@@ -1,0 +1,231 @@
+
+#wpadminbar .quicklinks .menupop ul li.qm-true > a {
+	color: #0a0;
+}
+
+#wp-admin-bar-query_monitor_notices {
+	background-color: #B47359 !important;
+	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 ) !important;
+}
+
+#wpadminbar .qm-notice {
+	background-color: #B47359;
+	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 );
+}
+
+#wp-admin-bar-query_monitor_warnings {
+	background-color: #e33 !important;
+	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
+}
+
+#wpadminbar .qm-warning {
+	background-color: #e33;
+	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 );
+}
+
+#wp-admin-bar-query_monitor_errors,
+#wpadminbar .qm-error {
+	background-color: #e33 !important;
+	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
+}
+
+#wp-admin-bar-query_monitor_notices a,
+#wp-admin-bar-query_monitor_warnings a,
+#wp-admin-bar-query_monitor_errors a {
+	color: #ddd !important;
+}
+
+#wp-admin-bar-query_monitor small {
+	font-size: 11px !important;
+}
+
+#wpadminbar .quicklinks .menupop.qm-wp-32 ul li.qm-true.hover > a {
+	color: #fff !important;
+}
+
+#wp-admin-bar-query_monitor.qm-wp-33 a:hover small,
+#wp-admin-bar-query_monitor.qm-wp-33 a:focus small {
+	color: #fafafa !important;
+}
+
+#wp-admin-bar-query_monitor.qm-wp-33.hover a small {
+	text-shadow: none !important;
+	color: #333 !important;
+}
+
+.nojs #wp-admin-bar-query_monitor.qm-wp-33 a:hover small {
+	text-shadow: none !important;
+	color: #333 !important;
+}
+
+#qm {
+	clear: both !important;
+	background: #ececec !important;
+	margin: 25px 0 0 !important;
+	border-top: 1px solid #ccc !important;
+	padding: 0 0 20px !important;
+	text-align: start !important;
+}
+
+#qm:after {
+	display: block;
+	content: '';
+	clear: both;
+	height: 0;
+}
+
+.wp-admin #qm {
+	margin: 0 !important;
+}
+
+#qm > p {
+	color: #999 !important;
+	font: italic 11px/13px Georgia !important;
+	margin: 20px 20px -15px !important;
+	text-shadow: 0 1px 0 #fff !important;
+}
+
+.qm {
+	border-collapse: collapse !important;
+	margin: 40px 20px 5px !important;
+	color: #444 !important;
+	float: left !important;
+	border: 0 !important;
+	box-shadow: 0 0 5px #ddd !important;
+	width: auto !important;
+}
+
+#qm-auth {
+	width: 300px !important;
+}
+
+.qm-queries {
+	max-width: 60% !important;
+}
+
+.qm td,
+.qm th {
+	background: #fff !important;
+	text-align: start !important;
+	font-family: monospace !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+	line-height: 16px !important;
+	border: 1px solid #ccc !important;
+	padding: 6px 8px 5px !important;
+	vertical-align: top !important;
+}
+
+.qm th {
+	color: #222 !important;
+}
+
+.qm-inner {
+	border-collapse: collapse !important;
+	margin: 0px !important;
+	background: #fff !important;
+	color: #333 !important;
+	float: none !important;
+	border: none !important;
+}
+
+.qm-inner td,
+.qm-inner th {
+	text-align: start !important;
+	font-family: monospace !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	border: none !important;
+	padding: 1px 0px !important;
+}
+
+.qm ul {
+	margin: 0px !important;
+	padding: 0px 0px 0px 10px !important;
+	list-style: none !important;
+}
+
+.qm li {
+	margin-bottom: 2px !important;
+}
+
+.qm span.qm-true,
+.qm tr.qm-true {
+	color: #0a0 !important;
+}
+
+.qm span.qm-false,
+.qm tr.qm-false {
+	color: #aaa !important;
+}
+
+.qm span.qm-na,
+.qm tr.qm-na {
+	color: #ccc !important;
+}
+
+.qm .qm-nonselectsql {
+	color: #a0a !important;
+}
+
+.qm .qm-current {
+	color: #a0a !important;
+}
+
+.qm .qm-url span {
+	color: #ccc !important;
+}
+
+.qm .qm-info {
+	color: #999 !important;
+}
+
+.qm .qm-qm {
+	color: #ccc !important;
+}
+
+.qm a {
+	color: #21759B !important;
+	text-decoration: underline !important;
+}
+
+.qm a.qm-warn {
+	text-decoration: underline !important;
+}
+
+.qm .qm-warn {
+	color: #f00 !important;
+}
+
+.qm span.qm-expensive,
+.qm td.qm-expensive {
+	color: #f44 !important;
+}
+
+.qm td.qm-priority {
+	width: 2.2em !important;
+	text-align: right !important;
+    padding: 1px 0.75em 1px 0 !important;
+}
+
+.qm td.qm-var {
+	text-align: right !important;
+	padding: 1px 1.5em 1px 0 !important;
+}
+
+
+/* RTL support */
+
+html[dir="rtl"] .qm-ltr {
+	direction: ltr !important;
+	text-align: right !important;
+}
+
+html[dir="rtl"] .qm td.qm-priority {
+    padding: 1px 0 1px 0.75em !important;
+}
+
+html[dir="rtl"] .qm td.qm-var {
+	padding: 1px 0 1px 1.5em !important;
+}
+
