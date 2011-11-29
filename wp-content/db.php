@@ -139,6 +139,8 @@ class QueryMonitorDB extends wpdb {
 
 			if ( in_array( $trace['class'], $ignore_class ) )
 				return null;
+			else if ( 0 === strpos( $trace['class'], 'QM' ) )
+				return null;
 			else
 				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
 
