@@ -3,20 +3,16 @@
 class QM_Admin extends QM {
 
 	var $id = 'admin';
-	var $admin  = array();
-	var $screen = '';
 
 	function __construct() {
-
 		parent::__construct();
-
-		add_filter( 'current_screen', array( $this, 'current_screen' ), 99 );
-
+		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 	}
 
 	function current_screen( $screen ) {
-		if ( empty( $this->admin ) )
-			$this->admin = wp_clone( $screen );
+		if ( empty( $this->data['admin'] ) )
+			$this->data['admin'] = wp_clone( $screen );
 		return $screen;
 	}
 
@@ -24,50 +20,30 @@ class QM_Admin extends QM {
 
 		global $current_screen, $pagenow;
 
-		if ( !isset( $current_screen ) or empty( $current_screen ) ) {
+		if ( isset( $_GET['page'] ) )
+			$this->data['base'] = $current_screen->base;
+		else
+			$this->data['base'] = $pagenow;
 
-			# Pre-3.0 compat:
-			if ( isset( $_GET['page'] ) ) {
-
-				$plugin_page = plugin_basename( stripslashes( $_GET['page'] ) );
-
-				if ( isset( $plugin_page ) ) {
-					if ( !$page_hook = get_plugin_page_hook( $plugin_page, $pagenow ) )
-						$page_hook = get_plugin_page_hook( $plugin_page, $plugin_page );
-					if ( !$page_hook )
-						$page_hook = $plugin_page;
-				}
-
-			} else {
-				$page_hook = $pagenow;
-			}
-
-			$this->screen = $page_hook;
-
-		} else {
-			if ( isset( $_GET['page'] ) )
-				$this->screen = $current_screen->base;
-			else
-				$this->screen = $pagenow;
-		}
+		$this->data['pagenow'] = $pagenow;
+		$this->data['current_screen'] = $current_screen;
 
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		return $this->menu( array(
-			'title' => sprintf( __( 'Admin Screen: %s', 'query_monitor' ), $this->screen )
+		$menu[] = $this->menu( array(
+			'title' => sprintf( __( 'Admin Screen: %s', 'query_monitor' ), $this->data['base'] )
 		) );
+		return $menu;
 
 	}
 
-	function output() {
-
-		global $current_screen, $typenow, $pagenow;
+	function output( $args, $data ) {
 
 		$post_type_warning = '';
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="3">' . __( 'Admin', 'query_monitor' ) . '</th>';
@@ -76,19 +52,19 @@ class QM_Admin extends QM {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="3">' . __( 'Variables', 'query_monitor' ) . '</td>';
+		echo '<td rowspan="2">' . __( 'Variables', 'query_monitor' ) . '</td>';
 		echo '<td class="qm-ltr">$current_screen</td>';
 		echo '<td>';
 
-		if ( is_object( $this->admin ) ) {
+		if ( is_object( $data['admin'] ) ) {
 			echo '<table class="qm-inner" cellspacing="0">';
 			echo '<tbody>';
-			foreach ( $this->admin as $key => $value ) {
+			foreach ( $data['admin'] as $key => $value ) {
 				echo '<tr>';
 				echo "<td class='qm-var'>{$key}:</td>";
 				echo '<td>';
 				echo $value;
-				if ( !empty( $value ) and ( $current_screen->$key != $value ) )
+				if ( !empty( $value ) and ( $data['current_screen']->$key != $value ) )
 					echo $post_type_warning = '&nbsp;(<a href="http://core.trac.wordpress.org/ticket/14886" class="qm-warn" title="' . esc_attr__( 'This value may not be as expected. Please see WordPress bug #14886.', 'query_monitor' ) . '" target="_blank">!</a>)';
 				echo '</td>';
 				echo '</tr>';
@@ -96,7 +72,7 @@ class QM_Admin extends QM {
 			echo '</tbody>';
 			echo '</table>';
 		} else {
-			echo $this->admin;
+			echo $data['admin'];
 		}
 
 		echo '</td>';
@@ -104,29 +80,24 @@ class QM_Admin extends QM {
 
 		echo '<tr>';
 		echo '<td class="qm-ltr">$pagenow</td>';
-		echo "<td>{$pagenow}</td>";
+		echo "<td>{$data['pagenow']}</td>";
 		echo '</tr>';
 
-		echo '<tr>';
-		echo '<td class="qm-ltr">$typenow</td>';
-		echo "<td>{$typenow} {$post_type_warning}</td>";
-		echo '</tr>';
-
-		if ( in_array( $current_screen->base, array( 'edit', 'edit-comments', 'edit-tags', 'link-manager', 'plugins', 'plugins-network', 'sites-network', 'themes-network', 'upload', 'users', 'users-network' ) ) ) {
+		if ( in_array( $data['current_screen']->base, array( 'edit', 'edit-comments', 'edit-tags', 'link-manager', 'plugins', 'plugins-network', 'sites-network', 'themes-network', 'upload', 'users', 'users-network' ) ) ) {
 
 			# And now, WordPress' legendary inconsistency comes into play:
 
-			if ( !empty( $current_screen->taxonomy ) )
-				$col = $current_screen->taxonomy;
-			else if ( !empty( $current_screen->post_type ) )
-				$col = $current_screen->post_type . '_posts';
+			if ( !empty( $data['current_screen']->taxonomy ) )
+				$col = $data['current_screen']->taxonomy;
+			else if ( !empty( $data['current_screen']->post_type ) )
+				$col = $data['current_screen']->post_type . '_posts';
 			else
-				$col = $current_screen->base;
+				$col = $data['current_screen']->base;
 
-			if ( !empty( $current_screen->post_type ) )
-				$cols = $current_screen->post_type . '_posts';
+			if ( !empty( $data['current_screen']->post_type ) )
+				$cols = $data['current_screen']->post_type . '_posts';
 			else
-				$cols = $current_screen->id;
+				$cols = $data['current_screen']->id;
 
 			if ( 'edit-comments' == $col )
 				$col = 'comments';
@@ -143,7 +114,7 @@ class QM_Admin extends QM {
 			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column</td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$current_screen->id}</span>_sortable_columns</td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns</td>";
 			echo '</tr>';
 
 		}
@@ -161,6 +132,6 @@ function register_qm_admin( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_admin' );
+add_filter( 'query_monitor_components', 'register_qm_admin', 50 );
 
 ?>

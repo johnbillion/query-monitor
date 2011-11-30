@@ -9,16 +9,17 @@ class QM_HTTP extends QM {
 
 		parent::__construct();
 
-		add_action( 'http_api_debug',    array( $this, 'http_debug' ), 99, 5 );
-		add_filter( 'http_request_args', array( $this, 'http_request' ), 99, 2 );
-		add_filter( 'http_response',     array( $this, 'http_response' ), 99, 3 );
+		add_action( 'http_api_debug',      array( $this, 'http_debug' ),    99, 5 );
+		add_filter( 'http_request_args',   array( $this, 'http_request' ),  99, 2 );
+		add_filter( 'http_response',       array( $this, 'http_response' ), 99, 3 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
 
 	}
 
 	function http_request( $args, $url ) {
 		$m_start = microtime( true );
 		$key = $m_start;
-		$this->http[$key] = array(
+		$this->data['http'][$key] = array(
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $m_start,
@@ -46,7 +47,7 @@ class QM_HTTP extends QM {
 				if ( !isset( $args['_qm_key'] ) )
 					return;
 
-				$this->http[$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
+				$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
 
 				if ( is_wp_error( $response ) )
 					$this->http_response( $response, $args, $url );
@@ -62,28 +63,31 @@ class QM_HTTP extends QM {
 	}
 
 	function http_response( $response, $args, $url ) {
-		$this->http[$args['_qm_key']]['end']      = microtime( true );
-		$this->http[$args['_qm_key']]['response'] = $response;
+		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
+		$this->data['http'][$args['_qm_key']]['response'] = $response;
 		return $response;
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		$title = ( empty( $this->http ) )
+		$count = isset( $this->data['http'] ) ? count( $this->data['http'] ) : 0;
+
+		$title = ( empty( $count ) )
 			? __( 'HTTP Requests', 'query_monitor' )
-			: _n( 'HTTP Requests (%s)', 'HTTP Requests (%s)', count( $this->http ), 'query_monitor' );
+			: _n( 'HTTP Requests (%s)', 'HTTP Requests (%s)', $count, 'query_monitor' );
 
-		return $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( count( $this->http ) ) )
+		$menu[] = $this->menu( array(
+			'title' => sprintf( $title, number_format_i18n( $count ) )
 		) );
+		return $menu;
 
 	}
 
-	function output() {
+	function output( $args, $data ) {
 
 		$total_time = 0;
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'HTTP Request', 'query_monitor' ) . '</th>';
@@ -96,9 +100,9 @@ class QM_HTTP extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( !empty( $this->http ) ) {
+		if ( !empty( $data['http'] ) ) {
 
-			foreach ( $this->http as $row ) {
+			foreach ( $data['http'] as $row ) {
 				$funcs = array();
 
 				if ( isset( $row['response'] ) ) {
@@ -195,6 +199,6 @@ function register_qm_http( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_http' );
+add_filter( 'query_monitor_components', 'register_qm_http', 110 );
 
 ?>

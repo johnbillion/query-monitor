@@ -5,24 +5,24 @@ class QM_Environment extends QM {
 	var $id = 'environment';
 
 	function __construct() {
-
 		parent::__construct();
-
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 80 );
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		return $this->menu( array(
+		$menu[] = $this->menu( array(
 			'title' => __( 'Environment', 'query_monitor' )
 		) );
+		return $menu;
 
 	}
 
-	function output() {
+	function process() {
 
-		global $wpdb;
+		# @TODO support for all db instances
 
-		# We could attempt to calculate optimal values here but there are just too many factors to consider.
+		global $wpdb, $wp_version, $blog_id;
 
 		$vars = array(
 			'key_buffer_size'    => true,  # Key cache limit
@@ -33,22 +33,17 @@ class QM_Environment extends QM {
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
 
-		$version = $wpdb->get_row( "
-			SHOW VARIABLES
-			WHERE Variable_name = 'version'
-		" );
 		$variables = $wpdb->get_results( "
 			SHOW VARIABLES
 			WHERE Variable_name IN ( '" . implode( "', '", array_keys( $vars ) ) . "' )
 		" );
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Environment', 'query_monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		$this->data['mysql'] = array(
+			'version'   => mysql_get_server_info( $wpdb->dbh ),
+			'user'      => DB_USER, # @TODO any other way to get this?
+			'vars'      => $vars,
+			'variables' => $variables
+		);
 
 		if ( function_exists( 'posix_getpwuid' ) ) {
 
@@ -66,25 +61,50 @@ class QM_Environment extends QM {
 
 		}
 
+		$this->data['php'] = array(
+			'version' => phpversion(),
+			'user'    => $php_u
+		);
+
+		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
+
+		$this->data['wp'] = array(
+			'version'  => $wp_version,
+			'wp_debug' => $wp_debug,
+			'blog_id'  => $blog_id
+		);
+
+	}
+
+	function output( $args, $data ) {
+
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th colspan="3">' . __( 'Environment', 'query_monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
 		echo '<tr>';
 		echo '<td rowspan="2">PHP</td>';
 		echo '<td>version</td>';
-		echo '<td>' . phpversion() . '</td>';
+		echo '<td>' . $data['php']['version'] . '</td>';
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>user</td>';
-		echo "<td>{$php_u}</td>";
+		echo "<td>{$data['php']['user']}</td>";
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td rowspan="' . ( 2 + count( $variables ) ) . '">MySQL</td>';
+		echo '<td rowspan="' . ( 2 + count( $data['mysql']['variables'] ) ) . '">MySQL</td>';
 		echo '<td>version</td>';
-		echo '<td>' . $version->Value . '</td>';
+		echo '<td>' . $data['mysql']['version'] . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<td>user</td>';
-		echo '<td>' . DB_USER . '</td>';
+		echo '<td>' . $data['mysql']['user'] . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
@@ -93,16 +113,16 @@ class QM_Environment extends QM {
 		$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query_monitor' );
 		$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query_monitor' );
 
-		foreach ( $variables as $setting ) {
+		foreach ( $data['mysql']['variables'] as $setting ) {
 
 			$key = $setting->Variable_name;
 			$val = $setting->Value;
 			$prepend = '';
 			$warning = '&nbsp;(<a class="qm-warn" href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">!</a>)';
 
-			if ( ( true === $vars[$key] ) and empty( $val ) )
+			if ( ( true === $data['mysql']['vars'][$key] ) and empty( $val ) )
 				$prepend .= $warning;
-			else if ( is_string( $vars[$key] ) and ( $val !== $vars[$key] ) )
+			else if ( is_string( $data['mysql']['vars'][$key] ) and ( $val !== $data['mysql']['vars'][$key] ) )
 				$prepend .= $warning;
 
 			if ( is_numeric( $val ) and ( $val >= 1024 ) )
@@ -123,7 +143,6 @@ class QM_Environment extends QM {
 
 		}
 
-		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
 		$wp_span = 2;
 
 		if ( is_multisite() )
@@ -132,19 +151,19 @@ class QM_Environment extends QM {
 		echo '<tr>';
 		echo '<td rowspan="' . $wp_span . '">WP</td>';
 		echo '<td>version</td>';
-		echo "<td>{$GLOBALS['wp_version']}</td>";
+		echo "<td>{$data['wp']['version']}</td>";
 		echo '</tr>';
 
 		if ( is_multisite() ) {
 			echo '<tr>';
 			echo '<td>blog_id</td>';
-			echo "<td>{$GLOBALS['blog_id']}</td>";
+			echo "<td>{$data['wp']['blog_id']}</td>";
 			echo '</tr>';
 		}
 
 		echo '<tr>';
 		echo '<td>WP_DEBUG</td>';
-		echo "<td>{$wp_debug}</td>";
+		echo "<td>{$data['wp']['wp_debug']}</td>";
 		echo '</tr>';
 
 		echo '</tbody>';
@@ -159,6 +178,6 @@ function register_qm_environment( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_environment' );
+add_filter( 'query_monitor_components', 'register_qm_environment', 90 );
 
 ?>

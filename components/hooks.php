@@ -5,47 +5,40 @@ class QM_Hooks extends QM {
 	var $id = 'hooks';
 
 	function __construct() {
-
 		parent::__construct();
-
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		return $this->menu( array(
+		$menu[] = $this->menu( array(
 			'title' => __( 'Hooks', 'query_monitor' )
 		) );
+		return $menu;
 
 	}
 
-	function output() {
+	function process_late() {
 
-		global $wp_actions, $querymonitor;
+		# why is this fucking with the hooks?
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>' . __( 'Hook', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Actions', 'query_monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		global $wp_actions, $wp_filter, $querymonitor, $current_screen, $pagenow;
 
-		if ( is_numeric( current( $wp_actions ) ) )
-			$actions = array_keys( $wp_actions ); # wp 3.0+
+		if ( isset( $_GET['page'] ) )
+			$screen = $current_screen->base;
 		else
-			$actions = array_values( $wp_actions ); # < wp 3.0
+			$screen = $pagenow;
 
 		$qm_class = get_class( $querymonitor );
+		$hooks = array();
 
 		if ( is_multisite() and is_network_admin() )
-			$screen = preg_replace( '|-network$|', '', $this->screen );
-		else
-			$screen = $this->screen;
+			$screen = preg_replace( '|-network$|', '', $screen );
 
-		foreach ( $actions as $action ) {
+		foreach ( $wp_actions as $action => $triggered ) {
 
 			$name = $action;
+			$actions = array();
 
 			if ( !empty( $screen ) ) {
 
@@ -56,30 +49,75 @@ class QM_Hooks extends QM {
 
 			}
 
-			echo '<tr>';
-			echo "<td valign='top'>$name</td>";
-			if ( isset( $GLOBALS['wp_filter'][$action] ) ) {
-				echo '<td><table class="qm-inner" cellspacing="0">';
-				foreach( $GLOBALS['wp_filter'][$action] as $priority => $functions ) {
+			if ( isset( $wp_filter[$action] ) ) {
+
+				foreach( $wp_filter[$action] as $priority => $functions ) {
+
 					foreach ( $functions as $function ) {
-						$css = '';
+
+						$css_class = '';
+
 						if ( is_array( $function['function'] ) ) {
-							$class = $function['function'][0];
-							if ( is_object( $class ) )
-								$class = get_class( $class );
+
+							if ( is_object( $function['function'][0] ) )
+								$class = get_class( $function['function'][0] );
+							else
+								$class = $function['function'][0];
+
 							if ( $qm_class == $class )
-								$css = 'qm-qm';
+								$css_class = 'qm-qm';
 							$out = $class . '-&gt;' . $function['function'][1] . '()';
 						} else {
 							$out = $function['function'] . '()';
 						}
-						echo '<tr class="' . $css . '">';
-						echo '<td valign="top" class="qm-priority">' . $priority . '</td>';
-						echo '<td valign="top" class="qm-ltr">';
-						echo $out;
-						echo '</td>';
-						echo '</tr>';
+
+						$actions[] = array(
+							'class'    => $css_class,
+							'priority' => $priority,
+							'function' => $out
+						);
+
 					}
+
+				}
+
+			}
+
+			$hooks[$action] = array(
+				'name'    => $name,
+				'actions' => $actions
+			);
+
+		}
+
+		$this->data['hooks'] = $hooks;
+
+	}
+
+	function output( $args, $data ) {
+
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th>' . __( 'Hook', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Actions', 'query_monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		foreach ( $data['hooks'] as $hook ) {
+
+			echo '<tr>';
+			echo "<td valign='top'>{$hook['name']}</td>";
+			if ( !empty( $hook['actions'] ) ) {
+				echo '<td><table class="qm-inner" cellspacing="0">';
+				foreach ( $hook['actions'] as $action ) {
+					echo '<tr class="' . $action['class'] . '">';
+					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
+					echo '<td valign="top" class="qm-ltr">';
+					echo $action['function'];
+					echo '</td>';
+					echo '</tr>';
 				}
 				echo '</table></td>';
 			} else {
@@ -100,6 +138,6 @@ function register_qm_hooks( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_hooks' );
+add_filter( 'query_monitor_components', 'register_qm_hooks', 80 );
 
 ?>

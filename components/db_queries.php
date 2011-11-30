@@ -2,66 +2,95 @@
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
-if ( !defined( 'QM_EXPENSIVE' ) )
-	define( 'QM_EXPENSIVE', 0.05 );
-if ( !defined( 'QM_LONG' ) )
-	define( 'QM_LONG', 1000 );
-if ( !defined( 'QM_DISPLAY_LIMIT' ) )
-	define( 'QM_DISPLAY_LIMIT', 100 );
+if ( !defined( 'QM_DB_EXPENSIVE' ) )
+	define( 'QM_DB_EXPENSIVE', 0.05 );
+if ( !defined( 'QM_DB_LONG' ) )
+	define( 'QM_DB_LONG', 1000 );
+if ( !defined( 'QM_DB_LIMIT' ) )
+	define( 'QM_DB_LIMIT', 100 );
+
+# @TODO warnings and shit for long/slow queries
 
 class QM_DB_Queries extends QM {
 
 	var $id = 'db_queries';
-	var $db_objects = array();
-	var $query_num  = 0;
-	var $query_time = 0;
-	var $errors  = 0;
-	var $times = array();
 
 	function __construct() {
-
 		parent::__construct();
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
+		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 20 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
+	}
+
+	function admin_title( $title ) {
+		$title[] = sprintf( __( '%s<small>Q</small>', 'query_monitor' ), number_format_i18n( $this->data['query_num'] ) );
+		return $title;
+	}
+
+	function admin_class( $class ) {
+
+		if ( $this->get_errors() )
+			$class[] = 'qm-error';
+		return $class;
+
+	}
+
+	function admin_menu( $menu ) {
+
+		if ( $errors = $this->get_errors() ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query_monitor_errors',
+				'title' => sprintf( __( 'Database Errors (%s)', 'query_monitor' ), number_format_i18n( count( $errors ) ) )
+			) );
+		}
+		return $menu;
+
+	}
+
+	function get_errors() {
+
+		# This function loops over the DB queries 
+		return false;
 
 	}
 
 	function process() {
 
-		global $wpdb;
-
-		# @TODO support all db classes
-
-		foreach ( (array) $wpdb->queries as $query ) {
-			if ( strpos( $query[2], 'wp_admin_bar' ) )
-				continue;
-			$this->query_num++;
-			$this->query_time += $query[1];
-			if ( isset( $query[3] ) and is_wp_error( $query[3] ) )
-				$this->errors++;
-		}
-
-	}
-
-	function output() {
-
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->db_objects = array();
+		$this->data['query_num']  = 0;
+		$this->data['query_time'] = 0;
+		$this->data['errors']     = 0;
+		$this->data['db_objects'] = apply_filters( 'query_monitor_db_objects', array(
+			'$wpdb' => $GLOBALS['wpdb']
+		) );
 
-		foreach ( $GLOBALS as $key => $value ) {
+		foreach ( $this->data['db_objects'] as $key => $db ) {
 
-			if ( $this->is_db_object( $value ) ) {
-				$this->db_objects[$key] = $value;
-			} else if ( $this->is_allowed_object( $value ) ) {
-				foreach ( $value as $k => $v ) {
-					if ( $this->is_db_object( $v ) )
-						$this->db_objects["{$key}->{$k}"] = $v;
-				}
+			foreach ( (array) $db->queries as $query ) {
+
+				if ( false !== strpos( $query[2], 'wp_admin_bar' ) )
+					continue;
+
+				$this->data['query_num']++;
+				$this->data['query_time'] += $query[1];
+
+				if ( isset( $query[3] ) and is_wp_error( $query[3] ) )
+					$this->data['errors']++;
+
 			}
 
 		}
 
-		foreach ( (array) apply_filters( 'query_monitor_db_objects', $this->db_objects ) as $name => $object ) {
+	}
+
+	function output( $args, $data ) {
+
+		if ( !SAVEQUERIES )
+			return;
+
+		foreach ( $data['db_objects'] as $name => $object ) {
 			if ( $this->is_db_object( $object ) )
 				$this->output_queries( $object, $name );
 		}
@@ -95,19 +124,21 @@ class QM_DB_Queries extends QM {
 
 		# @TODO move this into the QM object
 
-		if ( !isset( $this->times[$func] ) ) {
-			$this->times[$func] = array(
+		if ( !isset( $this->data['times'][$func] ) ) {
+			$this->data['times'][$func] = array(
 				'func'  => $func,
 				'calls' => 0,
 				'ltime' => 0
 			);
 		}
 
-		$this->times[$func]['calls']++;
-		$this->times[$func]['ltime'] += $ltime;
+		$this->data['times'][$func]['calls']++;
+		$this->data['times'][$func]['ltime'] += $ltime;
 	}
 
 	function output_queries( $dbc, $name ) {
+
+		# @TODO move more of this into process()
 
 		$rows         = array();
 		$total_time   = 0;
@@ -152,7 +183,7 @@ class QM_DB_Queries extends QM {
 					$this->add_time( $func, $ltime );
 				}
 
-				if ( ( $total_qs > QM_DISPLAY_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) ) {
+				if ( ( $total_qs > QM_DB_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) ) {
 					$max_exceeded = true;
 					continue;
 				}
@@ -187,11 +218,11 @@ class QM_DB_Queries extends QM {
 		echo '<table class="qm qm-queries" cellspacing="0" id="qm-queries-' . $id . '">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $span . '" class="qm-ltr">$' . $name . '</th>';
+		echo '<th colspan="' . $span . '" class="qm-ltr">' . $name . '</th>';
 		echo '</tr>';
 
 		if ( $max_exceeded ) {
-			echo '<tr><td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s $%2$s queries were performed on this page load. Only the first %3$d are shown below. Total query time and cumulative function times should be accurate.', 'query_monitor' ), number_format_i18n( $total_qs ), $name, number_format_i18n( QM_DISPLAY_LIMIT ) ) . '</td></tr>';
+			echo '<tr><td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s $%2$s queries were performed on this page load. Only the first %3$d are shown below. Total query time and cumulative function times should be accurate.', 'query_monitor' ), number_format_i18n( $total_qs ), $name, number_format_i18n( QM_DB_LIMIT ) ) . '</td></tr>';
 		}
 
 		echo '<tr>';
@@ -225,11 +256,11 @@ class QM_DB_Queries extends QM {
 				$qs = size_format( $ql );
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
-				if ( $select and ( $ql > QM_LONG ) )
+				if ( $select and ( $ql > QM_DB_LONG ) )
 					$row['qs'] = "<br /><span class='qm-expensive'>({$qs})</span>";
 				else
 					$row['qs'] = '';
-				$td = ( $row['ltime'] > QM_EXPENSIVE ) ? " class='qm-expensive'" : '';
+				$td = ( $row['ltime'] > QM_DB_EXPENSIVE ) ? " class='qm-expensive'" : '';
 				if ( !$select )
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
@@ -283,6 +314,6 @@ function register_qm_db_queries( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_db_queries' );
+add_filter( 'query_monitor_components', 'register_qm_db_queries', 20 );
 
 ?>

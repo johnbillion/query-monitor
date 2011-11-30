@@ -3,33 +3,29 @@
 class QM_Conditionals extends QM {
 
 	var $id = 'conditionals';
-	var $conds = array();
 
 	function __construct() {
-
 		parent::__construct();
-
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
 	}
 
-	function admin_menus() {
+	function admin_menu( $menu ) {
 
-		$menus = array();
-
-		foreach ( $this->conds['true'] as $cond ) {
-			$menus[] = $this->menu( array(
+		foreach ( $this->data['conds']['true'] as $cond ) {
+			$menu[] = $this->menu( array(
 				'title' => $cond . '()',
 				'id'    => 'query_monitor_' . $cond,
 				'meta'  => array( 'class' => 'qm-true' )
 			) );
 		}
 
-		return $menus;
+		return $menu;
 
 	}
 
-	function output() {
+	function output( $args, $data ) {
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Conditionals', 'query_monitor' ) . '</th>';
@@ -37,23 +33,17 @@ class QM_Conditionals extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		foreach ( $this->conds['true'] as $cond ) {
+		foreach ( $data['conds']['true'] as $cond ) {
 			echo '<tr class="qm-true">';
 			echo '<td class="qm-ltr">' . $cond . '()</td>';
 			echo '</tr>';
 		}
 
-		foreach ( $this->conds['false'] as $cond ) {
+		foreach ( $data['conds']['false'] as $cond ) {
 			echo '<tr class="qm-false">';
 			echo '<td class="qm-ltr">' . $cond . '()</td>';
 			echo '</tr>';
 		}
-
-		#foreach ( $this->conds['na'] as $cond )
-		#	echo '<tr class="qm-na">';
-		#	echo '<td class="qm-ltr">' . $cond . '()</td>';
-		#	echo '</tr>';
-		#}
 
 		echo '</tbody>';
 		echo '</table>';
@@ -91,8 +81,7 @@ class QM_Conditionals extends QM {
 				$na[] = $cond;
 			}
 		}
-
-		return $this->conds = compact( 'true', 'false', 'na' );
+		$this->data['conds'] = compact( 'true', 'false', 'na' );
 
 	}
 
@@ -103,6 +92,6 @@ function register_qm_conditionals( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_conditionals' );
+add_filter( 'query_monitor_components', 'register_qm_conditionals', 40 );
 
 ?>

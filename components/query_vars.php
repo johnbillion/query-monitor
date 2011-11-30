@@ -3,13 +3,10 @@
 class QM_Query_Vars extends QM {
 
 	var $id = 'query_vars';
-	var $qvars        = array();
-	var $plugin_qvars = array();
 
 	function __construct() {
-
 		parent::__construct();
-
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 70 );
 	}
 
 	function process() {
@@ -26,25 +23,25 @@ class QM_Query_Vars extends QM {
 			}
 		}
 
-		# First add plugin vars to $this->qvars:
+		# First add plugin vars to $this->data['qvars']:
 		foreach ( $query_vars as $k => $v ) {
 			if ( in_array( $k, $plugin_qvars ) ) {
-				$this->qvars[$k] = $v;
-				$this->plugin_qvars[] = $k;
+				$this->data['qvars'][$k] = $v;
+				$this->data['plugin_qvars'][] = $k;
 			}
 		}
 
-		# Now add all other vars to $this->qvars:
+		# Now add all other vars to $this->data['qvars']:
 		foreach ( $query_vars as $k => $v ) {
 			if ( !in_array( $k, $plugin_qvars ) )
-				$this->qvars[$k] = $v;
+				$this->data['qvars'][$k] = $v;
 		}
 
 	}
 
-	function output() {
+	function output( $args, $data ) {
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="2">' . __( 'Query Vars', 'query_monitor' ) . '</th>';
@@ -52,33 +49,34 @@ class QM_Query_Vars extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( empty( $this->qvars ) ) {
+		if ( !empty( $data['qvars'] ) ) {
+
+			foreach( $data['qvars'] as $var => $value ) {
+				if ( isset( $data['plugin_qvars'] ) and in_array( $var, $data['plugin_qvars'] ) )
+					$var = '<span class="qm-current">' . $var . '</span>';
+				echo '<tr>';
+				echo "<td valign='top'>{$var}</td>";
+				if ( is_array( $value ) ) {
+					echo '<td valign="top"><ul>';
+					foreach ( $value as $k => $v ) {
+						$k = esc_html( $k );
+						$v = esc_html( $v );
+						echo "<li>{$k} => {$v}</li>";
+					}
+					echo '</ul></td>';
+				} else {
+					$value = esc_html( $value );
+					echo "<td valign='top'>{$value}</td>";
+				}
+				echo '</tr>';
+			}
+
+		} else {
+
 			echo '<tr>';
 			echo '<td colspan="2" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
 			echo '</tr>';
-			echo '</tbody>';
-			echo '</table>';
-			return;
-		}
 
-		foreach( $this->qvars as $var => $value ) {
-			if ( in_array( $var, $this->plugin_qvars ) )
-				$var = '<span class="qm-current">' . $var . '</span>';
-			echo '<tr>';
-			echo "<td valign='top'>{$var}</td>";
-			if ( is_array( $value ) ) {
-				echo '<td valign="top"><ul>';
-				foreach ( $value as $k => $v ) {
-					$k = esc_html( $k );
-					$v = esc_html( $v );
-					echo "<li>{$k} => {$v}</li>";
-				}
-				echo '</ul></td>';
-			} else {
-				$value = esc_html( $value );
-				echo "<td valign='top'>{$value}</td>";
-			}
-			echo '</tr>';
 		}
 
 		echo '</tbody>';
@@ -86,15 +84,18 @@ class QM_Query_Vars extends QM {
 
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		$title = ( empty( $this->plugin_qvars ) )
+		$count = isset( $this->data['plugin_qvars'] ) ? count( $this->data['plugin_qvars'] ) : 0;
+
+		$title = ( empty( $count ) )
 			? __( 'Query Vars', 'query_monitor' )
-			: _n( 'Query Vars (+%s)', 'Query Vars (+%s)', count( $this->plugin_qvars ), 'query_monitor' );
+			: _n( 'Query Vars (+%s)', 'Query Vars (+%s)', $count, 'query_monitor' );
 
-		return $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( count( $this->plugin_qvars ) ) )
+		$menu[] = $this->menu( array(
+			'title' => sprintf( $title, number_format_i18n( $count ) )
 		) );
+		return $menu;
 
 	}
 
@@ -105,6 +106,6 @@ function register_qm_query_vars( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_query_vars' );
+add_filter( 'query_monitor_components', 'register_qm_query_vars', 70 );
 
 ?>

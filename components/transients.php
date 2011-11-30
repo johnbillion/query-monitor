@@ -2,16 +2,13 @@
 
 class QM_Transients extends QM {
 
-	var $id   = 'transients';
-	var $trans = array();
+	var $id = 'transients';
 
 	function __construct() {
-
 		parent::__construct();
-
-		add_action( 'setted_site_transient',  array( $this, 'setted_site_transient' ) );
-		add_action( 'setted_transient',       array( $this, 'setted_blog_transient' ) );
-
+		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ) );
+		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ) );
+		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 50 );
 	}
 
 	function setted_site_transient( $transient ) {
@@ -23,16 +20,16 @@ class QM_Transients extends QM {
 	}
 
 	function setted_transient( $transient, $type ) {
-		$this->trans[] = array(
+		$this->data['trans'][] = array(
 			'transient' => $transient,
 			'trace'     => $this->backtrace(),
 			'type'      => $type
 		);
 	}
 
-	function output() {
+	function output( $args, $data ) {
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Transient Set', 'query_monitor' ) . '</th>';
@@ -43,9 +40,9 @@ class QM_Transients extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( !empty( $this->trans ) ) {
+		if ( !empty( $data['trans'] ) ) {
 
-			foreach ( $this->trans as $row ) {
+			foreach ( $data['trans'] as $row ) {
 				unset( $row['trace'][0], $row['trace'][1] );
 				$func = $row['trace'][2];
 				$transient = str_replace( array(
@@ -76,15 +73,18 @@ class QM_Transients extends QM {
 
 	}
 
-	function admin_menu() {
+	function admin_menu( $menu ) {
 
-		$title = ( empty( $this->trans ) )
+		$count = isset( $this->data['trans'] ) ? count( $this->data['trans'] ) : 0;
+
+		$title = ( empty( $count ) )
 			? __( 'Transients Set', 'query_monitor' )
-			: _n( 'Transients Set (%s)', 'Transients Set (%s)', count( $this->trans ), 'query_monitor' );
+			: _n( 'Transients Set (%s)', 'Transients Set (%s)', $count, 'query_monitor' );
 
-		return $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( count( $this->trans ) ) )
+		$menu[] = $this->menu( array(
+			'title' => sprintf( $title, number_format_i18n( $count ) )
 		) );
+		return $menu;
 
 	}
 
@@ -96,6 +96,6 @@ function register_qm_transients( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_transients' );
+add_filter( 'query_monitor_components', 'register_qm_transients', 100 );
 
 ?>

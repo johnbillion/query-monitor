@@ -3,31 +3,37 @@
 class QM_Overview extends QM {
 
 	var $id = 'overview';
-	var $load_time = 0;
-	var $memory    = 0;
 
 	function __construct() {
-
 		parent::__construct();
-
+		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );
 	}
 
-	function output() {
+	function admin_title( $title ) {
+		$title[] = sprintf( __( '%s<small>S</small>', 'query_monitor' ), number_format_i18n( $this->data['load_time'], 2 ) );
+		return $title;
+	}
+
+	function output( $args, $data ) {
 
 		$http_time = 0;
+		$http = $this->get_component( 'http' );
 
 		# @TODO this should go into a process_*() function:
-		foreach ( $this->components->http->http as $row ) {
-			if ( isset( $row['response'] ) )
-				$http_time += ( $row['end'] - $row['start'] );
-			else
-				$http_time += $row['args']['timeout'];
+
+		if ( isset( $http->data['http'] ) ) {
+			foreach ( $http->data['http'] as $row ) {
+				if ( isset( $row['response'] ) )
+					$http_time += ( $row['end'] - $row['start'] );
+				else
+					$http_time += $row['args']['timeout'];
+			}
 		}
 
-		$total_stime = number_format_i18n( $this->load_time, 4 );
-		$total_ltime = number_format_i18n( $this->load_time, 10 );
-		$excl_stime  = number_format_i18n( $this->load_time - $http_time, 4 );
-		$excl_ltime  = number_format_i18n( $this->load_time - $http_time, 10 );
+		$total_stime = number_format_i18n( $data['load_time'], 4 );
+		$total_ltime = number_format_i18n( $data['load_time'], 10 );
+		$excl_stime  = number_format_i18n( $data['load_time'] - $http_time, 4 );
+		$excl_ltime  = number_format_i18n( $data['load_time'] - $http_time, 10 );
 
 		if ( empty( $http_time ) )
 			$timespan = 1;
@@ -39,7 +45,7 @@ class QM_Overview extends QM {
 
 		echo '<tr>';
 		echo '<td>' . __( 'Peak memory usage', 'query_monitor' ) . '</td>';
-		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query_monitor' ), number_format_i18n( $this->memory ) ) ) . '">' . sprintf( __( '%s kB', 'query_monitor' ), number_format_i18n( $this->memory / 1000 ) ) . '</td>';
+		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query_monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query_monitor' ), number_format_i18n( $data['memory'] / 1000 ) ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
@@ -61,11 +67,11 @@ class QM_Overview extends QM {
 	function process() {
 
 		if ( function_exists( 'memory_get_peak_usage' ) )
-			$this->memory = memory_get_peak_usage();
+			$this->data['memory'] = memory_get_peak_usage();
 		else
-			$this->memory = memory_get_usage();
+			$this->data['memory'] = memory_get_usage();
 
-		$this->load_time = $this->timer_stop_float();
+		$this->data['load_time'] = $this->timer_stop_float();
 
 	}
 
@@ -76,6 +82,6 @@ function register_qm_overview( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_overview' );
+add_filter( 'query_monitor_components', 'register_qm_overview', 10 );
 
 ?>

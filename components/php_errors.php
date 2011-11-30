@@ -3,22 +3,50 @@
 class QM_PHP_Errors extends QM {
 
 	var $id = 'php_errors';
-	var $php_errors   = array();
 
 	function __construct() {
 
 		parent::__construct();
-
 		set_error_handler( array( $this, 'error_handler' ) );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 
 	}
 
-	function output() {
+	function admin_class( $class ) {
 
-		if ( empty( $this->php_errors ) )
+		if ( isset( $this->data['errors']['notice'] ) )
+			$class[] = 'qm-notice';
+		if ( isset( $this->data['errors']['warning'] ) )
+			$class[] = 'qm-warning';
+		return $class;
+
+	}
+
+	function admin_menu( $menu ) {
+
+		if ( isset( $this->data['errors']['warning'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query_monitor_warnings',
+				'title' => sprintf( __( 'PHP Warnings (%s)', 'query_monitor' ), number_format_i18n( count( $this->data['errors']['warning'] ) ) )
+			) );
+		}
+		if ( isset( $this->data['errors']['notice'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query_monitor_notices',
+				'title' => sprintf( __( 'PHP Notices (%s)', 'query_monitor' ), number_format_i18n( count( $this->data['errors']['notice'] ) ) )
+			) );
+		}
+		return $menu;
+
+	}
+
+	function output( $args, $data ) {
+
+		if ( empty( $this->data['errors'] ) )
 			return;
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="2">' . __( 'PHP Error', 'query_monitor' ) . '</th>';
@@ -36,13 +64,13 @@ class QM_PHP_Errors extends QM {
 
 		foreach ( $types as $type => $title ) {
 
-			if ( isset( $this->php_errors[$type] ) ) {
+			if ( isset( $data['errors'][$type] ) ) {
 
 				echo '<tr>';
-				echo '<td rowspan="' . count( $this->php_errors[$type] ) . '">' . $title . '</td>';
+				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
 				$first = true;
 
-				foreach ( $this->php_errors[$type] as $error ) {
+				foreach ( $data['errors'][$type] as $error ) {
 
 					if ( !$first )
 						echo '<tr>';
@@ -66,31 +94,6 @@ class QM_PHP_Errors extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
-
-	}
-
-	function admin_menus() {
-
-		$menus = array();
-
-		if ( isset( $this->php_errors['warning'] ) ) {
-			$menus[] = $this->menu( array(
-				'id'    => 'query_monitor_warnings',
-				'title' => sprintf( __( 'PHP Warnings (%s)', 'query_monitor' ), count( $this->php_errors['warning'] ) ) # 'TODO l18n number
-			) );
-		}
-
-		if ( isset( $this->php_errors['notice'] ) ) {
-			$menus[] = $this->menu( array(
-				'id'    => 'query_monitor_notices',
-				'title' => sprintf( __( 'PHP Notices (%s)', 'query_monitor' ), count( $this->php_errors['notice'] ) ) # 'TODO l18n number
-			) );
-		}
-
-		if ( empty( $menus ) )
-			return false;
-
-		return $menus;
 
 	}
 
@@ -123,10 +126,10 @@ class QM_PHP_Errors extends QM {
 
 			$key = md5( $message . $file . $line . $funcs[0] );
 
-			if ( isset( $this->php_errors[$type][$key] ) ) {
-				$this->php_errors[$type][$key]->calls++;
+			if ( isset( $this->data['errors'][$type][$key] ) ) {
+				$this->data['errors'][$type][$key]->calls++;
 			} else {
-				$this->php_errors[$type][$key] = (object) array(
+				$this->data['errors'][$type][$key] = (object) array(
 					'type'    => $type,
 					'message' => $message,
 					'file'    => $file,
@@ -143,5 +146,12 @@ class QM_PHP_Errors extends QM {
 	}
 
 }
+
+function register_qm_php_errors( $qm ) {
+	$qm['php_errors'] = new QM_PHP_Errors;
+	return $qm;
+}
+
+add_filter( 'query_monitor_components', 'register_qm_php_errors', 120 );
 
 ?>

@@ -1,18 +1,12 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version: 2.0.3
+Version:     2.1.1
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
 
 */
-
-# Pre-3.0.something compat
-if ( !class_exists( 'wpdb' ) ) {
-	$wpdb = true;
-	require_once( ABSPATH . WPINC . '/wp-db.php' );
-}
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
@@ -52,11 +46,11 @@ class QueryMonitorDB extends wpdb {
 		$this->num_queries++;
 
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
-			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_trace(), null );
+			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller(), null );
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			$this->queries[$this->num_queries][3] = new WP_Error( 'qmdb_error', $this->last_error );
+			$this->queries[$this->num_queries][3] = new WP_Error( 'query_monitor_db_error', $this->last_error );
 			$this->print_error();
 			return false;
 		}
@@ -94,7 +88,7 @@ class QueryMonitorDB extends wpdb {
 		return $return_val;
 	}
 
-	function get_trace() {
+	function get_caller() {
 		return implode( ', ', array_reverse( $this->backtrace() ) );
 	}
 
@@ -107,11 +101,10 @@ class QueryMonitorDB extends wpdb {
 	function _filter_trace( $trace ) {
 
 		$ignore_class = array(
-			'W3_Db',
+			'wpdb',
 			'QueryMonitor',
 			'QueryMonitorDB',
-			'wpdb',
-			'Debug_Bar_PHP'
+			'W3_Db'
 		);
 		$ignore_func = array(
 			'include_once',
@@ -119,12 +112,7 @@ class QueryMonitorDB extends wpdb {
 			'include',
 			'require',
 			'call_user_func_array',
-			'call_user_func',
-			'trigger_error',
-			'_doing_it_wrong',
-			'_deprecated_argument',
-			'_deprecated_file',
-			'_deprecated_function'
+			'call_user_func'
 		);
 		$show_arg = array(
 			'do_action',
@@ -158,6 +146,9 @@ class QueryMonitorDB extends wpdb {
 	}
 
 }
+
+if ( !defined( 'ABSPATH' ) )
+    die();
 
 $wpdb = new QueryMonitorDB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
 

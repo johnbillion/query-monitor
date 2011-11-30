@@ -5,8 +5,14 @@ class QM_Authentication extends QM {
 	var $id = 'authentication';
 
 	function __construct() {
-
 		parent::__construct();
+		add_filter( 'plugins_loaded', array( $this, 'setup' ) );
+	}
+
+	function setup() {
+
+		if ( !defined( 'QUERY_MONITOR_COOKIE' ) )
+			define( 'QUERY_MONITOR_COOKIE', 'query_monitor_' . COOKIEHASH );
 
 	}
 
@@ -16,16 +22,11 @@ class QM_Authentication extends QM {
 		return false;
 	}
 
-	function setup() {
-		if ( !defined( 'QUERY_MONITOR_COOKIE' ) )
-			define( 'QUERY_MONITOR_COOKIE', 'query_monitor_' . COOKIEHASH );
-	}
-
-	function output() {
+	function output( $args, $data ) {
 
 		# @TODO non-js fallback
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Authentication', 'query_monitor' ) . '</th>';
@@ -96,6 +97,6 @@ function register_qm_authentication( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_authentication' );
+add_filter( 'query_monitor_components', 'register_qm_authentication', 130 );
 
 ?>

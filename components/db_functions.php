@@ -3,22 +3,34 @@
 class QM_DB_Functions extends QM {
 
 	var $id = 'db_functions';
-	var $times = array();
 
 	function __construct() {
-
 		parent::__construct();
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 30 );
+	}
+
+	function process() {
+
+		$dbq = $this->get_component( 'db_queries' );
+		$this->data['times'] = $dbq->data['times'];
 
 	}
 
-	function output() {
+	function admin_menu( $menu ) {
+
+		$menu[] = $this->menu( array(
+			'title' => __( 'Functions', 'query_monitor' )
+		) );
+		return $menu;
+
+	}
+
+	function output( $args, $data ) {
 
 		$total_time  = 0;
 		$total_calls = 0;
-		$dbq = $this->get_component( 'db_queries' );
-		$this->times = $dbq->times;
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Query Function', 'query_monitor' ) . '</th>';
@@ -28,11 +40,11 @@ class QM_DB_Functions extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( !empty( $this->times ) ) {
+		if ( !empty( $data['times'] ) ) {
 
-			usort( $this->times, array( $this, '_sort' ) );
+			usort( $data['times'], array( $this, '_sort' ) );
 
-			foreach ( $this->times as $func => $row ) {
+			foreach ( $data['times'] as $func => $row ) {
 				$total_time  += $row['ltime'];
 				$total_calls += $row['calls'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
@@ -66,16 +78,6 @@ class QM_DB_Functions extends QM {
 
 	}
 
-	function admin_menu() {
-
-		global $template;
-
-		return $this->menu( array(
-			'title' => __( 'Functions', 'query_monitor' )
-		) );
-
-	}
-
 }
 
 function register_qm_db_functions( $qm ) {
@@ -83,6 +85,6 @@ function register_qm_db_functions( $qm ) {
 	return $qm;
 }
 
-add_filter( 'qm', 'register_qm_db_functions' );
+#add_filter( 'query_monitor_components', 'register_qm_db_functions', 30 );
 
 ?>

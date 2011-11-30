@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1
+Version:     2.1.1
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
@@ -39,39 +39,37 @@ Query Monitor outputs info on:
 
 class QueryMonitor {
 
-	var $overview = array();
-
 	function __construct() {
 
-		add_action( 'plugins_loaded',         array( $this, 'setup' ), 1 );
-		add_action( 'init',                   array( $this, 'register_style' ) );
-		add_action( 'wp_footer',              array( $this, 'register_output' ), 99 );
-		add_action( 'admin_footer',           array( $this, 'register_output' ), 99 );
-
+		add_action( 'init',                   array( $this, 'enqueue_style' ) );
+		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
+		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		$this->plugin_dir = plugin_dir_path( __FILE__ );
 		$this->plugin_url = plugin_dir_url( __FILE__ );
 
-		foreach ( array(
-			'overview', 'php_errors', 'db_queries', 'db_functions', 'transients', 'http', 'hooks',
-			'query_vars', 'environment', 'admin', 'theme', 'conditionals', 'authentication'
-		) as $component )
-			include( "{$this->plugin_dir}/components/{$component}.php" );
+		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
+			include( $component );
 
-		# These components are instantiated immediately, all others are on plugins_loaded
-		foreach ( array(
-			'QM_PHP_Errors'
-		) as $class )
-			$this->add_component( new $class );
+		foreach ( apply_filters( 'query_monitor_components', array() ) as $component )
+			$this->add_component( $component );
 
 	}
 
 	function add_component( $component ) {
-		$component->setup();
-		$id = $component->id;
-		$this->components->$id = $component;
+		$this->components->{$component->id} = $component;
+	}
+
+	function get_component( $id ) {
+		if ( isset( $this->components->$id ) )
+			return $this->components->$id;
+		return false;
+	}
+
+	function get_components() {
+		return $this->components;
 	}
 
 	function activate() {
@@ -80,16 +78,18 @@ class QueryMonitor {
 			$admins->add_cap( 'view_query_monitor' );
 
 		if ( !file_exists( WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
-			@symlink( plugin_dir_path(  __FILE__ ) . 'wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
+			@symlink( $this->plugin_dir . 'wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
 
 	}
 
 	function deactivate() {
 
-		# We don't delete wp-content/db.php on deactivation in case it doesn't belong to Query Monitor
-
 		if ( $admins = $this->get_admins() )
 			$admins->remove_cap( 'view_query_monitor' );
+
+		# Only delete db.php if it belongs to Query Monitor
+		if ( class_exists( 'QueryMonitorDB' ) )
+			@unlink( WP_CONTENT_DIR . '/db.php' );
 
 	}
 
@@ -101,71 +101,27 @@ class QueryMonitor {
 			return get_role( 'administrator' );
 	}
 
-	function setup() {
-		foreach ( apply_filters( 'qm', array() ) as $component )
-			$this->add_component( $component );
-	}
-
 	function admin_bar_menu() {
 
 		global $wp_admin_bar;
 
-		if ( !is_admin_bar_showing() )
-			return;
+		$class = implode( ' ', apply_filters( 'query_monitor_class', array( $this->wpv() ) ) );
+		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
 
-		$db  = $this->components->db_queries;
-		$php = $this->components->php_errors;
-
-		if ( isset( $php->php_errors['warning'] ) )
-			$link_class = 'qm-warning';
-		else if ( isset( $php->php_errors['notice'] ) )
-			$link_class = 'qm-notice';
-		else
-			$link_class = '';
-
-		# @TODO support not loading the DB monitoring class
-		# @TODO support multiple WPDB classes
-
-		if ( empty( $db->errors ) ) {
-			$title = sprintf(
-				_n( '%1$s<small>S</small> / %2$s<small>Q</small>', '%1$s<small>S</small> / %2$s<small>Q</small>', $this->overview['query_num'], 'query_monitor' ),
-				$this->overview['load_time'],
-				$this->overview['query_num']
-			);
-		} else {
-			$link_class = 'qm-error';
-			$title = sprintf(
-				_n( '%1$s<small>S</small> / %2$s<small>Q</small> (%3$d error)', '%1$s<small>S</small> / %2$s<small>Q</small> (%3$d errors)', $db->errors, 'query_monitor' ),
-				$this->overview['load_time'],
-				$this->overview['query_num'],
-				$db->errors
-			);
-		}
+		if ( empty( $title ) )
+			$title = 'Query Monitor';
 
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query_monitor',
 			'title' => $title,
 			'href'  => '#qm-overview',
 			'meta'  => array(
-				'class' => $link_class . ' ' . $this->wpv()
+				'class' => $class
 			)
 		) );
 
-		if ( !empty( $db->errors ) ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'query_monitor',
-				'id'     => 'query_monitor_errors',
-				'title'  => sprintf( __( 'Database Errors (%s)', 'query_monitor' ), $db->errors ),
-				'href'   => '#qm-overview'
-			) );
-		}
-
-		foreach ( $this->components as $component ) {
-			if ( $menus = $component->admin_menus() ) {
-				foreach ( $menus as $menu )
-					$wp_admin_bar->add_menu( $menu );
-			}
-		}
+		foreach ( apply_filters( 'query_monitor_menus', array() ) as $menu )
+			$wp_admin_bar->add_menu( $menu );
 
 	}
 
@@ -178,7 +134,9 @@ class QueryMonitor {
 			return true;
 		}
 
-		return $this->components->authentication->show_query_monitor();
+		$auth = $this->get_component( 'authentication' );
+
+		return $auth ? $auth->show_query_monitor() : false;
 
 	}
 
@@ -187,22 +145,15 @@ class QueryMonitor {
 		if ( !$this->show_query_monitor() )
 			return;
 
-		foreach ( $this->components as $component )
+		foreach ( $this->get_components() as $component )
 			$component->process();
-
-		$this->overview = array(
-			'query_num'  => $this->components->db_queries->query_num,
-			'query_time' => number_format_i18n( $this->components->db_queries->query_time, 4 ),
-			'load_time'  => number_format_i18n( $this->components->overview->load_time, 2 ),
-			'memory'     => number_format_i18n( $this->components->overview->memory / 1000 )
-		);
 
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 99 );
 		add_action( 'shutdown',       array( $this, 'output' ), 0 );
 
 	}
 
-	function register_style() {
+	function enqueue_style() {
 
 		if ( !$this->show_query_monitor() )
 			return;
@@ -222,10 +173,16 @@ class QueryMonitor {
 		while ( ob_get_length() )
 			ob_flush();
 
+		foreach ( $this->get_components() as $component )
+			$component->process_late();
+
 		$this->output_start();
 
-		foreach ( $this->components as $component )
-			$component->output();
+		foreach ( $this->get_components() as $component ) {
+			$component->output( array(
+				'id' => $component->id()
+			), $component->data );
+		}
 
 		$this->output_close();
 
@@ -248,16 +205,18 @@ class QueryMonitor {
 
 class QM {
 
+	var $data = array();
+
 	function __construct() {
 	}
 
 	protected function _filter_trace( $trace ) {
 
 		$ignore_class = array(
-			'W3_Db',
+			'wpdb',
 			'QueryMonitor',
 			'QueryMonitorDB',
-			'wpdb',
+			'W3_Db',
 			'Debug_Bar_PHP'
 		);
 		$ignore_func = array(
@@ -322,7 +281,7 @@ class QM {
 			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
 	}
 
-	protected function id() {
+	public function id() {
 		return "qm-{$this->id}";
 	}
 
@@ -336,27 +295,15 @@ class QM {
 
 	}
 
-	public function admin_menus() {
-		if ( $menu = $this->admin_menu() ) {
-			return array(
-				$menu
-			);
-		} else {
-			return false;
-		}
-	}
-
-	protected function get_component( $component ) {
+	protected function get_component( $id ) {
 		global $querymonitor;
-		# @TODO sanity check
-		return $querymonitor->components->$component;
+		return $querymonitor->get_component( $id );
 	}
-
-	public function admin_menu() {
+	public function process() {
 		return false;
 	}
 
-	public function process() {
+	public function process_late() {
 		return false;
 	}
 
@@ -364,11 +311,10 @@ class QM {
 		return false;
 	}
 
-	public function setup() {
-		return false;
-	}
-
 }
+
+if ( !defined( 'ABSPATH' ) )
+    die();
 
 $querymonitor = new QueryMonitor;
 
