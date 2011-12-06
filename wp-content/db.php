@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.1.1
+Version:     2.1.2
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -94,7 +94,8 @@ class QueryMonitorDB extends wpdb {
 
 	function backtrace() {
 		$trace = debug_backtrace( false );
-		$trace = array_values( array_filter( array_map( array( $this, '_filter_trace' ), $trace ) ) );
+		$trace = array_map( array( $this, '_filter_trace' ), $trace );
+		$trace = array_values( array_filter( $trace ) );
 		return $trace;
 	}
 
@@ -120,7 +121,10 @@ class QueryMonitorDB extends wpdb {
 			'do_action_ref_array',
 			'apply_filters_ref_array',
 			'get_template_part',
-			'section_template'
+			'section_template',
+			'get_header',
+			'get_sidebar',
+			'get_footer'
 		);
 
 		if ( isset( $trace['class'] ) ) {
@@ -136,7 +140,7 @@ class QueryMonitorDB extends wpdb {
 
 			if ( in_array( $trace['function'], $ignore_func ) )
 				return null;
-			else if ( isset( $trace['args'] ) and in_array( $trace['function'], $show_arg ) )
+			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $show_arg ) )
 				return $trace['function'] . "('{$trace['args'][0]}')";
 			else
 				return $trace['function'] . '()';

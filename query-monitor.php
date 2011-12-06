@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.1
+Version:     2.1.2
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
@@ -184,7 +184,7 @@ class QueryMonitor {
 			), $component->data );
 		}
 
-		$this->output_close();
+		$this->output_end();
 
 	}
 
@@ -193,7 +193,7 @@ class QueryMonitor {
 		echo '<p>Query Monitor</p>';
 	}
 
-	function output_close() {
+	function output_end() {
 		echo '</div>';
 	}
 
@@ -238,14 +238,15 @@ class QM {
 			'do_action_ref_array',
 			'apply_filters_ref_array',
 			'get_template_part',
-			'section_template'
+			'section_template',
+			'get_header',
+			'get_sidebar',
+			'get_footer'
 		);
 
 		if ( isset( $trace['class'] ) ) {
 
 			if ( in_array( $trace['class'], $ignore_class ) )
-				return null;
-			else if ( 0 === strpos( $trace['class'], 'QM' ) )
 				return null;
 			else
 				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
@@ -265,7 +266,8 @@ class QM {
 
 	protected function backtrace() {
 		$trace = debug_backtrace( false );
-		$trace = array_values( array_filter( array_map( array( $this, '_filter_trace' ), $trace ) ) );
+		$trace = array_map( array( $this, '_filter_trace' ), $trace );
+		$trace = array_values( array_filter( $trace ) );
 		return $trace;
 	}
 
@@ -290,7 +292,7 @@ class QM {
 		return wp_parse_args( $args, array(
 			'parent' => 'query_monitor',
 			'id'     => "query_monitor_{$this->id}",
-			'href'   => "#qm-{$this->id}"
+			'href'   => '#' . $this->id()
 		) );
 
 	}
@@ -299,6 +301,7 @@ class QM {
 		global $querymonitor;
 		return $querymonitor->get_component( $id );
 	}
+
 	public function process() {
 		return false;
 	}

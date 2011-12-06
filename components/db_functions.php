@@ -11,8 +11,8 @@ class QM_DB_Functions extends QM {
 
 	function process() {
 
-		$dbq = $this->get_component( 'db_queries' );
-		$this->data['times'] = $dbq->data['times'];
+		if ( $dbq = $this->get_component( 'db_queries' ) )
+			$this->data['times'] = $dbq->data['times'];
 
 	}
 
@@ -85,6 +85,6 @@ function register_qm_db_functions( $qm ) {
 	return $qm;
 }
 
-#add_filter( 'query_monitor_components', 'register_qm_db_functions', 30 );
+add_filter( 'query_monitor_components', 'register_qm_db_functions', 30 );
 
 ?>
