@@ -75,13 +75,16 @@ class QM_PHP_Errors extends QM {
 					if ( !$first )
 						echo '<tr>';
 
-					$funca = implode( ', ', array_reverse( $error->funcs ) );
+					$funca   = $error->funcs;
+					unset( $funca[0], $funca[1] );
+					$funca   = implode( ', ', array_reverse( $funca ) );
+					$func    = $error->funcs[2];
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					echo '<td>' . $message . '</td>';
 					echo '<td>' . esc_html( $error->file ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
-					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . esc_html( $error->funcs[0] ) . '</td>';
+					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . esc_html( $func ) . '</td>';
 					echo '</tr>';
 
 					$first = false;

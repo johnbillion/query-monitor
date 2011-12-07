@@ -33,7 +33,7 @@ class QM_Transients extends QM {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Transient Set', 'query_monitor' ) . '</th>';
-		if ( is_multisite() )
+		if ( $this->is_multisite )
 			echo '<th>' . __( 'Type', 'query_monitor' ) . '</th>';
 		echo '<th>' . __( 'Function', 'query_monitor' ) . '</th>';
 		echo '</tr>';
@@ -50,7 +50,7 @@ class QM_Transients extends QM {
 					'_transient_'
 				), '', $row['transient'] );
 				$funcs = esc_attr( implode( ', ', array_reverse( $row['trace'] ) ) );
-				$type = ( is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
+				$type = ( $this->is_multisite ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
 				echo "
 					<tr>\n
 						<td valign='top'>{$transient}</td>\n

@@ -15,13 +15,12 @@ class QM_Theme extends QM {
 		return $class;
 	}
 
-	function output( $args, $data ) {
-
+	function process() {
 		global $template;
+		$this->data['template_file'] = apply_filters( 'query_monitor_template', basename( $template ) );
+	}
 
-		# @TODO display parent/child theme info
-
-		$template_file = apply_filters( 'query_monitor_template', basename( $template ) );
+	function output( $args, $data ) {
 
 		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
@@ -33,7 +32,7 @@ class QM_Theme extends QM {
 		echo '<tbody>';
 		echo '<tr>';
 		echo '<td>' . __( 'Template', 'query_monitor' ) . '</td>';
-		echo "<td>{$template_file}</td>";
+		echo "<td>{$this->data['template_file']}</td>";
 		echo '</tr>';
 
 		if ( !empty( $data['body_class'] ) ) {
@@ -63,14 +62,8 @@ class QM_Theme extends QM {
 
 	function admin_menu( $menu ) {
 
-		# @TODO put the template into process():
-
-		global $template;
-
-		$template_file = apply_filters( 'query_monitor_template', basename( $template ) );
-
 		$menu[] = $this->menu( array(
-			'title' => sprintf( __( 'Template: %s', 'query_monitor' ), $template_file )
+			'title' => sprintf( __( 'Template: %s', 'query_monitor' ), $this->data['template_file'] )
 		) );
 		return $menu;
 

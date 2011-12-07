@@ -24,18 +24,23 @@ class QM_Hooks extends QM {
 
 		global $wp_actions, $wp_filter, $querymonitor, $current_screen, $pagenow;
 
-		if ( isset( $_GET['page'] ) )
-			$screen = $current_screen->base;
+		if ( $admin = $this->get_component( 'admin' ) )
+			$screen = $admin->data['base'];
 		else
-			$screen = $pagenow;
+			$screen = '';
 
 		$qm_class = get_class( $querymonitor );
 		$hooks = array();
 
-		if ( is_multisite() and is_network_admin() )
+		if ( $this->is_multisite and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
-		foreach ( $wp_actions as $action => $triggered ) {
+		if ( is_numeric( current( $wp_actions ) ) )
+			$actions = array_keys( $wp_actions ); # wp 3.0+
+		else
+			$actions = array_values( $wp_actions ); # < wp 3.0
+
+		foreach ( $actions as $action ) {
 
 			$name = $action;
 			$actions = array();

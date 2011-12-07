@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.1.3
+Version:     2.1.4
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -10,6 +10,12 @@ database query information in Query Monitor's output.
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
+
+# Pre-3.0.something compat
+if ( !class_exists( 'wpdb' ) ) {
+	$wpdb = true;
+	require_once( ABSPATH . WPINC . '/wp-db.php' );
+}
 
 class QueryMonitorDB extends wpdb {
 

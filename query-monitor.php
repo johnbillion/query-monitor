@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.3
+Version:     2.1.4
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
@@ -47,8 +47,9 @@ class QueryMonitor {
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-		$this->plugin_dir = plugin_dir_path( __FILE__ );
-		$this->plugin_url = plugin_dir_url( __FILE__ );
+		$this->plugin_dir   = plugin_dir_path( __FILE__ );
+		$this->plugin_url   = plugin_dir_url( __FILE__ );
+		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
 
 		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
 			include( $component );
@@ -95,7 +96,7 @@ class QueryMonitor {
 
 	function get_admins() {
 		# @TODO this should use a cap not a role
-		if ( is_multisite() )
+		if ( $this->is_multisite )
 			return false;
 		else
 			return get_role( 'administrator' );
@@ -127,7 +128,7 @@ class QueryMonitor {
 
 	function show_query_monitor() {
 
-		if ( is_multisite() ) {
+		if ( $this->is_multisite ) {
 			if ( current_user_can( 'manage_network_options' ) )
 				return true;
 		} else if ( current_user_can( 'view_query_monitor' ) ) {
@@ -208,6 +209,7 @@ class QM {
 	var $data = array();
 
 	function __construct() {
+		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
 	}
 
 	protected function _filter_trace( $trace ) {

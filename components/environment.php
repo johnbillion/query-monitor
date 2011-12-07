@@ -20,9 +20,7 @@ class QM_Environment extends QM {
 
 	function process() {
 
-		# @TODO support for all db instances
-
-		global $wpdb, $wp_version, $blog_id;
+		global $wp_version, $blog_id;
 
 		$vars = array(
 			'key_buffer_size'    => true,  # Key cache limit
@@ -33,17 +31,25 @@ class QM_Environment extends QM {
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
 
-		$variables = $wpdb->get_results( "
-			SHOW VARIABLES
-			WHERE Variable_name IN ( '" . implode( "', '", array_keys( $vars ) ) . "' )
-		" );
+		if ( $dbq = $this->get_component( 'db_queries' ) ) {
 
-		$this->data['mysql'] = array(
-			'version'   => mysql_get_server_info( $wpdb->dbh ),
-			'user'      => DB_USER, # @TODO any other way to get this?
-			'vars'      => $vars,
-			'variables' => $variables
-		);
+			foreach ( $dbq->data['db_objects'] as $id => $db ) {
+
+				$variables = $db->get_results( "
+					SHOW VARIABLES
+					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $vars ) ) . "' )
+				" );
+
+				$this->data['db'][$id] = array(
+					'version'   => mysql_get_server_info( $db->dbh ),
+					'user'      => $db->dbuser,
+					'vars'      => $vars,
+					'variables' => $variables
+				);
+
+			}
+
+		}
 
 		if ( function_exists( 'posix_getpwuid' ) ) {
 
@@ -89,63 +95,76 @@ class QM_Environment extends QM {
 		echo '<tr>';
 		echo '<td rowspan="2">PHP</td>';
 		echo '<td>version</td>';
-		echo '<td>' . $data['php']['version'] . '</td>';
+		echo "<td>{$data['php']['version']}</td>";
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>user</td>';
 		echo "<td>{$data['php']['user']}</td>";
 		echo '</tr>';
 
-		echo '<tr>';
-		echo '<td rowspan="' . ( 2 + count( $data['mysql']['variables'] ) ) . '">MySQL</td>';
-		echo '<td>version</td>';
-		echo '<td>' . $data['mysql']['version'] . '</td>';
-		echo '</tr>';
+		if ( isset( $data['db'] ) ) {
 
-		echo '<tr>';
-		echo '<td>user</td>';
-		echo '<td>' . $data['mysql']['user'] . '</td>';
-		echo '</tr>';
+			foreach ( $data['db'] as $id => $db ) {
 
-		echo '<tr>';
+				if ( 1 == count( $data['db'] ) )
+					$name = 'MySQL';
+				else
+					$name = $id . '<br />MySQL';
 
-		$first  = true;
-		$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query_monitor' );
-		$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query_monitor' );
+				echo '<tr>';
+				echo '<td rowspan="' . ( 2 + count( $db['variables'] ) ) . '">' . $name . '</td>';
+				echo '<td>version</td>';
+				echo '<td>' . $db['version'] . '</td>';
+				echo '</tr>';
 
-		foreach ( $data['mysql']['variables'] as $setting ) {
+				echo '<tr>';
+				echo '<td>user</td>';
+				echo '<td>' . $db['user'] . '</td>';
+				echo '</tr>';
 
-			$key = $setting->Variable_name;
-			$val = $setting->Value;
-			$prepend = '';
-			$warning = '&nbsp;(<a class="qm-warn" href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">!</a>)';
-
-			if ( ( true === $data['mysql']['vars'][$key] ) and empty( $val ) )
-				$prepend .= $warning;
-			else if ( is_string( $data['mysql']['vars'][$key] ) and ( $val !== $data['mysql']['vars'][$key] ) )
-				$prepend .= $warning;
-
-			if ( is_numeric( $val ) and ( $val >= 1024 ) )
-				$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
-
-			if ( !$first )
 				echo '<tr>';
 
-			$key = esc_html( $key );
-			$val = esc_html( $val );
+				$first  = true;
+				$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query_monitor' );
+				$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query_monitor' );
 
-			echo "<td>{$key}</td>";
-			echo "<td>{$val}{$prepend}</td>";
+				foreach ( $db['variables'] as $setting ) {
 
-			echo '</tr>';
+					$key = $setting->Variable_name;
+					$val = $setting->Value;
+					$prepend = '';
+					$warning = '&nbsp;(<a class="qm-warn" href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">!</a>)';
 
-			$first = false;
+					if ( ( true === $db['vars'][$key] ) and empty( $val ) )
+						$prepend .= $warning;
+					else if ( is_string( $db['vars'][$key] ) and ( $val !== $db['vars'][$key] ) )
+						$prepend .= $warning;
+
+					if ( is_numeric( $val ) and ( $val >= 1024 ) )
+						$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
+
+					if ( !$first )
+						echo '<tr>';
+
+					$key = esc_html( $key );
+					$val = esc_html( $val );
+
+					echo "<td>{$key}</td>";
+					echo "<td>{$val}{$prepend}</td>";
+
+					echo '</tr>';
+
+					$first = false;
+
+				}
+
+			}
 
 		}
 
 		$wp_span = 2;
 
-		if ( is_multisite() )
+		if ( $this->is_multisite )
 			$wp_span++;
 
 		echo '<tr>';
@@ -154,7 +173,7 @@ class QM_Environment extends QM {
 		echo "<td>{$data['wp']['version']}</td>";
 		echo '</tr>';
 
-		if ( is_multisite() ) {
+		if ( $this->is_multisite ) {
 			echo '<tr>';
 			echo '<td>blog_id</td>';
 			echo "<td>{$data['wp']['blog_id']}</td>";

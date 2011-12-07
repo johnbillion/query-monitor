@@ -20,10 +20,35 @@ class QM_Admin extends QM {
 
 		global $current_screen, $pagenow;
 
-		if ( isset( $_GET['page'] ) )
-			$this->data['base'] = $current_screen->base;
-		else
-			$this->data['base'] = $pagenow;
+		if ( !isset( $current_screen ) or empty( $current_screen ) ) {
+
+			# Pre-3.0 compat:
+			if ( isset( $_GET['page'] ) ) {
+
+				$plugin_page = plugin_basename( stripslashes( $_GET['page'] ) );
+
+				if ( isset( $plugin_page ) ) {
+					if ( !$page_hook = get_plugin_page_hook( $plugin_page, $pagenow ) )
+						$page_hook = get_plugin_page_hook( $plugin_page, $plugin_page );
+					if ( !$page_hook )
+						$page_hook = $plugin_page;
+				}
+
+			} else {
+				$page_hook = $pagenow;
+			}
+
+			$this->data['base'] = $page_hook;
+
+		} else {
+			if ( isset( $_GET['page'] ) )
+				$this->data['base'] = $current_screen->base;
+			else
+				$this->data['base'] = $pagenow;
+		}
+
+		if ( !isset( $this->data['admin'] ) )
+			$this->data['admin'] = __( 'n/a', 'query_monitor' );
 
 		$this->data['pagenow'] = $pagenow;
 		$this->data['current_screen'] = $current_screen;
@@ -83,7 +108,7 @@ class QM_Admin extends QM {
 		echo "<td>{$data['pagenow']}</td>";
 		echo '</tr>';
 
-		if ( in_array( $data['current_screen']->base, array( 'edit', 'edit-comments', 'edit-tags', 'link-manager', 'plugins', 'plugins-network', 'sites-network', 'themes-network', 'upload', 'users', 'users-network' ) ) ) {
+		if ( !empty( $data['current_screen'] ) and in_array( $data['current_screen']->base, array( 'edit', 'edit-comments', 'edit-tags', 'link-manager', 'plugins', 'plugins-network', 'sites-network', 'themes-network', 'upload', 'users', 'users-network' ) ) ) {
 
 			# And now, WordPress' legendary inconsistency comes into play:
 
