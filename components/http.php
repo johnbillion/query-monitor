@@ -151,8 +151,8 @@ class QM_HTTP extends QM {
 					'<br /><span>&nbsp;?&nbsp;</span>',
 					'<span>&nbsp;=&nbsp;</span>',
 				), $row['url'] );
-				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2], $row['trace'][3] );
-				$f = 4;
+				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] );
+				$f = 6;
 				$func = $row['trace'][$f];
 				if ( 0 === strpos( $func, 'SimplePie' ) )
 					$func = $row['trace'][++$f];

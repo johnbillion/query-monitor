@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.2
+Version:     2.1.3
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 

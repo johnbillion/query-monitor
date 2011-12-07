@@ -4,8 +4,6 @@ if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
 if ( !defined( 'QM_DB_EXPENSIVE' ) )
 	define( 'QM_DB_EXPENSIVE', 0.05 );
-if ( !defined( 'QM_DB_LONG' ) )
-	define( 'QM_DB_LONG', 1000 );
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
@@ -117,18 +115,15 @@ class QM_DB_Queries extends QM {
 
 	function process_db_object( $id, $db ) {
 
-		$rows         = array();
-		$total_time   = 0;
-		$total_qs     = 0;
-		$ignored_time = 0;
-		$has_results  = false;
+		$rows        = array();
+		$total_time  = 0;
+		$total_qs    = 0;
+		$has_results = false;
 
 		foreach ( (array) $db->queries as $query ) {
 
-			/* ********************************************************* */
-			#if ( false !== strpos( $query[2], 'wp_admin_bar' ) )
-			#	continue;
-			/* ********************************************************* */
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_all'] ) )
+				continue;
 
 			$sql         = $query[0];
 			$ltime       = $query[1];
@@ -140,24 +135,15 @@ class QM_DB_Queries extends QM {
 			else
 				$result = null;
 
-			if ( strpos( $funcs, 'wp_admin_bar' ) ) {
-				$ignored_time += $ltime;
-			} else {
-				$total_time += $ltime;
-				$total_qs++;
-			}
+			$total_time += $ltime;
+			$total_qs++;
 
 			if ( !empty( $funcs ) )
 				$func  = reset( array_reverse( explode( ', ', $funcs ) ) );
 			else
 				$func = '<em class="qm-info">' . __( 'none', 'query_monitor' ) . '</em>';
 
-			if ( strpos( $funcs, 'wp_admin_bar' ) ) {
-				if ( isset( $_REQUEST['qm_display_all'] ) )
-					$this->add_func_time( $func, $ltime );
-			} else {
-				$this->add_func_time( $func, $ltime );
-			}
+			$this->add_func_time( $func, $ltime );
 
 			$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
 			$sql = esc_html( trim( $sql ) );
@@ -217,7 +203,13 @@ class QM_DB_Queries extends QM {
 		echo '</tr>';
 
 		if ( $max_exceeded ) {
-			echo '<tr><td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown below. Total query time and cumulative function times should be accurate.', 'query_monitor' ), number_format_i18n( $total_qs ), $name, number_format_i18n( QM_DB_LIMIT ) ) . '</td></tr>';
+			echo '<tr>';
+			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown. Total times shown are for all queries.', 'query_monitor' ),
+				number_format_i18n( $total_qs ),
+				$name,
+				number_format_i18n( QM_DB_LIMIT )
+			) . '</td>';
+			echo '</tr>';
 		}
 
 		echo '<tr>';
@@ -237,23 +229,16 @@ class QM_DB_Queries extends QM {
 
 		if ( !empty( $rows ) ) {
 
-			foreach ( $rows as $row ) {
-				if ( strpos( $row['funcs'], 'wp_admin_bar' ) ) {
-					if ( !isset( $_REQUEST['qm_display_all'] ) )
-						continue;
-					$row_class = 'qm-na';
-				} else {
-					$row_class = '';
-				}
+			foreach ( $rows as $i => $row ) {
+
+				if ( $i === QM_DB_LIMIT )
+					break;
+
+				$row_class = '';
 				$select = ( 0 === strpos( strtoupper( $row['sql'] ), 'SELECT' ) );
 				$ql = strlen( $row['sql'] );
-				$qs = size_format( $ql );
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
-				if ( $select and ( $ql > QM_DB_LONG ) )
-					$row['qs'] = "<br /><span class='qm-expensive'>({$qs})</span>";
-				else
-					$row['qs'] = '';
 				$td = ( $row['ltime'] > QM_DB_EXPENSIVE ) ? " class='qm-expensive'" : '';
 				if ( !$select )
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
@@ -274,7 +259,7 @@ class QM_DB_Queries extends QM {
 
 				echo "
 					<tr class='{$row_class}'>\n
-						<td valign='top' class='qm-ltr'>{$row['sql']}{$row['qs']}</td>\n
+						<td valign='top' class='qm-ltr'>{$row['sql']}</td>\n
 						<td valign='top' class='qm-ltr' title='{$funcs}'>{$row['func']}</td>\n
 						{$results}
 						<td valign='top' title='{$ltime}'{$td}>{$stime}</td>\n

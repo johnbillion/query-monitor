@@ -43,8 +43,8 @@ class QM_Transients extends QM {
 		if ( !empty( $data['trans'] ) ) {
 
 			foreach ( $data['trans'] as $row ) {
-				unset( $row['trace'][0], $row['trace'][1] );
-				$func = $row['trace'][2];
+				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2], $row['trace'][3] );
+				$func = $row['trace'][5];
 				$transient = str_replace( array(
 					'_site_transient_',
 					'_transient_'
