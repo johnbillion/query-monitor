@@ -23,17 +23,21 @@ class QM_Environment extends QM {
 		global $wp_version, $blog_id;
 
 		$vars = array(
-			'key_buffer_size'    => true,  # Key cache limit
-			'max_allowed_packet' => false, # Max individual query size
-			'max_connections'    => false, # Max client connections
-			'query_cache_limit'  => true,  # Individual query cache limit
-			'query_cache_size'   => true,  # Query cache limit
+			'key_buffer_size'    => true,  # Key cache size limit
+			'max_allowed_packet' => false, # Individual query size limit
+			'max_connections'    => false, # Max number of client connections
+		#	'profiling'          => 'OFF', # Query profiling on or off
+			'query_cache_limit'  => true,  # Individual query cache size limit
+			'query_cache_size'   => true,  # Total cache size limit
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
 
 		if ( $dbq = $this->get_component( 'db_queries' ) ) {
 
-			foreach ( $dbq->data['db_objects'] as $id => $db ) {
+			foreach ( $dbq->db_objects as $id => $db ) {
+
+				if ( !$dbq->is_db_object( $db ) )
+					continue;
 
 				$variables = $db->get_results( "
 					SHOW VARIABLES
@@ -43,6 +47,8 @@ class QM_Environment extends QM {
 				$this->data['db'][$id] = array(
 					'version'   => mysql_get_server_info( $db->dbh ),
 					'user'      => $db->dbuser,
+					'host'      => $db->dbhost,
+					'name'      => $db->dbname,
 					'vars'      => $vars,
 					'variables' => $variables
 				);
@@ -112,7 +118,7 @@ class QM_Environment extends QM {
 					$name = $id . '<br />MySQL';
 
 				echo '<tr>';
-				echo '<td rowspan="' . ( 2 + count( $db['variables'] ) ) . '">' . $name . '</td>';
+				echo '<td rowspan="' . ( 4 + count( $db['variables'] ) ) . '">' . $name . '</td>';
 				echo '<td>version</td>';
 				echo '<td>' . $db['version'] . '</td>';
 				echo '</tr>';
@@ -120,6 +126,16 @@ class QM_Environment extends QM {
 				echo '<tr>';
 				echo '<td>user</td>';
 				echo '<td>' . $db['user'] . '</td>';
+				echo '</tr>';
+
+				echo '<tr>';
+				echo '<td>host</td>';
+				echo '<td>' . $db['host'] . '</td>';
+				echo '</tr>';
+
+				echo '<tr>';
+				echo '<td>database</td>';
+				echo '<td>' . $db['name'] . '</td>';
 				echo '</tr>';
 
 				echo '<tr>';
@@ -140,7 +156,7 @@ class QM_Environment extends QM {
 					else if ( is_string( $db['vars'][$key] ) and ( $val !== $db['vars'][$key] ) )
 						$prepend .= $warning;
 
-					if ( is_numeric( $val ) and ( $val >= 1024 ) )
+					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) )
 						$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
 
 					if ( !$first )

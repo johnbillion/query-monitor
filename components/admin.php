@@ -20,6 +20,9 @@ class QM_Admin extends QM {
 
 		global $current_screen, $pagenow;
 
+		if ( !is_admin() )
+			return;
+
 		if ( !isset( $current_screen ) or empty( $current_screen ) ) {
 
 			# Pre-3.0 compat:
@@ -57,14 +60,19 @@ class QM_Admin extends QM {
 
 	function admin_menu( $menu ) {
 
-		$menu[] = $this->menu( array(
-			'title' => sprintf( __( 'Admin Screen: %s', 'query_monitor' ), $this->data['base'] )
-		) );
+		if ( isset( $this->data['base'] ) ) {
+			$menu[] = $this->menu( array(
+				'title' => sprintf( __( 'Admin Screen: %s', 'query_monitor' ), $this->data['base'] )
+			) );
+		}
 		return $menu;
 
 	}
 
 	function output( $args, $data ) {
+
+		if ( empty( $data ) )
+			return;
 
 		$post_type_warning = '';
 
@@ -152,8 +160,7 @@ class QM_Admin extends QM {
 }
 
 function register_qm_admin( $qm ) {
-	if ( is_admin() )
-		$qm['admin'] = new QM_Admin;
+	$qm['admin'] = new QM_Admin;
 	return $qm;
 }
 

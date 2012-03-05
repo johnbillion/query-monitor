@@ -16,11 +16,20 @@ class QM_Theme extends QM {
 	}
 
 	function process() {
+
 		global $template;
+
+		if ( is_admin() )
+			return;
+
 		$this->data['template_file'] = apply_filters( 'query_monitor_template', basename( $template ) );
+
 	}
 
 	function output( $args, $data ) {
+
+		if ( empty( $data ) )
+			return;
 
 		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
 		echo '<thead>';
@@ -62,9 +71,11 @@ class QM_Theme extends QM {
 
 	function admin_menu( $menu ) {
 
-		$menu[] = $this->menu( array(
-			'title' => sprintf( __( 'Template: %s', 'query_monitor' ), $this->data['template_file'] )
-		) );
+		if ( isset( $this->data['template_file'] ) ) {
+			$menu[] = $this->menu( array(
+				'title' => sprintf( __( 'Template: %s', 'query_monitor' ), $this->data['template_file'] )
+			) );
+		}
 		return $menu;
 
 	}
@@ -72,8 +83,7 @@ class QM_Theme extends QM {
 }
 
 function register_qm_theme( $qm ) {
-	if ( !is_admin() )
-		$qm['theme'] = new QM_Theme;
+	$qm['theme'] = new QM_Theme;
 	return $qm;
 }
 

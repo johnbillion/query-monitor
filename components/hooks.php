@@ -24,7 +24,7 @@ class QM_Hooks extends QM {
 
 		global $wp_actions, $wp_filter, $querymonitor, $current_screen, $pagenow;
 
-		if ( $admin = $this->get_component( 'admin' ) )
+		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
 			$screen = $admin->data['base'];
 		else
 			$screen = '';
@@ -71,7 +71,7 @@ class QM_Hooks extends QM {
 
 							if ( $qm_class == $class )
 								$css_class = 'qm-qm';
-							$out = $class . '-&gt;' . $function['function'][1] . '()';
+							$out = $class . '->' . $function['function'][1] . '()';
 						} else {
 							$out = $function['function'] . '()';
 						}
@@ -120,7 +120,7 @@ class QM_Hooks extends QM {
 					echo '<tr class="' . $action['class'] . '">';
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
-					echo $action['function'];
+					echo esc_html( $action['function'] );
 					echo '</td>';
 					echo '</tr>';
 				}

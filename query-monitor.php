@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.4
+Version:     2.1.5
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
@@ -44,11 +44,12 @@ class QueryMonitor {
 		add_action( 'init',                   array( $this, 'enqueue_style' ) );
 		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
+		add_filter( 'wp_redirect',            array( $this, 'redirect' ), 999 );
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-		$this->plugin_dir   = plugin_dir_path( __FILE__ );
-		$this->plugin_url   = plugin_dir_url( __FILE__ );
+		$this->plugin_dir   = untrailingslashit( plugin_dir_path( __FILE__ ) );
+		$this->plugin_url   = untrailingslashit( plugin_dir_url( __FILE__ ) );
 		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
 
 		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
@@ -73,13 +74,72 @@ class QueryMonitor {
 		return $this->components;
 	}
 
+	function redirect( $location ) {
+
+		if ( !QM_LOG_REDIRECT_DATA )
+			return $location;
+		if ( false === strpos( $location, $_SERVER['HTTP_HOST'] ) )
+			return $location;
+		if ( !$this->show_query_monitor() )
+			return $location;
+
+		# @TODO we're only doing this for logged-in users at the moment because I can't decide how
+		# best to generate and retrieve a key for non-logged-in users with a QM auth cookie.
+
+		if ( !is_user_logged_in() )
+			return $location;
+
+		$current = ( is_ssl() )
+			? 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+			: 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+		$data = array(
+			'url' => $current
+		);
+
+		foreach ( $this->get_components() as $component )
+			$component->process();
+
+		foreach ( $this->get_components() as $component )
+			$component->process_late();
+
+		foreach ( $this->get_components() as $component )
+			$data['components'][$component->id] = $component->get_data();
+
+		$key = 'qm_redirect_data_' . wp_get_current_user()->ID;
+
+		set_transient( $key, $data, 3600 );
+
+		return $location;
+
+	}
+
+	function get_redirect_data() {
+
+		if ( !wp_get_referer() )
+			return null;
+		if ( !is_user_logged_in() )
+			return null;
+
+		$key  = 'qm_redirect_data_' . wp_get_current_user()->ID;
+		$data = get_transient( $key );
+
+		if ( empty( $data ) )
+			return null;
+
+		delete_transient( $key );
+
+		return $data;
+
+	}
+
 	function activate() {
 
 		if ( $admins = $this->get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
 		if ( !file_exists( WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
-			@symlink( $this->plugin_dir . 'wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
+			@symlink( $this->plugin_dir . '/wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
 
 	}
 
@@ -135,9 +195,10 @@ class QueryMonitor {
 			return true;
 		}
 
-		$auth = $this->get_component( 'authentication' );
+		if ( $auth = $this->get_component( 'authentication' ) )
+			return $auth->show_query_monitor();
 
-		return $auth ? $auth->show_query_monitor() : false;
+		return false;
 
 	}
 
@@ -149,7 +210,7 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process();
 
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 99 );
+		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 999 );
 		add_action( 'shutdown',       array( $this, 'output' ), 0 );
 
 	}
@@ -161,9 +222,9 @@ class QueryMonitor {
 
 		wp_enqueue_style(
 			'query_monitor',
-			$this->plugin_url . 'query-monitor.css',
+			$this->plugin_url . '/query-monitor.css',
 			null,
-			filemtime( $this->plugin_dir . 'query-monitor.css' )
+			filemtime( $this->plugin_dir . '/query-monitor.css' )
 		);
 
 	}
@@ -177,7 +238,10 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process_late();
 
-		$this->output_start();
+		$redirect_data = $this->get_redirect_data();
+
+		echo '<div id="qm">';
+		echo '<p>Query Monitor</p>';
 
 		foreach ( $this->get_components() as $component ) {
 			$component->output( array(
@@ -185,17 +249,8 @@ class QueryMonitor {
 			), $component->data );
 		}
 
-		$this->output_end();
-
-	}
-
-	function output_start() {
-		echo '<div id="qm">';
-		echo '<p>Query Monitor</p>';
-	}
-
-	function output_end() {
 		echo '</div>';
+
 	}
 
 	function wpv() {
@@ -257,7 +312,7 @@ class QM {
 
 			if ( in_array( $trace['function'], $ignore_func ) )
 				return null;
-			else if ( isset( $trace['args'] ) and in_array( $trace['function'], $show_arg ) )
+			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $show_arg ) )
 				return $trace['function'] . "('{$trace['args'][0]}')";
 			else
 				return $trace['function'] . '()';
@@ -304,6 +359,12 @@ class QM {
 		return $querymonitor->get_component( $id );
 	}
 
+	public function get_data() {
+		if ( isset( $this->data ) )
+			return $this->data;
+		return null;
+	}
+
 	public function process() {
 		return false;
 	}
@@ -321,6 +382,9 @@ class QM {
 if ( !defined( 'ABSPATH' ) )
     die();
 
-$querymonitor = new QueryMonitor;
+if ( !defined( 'QM_LOG_REDIRECT_DATA' ) )
+	define( 'QM_LOG_REDIRECT_DATA', false );
+
+$GLOBALS['querymonitor'] = new QueryMonitor;
 
 ?>

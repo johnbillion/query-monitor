@@ -154,6 +154,8 @@ class QM_HTTP extends QM {
 				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] );
 				$f = 6;
 				$func = $row['trace'][$f];
+				if ( 0 === strpos( $func, 'fetch_rss' ) )
+					$func = $row['trace'][++$f];
 				if ( 0 === strpos( $func, 'SimplePie' ) )
 					$func = $row['trace'][++$f];
 				if ( 0 === strpos( $func, 'fetch_feed' ) )

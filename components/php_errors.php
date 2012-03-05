@@ -75,14 +75,15 @@ class QM_PHP_Errors extends QM {
 					if ( !$first )
 						echo '<tr>';
 
-					$funca   = $error->funcs;
+					$funca = $error->funcs;
 					unset( $funca[0], $funca[1] );
+
 					$funca   = implode( ', ', array_reverse( $funca ) );
 					$func    = $error->funcs[2];
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					echo '<td>' . $message . '</td>';
-					echo '<td>' . esc_html( $error->file ) . '</td>';
+					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
 					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . esc_html( $func ) . '</td>';
 					echo '</tr>';
@@ -129,16 +130,21 @@ class QM_PHP_Errors extends QM {
 
 			$key = md5( $message . $file . $line . $funcs[0] );
 
+			$filename = str_replace( '\\', '/', $file );
+			$path     = str_replace( '\\', '/', ABSPATH );
+			$filename = str_replace( $path, '', $filename );
+
 			if ( isset( $this->data['errors'][$type][$key] ) ) {
 				$this->data['errors'][$type][$key]->calls++;
 			} else {
 				$this->data['errors'][$type][$key] = (object) array(
-					'type'    => $type,
-					'message' => $message,
-					'file'    => $file,
-					'line'    => $line,
-					'funcs'   => $funcs,
-					'calls'   => 1
+					'type'     => $type,
+					'message'  => $message,
+					'file'     => $file,
+					'filename' => $filename,
+					'line'     => $line,
+					'funcs'    => $funcs,
+					'calls'    => 1
 				);
 			}
 

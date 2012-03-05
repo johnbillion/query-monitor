@@ -127,10 +127,11 @@
 	border: 1px solid #ccc !important;
 	padding: 6px 7px 5px !important;
 	vertical-align: top !important;
+	text-shadow: none !important;
 }
 
 .qm th {
-	color: #222 !important;
+	color: #111 !important;
 }
 
 .qm-inner {
@@ -194,12 +195,14 @@
 }
 
 .qm .qm-qm {
-	color: #ccc !important;
+	color: #999 !important;
 }
 
 .qm a {
 	color: #21759B !important;
 	text-decoration: underline !important;
+	text-shadow: none !important;
+	font-weight: normal !important;
 }
 
 .qm a.qm-warn {

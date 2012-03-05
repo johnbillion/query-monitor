@@ -11,8 +11,19 @@ class QM_Query_Vars extends QM {
 
 	function process() {
 
-		$query_vars   = array_filter( $GLOBALS['wp_query']->query_vars );
 		$plugin_qvars = apply_filters( 'query_vars', array() );
+		$qvars        = $GLOBALS['wp_query']->query_vars;
+		$query_vars   = array();
+
+		foreach ( $qvars as $k => $v ) {
+			if ( in_array( $k, $plugin_qvars ) ) {
+				if ( '' !== $v )
+					$query_vars[$k] = $v;
+			} else {
+				if ( !empty( $v ) )
+					$query_vars[$k] = $v;
+			}
+		}
 
 		ksort( $query_vars );
 
@@ -64,6 +75,10 @@ class QM_Query_Vars extends QM {
 						echo "<li>{$k} => {$v}</li>";
 					}
 					echo '</ul></td>';
+				} else if ( is_object( $value ) ) {
+					echo '<td valign="top"><pre>';
+					print_r( $value );
+					echo '</pre></td>';
 				} else {
 					$value = esc_html( $value );
 					echo "<td valign='top'>{$value}</td>";

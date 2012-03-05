@@ -7,11 +7,12 @@ if ( !defined( 'QM_DB_EXPENSIVE' ) )
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
-# @TODO warnings and shit for long/slow queries
+# @TODO warnings for slow queries
 
 class QM_DB_Queries extends QM {
 
 	var $id = 'db_queries';
+	var $db_objects = array();
 
 	function __construct() {
 		parent::__construct();
@@ -21,7 +22,8 @@ class QM_DB_Queries extends QM {
 	}
 
 	function admin_title( $title ) {
-		$title[] = sprintf( __( '%s<small>Q</small>', 'query_monitor' ), number_format_i18n( $this->data['query_num'] ) );
+		foreach ( $this->data['dbs'] as $db )
+			$title[] = sprintf( __( '%s<small>Q</small>', 'query_monitor' ), number_format_i18n( $db->total_qs ) );
 		return $title;
 	}
 
@@ -38,6 +40,7 @@ class QM_DB_Queries extends QM {
 		if ( $errors = $this->get_errors() ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query_monitor_errors',
+				'href'  => '#qm-overview',
 				'title' => sprintf( __( 'Database Errors (%s)', 'query_monitor' ), number_format_i18n( count( $errors ) ) )
 			) );
 		}
@@ -56,13 +59,14 @@ class QM_DB_Queries extends QM {
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->data['query_num']  = 0;
-		$this->data['errors']     = array();
-		$this->data['db_objects'] = apply_filters( 'query_monitor_db_objects', array(
+		$this->data['query_num'] = 0;
+		$this->data['errors']    = array();
+
+		$this->db_objects = apply_filters( 'query_monitor_db_objects', array(
 			'$wpdb' => $GLOBALS['wpdb']
 		) );
 
-		foreach ( $this->data['db_objects'] as $name => $db ) {
+		foreach ( $this->db_objects as $name => $db ) {
 			if ( $this->is_db_object( $db ) )
 				$this->process_db_object( $name, $db );
 		}
@@ -74,10 +78,8 @@ class QM_DB_Queries extends QM {
 		if ( !SAVEQUERIES )
 			return;
 
-		foreach ( $data['db_objects'] as $name => $db ) {
-			if ( isset( $this->data['dbs'][$name] ) )
-				$this->output_queries( $name, $this->data['dbs'][$name] );
-		}
+		foreach ( $data['dbs'] as $name => $db )
+			$this->output_queries( $name, $db );
 
 	}
 
@@ -138,10 +140,10 @@ class QM_DB_Queries extends QM {
 			$total_time += $ltime;
 			$total_qs++;
 
-			if ( !empty( $funcs ) )
-				$func  = reset( array_reverse( explode( ', ', $funcs ) ) );
+			if ( false !== strpos( $funcs, '.php' ) )
+				$func = sprintf( __( '<em>None</em> (%s)', 'query_monitor' ), $funcs );
 			else
-				$func = '<em class="qm-info">' . __( 'none', 'query_monitor' ) . '</em>';
+				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
 			$this->add_func_time( $func, $ltime );
 
@@ -154,13 +156,7 @@ class QM_DB_Queries extends QM {
 			) as $cmd )
 				$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
 
-			$rows[] = array(
-				'func'   => $func,
-				'funcs'  => $funcs,
-				'sql'    => $sql,
-				'ltime'  => $ltime,
-				'result' => $result
-			);
+			$rows[] = compact( 'func', 'funcs', 'sql', 'ltime', 'result' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $result;
@@ -171,12 +167,7 @@ class QM_DB_Queries extends QM {
 		$this->data['query_num'] += $total_qs;
 
 		# @TODO put errors in here too:
-		$this->data['dbs'][$id] = (object) array(
-			'rows'        => $rows,
-			'has_results' => $has_results,
-			'total_time'  => $total_time,
-			'total_qs'    => $total_qs,
-		);
+		$this->data['dbs'][$id] = (object) compact('rows', 'types', 'has_results', 'total_time', 'total_qs' );
 
 	}
 
@@ -245,7 +236,7 @@ class QM_DB_Queries extends QM {
 
 				if ( $has_results ) {
 					if ( is_wp_error( $row['result'] ) ) {
-						$r = $row['result']->get_error_message( 'qmdb_error' );
+						$r = $row['result']->get_error_message( 'query_monitor_db_error' );
 						$results = "<td valign='top'>{$r}</td>\n";
 						$row_class = 'qm-warn';
 					} else {
