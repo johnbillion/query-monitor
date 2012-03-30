@@ -100,10 +100,14 @@
 }
 
 .qm {
-	border-collapse: collapse !important;
-	margin: 40px 20px 5px !important;
-	color: #444 !important;
+	margin: 0 !important;
+	padding: 40px 20px 5px !important;
 	float: left !important;
+}
+
+.qm>table {
+	border-collapse: collapse !important;
+	color: #444 !important;
 	border: 0 !important;
 	box-shadow: 0 0 5px #d0d0d0 !important;
 	width: auto !important;

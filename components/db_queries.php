@@ -187,7 +187,8 @@ class QM_DB_Queries extends QM {
 		if ( $has_results )
 			$span++;
 
-		echo '<table class="qm qm-queries" cellspacing="0" id="qm-queries-' . $id . '">';
+		echo '<div class="qm qm-queries" id="qm-queries-' . $id . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="' . $span . '" class="qm-ltr">' . $name . '</th>';
@@ -274,6 +275,7 @@ class QM_DB_Queries extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

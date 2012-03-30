@@ -87,7 +87,8 @@ class QM_HTTP extends QM {
 
 		$total_time = 0;
 
-		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'HTTP Request', 'query_monitor' ) . '</th>';
@@ -191,6 +192,7 @@ class QM_HTTP extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

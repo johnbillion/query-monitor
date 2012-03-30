@@ -76,7 +76,8 @@ class QM_Admin extends QM {
 
 		$post_type_warning = '';
 
-		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="3">' . __( 'Admin', 'query_monitor' ) . '</th>';
@@ -154,6 +155,7 @@ class QM_Admin extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

@@ -90,7 +90,8 @@ class QM_Environment extends QM {
 
 	function output( $args, $data ) {
 
-		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="3">' . __( 'Environment', 'query_monitor' ) . '</th>';
@@ -203,6 +204,7 @@ class QM_Environment extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

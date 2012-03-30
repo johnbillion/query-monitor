@@ -20,8 +20,6 @@ class QM_Hooks extends QM {
 
 	function process_late() {
 
-		# why is this fucking with the hooks?
-
 		global $wp_actions, $wp_filter, $querymonitor, $current_screen, $pagenow;
 
 		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
@@ -101,7 +99,8 @@ class QM_Hooks extends QM {
 
 	function output( $args, $data ) {
 
-		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query_monitor' ) . '</th>';
@@ -133,6 +132,7 @@ class QM_Hooks extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

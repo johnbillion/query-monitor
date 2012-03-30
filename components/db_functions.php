@@ -30,7 +30,8 @@ class QM_DB_Functions extends QM {
 		$total_time  = 0;
 		$total_calls = 0;
 
-		echo '<table class="qm" cellspacing="0" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Query Function', 'query_monitor' ) . '</th>';
@@ -75,6 +76,7 @@ class QM_DB_Functions extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 

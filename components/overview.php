@@ -40,7 +40,8 @@ class QM_Overview extends QM {
 		else
 			$timespan = 2;
 
-		echo '<table class="qm" cellspacing="0" id="' . $this->id() . '">';
+		echo '<div class="qm" id="' . $this->id() . '">';
+		echo '<table cellspacing="0">';
 		echo '<tbody>';
 
 		echo '<tr>';
@@ -61,6 +62,7 @@ class QM_Overview extends QM {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
 
 	}
 
