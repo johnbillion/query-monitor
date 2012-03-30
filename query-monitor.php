@@ -2,10 +2,11 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.6
+Version:     2.1.7
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
+© 2012 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,9 +42,10 @@ class QueryMonitor {
 
 	function __construct() {
 
-		add_action( 'init',                   array( $this, 'enqueue_style' ) );
+		add_action( 'init',                   array( $this, 'enqueue_stuff' ) );
 		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
+		add_action( 'admin_bar_menu',         array( $this, 'admin_bar_menu' ), 999 );
 		add_filter( 'wp_redirect',            array( $this, 'redirect' ), 999 );
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -84,7 +86,7 @@ class QueryMonitor {
 			return $location;
 
 		# @TODO we're only doing this for logged-in users at the moment because I can't decide how
-		# best to generate and retrieve a key for non-logged-in users with a QM auth cookie.
+		# best to generate and retrieve a key for non-logged-in users who have a QM auth cookie.
 
 		if ( !is_user_logged_in() )
 			return $location;
@@ -106,7 +108,7 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$data['components'][$component->id] = $component->get_data();
 
-		$key = 'qm_redirect_data_' . wp_get_current_user()->ID;
+		$key = 'qm_redirect_data_' . get_current_user_id();
 
 		set_transient( $key, $data, 3600 );
 
@@ -121,7 +123,7 @@ class QueryMonitor {
 		if ( !is_user_logged_in() )
 			return null;
 
-		$key  = 'qm_redirect_data_' . wp_get_current_user()->ID;
+		$key  = 'qm_redirect_data_' . get_current_user_id();
 		$data = get_transient( $key );
 
 		if ( empty( $data ) )
@@ -162,15 +164,13 @@ class QueryMonitor {
 			return get_role( 'administrator' );
 	}
 
-	function admin_bar_menu() {
+	function admin_bar_menu( $wp_admin_bar ) {
 
-		global $wp_admin_bar;
+		if ( !$this->show_query_monitor() )
+			return;
 
-		$class = implode( ' ', apply_filters( 'query_monitor_class', array( $this->wpv() ) ) );
-		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
-
-		if ( empty( $title ) )
-			$title = 'Query Monitor';
+		$class = implode( ' ', array( 'hide-if-js', $this->wpv() ) );
+		$title = 'Query Monitor';
 
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query_monitor',
@@ -181,8 +181,35 @@ class QueryMonitor {
 			)
 		) );
 
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'query_monitor',
+			'id'     => 'query_monitor_placeholder',
+			'title'  => $title,
+			'href'   => '#qm-overview'
+		) );
+
+	}
+
+	function js_admin_bar_menu() {
+
+		$class = implode( ' ', apply_filters( 'query_monitor_class', array( $this->wpv() ) ) );
+		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
+
+		if ( empty( $title ) )
+			$title = 'Query Monitor';
+
+		$admin_bar_menu = array(
+			'top' => array(
+				'title' => $title,
+				'class' => $class
+			),
+			'sub' => array()
+		);
+
 		foreach ( apply_filters( 'query_monitor_menus', array() ) as $menu )
-			$wp_admin_bar->add_menu( $menu );
+			$admin_bar_menu['sub'][] = $menu;
+
+		return $admin_bar_menu;
 
 	}
 
@@ -210,12 +237,11 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process();
 
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 999 );
-		add_action( 'shutdown',       array( $this, 'output' ), 0 );
+		add_action( 'shutdown', array( $this, 'output' ), 0 );
 
 	}
 
-	function enqueue_style() {
+	function enqueue_stuff() {
 
 		if ( !$this->show_query_monitor() )
 			return;
@@ -225,6 +251,13 @@ class QueryMonitor {
 			$this->plugin_url . '/query-monitor.css',
 			null,
 			filemtime( $this->plugin_dir . '/query-monitor.css' )
+		);
+		wp_enqueue_script(
+			'query_monitor',
+			$this->plugin_url . '/query-monitor.js',
+			array( 'jquery' ),
+			filemtime( $this->plugin_dir . '/query-monitor.js' ),
+			true
 		);
 
 	}
@@ -238,7 +271,9 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process_late();
 
-		$redirect_data = $this->get_redirect_data();
+		echo '<script type="text/javascript">' . "\n\n";
+		echo 'var qm = ' . json_encode( $this->js_admin_bar_menu() ) . ';' . "\n\n";
+		echo '</script>' . "\n\n";
 
 		echo '<div id="qm">';
 		echo '<p>Query Monitor</p>';
@@ -359,9 +394,8 @@ class QM {
 	protected function menu( $args ) {
 
 		return wp_parse_args( $args, array(
-			'parent' => 'query_monitor',
-			'id'     => "query_monitor_{$this->id}",
-			'href'   => '#' . $this->id()
+			'id'   => "query_monitor_{$this->id}",
+			'href' => '#' . $this->id()
 		) );
 
 	}

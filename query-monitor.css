@@ -67,6 +67,11 @@
 	color: #fff !important;
 }
 
+#wp-admin-bar-query_monitor_placeholder,
+#wp-admin-bar-query_monitor-default {
+	display: none;
+}
+
 #qm {
 	clear: both !important;
 	background: #ececec !important;
