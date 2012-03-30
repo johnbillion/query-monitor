@@ -46,7 +46,7 @@ class QueryMonitor {
 		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
 		add_action( 'admin_bar_menu',         array( $this, 'admin_bar_menu' ), 999 );
-		add_filter( 'wp_redirect',            array( $this, 'redirect' ), 999 );
+
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
@@ -74,65 +74,6 @@ class QueryMonitor {
 
 	function get_components() {
 		return $this->components;
-	}
-
-	function redirect( $location ) {
-
-		if ( !QM_LOG_REDIRECT_DATA )
-			return $location;
-		if ( false === strpos( $location, $_SERVER['HTTP_HOST'] ) )
-			return $location;
-		if ( !$this->show_query_monitor() )
-			return $location;
-
-		# @TODO we're only doing this for logged-in users at the moment because I can't decide how
-		# best to generate and retrieve a key for non-logged-in users who have a QM auth cookie.
-
-		if ( !is_user_logged_in() )
-			return $location;
-
-		$current = ( is_ssl() )
-			? 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
-			: 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-		$data = array(
-			'url' => $current
-		);
-
-		foreach ( $this->get_components() as $component )
-			$component->process();
-
-		foreach ( $this->get_components() as $component )
-			$component->process_late();
-
-		foreach ( $this->get_components() as $component )
-			$data['components'][$component->id] = $component->get_data();
-
-		$key = 'qm_redirect_data_' . get_current_user_id();
-
-		set_transient( $key, $data, 3600 );
-
-		return $location;
-
-	}
-
-	function get_redirect_data() {
-
-		if ( !wp_get_referer() )
-			return null;
-		if ( !is_user_logged_in() )
-			return null;
-
-		$key  = 'qm_redirect_data_' . get_current_user_id();
-		$data = get_transient( $key );
-
-		if ( empty( $data ) )
-			return null;
-
-		delete_transient( $key );
-
-		return $data;
-
 	}
 
 	function activate() {
@@ -427,9 +368,6 @@ class QM {
 
 if ( !defined( 'ABSPATH' ) )
     die();
-
-if ( !defined( 'QM_LOG_REDIRECT_DATA' ) )
-	define( 'QM_LOG_REDIRECT_DATA', false );
 
 $GLOBALS['querymonitor'] = new QueryMonitor;
 
