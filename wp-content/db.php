@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.1.5
+Version:     2.1.6
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -18,6 +18,33 @@ if ( !class_exists( 'wpdb' ) ) {
 }
 
 class QueryMonitorDB extends wpdb {
+
+	var $qm_ignore_class = array(
+		'wpdb',
+		'QueryMonitor',
+		'QueryMonitorDB',
+		'W3_Db'
+	);
+	var $qm_ignore_func = array(
+		'include_once',
+		'require_once',
+		'include',
+		'require',
+		'call_user_func_array',
+		'call_user_func'
+	);
+	var $qm_show_arg = array(
+		'do_action',
+		'apply_filters',
+		'do_action_ref_array',
+		'apply_filters_ref_array',
+		'get_template_part',
+		'section_template',
+		'get_header',
+		'get_sidebar',
+		'get_footer'
+	);
+	var $qm_filtered = false;
 
 	/**
 	 * Perform a MySQL database query, using current database connection.
@@ -103,6 +130,17 @@ class QueryMonitorDB extends wpdb {
 
 	function backtrace() {
 		$_trace = debug_backtrace( false );
+
+		if ( !$this->qm_filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
+
+			# Only run apply_filters on these once
+			$this->qm_ignore_class = apply_filters( 'query_monitor_db_ignore_class', $this->qm_ignore_class );
+			$this->qm_ignore_func  = apply_filters( 'query_monitor_db_ignore_func',  $this->qm_ignore_func );
+			$this->qm_show_arg     = apply_filters( 'query_monitor_db_show_arg',     $this->qm_show_arg );
+			$this->qm_filtered = true;
+
+		}
+
 		$trace = array_map( array( $this, '_filter_trace' ), $_trace );
 		$trace = array_values( array_filter( $trace ) );
 		if ( empty( $trace ) ) {
@@ -116,35 +154,9 @@ class QueryMonitorDB extends wpdb {
 
 	function _filter_trace( $trace ) {
 
-		$ignore_class = array(
-			'wpdb',
-			'QueryMonitor',
-			'QueryMonitorDB',
-			'W3_Db'
-		);
-		$ignore_func = array(
-			'include_once',
-			'require_once',
-			'include',
-			'require',
-			'call_user_func_array',
-			'call_user_func'
-		);
-		$show_arg = array(
-			'do_action',
-			'apply_filters',
-			'do_action_ref_array',
-			'apply_filters_ref_array',
-			'get_template_part',
-			'section_template',
-			'get_header',
-			'get_sidebar',
-			'get_footer'
-		);
-
 		if ( isset( $trace['class'] ) ) {
 
-			if ( in_array( $trace['class'], $ignore_class ) )
+			if ( in_array( $trace['class'], $this->qm_ignore_class ) )
 				return null;
 			else if ( 0 === strpos( $trace['class'], 'QM' ) )
 				return null;
@@ -153,9 +165,9 @@ class QueryMonitorDB extends wpdb {
 
 		} else {
 
-			if ( in_array( $trace['function'], $ignore_func ) )
+			if ( in_array( $trace['function'], $this->qm_ignore_func ) )
 				return null;
-			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $show_arg ) )
+			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $this->qm_show_arg ) )
 				return $trace['function'] . "('{$trace['args'][0]}')";
 			else
 				return $trace['function'] . '()';

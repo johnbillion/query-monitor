@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.5
+Version:     2.1.6
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 
@@ -263,56 +263,68 @@ class QM {
 
 	var $data = array();
 
+	static $ignore_class = array(
+		'wpdb',
+		'QueryMonitor',
+		'QueryMonitorDB',
+		'W3_Db',
+		'Debug_Bar_PHP'
+	);
+	static $ignore_func = array(
+		'include_once',
+		'require_once',
+		'include',
+		'require',
+		'call_user_func_array',
+		'call_user_func',
+		'trigger_error',
+		'_doing_it_wrong',
+		'_deprecated_argument',
+		'_deprecated_file',
+		'_deprecated_function'
+	);
+	static $show_arg = array(
+		'do_action',
+		'apply_filters',
+		'do_action_ref_array',
+		'apply_filters_ref_array',
+		'get_template_part',
+		'section_template',
+		'get_header',
+		'get_sidebar',
+		'get_footer'
+	);
+	static $filtered = false;
+
 	function __construct() {
+
+		if ( !self::$filtered ) {
+
+			# Only run apply_filters on these once
+			self::$ignore_class = apply_filters( 'query_monitor_ignore_class', self::$ignore_class );
+			self::$ignore_func  = apply_filters( 'query_monitor_ignore_func',  self::$ignore_func );
+			self::$show_arg     = apply_filters( 'query_monitor_show_arg',     self::$show_arg );
+			self::$filtered = true;
+
+		}
+
 		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
 	}
 
 	protected function _filter_trace( $trace ) {
 
-		$ignore_class = array(
-			'wpdb',
-			'QueryMonitor',
-			'QueryMonitorDB',
-			'W3_Db',
-			'Debug_Bar_PHP'
-		);
-		$ignore_func = array(
-			'include_once',
-			'require_once',
-			'include',
-			'require',
-			'call_user_func_array',
-			'call_user_func',
-			'trigger_error',
-			'_doing_it_wrong',
-			'_deprecated_argument',
-			'_deprecated_file',
-			'_deprecated_function'
-		);
-		$show_arg = array(
-			'do_action',
-			'apply_filters',
-			'do_action_ref_array',
-			'apply_filters_ref_array',
-			'get_template_part',
-			'section_template',
-			'get_header',
-			'get_sidebar',
-			'get_footer'
-		);
-
 		if ( isset( $trace['class'] ) ) {
 
-			if ( in_array( $trace['class'], $ignore_class ) )
+			if ( in_array( $trace['class'], self::$ignore_class ) )
 				return null;
 			else
 				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
 
 		} else {
 
-			if ( in_array( $trace['function'], $ignore_func ) )
+			if ( in_array( $trace['function'], self::$ignore_func ) )
 				return null;
-			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $show_arg ) )
+			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], self::$show_arg ) )
 				return $trace['function'] . "('{$trace['args'][0]}')";
 			else
 				return $trace['function'] . '()';

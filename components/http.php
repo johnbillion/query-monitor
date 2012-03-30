@@ -143,13 +143,13 @@ class QM_HTTP extends QM {
 				if ( !$row['args']['blocking'] )
 					$method .= '<br />' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query_monitor' );
 				$url = str_replace( array(
+					'=',
 					'&',
 					'?',
-					'=',
 				), array(
-					'<br /><span>&nbsp;&amp;&nbsp;</span>',
-					'<br /><span>&nbsp;?&nbsp;</span>',
-					'<span>&nbsp;=&nbsp;</span>',
+					'<span class="qm-param">=</span>',
+					'<br /><span class="qm-param">&amp;</span>',
+					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] );
 				$f = 6;
