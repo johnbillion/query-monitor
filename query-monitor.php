@@ -1,10 +1,12 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Description: Monitoring of database queries, hooks, conditionals and much more.
-Version:     2.1.7
+Description: Monitoring of database queries, hooks, conditionals and more.
+Version:     2.1.8
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
+Text Domain: query-monitor
+Domain Path: /languages/
 
 © 2012 John Blackbourn
 
@@ -32,7 +34,7 @@ Query Monitor outputs info on:
   * Selected MySQL and PHP configuration
   * Selected WordPress variables
   * Template conditionals
-  * Template file and body classes
+  * Template file name and body classes
   * Transient update calls
 
 
@@ -42,7 +44,7 @@ class QueryMonitor {
 
 	function __construct() {
 
-		add_action( 'init',                   array( $this, 'enqueue_stuff' ) );
+		add_action( 'init',                   array( $this, 'init' ) );
 		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
 		add_action( 'admin_bar_menu',         array( $this, 'admin_bar_menu' ), 999 );
@@ -114,7 +116,7 @@ class QueryMonitor {
 		$title = 'Query Monitor';
 
 		$wp_admin_bar->add_menu( array(
-			'id'    => 'query_monitor',
+			'id'    => 'query-monitor',
 			'title' => $title,
 			'href'  => '#qm-overview',
 			'meta'  => array(
@@ -123,8 +125,8 @@ class QueryMonitor {
 		) );
 
 		$wp_admin_bar->add_menu( array(
-			'parent' => 'query_monitor',
-			'id'     => 'query_monitor_placeholder',
+			'parent' => 'query-monitor',
+			'id'     => 'query-monitor-placeholder',
 			'title'  => $title,
 			'href'   => '#qm-overview'
 		) );
@@ -182,19 +184,21 @@ class QueryMonitor {
 
 	}
 
-	function enqueue_stuff() {
+	function init() {
+
+		load_plugin_textdomain( 'query-monitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		if ( !$this->show_query_monitor() )
 			return;
 
 		wp_enqueue_style(
-			'query_monitor',
+			'query-monitor',
 			$this->plugin_url . '/query-monitor.css',
 			null,
 			filemtime( $this->plugin_dir . '/query-monitor.css' )
 		);
 		wp_enqueue_script(
-			'query_monitor',
+			'query-monitor',
 			$this->plugin_url . '/query-monitor.js',
 			array( 'jquery' ),
 			filemtime( $this->plugin_dir . '/query-monitor.js' ),
@@ -335,7 +339,7 @@ class QM {
 	protected function menu( $args ) {
 
 		return wp_parse_args( $args, array(
-			'id'   => "query_monitor_{$this->id}",
+			'id'   => "query-monitor-{$this->id}",
 			'href' => '#' . $this->id()
 		) );
 

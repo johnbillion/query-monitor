@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.1.7
+Version:     2.1.8
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -86,7 +86,7 @@ class QueryMonitorDB extends wpdb {
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			$this->queries[$this->num_queries][3] = new WP_Error( 'query_monitor_db_error', $this->last_error );
+			$this->queries[$this->num_queries][3] = new WP_Error( 'qmdb', $this->last_error );
 			$this->print_error();
 			return false;
 		}

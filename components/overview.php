@@ -10,18 +10,19 @@ class QM_Overview extends QM {
 	}
 
 	function admin_title( $title ) {
-		$title[] = sprintf( __( '%s<small>S</small>', 'query_monitor' ), number_format_i18n( $this->data['load_time'], 2 ) );
+		$title[] = sprintf( __( '%s<small>S</small>', 'query-monitor' ), number_format_i18n( $this->data['load_time'], 2 ) );
 		return $title;
 	}
 
 	function output( $args, $data ) {
 
-		$http_time = 0;
+		$http_time = null;
 		$http = $this->get_component( 'http' );
 
-		# @TODO this should go into a process_*() function:
+		$db_query_num = null;
+		$db_queries = $this->get_component( 'db_queries' );
 
-		if ( isset( $http->data['http'] ) ) {
+		if ( $http and isset( $http->data['http'] ) ) {
 			foreach ( $http->data['http'] as $row ) {
 				if ( isset( $row['response'] ) )
 					$http_time += ( $row['end'] - $row['start'] );
@@ -29,6 +30,9 @@ class QM_Overview extends QM {
 					$http_time += $row['args']['timeout'];
 			}
 		}
+
+		if ( $db_queries and isset( $db_queries->data['query_num'] ) )
+			$db_query_num = $db_queries->data['query_num'];
 
 		$total_stime = number_format_i18n( $data['load_time'], 4 );
 		$total_ltime = number_format_i18n( $data['load_time'], 10 );
@@ -45,18 +49,25 @@ class QM_Overview extends QM {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td>' . __( 'Peak memory usage', 'query_monitor' ) . '</td>';
-		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query_monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query_monitor' ), number_format_i18n( $data['memory'] / 1000 ) ) . '</td>';
+		echo '<td>' . __( 'Peak memory usage', 'query-monitor' ) . '</td>';
+		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1000 ) ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td rowspan=" ' . $timespan . '">' . __( 'Page generation time', 'query_monitor' ) . '</td>';
+		echo '<td rowspan=" ' . $timespan . '">' . __( 'Page generation time', 'query-monitor' ) . '</td>';
 		echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 		echo '</tr>';
 
-		if ( !empty( $http_time ) ) {
+		if ( isset( $http_time ) ) {
 			echo '<tr>';
-			echo "<td title='{$excl_ltime}'>" . sprintf( __( '%s w/o HTTP requests', 'query_monitor' ), $excl_stime ) . "</td>";
+			echo "<td title='{$excl_ltime}'>" . sprintf( __( '%s w/o HTTP requests', 'query-monitor' ), $excl_stime ) . "</td>";
+			echo '</tr>';
+		}
+
+		if ( isset( $db_query_num ) ) {
+			echo '<tr>';
+			echo '<td>' . __( 'Database queries', 'query-monitor' ) . '</td>';
+			echo '<td>' . number_format_i18n( $db_query_num ) . '</td>';
 			echo '</tr>';
 		}
 

@@ -35,20 +35,20 @@ class QM_Theme extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Theme', 'query_monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'Theme', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
 		echo '<tr>';
-		echo '<td>' . __( 'Template', 'query_monitor' ) . '</td>';
+		echo '<td>' . __( 'Template', 'query-monitor' ) . '</td>';
 		echo "<td>{$this->data['template_file']}</td>";
 		echo '</tr>';
 
 		if ( !empty( $data['body_class'] ) ) {
 
 			echo '<tr>';
-			echo '<td rowspan="' . count( $data['body_class'] ) . '">' . __( 'Body Classes', 'query_monitor' ) . '</td>';
+			echo '<td rowspan="' . count( $data['body_class'] ) . '">' . __( 'Body Classes', 'query-monitor' ) . '</td>';
 			$first = true;
 
 			foreach ( $data['body_class'] as $class ) {
@@ -75,7 +75,7 @@ class QM_Theme extends QM {
 
 		if ( isset( $this->data['template_file'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Template: %s', 'query_monitor' ), $this->data['template_file'] )
+				'title' => sprintf( __( 'Template: %s', 'query-monitor' ), $this->data['template_file'] )
 			) );
 		}
 		return $menu;

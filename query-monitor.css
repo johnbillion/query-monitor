@@ -3,7 +3,7 @@
 	color: #0a0;
 }
 
-#wp-admin-bar-query_monitor_notices {
+#wp-admin-bar-query-monitor-notices {
 	background-color: #B47359 !important;
 	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 ) !important;
 }
@@ -13,7 +13,7 @@
 	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 );
 }
 
-#wp-admin-bar-query_monitor_warnings {
+#wp-admin-bar-query-monitor-warnings {
 	background-color: #e33 !important;
 	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
 }
@@ -23,43 +23,43 @@
 	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 );
 }
 
-#wp-admin-bar-query_monitor_php_errors,
+#wp-admin-bar-query-monitor-php_errors,
 #wpadminbar .qm-error {
 	background-color: #e33 !important;
 	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
 }
 
-#wp-admin-bar-query_monitor_notices a,
-#wp-admin-bar-query_monitor_warnings a,
-#wp-admin-bar-query_monitor_php_errors a {
+#wp-admin-bar-query-monitor-notices a,
+#wp-admin-bar-query-monitor-warnings a,
+#wp-admin-bar-query-monitor-php_errors a {
 	color: #ddd !important;
 }
 
-#wp-admin-bar-query_monitor small {
+#wp-admin-bar-query-monitor small {
 	font-size: 11px !important;
 }
 
-#wp-admin-bar-query_monitor a:hover small,
-#wp-admin-bar-query_monitor a:focus small {
+#wp-admin-bar-query-monitor a:hover small,
+#wp-admin-bar-query-monitor a:focus small {
 	color: #fafafa !important;
 }
 
-.nojs #wp-admin-bar-query_monitor:hover a small {
+.nojs #wp-admin-bar-query-monitor:hover a small {
 	text-shadow: none !important;
 	color: #333 !important;
 }
 
-#wp-admin-bar-query_monitor.hover a small {
+#wp-admin-bar-query-monitor.hover a small {
 	text-shadow: none !important;
 	color: #333 !important;
 }
 
-.nojs #wp-admin-bar-query_monitor a:hover small {
+.nojs #wp-admin-bar-query-monitor a:hover small {
 	text-shadow: none !important;
 	color: #333 !important;
 }
 
-#wp-admin-bar-query_monitor.qm-wp-32.hover a small {
+#wp-admin-bar-query-monitor.qm-wp-32.hover a small {
 	color: #ddd !important;
 }
 
@@ -67,8 +67,9 @@
 	color: #fff !important;
 }
 
-#wp-admin-bar-query_monitor_placeholder,
-#wp-admin-bar-query_monitor-default {
+#qm-authentication,
+#wp-admin-bar-query-monitor-placeholder,
+#wp-admin-bar-query-monitor-default {
 	display: none;
 }
 
@@ -123,6 +124,10 @@
 
 .qm-queries {
 	max-width: 60% !important;
+}
+
+.qm-queries>table {
+	width: 100% !important;
 }
 
 .qm td,

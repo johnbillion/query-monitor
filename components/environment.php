@@ -12,7 +12,7 @@ class QM_Environment extends QM {
 	function admin_menu( $menu ) {
 
 		$menu[] = $this->menu( array(
-			'title' => __( 'Environment', 'query_monitor' )
+			'title' => __( 'Environment', 'query-monitor' )
 		) );
 		return $menu;
 
@@ -69,7 +69,7 @@ class QM_Environment extends QM {
 
 		} else {
 
-			$php_u = '<em>' . __( 'Unknown', 'query_monitor' ) . '</em>';
+			$php_u = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
 
 		}
 
@@ -94,7 +94,7 @@ class QM_Environment extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Environment', 'query_monitor' ) . '</th>';
+		echo '<th colspan="3">' . __( 'Environment', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -142,8 +142,8 @@ class QM_Environment extends QM {
 				echo '<tr>';
 
 				$first  = true;
-				$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query_monitor' );
-				$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query_monitor' );
+				$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query-monitor' );
+				$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
 
 				foreach ( $db['variables'] as $setting ) {
 

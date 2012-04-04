@@ -51,7 +51,7 @@ class QM_Admin extends QM {
 		}
 
 		if ( !isset( $this->data['admin'] ) )
-			$this->data['admin'] = __( 'n/a', 'query_monitor' );
+			$this->data['admin'] = __( 'n/a', 'query-monitor' );
 
 		$this->data['pagenow'] = $pagenow;
 		$this->data['current_screen'] = $current_screen;
@@ -62,7 +62,7 @@ class QM_Admin extends QM {
 
 		if ( isset( $this->data['base'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Admin Screen: %s', 'query_monitor' ), $this->data['base'] )
+				'title' => sprintf( __( 'Admin Screen: %s', 'query-monitor' ), $this->data['base'] )
 			) );
 		}
 		return $menu;
@@ -80,13 +80,13 @@ class QM_Admin extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Admin', 'query_monitor' ) . '</th>';
+		echo '<th colspan="3">' . __( 'Admin', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="2">' . __( 'Variables', 'query_monitor' ) . '</td>';
+		echo '<td rowspan="2">' . __( 'Variables', 'query-monitor' ) . '</td>';
 		echo '<td class="qm-ltr">$current_screen</td>';
 		echo '<td>';
 
@@ -99,7 +99,7 @@ class QM_Admin extends QM {
 				echo '<td>';
 				echo $value;
 				if ( !empty( $value ) and ( $data['current_screen']->$key != $value ) )
-					echo $post_type_warning = '&nbsp;(<a href="http://core.trac.wordpress.org/ticket/14886" class="qm-warn" title="' . esc_attr__( 'This value may not be as expected. Please see WordPress bug #14886.', 'query_monitor' ) . '" target="_blank">!</a>)';
+					echo $post_type_warning = '&nbsp;(<a href="http://core.trac.wordpress.org/ticket/14886" class="qm-warn" title="' . esc_attr__( 'This value may not be as expected. Please see WordPress bug #14886.', 'query-monitor' ) . '" target="_blank">!</a>)';
 				echo '</td>';
 				echo '</tr>';
 			}
@@ -141,7 +141,7 @@ class QM_Admin extends QM {
 				$col = 'link';
 
 			echo '<tr>';
-			echo '<td rowspan="3">' . __( 'Columns', 'query_monitor' ) . '</td>';
+			echo '<td rowspan="3">' . __( 'Columns', 'query-monitor' ) . '</td>';
 			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns</td>";
 			echo '</tr>';
 			echo '<tr>';

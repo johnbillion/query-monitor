@@ -56,7 +56,7 @@ class QM_Query_Vars extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Query Vars', 'query_monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'Query Vars', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -90,7 +90,7 @@ class QM_Query_Vars extends QM {
 		} else {
 
 			echo '<tr>';
-			echo '<td colspan="2" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
+			echo '<td colspan="2" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 
 		}
@@ -106,8 +106,8 @@ class QM_Query_Vars extends QM {
 		$count = isset( $this->data['plugin_qvars'] ) ? count( $this->data['plugin_qvars'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'Query Vars', 'query_monitor' )
-			: _n( 'Query Vars (+%s)', 'Query Vars (+%s)', $count, 'query_monitor' );
+			? __( 'Query Vars', 'query-monitor' )
+			: _n( 'Query Vars (+%s)', 'Query Vars (+%s)', $count, 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )

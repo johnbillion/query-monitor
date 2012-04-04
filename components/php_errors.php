@@ -27,14 +27,14 @@ class QM_PHP_Errors extends QM {
 
 		if ( isset( $this->data['errors']['warning'] ) ) {
 			$menu[] = $this->menu( array(
-				'id'    => 'query_monitor_warnings',
-				'title' => sprintf( __( 'PHP Warnings (%s)', 'query_monitor' ), number_format_i18n( count( $this->data['errors']['warning'] ) ) )
+				'id'    => 'query-monitor-warnings',
+				'title' => sprintf( __( 'PHP Warnings (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['warning'] ) ) )
 			) );
 		}
 		if ( isset( $this->data['errors']['notice'] ) ) {
 			$menu[] = $this->menu( array(
-				'id'    => 'query_monitor_notices',
-				'title' => sprintf( __( 'PHP Notices (%s)', 'query_monitor' ), number_format_i18n( count( $this->data['errors']['notice'] ) ) )
+				'id'    => 'query-monitor-notices',
+				'title' => sprintf( __( 'PHP Notices (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['notice'] ) ) )
 			) );
 		}
 		return $menu;
@@ -50,17 +50,17 @@ class QM_PHP_Errors extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'PHP Error', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'File', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Line', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query_monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'File', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Line', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		$types = array(
-			'warning' => __( 'Warning', 'query_monitor' ),
-			'notice'  => __( 'Notice', 'query_monitor' )
+			'warning' => __( 'Warning', 'query-monitor' ),
+			'notice'  => __( 'Notice', 'query-monitor' )
 		);
 
 		foreach ( $types as $type => $title ) {

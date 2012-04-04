@@ -19,7 +19,7 @@ class QM_DB_Functions extends QM {
 	function admin_menu( $menu ) {
 
 		$menu[] = $this->menu( array(
-			'title' => __( 'Functions', 'query_monitor' )
+			'title' => __( 'Functions', 'query-monitor' )
 		) );
 		return $menu;
 
@@ -34,9 +34,9 @@ class QM_DB_Functions extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Query Function', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Queries', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Time', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Query Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Queries', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -70,7 +70,7 @@ class QM_DB_Functions extends QM {
 
 		} else {
 
-			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
+			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 
 		}
 

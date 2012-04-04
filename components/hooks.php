@@ -12,7 +12,7 @@ class QM_Hooks extends QM {
 	function admin_menu( $menu ) {
 
 		$menu[] = $this->menu( array(
-			'title' => __( 'Hooks', 'query_monitor' )
+			'title' => __( 'Hooks', 'query-monitor' )
 		) );
 		return $menu;
 
@@ -103,8 +103,8 @@ class QM_Hooks extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Hook', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Actions', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Actions', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

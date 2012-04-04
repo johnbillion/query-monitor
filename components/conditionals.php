@@ -14,7 +14,7 @@ class QM_Conditionals extends QM {
 		foreach ( $this->data['conds']['true'] as $cond ) {
 			$menu[] = $this->menu( array(
 				'title' => $cond . '()',
-				'id'    => 'query_monitor_' . $cond,
+				'id'    => 'query-monitor-' . $cond,
 				'meta'  => array( 'class' => 'qm-true' )
 			) );
 		}
@@ -29,7 +29,7 @@ class QM_Conditionals extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Conditionals', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Conditionals', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

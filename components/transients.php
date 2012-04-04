@@ -33,10 +33,10 @@ class QM_Transients extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Transient Set', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Transient Set', 'query-monitor' ) . '</th>';
 		if ( $this->is_multisite )
-			echo '<th>' . __( 'Type', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query_monitor' ) . '</th>';
+			echo '<th>' . __( 'Type', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -64,7 +64,7 @@ class QM_Transients extends QM {
 		} else {
 
 			echo '<tr>';
-			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
+			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 
 		}
@@ -80,8 +80,8 @@ class QM_Transients extends QM {
 		$count = isset( $this->data['trans'] ) ? count( $this->data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'Transients Set', 'query_monitor' )
-			: _n( 'Transients Set (%s)', 'Transients Set (%s)', $count, 'query_monitor' );
+			? __( 'Transients Set', 'query-monitor' )
+			: _n( 'Transients Set (%s)', 'Transients Set (%s)', $count, 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )

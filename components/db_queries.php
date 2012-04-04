@@ -23,7 +23,7 @@ class QM_DB_Queries extends QM {
 
 	function admin_title( $title ) {
 		foreach ( $this->data['dbs'] as $db )
-			$title[] = sprintf( __( '%s<small>Q</small>', 'query_monitor' ), number_format_i18n( $db->total_qs ) );
+			$title[] = sprintf( __( '%s<small>Q</small>', 'query-monitor' ), number_format_i18n( $db->total_qs ) );
 		return $title;
 	}
 
@@ -39,9 +39,9 @@ class QM_DB_Queries extends QM {
 
 		if ( $errors = $this->get_errors() ) {
 			$menu[] = $this->menu( array(
-				'id'    => 'query_monitor_errors',
+				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-overview',
-				'title' => sprintf( __( 'Database Errors (%s)', 'query_monitor' ), number_format_i18n( count( $errors ) ) )
+				'title' => sprintf( __( 'Database Errors (%s)', 'query-monitor' ), number_format_i18n( count( $errors ) ) )
 			) );
 		}
 		return $menu;
@@ -141,7 +141,7 @@ class QM_DB_Queries extends QM {
 			$total_qs++;
 
 			if ( false !== strpos( $funcs, '.php' ) )
-				$func = sprintf( __( '<em>None</em> (%s)', 'query_monitor' ), $funcs );
+				$func = sprintf( __( '<em>None</em> (%s)', 'query-monitor' ), $funcs );
 			else
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
@@ -196,7 +196,7 @@ class QM_DB_Queries extends QM {
 
 		if ( $max_exceeded ) {
 			echo '<tr>';
-			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown. Total times shown are for all queries.', 'query_monitor' ),
+			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown. Total times shown are for all queries.', 'query-monitor' ),
 				number_format_i18n( $total_qs ),
 				$name,
 				number_format_i18n( QM_DB_LIMIT )
@@ -205,13 +205,13 @@ class QM_DB_Queries extends QM {
 		}
 
 		echo '<tr>';
-		echo '<th>' . __( 'Query', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
 
 		if ( $has_results )
-			echo '<th>' . __( 'Affected Rows', 'query_monitor' ) . '</th>';
+			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 
-		echo '<th>' . __( 'Time', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -237,7 +237,7 @@ class QM_DB_Queries extends QM {
 
 				if ( $has_results ) {
 					if ( is_wp_error( $row['result'] ) ) {
-						$r = $row['result']->get_error_message( 'query_monitor_db_error' );
+						$r = $row['result']->get_error_message( 'qmdb' );
 						$results = "<td valign='top'>{$r}</td>\n";
 						$row_class = 'qm-warn';
 					} else {
@@ -263,13 +263,13 @@ class QM_DB_Queries extends QM {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( _n( '%s query', '%s queries', $total_qs ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( _n( '%s query', '%s queries', $total_qs, 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
 		} else {
 
-			echo '<td colspan="' . $span . '" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
+			echo '<td colspan="' . $span . '" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 
 		}
 

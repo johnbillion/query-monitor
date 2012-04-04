@@ -73,8 +73,8 @@ class QM_HTTP extends QM {
 		$count = isset( $this->data['http'] ) ? count( $this->data['http'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'HTTP Requests', 'query_monitor' )
-			: _n( 'HTTP Requests (%s)', 'HTTP Requests (%s)', $count, 'query_monitor' );
+			? __( 'HTTP Requests', 'query-monitor' )
+			: _n( 'HTTP Requests (%s)', 'HTTP Requests (%s)', $count, 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )
@@ -91,12 +91,12 @@ class QM_HTTP extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'HTTP Request', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Method', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Response', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Timeout', 'query_monitor' ) . '</th>';
-		echo '<th>' . __( 'Time', 'query_monitor' ) . '</th>';
+		echo '<th>' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Method', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Timeout', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -124,7 +124,7 @@ class QM_HTTP extends QM {
 						else if ( !empty( $response ) )
 							$response = '<span class="qm-warn">' . esc_html( $response . ' ' . $msg ) . '</span>';
 						else
-							$response = __( 'n/a', 'query_monitor' );
+							$response = __( 'n/a', 'query-monitor' );
 						$css = '';
 					}
 
@@ -133,16 +133,16 @@ class QM_HTTP extends QM {
 					$ltime = '';
 					$total_time += $row['args']['timeout'];
 					$stime = number_format_i18n( $row['args']['timeout'], 4 );
-					$response = __( 'Request timed out', 'query_monitor' );
+					$response = __( 'Request timed out', 'query-monitor' );
 					$css = 'qm-warn';
 
 				}
 
 				$method = $row['args']['method'];
 				if ( isset( $row['transport'] ) )
-					$method .= '<br />' . sprintf( _x( '(using %s)', 'using HTTP transport', 'query_monitor' ), $row['transport'] );
+					$method .= '<br />' . sprintf( _x( '(using %s)', 'using HTTP transport', 'query-monitor' ), $row['transport'] );
 				if ( !$row['args']['blocking'] )
-					$method .= '<br />' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query_monitor' );
+					$method .= '<br />' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
 				$url = str_replace( array(
 					'=',
 					'&',
@@ -185,7 +185,7 @@ class QM_HTTP extends QM {
 		} else {
 
 			echo '<tr>';
-			echo '<td colspan="6" style="text-align:center !important"><em>' . __( 'none', 'query_monitor' ) . '</em></td>';
+			echo '<td colspan="6" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 	
 		}
