@@ -178,7 +178,11 @@ class QM_HTTP extends QM {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td colspan="5">&nbsp;</td>';
+			echo '<td colspan="5"><span class="qm-info">';
+			printf( __( 'HTTP transport order of preference: %s', 'query-monitor' ),
+				'<em>curl, streams, fsockopen</em>'
+			);
+			echo '</span></td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
