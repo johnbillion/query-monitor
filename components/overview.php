@@ -21,6 +21,7 @@ class QM_Overview extends QM {
 
 		$db_query_num = null;
 		$db_query_types = array();
+		$db_query_time = array();
 		$db_queries = $this->get_component( 'db_queries' );
 
 		if ( $http and isset( $http->data['http'] ) ) {
@@ -32,8 +33,11 @@ class QM_Overview extends QM {
 			}
 		}
 
-		if ( $db_queries and isset( $db_queries->data['query_num'] ) )
+		if ( $db_queries and isset( $db_queries->data['query_num'] ) ) {
 			$db_query_num = $db_queries->data['types'];
+			$db_stime = number_format_i18n( $db_queries->data['total_time'], 4 );
+			$db_ltime = number_format_i18n( $db_queries->data['total_time'], 10 );
+		}
 
 		$total_stime = number_format_i18n( $data['load_time'], 4 );
 		$total_ltime = number_format_i18n( $data['load_time'], 10 );
@@ -50,12 +54,12 @@ class QM_Overview extends QM {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td>' . __( 'Peak memory usage', 'query-monitor' ) . '</td>';
+		echo '<th>' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
 		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1000 ) ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td rowspan=" ' . $timespan . '">' . __( 'Page generation time', 'query-monitor' ) . '</td>';
+		echo '<th rowspan=" ' . $timespan . '">' . __( 'Page generation time', 'query-monitor' ) . '</th>';
 		echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 		echo '</tr>';
 
@@ -65,9 +69,16 @@ class QM_Overview extends QM {
 			echo '</tr>';
 		}
 
+		if ( isset( $db_query_time ) ) {
+			echo '<tr>';
+			echo '<th>' . __( 'Database query time', 'query-monitor' ) . '</th>';
+			echo "<td title='{$db_ltime}'>{$db_stime}</td>";
+			echo '</tr>';
+		}
+
 		if ( isset( $db_query_num ) ) {
 			echo '<tr>';
-			echo '<td>' . __( 'Database queries', 'query-monitor' ) . '</td>';
+			echo '<th>' . __( 'Database queries', 'query-monitor' ) . '</th>';
 			echo '<td>';
 
 			foreach ( $db_query_num as $type_name => $type_count )

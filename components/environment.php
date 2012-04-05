@@ -26,7 +26,6 @@ class QM_Environment extends QM {
 			'key_buffer_size'    => true,  # Key cache size limit
 			'max_allowed_packet' => false, # Individual query size limit
 			'max_connections'    => false, # Max number of client connections
-		#	'profiling'          => 'OFF', # Query profiling on or off
 			'query_cache_limit'  => true,  # Individual query cache size limit
 			'query_cache_size'   => true,  # Total cache size limit
 			'query_cache_type'   => 'ON'   # Query cache on or off

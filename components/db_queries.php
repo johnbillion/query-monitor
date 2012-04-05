@@ -59,8 +59,9 @@ class QM_DB_Queries extends QM {
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->data['query_num'] = 0;
-		$this->data['errors']    = array();
+		$this->data['query_num']  = 0;
+		$this->data['total_time'] = 0;
+		$this->data['errors']     = array();
 
 		$this->db_objects = apply_filters( 'query_monitor_db_objects', array(
 			'$wpdb' => $GLOBALS['wpdb']
@@ -190,6 +191,7 @@ class QM_DB_Queries extends QM {
 
 		# @TODO standardise these var names:
 		$this->data['query_num'] += $total_qs;
+		$this->data['total_time'] += $total_time;
 
 		# @TODO put errors in here too:
 		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'total_time', 'total_qs' );
