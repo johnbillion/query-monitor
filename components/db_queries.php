@@ -128,11 +128,13 @@ class QM_DB_Queries extends QM {
 
 		if ( !empty( $data['expensive'] ) ) {
 
+			$dp = strlen( substr( strrchr( QM_DB_EXPENSIVE, '.' ), 1 ) );
+
 			echo '<div class="qm qm-queries" id="qm-query-expensive">';
 			echo '<table cellspacing="0">';
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th colspan="4">' . __( 'Slow Database Queries', 'query-monitor' ) . '</th>';
+			echo '<th colspan="4">' . sprintf( __( 'Database Queries Above %ss', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';

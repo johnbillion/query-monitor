@@ -121,6 +121,8 @@
 	width: auto !important;
 }
 
+#qm-query-errors,
+#qm-query-expensive,
 #qm-queries-wpdb {
 	clear: left !important;
 }
