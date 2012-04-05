@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.1.8
+Version:     2.2b
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -190,6 +190,9 @@ class QueryMonitor {
 
 		if ( !$this->show_query_monitor() )
 			return;
+
+		if ( !defined( 'DONOTCACHEPAGE' ) )
+			define( 'DONOTCACHEPAGE', 1 );
 
 		wp_enqueue_style(
 			'query-monitor',
