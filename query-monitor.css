@@ -11,6 +11,14 @@
 	background-color: #740;
 }
 
+#wp-admin-bar-query-monitor-expensive {
+	background-color: #b60 !important;
+}
+
+#wpadminbar .qm-expensive {
+	background-color: #b60;
+}
+
 #wp-admin-bar-query-monitor-warnings {
 	background-color: #c00 !important;
 }
@@ -28,6 +36,7 @@
 }
 
 #wp-admin-bar-query-monitor-notices a,
+#wp-admin-bar-query-monitor-expensive a,
 #wp-admin-bar-query-monitor-warnings a,
 #wp-admin-bar-query-monitor-errors a {
 	color: #eee !important;

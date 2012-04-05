@@ -7,8 +7,6 @@ if ( !defined( 'QM_DB_EXPENSIVE' ) )
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
-# @TODO warnings for slow queries
-
 class QM_DB_Queries extends QM {
 
 	var $id = 'db_queries';
@@ -31,6 +29,8 @@ class QM_DB_Queries extends QM {
 
 		if ( $this->get_errors() )
 			$class[] = 'qm-error';
+		if ( $this->get_expensive() )
+			$class[] = 'qm-expensive';
 		return $class;
 
 	}
@@ -44,6 +44,13 @@ class QM_DB_Queries extends QM {
 				'title' => sprintf( __( 'Database Errors (%s)', 'query-monitor' ), number_format_i18n( count( $errors ) ) )
 			) );
 		}
+		if ( $expensive = $this->get_expensive() ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-expensive',
+				'href'  => '#qm-query-expensive',
+				'title' => sprintf( __( 'Slow Queries (%s)', 'query-monitor' ), number_format_i18n( count( $expensive ) ) )
+			) );
+		}
 		return $menu;
 
 	}
@@ -52,6 +59,16 @@ class QM_DB_Queries extends QM {
 		if ( !empty( $this->data['errors'] ) )
 			return $this->data['errors'];
 		return false;
+	}
+
+	function get_expensive() {
+		if ( !empty( $this->data['expensive'] ) )
+			return $this->data['expensive'];
+		return false;
+	}
+
+	function is_expensive( $row ) {
+		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
 	function process() {
@@ -76,10 +93,10 @@ class QM_DB_Queries extends QM {
 
 	function output( $args, $data ) {
 
-		if ( empty( $this->data['dbs'] ) )
+		if ( empty( $data['dbs'] ) )
 			return;
 
-		if ( !empty( $this->data['errors'] ) ) {
+		if ( !empty( $data['errors'] ) ) {
 
 			echo '<div class="qm qm-queries" id="qm-query-errors">';
 			echo '<table cellspacing="0">';
@@ -95,12 +112,52 @@ class QM_DB_Queries extends QM {
 			echo '</thead>';
 			echo '<tbody>';
 
-			foreach ( $this->data['errors'] as $error ) {
+			foreach ( $data['errors'] as $row ) {
 				echo '<tr class="qm-warn">';
-				echo '<td>' . $error['sql'] . '</td>';
-				echo '<td title="' . esc_attr( $error['funcs'] ) . '">' . $error['func'] . '</td>';
-				echo '<td>' . $error['result']->get_error_message( 'qmdb' ) . '</td>';
+				echo '<td>' . $row['sql'] . '</td>';
+				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
+				echo '<td>' . $row['result']->get_error_message( 'qmdb' ) . '</td>';
 				echo '</tr>';
+			}
+
+			echo '</tbody>';
+			echo '</table>';
+			echo '</div>';
+
+		}
+
+		if ( !empty( $data['expensive'] ) ) {
+
+			echo '<div class="qm qm-queries" id="qm-query-expensive">';
+			echo '<table cellspacing="0">';
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th colspan="4">' . __( 'Slow Database Queries', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '<tr>';
+			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+			echo '<tbody>';
+
+			foreach ( $data['expensive'] as $row ) {
+
+				$stime = number_format_i18n( $row['ltime'], 4 );
+				$ltime = number_format_i18n( $row['ltime'], 10 );
+
+				if ( 'SELECT' != $row['type'] )
+					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
+
+				echo '<tr>';
+				echo '<td>' . $row['sql'] . '</td>';
+				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
+				echo '<td>' . $row['result'] . '</td>';
+				echo '<td class="qm-expensive" title="' . esc_attr( $ltime ) . '">' . $stime . '</td>';
+				echo '</tr>';
+
 			}
 
 			echo '</tbody>';
@@ -210,6 +267,9 @@ class QM_DB_Queries extends QM {
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
 
+			if ( $this->is_expensive( $row ) )
+				$this->data['expensive'][] = $row;
+
 			$rows[] = $row;
 
 		}
@@ -297,7 +357,7 @@ class QM_DB_Queries extends QM {
 				$ql = strlen( $row['sql'] );
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
-				$td = ( $row['ltime'] > QM_DB_EXPENSIVE ) ? " class='qm-expensive'" : '';
+				$td = $this->is_expensive( $row ) ? " class='qm-expensive'" : '';
 				if ( 'SELECT' != $row['type'] )
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
