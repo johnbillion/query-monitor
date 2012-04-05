@@ -4,35 +4,33 @@
 }
 
 #wp-admin-bar-query-monitor-notices {
-	background-color: #B47359 !important;
-	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 ) !important;
+	background-color: #740 !important;
 }
 
 #wpadminbar .qm-notice {
-	background-color: #B47359;
-	background-image: -moz-linear-gradient( center bottom, #8C634B, #B47359 );
+	background-color: #740;
 }
 
 #wp-admin-bar-query-monitor-warnings {
-	background-color: #e33 !important;
-	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
+	background-color: #c00 !important;
 }
 
 #wpadminbar .qm-warning {
-	background-color: #e33;
-	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 );
+	background-color: #c00;
 }
 
-#wp-admin-bar-query-monitor-php_errors,
+#wp-admin-bar-query-monitor-errors {
+	background-color: #c00 !important;
+}
+
 #wpadminbar .qm-error {
-	background-color: #e33 !important;
-	background-image: -moz-linear-gradient( center bottom, #cc3333, #e33 ) !important;
+	background-color: #c00 !important;
 }
 
 #wp-admin-bar-query-monitor-notices a,
 #wp-admin-bar-query-monitor-warnings a,
-#wp-admin-bar-query-monitor-php_errors a {
-	color: #ddd !important;
+#wp-admin-bar-query-monitor-errors a {
+	color: #eee !important;
 }
 
 #wp-admin-bar-query-monitor small {

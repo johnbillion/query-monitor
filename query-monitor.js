@@ -13,7 +13,7 @@ jQuery( function($) {
 
 			new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 				.clone()
-				.attr('id','wp-admin-'+el.id)
+				.attr('id','wp-admin-bar-'+el.id)
 			;
 			new_menu
 				.find('a').eq(0)
@@ -24,7 +24,7 @@ jQuery( function($) {
 			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.class != 'undefined' ) )
 				new_menu.addClass(el.meta.class);
 
-			new_menu.appendTo('#wp-admin-bar-query-monitor-default');
+			new_menu.appendTo('#wp-admin-bar-query-monitor ul');
 
 		} );
 
