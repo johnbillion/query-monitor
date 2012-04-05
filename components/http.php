@@ -74,7 +74,7 @@ class QM_HTTP extends QM {
 
 		$title = ( empty( $count ) )
 			? __( 'HTTP Requests', 'query-monitor' )
-			: _n( 'HTTP Requests (%s)', 'HTTP Requests (%s)', $count, 'query-monitor' );
+			: __( 'HTTP Requests (%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )

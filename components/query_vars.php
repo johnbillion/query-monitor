@@ -107,7 +107,7 @@ class QM_Query_Vars extends QM {
 
 		$title = ( empty( $count ) )
 			? __( 'Query Vars', 'query-monitor' )
-			: _n( 'Query Vars (+%s)', 'Query Vars (+%s)', $count, 'query-monitor' );
+			: __( 'Query Vars (+%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )

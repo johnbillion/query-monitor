@@ -81,7 +81,7 @@ class QM_Transients extends QM {
 
 		$title = ( empty( $count ) )
 			? __( 'Transients Set', 'query-monitor' )
-			: _n( 'Transients Set (%s)', 'Transients Set (%s)', $count, 'query-monitor' );
+			: __( 'Transients Set (%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )
