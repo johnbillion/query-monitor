@@ -11,8 +11,10 @@ class QM_DB_Functions extends QM {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) )
+		if ( $dbq = $this->get_component( 'db_queries' ) ) {
 			$this->data['times'] = $dbq->data['times'];
+			$this->data['types'] = $dbq->data['types'];
+		}
 
 	}
 
@@ -35,7 +37,12 @@ class QM_DB_Functions extends QM {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Query Function', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Queries', 'query-monitor' ) . '</th>';
+
+		if ( !empty( $data['types'] ) ) {
+			foreach ( $data['types'] as $type_name => $type_count )
+				echo '<th>' . $type_name . '</th>';
+		}
+
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -50,13 +57,20 @@ class QM_DB_Functions extends QM {
 				$total_calls += $row['calls'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
-				echo "
-					<tr>\n
-						<td valign='top' class='qm-ltr'>{$row['func']}</td>\n
-						<td valign='top'>{$row['calls']}</td>\n
-						<td valign='top' title='{$ltime}'>{$stime}</td>\n
-					</tr>\n
-				";
+
+				echo '<tr>';
+				echo "<td valign='top' class='qm-ltr'>{$row['func']}</td>";
+
+				foreach ( $data['types'] as $type_name => $type_count ) {
+					if ( isset( $row['types'][$type_name] ) )
+						echo "<td valign='top'>{$row['types'][$type_name]}</td>";
+					else
+						echo "<td valign='top'>&nbsp;</td>";
+				}
+
+				echo "<td valign='top' title='{$ltime}'>{$stime}</td>";
+				echo '</tr>';
+
 			}
 
 			$total_stime = number_format_i18n( $total_time, 4 );
@@ -64,7 +78,10 @@ class QM_DB_Functions extends QM {
 
 			echo '<tr>';
 			echo '<td>&nbsp;</td>';
-			echo "<td>{$total_calls}</td>";
+
+			foreach ( $data['types'] as $type_name => $type_count )
+				echo '<td>' . $type_count . '</td>';
+
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 

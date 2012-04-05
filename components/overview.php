@@ -20,6 +20,7 @@ class QM_Overview extends QM {
 		$http = $this->get_component( 'http' );
 
 		$db_query_num = null;
+		$db_query_types = array();
 		$db_queries = $this->get_component( 'db_queries' );
 
 		if ( $http and isset( $http->data['http'] ) ) {
@@ -32,7 +33,7 @@ class QM_Overview extends QM {
 		}
 
 		if ( $db_queries and isset( $db_queries->data['query_num'] ) )
-			$db_query_num = $db_queries->data['query_num'];
+			$db_query_num = $db_queries->data['types'];
 
 		$total_stime = number_format_i18n( $data['load_time'], 4 );
 		$total_ltime = number_format_i18n( $data['load_time'], 10 );
@@ -67,7 +68,14 @@ class QM_Overview extends QM {
 		if ( isset( $db_query_num ) ) {
 			echo '<tr>';
 			echo '<td>' . __( 'Database queries', 'query-monitor' ) . '</td>';
-			echo '<td>' . number_format_i18n( $db_query_num ) . '</td>';
+			echo '<td>';
+
+			foreach ( $db_query_num as $type_name => $type_count )
+				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
+
+			echo implode( '<br />', $db_query_types );
+
+			echo '</td>';
 			echo '</tr>';
 		}
 

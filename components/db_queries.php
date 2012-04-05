@@ -95,7 +95,7 @@ class QM_DB_Queries extends QM {
 		return false;
 	}
 
-	function add_func_time( $func, $ltime ) {
+	function add_func_time( $func, $ltime, $type ) {
 
 		/*
 		 * This should really be done in the db_functions component, but it's done here to save
@@ -106,24 +106,38 @@ class QM_DB_Queries extends QM {
 			$this->data['times'][$func] = array(
 				'func'  => $func,
 				'calls' => 0,
-				'ltime' => 0
+				'ltime' => 0,
+				'types' => array()
 			);
 		}
 
 		$this->data['times'][$func]['calls']++;
 		$this->data['times'][$func]['ltime'] += $ltime;
 
+		if ( isset( $this->data['times'][$func]['types'][$type] ) )
+			$this->data['times'][$func]['types'][$type]++;
+		else
+			$this->data['times'][$func]['types'][$type] = 1;
+
+		if ( isset( $this->data['types'][$type] ) )
+			$this->data['types'][$type]++;
+		else
+			$this->data['types'][$type] = 1;
+
+
 	}
 
 	function process_db_object( $id, $db ) {
 
 		$rows        = array();
+		$types       = array();
 		$total_time  = 0;
 		$total_qs    = 0;
 		$has_results = false;
 
 		foreach ( (array) $db->queries as $query ) {
 
+			# @TODO: is this needed now?
 			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_all'] ) )
 				continue;
 
@@ -145,10 +159,21 @@ class QM_DB_Queries extends QM {
 			else
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
-			$this->add_func_time( $func, $ltime );
-
 			$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
 			$sql = esc_html( trim( $sql ) );
+			$type = strtoupper( substr( $sql, 0, strpos( $sql, ' ' ) ) );
+
+			$this->add_func_time( $func, $ltime, $type );
+
+			if ( !isset( $types[$type]['total'] ) )
+				$types[$type]['total'] = 1;
+			else
+				$types[$type]['total']++;
+
+			if ( !isset( $types[$type]['funcs'][$func] ) )
+				$types[$type]['funcs'][$func] = 1;
+			else
+				$types[$type]['funcs'][$func]++;
 
 			foreach( array(
 				'AND', 'DELETE', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
@@ -156,7 +181,7 @@ class QM_DB_Queries extends QM {
 			) as $cmd )
 				$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
 
-			$rows[] = compact( 'func', 'funcs', 'sql', 'ltime', 'result' );
+			$rows[] = compact( 'func', 'funcs', 'sql', 'ltime', 'result', 'type' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $result;
@@ -167,7 +192,7 @@ class QM_DB_Queries extends QM {
 		$this->data['query_num'] += $total_qs;
 
 		# @TODO put errors in here too:
-		$this->data['dbs'][$id] = (object) compact('rows', 'types', 'has_results', 'total_time', 'total_qs' );
+		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'total_time', 'total_qs' );
 
 	}
 
@@ -194,7 +219,7 @@ class QM_DB_Queries extends QM {
 		echo '<th colspan="' . $span . '" class="qm-ltr">' . $name . '</th>';
 		echo '</tr>';
 
-		if ( $max_exceeded ) {
+		if ( $max_exceeded and !isset( $_REQUEST['qm_display_all'] ) ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown. Total times shown are for all queries.', 'query-monitor' ),
 				number_format_i18n( $total_qs ),
@@ -223,16 +248,15 @@ class QM_DB_Queries extends QM {
 
 			foreach ( $rows as $i => $row ) {
 
-				if ( $i === QM_DB_LIMIT )
+				if ( ( $i === QM_DB_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) )
 					break;
 
 				$row_class = '';
-				$select = ( 0 === strpos( strtoupper( $row['sql'] ), 'SELECT' ) );
 				$ql = strlen( $row['sql'] );
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
 				$td = ( $row['ltime'] > QM_DB_EXPENSIVE ) ? " class='qm-expensive'" : '';
-				if ( !$select )
+				if ( 'SELECT' != $row['type'] )
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
 				if ( $has_results ) {
