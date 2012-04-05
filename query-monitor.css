@@ -132,7 +132,7 @@
 .qm th {
 	background: #fff !important;
 	text-align: start !important;
-	font-family: monospace !important;
+	font-family: 'Consolas', 'Courier New', monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
 	line-height: 16px !important;
