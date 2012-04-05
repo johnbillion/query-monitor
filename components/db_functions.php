@@ -21,7 +21,7 @@ class QM_DB_Functions extends QM {
 	function admin_menu( $menu ) {
 
 		$menu[] = $this->menu( array(
-			'title' => __( 'Functions', 'query-monitor' )
+			'title' => __( 'Query Functions', 'query-monitor' )
 		) );
 		return $menu;
 

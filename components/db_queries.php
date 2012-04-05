@@ -40,7 +40,7 @@ class QM_DB_Queries extends QM {
 		if ( $errors = $this->get_errors() ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-errors',
-				'href'  => '#qm-overview',
+				'href'  => '#qm-query-errors',
 				'title' => sprintf( __( 'Database Errors (%s)', 'query-monitor' ), number_format_i18n( count( $errors ) ) )
 			) );
 		}
@@ -76,8 +76,38 @@ class QM_DB_Queries extends QM {
 
 	function output( $args, $data ) {
 
-		if ( !SAVEQUERIES )
+		if ( empty( $this->data['dbs'] ) )
 			return;
+
+		if ( !empty( $this->data['errors'] ) ) {
+
+			echo '<div class="qm qm-queries" id="qm-query-errors">';
+			echo '<table cellspacing="0">';
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th colspan="3">' . __( 'Database Query Errors', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '<tr>';
+			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Error', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+			echo '<tbody>';
+
+			foreach ( $this->data['errors'] as $error ) {
+				echo '<tr class="qm-warn">';
+				echo '<td>' . $error['sql'] . '</td>';
+				echo '<td title="' . esc_attr( $error['funcs'] ) . '">' . $error['func'] . '</td>';
+				echo '<td>' . $error['result']->get_error_message( 'qmdb' ) . '</td>';
+				echo '</tr>';
+			}
+
+			echo '</tbody>';
+			echo '</table>';
+			echo '</div>';
+
+		}
 
 		foreach ( $data['dbs'] as $name => $db )
 			$this->output_queries( $name, $db );
@@ -160,8 +190,7 @@ class QM_DB_Queries extends QM {
 			else
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
-			$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
-			$sql = esc_html( trim( $sql ) );
+			$sql = $this->format_sql( $sql );
 			$type = strtoupper( substr( $sql, 0, strpos( $sql, ' ' ) ) );
 
 			$this->add_func_time( $func, $ltime, $type );
@@ -176,16 +205,12 @@ class QM_DB_Queries extends QM {
 			else
 				$types[$type]['funcs'][$func]++;
 
-			foreach( array(
-				'AND', 'DELETE', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
-				'ON', 'OR', 'ORDER', 'SELECT', 'SET', 'THEN', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
-			) as $cmd )
-				$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
-
-			$rows[] = compact( 'func', 'funcs', 'sql', 'ltime', 'result', 'type' );
+			$row = compact( 'func', 'funcs', 'sql', 'ltime', 'result', 'type' );
 
 			if ( is_wp_error( $result ) )
-				$this->data['errors'][] = $result;
+				$this->data['errors'][] = $row;
+
+			$rows[] = $row;
 
 		}
 
@@ -195,6 +220,21 @@ class QM_DB_Queries extends QM {
 
 		# @TODO put errors in here too:
 		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'total_time', 'total_qs' );
+
+	}
+
+	function format_sql( $sql ) {
+
+		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
+		$sql = esc_html( trim( $sql ) );
+
+		foreach( array(
+			'AND', 'DELETE', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
+			'ON', 'OR', 'ORDER', 'SELECT', 'SET', 'THEN', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
+		) as $cmd )
+			$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
+
+		return $sql;
 
 	}
 
