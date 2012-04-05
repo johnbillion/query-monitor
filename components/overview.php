@@ -11,6 +11,7 @@ class QM_Overview extends QM {
 
 	function admin_title( $title ) {
 		$title[] = sprintf( __( '%s<small>S</small>', 'query-monitor' ), number_format_i18n( $this->data['load_time'], 2 ) );
+		$title[] = sprintf( __( '%s<small>M</small>', 'query-monitor' ), number_format_i18n( ( $this->data['memory'] / 1000 / 1000 ), 1 ) );
 		return $title;
 	}
 
