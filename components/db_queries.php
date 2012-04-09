@@ -108,7 +108,7 @@ class QM_DB_Queries extends QM {
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Error', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -140,7 +140,7 @@ class QM_DB_Queries extends QM {
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -247,7 +247,7 @@ class QM_DB_Queries extends QM {
 			$total_qs++;
 
 			if ( false !== strpos( $funcs, '.php' ) )
-				$func = sprintf( __( '<em>None</em> (%s)', 'query-monitor' ), $funcs );
+				$func = $funcs;
 			else
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
@@ -338,7 +338,7 @@ class QM_DB_Queries extends QM {
 
 		echo '<tr>';
 		echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
 
 		if ( $has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';

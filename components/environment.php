@@ -30,6 +30,7 @@ class QM_Environment extends QM {
 			'query_cache_size'   => true,  # Total cache size limit
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
+		$php_u = '';
 
 		if ( $dbq = $this->get_component( 'db_queries' ) ) {
 
@@ -62,15 +63,18 @@ class QM_Environment extends QM {
 			$g = posix_getgrgid( $u['gid'] );
 			$php_u = esc_html( $u['name'] . ':' . $g['name'] );
 
+		} else if ( isset( $_SERVER['USER'] ) ) {
+
+			$php_u = esc_html( $_SERVER['USER'] );
+
 		} else if ( function_exists( 'exec' ) ) {
 
 			$php_u = esc_html( exec( 'whoami' ) );
 
-		} else {
-
-			$php_u = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
-
 		}
+
+		if ( empty( $php_u ) )
+			$php_u = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
 
 		$this->data['php'] = array(
 			'version'   => phpversion(),
@@ -88,6 +92,15 @@ class QM_Environment extends QM {
 			'version'  => $wp_version,
 			'wp_debug' => $wp_debug,
 			'blog_id'  => $blog_id
+		);
+
+		$server = explode( '/', reset( explode( ' ', $_SERVER['SERVER_SOFTWARE'] ) ) );
+
+		$this->data['server'] = array(
+			'name'    => $server[0],
+			'version' => $server[1],
+			'address' => $_SERVER['SERVER_ADDR'],
+			'host'    => php_uname( 'n' )
 		);
 
 	}
@@ -212,6 +225,27 @@ class QM_Environment extends QM {
 		echo '<tr>';
 		echo '<td>WP_DEBUG</td>';
 		echo "<td>{$data['wp']['wp_debug']}</td>";
+		echo '</tr>';
+
+		echo '<tr>';
+		echo '<td rowspan="4">' . __( 'Server', 'query-monitor' ) . '</td>';
+		echo '<td>software</td>';
+		echo "<td>{$data['server']['name']}</td>";
+		echo '</tr>';
+
+		echo '<tr>';
+		echo '<td>version</td>';
+		echo "<td>{$data['server']['version']}</td>";
+		echo '</tr>';
+
+		echo '<tr>';
+		echo '<td>address</td>';
+		echo "<td>{$data['server']['address']}</td>";
+		echo '</tr>';
+
+		echo '<tr>';
+		echo '<td>host</td>';
+		echo "<td>{$data['server']['host']}</td>";
 		echo '</tr>';
 
 		echo '</tbody>';
