@@ -11,7 +11,7 @@ class QM_DB_Functions extends QM {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
 			$this->data['times'] = $dbq->data['times'];
 			$this->data['types'] = $dbq->data['types'];
 		}
@@ -20,14 +20,19 @@ class QM_DB_Functions extends QM {
 
 	function admin_menu( $menu ) {
 
-		$menu[] = $this->menu( array(
-			'title' => __( 'Query Functions', 'query-monitor' )
-		) );
+		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
+			$menu[] = $this->menu( array(
+				'title' => __( 'Query Functions', 'query-monitor' )
+			) );
+		}
 		return $menu;
 
 	}
 
 	function output( $args, $data ) {
+
+		if ( empty( $data ) )
+			return;
 
 		$total_time  = 0;
 		$total_calls = 0;

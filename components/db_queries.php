@@ -20,8 +20,10 @@ class QM_DB_Queries extends QM {
 	}
 
 	function admin_title( $title ) {
-		foreach ( $this->data['dbs'] as $db )
-			$title[] = sprintf( __( '%s<small>Q</small>', 'query-monitor' ), number_format_i18n( $db->total_qs ) );
+		if ( isset( $this->data['dbs'] ) ) {
+			foreach ( $this->data['dbs'] as $db )
+				$title[] = sprintf( __( '%s<small>Q</small>', 'query-monitor' ), number_format_i18n( $db->total_qs ) );
+		}
 		return $title;
 	}
 

@@ -34,7 +34,7 @@ class QM_Overview extends QM {
 			}
 		}
 
-		if ( $db_queries and isset( $db_queries->data['query_num'] ) ) {
+		if ( $db_queries and isset( $db_queries->data['types'] ) ) {
 			$db_query_num = $db_queries->data['types'];
 			$db_stime = number_format_i18n( $db_queries->data['total_time'], 4 );
 			$db_ltime = number_format_i18n( $db_queries->data['total_time'], 10 );
@@ -70,7 +70,7 @@ class QM_Overview extends QM {
 			echo '</tr>';
 		}
 
-		if ( isset( $db_query_time ) ) {
+		if ( !empty( $db_query_time ) ) {
 			echo '<tr>';
 			echo '<th>' . __( 'Database query time', 'query-monitor' ) . '</th>';
 			echo "<td title='{$db_ltime}'>{$db_stime}</td>";
