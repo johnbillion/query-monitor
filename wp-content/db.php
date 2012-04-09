@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2b
+Version:     2.2
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.

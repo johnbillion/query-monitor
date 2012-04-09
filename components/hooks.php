@@ -67,7 +67,7 @@ class QM_Hooks extends QM {
 							else
 								$class = $function['function'][0];
 
-							if ( $qm_class == $class )
+							if ( ( $qm_class == $class ) or ( 0 === strpos( $class, 'QM_' ) ) )
 								$css_class = 'qm-qm';
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else {

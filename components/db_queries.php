@@ -136,7 +136,7 @@ class QM_DB_Queries extends QM {
 			echo '<table cellspacing="0">';
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th colspan="4">' . sprintf( __( 'Database Queries Above %ss', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
+			echo '<th colspan="4">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
