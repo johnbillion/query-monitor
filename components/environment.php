@@ -73,9 +73,14 @@ class QM_Environment extends QM {
 		}
 
 		$this->data['php'] = array(
-			'version' => phpversion(),
-			'user'    => $php_u
+			'version'   => phpversion(),
+			'user'      => $php_u,
+			'variables' => array()
 		);
+
+		# @TODO highlight changes made via ini_set() during runtime (log default values on plugins_loaded)
+		foreach ( array( 'max_execution_time', 'memory_limit', 'upload_max_filesize', 'post_max_size' ) as $setting )
+			$this->data['php']['variables'][$setting] = ini_get( $setting );
 
 		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
 
@@ -99,7 +104,7 @@ class QM_Environment extends QM {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="2">PHP</td>';
+		echo '<td rowspan="' . ( 2 + count( $data['php']['variables'] ) ) . '">PHP</td>';
 		echo '<td>version</td>';
 		echo "<td>{$data['php']['version']}</td>";
 		echo '</tr>';
@@ -107,6 +112,14 @@ class QM_Environment extends QM {
 		echo '<td>user</td>';
 		echo "<td>{$data['php']['user']}</td>";
 		echo '</tr>';
+
+		foreach ( $data['php']['variables'] as $key => $val ) {
+
+			echo '<tr>';
+			echo "<td>{$key}</td>";
+			echo "<td>{$val}</td>";
+			echo '</tr>';
+		}
 
 		if ( isset( $data['db'] ) ) {
 
