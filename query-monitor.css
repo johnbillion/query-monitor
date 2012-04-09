@@ -201,6 +201,11 @@
 	color: #ccc !important;
 }
 
+.qm .qm-sql {
+	word-wrap: break-word !important;
+	word-break: break-word !important;
+}
+
 .qm .qm-nonselectsql {
 	color: #a0a !important;
 }

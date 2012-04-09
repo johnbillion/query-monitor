@@ -116,7 +116,7 @@ class QM_DB_Queries extends QM {
 
 			foreach ( $data['errors'] as $row ) {
 				echo '<tr class="qm-warn">';
-				echo '<td>' . $row['sql'] . '</td>';
+				echo '<td class="qm-sql">' . $row['sql'] . '</td>';
 				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
 				echo '<td>' . $row['result']->get_error_message( 'qmdb' ) . '</td>';
 				echo '</tr>';
@@ -156,7 +156,7 @@ class QM_DB_Queries extends QM {
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
 				echo '<tr>';
-				echo '<td>' . $row['sql'] . '</td>';
+				echo '<td class="qm-sql">' . $row['sql'] . '</td>';
 				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
 				echo '<td>' . $row['result'] . '</td>';
 				echo '<td class="qm-expensive" title="' . esc_attr( $ltime ) . '">' . $stime . '</td>';
@@ -252,7 +252,8 @@ class QM_DB_Queries extends QM {
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
 			$sql = $this->format_sql( $sql );
-			$type = strtoupper( substr( $sql, 0, strpos( $sql, ' ' ) ) );
+			$type = preg_split( '/\b/', $sql );
+			$type = strtoupper( $type[1] );
 
 			$this->add_func_time( $func, $ltime, $type );
 
@@ -358,7 +359,6 @@ class QM_DB_Queries extends QM {
 					break;
 
 				$row_class = '';
-				$ql = strlen( $row['sql'] );
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
 				$td = $this->is_expensive( $row ) ? " class='qm-expensive'" : '';
@@ -381,7 +381,7 @@ class QM_DB_Queries extends QM {
 
 				echo "
 					<tr class='{$row_class}'>\n
-						<td valign='top' class='qm-ltr'>{$row['sql']}</td>\n
+						<td valign='top' class='qm-ltr qm-sql'>{$row['sql']}</td>\n
 						<td valign='top' class='qm-ltr' title='{$funcs}'>{$row['func']}</td>\n
 						{$results}
 						<td valign='top' title='{$ltime}'{$td}>{$stime}</td>\n

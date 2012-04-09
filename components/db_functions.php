@@ -85,7 +85,7 @@ class QM_DB_Functions extends QM {
 			echo '<td>&nbsp;</td>';
 
 			foreach ( $data['types'] as $type_name => $type_count )
-				echo '<td>' . $type_count . '</td>';
+				echo '<td>' . number_format_i18n( $type_count ) . '</td>';
 
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
