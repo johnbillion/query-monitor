@@ -221,11 +221,12 @@ class QM_DB_Queries extends QM {
 
 	function process_db_object( $id, $db ) {
 
-		$rows        = array();
-		$types       = array();
-		$total_time  = 0;
-		$total_qs    = 0;
-		$has_results = false;
+		$rows          = array();
+		$types         = array();
+		$total_time    = 0;
+		$total_qs      = 0;
+		$has_results   = false;
+		$has_components= false;
 
 		foreach ( (array) $db->queries as $query ) {
 
@@ -233,18 +234,59 @@ class QM_DB_Queries extends QM {
 			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_all'] ) )
 				continue;
 
-			$sql         = $query[0];
-			$ltime       = $query[1];
-			$funcs       = $query[2];
-			$has_results = isset( $query[3] );
+			$sql           = $query[0];
+			$ltime         = $query[1];
+			$funcs         = $query[2];
+			$has_component = isset( $query[3] );
+			$has_results   = isset( $query[4] );
+
+			if ( $has_component )
+				$stack = $query[3];
+			else
+				$stack = null;
 
 			if ( $has_results )
-				$result = $query[3];
+				$result = $query[4];
 			else
 				$result = null;
 
 			$total_time += $ltime;
 			$total_qs++;
+
+			if ( null !== $stack ) {
+
+				foreach ( $stack as $f ) {
+
+					$f = $this->standard_dir( $f );
+					if ( 'core' != ( $type = $this->get_file_component( $f ) ) )
+						break;
+
+				}
+
+				switch ( $type ) {
+					case 'plugin':
+						$plug = plugin_basename( $f );
+						if ( strpos( $plug, '/' ) )
+							$plug = reset( explode( '/', $plug ) );
+						else
+							$plug = basename( $plug );
+						$component = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+						break;
+					case 'theme':
+						$component = __( 'Theme', 'query-monitor' );
+						break;
+					case 'parent_theme':
+						$component = __( 'Parent Theme', 'query-monitor' );
+						break;
+					case 'core':
+					default:
+						$component = __( 'Core', 'query-monitor' );
+						break;
+				}
+
+			} else {
+				$component = null;
+			}
 
 			if ( false !== strpos( $funcs, '.php' ) )
 				$func = $funcs;
@@ -267,7 +309,7 @@ class QM_DB_Queries extends QM {
 			else
 				$types[$type]['funcs'][$func]++;
 
-			$row = compact( 'func', 'funcs', 'sql', 'ltime', 'result', 'type' );
+			$row = compact( 'func', 'funcs', 'sql', 'ltime', 'result', 'type', 'component' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
@@ -284,7 +326,7 @@ class QM_DB_Queries extends QM {
 		$this->data['total_time'] += $total_time;
 
 		# @TODO put errors in here too:
-		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'total_time', 'total_qs' );
+		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'has_component', 'total_time', 'total_qs' );
 
 	}
 
@@ -307,16 +349,19 @@ class QM_DB_Queries extends QM {
 
 		# @TODO move more of this into process()
 
-		$rows         = $db->rows;
-		$has_results  = $db->has_results;
-		$total_time   = $db->total_time;
-		$total_qs     = $db->total_qs;
-		$max_exceeded = $total_qs > QM_DB_LIMIT;
+		$rows          = $db->rows;
+		$has_results   = $db->has_results;
+		$has_component = $db->has_component;
+		$total_time    = $db->total_time;
+		$total_qs      = $db->total_qs;
+		$max_exceeded  = $total_qs > QM_DB_LIMIT;
 
 		$id = sanitize_title( $name );
 		$span = 3;
 
 		if ( $has_results )
+			$span++;
+		if ( $has_component )
 			$span++;
 
 		echo '<div class="qm qm-queries" id="qm-queries-' . $id . '">';
@@ -339,6 +384,9 @@ class QM_DB_Queries extends QM {
 		echo '<tr>';
 		echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
+
+		if ( $has_component )
+			echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 
 		if ( $has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
@@ -365,6 +413,11 @@ class QM_DB_Queries extends QM {
 				if ( 'SELECT' != $row['type'] )
 					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
+				if ( $has_component )
+					$component = "<td valign='top'>{$row['component']}</td>\n";
+				else
+					$component = '';
+
 				if ( $has_results ) {
 					if ( is_wp_error( $row['result'] ) ) {
 						$r = $row['result']->get_error_message( 'qmdb' );
@@ -383,6 +436,7 @@ class QM_DB_Queries extends QM {
 					<tr class='{$row_class}'>\n
 						<td valign='top' class='qm-ltr qm-sql'>{$row['sql']}</td>\n
 						<td valign='top' class='qm-ltr' title='{$funcs}'>{$row['func']}</td>\n
+						{$component}
 						{$results}
 						<td valign='top' title='{$ltime}'{$td}>{$stime}</td>\n
 					</tr>\n

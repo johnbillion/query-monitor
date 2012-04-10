@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2.2
+Version:     2.2.3b
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -100,11 +100,11 @@ class QueryMonitorDB extends wpdb {
 		$this->num_queries++;
 
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
-			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller(), null );
+			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller(), $this->get_stack(), null );
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			$this->queries[$this->num_queries][3] = new WP_Error( 'qmdb', $this->last_error );
+			$this->queries[$this->num_queries][4] = new WP_Error( 'qmdb', $this->last_error );
 			$this->print_error();
 			return false;
 		}
@@ -137,13 +137,32 @@ class QueryMonitorDB extends wpdb {
 			$return_val     = $num_rows;
 		}
 
-		$this->queries[$this->num_queries][3] = $return_val;
+		$this->queries[$this->num_queries][4] = $return_val;
 
 		return $return_val;
 	}
 
 	function get_caller() {
 		return implode( ', ', array_reverse( $this->backtrace() ) );
+	}
+
+	function get_stack() {
+
+		$_trace = debug_backtrace( false );
+		$stack  = array();
+
+		unset(
+			$_trace[0], # this file
+			$_trace[1]  # wp-includes/wp-db.php
+		);
+
+		foreach ( $_trace as $t ) {
+			if ( isset( $t['file'] ) )
+				$stack[] = $t['file'];
+		}
+
+		return $stack;
+
 	}
 
 	function backtrace() {
