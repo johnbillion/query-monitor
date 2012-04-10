@@ -104,23 +104,19 @@ class QM_DB_Queries extends QM {
 			echo '<table cellspacing="0">';
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th colspan="3">' . __( 'Database Query Errors', 'query-monitor' ) . '</th>';
+			echo '<th colspan="4">' . __( 'Database Errors', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Error', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
 
-			foreach ( $data['errors'] as $row ) {
-				echo '<tr class="qm-warn">';
-				echo '<td class="qm-sql">' . $row['sql'] . '</td>';
-				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
-				echo '<td>' . $row['result']->get_error_message( 'qmdb' ) . '</td>';
-				echo '</tr>';
-			}
+			foreach ( $data['errors'] as $row )
+				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result' ) );
 
 			echo '</tbody>';
 			echo '</table>';
@@ -136,33 +132,25 @@ class QM_DB_Queries extends QM {
 			echo '<table cellspacing="0">';
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th colspan="4">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
+			echo '<th colspan="5">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+
+			if ( isset( $data['expensive'][0]['component'] ) )
+				echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+
+			if ( isset( $data['expensive'][0]['result'] ) )
+				echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+
 			echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
 
-			foreach ( $data['expensive'] as $row ) {
-
-				$stime = number_format_i18n( $row['ltime'], 4 );
-				$ltime = number_format_i18n( $row['ltime'], 10 );
-
-				if ( 'SELECT' != $row['type'] )
-					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
-
-				echo '<tr>';
-				echo '<td class="qm-sql">' . $row['sql'] . '</td>';
-				echo '<td title="' . esc_attr( $row['funcs'] ) . '">' . $row['func'] . '</td>';
-				echo '<td>' . $row['result'] . '</td>';
-				echo '<td class="qm-expensive" title="' . esc_attr( $ltime ) . '">' . $stime . '</td>';
-				echo '</tr>';
-
-			}
+			foreach ( $data['expensive'] as $row )
+				$this->output_query_row( $row );
 
 			echo '</tbody>';
 			echo '</table>';
@@ -429,41 +417,8 @@ class QM_DB_Queries extends QM {
 				if ( ( $i === QM_DB_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) )
 					break;
 
-				$row_class = '';
-				$stime = number_format_i18n( $row['ltime'], 4 );
-				$ltime = number_format_i18n( $row['ltime'], 10 );
-				$td = $this->is_expensive( $row ) ? " class='qm-expensive'" : '';
-				if ( 'SELECT' != $row['type'] )
-					$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
+				$this->output_query_row( $row );
 
-				if ( $has_component )
-					$component = "<td valign='top'>{$row['component']}</td>\n";
-				else
-					$component = '';
-
-				if ( $has_results ) {
-					if ( is_wp_error( $row['result'] ) ) {
-						$r = $row['result']->get_error_message( 'qmdb' );
-						$results = "<td valign='top'>{$r}</td>\n";
-						$row_class = 'qm-warn';
-					} else {
-						$results = "<td valign='top'>{$row['result']}</td>\n";
-					}
-				} else {
-					$results = '';
-				}
-
-				$funcs = esc_attr( $row['funcs'] );
-
-				echo "
-					<tr class='{$row_class}'>\n
-						<td valign='top' class='qm-ltr qm-sql'>{$row['sql']}</td>\n
-						<td valign='top' class='qm-ltr' title='{$funcs}'>{$row['func']}</td>\n
-						{$component}
-						{$results}
-						<td valign='top' title='{$ltime}'{$td}>{$stime}</td>\n
-					</tr>\n
-				";
 			}
 
 			$total_stime = number_format_i18n( $total_time, 4 );
@@ -483,6 +438,60 @@ class QM_DB_Queries extends QM {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	function output_query_row( $row, $cols = array() ) {
+
+		$cols = (array) $cols;
+
+		if ( empty( $cols ) )
+			$cols = array( 'sql', 'caller', 'component', 'result', 'time' );
+
+		$cols = array_flip( $cols );
+
+		if ( null === $row['component'] )
+			unset( $cols['component'] );
+		if ( null === $row['result'] )
+			unset( $cols['result'] );
+
+		$row_class = array();
+		$stime = number_format_i18n( $row['ltime'], 4 );
+		$ltime = number_format_i18n( $row['ltime'], 10 );
+		$td = $this->is_expensive( $row ) ? " class='qm-expensive'" : '';
+
+		if ( 'SELECT' != $row['type'] )
+			$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
+
+		if ( is_wp_error( $row['result'] ) ) {
+			$r = $row['result']->get_error_message( 'qmdb' );
+			$result = "<td valign='top'>{$r}</td>\n";
+			$row_class[] = 'qm-warn';
+		} else {
+			$result = "<td valign='top'>{$row['result']}</td>\n";
+		}
+
+		$funcs = esc_attr( $row['funcs'] );
+		$row_class = implode( ' ', $row_class );
+
+		echo "<tr class='{$row_class}'>";
+
+		if ( isset( $cols['sql'] ) )
+			echo "<td valign='top' class='qm-ltr qm-sql'>{$row['sql']}</td>";
+
+		if ( isset( $cols['caller'] ) )
+			echo "<td valign='top' class='qm-ltr' title='{$funcs}'>{$row['func']}</td>";
+
+		if ( isset( $cols['component'] ) )
+			echo "<td valign='top'>{$row['component']}</td>\n";
+
+		if ( isset( $cols['result'] ) )
+			echo $result;
+
+		if ( isset( $cols['time'] ) )
+			echo "<td valign='top' title='{$ltime}'{$td}>{$stime}</td>\n";
+
+		echo "</tr>";
 
 	}
 

@@ -57,7 +57,7 @@ class QM_Overview extends QM {
 		echo '</tr>';
 
 		if ( isset( $http_time ) )
-			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%s without HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
+			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
 
 		if ( $data['time_usage'] > 25 ) /* Only bother with generation time if it's above 25%: */
 			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';

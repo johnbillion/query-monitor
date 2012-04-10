@@ -151,10 +151,7 @@ class QueryMonitorDB extends wpdb {
 		$_trace = debug_backtrace( false );
 		$stack  = array();
 
-		unset(
-			$_trace[0], # this file
-			$_trace[1]  # wp-includes/wp-db.php
-		);
+		unset( $_trace[0] ); # This file
 
 		foreach ( $_trace as $t ) {
 			if ( isset( $t['file'] ) )
