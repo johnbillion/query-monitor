@@ -3,10 +3,32 @@
 class QM_Environment extends QM {
 
 	var $id = 'environment';
+	var $php_vars = array(
+		'max_execution_time',
+		'memory_limit',
+		'upload_max_filesize',
+		'post_max_size'
+	);
 
 	function __construct() {
+
+		global $wpdb;
+
 		parent::__construct();
+
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 80 );
+
+		# If QueryMonitorDB is in place then we'll use the values which were
+		# caught early before any plugins had a chance to alter them
+
+		foreach ( $this->php_vars as $setting ) {
+			if ( isset( $wpdb->qm_php_vars[$setting] ) )
+				$val = $wpdb->qm_php_vars[$setting];
+			else
+				$val = ini_get( $setting );
+			$this->data['php']['variables'][$setting]['before'] = $val;
+		}
+
 	}
 
 	function admin_menu( $menu ) {
@@ -22,7 +44,7 @@ class QM_Environment extends QM {
 
 		global $wp_version, $blog_id;
 
-		$vars = array(
+		$mysql_vars = array(
 			'key_buffer_size'    => true,  # Key cache size limit
 			'max_allowed_packet' => false, # Individual query size limit
 			'max_connections'    => false, # Max number of client connections
@@ -41,7 +63,7 @@ class QM_Environment extends QM {
 
 				$variables = $db->get_results( "
 					SHOW VARIABLES
-					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $vars ) ) . "' )
+					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 				" );
 
 				$this->data['db'][$id] = array(
@@ -49,7 +71,7 @@ class QM_Environment extends QM {
 					'user'      => $db->dbuser,
 					'host'      => $db->dbhost,
 					'name'      => $db->dbname,
-					'vars'      => $vars,
+					'vars'      => $mysql_vars,
 					'variables' => $variables
 				);
 
@@ -76,15 +98,11 @@ class QM_Environment extends QM {
 		if ( empty( $php_u ) )
 			$php_u = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
 
-		$this->data['php'] = array(
-			'version'   => phpversion(),
-			'user'      => $php_u,
-			'variables' => array()
-		);
+		$this->data['php']['version'] = phpversion();
+		$this->data['php']['user']    = $php_u;
 
-		# @TODO highlight changes made via ini_set() during runtime (log default values on plugins_loaded)
-		foreach ( array( 'max_execution_time', 'memory_limit', 'upload_max_filesize', 'post_max_size' ) as $setting )
-			$this->data['php']['variables'][$setting] = ini_get( $setting );
+		foreach ( $this->php_vars as $setting )
+			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
 
 		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
 
@@ -128,9 +146,14 @@ class QM_Environment extends QM {
 
 		foreach ( $data['php']['variables'] as $key => $val ) {
 
+			$append = '';
+
+			if ( $val['after'] != $val['before'] )
+				$append .= '<br /><span class="qm-info">' . sprintf( __( 'Overridden from %s', 'query-monitor' ), $val['before'] ) . '</span>';
+
 			echo '<tr>';
 			echo "<td>{$key}</td>";
-			echo "<td>{$val}</td>";
+			echo "<td>{$val['after']}{$append}</td>";
 			echo '</tr>';
 		}
 

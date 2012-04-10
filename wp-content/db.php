@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2.1
+Version:     2.2.2
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -45,6 +45,24 @@ class QueryMonitorDB extends wpdb {
 		'get_footer'
 	);
 	var $qm_filtered = false;
+	var $qm_php_vars = array(
+		'max_execution_time'  => null,
+		'memory_limit'        => null,
+		'upload_max_filesize' => null,
+		'post_max_size'       => null
+	);
+
+	/**
+	 * Class constructor
+	 */
+	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
+
+		foreach ( $this->qm_php_vars as $setting => &$val )
+			$val = ini_get( $setting );
+
+		parent::__construct( $dbuser, $dbpassword, $dbname, $dbhost );
+
+	}
 
 	/**
 	 * Perform a MySQL database query, using current database connection.
