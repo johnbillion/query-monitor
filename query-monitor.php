@@ -365,35 +365,24 @@ class QM {
 
 	public function get_file_component( $file ) {
 
-		if ( !self::$file_dirs ) {
+		if ( isset( self::$file_components[$file] ) )
+			return self::$file_components[$file];
+
+		if ( empty( self::$file_dirs ) ) {
 			self::$file_dirs['plugin']     = $this->standard_dir( WP_PLUGIN_DIR );
 			self::$file_dirs['muplugin']   = $this->standard_dir( WPMU_PLUGIN_DIR );
 			self::$file_dirs['stylesheet'] = $this->standard_dir( get_stylesheet_directory() );
 			self::$file_dirs['template']   = $this->standard_dir( get_template_directory() );
+			self::$file_dirs['other']      = $this->standard_dir( WP_CONTENT_DIR );
+			self::$file_dirs['core']       = $this->standard_dir( ABSPATH );
 		}
 
-		if ( isset( $file_components[$file] ) )
-			return $file_components[$file];
-
-		switch ( true ) {
-			case ( 0 === strpos( $file, self::$file_dirs['plugin'] ) ):
-			case ( 0 === strpos( $file, self::$file_dirs['muplugin'] ) ):
-				$component = 'plugin';
-				break;
-			case ( 0 === strpos( $file, self::$file_dirs['stylesheet'] ) ):
-				$component = 'theme';
-				break;
-			case ( 0 === strpos( $file, self::$file_dirs['template'] ) ):
-				$component = 'parent_theme';
-				break;
-			default:
-				$component = 'core';
+		foreach ( self::$file_dirs as $component => $dir ) {
+			if ( 0 === strpos( $file, $dir ) )
 				break;
 		}
 
-		$file_components[$file] = $component;
-
-		return $file_components[$file];
+		return self::$file_components[$file] = $component;
 
 	}
 

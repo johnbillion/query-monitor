@@ -281,6 +281,7 @@ class QM_DB_Queries extends QM {
 
 				switch ( $file_component ) {
 					case 'plugin':
+					case 'muplugin':
 						$plug = plugin_basename( $f );
 						if ( strpos( $plug, '/' ) )
 							$plug = reset( explode( '/', $plug ) );
@@ -288,11 +289,14 @@ class QM_DB_Queries extends QM {
 							$plug = basename( $plug );
 						$component = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
 						break;
-					case 'theme':
+					case 'stylesheet':
 						$component = __( 'Theme', 'query-monitor' );
 						break;
-					case 'parent_theme':
+					case 'template':
 						$component = __( 'Parent Theme', 'query-monitor' );
+						break;
+					case 'other':
+						$component = str_replace( $this->standard_dir( ABSPATH ), '', $f );
 						break;
 					case 'core':
 					default:
