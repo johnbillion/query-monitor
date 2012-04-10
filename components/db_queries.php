@@ -455,7 +455,7 @@ class QM_DB_Queries extends QM {
 		if ( null === $row['result'] )
 			unset( $cols['result'] );
 
-		$row_class = array();
+		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
 		$ltime = number_format_i18n( $row['ltime'], 10 );
 		$td = $this->is_expensive( $row ) ? " class='qm-expensive'" : '';
@@ -466,15 +466,23 @@ class QM_DB_Queries extends QM {
 		if ( is_wp_error( $row['result'] ) ) {
 			$r = $row['result']->get_error_message( 'qmdb' );
 			$result = "<td valign='top'>{$r}</td>\n";
-			$row_class[] = 'qm-warn';
+			$row_attr['class'] = 'qm-warn';
 		} else {
 			$result = "<td valign='top'>{$row['result']}</td>\n";
 		}
 
-		$funcs = esc_attr( $row['funcs'] );
-		$row_class = implode( ' ', $row_class );
+		if ( isset( $cols['component'] ) )
+			$row_attr['data-qm-component'] = $row['component'];
+		if ( isset( $cols['caller'] ) )
+			$row_attr['data-qm-caller'] = $row['func'];
 
-		echo "<tr class='{$row_class}'>";
+		$funcs = esc_attr( $row['funcs'] );
+		$attr = '';
+
+		foreach ( $row_attr as $a => $v )
+			$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+
+		echo "<tr{$attr}>";
 
 		if ( isset( $cols['sql'] ) )
 			echo "<td valign='top' class='qm-ltr qm-sql'>{$row['sql']}</td>";
