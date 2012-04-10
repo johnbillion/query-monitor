@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.2.1
+Version:     2.2.2
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -333,6 +333,26 @@ class QM {
 			return 0;
 		else
 			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
+	}
+
+	protected function convert_hr_to_bytes( $size ) {
+
+		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
+		# loaded in the admin area, so we'll use our own version.
+		# See http://core.trac.wordpress.org/ticket/17725
+
+		$bytes = (float) $size;
+
+		if ( $bytes ) {
+			$last = strtolower( substr( $size, -1 ) );
+			$pos = strpos( ' kmg', $last, 1);
+			if ( $pos )
+				$bytes *= pow( 1024, $pos );
+			$bytes = round( $bytes );
+		}
+
+		return $bytes;
+
 	}
 
 	public function id() {
