@@ -1,0 +1,114 @@
+<?php
+
+class QM_DB_Components extends QM {
+
+	var $id = 'db_components';
+
+	function __construct() {
+		parent::__construct();
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 35 );
+	}
+
+	function process() {
+
+		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
+			$this->data['times'] = $dbq->data['component_times'];
+			$this->data['types'] = $dbq->data['types'];
+		}
+
+	}
+
+	function admin_menu( $menu ) {
+
+		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
+			$menu[] = $this->menu( array(
+				'title' => __( 'Query Components', 'query-monitor' )
+			) );
+		}
+		return $menu;
+
+	}
+
+	function output( $args, $data ) {
+
+		if ( empty( $data ) )
+			return;
+
+		$total_time  = 0;
+		$total_calls = 0;
+
+		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<table cellspacing="0">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th>' . __( 'Query Component', 'query-monitor' ) . '</th>';
+
+		if ( !empty( $data['types'] ) ) {
+			foreach ( $data['types'] as $type_name => $type_count )
+				echo '<th>' . $type_name . '</th>';
+		}
+
+		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		if ( !empty( $data['times'] ) ) {
+
+			usort( $data['times'], array( $this, '_sort' ) );
+
+			foreach ( $data['times'] as $component => $row ) {
+				$total_time  += $row['ltime'];
+				$total_calls += $row['calls'];
+				$stime = number_format_i18n( $row['ltime'], 4 );
+				$ltime = number_format_i18n( $row['ltime'], 10 );
+
+				echo '<tr>';
+				echo "<td valign='top' class='qm-ltr'>{$row['component']}</td>";
+
+				foreach ( $data['types'] as $type_name => $type_count ) {
+					if ( isset( $row['types'][$type_name] ) )
+						echo "<td valign='top'>{$row['types'][$type_name]}</td>";
+					else
+						echo "<td valign='top'>&nbsp;</td>";
+				}
+
+				echo "<td valign='top' title='{$ltime}'>{$stime}</td>";
+				echo '</tr>';
+
+			}
+
+			$total_stime = number_format_i18n( $total_time, 4 );
+			$total_ltime = number_format_i18n( $total_time, 10 );
+
+			echo '<tr>';
+			echo '<td>&nbsp;</td>';
+
+			foreach ( $data['types'] as $type_name => $type_count )
+				echo '<td>' . number_format_i18n( $type_count ) . '</td>';
+
+			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
+			echo '</tr>';
+
+		} else {
+
+			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+
+		}
+
+		echo '</tbody>';
+		echo '</table>';
+		echo '</div>';
+
+	}
+
+}
+
+function register_qm_db_components( $qm ) {
+	$qm['db_components'] = new QM_DB_Components;
+	return $qm;
+}
+
+add_filter( 'query_monitor_components', 'register_qm_db_components', 35 );
+
+?>

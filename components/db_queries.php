@@ -189,11 +189,6 @@ class QM_DB_Queries extends QM {
 
 	function add_func_time( $func, $ltime, $type ) {
 
-		/*
-		 * This should really be done in the db_functions component, but it's done here to save
-		 * looping over the queries multiple times.
-		 */
-
 		if ( !isset( $this->data['times'][$func] ) ) {
 			$this->data['times'][$func] = array(
 				'func'  => $func,
@@ -211,11 +206,32 @@ class QM_DB_Queries extends QM {
 		else
 			$this->data['times'][$func]['types'][$type] = 1;
 
+		# @TODO: this should be in a separate function:
 		if ( isset( $this->data['types'][$type] ) )
 			$this->data['types'][$type]++;
 		else
 			$this->data['types'][$type] = 1;
 
+	}
+
+	function add_component_time( $component, $ltime, $type ) {
+
+		if ( !isset( $this->data['component_times'][$component] ) ) {
+			$this->data['component_times'][$component] = array(
+				'component' => $component,
+				'calls'     => 0,
+				'ltime'     => 0,
+				'types'     => array()
+			);
+		}
+
+		$this->data['component_times'][$component]['calls']++;
+		$this->data['component_times'][$component]['ltime'] += $ltime;
+
+		if ( isset( $this->data['component_times'][$component]['types'][$type] ) )
+			$this->data['component_times'][$component]['types'][$type]++;
+		else
+			$this->data['component_times'][$component]['types'][$type] = 1;
 
 	}
 
@@ -258,12 +274,12 @@ class QM_DB_Queries extends QM {
 				foreach ( $stack as $f ) {
 
 					$f = $this->standard_dir( $f );
-					if ( 'core' != ( $type = $this->get_file_component( $f ) ) )
+					if ( 'core' != ( $file_component = $this->get_file_component( $f ) ) )
 						break;
 
 				}
 
-				switch ( $type ) {
+				switch ( $file_component ) {
 					case 'plugin':
 						$plug = plugin_basename( $f );
 						if ( strpos( $plug, '/' ) )
@@ -298,6 +314,9 @@ class QM_DB_Queries extends QM {
 			$type = strtoupper( $type[1] );
 
 			$this->add_func_time( $func, $ltime, $type );
+
+			if ( $has_component )
+				$this->add_component_time( $component, $ltime, $type );
 
 			if ( !isset( $types[$type]['total'] ) )
 				$types[$type]['total'] = 1;
