@@ -471,6 +471,8 @@ class QM_DB_Queries extends QM {
 			$result = "<td valign='top'>{$row['result']}</td>\n";
 		}
 
+		if ( isset( $cols['sql'] ) )
+			$row_attr['data-qm-type'] = $row['type'];
 		if ( isset( $cols['component'] ) )
 			$row_attr['data-qm-component'] = $row['component'];
 		if ( isset( $cols['caller'] ) )

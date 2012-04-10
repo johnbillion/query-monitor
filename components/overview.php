@@ -51,11 +51,6 @@ class QM_Overview extends QM {
 
 		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
 
-		echo '<tr>';
-		echo '<th>' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
-		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
-		echo '</tr>';
-
 		if ( isset( $http_time ) )
 			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
 
@@ -65,6 +60,11 @@ class QM_Overview extends QM {
 		echo '<tr>';
 		echo '<th>' . __( 'Page generation time', 'query-monitor' ) . '</th>';
 		echo "<td title='{$total_ltime}'>{$total_stime}{$time_usage}</td>";
+		echo '</tr>';
+
+		echo '<tr>';
+		echo '<th>' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
+		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
 		echo '</tr>';
 
 		if ( isset( $db_query_num ) ) {

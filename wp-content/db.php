@@ -23,6 +23,7 @@ class QueryMonitorDB extends wpdb {
 		'wpdb',
 		'QueryMonitor',
 		'QueryMonitorDB',
+		'ExtQuery',
 		'W3_Db'
 	);
 	var $qm_ignore_func = array(

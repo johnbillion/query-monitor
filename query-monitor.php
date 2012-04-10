@@ -250,6 +250,7 @@ class QM {
 		'wpdb',
 		'QueryMonitor',
 		'QueryMonitorDB',
+		'ExtQuery',
 		'W3_Db',
 		'Debug_Bar_PHP'
 	);
