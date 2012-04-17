@@ -426,7 +426,7 @@ class QM_DB_Queries extends QM {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( _n( '%s query', '%s queries', $total_qs, 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( _n( '%s query', '%s queries', $total_qs, 'query-monitor' ), number_format_i18n( $total_qs ) ) . ' <span class="qm-queries-shown qm-hide">' . sprintf( __( '(%s shown)', 'query-monitor' ), '<span class="qm-queries-number">' . $total_qs . '</span>' ) . '</span></td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
@@ -443,9 +443,6 @@ class QM_DB_Queries extends QM {
 	}
 
 	function build_filter( $name, $values ) {
-
-		if ( count( $values ) < 2 )
-			return;
 
 		usort( $values, 'strcasecmp' );
 

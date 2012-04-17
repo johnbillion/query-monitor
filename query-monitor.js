@@ -36,15 +36,18 @@ jQuery( function($) {
 
 	$('#qm').find('select.qm-filter').change(function(e){
 		fi = $(this).attr('data-filter');
-		tr = $(this).closest('table').find('tbody tr[data-qm-' + fi + ']');
+		ta = $(this).closest('table');
+		tr = ta.find('tbody tr[data-qm-' + fi + ']');
 		val = $(this).val().replace(/[[\]()'"]/g, "\\$&");
-		tr.removeClass('qm-hide-'+fi);
+		total = tr.removeClass('qm-hide-'+fi).length;
 		if ( $(this).val() != '' ) {
 			$(this).addClass('qm-filter-show');
 			tr.not('[data-qm-' + fi + '="' + val + '"]').addClass('qm-hide-'+fi);
 		} else {
 			$(this).removeClass('qm-filter-show');
 		}
+		shown = tr.filter(':visible').length;
+		ta.find('.qm-queries-shown').removeClass('qm-hide').find('.qm-queries-number').text(shown);
 		$(this).blur();
 	});
 
