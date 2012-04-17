@@ -34,4 +34,18 @@ jQuery( function($) {
 
 	$('#qm-authentication').show();
 
+	$('#qm').find('select.qm-filter').change(function(e){
+		fi = $(this).attr('data-filter');
+		tr = $(this).closest('table').find('tbody tr[data-qm-' + fi + ']');
+		val = $(this).val().replace(/[[\]()'"]/g, "\\$&");
+		tr.removeClass('qm-hide-'+fi);
+		if ( $(this).val() != '' ) {
+			$(this).addClass('qm-filter-show');
+			tr.not('[data-qm-' + fi + '="' + val + '"]').addClass('qm-hide-'+fi);
+		} else {
+			$(this).removeClass('qm-filter-show');
+		}
+		$(this).blur();
+	});
+
 } );

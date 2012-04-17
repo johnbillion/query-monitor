@@ -261,6 +261,25 @@
 	padding: 0 6px !important;
 }
 
+/* Filters */
+
+.qm-filter {
+	visibility: hidden;
+	display: block;
+}
+
+.qm-filter:focus,
+.qm-filter-show,
+.qm thead th:hover .qm-filter {
+	visibility: visible;
+}
+
+.qm-hide-type,
+.qm-hide-caller,
+.qm-hide-component {
+	display: none;
+}
+
 /* RTL */
 
 html[dir="rtl"] .qm-ltr {

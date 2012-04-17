@@ -389,12 +389,16 @@ class QM_DB_Queries extends QM {
 			echo '</tr>';
 		}
 
+		$query_filter     = $this->build_filter( 'type', array_keys( $db->types ) );
+		$caller_filter    = $this->build_filter( 'caller', array_keys( $this->data['times'] ) );
+		$component_filter = $this->build_filter( 'component', array_keys( $this->data['component_times'] ) );
+
 		echo '<tr>';
-		echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Query', 'query-monitor' ) . $query_filter . '</th>';
+		echo '<th>' . __( 'Caller', 'query-monitor' ) . $caller_filter . '</th>';
 
 		if ( $has_component )
-			echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Component', 'query-monitor' ) . $component_filter . '</th>';
 
 		if ( $has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
@@ -435,6 +439,25 @@ class QM_DB_Queries extends QM {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	function build_filter( $name, $values ) {
+
+		if ( count( $values ) < 2 )
+			return;
+
+		usort( $values, 'strcasecmp' );
+
+		$out = '<select id="qm-filter-' . esc_attr( $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
+		$out .= '<option value="">' . __( 'All', 'query-monitor' ) . '</option>'; # @TODO _x()?
+
+		foreach ( $values as $value )
+			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+
+		$out .= '</select>';
+
+		return $out;
 
 	}
 
