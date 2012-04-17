@@ -149,7 +149,7 @@ class QM_Environment extends QM {
 			$append = '';
 
 			if ( $val['after'] != $val['before'] )
-				$append .= '<br /><span class="qm-info">' . sprintf( __( 'Overridden from %s', 'query-monitor' ), $val['before'] ) . '</span>';
+				$append .= '<br /><span class="qm-info">' . sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) . '</span>';
 
 			echo '<tr>';
 			echo "<td>{$key}</td>";

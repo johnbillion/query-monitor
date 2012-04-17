@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2.3b
+Version:     2.2.3
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -146,10 +146,6 @@ class QueryMonitorDB extends wpdb {
 		return $return_val;
 	}
 
-	function get_caller( $_trace ) {
-		return implode( ', ', array_reverse( $this->backtrace( $_trace ) ) );
-	}
-
 	function get_stack( $_trace ) {
 
 		$stack  = array();
@@ -165,7 +161,7 @@ class QueryMonitorDB extends wpdb {
 
 	}
 
-	function backtrace( $_trace ) {
+	function get_caller( $_trace ) {
 
 		if ( !$this->qm_filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
@@ -185,7 +181,7 @@ class QueryMonitorDB extends wpdb {
 			$file = str_replace( $path, '', $file );
 			$trace[] = $file;
 		}
-		return $trace;
+		return implode( ', ', array_reverse( $trace ) );
 	}
 
 	function _filter_trace( $trace ) {

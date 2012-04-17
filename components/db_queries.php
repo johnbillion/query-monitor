@@ -225,17 +225,14 @@ class QM_DB_Queries extends QM {
 
 	function process_db_object( $id, $db ) {
 
-		$rows          = array();
-		$types         = array();
-		$total_time    = 0;
-		$total_qs      = 0;
-		$has_results   = false;
-		$has_components= false;
+		$rows       = array();
+		$types      = array();
+		$total_time = 0;
+		$total_qs   = 0;
 
 		foreach ( (array) $db->queries as $query ) {
 
-			# @TODO: is this needed now?
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_all'] ) )
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
 				continue;
 
 			$sql           = $query[0];
@@ -301,7 +298,7 @@ class QM_DB_Queries extends QM {
 			else
 				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
 
-			$sql = $this->format_sql( $sql );
+			$sql  = $this->format_sql( $sql );
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
