@@ -100,8 +100,11 @@ class QueryMonitorDB extends wpdb {
 		$this->result = @mysql_query( $query, $this->dbh );
 		$this->num_queries++;
 
-		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
-			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller(), $this->get_stack(), null );
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+			$trace = debug_backtrace( false );
+			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller( $trace ), $this->get_stack( $trace ), null );
+			unset( $trace );
+		}
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
@@ -143,13 +146,12 @@ class QueryMonitorDB extends wpdb {
 		return $return_val;
 	}
 
-	function get_caller() {
-		return implode( ', ', array_reverse( $this->backtrace() ) );
+	function get_caller( $_trace ) {
+		return implode( ', ', array_reverse( $this->backtrace( $_trace ) ) );
 	}
 
-	function get_stack() {
+	function get_stack( $_trace ) {
 
-		$_trace = debug_backtrace( false );
 		$stack  = array();
 
 		unset( $_trace[0] ); # This file
@@ -163,8 +165,7 @@ class QueryMonitorDB extends wpdb {
 
 	}
 
-	function backtrace() {
-		$_trace = debug_backtrace( false );
+	function backtrace( $_trace ) {
 
 		if ( !$this->qm_filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
