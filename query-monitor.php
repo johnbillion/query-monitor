@@ -186,6 +186,8 @@ class QueryMonitor {
 
 	function init() {
 
+		global $wp_locale;
+
 		load_plugin_textdomain( 'query-monitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		if ( !$this->show_query_monitor() )
@@ -206,6 +208,11 @@ class QueryMonitor {
 			array( 'jquery' ),
 			filemtime( $this->plugin_dir . '/query-monitor.js' ),
 			true
+		);
+		wp_localize_script(
+			'query-monitor',
+			'qm_locale',
+			(array) $wp_locale
 		);
 
 	}
