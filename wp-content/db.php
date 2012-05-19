@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2.4b
+Version:     2.2.4
 
 Move this file into your wp-content directory to provide additional
 database query information in Query Monitor's output.
@@ -34,6 +34,7 @@ class QueryMonitorDB extends wpdb {
 		'call_user_func_array',
 		'call_user_func'
 	);
+	var $qm_ignore_method = array();
 	var $qm_show_arg = array(
 		'do_action',
 		'apply_filters',
@@ -161,14 +162,18 @@ class QueryMonitorDB extends wpdb {
 
 	}
 
-	function get_caller( $_trace ) {
+	function get_caller( $_trace = null ) {
+
+		if ( !$_trace )
+			$_trace = debug_backtrace( false );
 
 		if ( !$this->qm_filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
 			# Only run apply_filters on these once
-			$this->qm_ignore_class = apply_filters( 'query_monitor_db_ignore_class', $this->qm_ignore_class );
-			$this->qm_ignore_func  = apply_filters( 'query_monitor_db_ignore_func',  $this->qm_ignore_func );
-			$this->qm_show_arg     = apply_filters( 'query_monitor_db_show_arg',     $this->qm_show_arg );
+			$this->qm_ignore_class  = apply_filters( 'query_monitor_db_ignore_class',  $this->qm_ignore_class );
+			$this->qm_ignore_func   = apply_filters( 'query_monitor_db_ignore_func',   $this->qm_ignore_func );
+			$this->qm_ignore_method = apply_filters( 'query_monitor_db_ignore_method', $this->qm_ignore_method );
+			$this->qm_show_arg      = apply_filters( 'query_monitor_db_show_arg',      $this->qm_show_arg );
 			$this->qm_filtered = true;
 
 		}
@@ -189,6 +194,8 @@ class QueryMonitorDB extends wpdb {
 		if ( isset( $trace['class'] ) ) {
 
 			if ( in_array( $trace['class'], $this->qm_ignore_class ) )
+				return null;
+			else if ( in_array( array( $trace['class'], $trace['function'] ), $this->qm_ignore_method ) )
 				return null;
 			else if ( 0 === strpos( $trace['class'], 'QM' ) )
 				return null;

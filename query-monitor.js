@@ -5,6 +5,9 @@ var QM_i18n = {
 
 	number_format : function( number, decimals ) {
 
+		if ( isNaN( number ) )
+			return;
+
 		if ( !decimals )
 			decimals = 0;
 
@@ -28,20 +31,6 @@ var QM_i18n = {
 			o = o + qm_locale.number_format.decimal_point + fraction;
 
 		return o;
-
-
-		var n1 = '';
-		if ( isNaN(n) )
-			return;
-		n = n < 1 ? '0' : n.toString();
-		if ( n.length > 3 ) {
-			while ( n.length > 3 ) {
-				n1 = thousandsSeparator + n.substr(n.length - 3) + n1;
-				n = n.substr(0, n.length - 3);
-			}
-			n = n + n1;
-		}
-
 
 	}
 
@@ -111,5 +100,13 @@ jQuery( function($) {
 		$(this).blur();
 
 	});
+
+	/*$('body').ajaxSend( function( event, xhr, options ) {
+		console.debug(options);
+		return event;
+	} ).ajaxSuccess( function( event, data, options ) {
+		console.debug(options);
+		return event;
+	} );*/
 
 } );

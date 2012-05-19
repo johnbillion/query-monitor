@@ -96,7 +96,11 @@ class QM_Overview extends QM {
 
 		$this->data['time']       = $this->timer_stop_float();
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
-		$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time'];
+
+		if ( !empty( $this->data['time_limit'] ) )
+			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time'];
+		else
+			$this->data['time_usage'] = 0;
 
 		if ( function_exists( 'memory_get_peak_usage' ) )
 			$this->data['memory'] = memory_get_peak_usage();
