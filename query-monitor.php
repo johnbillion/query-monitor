@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.2.4
+Version:     2.2.5
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -37,6 +37,14 @@ Query Monitor outputs info on:
   * Template file name and body classes
   * Transient update calls
 
+@ TODO:
+
+ * Display queries from page loads before wp_redirect()
+ * Display queries from AJAX calls
+ * Show queried object info
+ * Show hooks attached to some selected filters, eg request, parse_request
+ * Add 'Component' filter to PHP errors list
+ * Change 'Function' to 'Caller'
 
 */
 
@@ -44,10 +52,16 @@ class QueryMonitor {
 
 	function __construct() {
 
+		# Actions
 		add_action( 'init',                   array( $this, 'init' ) );
 		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
+		add_action( 'login_footer',           array( $this, 'register_output' ), 999 );
 		add_action( 'admin_bar_menu',         array( $this, 'admin_bar_menu' ), 999 );
+
+		# Filters
+		add_filter( 'pre_update_option_active_plugins',               array( $this, 'load_first' ) );
+		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'load_first_sitewide' ) );
 
 		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -78,13 +92,18 @@ class QueryMonitor {
 		return $this->components;
 	}
 
-	function activate() {
+	function activate( $sitewide = false ) {
 
 		if ( $admins = $this->get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
 		if ( !file_exists( WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
 			@symlink( $this->plugin_dir . '/wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
+
+		if ( $sitewide )
+			update_site_option( 'active_sitewide_plugins', $this->load_first_sitewide( get_site_option( 'active_sitewide_plugins'  ) ) );
+		else
+			update_option( 'active_plugins', $this->load_first( get_option( 'active_plugins'  ) ) );
 
 	}
 
@@ -240,6 +259,35 @@ class QueryMonitor {
 		}
 
 		echo '</div>';
+
+	}
+
+	function load_first( $plugins ) {
+
+		$f = preg_quote( basename( __FILE__ ) );
+
+		return array_merge(
+			preg_grep( '/' . $f . '$/', $plugins ),
+			preg_grep( '/' . $f . '$/', $plugins, PREG_GREP_INVERT )
+		);
+
+	}
+
+	function load_first_sitewide( $plugins ) {
+
+		$f = plugin_basename( __FILE__ );
+
+		if ( isset( $plugins[$f] ) ) {
+
+			unset( $plugins[$f] );
+
+			return array_merge( array(
+				$f => time(),
+			), $plugins );
+
+		} else {
+			return $plugins;
+		}
 
 	}
 
