@@ -21,8 +21,16 @@ class QM_DB_Queries extends QM {
 
 	function admin_title( $title ) {
 		if ( isset( $this->data['dbs'] ) ) {
-			foreach ( $this->data['dbs'] as $db )
-				$title[] = sprintf( __( '%s<small>Q</small>', 'query-monitor' ), number_format_i18n( $db->total_qs ) );
+			foreach ( $this->data['dbs'] as $db ) {
+				$title[] = sprintf(
+					_x( '%s<small>S</small>', 'database query time', 'query-monitor' ),
+					number_format_i18n( $db->total_time, 4 )
+				);
+				$title[] = sprintf(
+					_x( '%s<small>Q</small>', 'database query number', 'query-monitor' ),
+					number_format_i18n( $db->total_qs )
+				);
+			}
 		}
 		return $title;
 	}
@@ -389,16 +397,12 @@ class QM_DB_Queries extends QM {
 			echo '</tr>';
 		}
 
-		$query_filter     = $this->build_filter( 'type', array_keys( $db->types ) );
-		$caller_filter    = $this->build_filter( 'caller', array_keys( $this->data['times'] ) );
-		$component_filter = $this->build_filter( 'component', array_keys( $this->data['component_times'] ) );
-
 		echo '<tr>';
-		echo '<th>' . __( 'Query', 'query-monitor' ) . $query_filter . '</th>';
-		echo '<th>' . __( 'Caller', 'query-monitor' ) . $caller_filter . '</th>';
+		echo '<th>' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
+		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $this->data['times'] ) ) . '</th>';
 
 		if ( $has_component )
-			echo '<th>' . __( 'Component', 'query-monitor' ) . $component_filter . '</th>';
+			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $this->data['component_times'] ) ) . '</th>';
 
 		if ( $has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';

@@ -11,7 +11,7 @@ var QM_i18n = {
 		if ( !decimals )
 			decimals = 0;
 
-		number    = ( number < 1 ) ? 0 : parseFloat( number );
+		number    = parseFloat( number );
 		num_float = number.toFixed( decimals );
 		num_int   = Math.floor( number );
 		num_str   = num_int.toString();
@@ -41,7 +41,7 @@ jQuery( function($) {
 	if ( window.qm ) {
 
 		$('#wp-admin-bar-query-monitor')
-			.addClass(qm.top.class)
+			.addClass(qm.top.classname)
 			.find('a').eq(0)
 			.html(qm.top.title)
 		;
@@ -58,8 +58,8 @@ jQuery( function($) {
 				.attr('href',el.href)
 			;
 
-			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.class != 'undefined' ) )
-				new_menu.addClass(el.meta.class);
+			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
+				new_menu.addClass(el.meta.classname);
 
 			new_menu.appendTo('#wp-admin-bar-query-monitor ul');
 

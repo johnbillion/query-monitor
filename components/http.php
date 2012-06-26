@@ -153,7 +153,10 @@ class QM_HTTP extends QM {
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] );
-				$f = 6;
+				if ( isset( $row['trace'][6] ) )
+					$f = 6;
+				else
+					$f = 5;
 				$func = $row['trace'][$f];
 				if ( 0 === strpos( $func, 'fetch_rss' ) )
 					$func = $row['trace'][++$f];

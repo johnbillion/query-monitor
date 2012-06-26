@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.2.5
+Version:     2.2.6
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -45,6 +45,7 @@ Query Monitor outputs info on:
  * Show hooks attached to some selected filters, eg request, parse_request
  * Add 'Component' filter to PHP errors list
  * Change 'Function' to 'Caller'
+ * Correctly show theme template used when using BuddyPress
 
 */
 
@@ -53,11 +54,11 @@ class QueryMonitor {
 	function __construct() {
 
 		# Actions
-		add_action( 'init',                   array( $this, 'init' ) );
-		add_action( 'admin_footer',           array( $this, 'register_output' ), 999 );
-		add_action( 'wp_footer',              array( $this, 'register_output' ), 999 );
-		add_action( 'login_footer',           array( $this, 'register_output' ), 999 );
-		add_action( 'admin_bar_menu',         array( $this, 'admin_bar_menu' ), 999 );
+		add_action( 'init',           array( $this, 'init' ) );
+		add_action( 'admin_footer',   array( $this, 'register_output' ), 999 );
+		add_action( 'wp_footer',      array( $this, 'register_output' ), 999 );
+		add_action( 'login_footer',   array( $this, 'register_output' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 999 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'load_first' ) );
@@ -132,14 +133,14 @@ class QueryMonitor {
 			return;
 
 		$class = implode( ' ', array( 'hide-if-js', $this->wpv() ) );
-		$title = 'Query Monitor';
+		$title = __( 'Query Monitor', 'query-monitor' );
 
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query-monitor',
 			'title' => $title,
 			'href'  => '#qm-overview',
 			'meta'  => array(
-				'class' => $class
+				'classname' => $class
 			)
 		) );
 
@@ -158,12 +159,12 @@ class QueryMonitor {
 		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
 
 		if ( empty( $title ) )
-			$title = 'Query Monitor';
+			$title = __( 'Query Monitor', 'query-monitor' );
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title' => $title,
-				'class' => $class
+				'title'     => $title,
+				'classname' => $class
 			),
 			'sub' => array()
 		);
@@ -250,7 +251,7 @@ class QueryMonitor {
 		echo '</script>' . "\n\n";
 
 		echo '<div id="qm">';
-		echo '<p>Query Monitor</p>';
+		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
 
 		foreach ( $this->get_components() as $component ) {
 			$component->output( array(
