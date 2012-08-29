@@ -41,7 +41,7 @@ class QM_DB_Components extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Query Component', 'query-monitor' ) . '</th>';
+		echo '<th>' . _x( 'Component', 'Query component', 'query-monitor' ) . '</th>';
 
 		if ( !empty( $data['types'] ) ) {
 			foreach ( $data['types'] as $type_name => $type_count )

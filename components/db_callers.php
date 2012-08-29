@@ -1,8 +1,8 @@
 <?php
 
-class QM_DB_Functions extends QM {
+class QM_DB_Callers extends QM {
 
-	var $id = 'db_functions';
+	var $id = 'db_callers';
 
 	function __construct() {
 		parent::__construct();
@@ -22,7 +22,7 @@ class QM_DB_Functions extends QM {
 
 		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => __( 'Query Functions', 'query-monitor' )
+				'title' => __( 'Query Callers', 'query-monitor' )
 			) );
 		}
 		return $menu;
@@ -41,7 +41,7 @@ class QM_DB_Functions extends QM {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Query Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . _x( 'Caller', 'Query caller', 'query-monitor' ) . '</th>';
 
 		if ( !empty( $data['types'] ) ) {
 			foreach ( $data['types'] as $type_name => $type_count )
@@ -104,11 +104,11 @@ class QM_DB_Functions extends QM {
 
 }
 
-function register_qm_db_functions( $qm ) {
-	$qm['db_functions'] = new QM_DB_Functions;
+function register_qm_db_callers( $qm ) {
+	$qm['db_callers'] = new QM_DB_Callers;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_db_functions', 30 );
+add_filter( 'query_monitor_components', 'register_qm_db_callers', 30 );
 
 ?>

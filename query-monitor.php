@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.2.6
+Version:     2.2.7b
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -39,17 +39,19 @@ Query Monitor outputs info on:
 
 @ TODO:
 
- * Display queries from page loads before wp_redirect()
+ * Log and display queries from page loads before wp_redirect()
  * Display queries from AJAX calls
  * Show queried object info
  * Show hooks attached to some selected filters, eg request, parse_request
  * Add 'Component' filter to PHP errors list
- * Change 'Function' to 'Caller'
  * Correctly show theme template used when using BuddyPress
+ * Ignore dbDelta() in caller list
 
 */
 
 class QueryMonitor {
+
+	var $components = array();
 
 	function __construct() {
 
@@ -80,12 +82,12 @@ class QueryMonitor {
 	}
 
 	function add_component( $component ) {
-		$this->components->{$component->id} = $component;
+		$this->components[$component->id] = $component;
 	}
 
 	function get_component( $id ) {
-		if ( isset( $this->components->$id ) )
-			return $this->components->$id;
+		if ( isset( $this->components[$id] ) )
+			return $this->components[$id];
 		return false;
 	}
 
@@ -177,6 +179,9 @@ class QueryMonitor {
 	}
 
 	function show_query_monitor() {
+
+		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
+			return false;
 
 		if ( $this->is_multisite ) {
 			if ( current_user_can( 'manage_network_options' ) )

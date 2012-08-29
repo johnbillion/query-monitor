@@ -29,6 +29,48 @@ class QM_Environment extends QM {
 			$this->data['php']['variables'][$setting]['before'] = $val;
 		}
 
+		if ( isset( $wpdb->qm_php_vars['error_reporting'] ) )
+			$val = $wpdb->qm_php_vars['error_reporting'];
+		else
+			$val = implode( '<br/>', $this->get_error_reporting() );
+		$this->data['php']['variables']['error_reporting']['before'] = $val;
+
+	}
+
+	function get_error_reporting() {
+
+		$error_reporting = error_reporting();
+		$levels = array();
+
+		$constants = array(
+			'E_ERROR',
+			'E_WARNING',
+			'E_PARSE',
+			'E_NOTICE',
+			#'E_CORE_ERROR',
+			#'E_CORE_WARNING',
+			#'E_COMPILE_ERROR',
+			#'E_COMPILE_WARNING',
+			'E_USER_ERROR',
+			'E_USER_WARNING',
+			'E_USER_NOTICE',
+			'E_STRICT',
+			'E_RECOVERABLE_ERROR',
+			'E_DEPRECATED',
+			'E_USER_DEPRECATED',
+			'E_ALL'
+		);
+
+		foreach ( $constants as $level ) {
+			if ( defined( $level ) ) {
+				$c = constant( $level );
+				if ( $error_reporting & $c ) 
+					$levels[$c] = $level;
+			}
+		}
+
+		return $levels;
+
 	}
 
 	function admin_menu( $menu ) {
@@ -103,6 +145,8 @@ class QM_Environment extends QM {
 
 		foreach ( $this->php_vars as $setting )
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
+
+		$this->data['php']['variables']['error_reporting']['after'] = implode( '<br/>', $this->get_error_reporting() );
 
 		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
 

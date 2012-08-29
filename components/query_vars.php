@@ -68,15 +68,7 @@ class QM_Query_Vars extends QM {
 					$var = '<span class="qm-current">' . $var . '</span>';
 				echo '<tr>';
 				echo "<td valign='top'>{$var}</td>";
-				if ( is_array( $value ) ) {
-					echo '<td valign="top"><ul>';
-					foreach ( $value as $k => $v ) {
-						$k = esc_html( $k );
-						$v = esc_html( $v );
-						echo "<li>{$k} => {$v}</li>";
-					}
-					echo '</ul></td>';
-				} else if ( is_object( $value ) ) {
+				if ( is_array( $value ) or is_object( $value ) ) {
 					echo '<td valign="top"><pre>';
 					print_r( $value );
 					echo '</pre></td>';

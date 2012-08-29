@@ -15,7 +15,7 @@ class QM_Conditionals extends QM {
 			$menu[] = $this->menu( array(
 				'title' => $cond . '()',
 				'id'    => 'query-monitor-' . $cond,
-				'meta'  => array( 'class' => 'qm-true' )
+				'meta'  => array( 'classname' => 'qm-true' )
 			) );
 		}
 
@@ -55,8 +55,8 @@ class QM_Conditionals extends QM {
 	function process() {
 
 		$conds = apply_filters( 'qm_conditionals', array(
-			'is_404', 'is_archive', 'is_admin', 'is_attachment', 'is_author', 'is_blog_admin', 'is_category', 'is_comments_popup',
-			'is_date', 'is_day', 'is_feed', 'is_front_page', 'is_generic_request', 'is_home', 'is_main_site', 'is_month', 'is_network_admin',
+			'is_404', 'is_archive', 'is_admin', 'is_attachment', 'is_author', 'is_blog_admin', 'is_category', 'is_comments_popup', 'is_date',
+			'is_day', 'is_feed', 'is_front_page', 'is_generic_request', 'is_home', 'is_main_site', 'is_month', 'is_multitax', 'is_network_admin',
 			'is_page', 'is_page_template', 'is_paged', 'is_post_type_archive', 'is_preview', 'is_robots', 'is_rtl', 'is_search', 'is_single',
 			'is_singular', 'is_ssl', 'is_sticky', 'is_tag', 'is_tax', 'is_time', 'is_trackback', 'is_year'
 		) );	
