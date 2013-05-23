@@ -1,6 +1,22 @@
+/*
+
+© 2013 John Blackbourn
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
-	color: #0a0;
+	color: #4a4 !important;
 }
 
 #wp-admin-bar-query-monitor-notices {
@@ -74,10 +90,22 @@
 	color: #fff !important;
 }
 
-#qm-authentication,
 #wp-admin-bar-query-monitor-placeholder,
 #wp-admin-bar-query-monitor-default {
 	display: none;
+}
+
+#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+	font: 16px/16px 'Open Sans', sans-serif !important;
+	width: auto !important;
+	padding: 6px 10px;
+	color: #ddd !important;
+}
+
+@media screen and ( min-width: 768px ) {
+	#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+		display: none;
+	}
 }
 
 #qm {
@@ -85,8 +113,9 @@
 	background: #ececec !important;
 	margin: 25px 0 0 !important;
 	border-top: 1px solid #ccc !important;
-	padding: 0 0 20px !important;
-	text-align: start !important;
+	padding: 0 0 35px !important;
+	text-align: left !important;
+	cursor: pointer;
 }
 
 #qm:after {
@@ -96,13 +125,17 @@
 	height: 0 !important;
 }
 
-.wp-admin #qm {
+body.wp-admin #qm {
 	margin: 0 !important;
 }
 
+body.sticky-menu #qm {
+	margin-left: 150px !important;
+}
+
 #qm > p {
-	color: #999 !important;
-	font: italic 11px/13px Georgia !important;
+	color: #777 !important;
+	font: italic 13px/15px 'Open Sans', Georgia !important;
 	margin: 20px 20px -15px !important;
 	text-shadow: 0 1px 0 #fff !important;
 }
@@ -111,13 +144,14 @@
 	margin: 0 !important;
 	padding: 40px 20px 5px !important;
 	float: left !important;
+	display: none;
 }
 
 .qm>table {
 	border-collapse: collapse !important;
-	color: #444 !important;
-	border: 0 !important;
-	box-shadow: 0 0 5px #d0d0d0 !important;
+	color: #555 !important;
+	border-style: hidden !important;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.13) !important;
 	width: auto !important;
 }
 
@@ -132,7 +166,7 @@
 }
 
 .qm-queries {
-	max-width: 70% !important;
+	width: 70% !important;
 }
 
 .qm-queries>table {
@@ -142,34 +176,35 @@
 .qm td,
 .qm th {
 	background: #fff !important;
-	text-align: start !important;
+	text-align: left !important;
 	font-family: 'Consolas', 'Courier New', monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
 	line-height: 16px !important;
-	border: 1px solid #ccc !important;
-	padding: 6px 7px 5px !important;
+	border: 1px solid #dadada !important;
+	padding: 7px 8px 6px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
+	text-transform: none !important;
 }
 
 .qm th {
-	color: #111 !important;
+	color: #444 !important;
 }
 
 .qm-inner {
 	border-collapse: collapse !important;
 	margin: 0px !important;
 	background: #fff !important;
-	color: #444 !important;
+	color: #555 !important;
 	float: none !important;
 	border: none !important;
 }
 
 .qm-inner td,
 .qm-inner th {
-	text-align: start !important;
-	font-family: monospace !important;
+	text-align: left !important;
+	font-family: 'Consolas', 'Courier New', monospace !important;
 	font-size: 11px !important;
 	line-height: 16px !important;
 	border: none !important;
@@ -188,7 +223,7 @@
 
 .qm span.qm-true,
 .qm tr.qm-true {
-	color: #0a0 !important;
+	color: #4a4 !important;
 }
 
 .qm span.qm-false,
@@ -203,7 +238,7 @@
 
 .qm .qm-sql {
 	word-wrap: break-word !important;
-	word-break: break-word !important;
+	word-break: break-all !important;
 }
 
 .qm .qm-nonselectsql {
@@ -227,10 +262,13 @@
 }
 
 .qm a {
-	color: #21759B !important;
-	text-decoration: underline !important;
+	color: #0074a2 !important;
+	text-decoration: none !important;
 	text-shadow: none !important;
 	font-weight: normal !important;
+}
+.qm a:hover {
+	text-decoration: underline !important;
 }
 
 .qm a.qm-warn {
@@ -264,21 +302,23 @@
 /* Filters */
 
 .qm-filter {
-	visibility: hidden;
-	display: block;
+	visibility: hidden !important;
+	display: block !important;
+	font-size: 11px !important;
 }
 
+.qm-mobile .qm-filter,
 .qm-filter:focus,
 .qm-filter-show,
 .qm thead th:hover .qm-filter {
-	visibility: visible;
+	visibility: visible !important;
 }
 
 .qm-hide,
 .qm-hide-type,
 .qm-hide-caller,
 .qm-hide-component {
-	display: none;
+	display: none !important;
 }
 
 /* RTL */

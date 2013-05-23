@@ -2,14 +2,14 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.2.8
+Version:     2.3b
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
 Domain Path: /languages/
 License:     GPL v2 or later
 
-© 2012 John Blackbourn
+© 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -67,8 +67,8 @@ class QueryMonitor {
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'load_first' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'load_first_sitewide' ) );
 
-		register_activation_hook( __FILE__,   array( $this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+		register_activation_hook(   $this->_file( __FILE__ ), array( $this, 'activate' ) );
+		register_deactivation_hook( $this->_file( __FILE__ ), array( $this, 'deactivate' ) );
 
 		$this->plugin_dir   = untrailingslashit( plugin_dir_path( __FILE__ ) );
 		$this->plugin_url   = untrailingslashit( plugin_dir_url( __FILE__ ) );
@@ -166,7 +166,7 @@ class QueryMonitor {
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title'     => $title,
+				'title'     => sprintf( '<span class="ab-icon">QM</span><span class="ab-label">%s</span>', $title ),
 				'classname' => $class
 			),
 			'sub' => array()
@@ -181,20 +181,23 @@ class QueryMonitor {
 
 	function show_query_monitor() {
 
+		if ( isset( $this->show_query_monitor ) )
+			return $this->show_query_monitor;
+
 		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
-			return false;
+			return $this->show_query_monitor = false;
 
 		if ( $this->is_multisite ) {
 			if ( current_user_can( 'manage_network_options' ) )
-				return true;
+				return $this->show_query_monitor = true;
 		} else if ( current_user_can( 'view_query_monitor' ) ) {
-			return true;
+			return $this->show_query_monitor = true;
 		}
 
 		if ( $auth = $this->get_component( 'authentication' ) )
-			return $auth->show_query_monitor();
+			return $this->show_query_monitor = $auth->show_query_monitor();
 
-		return false;
+		return $this->show_query_monitor = false;
 
 	}
 
@@ -245,9 +248,20 @@ class QueryMonitor {
 
 	function output() {
 
+		global $is_iphone;
+
+		if ( function_exists( 'wp_is_mobile' ) and wp_is_mobile() )
+			$qm_class = 'qm-mobile';
+		else if ( $is_iphone )
+			$qm_class = 'qm-mobile';
+		else
+			$qm_class = '';
+
 		# Flush the output buffer to avoid crashes
-		while ( ob_get_length() )
-			ob_flush();
+		if ( !is_feed() ) {
+			while ( ob_get_length() )
+				ob_flush();
+		}
 
 		foreach ( $this->get_components() as $component )
 			$component->process_late();
@@ -256,7 +270,7 @@ class QueryMonitor {
 		echo 'var qm = ' . json_encode( $this->js_admin_bar_menu() ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="qm">';
+		echo '<div id="qm" class="' . $qm_class . '">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
 
 		foreach ( $this->get_components() as $component ) {
@@ -302,9 +316,14 @@ class QueryMonitor {
 		return 'qm-wp-' . ( floatval( $GLOBALS['wp_version'] ) * 10 );
 	}
 
+	function _file( $file ) {
+		# Symlink-safe version of plugin_basename() for passing to register_(de)?activation_hook()
+		return basename( dirname( $file ) ) . '/' . basename( $file );
+	}
+
 }
 
-class QM {
+abstract class QM {
 
 	var $data = array();
 
@@ -340,9 +359,9 @@ class QM {
 		'get_sidebar',
 		'get_footer'
 	);
-	static $filtered = false;
+	static $filtered        = false;
 	static $file_components = array();
-	static $file_dirs = array();
+	static $file_dirs       = array();
 
 	function __construct() {
 
@@ -356,7 +375,10 @@ class QM {
 
 		}
 
-		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
+	}
+
+	public function is_multisite() {
+		return ( function_exists( 'is_multisite' ) and is_multisite() );
 	}
 
 	protected function _filter_trace( $trace ) {
@@ -400,7 +422,7 @@ class QM {
 			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
 	}
 
-	protected function convert_hr_to_bytes( $size ) {
+	public function convert_hr_to_bytes( $size ) {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
 		# loaded in the admin area, so we'll use our own version.
@@ -432,12 +454,12 @@ class QM {
 			return self::$file_components[$file];
 
 		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = $this->standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['muplugin']   = $this->standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['stylesheet'] = $this->standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = $this->standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = $this->standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = $this->standard_dir( ABSPATH );
+			self::$file_dirs['plugin']     = QM::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['muplugin']   = QM::standard_dir( WPMU_PLUGIN_DIR );
+			self::$file_dirs['stylesheet'] = QM::standard_dir( get_stylesheet_directory() );
+			self::$file_dirs['template']   = QM::standard_dir( get_template_directory() );
+			self::$file_dirs['other']      = QM::standard_dir( WP_CONTENT_DIR );
+			self::$file_dirs['core']       = QM::standard_dir( ABSPATH );
 		}
 
 		foreach ( self::$file_dirs as $component => $dir ) {
@@ -463,6 +485,7 @@ class QM {
 	}
 
 	protected function get_component( $id ) {
+		# @TODO use singleton?
 		global $querymonitor;
 		return $querymonitor->get_component( $id );
 	}
@@ -481,9 +504,7 @@ class QM {
 		return false;
 	}
 
-	public function output() {
-		return false;
-	}
+	abstract public function output( $args, $data );
 
 }
 
@@ -491,5 +512,3 @@ if ( !defined( 'ABSPATH' ) )
     die();
 
 $GLOBALS['querymonitor'] = new QueryMonitor;
-
-?>

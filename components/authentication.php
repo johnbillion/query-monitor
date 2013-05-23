@@ -35,15 +35,15 @@ class QM_Authentication extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		$name   = QUERY_MONITOR_COOKIE;
-		$domain = COOKIE_DOMAIN;
-		$path   = COOKIEPATH;
-		$value  = $this->create_nonce( 'view_query_monitor' );
+		$name = QUERY_MONITOR_COOKIE;
 
-		if ( !isset( $_COOKIE[$name] ) ) {
+		if ( !isset( $_COOKIE[$name] ) or !$this->verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' ) ) {
 
-			$text = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
-			$link = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
+			$domain = COOKIE_DOMAIN;
+			$path   = COOKIEPATH;
+			$value  = $this->create_nonce( 'view_query_monitor' );
+			$text   = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
+			$link   = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
 
 			echo '<tr>';
 			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';

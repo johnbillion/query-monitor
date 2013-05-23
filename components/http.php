@@ -158,12 +158,12 @@ class QM_HTTP extends QM {
 				else
 					$f = 5;
 				$func = $row['trace'][$f];
-				if ( 0 === strpos( $func, 'fetch_rss' ) )
-					$func = $row['trace'][++$f];
-				if ( 0 === strpos( $func, 'SimplePie' ) )
-					$func = $row['trace'][++$f];
-				if ( 0 === strpos( $func, 'fetch_feed' ) )
-					$func = $row['trace'][++$f];
+
+				foreach ( array( 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
+					if ( 0 === strpos( $func, $skip ) )
+						$func = $row['trace'][++$f];
+				}
+
 				$funcs = esc_attr( implode( ', ', array_reverse( $row['trace'] ) ) );
 				echo "
 					<tr class='{$css}'>\n

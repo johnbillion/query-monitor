@@ -30,7 +30,7 @@ class QM_Hooks extends QM {
 		$qm_class = get_class( $querymonitor );
 		$hooks = array();
 
-		if ( $this->is_multisite and is_network_admin() )
+		if ( QM::is_multisite() and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
 		if ( is_numeric( current( $wp_actions ) ) )

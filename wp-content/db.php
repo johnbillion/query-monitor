@@ -1,10 +1,23 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.2.4
+Version:     2.3b
 
-Move this file into your wp-content directory to provide additional
+Symlink this file to your wp-content directory to provide additional
 database query information in Query Monitor's output.
+
+
+© 2013 John Blackbourn
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
 */
 
@@ -149,9 +162,7 @@ class QueryMonitorDB extends wpdb {
 
 	function get_stack( $_trace ) {
 
-		$stack  = array();
-
-		unset( $_trace[0] ); # This file
+		$stack = array();
 
 		foreach ( $_trace as $t ) {
 			if ( isset( $t['file'] ) )
@@ -181,7 +192,7 @@ class QueryMonitorDB extends wpdb {
 		$trace = array_map( array( $this, '_filter_trace' ), $_trace );
 		$trace = array_values( array_filter( $trace ) );
 		if ( empty( $trace ) ) {
-			$file = str_replace( '\\', '/', $_trace[3]['file'] );
+			$file = str_replace( '\\', '/', $_trace[1]['file'] );
 			$path = str_replace( '\\', '/', ABSPATH );
 			$file = str_replace( $path, '', $file );
 			$trace[] = $file;

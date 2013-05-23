@@ -7,7 +7,10 @@ class QM_Environment extends QM {
 		'max_execution_time',
 		'memory_limit',
 		'upload_max_filesize',
-		'post_max_size'
+		'post_max_size',
+		'display_errors',
+		'log_errors',
+	#	'error_log',
 	);
 
 	function __construct() {
@@ -158,9 +161,14 @@ class QM_Environment extends QM {
 
 		$server = explode( '/', reset( explode( ' ', $_SERVER['SERVER_SOFTWARE'] ) ) );
 
+		if ( isset( $server[1] ) )
+			$server_version = $server[1];
+		else
+			$server_version = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+
 		$this->data['server'] = array(
 			'name'    => $server[0],
-			'version' => $server[1],
+			'version' => $server_version,
 			'address' => $_SERVER['SERVER_ADDR'],
 			'host'    => php_uname( 'n' )
 		);
@@ -273,7 +281,7 @@ class QM_Environment extends QM {
 
 		$wp_span = 2;
 
-		if ( $this->is_multisite )
+		if ( QM::is_multisite() )
 			$wp_span++;
 
 		echo '<tr>';
@@ -282,7 +290,7 @@ class QM_Environment extends QM {
 		echo "<td>{$data['wp']['version']}</td>";
 		echo '</tr>';
 
-		if ( $this->is_multisite ) {
+		if ( QM::is_multisite() ) {
 			echo '<tr>';
 			echo '<td>blog_id</td>';
 			echo "<td>{$data['wp']['blog_id']}</td>";

@@ -69,7 +69,7 @@ class QM_Conditionals extends QM {
 				if ( ( 'is_sticky' == $cond ) and !get_post( $id = null ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
-				} else if ( ( 'is_main_site' == $cond ) and !$this->is_multisite ) {
+				} else if ( ( 'is_main_site' == $cond ) and !QM::is_multisite() ) {
 					# Special case for is_main_site to prevent it from being annoying on single site installs
 					$na[] = $cond;
 				} else {
