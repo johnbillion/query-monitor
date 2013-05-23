@@ -1,3 +1,18 @@
+/*
+
+© 2013 John Blackbourn
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 
 var QM_i18n = {
 
@@ -65,11 +80,20 @@ jQuery( function($) {
 
 		} );
 
+		$('#wp-admin-bar-query-monitor').find('a').click(function(e){
+			$('.qm').show();
+			$('#qm').css('cursor','auto').unbind('click');
+		});
+
+		$('#qm').click(function(e){
+			$('.qm').show();
+			$('#qm').css('cursor','auto').unbind('click');
+			$('html,body').scrollTop($("#qm").offset().top-$('#wpadminbar').outerHeight());
+		});
+
 		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
 	}
-
-	$('#qm-authentication').show();
 
 	$('#qm').find('select.qm-filter').change(function(e){
 
@@ -101,12 +125,30 @@ jQuery( function($) {
 
 	});
 
-	/*$('body').ajaxSend( function( event, xhr, options ) {
-		console.debug(options);
+	$( document ).ajaxSuccess( function( event, response, options ) {
+
+		var errors, key, error, text;
+
+		if ( errors = response.getResponseHeader( 'X-QM-Errors' ) ) {
+
+			errors = $.parseJSON( errors );
+
+			for ( key in errors ) {
+				error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
+				console.log( '=== PHP Error ===' );
+				console.log( options );
+				console.log( error );
+
+				$('#wp-admin-bar-query-monitor')
+					.addClass('qm-'+error.type)
+					.find('a').first().append('<span class="qm-ajax-'+ error.type +'"> / AJAX: '+ error.type +'</span>')
+				;
+			}
+
+		}
+
 		return event;
-	} ).ajaxSuccess( function( event, data, options ) {
-		console.debug(options);
-		return event;
-	} );*/
+
+	} );
 
 } );

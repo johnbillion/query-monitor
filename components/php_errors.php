@@ -3,6 +3,7 @@
 class QM_PHP_Errors extends QM {
 
 	var $id = 'php_errors';
+	var $all_errors = array();
 
 	function __construct() {
 
@@ -148,6 +149,20 @@ class QM_PHP_Errors extends QM {
 					'funcs'    => $funcs,
 					'calls'    => 1
 				);
+			}
+
+			if ( $GLOBALS['querymonitor']->show_query_monitor() ) {
+
+				$this->all_errors[] = $key;
+
+				header( sprintf( 'X-QM-Errors: %s',
+					json_encode( $this->all_errors )
+				) );
+				header( sprintf( 'X-QM-Error-%s: %s',
+					$key,
+					json_encode( $this->data['errors'][$type][$key] )
+				) );
+
 			}
 
 		}
