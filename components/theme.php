@@ -22,7 +22,17 @@ class QM_Theme extends QM {
 		if ( is_admin() )
 			return;
 
-		$this->data['template_file'] = apply_filters( 'query_monitor_template', basename( $template ) );
+		$template_file        = QM::standard_dir( $template );
+		$stylesheet_directory = QM::standard_dir( get_stylesheet_directory() );
+		$template_directory   = QM::standard_dir( get_template_directory() );
+
+		$template_file = str_replace( $stylesheet_directory, '', $template_file );
+		$template_file = str_replace( $template_directory,   '', $template_file );
+		$template_file = ltrim( $template_file, '/' );
+
+		$this->data['template_file'] = apply_filters( 'query_monitor_template', $template_file, $template );
+		$this->data['stylesheet']    = get_stylesheet();
+		$this->data['template']      = get_template();
 
 	}
 
@@ -63,6 +73,18 @@ class QM_Theme extends QM {
 
 			}
 
+		}
+
+		echo '<tr>';
+		echo '<td>' . __( 'Theme', 'query-monitor' ) . '</td>';
+		echo "<td>{$this->data['stylesheet']}</td>";
+		echo '</tr>';
+
+		if ( $this->data['stylesheet'] != $this->data['template'] ) {
+			echo '<tr>';
+			echo '<td>' . __( 'Parent Theme', 'query-monitor' ) . '</td>';
+			echo "<td>{$this->data['template']}</td>";
+			echo '</tr>';
 		}
 
 		echo '</tbody>';
