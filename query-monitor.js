@@ -27,12 +27,12 @@ var QM_i18n = {
 			decimals = 0;
 
 		number    = parseFloat( number );
-		num_float = number.toFixed( decimals );
-		num_int   = Math.floor( number );
-		num_str   = num_int.toString();
-		fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length );
 
-		var o = '';
+		var num_float = number.toFixed( decimals ),
+		    num_int   = Math.floor( number ),
+		    num_str   = num_int.toString(),
+		    fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
+			o = '';
 
 		if ( num_str.length > 3 ) {
 			for ( i = num_str.length; i > 3; i -= 3 )
@@ -56,12 +56,12 @@ jQuery( function($) {
 	if ( window.qm ) {
 
 		$('#wp-admin-bar-query-monitor')
-			.addClass(qm.top.classname)
+			.addClass(qm.menu.top.classname)
 			.find('a').eq(0)
-			.html(qm.top.title)
+			.html(qm.menu.top.title)
 		;
 
-		$.each( qm.sub, function( i, el ) {
+		$.each( qm.menu.sub, function( i, el ) {
 
 			new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 				.clone()
@@ -97,11 +97,12 @@ jQuery( function($) {
 
 	$('#qm').find('select.qm-filter').change(function(e){
 
-		filter = $(this).attr('data-filter');
-		table  = $(this).closest('table');
-		tr     = table.find('tbody tr[data-qm-' + filter + ']');
-		val    = $(this).val().replace(/[[\]()'"]/g, "\\$&");
-		total  = tr.removeClass('qm-hide-' + filter).length;
+		var filter = $(this).attr('data-filter'),
+		    table  = $(this).closest('table'),
+		    tr     = table.find('tbody tr[data-qm-' + filter + ']'),
+		    val    = $(this).val().replace(/[[\]()'"]/g, "\\$&"),
+		    total  = tr.removeClass('qm-hide-' + filter).length,
+		    time   = 0;
 
 		if ( $(this).val() != '' ) {
 			$(this).addClass('qm-filter-show');
@@ -110,14 +111,13 @@ jQuery( function($) {
 			$(this).removeClass('qm-filter-show');
 		}
 
-		time = 0;
-		matches = tr.filter(':visible');
+		var matches = tr.filter(':visible');
 		matches.each(function(i){
 			time += parseFloat( $(this).attr('data-qm-time') );
 		});
 		time = QM_i18n.number_format( time, 4 );
 
-		results = table.find('.qm-queries-shown').removeClass('qm-hide');
+		var results = table.find('.qm-queries-shown').removeClass('qm-hide');
 		results.find('.qm-queries-number').text(matches.length);
 		results.find('.qm-queries-time').text(time);
 
@@ -127,23 +127,27 @@ jQuery( function($) {
 
 	$( document ).ajaxSuccess( function( event, response, options ) {
 
-		var errors, key, error, text;
+		var errors = response.getResponseHeader( 'X-QM-Errors' );
 
-		if ( errors = response.getResponseHeader( 'X-QM-Errors' ) ) {
+		if ( !errors )
+			return event;
 
-			errors = $.parseJSON( errors );
+		errors = $.parseJSON( errors );
 
-			for ( key in errors ) {
-				error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
-				console.log( '=== PHP Error ===' );
-				console.log( options );
-				console.log( error );
+		for ( key in errors ) {
+			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
+			console.debug( '=== PHP Error ===' );
+			console.debug( options );
+			console.debug( error );
 
+			if ( ! qm.ajax_errors[error.type] ) {
 				$('#wp-admin-bar-query-monitor')
 					.addClass('qm-'+error.type)
 					.find('a').first().append('<span class="qm-ajax-'+ error.type +'"> / AJAX: '+ error.type +'</span>')
 				;
 			}
+
+			qm.ajax_errors[error.type] = true;
 
 		}
 

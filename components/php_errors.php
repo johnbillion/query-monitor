@@ -16,15 +16,19 @@ class QM_PHP_Errors extends QM {
 
 	function admin_class( $class ) {
 
-		if ( isset( $this->data['errors']['notice'] ) )
-			$class[] = 'qm-notice';
+		# @TODO stricts
+
 		if ( isset( $this->data['errors']['warning'] ) )
 			$class[] = 'qm-warning';
+		else if ( isset( $this->data['errors']['notice'] ) )
+			$class[] = 'qm-notice';
 		return $class;
 
 	}
 
 	function admin_menu( $menu ) {
+
+		# @TODO stricts
 
 		if ( isset( $this->data['errors']['warning'] ) ) {
 			$menu[] = $this->menu( array(
@@ -54,10 +58,12 @@ class QM_PHP_Errors extends QM {
 		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'File', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Line', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
+
+		# @TODO stricts
 
 		$types = array(
 			'warning' => __( 'Warning', 'query-monitor' ),
@@ -81,13 +87,15 @@ class QM_PHP_Errors extends QM {
 					unset( $funca[0], $funca[1] );
 
 					$funca   = implode( ', ', array_reverse( $funca ) );
-					$func    = $error->funcs[2];
+					$stack   = $error->funcs;
+					unset( $stack[0], $stack[1] );
+					$stack   = implode( '<br />', $stack );
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					echo '<td>' . $message . '</td>';
 					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
-					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . esc_html( $func ) . '</td>';
+					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . $stack . '</td>';
 					echo '</tr>';
 
 					$first = false;
@@ -105,6 +113,10 @@ class QM_PHP_Errors extends QM {
 	}
 
 	function error_handler( $type, $message, $file = null, $line = null ) {
+
+		global $querymonitor;
+
+		# @TODO stricts
 
 		switch ( $type ) {
 
@@ -133,8 +145,8 @@ class QM_PHP_Errors extends QM {
 
 			$key = md5( $message . $file . $line . $funcs[0] );
 
-			$filename = str_replace( '\\', '/', $file );
-			$path     = str_replace( '\\', '/', ABSPATH );
+			$filename = self::standard_dir( $file );
+			$path     = self::standard_dir( ABSPATH );
 			$filename = str_replace( $path, '', $filename );
 
 			if ( isset( $this->data['errors'][$type][$key] ) ) {
@@ -151,17 +163,17 @@ class QM_PHP_Errors extends QM {
 				);
 			}
 
-			if ( $GLOBALS['querymonitor']->show_query_monitor() ) {
+			if ( $this->is_ajax() and !headers_sent() and $querymonitor->show_query_monitor() ) {
 
-				$this->all_errors[] = $key;
+				$this->all_errors[$key] = $key;
 
 				header( sprintf( 'X-QM-Errors: %s',
 					json_encode( $this->all_errors )
-				) );
+				), true );
 				header( sprintf( 'X-QM-Error-%s: %s',
 					$key,
 					json_encode( $this->data['errors'][$type][$key] )
-				) );
+				), true );
 
 			}
 
@@ -174,8 +186,14 @@ class QM_PHP_Errors extends QM {
 }
 
 function register_qm_php_errors( $qm ) {
-	$qm['php_errors'] = new QM_PHP_Errors;
+
+	$handle = apply_filters( 'qm_handle_php_errors', !function_exists( 'xdebug_start_error_collection' ) );
+
+	if ( $handle )
+		$qm['php_errors'] = new QM_PHP_Errors;
+
 	return $qm;
+
 }
 
 add_filter( 'query_monitor_components', 'register_qm_php_errors', 120 );

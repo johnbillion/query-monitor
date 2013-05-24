@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.3
+Version:     2.3.1
 Author:      John Blackbourn
 Author URI:  http://lud.icro.us/
 Text Domain: query-monitor
@@ -266,8 +266,13 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process_late();
 
+		$qm = array(
+			'menu'        => $this->js_admin_bar_menu(),
+			'ajax_errors' => array() # @TODO move this into the php_errors component
+		);
+
 		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $this->js_admin_bar_menu() ) . ';' . "\n\n";
+		echo 'var qm = ' . json_encode( $qm ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<div id="qm" class="' . $qm_class . '">';
@@ -363,7 +368,7 @@ abstract class QM {
 	static $file_components = array();
 	static $file_dirs       = array();
 
-	function __construct() {
+	public function __construct() {
 
 		if ( !self::$filtered ) {
 
@@ -454,12 +459,12 @@ abstract class QM {
 			return self::$file_components[$file];
 
 		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = QM::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['muplugin']   = QM::standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['stylesheet'] = QM::standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = QM::standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = QM::standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = QM::standard_dir( ABSPATH );
+			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['muplugin']   = self::standard_dir( WPMU_PLUGIN_DIR );
+			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
+			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
+			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
+			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
 		}
 
 		foreach ( self::$file_dirs as $component => $dir ) {
@@ -502,6 +507,34 @@ abstract class QM {
 
 	public function process_late() {
 		return false;
+	}
+
+	public function file_link( $filename, $line, $display = null ) {
+
+		# not implemented yet
+
+		if ( !$display )
+			$display = $filename;
+
+		$handler = apply_filters( 'qm_file_handler', 'subl://open/?url=file://%1$s&amp;line=%2$d', $file );
+
+		if ( !$handler )
+			return $display;
+
+		$link = sprintf( $handler,
+			esc_attr( $filename ),
+			absint( $line )
+		);
+
+		return sprintf( '<a href="%1$s">%2$s</a>',
+			esc_attr( $link ),
+			esc_html( $display )
+		);
+
+	}
+
+	public function is_ajax() {
+		return defined( 'DOING_AJAX' ) and DOING_AJAX;
 	}
 
 	abstract public function output( $args, $data );

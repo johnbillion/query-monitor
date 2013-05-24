@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.3
+Version:     2.3.1
 
 Symlink this file to your wp-content directory to provide additional
 database query information in Query Monitor's output.

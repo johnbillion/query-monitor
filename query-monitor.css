@@ -135,7 +135,7 @@ body.sticky-menu #qm {
 
 #qm > p {
 	color: #777 !important;
-	font: italic 13px/15px 'Open Sans', Georgia !important;
+	font: 13px/15px 'Open Sans', Georgia !important;
 	margin: 20px 20px -15px !important;
 	text-shadow: 0 1px 0 #fff !important;
 }
@@ -182,7 +182,7 @@ body.sticky-menu #qm {
 	font-weight: normal !important;
 	line-height: 16px !important;
 	border: 1px solid #dadada !important;
-	padding: 7px 8px 6px !important;
+	padding: 6px 9px 5px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
