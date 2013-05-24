@@ -73,7 +73,7 @@ class QM_Hooks extends QM {
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref = new ReflectionFunction( $function['function'] );
 							$line = $ref->getEndLine();
-							$file = trim( str_replace( array( $this->standard_dir( ABSPATH ), $this->standard_dir( WP_PLUGIN_DIR ) ), '', $this->standard_dir( $ref->getFileName() ) ), '/' );
+							$file = trim( str_replace( array( self::standard_dir( ABSPATH ), self::standard_dir( WP_PLUGIN_DIR ) ), '', self::standard_dir( $ref->getFileName() ) ), '/' );
 							$out = sprintf( __( 'Closure on line %1$s of %2$s', 'query-monitor' ), $line, $file );
 						} else {
 							$out = $function['function'] . '()';

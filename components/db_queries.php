@@ -266,7 +266,7 @@ class QM_DB_Queries extends QM {
 
 				foreach ( $stack as $f ) {
 
-					$f = $this->standard_dir( $f );
+					$f = self::standard_dir( $f );
 					if ( 'core' != ( $file_component = $this->get_file_component( $f ) ) )
 						break;
 
@@ -289,7 +289,7 @@ class QM_DB_Queries extends QM {
 						$component = __( 'Parent Theme', 'query-monitor' );
 						break;
 					case 'other':
-						$component = str_replace( $this->standard_dir( ABSPATH ), '', $f );
+						$component = str_replace( self::standard_dir( ABSPATH ), '', $f );
 						break;
 					case 'core':
 					default:

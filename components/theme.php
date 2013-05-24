@@ -22,9 +22,9 @@ class QM_Theme extends QM {
 		if ( is_admin() )
 			return;
 
-		$template_file        = QM::standard_dir( $template );
-		$stylesheet_directory = QM::standard_dir( get_stylesheet_directory() );
-		$template_directory   = QM::standard_dir( get_template_directory() );
+		$template_file        = self::standard_dir( $template );
+		$stylesheet_directory = self::standard_dir( get_stylesheet_directory() );
+		$template_directory   = self::standard_dir( get_template_directory() );
 
 		$template_file = str_replace( $stylesheet_directory, '', $template_file );
 		$template_file = str_replace( $template_directory,   '', $template_file );
