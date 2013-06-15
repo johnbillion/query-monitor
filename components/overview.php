@@ -55,22 +55,22 @@ class QM_Component_Overview extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<tbody>';
 
-		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
+		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
 
 		if ( isset( $http_time ) )
-			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
+			$time_usage .= '<br /><span class="qm-info" title="' . esc_attr( $excl_ltime ) . '">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
 
 		if ( $data['time_usage'] > 25 ) /* Only bother with generation time if it's above 25%: */
 			$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
 
 		echo '<tr>';
 		echo '<th>' . __( 'Page generation time', 'query-monitor' ) . '</th>';
-		echo "<td title='{$total_ltime}'>{$total_stime}{$time_usage}</td>";
+		echo "<td><span title='{$total_ltime}'>{$total_stime}</span>{$time_usage}</td>";
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th>' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
-		echo '<td title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
+		echo '<td><span title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . '</span>' . $memory_usage . '</td>';
 		echo '</tr>';
 
 		if ( isset( $db_query_num ) ) {
@@ -82,7 +82,6 @@ class QM_Component_Overview extends QM_Component {
 			echo '<th>' . __( 'Database queries', 'query-monitor' ) . '</th>';
 			echo '<td>';
 
-			# @TODO i18n
 			foreach ( $db_query_num as $type_name => $type_count )
 				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
 
