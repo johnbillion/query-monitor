@@ -1,6 +1,6 @@
 <?php
 
-class QM_Conditionals extends QM {
+class QM_Component_Conditionals extends QM_Component {
 
 	var $id = 'conditionals';
 
@@ -9,7 +9,7 @@ class QM_Conditionals extends QM {
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		foreach ( $this->data['conds']['true'] as $cond ) {
 			$menu[] = $this->menu( array(
@@ -23,7 +23,7 @@ class QM_Conditionals extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -69,7 +69,7 @@ class QM_Conditionals extends QM {
 				if ( ( 'is_sticky' == $cond ) and !get_post( $id = null ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
-				} else if ( ( 'is_main_site' == $cond ) and !QM::is_multisite() ) {
+				} else if ( ( 'is_main_site' == $cond ) and !QM_Util::is_multisite() ) {
 					# Special case for is_main_site to prevent it from being annoying on single site installs
 					$na[] = $cond;
 				} else {
@@ -89,8 +89,8 @@ class QM_Conditionals extends QM {
 
 }
 
-function register_qm_conditionals( $qm ) {
-	$qm['conditionals'] = new QM_Conditionals;
+function register_qm_conditionals( array $qm ) {
+	$qm['conditionals'] = new QM_Component_Conditionals;
 	return $qm;
 }
 

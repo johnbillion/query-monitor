@@ -1,6 +1,6 @@
 <?php
 
-class QM_Theme extends QM {
+class QM_Component_Theme extends QM_Component {
 
 	var $id = 'theme';
 
@@ -22,9 +22,9 @@ class QM_Theme extends QM {
 		if ( is_admin() )
 			return;
 
-		$template_file        = self::standard_dir( $template );
-		$stylesheet_directory = self::standard_dir( get_stylesheet_directory() );
-		$template_directory   = self::standard_dir( get_template_directory() );
+		$template_file        = QM_Util::standard_dir( $template );
+		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
+		$template_directory   = QM_Util::standard_dir( get_template_directory() );
 
 		$template_file = str_replace( $stylesheet_directory, '', $template_file );
 		$template_file = str_replace( $template_directory,   '', $template_file );
@@ -36,7 +36,7 @@ class QM_Theme extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;
@@ -93,7 +93,7 @@ class QM_Theme extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		if ( isset( $this->data['template_file'] ) ) {
 			$menu[] = $this->menu( array(
@@ -106,8 +106,8 @@ class QM_Theme extends QM {
 
 }
 
-function register_qm_theme( $qm ) {
-	$qm['theme'] = new QM_Theme;
+function register_qm_theme( array $qm ) {
+	$qm['theme'] = new QM_Component_Theme;
 	return $qm;
 }
 

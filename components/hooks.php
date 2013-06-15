@@ -1,6 +1,6 @@
 <?php
 
-class QM_Hooks extends QM {
+class QM_Component_Hooks extends QM_Component {
 
 	var $id = 'hooks';
 
@@ -9,7 +9,7 @@ class QM_Hooks extends QM {
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		$menu[] = $this->menu( array(
 			'title' => __( 'Hooks', 'query-monitor' )
@@ -30,7 +30,7 @@ class QM_Hooks extends QM {
 		$qm_class = get_class( $querymonitor );
 		$hooks = array();
 
-		if ( QM::is_multisite() and is_network_admin() )
+		if ( QM_Util::is_multisite() and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
 		if ( is_numeric( current( $wp_actions ) ) )
@@ -67,13 +67,13 @@ class QM_Hooks extends QM {
 							else
 								$class = $function['function'][0];
 
-							if ( ( $qm_class == $class ) or ( 0 === strpos( $class, 'QM_' ) ) )
+							if ( ( 'QueryMonitor' == $class ) or ( 0 === strpos( $class, 'QM_' ) ) )
 								$css_class = 'qm-qm';
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref = new ReflectionFunction( $function['function'] );
 							$line = $ref->getEndLine();
-							$file = trim( str_replace( array( self::standard_dir( ABSPATH ), self::standard_dir( WP_PLUGIN_DIR ) ), '', self::standard_dir( $ref->getFileName() ) ), '/' );
+							$file = trim( str_replace( array( QM_Util::standard_dir( ABSPATH ), QM_Util::standard_dir( WP_PLUGIN_DIR ) ), '', QM_Util::standard_dir( $ref->getFileName() ) ), '/' );
 							$out = sprintf( __( 'Closure on line %1$s of %2$s', 'query-monitor' ), $line, $file );
 						} else {
 							$out = $function['function'] . '()';
@@ -102,7 +102,7 @@ class QM_Hooks extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -143,8 +143,8 @@ class QM_Hooks extends QM {
 
 }
 
-function register_qm_hooks( $qm ) {
-	$qm['hooks'] = new QM_Hooks;
+function register_qm_hooks( array $qm ) {
+	$qm['hooks'] = new QM_Component_Hooks;
 	return $qm;
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-class QM_Overview extends QM {
+class QM_Component_Overview extends QM_Component {
 
 	var $id = 'overview';
 
@@ -9,7 +9,7 @@ class QM_Overview extends QM {
 		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );
 	}
 
-	function admin_title( $title ) {
+	function admin_title( array $title ) {
 		$title[] = sprintf(
 			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
 			number_format_i18n( $this->data['time'], 2 )
@@ -21,7 +21,7 @@ class QM_Overview extends QM {
 		return $title;
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		$http_time      = null;
 		$db_query_num   = null;
@@ -100,7 +100,7 @@ class QM_Overview extends QM {
 
 	function process() {
 
-		$this->data['time']       = $this->timer_stop_float();
+		$this->data['time']       = QM_Util::timer_stop_float();
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
 
 		if ( !empty( $this->data['time_limit'] ) )
@@ -113,15 +113,15 @@ class QM_Overview extends QM {
 		else
 			$this->data['memory'] = memory_get_usage();
 
-		$this->data['memory_limit'] = $this->convert_hr_to_bytes( ini_get( 'memory_limit' ) );
+		$this->data['memory_limit'] = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) );
 		$this->data['memory_usage'] = ( 100 / $this->data['memory_limit'] ) * $this->data['memory'];
 
 	}
 
 }
 
-function register_qm_overview( $qm ) {
-	$qm['overview'] = new QM_Overview;
+function register_qm_overview( array $qm ) {
+	$qm['overview'] = new QM_Component_Overview;
 	return $qm;
 }
 

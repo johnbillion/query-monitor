@@ -1,6 +1,6 @@
 <?php
 
-class QM_DB_Callers extends QM {
+class QM_Component_DB_Callers extends QM_Component {
 
 	var $id = 'db_callers';
 
@@ -18,7 +18,7 @@ class QM_DB_Callers extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
 			$menu[] = $this->menu( array(
@@ -29,7 +29,7 @@ class QM_DB_Callers extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;
@@ -55,7 +55,7 @@ class QM_DB_Callers extends QM {
 
 		if ( !empty( $data['times'] ) ) {
 
-			usort( $data['times'], array( $this, '_sort' ) );
+			usort( $data['times'], array( 'QM_Util', 'sort' ) );
 
 			foreach ( $data['times'] as $func => $row ) {
 				$total_time  += $row['ltime'];
@@ -104,8 +104,8 @@ class QM_DB_Callers extends QM {
 
 }
 
-function register_qm_db_callers( $qm ) {
-	$qm['db_callers'] = new QM_DB_Callers;
+function register_qm_db_callers( array $qm ) {
+	$qm['db_callers'] = new QM_Component_DB_Callers;
 	return $qm;
 }
 

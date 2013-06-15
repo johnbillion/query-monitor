@@ -1,6 +1,6 @@
 <?php
 
-class QM_HTTP extends QM {
+class QM_Component_HTTP extends QM_Component {
 
 	var $id   = 'http';
 	var $http = array();
@@ -16,14 +16,14 @@ class QM_HTTP extends QM {
 
 	}
 
-	function http_request( $args, $url ) {
+	function http_request( array $args, $url ) {
 		$m_start = microtime( true );
 		$key = $m_start;
 		$this->data['http'][$key] = array(
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $m_start,
-			'trace' => $this->backtrace()
+			'trace' => QM_Util::backtrace()
 		);
 		$args['_qm_key'] = $key;
 		return $args;
@@ -62,13 +62,13 @@ class QM_HTTP extends QM {
 
 	}
 
-	function http_response( $response, $args, $url ) {
+	function http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
 		return $response;
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		$count = isset( $this->data['http'] ) ? count( $this->data['http'] ) : 0;
 
@@ -83,7 +83,7 @@ class QM_HTTP extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		$total_time = 0;
 
@@ -182,6 +182,7 @@ class QM_HTTP extends QM {
 
 			echo '<tr>';
 			echo '<td colspan="5"><span class="qm-info">';
+			# http://core.trac.wordpress.org/ticket/18738
 			printf( __( 'HTTP transport order of preference: %s', 'query-monitor' ),
 				'<em>curl, streams, fsockopen</em>'
 			);
@@ -205,8 +206,8 @@ class QM_HTTP extends QM {
 
 }
 
-function register_qm_http( $qm ) {
-	$qm['http'] = new QM_HTTP;
+function register_qm_http( array $qm ) {
+	$qm['http'] = new QM_Component_HTTP;
 	return $qm;
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-class QM_DB_Components extends QM {
+class QM_Component_DB_Components extends QM_Component {
 
 	var $id = 'db_components';
 
@@ -18,7 +18,7 @@ class QM_DB_Components extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
 			$menu[] = $this->menu( array(
@@ -29,7 +29,7 @@ class QM_DB_Components extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;
@@ -55,7 +55,7 @@ class QM_DB_Components extends QM {
 
 		if ( !empty( $data['times'] ) ) {
 
-			usort( $data['times'], array( $this, '_sort' ) );
+			usort( $data['times'], array( 'QM_Util', 'sort' ) );
 
 			foreach ( $data['times'] as $component => $row ) {
 				$total_time  += $row['ltime'];
@@ -104,8 +104,8 @@ class QM_DB_Components extends QM {
 
 }
 
-function register_qm_db_components( $qm ) {
-	$qm['db_components'] = new QM_DB_Components;
+function register_qm_db_components( array $qm ) {
+	$qm['db_components'] = new QM_Component_DB_Components;
 	return $qm;
 }
 

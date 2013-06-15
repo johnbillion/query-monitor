@@ -1,6 +1,6 @@
 <?php
 
-class QM_Admin extends QM {
+class QM_Component_Admin extends QM_Component {
 
 	var $id = 'admin';
 
@@ -10,7 +10,7 @@ class QM_Admin extends QM {
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 	}
 
-	function current_screen( $screen ) {
+	function current_screen( WP_Screen $screen ) {
 		if ( empty( $this->data['admin'] ) )
 			$this->data['admin'] = wp_clone( $screen );
 		return $screen;
@@ -58,7 +58,7 @@ class QM_Admin extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		if ( isset( $this->data['base'] ) ) {
 			$menu[] = $this->menu( array(
@@ -69,7 +69,7 @@ class QM_Admin extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;
@@ -161,8 +161,8 @@ class QM_Admin extends QM {
 
 }
 
-function register_qm_admin( $qm ) {
-	$qm['admin'] = new QM_Admin;
+function register_qm_admin( array $qm ) {
+	$qm['admin'] = new QM_Component_Admin;
 	return $qm;
 }
 

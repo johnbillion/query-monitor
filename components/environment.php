@@ -1,6 +1,6 @@
 <?php
 
-class QM_Environment extends QM {
+class QM_Component_Environment extends QM_Component {
 
 	var $id = 'environment';
 	var $php_vars = array(
@@ -50,10 +50,6 @@ class QM_Environment extends QM {
 			'E_WARNING',
 			'E_PARSE',
 			'E_NOTICE',
-			#'E_CORE_ERROR',
-			#'E_CORE_WARNING',
-			#'E_COMPILE_ERROR',
-			#'E_COMPILE_WARNING',
 			'E_USER_ERROR',
 			'E_USER_WARNING',
 			'E_USER_NOTICE',
@@ -76,7 +72,7 @@ class QM_Environment extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		$menu[] = $this->menu( array(
 			'title' => __( 'Environment', 'query-monitor' )
@@ -159,7 +155,8 @@ class QM_Environment extends QM {
 			'blog_id'  => $blog_id
 		);
 
-		$server = explode( '/', reset( explode( ' ', $_SERVER['SERVER_SOFTWARE'] ) ) );
+		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );
+		$server = explode( '/', reset( $server ) );
 
 		if ( isset( $server[1] ) )
 			$server_version = $server[1];
@@ -175,7 +172,7 @@ class QM_Environment extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -281,16 +278,16 @@ class QM_Environment extends QM {
 
 		$wp_span = 2;
 
-		if ( QM::is_multisite() )
+		if ( QM_Util::is_multisite() )
 			$wp_span++;
 
 		echo '<tr>';
-		echo '<td rowspan="' . $wp_span . '">WP</td>';
+		echo '<td rowspan="' . $wp_span . '">WordPress</td>';
 		echo '<td>version</td>';
 		echo "<td>{$data['wp']['version']}</td>";
 		echo '</tr>';
 
-		if ( QM::is_multisite() ) {
+		if ( QM_Util::is_multisite() ) {
 			echo '<tr>';
 			echo '<td>blog_id</td>';
 			echo "<td>{$data['wp']['blog_id']}</td>";
@@ -331,8 +328,8 @@ class QM_Environment extends QM {
 
 }
 
-function register_qm_environment( $qm ) {
-	$qm['environment'] = new QM_Environment;
+function register_qm_environment( array $qm ) {
+	$qm['environment'] = new QM_Component_Environment;
 	return $qm;
 }
 

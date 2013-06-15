@@ -1,6 +1,6 @@
 <?php
 
-class QM_Authentication extends QM {
+class QM_Component_Authentication extends QM_Component {
 
 	var $id = 'authentication';
 
@@ -22,7 +22,7 @@ class QM_Authentication extends QM {
 		return false;
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		# @TODO non-js fallback
 
@@ -94,8 +94,8 @@ class QM_Authentication extends QM {
 
 }
 
-function register_qm_authentication( $qm ) {
-	$qm['authentication'] = new QM_Authentication;
+function register_qm_authentication( array $qm ) {
+	$qm['authentication'] = new QM_Component_Authentication;
 	return $qm;
 }
 

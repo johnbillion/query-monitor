@@ -7,10 +7,10 @@ if ( !defined( 'QM_DB_EXPENSIVE' ) )
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
-class QM_DB_Queries extends QM {
+class QM_Component_DB_Queries extends QM_Component {
 
-	var $id = 'db_queries';
-	var $db_objects = array();
+	public $id = 'db_queries';
+	public $db_objects = array();
 
 	function __construct() {
 		parent::__construct();
@@ -19,7 +19,7 @@ class QM_DB_Queries extends QM {
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 	}
 
-	function admin_title( $title ) {
+	function admin_title( array $title ) {
 		if ( isset( $this->data['dbs'] ) ) {
 			foreach ( $this->data['dbs'] as $db ) {
 				$title[] = sprintf(
@@ -35,7 +35,7 @@ class QM_DB_Queries extends QM {
 		return $title;
 	}
 
-	function admin_class( $class ) {
+	function admin_class( array $class ) {
 
 		if ( $this->get_errors() )
 			$class[] = 'qm-error';
@@ -45,7 +45,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		if ( $errors = $this->get_errors() ) {
 			$menu[] = $this->menu( array(
@@ -77,7 +77,7 @@ class QM_DB_Queries extends QM {
 		return false;
 	}
 
-	function is_expensive( $row ) {
+	function is_expensive( array $row ) {
 		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
@@ -101,7 +101,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		if ( empty( $data['dbs'] ) )
 			return;
@@ -231,7 +231,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function process_db_object( $id, $db ) {
+	function process_db_object( $id, wpdb $db ) {
 
 		$rows       = array();
 		$types      = array();
@@ -266,8 +266,8 @@ class QM_DB_Queries extends QM {
 
 				foreach ( $stack as $f ) {
 
-					$f = self::standard_dir( $f );
-					if ( 'core' != ( $file_component = $this->get_file_component( $f ) ) )
+					$f = QM_Util::standard_dir( $f );
+					if ( 'core' != ( $file_component = QM_Util::get_file_component( $f ) ) )
 						break;
 
 				}
@@ -276,10 +276,12 @@ class QM_DB_Queries extends QM {
 					case 'plugin':
 					case 'muplugin':
 						$plug = plugin_basename( $f );
-						if ( strpos( $plug, '/' ) )
-							$plug = reset( explode( '/', $plug ) );
-						else
+						if ( strpos( $plug, '/' ) ) {
+							$plug = explode( '/', $plug );
+							$plug = reset( $plug );
+						} else {
 							$plug = basename( $plug );
+						}
 						$component = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
 						break;
 					case 'stylesheet':
@@ -289,7 +291,7 @@ class QM_DB_Queries extends QM {
 						$component = __( 'Parent Theme', 'query-monitor' );
 						break;
 					case 'other':
-						$component = str_replace( self::standard_dir( ABSPATH ), '', $f );
+						$component = str_replace( QM_Util::standard_dir( ABSPATH ), '', $f );
 						break;
 					case 'core':
 					default:
@@ -301,10 +303,12 @@ class QM_DB_Queries extends QM {
 				$component = null;
 			}
 
-			if ( preg_match( '|\.php$|', $funcs ) )
+			if ( preg_match( '|\.php$|', $funcs ) ) {
 				$func = $funcs;
-			else
-				$func = reset( array_reverse( explode( ', ', $funcs ) ) );
+			} else {
+				$func = array_reverse( explode( ', ', $funcs ) );
+				$func = reset( $func );
+			}
 
 			$sql  = $this->format_sql( $sql );
 			$type = preg_split( '/\b/', $sql );
@@ -342,6 +346,7 @@ class QM_DB_Queries extends QM {
 		$this->data['total_time'] += $total_time;
 
 		# @TODO put errors in here too:
+		# @TODO proper class instead of (object)
 		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'has_component', 'total_time', 'total_qs' );
 
 	}
@@ -361,7 +366,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function output_queries( $name, $db ) {
+	function output_queries( $name, stdClass $db ) {
 
 		# @TODO move more of this into process()
 
@@ -413,7 +418,7 @@ class QM_DB_Queries extends QM {
 		echo '<tbody>';
 
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
-			usort( $rows, array( $this, '_sort' ) );
+			usort( $rows, array( 'QM_Util', 'sort' ) );
 
 		if ( !empty( $rows ) ) {
 
@@ -451,7 +456,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function build_filter( $name, $values ) {
+	function build_filter( $name, array $values ) {
 
 		usort( $values, 'strcasecmp' );
 
@@ -467,7 +472,7 @@ class QM_DB_Queries extends QM {
 
 	}
 
-	function output_query_row( $row, $cols = array() ) {
+	function output_query_row( array $row, array $cols = array() ) {
 
 		$cols = (array) $cols;
 
@@ -535,8 +540,8 @@ class QM_DB_Queries extends QM {
 
 }
 
-function register_qm_db_queries( $qm ) {
-	$qm['db_queries'] = new QM_DB_Queries;
+function register_qm_db_queries( array $qm ) {
+	$qm['db_queries'] = new QM_Component_DB_Queries;
 	return $qm;
 }
 

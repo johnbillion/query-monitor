@@ -1,11 +1,14 @@
 <?php
 /*
 Plugin Name: Query Monitor
-Version:     2.3.1
+Version:     2.4a
+
+********************************************************************
 
 Symlink this file to your wp-content directory to provide additional
 database query information in Query Monitor's output.
 
+********************************************************************
 
 © 2013 John Blackbourn
 
@@ -21,46 +24,14 @@ GNU General Public License for more details.
 
 */
 
+defined( 'ABSPATH' ) or die();
+
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
 
-# Pre-3.0.something compat
-if ( !class_exists( 'wpdb' ) ) {
-	$wpdb = true;
-	require_once( ABSPATH . WPINC . '/wp-db.php' );
-}
-
 class QueryMonitorDB extends wpdb {
 
-	var $qm_ignore_class = array(
-		'wpdb',
-		'QueryMonitor',
-		'QueryMonitorDB',
-		'ExtQuery',
-		'W3_Db'
-	);
-	var $qm_ignore_func = array(
-		'include_once',
-		'require_once',
-		'include',
-		'require',
-		'call_user_func_array',
-		'call_user_func'
-	);
-	var $qm_ignore_method = array();
-	var $qm_show_arg = array(
-		'do_action',
-		'apply_filters',
-		'do_action_ref_array',
-		'apply_filters_ref_array',
-		'get_template_part',
-		'section_template',
-		'get_header',
-		'get_sidebar',
-		'get_footer'
-	);
-	var $qm_filtered = false;
-	var $qm_php_vars = array(
+	public $qm_php_vars = array(
 		'max_execution_time'  => null,
 		'memory_limit'        => null,
 		'upload_max_filesize' => null,
@@ -93,7 +64,7 @@ class QueryMonitorDB extends wpdb {
 		if ( ! $this->ready )
 			return false;
 
-		if ( $this->show_errors and class_exists( 'QM_DB_Queries' ) )
+		if ( $this->show_errors and class_exists( 'QM_Component_DB_Queries' ) )
 			$this->hide_errors();
 
 		// some queries are made before the plugins have been loaded, and thus cannot be filtered with this method
@@ -116,7 +87,7 @@ class QueryMonitorDB extends wpdb {
 
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
 			$trace = debug_backtrace( false );
-			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), $this->get_caller( $trace ), $this->get_stack( $trace ), null );
+			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), self::qm_get_caller( $trace ), self::qm_get_stack( $trace ), null );
 			unset( $trace );
 		}
 
@@ -160,7 +131,7 @@ class QueryMonitorDB extends wpdb {
 		return $return_val;
 	}
 
-	function get_stack( $_trace ) {
+	public static function qm_get_stack( array $_trace ) {
 
 		$stack = array();
 
@@ -173,64 +144,20 @@ class QueryMonitorDB extends wpdb {
 
 	}
 
-	function get_caller( $_trace = null ) {
+	public static function qm_get_caller( array $_trace ) {
 
-		if ( !$_trace )
-			$_trace = debug_backtrace( false );
-
-		if ( !$this->qm_filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
-
-			# Only run apply_filters on these once
-			$this->qm_ignore_class  = apply_filters( 'query_monitor_db_ignore_class',  $this->qm_ignore_class );
-			$this->qm_ignore_func   = apply_filters( 'query_monitor_db_ignore_func',   $this->qm_ignore_func );
-			$this->qm_ignore_method = apply_filters( 'query_monitor_db_ignore_method', $this->qm_ignore_method );
-			$this->qm_show_arg      = apply_filters( 'query_monitor_db_show_arg',      $this->qm_show_arg );
-			$this->qm_filtered = true;
-
-		}
-
-		$trace = array_map( array( $this, '_filter_trace' ), $_trace );
+		$trace = array_map( array( 'QM_Util', 'filter_trace' ), $_trace );
 		$trace = array_values( array_filter( $trace ) );
-		if ( empty( $trace ) ) {
-			$file = str_replace( '\\', '/', $_trace[1]['file'] );
-			$path = str_replace( '\\', '/', ABSPATH );
-			$file = str_replace( $path, '', $file );
-			$trace[] = $file;
-		}
+
+		if ( empty( $trace ) )
+			$trace[] = str_replace( QM_Util::standard_dir( ABSPATH ), '', QM_Util::standard_dir( $_trace[1]['file'] ) );
+
 		return implode( ', ', array_reverse( $trace ) );
-	}
-
-	function _filter_trace( $trace ) {
-
-		if ( isset( $trace['class'] ) ) {
-
-			if ( in_array( $trace['class'], $this->qm_ignore_class ) )
-				return null;
-			else if ( in_array( array( $trace['class'], $trace['function'] ), $this->qm_ignore_method ) )
-				return null;
-			else if ( 0 === strpos( $trace['class'], 'QM' ) )
-				return null;
-			else
-				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
-
-		} else {
-
-			if ( in_array( $trace['function'], $this->qm_ignore_func ) )
-				return null;
-			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], $this->qm_show_arg ) )
-				return $trace['function'] . "('{$trace['args'][0]}')";
-			else
-				return $trace['function'] . '()';
-
-		}
 
 	}
 
 }
 
-if ( !defined( 'ABSPATH' ) )
-    die();
+require_once dirname( __FILE__ ) . '/../class.qm-util.php';
 
 $wpdb = new QueryMonitorDB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
-
-?>

@@ -1,6 +1,6 @@
 <?php
 
-class QM_PHP_Errors extends QM {
+class QM_Component_PHP_Errors extends QM_Component {
 
 	var $id = 'php_errors';
 	var $all_errors = array();
@@ -51,9 +51,9 @@ class QM_PHP_Errors extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
-		if ( empty( $this->data['errors'] ) )
+		if ( empty( $data['errors'] ) )
 			return;
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
@@ -92,14 +92,14 @@ class QM_PHP_Errors extends QM {
 
 					$funca   = implode( ', ', array_reverse( $funca ) );
 					$stack   = $error->funcs;
-					unset( $stack[0], $stack[1] );
+					unset( $stack[0], $stack[1] ); # QM functions
 					$stack   = implode( '<br />', $stack );
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					echo '<td>' . $message . '</td>';
 					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
-					echo '<td title="' . esc_attr( $funca ) . '" class="qm-ltr">' . $stack . '</td>';
+					echo '<td class="qm-ltr">' . $stack . '</td>';
 					echo '</tr>';
 
 					$first = false;
@@ -144,15 +144,15 @@ class QM_PHP_Errors extends QM {
 
 		if ( error_reporting() > 0 ) {
 
-			$funcs = $this->backtrace();
+			$funcs = QM_Util::backtrace();
 
 			if ( !isset( $funcs[0] ) )
 				$funcs[0] = '';
 
 			$key = md5( $message . $file . $line . $funcs[0] );
 
-			$filename = self::standard_dir( $file );
-			$path     = self::standard_dir( ABSPATH );
+			$filename = QM_Util::standard_dir( $file );
+			$path     = QM_Util::standard_dir( ABSPATH );
 			$filename = str_replace( $path, '', $filename );
 
 			if ( isset( $this->data['errors'][$type][$key] ) ) {
@@ -169,13 +169,14 @@ class QM_PHP_Errors extends QM {
 				);
 			}
 
-			if ( $this->is_ajax() and !headers_sent() and $querymonitor->show_query_monitor() ) {
+			if ( QM_Util::is_ajax() and !headers_sent() and $querymonitor->show_query_monitor() ) {
 
 				$this->all_errors[$key] = $key;
 
 				header( sprintf( 'X-QM-Errors: %s',
 					json_encode( $this->all_errors )
 				), true );
+
 				header( sprintf( 'X-QM-Error-%s: %s',
 					$key,
 					json_encode( $this->data['errors'][$type][$key] )
@@ -191,12 +192,13 @@ class QM_PHP_Errors extends QM {
 
 }
 
-function register_qm_php_errors( $qm ) {
+function register_qm_php_errors( array $qm ) {
 
+	# Don't handle errors if Xdebug is installed:
 	$handle = apply_filters( 'qm_handle_php_errors', !function_exists( 'xdebug_start_error_collection' ) );
 
 	if ( $handle )
-		$qm['php_errors'] = new QM_PHP_Errors;
+		$qm['php_errors'] = new QM_Component_PHP_Errors;
 
 	return $qm;
 

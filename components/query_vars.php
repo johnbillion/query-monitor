@@ -1,6 +1,6 @@
 <?php
 
-class QM_Query_Vars extends QM {
+class QM_Component_Query_Vars extends QM_Component {
 
 	var $id = 'query_vars';
 
@@ -50,7 +50,7 @@ class QM_Query_Vars extends QM {
 
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -93,7 +93,7 @@ class QM_Query_Vars extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		$count = isset( $this->data['plugin_qvars'] ) ? count( $this->data['plugin_qvars'] ) : 0;
 
@@ -110,8 +110,8 @@ class QM_Query_Vars extends QM {
 
 }
 
-function register_qm_query_vars( $qm ) {
-	$qm['query_vars'] = new QM_Query_Vars;
+function register_qm_query_vars( array $qm ) {
+	$qm['query_vars'] = new QM_Component_Query_Vars;
 	return $qm;
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-class QM_Transients extends QM {
+class QM_Component_Transients extends QM_Component {
 
 	var $id = 'transients';
 
@@ -22,19 +22,19 @@ class QM_Transients extends QM {
 	function setted_transient( $transient, $type ) {
 		$this->data['trans'][] = array(
 			'transient' => $transient,
-			'trace'     => $this->backtrace(),
+			'trace'     => QM_Util::backtrace(),
 			'type'      => $type
 		);
 	}
 
-	function output( $args, $data ) {
+	function output( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Transient Set', 'query-monitor' ) . '</th>';
-		if ( QM::is_multisite() )
+		if ( QM_Util::is_multisite() )
 			echo '<th>' . __( 'Type', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -51,7 +51,7 @@ class QM_Transients extends QM {
 					'_transient_'
 				), '', $row['transient'] );
 				$funcs = esc_attr( implode( ', ', array_reverse( $row['trace'] ) ) );
-				$type = ( QM::is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
+				$type = ( QM_Util::is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
 				echo "
 					<tr>\n
 						<td valign='top'>{$transient}</td>\n
@@ -75,7 +75,7 @@ class QM_Transients extends QM {
 
 	}
 
-	function admin_menu( $menu ) {
+	function admin_menu( array $menu ) {
 
 		$count = isset( $this->data['trans'] ) ? count( $this->data['trans'] ) : 0;
 
@@ -93,8 +93,8 @@ class QM_Transients extends QM {
 
 }
 
-function register_qm_transients( $qm ) {
-	$qm['transients'] = new QM_Transients;
+function register_qm_transients( array $qm ) {
+	$qm['transients'] = new QM_Component_Transients;
 	return $qm;
 }
 
