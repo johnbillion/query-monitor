@@ -86,6 +86,7 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 	color: #ddd !important;
 }
 
+/* @TODO fix this: */;
 #wpadminbar .quicklinks .menupop.qm-wp-32 ul li.qm-true.hover > a {
 	color: #fff !important;
 }
@@ -306,16 +307,9 @@ body.sticky-menu #qm {
 /* Filters */
 
 .qm-filter {
-	visibility: hidden !important;
 	display: block !important;
-	font-size: 11px !important;
-}
-
-.qm-mobile .qm-filter,
-.qm-filter:focus,
-.qm-filter-show,
-.qm thead th:hover .qm-filter {
-	visibility: visible !important;
+	font-size: 12px !important;
+	margin: 4px 0 2px !important;
 }
 
 .qm-hide,

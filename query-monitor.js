@@ -100,12 +100,8 @@ jQuery( function($) {
 		    total  = tr.removeClass('qm-hide-' + filter).length,
 		    time   = 0;
 
-		if ( $(this).val() != '' ) {
-			$(this).addClass('qm-filter-show');
+		if ( $(this).val() != '' )
 			tr.not('[data-qm-' + filter + '="' + val + '"]').addClass('qm-hide-' + filter);
-		} else {
-			$(this).removeClass('qm-filter-show');
-		}
 
 		var matches = tr.filter(':visible');
 		matches.each(function(i){
