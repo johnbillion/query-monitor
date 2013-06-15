@@ -15,7 +15,7 @@ class QM_Component_Conditionals extends QM_Component {
 			$menu[] = $this->menu( array(
 				'title' => $cond . '()',
 				'id'    => 'query-monitor-' . $cond,
-				'meta'  => array( 'classname' => 'qm-true' )
+				'meta'  => array( 'classname' => 'qm-true qm-ltr' )
 			) );
 		}
 
