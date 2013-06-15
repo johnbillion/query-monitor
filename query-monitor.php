@@ -2,9 +2,9 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.3.1
+Version:     2.4b
 Author:      John Blackbourn
-Author URI:  http://lud.icro.us/
+Author URI:  http://johnblackbourn.com/
 Text Domain: query-monitor
 Domain Path: /languages/
 License:     GPL v2 or later
@@ -50,6 +50,8 @@ Query Monitor outputs info on:
 
 */
 
+defined( 'ABSPATH' ) or die();
+
 class QueryMonitor {
 
 	var $components = array();
@@ -70,9 +72,8 @@ class QueryMonitor {
 		register_activation_hook(   $this->_file( __FILE__ ), array( $this, 'activate' ) );
 		register_deactivation_hook( $this->_file( __FILE__ ), array( $this, 'deactivate' ) );
 
-		$this->plugin_dir   = untrailingslashit( plugin_dir_path( __FILE__ ) );
-		$this->plugin_url   = untrailingslashit( plugin_dir_url( __FILE__ ) );
-		$this->is_multisite = ( function_exists( 'is_multisite' ) and is_multisite() );
+		$this->plugin_dir = untrailingslashit( plugin_dir_path( __FILE__ ) );
+		$this->plugin_url = untrailingslashit( plugin_dir_url( __FILE__ ) );
 
 		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
 			include( $component );
@@ -124,7 +125,7 @@ class QueryMonitor {
 
 	function get_admins() {
 		# @TODO this should use a cap not a role
-		if ( $this->is_multisite )
+		if ( QM_Util::is_multisite() )
 			return false;
 		else
 			return get_role( 'administrator' );
@@ -187,7 +188,7 @@ class QueryMonitor {
 		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
 			return $this->show_query_monitor = false;
 
-		if ( $this->is_multisite ) {
+		if ( QM_Util::is_multisite() ) {
 			if ( current_user_can( 'manage_network_options' ) )
 				return $this->show_query_monitor = true;
 		} else if ( current_user_can( 'view_query_monitor' ) ) {
@@ -328,220 +329,7 @@ class QueryMonitor {
 
 }
 
-abstract class QM {
-
-	var $data = array();
-
-	static $ignore_class = array(
-		'wpdb',
-		'QueryMonitor',
-		'QueryMonitorDB',
-		'ExtQuery',
-		'W3_Db',
-		'Debug_Bar_PHP'
-	);
-	static $ignore_func = array(
-		'include_once',
-		'require_once',
-		'include',
-		'require',
-		'call_user_func_array',
-		'call_user_func',
-		'trigger_error',
-		'_doing_it_wrong',
-		'_deprecated_argument',
-		'_deprecated_file',
-		'_deprecated_function'
-	);
-	static $show_arg = array(
-		'do_action',
-		'apply_filters',
-		'do_action_ref_array',
-		'apply_filters_ref_array',
-		'get_template_part',
-		'section_template',
-		'get_header',
-		'get_sidebar',
-		'get_footer'
-	);
-	static $filtered        = false;
-	static $file_components = array();
-	static $file_dirs       = array();
-
-	public function __construct() {
-
-		if ( !self::$filtered ) {
-
-			# Only run apply_filters on these once
-			self::$ignore_class = apply_filters( 'query_monitor_ignore_class', self::$ignore_class );
-			self::$ignore_func  = apply_filters( 'query_monitor_ignore_func',  self::$ignore_func );
-			self::$show_arg     = apply_filters( 'query_monitor_show_arg',     self::$show_arg );
-			self::$filtered = true;
-
-		}
-
-	}
-
-	public function is_multisite() {
-		return ( function_exists( 'is_multisite' ) and is_multisite() );
-	}
-
-	protected function _filter_trace( $trace ) {
-
-		if ( isset( $trace['class'] ) ) {
-
-			if ( in_array( $trace['class'], self::$ignore_class ) )
-				return null;
-			else
-				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
-
-		} else {
-
-			if ( in_array( $trace['function'], self::$ignore_func ) )
-				return null;
-			else if ( isset( $trace['args'][0] ) and in_array( $trace['function'], self::$show_arg ) )
-				return $trace['function'] . "('{$trace['args'][0]}')";
-			else
-				return $trace['function'] . '()';
-
-		}
-
-	}
-
-	protected function backtrace() {
-		$trace = debug_backtrace( false );
-		$trace = array_map( array( $this, '_filter_trace' ), $trace );
-		$trace = array_values( array_filter( $trace ) );
-		return $trace;
-	}
-
-	protected function timer_stop_float() {
-		global $timestart;
-		return microtime( true ) - $timestart;
-	}
-
-	protected function _sort( $a, $b ) {
-		if ( $a['ltime'] == $b['ltime'] )
-			return 0;
-		else
-			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
-	}
-
-	public function convert_hr_to_bytes( $size ) {
-
-		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
-		# loaded in the admin area, so we'll use our own version.
-		# See http://core.trac.wordpress.org/ticket/17725
-
-		$bytes = (float) $size;
-
-		if ( $bytes ) {
-			$last = strtolower( substr( $size, -1 ) );
-			$pos = strpos( ' kmg', $last, 1);
-			if ( $pos )
-				$bytes *= pow( 1024, $pos );
-			$bytes = round( $bytes );
-		}
-
-		return $bytes;
-
-	}
-
-	public function standard_dir( $dir ) {
-		$dir = str_replace( '\\', '/', $dir );
-		$dir = preg_replace( '|/+|', '/', $dir );
-		return $dir;
-	}
-
-	public function get_file_component( $file ) {
-
-		if ( isset( self::$file_components[$file] ) )
-			return self::$file_components[$file];
-
-		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['muplugin']   = self::standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
-		}
-
-		foreach ( self::$file_dirs as $component => $dir ) {
-			if ( 0 === strpos( $file, $dir ) )
-				break;
-		}
-
-		return self::$file_components[$file] = $component;
-
-	}
-
-	public function id() {
-		return "qm-{$this->id}";
-	}
-
-	protected function menu( $args ) {
-
-		return wp_parse_args( $args, array(
-			'id'   => "query-monitor-{$this->id}",
-			'href' => '#' . $this->id()
-		) );
-
-	}
-
-	protected function get_component( $id ) {
-		# @TODO use singleton?
-		global $querymonitor;
-		return $querymonitor->get_component( $id );
-	}
-
-	public function get_data() {
-		if ( isset( $this->data ) )
-			return $this->data;
-		return null;
-	}
-
-	public function process() {
-		return false;
-	}
-
-	public function process_late() {
-		return false;
-	}
-
-	public function file_link( $filename, $line, $display = null ) {
-
-		# not implemented yet
-
-		if ( !$display )
-			$display = $filename;
-
-		$handler = apply_filters( 'qm_file_handler', 'subl://open/?url=file://%1$s&amp;line=%2$d', $file );
-
-		if ( !$handler )
-			return $display;
-
-		$link = sprintf( $handler,
-			esc_attr( $filename ),
-			absint( $line )
-		);
-
-		return sprintf( '<a href="%1$s">%2$s</a>',
-			esc_attr( $link ),
-			esc_html( $display )
-		);
-
-	}
-
-	public function is_ajax() {
-		return defined( 'DOING_AJAX' ) and DOING_AJAX;
-	}
-
-	abstract public function output( $args, $data );
-
-}
-
-if ( !defined( 'ABSPATH' ) )
-    die();
+require_once dirname( __FILE__ ) . '/class.qm-util.php';
+require_once dirname( __FILE__ ) . '/class.qm-component.php';
 
 $GLOBALS['querymonitor'] = new QueryMonitor;
