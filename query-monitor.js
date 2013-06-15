@@ -26,7 +26,7 @@ var QM_i18n = {
 		if ( !decimals )
 			decimals = 0;
 
-		number    = parseFloat( number );
+		number = parseFloat( number );
 
 		var num_float = number.toFixed( decimals ),
 		    num_int   = Math.floor( number ),
@@ -53,49 +53,45 @@ var QM_i18n = {
 
 jQuery( function($) {
 
-	if ( window.qm ) {
+	if ( !window.qm )
+		return;
 
-		$('#wp-admin-bar-query-monitor')
-			.addClass(qm.menu.top.classname)
+	var container = document.createDocumentFragment();
+
+	$('#wp-admin-bar-query-monitor')
+		.addClass(qm.menu.top.classname)
+		.find('a').eq(0)
+		.html(qm.menu.top.title)
+	;
+
+	$.each( qm.menu.sub, function( i, el ) {
+
+		new_menu = $('#wp-admin-bar-query-monitor-placeholder')
+			.clone()
+			.attr('id','wp-admin-bar-'+el.id)
+		;
+		new_menu
 			.find('a').eq(0)
-			.html(qm.menu.top.title)
+			.html(el.title)
+			.attr('href',el.href)
 		;
 
-		$.each( qm.menu.sub, function( i, el ) {
+		if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
+			new_menu.addClass(el.meta.classname);
 
-			new_menu = $('#wp-admin-bar-query-monitor-placeholder')
-				.clone()
-				.attr('id','wp-admin-bar-'+el.id)
-			;
-			new_menu
-				.find('a').eq(0)
-				.html(el.title)
-				.attr('href',el.href)
-			;
+		container.appendChild( new_menu.get(0) );
 
-			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
-				new_menu.addClass(el.meta.classname);
+	} );
 
-			new_menu.appendTo('#wp-admin-bar-query-monitor ul');
+	$('#wp-admin-bar-query-monitor ul').append(container);
 
-		} );
+	$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
+		$('#qm').show();
+	});
 
-		$('#wp-admin-bar-query-monitor').find('a').click(function(e){
-			$('.qm').show();
-			$('#qm').css('cursor','auto').unbind('click');
-		});
+	$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
-		$('#qm').click(function(e){
-			$('.qm').show();
-			$('#qm').css('cursor','auto').unbind('click');
-			$('html,body').scrollTop($("#qm").offset().top-$('#wpadminbar').outerHeight());
-		});
-
-		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
-
-	}
-
-	$('#qm').find('select.qm-filter').change(function(e){
+	$('#qm').find('select.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
 		    table  = $(this).closest('table'),
@@ -135,10 +131,14 @@ jQuery( function($) {
 		errors = $.parseJSON( errors );
 
 		for ( key in errors ) {
+
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
-			console.debug( '=== PHP Error ===' );
-			console.debug( options );
-			console.debug( error );
+
+			if ( window.console ) {
+				console.debug( '=== PHP Error ===' );
+				console.debug( options );
+				console.debug( error );
+			}
 
 			if ( ! qm.ajax_errors[error.type] ) {
 				$('#wp-admin-bar-query-monitor')

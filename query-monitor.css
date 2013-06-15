@@ -74,24 +74,12 @@ GNU General Public License for more details.
 	font-size: 11px !important;
 }
 
-#wp-admin-bar-query-monitor a:hover small,
-#wp-admin-bar-query-monitor a:focus small {
-	color: #fafafa !important;
-}
-
-.nojs #wp-admin-bar-query-monitor:hover a small {
-	text-shadow: none !important;
-	color: #333 !important;
-}
-
 #wp-admin-bar-query-monitor.hover a small {
 	text-shadow: none !important;
 	color: #333 !important;
 }
-
-.nojs #wp-admin-bar-query-monitor a:hover small {
-	text-shadow: none !important;
-	color: #333 !important;
+body.mp6 #wp-admin-bar-query-monitor.hover a small {
+	color: #2ea2cc !important;
 }
 
 #wp-admin-bar-query-monitor.qm-wp-32.hover a small {
@@ -127,7 +115,11 @@ GNU General Public License for more details.
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
 	text-align: left !important;
-	cursor: pointer;
+	display: none;
+}
+
+.nojs #qm {
+	display: block;
 }
 
 #qm:after {
@@ -156,7 +148,6 @@ body.sticky-menu #qm {
 	margin: 0 !important;
 	padding: 40px 20px 5px !important;
 	float: left !important;
-	display: none;
 }
 
 .qm>table {
@@ -287,7 +278,8 @@ body.sticky-menu #qm {
 	text-decoration: underline !important;
 }
 
-.qm .qm-warn {
+.qm .qm-warn,
+.qm .qm-warn span.qm-na {
 	color: #f00 !important;
 }
 
