@@ -18,6 +18,12 @@ GNU General Public License for more details.
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
 	color: #4a4 !important;
 }
+body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
+	color: #8c8 !important;
+}
+body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
+	color: #4a4 !important;
+}
 
 #wp-admin-bar-query-monitor-notices {
 	background-color: #740 !important;
@@ -99,13 +105,15 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
 	font: 16px/16px 'Open Sans', sans-serif !important;
 	width: auto !important;
-	padding: 6px 10px;
-	color: #ddd !important;
+	padding: 0 2px !important;
+	color: #999 !important;
+	line-height: 32px !important;
+	display: none !important;
 }
 
-@media screen and ( min-width: 768px ) {
-	#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
-		display: none;
+@media screen and ( max-width: 782px ) {
+	body.mp6 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+		display: block !important;
 	}
 }
 
