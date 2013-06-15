@@ -14,21 +14,20 @@ class QM_PHP_Errors extends QM {
 
 	}
 
-	function admin_class( $class ) {
-
-		# @TODO stricts
+	function admin_class( array $class ) {
 
 		if ( isset( $this->data['errors']['warning'] ) )
 			$class[] = 'qm-warning';
 		else if ( isset( $this->data['errors']['notice'] ) )
 			$class[] = 'qm-notice';
+		else if ( isset( $this->data['errors']['strict'] ) )
+			$class[] = 'qm-strict';
+
 		return $class;
 
 	}
 
-	function admin_menu( $menu ) {
-
-		# @TODO stricts
+	function admin_menu( array $menu ) {
 
 		if ( isset( $this->data['errors']['warning'] ) ) {
 			$menu[] = $this->menu( array(
@@ -40,6 +39,12 @@ class QM_PHP_Errors extends QM {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-notices',
 				'title' => sprintf( __( 'PHP Notices (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['notice'] ) ) )
+			) );
+		}
+		if ( isset( $this->data['errors']['strict'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-stricts',
+				'title' => sprintf( __( 'PHP Stricts (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['strict'] ) ) )
 			) );
 		}
 		return $menu;
@@ -63,11 +68,10 @@ class QM_PHP_Errors extends QM {
 		echo '</thead>';
 		echo '<tbody>';
 
-		# @TODO stricts
-
 		$types = array(
 			'warning' => __( 'Warning', 'query-monitor' ),
-			'notice'  => __( 'Notice', 'query-monitor' )
+			'notice'  => __( 'Notice', 'query-monitor' ),
+			'strict'  => __( 'Strict', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $title ) {
@@ -116,8 +120,6 @@ class QM_PHP_Errors extends QM {
 
 		global $querymonitor;
 
-		# @TODO stricts
-
 		switch ( $type ) {
 
 			case E_WARNING:
@@ -128,6 +130,10 @@ class QM_PHP_Errors extends QM {
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$type = 'notice';
+				break;
+
+			case E_STRICT:
+				$type = 'strict';
 				break;
 
 			default:
