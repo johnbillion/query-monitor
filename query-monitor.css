@@ -225,12 +225,12 @@ body.sticky-menu #qm {
 }
 
 .qm span.qm-true,
-.qm tr.qm-true {
+.qm td.qm-true {
 	color: #4a4 !important;
 }
 
 .qm span.qm-false,
-.qm tr.qm-false {
+.qm td.qm-false {
 	color: #aaa !important;
 }
 

@@ -38,8 +38,8 @@ class QM_Component_Conditionals extends QM_Component {
 
 		foreach ( $data['conds']['true'] as $cond ) {
 			if ( $first )
-				echo '<tr class="qm-true">';
-			echo '<td class="qm-ltr">' . $cond . '()</td>';
+				echo '<tr>';
+			echo '<td class="qm-ltr qm-true">' . $cond . '()</td>';
 			if ( !$first )
 				echo '</tr>';
 			$first = !$first;
@@ -47,8 +47,8 @@ class QM_Component_Conditionals extends QM_Component {
 
 		foreach ( $data['conds']['false'] as $cond ) {
 			if ( $first )
-				echo '<tr class="qm-false">';
-			echo '<td class="qm-ltr">' . $cond . '()</td>';
+				echo '<tr>';
+			echo '<td class="qm-ltr qm-false">' . $cond . '()</td>';
 			if ( !$first )
 				echo '</tr>';
 			$first = !$first;
