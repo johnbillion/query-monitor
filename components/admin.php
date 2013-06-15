@@ -142,13 +142,13 @@ class QM_Component_Admin extends QM_Component {
 
 			echo '<tr>';
 			echo '<td rowspan="3">' . __( 'Columns', 'query-monitor' ) . '</td>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns</td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns&nbsp;<span class='qm-info'>cols</span></td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column</td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column&nbsp;<span class='qm-info'>col_id, post_id</span></td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns</td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns&nbsp;<span class='qm-info'>cols</span></td>";
 			echo '</tr>';
 
 		}

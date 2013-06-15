@@ -20,25 +20,19 @@ class QM_Component_Hooks extends QM_Component {
 
 	function process_late() {
 
-		global $wp_actions, $wp_filter, $querymonitor, $current_screen, $pagenow;
+		global $wp_actions, $wp_filter;
 
 		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
 			$screen = $admin->data['base'];
 		else
 			$screen = '';
 
-		$qm_class = get_class( $querymonitor );
 		$hooks = array();
 
 		if ( QM_Util::is_multisite() and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
-		if ( is_numeric( current( $wp_actions ) ) )
-			$actions = array_keys( $wp_actions ); # wp 3.0+
-		else
-			$actions = array_values( $wp_actions ); # < wp 3.0
-
-		foreach ( $actions as $action ) {
+		foreach ( array_keys( $wp_actions ) as $action ) {
 
 			$name = $action;
 			$actions = array();

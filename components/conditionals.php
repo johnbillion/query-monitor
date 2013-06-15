@@ -29,20 +29,33 @@ class QM_Component_Conditionals extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Conditionals', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'Conditionals', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
+		$first = true;
+
 		foreach ( $data['conds']['true'] as $cond ) {
-			echo '<tr class="qm-true">';
+			if ( $first )
+				echo '<tr class="qm-true">';
 			echo '<td class="qm-ltr">' . $cond . '()</td>';
-			echo '</tr>';
+			if ( !$first )
+				echo '</tr>';
+			$first = !$first;
 		}
 
 		foreach ( $data['conds']['false'] as $cond ) {
-			echo '<tr class="qm-false">';
+			if ( $first )
+				echo '<tr class="qm-false">';
 			echo '<td class="qm-ltr">' . $cond . '()</td>';
+			if ( !$first )
+				echo '</tr>';
+			$first = !$first;
+		}
+
+		if ( !$first ) {
+			echo '<td>&nbsp;</td>';
 			echo '</tr>';
 		}
 

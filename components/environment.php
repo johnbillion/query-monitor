@@ -247,18 +247,24 @@ class QM_Component_Environment extends QM_Component {
 					$key = $setting->Variable_name;
 					$val = $setting->Value;
 					$prepend = '';
-					$warning = '&nbsp;(<a class="qm-warn" href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">!</a>)';
+					$warning = '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">' . __( 'Help', 'query-monitor' ) . '</a>)</span>';
+					$show_warning = false;
 
 					if ( ( true === $db['vars'][$key] ) and empty( $val ) )
-						$prepend .= $warning;
+						$show_warning = true;
 					else if ( is_string( $db['vars'][$key] ) and ( $val !== $db['vars'][$key] ) )
+						$show_warning = true;
+
+					if ( $show_warning )
 						$prepend .= $warning;
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) )
 						$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
 
+					$class = ( $show_warning ) ? 'qm-warn' : '';
+
 					if ( !$first )
-						echo '<tr>';
+						echo "<tr class='{$class}'>";
 
 					$key = esc_html( $key );
 					$val = esc_html( $val );
