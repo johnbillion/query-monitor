@@ -18,7 +18,7 @@ class QM_Component_HTTP extends QM_Component {
 
 	function http_request( array $args, $url ) {
 		$m_start = microtime( true );
-		$key = $m_start;
+		$key = $m_start . $url;
 		$this->data['http'][$key] = array(
 			'url'   => $url,
 			'args'  => $args,
@@ -94,7 +94,7 @@ class QM_Component_HTTP extends QM_Component {
 		echo '<th>' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Method', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Timeout', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -115,26 +115,32 @@ class QM_Component_HTTP extends QM_Component {
 
 					if ( is_wp_error( $row['response'] ) ) {
 						$response = $row['response']->get_error_message();
-						$css = 'qm-warn';
+						$css      = 'qm-warn';
 					} else {
 						$response = wp_remote_retrieve_response_code( $row['response'] );
-						$msg = wp_remote_retrieve_response_message( $row['response'] );
-						if ( 200 === intval( $response ) )
-							$response = esc_html( $response . ' ' . $msg );
-						else if ( !empty( $response ) )
-							$response = '<span class="qm-warn">' . esc_html( $response . ' ' . $msg ) . '</span>';
-						else
+						$msg      = wp_remote_retrieve_response_message( $row['response'] );
+						$css      = '';
+
+						if ( empty( $response ) )
 							$response = __( 'n/a', 'query-monitor' );
-						$css = '';
+						else
+							$response = esc_html( $response . ' ' . $msg );
+
+						if ( intval( $response ) >= 400 )
+							$css = 'qm-warn';
+
 					}
 
 				} else {
 
-					$ltime = '';
+					# @TODO test if the timeout has actually passed. if not, the request was erroneous rather than timed out
+
 					$total_time += $row['args']['timeout'];
-					$stime = number_format_i18n( $row['args']['timeout'], 4 );
+
+					$ltime    = '';
+					$stime    = number_format_i18n( $row['args']['timeout'], 4 );
 					$response = __( 'Request timed out', 'query-monitor' );
-					$css = 'qm-warn';
+					$css      = 'qm-warn';
 
 				}
 
@@ -152,25 +158,26 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">&amp;</span>',
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
-				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] );
-				if ( isset( $row['trace'][6] ) )
-					$f = 6;
-				else
-					$f = 5;
-				$func = $row['trace'][$f];
 
-				foreach ( array( 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
-					if ( 0 === strpos( $func, $skip ) )
-						$func = $row['trace'][++$f];
+				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] ); # QM funcs
+				unset( $row['trace'][3], $row['trace'][4] ); # WP_Http funcs
+
+				foreach ( $row['trace'] as & $trace ) {
+					foreach ( array( 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
+						if ( 0 === strpos( $trace, $skip ) ) {
+							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
+							break;
+						}
+					}
 				}
 
-				$funcs = esc_attr( implode( ', ', array_reverse( $row['trace'] ) ) );
+				$stack = implode( '<br />', $row['trace'] );
 				echo "
 					<tr class='{$css}'>\n
 						<td valign='top' class='qm-url qm-ltr'>{$url}</td>\n
 						<td valign='top'>{$method}</td>\n
 						<td valign='top'>{$response}</td>\n
-						<td valign='top' title='{$funcs}' class='qm-ltr'>{$func}</td>\n
+						<td valign='top' class='qm-ltr'>{$stack}</td>\n
 						<td valign='top'>{$row['args']['timeout']}</td>\n
 						<td valign='top' title='{$ltime}'>{$stime}</td>\n
 					</tr>\n
