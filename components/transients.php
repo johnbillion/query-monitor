@@ -6,24 +6,27 @@ class QM_Component_Transients extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ) );
-		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ) );
+		# See http://core.trac.wordpress.org/ticket/24583
+		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ), 10, 3 );
+		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ), 10, 3 );
 		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 50 );
 	}
 
-	function setted_site_transient( $transient ) {
-		$this->setted_transient( $transient, 'site' );
+	function setted_site_transient( $transient, $value = null, $expiration = null ) {
+		$this->setted_transient( $transient, 'site', $value, $expiration );
 	}
 
-	function setted_blog_transient( $transient ) {
-		$this->setted_transient( $transient, 'blog' );
+	function setted_blog_transient( $transient, $value = null, $expiration = null ) {
+		$this->setted_transient( $transient, 'blog', $value, $expiration );
 	}
 
-	function setted_transient( $transient, $type ) {
+	function setted_transient( $transient, $type, $value = null, $expiration = null ) {
 		$this->data['trans'][] = array(
-			'transient' => $transient,
-			'trace'     => QM_Util::backtrace(),
-			'type'      => $type
+			'transient'  => $transient,
+			'trace'      => QM_Util::backtrace(),
+			'type'       => $type,
+			'value'      => $value,
+			'expiration' => $expiration,
 		);
 	}
 
@@ -34,9 +37,11 @@ class QM_Component_Transients extends QM_Component {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Transient Set', 'query-monitor' ) . '</th>';
-		if ( QM_Util::is_multisite() )
+		if ( is_multisite() )
 			echo '<th>' . __( 'Type', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Function', 'query-monitor' ) . '</th>';
+		if ( !empty( $data['trans'] ) and !is_null( $data['trans'][0]['expiration'] ) )
+			echo '<th>' . __( 'Expiration', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -44,19 +49,33 @@ class QM_Component_Transients extends QM_Component {
 		if ( !empty( $data['trans'] ) ) {
 
 			foreach ( $data['trans'] as $row ) {
-				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2], $row['trace'][3] );
-				$func = $row['trace'][5];
+				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] ); # QM funcs
+				unset( $row['trace'][3] ); # transient funcs
 				$transient = str_replace( array(
 					'_site_transient_',
 					'_transient_'
 				), '', $row['transient'] );
-				$funcs = esc_attr( implode( ', ', array_reverse( $row['trace'] ) ) );
-				$type = ( QM_Util::is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
+				$type = ( is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
+				if ( 0 === $row['expiration'] )
+					$row['expiration'] = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+				$expiration = ( !is_null( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
+
+				foreach ( $row['trace'] as & $trace ) {
+					foreach ( array( 'set_transient', 'set_site_transient' ) as $skip ) {
+						if ( 0 === strpos( $trace, $skip ) ) {
+							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
+							break;
+						}
+					}
+				}
+
+				$stack = implode( '<br />', $row['trace'] );
 				echo "
 					<tr>\n
 						<td valign='top'>{$transient}</td>\n
 						{$type}
-						<td valign='top' title='{$funcs}' class='qm-ltr'>{$func}</td>\n
+						{$expiration}
+						<td valign='top' class='qm-ltr'>{$stack}</td>\n
 					</tr>\n
 				";
 			}
