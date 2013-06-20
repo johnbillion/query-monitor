@@ -11,12 +11,12 @@ class QM_Component_Query_Vars extends QM_Component {
 
 	function process() {
 
-		$plugin_qvars = apply_filters( 'query_vars', array() );
+		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
 		$qvars        = $GLOBALS['wp_query']->query_vars;
 		$query_vars   = array();
 
 		foreach ( $qvars as $k => $v ) {
-			if ( in_array( $k, $plugin_qvars ) ) {
+			if ( isset( $plugin_qvars[$k] ) ) {
 				if ( '' !== $v )
 					$query_vars[$k] = $v;
 			} else {
@@ -27,24 +27,17 @@ class QM_Component_Query_Vars extends QM_Component {
 
 		ksort( $query_vars );
 
-		# Array query vars in < 3.0 get smushed to the string 'Array'
-		foreach ( $query_vars as $key => $var ) {
-			if ( 'Array' === $var ) {
-				$query_vars[$key] = 'Array (<span class="qm-warn">!</span>)';
-			}
-		}
-
 		# First add plugin vars to $this->data['qvars']:
 		foreach ( $query_vars as $k => $v ) {
-			if ( in_array( $k, $plugin_qvars ) ) {
+			if ( isset( $plugin_qvars[$k] ) ) {
 				$this->data['qvars'][$k] = $v;
-				$this->data['plugin_qvars'][] = $k;
+				$this->data['plugin_qvars'][$k] = $v;
 			}
 		}
 
 		# Now add all other vars to $this->data['qvars']:
 		foreach ( $query_vars as $k => $v ) {
-			if ( !in_array( $k, $plugin_qvars ) )
+			if ( !isset( $plugin_qvars[$k] ) )
 				$this->data['qvars'][$k] = $v;
 		}
 
@@ -64,10 +57,11 @@ class QM_Component_Query_Vars extends QM_Component {
 		if ( !empty( $data['qvars'] ) ) {
 
 			foreach( $data['qvars'] as $var => $value ) {
-				if ( isset( $data['plugin_qvars'] ) and in_array( $var, $data['plugin_qvars'] ) )
-					$var = '<span class="qm-current">' . $var . '</span>';
 				echo '<tr>';
-				echo "<td valign='top'>{$var}</td>";
+				if ( isset( $data['plugin_qvars'][$var] ) )
+					echo "<td valign='top'><span class='qm-current'>{$var}</span></td>";
+				else
+					echo "<td valign='top'>{$var}</td>";
 				if ( is_array( $value ) or is_object( $value ) ) {
 					echo '<td valign="top"><pre>';
 					print_r( $value );
