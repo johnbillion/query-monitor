@@ -18,25 +18,26 @@ GNU General Public License for more details.
 class QM_Util {
 
 	static $ignore_class = array(
-		'wpdb',
-		'QueryMonitor',
-		'QueryMonitorDB',
-		'ExtQuery',
-		'W3_Db',
-		'Debug_Bar_PHP'
+		'wpdb'           => true,
+		'QueryMonitor'   => true,
+		'QueryMonitorDB' => true,
+		'ExtQuery'       => true,
+		'W3_Db'          => true,
+		'Debug_Bar_PHP'  => true,
 	);
+	static $ignore_method = array();
 	static $ignore_func = array(
-		'include_once',
-		'require_once',
-		'include',
-		'require',
-		'call_user_func_array',
-		'call_user_func',
-		'trigger_error',
-		'_doing_it_wrong',
-		'_deprecated_argument',
-		'_deprecated_file',
-		'_deprecated_function'
+		'include_once'         => true,
+		'require_once'         => true,
+		'include'              => true,
+		'require'              => true,
+		'call_user_func_array' => true,
+		'call_user_func'       => true,
+		'trigger_error'        => true,
+		'_doing_it_wrong'      => true,
+		'_deprecated_argument' => true,
+		'_deprecated_file'     => true,
+		'_deprecated_function' => true,
 	);
 	static $show_args = array(
 		'do_action'               => 1,
@@ -56,32 +57,31 @@ class QM_Util {
 
 	private function __construct() {}
 
-	public static function is_multisite() {
-		return ( function_exists( 'is_multisite' ) and is_multisite() );
-	}
-
 	public static function filter_trace( array $trace ) {
 
 		if ( !self::$filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
 			# Only run apply_filters on these once
-			self::$ignore_class = apply_filters( 'query_monitor_ignore_class', self::$ignore_class );
-			self::$ignore_func  = apply_filters( 'query_monitor_ignore_func',  self::$ignore_func );
-			self::$show_args    = apply_filters( 'query_monitor_show_args',    self::$show_args );
+			self::$ignore_class  = apply_filters( 'query_monitor_ignore_class',  self::$ignore_class );
+			self::$ignore_method = apply_filters( 'query_monitor_ignore_method', self::$ignore_method );
+			self::$ignore_func   = apply_filters( 'query_monitor_ignore_func',   self::$ignore_func );
+			self::$show_args     = apply_filters( 'query_monitor_show_args',     self::$show_args );
 			self::$filtered = true;
 
 		}
 
 		if ( isset( $trace['class'] ) ) {
 
-			if ( in_array( $trace['class'], self::$ignore_class ) )
+			if ( isset( self::$ignore_class[$trace['class']] ) )
+				return null;
+			else if ( isset( self::$ignore_method[$trace['class']][$trace['function']] ) )
 				return null;
 			else
 				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
 
 		} else {
 
-			if ( in_array( $trace['function'], self::$ignore_func ) ) {
+			if ( isset( self::$ignore_func[$trace['function']] ) ) {
 
 				return null;
 
