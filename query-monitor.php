@@ -125,7 +125,7 @@ class QueryMonitor {
 
 	function get_admins() {
 		# @TODO this should use a cap not a role
-		if ( QM_Util::is_multisite() )
+		if ( is_multisite() )
 			return false;
 		else
 			return get_role( 'administrator' );
@@ -188,7 +188,7 @@ class QueryMonitor {
 		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
 			return $this->show_query_monitor = false;
 
-		if ( QM_Util::is_multisite() ) {
+		if ( is_multisite() ) {
 			if ( current_user_can( 'manage_network_options' ) )
 				return $this->show_query_monitor = true;
 		} else if ( current_user_can( 'view_query_monitor' ) ) {

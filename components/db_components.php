@@ -22,7 +22,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => __( 'Query Components', 'query-monitor' )
+				'title' => __( 'Queries by Component', 'query-monitor' )
 			) );
 		}
 		return $menu;

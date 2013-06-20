@@ -99,7 +99,7 @@ class QM_Component_Environment extends QM_Component {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
-				if ( !$dbq->is_db_object( $db ) )
+				if ( !is_a( $db, 'wpdb' ) )
 					continue;
 
 				$variables = $db->get_results( "
@@ -239,7 +239,7 @@ class QM_Component_Environment extends QM_Component {
 				echo '<tr>';
 
 				$first  = true;
-				$warn   = __( "This value is not optimal. Check the recommended setting for '%s'.", 'query-monitor' );
+				$warn   = __( "This value may not be optimal. Check the recommended configuration for '%s'.", 'query-monitor' );
 				$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
 
 				foreach ( $db['variables'] as $setting ) {
@@ -284,7 +284,7 @@ class QM_Component_Environment extends QM_Component {
 
 		$wp_span = 2;
 
-		if ( QM_Util::is_multisite() )
+		if ( is_multisite() )
 			$wp_span++;
 
 		echo '<tr>';
@@ -293,7 +293,7 @@ class QM_Component_Environment extends QM_Component {
 		echo "<td>{$data['wp']['version']}</td>";
 		echo '</tr>';
 
-		if ( QM_Util::is_multisite() ) {
+		if ( is_multisite() ) {
 			echo '<tr>';
 			echo '<td>blog_id</td>';
 			echo "<td>{$data['wp']['blog_id']}</td>";

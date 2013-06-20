@@ -117,7 +117,21 @@ class QM_Component_Admin extends QM_Component {
 		echo "<td>{$data['pagenow']}</td>";
 		echo '</tr>';
 
-		if ( !empty( $data['current_screen'] ) and in_array( $data['current_screen']->base, array( 'edit', 'edit-comments', 'edit-tags', 'link-manager', 'plugins', 'plugins-network', 'sites-network', 'themes-network', 'upload', 'users', 'users-network' ) ) ) {
+		$screens = array(
+			'edit'            => true,
+			'edit-comments'   => true,
+			'edit-tags'       => true,
+			'link-manager'    => true,
+			'plugins'         => true,
+			'plugins-network' => true,
+			'sites-network'   => true,
+			'themes-network'  => true,
+			'upload'          => true,
+			'users'           => true,
+			'users-network'   => true,
+		);
+
+		if ( !empty( $data['current_screen'] ) and isset( $screens[$data['current_screen']->base] ) ) {
 
 			# And now, WordPress' legendary inconsistency comes into play:
 
@@ -142,13 +156,13 @@ class QM_Component_Admin extends QM_Component {
 
 			echo '<tr>';
 			echo '<td rowspan="3">' . __( 'Columns', 'query-monitor' ) . '</td>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns&nbsp;<span class='qm-info'>cols</span></td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns<span class='qm-info'>,&nbsp;cols</span></td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column&nbsp;<span class='qm-info'>col_id, post_id</span></td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column<span class='qm-info'>,&nbsp;col_id,&nbsp;post_id</span></td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns&nbsp;<span class='qm-info'>cols</span></td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns<span class='qm-info'>,&nbsp;cols</span></td>";
 			echo '</tr>';
 
 		}

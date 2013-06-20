@@ -26,13 +26,15 @@ class QM_Component_Theme extends QM_Component {
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
 		$template_directory   = QM_Util::standard_dir( get_template_directory() );
 
-		$template_file = str_replace( $stylesheet_directory, '', $template_file );
-		$template_file = str_replace( $template_directory,   '', $template_file );
+		$template_file = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_file );
 		$template_file = ltrim( $template_file, '/' );
 
 		$this->data['template_file'] = apply_filters( 'query_monitor_template', $template_file, $template );
 		$this->data['stylesheet']    = get_stylesheet();
 		$this->data['template']      = get_template();
+
+		if ( isset( $this->data['body_class'] ) )
+			asort( $this->data['body_class'] );
 
 	}
 

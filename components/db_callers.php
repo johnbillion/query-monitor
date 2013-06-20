@@ -22,7 +22,7 @@ class QM_Component_DB_Callers extends QM_Component {
 
 		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => __( 'Query Callers', 'query-monitor' )
+				'title' => __( 'Queries by Caller', 'query-monitor' )
 			) );
 		}
 		return $menu;

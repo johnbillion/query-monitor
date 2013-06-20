@@ -61,6 +61,19 @@ class QM_Component_DB_Queries extends QM_Component {
 				'title' => sprintf( __( 'Slow Queries (%s)', 'query-monitor' ), number_format_i18n( count( $expensive ) ) )
 			) );
 		}
+
+		if ( count( $this->data['dbs'] ) > 1 ) {
+			foreach ( $this->data['dbs'] as $name => $db ) {
+				$menu[] = $this->menu( array(
+					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) )
+				) );
+			}
+		} else {
+			$menu[] = $this->menu( array(
+				'title' => __( 'Queries', 'query-monitor' )
+			) );
+		}
+
 		return $menu;
 
 	}
@@ -95,7 +108,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		) );
 
 		foreach ( $this->db_objects as $name => $db ) {
-			if ( $this->is_db_object( $db ) )
+			if ( is_a( $db, 'wpdb' ) )
 				$this->process_db_object( $name, $db );
 		}
 
@@ -169,18 +182,6 @@ class QM_Component_DB_Queries extends QM_Component {
 		foreach ( $data['dbs'] as $name => $db )
 			$this->output_queries( $name, $db );
 
-	}
-
-	function is_db_object( $var ) {
-		$objs = array(
-			'wpdb',
-			'dbrc_wpdb'
-		);
-		foreach ( $objs as $obj ) {
-			if ( $var instanceof $obj )
-				return true;
-		}
-		return false;
 	}
 
 	function add_func_time( $func, $ltime, $type ) {

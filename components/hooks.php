@@ -29,7 +29,7 @@ class QM_Component_Hooks extends QM_Component {
 
 		$hooks = array();
 
-		if ( QM_Util::is_multisite() and is_network_admin() )
+		if ( is_multisite() and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
 		foreach ( array_keys( $wp_actions ) as $action ) {
@@ -68,7 +68,7 @@ class QM_Component_Hooks extends QM_Component {
 							$ref = new ReflectionFunction( $function['function'] );
 							$line = $ref->getEndLine();
 							$file = trim( str_replace( array( QM_Util::standard_dir( ABSPATH ), QM_Util::standard_dir( WP_PLUGIN_DIR ) ), '', QM_Util::standard_dir( $ref->getFileName() ) ), '/' );
-							$out = sprintf( __( 'Closure on line %1$s of %2$s', 'query-monitor' ), $line, $file );
+							$out = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $line, $file );
 						} else {
 							$out = $function['function'] . '()';
 						}
