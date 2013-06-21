@@ -54,52 +54,52 @@ defined( 'ABSPATH' ) or die();
 
 class QueryMonitor {
 
-	var $components = array();
+	protected $components = array();
 
-	function __construct() {
+	public function __construct() {
 
 		# Actions
-		add_action( 'init',           array( $this, 'init' ) );
-		add_action( 'admin_footer',   array( $this, 'register_output' ), 999 );
-		add_action( 'wp_footer',      array( $this, 'register_output' ), 999 );
-		add_action( 'login_footer',   array( $this, 'register_output' ), 999 );
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ), 999 );
+		add_action( 'init',           array( $this, 'action_init' ) );
+		add_action( 'admin_footer',   array( $this, 'action_footer' ), 999 );
+		add_action( 'wp_footer',      array( $this, 'action_footer' ), 999 );
+		add_action( 'login_footer',   array( $this, 'action_footer' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
 
 		# Filters
-		add_filter( 'pre_update_option_active_plugins',               array( $this, 'load_first' ) );
-		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'load_first_sitewide' ) );
+		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
+		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
-		register_activation_hook(   $this->_file( __FILE__ ), array( $this, 'activate' ) );
-		register_deactivation_hook( $this->_file( __FILE__ ), array( $this, 'deactivate' ) );
+		register_activation_hook(   QM_Util::file( __FILE__ ), array( $this, 'activate' ) );
+		register_deactivation_hook( QM_Util::file( __FILE__ ), array( $this, 'deactivate' ) );
 
 		$this->plugin_dir = untrailingslashit( plugin_dir_path( __FILE__ ) );
 		$this->plugin_url = untrailingslashit( plugin_dir_url( __FILE__ ) );
 
 		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
-			include( $component );
+			include $component;
 
 		foreach ( apply_filters( 'query_monitor_components', array() ) as $component )
 			$this->add_component( $component );
 
 	}
 
-	function add_component( $component ) {
+	public function add_component( QM_Component $component ) {
 		$this->components[$component->id] = $component;
 	}
 
-	function get_component( $id ) {
+	public function get_component( $id ) {
 		if ( isset( $this->components[$id] ) )
 			return $this->components[$id];
 		return false;
 	}
 
-	function get_components() {
+	public function get_components() {
 		return $this->components;
 	}
 
-	function activate( $sitewide = false ) {
+	public function activate( $sitewide = false ) {
 
-		if ( $admins = $this->get_admins() )
+		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
 		if ( !file_exists( WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
@@ -112,31 +112,23 @@ class QueryMonitor {
 
 	}
 
-	function deactivate() {
+	public function deactivate() {
 
-		if ( $admins = $this->get_admins() )
+		if ( $admins = QM_Util::get_admins() )
 			$admins->remove_cap( 'view_query_monitor' );
 
 		# Only delete db.php if it belongs to Query Monitor
 		if ( class_exists( 'QueryMonitorDB' ) )
-			@unlink( WP_CONTENT_DIR . '/db.php' );
+			unlink( WP_CONTENT_DIR . '/db.php' );
 
 	}
 
-	function get_admins() {
-		# @TODO this should use a cap not a role
-		if ( is_multisite() )
-			return false;
-		else
-			return get_role( 'administrator' );
-	}
-
-	function admin_bar_menu( $wp_admin_bar ) {
+	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
 
 		if ( !$this->show_query_monitor() )
 			return;
 
-		$class = implode( ' ', array( 'hide-if-js', $this->wpv() ) );
+		$class = implode( ' ', array( 'hide-if-js', QM_Util::wpv() ) );
 		$title = __( 'Query Monitor', 'query-monitor' );
 
 		$wp_admin_bar->add_menu( array(
@@ -157,9 +149,9 @@ class QueryMonitor {
 
 	}
 
-	function js_admin_bar_menu() {
+	public function js_admin_bar_menu() {
 
-		$class = implode( ' ', apply_filters( 'query_monitor_class', array( $this->wpv() ) ) );
+		$class = implode( ' ', apply_filters( 'query_monitor_class', array( QM_Util::wpv() ) ) );
 		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
 
 		if ( empty( $title ) )
@@ -180,7 +172,7 @@ class QueryMonitor {
 
 	}
 
-	function show_query_monitor() {
+	public function show_query_monitor() {
 
 		if ( isset( $this->show_query_monitor ) )
 			return $this->show_query_monitor;
@@ -202,7 +194,7 @@ class QueryMonitor {
 
 	}
 
-	function register_output() {
+	public function action_footer() {
 
 		if ( !$this->show_query_monitor() )
 			return;
@@ -214,7 +206,7 @@ class QueryMonitor {
 
 	}
 
-	function init() {
+	public function action_init() {
 
 		global $wp_locale;
 
@@ -247,13 +239,11 @@ class QueryMonitor {
 
 	}
 
-	function output() {
-
-		global $is_iphone;
+	public function output() {
 
 		if ( function_exists( 'wp_is_mobile' ) and wp_is_mobile() )
 			$qm_class = 'qm-mobile';
-		else if ( $is_iphone )
+		else if ( $GLOBALS['is_iphone'] )
 			$qm_class = 'qm-mobile';
 		else
 			$qm_class = '';
@@ -289,7 +279,7 @@ class QueryMonitor {
 
 	}
 
-	function load_first( $plugins ) {
+	public function filter_active_plugins( array $plugins ) {
 
 		$f = preg_quote( basename( __FILE__ ) );
 
@@ -300,7 +290,7 @@ class QueryMonitor {
 
 	}
 
-	function load_first_sitewide( $plugins ) {
+	public function filter_active_sitewide_plugins( array $plugins ) {
 
 		$f = plugin_basename( __FILE__ );
 
@@ -316,15 +306,6 @@ class QueryMonitor {
 			return $plugins;
 		}
 
-	}
-
-	function wpv() {
-		return 'qm-wp-' . ( floatval( $GLOBALS['wp_version'] ) * 10 );
-	}
-
-	function _file( $file ) {
-		# Symlink-safe version of plugin_basename() for passing to register_(de)?activation_hook()
-		return basename( dirname( $file ) ) . '/' . basename( $file );
 	}
 
 }

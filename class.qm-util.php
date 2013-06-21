@@ -184,4 +184,20 @@ class QM_Util {
 		return defined( 'DOING_AJAX' ) and DOING_AJAX;
 	}
 
+	public static function wpv() {
+		return 'qm-wp-' . ( floatval( $GLOBALS['wp_version'] ) * 10 );
+	}
+
+	public static function get_admins() {
+		if ( is_multisite() )
+			return false;
+		else
+			return get_role( 'administrator' );
+	}
+
+	public static function file( $file ) {
+		# Symlink-safe version of plugin_basename() for passing to register_(de)?activation_hook()
+		return basename( dirname( $file ) ) . '/' . basename( $file );
+	}
+
 }
