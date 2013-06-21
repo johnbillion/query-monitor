@@ -74,8 +74,6 @@ class QM_Component_Admin extends QM_Component {
 		if ( empty( $data ) )
 			return;
 
-		$post_type_warning = '';
-
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
@@ -99,7 +97,7 @@ class QM_Component_Admin extends QM_Component {
 				echo '<td>';
 				echo $value;
 				if ( !empty( $value ) and ( $data['current_screen']->$key != $value ) )
-					echo $post_type_warning = '&nbsp;(<a href="http://core.trac.wordpress.org/ticket/14886" class="qm-warn" title="' . esc_attr__( 'This value may not be as expected. Please see WordPress bug #14886.', 'query-monitor' ) . '" target="_blank">!</a>)';
+					echo '&nbsp;(<a href="http://core.trac.wordpress.org/ticket/14886" class="qm-warn" title="' . esc_attr__( 'This value may not be as expected. Please see WordPress bug #14886.', 'query-monitor' ) . '" target="_blank">!</a>)';
 				echo '</td>';
 				echo '</tr>';
 			}
@@ -142,7 +140,7 @@ class QM_Component_Admin extends QM_Component {
 			else
 				$col = $data['current_screen']->base;
 
-			if ( !empty( $data['current_screen']->post_type ) )
+			if ( !empty( $data['current_screen']->post_type ) and empty( $data['current_screen']->taxonomy ) )
 				$cols = $data['current_screen']->post_type . '_posts';
 			else
 				$cols = $data['current_screen']->id;
@@ -155,14 +153,16 @@ class QM_Component_Admin extends QM_Component {
 				$col = 'link';
 
 			echo '<tr>';
-			echo '<td rowspan="3">' . __( 'Columns', 'query-monitor' ) . '</td>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns<span class='qm-info'>,&nbsp;cols</span></td>";
+			echo '<td rowspan="2">' . __( 'Columns', 'query-monitor' ) . '</td>';
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns</td>";
 			echo '</tr>';
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column<span class='qm-info'>,&nbsp;col_id,&nbsp;post_id</span></td>";
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns</td>";
 			echo '</tr>';
+
 			echo '<tr>';
-			echo "<td colspan='2'>manage_<span class='qm-current'>{$data['current_screen']->id}</span>_sortable_columns<span class='qm-info'>,&nbsp;cols</span></td>";
+			echo '<td rowspan="1">' . __( 'Column', 'query-monitor' ) . '</td>';
+			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column</td>";
 			echo '</tr>';
 
 		}
@@ -181,5 +181,3 @@ function register_qm_admin( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_admin', 50 );
-
-?>
