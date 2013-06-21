@@ -55,7 +55,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 		if ( !empty( $data['times'] ) ) {
 
-			usort( $data['times'], array( 'QM_Util', 'sort' ) );
+			usort( $data['times'], 'QM_Util::sort' );
 
 			foreach ( $data['times'] as $component => $row ) {
 				$total_time  += $row['ltime'];
@@ -110,5 +110,3 @@ function register_qm_db_components( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_db_components', 35 );
-
-?>

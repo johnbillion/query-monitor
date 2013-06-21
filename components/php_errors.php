@@ -9,7 +9,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		parent::__construct();
 		set_error_handler( array( $this, 'error_handler' ) );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 
 	}
@@ -79,7 +79,10 @@ class QM_Component_PHP_Errors extends QM_Component {
 			if ( isset( $data['errors'][$type] ) ) {
 
 				echo '<tr>';
-				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
+				if ( count( $data['errors'][$type] ) > 1 )
+					echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
+				else
+					echo '<td>' . $title . '</td>';
 				$first = true;
 
 				foreach ( $data['errors'][$type] as $error ) {
@@ -87,13 +90,11 @@ class QM_Component_PHP_Errors extends QM_Component {
 					if ( !$first )
 						echo '<tr>';
 
-					$funca = $error->funcs;
-					unset( $funca[0], $funca[1] );
+					if ( empty( $error->funcs ) )
+						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+					else
+						$stack = implode( '<br />', $error->funcs );
 
-					$funca   = implode( ', ', array_reverse( $funca ) );
-					$stack   = $error->funcs;
-					unset( $stack[0], $stack[1] ); # QM functions
-					$stack   = implode( '<br />', $stack );
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					echo '<td>' . $message . '</td>';

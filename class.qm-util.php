@@ -76,6 +76,8 @@ class QM_Util {
 				return null;
 			else if ( isset( self::$ignore_method[$trace['class']][$trace['function']] ) )
 				return null;
+			else if ( 0 === strpos( $trace['class'], 'QM_' ) )
+				return null;
 			else
 				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
 
@@ -112,7 +114,7 @@ class QM_Util {
 
 	public static function backtrace() {
 		$trace = debug_backtrace( false );
-		$trace = array_map( array( __CLASS__, 'filter_trace' ), $trace );
+		$trace = array_map( 'QM_Util::filter_trace', $trace );
 		$trace = array_values( array_filter( $trace ) );
 		return $trace;
 	}

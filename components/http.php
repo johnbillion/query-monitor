@@ -159,8 +159,8 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 
-				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] ); # QM funcs
-				unset( $row['trace'][3], $row['trace'][4] ); # WP_Http funcs
+				unset( $row['trace'][0] ); # QM filter
+				unset( $row['trace'][1], $row['trace'][2] ); # WP_Http funcs
 
 				foreach ( $row['trace'] as & $trace ) {
 					foreach ( array( 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
@@ -219,5 +219,3 @@ function register_qm_http( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_http', 110 );
-
-?>

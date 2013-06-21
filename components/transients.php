@@ -49,8 +49,7 @@ class QM_Component_Transients extends QM_Component {
 		if ( !empty( $data['trans'] ) ) {
 
 			foreach ( $data['trans'] as $row ) {
-				unset( $row['trace'][0], $row['trace'][1], $row['trace'][2] ); # QM funcs
-				unset( $row['trace'][3] ); # transient funcs
+				unset( $row['trace'][0] ); # QM hook
 				$transient = str_replace( array(
 					'_site_transient_',
 					'_transient_'
@@ -118,5 +117,3 @@ function register_qm_transients( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_transients', 100 );
-
-?>

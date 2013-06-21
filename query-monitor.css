@@ -127,6 +127,7 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 	display: none;
 }
 
+.no-js #qm,
 .nojs #qm {
 	display: block;
 }
@@ -144,6 +145,10 @@ body.wp-admin #qm {
 
 body.sticky-menu #qm {
 	margin-left: 150px !important;
+}
+
+body.sticky-menu.folded #qm {
+	margin-left: 36px !important;
 }
 
 #qm > p {
@@ -169,7 +174,7 @@ body.sticky-menu #qm {
 
 #qm-query-errors,
 #qm-query-expensive,
-#qm-queries-wpdb {
+.qm-queries {
 	clear: left !important;
 }
 
@@ -198,6 +203,18 @@ body.sticky-menu #qm {
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
+}
+
+.qm tbody tr:hover th,
+.qm tbody tr:hover td {
+	background: #f8f8f8 !important;
+}
+
+#qm-conditionals tbody tr:hover td,
+#qm-authentication tbody tr:hover td,
+.qm tbody tr:hover th[rowspan],
+.qm tbody tr:hover td[rowspan] {
+	background: #fff !important;
 }
 
 .qm th {
@@ -269,10 +286,6 @@ body.sticky-menu #qm {
 	color: #999 !important;
 }
 
-.qm .qm-qm {
-	color: #999 !important;
-}
-
 .qm a {
 	color: #0074a2 !important;
 	text-decoration: none !important;
@@ -316,8 +329,16 @@ body.sticky-menu #qm {
 
 .qm-filter {
 	display: block !important;
+	font-family: 'Consolas', 'Courier New', monospace !important;	font-size: 11px !important;
+	font-weight: normal !important;
 	font-size: 11px !important;
 	margin: 4px 0 2px !important;
+	border: 1px solid #dadada !important;
+	padding: 1px !important;
+	background: #fff !important;
+	color: #444 !important;
+	height: 2em !important;
+	border-radius: 0 !important;
 }
 
 .qm-hide,
@@ -340,9 +361,6 @@ html[dir="rtl"] .qm td.qm-priority {
 
 html[dir="rtl"] .qm td.qm-var {
 	padding: 1px 0 1px 1.5em !important;
-}
-
-html[dir="rtl"] .qm td.qm-var {
 	text-align: left !important;
 }
 

@@ -146,7 +146,7 @@ class QueryMonitorDB extends wpdb {
 
 	public static function qm_get_caller( array $_trace ) {
 
-		$trace = array_map( array( 'QM_Util', 'filter_trace' ), $_trace );
+		$trace = array_map( 'QM_Util::filter_trace', $_trace );
 		$trace = array_values( array_filter( $trace ) );
 
 		if ( empty( $trace ) )

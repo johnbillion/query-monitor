@@ -14,7 +14,7 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );
 		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 20 );
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 	}
@@ -65,12 +65,14 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( count( $this->data['dbs'] ) > 1 ) {
 			foreach ( $this->data['dbs'] as $name => $db ) {
 				$menu[] = $this->menu( array(
-					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) )
+					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) ),
+					'href'  => sprintf( '#%s-%s', $this->id(), sanitize_title( $name ) ),
 				) );
 			}
 		} else {
 			$menu[] = $this->menu( array(
-				'title' => __( 'Queries', 'query-monitor' )
+				'title' => __( 'Queries', 'query-monitor' ),
+				'href'  => sprintf( '#%s-wpdb', $this->id() ),
 			) );
 		}
 
@@ -386,7 +388,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( $has_component )
 			$span++;
 
-		echo '<div class="qm qm-queries" id="qm-queries-' . $id . '">';
+		echo '<div class="qm qm-queries" id="' . $this->id() . '-' . $id . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -419,7 +421,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		echo '<tbody>';
 
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
-			usort( $rows, array( 'QM_Util', 'sort' ) );
+			usort( $rows, 'QM_Util::sort' );
 
 		if ( !empty( $rows ) ) {
 
@@ -436,7 +438,7 @@ class QM_Component_DB_Queries extends QM_Component {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( _n( '%s query', '%s queries', $total_qs, 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries: %s', 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
@@ -547,5 +549,3 @@ function register_qm_db_queries( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_db_queries', 20 );
-
-?>

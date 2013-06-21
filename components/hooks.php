@@ -32,7 +32,7 @@ class QM_Component_Hooks extends QM_Component {
 		if ( is_multisite() and is_network_admin() )
 			$screen = preg_replace( '|-network$|', '', $screen );
 
-		foreach ( array_keys( $wp_actions ) as $action ) {
+		foreach ( $wp_actions as $action => $count ) {
 
 			$name = $action;
 			$actions = array();
@@ -62,7 +62,7 @@ class QM_Component_Hooks extends QM_Component {
 								$class = $function['function'][0];
 
 							if ( ( 'QueryMonitor' == $class ) or ( 0 === strpos( $class, 'QM_' ) ) )
-								$css_class = 'qm-qm';
+								$css_class = 'qm-na';
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref = new ReflectionFunction( $function['function'] );
@@ -143,5 +143,3 @@ function register_qm_hooks( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_hooks', 80 );
-
-?>
