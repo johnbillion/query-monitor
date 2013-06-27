@@ -210,4 +210,20 @@ class QM_Util {
 		return basename( dirname( $file ) ) . '/' . basename( $file );
 	}
 
+	public static function format_sql( $sql ) {
+
+		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
+		$sql = esc_html( $sql );
+		$sql = trim( $sql );
+
+		foreach( array(
+			'ALTER', 'AND', 'COMMIT', 'CREATE', 'DESCRIBE', 'DELETE', 'DROP', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
+			'ON', 'OR', 'ORDER', 'ROLLBACK', 'SELECT', 'SET', 'SHOW','START', 'THEN', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
+		) as $cmd )
+			$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
+
+		return $sql;
+
+	}
+
 }

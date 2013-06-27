@@ -313,7 +313,7 @@ class QM_Component_DB_Queries extends QM_Component {
 				$func = reset( $func );
 			}
 
-			$sql  = $this->format_sql( $sql );
+			$sql  = QM_Util::format_sql( $sql );
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
@@ -351,21 +351,6 @@ class QM_Component_DB_Queries extends QM_Component {
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
 		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'has_component', 'total_time', 'total_qs' );
-
-	}
-
-	function format_sql( $sql ) {
-
-		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
-		$sql = esc_html( trim( $sql ) );
-
-		foreach( array(
-			'AND', 'DELETE', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
-			'ON', 'OR', 'ORDER', 'SELECT', 'SET', 'THEN', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
-		) as $cmd )
-			$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
-
-		return $sql;
 
 	}
 
