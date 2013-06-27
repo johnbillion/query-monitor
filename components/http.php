@@ -99,9 +99,10 @@ class QM_Component_HTTP extends QM_Component {
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		if ( !empty( $data['http'] ) ) {
+
+			echo '<tbody>';
 
 			foreach ( $data['http'] as $row ) {
 				$funcs = array();
@@ -159,7 +160,7 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 
-				unset( $row['trace'][0] ); # QM filter
+				unset( $row['trace'][0] ); # http_request_args filter
 				unset( $row['trace'][1], $row['trace'][2] ); # WP_Http funcs
 
 				foreach ( $row['trace'] as & $trace ) {
@@ -184,6 +185,9 @@ class QM_Component_HTTP extends QM_Component {
 				";
 			}
 
+			echo '</tbody>';
+			echo '<tfoot>';
+
 			$total_stime = number_format_i18n( $total_time, 4 );
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
@@ -196,16 +200,18 @@ class QM_Component_HTTP extends QM_Component {
 			echo '</span></td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
+			echo '</tfoot>';
 
 		} else {
 
+			echo '<tbody>';
 			echo '<tr>';
 			echo '<td colspan="6" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
+			echo '</tbody>';
 	
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 

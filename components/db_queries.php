@@ -155,7 +155,7 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo '<table cellspacing="0">';
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th colspan="5" class="qm-expensive">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</th>';
+			echo '<th colspan="5" class="qm-expensive">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), '<span class="qm-expensive">' . number_format_i18n( QM_DB_EXPENSIVE, $dp ) . '</span>' ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
@@ -418,12 +418,13 @@ class QM_Component_DB_Queries extends QM_Component {
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
 			usort( $rows, 'QM_Util::sort' );
 
 		if ( !empty( $rows ) ) {
+
+			echo '<tbody>';
 
 			foreach ( $rows as $i => $row ) {
 
@@ -434,11 +435,14 @@ class QM_Component_DB_Queries extends QM_Component {
 
 			}
 
+			echo '</tbody>';
+			echo '<tfoot>';
+
 			$total_stime = number_format_i18n( $total_time, 4 );
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries: %s', 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
@@ -446,14 +450,18 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-queries-number">' . number_format_i18n( $total_qs ) . '</span>' ) . '</td>';
 			echo "<td valign='top' class='qm-queries-time'>{$total_stime}</td>";
 			echo '</tr>';
+			echo '</tfoot>';
 
 		} else {
 
+			echo '<tbody>';
+			echo '<tr>';
 			echo '<td colspan="' . $span . '" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '</tr>';
+			echo '</tbody>';
 
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
@@ -464,7 +472,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		usort( $values, 'strcasecmp' );
 
 		$out = '<select id="qm-filter-' . esc_attr( $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
-		$out .= '<option value="">' . __( 'All', 'query-monitor' ) . '</option>'; # @TODO _x()?
+		$out .= '<option value="">' . _x( 'All', 'All option for query filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value )
 			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
@@ -484,9 +492,9 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		$cols = array_flip( $cols );
 
-		if ( null === $row['component'] )
+		if ( is_null( $row['component'] ) )
 			unset( $cols['component'] );
-		if ( null === $row['result'] )
+		if ( is_null( $row['result'] ) )
 			unset( $cols['result'] );
 
 		$row_attr = array();
@@ -498,8 +506,8 @@ class QM_Component_DB_Queries extends QM_Component {
 			$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
 		if ( is_wp_error( $row['result'] ) ) {
-			$r = $row['result']->get_error_message( 'qmdb' );
-			$result = "<td valign='top' class='qm-row-result qm-row-error'>{$r}</td>\n";
+			$error  = $row['result']->get_error_message( 'qmdb' );
+			$result = "<td valign='top' class='qm-row-result qm-row-error'>{$error}</td>\n";
 			$row_attr['class'] = 'qm-warn';
 		} else {
 			$result = "<td valign='top' class='qm-row-result'>{$row['result']}</td>\n";
@@ -537,7 +545,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( isset( $cols['time'] ) )
 			echo "<td valign='top' title='{$ltime}' class='qm-row-time{$td}'>{$stime}</td>\n";
 
-		echo "</tr>";
+		echo '</tr>';
 
 	}
 

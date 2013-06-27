@@ -24,29 +24,26 @@ GNU General Public License for more details.
 
 Query Monitor outputs info on:
 
-  * Admin screen variables
-  * Hooks and associated actions
+  * Admin screen variables and names of admin screen column hooks
+  * All hooks that have fired and their associated actions
   * HTTP API requests and responses
   * Database queries
-  * Memory usage and page build time
-  * Names of custom columns on admin screens
-  * PHP warnings and notices
-  * Query variables
-  * Selected MySQL and PHP configuration
-  * Selected WordPress variables
+    * Filterable by type, calling function and component
+    * Broken down and summarised by calling function and component
+    * Supports multiple instances of WPDB
+  * Memory usage and page generation time
+  * PHP warnings, notices and strict errors
+    * Also shown in AJAX responses (!) (more to come)
+  * Query vars, split by built-in and custom vars
+  * Selected MySQL, PHP, WordPress and server configuration
   * Template conditionals
   * Template file name and body classes
   * Transient update calls
 
 @ TODO:
 
- * Log and display queries from page loads before wp_redirect()
- * Display queries from AJAX calls
- * Show queried object info
+ * Display queries and other debugging from AJAX calls
  * Show hooks attached to some selected filters, eg request, parse_request
- * Add 'Component' filter to PHP errors list
- * Correctly show theme template used when using BuddyPress
- * Ignore dbDelta() in caller list
 
 */
 

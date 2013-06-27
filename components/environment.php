@@ -147,7 +147,7 @@ class QM_Component_Environment extends QM_Component {
 
 		$this->data['php']['variables']['error_reporting']['after'] = implode( '<br/>', $this->get_error_reporting() );
 
-		$wp_debug = ( WP_DEBUG ) ? 'ON' : 'OFF';
+		$wp_debug = ( WP_DEBUG ) ? 'true' : 'false';
 
 		$this->data['wp'] = array(
 			'version'  => $wp_version,

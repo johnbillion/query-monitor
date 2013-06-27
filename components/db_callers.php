@@ -51,9 +51,10 @@ class QM_Component_DB_Callers extends QM_Component {
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		if ( !empty( $data['times'] ) ) {
+
+			echo '<tbody>';
 
 			usort( $data['times'], 'QM_Util::sort' );
 
@@ -78,6 +79,9 @@ class QM_Component_DB_Callers extends QM_Component {
 
 			}
 
+			echo '</tbody>';
+			echo '<tfoot>';
+
 			$total_stime = number_format_i18n( $total_time, 4 );
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
@@ -90,13 +94,18 @@ class QM_Component_DB_Callers extends QM_Component {
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
+			echo '</tfoot>';
+
 		} else {
 
+			echo '<tbody>';
+			echo '<tr>';
 			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '</tr>';
+			echo '</tbody>';
 
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 

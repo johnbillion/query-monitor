@@ -6,10 +6,10 @@ class QM_Component_Authentication extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'plugins_loaded', array( $this, 'setup' ) );
+		add_filter( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 	}
 
-	function setup() {
+	function action_plugins_loaded() {
 
 		if ( !defined( 'QUERY_MONITOR_COOKIE' ) )
 			define( 'QUERY_MONITOR_COOKIE', 'query_monitor_' . COOKIEHASH );

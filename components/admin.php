@@ -18,43 +18,18 @@ class QM_Component_Admin extends QM_Component {
 
 	function process() {
 
-		global $current_screen, $pagenow;
+		global $pagenow;
 
-		if ( !is_admin() )
-			return;
-
-		if ( !isset( $current_screen ) or empty( $current_screen ) ) {
-
-			# Pre-3.0 compat:
-			if ( isset( $_GET['page'] ) ) {
-
-				$plugin_page = plugin_basename( stripslashes( $_GET['page'] ) );
-
-				if ( isset( $plugin_page ) ) {
-					if ( !$page_hook = get_plugin_page_hook( $plugin_page, $pagenow ) )
-						$page_hook = get_plugin_page_hook( $plugin_page, $plugin_page );
-					if ( !$page_hook )
-						$page_hook = $plugin_page;
-				}
-
-			} else {
-				$page_hook = $pagenow;
-			}
-
-			$this->data['base'] = $page_hook;
-
-		} else {
-			if ( isset( $_GET['page'] ) )
-				$this->data['base'] = $current_screen->base;
-			else
-				$this->data['base'] = $pagenow;
-		}
+		if ( isset( $_GET['page'] ) )
+			$this->data['base'] = get_current_screen()->base;
+		else
+			$this->data['base'] = $pagenow;
 
 		if ( !isset( $this->data['admin'] ) )
 			$this->data['admin'] = __( 'n/a', 'query-monitor' );
 
 		$this->data['pagenow'] = $pagenow;
-		$this->data['current_screen'] = $current_screen;
+		$this->data['current_screen'] = get_current_screen();
 
 	}
 
@@ -176,7 +151,8 @@ class QM_Component_Admin extends QM_Component {
 }
 
 function register_qm_admin( array $qm ) {
-	$qm['admin'] = new QM_Component_Admin;
+	if ( is_admin() )
+		$qm['admin'] = new QM_Component_Admin;
 	return $qm;
 }
 

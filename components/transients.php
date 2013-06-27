@@ -44,9 +44,10 @@ class QM_Component_Transients extends QM_Component {
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		if ( !empty( $data['trans'] ) ) {
+
+			echo '<tbody>';
 
 			foreach ( $data['trans'] as $row ) {
 				unset( $row['trace'][0] ); # QM hook
@@ -79,15 +80,18 @@ class QM_Component_Transients extends QM_Component {
 				";
 			}
 
+			echo '</tbody>';
+
 		} else {
 
+			echo '<tbody>';
 			echo '<tr>';
 			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
+			echo '</tbody>';
 
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
