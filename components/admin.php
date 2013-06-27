@@ -7,7 +7,7 @@ class QM_Component_Admin extends QM_Component {
 	function __construct() {
 		parent::__construct();
 		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
 	}
 
 	function current_screen( WP_Screen $screen ) {

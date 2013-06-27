@@ -12,7 +12,7 @@ class QM_Component_HTTP extends QM_Component {
 		add_action( 'http_api_debug',      array( $this, 'http_debug' ),    99, 5 );
 		add_filter( 'http_request_args',   array( $this, 'http_request' ),  99, 2 );
 		add_filter( 'http_response',       array( $this, 'http_response' ), 99, 3 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
 
 	}
 

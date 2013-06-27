@@ -6,7 +6,7 @@ class QM_Component_Conditionals extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 120 );
 	}
 
 	function admin_menu( array $menu ) {

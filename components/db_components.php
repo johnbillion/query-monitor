@@ -6,7 +6,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 35 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
 	}
 
 	function process() {

@@ -9,7 +9,7 @@ class QM_Component_Transients extends QM_Component {
 		# See http://core.trac.wordpress.org/ticket/24583
 		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ), 10, 3 );
 		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ), 10, 3 );
-		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 50 );
+		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 70 );
 	}
 
 	function setted_site_transient( $transient, $value = null, $expiration = null ) {

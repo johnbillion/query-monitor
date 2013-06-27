@@ -6,7 +6,7 @@ class QM_Component_Query_Vars extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 70 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 	}
 
 	function process() {
