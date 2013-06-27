@@ -187,7 +187,11 @@ class QM_Util {
 	}
 
 	public static function is_ajax() {
-		return defined( 'DOING_AJAX' ) and DOING_AJAX;
+		if ( defined( 'DOING_AJAX' ) and DOING_AJAX )
+			return true;
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' == strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) )
+			return true;
+		return false;
 	}
 
 	public static function wpv() {
