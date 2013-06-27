@@ -294,7 +294,7 @@ class QM_Component_DB_Queries extends QM_Component {
 						$component = __( 'Parent Theme', 'query-monitor' );
 						break;
 					case 'other':
-						$component = str_replace( QM_Util::standard_dir( ABSPATH ), '', $f );
+						$component = QM_Util::standard_dir( $f, '' );
 						break;
 					case 'core':
 					default:

@@ -149,7 +149,7 @@ class QueryMonitorDB extends wpdb {
 		$trace = array_values( array_filter( $trace ) );
 
 		if ( empty( $trace ) )
-			$trace[] = str_replace( QM_Util::standard_dir( ABSPATH ), '', QM_Util::standard_dir( $_trace[1]['file'] ) );
+			$trace[] = QM_Util::standard_dir( $_trace[1]['file'], '' );
 
 		return implode( ', ', array_reverse( $trace ) );
 

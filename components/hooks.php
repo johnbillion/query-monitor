@@ -65,10 +65,9 @@ class QM_Component_Hooks extends QM_Component {
 								$css_class = 'qm-na';
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
-							$ref = new ReflectionFunction( $function['function'] );
-							$line = $ref->getEndLine();
-							$file = trim( str_replace( array( QM_Util::standard_dir( ABSPATH ), QM_Util::standard_dir( WP_PLUGIN_DIR ) ), '', QM_Util::standard_dir( $ref->getFileName() ) ), '/' );
-							$out = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $line, $file );
+							$ref  = new ReflectionFunction( $function['function'] );
+							$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
+							$out  = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
 						} else {
 							$out = $function['function'] . '()';
 						}

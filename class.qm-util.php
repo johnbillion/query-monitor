@@ -92,7 +92,7 @@ class QM_Util {
 				$show = self::$show_args[$trace['function']];
 				if ( 'dir' === $show ) {
 					if ( isset( $trace['args'][0] ) ) {
-						$arg = str_replace( self::standard_dir( ABSPATH ), '&hellip;/', self::standard_dir( $trace['args'][0] ) );
+						$arg = self::standard_dir( $trace['args'][0], '&hellip;/' );
 						return $trace['function'] . "('{$arg}')";
 					}
 				} else {
@@ -151,10 +151,16 @@ class QM_Util {
 
 	}
 
-	public static function standard_dir( $dir ) {
+	public static function standard_dir( $dir, $abspath_replace = null ) {
+
 		$dir = str_replace( '\\', '/', $dir );
 		$dir = preg_replace( '|/+|', '/', $dir );
+
+		if ( is_string( $abspath_replace ) )
+			$dir = str_replace( self::standard_dir( ABSPATH ), $abspath_replace, $dir );
+
 		return $dir;
+
 	}
 
 	public static function get_file_component( $file ) {

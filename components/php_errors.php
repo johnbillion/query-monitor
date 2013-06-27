@@ -180,9 +180,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 			$key = md5( $message . $file . $line . $funcs[0] );
 
-			$filename = QM_Util::standard_dir( $file );
-			$path     = QM_Util::standard_dir( ABSPATH );
-			$filename = str_replace( $path, '', $filename );
+			$filename = QM_Util::standard_dir( $file, '' );
 
 			if ( isset( $this->data['errors'][$type][$key] ) ) {
 				$this->data['errors'][$type][$key]->calls++;
