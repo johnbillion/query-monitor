@@ -127,6 +127,8 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 	display: none;
 }
 
+body.login #qm,
+#qm.qm-show,
 .no-js #qm,
 .nojs #qm {
 	display: block;
@@ -183,7 +185,12 @@ body.sticky-menu.folded #qm {
 }
 
 .qm-queries {
-	width: 70% !important;
+	width: 80% !important;
+}
+
+/* wp_die() page: */
+body#error-page .qm-queries {
+	width: 94% !important;
 }
 
 .qm-queries>table {
@@ -198,7 +205,7 @@ body.sticky-menu.folded #qm {
 	font-size: 11px !important;
 	font-weight: normal !important;
 	line-height: 16px !important;
-	border: 1px solid #dadada !important;
+	border: 1px solid #e6e6e6 !important;
 	padding: 6px 9px 5px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
@@ -207,7 +214,7 @@ body.sticky-menu.folded #qm {
 
 .qm tbody tr:hover th,
 .qm tbody tr:hover td {
-	background: #f8f8f8 !important;
+	background: #f6f6f6 !important;
 }
 
 #qm-conditionals tbody tr:hover td,
@@ -327,18 +334,23 @@ body.sticky-menu.folded #qm {
 
 /* Filters */
 
-.qm-filter {
-	display: block !important;
+select.qm-filter {
+	display: none !important;
 	font-family: 'Consolas', 'Courier New', monospace !important;	font-size: 11px !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
 	margin: 4px 0 2px !important;
-	border: 1px solid #dadada !important;
+	border: 1px solid #e6e6e6 !important;
 	padding: 1px !important;
 	background: #fff !important;
 	color: #444 !important;
 	height: 2em !important;
+	width: auto !important;
 	border-radius: 0 !important;
+}
+
+select.qm-filter-show {
+	display: block !important;
 }
 
 .qm-hide,

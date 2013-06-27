@@ -56,42 +56,46 @@ jQuery( function($) {
 	if ( !window.qm )
 		return;
 
-	var container = document.createDocumentFragment();
+	if ( $('#wp-admin-bar-query-monitor').length ) {
 
-	$('#wp-admin-bar-query-monitor')
-		.addClass(qm.menu.top.classname)
-		.find('a').eq(0)
-		.html(qm.menu.top.title)
-	;
+		var container = document.createDocumentFragment();
 
-	$.each( qm.menu.sub, function( i, el ) {
-
-		new_menu = $('#wp-admin-bar-query-monitor-placeholder')
-			.clone()
-			.attr('id','wp-admin-bar-'+el.id)
-		;
-		new_menu
+		$('#wp-admin-bar-query-monitor')
+			.addClass(qm.menu.top.classname)
 			.find('a').eq(0)
-			.html(el.title)
-			.attr('href',el.href)
+			.html(qm.menu.top.title)
 		;
 
-		if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
-			new_menu.addClass(el.meta.classname);
+		$.each( qm.menu.sub, function( i, el ) {
 
-		container.appendChild( new_menu.get(0) );
+			new_menu = $('#wp-admin-bar-query-monitor-placeholder')
+				.clone()
+				.attr('id','wp-admin-bar-'+el.id)
+			;
+			new_menu
+				.find('a').eq(0)
+				.html(el.title)
+				.attr('href',el.href)
+			;
 
-	} );
+			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
+				new_menu.addClass(el.meta.classname);
 
-	$('#wp-admin-bar-query-monitor ul').append(container);
+			container.appendChild( new_menu.get(0) );
 
-	$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
-		$('#qm').show();
-	});
+		} );
 
-	$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
+		$('#wp-admin-bar-query-monitor ul').append(container);
 
-	$('#qm').find('select.qm-filter').on('change',function(e){
+		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
+			$('#qm').show();
+		});
+
+		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
+
+	}
+
+	$('#qm').find('select.qm-filter').addClass('qm-filter-show').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
 		    table  = $(this).closest('table'),
@@ -131,16 +135,17 @@ jQuery( function($) {
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
 
 			if ( window.console ) {
-				console.debug( '=== PHP Error ===' );
-				console.debug( options );
+				console.debug( '=== PHP Error in AJAX Response ===' ); // @TODO i18n
 				console.debug( error );
 			}
 
-			if ( ! qm.ajax_errors[error.type] ) {
-				$('#wp-admin-bar-query-monitor')
-					.addClass('qm-'+error.type)
-					.find('a').first().append('<span class="qm-ajax-'+ error.type +'"> / AJAX: '+ error.type +'</span>')
-				;
+			if ( $('#wp-admin-bar-query-monitor').length ) {
+				if ( ! qm.ajax_errors[error.type] ) {
+					$('#wp-admin-bar-query-monitor')
+						.addClass('qm-'+error.type)
+						.find('a').first().append('<span class="qm-ajax-'+ error.type +'"> / AJAX: '+ error.type +'</span>')
+					;
+				}
 			}
 
 			qm.ajax_errors[error.type] = true;
