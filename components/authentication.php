@@ -18,7 +18,7 @@ class QM_Component_Authentication extends QM_Component {
 
 	function show_query_monitor() {
 		if ( isset( $_COOKIE[QUERY_MONITOR_COOKIE] ) )
-			return $this->verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' );
+			return self::verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' );
 		return false;
 	}
 
@@ -37,11 +37,11 @@ class QM_Component_Authentication extends QM_Component {
 
 		$name = QUERY_MONITOR_COOKIE;
 
-		if ( !isset( $_COOKIE[$name] ) or !$this->verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' ) ) {
+		if ( !isset( $_COOKIE[$name] ) or !self::verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' ) ) {
 
 			$domain = COOKIE_DOMAIN;
 			$path   = COOKIEPATH;
-			$value  = $this->create_nonce( 'view_query_monitor' );
+			$value  = self::create_nonce( 'view_query_monitor' );
 			$text   = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
 			$link   = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
 
@@ -72,20 +72,20 @@ class QM_Component_Authentication extends QM_Component {
 
 	}
 
-	function create_nonce( $action ) {
+	public static function create_nonce( $action ) {
 		# This is just WordPress' nonce implementation minus the user ID
 		# check so a nonce can be set in a cookie and used cross-user
 		$i = wp_nonce_tick();
 		return substr( wp_hash( $i . $action, 'nonce' ), -12, 10 );
 	}
 
-	function verify_nonce( $nonce, $action ) {
+	public static function verify_nonce( $nonce, $action ) {
 
 		$i = wp_nonce_tick();
 
-		if ( substr( wp_hash( $i . $action, 'nonce' ), -12, 10 ) == $nonce )
+		if ( substr( wp_hash( $i . $action, 'nonce' ), -12, 10 ) === $nonce )
 			return true;
-		if ( substr( wp_hash( ( $i - 1 ) . $action, 'nonce' ), -12, 10 ) == $nonce )
+		if ( substr( wp_hash( ( $i - 1 ) . $action, 'nonce' ), -12, 10 ) === $nonce )
 			return true;
 
 		return false;
