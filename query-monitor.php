@@ -105,9 +105,9 @@ class QueryMonitor {
 			@symlink( $this->plugin_dir . '/wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
 
 		if ( $sitewide )
-			update_site_option( 'active_sitewide_plugins', $this->load_first_sitewide( get_site_option( 'active_sitewide_plugins'  ) ) );
+			update_site_option( 'active_sitewide_plugins', $this->filter_active_sitewide_plugins( get_site_option( 'active_sitewide_plugins'  ) ) );
 		else
-			update_option( 'active_plugins', $this->load_first( get_option( 'active_plugins'  ) ) );
+			update_option( 'active_plugins', $this->filter_active_plugins( get_option( 'active_plugins'  ) ) );
 
 	}
 
