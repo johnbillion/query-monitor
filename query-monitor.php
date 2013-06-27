@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.4b
+Version:     2.4-beta3
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
 Text Domain: query-monitor
@@ -55,6 +55,7 @@ defined( 'ABSPATH' ) or die();
 class QueryMonitor {
 
 	protected $components = array();
+	protected $did_footer = false;
 
 	public function __construct() {
 
@@ -63,7 +64,8 @@ class QueryMonitor {
 		add_action( 'admin_footer',   array( $this, 'action_footer' ), 999 );
 		add_action( 'wp_footer',      array( $this, 'action_footer' ), 999 );
 		add_action( 'login_footer',   array( $this, 'action_footer' ), 999 );
-		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
+		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999, 2 );
+		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
@@ -180,6 +182,9 @@ class QueryMonitor {
 		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
 			return $this->show_query_monitor = false;
 
+		if ( !did_action( 'plugins_loaded' ) )
+			return false;
+
 		if ( is_multisite() ) {
 			if ( current_user_can( 'manage_network_options' ) )
 				return $this->show_query_monitor = true;
@@ -195,6 +200,10 @@ class QueryMonitor {
 	}
 
 	public function action_footer() {
+		$this->did_footer = true;
+	}
+
+	public function action_shutdown() {
 
 		if ( !$this->show_query_monitor() )
 			return;
@@ -202,7 +211,10 @@ class QueryMonitor {
 		foreach ( $this->get_components() as $component )
 			$component->process();
 
-		add_action( 'shutdown', array( $this, 'output' ), 0 );
+		if ( QM_Util::is_ajax() )
+			$this->output_ajax();
+		else
+			$this->output_footer();
 
 	}
 
@@ -214,6 +226,9 @@ class QueryMonitor {
 
 		if ( !$this->show_query_monitor() )
 			return;
+
+		if ( QM_Util::is_ajax() )
+			ob_start();
 
 		if ( !defined( 'DONOTCACHEPAGE' ) )
 			define( 'DONOTCACHEPAGE', 1 );
@@ -239,14 +254,7 @@ class QueryMonitor {
 
 	}
 
-	public function output() {
-
-		if ( function_exists( 'wp_is_mobile' ) and wp_is_mobile() )
-			$qm_class = 'qm-mobile';
-		else if ( $GLOBALS['is_iphone'] )
-			$qm_class = 'qm-mobile';
-		else
-			$qm_class = '';
+	public function output_footer() {
 
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
@@ -254,28 +262,58 @@ class QueryMonitor {
 				ob_flush();
 		}
 
-		foreach ( $this->get_components() as $component )
-			$component->process_late();
+		if ( $this->did_footer ) {
 
-		$qm = array(
-			'menu'        => $this->js_admin_bar_menu(),
-			'ajax_errors' => array() # @TODO move this into the php_errors component
-		);
+			if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
+				$class = 'qm-show';
+			else
+				$class = '';
 
-		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $qm ) . ';' . "\n\n";
-		echo '</script>' . "\n\n";
+			$qm = array(
+				'menu'        => $this->js_admin_bar_menu(),
+				'ajax_errors' => array() # @TODO move this into the php_errors component
+			);
 
-		echo '<div id="qm" class="' . $qm_class . '">';
+			echo '<script type="text/javascript">' . "\n\n";
+			echo 'var qm = ' . json_encode( $qm ) . ';' . "\n\n";
+			echo '</script>' . "\n\n";
+
+		} else {
+
+			$class = 'qm-show';
+
+			echo '<link rel="stylesheet" href="' . $this->plugin_url . '/query-monitor.css" />';
+
+		}
+
+		echo '<div id="qm" class="' . $class . '">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
 
 		foreach ( $this->get_components() as $component ) {
-			$component->output( array(
+			$component->output_html( array(
 				'id' => $component->id()
-			), $component->data );
+			), $component->get_data() );
 		}
 
 		echo '</div>';
+
+	}
+
+	public function output_ajax() {
+
+		# if the headers have already been sent then we can't do anything about it
+		if ( headers_sent() )
+			return;
+
+		foreach ( $this->get_components() as $component ) {
+			$component->output_headers( array(
+				'id' => $component->id()
+			), $component->get_data() );
+		}
+
+		# flush once, because we're nice
+		if ( ob_get_length() )
+			ob_flush();
 
 	}
 

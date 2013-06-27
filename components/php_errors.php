@@ -3,7 +3,6 @@
 class QM_Component_PHP_Errors extends QM_Component {
 
 	var $id = 'php_errors';
-	var $all_errors = array();
 
 	function __construct() {
 
@@ -51,7 +50,35 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 	}
 
-	function output( array $args, array $data ) {
+	function output_headers( array $args, array $data ) {
+
+		if ( empty( $data['errors'] ) )
+			return;
+
+		$all_errors = array();
+
+		foreach ( $data['errors'] as $type => $errors ) {
+
+			foreach ( $errors as $key => $error ) {
+
+				$all_errors[$key] = $key;
+
+				header( sprintf( 'X-QM-Error-%s: %s',
+					$key,
+					json_encode( $error )
+				) );
+
+			}
+
+		}
+
+		header( sprintf( 'X-QM-Errors: %s',
+			json_encode( $all_errors )
+		) );
+
+	}
+
+	function output_html( array $args, array $data ) {
 
 		if ( empty( $data['errors'] ) )
 			return;
@@ -117,11 +144,12 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 	}
 
-	function error_handler( $type, $message, $file = null, $line = null ) {
+	function error_handler( $errno, $message, $file = null, $line = null ) {
 
-		global $querymonitor;
+		#if ( !( error_reporting() & $errno ) )
+		#	return false;
 
-		switch ( $type ) {
+		switch ( $errno ) {
 
 			case E_WARNING:
 			case E_USER_WARNING:
@@ -160,6 +188,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 				$this->data['errors'][$type][$key]->calls++;
 			} else {
 				$this->data['errors'][$type][$key] = (object) array(
+					'errno'    => $errno,
 					'type'     => $type,
 					'message'  => $message,
 					'file'     => $file,
@@ -168,21 +197,6 @@ class QM_Component_PHP_Errors extends QM_Component {
 					'funcs'    => $funcs,
 					'calls'    => 1
 				);
-			}
-
-			if ( QM_Util::is_ajax() and !headers_sent() and $querymonitor->show_query_monitor() ) {
-
-				$this->all_errors[$key] = $key;
-
-				header( sprintf( 'X-QM-Errors: %s',
-					json_encode( $this->all_errors )
-				), true );
-
-				header( sprintf( 'X-QM-Error-%s: %s',
-					$key,
-					json_encode( $this->data['errors'][$type][$key] )
-				), true );
-
 			}
 
 		}

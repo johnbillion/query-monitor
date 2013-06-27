@@ -23,7 +23,7 @@ class QM_Component_Conditionals extends QM_Component {
 
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -108,5 +108,3 @@ function register_qm_conditionals( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_conditionals', 40 );
-
-?>

@@ -29,7 +29,7 @@ class QM_Component_DB_Callers extends QM_Component {
 
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;

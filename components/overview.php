@@ -21,7 +21,7 @@ class QM_Component_Overview extends QM_Component {
 		return $title;
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		$http_time      = null;
 		$db_query_num   = null;

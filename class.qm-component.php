@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 abstract class QM_Component {
 
-	public $data = array();
+	protected $data = array();
 
 	protected function __construct() {}
 
@@ -50,11 +50,12 @@ abstract class QM_Component {
 		return false;
 	}
 
-	public function process_late() {
+	public function output_html( array $args, array $data ) {
 		return false;
 	}
 
-	abstract public function output( array $args, array $data );
+	public function output_headers( array $args, array $data ) {
+		return false;
+	}
 
 }
-

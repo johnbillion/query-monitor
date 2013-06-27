@@ -83,7 +83,7 @@ class QM_Component_HTTP extends QM_Component {
 
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		$total_time = 0;
 

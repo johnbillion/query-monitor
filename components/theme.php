@@ -19,9 +19,6 @@ class QM_Component_Theme extends QM_Component {
 
 		global $template;
 
-		if ( is_admin() )
-			return;
-
 		$template_file        = QM_Util::standard_dir( $template );
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
 		$template_directory   = QM_Util::standard_dir( get_template_directory() );
@@ -38,7 +35,7 @@ class QM_Component_Theme extends QM_Component {
 
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		if ( empty( $data ) )
 			return;
@@ -109,10 +106,9 @@ class QM_Component_Theme extends QM_Component {
 }
 
 function register_qm_theme( array $qm ) {
-	$qm['theme'] = new QM_Component_Theme;
+	if ( !is_admin() )
+		$qm['theme'] = new QM_Component_Theme;
 	return $qm;
 }
 
 add_filter( 'query_monitor_components', 'register_qm_theme', 60 );
-
-?>

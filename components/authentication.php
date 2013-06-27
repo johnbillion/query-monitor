@@ -22,7 +22,7 @@ class QM_Component_Authentication extends QM_Component {
 		return false;
 	}
 
-	function output( array $args, array $data ) {
+	function output_html( array $args, array $data ) {
 
 		# @TODO non-js fallback
 
@@ -100,5 +100,3 @@ function register_qm_authentication( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_authentication', 130 );
-
-?>
