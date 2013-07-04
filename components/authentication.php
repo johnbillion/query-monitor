@@ -11,20 +11,18 @@ class QM_Component_Authentication extends QM_Component {
 
 	function action_plugins_loaded() {
 
-		if ( !defined( 'QUERY_MONITOR_COOKIE' ) )
-			define( 'QUERY_MONITOR_COOKIE', 'query_monitor_' . COOKIEHASH );
+		if ( !defined( 'QM_COOKIE' ) )
+			define( 'QM_COOKIE', 'qm_' . COOKIEHASH );
 
 	}
 
 	function show_query_monitor() {
-		if ( isset( $_COOKIE[QUERY_MONITOR_COOKIE] ) )
-			return self::verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' );
+		if ( isset( $_COOKIE[QM_COOKIE] ) )
+			return self::verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
 		return false;
 	}
 
 	function output_html( array $args, array $data ) {
-
-		# @TODO non-js fallback
 
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
@@ -35,15 +33,15 @@ class QM_Component_Authentication extends QM_Component {
 		echo '</thead>';
 		echo '<tbody>';
 
-		$name = QUERY_MONITOR_COOKIE;
+		$name   = QM_COOKIE;
+		$domain = COOKIE_DOMAIN;
+		$path   = COOKIEPATH;
 
-		if ( !isset( $_COOKIE[$name] ) or !self::verify_nonce( $_COOKIE[QUERY_MONITOR_COOKIE], 'view_query_monitor' ) ) {
+		if ( !isset( $_COOKIE[$name] ) or !self::verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
 
-			$domain = COOKIE_DOMAIN;
-			$path   = COOKIEPATH;
-			$value  = self::create_nonce( 'view_query_monitor' );
-			$text   = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
-			$link   = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
+			$value = self::create_nonce( 'view_query_monitor' );
+			$text  = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
+			$link  = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
 
 			echo '<tr>';
 			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
