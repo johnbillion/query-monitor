@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.4
+Version:     2.4.1
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
 Text Domain: query-monitor
@@ -52,6 +52,7 @@ defined( 'ABSPATH' ) or die();
 class QueryMonitor {
 
 	protected $components = array();
+	protected $did_footer = false;
 
 	public function __construct() {
 
@@ -61,9 +62,7 @@ class QueryMonitor {
 		add_action( 'wp_footer',      array( $this, 'action_footer' ), 999 );
 		add_action( 'login_footer',   array( $this, 'action_footer' ), 999 );
 		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
-
-		if ( QM_Util::is_ajax() )
-			add_action( 'shutdown',   array( $this, 'action_footer' ), 0 );
+		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
@@ -202,15 +201,15 @@ class QueryMonitor {
 
 	public function action_footer() {
 
-		if ( !$this->show_query_monitor() )
-			return;
+		$this->did_footer = true;
 
-		foreach ( $this->get_components() as $component )
-			$component->process();
+	}
+
+	public function action_shutdown() {
 
 		if ( QM_Util::is_ajax() )
 			$this->output_ajax();
-		else
+		else if ( $this->did_footer )
 			$this->output_footer();
 
 	}
@@ -253,11 +252,17 @@ class QueryMonitor {
 
 	public function output_footer() {
 
+		if ( !$this->show_query_monitor() )
+			return;
+
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
 			while ( ob_get_length() )
 				ob_flush();
 		}
+
+		foreach ( $this->get_components() as $component )
+			$component->process();
 
 		if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
 			$class = 'qm-show';
@@ -291,6 +296,12 @@ class QueryMonitor {
 		# if the headers have already been sent then we can't do anything about it
 		if ( headers_sent() )
 			return;
+
+		if ( !$this->show_query_monitor() )
+			return;
+
+		foreach ( $this->get_components() as $component )
+			$component->process();
 
 		foreach ( $this->get_components() as $component ) {
 			$component->output_headers( array(
