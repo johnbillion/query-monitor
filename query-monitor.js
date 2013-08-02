@@ -95,7 +95,7 @@ jQuery( function($) {
 
 	}
 
-	$('#qm').find('select.qm-filter').addClass('qm-filter-show').on('change',function(e){
+	$('#qm').find('select.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
 		    table  = $(this).closest('table'),

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.4-beta3
+Version:     2.4-beta4
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
 Text Domain: query-monitor
@@ -52,7 +52,6 @@ defined( 'ABSPATH' ) or die();
 class QueryMonitor {
 
 	protected $components = array();
-	protected $did_footer = false;
 
 	public function __construct() {
 
@@ -61,8 +60,10 @@ class QueryMonitor {
 		add_action( 'admin_footer',   array( $this, 'action_footer' ), 999 );
 		add_action( 'wp_footer',      array( $this, 'action_footer' ), 999 );
 		add_action( 'login_footer',   array( $this, 'action_footer' ), 999 );
-		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999, 2 );
-		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
+		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
+
+		if ( QM_Util::is_ajax() )
+			add_action( 'shutdown',   array( $this, 'action_footer' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
@@ -197,10 +198,6 @@ class QueryMonitor {
 	}
 
 	public function action_footer() {
-		$this->did_footer = true;
-	}
-
-	public function action_shutdown() {
 
 		if ( !$this->show_query_monitor() )
 			return;
@@ -259,29 +256,19 @@ class QueryMonitor {
 				ob_flush();
 		}
 
-		if ( $this->did_footer ) {
-
-			if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
-				$class = 'qm-show';
-			else
-				$class = '';
-
-			$qm = array(
-				'menu'        => $this->js_admin_bar_menu(),
-				'ajax_errors' => array() # @TODO move this into the php_errors component
-			);
-
-			echo '<script type="text/javascript">' . "\n\n";
-			echo 'var qm = ' . json_encode( $qm ) . ';' . "\n\n";
-			echo '</script>' . "\n\n";
-
-		} else {
-
+		if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
 			$class = 'qm-show';
+		else
+			$class = '';
 
-			echo '<link rel="stylesheet" href="' . $this->plugin_url . '/query-monitor.css" />';
+		$qm = array(
+			'menu'        => $this->js_admin_bar_menu(),
+			'ajax_errors' => array() # @TODO move this into the php_errors component
+		);
 
-		}
+		echo '<script type="text/javascript">' . "\n\n";
+		echo 'var qm = ' . json_encode( $qm ) . ';' . "\n\n";
+		echo '</script>' . "\n\n";
 
 		echo '<div id="qm" class="' . $class . '">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
