@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 class QM_Util {
 
-	static $ignore_class = array(
+	protected static $ignore_class = array(
 		'wpdb'           => true,
 		'QueryMonitor'   => true,
 		'QueryMonitorDB' => true,
@@ -25,8 +25,8 @@ class QM_Util {
 		'W3_Db'          => true,
 		'Debug_Bar_PHP'  => true,
 	);
-	static $ignore_method = array();
-	static $ignore_func = array(
+	protected static $ignore_method = array();
+	protected static $ignore_func = array(
 		'include_once'         => true,
 		'require_once'         => true,
 		'include'              => true,
@@ -39,7 +39,7 @@ class QM_Util {
 		'_deprecated_file'     => true,
 		'_deprecated_function' => true,
 	);
-	static $show_args = array(
+	protected static $show_args = array(
 		'do_action'               => 1,
 		'apply_filters'           => 1,
 		'do_action_ref_array'     => 1,
@@ -51,9 +51,9 @@ class QM_Util {
 		'get_sidebar'             => 1,
 		'get_footer'              => 1,
 	);
-	static $filtered        = false;
-	static $file_components = array();
-	static $file_dirs       = array();
+	protected static $filtered        = false;
+	protected static $file_components = array();
+	protected static $file_dirs       = array();
 
 	private function __construct() {}
 

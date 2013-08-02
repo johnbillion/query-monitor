@@ -330,8 +330,8 @@ body.sticky-menu.folded #qm {
 /* Filters */
 
 select.qm-filter {
-	display: none !important;
-	font-family: 'Consolas', 'Courier New', monospace !important;	font-size: 11px !important;
+	display: block !important;
+	font-family: 'Consolas', 'Courier New', monospace !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
 	margin: 4px 0 2px !important;

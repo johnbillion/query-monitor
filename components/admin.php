@@ -59,8 +59,7 @@ class QM_Component_Admin extends QM_Component {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="2">' . __( 'Variables', 'query-monitor' ) . '</td>';
-		echo '<td class="qm-ltr">$current_screen</td>';
+		echo '<td class="qm-ltr">get_current_screen()</td>';
 		echo '<td>';
 
 		if ( is_object( $data['admin'] ) ) {

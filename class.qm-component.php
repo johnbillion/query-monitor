@@ -21,11 +21,11 @@ abstract class QM_Component {
 
 	protected function __construct() {}
 
-	public function id() {
+	final public function id() {
 		return "qm-{$this->id}";
 	}
 
-	protected function menu( array $args ) {
+	final protected function menu( array $args ) {
 
 		return wp_parse_args( $args, array(
 			'id'   => "query-monitor-{$this->id}",
@@ -34,28 +34,20 @@ abstract class QM_Component {
 
 	}
 
-	protected function get_component( $id ) {
+	final protected function get_component( $id ) {
 		# @TODO use singleton?
 		global $querymonitor;
 		return $querymonitor->get_component( $id );
 	}
 
-	public function get_data() {
-		if ( isset( $this->data ) )
-			return $this->data;
-		return null;
+	final public function get_data() {
+		return $this->data;
 	}
 
-	public function process() {
-		return false;
-	}
+	public function process() {}
 
-	public function output_html( array $args, array $data ) {
-		return false;
-	}
+	public function output_html( array $args, array $data ) {}
 
-	public function output_headers( array $args, array $data ) {
-		return false;
-	}
+	public function output_headers( array $args, array $data ) {}
 
 }

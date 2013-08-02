@@ -174,14 +174,17 @@ class QueryMonitor {
 
 	public function show_query_monitor() {
 
+		if ( !did_action( 'plugins_loaded' ) )
+			return false;
+
 		if ( isset( $this->show_query_monitor ) )
 			return $this->show_query_monitor;
 
-		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
+		if ( defined( 'WP_CLI' ) and WP_CLI )
 			return $this->show_query_monitor = false;
 
-		if ( !did_action( 'plugins_loaded' ) )
-			return false;
+		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
+			return $this->show_query_monitor = false;
 
 		if ( is_multisite() ) {
 			if ( current_user_can( 'manage_network_options' ) )
@@ -332,7 +335,8 @@ class QueryMonitor {
 
 }
 
-require_once dirname( __FILE__ ) . '/class.qm-util.php';
+if ( !class_exists( 'QM_Util' ) )
+	require_once dirname( __FILE__ ) . '/class.qm-util.php';
 require_once dirname( __FILE__ ) . '/class.qm-component.php';
 
 $GLOBALS['querymonitor'] = new QueryMonitor;
