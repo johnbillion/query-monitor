@@ -59,8 +59,8 @@ class QM_Component_Overview extends QM_Component {
 
 		$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
 
-		if ( isset( $http_time ) )
-			$time_usage .= '<br /><span class="qm-info" title="' . esc_attr( $excl_ltime ) . '">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
+		#if ( isset( $http_time ) )
+		#	$time_usage .= '<br /><span class="qm-info" title="' . esc_attr( $excl_ltime ) . '">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
 
 		echo '<tr>';
 		echo '<th>' . __( 'Page generation time', 'query-monitor' ) . '</th>';
