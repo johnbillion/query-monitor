@@ -342,6 +342,10 @@ select.qm-filter {
 	height: 2em !important;
 	width: auto !important;
 	border-radius: 0 !important;
+	float: none !important;
+	cursor: pointer !important;
+	text-transform: none !important;
+	-webkit-appearance: menulist !important;
 }
 
 .qm-hide,

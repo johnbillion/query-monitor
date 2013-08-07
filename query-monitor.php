@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.4.1
+Version:     2.4.2-beta-1
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
 Text Domain: query-monitor
