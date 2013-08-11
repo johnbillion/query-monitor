@@ -67,8 +67,7 @@ class QueryMonitorDB extends wpdb {
 			$this->hide_errors();
 
 		// some queries are made before the plugins have been loaded, and thus cannot be filtered with this method
-		if ( function_exists( 'apply_filters' ) )
-			$query = apply_filters( 'query', $query );
+		$query = apply_filters( 'query', $query );
 
 		$return_val = 0;
 		$this->flush();
@@ -79,7 +78,8 @@ class QueryMonitorDB extends wpdb {
 		// Keep track of the last query for debug..
 		$this->last_query = $query;
 
-		$this->timer_start();
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
+			$this->timer_start();
 
 		$this->result = @mysql_query( $query, $this->dbh );
 		$this->num_queries++;
@@ -93,31 +93,30 @@ class QueryMonitorDB extends wpdb {
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
 			$this->queries[$this->num_queries][4] = new WP_Error( 'qmdb', $this->last_error );
+			// Clear insert_id on a subsequent failed insert.
+			if ( $this->insert_id && preg_match( '/^\s*(insert|replace)\s/i', $query ) )
+				$this->insert_id = 0;
+
 			$this->print_error();
 			return false;
 		}
 
-		if ( preg_match( "/^\\s*(insert|delete|update|replace|alter) /i", $query ) ) {
+		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
+			$return_val = $this->result;
+		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
 			$this->rows_affected = mysql_affected_rows( $this->dbh );
 			// Take note of the insert_id
-			if ( preg_match( "/^\\s*(insert|replace) /i", $query ) ) {
+			if ( preg_match( '/^\s*(insert|replace)\s/i', $query ) ) {
 				$this->insert_id = mysql_insert_id($this->dbh);
 			}
 			// Return number of rows affected
 			$return_val = $this->rows_affected;
 		} else {
-			$i = 0;
-			while ( $i < @mysql_num_fields( $this->result ) ) {
-				$this->col_info[$i] = @mysql_fetch_field( $this->result );
-				$i++;
-			}
 			$num_rows = 0;
 			while ( $row = @mysql_fetch_object( $this->result ) ) {
 				$this->last_result[$num_rows] = $row;
 				$num_rows++;
 			}
-
-			@mysql_free_result( $this->result );
 
 			// Log number of rows the query returned
 			// and return number of rows selected
