@@ -25,6 +25,11 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
+if ( !is_readable( $qm_util = dirname( __FILE__ ) . '/../class.qm-util.php' ) )
+	return;
+
+require_once $qm_util;
+
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
 
@@ -157,7 +162,5 @@ class QueryMonitorDB extends wpdb {
 	}
 
 }
-
-require_once dirname( __FILE__ ) . '/../class.qm-util.php';
 
 $wpdb = new QueryMonitorDB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
