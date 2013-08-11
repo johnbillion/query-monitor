@@ -34,7 +34,9 @@ class QueryMonitorDB extends wpdb {
 		'max_execution_time'  => null,
 		'memory_limit'        => null,
 		'upload_max_filesize' => null,
-		'post_max_size'       => null
+		'post_max_size'       => null,
+		'display_errors'      => null,
+		'log_errors'          => null,
 	);
 
 	/**
