@@ -92,7 +92,7 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 	color: #ddd !important;
 }
 
-/* @TODO fix this: */;
+/* @TODO fix this: */
 #wpadminbar .quicklinks .menupop.qm-wp-32 ul li.qm-true.hover > a {
 	color: #fff !important;
 }
@@ -111,7 +111,7 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 	display: none !important;
 }
 
-@media screen and ( max-width: 782px ) {
+@media screen and (max-width: 782px) {
 	body.mp6 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
 		display: block !important;
 	}
@@ -226,7 +226,7 @@ body.sticky-menu.folded #qm {
 
 .qm-inner {
 	border-collapse: collapse !important;
-	margin: 0px !important;
+	margin: 0 !important;
 	background: #fff !important;
 	color: #555 !important;
 	float: none !important;
@@ -240,12 +240,12 @@ body.sticky-menu.folded #qm {
 	font-size: 11px !important;
 	line-height: 16px !important;
 	border: none !important;
-	padding: 1px 0px !important;
+	padding: 1px 0 !important;
 }
 
 .qm ul {
-	margin: 0px !important;
-	padding: 0px 0px 0px 10px !important;
+	margin: 0 !important;
+	padding: 0 0 0 10px !important;
 	list-style: none !important;
 }
 
@@ -347,6 +347,7 @@ select.qm-filter {
 	cursor: pointer !important;
 	text-transform: none !important;
 	-webkit-appearance: menulist !important;
+	-moz-appearance: menulist !important;
 }
 
 .qm-hide,
