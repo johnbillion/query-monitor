@@ -196,9 +196,10 @@ body.sticky-menu.folded #qm {
 .qm th {
 	background: #fff !important;
 	text-align: left !important;
-	font-family: 'Consolas', 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
+	font-style: normal !important;
 	line-height: 16px !important;
 	border: 1px solid #e6e6e6 !important;
 	padding: 6px 9px 5px !important;
@@ -235,7 +236,7 @@ body.sticky-menu.folded #qm {
 .qm-inner td,
 .qm-inner th {
 	text-align: left !important;
-	font-family: 'Consolas', 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
 	font-size: 11px !important;
 	line-height: 16px !important;
 	border: none !important;
@@ -331,7 +332,7 @@ body.sticky-menu.folded #qm {
 
 select.qm-filter {
 	display: block !important;
-	font-family: 'Consolas', 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
 	margin: 4px 0 2px !important;
