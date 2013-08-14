@@ -161,10 +161,9 @@ class QM_Component_HTTP extends QM_Component {
 				), $row['url'] );
 
 				unset( $row['trace'][0] ); # http_request_args filter
-				unset( $row['trace'][1], $row['trace'][2] ); # WP_Http funcs
 
 				foreach ( $row['trace'] as & $trace ) {
-					foreach ( array( 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
+					foreach ( array( 'WP_Http', 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
 						if ( 0 === strpos( $trace, $skip ) ) {
 							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
 							break;
