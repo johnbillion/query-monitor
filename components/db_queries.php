@@ -92,7 +92,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		return false;
 	}
 
-	function is_expensive( array $row ) {
+	protected static function is_expensive( array $row ) {
 		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
@@ -338,7 +338,7 @@ class QM_Component_DB_Queries extends QM_Component {
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
 
-			if ( $this->is_expensive( $row ) )
+			if ( self::is_expensive( $row ) )
 				$this->data['expensive'][] = $row;
 
 			$rows[] = $row;

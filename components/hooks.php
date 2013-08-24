@@ -52,8 +52,6 @@ class QM_Component_Hooks extends QM_Component {
 							else
 								$class = $function['function'][0];
 
-							if ( ( 'QueryMonitor' == $class ) or ( 0 === strpos( $class, 'QM_' ) ) )
-								$css_class = 'qm-na';
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref  = new ReflectionFunction( $function['function'] );

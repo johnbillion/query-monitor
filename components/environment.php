@@ -25,14 +25,14 @@ class QM_Component_Environment extends QM_Component {
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars[$setting] ) )
+			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[$setting] ) )
 				$val = $wpdb->qm_php_vars[$setting];
 			else
 				$val = ini_get( $setting );
 			$this->data['php']['variables'][$setting]['before'] = $val;
 		}
 
-		if ( isset( $wpdb->qm_php_vars['error_reporting'] ) )
+		if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars['error_reporting'] ) )
 			$val = $wpdb->qm_php_vars['error_reporting'];
 		else
 			$val = implode( '<br/>', $this->get_error_reporting() );
@@ -240,14 +240,13 @@ class QM_Component_Environment extends QM_Component {
 
 				$first  = true;
 				$warn   = __( "This value may not be optimal. Check the recommended configuration for '%s'.", 'query-monitor' );
-				$search = __( 'http://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
+				$search = __( 'https://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
 
 				foreach ( $db['variables'] as $setting ) {
 
 					$key = $setting->Variable_name;
 					$val = $setting->Value;
 					$prepend = '';
-					$warning = '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">' . __( 'Help', 'query-monitor' ) . '</a>)</span>';
 					$show_warning = false;
 
 					if ( ( true === $db['vars'][$key] ) and empty( $val ) )
@@ -256,7 +255,7 @@ class QM_Component_Environment extends QM_Component {
 						$show_warning = true;
 
 					if ( $show_warning )
-						$prepend .= $warning;
+						$prepend .= '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">' . __( 'Help', 'query-monitor' ) . '</a>)</span>';
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) )
 						$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
