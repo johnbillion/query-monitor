@@ -218,7 +218,7 @@ class QM_Util {
 
 		foreach( array(
 			'ALTER', 'AND', 'COMMIT', 'CREATE', 'DESCRIBE', 'DELETE', 'DROP', 'ELSE', 'END', 'FROM', 'GROUP', 'HAVING', 'INNER', 'INSERT', 'LIMIT',
-			'ON', 'OR', 'ORDER', 'ROLLBACK', 'SELECT', 'SET', 'SHOW','START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
+			'ON', 'OR', 'ORDER', 'ROLLBACK', 'SELECT', 'SET', 'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
 		) as $cmd )
 			$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
 
