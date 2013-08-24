@@ -40,6 +40,22 @@ abstract class QM_Component {
 		return $querymonitor->get_component( $id );
 	}
 
+	protected function build_filter( $name, array $values ) {
+
+		usort( $values, 'strcasecmp' );
+
+		$out = '<select id="qm-filter-' . esc_attr( $this->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->id . '-' . $name ) . '">';
+		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
+
+		foreach ( $values as $value )
+			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+
+		$out .= '</select>';
+
+		return $out;
+
+	}
+
 	final public function get_data() {
 		return $this->data;
 	}

@@ -432,9 +432,9 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
-			echo '<tr class="qm-queries-shown qm-hide">';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-queries-number">' . number_format_i18n( $total_qs ) . '</span>' ) . '</td>';
-			echo "<td valign='top' class='qm-queries-time'>{$total_stime}</td>";
+			echo '<tr class="qm-items-shown qm-hide">';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $total_qs ) . '</span>' ) . '</td>';
+			echo "<td valign='top' class='qm-items-time'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -453,23 +453,7 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function build_filter( $name, array $values ) {
-
-		usort( $values, 'strcasecmp' );
-
-		$out = '<select id="qm-filter-' . esc_attr( $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
-		$out .= '<option value="">' . _x( 'All', 'All option for query filters', 'query-monitor' ) . '</option>';
-
-		foreach ( $values as $value )
-			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
-
-		$out .= '</select>';
-
-		return $out;
-
-	}
-
-	function output_query_row( array $row, array $cols = array() ) {
+	function output_query_row( array $row, array $cols ) {
 
 		$cols = array_flip( $cols );
 
@@ -481,13 +465,13 @@ class QM_Component_DB_Queries extends QM_Component {
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
 		$ltime = number_format_i18n( $row['ltime'], 10 );
-		$td = $this->is_expensive( $row ) ? ' qm-expensive' : '';
+		$td = self::is_expensive( $row ) ? ' qm-expensive' : '';
 
 		if ( 'SELECT' != $row['type'] )
 			$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
 
 		if ( is_wp_error( $row['result'] ) ) {
-			$error  = $row['result']->get_error_message( 'qmdb' );
+			$error  = $row['result']->get_error_message();
 			$result = "<td valign='top' class='qm-row-result qm-row-error'>{$error}</td>\n";
 			$row_attr['class'] = 'qm-warn';
 		} else {
@@ -495,13 +479,13 @@ class QM_Component_DB_Queries extends QM_Component {
 		}
 
 		if ( isset( $cols['sql'] ) )
-			$row_attr['data-qm-type'] = $row['type'];
+			$row_attr['data-qm-db_queries-type'] = $row['type'];
 		if ( isset( $cols['component'] ) )
-			$row_attr['data-qm-component'] = $row['component'];
+			$row_attr['data-qm-db_queries-component'] = $row['component'];
 		if ( isset( $cols['caller'] ) )
-			$row_attr['data-qm-caller'] = $row['func_name'];
+			$row_attr['data-qm-db_queries-caller'] = $row['func_name'];
 		if ( isset( $cols['time'] ) )
-			$row_attr['data-qm-time'] = $row['ltime'];
+			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 
 		$funcs = esc_attr( implode( ', ', $row['funcs'] ) );
 		$attr = '';

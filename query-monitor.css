@@ -351,9 +351,10 @@ select.qm-filter {
 }
 
 .qm-hide,
-.qm-hide-type,
-.qm-hide-caller,
-.qm-hide-component {
+.qm-hide-hooks-name,
+.qm-hide-db_queries-type,
+.qm-hide-db_queries-caller,
+.qm-hide-db_queries-component {
 	display: none !important;
 }
 

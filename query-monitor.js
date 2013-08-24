@@ -104,18 +104,21 @@ jQuery( function($) {
 		    total  = tr.removeClass('qm-hide-' + filter).length,
 		    time   = 0;
 
-		if ( $(this).val() != '' )
-			tr.not('[data-qm-' + filter + '="' + val + '"]').addClass('qm-hide-' + filter);
+		if ( $(this).val() !== '' )
+			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
 
 		var matches = tr.filter(':visible');
 		matches.each(function(i){
-			time += parseFloat( $(this).attr('data-qm-time') );
+			var row_time = $(this).attr('data-qm-time');
+			if ( row_time )
+				time += parseFloat( row_time );
 		});
-		time = QM_i18n.number_format( time, 4 );
+		if ( time )
+			time = QM_i18n.number_format( time, 4 );
 
-		var results = table.find('.qm-queries-shown').removeClass('qm-hide');
-		results.find('.qm-queries-number').text(matches.length);
-		results.find('.qm-queries-time').text(time);
+		var results = table.find('.qm-items-shown').removeClass('qm-hide');
+		results.find('.qm-items-number').text(matches.length);
+		results.find('.qm-items-time').text(time);
 
 		$(this).blur();
 

@@ -23,28 +23,19 @@ class QM_Component_Hooks extends QM_Component {
 		global $wp_actions, $wp_filter;
 
 		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
-			$screen = $admin->data['base'];
+			$this->data['screen'] = $admin->data['base'];
 		else
-			$screen = '';
+			$this->data['screen'] = '';
 
-		$hooks = array();
+		$hooks = $parts = array();
 
 		if ( is_multisite() and is_network_admin() )
-			$screen = preg_replace( '|-network$|', '', $screen );
+			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
 
 		foreach ( $wp_actions as $action => $count ) {
 
 			$name = $action;
 			$actions = array();
-
-			if ( !empty( $screen ) ) {
-
-				if ( false !== strpos( $name, $screen . '.php' ) )
-					$name = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', $name );
-				else
-					$name = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', $name );
-
-			}
 
 			if ( isset( $wp_filter[$action] ) ) {
 
@@ -84,14 +75,19 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
+			$p = array_filter( preg_split( '/[_-]/', $name ) );
+			$parts = array_merge( $parts, $p );
+
 			$hooks[$action] = array(
 				'name'    => $name,
-				'actions' => $actions
+				'actions' => $actions,
+				'parts'   => $p
 			);
 
 		}
 
 		$this->data['hooks'] = $hooks;
+		$this->data['parts'] = array_unique( array_filter( $parts ) );
 
 	}
 
@@ -101,7 +97,7 @@ class QM_Component_Hooks extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
 		echo '<th>' . __( 'Actions', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -109,8 +105,25 @@ class QM_Component_Hooks extends QM_Component {
 
 		foreach ( $data['hooks'] as $hook ) {
 
-			echo '<tr>';
-			echo "<td valign='top'>{$hook['name']}</td>";
+			if ( !empty( $data['screen'] ) ) {
+
+				if ( false !== strpos( $hook['name'], $data['screen'] . '.php' ) )
+					$hook['name'] = str_replace( '-' . $data['screen'] . '.php', '-<span class="qm-current">' . $data['screen'] . '.php</span>', $hook['name'] );
+				else
+					$hook['name'] = str_replace( '-' . $data['screen'], '-<span class="qm-current">' . $data['screen'] . '</span>', $hook['name'] );
+
+			}
+
+			$row_attr['data-qm-hooks-name'] = implode( ' ', $hook['parts'] );
+
+			$attr = '';
+
+			foreach ( $row_attr as $a => $v )
+				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+
+			echo "<tr{$attr}>";
+
+			echo "<td valign='top'>{$hook['name']}</td>";	
 			if ( !empty( $hook['actions'] ) ) {
 				echo '<td><table class="qm-inner" cellspacing="0">';
 				foreach ( $hook['actions'] as $action ) {
