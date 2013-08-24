@@ -29,9 +29,9 @@ var QM_i18n = {
 		number = parseFloat( number );
 
 		var num_float = number.toFixed( decimals ),
-		    num_int   = Math.floor( number ),
-		    num_str   = num_int.toString(),
-		    fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
+			num_int   = Math.floor( number ),
+			num_str   = num_int.toString(),
+			fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
 			o = '';
 
 		if ( num_str.length > 3 ) {
@@ -68,7 +68,7 @@ jQuery( function($) {
 
 		$.each( qm.menu.sub, function( i, el ) {
 
-			new_menu = $('#wp-admin-bar-query-monitor-placeholder')
+			var new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 				.clone()
 				.attr('id','wp-admin-bar-'+el.id)
 			;
@@ -98,11 +98,11 @@ jQuery( function($) {
 	$('#qm').find('select.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
-		    table  = $(this).closest('table'),
-		    tr     = table.find('tbody tr[data-qm-' + filter + ']'),
-		    val    = $(this).val().replace(/[[\]()'"]/g, "\\$&"),
-		    total  = tr.removeClass('qm-hide-' + filter).length,
-		    time   = 0;
+			table  = $(this).closest('table'),
+			tr     = table.find('tbody tr[data-qm-' + filter + ']'),
+			val    = $(this).val().replace(/[[\]()'"]/g, "\\$&"),
+			total  = tr.removeClass('qm-hide-' + filter).length,
+			time   = 0;
 
 		if ( $(this).val() !== '' )
 			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
@@ -133,7 +133,7 @@ jQuery( function($) {
 
 		errors = $.parseJSON( errors );
 
-		for ( key in errors ) {
+		for ( var key in errors ) {
 
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
 
