@@ -13,7 +13,11 @@ class QM_Component_Redirects extends QM_Component {
 
 		global $querymonitor;
 
-		if ( !$location or !$querymonitor->show_query_monitor() )
+		if ( !$location )
+			return $location;
+		if ( !$querymonitor->show_query_monitor() )
+			return $location;
+		if ( headers_sent() )
 			return $location;
 
 		$trace = QM_Util::backtrace();
