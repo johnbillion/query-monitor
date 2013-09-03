@@ -94,6 +94,7 @@ class QM_Component_HTTP extends QM_Component {
 		echo '<th>' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Method', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Transport', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Timeout', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
@@ -146,8 +147,6 @@ class QM_Component_HTTP extends QM_Component {
 				}
 
 				$method = $row['args']['method'];
-				if ( isset( $row['transport'] ) )
-					$method .= '<br />' . sprintf( _x( '(using %s)', 'using HTTP transport', 'query-monitor' ), $row['transport'] );
 				if ( !$row['args']['blocking'] )
 					$method .= '<br />' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
 				$url = str_replace( array(
@@ -159,6 +158,22 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">&amp;</span>',
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
+
+				$transports = apply_filters( 'http_api_transports', array(
+					'curl', 'streams', 'fsockopen'
+				), $row['args'], $row['url'] ); 
+
+				if ( isset( $row['transport'] ) ) {
+					foreach ( $transports as & $transport ) {
+						if ( $row['transport'] == $transport )
+							$transport = sprintf( '<span class="qm-true">%s</span>', $transport );
+						else
+							$transport = sprintf( '<span class="qm-false">%s</span>', $transport );
+					}
+					$transport = implode( '<br/>', $transports );
+				} else {
+					$transport = '';
+				}
 
 				unset( $row['trace'][0] ); # http_request_args filter
 
@@ -177,6 +192,7 @@ class QM_Component_HTTP extends QM_Component {
 						<td valign='top' class='qm-url qm-ltr'>{$url}</td>\n
 						<td valign='top'>{$method}</td>\n
 						<td valign='top'>{$response}</td>\n
+						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
 						<td valign='top'>{$row['args']['timeout']}</td>\n
 						<td valign='top' title='{$ltime}'>{$stime}</td>\n
@@ -191,12 +207,7 @@ class QM_Component_HTTP extends QM_Component {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td colspan="5"><span class="qm-info">';
-			# http://core.trac.wordpress.org/ticket/18738
-			printf( __( 'HTTP transport order of preference: %s', 'query-monitor' ),
-				'<em>curl, streams, fsockopen</em>'
-			);
-			echo '</span></td>';
+			echo '<td colspan="6">&nbsp;</td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
@@ -205,7 +216,7 @@ class QM_Component_HTTP extends QM_Component {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="6" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="7" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
 	
