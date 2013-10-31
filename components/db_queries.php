@@ -4,6 +4,9 @@ if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
 if ( !defined( 'QM_DB_EXPENSIVE' ) )
 	define( 'QM_DB_EXPENSIVE', 0.05 );
+
+# QM_DB_LIMIT used to be a hard limit but proved to be more of an annoyance than anything. It now
+# just adds a nag to the top of the query table. I might remove it altogether at some point.
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
@@ -381,9 +384,9 @@ class QM_Component_DB_Queries extends QM_Component {
 		echo '<th colspan="' . $span . '" class="qm-ltr">' . $name . '</th>';
 		echo '</tr>';
 
-		if ( $max_exceeded and !isset( $_REQUEST['qm_display_all'] ) ) {
+		if ( $max_exceeded ) {
 			echo '<tr>';
-			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Only the first %3$d are shown. Total times shown are for all queries.', 'query-monitor' ),
+			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Crikey!', 'query-monitor' ),
 				number_format_i18n( $total_qs ),
 				$name,
 				number_format_i18n( QM_DB_LIMIT )
