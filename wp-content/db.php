@@ -2,12 +2,12 @@
 /*
 Plugin Name: Query Monitor
 
-********************************************************************
+*********************************************************************
 
-Symlink this file to your wp-content directory to provide additional
-database query information in Query Monitor's output.
+Ensure this file is symlinked to your wp-content directory to provide
+additional database query information in Query Monitor's output.
 
-********************************************************************
+*********************************************************************
 
 © 2013 John Blackbourn
 

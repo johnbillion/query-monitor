@@ -40,7 +40,7 @@ Query Monitor outputs info on:
   * Template file name and body classes
   * Transient update calls
 
-@ TODO:
+@ TODO
 
  * Display queries and other debugging from AJAX calls
  * Show hooks attached to some selected filters, eg request, parse_request
