@@ -226,4 +226,11 @@ class QM_Util {
 
 	}
 
+	public static function format_bool_constant( $constant ) {
+		if ( !defined( $constant ) or !constant( $constant ) )
+			return 'false';
+		else
+			return 'true';
+	}
+
 }
