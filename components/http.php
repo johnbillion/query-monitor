@@ -160,9 +160,12 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 
-				$transports = apply_filters( 'http_api_transports', array(
-					'curl', 'streams', 'fsockopen'
-				), $row['args'], $row['url'] ); 
+				if ( version_compare( $GLOBALS['wp_version'], 3.7, '>=' ) )
+					$transports = array( 'curl', 'streams' );
+				else
+					$transports = array( 'curl', 'streams', 'fsockopen' );
+
+				$transports = apply_filters( 'http_api_transports', $transports, $row['args'], $row['url'] ); 
 
 				if ( isset( $row['transport'] ) ) {
 					foreach ( $transports as & $transport ) {
