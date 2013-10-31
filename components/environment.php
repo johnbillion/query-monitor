@@ -147,13 +147,14 @@ class QM_Component_Environment extends QM_Component {
 
 		$this->data['php']['variables']['error_reporting']['after'] = implode( '<br/>', $this->get_error_reporting() );
 
-		$wp_debug = ( WP_DEBUG ) ? 'true' : 'false';
-
 		$this->data['wp'] = array(
-			'version'  => $wp_version,
-			'wp_debug' => $wp_debug,
-			'blog_id'  => $blog_id
+			'version'      => $wp_version,
+			'WP_DEBUG'     => QM_Util::format_bool_constant( 'WP_DEBUG' ),
+			'WP_LOCAL_DEV' => QM_Util::format_bool_constant( 'WP_LOCAL_DEV' ),
 		);
+
+		if ( is_multisite() )
+			$this->data['wp']['blog_id'] = $blog_id;
 
 		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );
 		$server = explode( '/', reset( $server ) );
@@ -281,28 +282,23 @@ class QM_Component_Environment extends QM_Component {
 
 		}
 
-		$wp_span = 2;
-
-		if ( is_multisite() )
-			$wp_span++;
-
 		echo '<tr>';
-		echo '<td rowspan="' . $wp_span . '">WordPress</td>';
-		echo '<td>version</td>';
-		echo "<td>{$data['wp']['version']}</td>";
-		echo '</tr>';
+		echo '<td rowspan="' . count( $data['wp'] ). '">WordPress</td>';
 
-		if ( is_multisite() ) {
-			echo '<tr>';
-			echo '<td>blog_id</td>';
-			echo "<td>{$data['wp']['blog_id']}</td>";
+		$first = true;
+
+		foreach ( $data['wp'] as $key => $val ) {
+
+			if ( !$first )
+				echo "<tr>";
+
+			echo "<td>{$key}</td>";
+			echo "<td>{$val}</td>";
 			echo '</tr>';
-		}
 
-		echo '<tr>';
-		echo '<td>WP_DEBUG</td>';
-		echo "<td>{$data['wp']['wp_debug']}</td>";
-		echo '</tr>';
+			$first = false;
+
+		}
 
 		echo '<tr>';
 		echo '<td rowspan="4">' . __( 'Server', 'query-monitor' ) . '</td>';
