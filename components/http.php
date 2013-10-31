@@ -24,7 +24,7 @@ class QM_Component_HTTP extends QM_Component {
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $m_start,
-			'trace' => QM_Util::backtrace()
+			'trace' => QM_Backtrace::backtrace()
 		);
 		$args['_qm_key'] = $key;
 		return $args;

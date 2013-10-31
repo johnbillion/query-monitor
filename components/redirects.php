@@ -20,7 +20,7 @@ class QM_Component_Redirects extends QM_Component {
 		if ( headers_sent() )
 			return $location;
 
-		$trace = QM_Util::backtrace();
+		$trace = QM_Backtrace::backtrace();
 		unset( $trace[0] ); # wp_redirect filter
 
 		header( sprintf( 'X-QM-Redirect-Trace: %s',

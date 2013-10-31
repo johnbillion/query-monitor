@@ -346,8 +346,12 @@ class QueryMonitor {
 
 }
 
+# @TODO autoload these QM_ classes:
 if ( !class_exists( 'QM_Util' ) )
 	require_once dirname( __FILE__ ) . '/class.qm-util.php';
+if ( !class_exists( 'QM_Backtrace' ) )
+	require_once dirname( __FILE__ ) . '/class.qm-backtrace.php';
+
 require_once dirname( __FILE__ ) . '/class.qm-component.php';
 
 $GLOBALS['querymonitor'] = new QueryMonitor;

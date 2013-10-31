@@ -23,7 +23,7 @@ class QM_Component_Transients extends QM_Component {
 	function setted_transient( $transient, $type, $value = null, $expiration = null ) {
 		$this->data['trans'][] = array(
 			'transient'  => $transient,
-			'trace'      => QM_Util::backtrace(),
+			'trace'      => QM_Backtrace::backtrace(),
 			'type'       => $type,
 			'value'      => $value,
 			'expiration' => $expiration,

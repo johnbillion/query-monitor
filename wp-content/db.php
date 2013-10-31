@@ -25,10 +25,16 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-if ( !is_readable( $qm_util = dirname( __FILE__ ) . '/../class.qm-util.php' ) )
-	return;
-
-require_once $qm_util;
+# @TODO autoload these QM_ classes:
+foreach ( array( 'util', 'backtrace' ) as $class ) {
+	$file = sprintf( '%s/../class.qm-%s.php',
+		dirname( __FILE__ ),
+		$class
+	);
+	if ( !is_readable( $file ) )
+		return;
+	require_once $file;
+}
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
@@ -136,6 +142,7 @@ class QueryMonitorDB extends wpdb {
 		return $return_val;
 	}
 
+	# @TODO move this to the QM_Backtrace class
 	public static function qm_get_stack( array $_trace ) {
 
 		$stack = array();
@@ -149,9 +156,10 @@ class QueryMonitorDB extends wpdb {
 
 	}
 
+	# @TODO move this to the QM_Backtrace class
 	public static function qm_get_caller( array $_trace ) {
 
-		$trace = array_map( 'QM_Util::filter_trace', $_trace );
+		$trace = array_map( 'QM_Backtrace::filter_trace', $_trace );
 		$trace = array_values( array_filter( $trace ) );
 
 		if ( empty( $trace ) )

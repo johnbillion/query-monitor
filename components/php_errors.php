@@ -173,7 +173,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		if ( error_reporting() > 0 ) {
 
-			$funcs = QM_Util::backtrace();
+			$funcs = QM_Backtrace::backtrace();
 
 			if ( !isset( $funcs[0] ) )
 				$funcs[0] = '';
