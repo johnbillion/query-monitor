@@ -189,7 +189,16 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function add_func_time( $func, $ltime, $type ) {
+	function log_type( $type ) {
+
+		if ( isset( $this->data['types'][$type] ) )
+			$this->data['types'][$type]++;
+		else
+			$this->data['types'][$type] = 1;
+
+	}
+
+	function log_caller( $func, $ltime, $type ) {
 
 		if ( !isset( $this->data['times'][$func] ) ) {
 			$this->data['times'][$func] = array(
@@ -208,15 +217,9 @@ class QM_Component_DB_Queries extends QM_Component {
 		else
 			$this->data['times'][$func]['types'][$type] = 1;
 
-		# @TODO: this should be in a separate function:
-		if ( isset( $this->data['types'][$type] ) )
-			$this->data['types'][$type]++;
-		else
-			$this->data['types'][$type] = 1;
-
 	}
 
-	function add_component_time( $component, $ltime, $type ) {
+	function log_component( $component, $ltime, $type ) {
 
 		if ( !isset( $this->data['component_times'][$component] ) ) {
 			$this->data['component_times'][$component] = array(
@@ -321,10 +324,11 @@ class QM_Component_DB_Queries extends QM_Component {
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
-			$this->add_func_time( $func_name, $ltime, $type );
+			$this->log_type( $type );
+			$this->log_caller( $func_name, $ltime, $type );
 
 			if ( $has_component )
-				$this->add_component_time( $component, $ltime, $type );
+				$this->log_component( $component, $ltime, $type );
 
 			if ( !isset( $types[$type]['total'] ) )
 				$types[$type]['total'] = 1;
