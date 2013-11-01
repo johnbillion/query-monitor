@@ -108,11 +108,6 @@ class QM_Util {
 			return get_role( 'administrator' );
 	}
 
-	public static function file( $file ) {
-		# Symlink-safe version of plugin_basename() for passing to register_(de)?activation_hook()
-		return basename( dirname( $file ) ) . '/' . basename( $file );
-	}
-
 	public static function format_sql( $sql ) {
 
 		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );

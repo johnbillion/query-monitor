@@ -49,12 +49,14 @@ Query Monitor outputs info on:
 
 defined( 'ABSPATH' ) or die();
 
-class QueryMonitor {
+require_once dirname( __FILE__ ) . '/class.qm-plugin.php';
+
+class QueryMonitor extends QM_Plugin {
 
 	protected $components = array();
 	protected $did_footer = false;
 
-	public function __construct() {
+	public function __construct( $file ) {
 
 		# Actions
 		add_action( 'init',           array( $this, 'action_init' ) );
@@ -68,13 +70,14 @@ class QueryMonitor {
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
-		register_activation_hook(   QM_Util::file( __FILE__ ), array( $this, 'activate' ) );
-		register_deactivation_hook( QM_Util::file( __FILE__ ), array( $this, 'deactivate' ) );
+		# [Dea|A]ctivation
+		register_activation_hook(   __FILE__, array( $this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-		$this->plugin_dir = untrailingslashit( plugin_dir_path( __FILE__ ) );
-		$this->plugin_url = untrailingslashit( plugin_dir_url( __FILE__ ) );
+		# Parent setup:
+		parent::__construct( $file );
 
-		foreach ( glob( "{$this->plugin_dir}/components/*.php" ) as $component )
+		foreach ( glob( $this->plugin_path( 'components/*.php' ) ) as $component )
 			include $component;
 
 		foreach ( apply_filters( 'query_monitor_components', array() ) as $component )
@@ -101,8 +104,8 @@ class QueryMonitor {
 		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
-		if ( !file_exists( WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
-			@symlink( $this->plugin_dir . '/wp-content/db.php', WP_CONTENT_DIR . '/db.php' );
+		if ( !file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
+			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
 
 		if ( $sitewide )
 			update_site_option( 'active_sitewide_plugins', $this->filter_active_sitewide_plugins( get_site_option( 'active_sitewide_plugins'  ) ) );
@@ -231,15 +234,15 @@ class QueryMonitor {
 
 		wp_enqueue_style(
 			'query-monitor',
-			$this->plugin_url . '/query-monitor.css',
+			$this->plugin_url( 'query-monitor.css' ),
 			null,
-			filemtime( $this->plugin_dir . '/query-monitor.css' )
+			$this->plugin_ver( 'query-monitor.css' )
 		);
 		wp_enqueue_script(
 			'query-monitor',
-			$this->plugin_url . '/query-monitor.js',
+			$this->plugin_url( 'query-monitor.js' ),
 			array( 'jquery' ),
-			filemtime( $this->plugin_dir . '/query-monitor.js' ),
+			$this->plugin_ver( 'query-monitor.js' ),
 			true
 		);
 		wp_localize_script(
@@ -354,4 +357,4 @@ if ( !class_exists( 'QM_Backtrace' ) )
 
 require_once dirname( __FILE__ ) . '/class.qm-component.php';
 
-$GLOBALS['querymonitor'] = new QueryMonitor;
+$GLOBALS['querymonitor'] = new QueryMonitor( __FILE__ );

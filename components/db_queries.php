@@ -104,7 +104,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->data['query_num']  = 0;
+		$this->data['total_qs']  = 0;
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
 
@@ -348,8 +348,7 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		}
 
-		# @TODO standardise these var names:
-		$this->data['query_num'] += $total_qs;
+		$this->data['total_qs'] += $total_qs;
 		$this->data['total_time'] += $total_time;
 
 		# @TODO put errors in here too:
