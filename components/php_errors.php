@@ -179,12 +179,8 @@ class QM_Component_PHP_Errors extends QM_Component {
 		if ( error_reporting() > 0 ) {
 
 			$trace = new QM_Backtrace;
-
-			# @TODO fix:
-			if ( !isset( $funcs[0] ) )
-				$funcs[0] = '';
-
-			$key = md5( $message . $file . $line . $funcs[0] );
+			$func  = reset( $trace->get_stack() );
+			$key   = md5( $message . $file . $line . $func );
 
 			$filename = QM_Util::standard_dir( $file, '' );
 
