@@ -120,19 +120,8 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
-			$row_attr['data-qm-hooks-name'] = implode( ' ', $hook['parts'] );
-			$row_attr['data-qm-hooks-component'] = '';
-
-			if ( !empty( $hook['actions'] ) ) {
-
-				$row_attr['data-qm-hooks-component'] = array();
-
-				foreach ( $hook['actions'] as $action )
-					$row_attr['data-qm-hooks-component'][$action['component']->name] = $action['component']->name;
-
-				$row_attr['data-qm-hooks-component'] = implode( ' ', $row_attr['data-qm-hooks-component'] );
-
-			}
+			$row_attr['data-qm-hooks-name']      = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-hooks-component'] = implode( ' ', $hook['components'] );
 
 			$attr = '';
 
