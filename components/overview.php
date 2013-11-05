@@ -63,22 +63,19 @@ class QM_Component_Overview extends QM_Component {
 		#	$time_usage .= '<br /><span class="qm-info" title="' . esc_attr( $excl_ltime ) . '">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
 
 		echo '<tr>';
-		echo '<th>' . __( 'Page generation time', 'query-monitor' ) . '</th>';
-		echo "<td><span title='{$total_ltime}'>{$total_stime}</span>{$time_usage}</td>";
+		echo '<th scope="col">' . __( 'Page generation time', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
+		if ( isset( $db_query_num ) ) {
+			echo '<th scope="col">' . __( 'Database query time', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . __( 'Database queries', 'query-monitor' ) . '</th>';
+		}
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<th>' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
+		echo "<td><span title='{$total_ltime}'>{$total_stime}</span>{$time_usage}</td>";
 		echo '<td><span title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . '</span>' . $memory_usage . '</td>';
-		echo '</tr>';
-
 		if ( isset( $db_query_num ) ) {
-			echo '<tr>';
-			echo '<th>' . __( 'Database query time', 'query-monitor' ) . '</th>';
 			echo "<td title='{$db_ltime}'>{$db_stime}</td>";
-			echo '</tr>';
-			echo '<tr>';
-			echo '<th>' . __( 'Database queries', 'query-monitor' ) . '</th>';
 			echo '<td>';
 
 			foreach ( $db_query_num as $type_name => $type_count )
@@ -87,8 +84,8 @@ class QM_Component_Overview extends QM_Component {
 			echo implode( '<br />', $db_query_types );
 
 			echo '</td>';
-			echo '</tr>';
 		}
+		echo '</tr>';
 
 		echo '</tbody>';
 		echo '</table>';
@@ -124,5 +121,3 @@ function register_qm_overview( array $qm ) {
 }
 
 add_filter( 'query_monitor_components', 'register_qm_overview', 10 );
-
-?>
