@@ -98,7 +98,8 @@ class QM_Component_Hooks extends QM_Component {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
-		echo '<th>' . __( 'Actions', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'Actions', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -115,19 +116,26 @@ class QM_Component_Hooks extends QM_Component {
 			}
 
 			$row_attr['data-qm-hooks-name'] = implode( ' ', $hook['parts'] );
-
 			$attr = '';
+
+			if ( !empty( $hook['actions'] ) )
+				$rowspan = count( $hook['actions'] );
+			else
+				$rowspan = 1;
 
 			foreach ( $row_attr as $a => $v )
 				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 
 			echo "<tr{$attr}>";
 
-			echo "<td valign='top'>{$hook['name']}</td>";	
+			echo "<td valign='top' rowspan='{$rowspan}'>{$hook['name']}</td>";	
 			if ( !empty( $hook['actions'] ) ) {
-				echo '<td><table class="qm-inner" cellspacing="0">';
+
+				$first = true;
+
 				foreach ( $hook['actions'] as $action ) {
-					echo '<tr>';
+					if ( !$first )
+						echo "<tr{$attr}>";
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
 					echo esc_html( $action['function'] );
@@ -136,9 +144,11 @@ class QM_Component_Hooks extends QM_Component {
 					echo esc_html( $action['component']->name );
 					echo '</td>';
 					echo '</tr>';
+					$first = false;
 				}
-				echo '</table></td>';
+
 			} else {
+				echo '<td colspan="2">&nbsp;</td>';
 				echo '<td>&nbsp;</td>';
 			}
 			echo '</tr>';
