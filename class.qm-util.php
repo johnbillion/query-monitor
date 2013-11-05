@@ -127,12 +127,18 @@ class QM_Util {
 		foreach ( $backtrace->get_trace() as $item ) {
 
 			try {
-				if ( isset( $item['class'] ) )
-					$ref = new ReflectionMethod( $item['class'], $item['function'] );
-				else
-					$ref = new ReflectionFunction( $item['function'] );
 
-				$comp = self::get_file_component( $ref->getFileName() );
+				if ( isset( $item['file'] ) ) {
+					$file = $item['file'];
+				} else if ( isset( $item['class'] ) ) {
+					$ref = new ReflectionMethod( $item['class'], $item['function'] );
+					$file = $ref->getFileName();
+				} else {
+					$ref = new ReflectionFunction( $item['function'] );
+					$file = $ref->getFileName();
+				}
+
+				$comp = self::get_file_component( $file );
 				$components[$comp->type] = $comp;
 			} catch ( ReflectionException $e ) {
 				# nothing
