@@ -27,7 +27,7 @@ class QM_Component_Hooks extends QM_Component {
 		else
 			$this->data['screen'] = '';
 
-		$hooks = $parts = array();
+		$hooks = $parts = $components = array();
 
 		if ( is_multisite() and is_network_admin() )
 			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
@@ -36,14 +36,13 @@ class QM_Component_Hooks extends QM_Component {
 
 			$name = $action;
 			$actions = array();
+			$c = array();
 
 			if ( isset( $wp_filter[$action] ) ) {
 
 				foreach( $wp_filter[$action] as $priority => $functions ) {
 
 					foreach ( $functions as $function ) {
-
-						$css_class = '';
 
 						if ( is_array( $function['function'] ) ) {
 
@@ -52,19 +51,24 @@ class QM_Component_Hooks extends QM_Component {
 							else
 								$class = $function['function'][0];
 
+							$ref = new ReflectionMethod( $class, $function['function'][1] );
+
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref  = new ReflectionFunction( $function['function'] );
 							$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
 							$out  = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
 						} else {
+							$ref  = new ReflectionFunction( $function['function'] );
 							$out = $function['function'] . '()';
 						}
 
+						$component = QM_Util::get_file_component( $ref->getFileName() );
+						$c[$component->name] = $component->name;
 						$actions[] = array(
-							'class'    => $css_class,
-							'priority' => $priority,
-							'function' => $out
+							'priority'  => $priority,
+							'function'  => $out,
+							'component' => $component,
 						);
 
 					}
@@ -73,19 +77,22 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
-			$p = array_filter( preg_split( '/[_-]/', $name ) );
+			$p = array_filter( preg_split( '/[_\/-]/', $name ) );
 			$parts = array_merge( $parts, $p );
+			$components = array_merge( $components, $c );
 
 			$hooks[$action] = array(
 				'name'    => $name,
 				'actions' => $actions,
-				'parts'   => $p
+				'parts'   => $p,
+				'components' => $c,
 			);
 
 		}
 
 		$this->data['hooks'] = $hooks;
 		$this->data['parts'] = array_unique( array_filter( $parts ) );
+		$this->data['components'] = array_unique( array_filter( $components ) );
 
 	}
 
@@ -96,7 +103,8 @@ class QM_Component_Hooks extends QM_Component {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
-		echo '<th>' . __( 'Actions', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . __( 'Actions', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -112,28 +120,42 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
-			$row_attr['data-qm-hooks-name'] = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-hooks-name']      = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-hooks-component'] = implode( ' ', $hook['components'] );
 
 			$attr = '';
+
+			if ( !empty( $hook['actions'] ) )
+				$rowspan = count( $hook['actions'] );
+			else
+				$rowspan = 1;
 
 			foreach ( $row_attr as $a => $v )
 				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 
 			echo "<tr{$attr}>";
 
-			echo "<td valign='top'>{$hook['name']}</td>";	
+			echo "<td valign='top' rowspan='{$rowspan}'>{$hook['name']}</td>";	
 			if ( !empty( $hook['actions'] ) ) {
-				echo '<td><table class="qm-inner" cellspacing="0">';
+
+				$first = true;
+
 				foreach ( $hook['actions'] as $action ) {
-					echo '<tr class="' . $action['class'] . '">';
+					if ( !$first )
+						echo "<tr{$attr}>";
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
 					echo esc_html( $action['function'] );
 					echo '</td>';
+					echo '<td valign="top">';
+					echo esc_html( $action['component']->name );
+					echo '</td>';
 					echo '</tr>';
+					$first = false;
 				}
-				echo '</table></td>';
+
 			} else {
+				echo '<td colspan="2">&nbsp;</td>';
 				echo '<td>&nbsp;</td>';
 			}
 			echo '</tr>';

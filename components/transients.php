@@ -21,9 +21,12 @@ class QM_Component_Transients extends QM_Component {
 	}
 
 	function setted_transient( $transient, $type, $value = null, $expiration = null ) {
+		$trace = new QM_Backtrace( array(
+			'ignore_items' => 1 # Ignore the setted_(site|blog)_transient method
+		) );
 		$this->data['trans'][] = array(
 			'transient'  => $transient,
-			'trace'      => QM_Backtrace::backtrace(),
+			'trace'      => $trace,
 			'type'       => $type,
 			'value'      => $value,
 			'expiration' => $expiration,
@@ -42,6 +45,7 @@ class QM_Component_Transients extends QM_Component {
 		if ( !empty( $data['trans'] ) and !is_null( $data['trans'][0]['expiration'] ) )
 			echo '<th>' . __( 'Expiration', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -50,7 +54,7 @@ class QM_Component_Transients extends QM_Component {
 			echo '<tbody>';
 
 			foreach ( $data['trans'] as $row ) {
-				unset( $row['trace'][0] ); # QM hook
+				$stack = $row['trace']->get_stack();
 				$transient = str_replace( array(
 					'_site_transient_',
 					'_transient_'
@@ -60,7 +64,7 @@ class QM_Component_Transients extends QM_Component {
 					$row['expiration'] = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
 				$expiration = ( !is_null( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
 
-				foreach ( $row['trace'] as & $trace ) {
+				foreach ( $stack as & $trace ) {
 					foreach ( array( 'set_transient', 'set_site_transient' ) as $skip ) {
 						if ( 0 === strpos( $trace, $skip ) ) {
 							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
@@ -69,13 +73,16 @@ class QM_Component_Transients extends QM_Component {
 					}
 				}
 
-				$stack = implode( '<br />', $row['trace'] );
+				$component = QM_Util::get_backtrace_component( $row['trace'] );
+
+				$stack = implode( '<br />', $stack );
 				echo "
 					<tr>\n
 						<td valign='top'>{$transient}</td>\n
 						{$type}
 						{$expiration}
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
+						<td valign='top'>{$component->name}</td>\n
 					</tr>\n
 				";
 			}
@@ -86,7 +93,7 @@ class QM_Component_Transients extends QM_Component {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="4" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
 

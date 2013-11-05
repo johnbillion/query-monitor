@@ -275,38 +275,15 @@ class QM_Component_DB_Queries extends QM_Component {
 
 				foreach ( $stack as $f ) {
 
-					$f = QM_Util::standard_dir( $f );
-					if ( 'core' != ( $file_component = QM_Util::get_file_component( $f ) ) )
+					# @TODO convert to using our new QM_Backtrace class and QM_Util::get_stack_component
+
+					$file_component = QM_Util::get_file_component( QM_Util::standard_dir( $f ) );
+					if ( 'core' != $file_component->type )
 						break;
 
 				}
 
-				switch ( $file_component ) {
-					case 'plugin':
-					case 'muplugin':
-						$plug = plugin_basename( $f );
-						if ( strpos( $plug, '/' ) ) {
-							$plug = explode( '/', $plug );
-							$plug = reset( $plug );
-						} else {
-							$plug = basename( $plug );
-						}
-						$component = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
-						break;
-					case 'stylesheet':
-						$component = __( 'Theme', 'query-monitor' );
-						break;
-					case 'template':
-						$component = __( 'Parent Theme', 'query-monitor' );
-						break;
-					case 'other':
-						$component = QM_Util::standard_dir( $f, '' );
-						break;
-					case 'core':
-					default:
-						$component = __( 'Core', 'query-monitor' );
-						break;
-				}
+				$component = $file_component->name;
 
 			} else {
 				$component = null;
@@ -418,14 +395,8 @@ class QM_Component_DB_Queries extends QM_Component {
 
 			echo '<tbody>';
 
-			foreach ( $rows as $i => $row ) {
-
-				if ( ( $i === QM_DB_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) )
-					break;
-
+			foreach ( $rows as $i => $row )
 				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
-
-			}
 
 			echo '</tbody>';
 			echo '<tfoot>';

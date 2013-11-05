@@ -91,6 +91,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 		echo '<th>' . __( 'File', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Line', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -117,10 +118,13 @@ class QM_Component_PHP_Errors extends QM_Component {
 					if ( !$first )
 						echo '<tr>';
 
-					if ( empty( $error->funcs ) )
+					$stack = $error->trace->get_stack();
+					$component = QM_Util::get_backtrace_component( $error->trace );
+
+					if ( empty( $stack ) )
 						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
 					else
-						$stack = implode( '<br />', $error->funcs );
+						$stack = implode( '<br />', $stack );
 
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
@@ -128,6 +132,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
 					echo '<td class="qm-ltr">' . $stack . '</td>';
+					echo '<td>' . $component->name . '</td>';
 					echo '</tr>';
 
 					$first = false;
@@ -173,12 +178,9 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		if ( error_reporting() > 0 ) {
 
-			$funcs = QM_Backtrace::backtrace();
-
-			if ( !isset( $funcs[0] ) )
-				$funcs[0] = '';
-
-			$key = md5( $message . $file . $line . $funcs[0] );
+			$trace = new QM_Backtrace;
+			$func  = reset( $trace->get_stack() );
+			$key   = md5( $message . $file . $line . $func );
 
 			$filename = QM_Util::standard_dir( $file, '' );
 
@@ -192,7 +194,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 					'file'     => $file,
 					'filename' => $filename,
 					'line'     => $line,
-					'funcs'    => $funcs,
+					'trace'    => $trace,
 					'calls'    => 1
 				);
 			}

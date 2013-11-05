@@ -314,9 +314,7 @@ body.sticky-menu.folded #qm {
 }
 
 .qm td.qm-priority {
-	width: 2.2em !important;
 	text-align: right !important;
-    padding: 1px 0.75em 1px 0 !important;
 }
 
 .qm td.qm-var {
@@ -351,6 +349,7 @@ select.qm-filter {
 }
 
 .qm-hide,
+.qm-hide-hooks-component,
 .qm-hide-hooks-name,
 .qm-hide-db_queries-type,
 .qm-hide-db_queries-caller,

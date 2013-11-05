@@ -25,7 +25,7 @@ class QM_Component_HTTP extends QM_Component {
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $m_start,
-			'trace' => QM_Backtrace::backtrace()
+			'trace' => new QM_Backtrace
 		);
 		$args['_qm_key'] = $key;
 		return $args;
@@ -98,6 +98,7 @@ class QM_Component_HTTP extends QM_Component {
 		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Transport', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Timeout', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -180,9 +181,9 @@ class QM_Component_HTTP extends QM_Component {
 					$transport = '';
 				}
 
-				unset( $row['trace'][0] ); # http_request_args filter
+				$stack = $row['trace']->get_stack();
 
-				foreach ( $row['trace'] as & $trace ) {
+				foreach ( $stack as & $trace ) {
 					foreach ( array( 'WP_Http', 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
 						if ( 0 === strpos( $trace, $skip ) ) {
 							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
@@ -191,7 +192,9 @@ class QM_Component_HTTP extends QM_Component {
 					}
 				}
 
-				$stack = implode( '<br />', $row['trace'] );
+				$component = QM_Util::get_backtrace_component( $row['trace'] );
+
+				$stack = implode( '<br />', $stack );
 				echo "
 					<tr class='{$css}'>\n
 						<td valign='top' class='qm-url qm-ltr'>{$url}</td>\n
@@ -199,6 +202,7 @@ class QM_Component_HTTP extends QM_Component {
 						<td valign='top'>{$response}</td>\n
 						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
+						<td valign='top'>{$component->name}</td>\n
 						<td valign='top'>{$row['args']['timeout']}</td>\n
 						<td valign='top' title='{$ltime}'>{$stime}</td>\n
 					</tr>\n
@@ -212,7 +216,7 @@ class QM_Component_HTTP extends QM_Component {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td colspan="6">&nbsp;</td>';
+			echo '<td colspan="7">&nbsp;</td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
@@ -221,7 +225,7 @@ class QM_Component_HTTP extends QM_Component {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="7" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="8" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
 	
