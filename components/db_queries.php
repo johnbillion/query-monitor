@@ -395,14 +395,8 @@ class QM_Component_DB_Queries extends QM_Component {
 
 			echo '<tbody>';
 
-			foreach ( $rows as $i => $row ) {
-
-				if ( ( $i === QM_DB_LIMIT ) and !isset( $_REQUEST['qm_display_all'] ) )
-					break;
-
+			foreach ( $rows as $i => $row )
 				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
-
-			}
 
 			echo '</tbody>';
 			echo '<tfoot>';
