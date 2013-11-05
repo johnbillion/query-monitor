@@ -91,6 +91,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 		echo '<th>' . __( 'File', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Line', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -118,6 +119,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 						echo '<tr>';
 
 					$stack = $error->trace->get_stack();
+					$component = QM_Util::get_backtrace_component( $error->trace );
 
 					if ( empty( $stack ) )
 						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
@@ -130,6 +132,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
 					echo '<td>' . esc_html( $error->line ) . '</td>';
 					echo '<td class="qm-ltr">' . $stack . '</td>';
+					echo '<td>' . $component->name . '</td>';
 					echo '</tr>';
 
 					$first = false;
