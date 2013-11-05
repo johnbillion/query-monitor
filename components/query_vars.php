@@ -45,7 +45,7 @@ class QM_Component_Query_Vars extends QM_Component {
 
 	function output_html( array $args, array $data ) {
 
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

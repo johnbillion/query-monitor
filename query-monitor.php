@@ -282,6 +282,7 @@ class QueryMonitor extends QM_Plugin {
 		echo '</script>' . "\n\n";
 
 		echo '<div id="qm" class="' . $class . '">';
+		echo '<div id="qm-wrapper">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
 
 		foreach ( $this->get_components() as $component ) {
@@ -290,6 +291,7 @@ class QueryMonitor extends QM_Plugin {
 			), $component->get_data() );
 		}
 
+		echo '</div>';
 		echo '</div>';
 
 	}

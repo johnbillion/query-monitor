@@ -49,7 +49,7 @@ class QM_Component_Admin extends QM_Component {
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

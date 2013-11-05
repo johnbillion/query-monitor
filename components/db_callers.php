@@ -37,7 +37,7 @@ class QM_Component_DB_Callers extends QM_Component {
 		$total_time  = 0;
 		$total_calls = 0;
 
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

@@ -94,7 +94,6 @@ class QM_Component_HTTP extends QM_Component {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Method', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Transport', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
@@ -150,7 +149,7 @@ class QM_Component_HTTP extends QM_Component {
 
 				$method = $row['args']['method'];
 				if ( !$row['args']['blocking'] )
-					$method .= '<br />' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
+					$method .= '&nbsp;' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
 				$url = str_replace( array(
 					'=',
 					'&',
@@ -194,8 +193,7 @@ class QM_Component_HTTP extends QM_Component {
 				$stack = implode( '<br />', $row['trace'] );
 				echo "
 					<tr class='{$css}'>\n
-						<td valign='top' class='qm-url qm-ltr'>{$url}</td>\n
-						<td valign='top'>{$method}</td>\n
+						<td valign='top' class='qm-url qm-ltr'>{$method}<br/>{$url}</td>\n
 						<td valign='top'>{$response}</td>\n
 						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
@@ -212,7 +210,7 @@ class QM_Component_HTTP extends QM_Component {
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
-			echo '<td colspan="6">&nbsp;</td>';
+			echo '<td colspan="5">&nbsp;</td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
