@@ -161,24 +161,10 @@ class QM_Component_HTTP extends QM_Component {
 					'<br /><span class="qm-param">?</span>',
 				), $row['url'] );
 
-				if ( version_compare( $GLOBALS['wp_version'], 3.7, '>=' ) )
-					$transports = array( 'curl', 'streams' );
+				if ( isset( $row['transport'] ) )
+					$transport = $row['transport'];
 				else
-					$transports = array( 'curl', 'streams', 'fsockopen' );
-
-				$transports = apply_filters( 'http_api_transports', $transports, $row['args'], $row['url'] ); 
-
-				if ( isset( $row['transport'] ) ) {
-					foreach ( $transports as & $transport ) {
-						if ( $row['transport'] == $transport )
-							$transport = sprintf( '<span class="qm-true">%s</span>', $transport );
-						else
-							$transport = sprintf( '<span class="qm-false">%s</span>', $transport );
-					}
-					$transport = implode( '<br/>', $transports );
-				} else {
 					$transport = '';
-				}
 
 				$stack = $row['trace']->get_stack();
 
