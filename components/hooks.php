@@ -43,8 +43,6 @@ class QM_Component_Hooks extends QM_Component {
 
 					foreach ( $functions as $function ) {
 
-						$css_class = '';
-
 						if ( is_array( $function['function'] ) ) {
 
 							if ( is_object( $function['function'][0] ) )
@@ -52,19 +50,23 @@ class QM_Component_Hooks extends QM_Component {
 							else
 								$class = $function['function'][0];
 
+							$ref = new ReflectionMethod( $class, $function['function'][1] );
+
 							$out = $class . '->' . $function['function'][1] . '()';
 						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
 							$ref  = new ReflectionFunction( $function['function'] );
 							$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
 							$out  = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
 						} else {
+							$ref  = new ReflectionFunction( $function['function'] );
 							$out = $function['function'] . '()';
 						}
 
+						$component = QM_Util::get_file_component( $ref->getFileName() );
 						$actions[] = array(
-							'class'    => $css_class,
-							'priority' => $priority,
-							'function' => $out
+							'priority'  => $priority,
+							'function'  => $out,
+							'component' => $component,
 						);
 
 					}
@@ -125,10 +127,13 @@ class QM_Component_Hooks extends QM_Component {
 			if ( !empty( $hook['actions'] ) ) {
 				echo '<td><table class="qm-inner" cellspacing="0">';
 				foreach ( $hook['actions'] as $action ) {
-					echo '<tr class="' . $action['class'] . '">';
+					echo '<tr>';
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
 					echo esc_html( $action['function'] );
+					echo '</td>';
+					echo '<td valign="top">';
+					echo esc_html( $action['component']->name );
 					echo '</td>';
 					echo '</tr>';
 				}

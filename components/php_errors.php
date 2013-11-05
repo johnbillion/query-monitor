@@ -117,10 +117,12 @@ class QM_Component_PHP_Errors extends QM_Component {
 					if ( !$first )
 						echo '<tr>';
 
-					if ( empty( $error->funcs ) )
+					$stack = $error->trace->get_stack();
+
+					if ( empty( $stack ) )
 						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
 					else
-						$stack = implode( '<br />', $error->funcs );
+						$stack = implode( '<br />', $stack );
 
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
@@ -173,8 +175,9 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		if ( error_reporting() > 0 ) {
 
-			$funcs = QM_Backtrace::backtrace();
+			$trace = new QM_Backtrace;
 
+			# @TODO fix:
 			if ( !isset( $funcs[0] ) )
 				$funcs[0] = '';
 
@@ -192,7 +195,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 					'file'     => $file,
 					'filename' => $filename,
 					'line'     => $line,
-					'funcs'    => $funcs,
+					'trace'    => $trace,
 					'calls'    => 1
 				);
 			}

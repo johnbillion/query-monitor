@@ -53,7 +53,46 @@ class QM_Backtrace {
 	);
 	protected static $filtered = false;
 
-	private function __construct() {}
+	public function __construct( array $args = array() ) {
+		$args = array_merge( array(
+			'ignore_current_filter' => true,
+			'ignore_items'          => 0,
+		), $args );
+		$this->trace = debug_backtrace( false );
+		$this->ignore( 1 ); # Self-awareness
+
+		if ( $args['ignore_items'] )
+			$this->ignore( absint( $args['ignore_items'] ) );
+		if ( $args['ignore_current_filter'] )
+			$this->ignore_current_filter();
+
+	}
+
+	public function get_stack() {
+		$trace = array_map( 'QM_Backtrace::filter_trace', $this->trace );
+		$trace = array_values( array_filter( $trace ) );
+		return $trace;
+	}
+
+	public function get_trace() {
+		return $this->trace;
+	}
+
+	public function ignore( $num ) {
+		for ( $i = 0; $i < $num; $i++ )
+			unset( $this->trace[$i] );
+		$this->trace = array_values( $this->trace );
+		return $this;
+	}
+
+	public function ignore_current_filter() {
+
+		if ( isset( $this->trace[2] ) and isset( $this->trace[2]['function'] ) ) {
+			if ( in_array( $this->trace[2]['function'], array( 'apply_filters', 'do_action' ) ) )
+				$this->ignore( 3 ); # Ignore filter and action callbacks
+		}
+
+	}
 
 	public static function filter_trace( array $trace ) {
 
@@ -108,13 +147,6 @@ class QM_Backtrace {
 
 		}
 
-	}
-
-	public static function backtrace() {
-		$trace = debug_backtrace( false );
-		$trace = array_map( 'QM_Backtrace::filter_trace', $trace );
-		$trace = array_values( array_filter( $trace ) );
-		return $trace;
 	}
 
 }
