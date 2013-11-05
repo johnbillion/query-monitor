@@ -77,7 +77,7 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
-			$p = array_filter( preg_split( '/[_-]/', $name ) );
+			$p = array_filter( preg_split( '/[_\/-]/', $name ) );
 			$parts = array_merge( $parts, $p );
 			$components = array_merge( $components, $c );
 
