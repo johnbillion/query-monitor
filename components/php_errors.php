@@ -201,11 +201,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		}
 
-		# If Xdebug is enabled we'll return false so Xdebug's error handler can do its thing.
-		if ( function_exists( 'xdebug_is_enabled' ) and xdebug_is_enabled() )
-			return false;
-		else
-			return true;
+		return apply_filters( 'query_monitor_php_errors_return_value', true );
 
 	}
 
@@ -216,4 +212,13 @@ function register_qm_php_errors( array $qm ) {
 	return $qm;
 }
 
+function qm_php_errors_return_value( $return ) {
+	# If Xdebug is enabled we'll return false so Xdebug's error handler can do its thing.
+	if ( function_exists( 'xdebug_is_enabled' ) and xdebug_is_enabled() )
+		return false;
+	else
+		return $return;
+}
+
 add_filter( 'query_monitor_components', 'register_qm_php_errors', 120 );
+add_filter( 'query_monitor_php_errors_return_value', 'qm_php_errors_return_value' );
