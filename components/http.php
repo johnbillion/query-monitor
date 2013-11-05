@@ -49,7 +49,10 @@ class QM_Component_HTTP extends QM_Component {
 				if ( !isset( $args['_qm_key'] ) )
 					return;
 
-				$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
+				if ( !empty( $class ) )
+					$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
+				else
+					$this->data['http'][$args['_qm_key']]['transport'] = false;
 
 				if ( is_wp_error( $response ) )
 					$this->http_response( $response, $args, $url );
