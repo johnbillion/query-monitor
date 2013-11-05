@@ -36,11 +36,14 @@ class QM_Component_Environment extends QM_Component {
 			$val = $wpdb->qm_php_vars['error_reporting'];
 		else
 			$val = implode( '<br/>', $this->get_error_reporting() );
+
 		$this->data['php']['variables']['error_reporting']['before'] = $val;
 
 	}
 
 	function get_error_reporting() {
+
+		# @TODO move this into QM_Util and call it in QueryMonitorDB too
 
 		$error_reporting = error_reporting();
 		$levels = array();

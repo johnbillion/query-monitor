@@ -26,6 +26,7 @@ Query Monitor outputs info on:
 
   * Admin screen variables and names of admin screen column hooks
   * All hooks that have fired and their associated actions
+    * Filterable by name and component
   * HTTP API requests and responses
   * Database queries
     * Filterable by type, calling function and component
@@ -182,9 +183,6 @@ class QueryMonitor extends QM_Plugin {
 		if ( isset( $this->show_query_monitor ) )
 			return $this->show_query_monitor;
 
-		if ( defined( 'WP_CLI' ) and WP_CLI )
-			return $this->show_query_monitor = false;
-
 		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
 			return $this->show_query_monitor = false;
 
@@ -221,7 +219,7 @@ class QueryMonitor extends QM_Plugin {
 
 		global $wp_locale;
 
-		load_plugin_textdomain( 'query-monitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
 
 		if ( !$this->show_query_monitor() )
 			return;
