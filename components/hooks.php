@@ -27,7 +27,7 @@ class QM_Component_Hooks extends QM_Component {
 		else
 			$this->data['screen'] = '';
 
-		$hooks = $parts = array();
+		$hooks = $parts = $components = array();
 
 		if ( is_multisite() and is_network_admin() )
 			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
@@ -36,6 +36,7 @@ class QM_Component_Hooks extends QM_Component {
 
 			$name = $action;
 			$actions = array();
+			$c = array();
 
 			if ( isset( $wp_filter[$action] ) ) {
 
@@ -63,6 +64,7 @@ class QM_Component_Hooks extends QM_Component {
 						}
 
 						$component = QM_Util::get_file_component( $ref->getFileName() );
+						$c[$component->name] = $component->name;
 						$actions[] = array(
 							'priority'  => $priority,
 							'function'  => $out,
@@ -77,17 +79,20 @@ class QM_Component_Hooks extends QM_Component {
 
 			$p = array_filter( preg_split( '/[_-]/', $name ) );
 			$parts = array_merge( $parts, $p );
+			$components = array_merge( $components, $c );
 
 			$hooks[$action] = array(
 				'name'    => $name,
 				'actions' => $actions,
-				'parts'   => $p
+				'parts'   => $p,
+				'components' => $c,
 			);
 
 		}
 
 		$this->data['hooks'] = $hooks;
 		$this->data['parts'] = array_unique( array_filter( $parts ) );
+		$this->data['components'] = array_unique( array_filter( $components ) );
 
 	}
 
@@ -99,7 +104,7 @@ class QM_Component_Hooks extends QM_Component {
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
 		echo '<th colspan="2">' . __( 'Actions', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -116,6 +121,19 @@ class QM_Component_Hooks extends QM_Component {
 			}
 
 			$row_attr['data-qm-hooks-name'] = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-hooks-component'] = '';
+
+			if ( !empty( $hook['actions'] ) ) {
+
+				$row_attr['data-qm-hooks-component'] = array();
+
+				foreach ( $hook['actions'] as $action )
+					$row_attr['data-qm-hooks-component'][$action['component']->name] = $action['component']->name;
+
+				$row_attr['data-qm-hooks-component'] = implode( ' ', $row_attr['data-qm-hooks-component'] );
+
+			}
+
 			$attr = '';
 
 			if ( !empty( $hook['actions'] ) )
