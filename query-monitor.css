@@ -80,21 +80,14 @@ body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	font-size: 11px !important;
 }
 
-#wp-admin-bar-query-monitor.hover a small {
+#wp-admin-bar-query-monitor.hover a small,
+#wp-admin-bar-query-monitor.hover a .ab-label {
 	text-shadow: none !important;
 	color: #333 !important;
 }
-body.mp6 #wp-admin-bar-query-monitor.hover a small {
+body.mp6 #wp-admin-bar-query-monitor.hover a small,
+body.mp6 #wp-admin-bar-query-monitor.hover a .ab-label {
 	color: #2ea2cc !important;
-}
-
-#wp-admin-bar-query-monitor.qm-wp-32.hover a small {
-	color: #ddd !important;
-}
-
-/* @TODO fix this: */
-#wpadminbar .quicklinks .menupop.qm-wp-32 ul li.qm-true.hover > a {
-	color: #fff !important;
 }
 
 #wp-admin-bar-query-monitor-placeholder,
@@ -119,7 +112,7 @@ body.mp6 #wp-admin-bar-query-monitor.hover a small {
 
 #qm {
 	clear: both !important;
-	background: #ececec !important;
+	background: #eeeeee !important;
 	margin: 25px 0 0 !important;
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
@@ -154,14 +147,14 @@ body.sticky-menu.folded #qm {
 
 #qm-wrapper {
 	margin: 0 auto;
-	max-width: 80em;
+	max-width: 85em;
 }
 
 #qm-wrapper > p {
 	color: #777 !important;
-	font: 13px/15px 'Open Sans', Georgia !important;
-	margin: 20px 20px -15px !important;
-	text-shadow: 0 1px 0 #fff !important;
+	font: 13px/15px 'Open Sans', Arial !important;
+	margin: 20px 1% -15px !important;
+	font-style: italic !important;
 }
 
 .qm {
@@ -180,8 +173,9 @@ body.sticky-menu.folded #qm {
 	border-collapse: collapse !important;
 	color: #555 !important;
 	border-style: hidden !important;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.13) !important;
+	box-shadow: 0 1px 1px -1px rgba(0,0,0,0.1) !important;
 	width: 100% !important;
+	border: 1px solid #dedede !important;
 }
 
 .qm td,
@@ -193,8 +187,8 @@ body.sticky-menu.folded #qm {
 	font-weight: normal !important;
 	font-style: normal !important;
 	line-height: 16px !important;
-	border: 1px solid #e6e6e6 !important;
-	padding: 6px 9px 5px !important;
+	border: 1px solid #e1e1e1 !important;
+	padding: 5px 8px 4px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
@@ -288,6 +282,7 @@ body.sticky-menu.folded #qm {
 }
 .qm a:hover {
 	text-decoration: underline !important;
+	color: #2ea2cc !important;
 }
 
 .qm a.qm-warn {
