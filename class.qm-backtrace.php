@@ -62,7 +62,7 @@ class QM_Backtrace {
 		$this->ignore( 1 ); # Self-awareness
 
 		if ( $args['ignore_items'] )
-			$this->ignore( absint( $args['ignore_items'] ) );
+			$this->ignore( $args['ignore_items'] );
 		if ( $args['ignore_current_filter'] )
 			$this->ignore_current_filter();
 
@@ -79,7 +79,7 @@ class QM_Backtrace {
 	}
 
 	public function ignore( $num ) {
-		for ( $i = 0; $i < $num; $i++ )
+		for ( $i = 0; $i < absint( $num ); $i++ )
 			unset( $this->trace[$i] );
 		$this->trace = array_values( $this->trace );
 		return $this;

@@ -11,9 +11,13 @@ class QM_Component_DB_Callers extends QM_Component {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
-			$this->data['times'] = $dbq->data['times'];
-			$this->data['types'] = $dbq->data['types'];
+		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+			if ( isset( $dbq->data['times'] ) ) {
+				$this->data['times'] = $dbq->data['times'];
+			}
+			if ( isset( $dbq->data['types'] ) ) {
+				$this->data['types'] = $dbq->data['types'];
+			}
 		}
 
 	}

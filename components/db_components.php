@@ -11,9 +11,13 @@ class QM_Component_DB_Components extends QM_Component {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
-			$this->data['times'] = $dbq->data['component_times'];
-			$this->data['types'] = $dbq->data['types'];
+		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+			if ( isset( $dbq->data['component_times'] ) ) {
+				$this->data['times'] = $dbq->data['component_times'];
+			}
+			if ( isset( $dbq->data['types'] ) ) {
+				$this->data['types'] = $dbq->data['types'];
+			}
 		}
 
 	}
