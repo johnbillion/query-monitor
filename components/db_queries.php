@@ -329,6 +329,11 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		}
 
+		usort( $this->data['times'], 'QM_Util::sort' );
+
+		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
+			usort( $rows, 'QM_Util::sort' );
+
 		$this->data['total_qs'] += $total_qs;
 		$this->data['total_time'] += $total_time;
 
@@ -387,9 +392,6 @@ class QM_Component_DB_Queries extends QM_Component {
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-
-		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
-			usort( $rows, 'QM_Util::sort' );
 
 		if ( !empty( $rows ) ) {
 
