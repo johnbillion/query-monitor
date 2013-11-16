@@ -115,7 +115,8 @@ class QueryMonitorDB extends wpdb {
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			$this->queries[$this->num_queries]['result'] = new WP_Error( 'qmdb', $this->last_error );
+			if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
+				$this->queries[$this->num_queries]['result'] = new WP_Error( 'qmdb', $this->last_error );
 			// Clear insert_id on a subsequent failed insert.
 			if ( $this->insert_id && preg_match( '/^\s*(insert|replace)\s/i', $query ) )
 				$this->insert_id = 0;
@@ -147,7 +148,8 @@ class QueryMonitorDB extends wpdb {
 			$return_val     = $num_rows;
 		}
 
-		$this->queries[$this->num_queries]['result'] = $return_val;
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
+			$this->queries[$this->num_queries]['result'] = $return_val;
 
 		return $return_val;
 	}
