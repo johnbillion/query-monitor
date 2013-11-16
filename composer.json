@@ -1,0 +1,16 @@
+{
+	"name"       : "johnbillion/query-monitor",
+	"description": "WordPress plugin for monitoring database queries, hooks, conditionals, HTTP requests, query vars, environment, redirects, and more.",
+	"homepage"   : "https://github.com/johnbillion/QueryMonitor/",
+	"type"       : "wordpress-plugin",
+	"license"    : "GPL-2.0+",
+	"authors"    : [
+		{
+			"name"    : "John Blackbourn",
+			"homepage": "https://johnblackbourn.com/"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0"
+	}
+}
