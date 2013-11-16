@@ -50,7 +50,7 @@ Query Monitor outputs info on:
 
 defined( 'ABSPATH' ) or die();
 
-require_once dirname( __FILE__ ) . '/class.qm-plugin.php';
+require_once dirname( __FILE__ ) . '/autoloader.php';
 
 class QueryMonitor extends QM_Plugin {
 
@@ -232,15 +232,15 @@ class QueryMonitor extends QM_Plugin {
 
 		wp_enqueue_style(
 			'query-monitor',
-			$this->plugin_url( 'query-monitor.css' ),
+			$this->plugin_url( 'assets/query-monitor.css' ),
 			null,
-			$this->plugin_ver( 'query-monitor.css' )
+			$this->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
 			'query-monitor',
-			$this->plugin_url( 'query-monitor.js' ),
+			$this->plugin_url( 'assets/query-monitor.js' ),
 			array( 'jquery' ),
-			$this->plugin_ver( 'query-monitor.js' ),
+			$this->plugin_ver( 'assets/query-monitor.js' ),
 			true
 		);
 		wp_localize_script(
@@ -348,13 +348,5 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 }
-
-# @TODO autoload these QM_ classes:
-if ( !class_exists( 'QM_Util' ) )
-	require_once dirname( __FILE__ ) . '/class.qm-util.php';
-if ( !class_exists( 'QM_Backtrace' ) )
-	require_once dirname( __FILE__ ) . '/class.qm-backtrace.php';
-
-require_once dirname( __FILE__ ) . '/class.qm-component.php';
 
 $GLOBALS['querymonitor'] = new QueryMonitor( __FILE__ );

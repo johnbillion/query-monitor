@@ -25,16 +25,10 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-# @TODO autoload these QM_ classes:
-foreach ( array( 'util', 'backtrace' ) as $class ) {
-	$file = sprintf( '%s/../class.qm-%s.php',
-		dirname( __FILE__ ),
-		$class
-	);
-	if ( !is_readable( $file ) )
-		return;
-	require_once $file;
-}
+if ( ! is_readable( $autoloader = dirname( __FILE__ ) . '/../autoloader.php' ) )
+	return;
+
+include_once $autoloader;
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
