@@ -221,22 +221,22 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	function log_component( $component, $ltime, $type ) {
 
-		if ( !isset( $this->data['component_times'][$component] ) ) {
-			$this->data['component_times'][$component] = array(
-				'component' => $component,
+		if ( !isset( $this->data['component_times'][$component->name] ) ) {
+			$this->data['component_times'][$component->name] = array(
+				'component' => $component->name,
 				'calls'     => 0,
 				'ltime'     => 0,
 				'types'     => array()
 			);
 		}
 
-		$this->data['component_times'][$component]['calls']++;
-		$this->data['component_times'][$component]['ltime'] += $ltime;
+		$this->data['component_times'][$component->name]['calls']++;
+		$this->data['component_times'][$component->name]['ltime'] += $ltime;
 
-		if ( isset( $this->data['component_times'][$component]['types'][$type] ) )
-			$this->data['component_times'][$component]['types'][$type]++;
+		if ( isset( $this->data['component_times'][$component->name]['types'][$type] ) )
+			$this->data['component_times'][$component->name]['types'][$type]++;
 		else
-			$this->data['component_times'][$component]['types'][$type] = 1;
+			$this->data['component_times'][$component->name]['types'][$type] = 1;
 
 	}
 
@@ -255,39 +255,26 @@ class QM_Component_DB_Queries extends QM_Component {
 			$sql           = $query[0];
 			$ltime         = $query[1];
 			$funcs         = array_reverse( explode( ', ', $query[2] ) );
-			$has_component = isset( $query[3] );
-			$has_results   = isset( $query[4] );
+			$has_component = isset( $query['trace'] );
+			$has_results   = isset( $query['result'] );
 
 			if ( $has_component )
-				$stack = $query[3];
+				$trace = $query['trace'];
 			else
-				$stack = null;
+				$trace = null;
 
 			if ( $has_results )
-				$result = $query[4];
+				$result = $query['result'];
 			else
 				$result = null;
 
 			$total_time += $ltime;
 			$total_qs++;
 
-			if ( null !== $stack ) {
-
-				foreach ( $stack as $f ) {
-
-					# @TODO convert to using our new QM_Backtrace class and QM_Util::get_stack_component
-
-					$file_component = QM_Util::get_file_component( QM_Util::standard_dir( $f ) );
-					if ( 'core' != $file_component->type )
-						break;
-
-				}
-
-				$component = $file_component->name;
-
-			} else {
+			if ( !is_null( $trace ) )
+				$component = QM_Util::get_backtrace_component( $trace );
+			else
 				$component = null;
-			}
 
 			$func = reset( $funcs );
 
@@ -304,7 +291,7 @@ class QM_Component_DB_Queries extends QM_Component {
 			$this->log_type( $type );
 			$this->log_caller( $func_name, $ltime, $type );
 
-			if ( $has_component )
+			if ( $component )
 				$this->log_component( $component, $ltime, $type );
 
 			if ( !isset( $types[$type]['total'] ) )
@@ -460,7 +447,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( isset( $cols['sql'] ) )
 			$row_attr['data-qm-db_queries-type'] = $row['type'];
 		if ( isset( $cols['component'] ) )
-			$row_attr['data-qm-db_queries-component'] = $row['component'];
+			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
 		if ( isset( $cols['caller'] ) )
 			$row_attr['data-qm-db_queries-caller'] = $row['func_name'];
 		if ( isset( $cols['time'] ) )
@@ -486,7 +473,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		}
 
 		if ( isset( $cols['component'] ) )
-			echo "<td valign='top' class='qm-row-component'>{$row['component']}</td>\n";
+			echo "<td valign='top' class='qm-row-component'>{$row['component']->name}</td>\n";
 
 		if ( isset( $cols['result'] ) )
 			echo $result;

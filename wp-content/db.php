@@ -98,14 +98,24 @@ class QueryMonitorDB extends wpdb {
 		$this->num_queries++;
 
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
-			$trace = debug_backtrace( false );
-			$this->queries[$this->num_queries] = array( $query, $this->timer_stop(), self::qm_get_caller( $trace ), self::qm_get_stack( $trace ), null );
-			unset( $trace );
+			$trace = new QM_Backtrace;
+			$q = array(
+				'query'  => $query,
+				'ltime'  => $this->timer_stop(),
+				'stack'  => implode( ', ', $trace->get_stack() ),
+				'trace'  => $trace,
+				'result' => null,
+			);
+			# Numeric indices are for compatibility for anything else using saved queries
+			$q[0] = $q['query'];
+			$q[1] = $q['ltime'];
+			$q[2] = $q['stack'];
+			$this->queries[$this->num_queries] = $q;
 		}
 
 		// If there is an error then take note of it..
 		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			$this->queries[$this->num_queries][4] = new WP_Error( 'qmdb', $this->last_error );
+			$this->queries[$this->num_queries]['result'] = new WP_Error( 'qmdb', $this->last_error );
 			// Clear insert_id on a subsequent failed insert.
 			if ( $this->insert_id && preg_match( '/^\s*(insert|replace)\s/i', $query ) )
 				$this->insert_id = 0;
@@ -137,36 +147,9 @@ class QueryMonitorDB extends wpdb {
 			$return_val     = $num_rows;
 		}
 
-		$this->queries[$this->num_queries][4] = $return_val;
+		$this->queries[$this->num_queries]['result'] = $return_val;
 
 		return $return_val;
-	}
-
-	# @TODO move this to the QM_Backtrace class
-	public static function qm_get_stack( array $_trace ) {
-
-		$stack = array();
-
-		foreach ( $_trace as $t ) {
-			if ( isset( $t['file'] ) )
-				$stack[] = $t['file'];
-		}
-
-		return $stack;
-
-	}
-
-	# @TODO move this to the QM_Backtrace class
-	public static function qm_get_caller( array $_trace ) {
-
-		$trace = array_map( 'QM_Backtrace::filter_trace', $_trace );
-		$trace = array_values( array_filter( $trace ) );
-
-		if ( empty( $trace ) )
-			$trace[] = QM_Util::standard_dir( $_trace[1]['file'], '' );
-
-		return implode( ', ', array_reverse( $trace ) );
-
 	}
 
 }
