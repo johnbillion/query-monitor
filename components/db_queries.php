@@ -316,8 +316,6 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		}
 
-		usort( $this->data['times'], 'QM_Util::sort' );
-
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
 			usort( $rows, 'QM_Util::sort' );
 
