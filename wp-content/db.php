@@ -94,14 +94,14 @@ class QueryMonitorDB extends wpdb {
 		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
 			$trace = new QM_Backtrace;
 			$q = array(
-				'query'  => $query,
+				'sql'    => $query,
 				'ltime'  => $this->timer_stop(),
-				'stack'  => implode( ', ', $trace->get_stack() ),
+				'stack'  => implode( ', ', array_reverse( $trace->get_stack() ) ),
 				'trace'  => $trace,
 				'result' => null,
 			);
 			# Numeric indices are for compatibility for anything else using saved queries
-			$q[0] = $q['query'];
+			$q[0] = $q['sql'];
 			$q[1] = $q['ltime'];
 			$q[2] = $q['stack'];
 			$this->queries[$this->num_queries] = $q;

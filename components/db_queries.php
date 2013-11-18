@@ -240,6 +240,12 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
+	protected static function query_compat( array & $query ) {
+
+		list( $query['sql'], $query['ltime'], $query['stack'] ) = $query;
+
+	}
+
 	function process_db_object( $id, wpdb $db ) {
 
 		$rows       = array();
@@ -249,19 +255,17 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		foreach ( (array) $db->queries as $query ) {
 
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
+			if ( ! isset( $query['sql'] ) )
+				self::query_compat( $query );
+
+			if ( false !== strpos( $query['stack'], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
 				continue;
 
-			$sql           = $query[0];
-			$ltime         = $query[1];
-			$funcs         = array_reverse( explode( ', ', $query[2] ) );
+			$sql           = $query['sql'];
+			$ltime         = $query['ltime'];
+			$stack         = $query['stack'];
 			$has_component = isset( $query['trace'] );
 			$has_results   = isset( $query['result'] );
-
-			if ( $has_component )
-				$trace = $query['trace'];
-			else
-				$trace = null;
 
 			if ( $has_results )
 				$result = $query['result'];
@@ -271,8 +275,8 @@ class QM_Component_DB_Queries extends QM_Component {
 			$total_time += $ltime;
 			$total_qs++;
 
-			if ( !is_null( $trace ) )
-				$component = QM_Util::get_backtrace_component( $trace );
+			if ( isset( $query['trace'] ) )
+				$component = QM_Util::get_backtrace_component( $query['trace'] );
 			else
 				$component = null;
 
@@ -454,7 +458,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( isset( $cols['time'] ) )
 			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 
-		$funcs = esc_attr( implode( ', ', $row['funcs'] ) );
+		$stack = esc_attr( $row['stack'] );
 		$attr = '';
 
 		foreach ( $row_attr as $a => $v )
