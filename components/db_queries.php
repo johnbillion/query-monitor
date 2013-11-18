@@ -337,24 +337,16 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	function output_queries( $name, stdClass $db ) {
 
-		# @TODO move more of this into process()
+		$max_exceeded = $db->total_qs > QM_DB_LIMIT;
 
-		$rows          = $db->rows;
-		$has_results   = $db->has_results;
-		$has_component = $db->has_component;
-		$total_time    = $db->total_time;
-		$total_qs      = $db->total_qs;
-		$max_exceeded  = $total_qs > QM_DB_LIMIT;
-
-		$id = sanitize_title( $name );
 		$span = 3;
 
-		if ( $has_results )
+		if ( $db->has_results )
 			$span++;
-		if ( $has_component )
+		if ( $db->has_component )
 			$span++;
 
-		echo '<div class="qm qm-queries" id="' . $this->id() . '-' . $id . '">';
+		echo '<div class="qm qm-queries" id="' . $this->id() . '-' . sanitize_title( $name ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -364,7 +356,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( $max_exceeded ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Crikey!', 'query-monitor' ),
-				number_format_i18n( $total_qs ),
+				number_format_i18n( $db->total_qs ),
 				$name,
 				number_format_i18n( QM_DB_LIMIT )
 			) . '</td>';
@@ -375,36 +367,36 @@ class QM_Component_DB_Queries extends QM_Component {
 		echo '<th>' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
 		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $this->data['times'] ) ) . '</th>';
 
-		if ( $has_component )
+		if ( $db->has_component )
 			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $this->data['component_times'] ) ) . '</th>';
 
-		if ( $has_results )
+		if ( $db->has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
-		if ( !empty( $rows ) ) {
+		if ( !empty( $db->rows ) ) {
 
 			echo '<tbody>';
 
-			foreach ( $rows as $i => $row )
+			foreach ( $db->rows as $i => $row )
 				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
 
 			echo '</tbody>';
 			echo '<tfoot>';
 
-			$total_stime = number_format_i18n( $total_time, 4 );
-			$total_ltime = number_format_i18n( $total_time, 10 );
+			$total_stime = number_format_i18n( $db->total_time, 4 );
+			$total_ltime = number_format_i18n( $db->total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
 			echo '<tr class="qm-items-shown qm-hide">';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $total_qs ) . '</span>' ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $db->total_qs ) . '</span>' ) . '</td>';
 			echo "<td valign='top' class='qm-items-time'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
