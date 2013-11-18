@@ -62,14 +62,14 @@ class QM_Component_DB_Callers extends QM_Component {
 
 			usort( $data['times'], 'QM_Util::sort' );
 
-			foreach ( $data['times'] as $func => $row ) {
+			foreach ( $data['times'] as $caller => $row ) {
 				$total_time  += $row['ltime'];
 				$total_calls += $row['calls'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
 
 				echo '<tr>';
-				echo "<td valign='top' class='qm-ltr'>{$row['func']}</td>";
+				echo "<td valign='top' class='qm-ltr'>{$row['caller']}</td>";
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) )

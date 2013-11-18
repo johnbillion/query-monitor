@@ -198,24 +198,24 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function log_caller( $func, $ltime, $type ) {
+	function log_caller( $caller, $ltime, $type ) {
 
-		if ( !isset( $this->data['times'][$func] ) ) {
-			$this->data['times'][$func] = array(
-				'func'  => $func,
+		if ( !isset( $this->data['times'][$caller] ) ) {
+			$this->data['times'][$caller] = array(
+				'caller' => $caller,
 				'calls' => 0,
 				'ltime' => 0,
 				'types' => array()
 			);
 		}
 
-		$this->data['times'][$func]['calls']++;
-		$this->data['times'][$func]['ltime'] += $ltime;
+		$this->data['times'][$caller]['calls']++;
+		$this->data['times'][$caller]['ltime'] += $ltime;
 
-		if ( isset( $this->data['times'][$func]['types'][$type] ) )
-			$this->data['times'][$func]['types'][$type]++;
+		if ( isset( $this->data['times'][$caller]['types'][$type] ) )
+			$this->data['times'][$caller]['types'][$type]++;
 		else
-			$this->data['times'][$func]['types'][$type] = 1;
+			$this->data['times'][$caller]['types'][$type] = 1;
 
 	}
 
@@ -276,20 +276,23 @@ class QM_Component_DB_Queries extends QM_Component {
 			else
 				$component = null;
 
-			$func = reset( $funcs );
+			# @TODO we should grab this from the trace instead for increased accuracy in case
+			# the caller contains multiple comma separated arguments (see QM_Backtrace::$show_args)
+			$callers = explode( ',', $stack );
+			$caller  = trim( end( $callers ) );
 
-			# @TODO rename $func to $caller and $func_name to $func
-			if ( false !== strpos( $func, '(' ) )
-				$func_name = strstr( $func, '(', true ) . '()';
+			if ( false !== strpos( $caller, '(' ) )
+				$caller_name = strstr( $caller, '(', true ) . '()';
 			else
-				$func_name = $func;
+				$caller_name = $caller;
 
+			# @TODO this formatting should move to JIT when outputting as html
 			$sql  = QM_Util::format_sql( $sql );
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
 			$this->log_type( $type );
-			$this->log_caller( $func_name, $ltime, $type );
+			$this->log_caller( $caller_name, $ltime, $type );
 
 			if ( $component )
 				$this->log_component( $component, $ltime, $type );
@@ -299,12 +302,12 @@ class QM_Component_DB_Queries extends QM_Component {
 			else
 				$types[$type]['total']++;
 
-			if ( !isset( $types[$type]['funcs'][$func] ) )
-				$types[$type]['funcs'][$func] = 1;
+			if ( !isset( $types[$type]['callers'][$caller] ) )
+				$types[$type]['callers'][$caller] = 1;
 			else
-				$types[$type]['funcs'][$func]++;
+				$types[$type]['callers'][$caller]++;
 
-			$row = compact( 'func', 'func_name', 'funcs', 'sql', 'ltime', 'result', 'type', 'component' );
+			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
@@ -447,7 +450,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( isset( $cols['component'] ) )
 			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
 		if ( isset( $cols['caller'] ) )
-			$row_attr['data-qm-db_queries-caller'] = $row['func_name'];
+			$row_attr['data-qm-db_queries-caller'] = $row['caller_name'];
 		if ( isset( $cols['time'] ) )
 			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 
@@ -463,10 +466,10 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$row['sql']}</td>";
 
 		if ( isset( $cols['caller'] ) )
-			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$funcs}'>{$row['func']}</td>";
+			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$stack}'>{$row['caller']}</td>";
 
 		if ( isset( $cols['stack'] ) ) {
-			$stack = implode( '<br/>', $row['funcs'] );
+			$stack = implode( '<br/>', $row['stack'] );
 			echo "<td valign='top' class='qm-row-caller qm-row-stack qm-ltr'>{$stack}</td>";
 		}
 
