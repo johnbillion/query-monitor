@@ -200,6 +200,7 @@ body.sticky-menu.folded #qm {
 }
 
 #qm-conditionals tbody tr:hover td,
+#qm-overview tbody tr:hover td,
 #qm-authentication tbody tr:hover td,
 .qm tbody tr:hover th[rowspan],
 .qm tbody tr:hover td[rowspan] {

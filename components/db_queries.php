@@ -161,14 +161,14 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo '<th colspan="5" class="qm-expensive">' . sprintf( __( 'Slow Database Queries (above %ss)', 'query-monitor' ), '<span class="qm-expensive">' . number_format_i18n( QM_DB_EXPENSIVE, $dp ) . '</span>' ) . '</th>';
 			echo '</tr>';
 			echo '<tr>';
-			echo '<th>' . __( 'Query', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Caller', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . '</th>';
 
 			if ( isset( $data['expensive'][0]['component'] ) )
-				echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+				echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . '</th>';
 
 			if ( isset( $data['expensive'][0]['result'] ) )
-				echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+				echo '<th scope="col">' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 
 			echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -364,16 +364,16 @@ class QM_Component_DB_Queries extends QM_Component {
 		}
 
 		echo '<tr>';
-		echo '<th>' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
-		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $data['times'] ) ) . '</th>';
+		echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
+		echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $data['times'] ) ) . '</th>';
 
 		if ( $db->has_component )
-			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $data['component_times'] ) ) . '</th>';
+			echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $data['component_times'] ) ) . '</th>';
 
 		if ( $db->has_results )
-			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 
-		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 

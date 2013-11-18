@@ -29,6 +29,7 @@ class QM_Component_Hooks extends QM_Component {
 
 		$hooks = $parts = $components = array();
 
+		# @TODO why am i doing this here?:
 		if ( is_multisite() and is_network_admin() )
 			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
 
@@ -36,6 +37,7 @@ class QM_Component_Hooks extends QM_Component {
 
 			$name = $action;
 			$actions = array();
+			# @TODO better variable name:
 			$c = array();
 
 			if ( isset( $wp_filter[$action] ) ) {
@@ -59,7 +61,7 @@ class QM_Component_Hooks extends QM_Component {
 							$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
 							$out  = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
 						} else {
-							$ref  = new ReflectionFunction( $function['function'] );
+							$ref = new ReflectionFunction( $function['function'] );
 							$out = $function['function'] . '()';
 						}
 
@@ -77,6 +79,7 @@ class QM_Component_Hooks extends QM_Component {
 
 			}
 
+			# @TODO better variable name:
 			$p = array_filter( preg_split( '/[_\/-]/', $name ) );
 			$parts = array_merge( $parts, $p );
 			$components = array_merge( $components, $c );
@@ -98,13 +101,15 @@ class QM_Component_Hooks extends QM_Component {
 
 	function output_html( array $args, array $data ) {
 
+		$row_attr = array();
+
 		echo '<div class="qm" id="' . $args['id'] . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
 		echo '<th colspan="2">' . __( 'Actions', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
+		echo '<th>' . __( 'Action Component', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
