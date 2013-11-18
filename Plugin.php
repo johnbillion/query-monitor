@@ -28,7 +28,7 @@ class QM_Plugin {
 	/**
 	 * Returns the URL for for a file/dir within this plugin.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string URL
 	 * @author John Blackbourn
 	 **/
@@ -39,7 +39,7 @@ class QM_Plugin {
 	/**
 	 * Returns the filesystem path for a file/dir within this plugin.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Filesystem path
 	 * @author John Blackbourn
 	 **/
@@ -50,7 +50,7 @@ class QM_Plugin {
 	/**
 	 * Returns a version number for the given plugin file.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Version
 	 * @author John Blackbourn
 	 **/
