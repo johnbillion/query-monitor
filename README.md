@@ -8,7 +8,29 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
 
 ![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/db_query_components.png)
 
-More screenshots at the bottom of the page.
+---
+
+ * [Features](#features)
+    * [Database Queries](#database-queries)
+    * [Hooks](#hooks)
+    * [Theme](#theme)
+    * [PHP Errors](#php-errors)
+    * [HTTP Requests](#http-requests)
+    * [Redirects](#redirects)
+    * [AJAX](#ajax)
+    * [Admin Screen](#admin-screen)
+    * [Environment Information](#environment-information)
+    * [Everything Else](#everything-else)
+ * [Notes](#notes)
+    * [Profiling](#a-note-on-profiling)
+    * [Implementation](#a-note-on-query-monitors-implementation)
+ * [Screenshots](#screenshots)
+ * [Contributing](#contributing)
+ * [License](#license-gplv2)
+
+---
+
+# Features
 
 ## Database Queries
 
@@ -79,6 +101,9 @@ Hands up who can remember the correct names for the filters and hooks for custom
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
+ * You can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details
+
+# Notes
 
 ## A Note on Profiling
 
@@ -138,3 +163,19 @@ Hook listing panel showing all hooks, and the controls for filtering by name and
 Showing an HTTP request with an error
 
 ![HTTP](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/http.png)
+
+# Contributing
+
+Code contributions are very welcome, as are bug reports in the form of GitHub issues. Development happens in the `develop` branch, and any pull requests should be made to that branch please.
+
+# License: GPLv2
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
