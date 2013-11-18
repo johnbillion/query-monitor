@@ -104,7 +104,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->data['total_qs']  = 0;
+		$this->data['total_qs']   = 0;
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
 
@@ -251,7 +251,6 @@ class QM_Component_DB_Queries extends QM_Component {
 		$rows       = array();
 		$types      = array();
 		$total_time = 0;
-		$total_qs   = 0;
 
 		foreach ( (array) $db->queries as $query ) {
 
@@ -273,7 +272,6 @@ class QM_Component_DB_Queries extends QM_Component {
 				$result = null;
 
 			$total_time += $ltime;
-			$total_qs++;
 
 			if ( isset( $query['trace'] ) )
 				$component = QM_Util::get_backtrace_component( $query['trace'] );
@@ -325,6 +323,8 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
 			usort( $rows, 'QM_Util::sort' );
+
+		$total_qs = count( $rows );
 
 		$this->data['total_qs'] += $total_qs;
 		$this->data['total_time'] += $total_time;
