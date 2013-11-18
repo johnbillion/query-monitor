@@ -104,7 +104,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( !SAVEQUERIES )
 			return;
 
-		$this->data['total_qs']  = 0;
+		$this->data['total_qs']   = 0;
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
 
@@ -185,7 +185,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		}
 
 		foreach ( $data['dbs'] as $name => $db )
-			$this->output_queries( $name, $db );
+			$this->output_queries( $name, $db, $data );
 
 	}
 
@@ -198,24 +198,24 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function log_caller( $func, $ltime, $type ) {
+	function log_caller( $caller, $ltime, $type ) {
 
-		if ( !isset( $this->data['times'][$func] ) ) {
-			$this->data['times'][$func] = array(
-				'func'  => $func,
+		if ( !isset( $this->data['times'][$caller] ) ) {
+			$this->data['times'][$caller] = array(
+				'caller' => $caller,
 				'calls' => 0,
 				'ltime' => 0,
 				'types' => array()
 			);
 		}
 
-		$this->data['times'][$func]['calls']++;
-		$this->data['times'][$func]['ltime'] += $ltime;
+		$this->data['times'][$caller]['calls']++;
+		$this->data['times'][$caller]['ltime'] += $ltime;
 
-		if ( isset( $this->data['times'][$func]['types'][$type] ) )
-			$this->data['times'][$func]['types'][$type]++;
+		if ( isset( $this->data['times'][$caller]['types'][$type] ) )
+			$this->data['times'][$caller]['types'][$type]++;
 		else
-			$this->data['times'][$func]['types'][$type] = 1;
+			$this->data['times'][$caller]['types'][$type] = 1;
 
 	}
 
@@ -240,28 +240,31 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
+	protected static function query_compat( array & $query ) {
+
+		list( $query['sql'], $query['ltime'], $query['stack'] ) = $query;
+
+	}
+
 	function process_db_object( $id, wpdb $db ) {
 
 		$rows       = array();
 		$types      = array();
 		$total_time = 0;
-		$total_qs   = 0;
 
 		foreach ( (array) $db->queries as $query ) {
 
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
+			if ( ! isset( $query['sql'] ) )
+				self::query_compat( $query );
+
+			if ( false !== strpos( $query['stack'], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
 				continue;
 
-			$sql           = $query[0];
-			$ltime         = $query[1];
-			$funcs         = array_reverse( explode( ', ', $query[2] ) );
+			$sql           = $query['sql'];
+			$ltime         = $query['ltime'];
+			$stack         = $query['stack'];
 			$has_component = isset( $query['trace'] );
 			$has_results   = isset( $query['result'] );
-
-			if ( $has_component )
-				$trace = $query['trace'];
-			else
-				$trace = null;
 
 			if ( $has_results )
 				$result = $query['result'];
@@ -269,27 +272,29 @@ class QM_Component_DB_Queries extends QM_Component {
 				$result = null;
 
 			$total_time += $ltime;
-			$total_qs++;
 
-			if ( !is_null( $trace ) )
-				$component = QM_Util::get_backtrace_component( $trace );
+			if ( isset( $query['trace'] ) )
+				$component = QM_Util::get_backtrace_component( $query['trace'] );
 			else
 				$component = null;
 
-			$func = reset( $funcs );
+			# @TODO we should grab this from the trace instead for increased accuracy in case
+			# the caller contains multiple comma separated arguments (see QM_Backtrace::$show_args)
+			$callers = explode( ',', $stack );
+			$caller  = trim( end( $callers ) );
 
-			# @TODO rename $func to $caller and $func_name to $func
-			if ( false !== strpos( $func, '(' ) )
-				$func_name = strstr( $func, '(', true ) . '()';
+			if ( false !== strpos( $caller, '(' ) )
+				$caller_name = strstr( $caller, '(', true ) . '()';
 			else
-				$func_name = $func;
+				$caller_name = $caller;
 
+			# @TODO this formatting should move to JIT when outputting as html
 			$sql  = QM_Util::format_sql( $sql );
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
 			$this->log_type( $type );
-			$this->log_caller( $func_name, $ltime, $type );
+			$this->log_caller( $caller_name, $ltime, $type );
 
 			if ( $component )
 				$this->log_component( $component, $ltime, $type );
@@ -299,12 +304,12 @@ class QM_Component_DB_Queries extends QM_Component {
 			else
 				$types[$type]['total']++;
 
-			if ( !isset( $types[$type]['funcs'][$func] ) )
-				$types[$type]['funcs'][$func] = 1;
+			if ( !isset( $types[$type]['callers'][$caller] ) )
+				$types[$type]['callers'][$caller] = 1;
 			else
-				$types[$type]['funcs'][$func]++;
+				$types[$type]['callers'][$caller]++;
 
-			$row = compact( 'func', 'func_name', 'funcs', 'sql', 'ltime', 'result', 'type', 'component' );
+			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
@@ -316,10 +321,10 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		}
 
-		usort( $this->data['times'], 'QM_Util::sort' );
-
 		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
 			usort( $rows, 'QM_Util::sort' );
+
+		$total_qs = count( $rows );
 
 		$this->data['total_qs'] += $total_qs;
 		$this->data['total_time'] += $total_time;
@@ -330,26 +335,18 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function output_queries( $name, stdClass $db ) {
+	function output_queries( $name, stdClass $db, array $data ) {
 
-		# @TODO move more of this into process()
+		$max_exceeded = $db->total_qs > QM_DB_LIMIT;
 
-		$rows          = $db->rows;
-		$has_results   = $db->has_results;
-		$has_component = $db->has_component;
-		$total_time    = $db->total_time;
-		$total_qs      = $db->total_qs;
-		$max_exceeded  = $total_qs > QM_DB_LIMIT;
-
-		$id = sanitize_title( $name );
 		$span = 3;
 
-		if ( $has_results )
+		if ( $db->has_results )
 			$span++;
-		if ( $has_component )
+		if ( $db->has_component )
 			$span++;
 
-		echo '<div class="qm qm-queries" id="' . $this->id() . '-' . $id . '">';
+		echo '<div class="qm qm-queries" id="' . $this->id() . '-' . sanitize_title( $name ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -359,7 +356,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( $max_exceeded ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Crikey!', 'query-monitor' ),
-				number_format_i18n( $total_qs ),
+				number_format_i18n( $db->total_qs ),
 				$name,
 				number_format_i18n( QM_DB_LIMIT )
 			) . '</td>';
@@ -368,38 +365,38 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		echo '<tr>';
 		echo '<th>' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
-		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $this->data['times'] ) ) . '</th>';
+		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $data['times'] ) ) . '</th>';
 
-		if ( $has_component )
-			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $this->data['component_times'] ) ) . '</th>';
+		if ( $db->has_component )
+			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $data['component_times'] ) ) . '</th>';
 
-		if ( $has_results )
+		if ( $db->has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 
 		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
-		if ( !empty( $rows ) ) {
+		if ( !empty( $db->rows ) ) {
 
 			echo '<tbody>';
 
-			foreach ( $rows as $i => $row )
+			foreach ( $db->rows as $i => $row )
 				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
 
 			echo '</tbody>';
 			echo '<tfoot>';
 
-			$total_stime = number_format_i18n( $total_time, 4 );
-			$total_ltime = number_format_i18n( $total_time, 10 );
+			$total_stime = number_format_i18n( $db->total_time, 4 );
+			$total_ltime = number_format_i18n( $db->total_time, 10 );
 
 			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $total_qs ) ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
 			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 
 			echo '<tr class="qm-items-shown qm-hide">';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $total_qs ) . '</span>' ) . '</td>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $db->total_qs ) . '</span>' ) . '</td>';
 			echo "<td valign='top' class='qm-items-time'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
@@ -449,11 +446,11 @@ class QM_Component_DB_Queries extends QM_Component {
 		if ( isset( $cols['component'] ) )
 			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
 		if ( isset( $cols['caller'] ) )
-			$row_attr['data-qm-db_queries-caller'] = $row['func_name'];
+			$row_attr['data-qm-db_queries-caller'] = $row['caller_name'];
 		if ( isset( $cols['time'] ) )
 			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 
-		$funcs = esc_attr( implode( ', ', $row['funcs'] ) );
+		$stack = esc_attr( $row['stack'] );
 		$attr = '';
 
 		foreach ( $row_attr as $a => $v )
@@ -465,10 +462,10 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$row['sql']}</td>";
 
 		if ( isset( $cols['caller'] ) )
-			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$funcs}'>{$row['func']}</td>";
+			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$stack}'>{$row['caller']}</td>";
 
 		if ( isset( $cols['stack'] ) ) {
-			$stack = implode( '<br/>', $row['funcs'] );
+			$stack = implode( '<br/>', $row['stack'] );
 			echo "<td valign='top' class='qm-row-caller qm-row-stack qm-ltr'>{$stack}</td>";
 		}
 

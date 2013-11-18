@@ -60,6 +60,8 @@ class QM_Component_DB_Components extends QM_Component {
 
 			echo '<tbody>';
 
+			usort( $data['times'], 'QM_Util::sort' );
+
 			foreach ( $data['times'] as $component => $row ) {
 				$total_time  += $row['ltime'];
 				$total_calls += $row['calls'];
