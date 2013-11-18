@@ -185,7 +185,7 @@ class QM_Component_DB_Queries extends QM_Component {
 		}
 
 		foreach ( $data['dbs'] as $name => $db )
-			$this->output_queries( $name, $db );
+			$this->output_queries( $name, $db, $data );
 
 	}
 
@@ -335,7 +335,7 @@ class QM_Component_DB_Queries extends QM_Component {
 
 	}
 
-	function output_queries( $name, stdClass $db ) {
+	function output_queries( $name, stdClass $db, array $data ) {
 
 		$max_exceeded = $db->total_qs > QM_DB_LIMIT;
 
@@ -365,10 +365,10 @@ class QM_Component_DB_Queries extends QM_Component {
 
 		echo '<tr>';
 		echo '<th>' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
-		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $this->data['times'] ) ) . '</th>';
+		echo '<th>' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $data['times'] ) ) . '</th>';
 
 		if ( $db->has_component )
-			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $this->data['component_times'] ) ) . '</th>';
+			echo '<th>' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $data['component_times'] ) ) . '</th>';
 
 		if ( $db->has_results )
 			echo '<th>' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
