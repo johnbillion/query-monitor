@@ -135,7 +135,7 @@ class QM_Component_Hooks extends QM_Component {
 						$component = '';
 
 					if ( !$first )
-						echo "<tr{$attr} class='{$class}''>";
+						echo "<tr{$attr}>";
 
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
