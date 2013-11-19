@@ -155,6 +155,52 @@ class QM_Util {
 
 	}
 
+	public static function populate_callback( array $callback ) {
+
+		$access = '->';
+
+		if ( is_string( $callback['function'] ) and ( false !== strpos( $callback['function'], '::' ) ) ) {
+			$callback['function'] = explode( '::', $callback['function'] );
+			$access = '::';
+		}
+
+		try {
+
+			if ( is_array( $callback['function'] ) ) {
+
+				if ( is_object( $callback['function'][0] ) )
+					$class = get_class( $callback['function'][0] );
+				else
+					$class = $callback['function'][0];
+
+				$callback['name'] = $class . $access . $callback['function'][1] . '()';
+				$ref = new ReflectionMethod( $class, $callback['function'][1] );
+
+			} else if ( is_object( $callback['function'] ) and is_a( $callback['function'], 'Closure' ) ) {
+
+				$ref  = new ReflectionFunction( $callback['function'] );
+				$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
+				$callback['name'] = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
+
+			} else {
+
+				$callback['name'] = $callback['function'] . '()';
+				$ref = new ReflectionFunction( $callback['function'] );
+
+			}
+
+			$callback['component'] = self::get_file_component( $ref->getFileName() );
+
+		} catch ( ReflectionException $e ) {
+
+			# Nothing
+
+		}
+
+		return $callback;
+
+	}
+
 	public static function is_ajax() {
 		if ( defined( 'DOING_AJAX' ) and DOING_AJAX )
 			return true;

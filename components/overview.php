@@ -48,20 +48,15 @@ class QM_Component_Overview extends QM_Component {
 
 		$total_stime = number_format_i18n( $data['time'], 4 );
 		$total_ltime = number_format_i18n( $data['time'], 10 );
-		$excl_stime  = number_format_i18n( $data['time'] - $http_time, 4 );
-		$excl_ltime  = number_format_i18n( $data['time'] - $http_time, 10 );
 
 		echo '<div class="qm" id="' . $this->id() . '">';
 		echo '<table cellspacing="0">';
-		echo '<tbody>';
 
 		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
 
 		$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
 
-		#if ( isset( $http_time ) )
-		#	$time_usage .= '<br /><span class="qm-info" title="' . esc_attr( $excl_ltime ) . '">' . sprintf( __( '%s excluding HTTP requests', 'query-monitor' ), $excl_stime ) . '</span>';
-
+		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . __( 'Page generation time', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
@@ -70,7 +65,9 @@ class QM_Component_Overview extends QM_Component {
 			echo '<th scope="col">' . __( 'Database queries', 'query-monitor' ) . '</th>';
 		}
 		echo '</tr>';
+		echo '</thead>';
 
+		echo '<tbody>';
 		echo '<tr>';
 		echo "<td><span title='{$total_ltime}'>{$total_stime}</span>{$time_usage}</td>";
 		echo '<td><span title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . '</span>' . $memory_usage . '</td>';
@@ -86,8 +83,8 @@ class QM_Component_Overview extends QM_Component {
 			echo '</td>';
 		}
 		echo '</tr>';
-
 		echo '</tbody>';
+
 		echo '</table>';
 		echo '</div>';
 
