@@ -33,44 +33,26 @@ class QM_Component_Hooks extends QM_Component {
 		if ( is_multisite() and is_network_admin() )
 			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
 
-		foreach ( $wp_actions as $action => $count ) {
+		foreach ( $wp_actions as $name => $count ) {
 
-			$name = $action;
 			$actions = array();
 			# @TODO better variable name:
 			$c = array();
 
-			if ( isset( $wp_filter[$action] ) ) {
+			if ( isset( $wp_filter[$name] ) ) {
 
-				foreach( $wp_filter[$action] as $priority => $functions ) {
+				foreach( $wp_filter[$name] as $priority => $callbacks ) {
 
-					foreach ( $functions as $function ) {
+					foreach ( $callbacks as $callback ) {
 
-						if ( is_array( $function['function'] ) ) {
+						$callback = QM_Util::populate_callback( $callback );
 
-							if ( is_object( $function['function'][0] ) )
-								$class = get_class( $function['function'][0] );
-							else
-								$class = $function['function'][0];
+						if ( isset( $callback['component'] ) )
+							$c[$callback['component']->name] = $callback['component']->name;
 
-							$ref = new ReflectionMethod( $class, $function['function'][1] );
-
-							$out = $class . '->' . $function['function'][1] . '()';
-						} else if ( is_object( $function['function'] ) and is_a( $function['function'], 'Closure' ) ) {
-							$ref  = new ReflectionFunction( $function['function'] );
-							$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
-							$out  = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
-						} else {
-							$ref = new ReflectionFunction( $function['function'] );
-							$out = $function['function'] . '()';
-						}
-
-						$component = QM_Util::get_file_component( $ref->getFileName() );
-						$c[$component->name] = $component->name;
 						$actions[] = array(
 							'priority'  => $priority,
-							'function'  => $out,
-							'component' => $component,
+							'callback'  => $callback,
 						);
 
 					}
@@ -84,7 +66,7 @@ class QM_Component_Hooks extends QM_Component {
 			$parts = array_merge( $parts, $p );
 			$components = array_merge( $components, $c );
 
-			$hooks[$action] = array(
+			$hooks[$name] = array(
 				'name'    => $name,
 				'actions' => $actions,
 				'parts'   => $p,
@@ -146,14 +128,21 @@ class QM_Component_Hooks extends QM_Component {
 				$first = true;
 
 				foreach ( $hook['actions'] as $action ) {
+
+					if ( isset( $action['callback']['component'] ) )
+						$component = $action['callback']['component']->name;
+					else
+						$component = '';
+
 					if ( !$first )
-						echo "<tr{$attr}>";
+						echo "<tr{$attr} class='{$class}''>";
+
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
-					echo esc_html( $action['function'] );
+					echo esc_html( $action['callback']['name'] );
 					echo '</td>';
 					echo '<td valign="top">';
-					echo esc_html( $action['component']->name );
+					echo esc_html( $component );
 					echo '</td>';
 					echo '</tr>';
 					$first = false;
