@@ -2,7 +2,8 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.5.1
+Version:     2.5.2
+Plugin URI:  https://github.com/johnbillion/QueryMonitor
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
 Text Domain: query-monitor
@@ -20,31 +21,6 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
-
-Query Monitor outputs info on:
-
-  * Admin screen variables and names of admin screen column hooks
-  * All hooks that have fired and their associated actions
-    * Filterable by name and component
-  * HTTP API requests and responses
-  * Database queries
-    * Filterable by type, calling function and component
-    * Broken down and summarised by calling function and component
-    * Supports multiple instances of WPDB
-  * Memory usage and page generation time
-  * PHP warnings, notices and strict errors
-    * Also shown in AJAX responses (!) (more to come)
-  * Query vars, split by built-in and custom vars
-  * Selected MySQL, PHP, WordPress and server configuration
-  * Template conditionals
-  * Template file name and body classes
-  * Transient update calls
-
-@ TODO
-
- * Display queries and other debugging from AJAX calls
- * Show hooks attached to some selected filters, eg request, parse_request
 
 */
 
