@@ -37,6 +37,7 @@ class QM_Backtrace {
 		'_deprecated_argument' => true,
 		'_deprecated_file'     => true,
 		'_deprecated_function' => true,
+		'dbDelta'              => true,
 	);
 	protected static $show_args = array(
 		'do_action'               => 1,
