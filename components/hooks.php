@@ -154,6 +154,13 @@ class QM_Component_Hooks extends QM_Component {
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
 					echo esc_html( $action['callback']['name'] );
+					if ( isset( $action['callback']['error'] ) ) {
+						echo '<br><span class="qm-warn">';
+						printf( __( 'Error: %s', 'query-monitor' ),
+							esc_html( $action['callback']['error']->get_error_message() )
+						);
+						echo '<span>';
+					}
 					echo '</td>';
 					echo '<td valign="top">';
 					echo esc_html( $component );
