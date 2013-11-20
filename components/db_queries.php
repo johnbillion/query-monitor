@@ -404,14 +404,14 @@ class QM_Component_DB_Queries extends QM_Component {
 			$total_stime = number_format_i18n( $db->total_time, 4 );
 			$total_ltime = number_format_i18n( $db->total_time, 10 );
 
-			echo '<tr>';
-			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
-			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
-			echo '</tr>';
-
 			echo '<tr class="qm-items-shown qm-hide">';
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $db->total_qs ) . '</span>' ) . '</td>';
 			echo "<td valign='top' class='qm-items-time'>{$total_stime}</td>";
+			echo '</tr>';
+
+			echo '<tr>';
+			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
+			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -438,6 +438,8 @@ class QM_Component_DB_Queries extends QM_Component {
 			unset( $cols['component'] );
 		if ( is_null( $row['result'] ) )
 			unset( $cols['result'] );
+		if ( is_null( $row['stack'] ) )
+			unset( $cols['stack'] );
 
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
@@ -461,8 +463,10 @@ class QM_Component_DB_Queries extends QM_Component {
 			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
 		if ( isset( $cols['caller'] ) )
 			$row_attr['data-qm-db_queries-caller'] = $row['caller_name'];
-		if ( isset( $cols['time'] ) )
+		if ( isset( $cols['time'] ) ) {
 			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
+			$row_attr['data-qm-time'] = $row['ltime'];
+		}
 
 		$stack = esc_attr( $row['stack'] );
 		$attr = '';
@@ -479,7 +483,10 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$stack}'>{$row['caller']}</td>";
 
 		if ( isset( $cols['stack'] ) ) {
-			$stack = implode( '<br/>', $row['stack'] );
+			# This isn't optimal...
+			$stack = explode( ', ', $row['stack'] );
+			$stack = array_reverse( $stack );
+			$stack = implode( '<br>', $stack );
 			echo "<td valign='top' class='qm-row-caller qm-row-stack qm-ltr'>{$stack}</td>";
 		}
 

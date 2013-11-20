@@ -37,6 +37,7 @@ class QM_Backtrace {
 		'_deprecated_argument' => true,
 		'_deprecated_file'     => true,
 		'_deprecated_function' => true,
+		'dbDelta'              => true,
 	);
 	protected static $show_args = array(
 		'do_action'               => 1,
@@ -70,6 +71,8 @@ class QM_Backtrace {
 	public function get_stack() {
 		$trace = array_map( 'QM_Backtrace::filter_trace', $this->trace );
 		$trace = array_values( array_filter( $trace ) );
+		if ( empty( $trace ) and isset( $this->trace[0]['file'] ) )
+			$trace[] = QM_Util::standard_dir( $this->trace[0]['file'], '' );
 		return $trace;
 	}
 

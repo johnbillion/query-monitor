@@ -193,7 +193,7 @@ class QM_Util {
 
 		} catch ( ReflectionException $e ) {
 
-			# Nothing
+			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
 
 		}
 

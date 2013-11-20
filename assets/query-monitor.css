@@ -57,12 +57,20 @@ body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	background-color: #c00;
 }
 
+#wpadminbar .qm-warning > a {
+	color: #fff !important;
+}
+
 #wp-admin-bar-query-monitor-errors {
 	background-color: #c00 !important;
 }
 
 #wpadminbar .qm-error {
 	background-color: #c00 !important;
+}
+
+#wpadminbar .qm-error > a {
+	color: #fff !important;
 }
 
 #wp-admin-bar-query-monitor-stricts a {
@@ -319,7 +327,7 @@ select.qm-filter {
 	display: block !important;
 	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
 	font-weight: normal !important;
-	font-size: 11px !important;
+	font-size: 10px !important;
 	margin: 4px 0 2px !important;
 	border: 1px solid #e6e6e6 !important;
 	padding: 1px !important;

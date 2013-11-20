@@ -17,7 +17,6 @@ GNU General Public License for more details.
 class QM_Component_HTTP extends QM_Component {
 
 	var $id   = 'http';
-	var $http = array();
 
 	function __construct() {
 
@@ -29,6 +28,18 @@ class QM_Component_HTTP extends QM_Component {
 		# http://core.trac.wordpress.org/ticket/25747
 		add_filter( 'pre_http_request',    array( $this, 'http_response' ), 99, 3 );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
+
+	}
+
+	function admin_class( array $class ) {
+
+		if ( isset( $this->data['errors']['error'] ) )
+			$class[] = 'qm-error';
+		else if ( isset( $this->data['errors']['warning'] ) )
+			$class[] = 'qm-warning';
+
+		return $class;
 
 	}
 
@@ -84,6 +95,13 @@ class QM_Component_HTTP extends QM_Component {
 	function http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
+
+		if ( is_wp_error( $response ) ) {
+			$this->data['errors']['error'][] = $args['_qm_key'];
+		} else {
+			if ( intval( wp_remote_retrieve_response_code( $response ) ) >= 400 )
+				$this->data['errors']['warning'][] = $args['_qm_key'];
+		}
 		return $response;
 	}
 
@@ -95,9 +113,17 @@ class QM_Component_HTTP extends QM_Component {
 			? __( 'HTTP Requests', 'query-monitor' )
 			: __( 'HTTP Requests (%s)', 'query-monitor' );
 
-		$menu[] = $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( $count ) )
-		) );
+		$args = array(
+			'title' => sprintf( $title, number_format_i18n( $count ) ),
+		);
+
+		if ( isset( $this->data['errors']['error'] ) )
+			$args['meta']['classname'] = 'qm-error';
+		else if ( isset( $this->data['errors']['warning'] ) )
+			$args['meta']['classname'] = 'qm-warning';
+
+		$menu[] = $this->menu( $args );
+
 		return $menu;
 
 	}

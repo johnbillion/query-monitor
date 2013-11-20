@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Plugin {
+abstract class QM_Plugin {
 
 	/**
 	 * Class constructor

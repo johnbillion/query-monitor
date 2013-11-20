@@ -141,7 +141,7 @@ class QM_Component_Admin extends QM_Component {
 				$col = 'link';
 
 			echo '<tr>';
-			echo '<td rowspan="2">' . __( 'Columns', 'query-monitor' ) . '</td>';
+			echo '<td rowspan="2">' . __( 'Column Filters', 'query-monitor' ) . '</td>';
 			echo "<td colspan='2'>manage_<span class='qm-current'>{$cols}</span>_columns</td>";
 			echo '</tr>';
 			echo '<tr>';
@@ -149,7 +149,7 @@ class QM_Component_Admin extends QM_Component {
 			echo '</tr>';
 
 			echo '<tr>';
-			echo '<td rowspan="1">' . __( 'Column', 'query-monitor' ) . '</td>';
+			echo '<td rowspan="1">' . __( 'Column Action', 'query-monitor' ) . '</td>';
 			echo "<td colspan='2'>manage_<span class='qm-current'>{$col}</span>_custom_column</td>";
 			echo '</tr>';
 
