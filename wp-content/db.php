@@ -70,7 +70,7 @@ class QueryMonitorDB extends wpdb {
 		if ( ! $this->ready )
 			return false;
 
-		if ( $this->show_errors and class_exists( 'QM_Component_DB_Queries' ) )
+		if ( $this->show_errors )
 			$this->hide_errors();
 
 		// some queries are made before the plugins have been loaded, and thus cannot be filtered with this method
