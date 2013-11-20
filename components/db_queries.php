@@ -438,6 +438,8 @@ class QM_Component_DB_Queries extends QM_Component {
 			unset( $cols['component'] );
 		if ( is_null( $row['result'] ) )
 			unset( $cols['result'] );
+		if ( is_null( $row['stack'] ) )
+			unset( $cols['stack'] );
 
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
@@ -479,7 +481,10 @@ class QM_Component_DB_Queries extends QM_Component {
 			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$stack}'>{$row['caller']}</td>";
 
 		if ( isset( $cols['stack'] ) ) {
-			$stack = implode( '<br/>', $row['stack'] );
+			# This isn't optimal...
+			$stack = explode( ', ', $row['stack'] );
+			$stack = array_reverse( $stack );
+			$stack = implode( '<br>', $stack );
 			echo "<td valign='top' class='qm-row-caller qm-row-stack qm-ltr'>{$stack}</td>";
 		}
 
