@@ -1,4 +1,4 @@
-# Query Monitor
+# Query Monitor #
 
 Query Monitor is a debugging plugin for anyone developing with WordPress. It has some unique features not yet seen in other debugging plugins, including automatic AJAX debugging and the ability to narrow down things by plugin or theme.
 
@@ -30,9 +30,9 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
 
 ---
 
-# Features
+# Features #
 
-## Database Queries
+## Database Queries ##
 
  * Shows all database queries performed on the current page
  * Shows **affected rows** and time for all queries
@@ -45,48 +45,48 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
 
 Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries. Query Monitor can easily tell you if your "premium" theme is doing a premium number of database queries.
 
-## Hooks
+## Hooks ##
 
  * Shows all hooks fired on the current page, along with hooked actions and their priorities
  * Filter hooks by **part of their name**
  * Filter actions by **component** (WordPress core, Plugin X, Plugin Y, theme)
 
-## Theme
+## Theme ##
 
  * Shows the **template filename** for the current page
  * Shows the available **body classes** for the current page
  * Shows the active theme name
 
-## PHP Errors
+## PHP Errors ##
 
  * PHP errors (warnings, notices and stricts) are presented nicely along with their component and call stack
  * Shows an easily visible warning in the admin toolbar
  * Plays nicely with Xdebug
 
-## HTTP Requests
+## HTTP Requests ##
 
  * Shows all HTTP requests performed on the current page (as long as they use WordPress' HTTP API)
  * Shows the response code, call stack, transport, timeout, and time taken
  * Highlights **erroneous responses**, such as failed requests and anything without a `200` response code
 
-## Redirects
+## Redirects ##
 
  * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector to easily trace where a redirect has come from
 
-## AJAX
+## AJAX ##
 
 The response from any jQuery AJAX request on the page will contain various debugging information in its header that gets output to the developer console. **No hooking required**.
 
 AJAX debugging is in its early stages. Currently it only includes PHP errors (warnings, notices and stricts), but this will be built upon in future versions.
 
-## Admin Screen
+## Admin Screen ##
 
 Hands up who can remember the correct names for the filters and hooks for custom admin screen columns?
 
  * Shows the correct names for **custom column hooks and filters** on all admin screens that have a listing table
  * Shows the state of `get_current_screen()` and a few variables
 
-## Environment Information
+## Environment Information ##
 
  * Shows **various PHP information** such as memory limit and error reporting levels
  * Highlights the fact when any of these are overridden at runtime
@@ -95,7 +95,7 @@ Hands up who can remember the correct names for the filters and hooks for custom
  * Shows various details about **WordPress** and the **web server**
  * Shows version numbers for everything
 
-## Everything Else
+## Everything Else ##
 
  * Shows the names and values for **query vars** on the current page, and highlights **custom query vars**
  * Shows any **transients that were set**, along with their timeout, component, and call stack
@@ -103,15 +103,15 @@ Hands up who can remember the correct names for the filters and hooks for custom
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
  * You can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details
 
-# Notes
+# Notes #
 
-## A Note on Profiling
+## A Note on Profiling ##
 
 Query Monitor does not currently contain a profiling mechanism. The main reason for this is that profiling is best done at a lower level using tools such as [XHProf](https://github.com/facebook/xhprof).
 
 However, it is likely that I will add some form of profiling functionality at some point. It'll probably be similar to how Joe Hoyle's [TimeStack](https://github.com/joehoyle/Time-Stack) does it, because that works nicely. Suggestions welcome.
 
-## A Note on Query Monitor's Implementation
+## A Note on Query Monitor's Implementation ##
 
 In order to do a few clever things, Query Monitor loads earlier than you ever thought humanly possible (almost). It does this by symlinking a custom `db.php` in your `WP_CONTENT_DIR`. This file (when present) gets included before the database driver is loaded, meaning this portion of Query Monitor loads before WordPress even engages its brain.
 
@@ -124,13 +124,13 @@ In this file is Query Monitor's extension to the `wpdb` class which:
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can manually create the symlink to the plugin's `wp-content/db.php` if you have permission. ([Related GitHub issue](https://github.com/johnbillion/QueryMonitor/issues/5))
 
-# Screenshots
+# Screenshots #
 
-### Admin Menu
+### Admin Menu ###
 
 ![Admin Menu](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/admin_menu.png)
 
-### Database Queries
+### Database Queries ###
 
 Database listing panel showing all queries, and the controls for filtering by query type, caller, and component
 
@@ -140,35 +140,35 @@ A slow database query (over 0.1s by default) that has been highlighted in a sepa
 
 ![Slow Database Queries](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/db_queries_slow.png)
 
-### Aggregate Database Queries by Component
+### Aggregate Database Queries by Component ###
 
 Ordered by most time spent
 
 ![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/db_query_components.png)
 
-### Aggregate Database Queries by Calling Function
+### Aggregate Database Queries by Calling Function ###
 
 Ordered by most time spent
 
 ![Aggregate Database Queries by Calling Function](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/db_query_callers.png)
 
-### Hooks
+### Hooks ###
 
 Hook listing panel showing all hooks, and the controls for filtering by name and component
 
 ![Hooks](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/hooks.png)
 
-### HTTP Requests
+### HTTP Requests ###
 
 Showing an HTTP request with an error
 
 ![HTTP](https://raw.github.com/johnbillion/QueryMonitor/master/screenshots/http.png)
 
-# Contributing
+# Contributing #
 
 Code contributions are very welcome, as are bug reports in the form of GitHub issues. Development happens in the `develop` branch, and any pull requests should be made to that branch please.
 
-# License: GPLv2
+# License: GPLv2 #
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
