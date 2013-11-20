@@ -71,6 +71,8 @@ class QM_Backtrace {
 	public function get_stack() {
 		$trace = array_map( 'QM_Backtrace::filter_trace', $this->trace );
 		$trace = array_values( array_filter( $trace ) );
+		if ( empty( $trace ) and isset( $this->trace[0]['file'] ) )
+			$trace[] = QM_Util::standard_dir( $this->trace[0]['file'], '' );
 		return $trace;
 	}
 
