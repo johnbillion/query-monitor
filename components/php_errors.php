@@ -193,7 +193,8 @@ class QM_Component_PHP_Errors extends QM_Component {
 		if ( error_reporting() > 0 ) {
 
 			$trace = new QM_Backtrace;
-			$func  = reset( $trace->get_stack() );
+			$stack = $trace->get_stack();
+			$func  = reset( $stack );
 			$key   = md5( $message . $file . $line . $func );
 
 			$filename = QM_Util::standard_dir( $file, '' );
