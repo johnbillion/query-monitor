@@ -25,10 +25,12 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-if ( ! is_readable( $autoloader = dirname( __FILE__ ) . '/../autoloader.php' ) )
-	return;
-
-include_once $autoloader;
+# No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
+foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util' ) as $f ) {
+	if ( ! is_readable( $file = dirname( __FILE__ ) . "/../{$f}.php" ) )
+		return;
+	require_once $file;
+}
 
 if ( !defined( 'SAVEQUERIES' ) )
 	define( 'SAVEQUERIES', true );
