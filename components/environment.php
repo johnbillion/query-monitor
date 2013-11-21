@@ -124,8 +124,16 @@ class QM_Component_Environment extends QM_Component {
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 				" );
 
+				if ( is_resource( $db->dbh ) ) {
+					$version = mysql_get_server_info( $db->dbh );
+				} else {
+					$version = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+					# @TODO this message is temporary:
+					$version .= '<br><span class="qm-warn">This is a known issue. <a href="https://github.com/johnbillion/QueryMonitor/issues/25">More info here</a></span>';
+				}
+
 				$this->data['db'][$id] = array(
-					'version'   => mysql_get_server_info( $db->dbh ),
+					'version'   => $version,
 					'user'      => $db->dbuser,
 					'host'      => $db->dbhost,
 					'name'      => $db->dbname,
