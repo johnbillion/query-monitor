@@ -193,6 +193,9 @@ class QueryMonitor extends QM_Plugin {
 
 	public function action_shutdown() {
 
+		if ( !$this->show_query_monitor() )
+			return;
+
 		if ( QM_Util::is_ajax() )
 			$this->output_ajax();
 		else if ( $this->did_footer )
@@ -212,6 +215,7 @@ class QueryMonitor extends QM_Plugin {
 		if ( QM_Util::is_ajax() )
 			ob_start();
 
+		# @todo move into output_html
 		if ( !defined( 'DONOTCACHEPAGE' ) )
 			define( 'DONOTCACHEPAGE', 1 );
 
@@ -238,8 +242,6 @@ class QueryMonitor extends QM_Plugin {
 
 	public function output_footer() {
 
-		if ( !$this->show_query_monitor() )
-			return;
 
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
@@ -283,9 +285,6 @@ class QueryMonitor extends QM_Plugin {
 
 		# if the headers have already been sent then we can't do anything about it
 		if ( headers_sent() )
-			return;
-
-		if ( !$this->show_query_monitor() )
 			return;
 
 		foreach ( $this->get_components() as $component )
