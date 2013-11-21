@@ -24,7 +24,6 @@ class QM_Component_Environment extends QM_Component {
 		'post_max_size',
 		'display_errors',
 		'log_errors',
-	#	'error_log',
 	);
 
 	function __construct() {
@@ -46,20 +45,10 @@ class QM_Component_Environment extends QM_Component {
 			$this->data['php']['variables'][$setting]['before'] = $val;
 		}
 
-		if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars['error_reporting'] ) )
-			$val = $wpdb->qm_php_vars['error_reporting'];
-		else
-			$val = implode( '<br/>', $this->get_error_reporting() );
-
-		$this->data['php']['variables']['error_reporting']['before'] = $val;
-
 	}
 
-	function get_error_reporting() {
+	public static function get_error_levels( $error_reporting ) {
 
-		# @TODO move this into QM_Util and call it in QueryMonitorDB too
-
-		$error_reporting = error_reporting();
 		$levels = array();
 
 		$constants = array(
@@ -67,6 +56,10 @@ class QM_Component_Environment extends QM_Component {
 			'E_WARNING',
 			'E_PARSE',
 			'E_NOTICE',
+			'E_CORE_ERROR',
+			'E_CORE_WARNING',
+			'E_COMPILE_ERROR',
+			'E_COMPILE_WARNING',
 			'E_USER_ERROR',
 			'E_USER_WARNING',
 			'E_USER_NOTICE',
@@ -170,8 +163,9 @@ class QM_Component_Environment extends QM_Component {
 		foreach ( $this->php_vars as $setting )
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
 
-		$this->data['php']['variables']['error_reporting']['after'] = implode( '<br/>', $this->get_error_reporting() );
+		$this->data['php']['error_reporting'] = error_reporting();
 
+		# @TODO put WP's other debugging constants in here, eg. SCRIPT_DEBUG
 		$this->data['wp'] = array(
 			'version'      => $wp_version,
 			'WP_DEBUG'     => QM_Util::format_bool_constant( 'WP_DEBUG' ),
@@ -210,7 +204,7 @@ class QM_Component_Environment extends QM_Component {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="' . ( 2 + count( $data['php']['variables'] ) ) . '">PHP</td>';
+		echo '<td rowspan="' . ( 3 + count( $data['php']['variables'] ) ) . '">PHP</td>';
 		echo '<td>version</td>';
 		echo "<td>{$data['php']['version']}</td>";
 		echo '</tr>';
@@ -231,6 +225,13 @@ class QM_Component_Environment extends QM_Component {
 			echo "<td>{$val['after']}{$append}</td>";
 			echo '</tr>';
 		}
+
+		$error_levels = implode( '<br/>', self::get_error_levels( $data['php']['error_reporting'] ) );
+
+		echo '<tr>';
+		echo '<td>error_reporting</td>';
+		echo "<td>{$data['php']['error_reporting']}<br><span class='qm-info'>{$error_levels}</span></td>";
+		echo '</tr>';
 
 		if ( isset( $data['db'] ) ) {
 
