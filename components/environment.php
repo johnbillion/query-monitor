@@ -119,14 +119,17 @@ class QM_Component_Environment extends QM_Component {
 
 				if ( is_resource( $db->dbh ) ) {
 					$version = mysql_get_server_info( $db->dbh );
+					$driver  = 'mysql';
+				} else if ( is_object( $db->dbh ) and method_exists( $db->dbh, 'db_version' ) ) {
+					$version = $db->dbh->db_version();
+					$driver  = get_class( $db->dbh );
 				} else {
-					$version = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
-					# @TODO this message is temporary:
-					$version .= '<br><span class="qm-warn">This is a known issue. <a href="https://github.com/johnbillion/QueryMonitor/issues/25">More info here</a></span>';
+					$version = $driver = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
 				}
 
 				$this->data['db'][$id] = array(
 					'version'   => $version,
+					'driver'    => $driver,
 					'user'      => $db->dbuser,
 					'host'      => $db->dbhost,
 					'name'      => $db->dbname,
@@ -243,9 +246,14 @@ class QM_Component_Environment extends QM_Component {
 					$name = $id . '<br />MySQL';
 
 				echo '<tr>';
-				echo '<td rowspan="' . ( 4 + count( $db['variables'] ) ) . '">' . $name . '</td>';
+				echo '<td rowspan="' . ( 5 + count( $db['variables'] ) ) . '">' . $name . '</td>';
 				echo '<td>version</td>';
 				echo '<td>' . $db['version'] . '</td>';
+				echo '</tr>';
+
+				echo '<tr>';
+				echo '<td>driver</td>';
+				echo '<td>' . $db['driver'] . '</td>';
 				echo '</tr>';
 
 				echo '<tr>';
