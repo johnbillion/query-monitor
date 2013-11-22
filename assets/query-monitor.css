@@ -16,12 +16,13 @@ GNU General Public License for more details.
 
 
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
-	color: #4a4 !important;
-}
-body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
 	color: #8c8 !important;
 }
-body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
+body:not(.mp6) #wpadminbar .quicklinks .menupop.qm-wp-37 ul li.qm-true > a {
+	color: #4a4 !important;
+}
+
+#wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	color: #4a4 !important;
 }
 
@@ -34,10 +35,16 @@ body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 }
 
 #wp-admin-bar-query-monitor-stricts {
+	background-color: #555 !important;
+}
+body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-stricts {
 	background-color: #eee !important;
 }
 
 #wpadminbar .qm-strict {
+	background-color: #3c3c3c;
+}
+body:not(.mp6) #wpadminbar .qm-wp-37 .qm-strict {
 	background-color: #000;
 }
 
@@ -73,10 +80,7 @@ body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	color: #fff !important;
 }
 
-#wp-admin-bar-query-monitor-stricts a {
-	color: #555 !important;
-}
-
+#wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
 #wp-admin-bar-query-monitor-expensive a,
 #wp-admin-bar-query-monitor-warnings a,
@@ -84,17 +88,22 @@ body.mp6 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	color: #eee !important;
 }
 
+body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-stricts a {
+	color: #555 !important;
+}
+
 #wp-admin-bar-query-monitor small {
 	font-size: 11px !important;
 }
 
-#wp-admin-bar-query-monitor.hover a small,
-#wp-admin-bar-query-monitor.hover a .ab-label {
+body:not(.mp6) #wp-admin-bar-query-monitor.qm-wp-37.hover a small,
+body:not(.mp6) #wp-admin-bar-query-monitor.qm-wp-37.hover a .ab-label {
 	text-shadow: none !important;
 	color: #333 !important;
 }
-body.mp6 #wp-admin-bar-query-monitor.hover a small,
-body.mp6 #wp-admin-bar-query-monitor.hover a .ab-label {
+#wp-admin-bar-query-monitor.hover a small,
+#wp-admin-bar-query-monitor.hover a .ab-label {
+	text-shadow: none !important;
 	color: #2ea2cc !important;
 }
 
@@ -104,18 +113,40 @@ body.mp6 #wp-admin-bar-query-monitor.hover a .ab-label {
 }
 
 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
-	font: 16px/16px 'Open Sans', sans-serif !important;
+	font: 18px/44px 'Open Sans', sans-serif !important;
 	width: auto !important;
-	padding: 0 2px !important;
-	color: #999 !important;
-	line-height: 32px !important;
+	padding: 0 10px !important;
+	color: #aaa !important;
 	display: none !important;
+	background: red !important;
+}
+/* for mp6 on 3.7, reduce the menu icon line height */
+body.mp6 #wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-icon {
+	line-height: 30px !important;
 }
 
 @media screen and (max-width: 782px) {
-	body.mp6 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+	/* force menu icon to show up */
+	#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
 		display: block !important;
 	}
+	/* hide menu text */
+	#wpadminbar #wp-admin-bar-query-monitor .ab-label {
+		display: none !important;
+	}
+	/* for default 3.7, override our rule above and hide the menu icon */
+	body:not(.mp6) #wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-icon {
+		display: none !important;
+	}
+	/* for default 3.7, override our rule above and show the menu text */
+	body:not(.mp6) #wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-label {
+		display: inline-block !important;
+	}
+}
+
+/* for 3.7, fix the label margin */
+#wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-label {
+	margin: 0 !important;
 }
 
 #qm {

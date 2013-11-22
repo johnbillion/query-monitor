@@ -140,7 +140,7 @@ class QueryMonitor extends QM_Plugin {
 	public function js_admin_bar_menu() {
 
 		$class = implode( ' ', apply_filters( 'query_monitor_class', array( QM_Util::wpv() ) ) );
-		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
+		$title = implode( ' &nbsp; ', apply_filters( 'query_monitor_title', array() ) );
 
 		if ( empty( $title ) )
 			$title = __( 'Query Monitor', 'query-monitor' );
