@@ -26,7 +26,9 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-require_once dirname( __FILE__ ) . '/autoloader.php';
+# No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
+foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util' ) as $f )
+	require_once dirname( __FILE__ ) . "/{$f}.php";
 
 class QueryMonitor extends QM_Plugin {
 
@@ -77,6 +79,13 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 	public function activate( $sitewide = false ) {
+
+		if ( ! extension_loaded( 'spl' ) ) {
+			die( sprintf( 'This plugin requires the <a href="%s">%s</a> extension, which is not installed on your server.',
+				'http://php.net/manual/book.spl.php',
+				'Standard PHP Library (SPL)'
+			) );
+		}
 
 		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
@@ -131,7 +140,7 @@ class QueryMonitor extends QM_Plugin {
 	public function js_admin_bar_menu() {
 
 		$class = implode( ' ', apply_filters( 'query_monitor_class', array( QM_Util::wpv() ) ) );
-		$title = implode( ' / ', apply_filters( 'query_monitor_title', array() ) );
+		$title = implode( ' &nbsp; ', apply_filters( 'query_monitor_title', array() ) );
 
 		if ( empty( $title ) )
 			$title = __( 'Query Monitor', 'query-monitor' );
@@ -184,6 +193,9 @@ class QueryMonitor extends QM_Plugin {
 
 	public function action_shutdown() {
 
+		if ( !$this->show_query_monitor() )
+			return;
+
 		if ( QM_Util::is_ajax() )
 			$this->output_ajax();
 		else if ( $this->did_footer )
@@ -203,6 +215,7 @@ class QueryMonitor extends QM_Plugin {
 		if ( QM_Util::is_ajax() )
 			ob_start();
 
+		# @todo move into output_html
 		if ( !defined( 'DONOTCACHEPAGE' ) )
 			define( 'DONOTCACHEPAGE', 1 );
 
@@ -229,8 +242,6 @@ class QueryMonitor extends QM_Plugin {
 
 	public function output_footer() {
 
-		if ( !$this->show_query_monitor() )
-			return;
 
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
@@ -274,9 +285,6 @@ class QueryMonitor extends QM_Plugin {
 
 		# if the headers have already been sent then we can't do anything about it
 		if ( headers_sent() )
-			return;
-
-		if ( !$this->show_query_monitor() )
 			return;
 
 		foreach ( $this->get_components() as $component )
