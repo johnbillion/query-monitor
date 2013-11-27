@@ -104,8 +104,7 @@ class QM_Component_Hooks extends QM_Component {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
-		echo '<th colspan="2">' . __( 'Actions', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Action Component', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
+		echo '<th colspan="3">' . __( 'Actions', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -170,8 +169,7 @@ class QM_Component_Hooks extends QM_Component {
 				}
 
 			} else {
-				echo '<td colspan="2">&nbsp;</td>';
-				echo '<td>&nbsp;</td>';
+				echo '<td colspan="3">&nbsp;</td>';
 			}
 			echo '</tr>';
 		}
