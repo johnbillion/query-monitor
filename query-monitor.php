@@ -80,17 +80,10 @@ class QueryMonitor extends QM_Plugin {
 
 	public function activate( $sitewide = false ) {
 
-		if ( ! extension_loaded( 'spl' ) ) {
-			die( sprintf( 'This plugin requires the <a href="%s">%s</a> extension, which is not installed on your server.',
-				'http://php.net/manual/book.spl.php',
-				'Standard PHP Library (SPL)'
-			) );
-		}
-
 		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
-		if ( !file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
+		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) )
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
 
 		if ( $sitewide )
