@@ -204,8 +204,6 @@ class QM_Util {
 	public static function is_ajax() {
 		if ( defined( 'DOING_AJAX' ) and DOING_AJAX )
 			return true;
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' == strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) )
-			return true;
 		return false;
 	}
 
