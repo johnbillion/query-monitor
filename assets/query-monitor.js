@@ -131,11 +131,11 @@ jQuery( function($) {
 		if ( !errors )
 			return event;
 
-		errors = $.parseJSON( errors );
+		errors = parseInt( errors, 10 );
 
-		for ( var key in errors ) {
+		for ( var key = 1; key <= errors; key++ ) {
 
-			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + errors[key] ) );
+			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + key ) );
 
 			if ( window.console ) {
 				console.debug( '=== PHP Error in AJAX Response ===' ); // @TODO i18n
@@ -146,7 +146,7 @@ jQuery( function($) {
 				if ( ! qm.ajax_errors[error.type] ) {
 					$('#wp-admin-bar-query-monitor')
 						.addClass('qm-'+error.type)
-						.find('a').first().append('<span class="qm-ajax-'+ error.type +'"> / AJAX: '+ error.type +'</span>')
+						.find('a').first().append('<span class="ab-label qm-ajax-'+ error.type +'"> &nbsp; AJAX: '+ error.type +'</span>')
 					;
 				}
 			}
