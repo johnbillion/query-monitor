@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.5.4
+Version:     2.5.5
 Plugin URI:  https://github.com/johnbillion/QueryMonitor
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
@@ -80,23 +80,16 @@ class QueryMonitor extends QM_Plugin {
 
 	public function activate( $sitewide = false ) {
 
-		if ( ! extension_loaded( 'spl' ) ) {
-			die( sprintf( 'This plugin requires the <a href="%s">%s</a> extension, which is not installed on your server.',
-				'http://php.net/manual/book.spl.php',
-				'Standard PHP Library (SPL)'
-			) );
-		}
-
 		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
-		if ( !file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
+		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) )
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
 
 		if ( $sitewide )
-			update_site_option( 'active_sitewide_plugins', $this->filter_active_sitewide_plugins( get_site_option( 'active_sitewide_plugins'  ) ) );
+			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
 		else
-			update_option( 'active_plugins', $this->filter_active_plugins( get_option( 'active_plugins'  ) ) );
+			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
 
 	}
 
@@ -242,11 +235,11 @@ class QueryMonitor extends QM_Plugin {
 
 	public function output_footer() {
 
-
+		# @TODO document why this is needed
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
 			while ( ob_get_length() )
-				ob_flush();
+				ob_end_flush();
 		}
 
 		foreach ( $this->get_components() as $component )
@@ -304,7 +297,7 @@ class QueryMonitor extends QM_Plugin {
 
 	public function filter_active_plugins( array $plugins ) {
 
-		$f = preg_quote( basename( __FILE__ ) );
+		$f = preg_quote( basename( $this->plugin_base() ) );
 
 		return array_merge(
 			preg_grep( '/' . $f . '$/', $plugins ),
@@ -315,7 +308,7 @@ class QueryMonitor extends QM_Plugin {
 
 	public function filter_active_sitewide_plugins( array $plugins ) {
 
-		$f = plugin_basename( __FILE__ );
+		$f = $this->plugin_base();
 
 		if ( isset( $plugins[$f] ) ) {
 
