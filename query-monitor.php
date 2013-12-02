@@ -235,11 +235,11 @@ class QueryMonitor extends QM_Plugin {
 
 	public function output_footer() {
 
-
+		# @TODO document why this is needed
 		# Flush the output buffer to avoid crashes
 		if ( !is_feed() ) {
 			while ( ob_get_length() )
-				ob_flush();
+				ob_end_flush();
 		}
 
 		foreach ( $this->get_components() as $component )
