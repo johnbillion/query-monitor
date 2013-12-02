@@ -87,9 +87,9 @@ class QueryMonitor extends QM_Plugin {
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
 
 		if ( $sitewide )
-			update_site_option( 'active_sitewide_plugins', $this->filter_active_sitewide_plugins( get_site_option( 'active_sitewide_plugins'  ) ) );
+			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
 		else
-			update_option( 'active_plugins', $this->filter_active_plugins( get_option( 'active_plugins'  ) ) );
+			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
 
 	}
 
@@ -297,7 +297,7 @@ class QueryMonitor extends QM_Plugin {
 
 	public function filter_active_plugins( array $plugins ) {
 
-		$f = preg_quote( basename( __FILE__ ) );
+		$f = preg_quote( basename( $this->plugin_base() ) );
 
 		return array_merge(
 			preg_grep( '/' . $f . '$/', $plugins ),
@@ -308,7 +308,7 @@ class QueryMonitor extends QM_Plugin {
 
 	public function filter_active_sitewide_plugins( array $plugins ) {
 
-		$f = plugin_basename( __FILE__ );
+		$f = $this->plugin_base();
 
 		if ( isset( $plugins[$f] ) ) {
 
