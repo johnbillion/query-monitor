@@ -138,7 +138,7 @@ jQuery( function($) {
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + key ) );
 
 			if ( window.console ) {
-				console.debug( '=== PHP Error in AJAX Response ===' ); // @TODO i18n
+				console.debug( '=== ' + qm_l10n.ajax_error + ' ===' );
 				console.debug( error );
 			}
 
