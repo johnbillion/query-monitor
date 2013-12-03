@@ -230,6 +230,13 @@ class QueryMonitor extends QM_Plugin {
 			'qm_locale',
 			(array) $wp_locale
 		);
+		wp_localize_script(
+			'query-monitor',
+			'qm_l10n',
+			array(
+				'ajax_error' => __( 'PHP Error in AJAX Response', 'query-monitor' ),
+			)
+		);
 
 	}
 

@@ -69,25 +69,37 @@ class QM_Component_PHP_Errors extends QM_Component {
 		if ( empty( $data['errors'] ) )
 			return;
 
-		$all_errors = array();
+		$count = 0;
 
 		foreach ( $data['errors'] as $type => $errors ) {
 
 			foreach ( $errors as $key => $error ) {
 
-				$all_errors[$key] = $key;
+				$count++;
 
-				header( sprintf( 'X-QM-Error-%s: %s',
-					$key,
-					json_encode( $error )
+				# @TODO we should calculate the component during process() so we don't need to do it
+				# separately in output_html() and output_headers().
+				$component = QM_Util::get_backtrace_component( $error->trace );
+				$output_error = array(
+					'type'      => $error->type,
+					'message'   => $error->message,
+					'file'      => $error->file,
+					'line'      => $error->line,
+					'stack'     => $error->trace->get_stack(),
+					'component' => $component->name,
+				);
+
+				header( sprintf( 'X-QM-Error-%d: %s',
+					$count,
+					json_encode( $output_error )
 				) );
 
 			}
 
 		}
 
-		header( sprintf( 'X-QM-Errors: %s',
-			json_encode( $all_errors )
+		header( sprintf( 'X-QM-Errors: %d',
+			$count
 		) );
 
 	}
@@ -228,6 +240,8 @@ function register_qm_php_errors( array $qm ) {
 }
 
 function qm_php_errors_return_value( $return ) {
+	if ( QM_Util::is_ajax() )
+		return true;
 	# If Xdebug is enabled we'll return false so Xdebug's error handler can do its thing.
 	if ( function_exists( 'xdebug_is_enabled' ) and xdebug_is_enabled() )
 		return false;

@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Query Monitor
+Plugin Name: Query Monitor Database Class
 
 *********************************************************************
 
