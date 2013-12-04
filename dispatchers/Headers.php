@@ -38,8 +38,8 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 	}
 
-	public function get_outputter() {
-		return new QM_Output_Headers;
+	public function get_outputter( QM_Component $component ) {
+		return new QM_Output_Headers( $component );
 	}
 
 	public function active( QM_Plugin $qm ) {
@@ -54,7 +54,7 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 }
 
-function register_qm_dispatcher_html( array $dispatchers ) {
+function register_qm_dispatcher_headers( array $dispatchers ) {
 	$dispatchers['headers'] = new QM_Output_Dispatcher_Headers;
 	return $dispatchers;
 }

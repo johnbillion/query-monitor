@@ -124,8 +124,8 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function get_outputter() {
-		return new QM_Output_Html;
+	public function get_outputter( QM_Component $component ) {
+		return new QM_Output_Html( $component );
 	}
 
 	public function js_admin_bar_menu() {

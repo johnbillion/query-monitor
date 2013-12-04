@@ -17,17 +17,11 @@ GNU General Public License for more details.
 
 abstract class QM_Output_Dispatcher {
 
-	public $outputters = array();
-
 	public function __construct() {
 		// nothing
 	}
 
 	final public function setup( QM_Plugin $qm ) {
-		$filter = 'query_monitor_outputs_' . $this->id;
-		foreach ( apply_filters( $filter, array() ) as $output ) {
-			$this->add_outputter( $output );
-		}
 		$this->qm = $qm;
 	}
 
@@ -49,20 +43,20 @@ abstract class QM_Output_Dispatcher {
 		// nothing
 	}
 
-	public function add_outputter( QM_Output $output ) {
-		$this->outputters[$output->id] = $output;
-	}
-
-	abstract public function get_outputter();
+	abstract public function get_outputter( QM_Component $component );
 
 	public function output( QM_Component $component ) {
 
-		if ( isset( $this->outputters[$component->id] ) ) {
-			$this->outputters[$component->id]->output( $component );
-		} else {
-			$output = $this->get_outputter();
-			$output->output( $component );
+		$filter = 'query_monitor_output_' . $this->id . '_' . $component->id;
+
+		$output = apply_filters( $filter, null, $component );
+
+		if ( !is_a( $output, 'QM_Output' ) ) {
+			$output = $this->get_outputter( $component );
 		}
+
+		$output->output();
+
 	}
 
 }
