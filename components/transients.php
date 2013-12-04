@@ -18,6 +18,10 @@ class QM_Component_Transients extends QM_Component {
 
 	var $id = 'transients';
 
+	function name() {
+		return __( 'Transients', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		# See http://core.trac.wordpress.org/ticket/24583

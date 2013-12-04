@@ -18,6 +18,10 @@ class QM_Component_Conditionals extends QM_Component {
 
 	var $id = 'conditionals';
 
+	function name() {
+		return __( 'Conditionals', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 120 );
@@ -47,7 +51,7 @@ class QM_Component_Conditionals extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $cols . '">' . __( 'Conditionals', 'query-monitor' ) . '</th>';
+		echo '<th colspan="' . $cols . '">' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

@@ -39,6 +39,10 @@ abstract class QM_Component {
 		return $querymonitor->get_component( $id );
 	}
 
+	public function name() {
+		return null;
+	}
+
 	protected function build_filter( $name, array $values ) {
 
 		usort( $values, 'strcasecmp' );

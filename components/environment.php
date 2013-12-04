@@ -26,6 +26,10 @@ class QM_Component_Environment extends QM_Component {
 		'log_errors',
 	);
 
+	function name() {
+		return __( 'Environment', 'query-monitor' );
+	}
+
 	function __construct() {
 
 		global $wpdb;
@@ -201,7 +205,7 @@ class QM_Component_Environment extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Environment', 'query-monitor' ) . '</th>';
+		echo '<th colspan="3">' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

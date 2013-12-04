@@ -18,6 +18,10 @@ class QM_Component_HTTP extends QM_Component {
 
 	var $id   = 'http';
 
+	function name() {
+		return __( 'HTTP Requests', 'query-monitor' );
+	}
+
 	function __construct() {
 
 		parent::__construct();

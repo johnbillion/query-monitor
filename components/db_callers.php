@@ -18,6 +18,10 @@ class QM_Component_DB_Callers extends QM_Component {
 
 	var $id = 'db_callers';
 
+	function name() {
+		return __( 'Queries by Caller', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 30 );

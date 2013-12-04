@@ -18,6 +18,10 @@ class QM_Component_Admin extends QM_Component {
 
 	var $id = 'admin';
 
+	function name() {
+		return __( 'Admin', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
@@ -67,7 +71,7 @@ class QM_Component_Admin extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Admin', 'query-monitor' ) . '</th>';
+		echo '<th colspan="3">' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

@@ -18,6 +18,10 @@ class QM_Component_Hooks extends QM_Component {
 
 	var $id = 'hooks';
 
+	function name() {
+		return __( 'Hooks', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 80 );

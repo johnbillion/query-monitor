@@ -18,6 +18,10 @@ class QM_Component_Theme extends QM_Component {
 
 	var $id = 'theme';
 
+	function name() {
+		return __( 'Theme', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'body_class',          array( $this, 'body_class' ), 99 );
@@ -58,7 +62,7 @@ class QM_Component_Theme extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Theme', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 

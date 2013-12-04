@@ -18,6 +18,10 @@ class QM_Component_Authentication extends QM_Component {
 
 	var $id = 'authentication';
 
+	function name() {
+		return __( 'Authentication', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
@@ -42,7 +46,7 @@ class QM_Component_Authentication extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Authentication', 'query-monitor' ) . '</th>';
+		echo '<th>' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

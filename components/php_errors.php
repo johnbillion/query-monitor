@@ -18,6 +18,10 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 	var $id = 'php_errors';
 
+	function name() {
+		return __( 'PHP Errors', 'query-monitor' );
+	}
+
 	function __construct() {
 
 		parent::__construct();

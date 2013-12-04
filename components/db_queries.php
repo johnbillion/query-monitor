@@ -29,6 +29,10 @@ class QM_Component_DB_Queries extends QM_Component {
 	public $id = 'db_queries';
 	public $db_objects = array();
 
+	function name() {
+		return __( 'Database Queries', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );

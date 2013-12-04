@@ -18,6 +18,10 @@ class QM_Component_Overview extends QM_Component {
 
 	var $id = 'overview';
 
+	function name() {
+		return __( 'Overview', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );

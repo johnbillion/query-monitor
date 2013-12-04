@@ -18,6 +18,10 @@ class QM_Component_Redirects extends QM_Component {
 
 	var $id = 'redirects';
 
+	function name() {
+		return __( 'Redirects', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 999, 2 );

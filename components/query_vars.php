@@ -18,6 +18,10 @@ class QM_Component_Query_Vars extends QM_Component {
 
 	var $id = 'query_vars';
 
+	function name() {
+		return __( 'Query Vars', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
@@ -63,7 +67,7 @@ class QM_Component_Query_Vars extends QM_Component {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Query Vars', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . $this->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
