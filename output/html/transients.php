@@ -1,0 +1,99 @@
+<?php
+/*
+
+© 2013 John Blackbourn
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+class QM_Output_Html_Transients extends QM_Output_Html {
+
+	public function output() {
+
+		$data = $this->component->get_data();
+
+		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<table cellspacing="0">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th>' . __( 'Transient Set', 'query-monitor' ) . '</th>';
+		if ( is_multisite() )
+			echo '<th>' . __( 'Type', 'query-monitor' ) . '</th>';
+		if ( !empty( $data['trans'] ) and !is_null( $data['trans'][0]['expiration'] ) )
+			echo '<th>' . __( 'Expiration', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+
+		if ( !empty( $data['trans'] ) ) {
+
+			echo '<tbody>';
+
+			foreach ( $data['trans'] as $row ) {
+				$stack = $row['trace']->get_stack();
+				$transient = str_replace( array(
+					'_site_transient_',
+					'_transient_'
+				), '', $row['transient'] );
+				$type = ( is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
+				if ( 0 === $row['expiration'] )
+					$row['expiration'] = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+				$expiration = ( !is_null( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
+
+				foreach ( $stack as & $trace ) {
+					foreach ( array( 'set_transient', 'set_site_transient' ) as $skip ) {
+						if ( 0 === strpos( $trace, $skip ) ) {
+							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
+							break;
+						}
+					}
+				}
+
+				$component = QM_Util::get_backtrace_component( $row['trace'] );
+
+				$stack = implode( '<br />', $stack );
+				echo "
+					<tr>\n
+						<td valign='top'>{$transient}</td>\n
+						{$type}
+						{$expiration}
+						<td valign='top' class='qm-ltr'>{$stack}</td>\n
+						<td valign='top'>{$component->name}</td>\n
+					</tr>\n
+				";
+			}
+
+			echo '</tbody>';
+
+		} else {
+
+			echo '<tbody>';
+			echo '<tr>';
+			echo '<td colspan="4" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '</tr>';
+			echo '</tbody>';
+
+		}
+
+		echo '</table>';
+		echo '</div>';
+
+	}
+
+}
+
+function register_qm_transients_output_html( QM_Output $output = null, QM_Component $component ) {
+	return new QM_Output_Html_Transients( $component );
+}
+
+add_filter( 'query_monitor_output_html_transients', 'register_qm_transients_output_html', 10, 2 );
