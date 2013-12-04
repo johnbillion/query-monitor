@@ -298,7 +298,7 @@ class QM_Component_DB_Queries extends QM_Component {
 			$caller  = trim( end( $callers ) );
 
 			if ( false !== strpos( $caller, '(' ) )
-				$caller_name = strstr( $caller, '(', true ) . '()';
+				$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
 			else
 				$caller_name = $caller;
 
