@@ -41,50 +41,6 @@ class QM_Component_Conditionals extends QM_Component {
 
 	}
 
-	function output_html( array $args, array $data ) {
-
-		$cols = 5;
-		$i = 0;
-		$w = floor( 100 / $cols );
-
-		echo '<div class="qm" id="' . $args['id'] . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="' . $cols . '">' . $this->name() . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
-
-		foreach ( $data['conds']['true'] as $cond ) {
-			$i++;
-			if ( 1 === $i%$cols )
-				echo '<tr>';
-			echo '<td class="qm-ltr qm-true" width="' . $w . '%">' . $cond . '()</td>';
-			if ( 0 === $i%$cols )
-				echo '</tr>';
-		}
-
-		foreach ( $data['conds']['false'] as $cond ) {
-			$i++;
-			if ( 1 === $i%$cols )
-				echo '<tr>';
-			echo '<td class="qm-ltr qm-false" width="' . $w . '%">' . $cond . '()</td>';
-			if ( 0 === $i%$cols )
-				echo '</tr>';
-		}
-		$fill = ($cols-($i%$cols));
-		if ( $fill ) {
-			echo '<td colspan="' . $fill . '">&nbsp;</td>';
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
-	}
-
 	function process() {
 
 		$conds = apply_filters( 'query_monitor_conditionals', array(
