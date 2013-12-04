@@ -27,7 +27,7 @@ GNU General Public License for more details.
 defined( 'ABSPATH' ) or die();
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
-foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Html' ) as $f )
+foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Html', 'Headers' ) as $f )
 	require_once dirname( __FILE__ ) . "/{$f}.php";
 
 class QueryMonitor extends QM_Plugin {

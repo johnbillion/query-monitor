@@ -30,6 +30,14 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 	}
 
+	public function before_output( QM_Plugin $qm ) {
+
+		foreach ( glob( $qm->plugin_path( 'output/headers/*.php' ) ) as $output ) {
+			include $output;
+		}
+
+	}
+
 	public function after_output( QM_Plugin $qm ) {
 
 		# flush once, because we're nice
