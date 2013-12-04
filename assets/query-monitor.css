@@ -176,11 +176,11 @@ body.wp-admin #qm {
 	margin: 0 !important;
 }
 
-body.sticky-menu #qm {
+body:not(.iframe).sticky-menu #qm {
 	margin-left: 150px !important;
 }
 
-body.sticky-menu.folded #qm {
+body:not(.iframe).sticky-menu.folded #qm {
 	margin-left: 36px !important;
 }
 
@@ -399,7 +399,7 @@ html[dir="rtl"] .qm td.qm-var {
 	text-align: left !important;
 }
 
-html[dir="rtl"] body.sticky-menu #qm {
+html[dir="rtl"] body:not(.iframe).sticky-menu #qm {
 	margin-right: 150px !important;
 	margin-left: 0 !important;
 }
