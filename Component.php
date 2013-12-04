@@ -33,7 +33,7 @@ abstract class QM_Component {
 
 	}
 
-	final protected function get_component( $id ) {
+	final public function get_component( $id ) {
 		# @TODO use singleton?
 		global $querymonitor;
 		return $querymonitor->get_component( $id );
