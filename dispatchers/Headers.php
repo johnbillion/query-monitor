@@ -57,7 +57,12 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 		}
 
 		# if the headers have already been sent then we can't do anything about it
-		return ( QM_Util::is_ajax() and !headers_sent() );
+		if ( headers_sent() ) {
+			return false;
+		}
+
+		return true;
+
 	}
 
 }
