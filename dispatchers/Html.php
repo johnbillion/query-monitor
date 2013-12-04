@@ -97,6 +97,10 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 				ob_end_flush();
 		}
 
+		foreach ( glob( $qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
+			include $output;
+		}
+
 		if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
 			$class = 'qm-show';
 		else
