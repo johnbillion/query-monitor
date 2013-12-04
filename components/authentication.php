@@ -36,66 +36,18 @@ class QM_Component_Authentication extends QM_Component {
 
 	function show_query_monitor() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) )
-			return self::verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
+			return $this->verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
 		return false;
 	}
 
-	function output_html( array $args, array $data ) {
-
-		echo '<div class="qm" id="' . $args['id'] . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>' . $this->name() . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
-
-		$name   = QM_COOKIE;
-		$domain = COOKIE_DOMAIN;
-		$path   = COOKIEPATH;
-
-		if ( !isset( $_COOKIE[$name] ) or !self::verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
-
-			$value = self::create_nonce( 'view_query_monitor' );
-			$text  = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
-			$link  = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
-
-			echo '<tr>';
-			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
-			echo '</tr>';
-			echo '<tr>';
-			echo '<td><a href="#" onclick="' . $link . '">' . __( 'Set authentication cookie', 'query-monitor' ) . '</a></td>';
-			echo '</tr>';
-
-		} else {
-
-			$text = esc_js( __( 'Authentication cookie cleared.', 'query-monitor' ) );
-			$link = "document.cookie='{$name}=; expires=' + new Date(0).toUTCString() + '; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
-
-			echo '<tr>';
-			echo '<td>' . __( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</td>';
-			echo '</tr>';
-			echo '<tr>';
-			echo '<td><a href="#" onclick="' . $link . '">' . __( 'Clear authentication cookie', 'query-monitor' ) . '</a></td>';
-			echo '</tr>';
-
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
-	}
-
-	public static function create_nonce( $action ) {
+	public function create_nonce( $action ) {
 		# This is just WordPress' nonce implementation minus the user ID
 		# check so a nonce can be set in a cookie and used cross-user
 		$i = wp_nonce_tick();
 		return substr( wp_hash( $i . $action, 'nonce' ), -12, 10 );
 	}
 
-	public static function verify_nonce( $nonce, $action ) {
+	public function verify_nonce( $nonce, $action ) {
 
 		$i = wp_nonce_tick();
 
