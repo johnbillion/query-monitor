@@ -68,46 +68,6 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 	}
 
-	function output_headers( array $args, array $data ) {
-
-		if ( empty( $data['errors'] ) )
-			return;
-
-		$count = 0;
-
-		foreach ( $data['errors'] as $type => $errors ) {
-
-			foreach ( $errors as $key => $error ) {
-
-				$count++;
-
-				# @TODO we should calculate the component during process() so we don't need to do it
-				# separately in output_html() and output_headers().
-				$component = QM_Util::get_backtrace_component( $error->trace );
-				$output_error = array(
-					'type'      => $error->type,
-					'message'   => $error->message,
-					'file'      => $error->file,
-					'line'      => $error->line,
-					'stack'     => $error->trace->get_stack(),
-					'component' => $component->name,
-				);
-
-				header( sprintf( 'X-QM-Error-%d: %s',
-					$count,
-					json_encode( $output_error )
-				) );
-
-			}
-
-		}
-
-		header( sprintf( 'X-QM-Errors: %d',
-			$count
-		) );
-
-	}
-
 	function error_handler( $errno, $message, $file = null, $line = null ) {
 
 		#if ( !( error_reporting() & $errno ) )
