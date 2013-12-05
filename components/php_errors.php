@@ -14,6 +14,17 @@ GNU General Public License for more details.
 
 */
 
+# E_DEPRECATED and E_USER_DEPRECATED were introduced in PHP 5.3 so we need to use back-compat constants that work on 5.2.
+if ( defined( 'E_DEPRECATED' ) )
+	define( 'QM_E_DEPRECATED', E_DEPRECATED );
+else
+	define( 'QM_E_DEPRECATED', 0 );
+
+if ( defined( 'E_USER_DEPRECATED' ) )
+	define( 'QM_E_USER_DEPRECATED', E_USER_DEPRECATED );
+else
+	define( 'QM_E_USER_DEPRECATED', 0 );
+
 class QM_Component_PHP_Errors extends QM_Component {
 
 	var $id = 'php_errors';
@@ -35,6 +46,8 @@ class QM_Component_PHP_Errors extends QM_Component {
 			$class[] = 'qm-notice';
 		else if ( isset( $this->data['errors']['strict'] ) )
 			$class[] = 'qm-strict';
+		else if ( isset( $this->data['errors']['deprecated'] ) )
+			$class[] = 'qm-deprecated';
 
 		return $class;
 
@@ -58,6 +71,12 @@ class QM_Component_PHP_Errors extends QM_Component {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-stricts',
 				'title' => sprintf( __( 'PHP Stricts (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['strict'] ) ) )
+			) );
+		}
+		if ( isset( $this->data['errors']['deprecated'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-deprecated',
+				'title' => sprintf( __( 'PHP Deprecated (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['deprecated'] ) ) )
 			) );
 		}
 		return $menu;
@@ -123,9 +142,10 @@ class QM_Component_PHP_Errors extends QM_Component {
 		echo '<tbody>';
 
 		$types = array(
-			'warning' => __( 'Warning', 'query-monitor' ),
-			'notice'  => __( 'Notice', 'query-monitor' ),
-			'strict'  => __( 'Strict', 'query-monitor' ),
+			'warning'    => __( 'Warning', 'query-monitor' ),
+			'notice'     => __( 'Notice', 'query-monitor' ),
+			'strict'     => __( 'Strict', 'query-monitor' ),
+			'deprecated' => __( 'Deprecated', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $title ) {
@@ -194,6 +214,11 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 			case E_STRICT:
 				$type = 'strict';
+				break;
+
+			case QM_E_DEPRECATED:
+			case QM_E_USER_DEPRECATED:
+				$type = 'deprecated';
 				break;
 
 			default:
