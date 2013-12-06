@@ -19,11 +19,11 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	public $id = 'html';
 
-	public function __construct() {
+	public function __construct( QM_Plugin $qm ) {
 
 		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
 
-		parent::__construct();
+		parent::__construct( $qm );
 
 	}
 
@@ -167,9 +167,9 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 }
 
-function register_qm_dispatcher_html( array $dispatchers ) {
-	$dispatchers['html'] = new QM_Output_Dispatcher_Html;
+function register_qm_dispatcher_html( array $dispatchers, QM_Plugin $qm ) {
+	$dispatchers['html'] = new QM_Output_Dispatcher_Html( $qm );
 	return $dispatchers;
 }
 
-add_filter( 'query_monitor_dispatchers', 'register_qm_dispatcher_html' );
+add_filter( 'query_monitor_dispatchers', 'register_qm_dispatcher_html', 10, 2 );

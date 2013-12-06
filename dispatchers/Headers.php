@@ -19,8 +19,8 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 	public $id = 'headers';
 
-	public function __construct() {
-		parent::__construct();
+	public function __construct( QM_Plugin $qm ) {
+		parent::__construct( $qm );
 	}
 
 	public function init( QM_Plugin $qm ) {
@@ -67,9 +67,9 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 }
 
-function register_qm_dispatcher_headers( array $dispatchers ) {
-	$dispatchers['headers'] = new QM_Output_Dispatcher_Headers;
+function register_qm_dispatcher_headers( array $dispatchers, QM_Plugin $qm ) {
+	$dispatchers['headers'] = new QM_Output_Dispatcher_Headers( $qm );
 	return $dispatchers;
 }
 
-add_filter( 'query_monitor_dispatchers', 'register_qm_dispatcher_headers' );
+add_filter( 'query_monitor_dispatchers', 'register_qm_dispatcher_headers', 10, 2 );

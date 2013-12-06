@@ -17,11 +17,7 @@ GNU General Public License for more details.
 
 abstract class QM_Output_Dispatcher {
 
-	public function __construct() {
-		// nothing
-	}
-
-	final public function setup( QM_Plugin $qm ) {
+	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 	}
 

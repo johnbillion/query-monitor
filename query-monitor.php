@@ -67,7 +67,7 @@ class QueryMonitor extends QM_Plugin {
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
 			include $dispatcher;
 
-		foreach ( apply_filters( 'query_monitor_dispatchers', array() ) as $dispatcher )
+		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher )
 			$this->add_dispatcher( $dispatcher );
 
 	}
@@ -190,7 +190,6 @@ class QueryMonitor extends QM_Plugin {
 			return;
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
-			$dispatcher->setup( $this );
 			$dispatcher->init( $this );
 		}
 
