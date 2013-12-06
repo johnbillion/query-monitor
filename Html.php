@@ -76,7 +76,7 @@ class QM_Output_Html implements QM_Output {
 	protected function menu( array $args ) {
 
 		return array_merge( array(
-			'id'   => "query-monitor-{$this->id}",
+			'id'   => "query-monitor-{$this->component->id}",
 			'href' => '#' . $this->component->id()
 		), $args );
 

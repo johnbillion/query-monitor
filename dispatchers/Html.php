@@ -106,15 +106,6 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 		else
 			$class = '';
 
-		$json = array(
-			'menu'        => $this->js_admin_bar_menu(),
-			'ajax_errors' => array() # @TODO move this into the php_errors component
-		);
-
-		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
-		echo '</script>' . "\n\n";
-
 		echo '<div id="qm" class="' . $class . '">';
 		echo '<div id="qm-wrapper">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
@@ -125,6 +116,15 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 		echo '</div>';
 		echo '</div>';
+
+		$json = array(
+			'menu'        => $this->js_admin_bar_menu(),
+			'ajax_errors' => array() # @TODO move this into the php_errors component
+		);
+
+		echo '<script type="text/javascript">' . "\n\n";
+		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+		echo '</script>' . "\n\n";
 
 	}
 
