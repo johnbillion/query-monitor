@@ -19,6 +19,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	public $id = 'hooks';
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 80 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -106,6 +111,15 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$menu[] = $this->menu( array(
+			'title' => __( 'Hooks', 'query-monitor' )
+		) );
+		return $menu;
 
 	}
 

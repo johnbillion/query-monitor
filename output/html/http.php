@@ -17,6 +17,12 @@ GNU General Public License for more details.
 
 class QM_Output_Html_HTTP extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -151,6 +157,44 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_class( array $class ) {
+
+		$data = $this->component->get_data();
+
+		if ( isset( $data['errors']['error'] ) )
+			$class[] = 'qm-error';
+		else if ( isset( $data['errors']['warning'] ) )
+			$class[] = 'qm-warning';
+
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->component->get_data();
+
+		$count = isset( $data['http'] ) ? count( $data['http'] ) : 0;
+
+		$title = ( empty( $count ) )
+			? __( 'HTTP Requests', 'query-monitor' )
+			: __( 'HTTP Requests (%s)', 'query-monitor' );
+
+		$args = array(
+			'title' => sprintf( $title, number_format_i18n( $count ) ),
+		);
+
+		if ( isset( $data['errors']['error'] ) )
+			$args['meta']['classname'] = 'qm-error';
+		else if ( isset( $data['errors']['warning'] ) )
+			$args['meta']['classname'] = 'qm-warning';
+
+		$menu[] = $this->menu( $args );
+
+		return $menu;
 
 	}
 

@@ -26,45 +26,6 @@ class QM_Component_PHP_Errors extends QM_Component {
 
 		parent::__construct();
 		set_error_handler( array( $this, 'error_handler' ) );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
-		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
-
-	}
-
-	function admin_class( array $class ) {
-
-		if ( isset( $this->data['errors']['warning'] ) )
-			$class[] = 'qm-warning';
-		else if ( isset( $this->data['errors']['notice'] ) )
-			$class[] = 'qm-notice';
-		else if ( isset( $this->data['errors']['strict'] ) )
-			$class[] = 'qm-strict';
-
-		return $class;
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( isset( $this->data['errors']['warning'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-warnings',
-				'title' => sprintf( __( 'PHP Warnings (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['warning'] ) ) )
-			) );
-		}
-		if ( isset( $this->data['errors']['notice'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-notices',
-				'title' => sprintf( __( 'PHP Notices (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['notice'] ) ) )
-			) );
-		}
-		if ( isset( $this->data['errors']['strict'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-stricts',
-				'title' => sprintf( __( 'PHP Stricts (%s)', 'query-monitor' ), number_format_i18n( count( $this->data['errors']['strict'] ) ) )
-			) );
-		}
-		return $menu;
 
 	}
 

@@ -17,6 +17,12 @@ GNU General Public License for more details.
 
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -87,6 +93,47 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_class( array $class ) {
+
+		$data = $this->component->get_data();
+
+		if ( isset( $data['errors']['warning'] ) )
+			$class[] = 'qm-warning';
+		else if ( isset( $data['errors']['notice'] ) )
+			$class[] = 'qm-notice';
+		else if ( isset( $data['errors']['strict'] ) )
+			$class[] = 'qm-strict';
+
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->component->get_data();
+
+		if ( isset( $data['errors']['warning'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-warnings',
+				'title' => sprintf( __( 'PHP Warnings (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['warning'] ) ) )
+			) );
+		}
+		if ( isset( $data['errors']['notice'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-notices',
+				'title' => sprintf( __( 'PHP Notices (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['notice'] ) ) )
+			) );
+		}
+		if ( isset( $data['errors']['strict'] ) ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-stricts',
+				'title' => sprintf( __( 'PHP Stricts (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['strict'] ) ) )
+			) );
+		}
+		return $menu;
 
 	}
 

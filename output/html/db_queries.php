@@ -17,6 +17,13 @@ GNU General Public License for more details.
 
 class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );
+		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 20 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -241,6 +248,72 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo "<td valign='top' title='{$ltime}' class='qm-row-time{$td}'>{$stime}</td>\n";
 
 		echo '</tr>';
+
+	}
+
+	public function admin_title( array $title ) {
+
+		$data = $this->component->get_data();
+
+		if ( isset( $data['dbs'] ) ) {
+			foreach ( $data['dbs'] as $db ) {
+				$title[] = sprintf(
+					_x( '%s<small>S</small>', 'database query time', 'query-monitor' ),
+					number_format_i18n( $db->total_time, 4 )
+				);
+				$title[] = sprintf(
+					_x( '%s<small>Q</small>', 'database query number', 'query-monitor' ),
+					number_format_i18n( $db->total_qs )
+				);
+			}
+		}
+		return $title;
+	}
+
+	public function admin_class( array $class ) {
+
+		if ( $this->component->get_errors() )
+			$class[] = 'qm-error';
+		if ( $this->component->get_expensive() )
+			$class[] = 'qm-expensive';
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->component->get_data();
+
+		if ( $errors = $this->component->get_errors() ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-errors',
+				'href'  => '#qm-query-errors',
+				'title' => sprintf( __( 'Database Errors (%s)', 'query-monitor' ), number_format_i18n( count( $errors ) ) )
+			) );
+		}
+		if ( $expensive = $this->component->get_expensive() ) {
+			$menu[] = $this->menu( array(
+				'id'    => 'query-monitor-expensive',
+				'href'  => '#qm-query-expensive',
+				'title' => sprintf( __( 'Slow Queries (%s)', 'query-monitor' ), number_format_i18n( count( $expensive ) ) )
+			) );
+		}
+
+		if ( count( $data['dbs'] ) > 1 ) {
+			foreach ( $data['dbs'] as $name => $db ) {
+				$menu[] = $this->menu( array(
+					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) ),
+					'href'  => sprintf( '#%s-%s', $this->component->id(), sanitize_title( $name ) ),
+				) );
+			}
+		} else {
+			$menu[] = $this->menu( array(
+				'title' => __( 'Queries', 'query-monitor' ),
+				'href'  => sprintf( '#%s-wpdb', $this->component->id() ),
+			) );
+		}
+
+		return $menu;
 
 	}
 

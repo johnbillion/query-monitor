@@ -27,7 +27,6 @@ class QM_Component_Transients extends QM_Component {
 		# See http://core.trac.wordpress.org/ticket/24583
 		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ), 10, 3 );
 		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ), 10, 3 );
-		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 70 );
 	}
 
 	function setted_site_transient( $transient, $value = null, $expiration = null ) {
@@ -50,22 +49,6 @@ class QM_Component_Transients extends QM_Component {
 			'expiration' => $expiration,
 		);
 	}
-
-	function admin_menu( array $menu ) {
-
-		$count = isset( $this->data['trans'] ) ? count( $this->data['trans'] ) : 0;
-
-		$title = ( empty( $count ) )
-			? __( 'Transients Set', 'query-monitor' )
-			: __( 'Transients Set (%s)', 'query-monitor' );
-
-		$menu[] = $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( $count ) )
-		) );
-		return $menu;
-
-	}
-
 
 }
 

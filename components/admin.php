@@ -25,7 +25,6 @@ class QM_Component_Admin extends QM_Component {
 	function __construct() {
 		parent::__construct();
 		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
 	}
 
 	function current_screen( WP_Screen $screen ) {
@@ -48,17 +47,6 @@ class QM_Component_Admin extends QM_Component {
 
 		$this->data['pagenow'] = $pagenow;
 		$this->data['current_screen'] = get_current_screen();
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( isset( $this->data['base'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Admin Screen: %s', 'query-monitor' ), $this->data['base'] )
-			) );
-		}
-		return $menu;
 
 	}
 

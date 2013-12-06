@@ -17,6 +17,11 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Environment extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -182,6 +187,15 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$menu[] = $this->menu( array(
+			'title' => __( 'Environment', 'query-monitor' )
+		) );
+		return $menu;
 
 	}
 

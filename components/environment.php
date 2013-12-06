@@ -36,8 +36,6 @@ class QM_Component_Environment extends QM_Component {
 
 		parent::__construct();
 
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
-
 		# If QueryMonitorDB is in place then we'll use the values which were
 		# caught early before any plugins had a chance to alter them
 
@@ -83,15 +81,6 @@ class QM_Component_Environment extends QM_Component {
 		}
 
 		return $levels;
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		$menu[] = $this->menu( array(
-			'title' => __( 'Environment', 'query-monitor' )
-		) );
-		return $menu;
 
 	}
 

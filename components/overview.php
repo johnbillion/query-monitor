@@ -24,19 +24,6 @@ class QM_Component_Overview extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );
-	}
-
-	function admin_title( array $title ) {
-		$title[] = sprintf(
-			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
-			number_format_i18n( $this->data['time'], 2 )
-		);
-		$title[] = sprintf(
-			_x( '%s<small>MB</small>', 'memory usage', 'query-monitor' ),
-			number_format_i18n( ( $this->data['memory'] / 1024 / 1024 ), 2 )
-		);
-		return $title;
 	}
 
 	function process() {

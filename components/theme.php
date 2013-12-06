@@ -25,7 +25,6 @@ class QM_Component_Theme extends QM_Component {
 	function __construct() {
 		parent::__construct();
 		add_filter( 'body_class',          array( $this, 'body_class' ), 99 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
 	}
 
 	function body_class( $class ) {
@@ -50,17 +49,6 @@ class QM_Component_Theme extends QM_Component {
 
 		if ( isset( $this->data['body_class'] ) )
 			asort( $this->data['body_class'] );
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( isset( $this->data['template_file'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Template: %s', 'query-monitor' ), $this->data['template_file'] )
-			) );
-		}
-		return $menu;
 
 	}
 

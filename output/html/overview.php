@@ -17,6 +17,11 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Overview extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -93,7 +98,21 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</table>';
 		echo '</div>';
 
+	}
 
+	public function admin_title( array $title ) {
+
+		$data = $this->component->get_data();
+
+		$title[] = sprintf(
+			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
+			number_format_i18n( $data['time'], 2 )
+		);
+		$title[] = sprintf(
+			_x( '%s<small>MB</small>', 'memory usage', 'query-monitor' ),
+			number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 2 )
+		);
+		return $title;
 	}
 
 }

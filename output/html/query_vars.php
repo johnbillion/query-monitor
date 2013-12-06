@@ -17,6 +17,11 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Query_Vars extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -60,6 +65,22 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data  = $this->component->get_data();
+		$count = isset( $data['plugin_qvars'] ) ? count( $data['plugin_qvars'] ) : 0;
+
+		$title = ( empty( $count ) )
+			? __( 'Query Vars', 'query-monitor' )
+			: __( 'Query Vars (+%s)', 'query-monitor' );
+
+		$menu[] = $this->menu( array(
+			'title' => sprintf( $title, number_format_i18n( $count ) )
+		) );
+		return $menu;
 
 	}
 

@@ -24,21 +24,6 @@ class QM_Component_Conditionals extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 120 );
-	}
-
-	function admin_menu( array $menu ) {
-
-		foreach ( $this->data['conds']['true'] as $cond ) {
-			$menu[] = $this->menu( array(
-				'title' => $cond . '()',
-				'id'    => 'query-monitor-' . $cond,
-				'meta'  => array( 'classname' => 'qm-true qm-ltr' )
-			) );
-		}
-
-		return $menu;
-
 	}
 
 	function process() {

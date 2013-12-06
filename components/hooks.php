@@ -24,16 +24,6 @@ class QM_Component_Hooks extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 80 );
-	}
-
-	function admin_menu( array $menu ) {
-
-		$menu[] = $this->menu( array(
-			'title' => __( 'Hooks', 'query-monitor' )
-		) );
-		return $menu;
-
 	}
 
 	function process() {

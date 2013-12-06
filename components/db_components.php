@@ -24,7 +24,6 @@ class QM_Component_DB_Components extends QM_Component {
 
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
 	}
 
 	function process() {
@@ -37,17 +36,6 @@ class QM_Component_DB_Components extends QM_Component {
 				$this->data['types'] = $dbq->data['types'];
 			}
 		}
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => __( 'Queries by Component', 'query-monitor' )
-			) );
-		}
-		return $menu;
 
 	}
 

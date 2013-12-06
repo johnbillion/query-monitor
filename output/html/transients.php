@@ -17,6 +17,11 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Transients extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 70 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -87,6 +92,22 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data  = $this->component->get_data();
+		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
+
+		$title = ( empty( $count ) )
+			? __( 'Transients Set', 'query-monitor' )
+			: __( 'Transients Set (%s)', 'query-monitor' );
+
+		$menu[] = $this->menu( array(
+			'title' => sprintf( $title, number_format_i18n( $count ) )
+		) );
+		return $menu;
 
 	}
 

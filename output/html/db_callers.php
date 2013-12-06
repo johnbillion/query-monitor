@@ -17,6 +17,11 @@ GNU General Public License for more details.
 
 class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
+	public function __construct( QM_Component $component ) {
+		parent::__construct( $component );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 30 );
+	}
+
 	public function output() {
 
 		$data = $this->component->get_data();
@@ -98,6 +103,20 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		if ( $dbq = $this->component->get_component( 'db_queries' ) ) {
+			$dbq_data = $dbq->get_data();
+			if ( isset( $dbq_data['times'] ) ) {
+				$menu[] = $this->menu( array(
+					'title' => __( 'Queries by Caller', 'query-monitor' )
+				) );
+			}
+		}
+		return $menu;
 
 	}
 
