@@ -21,21 +21,17 @@ abstract class QM_Output_Dispatcher {
 		$this->qm = $qm;
 	}
 
-	# @TODO don't pass QM_Plugin to this method
-	abstract public function active( QM_Plugin $qm );
+	abstract public function active();
 
-	# @TODO don't pass QM_Plugin to this method
-	public function init( QM_Plugin $qm ) {
+	public function init() {
 		// nothing
 	}
 
-	# @TODO don't pass QM_Plugin to this method
-	public function before_output( QM_Plugin $qm ) {
+	public function before_output() {
 		// nothing
 	}
 
-	# @TODO don't pass QM_Plugin to this method
-	public function after_output( QM_Plugin $qm ) {
+	public function after_output() {
 		// nothing
 	}
 

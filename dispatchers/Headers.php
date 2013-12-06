@@ -23,22 +23,22 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 		parent::__construct( $qm );
 	}
 
-	public function init( QM_Plugin $qm ) {
+	public function init() {
 
 		if ( QM_Util::is_ajax() )
 			ob_start();
 
 	}
 
-	public function before_output( QM_Plugin $qm ) {
+	public function before_output() {
 
-		foreach ( glob( $qm->plugin_path( 'output/headers/*.php' ) ) as $output ) {
+		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $output ) {
 			include $output;
 		}
 
 	}
 
-	public function after_output( QM_Plugin $qm ) {
+	public function after_output() {
 
 		# flush once, because we're nice
 		if ( ob_get_length() )
@@ -50,9 +50,9 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 		return new QM_Output_Headers( $component );
 	}
 
-	public function active( QM_Plugin $qm ) {
+	public function active() {
 
-		if ( !$qm->show_query_monitor() ) {
+		if ( !$this->qm->show_query_monitor() ) {
 			return false;
 		}
 

@@ -53,7 +53,7 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function init( QM_Plugin $qm ) {
+	public function init() {
 
 		global $wp_locale;
 
@@ -62,15 +62,15 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 		wp_enqueue_style(
 			'query-monitor',
-			$qm->plugin_url( 'assets/query-monitor.css' ),
+			$this->qm->plugin_url( 'assets/query-monitor.css' ),
 			null,
-			$qm->plugin_ver( 'assets/query-monitor.css' )
+			$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
 			'query-monitor',
-			$qm->plugin_url( 'assets/query-monitor.js' ),
+			$this->qm->plugin_url( 'assets/query-monitor.js' ),
 			array( 'jquery' ),
-			$qm->plugin_ver( 'assets/query-monitor.js' ),
+			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
 			true
 		);
 		wp_localize_script(
@@ -88,7 +88,7 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function before_output( QM_Plugin $qm ) {
+	public function before_output() {
 
 		# @TODO document why this is needed
 		# Flush the output buffer to avoid crashes
@@ -97,7 +97,7 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 				ob_end_flush();
 		}
 
-		foreach ( glob( $qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
+		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
 			include $output;
 		}
 
@@ -121,7 +121,7 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function after_output( QM_Plugin $qm ) {
+	public function after_output() {
 
 		echo '</div>';
 		echo '</div>';
@@ -155,9 +155,9 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function active( QM_Plugin $qm ) {
+	public function active() {
 
-		if ( !$qm->show_query_monitor() ) {
+		if ( !$this->qm->show_query_monitor() ) {
 			return false;
 		}
 

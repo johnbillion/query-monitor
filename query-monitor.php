@@ -166,17 +166,17 @@ class QueryMonitor extends QM_Plugin {
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
 
-			if ( ! $dispatcher->active( $this ) ) {
+			if ( ! $dispatcher->active() ) {
 				continue;
 			}
 
-			$dispatcher->before_output( $this );
+			$dispatcher->before_output();
 
 			foreach ( $this->get_components() as $component ) {
 				$dispatcher->output( $component );
 			}
 
-			$dispatcher->after_output( $this );
+			$dispatcher->after_output();
 
 		}
 
@@ -190,7 +190,7 @@ class QueryMonitor extends QM_Plugin {
 			return;
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
-			$dispatcher->init( $this );
+			$dispatcher->init();
 		}
 
 	}
