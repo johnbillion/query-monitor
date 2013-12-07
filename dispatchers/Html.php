@@ -119,7 +119,7 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 		$json = array(
 			'menu'        => $this->js_admin_bar_menu(),
-			'ajax_errors' => array() # @TODO move this into the php_errors component
+			'ajax_errors' => array() # @TODO move this into the php_errors collector
 		);
 
 		echo '<script type="text/javascript">' . "\n\n";
@@ -128,8 +128,8 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 
 	}
 
-	public function get_outputter( QM_Component $component ) {
-		return new QM_Output_Html( $component );
+	public function get_outputter( QM_Collector $collector ) {
+		return new QM_Output_Html( $collector );
 	}
 
 	public function js_admin_bar_menu() {

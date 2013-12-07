@@ -17,8 +17,8 @@ GNU General Public License for more details.
 
 class QM_Output_Headers implements QM_Output {
 
-	public function __construct( QM_Component $component ) {
-		$this->component = $component;
+	public function __construct( QM_Collector $collector ) {
+		$this->collector = $collector;
 	}
 
 	public function output() {

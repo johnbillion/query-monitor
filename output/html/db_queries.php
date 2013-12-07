@@ -17,8 +17,8 @@ GNU General Public License for more details.
 
 class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 20 );
 		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 20 );
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
@@ -26,7 +26,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['dbs'] ) )
 			return;
@@ -108,7 +108,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( $db->has_component )
 			$span++;
 
-		echo '<div class="qm qm-queries" id="' . $this->component->id() . '-' . sanitize_title( $name ) . '">';
+		echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-' . sanitize_title( $name ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -192,7 +192,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
 		$ltime = number_format_i18n( $row['ltime'], 10 );
-		$td = $this->component->is_expensive( $row ) ? ' qm-expensive' : '';
+		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
 		if ( 'SELECT' != $row['type'] )
 			$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
@@ -253,7 +253,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_title( array $title ) {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $db ) {
@@ -272,9 +272,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_class( array $class ) {
 
-		if ( $this->component->get_errors() )
+		if ( $this->collector->get_errors() )
 			$class[] = 'qm-error';
-		if ( $this->component->get_expensive() )
+		if ( $this->collector->get_expensive() )
 			$class[] = 'qm-expensive';
 		return $class;
 
@@ -282,16 +282,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
-		if ( $errors = $this->component->get_errors() ) {
+		if ( $errors = $this->collector->get_errors() ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-query-errors',
 				'title' => sprintf( __( 'Database Errors (%s)', 'query-monitor' ), number_format_i18n( count( $errors ) ) )
 			) );
 		}
-		if ( $expensive = $this->component->get_expensive() ) {
+		if ( $expensive = $this->collector->get_expensive() ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-expensive',
 				'href'  => '#qm-query-expensive',
@@ -303,13 +303,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			foreach ( $data['dbs'] as $name => $db ) {
 				$menu[] = $this->menu( array(
 					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) ),
-					'href'  => sprintf( '#%s-%s', $this->component->id(), sanitize_title( $name ) ),
+					'href'  => sprintf( '#%s-%s', $this->collector->id(), sanitize_title( $name ) ),
 				) );
 			}
 		} else {
 			$menu[] = $this->menu( array(
 				'title' => __( 'Queries', 'query-monitor' ),
-				'href'  => sprintf( '#%s-wpdb', $this->component->id() ),
+				'href'  => sprintf( '#%s-wpdb', $this->collector->id() ),
 			) );
 		}
 
@@ -319,8 +319,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 }
 
-function register_qm_db_queries_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_DB_Queries( $component );
+function register_qm_db_queries_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_DB_Queries( $collector );
 }
 
 add_filter( 'query_monitor_output_html_db_queries', 'register_qm_db_queries_output_html', 10, 2 );

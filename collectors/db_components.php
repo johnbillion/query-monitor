@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_DB_Components extends QM_Component {
+class QM_Collector_DB_Components extends QM_Collector {
 
 	var $id = 'db_components';
 
@@ -28,7 +28,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 	function process() {
 
-		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
 			}
@@ -42,8 +42,8 @@ class QM_Component_DB_Components extends QM_Component {
 }
 
 function register_qm_db_components( array $qm ) {
-	$qm['db_components'] = new QM_Component_DB_Components;
+	$qm['db_components'] = new QM_Collector_DB_Components;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_db_components', 35 );
+add_filter( 'query_monitor_collectors', 'register_qm_db_components', 35 );

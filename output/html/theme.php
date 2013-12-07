@@ -17,23 +17,23 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Theme extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm qm-half" id="' . $this->component->id() . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . $this->component->name() . '</th>';
+		echo '<th colspan="2">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -83,7 +83,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 	function admin_menu( array $menu ) {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( isset( $data['template_file'] ) ) {
 			$menu[] = $this->menu( array(
@@ -96,8 +96,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 }
 
-function register_qm_theme_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_Theme( $component );
+function register_qm_theme_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Theme( $collector );
 }
 
 add_filter( 'query_monitor_output_html_theme', 'register_qm_theme_output_html', 10, 2 );

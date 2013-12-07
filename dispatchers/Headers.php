@@ -46,8 +46,8 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 	}
 
-	public function get_outputter( QM_Component $component ) {
-		return new QM_Output_Headers( $component );
+	public function get_outputter( QM_Collector $collector ) {
+		return new QM_Output_Headers( $collector );
 	}
 
 	public function active() {

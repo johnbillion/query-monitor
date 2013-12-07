@@ -17,20 +17,20 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Environment extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 110 );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . $this->component->name() . '</th>';
+		echo '<th colspan="3">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -58,7 +58,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '<br/>', $this->component->get_error_levels( $data['php']['error_reporting'] ) );
+		$error_levels = implode( '<br/>', $this->collector->get_error_levels( $data['php']['error_reporting'] ) );
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
@@ -201,8 +201,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 }
 
-function register_qm_environment_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_Environment( $component );
+function register_qm_environment_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Environment( $collector );
 }
 
 add_filter( 'query_monitor_output_html_environment', 'register_qm_environment_output_html', 10, 2 );

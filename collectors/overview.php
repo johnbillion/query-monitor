@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Overview extends QM_Component {
+class QM_Collector_Overview extends QM_Collector {
 
 	var $id = 'overview';
 
@@ -49,8 +49,8 @@ class QM_Component_Overview extends QM_Component {
 }
 
 function register_qm_overview( array $qm ) {
-	$qm['overview'] = new QM_Component_Overview;
+	$qm['overview'] = new QM_Collector_Overview;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_overview', 10 );
+add_filter( 'query_monitor_collectors', 'register_qm_overview', 10 );

@@ -17,20 +17,20 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Query_Vars extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
-		echo '<div class="qm qm-half" id="' . $this->component->id() . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . $this->component->name() . '</th>';
+		echo '<th colspan="2">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -70,7 +70,7 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->component->get_data();
+		$data  = $this->collector->get_data();
 		$count = isset( $data['plugin_qvars'] ) ? count( $data['plugin_qvars'] ) : 0;
 
 		$title = ( empty( $count ) )
@@ -86,8 +86,8 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 
 }
 
-function register_qm_query_vars_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_Query_Vars( $component );
+function register_qm_query_vars_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Query_Vars( $collector );
 }
 
 add_filter( 'query_monitor_output_html_query_vars', 'register_qm_query_vars_output_html', 10, 2 );

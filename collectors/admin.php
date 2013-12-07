@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Admin extends QM_Component {
+class QM_Collector_Admin extends QM_Collector {
 
 	var $id = 'admin';
 
@@ -54,8 +54,8 @@ class QM_Component_Admin extends QM_Component {
 
 function register_qm_admin( array $qm ) {
 	if ( is_admin() )
-		$qm['admin'] = new QM_Component_Admin;
+		$qm['admin'] = new QM_Collector_Admin;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_admin', 50 );
+add_filter( 'query_monitor_collectors', 'register_qm_admin', 50 );

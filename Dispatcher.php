@@ -35,16 +35,16 @@ abstract class QM_Output_Dispatcher {
 		// nothing
 	}
 
-	abstract public function get_outputter( QM_Component $component );
+	abstract public function get_outputter( QM_Collector $collector );
 
-	public function output( QM_Component $component ) {
+	public function output( QM_Collector $collector ) {
 
-		$filter = 'query_monitor_output_' . $this->id . '_' . $component->id;
+		$filter = 'query_monitor_output_' . $this->id . '_' . $collector->id;
 
-		$output = apply_filters( $filter, null, $component );
+		$output = apply_filters( $filter, null, $collector );
 
 		if ( !is_a( $output, 'QM_Output' ) ) {
-			$output = $this->get_outputter( $component );
+			$output = $this->get_outputter( $collector );
 		}
 
 		$output->output();

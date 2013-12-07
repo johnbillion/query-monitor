@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Authentication extends QM_Component {
+class QM_Collector_Authentication extends QM_Collector {
 
 	var $id = 'authentication';
 
@@ -63,8 +63,8 @@ class QM_Component_Authentication extends QM_Component {
 }
 
 function register_qm_authentication( array $qm ) {
-	$qm['authentication'] = new QM_Component_Authentication;
+	$qm['authentication'] = new QM_Collector_Authentication;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_authentication', 130 );
+add_filter( 'query_monitor_collectors', 'register_qm_authentication', 130 );

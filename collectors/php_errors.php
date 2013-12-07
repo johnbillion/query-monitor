@@ -25,7 +25,7 @@ if ( defined( 'E_USER_DEPRECATED' ) )
 else
 	define( 'QM_E_USER_DEPRECATED', 0 );
 
-class QM_Component_PHP_Errors extends QM_Component {
+class QM_Collector_PHP_Errors extends QM_Collector {
 
 	var $id = 'php_errors';
 
@@ -105,7 +105,7 @@ class QM_Component_PHP_Errors extends QM_Component {
 }
 
 function register_qm_php_errors( array $qm ) {
-	$qm['php_errors'] = new QM_Component_PHP_Errors;
+	$qm['php_errors'] = new QM_Collector_PHP_Errors;
 	return $qm;
 }
 
@@ -119,5 +119,5 @@ function qm_php_errors_return_value( $return ) {
 		return $return;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_php_errors', 120 );
+add_filter( 'query_monitor_collectors', 'register_qm_php_errors', 120 );
 add_filter( 'query_monitor_php_errors_return_value', 'qm_php_errors_return_value' );

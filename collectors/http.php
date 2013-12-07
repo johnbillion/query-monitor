@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_HTTP extends QM_Component {
+class QM_Collector_HTTP extends QM_Collector {
 
 	var $id   = 'http';
 
@@ -99,8 +99,8 @@ class QM_Component_HTTP extends QM_Component {
 }
 
 function register_qm_http( array $qm ) {
-	$qm['http'] = new QM_Component_HTTP;
+	$qm['http'] = new QM_Collector_HTTP;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_http', 110 );
+add_filter( 'query_monitor_collectors', 'register_qm_http', 110 );

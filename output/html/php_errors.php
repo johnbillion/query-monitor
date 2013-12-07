@@ -17,20 +17,20 @@ GNU General Public License for more details.
 
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 10 );
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['errors'] ) )
 			return;
 
-		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -99,7 +99,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function admin_class( array $class ) {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( isset( $data['errors']['warning'] ) )
 			$class[] = 'qm-warning';
@@ -116,7 +116,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( isset( $data['errors']['warning'] ) ) {
 			$menu[] = $this->menu( array(
@@ -148,8 +148,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 }
 
-function register_qm_php_errors_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_PHP_Errors( $component );
+function register_qm_php_errors_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_PHP_Errors( $collector );
 }
 
 add_filter( 'query_monitor_output_html_php_errors', 'register_qm_php_errors_output_html', 10, 2 );

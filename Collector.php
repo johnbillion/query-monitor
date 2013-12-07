@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-abstract class QM_Component {
+abstract class QM_Collector {
 
 	protected $data = array();
 

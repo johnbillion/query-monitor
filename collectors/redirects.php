@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Redirects extends QM_Component {
+class QM_Collector_Redirects extends QM_Collector {
 
 	var $id = 'redirects';
 
@@ -49,8 +49,8 @@ class QM_Component_Redirects extends QM_Component {
 }
 
 function register_qm_redirects( array $qm ) {
-	$qm['redirects'] = new QM_Component_Redirects;
+	$qm['redirects'] = new QM_Collector_Redirects;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_redirects', 140 );
+add_filter( 'query_monitor_collectors', 'register_qm_redirects', 140 );

@@ -17,14 +17,14 @@ GNU General Public License for more details.
 
 class QM_Output_Html_DB_Components extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data ) )
 			return;
@@ -32,7 +32,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$total_time  = 0;
 		$total_calls = 0;
 
-		echo '<div class="qm qm-half" id="' . $this->component->id() . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -107,7 +107,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
 				$menu[] = $this->menu( array(
@@ -121,8 +121,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 }
 
-function register_qm_db_components_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_DB_Components( $component );
+function register_qm_db_components_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_DB_Components( $collector );
 }
 
 add_filter( 'query_monitor_output_html_db_components', 'register_qm_db_components_output_html', 10, 2 );

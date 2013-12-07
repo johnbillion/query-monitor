@@ -22,7 +22,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 		if ( ! QM_Util::is_ajax() )
 			return;
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['errors'] ) )
 			return;
@@ -64,8 +64,8 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 }
 
-function register_qm_php_errors_output_headers( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Headers_PHP_Errors( $component );
+function register_qm_php_errors_output_headers( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Headers_PHP_Errors( $collector );
 }
 
 add_filter( 'query_monitor_output_headers_php_errors', 'register_qm_php_errors_output_headers', 10, 2 );

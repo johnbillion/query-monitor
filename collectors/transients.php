@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Transients extends QM_Component {
+class QM_Collector_Transients extends QM_Collector {
 
 	var $id = 'transients';
 
@@ -53,8 +53,8 @@ class QM_Component_Transients extends QM_Component {
 }
 
 function register_qm_transients( array $qm ) {
-	$qm['transients'] = new QM_Component_Transients;
+	$qm['transients'] = new QM_Collector_Transients;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_transients', 100 );
+add_filter( 'query_monitor_collectors', 'register_qm_transients', 100 );

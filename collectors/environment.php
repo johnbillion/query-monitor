@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Environment extends QM_Component {
+class QM_Collector_Environment extends QM_Collector {
 
 	var $id = 'environment';
 	var $php_vars = array(
@@ -98,7 +98,7 @@ class QM_Component_Environment extends QM_Component {
 		);
 		$php_u = '';
 
-		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
@@ -195,8 +195,8 @@ class QM_Component_Environment extends QM_Component {
 }
 
 function register_qm_environment( array $qm ) {
-	$qm['environment'] = new QM_Component_Environment;
+	$qm['environment'] = new QM_Collector_Environment;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_environment', 90 );
+add_filter( 'query_monitor_collectors', 'register_qm_environment', 90 );

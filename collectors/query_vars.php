@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Query_Vars extends QM_Component {
+class QM_Collector_Query_Vars extends QM_Collector {
 
 	var $id = 'query_vars';
 
@@ -63,8 +63,8 @@ class QM_Component_Query_Vars extends QM_Component {
 }
 
 function register_qm_query_vars( array $qm ) {
-	$qm['query_vars'] = new QM_Component_Query_Vars;
+	$qm['query_vars'] = new QM_Collector_Query_Vars;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_query_vars', 70 );
+add_filter( 'query_monitor_collectors', 'register_qm_query_vars', 70 );

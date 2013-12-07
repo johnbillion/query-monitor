@@ -17,19 +17,19 @@ GNU General Public License for more details.
 
 class QM_Output_Html implements QM_Output {
 
-	public function __construct( QM_Component $component ) {
-		$this->component = $component;
+	public function __construct( QM_Collector $collector ) {
+		$this->collector = $collector;
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
-		$name = $this->component->name();
+		$data = $this->collector->get_data();
+		$name = $this->collector->name();
 
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		if ( !empty( $name ) ) {
 			echo '<thead>';
@@ -61,7 +61,7 @@ class QM_Output_Html implements QM_Output {
 
 		usort( $values, 'strcasecmp' );
 
-		$out = '<select id="qm-filter-' . esc_attr( $this->component->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->component->id . '-' . $name ) . '">';
+		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->collector->id . '-' . $name ) . '">';
 		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value )
@@ -76,8 +76,8 @@ class QM_Output_Html implements QM_Output {
 	protected function menu( array $args ) {
 
 		return array_merge( array(
-			'id'   => "query-monitor-{$this->component->id}",
-			'href' => '#' . $this->component->id()
+			'id'   => "query-monitor-{$this->collector->id}",
+			'href' => '#' . $this->collector->id()
 		), $args );
 
 	}

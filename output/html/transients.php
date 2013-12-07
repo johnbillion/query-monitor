@@ -17,16 +17,16 @@ GNU General Public License for more details.
 
 class QM_Output_Html_Transients extends QM_Output_Html {
 
-	public function __construct( QM_Component $component ) {
-		parent::__construct( $component );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 70 );
 	}
 
 	public function output() {
 
-		$data = $this->component->get_data();
+		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -97,7 +97,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->component->get_data();
+		$data  = $this->collector->get_data();
 		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )
@@ -113,8 +113,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 }
 
-function register_qm_transients_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_Transients( $component );
+function register_qm_transients_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Transients( $collector );
 }
 
 add_filter( 'query_monitor_output_html_transients', 'register_qm_transients_output_html', 10, 2 );

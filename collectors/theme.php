@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Theme extends QM_Component {
+class QM_Collector_Theme extends QM_Collector {
 
 	var $id = 'theme';
 
@@ -56,8 +56,8 @@ class QM_Component_Theme extends QM_Component {
 
 function register_qm_theme( array $qm ) {
 	if ( !is_admin() )
-		$qm['theme'] = new QM_Component_Theme;
+		$qm['theme'] = new QM_Collector_Theme;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_theme', 60 );
+add_filter( 'query_monitor_collectors', 'register_qm_theme', 60 );

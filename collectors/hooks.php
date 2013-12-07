@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Hooks extends QM_Component {
+class QM_Collector_Hooks extends QM_Collector {
 
 	var $id = 'hooks';
 
@@ -36,7 +36,7 @@ class QM_Component_Hooks extends QM_Component {
 		if ( '/wp-admin/customize.php' == $_SERVER['REQUEST_URI'] )
 			return;
 
-		if ( is_admin() and ( $admin = QueryMonitor::get_component( 'admin' ) ) )
+		if ( is_admin() and ( $admin = QueryMonitor::get_collector( 'admin' ) ) )
 			$this->data['screen'] = $admin->data['base'];
 		else
 			$this->data['screen'] = '';
@@ -94,8 +94,8 @@ class QM_Component_Hooks extends QM_Component {
 }
 
 function register_qm_hooks( array $qm ) {
-	$qm['hooks'] = new QM_Component_Hooks;
+	$qm['hooks'] = new QM_Collector_Hooks;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_hooks', 80 );
+add_filter( 'query_monitor_collectors', 'register_qm_hooks', 80 );

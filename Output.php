@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 interface QM_Output {
 
-	public function __construct( QM_Component $component );
+	public function __construct( QM_Collector $collector );
 
 	public function output();
 

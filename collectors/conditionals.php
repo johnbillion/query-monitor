@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Conditionals extends QM_Component {
+class QM_Collector_Conditionals extends QM_Collector {
 
 	var $id = 'conditionals';
 
@@ -64,8 +64,8 @@ class QM_Component_Conditionals extends QM_Component {
 }
 
 function register_qm_conditionals( array $qm ) {
-	$qm['conditionals'] = new QM_Component_Conditionals;
+	$qm['conditionals'] = new QM_Collector_Conditionals;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_conditionals', 40 );
+add_filter( 'query_monitor_collectors', 'register_qm_conditionals', 40 );

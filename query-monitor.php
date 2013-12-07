@@ -32,7 +32,7 @@ foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Outp
 
 class QueryMonitor extends QM_Plugin {
 
-	protected $components = array();
+	protected $collectors = array();
 	protected $dispatchers    = array();
 	protected $did_footer = false;
 
@@ -60,8 +60,8 @@ class QueryMonitor extends QM_Plugin {
 		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $collector )
 			include $collector;
 
-		foreach ( apply_filters( 'query_monitor_components', array() ) as $component )
-			$this->add_component( $component );
+		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
+			$this->add_collector( $collector );
 
 		# @TODO rather than globbing here, introduce a whatever_defaults() function and glob in there
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
@@ -72,24 +72,23 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	# @TODO rename component to collector?
-	public function add_component( QM_Component $component ) {
-		$this->components[$component->id] = $component;
+	public function add_collector( QM_Collector $collector ) {
+		$this->collectors[$collector->id] = $collector;
 	}
 
 	public function add_dispatcher( QM_Output_Dispatcher $dispatcher ) {
 		$this->dispatchers[$dispatcher->id] = $dispatcher;
 	}
 
-	public static function get_component( $id ) {
+	public static function get_collector( $id ) {
 		$qm = self::init();
-		if ( isset( $qm->components[$id] ) )
-			return $qm->components[$id];
+		if ( isset( $qm->collectors[$id] ) )
+			return $qm->collectors[$id];
 		return false;
 	}
 
-	public function get_components() {
-		return $this->components;
+	public function get_collectors() {
+		return $this->collectors;
 	}
 
 	public function get_dispatchers() {
@@ -144,7 +143,7 @@ class QueryMonitor extends QM_Plugin {
 			return $this->show_query_monitor = true;
 		}
 
-		if ( $auth = self::get_component( 'authentication' ) )
+		if ( $auth = self::get_collector( 'authentication' ) )
 			return $this->show_query_monitor = $auth->show_query_monitor();
 
 		return $this->show_query_monitor = false;
@@ -161,8 +160,8 @@ class QueryMonitor extends QM_Plugin {
 
 		# @TODO introduce a method on dispatchers which defaults to not processing
 		# qm and then a persistent outputter can switch it on
-		foreach ( $this->get_components() as $component ) {
-			$component->process();
+		foreach ( $this->get_collectors() as $collector ) {
+			$collector->process();
 		}
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
@@ -173,8 +172,8 @@ class QueryMonitor extends QM_Plugin {
 
 			$dispatcher->before_output();
 
-			foreach ( $this->get_components() as $component ) {
-				$dispatcher->output( $component );
+			foreach ( $this->get_collectors() as $collector ) {
+				$dispatcher->output( $collector );
 			}
 
 			$dispatcher->after_output();

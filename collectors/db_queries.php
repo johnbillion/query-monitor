@@ -24,7 +24,7 @@ if ( !defined( 'QM_DB_EXPENSIVE' ) )
 if ( !defined( 'QM_DB_LIMIT' ) )
 	define( 'QM_DB_LIMIT', 100 );
 
-class QM_Component_DB_Queries extends QM_Component {
+class QM_Collector_DB_Queries extends QM_Collector {
 
 	public $id = 'db_queries';
 	public $db_objects = array();
@@ -222,8 +222,8 @@ class QM_Component_DB_Queries extends QM_Component {
 }
 
 function register_qm_db_queries( array $qm ) {
-	$qm['db_queries'] = new QM_Component_DB_Queries;
+	$qm['db_queries'] = new QM_Collector_DB_Queries;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_db_queries', 20 );
+add_filter( 'query_monitor_collectors', 'register_qm_db_queries', 20 );

@@ -19,11 +19,11 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 
 	public function output() {
 
-		echo '<div class="qm" id="' . $this->component->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . $this->component->name() . '</th>';
+		echo '<th>' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -32,9 +32,9 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 		$domain = COOKIE_DOMAIN;
 		$path   = COOKIEPATH;
 
-		if ( !isset( $_COOKIE[$name] ) or !$this->component->verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
+		if ( !isset( $_COOKIE[$name] ) or !$this->collector->verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
 
-			$value = $this->component->create_nonce( 'view_query_monitor' );
+			$value = $this->collector->create_nonce( 'view_query_monitor' );
 			$text  = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
 			$link  = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
 
@@ -67,8 +67,8 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 
 }
 
-function register_qm_authentication_output_html( QM_Output $output = null, QM_Component $component ) {
-	return new QM_Output_Html_Authentication( $component );
+function register_qm_authentication_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Authentication( $collector );
 }
 
 add_filter( 'query_monitor_output_html_authentication', 'register_qm_authentication_output_html', 10, 2 );
