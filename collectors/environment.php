@@ -179,10 +179,15 @@ class QM_Collector_Environment extends QM_Collector {
 		else
 			$server_version = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
 
+		if ( isset( $_SERVER['SERVER_ADDR'] ) )
+			$address = $_SERVER['SERVER_ADDR'];
+		else
+			$address = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+
 		$this->data['server'] = array(
 			'name'    => $server[0],
 			'version' => $server_version,
-			'address' => $_SERVER['SERVER_ADDR'],
+			'address' => $address,
 			'host'    => php_uname( 'n' )
 		);
 
