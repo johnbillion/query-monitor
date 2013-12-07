@@ -43,10 +43,6 @@ class QM_Component_Hooks extends QM_Component {
 
 		$hooks = $parts = $components = array();
 
-		# @TODO why am i doing this here?:
-		if ( is_multisite() and is_network_admin() )
-			$this->data['screen'] = preg_replace( '|-network$|', '', $this->data['screen'] );
-
 		foreach ( $wp_actions as $name => $count ) {
 
 			$actions = array();

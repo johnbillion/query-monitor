@@ -33,6 +33,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		$row_attr = array();
 
+		if ( is_multisite() and is_network_admin() )
+			$screen = preg_replace( '|-network$|', '', $data['screen'] );
+		else
+			$screen = $data['screen'];
+
 		echo '<div class="qm" id="' . $this->component->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
@@ -45,12 +50,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		foreach ( $data['hooks'] as $hook ) {
 
-			if ( !empty( $data['screen'] ) ) {
+			if ( !empty( $screen ) ) {
 
-				if ( false !== strpos( $hook['name'], $data['screen'] . '.php' ) )
-					$hook['name'] = str_replace( '-' . $data['screen'] . '.php', '-<span class="qm-current">' . $data['screen'] . '.php</span>', $hook['name'] );
+				if ( false !== strpos( $hook['name'], $screen . '.php' ) )
+					$hook['name'] = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', $hook['name'] );
 				else
-					$hook['name'] = str_replace( '-' . $data['screen'], '-<span class="qm-current">' . $data['screen'] . '</span>', $hook['name'] );
+					$hook['name'] = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', $hook['name'] );
 
 			}
 
