@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
+class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public $id = 'headers';
 
@@ -70,7 +70,7 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 }
 
 function register_qm_dispatcher_headers( array $dispatchers, QM_Plugin $qm ) {
-	$dispatchers['headers'] = new QM_Output_Dispatcher_Headers( $qm );
+	$dispatchers['headers'] = new QM_Dispatcher_Headers( $qm );
 	return $dispatchers;
 }
 

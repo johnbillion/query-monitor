@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
+class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public $id = 'html';
 
@@ -163,14 +163,13 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 			return false;
 		}
 
-		# @TODO move this logic into this class
 		return $this->qm->did_footer();
 	}
 
 }
 
 function register_qm_dispatcher_html( array $dispatchers, QM_Plugin $qm ) {
-	$dispatchers['html'] = new QM_Output_Dispatcher_Html( $qm );
+	$dispatchers['html'] = new QM_Dispatcher_Html( $qm );
 	return $dispatchers;
 }
 

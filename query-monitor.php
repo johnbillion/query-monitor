@@ -56,14 +56,12 @@ class QueryMonitor extends QM_Plugin {
 		# Parent setup:
 		parent::__construct( $file );
 
-		# @TODO rather than globbing here, introduce a whatever_defaults() function and glob in there
 		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $collector )
 			include $collector;
 
 		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
 			$this->add_collector( $collector );
 
-		# @TODO rather than globbing here, introduce a whatever_defaults() function and glob in there
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
 			include $dispatcher;
 
@@ -76,7 +74,7 @@ class QueryMonitor extends QM_Plugin {
 		$this->collectors[$collector->id] = $collector;
 	}
 
-	public function add_dispatcher( QM_Output_Dispatcher $dispatcher ) {
+	public function add_dispatcher( QM_Dispatcher $dispatcher ) {
 		$this->dispatchers[$dispatcher->id] = $dispatcher;
 	}
 
