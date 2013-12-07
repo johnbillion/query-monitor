@@ -30,6 +30,12 @@ class QM_Component_Hooks extends QM_Component {
 
 		global $wp_actions, $wp_filter;
 
+		# @TODO this is a band-aid for a deeper problem which I haven't had time to look
+		# into. The customizer hooks onto 'shutdown' at priority 1000 and the act of
+		# looping over the filters below kills it somehow. Argh. Look into it.
+		if ( '/wp-admin/customize.php' == $_SERVER['REQUEST_URI'] )
+			return;
+
 		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
 			$this->data['screen'] = $admin->data['base'];
 		else
