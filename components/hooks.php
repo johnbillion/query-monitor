@@ -36,7 +36,7 @@ class QM_Component_Hooks extends QM_Component {
 		if ( '/wp-admin/customize.php' == $_SERVER['REQUEST_URI'] )
 			return;
 
-		if ( is_admin() and ( $admin = $this->get_component( 'admin' ) ) )
+		if ( is_admin() and ( $admin = QueryMonitor::get_component( 'admin' ) ) )
 			$this->data['screen'] = $admin->data['base'];
 		else
 			$this->data['screen'] = '';

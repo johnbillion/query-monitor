@@ -28,7 +28,7 @@ class QM_Component_DB_Callers extends QM_Component {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
 			if ( isset( $dbq->data['times'] ) ) {
 				$this->data['times'] = $dbq->data['times'];
 			}

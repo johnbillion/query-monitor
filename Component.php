@@ -33,12 +33,6 @@ abstract class QM_Component {
 
 	}
 
-	final public function get_component( $id ) {
-		# @TODO use singleton?
-		global $querymonitor;
-		return $querymonitor->get_component( $id );
-	}
-
 	public function name() {
 		return null;
 	}

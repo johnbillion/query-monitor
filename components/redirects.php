@@ -29,11 +29,9 @@ class QM_Component_Redirects extends QM_Component {
 
 	public function filter_wp_redirect( $location, $status ) {
 
-		global $querymonitor;
-
 		if ( !$location )
 			return $location;
-		if ( !$querymonitor->show_query_monitor() )
+		if ( !QueryMonitor::init()->show_query_monitor() )
 			return $location;
 		if ( headers_sent() )
 			return $location;

@@ -98,7 +98,7 @@ class QM_Component_Environment extends QM_Component {
 		);
 		$php_u = '';
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 

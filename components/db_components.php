@@ -28,7 +28,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 	function process() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
+		if ( $dbq = QueryMonitor::get_component( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
 			}

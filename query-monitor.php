@@ -36,7 +36,7 @@ class QueryMonitor extends QM_Plugin {
 	protected $dispatchers    = array();
 	protected $did_footer = false;
 
-	public function __construct( $file ) {
+	protected function __construct( $file ) {
 
 		# Actions
 		add_action( 'init',           array( $this, 'action_init' ) );
@@ -81,9 +81,10 @@ class QueryMonitor extends QM_Plugin {
 		$this->dispatchers[$dispatcher->id] = $dispatcher;
 	}
 
-	public function get_component( $id ) {
-		if ( isset( $this->components[$id] ) )
-			return $this->components[$id];
+	public static function get_component( $id ) {
+		$qm = self::init();
+		if ( isset( $qm->components[$id] ) )
+			return $qm->components[$id];
 		return false;
 	}
 
@@ -143,7 +144,7 @@ class QueryMonitor extends QM_Plugin {
 			return $this->show_query_monitor = true;
 		}
 
-		if ( $auth = $this->get_component( 'authentication' ) )
+		if ( $auth = self::get_component( 'authentication' ) )
 			return $this->show_query_monitor = $auth->show_query_monitor();
 
 		return $this->show_query_monitor = false;
@@ -224,6 +225,17 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
+	public static function init( $file = null ) {
+
+		static $instance = null;
+
+		if ( ! $instance )
+			$instance = new QueryMonitor( $file );
+
+		return $instance;
+
+	}
+
 }
 
-$GLOBALS['querymonitor'] = new QueryMonitor( __FILE__ );
+QueryMonitor::init( __FILE__ );

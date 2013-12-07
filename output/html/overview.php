@@ -30,8 +30,8 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$db_query_num   = null;
 		$db_query_types = array();
 		# @TODO: make this less derpy:
-		$http           = $this->component->get_component( 'http' );
-		$db_queries     = $this->component->get_component( 'db_queries' );
+		$http           = QueryMonitor::get_component( 'http' );
+		$db_queries     = QueryMonitor::get_component( 'db_queries' );
 		$time_usage     = '';
 		$memory_usage   = '';
 
