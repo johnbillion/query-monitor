@@ -27,7 +27,7 @@ GNU General Public License for more details.
 defined( 'ABSPATH' ) or die();
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
-foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Html', 'Headers' ) as $f )
+foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Html', 'Headers' ) as $f )
 	require_once dirname( __FILE__ ) . "/{$f}.php";
 
 class QueryMonitor extends QM_Plugin {
@@ -57,8 +57,8 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# @TODO rather than globbing here, introduce a whatever_defaults() function and glob in there
-		foreach ( glob( $this->plugin_path( 'components/*.php' ) ) as $component )
-			include $component;
+		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $collector )
+			include $collector;
 
 		foreach ( apply_filters( 'query_monitor_components', array() ) as $component )
 			$this->add_component( $component );
