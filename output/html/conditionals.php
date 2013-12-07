@@ -56,8 +56,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			if ( 0 === $i%$cols )
 				echo '</tr>';
 		}
-		$fill = ($cols-($i%$cols));
-		if ( $fill ) {
+
+		$fill = ( $cols - ( $i % $cols ) );
+		if ( $fill and ( $fill != $cols ) ) {
 			echo '<td colspan="' . $fill . '">&nbsp;</td>';
 			echo '</tr>';
 		}

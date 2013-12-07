@@ -31,10 +31,14 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		$total_time  = 0;
 		$total_calls = 0;
+		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
+		echo '<tr>';
+		echo '<th colspan="' . $span . '">' . $this->collector->name() . '</th>';
+		echo '</tr>';
 		echo '<tr>';
 		echo '<th>' . _x( 'Caller', 'Query caller', 'query-monitor' ) . '</th>';
 

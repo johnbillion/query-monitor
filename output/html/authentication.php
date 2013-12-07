@@ -19,7 +19,7 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 
 	public function output() {
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

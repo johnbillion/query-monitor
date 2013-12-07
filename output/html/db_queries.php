@@ -112,7 +112,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $span . '" class="qm-ltr">' . $name . '</th>';
+		echo '<th colspan="' . $span . '">' . sprintf( __( '%s Queries', 'query-monitor' ), $name ) . '</th>';
 		echo '</tr>';
 
 		if ( $max_exceeded ) {
