@@ -18,10 +18,13 @@ class QM_Component_Theme extends QM_Component {
 
 	var $id = 'theme';
 
+	function name() {
+		return __( 'Theme', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
 		add_filter( 'body_class',          array( $this, 'body_class' ), 99 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
 	}
 
 	function body_class( $class ) {
@@ -46,74 +49,6 @@ class QM_Component_Theme extends QM_Component {
 
 		if ( isset( $this->data['body_class'] ) )
 			asort( $this->data['body_class'] );
-
-	}
-
-	function output_html( array $args, array $data ) {
-
-		if ( empty( $data ) )
-			return;
-
-		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Theme', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-		echo '<tr>';
-		echo '<td>' . __( 'Template', 'query-monitor' ) . '</td>';
-		echo "<td>{$this->data['template_file']}</td>";
-		echo '</tr>';
-
-		if ( !empty( $data['body_class'] ) ) {
-
-			echo '<tr>';
-			echo '<td rowspan="' . count( $data['body_class'] ) . '">' . __( 'Body Classes', 'query-monitor' ) . '</td>';
-			$first = true;
-
-			foreach ( $data['body_class'] as $class ) {
-
-				if ( !$first )
-					echo '<tr>';
-
-				echo "<td>{$class}</td>";
-				echo '</tr>';
-
-				$first = false;
-
-			}
-
-		}
-
-		echo '<tr>';
-		echo '<td>' . __( 'Theme', 'query-monitor' ) . '</td>';
-		echo "<td>{$this->data['stylesheet']}</td>";
-		echo '</tr>';
-
-		if ( $this->data['stylesheet'] != $this->data['template'] ) {
-			echo '<tr>';
-			echo '<td>' . __( 'Parent Theme', 'query-monitor' ) . '</td>';
-			echo "<td>{$this->data['template']}</td>";
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( isset( $this->data['template_file'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Template: %s', 'query-monitor' ), $this->data['template_file'] )
-			) );
-		}
-		return $menu;
 
 	}
 

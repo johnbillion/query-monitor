@@ -18,67 +18,12 @@ class QM_Component_Conditionals extends QM_Component {
 
 	var $id = 'conditionals';
 
+	function name() {
+		return __( 'Conditionals', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 120 );
-	}
-
-	function admin_menu( array $menu ) {
-
-		foreach ( $this->data['conds']['true'] as $cond ) {
-			$menu[] = $this->menu( array(
-				'title' => $cond . '()',
-				'id'    => 'query-monitor-' . $cond,
-				'meta'  => array( 'classname' => 'qm-true qm-ltr' )
-			) );
-		}
-
-		return $menu;
-
-	}
-
-	function output_html( array $args, array $data ) {
-
-		$cols = 5;
-		$i = 0;
-		$w = floor( 100 / $cols );
-
-		echo '<div class="qm" id="' . $args['id'] . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="' . $cols . '">' . __( 'Conditionals', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
-
-		foreach ( $data['conds']['true'] as $cond ) {
-			$i++;
-			if ( 1 === $i%$cols )
-				echo '<tr>';
-			echo '<td class="qm-ltr qm-true" width="' . $w . '%">' . $cond . '()</td>';
-			if ( 0 === $i%$cols )
-				echo '</tr>';
-		}
-
-		foreach ( $data['conds']['false'] as $cond ) {
-			$i++;
-			if ( 1 === $i%$cols )
-				echo '<tr>';
-			echo '<td class="qm-ltr qm-false" width="' . $w . '%">' . $cond . '()</td>';
-			if ( 0 === $i%$cols )
-				echo '</tr>';
-		}
-		$fill = ($cols-($i%$cols));
-		if ( $fill ) {
-			echo '<td colspan="' . $fill . '">&nbsp;</td>';
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
 	}
 
 	function process() {

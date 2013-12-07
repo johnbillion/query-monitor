@@ -21,7 +21,7 @@ abstract class QM_Plugin {
 	 *
 	 * @author John Blackbourn
 	 **/
-	public function __construct( $file ) {
+	protected function __construct( $file ) {
 		$this->file = $file;
 	}
 

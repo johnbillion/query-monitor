@@ -18,9 +18,12 @@ class QM_Component_Query_Vars extends QM_Component {
 
 	var $id = 'query_vars';
 
+	function name() {
+		return __( 'Query Vars', 'query-monitor' );
+	}
+
 	function __construct() {
 		parent::__construct();
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 	}
 
 	function process() {
@@ -54,65 +57,6 @@ class QM_Component_Query_Vars extends QM_Component {
 			if ( !isset( $plugin_qvars[$k] ) )
 				$this->data['qvars'][$k] = $v;
 		}
-
-	}
-
-	function output_html( array $args, array $data ) {
-
-		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Query Vars', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
-
-		if ( !empty( $data['qvars'] ) ) {
-
-			foreach( $data['qvars'] as $var => $value ) {
-				echo '<tr>';
-				if ( isset( $data['plugin_qvars'][$var] ) )
-					echo "<td valign='top'><span class='qm-current'>{$var}</span></td>";
-				else
-					echo "<td valign='top'>{$var}</td>";
-				if ( is_array( $value ) or is_object( $value ) ) {
-					echo '<td valign="top"><pre>';
-					print_r( $value );
-					echo '</pre></td>';
-				} else {
-					$value = esc_html( $value );
-					echo "<td valign='top'>{$value}</td>";
-				}
-				echo '</tr>';
-			}
-
-		} else {
-
-			echo '<tr>';
-			echo '<td colspan="2" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		$count = isset( $this->data['plugin_qvars'] ) ? count( $this->data['plugin_qvars'] ) : 0;
-
-		$title = ( empty( $count ) )
-			? __( 'Query Vars', 'query-monitor' )
-			: __( 'Query Vars (+%s)', 'query-monitor' );
-
-		$menu[] = $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( $count ) )
-		) );
-		return $menu;
 
 	}
 
