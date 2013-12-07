@@ -97,6 +97,8 @@ class QM_Output_Dispatcher_Html extends QM_Output_Dispatcher {
 				ob_end_flush();
 		}
 
+		require_once $this->qm->plugin_path( 'output/Html.php' );
+
 		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
 			include $output;
 		}

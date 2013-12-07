@@ -32,6 +32,8 @@ class QM_Output_Dispatcher_Headers extends QM_Output_Dispatcher {
 
 	public function before_output() {
 
+		require_once $this->qm->plugin_path( 'output/Headers.php' );
+
 		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $output ) {
 			include $output;
 		}
