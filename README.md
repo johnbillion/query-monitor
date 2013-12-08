@@ -15,6 +15,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Hooks](#hooks)
     * [Theme](#theme)
     * [PHP Errors](#php-errors)
+    * [Request](#request)
     * [HTTP Requests](#http-requests)
     * [Redirects](#redirects)
     * [AJAX](#ajax)
@@ -63,6 +64,11 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows an easily visible warning in the admin toolbar
  * Plays nicely with Xdebug
 
+## Request ##
+
+ * Shows **matched rewrite rules** and associated query strings
+ * Shows **query vars** for the current request, and highlights **custom query vars**
+
 ## HTTP Requests ##
 
  * Shows all HTTP requests performed on the current page (as long as they use WordPress' HTTP API)
@@ -97,7 +103,6 @@ Hands up who can remember the correct names for the filters and hooks for custom
 
 ## Everything Else ##
 
- * Shows the names and values for **query vars** on the current page, and highlights **custom query vars**
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
