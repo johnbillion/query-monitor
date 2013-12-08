@@ -32,8 +32,15 @@ class QM_Collector_Request extends QM_Collector {
 
 		$qo = get_queried_object();
 
-		foreach ( array( 'request', 'matched_rule', 'matched_query', 'query_string' ) as $item ) {
-			$this->data['request'][$item] = $wp->$item;
+		if ( is_admin() ) {
+			$this->data['request']['request'] = $_SERVER['REQUEST_URI'];
+			foreach ( array( 'query_string' ) as $item ) {
+				$this->data['request'][$item] = $wp->$item;
+			}
+		} else {
+			foreach ( array( 'request', 'matched_rule', 'matched_query', 'query_string' ) as $item ) {
+				$this->data['request'][$item] = $wp->$item;
+			}
 		}
 
 		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
@@ -109,8 +116,7 @@ class QM_Collector_Request extends QM_Collector {
 }
 
 function register_qm_request( array $qm ) {
-	if ( ! is_admin() )
-		$qm['request'] = new QM_Collector_Request;
+	$qm['request'] = new QM_Collector_Request;
 	return $qm;
 }
 

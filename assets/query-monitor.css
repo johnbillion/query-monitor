@@ -312,10 +312,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 	color: #a0a !important;
 }
 
-.qm .qm-url span {
-	color: #ccc !important;
-}
-
 .qm .qm-info {
 	color: #999 !important;
 }
@@ -352,10 +348,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 .qm td.qm-var {
 	text-align: right !important;
 	padding: 1px 1.5em 1px 0 !important;
-}
-
-.qm-param {
-	padding: 0 6px !important;
 }
 
 /* Filters */

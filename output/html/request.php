@@ -35,7 +35,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		$rowspan = count( $data['qvars'] );
+		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
 		echo '<tr>';
 		echo '<td rowspan="' . $rowspan . '">' . __( 'Query Vars', 'query-monitor' ) . '</td>';
@@ -83,10 +83,18 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			'query_string'  => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
 
-			if ( ! empty( $data['request'][$item] ) )
-				$value = esc_html( $data['request'][$item] );
-			else
+			if ( !isset( $data['request'][$item] ) )
+				continue;
+
+			if ( ! empty( $data['request'][$item] ) ) {
+				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ) ) ) {
+					$value = QM_Util::format_url( $data['request'][$item] );
+				} else {
+					$value = esc_html( $data['request'][$item] );
+				}
+			} else {
 				$value = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+			}
 
 			echo '<tr>';
 			echo '<td valign="top">' . $name . '</td>';
