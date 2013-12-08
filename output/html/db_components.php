@@ -98,7 +98,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="' . $span . '" style="text-align:center !important"><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
 

@@ -114,6 +114,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th colspan="' . $span . '">' . sprintf( __( '%s Queries', 'query-monitor' ), $name ) . '</th>';
 		echo '</tr>';
 
+		if ( ! $db->has_component ) {
+			echo '<tr>';
+			echo '<td colspan="' . $span . '" class="qm-warn">' . sprintf( __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its db.php file into place. <a href="%s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
+				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
+			) . '</td>';
+			echo '</tr>';
+		}
+
 		if ( $max_exceeded ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Crikey!', 'query-monitor' ),
