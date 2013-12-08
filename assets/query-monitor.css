@@ -316,10 +316,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 	color: #999 !important;
 }
 
-.qm td.qm-has-toggle {
-	position: relative !important;
-	padding-right: 21px !important;
-}
 .qm td .qm-toggled {
 	display: none;
 }
@@ -341,11 +337,8 @@ body:not(.iframe).sticky-menu.folded #qm {
 }
 
 .qm a.qm-toggle {
-	position: absolute !important;
-	top: 2px !important;
-	right: 2px !important;
 	color: #ddd !important;
-	padding: 1px 5px !important;
+	padding: 0 3px !important;
 	border: 1px solid transparent !important;
 }
 
