@@ -16,13 +16,13 @@ GNU General Public License for more details.
 
 class QM_Collector_Redirects extends QM_Collector {
 
-	var $id = 'redirects';
+	public $id = 'redirects';
 
-	function name() {
+	public function name() {
 		return __( 'Redirects', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 999, 2 );
 	}
@@ -48,9 +48,9 @@ class QM_Collector_Redirects extends QM_Collector {
 
 }
 
-function register_qm_redirects( array $qm ) {
+function register_qm_collector_redirects( array $qm ) {
 	$qm['redirects'] = new QM_Collector_Redirects;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_redirects', 140 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_redirects', 140 );

@@ -16,17 +16,17 @@ GNU General Public License for more details.
 
 class QM_Collector_Hooks extends QM_Collector {
 
-	var $id = 'hooks';
+	public $id = 'hooks';
 
-	function name() {
+	public function name() {
 		return __( 'Hooks', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	function process() {
+	public function process() {
 
 		global $wp_actions, $wp_filter;
 
@@ -93,9 +93,9 @@ class QM_Collector_Hooks extends QM_Collector {
 
 }
 
-function register_qm_hooks( array $qm ) {
+function register_qm_collector_hooks( array $qm ) {
 	$qm['hooks'] = new QM_Collector_Hooks;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_hooks', 80 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_hooks', 80 );

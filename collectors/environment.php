@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 class QM_Collector_Environment extends QM_Collector {
 
-	var $id = 'environment';
-	var $php_vars = array(
+	public $id = 'environment';
+	protected $php_vars = array(
 		'max_execution_time',
 		'memory_limit',
 		'upload_max_filesize',
@@ -26,11 +26,11 @@ class QM_Collector_Environment extends QM_Collector {
 		'log_errors',
 	);
 
-	function name() {
+	public function name() {
 		return __( 'Environment', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 
 		global $wpdb;
 
@@ -49,7 +49,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
-	public function get_error_levels( $error_reporting ) {
+	public static function get_error_levels( $error_reporting ) {
 
 		$levels = array();
 
@@ -84,7 +84,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
-	function process() {
+	public function process() {
 
 		global $wp_version, $blog_id;
 
@@ -193,15 +193,11 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
-	function output_html( array $args, array $data ) {
-
-	}
-
 }
 
-function register_qm_environment( array $qm ) {
+function register_qm_collector_environment( array $qm ) {
 	$qm['environment'] = new QM_Collector_Environment;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_environment', 120 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_environment', 120 );

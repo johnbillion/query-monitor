@@ -81,7 +81,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 	}
 
-	function admin_menu( array $menu ) {
+	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
 
@@ -96,8 +96,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 }
 
-function register_qm_theme_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_theme( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_Theme( $collector );
 }
 
-add_filter( 'query_monitor_output_html_theme', 'register_qm_theme_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_theme', 'register_qm_output_html_theme', 10, 2 );

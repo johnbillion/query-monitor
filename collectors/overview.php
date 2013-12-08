@@ -16,17 +16,17 @@ GNU General Public License for more details.
 
 class QM_Collector_Overview extends QM_Collector {
 
-	var $id = 'overview';
+	public $id = 'overview';
 
-	function name() {
+	public function name() {
 		return __( 'Overview', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	function process() {
+	public function process() {
 
 		$this->data['time']       = QM_Util::timer_stop_float();
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
@@ -48,9 +48,9 @@ class QM_Collector_Overview extends QM_Collector {
 
 }
 
-function register_qm_overview( array $qm ) {
+function register_qm_collector_overview( array $qm ) {
 	$qm['overview'] = new QM_Collector_Overview;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_overview', 10 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_overview', 10 );

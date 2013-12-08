@@ -27,20 +27,20 @@ else
 
 class QM_Collector_PHP_Errors extends QM_Collector {
 
-	var $id = 'php_errors';
+	public $id = 'php_errors';
 
-	function name() {
+	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 
 		parent::__construct();
 		set_error_handler( array( $this, 'error_handler' ) );
 
 	}
 
-	function error_handler( $errno, $message, $file = null, $line = null ) {
+	public function error_handler( $errno, $message, $file = null, $line = null ) {
 
 		#if ( !( error_reporting() & $errno ) )
 		#	return false;
@@ -104,7 +104,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 }
 
-function register_qm_php_errors( array $qm ) {
+function register_qm_collector_php_errors( array $qm ) {
 	$qm['php_errors'] = new QM_Collector_PHP_Errors;
 	return $qm;
 }
@@ -119,5 +119,5 @@ function qm_php_errors_return_value( $return ) {
 		return $return;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_php_errors', 110 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_php_errors', 110 );
 add_filter( 'query_monitor_php_errors_return_value', 'qm_php_errors_return_value' );

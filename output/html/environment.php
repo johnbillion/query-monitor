@@ -201,8 +201,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 }
 
-function register_qm_environment_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_environment( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_Environment( $collector );
 }
 
-add_filter( 'query_monitor_output_html_environment', 'register_qm_environment_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_environment', 'register_qm_output_html_environment', 10, 2 );

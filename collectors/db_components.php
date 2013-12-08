@@ -16,17 +16,17 @@ GNU General Public License for more details.
 
 class QM_Collector_DB_Components extends QM_Collector {
 
-	var $id = 'db_components';
+	public $id = 'db_components';
 
-	function name() {
+	public function name() {
 		return __( 'Queries by Component', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	function process() {
+	public function process() {
 
 		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
@@ -41,9 +41,9 @@ class QM_Collector_DB_Components extends QM_Collector {
 
 }
 
-function register_qm_db_components( array $qm ) {
+function register_qm_collector_db_components( array $qm ) {
 	$qm['db_components'] = new QM_Collector_DB_Components;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_db_components', 40 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_db_components', 40 );

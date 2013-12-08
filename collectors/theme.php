@@ -16,23 +16,23 @@ GNU General Public License for more details.
 
 class QM_Collector_Theme extends QM_Collector {
 
-	var $id = 'theme';
+	public $id = 'theme';
 
-	function name() {
+	public function name() {
 		return __( 'Theme', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
-		add_filter( 'body_class',          array( $this, 'body_class' ), 99 );
+		add_filter( 'body_class', array( $this, 'filter_body_class' ), 99 );
 	}
 
-	function body_class( $class ) {
+	public function filter_body_class( $class ) {
 		$this->data['body_class'] = $class;
 		return $class;
 	}
 
-	function process() {
+	public function process() {
 
 		global $template;
 
@@ -54,10 +54,10 @@ class QM_Collector_Theme extends QM_Collector {
 
 }
 
-function register_qm_theme( array $qm ) {
+function register_qm_collector_theme( array $qm ) {
 	if ( !is_admin() )
 		$qm['theme'] = new QM_Collector_Theme;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_theme', 70 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_theme', 70 );

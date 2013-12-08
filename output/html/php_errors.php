@@ -148,8 +148,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 }
 
-function register_qm_php_errors_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_php_errors( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_PHP_Errors( $collector );
 }
 
-add_filter( 'query_monitor_output_html_php_errors', 'register_qm_php_errors_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_php_errors', 'register_qm_output_html_php_errors', 10, 2 );

@@ -96,8 +96,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
-
-	function output_queries( $name, stdClass $db, array $data ) {
+	protected function output_queries( $name, stdClass $db, array $data ) {
 
 		$max_exceeded = $db->total_qs > QM_DB_LIMIT;
 
@@ -178,7 +177,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
-	function output_query_row( array $row, array $cols ) {
+	protected function output_query_row( array $row, array $cols ) {
 
 		$cols = array_flip( $cols );
 
@@ -319,8 +318,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 }
 
-function register_qm_db_queries_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_db_queries( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_DB_Queries( $collector );
 }
 
-add_filter( 'query_monitor_output_html_db_queries', 'register_qm_db_queries_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_db_queries', 'register_qm_output_html_db_queries', 10, 2 );

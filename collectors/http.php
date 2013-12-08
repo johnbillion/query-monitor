@@ -16,25 +16,25 @@ GNU General Public License for more details.
 
 class QM_Collector_HTTP extends QM_Collector {
 
-	var $id   = 'http';
+	public $id = 'http';
 
-	function name() {
+	public function name() {
 		return __( 'HTTP Requests', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 
 		parent::__construct();
 
-		add_action( 'http_api_debug',      array( $this, 'http_debug' ),    99, 5 );
-		add_filter( 'http_request_args',   array( $this, 'http_request' ),  99, 2 );
-		add_filter( 'http_response',       array( $this, 'http_response' ), 99, 3 );
+		add_action( 'http_api_debug',    array( $this, 'action_http_debug' ),    99, 5 );
+		add_filter( 'http_request_args', array( $this, 'filter_http_request' ),  99, 2 );
+		add_filter( 'http_response',     array( $this, 'filter_http_response' ), 99, 3 );
 		# http://core.trac.wordpress.org/ticket/25747
-		add_filter( 'pre_http_request',    array( $this, 'http_response' ), 99, 3 );
+		add_filter( 'pre_http_request',  array( $this, 'filter_http_response' ), 99, 3 );
 
 	}
 
-	function http_request( array $args, $url ) {
+	public function filter_http_request( array $args, $url ) {
 		$m_start = microtime( true );
 		$key = $m_start . $url;
 		$this->data['http'][$key] = array(
@@ -47,7 +47,7 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $args;
 	}
 
-	function http_debug( $param, $action ) {
+	public function action_http_debug( $param, $action ) {
 
 		switch ( $action ) {
 
@@ -71,7 +71,7 @@ class QM_Collector_HTTP extends QM_Collector {
 					$this->data['http'][$args['_qm_key']]['transport'] = false;
 
 				if ( is_wp_error( $response ) )
-					$this->http_response( $response, $args, $url );
+					$this->filter_http_response( $response, $args, $url );
 
 				break;
 
@@ -83,7 +83,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
-	function http_response( $response, array $args, $url ) {
+	public function filter_http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
 
@@ -98,9 +98,9 @@ class QM_Collector_HTTP extends QM_Collector {
 
 }
 
-function register_qm_http( array $qm ) {
+function register_qm_collector_http( array $qm ) {
 	$qm['http'] = new QM_Collector_HTTP;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_http', 100 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_http', 100 );

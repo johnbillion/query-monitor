@@ -16,25 +16,25 @@ GNU General Public License for more details.
 
 class QM_Collector_Authentication extends QM_Collector {
 
-	var $id = 'authentication';
+	public $id = 'authentication';
 
-	function name() {
+	public function name() {
 		return __( 'Authentication', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
-		add_filter( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
+		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 	}
 
-	function action_plugins_loaded() {
+	public function action_plugins_loaded() {
 
 		if ( !defined( 'QM_COOKIE' ) )
 			define( 'QM_COOKIE', 'qm_' . COOKIEHASH );
 
 	}
 
-	function show_query_monitor() {
+	public function show_query_monitor() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) )
 			return $this->verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
 		return false;
@@ -62,9 +62,9 @@ class QM_Collector_Authentication extends QM_Collector {
 
 }
 
-function register_qm_authentication( array $qm ) {
+function register_qm_collector_authentication( array $qm ) {
 	$qm['authentication'] = new QM_Collector_Authentication;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_authentication', 130 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_authentication', 130 );

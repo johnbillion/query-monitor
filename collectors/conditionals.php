@@ -16,21 +16,21 @@ GNU General Public License for more details.
 
 class QM_Collector_Conditionals extends QM_Collector {
 
-	var $id = 'conditionals';
+	public $id = 'conditionals';
 
-	function name() {
+	public function name() {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	function process() {
+	public function process() {
 
 		$conds = apply_filters( 'query_monitor_conditionals', array(
 			'is_404', 'is_archive', 'is_admin', 'is_attachment', 'is_author', 'is_blog_admin', 'is_category', 'is_comments_popup', 'is_date',
-			'is_day', 'is_feed', 'is_front_page', 'is_home', 'is_main_network', 'is_main_site', 'is_month', 'is_multitax', 'is_network_admin',
+			'is_day', 'is_feed', 'is_front_page', 'is_home', 'is_main_network', 'is_main_site', 'is_month', 'is_network_admin',
 			'is_page', 'is_page_template', 'is_paged', 'is_post_type_archive', 'is_preview', 'is_robots', 'is_rtl', 'is_search', 'is_single',
 			'is_singular', 'is_ssl', 'is_sticky', 'is_tag', 'is_tax', 'is_time', 'is_trackback', 'is_year'
 		) );	
@@ -63,9 +63,9 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 }
 
-function register_qm_conditionals( array $qm ) {
+function register_qm_collector_conditionals( array $qm ) {
 	$qm['conditionals'] = new QM_Collector_Conditionals;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_conditionals', 50 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_conditionals', 50 );

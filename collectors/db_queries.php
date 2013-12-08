@@ -29,31 +29,31 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	public $id = 'db_queries';
 	public $db_objects = array();
 
-	function name() {
+	public function name() {
 		return __( 'Database Queries', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	function get_errors() {
+	public function get_errors() {
 		if ( !empty( $this->data['errors'] ) )
 			return $this->data['errors'];
 		return false;
 	}
 
-	function get_expensive() {
+	public function get_expensive() {
 		if ( !empty( $this->data['expensive'] ) )
 			return $this->data['expensive'];
 		return false;
 	}
 
-	public function is_expensive( array $row ) {
+	public static function is_expensive( array $row ) {
 		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
-	function process() {
+	public function process() {
 
 		if ( !SAVEQUERIES )
 			return;
@@ -73,7 +73,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
-	function log_type( $type ) {
+	protected function log_type( $type ) {
 
 		if ( isset( $this->data['types'][$type] ) )
 			$this->data['types'][$type]++;
@@ -82,7 +82,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
-	function log_caller( $caller, $ltime, $type ) {
+	protected function log_caller( $caller, $ltime, $type ) {
 
 		if ( !isset( $this->data['times'][$caller] ) ) {
 			$this->data['times'][$caller] = array(
@@ -103,7 +103,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
-	function log_component( $component, $ltime, $type ) {
+	protected function log_component( $component, $ltime, $type ) {
 
 		if ( !isset( $this->data['component_times'][$component->name] ) ) {
 			$this->data['component_times'][$component->name] = array(
@@ -130,7 +130,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
-	function process_db_object( $id, wpdb $db ) {
+	public function process_db_object( $id, wpdb $db ) {
 
 		$rows       = array();
 		$types      = array();
@@ -198,7 +198,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
 
-			if ( $this->is_expensive( $row ) )
+			if ( self::is_expensive( $row ) )
 				$this->data['expensive'][] = $row;
 
 			$rows[] = $row;
@@ -221,9 +221,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 }
 
-function register_qm_db_queries( array $qm ) {
+function register_qm_collector_db_queries( array $qm ) {
 	$qm['db_queries'] = new QM_Collector_DB_Queries;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_db_queries', 20 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_db_queries', 20 );

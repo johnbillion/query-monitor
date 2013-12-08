@@ -16,24 +16,24 @@ GNU General Public License for more details.
 
 class QM_Collector_Admin extends QM_Collector {
 
-	var $id = 'admin';
+	public $id = 'admin';
 
-	function name() {
+	public function name() {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
-		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
+		add_filter( 'current_screen', array( $this, 'filter_current_screen' ), 99 );
 	}
 
-	function current_screen( WP_Screen $screen ) {
+	public function filter_current_screen( WP_Screen $screen ) {
 		if ( empty( $this->data['admin'] ) )
 			$this->data['admin'] = wp_clone( $screen );
 		return $screen;
 	}
 
-	function process() {
+	public function process() {
 
 		global $pagenow;
 
@@ -52,10 +52,10 @@ class QM_Collector_Admin extends QM_Collector {
 
 }
 
-function register_qm_admin( array $qm ) {
+function register_qm_collector_admin( array $qm ) {
 	if ( is_admin() )
 		$qm['admin'] = new QM_Collector_Admin;
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_admin', 70 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_admin', 70 );

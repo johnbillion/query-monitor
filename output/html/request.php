@@ -126,8 +126,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 }
 
-function register_qm_request_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_request( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_Request( $collector );
 }
 
-add_filter( 'query_monitor_output_html_request', 'register_qm_request_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_request', 'register_qm_output_html_request', 10, 2 );

@@ -125,8 +125,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 }
 
-function register_qm_db_components_output_html( QM_Output $output = null, QM_Collector $collector ) {
+function register_qm_output_html_db_components( QM_Output $output = null, QM_Collector $collector ) {
 	return new QM_Output_Html_DB_Components( $collector );
 }
 
-add_filter( 'query_monitor_output_html_db_components', 'register_qm_db_components_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_db_components', 'register_qm_output_html_db_components', 10, 2 );
