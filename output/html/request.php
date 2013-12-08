@@ -15,11 +15,11 @@ GNU General Public License for more details.
 
 */
 
-class QM_Output_Html_Query_Vars extends QM_Output_Html {
+class QM_Output_Html_Request extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 45 );
 	}
 
 	public function output() {
@@ -30,19 +30,30 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . $this->collector->name() . '</th>';
+		echo '<th colspan="3">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
+		$rowspan = count( $data['qvars'] );
+
+		echo '<tr>';
+		echo '<td rowspan="' . $rowspan . '">' . __( 'Query Vars', 'query-monitor' ) . '</td>';
+
 		if ( !empty( $data['qvars'] ) ) {
 
+			$first = true;
+
 			foreach( $data['qvars'] as $var => $value ) {
-				echo '<tr>';
+
+				if ( !$first )
+					echo '<tr>';
+
 				if ( isset( $data['plugin_qvars'][$var] ) )
 					echo "<td valign='top'><span class='qm-current'>{$var}</span></td>";
 				else
 					echo "<td valign='top'>{$var}</td>";
+
 				if ( is_array( $value ) or is_object( $value ) ) {
 					echo '<td valign="top"><pre>';
 					print_r( $value );
@@ -51,15 +62,36 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 					$value = esc_html( $value );
 					echo "<td valign='top'>{$value}</td>";
 				}
+
 				echo '</tr>';
+
+				$first = false;
+
 			}
 
 		} else {
 
-			echo '<tr>';
-			echo '<td colspan="2" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="2"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 
+		}
+
+		foreach ( array(
+			'request'       => __( 'Request', 'query-monitor' ),
+			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
+			'matched_query' => __( 'Matched Query', 'query-monitor' ),
+			'query_string'  => __( 'Query String', 'query-monitor' ),
+		) as $item => $name ) {
+
+			if ( ! empty( $data['request'][$item] ) )
+				$value = esc_html( $data['request'][$item] );
+			else
+				$value = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+
+			echo '<tr>';
+			echo '<td valign="top">' . $name . '</td>';
+			echo '<td valign="top" colspan="2">' . $value . '</td>';
+			echo '</tr>';
 		}
 
 		echo '</tbody>';
@@ -74,8 +106,8 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 		$count = isset( $data['plugin_qvars'] ) ? count( $data['plugin_qvars'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'Query Vars', 'query-monitor' )
-			: __( 'Query Vars (+%s)', 'query-monitor' );
+			? __( 'Request', 'query-monitor' )
+			: __( 'Request (+%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => sprintf( $title, number_format_i18n( $count ) )
@@ -86,8 +118,8 @@ class QM_Output_Html_Query_Vars extends QM_Output_Html {
 
 }
 
-function register_qm_query_vars_output_html( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Query_Vars( $collector );
+function register_qm_request_output_html( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Request( $collector );
 }
 
-add_filter( 'query_monitor_output_html_query_vars', 'register_qm_query_vars_output_html', 10, 2 );
+add_filter( 'query_monitor_output_html_request', 'register_qm_request_output_html', 10, 2 );
