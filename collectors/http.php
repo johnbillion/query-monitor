@@ -30,18 +30,27 @@ class QM_Collector_HTTP extends QM_Collector {
 		add_filter( 'http_request_args', array( $this, 'filter_http_request' ),  99, 2 );
 		add_filter( 'http_response',     array( $this, 'filter_http_response' ), 99, 3 );
 		# http://core.trac.wordpress.org/ticket/25747
-		add_filter( 'pre_http_request',  array( $this, 'filter_http_response' ), 99, 3 );
+		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
 
 	}
 
 	public function filter_http_request( array $args, $url ) {
-		$m_start = microtime( true );
-		$key = $m_start . $url;
+		$trace = new QM_Backtrace;
+		if ( isset( $args['_qm_key'] ) ) {
+			// Something has triggered another HTTP request from within the `pre_http_request` filter
+			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
+			$args['_qm_original_key'] = $args['_qm_key'];
+			$m_start = $this->data['http'][$args['_qm_key']]['start'];
+		} else {
+			$m_start = microtime( true );
+		}
+		$x_start = microtime( true );
+		$key = $x_start . $url;
 		$this->data['http'][$key] = array(
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $m_start,
-			'trace' => new QM_Backtrace
+			'trace' => $trace,
 		);
 		$args['_qm_key'] = $key;
 		return $args;
@@ -83,17 +92,54 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	public function filter_pre_http_request( $response, array $args, $url ) {
+
+		// All is well:
+		if ( false === $response ) {
+			return $response;
+		}
+
+		// Something has filtered `pre_http_request` and short-circuited the request.
+		$this->data['http'][$args['_qm_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
+		$this->data['http'][$args['_qm_key']]['response'] = new WP_Error( 'http_request_not_executed', __( 'Request not executed due to a filter on pre_http_request', 'query-monitor' ) );
+
+		return $response;
+	}
+
 	public function filter_http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
-
-		if ( is_wp_error( $response ) ) {
-			$this->data['errors']['error'][] = $args['_qm_key'];
-		} else {
-			if ( intval( wp_remote_retrieve_response_code( $response ) ) >= 400 )
-				$this->data['errors']['warning'][] = $args['_qm_key'];
+		if ( isset( $args['_qm_original_key'] ) ) {
+			$this->data['http'][$args['_qm_original_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
+			$this->data['http'][$args['_qm_original_key']]['response'] = new WP_Error( 'http_request_not_executed', __( 'Request not executed due to a filter on pre_http_request', 'query-monitor' ) );
 		}
+
 		return $response;
+	}
+
+	public function process() {
+
+		if ( ! isset( $this->data['http'] ) )
+			return;
+
+		foreach ( $this->data['http'] as $key => & $http ) {
+
+			if ( !isset( $http['response'] ) ) {
+				// Timed out
+				$http['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
+				$http['end']      = floatval( $http['start'] + $http['args']['timeout'] );
+			}
+
+			if ( is_wp_error( $http['response'] ) ) {
+				if ( 'http_request_not_executed' != $http['response']->get_error_code() )
+					$this->data['errors']['error'][] = $key;
+			} else {
+				if ( intval( wp_remote_retrieve_response_code( $http['response'] ) ) >= 400 )
+					$this->data['errors']['warning'][] = $key;
+			}
+
+		}
+
 	}
 
 }

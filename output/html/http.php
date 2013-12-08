@@ -47,44 +47,34 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( $data['http'] as $row ) {
+			foreach ( $data['http'] as $key => $row ) {
 				$funcs = array();
 
-				if ( isset( $row['response'] ) ) {
+				$ltime = ( $row['end'] - $row['start'] );
+				$total_time += $ltime;
 
-					$ltime = ( $row['end'] - $row['start'] );
-					$total_time += $ltime;
+				if ( empty( $ltime ) )
+					$stime = '';
+				else
 					$stime = number_format_i18n( $ltime, 4 );
-					$ltime = number_format_i18n( $ltime, 10 );
 
-					if ( is_wp_error( $row['response'] ) ) {
-						$response = $row['response']->get_error_message();
-						$css      = 'qm-warn';
-					} else {
-						$response = wp_remote_retrieve_response_code( $row['response'] );
-						$msg      = wp_remote_retrieve_response_message( $row['response'] );
-						$css      = '';
+				$ltime = number_format_i18n( $ltime, 10 );
 
-						if ( empty( $response ) )
-							$response = __( 'n/a', 'query-monitor' );
-						else
-							$response = esc_html( $response . ' ' . $msg );
-
-						if ( intval( $response ) >= 400 )
-							$css = 'qm-warn';
-
-					}
-
-				} else {
-
-					# @TODO test if the timeout has actually passed. if not, the request was erroneous rather than timed out
-
-					$total_time += $row['args']['timeout'];
-
-					$ltime    = '';
-					$stime    = number_format_i18n( $row['args']['timeout'], 4 );
-					$response = __( 'Request timed out', 'query-monitor' );
+				if ( is_wp_error( $row['response'] ) ) {
+					$response = $row['response']->get_error_message();
 					$css      = 'qm-warn';
+				} else {
+					$response = wp_remote_retrieve_response_code( $row['response'] );
+					$msg      = wp_remote_retrieve_response_message( $row['response'] );
+					$css      = '';
+
+					if ( empty( $response ) )
+						$response = __( 'n/a', 'query-monitor' );
+					else
+						$response = esc_html( $response . ' ' . $msg );
+
+					if ( intval( $response ) >= 400 )
+						$css = 'qm-warn';
 
 				}
 
@@ -100,10 +90,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$stack = $row['trace']->get_stack();
 
-				foreach ( $stack as & $trace ) {
+				foreach ( $stack as & $frame ) {
 					foreach ( array( 'WP_Http', 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
-						if ( 0 === strpos( $trace, $skip ) ) {
-							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
+						if ( 0 === strpos( $frame, $skip ) ) {
+							$frame = sprintf( '<span class="qm-na">%s</span>', $frame );
 							break;
 						}
 					}
