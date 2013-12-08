@@ -19,7 +19,7 @@ class QM_Collector_Admin extends QM_Collector {
 	var $id = 'admin';
 
 	function name() {
-		return __( 'Admin', 'query-monitor' );
+		return __( 'Admin Screen', 'query-monitor' );
 	}
 
 	function __construct() {
@@ -58,4 +58,4 @@ function register_qm_admin( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_admin', 50 );
+add_filter( 'query_monitor_collectors', 'register_qm_admin', 70 );

@@ -204,4 +204,4 @@ function register_qm_environment( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_environment', 90 );
+add_filter( 'query_monitor_collectors', 'register_qm_environment', 120 );

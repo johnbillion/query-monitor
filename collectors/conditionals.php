@@ -68,4 +68,4 @@ function register_qm_conditionals( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_conditionals', 40 );
+add_filter( 'query_monitor_collectors', 'register_qm_conditionals', 50 );

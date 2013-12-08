@@ -103,4 +103,4 @@ function register_qm_http( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_http', 110 );
+add_filter( 'query_monitor_collectors', 'register_qm_http', 100 );

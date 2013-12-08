@@ -114,4 +114,4 @@ function register_qm_request( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_request', 40 );
+add_filter( 'query_monitor_collectors', 'register_qm_request', 60 );

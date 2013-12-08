@@ -57,4 +57,4 @@ function register_qm_transients( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_transients', 100 );
+add_filter( 'query_monitor_collectors', 'register_qm_transients', 90 );

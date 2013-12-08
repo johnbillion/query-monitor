@@ -19,7 +19,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
 	}
 
 	public function output() {
@@ -129,13 +129,9 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->collector->get_data();
-
-		if ( isset( $data['base'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Admin Screen: %s', 'query-monitor' ), $data['base'] )
-			) );
-		}
+		$menu[] = $this->menu( array(
+			'title' => __( 'Admin Screen', 'query-monitor' ),
+		) );
 		return $menu;
 
 	}

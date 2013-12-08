@@ -46,4 +46,4 @@ function register_qm_db_components( array $qm ) {
 	return $qm;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_db_components', 35 );
+add_filter( 'query_monitor_collectors', 'register_qm_db_components', 40 );

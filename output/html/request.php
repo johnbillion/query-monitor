@@ -19,7 +19,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 45 );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 50 );
 	}
 
 	public function output() {

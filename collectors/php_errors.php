@@ -119,5 +119,5 @@ function qm_php_errors_return_value( $return ) {
 		return $return;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_php_errors', 120 );
+add_filter( 'query_monitor_collectors', 'register_qm_php_errors', 110 );
 add_filter( 'query_monitor_php_errors_return_value', 'qm_php_errors_return_value' );
