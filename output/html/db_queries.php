@@ -234,8 +234,23 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['sql'] ) )
 			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$row['sql']}</td>";
 
-		if ( isset( $cols['caller'] ) )
-			echo "<td valign='top' class='qm-row-caller qm-ltr' title='{$stack}'>{$row['caller']}</td>";
+		if ( isset( $cols['caller'] ) ) {
+			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";
+			echo $row['caller'];
+
+			# This isn't optimal...
+			$stack = explode( ', ', $row['stack'] );
+			$stack = array_reverse( $stack );
+			array_shift( $stack );
+			$stack = implode( '<br>', $stack );
+
+			if ( !empty( $stack ) ) {
+				echo '<br><a href="#" class="qm-toggle">+</a>';
+				echo '<div class="qm-toggled">' . $stack . '</div>';
+			}
+
+			echo "</td>";
+		}
 
 		if ( isset( $cols['stack'] ) ) {
 			# This isn't optimal...

@@ -124,6 +124,17 @@ jQuery( function($) {
 
 	});
 
+	$('#qm').find('.qm-toggle').on('click',function(e){
+		var el = $(this);
+		$(this).parent().find('.qm-toggled').toggle(0,function(){
+			if ( '+' == el.text() )
+				el.text('-');
+			else
+				el.text('+');
+		});
+		e.preventDefault();
+	});
+
 	$( document ).ajaxSuccess( function( event, response, options ) {
 
 		var errors = response.getResponseHeader( 'X-QM-Errors' );
