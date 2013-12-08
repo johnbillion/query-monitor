@@ -26,7 +26,7 @@ GNU General Public License for more details.
 defined( 'ABSPATH' ) or die();
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
-foreach ( array( 'Backtrace', 'Component', 'Plugin', 'Util' ) as $f ) {
+foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util' ) as $f ) {
 	if ( ! is_readable( $file = dirname( __FILE__ ) . "/../{$f}.php" ) )
 		return;
 	require_once $file;

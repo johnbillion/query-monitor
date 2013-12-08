@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,50 +15,30 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_DB_Callers extends QM_Component {
+class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
-	var $id = 'db_callers';
-
-	function __construct() {
-		parent::__construct();
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 30 );
 	}
 
-	function process() {
+	public function output() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
-			if ( isset( $dbq->data['times'] ) ) {
-				$this->data['times'] = $dbq->data['times'];
-			}
-			if ( isset( $dbq->data['types'] ) ) {
-				$this->data['types'] = $dbq->data['types'];
-			}
-		}
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['times'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => __( 'Queries by Caller', 'query-monitor' )
-			) );
-		}
-		return $menu;
-
-	}
-
-	function output_html( array $args, array $data ) {
+		$data = $this->collector->get_data();
 
 		if ( empty( $data ) )
 			return;
 
 		$total_time  = 0;
 		$total_calls = 0;
+		$span = count( $data['types'] ) + 2;
 
-		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
+		echo '<tr>';
+		echo '<th colspan="' . $span . '">' . $this->collector->name() . '</th>';
+		echo '</tr>';
 		echo '<tr>';
 		echo '<th>' . _x( 'Caller', 'Query caller', 'query-monitor' ) . '</th>';
 
@@ -129,11 +110,24 @@ class QM_Component_DB_Callers extends QM_Component {
 
 	}
 
+	public function admin_menu( array $menu ) {
+
+		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
+			$dbq_data = $dbq->get_data();
+			if ( isset( $dbq_data['times'] ) ) {
+				$menu[] = $this->menu( array(
+					'title' => __( 'Queries by Caller', 'query-monitor' )
+				) );
+			}
+		}
+		return $menu;
+
+	}
+
 }
 
-function register_qm_db_callers( array $qm ) {
-	$qm['db_callers'] = new QM_Component_DB_Callers;
-	return $qm;
+function register_qm_output_html_db_callers( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_DB_Callers( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_db_callers', 30 );
+add_filter( 'query_monitor_output_html_db_callers', 'register_qm_output_html_db_callers', 10, 2 );

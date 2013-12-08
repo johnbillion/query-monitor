@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,56 +15,51 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Overview extends QM_Component {
+class QM_Output_Html_Overview extends QM_Output_Html {
 
-	var $id = 'overview';
-
-	function __construct() {
-		parent::__construct();
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_title', array( $this, 'admin_title' ), 10 );
 	}
 
-	function admin_title( array $title ) {
-		$title[] = sprintf(
-			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
-			number_format_i18n( $this->data['time'], 2 )
-		);
-		$title[] = sprintf(
-			_x( '%s<small>MB</small>', 'memory usage', 'query-monitor' ),
-			number_format_i18n( ( $this->data['memory'] / 1024 / 1024 ), 2 )
-		);
-		return $title;
-	}
+	public function output() {
 
-	function output_html( array $args, array $data ) {
+		$data = $this->collector->get_data();
 
 		$http_time      = null;
 		$db_query_num   = null;
 		$db_query_types = array();
-		$http           = $this->get_component( 'http' );
-		$db_queries     = $this->get_component( 'db_queries' );
+		# @TODO: make this less derpy:
+		$http           = QueryMonitor::get_collector( 'http' );
+		$db_queries     = QueryMonitor::get_collector( 'db_queries' );
 		$time_usage     = '';
 		$memory_usage   = '';
 
-		if ( $http and isset( $http->data['http'] ) ) {
-			foreach ( $http->data['http'] as $row ) {
-				if ( isset( $row['response'] ) )
-					$http_time += ( $row['end'] - $row['start'] );
-				else
-					$http_time += $row['args']['timeout'];
+		if ( $http ) {
+			$http_data = $http->get_data();
+			if ( isset( $http_data['http'] ) ) {
+				foreach ( $http_data['http'] as $row ) {
+					if ( isset( $row['response'] ) )
+						$http_time += ( $row['end'] - $row['start'] );
+					else
+						$http_time += $row['args']['timeout'];
+				}
 			}
 		}
 
-		if ( $db_queries and isset( $db_queries->data['types'] ) ) {
-			$db_query_num = $db_queries->data['types'];
-			$db_stime = number_format_i18n( $db_queries->data['total_time'], 4 );
-			$db_ltime = number_format_i18n( $db_queries->data['total_time'], 10 );
+		if ( $db_queries ) {
+			$db_queries_data = $db_queries->get_data();
+			if ( isset( $db_queries_data['types'] ) ) {
+				$db_query_num = $db_queries_data['types'];
+				$db_stime = number_format_i18n( $db_queries_data['total_time'], 4 );
+				$db_ltime = number_format_i18n( $db_queries_data['total_time'], 10 );
+			}
 		}
 
 		$total_stime = number_format_i18n( $data['time'], 4 );
 		$total_ltime = number_format_i18n( $data['time'], 10 );
 
-		echo '<div class="qm" id="' . $this->id() . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 
 		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
@@ -104,31 +100,25 @@ class QM_Component_Overview extends QM_Component {
 
 	}
 
-	function process() {
+	public function admin_title( array $title ) {
 
-		$this->data['time']       = QM_Util::timer_stop_float();
-		$this->data['time_limit'] = ini_get( 'max_execution_time' );
+		$data = $this->collector->get_data();
 
-		if ( !empty( $this->data['time_limit'] ) )
-			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time'];
-		else
-			$this->data['time_usage'] = 0;
-
-		if ( function_exists( 'memory_get_peak_usage' ) )
-			$this->data['memory'] = memory_get_peak_usage();
-		else
-			$this->data['memory'] = memory_get_usage();
-
-		$this->data['memory_limit'] = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) );
-		$this->data['memory_usage'] = ( 100 / $this->data['memory_limit'] ) * $this->data['memory'];
-
+		$title[] = sprintf(
+			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
+			number_format_i18n( $data['time'], 2 )
+		);
+		$title[] = sprintf(
+			_x( '%s<small>MB</small>', 'memory usage', 'query-monitor' ),
+			number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 2 )
+		);
+		return $title;
 	}
 
 }
 
-function register_qm_overview( array $qm ) {
-	$qm['overview'] = new QM_Component_Overview;
-	return $qm;
+function register_qm_output_html_overview( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Overview( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_overview', 10 );
+add_filter( 'query_monitor_output_html_overview', 'register_qm_output_html_overview', 10, 2 );

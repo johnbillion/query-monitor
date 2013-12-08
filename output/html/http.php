@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,125 +15,21 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_HTTP extends QM_Component {
+class QM_Output_Html_HTTP extends QM_Output_Html {
 
-	var $id   = 'http';
-
-	function __construct() {
-
-		parent::__construct();
-
-		add_action( 'http_api_debug',      array( $this, 'http_debug' ),    99, 5 );
-		add_filter( 'http_request_args',   array( $this, 'http_request' ),  99, 2 );
-		add_filter( 'http_response',       array( $this, 'http_response' ), 99, 3 );
-		# http://core.trac.wordpress.org/ticket/25747
-		add_filter( 'pre_http_request',    array( $this, 'http_response' ), 99, 3 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 90 );
 		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
-
 	}
 
-	function admin_class( array $class ) {
+	public function output() {
 
-		if ( isset( $this->data['errors']['error'] ) )
-			$class[] = 'qm-error';
-		else if ( isset( $this->data['errors']['warning'] ) )
-			$class[] = 'qm-warning';
-
-		return $class;
-
-	}
-
-	function http_request( array $args, $url ) {
-		$m_start = microtime( true );
-		$key = $m_start . $url;
-		$this->data['http'][$key] = array(
-			'url'   => $url,
-			'args'  => $args,
-			'start' => $m_start,
-			'trace' => new QM_Backtrace
-		);
-		$args['_qm_key'] = $key;
-		return $args;
-	}
-
-	function http_debug( $param, $action ) {
-
-		switch ( $action ) {
-
-			case 'response':
-
-				$fga = func_get_args();
-
-				list( $response, $action, $class ) = $fga;
-
-				# http://core.trac.wordpress.org/ticket/18732
-				if ( isset( $fga[3] ) )
-					$args = $fga[3];
-				if ( isset( $fga[4] ) )
-					$url = $fga[4];
-				if ( !isset( $args['_qm_key'] ) )
-					return;
-
-				if ( !empty( $class ) )
-					$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
-				else
-					$this->data['http'][$args['_qm_key']]['transport'] = false;
-
-				if ( is_wp_error( $response ) )
-					$this->http_response( $response, $args, $url );
-
-				break;
-
-			case 'transports_list':
-				# Nothing
-				break;
-
-		}
-
-	}
-
-	function http_response( $response, array $args, $url ) {
-		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
-		$this->data['http'][$args['_qm_key']]['response'] = $response;
-
-		if ( is_wp_error( $response ) ) {
-			$this->data['errors']['error'][] = $args['_qm_key'];
-		} else {
-			if ( intval( wp_remote_retrieve_response_code( $response ) ) >= 400 )
-				$this->data['errors']['warning'][] = $args['_qm_key'];
-		}
-		return $response;
-	}
-
-	function admin_menu( array $menu ) {
-
-		$count = isset( $this->data['http'] ) ? count( $this->data['http'] ) : 0;
-
-		$title = ( empty( $count ) )
-			? __( 'HTTP Requests', 'query-monitor' )
-			: __( 'HTTP Requests (%s)', 'query-monitor' );
-
-		$args = array(
-			'title' => sprintf( $title, number_format_i18n( $count ) ),
-		);
-
-		if ( isset( $this->data['errors']['error'] ) )
-			$args['meta']['classname'] = 'qm-error';
-		else if ( isset( $this->data['errors']['warning'] ) )
-			$args['meta']['classname'] = 'qm-warning';
-
-		$menu[] = $this->menu( $args );
-
-		return $menu;
-
-	}
-
-	function output_html( array $args, array $data ) {
+		$data = $this->collector->get_data();
 
 		$total_time = 0;
 
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -194,15 +91,7 @@ class QM_Component_HTTP extends QM_Component {
 				$method = $row['args']['method'];
 				if ( !$row['args']['blocking'] )
 					$method .= '&nbsp;' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
-				$url = str_replace( array(
-					'=',
-					'&',
-					'?',
-				), array(
-					'<span class="qm-param">=</span>',
-					'<br /><span class="qm-param">&amp;</span>',
-					'<br /><span class="qm-param">?</span>',
-				), $row['url'] );
+				$url = QM_Util::format_url( $row['url'] );
 
 				if ( isset( $row['transport'] ) )
 					$transport = $row['transport'];
@@ -255,7 +144,7 @@ class QM_Component_HTTP extends QM_Component {
 			echo '<td colspan="7" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
-	
+		
 		}
 
 		echo '</table>';
@@ -263,11 +152,48 @@ class QM_Component_HTTP extends QM_Component {
 
 	}
 
+	public function admin_class( array $class ) {
+
+		$data = $this->collector->get_data();
+
+		if ( isset( $data['errors']['error'] ) )
+			$class[] = 'qm-error';
+		else if ( isset( $data['errors']['warning'] ) )
+			$class[] = 'qm-warning';
+
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->collector->get_data();
+
+		$count = isset( $data['http'] ) ? count( $data['http'] ) : 0;
+
+		$title = ( empty( $count ) )
+			? __( 'HTTP Requests', 'query-monitor' )
+			: __( 'HTTP Requests (%s)', 'query-monitor' );
+
+		$args = array(
+			'title' => sprintf( $title, number_format_i18n( $count ) ),
+		);
+
+		if ( isset( $data['errors']['error'] ) )
+			$args['meta']['classname'] = 'qm-error';
+		else if ( isset( $data['errors']['warning'] ) )
+			$args['meta']['classname'] = 'qm-warning';
+
+		$menu[] = $this->menu( $args );
+
+		return $menu;
+
+	}
+
 }
 
-function register_qm_http( array $qm ) {
-	$qm['http'] = new QM_Component_HTTP;
-	return $qm;
+function register_qm_output_html_http( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_HTTP( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_http', 110 );
+add_filter( 'query_monitor_output_html_http', 'register_qm_output_html_http', 10, 2 );

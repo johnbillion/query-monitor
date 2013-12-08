@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,42 +15,18 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Transients extends QM_Component {
+class QM_Output_Html_Transients extends QM_Output_Html {
 
-	var $id = 'transients';
-
-	function __construct() {
-		parent::__construct();
-		# See http://core.trac.wordpress.org/ticket/24583
-		add_action( 'setted_site_transient', array( $this, 'setted_site_transient' ), 10, 3 );
-		add_action( 'setted_transient',      array( $this, 'setted_blog_transient' ), 10, 3 );
-		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 70 );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'query_monitor_menus',   array( $this, 'admin_menu' ), 80 );
 	}
 
-	function setted_site_transient( $transient, $value = null, $expiration = null ) {
-		$this->setted_transient( $transient, 'site', $value, $expiration );
-	}
+	public function output() {
 
-	function setted_blog_transient( $transient, $value = null, $expiration = null ) {
-		$this->setted_transient( $transient, 'blog', $value, $expiration );
-	}
+		$data = $this->collector->get_data();
 
-	function setted_transient( $transient, $type, $value = null, $expiration = null ) {
-		$trace = new QM_Backtrace( array(
-			'ignore_items' => 1 # Ignore the setted_(site|blog)_transient method
-		) );
-		$this->data['trans'][] = array(
-			'transient'  => $transient,
-			'trace'      => $trace,
-			'type'       => $type,
-			'value'      => $value,
-			'expiration' => $expiration,
-		);
-	}
-
-	function output_html( array $args, array $data ) {
-
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -118,9 +95,10 @@ class QM_Component_Transients extends QM_Component {
 
 	}
 
-	function admin_menu( array $menu ) {
+	public function admin_menu( array $menu ) {
 
-		$count = isset( $this->data['trans'] ) ? count( $this->data['trans'] ) : 0;
+		$data  = $this->collector->get_data();
+		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )
 			? __( 'Transients Set', 'query-monitor' )
@@ -133,12 +111,10 @@ class QM_Component_Transients extends QM_Component {
 
 	}
 
-
 }
 
-function register_qm_transients( array $qm ) {
-	$qm['transients'] = new QM_Component_Transients;
-	return $qm;
+function register_qm_output_html_transients( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Transients( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_transients', 100 );
+add_filter( 'query_monitor_output_html_transients', 'register_qm_output_html_transients', 10, 2 );

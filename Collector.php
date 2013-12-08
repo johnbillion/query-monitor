@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-abstract class QM_Component {
+abstract class QM_Collector {
 
 	protected $data = array();
 
@@ -33,10 +33,8 @@ abstract class QM_Component {
 
 	}
 
-	final protected function get_component( $id ) {
-		# @TODO use singleton?
-		global $querymonitor;
-		return $querymonitor->get_component( $id );
+	public function name() {
+		return null;
 	}
 
 	protected function build_filter( $name, array $values ) {

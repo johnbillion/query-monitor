@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,60 +15,25 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Admin extends QM_Component {
+class QM_Output_Html_Admin extends QM_Output_Html {
 
-	var $id = 'admin';
-
-	function __construct() {
-		parent::__construct();
-		add_filter( 'current_screen',      array( $this, 'current_screen' ), 99 );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 100 );
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 60 );
 	}
 
-	function current_screen( WP_Screen $screen ) {
-		if ( empty( $this->data['admin'] ) )
-			$this->data['admin'] = wp_clone( $screen );
-		return $screen;
-	}
+	public function output() {
 
-	function process() {
-
-		global $pagenow;
-
-		if ( isset( $_GET['page'] ) )
-			$this->data['base'] = get_current_screen()->base;
-		else
-			$this->data['base'] = $pagenow;
-
-		if ( !isset( $this->data['admin'] ) )
-			$this->data['admin'] = __( 'n/a', 'query-monitor' );
-
-		$this->data['pagenow'] = $pagenow;
-		$this->data['current_screen'] = get_current_screen();
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( isset( $this->data['base'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Admin Screen: %s', 'query-monitor' ), $this->data['base'] )
-			) );
-		}
-		return $menu;
-
-	}
-
-	function output_html( array $args, array $data ) {
+		$data = $this->collector->get_data();
 
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . __( 'Admin', 'query-monitor' ) . '</th>';
+		echo '<th colspan="3">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -161,12 +127,19 @@ class QM_Component_Admin extends QM_Component {
 
 	}
 
+	public function admin_menu( array $menu ) {
+
+		$menu[] = $this->menu( array(
+			'title' => __( 'Admin Screen', 'query-monitor' ),
+		) );
+		return $menu;
+
+	}
+
 }
 
-function register_qm_admin( array $qm ) {
-	if ( is_admin() )
-		$qm['admin'] = new QM_Component_Admin;
-	return $qm;
+function register_qm_output_html_admin( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Admin( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_admin', 50 );
+add_filter( 'query_monitor_output_html_admin', 'register_qm_output_html_admin', 10, 2 );

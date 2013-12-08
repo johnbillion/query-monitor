@@ -14,22 +14,24 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Redirects extends QM_Component {
+class QM_Collector_Redirects extends QM_Collector {
 
-	var $id = 'redirects';
+	public $id = 'redirects';
 
-	function __construct() {
+	public function name() {
+		return __( 'Redirects', 'query-monitor' );
+	}
+
+	public function __construct() {
 		parent::__construct();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 999, 2 );
 	}
 
 	public function filter_wp_redirect( $location, $status ) {
 
-		global $querymonitor;
-
 		if ( !$location )
 			return $location;
-		if ( !$querymonitor->show_query_monitor() )
+		if ( !QueryMonitor::init()->show_query_monitor() )
 			return $location;
 		if ( headers_sent() )
 			return $location;
@@ -46,9 +48,9 @@ class QM_Component_Redirects extends QM_Component {
 
 }
 
-function register_qm_redirects( array $qm ) {
-	$qm['redirects'] = new QM_Component_Redirects;
+function register_qm_collector_redirects( array $qm ) {
+	$qm['redirects'] = new QM_Collector_Redirects;
 	return $qm;
 }
 
-add_filter( 'query_monitor_components', 'register_qm_redirects', 140 );
+add_filter( 'query_monitor_collectors', 'register_qm_collector_redirects', 140 );

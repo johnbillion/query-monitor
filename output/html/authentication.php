@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,35 +15,15 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_Authentication extends QM_Component {
+class QM_Output_Html_Authentication extends QM_Output_Html {
 
-	var $id = 'authentication';
+	public function output() {
 
-	function __construct() {
-		parent::__construct();
-		add_filter( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
-	}
-
-	function action_plugins_loaded() {
-
-		if ( !defined( 'QM_COOKIE' ) )
-			define( 'QM_COOKIE', 'qm_' . COOKIEHASH );
-
-	}
-
-	function show_query_monitor() {
-		if ( isset( $_COOKIE[QM_COOKIE] ) )
-			return self::verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
-		return false;
-	}
-
-	function output_html( array $args, array $data ) {
-
-		echo '<div class="qm" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Authentication', 'query-monitor' ) . '</th>';
+		echo '<th>' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -51,9 +32,9 @@ class QM_Component_Authentication extends QM_Component {
 		$domain = COOKIE_DOMAIN;
 		$path   = COOKIEPATH;
 
-		if ( !isset( $_COOKIE[$name] ) or !self::verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
+		if ( !isset( $_COOKIE[$name] ) or !$this->collector->verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
 
-			$value = self::create_nonce( 'view_query_monitor' );
+			$value = $this->collector->create_nonce( 'view_query_monitor' );
 			$text  = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
 			$link  = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
 
@@ -84,31 +65,10 @@ class QM_Component_Authentication extends QM_Component {
 
 	}
 
-	public static function create_nonce( $action ) {
-		# This is just WordPress' nonce implementation minus the user ID
-		# check so a nonce can be set in a cookie and used cross-user
-		$i = wp_nonce_tick();
-		return substr( wp_hash( $i . $action, 'nonce' ), -12, 10 );
-	}
-
-	public static function verify_nonce( $nonce, $action ) {
-
-		$i = wp_nonce_tick();
-
-		if ( substr( wp_hash( $i . $action, 'nonce' ), -12, 10 ) === $nonce )
-			return true;
-		if ( substr( wp_hash( ( $i - 1 ) . $action, 'nonce' ), -12, 10 ) === $nonce )
-			return true;
-
-		return false;
-
-	}
-
 }
 
-function register_qm_authentication( array $qm ) {
-	$qm['authentication'] = new QM_Component_Authentication;
-	return $qm;
+function register_qm_output_html_authentication( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_Authentication( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_authentication', 130 );
+add_filter( 'query_monitor_output_html_authentication', 'register_qm_output_html_authentication', 10, 2 );

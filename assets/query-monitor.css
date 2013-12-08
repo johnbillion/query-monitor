@@ -1,6 +1,6 @@
 /*
 
-© 2013 John Blackbourn
+Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,16 +34,20 @@ body:not(.mp6) #wpadminbar .quicklinks .menupop.qm-wp-37 ul li.qm-true > a {
 	background-color: #740;
 }
 
+#wp-admin-bar-query-monitor-deprecated,
 #wp-admin-bar-query-monitor-stricts {
 	background-color: #555 !important;
 }
+body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-deprecated,
 body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-stricts {
 	background-color: #eee !important;
 }
 
+#wpadminbar .qm-deprecated,
 #wpadminbar .qm-strict {
 	background-color: #3c3c3c;
 }
+body:not(.mp6) #wpadminbar .qm-wp-37 .qm-deprecated,
 body:not(.mp6) #wpadminbar .qm-wp-37 .qm-strict {
 	background-color: #000;
 }
@@ -80,6 +84,7 @@ body:not(.mp6) #wpadminbar .qm-wp-37 .qm-strict {
 	color: #fff !important;
 }
 
+#wp-admin-bar-query-monitor-deprecated a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
 #wp-admin-bar-query-monitor-expensive a,
@@ -88,6 +93,7 @@ body:not(.mp6) #wpadminbar .qm-wp-37 .qm-strict {
 	color: #eee !important;
 }
 
+body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-deprecated a,
 body:not(.mp6) .qm-wp-37 #wp-admin-bar-query-monitor-stricts a {
 	color: #555 !important;
 }
@@ -176,11 +182,11 @@ body.wp-admin #qm {
 	margin: 0 !important;
 }
 
-body.sticky-menu #qm {
+body:not(.iframe).sticky-menu #qm {
 	margin-left: 150px !important;
 }
 
-body.sticky-menu.folded #qm {
+body:not(.iframe).sticky-menu.folded #qm {
 	margin-left: 36px !important;
 }
 
@@ -306,12 +312,16 @@ body.sticky-menu.folded #qm {
 	color: #a0a !important;
 }
 
-.qm .qm-url span {
-	color: #ccc !important;
-}
-
 .qm .qm-info {
 	color: #999 !important;
+}
+
+.qm td.qm-has-toggle {
+	position: relative !important;
+	padding-right: 21px !important;
+}
+.qm td .qm-toggled {
+	display: none;
 }
 
 .qm a {
@@ -320,6 +330,7 @@ body.sticky-menu.folded #qm {
 	text-shadow: none !important;
 	font-weight: normal !important;
 }
+.qm a:focus,
 .qm a:hover {
 	text-decoration: underline !important;
 	color: #2ea2cc !important;
@@ -327,6 +338,22 @@ body.sticky-menu.folded #qm {
 
 .qm a.qm-warn {
 	text-decoration: underline !important;
+}
+
+.qm a.qm-toggle {
+	position: absolute !important;
+	top: 2px !important;
+	right: 2px !important;
+	color: #ddd !important;
+	padding: 1px 5px !important;
+	border: 1px solid transparent !important;
+}
+
+.qm a.qm-toggle:hover {
+	text-decoration: none !important;
+	border-color: #e1e1e1 !important;
+	color: #999 !important;
+	background: #eee !important;
 }
 
 .qm .qm-warn,
@@ -346,10 +373,6 @@ body.sticky-menu.folded #qm {
 .qm td.qm-var {
 	text-align: right !important;
 	padding: 1px 1.5em 1px 0 !important;
-}
-
-.qm-param {
-	padding: 0 6px !important;
 }
 
 /* Filters */
@@ -399,7 +422,7 @@ html[dir="rtl"] .qm td.qm-var {
 	text-align: left !important;
 }
 
-html[dir="rtl"] body.sticky-menu #qm {
+html[dir="rtl"] body:not(.iframe).sticky-menu #qm {
 	margin-right: 150px !important;
 	margin-left: 0 !important;
 }

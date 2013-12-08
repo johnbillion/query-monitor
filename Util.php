@@ -1,7 +1,7 @@
 <?php
 /*
 
-© 2013 John Blackbourn
+Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -240,6 +240,19 @@ class QM_Util {
 			return 'false';
 		else
 			return 'true';
+	}
+
+	public static function format_url( $url ) {
+		$url = str_replace( array(
+			'=',
+			'&',
+			'?',
+		), array(
+			'<span class="qm-equals">=</span>',
+			'<br /><span class="qm-param">&amp;</span>',
+			'<br /><span class="qm-param">?</span>',
+		), $url );
+		return $url;
 	}
 
 }

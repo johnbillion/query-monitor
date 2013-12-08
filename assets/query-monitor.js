@@ -1,6 +1,6 @@
 /*
 
-© 2013 John Blackbourn
+Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -122,6 +122,17 @@ jQuery( function($) {
 
 		$(this).blur();
 
+	});
+
+	$('#qm').find('.qm-toggle').on('click',function(e){
+		var el = $(this);
+		$(this).parent().find('.qm-toggled').toggle(0,function(){
+			if ( '+' == el.text() )
+				el.text('-');
+			else
+				el.text('+');
+		});
+		e.preventDefault();
 	});
 
 	$( document ).ajaxSuccess( function( event, response, options ) {

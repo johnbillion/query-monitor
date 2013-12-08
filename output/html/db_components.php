@@ -1,5 +1,6 @@
 <?php
 /*
+
 Copyright 2013 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
@@ -14,50 +15,30 @@ GNU General Public License for more details.
 
 */
 
-class QM_Component_DB_Components extends QM_Component {
+class QM_Output_Html_DB_Components extends QM_Output_Html {
 
-	var $id = 'db_components';
-
-	function __construct() {
-		parent::__construct();
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 40 );
 	}
 
-	function process() {
+	public function output() {
 
-		if ( $dbq = $this->get_component( 'db_queries' ) ) {
-			if ( isset( $dbq->data['component_times'] ) ) {
-				$this->data['times'] = $dbq->data['component_times'];
-			}
-			if ( isset( $dbq->data['types'] ) ) {
-				$this->data['types'] = $dbq->data['types'];
-			}
-		}
-
-	}
-
-	function admin_menu( array $menu ) {
-
-		if ( $dbq = $this->get_component( 'db_queries' ) and isset( $dbq->data['component_times'] ) ) {
-			$menu[] = $this->menu( array(
-				'title' => __( 'Queries by Component', 'query-monitor' )
-			) );
-		}
-		return $menu;
-
-	}
-
-	function output_html( array $args, array $data ) {
+		$data = $this->collector->get_data();
 
 		if ( empty( $data ) )
 			return;
 
 		$total_time  = 0;
 		$total_calls = 0;
+		$span = count( $data['types'] ) + 2;
 
-		echo '<div class="qm qm-half" id="' . $args['id'] . '">';
+		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
+		echo '<tr>';
+		echo '<th colspan="' . $span . '">' . $this->collector->name() . '</th>';
+		echo '</tr>';
 		echo '<tr>';
 		echo '<th>' . _x( 'Component', 'Query component', 'query-monitor' ) . '</th>';
 
@@ -117,7 +98,7 @@ class QM_Component_DB_Components extends QM_Component {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="3" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="' . $span . '" style="text-align:center !important"><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			echo '</tbody>';
 
@@ -128,11 +109,24 @@ class QM_Component_DB_Components extends QM_Component {
 
 	}
 
+	public function admin_menu( array $menu ) {
+
+		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
+			$dbq_data = $dbq->get_data();
+			if ( isset( $dbq_data['component_times'] ) ) {
+				$menu[] = $this->menu( array(
+					'title' => __( 'Queries by Component', 'query-monitor' )
+				) );
+			}
+		}
+		return $menu;
+
+	}
+
 }
 
-function register_qm_db_components( array $qm ) {
-	$qm['db_components'] = new QM_Component_DB_Components;
-	return $qm;
+function register_qm_output_html_db_components( QM_Output $output = null, QM_Collector $collector ) {
+	return new QM_Output_Html_DB_Components( $collector );
 }
 
-add_filter( 'query_monitor_components', 'register_qm_db_components', 35 );
+add_filter( 'query_monitor_output_html_db_components', 'register_qm_output_html_db_components', 10, 2 );
