@@ -110,7 +110,6 @@ body:not(.mp6) #wp-admin-bar-query-monitor.qm-wp-37.hover a .ab-label {
 #wp-admin-bar-query-monitor.hover a small,
 #wp-admin-bar-query-monitor.hover a .ab-label {
 	text-shadow: none !important;
-	color: #2ea2cc !important;
 }
 
 #wp-admin-bar-query-monitor-placeholder,
@@ -124,7 +123,6 @@ body:not(.mp6) #wp-admin-bar-query-monitor.qm-wp-37.hover a .ab-label {
 	padding: 0 10px !important;
 	color: #aaa !important;
 	display: none !important;
-	background: red !important;
 }
 /* for mp6 on 3.7, reduce the menu icon line height */
 body.mp6 #wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-icon {
@@ -157,7 +155,7 @@ body.mp6 #wpadminbar #wp-admin-bar-query-monitor.qm-wp-37 .ab-icon {
 
 #qm {
 	clear: both !important;
-	background: #eeeeee !important;
+	background: #f3f3f3 !important;
 	margin: 25px 0 0 !important;
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
@@ -183,7 +181,7 @@ body.wp-admin #qm {
 }
 
 body:not(.iframe).sticky-menu #qm {
-	margin-left: 150px !important;
+	margin-left: 160px !important;
 }
 
 body:not(.iframe).sticky-menu.folded #qm {
@@ -218,9 +216,9 @@ body:not(.iframe).sticky-menu.folded #qm {
 	border-collapse: collapse !important;
 	color: #555 !important;
 	border-style: hidden !important;
-	box-shadow: 0 1px 1px -1px rgba(0,0,0,0.1) !important;
+	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.05) !important;
 	width: 100% !important;
-	border: 1px solid #dedede !important;
+	outline: 1px solid #ddd !important;
 }
 
 .qm td,
@@ -232,7 +230,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 	font-weight: normal !important;
 	font-style: normal !important;
 	line-height: 16px !important;
-	border: 1px solid #e1e1e1 !important;
+	border: 1px solid #eee !important;
 	padding: 5px 8px 4px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
