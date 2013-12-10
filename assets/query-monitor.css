@@ -212,6 +212,10 @@ body:not(.iframe).sticky-menu.folded #qm {
 	clear: none !important;
 }
 
+.qm-clear {
+	clear: left !important;
+}
+
 .qm>table {
 	border-collapse: collapse !important;
 	color: #555 !important;

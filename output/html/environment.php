@@ -26,17 +26,18 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div id="' . $this->collector->id() . '">';
+
+		echo '<div class="qm qm-half">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . $this->collector->name() . '</th>';
+		echo '<th colspan="2">PHP</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td rowspan="' . ( 3 + count( $data['php']['variables'] ) ) . '">PHP</td>';
 		echo '<td>version</td>';
 		echo "<td>{$data['php']['version']}</td>";
 		echo '</tr>';
@@ -65,6 +66,10 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo "<td>{$data['php']['error_reporting']}<br><span class='qm-info'>{$error_levels}</span></td>";
 		echo '</tr>';
 
+		echo '</tbody>';
+		echo '</table>';
+		echo '</div>';
+
 		if ( isset( $data['db'] ) ) {
 
 			foreach ( $data['db'] as $id => $db ) {
@@ -72,10 +77,18 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				if ( 1 == count( $data['db'] ) )
 					$name = 'MySQL';
 				else
-					$name = $id . '<br />MySQL';
+					$name = 'MySQL: ' . $id;
+
+				echo '<div class="qm qm-half">';
+				echo '<table cellspacing="0">';
+				echo '<thead>';
+				echo '<tr>';
+				echo '<th colspan="2">' . esc_html( $name ) . '</th>';
+				echo '</tr>';
+				echo '</thead>';
+				echo '<tbody>';
 
 				echo '<tr>';
-				echo '<td rowspan="' . ( 5 + count( $db['variables'] ) ) . '">' . $name . '</td>';
 				echo '<td>version</td>';
 				echo '<td>' . $db['version'] . '</td>';
 				echo '</tr>';
@@ -141,30 +154,46 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 				}
 
+				echo '</tbody>';
+				echo '</table>';
+				echo '</div>';
+
 			}
 
 		}
 
+		echo '<div class="qm qm-half qm-clear">';
+		echo '<table cellspacing="0">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<td rowspan="' . count( $data['wp'] ). '">WordPress</td>';
-
-		$first = true;
+		echo '<th colspan="2">WordPress</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
 
 		foreach ( $data['wp'] as $key => $val ) {
 
-			if ( !$first )
-				echo "<tr>";
-
+			echo '<tr>';
 			echo "<td>{$key}</td>";
 			echo "<td>{$val}</td>";
 			echo '</tr>';
 
-			$first = false;
-
 		}
 
+		echo '</tbody>';
+		echo '</table>';
+		echo '</div>';
+
+		echo '<div class="qm qm-half">';
+		echo '<table cellspacing="0">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<td rowspan="4">' . __( 'Server', 'query-monitor' ) . '</td>';
+		echo '<th colspan="2">' . __( 'Server', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		echo '<tr>';
 		echo '<td>software</td>';
 		echo "<td>{$data['server']['name']}</td>";
 		echo '</tr>';
@@ -186,6 +215,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '</tbody>';
 		echo '</table>';
+		echo '</div>';
+
 		echo '</div>';
 
 	}
