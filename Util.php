@@ -196,7 +196,7 @@ class QM_Util {
 			'HAVING', 'INNER', 'INSERT', 'LIMIT', 'ON', 'OR', 'ORDER', 'REPLACE', 'ROLLBACK', 'SELECT', 'SET',
 			'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
 		) as $cmd )
-			$sql = trim( str_replace( " $cmd ", "<br/>$cmd ", $sql ) );
+			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
 
 		return $sql;
 
@@ -216,8 +216,8 @@ class QM_Util {
 			'?',
 		), array(
 			'<span class="qm-equals">=</span>',
-			'<br /><span class="qm-param">&amp;</span>',
-			'<br /><span class="qm-param">?</span>',
+			'<br><span class="qm-param">&amp;</span>',
+			'<br><span class="qm-param">?</span>',
 		), $url );
 		return $url;
 	}

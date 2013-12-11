@@ -51,7 +51,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			$append = '';
 
 			if ( $val['after'] != $val['before'] )
-				$append .= '<br /><span class="qm-info">' . sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) . '</span>';
+				$append .= '<br><span class="qm-info">' . sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) . '</span>';
 
 			echo '<tr>';
 			echo "<td>{$key}</td>";
@@ -59,7 +59,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '<br/>', $this->collector->get_error_levels( $data['php']['error_reporting'] ) );
+		$error_levels = implode( '<br>', $this->collector->get_error_levels( $data['php']['error_reporting'] ) );
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
@@ -135,7 +135,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 						$prepend .= '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">' . __( 'Help', 'query-monitor' ) . '</a>)</span>';
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) )
-						$prepend .= '<br /><span class="qm-info">~' . size_format( $val ) . '</span>';
+						$prepend .= '<br><span class="qm-info">~' . size_format( $val ) . '</span>';
 
 					$class = ( $show_warning ) ? 'qm-warn' : '';
 

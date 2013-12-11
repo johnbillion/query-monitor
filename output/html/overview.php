@@ -62,9 +62,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 
-		$memory_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
+		$memory_usage .= '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
 
-		$time_usage .= '<br /><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
+		$time_usage .= '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
 
 		echo '<thead>';
 		echo '<tr>';
@@ -88,7 +88,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			foreach ( $db_query_num as $type_name => $type_count )
 				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
 
-			echo implode( '<br />', $db_query_types );
+			echo implode( '<br>', $db_query_types );
 
 			echo '</td>';
 		}

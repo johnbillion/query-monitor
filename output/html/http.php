@@ -101,10 +101,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$component = $row['trace']->get_component();
 
-				$stack = implode( '<br />', $stack );
+				$stack = implode( '<br>', $stack );
 				echo "
 					<tr class='{$css}'>\n
-						<td valign='top' class='qm-url qm-ltr'>{$method}<br/>{$url}</td>\n
+						<td valign='top' class='qm-url qm-ltr'>{$method}<br>{$url}</td>\n
 						<td valign='top'>{$response}</td>\n
 						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
