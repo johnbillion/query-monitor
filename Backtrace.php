@@ -76,6 +76,41 @@ class QM_Backtrace {
 		return $trace;
 	}
 
+	public function get_component() {
+
+		$components = array();
+
+		foreach ( $this->trace as $item ) {
+
+			try {
+
+				if ( isset( $item['file'] ) ) {
+					$file = $item['file'];
+				} else if ( isset( $item['class'] ) ) {
+					$ref = new ReflectionMethod( $item['class'], $item['function'] );
+					$file = $ref->getFileName();
+				} else {
+					$ref = new ReflectionFunction( $item['function'] );
+					$file = $ref->getFileName();
+				}
+
+				$comp = QM_Util::get_file_component( $file );
+				$components[$comp->type] = $comp;
+			} catch ( ReflectionException $e ) {
+				# nothing
+			}
+
+		}
+
+		foreach ( QM_Util::get_file_dirs() as $type => $dir ) {
+			if ( isset( $components[$type] ) )
+				return $components[$type];
+		}
+
+		# This should not happen
+
+	}
+
 	public function get_trace() {
 		return $this->trace;
 	}

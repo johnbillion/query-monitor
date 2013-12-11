@@ -37,7 +37,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 				# @TODO we should calculate the component during process() so we don't need to do it
 				# separately in each output.
-				$component = QM_Util::get_backtrace_component( $error->trace );
+				$component = $error->trace->get_component();
 				$output_error = array(
 					'type'      => $error->type,
 					'message'   => $error->message,

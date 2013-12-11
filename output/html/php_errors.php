@@ -67,7 +67,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						echo '<tr>';
 
 					$stack = $error->trace->get_stack();
-					$component = QM_Util::get_backtrace_component( $error->trace );
+					$component = $error->trace->get_component();
 
 					if ( empty( $stack ) )
 						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';

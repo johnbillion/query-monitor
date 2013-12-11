@@ -99,7 +99,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					}
 				}
 
-				$component = QM_Util::get_backtrace_component( $row['trace'] );
+				$component = $row['trace']->get_component();
 
 				$stack = implode( '<br />', $stack );
 				echo "

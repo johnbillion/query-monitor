@@ -66,6 +66,10 @@ class QM_Util {
 
 	}
 
+	public static function get_file_dirs() {
+		return self::$file_dirs;
+	}
+
 	public static function get_file_component( $file ) {
 
 		# @TODO turn this into a class (eg QM_File_Component)
@@ -115,43 +119,6 @@ class QM_Util {
 		}
 
 		return self::$file_components[$file] = (object) compact( 'type', 'name' );
-
-	}
-
-	public static function get_backtrace_component( QM_Backtrace $backtrace ) {
-
-		# @TODO turn this into a class (eg QM_Trace_Component)
-
-		$components = array();
-
-		foreach ( $backtrace->get_trace() as $item ) {
-
-			try {
-
-				if ( isset( $item['file'] ) ) {
-					$file = $item['file'];
-				} else if ( isset( $item['class'] ) ) {
-					$ref = new ReflectionMethod( $item['class'], $item['function'] );
-					$file = $ref->getFileName();
-				} else {
-					$ref = new ReflectionFunction( $item['function'] );
-					$file = $ref->getFileName();
-				}
-
-				$comp = self::get_file_component( $file );
-				$components[$comp->type] = $comp;
-			} catch ( ReflectionException $e ) {
-				# nothing
-			}
-
-		}
-
-		foreach ( self::$file_dirs as $type => $dir ) {
-			if ( isset( $components[$type] ) )
-				return $components[$type];
-		}
-
-		# This should not happen
 
 	}
 
