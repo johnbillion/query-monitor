@@ -201,8 +201,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$ltime = number_format_i18n( $row['ltime'], 10 );
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
+		$sql = QM_Util::format_sql( $row['sql'] );
+
 		if ( 'SELECT' != $row['type'] )
-			$row['sql'] = "<span class='qm-nonselectsql'>{$row['sql']}</span>";
+			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
 
 		if ( is_wp_error( $row['result'] ) ) {
 			$error  = $row['result']->get_error_message();
@@ -232,7 +234,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo "<tr{$attr}>";
 
 		if ( isset( $cols['sql'] ) )
-			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$row['sql']}</td>";
+			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$sql}</td>";
 
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";

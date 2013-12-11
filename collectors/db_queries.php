@@ -175,8 +175,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			else
 				$caller_name = $caller;
 
-			# @TODO this formatting should move to JIT when outputting as html
-			$sql  = QM_Util::format_sql( $sql );
+			$sql  = trim( $sql );
 			$type = preg_split( '/\b/', $sql );
 			$type = strtoupper( $type[1] );
 
