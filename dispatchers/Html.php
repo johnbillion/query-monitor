@@ -90,13 +90,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function before_output() {
 
-		# @TODO document why this is needed
-		# Flush the output buffer to avoid crashes
-		if ( !is_feed() ) {
-			while ( ob_get_length() )
-				ob_end_flush();
-		}
-
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
 		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
