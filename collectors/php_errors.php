@@ -112,6 +112,8 @@ function register_qm_collector_php_errors( array $qm ) {
 function qm_php_errors_return_value( $return ) {
 	if ( QM_Util::is_ajax() )
 		return true;
+	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' == strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) )
+		return true;
 	# If Xdebug is enabled we'll return false so Xdebug's error handler can do its thing.
 	if ( function_exists( 'xdebug_is_enabled' ) and xdebug_is_enabled() )
 		return false;
