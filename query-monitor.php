@@ -3,7 +3,7 @@
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
 Version:     2.6.1
-Plugin URI:  https://github.com/johnbillion/QueryMonitor
+Plugin URI:  https://github.com/johnbillion/query-monitor
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
 Text Domain: query-monitor
@@ -32,9 +32,9 @@ foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Outp
 
 class QueryMonitor extends QM_Plugin {
 
-	protected $collectors = array();
-	protected $dispatchers    = array();
-	protected $did_footer = false;
+	protected $collectors  = array();
+	protected $dispatchers = array();
+	protected $did_footer  = false;
 
 	protected function __construct( $file ) {
 
