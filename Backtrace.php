@@ -52,6 +52,8 @@ class QM_Backtrace {
 		'get_footer'              => 1,
 	);
 	protected static $filtered = false;
+	protected $trace           = null;
+	protected $filtered_trace  = null;
 
 	public function __construct( array $args = array() ) {
 		$args = array_merge( array(
@@ -69,11 +71,34 @@ class QM_Backtrace {
 	}
 
 	public function get_stack() {
-		$trace = array_map( 'QM_Backtrace::filter_trace', $this->trace );
-		$trace = array_values( array_filter( $trace ) );
-		if ( empty( $trace ) and isset( $this->trace[0]['file'] ) )
-			$trace[] = QM_Util::standard_dir( $this->trace[0]['file'], '' );
-		return $trace;
+
+		$trace = $this->get_filtered_trace();
+		$stack = array();
+
+		if ( empty( $trace ) ) {
+			if ( isset( $this->trace[0]['file'] ) ) {
+				$stack[] = QM_Util::standard_dir( $this->trace[0]['file'], '' );
+			} else {
+				$stack[] = __( 'Unknown', 'query-monitor' );
+			}
+		} else {
+			$stack = wp_list_pluck( $trace, 'display' );
+		}
+
+		return $stack;
+
+	}
+
+	public function get_caller() {
+
+		$trace = $this->get_filtered_trace();
+
+		if ( empty( $trace ) ) {
+			return reset( $this->trace );
+		} else {
+			return reset( $trace );
+		}
+
 	}
 
 	public function get_component() {
@@ -115,6 +140,18 @@ class QM_Backtrace {
 		return $this->trace;
 	}
 
+	public function get_filtered_trace() {
+
+		if ( !isset( $this->filtered_trace ) ) {
+			$trace = array_map( 'QM_Backtrace::filter_trace', $this->trace );
+			$trace = array_values( array_filter( $trace ) );
+			$this->filtered_trace = $trace;
+		}
+
+		return $this->filtered_trace;
+
+	}
+
 	public function ignore( $num ) {
 		for ( $i = 0; $i < absint( $num ); $i++ )
 			unset( $this->trace[$i] );
@@ -146,14 +183,17 @@ class QM_Backtrace {
 
 		if ( isset( $trace['class'] ) ) {
 
-			if ( isset( self::$ignore_class[$trace['class']] ) )
+			if ( isset( self::$ignore_class[$trace['class']] ) ) {
 				return null;
-			else if ( isset( self::$ignore_method[$trace['class']][$trace['function']] ) )
+			} else if ( isset( self::$ignore_method[$trace['class']][$trace['function']] ) ) {
 				return null;
-			else if ( 0 === strpos( $trace['class'], 'QM_' ) )
+			} else if ( 0 === strpos( $trace['class'], 'QM_' ) ) {
 				return null;
-			else
-				return $trace['class'] . $trace['type'] . $trace['function'] . '()';
+			} else {
+				$trace['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';
+				$trace['display'] = $trace['class'] . $trace['type'] . $trace['function'] . '()';
+				return $trace;
+			}
 
 		} else {
 
@@ -167,7 +207,9 @@ class QM_Backtrace {
 				if ( 'dir' === $show ) {
 					if ( isset( $trace['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $trace['args'][0], '&hellip;/' );
-						return $trace['function'] . "('{$arg}')";
+						$trace['id']      = $trace['function'] . '()';
+						$trace['display'] = $trace['function'] . "('{$arg}')";
+						return $trace;
 					}
 				} else {
 					$args = array();
@@ -175,12 +217,16 @@ class QM_Backtrace {
 						if ( isset( $trace['args'][$i] ) )
 							$args[] = sprintf( "'%s'", $trace['args'][$i] );
 					}
-					return $trace['function'] . '(' . implode( ',', $args ) . ')';
+					$trace['id']      = $trace['function'] . '()';
+					$trace['display'] = $trace['function'] . '(' . implode( ',', $args ) . ')';
+					return $trace;
 				}
 
 			}
 
-			return $trace['function'] . '()';
+			$trace['id']      = $trace['function'] . '()';
+			$trace['display'] = $trace['function'] . '()';
+			return $trace;
 
 		}
 

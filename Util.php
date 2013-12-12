@@ -156,6 +156,8 @@ class QM_Util {
 
 			}
 
+			$callback['file']      = $ref->getFileName();
+			$callback['line']      = $ref->getStartLine();
 			$callback['component'] = self::get_file_component( $ref->getFileName() );
 
 		} catch ( ReflectionException $e ) {
