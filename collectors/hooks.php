@@ -30,12 +30,6 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		global $wp_actions, $wp_filter;
 
-		# @TODO this is a band-aid for a deeper problem which I haven't had time to look
-		# into. The customizer hooks onto 'shutdown' at priority 1000 and the act of
-		# looping over the filters below kills it somehow. Argh. Look into it.
-		if ( '/wp-admin/customize.php' == $_SERVER['REQUEST_URI'] )
-			return;
-
 		if ( is_admin() and ( $admin = QueryMonitor::get_collector( 'admin' ) ) )
 			$this->data['screen'] = $admin->data['base'];
 		else
@@ -51,7 +45,10 @@ class QM_Collector_Hooks extends QM_Collector {
 
 			if ( isset( $wp_filter[$name] ) ) {
 
-				foreach( $wp_filter[$name] as $priority => $callbacks ) {
+				# http://core.trac.wordpress.org/ticket/17817
+				$action = $wp_filter[$name];
+
+				foreach ( $action as $priority => $callbacks ) {
 
 					foreach ( $callbacks as $callback ) {
 
