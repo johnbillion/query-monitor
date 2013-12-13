@@ -281,6 +281,18 @@ body:not(.iframe).sticky-menu.folded #qm {
 	margin-bottom: 2px !important;
 }
 
+.qm code {
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	line-height: 16px !important;
+	color: inherit !important;
+	background: #f3f3f3 !important;
+	padding: 3px 4px 2px !important;
+	margin: 0 !important;
+}
+
 .qm span.qm-true,
 .qm td.qm-true {
 	color: #4a4 !important;

@@ -28,8 +28,28 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['dbs'] ) )
+		if ( empty( $data['dbs'] ) ) {
+
+			echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-wpdb">';
+			echo '<table cellspacing="0">';
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th>' . __( 'Database Queries', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+			echo '<tbody>';
+			echo '<tr>';
+			echo '<td class="qm-warn">';
+			_e( 'No database queries were logged because <code>SAVEQUERIES</code> is set to <code>false</code>', 'query-monitor' );
+			echo '</td>';
+			echo '</tr>';
+			echo '</tbody>';
+			echo '</table>';
+			echo '</div>';
+
 			return;
+
+		}
 
 		if ( !empty( $data['errors'] ) ) {
 
@@ -323,7 +343,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			) );
 		}
 
-		if ( count( $data['dbs'] ) > 1 ) {
+		if ( isset( $data['dbs'] ) and count( $data['dbs'] ) > 1 ) {
 			foreach ( $data['dbs'] as $name => $db ) {
 				$menu[] = $this->menu( array(
 					'title' => sprintf( __( 'Queries (%s)', 'query-monitor' ), esc_html( $name ) ),
