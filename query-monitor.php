@@ -43,7 +43,7 @@ class QueryMonitor extends QM_Plugin {
 		add_action( 'admin_footer',   array( $this, 'action_footer' ) );
 		add_action( 'wp_footer',      array( $this, 'action_footer' ) );
 		add_action( 'login_footer',   array( $this, 'action_footer' ) );
-		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 9999 );
+		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
