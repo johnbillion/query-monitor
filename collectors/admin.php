@@ -24,13 +24,6 @@ class QM_Collector_Admin extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'current_screen', array( $this, 'filter_current_screen' ), 99 );
-	}
-
-	public function filter_current_screen( WP_Screen $screen ) {
-		if ( empty( $this->data['admin'] ) )
-			$this->data['admin'] = wp_clone( $screen );
-		return $screen;
 	}
 
 	public function process() {
@@ -41,9 +34,6 @@ class QM_Collector_Admin extends QM_Collector {
 			$this->data['base'] = get_current_screen()->base;
 		else
 			$this->data['base'] = $pagenow;
-
-		if ( !isset( $this->data['admin'] ) )
-			$this->data['admin'] = __( 'n/a', 'query-monitor' );
 
 		$this->data['pagenow'] = $pagenow;
 		$this->data['current_screen'] = get_current_screen();

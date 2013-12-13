@@ -14,7 +14,6 @@ GNU General Public License for more details.
 
 */
 
-
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
 	color: #8c8 !important;
 }
@@ -218,7 +217,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm>table {
 	border-collapse: collapse !important;
-	color: #555 !important;
 	border-style: hidden !important;
 	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.05) !important;
 	width: 100% !important;
@@ -227,6 +225,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm td,
 .qm th {
+	color: #555 !important;
 	background: #fff !important;
 	text-align: left !important;
 	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
@@ -268,10 +267,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm-inner td,
 .qm-inner th {
-	text-align: left !important;
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
-	font-size: 11px !important;
-	line-height: 16px !important;
 	border: none !important;
 	padding: 1px 0 !important;
 }
@@ -367,7 +362,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm td.qm-var {
 	text-align: right !important;
-	padding: 1px 1.5em 1px 0 !important;
+	padding: 1px 1em 1px 0 !important;
 }
 
 /* Filters */
