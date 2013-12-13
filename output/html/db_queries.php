@@ -29,6 +29,25 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( empty( $data['dbs'] ) ) {
+			$this->output_empty_queries( $data );
+			return;
+		}
+
+		if ( !empty( $data['errors'] ) ) {
+			$this->output_error_queries( $data );
+		}
+
+		if ( !empty( $data['expensive'] ) ) {
+			$this->output_expensive_queries( $data );
+		}
+
+		foreach ( $data['dbs'] as $name => $db ) {
+			$this->output_queries( $name, $db, $data );
+		}
+
+	}
+
+	protected function output_empty_queries( array $data ) {
 
 			echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-wpdb">';
 			echo '<table cellspacing="0">';
@@ -47,11 +66,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</table>';
 			echo '</div>';
 
-			return;
+	}
 
-		}
-
-		if ( !empty( $data['errors'] ) ) {
+	protected function output_error_queries( array $data ) {
 
 			echo '<div class="qm qm-queries" id="qm-query-errors">';
 			echo '<table cellspacing="0">';
@@ -75,9 +92,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</table>';
 			echo '</div>';
 
-		}
+	}
 
-		if ( !empty( $data['expensive'] ) ) {
+	protected function output_expensive_queries( array $data ) {
 
 			$dp = strlen( substr( strrchr( QM_DB_EXPENSIVE, '.' ), 1 ) );
 
@@ -108,11 +125,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</tbody>';
 			echo '</table>';
 			echo '</div>';
-
-		}
-
-		foreach ( $data['dbs'] as $name => $db )
-			$this->output_queries( $name, $db, $data );
 
 	}
 
@@ -261,6 +273,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo $row['caller'];
 
 			# This isn't optimal...
+			# @TODO convert this to use our new filtered trace array when present
 			$stack = explode( ', ', $row['stack'] );
 			$stack = array_reverse( $stack );
 			array_shift( $stack );
