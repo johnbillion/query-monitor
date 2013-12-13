@@ -141,7 +141,7 @@ Database listing panel showing all queries, and the controls for filtering by qu
 
 ![Database Queries](https://raw.github.com/johnbillion/QueryMonitor/master/assets-wp-repo/screenshot-4.png)
 
-A slow database query (over 0.1s by default) that has been highlighted in a separate panel
+A slow database query (over 0.05s by default) that has been highlighted in a separate panel
 
 ![Slow Database Queries](https://raw.github.com/johnbillion/QueryMonitor/master/assets-wp-repo/screenshot-3.png)
 
