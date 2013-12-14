@@ -35,8 +35,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'File', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Line', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -76,9 +75,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
+					$output = esc_html( $error->filename ) . '<br>' . sprintf( __( 'line %s', 'query-monitor' ), $error->line );
+
 					echo '<td>' . $message . '</td>';
-					echo '<td title="' . esc_attr( $error->file ) . '">' . esc_html( $error->filename ) . '</td>';
-					echo '<td>' . esc_html( $error->line ) . '</td>';
+					echo '<td title="' . esc_attr( $error->file ) . '">';
+					echo self::output_filename( $output, $error->file, $error->line );
+					echo '</td>';
 					echo '<td class="qm-ltr">' . $stack . '</td>';
 					echo '<td>' . $component->name . '</td>';
 					echo '</tr>';

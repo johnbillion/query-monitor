@@ -91,7 +91,13 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
-					echo esc_html( $action['callback']['name'] );
+
+					if ( isset( $action['callback']['file'] ) ) {
+						echo self::output_filename( esc_html( $action['callback']['name'] ), $action['callback']['file'], $action['callback']['line'] );
+					} else {
+						echo esc_html( $action['callback']['name'] );
+					}
+
 					if ( isset( $action['callback']['error'] ) ) {
 						echo '<br><span class="qm-warn">';
 						printf( __( 'Error: %s', 'query-monitor' ),
@@ -99,6 +105,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						);
 						echo '<span>';
 					}
+
 					echo '</td>';
 					echo '<td valign="top">';
 					echo esc_html( $component );
