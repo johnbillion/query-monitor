@@ -257,7 +257,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$row_attr['data-qm-time'] = $row['ltime'];
 		}
 
-		$stack = esc_attr( $row['stack'] );
 		$attr = '';
 
 		foreach ( $row_attr as $a => $v )
@@ -270,7 +269,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";
-			echo $row['caller'];
+
+			$caller_name = $row['caller'];
+
+			if ( isset( $row['trace'] ) ) {
+				$caller      = $row['trace']->get_caller();
+				$caller_name = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
+			}
+
+			echo $caller_name;
 
 			# This isn't optimal...
 			# @TODO convert this to use our new filtered trace array when present

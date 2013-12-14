@@ -149,8 +149,10 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$stack         = $query['stack'];
 			$has_component = isset( $query['trace'] );
 			$has_results   = isset( $query['result'] );
+			$trace         = null;
+			$component     = null;
 
-			if ( $has_results )
+			if ( isset( $query['result'] ) )
 				$result = $query['result'];
 			else
 				$result = null;
@@ -158,22 +160,24 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$total_time += $ltime;
 
 			if ( isset( $query['trace'] ) ) {
-				$component = $query['trace']->get_component();
-				$trace     = $query['trace'];
+
+				$trace       = $query['trace'];
+				$component   = $query['trace']->get_component();
+				$caller      = $query['trace']->get_caller();
+				$caller_name = $caller['id'];
+				$caller      = $caller['display'];
+
 			} else {
-				$component = null;
-				$trace     = null;
+
+				$callers = explode( ',', $stack );
+				$caller  = trim( end( $callers ) );
+
+				if ( false !== strpos( $caller, '(' ) )
+					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
+				else
+					$caller_name = $caller;
+
 			}
-
-			# @TODO we should grab this from the trace instead for increased accuracy in case
-			# the caller contains multiple comma separated arguments (see QM_Backtrace::$show_args)
-			$callers = explode( ',', $stack );
-			$caller  = trim( end( $callers ) );
-
-			if ( false !== strpos( $caller, '(' ) )
-				$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
-			else
-				$caller_name = $caller;
 
 			$sql  = trim( $sql );
 			$type = preg_split( '/\b/', $sql );
@@ -195,7 +199,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			else
 				$types[$type]['callers'][$caller]++;
 
-			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component' );
+			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace' );
 
 			if ( is_wp_error( $result ) )
 				$this->data['errors'][] = $row;
