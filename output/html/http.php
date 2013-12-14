@@ -81,7 +81,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$method = $row['args']['method'];
 				if ( !$row['args']['blocking'] )
 					$method .= '&nbsp;' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
-				$url = QM_Util::format_url( $row['url'] );
+				$url = self::format_url( $row['url'] );
 
 				if ( isset( $row['transport'] ) )
 					$transport = $row['transport'];

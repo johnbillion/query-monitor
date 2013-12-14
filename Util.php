@@ -22,11 +22,6 @@ class QM_Util {
 
 	private function __construct() {}
 
-	public static function timer_stop_float() {
-		global $timestart;
-		return microtime( true ) - $timestart;
-	}
-
 	public static function sort( $a, $b ) {
 		if ( $a['ltime'] == $b['ltime'] )
 			return 0;
@@ -185,43 +180,6 @@ class QM_Util {
 			return false;
 		else
 			return get_role( 'administrator' );
-	}
-
-	public static function format_sql( $sql ) {
-
-		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
-		$sql = esc_html( $sql );
-		$sql = trim( $sql );
-
-		foreach( array(
-			'ALTER', 'AND', 'COMMIT', 'CREATE', 'DESCRIBE', 'DELETE', 'DROP', 'ELSE', 'END', 'FROM', 'GROUP',
-			'HAVING', 'INNER', 'INSERT', 'LIMIT', 'ON', 'OR', 'ORDER', 'REPLACE', 'ROLLBACK', 'SELECT', 'SET',
-			'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
-		) as $cmd )
-			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
-
-		return $sql;
-
-	}
-
-	public static function format_bool_constant( $constant ) {
-		if ( !defined( $constant ) or !constant( $constant ) )
-			return 'false';
-		else
-			return 'true';
-	}
-
-	public static function format_url( $url ) {
-		$url = str_replace( array(
-			'=',
-			'&',
-			'?',
-		), array(
-			'<span class="qm-equals">=</span>',
-			'<br><span class="qm-param">&amp;</span>',
-			'<br><span class="qm-param">?</span>',
-		), $url );
-		return $url;
 	}
 
 }

@@ -28,7 +28,7 @@ class QM_Collector_Overview extends QM_Collector {
 
 	public function process() {
 
-		$this->data['time']       = QM_Util::timer_stop_float();
+		$this->data['time']       = self::timer_stop_float();
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
 
 		if ( !empty( $this->data['time_limit'] ) )

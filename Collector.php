@@ -53,6 +53,18 @@ abstract class QM_Collector {
 
 	}
 
+	public static function timer_stop_float() {
+		global $timestart;
+		return microtime( true ) - $timestart;
+	}
+
+	public static function format_bool_constant( $constant ) {
+		if ( !defined( $constant ) or !constant( $constant ) )
+			return 'false';
+		else
+			return 'true';
+	}
+
 	final public function get_data() {
 		return $this->data;
 	}

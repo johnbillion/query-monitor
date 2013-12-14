@@ -82,6 +82,37 @@ class QM_Output_Html implements QM_Output {
 
 	}
 
+	public static function format_sql( $sql ) {
+
+		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
+		$sql = esc_html( $sql );
+		$sql = trim( $sql );
+
+		foreach( array(
+			'ALTER', 'AND', 'COMMIT', 'CREATE', 'DESCRIBE', 'DELETE', 'DROP', 'ELSE', 'END', 'FROM', 'GROUP',
+			'HAVING', 'INNER', 'INSERT', 'LIMIT', 'ON', 'OR', 'ORDER', 'REPLACE', 'ROLLBACK', 'SELECT', 'SET',
+			'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
+		) as $cmd )
+			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
+
+		return $sql;
+
+	}
+
+	public static function format_url( $url ) {
+		$url = str_replace( array(
+			'=',
+			'&',
+			'?',
+		), array(
+			'<span class="qm-equals">=</span>',
+			'<br><span class="qm-param">&amp;</span>',
+			'<br><span class="qm-param">?</span>',
+		), $url );
+		return $url;
+
+	}
+
 	final public function get_type() {
 		return 'html';
 	}

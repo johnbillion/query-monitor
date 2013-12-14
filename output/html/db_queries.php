@@ -233,7 +233,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$ltime = number_format_i18n( $row['ltime'], 10 );
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
-		$sql = QM_Util::format_sql( $row['sql'] );
+		$sql = self::format_sql( $row['sql'] );
 
 		if ( 'SELECT' != $row['type'] )
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
