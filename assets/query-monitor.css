@@ -216,6 +216,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 }
 
 .qm>table {
+	color: #555 !important;
 	border-collapse: collapse !important;
 	border-style: hidden !important;
 	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.05) !important;
@@ -225,7 +226,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm td,
 .qm th {
-	color: #555 !important;
 	background: #fff !important;
 	text-align: left !important;
 	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
@@ -330,7 +330,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 }
 
 .qm a {
-	color: #0074a2 !important;
+	color: #2ea2cc !important;
 	text-decoration: none !important;
 	text-shadow: none !important;
 	font-weight: normal !important;
@@ -346,7 +346,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 }
 
 .qm a.qm-toggle {
-	color: #ddd !important;
+	color: #ccc !important;
 	padding: 0 3px !important;
 	border: 1px solid transparent !important;
 }
