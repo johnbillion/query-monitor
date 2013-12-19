@@ -34,15 +34,11 @@ class QueryMonitor extends QM_Plugin {
 
 	protected $collectors  = array();
 	protected $dispatchers = array();
-	protected $did_footer  = false;
 
 	protected function __construct( $file ) {
 
 		# Actions
 		add_action( 'init',           array( $this, 'action_init' ) );
-		add_action( 'admin_footer',   array( $this, 'action_footer' ) );
-		add_action( 'wp_footer',      array( $this, 'action_footer' ) );
-		add_action( 'login_footer',   array( $this, 'action_footer' ) );
 		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
@@ -93,10 +89,6 @@ class QueryMonitor extends QM_Plugin {
 		return $this->dispatchers;
 	}
 
-	public function did_footer() {
-		return $this->did_footer;
-	}
-
 	public function activate( $sitewide = false ) {
 
 		if ( $admins = QM_Util::get_admins() )
@@ -123,41 +115,75 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function show_query_monitor() {
+	public function user_can_view() {
 
 		if ( !did_action( 'plugins_loaded' ) )
 			return false;
 
-		if ( isset( $this->show_query_monitor ) )
-			return $this->show_query_monitor;
-
-		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] )
-			return $this->show_query_monitor = false;
-
 		if ( is_multisite() ) {
 			if ( current_user_can( 'manage_network_options' ) )
-				return $this->show_query_monitor = true;
+				return true;
 		} else if ( current_user_can( 'view_query_monitor' ) ) {
-			return $this->show_query_monitor = true;
+			return true;
 		}
 
 		if ( $auth = self::get_collector( 'authentication' ) )
-			return $this->show_query_monitor = $auth->show_query_monitor();
+			return $auth->user_can_view();
 
-		return $this->show_query_monitor = false;
+		return false;
 
 	}
 
-	public function action_footer() {
+	public function should_process() {
 
-		$this->did_footer = true;
+		# Don't process if the minimum required actions haven't fired:
+
+		if ( QM_Util::is_ajax() ) {
+
+			if ( ! did_action( 'init' ) ) {
+				return false;
+			}
+
+		} else if ( is_admin() ) {
+
+			if ( ! did_action( 'admin_init' ) ) {
+				return false;
+			}
+
+		} else {
+
+			if ( ! did_action( 'wp' ) ) {
+				return false;
+			}
+
+		}
+
+		$e = error_get_last();
+
+		# Don't process if a fatal has occurred:
+		if ( ! empty( $e ) and ( 1 === $e['type'] ) ) {
+			return false;
+		}
+
+		foreach ( $this->get_dispatchers() as $dispatcher ) {
+
+			# At least one dispatcher is active, so we need to process:
+			if ( $dispatcher->active() ) {
+				return true;
+			}
+
+		}
+
+		return false;
 
 	}
 
 	public function action_shutdown() {
 
-		# @TODO introduce a method on dispatchers which defaults to not processing
-		# qm and then a persistent outputter can switch it on
+		if ( ! $this->should_process() ) {
+			return;
+		}
+
 		foreach ( $this->get_collectors() as $collector ) {
 			$collector->process();
 		}
@@ -183,9 +209,6 @@ class QueryMonitor extends QM_Plugin {
 	public function action_init() {
 
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
-
-		if ( !$this->show_query_monitor() )
-			return;
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
 			$dispatcher->init();

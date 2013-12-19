@@ -29,8 +29,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
 
-		if ( !$this->qm->show_query_monitor() )
+		if ( ! $this->qm->user_can_view() ) {
 			return;
+		}
 
 		$class = implode( ' ', array( 'hide-if-js', QM_Util::wpv() ) );
 		$title = __( 'Query Monitor', 'query-monitor' );
@@ -57,8 +58,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		global $wp_locale;
 
-		if ( !defined( 'DONOTCACHEPAGE' ) )
+		if ( ! $this->qm->user_can_view() ) {
+			return;
+		}
+
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', 1 );
+		}
 
 		wp_enqueue_style(
 			'query-monitor',
@@ -152,11 +158,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function active() {
 
-		if ( !$this->qm->show_query_monitor() ) {
+		if ( ! $this->qm->user_can_view() ) {
 			return false;
 		}
 
-		return $this->qm->did_footer();
+		if ( ! ( did_action( 'wp_footer' ) or did_action( 'admin_footer' ) or did_action( 'login_footer' ) ) ) {
+			return false;
+		}
+
+		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] ) {
+			return false;
+		}
+
+		return true;
+
 	}
 
 }

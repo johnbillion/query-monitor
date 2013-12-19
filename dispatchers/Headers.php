@@ -25,8 +25,13 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( QM_Util::is_ajax() )
+		if ( ! $this->qm->user_can_view() ) {
+			return;
+		}
+
+		if ( QM_Util::is_ajax() ) {
 			ob_start();
+		}
 
 	}
 
@@ -43,8 +48,9 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 	public function after_output() {
 
 		# flush once, because we're nice
-		if ( ob_get_length() )
+		if ( ob_get_length() ) {
 			ob_flush();
+		}
 
 	}
 
@@ -54,11 +60,11 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public function active() {
 
-		if ( !$this->qm->show_query_monitor() ) {
+		if ( ! $this->qm->user_can_view() ) {
 			return false;
 		}
 
-		# if the headers have already been sent then we can't do anything about it
+		# If the headers have already been sent then we can't do anything about it
 		if ( headers_sent() ) {
 			return false;
 		}
