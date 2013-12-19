@@ -65,15 +65,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					if ( !$first )
 						echo '<tr>';
 
-					$stack = $error->trace->get_stack();
+					$stack     = $error->trace->get_stack();
 					$component = $error->trace->get_component();
-
-					if ( empty( $stack ) )
-						$stack = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
-					else
-						$stack = implode( '<br>', $stack );
-
-					$message = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
+					$stack     = implode( '<br>', $stack );
+					$message   = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
 					$output = esc_html( $error->filename ) . '<br>' . sprintf( __( 'line %s', 'query-monitor' ), $error->line );
 
