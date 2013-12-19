@@ -171,6 +171,14 @@ class QM_Util {
 		return false;
 	}
 
+	public static function is_async() {
+		if ( self::is_ajax() )
+			return true;
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' == strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) )
+			return true;
+		return false;
+	}
+
 	public static function wpv() {
 		return 'qm-wp-' . ( floatval( $GLOBALS['wp_version'] ) * 10 );
 	}

@@ -166,7 +166,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( isset( $_REQUEST['wp_customize'] ) and 'on' == $_REQUEST['wp_customize'] ) {
+		if ( QM_Util::is_async() ) {
 			return false;
 		}
 
