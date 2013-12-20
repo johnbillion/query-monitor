@@ -220,9 +220,8 @@ body:not(.iframe).sticky-menu.folded #qm {
 	border-collapse: collapse !important;
 	color: #555 !important;
 	border-style: hidden !important;
-	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.05) !important;
+	box-shadow: 0 0 0 1px #ddd, 0 1px 2px 1px rgba(0,0,0,0.05) !important;
 	width: 100% !important;
-	outline: 1px solid #ddd !important;
 }
 
 .qm td,
