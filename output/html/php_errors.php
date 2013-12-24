@@ -35,6 +35,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
+		echo '<th>' . __( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
@@ -54,10 +55,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			if ( isset( $data['errors'][$type] ) ) {
 
 				echo '<tr>';
-				if ( count( $data['errors'][$type] ) > 1 )
-					echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
-				else
-					echo '<td>' . $title . '</td>';
+				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
 				$first = true;
 
 				foreach ( $data['errors'][$type] as $error ) {
@@ -73,6 +71,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$output = esc_html( $error->filename ) . '<br>' . sprintf( __( 'line %s', 'query-monitor' ), $error->line );
 
 					echo '<td>' . $message . '</td>';
+					echo '<td>' . number_format_i18n( $error->calls ) . '</td>';
 					echo '<td title="' . esc_attr( $error->file ) . '">';
 					echo self::output_filename( $output, $error->file, $error->line );
 					echo '</td>';
