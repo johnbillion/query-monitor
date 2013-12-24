@@ -102,7 +102,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			include $output;
 		}
 
-		if ( !function_exists( 'is_admin_bar_showing' ) or !is_admin_bar_showing() )
+		if ( !is_admin_bar_showing() )
 			$class = 'qm-show';
 		else
 			$class = '';

@@ -36,11 +36,7 @@ class QM_Collector_Overview extends QM_Collector {
 		else
 			$this->data['time_usage'] = 0;
 
-		if ( function_exists( 'memory_get_peak_usage' ) )
-			$this->data['memory'] = memory_get_peak_usage();
-		else
-			$this->data['memory'] = memory_get_usage();
-
+		$this->data['memory']       = memory_get_peak_usage();
 		$this->data['memory_limit'] = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) );
 		$this->data['memory_usage'] = ( 100 / $this->data['memory_limit'] ) * $this->data['memory'];
 
