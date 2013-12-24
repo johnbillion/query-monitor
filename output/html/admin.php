@@ -33,7 +33,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="3">' . $this->collector->name() . '</th>';
+		echo '<th colspan="2">' . $this->collector->name() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
