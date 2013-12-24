@@ -95,6 +95,11 @@ class QM_Backtrace {
 
 		foreach ( $this->trace as $item ) {
 
+			if ( isset( $item['function'] ) and ( '{closure}' === $item['function'] ) ) {
+				# Reflection on a non-existant function is *slow* so we'll bail out early
+				continue;
+			}
+
 			try {
 
 				if ( isset( $item['file'] ) ) {
