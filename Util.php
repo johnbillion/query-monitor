@@ -54,8 +54,10 @@ class QM_Util {
 		$dir = str_replace( '\\', '/', $dir );
 		$dir = preg_replace( '|/+|', '/', $dir );
 
-		if ( is_string( $abspath_replace ) )
+		if ( is_string( $abspath_replace ) ) {
+			# @TODO cache the value of self::standard_dir( ABSPATH )
 			$dir = str_replace( self::standard_dir( ABSPATH ), $abspath_replace, $dir );
+		}
 
 		return $dir;
 

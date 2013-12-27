@@ -58,6 +58,7 @@ class QM_Backtrace {
 	protected $calling_file    = '';
 
 	public function __construct( array $args = array() ) {
+		# @TODO save the args as a property and process the trace JIT
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
 			'ignore_items'          => 0,

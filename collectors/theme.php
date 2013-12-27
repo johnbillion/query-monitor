@@ -43,7 +43,7 @@ class QM_Collector_Theme extends QM_Collector {
 		$template_file = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_file );
 		$template_file = ltrim( $template_file, '/' );
 
-		$this->data['template_file'] = apply_filters( 'query_monitor_template', $template_file, $template );
+		$this->data['template_file'] = $template_file;
 		$this->data['stylesheet']    = get_stylesheet();
 		$this->data['template']      = get_template();
 
