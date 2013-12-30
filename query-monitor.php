@@ -94,7 +94,7 @@ class QueryMonitor extends QM_Plugin {
 		if ( $admins = QM_Util::get_admins() )
 			$admins->add_cap( 'view_query_monitor' );
 
-		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) )
+		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
 
 		if ( $sitewide )
