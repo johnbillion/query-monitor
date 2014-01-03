@@ -170,4 +170,6 @@ jQuery( function($) {
 
 	} );
 
+	$('#qm').detach().appendTo('#wpbody-content .wrap');
+
 } );
