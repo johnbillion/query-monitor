@@ -226,7 +226,7 @@ class QM_Backtrace {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
 						if ( isset( $trace['args'][$i] ) )
-							$args[] = sprintf( "'%s'", $trace['args'][$i] );
+							$args[] = '\'' . $trace['args'][$i] . '\'';
 					}
 					$return['id']      = $trace['function'] . '()';
 					$return['display'] = $trace['function'] . '(' . implode( ',', $args ) . ')';
@@ -241,7 +241,7 @@ class QM_Backtrace {
 
 		}
 
-		if ( !is_null( $return ) ) {
+		if ( $return ) {
 
 			$return['calling_file'] = $this->calling_file;
 			$return['calling_line'] = $this->calling_line;
