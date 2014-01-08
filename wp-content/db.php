@@ -25,6 +25,9 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
+if ( defined( 'QM_DISABLED' ) and QM_DISABLED )
+	return;
+
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Timer' ) as $f ) {
 	if ( ! is_readable( $file = dirname( __FILE__ ) . "/../{$f}.php" ) )
