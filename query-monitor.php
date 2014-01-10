@@ -30,8 +30,9 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED )
 	return;
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
-foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Timer' ) as $f )
-	require_once dirname( __FILE__ ) . "/{$f}.php";
+$qm_dir = dirname( __FILE__ );
+foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output', 'Timer' ) as $qm_class )
+	require_once "{$qm_dir}/{$qm_class}.php";
 
 class QueryMonitor extends QM_Plugin {
 
@@ -41,8 +42,8 @@ class QueryMonitor extends QM_Plugin {
 	protected function __construct( $file ) {
 
 		# Actions
-		add_action( 'init',           array( $this, 'action_init' ) );
-		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
+		add_action( 'init',     array( $this, 'action_init' ) );
+		add_action( 'shutdown', array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );

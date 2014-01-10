@@ -50,15 +50,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			foreach ( $data['http'] as $key => $row ) {
 				$funcs = array();
 
-				$ltime = ( $row['end'] - $row['start'] );
+				$ltime = $row['ltime'];
 				$total_time += $ltime;
 
 				if ( empty( $ltime ) )
 					$stime = '';
 				else
 					$stime = number_format_i18n( $ltime, 4 );
-
-				$ltime = number_format_i18n( $ltime, 10 );
 
 				if ( is_wp_error( $row['response'] ) ) {
 					$response = $row['response']->get_error_message();
@@ -110,7 +108,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
 						<td valign='top'>{$component->name}</td>\n
 						<td valign='top'>{$row['args']['timeout']}</td>\n
-						<td valign='top' title='{$ltime}'>{$stime}</td>\n
+						<td valign='top'>{$stime}</td>\n
 					</tr>\n
 				";
 			}

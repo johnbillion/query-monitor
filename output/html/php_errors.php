@@ -68,7 +68,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$stack     = implode( '<br>', $stack );
 					$message   = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
-					$output = esc_html( $error->filename ) . '<br>' . sprintf( __( 'line %s', 'query-monitor' ), $error->line );
+					$output = esc_html( $error->filename ) . ':' . $error->line;
 
 					echo '<td>' . $message . '</td>';
 					echo '<td>' . number_format_i18n( $error->calls ) . '</td>';

@@ -30,7 +30,6 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			return;
 
 		$total_time  = 0;
-		$total_calls = 0;
 		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
@@ -59,7 +58,6 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 			foreach ( $data['times'] as $caller => $row ) {
 				$total_time  += $row['ltime'];
-				$total_calls += $row['calls'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
 				$ltime = number_format_i18n( $row['ltime'], 10 );
 

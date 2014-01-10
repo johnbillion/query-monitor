@@ -27,12 +27,12 @@ class QM_Timer {
 	}
 
 	public function start( array $data = null ) {
+		$this->trace = new QM_Backtrace;
 		$this->start = array(
 			'time'   => microtime( true ),
 			'memory' => memory_get_usage(),
 			'data'   => $data,
 		);
-		$this->trace = new QM_Backtrace;
 		return $this;
 	}
 

@@ -189,7 +189,7 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 #qm-wrapper {
 	margin: 0 auto;
-	max-width: 85em;
+	max-width: 100em;
 }
 
 #qm-wrapper > p {
