@@ -40,7 +40,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<tbody>';
 		echo '<tr>';
 		echo '<td>' . __( 'Template', 'query-monitor' ) . '</td>';
-		echo "<td>{$data['template_file']}</td>";
+		echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>';
 		echo '</tr>';
 
 		if ( !empty( $data['body_class'] ) ) {
