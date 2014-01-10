@@ -140,6 +140,11 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		}
 
+		foreach ( array( 'WP_PROXY_HOST', 'WP_PROXY_PORT' ) as $var ) {
+			if ( defined( $var ) and constant( $var ) )
+				$this->data['vars'][$var] = constant( $var );
+		}
+
 	}
 
 }

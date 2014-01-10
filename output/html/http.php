@@ -121,8 +121,18 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$total_stime = number_format_i18n( $total_time, 4 );
 			$total_ltime = number_format_i18n( $total_time, 10 );
 
+			$vars = '&nbsp;';
+
+			if ( isset( $data['vars'] ) ) {
+				$vars = array();
+				foreach ( $data['vars'] as $key => $value ) {
+					$vars[] = $key . ': ' . $value;
+				}
+				$vars = implode( ', ', $vars );
+			}
+
 			echo '<tr>';
-			echo '<td colspan="6">&nbsp;</td>';
+			echo '<td colspan="6">' . $vars . '</td>';
 			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
