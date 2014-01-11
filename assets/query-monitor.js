@@ -59,6 +59,7 @@ jQuery( function($) {
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
 		var container = document.createDocumentFragment();
+		var is_admin = $('body').hasClass('wp-admin');
 
 		$('#wp-admin-bar-query-monitor')
 			.addClass(qm.menu.top.classname)
@@ -88,6 +89,9 @@ jQuery( function($) {
 		$('#wp-admin-bar-query-monitor ul').append(container);
 
 		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
+			if ( is_admin ) {
+				$('#wpfooter').css('position','relative');
+			}
 			$('#qm').show();
 		});
 
@@ -170,6 +174,8 @@ jQuery( function($) {
 
 	} );
 
-	$('#qm').detach().appendTo('#wpbody-content .wrap');
+	if ( is_admin ) {
+		$('#qm').detach().appendTo('#wpwrap');
+	}
 
 } );

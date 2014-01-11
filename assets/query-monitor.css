@@ -193,14 +193,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 	margin-left: 36px !important;
 }
 
-body:not(.iframe).sticky-menu.js #qm {
-	margin-left: 0 !important;
-}
-
-body:not(.iframe).sticky-menu.folded.js #qm {
-	margin-left: 0 !important;
-}
-
 #qm-wrapper {
 	margin: 0 auto;
 	max-width: 85em;
