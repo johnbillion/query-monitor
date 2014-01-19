@@ -30,7 +30,7 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED )
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
-foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Timer' ) as $qm_class ) {
+foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util' ) as $qm_class ) {
 	if ( ! is_readable( $qm_file = "{$qm_dir}/{$qm_class}.php" ) )
 		return;
 	require_once $qm_file;
