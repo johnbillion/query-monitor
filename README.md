@@ -44,7 +44,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
  * View **aggregate query information** grouped by component, calling function, and type
  * Super advanced: Supports **multiple instances of wpdb** on one page
 
-Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries. Query Monitor can easily tell you if your "premium" theme is doing a premium number of database queries.
+Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries.
 
 ## Hooks ##
 
@@ -60,9 +60,8 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## PHP Errors ##
 
- * PHP errors (warnings, notices and stricts) are presented nicely along with their component and call stack
+ * PHP errors (warnings, notices, stricts and deprecated) are presented nicely along with their component and call stack
  * Shows an easily visible warning in the admin toolbar
- * Plays nicely with Xdebug
 
 ## Request ##
 
@@ -87,9 +86,9 @@ AJAX debugging is in its early stages. Currently it only includes PHP errors (wa
 
 ## Admin Screen ##
 
-Hands up who can remember the correct names for the filters and hooks for custom admin screen columns?
+Hands up who can remember the correct names for the filters and actions for custom admin screen columns?
 
- * Shows the correct names for **custom column hooks and filters** on all admin screens that have a listing table
+ * Shows the correct names for **custom column filters and actions** on all admin screens that have a listing table
  * Shows the state of `get_current_screen()` and a few variables
 
 ## Environment Information ##
@@ -99,14 +98,19 @@ Hands up who can remember the correct names for the filters and hooks for custom
  * Shows **various MySQL information**, including caching and performance related configuration
  * Highlights the fact when any performance related configurations are not optimal
  * Shows various details about **WordPress** and the **web server**
- * Shows version numbers for everything
+ * Shows version numbers for all the things
 
 ## Everything Else ##
 
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
- * You can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details
+
+## Authentication ##
+
+By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
 
 # Notes #
 
