@@ -2,7 +2,7 @@
 /*
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.6.2
+Version:     2.6.3
 Plugin URI:  https://github.com/johnbillion/query-monitor
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
@@ -56,12 +56,14 @@ class QueryMonitor extends QM_Plugin {
 		# Parent setup:
 		parent::__construct( $file );
 
+		# Collectors:
 		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $collector )
 			include $collector;
 
 		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
 			$this->add_collector( $collector );
 
+		# Dispatchers:
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
 			include $dispatcher;
 
