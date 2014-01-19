@@ -33,7 +33,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		echo '<th>' . __( 'Transient Set', 'query-monitor' ) . '</th>';
 		if ( is_multisite() )
 			echo '<th>' . __( 'Type', 'query-monitor' ) . '</th>';
-		if ( !empty( $data['trans'] ) and !is_null( $data['trans'][0]['expiration'] ) )
+		if ( !empty( $data['trans'] ) and isset( $data['trans'][0]['expiration'] ) )
 			echo '<th>' . __( 'Expiration', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
@@ -53,7 +53,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 				$type = ( is_multisite() ) ? "<td valign='top'>{$row['type']}</td>\n" : '';
 				if ( 0 === $row['expiration'] )
 					$row['expiration'] = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
-				$expiration = ( !is_null( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
+				$expiration = ( isset( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
 
 				foreach ( $stack as & $trace ) {
 					foreach ( array( 'set_transient', 'set_site_transient' ) as $skip ) {

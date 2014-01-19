@@ -221,11 +221,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$cols = array_flip( $cols );
 
-		if ( is_null( $row['component'] ) )
+		if ( !isset( $row['component'] ) )
 			unset( $cols['component'] );
-		if ( is_null( $row['result'] ) )
+		if ( !isset( $row['result'] ) )
 			unset( $cols['result'] );
-		if ( is_null( $row['stack'] ) )
+		if ( !isset( $row['stack'] ) )
 			unset( $cols['stack'] );
 
 		$row_attr = array();
