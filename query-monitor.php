@@ -146,7 +146,7 @@ class QueryMonitor extends QM_Plugin {
 
 		if ( QM_Util::is_ajax() ) {
 
-			if ( ! did_action( 'init' ) ) {
+			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
 
