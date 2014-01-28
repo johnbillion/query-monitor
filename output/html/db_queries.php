@@ -198,7 +198,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
-			echo "<td valign='top' title='{$total_ltime}'>{$total_stime}</td>";
+			echo "<td valign='top'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -309,7 +309,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo $result;
 
 		if ( isset( $cols['time'] ) )
-			echo "<td valign='top' title='{$ltime}' class='qm-row-time{$td}'>{$stime}</td>\n";
+			echo "<td valign='top' class='qm-row-time{$td}'>{$stime}</td>\n";
 
 		echo '</tr>';
 

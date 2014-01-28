@@ -79,10 +79,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<tbody>';
 		echo '<tr>';
-		echo "<td><span title='{$total_ltime}'>{$total_stime}</span>{$time_usage}</td>";
-		echo '<td><span title="' . esc_attr( sprintf( __( '%s bytes', 'query-monitor' ), number_format_i18n( $data['memory'] ) ) ) . '">' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . '</span>' . $memory_usage . '</td>';
+		echo "<td>{$total_stime}{$time_usage}</td>";
+		echo '<td>' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
 		if ( isset( $db_query_num ) ) {
-			echo "<td title='{$db_ltime}'>{$db_stime}</td>";
+			echo "<td>{$db_stime}</td>";
 			echo '<td>';
 
 			foreach ( $db_query_num as $type_name => $type_count )

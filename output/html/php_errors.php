@@ -72,7 +72,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '<td>' . $message . '</td>';
 					echo '<td>' . number_format_i18n( $error->calls ) . '</td>';
-					echo '<td title="' . esc_attr( $error->file ) . '">';
+					echo '<td>';
 					echo self::output_filename( $output, $error->file, $error->line );
 					echo '</td>';
 					echo '<td class="qm-ltr">' . $stack . '</td>';

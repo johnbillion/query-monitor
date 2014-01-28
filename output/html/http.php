@@ -131,7 +131,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td colspan="6">' . $vars . '</td>';
-			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
+			echo "<td>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 

@@ -73,7 +73,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 						echo "<td valign='top'>&nbsp;</td>";
 				}
 
-				echo "<td valign='top' title='{$ltime}'>{$stime}</td>";
+				echo "<td valign='top'>{$stime}</td>";
 				echo '</tr>';
 
 			}
@@ -90,7 +90,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			foreach ( $data['types'] as $type_name => $type_count )
 				echo '<td>' . number_format_i18n( $type_count ) . '</td>';
 
-			echo "<td title='{$total_ltime}'>{$total_stime}</td>";
+			echo "<td>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 
