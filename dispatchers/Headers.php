@@ -48,7 +48,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 	public function after_output() {
 
 		# flush once, because we're nice
-		if ( ob_get_length() ) {
+		if ( QM_Util::is_ajax() and ob_get_length() ) {
 			ob_flush();
 		}
 
