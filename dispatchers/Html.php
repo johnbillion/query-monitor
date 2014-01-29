@@ -56,8 +56,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function init() {
 
-		global $wp_locale;
-
 		if ( ! $this->qm->user_can_view() ) {
 			return;
 		}
@@ -65,6 +63,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', 1 );
 		}
+
+		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+
+	}
+
+	public function enqueue_assets() {
+
+		global $wp_locale;
 
 		wp_enqueue_style(
 			'query-monitor',
