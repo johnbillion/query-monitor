@@ -126,11 +126,11 @@ jQuery( function($) {
 
 	$('#qm').find('.qm-toggle').on('click',function(e){
 		var el = $(this);
-		$(this).parent().find('.qm-toggled').toggle(0,function(){
-			if ( '+' == el.text() )
-				el.text('-');
+		$(this).closest('td').find('.qm-toggled').toggle(0,function(){
+			if ( el.attr('data-off') == el.text() )
+				el.text(el.attr('data-on'));
 			else
-				el.text('+');
+				el.text(el.attr('data-off'));
 		});
 		e.preventDefault();
 	});

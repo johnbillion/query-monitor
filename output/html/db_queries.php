@@ -287,7 +287,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$stack = implode( '<br>', $stack );
 
 			if ( !empty( $stack ) ) {
-				echo '<a href="#" class="qm-toggle">+</a>';
+				echo '<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>';
 				echo '<div class="qm-toggled">' . $stack . '</div>';
 			}
 
