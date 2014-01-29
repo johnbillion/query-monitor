@@ -40,13 +40,13 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td class="qm-ltr">get_current_screen()</td>';
-		echo '<td>';
+		echo '<td class="qm-has-inner">';
 
 		echo '<table class="qm-inner" cellspacing="0">';
 		echo '<tbody>';
 		foreach ( $data['current_screen'] as $key => $value ) {
 			echo '<tr>';
-			echo '<td class="qm-var">' . esc_html( $key ) . ':</td>';
+			echo '<td>' . esc_html( $key ) . '</td>';
 			echo '<td>' . esc_html( $value ) . '</td>';
 			echo '</tr>';
 		}

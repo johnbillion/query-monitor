@@ -59,6 +59,39 @@ class QM_Output_Html implements QM_Output {
 
 	}
 
+	public static function output_inner( $vars ) {
+
+		echo '<table cellspacing="0" class="qm-inner">';
+
+		foreach ( $vars as $key => $value ) {
+			echo '<tr>';
+			echo '<td valign="top">' . esc_html( $key ) . '</td>';
+			if ( is_array( $value ) ) {
+				echo '<td valign="top" class="qm-has-inner">';
+				self::output_inner( $value );
+				echo '</td>';
+			} else if ( is_object( $value ) ) {
+				echo '<td valign="top" class="qm-has-inner">';
+				self::output_inner( get_object_vars( $value ) );
+				echo '</td>';
+			} else if ( is_bool( $value ) ) {
+				if ( $value ) {
+					echo '<td valign="top" class="qm-true">true</td>';
+				} else {
+					echo '<td valign="top" class="qm-false">false</td>';
+				}
+			} else {
+				echo '<td valign="top">';
+				echo nl2br( esc_html( $value ) );
+				echo '</td>';
+			}
+			echo '</td>';
+			echo '</tr>';
+		}
+		echo '</table>';
+
+	}
+
 	protected function build_filter( $name, array $values ) {
 
 		usort( $values, 'strcasecmp' );

@@ -256,18 +256,25 @@ body:not(.iframe).sticky-menu.folded #qm {
 	color: #444 !important;
 }
 
+.qm .qm-inner-toggle {
+	padding: 5px 8px 4px !important;
+}
+
+.qm-has-inner .qm-toggled > table {
+	border-top: 1px solid #eee !important;
+}
+
 .qm-inner {
 	border-collapse: collapse !important;
 	margin: 0 !important;
 	background: #fff !important;
 	color: #555 !important;
-	border: none !important;
+	border-style: hidden !important;
+	width: 100% !important;
 }
 
-.qm-inner td,
-.qm-inner th {
-	border: none !important;
-	padding: 1px 0 !important;
+.qm td.qm-has-inner {
+	padding: 0 !important;
 }
 
 .qm ul {
@@ -369,11 +376,6 @@ body:not(.iframe).sticky-menu.folded #qm {
 
 .qm td.qm-priority {
 	text-align: right !important;
-}
-
-.qm td.qm-var {
-	text-align: right !important;
-	padding: 1px 1em 1px 0 !important;
 }
 
 /* Filters */
