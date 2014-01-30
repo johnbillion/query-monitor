@@ -82,29 +82,34 @@ class QM_Collector_Request extends QM_Collector {
 			case is_a( $qo, 'WP_Post' ):
 				// Single post
 				$this->data['queried_object_type']  = 'post';
-				$this->data['queried_object_name']  = get_post_type_object( $qo->post_type )->labels->singular_name;
-				$this->data['queried_object_id']    = $qo->ID;
+				$this->data['queried_object_title'] = sprintf( __( 'Single %s: #%d', 'query-monitor' ),
+					get_post_type_object( $qo->post_type )->labels->singular_name,
+					$qo->ID
+				);
 				break;
 
 			case is_a( $qo, 'WP_User' ):
 				// Author archive
 				$this->data['queried_object_type']  = 'user';
-				$this->data['queried_object_name']  = __( 'User', 'query-monitor' );
-				$this->data['queried_object_id']    = $qo->ID;
+				$this->data['queried_object_title'] = sprintf( __( 'Author archive: %s', 'query-monitor' ),
+					$qo->user_nicename
+				);
 				break;
 
 			case property_exists( $qo, 'term_id' ):
 				// Term archive
 				$this->data['queried_object_type']  = 'term';
-				$this->data['queried_object_name']  = get_taxonomy( $qo->taxonomy )->labels->singular_name;
-				$this->data['queried_object_id']    = $qo->term_id;
+				$this->data['queried_object_title'] = sprintf( __( 'Term archive: %s', 'query-monitor' ),
+					$qo->slug
+				);
 				break;
 
 			case property_exists( $qo, 'has_archive' ):
 				// Post type archive
 				$this->data['queried_object_type']  = 'archive';
-				$this->data['queried_object_name']  = $qo->labels->singular_name;
-				$this->data['queried_object_id']    = $qo->name;
+				$this->data['queried_object_title'] = sprintf( __( 'Post type archive: %s', 'query-monitor' ),
+					$qo->name
+				);
 				break;
 
 		}

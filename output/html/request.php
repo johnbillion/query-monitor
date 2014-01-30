@@ -109,7 +109,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td valign="top">' . __( 'Queried Object', 'query-monitor' ) . '</td>';
 			echo '<td valign="top" colspan="2" class="qm-has-inner">';
-			echo '<div class="qm-inner-toggle">' . $data['queried_object_name'] . ' #' . $data['queried_object_id'] . ' (' . get_class( $data['queried_object'] ) . ' object) (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Show', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Hide', 'query-monitor' ) . '">' . __( 'Show', 'query-monitor' ) . '</a>)</div>';
+			echo '<div class="qm-inner-toggle">' . $data['queried_object_title'] . ' (' . get_class( $data['queried_object'] ) . ' object) (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Show', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Hide', 'query-monitor' ) . '">' . __( 'Show', 'query-monitor' ) . '</a>)</div>';
 
 			echo '<div class="qm-toggled">';
 			self::output_inner( $vars );
