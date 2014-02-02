@@ -211,9 +211,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		}
 
-		if ( isset( $_REQUEST['qm_sort'] ) and ( 'time' == $_REQUEST['qm_sort'] ) )
-			usort( $rows, 'QM_Util::sort' );
-
 		$total_qs = count( $rows );
 
 		$this->data['total_qs'] += $total_qs;
