@@ -144,13 +144,7 @@ class QueryMonitor extends QM_Plugin {
 
 		# Don't process if the minimum required actions haven't fired:
 
-		if ( QM_Util::is_ajax() ) {
-
-			if ( ! did_action( 'admin_init' ) ) {
-				return false;
-			}
-
-		} else if ( is_admin() ) {
+		if ( is_admin() ) {
 
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
