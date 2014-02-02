@@ -34,7 +34,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
-		echo '<table cellspacing="0">';
+		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="' . $span . '">' . $this->collector->name() . '</th>';
@@ -44,10 +44,10 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 		if ( !empty( $data['types'] ) ) {
 			foreach ( $data['types'] as $type_name => $type_count )
-				echo '<th>' . $type_name . '</th>';
+				echo '<th class="qm-num">' . $type_name . $this->build_sorter() . '</th>';
 		}
 
-		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num qm-sorted-desc">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 

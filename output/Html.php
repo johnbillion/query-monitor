@@ -108,6 +108,14 @@ class QM_Output_Html implements QM_Output {
 
 	}
 
+	protected function build_sorter() {
+		$out = '<span class="qm-sort-controls">';
+		$out .= '<a href="#" class="qm-sort qm-sort-asc">&#9650;</a>';
+		$out .= '<a href="#" class="qm-sort qm-sort-desc">&#9660;</a>';
+		$out .= '</span>';
+		return $out;
+	}
+
 	protected function menu( array $args ) {
 
 		return array_merge( array(

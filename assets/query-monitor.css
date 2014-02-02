@@ -266,6 +266,10 @@ body.js #qm-wrapper {
 	color: #444 !important;
 }
 
+.qm th.qm-num {
+	width: 4em !important;
+}
+
 .qm .qm-inner-toggle {
 	padding: 5px 8px 4px !important;
 }
@@ -417,6 +421,30 @@ select.qm-filter {
 .qm-hide-db_queries-caller,
 .qm-hide-db_queries-component {
 	display: none !important;
+}
+
+/* Sorters */
+
+.qm .qm-sort-controls {
+	display: block !important;
+	margin-top: 4px !important;
+	text-align: center !important;
+}
+
+.qm .qm-sort {
+	color: #ddd !important;
+	display: block !important;
+	font-size: 11px !important;
+	line-height: 9px !important;
+	text-decoration: none !important;
+}
+
+.qm .qm-sort:hover,
+.qm .qm-sort:focus,
+.qm .qm-sorted-asc .qm-sort-asc,
+.qm .qm-sorted-desc .qm-sort-desc {
+	color: #888 !important;
+	text-decoration: none !important;
 }
 
 /* RTL */
