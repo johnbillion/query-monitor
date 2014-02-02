@@ -24,34 +24,10 @@ abstract class QM_Collector {
 		return "qm-{$this->id}";
 	}
 
-	final protected function menu( array $args ) {
-
-		return wp_parse_args( $args, array(
-			'id'   => "query-monitor-{$this->id}",
-			'href' => '#' . $this->id()
-		) );
-
-	}
-
 	public function name() {
 		return null;
 	}
 
-	protected function build_filter( $name, array $values ) {
-
-		usort( $values, 'strcasecmp' );
-
-		$out = '<select id="qm-filter-' . esc_attr( $this->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->id . '-' . $name ) . '">';
-		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
-
-		foreach ( $values as $value )
-			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
-
-		$out .= '</select>';
-
-		return $out;
-
-	}
 
 	public static function timer_stop_float() {
 		global $timestart;
@@ -70,9 +46,5 @@ abstract class QM_Collector {
 	}
 
 	public function process() {}
-
-	public function output_html( array $args, array $data ) {}
-
-	public function output_headers( array $args, array $data ) {}
 
 }
