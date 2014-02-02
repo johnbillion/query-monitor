@@ -56,10 +56,11 @@ jQuery( function($) {
 	if ( !window.qm )
 		return;
 
+	var is_admin = $('body').hasClass('wp-admin');
+
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
 		var container = document.createDocumentFragment();
-		var is_admin = $('body').hasClass('wp-admin');
 
 		$('#wp-admin-bar-query-monitor')
 			.addClass(qm.menu.top.classname)
