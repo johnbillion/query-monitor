@@ -24,10 +24,7 @@ abstract class QM_Collector {
 		return "qm-{$this->id}";
 	}
 
-	public function name() {
-		return null;
-	}
-
+	abstract public function name();
 
 	public static function timer_stop_float() {
 		global $timestart;
