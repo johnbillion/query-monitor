@@ -36,12 +36,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			if ( isset( $db_queries_data['types'] ) ) {
 				$db_query_num = $db_queries_data['types'];
 				$db_stime = number_format_i18n( $db_queries_data['total_time'], 4 );
-				$db_ltime = number_format_i18n( $db_queries_data['total_time'], 10 );
 			}
 		}
 
 		$total_stime = number_format_i18n( $data['time'], 4 );
-		$total_ltime = number_format_i18n( $data['time'], 10 );
 
 		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';

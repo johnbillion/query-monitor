@@ -59,7 +59,6 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			foreach ( $data['times'] as $caller => $row ) {
 				$total_time  += $row['ltime'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
-				$ltime = number_format_i18n( $row['ltime'], 10 );
 
 				echo '<tr>';
 				echo "<td valign='top' class='qm-ltr'>{$row['caller']}</td>";
@@ -80,7 +79,6 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $total_time, 4 );
-			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
 			echo '<td>&nbsp;</td>';

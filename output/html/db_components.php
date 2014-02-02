@@ -61,7 +61,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				$total_time  += $row['ltime'];
 				$total_calls += $row['calls'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
-				$ltime = number_format_i18n( $row['ltime'], 10 );
 
 				echo '<tr>';
 				echo "<td valign='top' class='qm-ltr'>{$row['component']}</td>";
@@ -82,7 +81,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $total_time, 4 );
-			$total_ltime = number_format_i18n( $total_time, 10 );
 
 			echo '<tr>';
 			echo '<td>&nbsp;</td>';

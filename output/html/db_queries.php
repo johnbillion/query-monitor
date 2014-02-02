@@ -185,14 +185,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( $db->rows as $i => $row )
+			foreach ( $db->rows as $row )
 				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
 
 			echo '</tbody>';
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $db->total_time, 4 );
-			$total_ltime = number_format_i18n( $db->total_time, 10 );
 
 			echo '<tr class="qm-items-shown qm-hide">';
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $db->total_qs ) . '</span>' ) . '</td>';
@@ -233,7 +232,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
-		$ltime = number_format_i18n( $row['ltime'], 10 );
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
 		$sql = self::format_sql( $row['sql'] );
