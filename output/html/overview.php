@@ -26,26 +26,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		$http_time      = null;
 		$db_query_num   = null;
 		$db_query_types = array();
 		# @TODO: make this less derpy:
-		$http           = QueryMonitor::get_collector( 'http' );
 		$db_queries     = QueryMonitor::get_collector( 'db_queries' );
-		$time_usage     = '';
-		$memory_usage   = '';
-
-		if ( $http ) {
-			$http_data = $http->get_data();
-			if ( isset( $http_data['http'] ) ) {
-				foreach ( $http_data['http'] as $row ) {
-					if ( isset( $row['response'] ) )
-						$http_time += ( $row['end'] - $row['start'] );
-					else
-						$http_time += $row['args']['timeout'];
-				}
-			}
-		}
 
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
@@ -62,9 +46,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<div class="qm" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
 
-		$memory_usage .= '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
+		$memory_usage = '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
 
-		$time_usage .= '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
+		$time_usage = '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
 
 		echo '<thead>';
 		echo '<tr>';
