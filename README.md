@@ -67,6 +67,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
  * Shows **matched rewrite rules** and associated query strings
  * Shows **query vars** for the current request, and highlights **custom query vars**
+ * Shows the **queried object** details (collapsed by default)
 
 ## HTTP Requests ##
 
