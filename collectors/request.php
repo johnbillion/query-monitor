@@ -112,6 +112,12 @@ class QM_Collector_Request extends QM_Collector {
 				);
 				break;
 
+			default:
+				// Unknown, but we have a queried object
+				$this->data['queried_object_type']  = 'unknown';
+				$this->data['queried_object_title'] = __( 'Unknown queried object', 'query-monitor' );
+				break;
+
 		}
 
 		$this->data['queried_object'] = $qo;
