@@ -186,7 +186,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $db->rows as $row )
-				$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
+				$this->output_query_row( $row, array( 'row', 'sql', 'caller', 'component', 'result', 'time' ) );
 
 			echo '</tbody>';
 			echo '<tfoot>';
@@ -265,7 +265,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo "<tr{$attr}>";
 
-		echo "<td valign='top' class='qm-'>" . ++$this->query_row . "</td>";
+		if ( isset( $cols['row'] ) ) {
+			echo "<td valign='top'>" . ++$this->query_row . "</td>";
+		}
 
 		if ( isset( $cols['sql'] ) )
 			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$sql}</td>";
