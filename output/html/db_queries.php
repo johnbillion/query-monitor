@@ -136,9 +136,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$span = 4;
 
-		if ( $db->has_results )
+		if ( $db->has_result )
 			$span++;
-		if ( $db->has_component )
+		if ( $db->has_trace )
 			$span++;
 
 		echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-' . sanitize_title( $name ) . '">';
@@ -148,7 +148,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th colspan="' . $span . '">' . sprintf( __( '%s Queries', 'query-monitor' ), $name ) . '</th>';
 		echo '</tr>';
 
-		if ( ! $db->has_component ) {
+		if ( ! $db->has_trace ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-warn">' . sprintf( __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its <code>db.php</code> file into place. <a href="%s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
 				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
@@ -171,10 +171,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
 		echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', array_keys( $data['times'] ) ) . '</th>';
 
-		if ( $db->has_component )
+		if ( $db->has_trace )
 			echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', array_keys( $data['component_times'] ) ) . '</th>';
 
-		if ( $db->has_results )
+		if ( $db->has_result )
 			echo '<th scope="col">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
 
 		echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';

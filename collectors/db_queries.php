@@ -124,12 +124,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
-	protected static function query_compat( array & $query ) {
-
-		list( $query['sql'], $query['ltime'], $query['stack'] ) = $query;
-
-	}
-
 	public function process_db_object( $id, wpdb $db ) {
 
 		$rows       = array();
@@ -138,19 +132,15 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		foreach ( (array) $db->queries as $query ) {
 
-			if ( ! isset( $query['sql'] ) )
-				self::query_compat( $query );
-
-			if ( false !== strpos( $query['stack'], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
+			# @TODO: decide what I want to do with this:
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
 				continue;
 
-			$sql           = $query['sql'];
-			$ltime         = $query['ltime'];
-			$stack         = $query['stack'];
-			$has_component = isset( $query['trace'] );
-			$has_results   = isset( $query['result'] );
-			$trace         = null;
-			$component     = null;
+			$sql           = $query[0];
+			$ltime         = $query[1];
+			$stack         = $query[2];
+			$has_trace     = isset( $query['trace'] );
+			$has_result    = isset( $query['result'] );
 
 			if ( isset( $query['result'] ) )
 				$result = $query['result'];
@@ -169,6 +159,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			} else {
 
+				$trace     = null;
+				$component = null;
 				$callers = explode( ',', $stack );
 				$caller  = trim( end( $callers ) );
 
@@ -218,7 +210,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_results', 'has_component', 'total_time', 'total_qs' );
+		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs' );
 
 	}
 

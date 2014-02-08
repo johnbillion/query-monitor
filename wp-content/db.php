@@ -65,9 +65,7 @@ class QueryMonitorDB extends wpdb {
 	/**
 	 * Perform a MySQL database query, using current database connection.
 	 *
-	 * More information can be found on the codex page.
-	 *
-	 * @since 0.71
+	 * @see wpdb::query()
 	 *
 	 * @param string $query Database query
 	 * @return int|false Number of rows affected/selected or false on error
@@ -79,80 +77,20 @@ class QueryMonitorDB extends wpdb {
 		if ( $this->show_errors )
 			$this->hide_errors();
 
-		// some queries are made before the plugins have been loaded, and thus cannot be filtered with this method
-		$query = apply_filters( 'query', $query );
+		$result = parent::query( $query );
 
-		$return_val = 0;
-		$this->flush();
+		if ( ! SAVEQUERIES )
+			return $result;
 
-		// Log how the function was called
-		$this->func_call = "\$db->query(\"$query\")";
+		$i = $this->num_queries - 1;
+		$this->queries[$i]['trace'] = new QM_Backtrace;
 
-		// Keep track of the last query for debug..
-		$this->last_query = $query;
+		if ( $this->last_error )
+			$this->queries[$i]['result'] = new WP_Error( 'qmdb', $this->last_error );
+		else
+			$this->queries[$i]['result'] = $result;
 
-		if ( SAVEQUERIES )
-			$this->timer_start();
-
-		$this->result = @mysql_query( $query, $this->dbh );
-		$this->num_queries++;
-
-		if ( SAVEQUERIES ) {
-			$ltime = $this->timer_stop();
-			$trace = new QM_Backtrace;
-			$q = array(
-				'sql'    => $query,
-				'ltime'  => $ltime,
-				'stack'  => implode( ', ', array_reverse( $trace->get_stack() ) ),
-				'trace'  => $trace,
-				'result' => null,
-			);
-			# Numeric indices are for compatibility for anything else using saved queries
-			$q[0] = $q['sql'];
-			$q[1] = $q['ltime'];
-			$q[2] = $q['stack'];
-			$this->queries[$this->num_queries] = $q;
-		}
-
-		// If there is an error then take note of it..
-		if ( $this->last_error = mysql_error( $this->dbh ) ) {
-			if ( SAVEQUERIES )
-				$this->queries[$this->num_queries]['result'] = new WP_Error( 'qmdb', $this->last_error );
-			// Clear insert_id on a subsequent failed insert.
-			if ( $this->insert_id && preg_match( '/^\s*(insert|replace)\s/i', $query ) )
-				$this->insert_id = 0;
-
-			$this->print_error();
-			return false;
-		}
-
-		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
-			$return_val = $this->result;
-		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
-			$this->rows_affected = mysql_affected_rows( $this->dbh );
-			// Take note of the insert_id
-			if ( preg_match( '/^\s*(insert|replace)\s/i', $query ) ) {
-				$this->insert_id = mysql_insert_id($this->dbh);
-			}
-			// Return number of rows affected
-			$return_val = $this->rows_affected;
-		} else {
-			$num_rows = 0;
-			while ( $row = @mysql_fetch_object( $this->result ) ) {
-				$this->last_result[$num_rows] = $row;
-				$num_rows++;
-			}
-
-			// Log number of rows the query returned
-			// and return number of rows selected
-			$this->num_rows = $num_rows;
-			$return_val     = $num_rows;
-		}
-
-		if ( SAVEQUERIES )
-			$this->queries[$this->num_queries]['result'] = $return_val;
-
-		return $return_val;
+		return $result;
 	}
 
 }
