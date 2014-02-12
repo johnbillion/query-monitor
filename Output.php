@@ -20,6 +20,4 @@ interface QM_Output {
 
 	public function output();
 
-	public function get_type();
-
 }

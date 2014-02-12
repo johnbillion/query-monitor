@@ -180,8 +180,4 @@ class QM_Output_Html implements QM_Output {
 
 	}
 
-	final public function get_type() {
-		return 'html';
-	}
-
 }

@@ -26,8 +26,4 @@ class QM_Output_Headers implements QM_Output {
 		return false;
 	}
 
-	final public function get_type() {
-		return 'headers';
-	}
-
 }
