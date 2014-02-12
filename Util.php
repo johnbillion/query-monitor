@@ -22,13 +22,6 @@ class QM_Util {
 
 	private function __construct() {}
 
-	public static function sort( $a, $b ) {
-		if ( $a['ltime'] == $b['ltime'] )
-			return 0;
-		else
-			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
-	}
-
 	public static function convert_hr_to_bytes( $size ) {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only

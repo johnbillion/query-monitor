@@ -42,6 +42,13 @@ abstract class QM_Collector {
 		return $this->data;
 	}
 
+	public static function sort_ltime( $a, $b ) {
+		if ( $a['ltime'] == $b['ltime'] )
+			return 0;
+		else
+			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
+	}
+
 	public function process() {}
 
 }

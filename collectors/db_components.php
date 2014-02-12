@@ -31,6 +31,7 @@ class QM_Collector_DB_Components extends QM_Collector {
 		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
+				usort( $this->data['times'], 'QM_Collector::sort_ltime' );
 			}
 			if ( isset( $dbq->data['types'] ) ) {
 				$this->data['types'] = $dbq->data['types'];

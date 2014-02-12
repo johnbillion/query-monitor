@@ -54,9 +54,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			usort( $data['times'], 'QM_Util::sort' );
-
-			foreach ( $data['times'] as $caller => $row ) {
+			foreach ( $data['times'] as $row ) {
 				$total_time  += $row['ltime'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
