@@ -28,12 +28,33 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="3">' . $this->collector->name() . '</th>';
-		echo '</tr>';
-		echo '</thead>';
 		echo '<tbody>';
+
+		foreach ( array(
+			'request'       => __( 'Request', 'query-monitor' ),
+			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
+			'matched_query' => __( 'Matched Query', 'query-monitor' ),
+			'query_string'  => __( 'Query String', 'query-monitor' ),
+		) as $item => $name ) {
+
+			if ( !isset( $data['request'][$item] ) )
+				continue;
+
+			if ( ! empty( $data['request'][$item] ) ) {
+				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ) ) ) {
+					$value = self::format_url( $data['request'][$item] );
+				} else {
+					$value = esc_html( $data['request'][$item] );
+				}
+			} else {
+				$value = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+			}
+
+			echo '<tr>';
+			echo '<td valign="top">' . $name . '</td>';
+			echo '<td valign="top" colspan="2">' . $value . '</td>';
+			echo '</tr>';
+		}
 
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
@@ -74,32 +95,6 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<td colspan="2"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 
-		}
-
-		foreach ( array(
-			'request'       => __( 'Request', 'query-monitor' ),
-			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
-			'matched_query' => __( 'Matched Query', 'query-monitor' ),
-			'query_string'  => __( 'Query String', 'query-monitor' ),
-		) as $item => $name ) {
-
-			if ( !isset( $data['request'][$item] ) )
-				continue;
-
-			if ( ! empty( $data['request'][$item] ) ) {
-				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ) ) ) {
-					$value = self::format_url( $data['request'][$item] );
-				} else {
-					$value = esc_html( $data['request'][$item] );
-				}
-			} else {
-				$value = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
-			}
-
-			echo '<tr>';
-			echo '<td valign="top">' . $name . '</td>';
-			echo '<td valign="top" colspan="2">' . $value . '</td>';
-			echo '</tr>';
 		}
 
 		if ( !empty( $data['queried_object'] ) ) {
