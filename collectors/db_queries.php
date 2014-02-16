@@ -172,8 +172,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			}
 
 			$sql  = trim( $sql );
-			$type = preg_split( '/\b/', $sql );
-			$type = strtoupper( $type[1] );
+			$type = preg_split( '/\b/', $sql, 2, PREG_SPLIT_NO_EMPTY );
+			$type = strtoupper( $type[0] );
 
 			$this->log_type( $type );
 			$this->log_caller( $caller_name, $ltime, $type );
