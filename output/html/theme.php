@@ -31,15 +31,22 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">' . $this->collector->name() . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
 		echo '<tbody>';
+
 		echo '<tr>';
-		echo '<td>' . __( 'Template', 'query-monitor' ) . '</td>';
+		echo '<td>' . __( 'Theme', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html( $data['stylesheet'] ) . '</td>';
+		echo '</tr>';
+
+		if ( $data['stylesheet'] != $data['template'] ) {
+			echo '<tr>';
+			echo '<td>' . __( 'Parent Theme', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html( $data['template'] ) . '</td>';
+			echo '</tr>';
+		}
+
+		echo '<tr>';
+		echo '<td>' . __( 'Template File', 'query-monitor' ) . '</td>';
 		echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>';
 		echo '</tr>';
 
@@ -54,25 +61,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				if ( !$first )
 					echo '<tr>';
 
-				echo "<td>{$class}</td>";
+				echo '<td>' . esc_html( $class ) . '</td>';
 				echo '</tr>';
 
 				$first = false;
 
 			}
 
-		}
-
-		echo '<tr>';
-		echo '<td>' . __( 'Theme', 'query-monitor' ) . '</td>';
-		echo "<td>{$data['stylesheet']}</td>";
-		echo '</tr>';
-
-		if ( $data['stylesheet'] != $data['template'] ) {
-			echo '<tr>';
-			echo '<td>' . __( 'Parent Theme', 'query-monitor' ) . '</td>';
-			echo "<td>{$data['template']}</td>";
-			echo '</tr>';
 		}
 
 		echo '</tbody>';
