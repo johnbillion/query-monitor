@@ -132,8 +132,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	protected function output_queries( $name, stdClass $db, array $data ) {
 
-		$max_exceeded = $db->total_qs > QM_DB_LIMIT;
-
 		$span = 4;
 
 		if ( $db->has_result )
@@ -152,16 +150,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-warn">' . sprintf( __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its <code>db.php</code> file into place. <a href="%s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
 				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
-			) . '</td>';
-			echo '</tr>';
-		}
-
-		if ( $max_exceeded ) {
-			echo '<tr>';
-			echo '<td colspan="' . $span . '" class="qm-expensive">' . sprintf( __( '%1$s %2$s queries were performed on this page load. Crikey!', 'query-monitor' ),
-				number_format_i18n( $db->total_qs ),
-				$name,
-				number_format_i18n( QM_DB_LIMIT )
 			) . '</td>';
 			echo '</tr>';
 		}

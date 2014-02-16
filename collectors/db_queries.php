@@ -19,11 +19,6 @@ if ( !defined( 'SAVEQUERIES' ) )
 if ( !defined( 'QM_DB_EXPENSIVE' ) )
 	define( 'QM_DB_EXPENSIVE', 0.05 );
 
-# QM_DB_LIMIT used to be a hard limit but proved to be more of an annoyance than anything. It now
-# just adds a nag to the top of the query table. I might remove it altogether at some point.
-if ( !defined( 'QM_DB_LIMIT' ) )
-	define( 'QM_DB_LIMIT', 100 );
-
 class QM_Collector_DB_Queries extends QM_Collector {
 
 	public $id = 'db_queries';
