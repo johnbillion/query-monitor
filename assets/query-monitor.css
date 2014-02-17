@@ -328,7 +328,7 @@ body.js #qm-wrapper {
 }
 
 .qm a.qm-toggle {
-	color: #ccc !important;
+	color: #bbb !important;
 	padding: 0 3px !important;
 	border: 1px solid transparent !important;
 }
@@ -336,7 +336,7 @@ body.js #qm-wrapper {
 .qm a.qm-toggle:hover {
 	text-decoration: none !important;
 	border-color: #e1e1e1 !important;
-	color: #999 !important;
+	color: #888 !important;
 	background: #eee !important;
 }
 
