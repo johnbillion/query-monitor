@@ -235,6 +235,27 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$result = "<td valign='top' class='qm-row-result'>{$row['result']}</td>\n";
 		}
 
+		if ( isset( $row['trace'] ) ) {
+
+			$caller         = $row['trace']->get_caller();
+			$caller_name    = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
+			$stack          = array();
+			$filtered_trace = $row['trace']->get_filtered_trace();
+			array_shift( $filtered_trace );
+
+			foreach ( $filtered_trace as $item ) {
+				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+			}
+
+		} else {
+
+			$caller_name = $row['caller'];
+			$stack       = explode( ', ', $row['stack'] );
+			$stack       = array_reverse( $stack );
+			array_shift( $stack );
+
+		}
+
 		if ( isset( $cols['sql'] ) )
 			$row_attr['data-qm-db_queries-type'] = $row['type'];
 		if ( isset( $cols['component'] ) )
@@ -263,36 +284,18 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";
 
-			$caller_name = $row['caller'];
-
-			if ( isset( $row['trace'] ) ) {
-				$caller      = $row['trace']->get_caller();
-				$caller_name = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
-			}
-
 			echo $caller_name;
-
-			# This isn't optimal...
-			# @TODO convert this to use our new filtered trace array when present
-			$stack = explode( ', ', $row['stack'] );
-			$stack = array_reverse( $stack );
-			array_shift( $stack );
-			$stack = implode( '<br>', $stack );
 
 			if ( !empty( $stack ) ) {
 				echo '<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>';
-				echo '<div class="qm-toggled">' . $stack . '</div>';
+				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>';
 			}
 
 			echo "</td>";
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			# This isn't optimal...
-			$stack = explode( ', ', $row['stack'] );
-			$stack = array_reverse( $stack );
-			$stack = implode( '<br>', $stack );
-			echo "<td valign='top' class='qm-row-caller qm-row-stack qm-ltr'>{$stack}</td>";
+			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-ltr">' . implode( '<br>', $stack ) . '</td>';
 		}
 
 		if ( isset( $cols['component'] ) )

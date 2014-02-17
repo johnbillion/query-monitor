@@ -156,8 +156,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 				$trace     = null;
 				$component = null;
-				$callers = explode( ',', $stack );
-				$caller  = trim( end( $callers ) );
+				$callers   = explode( ',', $stack );
+				$caller    = trim( end( $callers ) );
 
 				if ( false !== strpos( $caller, '(' ) )
 					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
