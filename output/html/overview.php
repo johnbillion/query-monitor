@@ -62,7 +62,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<tbody>';
 		echo '<tr>';
 		echo "<td>{$total_stime}{$time_usage}</td>";
-		echo '<td>' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
+
+		if ( empty( $data['memory'] ) ) {
+			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em><br><span class="qm-info">' . __( 'Neither memory_get_peak_usage() nor memory_get_usage() are available. Speak to your host and get them to sort it out.', 'query-monitor' ) . '</span></td>';
+		} else {
+			echo '<td>' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
+		}
+
 		if ( isset( $db_query_num ) ) {
 			echo "<td>{$db_stime}</td>";
 			echo '<td>';
@@ -86,13 +92,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
+		if ( empty( $data['memory'] ) ) {
+			$memory = '??';
+		} else {
+			$memory = number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 2 );
+		}
+
 		$title[] = sprintf(
 			_x( '%s<small>S</small>', 'page load time', 'query-monitor' ),
 			number_format_i18n( $data['time'], 2 )
 		);
 		$title[] = sprintf(
 			_x( '%s<small>MB</small>', 'memory usage', 'query-monitor' ),
-			number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 2 )
+			$memory
 		);
 		return $title;
 	}
