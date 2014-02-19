@@ -146,6 +146,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th colspan="' . $span . '">' . sprintf( __( '%s Queries', 'query-monitor' ), $name ) . '</th>';
 		echo '</tr>';
 
+		if ( !empty( $db->rows ) ) {
+
 		if ( ! $db->has_trace ) {
 			echo '<tr>';
 			echo '<td colspan="' . $span . '" class="qm-warn">' . sprintf( __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its <code>db.php</code> file into place. <a href="%s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
@@ -167,6 +169,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
 		echo '</tr>';
+
+		}
+
 		echo '</thead>';
 
 		if ( !empty( $db->rows ) ) {
