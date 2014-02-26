@@ -124,6 +124,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$rows       = array();
 		$types      = array();
 		$total_time = 0;
+		$has_result = false;
+		$has_trace  = false;
 
 		foreach ( (array) $db->queries as $query ) {
 

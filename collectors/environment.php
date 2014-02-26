@@ -111,13 +111,20 @@ class QM_Collector_Environment extends QM_Collector {
 				" );
 
 				if ( is_resource( $db->dbh ) ) {
-					$version = mysql_get_server_info( $db->dbh );
-					$driver  = 'mysql';
-				} else if ( is_object( $db->dbh ) and method_exists( $db->dbh, 'db_version' ) ) {
-					$version = $db->dbh->db_version();
-					$driver  = get_class( $db->dbh );
+					# Standard mysql extension
+					$driver = 'mysql';
+				} else if ( is_object( $db->dbh ) ) {
+					# mysqli or PDO
+					$driver = get_class( $db->dbh );
 				} else {
-					$version = $driver = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
+					# Who knows?
+					$driver = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
+				}
+
+				if ( method_exists( $db, 'db_version' ) ) {
+					$version = $db->db_version();
+				} else {
+					$version = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
 				}
 
 				$this->data['db'][$id] = array(
