@@ -141,27 +141,8 @@ class QM_Collector_Environment extends QM_Collector {
 
 		}
 
-		if ( function_exists( 'posix_getpwuid' ) ) {
-
-			$u = posix_getpwuid( posix_getuid() );
-			$g = posix_getgrgid( $u['gid'] );
-			$php_u = esc_html( $u['name'] . ':' . $g['name'] );
-
-		} else if ( isset( $_SERVER['USER'] ) ) {
-
-			$php_u = esc_html( $_SERVER['USER'] );
-
-		} else if ( function_exists( 'exec' ) ) {
-
-			$php_u = esc_html( exec( 'whoami' ) );
-
-		}
-
-		if ( empty( $php_u ) )
-			$php_u = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
-
 		$this->data['php']['version'] = phpversion();
-		$this->data['php']['user']    = $php_u;
+		$this->data['php']['user']    = self::get_current_user();
 
 		foreach ( $this->php_vars as $setting )
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
@@ -184,12 +165,12 @@ class QM_Collector_Environment extends QM_Collector {
 		if ( isset( $server[1] ) )
 			$server_version = $server[1];
 		else
-			$server_version = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+			$server_version = null;
 
 		if ( isset( $_SERVER['SERVER_ADDR'] ) )
 			$address = $_SERVER['SERVER_ADDR'];
 		else
-			$address = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+			$address = null;
 
 		$this->data['server'] = array(
 			'name'    => $server[0],
@@ -197,6 +178,39 @@ class QM_Collector_Environment extends QM_Collector {
 			'address' => $address,
 			'host'    => php_uname( 'n' )
 		);
+
+	}
+
+	protected static function get_current_user() {
+
+		$php_u = null;
+
+		if ( function_exists( 'posix_getpwuid' ) ) {
+			$u = posix_getpwuid( posix_getuid() );
+			$g = posix_getgrgid( $u['gid'] );
+			$php_u = $u['name'] . ':' . $g['name'];
+		}
+
+		if ( empty( $php_u ) and isset( $_ENV['APACHE_RUN_USER'] ) ) {
+			$php_u = $_ENV['APACHE_RUN_USER'];
+			if ( isset( $_ENV['APACHE_RUN_GROUP'] ) ) {
+				$php_u .= ':' . $_ENV['APACHE_RUN_GROUP'];
+			}
+		}
+
+		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) {
+			$php_u = $_SERVER['USER'];
+		}
+
+		if ( empty( $php_u ) and function_exists( 'exec' ) ) {
+			$php_u = exec( 'whoami' );
+		}
+
+		if ( empty( $php_u ) and function_exists( 'getenv' ) ) {
+			$php_u = getenv( 'USERNAME' );
+		}
+
+		return $php_u;
 
 	}
 

@@ -43,7 +43,11 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>user</td>';
-		echo "<td>{$data['php']['user']}</td>";
+		if ( !empty( $data['php']['user'] ) ) {
+			echo '<td>' . esc_html( $data['php']['user'] ) . '</td>';
+		} else {
+			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+		}
 		echo '</tr>';
 
 		foreach ( $data['php']['variables'] as $key => $val ) {
@@ -200,12 +204,20 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>version</td>';
-		echo "<td>{$data['server']['version']}</td>";
+		if ( !empty( $data['server']['version'] ) ) {
+			echo '<td>' . esc_html( $data['server']['version'] ) . '</td>';
+		} else {
+			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+		}
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<td>address</td>';
-		echo "<td>{$data['server']['address']}</td>";
+		if ( !empty( $data['server']['address'] ) ) {
+			echo '<td>' . esc_html( $data['server']['address'] ) . '</td>';
+		} else {
+			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+		}
 		echo '</tr>';
 
 		echo '<tr>';
