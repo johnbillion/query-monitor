@@ -32,10 +32,13 @@ abstract class QM_Collector {
 	}
 
 	public static function format_bool_constant( $constant ) {
-		if ( !defined( $constant ) or !constant( $constant ) )
+		if ( !defined( $constant ) ) {
+			return 'undefined';
+		} else if ( !constant( $constant ) ) {
 			return 'false';
-		else
+		} else {
 			return 'true';
+		}
 	}
 
 	final public function get_data() {
