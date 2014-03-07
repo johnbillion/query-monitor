@@ -174,10 +174,6 @@ class QM_Util {
 		return false;
 	}
 
-	public static function wpv() {
-		return 'qm-wp-' . ( floatval( $GLOBALS['wp_version'] ) * 10 );
-	}
-
 	public static function get_admins() {
 		if ( is_multisite() )
 			return false;
