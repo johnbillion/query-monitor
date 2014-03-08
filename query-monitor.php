@@ -42,8 +42,9 @@ class QueryMonitor extends QM_Plugin {
 	protected function __construct( $file ) {
 
 		# Actions
-		add_action( 'init',     array( $this, 'action_init' ) );
-		add_action( 'shutdown', array( $this, 'action_shutdown' ), 0 );
+		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
+		add_action( 'init',           array( $this, 'action_init' ) );
+		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
@@ -62,6 +63,10 @@ class QueryMonitor extends QM_Plugin {
 
 		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
 			$this->add_collector( $collector );
+
+	}
+
+	public function action_plugins_loaded() {
 
 		# Dispatchers:
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
