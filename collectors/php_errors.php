@@ -105,6 +105,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	}
 
+	public function process() {
+		restore_error_handler();
+	}
+
 }
 
 function register_qm_collector_php_errors( array $qm ) {
