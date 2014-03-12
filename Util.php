@@ -19,6 +19,7 @@ class QM_Util {
 
 	protected static $file_components = array();
 	protected static $file_dirs       = array();
+	protected static $abspath         = null;
 
 	private function __construct() {}
 
@@ -48,8 +49,10 @@ class QM_Util {
 		$dir = preg_replace( '|/+|', '/', $dir );
 
 		if ( is_string( $abspath_replace ) ) {
-			# @TODO cache the value of self::standard_dir( ABSPATH )
-			$dir = str_replace( self::standard_dir( ABSPATH ), $abspath_replace, $dir );
+			if ( !self::$abspath ) {
+				self::$abspath = self::standard_dir( ABSPATH );
+			}
+			$dir = str_replace( self::$abspath, $abspath_replace, $dir );
 		}
 
 		return $dir;
