@@ -58,7 +58,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 		return new QM_Output_Headers( $collector );
 	}
 
-	public function active() {
+	public function is_active() {
 
 		if ( ! $this->qm->user_can_view() ) {
 			return false;

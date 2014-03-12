@@ -173,7 +173,7 @@ class QueryMonitor extends QM_Plugin {
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
 
 			# At least one dispatcher is active, so we need to process:
-			if ( $dispatcher->active() ) {
+			if ( $dispatcher->is_active() ) {
 				return true;
 			}
 
@@ -195,7 +195,7 @@ class QueryMonitor extends QM_Plugin {
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
 
-			if ( ! $dispatcher->active() ) {
+			if ( ! $dispatcher->is_active() ) {
 				continue;
 			}
 

@@ -173,7 +173,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function active() {
+	public function is_active() {
 
 		if ( ! $this->qm->user_can_view() ) {
 			return false;

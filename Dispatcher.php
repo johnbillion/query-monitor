@@ -21,7 +21,7 @@ abstract class QM_Dispatcher {
 		$this->qm = $qm;
 	}
 
-	abstract public function active();
+	abstract public function is_active();
 
 	public function init() {
 		// nothing
