@@ -65,6 +65,15 @@ class QM_Backtrace {
 		), $args );
 		$this->trace = debug_backtrace( false );
 		$this->ignore( 1 ); # Self-awareness
+		
+		/**
+		 * If error_handler() is in the trace, QM fails later when it tries
+		 * to get $lowest['file'] in get_filtered_trace()
+		 */ 
+		if ( $this->trace[0]['function'] === 'error_handler' ) {
+			$this->ignore( 1 );
+		}
+
 
 		if ( $args['ignore_items'] )
 			$this->ignore( $args['ignore_items'] );
