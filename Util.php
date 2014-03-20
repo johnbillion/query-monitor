@@ -46,7 +46,7 @@ class QM_Util {
 	public static function standard_dir( $dir, $abspath_replace = null ) {
 
 		$dir = str_replace( '\\', '/', $dir );
-		$dir = preg_replace( '|/+|', '/', $dir );
+		$dir = str_replace( '//', '/', $dir );
 
 		if ( is_string( $abspath_replace ) ) {
 			if ( !self::$abspath ) {
