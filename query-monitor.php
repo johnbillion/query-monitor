@@ -131,10 +131,7 @@ class QueryMonitor extends QM_Plugin {
 		if ( !did_action( 'plugins_loaded' ) )
 			return false;
 
-		if ( is_multisite() ) {
-			if ( current_user_can( 'manage_network_options' ) )
-				return true;
-		} else if ( current_user_can( 'view_query_monitor' ) ) {
+		if ( current_user_can( 'view_query_monitor' ) ) {
 			return true;
 		}
 
