@@ -30,31 +30,41 @@ class QM_Collector_Authentication extends QM_Collector {
 	public function action_plugins_loaded() {
 
 		if ( !defined( 'QM_COOKIE' ) )
-			define( 'QM_COOKIE', 'qm_' . COOKIEHASH );
+			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
 
 	}
 
-	public function user_can_view() {
+	public function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) )
-			return $this->verify_nonce( $_COOKIE[QM_COOKIE], 'view_query_monitor' );
+			return $this->verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
 		return false;
 	}
 
-	public function create_nonce( $action ) {
-		# This is just WordPress' nonce implementation minus the user ID
-		# check so a nonce can be set in a cookie and used cross-user
-		$i = wp_nonce_tick();
-		return substr( wp_hash( $i . $action, 'nonce' ), -12, 10 );
+	public function get_cookie_attributes() {
+
+		return array(
+			'name'   => QM_COOKIE,
+			'path'   => COOKIEPATH,
+			'domain' => COOKIE_DOMAIN,
+		);
+
 	}
 
-	public function verify_nonce( $nonce, $action ) {
+	public function get_cookie_content() {
 
-		$i = wp_nonce_tick();
+		$expires = time() + 172800; # 48 hours
+		$value   = wp_generate_auth_cookie( get_current_user_id(), $expires, 'logged_in' );
+		$secure  = apply_filters( 'secure_logged_in_cookie', false, get_current_user_id(), is_ssl() );
 
-		if ( substr( wp_hash( $i . $action, 'nonce' ), -12, 10 ) === $nonce )
-			return true;
-		if ( substr( wp_hash( ( $i - 1 ) . $action, 'nonce' ), -12, 10 ) === $nonce )
-			return true;
+		return compact( 'expires', 'value', 'secure' );
+
+	}
+
+	public function verify_cookie( $value ) {
+
+		if ( $old_user_id = wp_validate_auth_cookie( $value, 'logged_in' ) ) {
+			return user_can( $old_user_id, 'view_query_monitor' );
+		}
 
 		return false;
 

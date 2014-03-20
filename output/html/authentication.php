@@ -28,15 +28,17 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		$name   = QM_COOKIE;
-		$domain = COOKIE_DOMAIN;
-		$path   = COOKIEPATH;
+		$atts = $this->collector->get_cookie_attributes();
 
-		if ( !isset( $_COOKIE[$name] ) or !$this->collector->verify_nonce( $_COOKIE[$name], 'view_query_monitor' ) ) {
+		if ( !$this->collector->user_verified() ) {
 
-			$value = $this->collector->create_nonce( 'view_query_monitor' );
-			$text  = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
-			$link  = "document.cookie='{$name}={$value}; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
+			$cookie = $this->collector->get_cookie_content();
+			$text   = esc_js( __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' ) );
+			$value  = "{$atts['name']}={$cookie['value']}; domain={$atts['domain']}; path={$atts['path']}";
+			if ( $cookie['secure'] ) {
+				$value .= '; secure';
+			}
+			$link = "document.cookie='{$value}'; alert('{$text}'); return false;";
 
 			echo '<tr>';
 			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
@@ -47,8 +49,9 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 
 		} else {
 
-			$text = esc_js( __( 'Authentication cookie cleared.', 'query-monitor' ) );
-			$link = "document.cookie='{$name}=; expires=' + new Date(0).toUTCString() + '; domain={$domain}; path={$path}'; alert('{$text}'); return false;";
+			$text  = esc_js( __( 'Authentication cookie cleared.', 'query-monitor' ) );
+			$value = "{$atts['name']}=; expires=' + new Date(0).toUTCString() + '; domain={$atts['domain']}; path={$atts['path']}";
+			$link  = "document.cookie='{$value}'; alert('{$text}'); return false;";
 
 			echo '<tr>';
 			echo '<td>' . __( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</td>';

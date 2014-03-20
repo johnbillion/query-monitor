@@ -139,7 +139,7 @@ class QueryMonitor extends QM_Plugin {
 		}
 
 		if ( $auth = self::get_collector( 'authentication' ) )
-			return $auth->user_can_view();
+			return $auth->user_verified();
 
 		return false;
 
