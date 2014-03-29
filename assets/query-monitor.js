@@ -56,7 +56,8 @@ jQuery( function($) {
 	if ( !window.qm )
 		return;
 
-	var is_admin = $('body').hasClass('wp-admin');
+	var is_admin = $('body').hasClass('wp-admin'),
+		lastHref, resetTop;
 
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
@@ -90,10 +91,26 @@ jQuery( function($) {
 		$('#wp-admin-bar-query-monitor ul').append(container);
 
 		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
+			var currentHref = $(this).attr('href'),
+				scrollTop = $(window).scrollTop(),
+				qmTop;
+
 			if ( is_admin ) {
 				$('#wpfooter').css('position','relative');
 			}
-			$('#qm').show();
+			qmTop = $('#qm').show().offset().top;
+
+			if ( scrollTop < qmTop ) {
+				resetTop = scrollTop;
+			}
+
+			if ( ( lastHref && lastHref === currentHref ) || ( scrollTop > qmTop && '#qm-overview' === currentHref ) ) {
+				e.preventDefault();
+				lastHref = null;
+				$('html,body').scrollTop(resetTop);
+			} else {
+				lastHref = currentHref;
+			}
 		});
 
 		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
