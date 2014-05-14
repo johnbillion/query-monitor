@@ -61,7 +61,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
-				echo "<td valign='top' class='qm-ltr'>{$row['component']}</td>";
+				echo "<td valign='top'>{$row['component']}</td>";
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) )
