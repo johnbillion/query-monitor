@@ -3,7 +3,7 @@
 Plugin Name: Query Monitor
 Description: Monitoring of database queries, hooks, conditionals and more.
 Version:     2.6.7
-Plugin URI:  https://github.com/johnbillion/query-monitor
+Plugin URI:  https://querymonitor.com/
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
 Text Domain: query-monitor
