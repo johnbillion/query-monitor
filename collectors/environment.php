@@ -149,11 +149,16 @@ class QM_Collector_Environment extends QM_Collector {
 
 		$this->data['php']['error_reporting'] = error_reporting();
 
-		# @TODO put WP's other debugging constants in here, eg. SCRIPT_DEBUG
 		$this->data['wp'] = array(
-			'version'      => $wp_version,
-			'WP_DEBUG'     => self::format_bool_constant( 'WP_DEBUG' ),
-			'WP_LOCAL_DEV' => self::format_bool_constant( 'WP_LOCAL_DEV' ),
+			'version'             => $wp_version,
+			'WP_DEBUG'            => self::format_bool_constant( 'WP_DEBUG' ),
+			'WP_DEBUG_DISPLAY'    => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
+			'WP_DEBUG_LOG'        => self::format_bool_constant( 'WP_DEBUG_LOG' ),
+			'SCRIPT_DEBUG'        => self::format_bool_constant( 'SCRIPT_DEBUG' ),
+			'CONCATENATE_SCRIPTS' => self::format_bool_constant( 'CONCATENATE_SCRIPTS' ),
+			'COMPRESS_SCRIPTS'    => self::format_bool_constant( 'COMPRESS_SCRIPTS' ),
+			'COMPRESS_CSS'        => self::format_bool_constant( 'COMPRESS_CSS' ),
+			'WP_LOCAL_DEV'        => self::format_bool_constant( 'WP_LOCAL_DEV' ),
 		);
 
 		if ( is_multisite() )
