@@ -285,11 +285,6 @@ body.js #qm-wrapper {
 	color: #ccc !important;
 }
 
-.qm span.qm-na,
-.qm tr.qm-na {
-	color: #ccc !important;
-}
-
 .qm .qm-sql {
 	word-wrap: break-word !important;
 	word-break: break-all !important;
@@ -340,8 +335,7 @@ body.js #qm-wrapper {
 	background: #eee !important;
 }
 
-.qm .qm-warn,
-.qm .qm-warn span.qm-na {
+.qm .qm-warn {
 	color: #f00 !important;
 }
 

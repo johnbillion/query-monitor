@@ -84,17 +84,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				else
 					$transport = '';
 
-				$stack = $row['trace']->get_stack();
-
-				foreach ( $stack as & $frame ) {
-					foreach ( array( 'WP_Http', 'wp_remote_', 'fetch_rss', 'fetch_feed', 'SimplePie', 'download_url' ) as $skip ) {
-						if ( 0 === strpos( $frame, $skip ) ) {
-							$frame = sprintf( '<span class="qm-na">%s</span>', $frame );
-							break;
-						}
-					}
-				}
-
+				$stack     = $row['trace']->get_stack();
 				$component = $row['trace']->get_component();
 
 				$stack = implode( '<br>', $stack );

@@ -55,15 +55,6 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					$row['expiration'] = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
 				$expiration = ( isset( $row['expiration'] ) ) ? "<td valign='top'>{$row['expiration']}</td>\n" : '';
 
-				foreach ( $stack as & $trace ) {
-					foreach ( array( 'set_transient', 'set_site_transient' ) as $skip ) {
-						if ( 0 === strpos( $trace, $skip ) ) {
-							$trace = sprintf( '<span class="qm-na">%s</span>', $trace );
-							break;
-						}
-					}
-				}
-
 				$component = $row['trace']->get_component();
 
 				$stack = implode( '<br>', $stack );
