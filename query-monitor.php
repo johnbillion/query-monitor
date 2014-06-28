@@ -154,7 +154,7 @@ class QueryMonitor extends QM_Plugin {
 
 		} else {
 
-			if ( ! did_action( 'wp' ) ) {
+			if ( ! ( did_action( 'wp' ) or did_action( 'login_init' ) ) ) {
 				return false;
 			}
 
