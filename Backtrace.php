@@ -107,20 +107,20 @@ class QM_Backtrace {
 
 			try {
 
-				if ( isset( $item['file'] ) ) {
-					$file = $item['file'];
-				} else if ( isset( $item['class'] ) ) {
+				if ( isset( $item['class'] ) ) {
 					if ( !is_object( $item['class'] ) and !class_exists( $item['class'], false ) )
 						continue;
 					if ( !method_exists( $item['class'], $item['function'] ) )
 						continue;
 					$ref = new ReflectionMethod( $item['class'], $item['function'] );
 					$file = $ref->getFileName();
-				} else {
-					if ( !function_exists( $item['function'] ) )
-						continue;
+				} else if ( function_exists( $item['function'] ) ) {
 					$ref = new ReflectionFunction( $item['function'] );
 					$file = $ref->getFileName();
+				} else if ( isset( $item['file'] ) ) {
+					$file = $item['file'];
+				} else {
+					continue;
 				}
 
 				$comp = QM_Util::get_file_component( $file );
