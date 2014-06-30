@@ -83,7 +83,9 @@ class QueryMonitorDB extends wpdb {
 			return $result;
 
 		$i = $this->num_queries - 1;
-		$this->queries[$i]['trace'] = new QM_Backtrace;
+		$this->queries[$i]['trace'] = new QM_Backtrace( array(
+			'ignore_items' => 1,
+		) );
 
 		if ( $this->last_error )
 			$this->queries[$i]['result'] = new WP_Error( 'qmdb', $this->last_error );
