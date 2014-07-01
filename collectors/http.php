@@ -99,9 +99,13 @@ class QM_Collector_HTTP extends QM_Collector {
 			return $response;
 		}
 
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
 		// Something has filtered `pre_http_request` and short-circuited the request.
 		$this->data['http'][$args['_qm_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
-		$this->data['http'][$args['_qm_key']]['response'] = new WP_Error( 'http_request_not_executed', __( 'Request not executed due to a filter on pre_http_request', 'query-monitor' ) );
+		$this->data['http'][$args['_qm_key']]['response'] = new WP_Error( 'http_request_not_executed', sprintf( __( 'Request not executed due to a filter on %s', 'query-monitor' ), 'pre_http_request' ) );
 
 		return $response;
 	}
