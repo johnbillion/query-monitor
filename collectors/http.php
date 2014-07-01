@@ -123,6 +123,11 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	public function process() {
 
+		foreach ( array( 'WP_PROXY_HOST', 'WP_PROXY_PORT', 'WP_PROXY_USERNAME', 'WP_PROXY_PASSWORD', 'WP_PROXY_BYPASS_HOSTS' ) as $var ) {
+			if ( defined( $var ) and constant( $var ) )
+				$this->data['vars'][$var] = constant( $var );
+		}
+
 		if ( ! isset( $this->data['http'] ) )
 			return;
 
@@ -146,10 +151,6 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		}
 
-		foreach ( array( 'WP_PROXY_HOST', 'WP_PROXY_PORT' ) as $var ) {
-			if ( defined( $var ) and constant( $var ) )
-				$this->data['vars'][$var] = constant( $var );
-		}
 
 	}
 
