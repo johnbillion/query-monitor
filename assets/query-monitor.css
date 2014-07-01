@@ -410,16 +410,28 @@ html[dir="rtl"] .qm-ltr {
 	text-align: right !important;
 }
 
-html[dir="rtl"] .qm td.qm-priority {
-    padding: 1px 0 1px 0.75em !important;
-}
-
-html[dir="rtl"] .qm td.qm-var {
-	padding: 1px 0 1px 1.5em !important;
-	text-align: left !important;
-}
-
 html[dir="rtl"] body:not(.iframe).sticky-menu #qm {
-	margin-right: 150px !important;
+	margin-right: 160px !important;
 	margin-left: 0 !important;
+}
+
+@media all and (max-width: 900px) {
+	html[dir="rtl"] body:not(.iframe).sticky-menu #qm {
+		margin-right: 36px !important;
+		margin-left: 0 !important;
+	}
+}
+
+html[dir="rtl"] body:not(.iframe).sticky-menu.folded #qm {
+	margin-right: 36px !important;
+	margin-left: 0 !important;
+}
+
+html[dir="rtl"] #qm {
+	text-align: right !important;
+}
+
+html[dir="rtl"] .qm td,
+html[dir="rtl"] .qm th {
+	text-align: right !important;
 }
