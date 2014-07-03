@@ -1,6 +1,6 @@
 # Query Monitor #
 
-Query Monitor is a debugging plugin for anyone developing with WordPress. It has some unique features not yet seen in other debugging plugins, including automatic AJAX debugging and the ability to narrow down things by plugin or theme.
+Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging and the ability to narrow down things by plugin or theme.
 
 Query Monitor adds a toolbar menu showing an overview of the current page. Complete data is shown in the footer once you select a menu item.
 
