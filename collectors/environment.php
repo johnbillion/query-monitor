@@ -96,7 +96,6 @@ class QM_Collector_Environment extends QM_Collector {
 			'query_cache_size'   => true,  # Total cache size limit
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
-		$php_u = '';
 
 		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
 
