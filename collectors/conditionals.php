@@ -22,10 +22,6 @@ class QM_Collector_Conditionals extends QM_Collector {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function process() {
 
 		$conds = apply_filters( 'query_monitor_conditionals', array(

@@ -18,7 +18,7 @@ abstract class QM_Collector {
 
 	protected $data = array();
 
-	protected function __construct() {}
+	public function __construct() {}
 
 	final public function id() {
 		return "qm-{$this->id}";
