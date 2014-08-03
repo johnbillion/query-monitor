@@ -67,20 +67,25 @@ class QM_Collector_HTTP extends QM_Collector {
 				list( $response, $action, $class ) = $fga;
 
 				# http://core.trac.wordpress.org/ticket/18732
-				if ( isset( $fga[3] ) )
+				if ( isset( $fga[3] ) ) {
 					$args = $fga[3];
-				if ( isset( $fga[4] ) )
+				}
+				if ( isset( $fga[4] ) ) {
 					$url = $fga[4];
-				if ( !isset( $args['_qm_key'] ) )
+				}
+				if ( !isset( $args['_qm_key'] ) ) {
 					return;
+				}
 
-				if ( !empty( $class ) )
+				if ( !empty( $class ) ) {
 					$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
-				else
-					$this->data['http'][$args['_qm_key']]['transport'] = false;
+				} else {
+					$this->data['http'][$args['_qm_key']]['transport'] = null;
+				}
 
-				if ( is_wp_error( $response ) )
+				if ( is_wp_error( $response ) ) {
 					$this->filter_http_response( $response, $args, $url );
+				}
 
 				break;
 
@@ -118,13 +123,21 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	public function process() {
 
-		foreach ( array( 'WP_PROXY_HOST', 'WP_PROXY_PORT', 'WP_PROXY_USERNAME', 'WP_PROXY_PASSWORD', 'WP_PROXY_BYPASS_HOSTS' ) as $var ) {
-			if ( defined( $var ) and constant( $var ) )
+		foreach ( array(
+			'WP_PROXY_HOST',
+			'WP_PROXY_PORT',
+			'WP_PROXY_USERNAME',
+			'WP_PROXY_PASSWORD',
+			'WP_PROXY_BYPASS_HOSTS',
+		) as $var ) {
+			if ( defined( $var ) and constant( $var ) ) {
 				$this->data['vars'][$var] = constant( $var );
+			}
 		}
 
-		if ( ! isset( $this->data['http'] ) )
+		if ( ! isset( $this->data['http'] ) ) {
 			return;
+		}
 
 		$silent = apply_filters( 'query_monitor_silent_http_error_codes', array(
 			'http_request_not_executed',
@@ -144,8 +157,9 @@ class QM_Collector_HTTP extends QM_Collector {
 					$this->data['errors']['error'][] = $key;
 				}
 			} else {
-				if ( intval( wp_remote_retrieve_response_code( $http['response'] ) ) >= 400 )
+				if ( intval( wp_remote_retrieve_response_code( $http['response'] ) ) >= 400 ) {
 					$this->data['errors']['warning'][] = $key;
+				}
 			}
 
 			$http['ltime'] = ( $http['end'] - $http['start'] );
