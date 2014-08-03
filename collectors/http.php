@@ -26,8 +26,6 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		parent::__construct();
 
-		# http://core.trac.wordpress.org/ticket/25747
-
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
 		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
 		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
@@ -35,6 +33,15 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * Filter the arguments used in an HTTP request.
+	 *
+	 * Used to log the request, and to add the logging key to the arguments array.
+	 * 
+	 * @param  array  $args HTTP request arguments.
+	 * @param  string $url  The request URL.
+	 * @return array        HTTP request arguments.
+	 */
 	public function filter_http_request_args( array $args, $url ) {
 		$trace = new QM_Backtrace;
 		if ( isset( $args['_qm_key'] ) ) {
@@ -56,6 +63,18 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $args;
 	}
 
+	/**
+	 * Log the HTTP request's response if it's being short-circuited by another plugin.
+	 * This is necessary due to https://core.trac.wordpress.org/ticket/25747
+	 *
+	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
+	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
+	 *
+	 * @param bool|array|WP_Error $response The preemptive HTTP response. Default false.
+	 * @param array               $args     HTTP request arguments.
+	 * @param string              $url      The request URL.
+	 * @return bool|array|WP_Error          The preemptive HTTP response.
+	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
 
 		// All is well:
@@ -69,24 +88,23 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $response;
 	}
 
-	public function action_http_api_debug( $param, $action ) {
+	/**
+	 * Debugging action for the HTTP API.
+	 * 
+	 * @param mixed  $response A parameter which varies depending on $action.
+	 * @param string $action   The debug action. Currently one of 'response' or 'transports_list'.
+	 * @param string $class    The HTTP transport class name.
+	 * @param array  $args     HTTP request arguments.
+	 * @param string $url      The request URL.
+	 */
+	public function action_http_api_debug( $response, $action, $class = null, $args = null, $url = null ) {
 
 		switch ( $action ) {
 
 			case 'response':
 
-				$fga = func_get_args();
-
-				list( $response, $action, $class ) = $fga;
-
-				# http://core.trac.wordpress.org/ticket/18732
-				if ( isset( $fga[3] ) ) {
-					$args = $fga[3];
-				}
-				if ( isset( $fga[4] ) ) {
-					$url = $fga[4];
-				}
-				if ( !isset( $args['_qm_key'] ) ) {
+				# https://core.trac.wordpress.org/ticket/18732
+				if ( empty( $args ) or empty( $args['_qm_key'] ) ) {
 					return;
 				}
 
@@ -110,6 +128,14 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * Filter the HTTP response in order to log the response.
+	 *
+	 * @param array|WP_Error $response The HTTP response.
+	 * @param array          $args     HTTP request arguments.
+	 * @param string         $url      The request URL.
+	 * @return array|WP_Error          The HTTP response.
+	 */
 	public function filter_http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
