@@ -56,6 +56,19 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $args;
 	}
 
+	public function filter_pre_http_request( $response, array $args, $url ) {
+
+		// All is well:
+		if ( false === $response ) {
+			return $response;
+		}
+
+		// Something's filtering the response, so we'll log it
+		$this->filter_http_response( $response, $args, $url );
+
+		return $response;
+	}
+
 	public function action_http_api_debug( $param, $action ) {
 
 		switch ( $action ) {
@@ -95,19 +108,6 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		}
 
-	}
-
-	public function filter_pre_http_request( $response, array $args, $url ) {
-
-		// All is well:
-		if ( false === $response ) {
-			return $response;
-		}
-
-		// Something's filtering the response, so we'll log it
-		$this->filter_http_response( $response, $args, $url );
-
-		return $response;
 	}
 
 	public function filter_http_response( $response, array $args, $url ) {
