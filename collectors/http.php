@@ -126,6 +126,11 @@ class QM_Collector_HTTP extends QM_Collector {
 		if ( ! isset( $this->data['http'] ) )
 			return;
 
+		$silent = apply_filters( 'query_monitor_silent_http_error_codes', array(
+			'http_request_not_executed',
+			'airplane_mode_enabled'
+		) );
+
 		foreach ( $this->data['http'] as $key => & $http ) {
 
 			if ( !isset( $http['response'] ) ) {
@@ -135,8 +140,9 @@ class QM_Collector_HTTP extends QM_Collector {
 			}
 
 			if ( is_wp_error( $http['response'] ) ) {
-				if ( 'http_request_not_executed' != $http['response']->get_error_code() )
+				if ( !in_array( $http['response']->get_error_code(), $silent ) ) {
 					$this->data['errors']['error'][] = $key;
+				}
 			} else {
 				if ( intval( wp_remote_retrieve_response_code( $http['response'] ) ) >= 400 )
 					$this->data['errors']['warning'][] = $key;
