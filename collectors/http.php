@@ -26,15 +26,16 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		parent::__construct();
 
-		add_action( 'http_api_debug',    array( $this, 'action_http_debug' ),    99, 5 );
-		add_filter( 'http_request_args', array( $this, 'filter_http_request' ),  99, 2 );
-		add_filter( 'http_response',     array( $this, 'filter_http_response' ), 99, 3 );
 		# http://core.trac.wordpress.org/ticket/25747
+
+		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
 		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
+		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
+		add_filter( 'http_response',     array( $this, 'filter_http_response' ), 99, 3 );
 
 	}
 
-	public function filter_http_request( array $args, $url ) {
+	public function filter_http_request_args( array $args, $url ) {
 		$trace = new QM_Backtrace;
 		if ( isset( $args['_qm_key'] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
@@ -56,7 +57,7 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $args;
 	}
 
-	public function action_http_debug( $param, $action ) {
+	public function action_http_api_debug( $param, $action ) {
 
 		switch ( $action ) {
 
@@ -150,7 +151,6 @@ class QM_Collector_HTTP extends QM_Collector {
 			$http['ltime'] = ( $http['end'] - $http['start'] );
 
 		}
-
 
 	}
 
