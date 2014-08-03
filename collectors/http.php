@@ -41,16 +41,15 @@ class QM_Collector_HTTP extends QM_Collector {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$m_start = $this->data['http'][$args['_qm_key']]['start'];
+			$start = $this->data['http'][$args['_qm_key']]['start'];
 		} else {
-			$m_start = microtime( true );
+			$start = microtime( true );
 		}
-		$x_start = microtime( true );
-		$key = $x_start . $url;
+		$key = microtime( true ) . $url;
 		$this->data['http'][$key] = array(
 			'url'   => $url,
 			'args'  => $args,
-			'start' => $m_start,
+			'start' => $start,
 			'trace' => $trace,
 		);
 		$args['_qm_key'] = $key;
@@ -100,13 +99,8 @@ class QM_Collector_HTTP extends QM_Collector {
 			return $response;
 		}
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		// Something has filtered `pre_http_request` and short-circuited the request.
-		$this->data['http'][$args['_qm_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
-		$this->data['http'][$args['_qm_key']]['response'] = new WP_Error( 'http_request_not_executed', sprintf( __( 'Request not executed due to a filter on %s', 'query-monitor' ), 'pre_http_request' ) );
+		// Something's filtering the response, so we'll log it
+		$this->filter_http_response( $response, $args, $url );
 
 		return $response;
 	}
