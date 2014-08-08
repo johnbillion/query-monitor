@@ -151,7 +151,7 @@ class QM_Backtrace {
 			$trace = array_map( array( $this, 'filter_trace' ), $this->trace );
 			$trace = array_values( array_filter( $trace ) );
 
-			if ( empty( $trace ) ) {
+			if ( empty( $trace ) && !empty($this->trace) ) {
 				$lowest                 = $this->trace[0];
 				$file                   = QM_Util::standard_dir( $lowest['file'], '' );
 				$lowest['calling_file'] = $lowest['file'];
