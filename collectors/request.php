@@ -18,10 +18,6 @@ class QM_Collector_Request extends QM_Collector {
 
 	public $id = 'request';
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function name() {
 		return __( 'Request', 'query-monitor' );
 	}

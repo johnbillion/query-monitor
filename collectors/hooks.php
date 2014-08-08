@@ -22,10 +22,6 @@ class QM_Collector_Hooks extends QM_Collector {
 		return __( 'Hooks', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function process() {
 
 		global $wp_actions, $wp_filter;

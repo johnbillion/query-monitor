@@ -22,10 +22,6 @@ class QM_Collector_DB_Components extends QM_Collector {
 		return __( 'Queries by Component', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function process() {
 
 		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {

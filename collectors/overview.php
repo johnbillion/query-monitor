@@ -22,10 +22,6 @@ class QM_Collector_Overview extends QM_Collector {
 		return __( 'Overview', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function process() {
 
 		$this->data['time']       = self::timer_stop_float();

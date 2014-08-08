@@ -22,10 +22,6 @@ class QM_Collector_Admin extends QM_Collector {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function process() {
 
 		global $pagenow;

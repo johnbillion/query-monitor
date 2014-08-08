@@ -28,10 +28,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		return __( 'Database Queries', 'query-monitor' );
 	}
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function get_errors() {
 		if ( !empty( $this->data['errors'] ) )
 			return $this->data['errors'];
