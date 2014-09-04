@@ -18,6 +18,7 @@ GNU General Public License for more details.
 	color: #8c8 !important;
 }
 
+#wpadminbar .quicklinks .menupop ul li.qm-true > a:focus,
 #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
 	color: #4a4 !important;
 }
@@ -328,6 +329,7 @@ body.js #qm-wrapper {
 	border: 1px solid transparent !important;
 }
 
+.qm a.qm-toggle:focus,
 .qm a.qm-toggle:hover {
 	text-decoration: none !important;
 	border-color: #e1e1e1 !important;
