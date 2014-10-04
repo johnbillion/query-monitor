@@ -58,8 +58,12 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# Collectors:
-		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $collector )
-			include $collector;
+		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
+		$collector_iterator = new DirectoryIterator( $this->plugin_path( 'collectors' ) );
+		foreach ( $collector_iterator as $collector ) {
+			if ( $collector->getExtension() === 'php' )
+				include $collector->getPathname();
+		}
 
 		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
 			$this->add_collector( $collector );
@@ -69,8 +73,12 @@ class QueryMonitor extends QM_Plugin {
 	public function action_plugins_loaded() {
 
 		# Dispatchers:
-		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $dispatcher )
-			include $dispatcher;
+		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
+		$dispatcher_iterator = new DirectoryIterator( $this->plugin_path( 'dispatchers' ) );
+		foreach ( $dispatcher_iterator as $dispatcher ) {
+			if ( $dispatcher->getExtension() === 'php' )
+				include $dispatcher->getPathname();
+		}
 
 		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher )
 			$this->add_dispatcher( $dispatcher );

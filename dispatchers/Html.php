@@ -116,8 +116,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $output ) {
-			include $output;
+		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
+		$output_iterator = new DirectoryIterator( $this->qm->plugin_path( 'output/html' ) );
+		foreach ( $output_iterator as $output ) {
+			if ( $output->getExtension() === 'php' )
+				include $output->getPathname();
 		}
 
 		if ( !is_admin_bar_showing() )
