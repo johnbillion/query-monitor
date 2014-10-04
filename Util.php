@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
 	protected static $file_components = array();
@@ -188,4 +189,5 @@ class QM_Util {
 		return ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
+}
 }

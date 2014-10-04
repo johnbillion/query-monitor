@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 
+if ( ! class_exists( 'QM_Collector' ) ) {
 abstract class QM_Collector {
 
 	protected $data = array();
@@ -56,4 +57,5 @@ abstract class QM_Collector {
 
 	public function tear_down() {}
 
+}
 }

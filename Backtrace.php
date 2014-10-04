@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 
+if ( ! class_exists( 'QM_Backtrace' ) ) {
 class QM_Backtrace {
 
 	protected static $ignore_class = array(
@@ -265,5 +266,10 @@ class QM_Backtrace {
 		return $return;
 
 	}
+
+}
+} else {
+
+	add_action( 'init', 'QueryMonitor::symlink_warning' );
 
 }

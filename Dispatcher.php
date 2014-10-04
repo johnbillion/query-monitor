@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+if ( ! class_exists( 'QM_Dispatcher' ) ) {
 abstract class QM_Dispatcher {
 
 	public function __construct( QM_Plugin $qm ) {
@@ -54,4 +55,5 @@ abstract class QM_Dispatcher {
 
 	}
 
+}
 }

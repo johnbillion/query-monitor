@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 
+if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
 	/**
@@ -84,4 +85,5 @@ abstract class QM_Plugin {
 		return $this->plugin[$item] . ltrim( $file, '/' );
 	}
 
+}
 }
