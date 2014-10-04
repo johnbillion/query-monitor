@@ -93,6 +93,15 @@ jQuery( function($) {
 			if ( is_admin ) {
 				$('#wpfooter').css('position','relative');
 			}
+			if ( window.infinite_scroll && infinite_scroll.contentSelector ) {
+
+				$( infinite_scroll.contentSelector ).infinitescroll('pause');
+
+				if ( window.console ) {
+					console.log( qm_l10n.infinitescroll_paused );
+				}
+
+			}
 			$('#qm').show();
 		});
 

@@ -97,6 +97,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'qm_l10n',
 			array(
 				'ajax_error' => __( 'PHP Error in AJAX Response', 'query-monitor' ),
+				'infinitescroll_paused' => __( 'Infinite Scroll has been paused by Query Monitor', 'query-monitor' ),
 			)
 		);
 
