@@ -65,6 +65,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					$stack     = $error->trace->get_stack();
 					$component = $error->trace->get_component();
+					if ( $component ) {
+						$name = $component->name;
+					} else {
+						$name = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
+					}
 					$stack     = implode( '<br>', $stack );
 					$message   = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
 
@@ -76,7 +81,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo self::output_filename( $output, $error->file, $error->line );
 					echo '</td>';
 					echo '<td class="qm-ltr">' . $stack . '</td>';
-					echo '<td>' . $component->name . '</td>';
+					echo '<td>' . $name . '</td>';
 					echo '</tr>';
 
 					$first = false;
