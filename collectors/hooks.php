@@ -31,15 +31,14 @@ class QM_Collector_Hooks extends QM_Collector {
 		else
 			$this->data['screen'] = '';
 
-		$hooks = $parts = $components = array();
+		$hooks = $all_parts = $components = array();
 
 		$hide_qm = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF );
 
 		foreach ( $wp_actions as $name => $count ) {
 
 			$actions = array();
-			# @TODO better variable name:
-			$c = array();
+			$action_components = array();
 
 			if ( isset( $wp_filter[$name] ) ) {
 
@@ -57,7 +56,7 @@ class QM_Collector_Hooks extends QM_Collector {
 								continue;
 							}
 
-							$c[$callback['component']->name] = $callback['component']->name;
+							$action_components[$callback['component']->name] = $callback['component']->name;
 						}
 
 						$actions[] = array(
@@ -71,22 +70,21 @@ class QM_Collector_Hooks extends QM_Collector {
 
 			}
 
-			# @TODO better variable name:
-			$p = array_filter( preg_split( '/[_\/-]/', $name ) );
-			$parts = array_merge( $parts, $p );
-			$components = array_merge( $components, $c );
+			$action_parts = array_filter( preg_split( '#[_/-]#', $name ) );
+			$all_parts    = array_merge( $all_parts, $action_parts );
+			$components   = array_merge( $components, $action_components );
 
 			$hooks[$name] = array(
 				'name'    => $name,
 				'actions' => $actions,
-				'parts'   => $p,
-				'components' => $c,
+				'parts'   => $action_parts,
+				'components' => $action_components,
 			);
 
 		}
 
 		$this->data['hooks'] = $hooks;
-		$this->data['parts'] = array_unique( array_filter( $parts ) );
+		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
 		$this->data['components'] = array_unique( array_filter( $components ) );
 
 	}
