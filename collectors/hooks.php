@@ -37,6 +37,8 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		$hooks = $parts = $components = array();
 
+		$hide_qm = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF );
+
 		foreach ( $wp_actions as $name => $count ) {
 
 			$actions = array();
@@ -47,9 +49,6 @@ class QM_Collector_Hooks extends QM_Collector {
 
 				# http://core.trac.wordpress.org/ticket/17817
 				$action = $wp_filter[$name];
-				$self_name = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF )
-					? sprintf( __( 'Plugin: %s', 'query-monitor' ), 'query-monitor' )
-					: false
 
 				foreach ( $action as $priority => $callbacks ) {
 
@@ -58,8 +57,9 @@ class QM_Collector_Hooks extends QM_Collector {
 						$callback = QM_Util::populate_callback( $callback );
 
 						if ( isset( $callback['component'] ) ) {
-							if ( $self_name && $self_name === $callback['component']->name )
+							if ( $hide_qm and ( 'query-monitor' === $callback['component']->context ) ) {
 								continue;
+							}
 
 							$c[$callback['component']->name] = $callback['component']->name;
 						}
