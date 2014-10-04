@@ -85,6 +85,8 @@ class QM_Util {
 				break;
 		}
 
+		$context = $type;
+
 		switch ( $type ) {
 			case 'plugin':
 			case 'muplugin':
@@ -95,7 +97,8 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				$name = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+				$name    = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+				$context = $plug;
 				break;
 			case 'stylesheet':
 				$name = __( 'Theme', 'query-monitor' );
@@ -104,7 +107,8 @@ class QM_Util {
 				$name = __( 'Parent Theme', 'query-monitor' );
 				break;
 			case 'other':
-				$name = self::standard_dir( $file, '' );
+				$name    = self::standard_dir( $file, '' );
+				$context = $file;
 				break;
 			case 'core':
 			default:
@@ -112,7 +116,7 @@ class QM_Util {
 				break;
 		}
 
-		return self::$file_components[$file] = (object) compact( 'type', 'name' );
+		return self::$file_components[$file] = (object) compact( 'type', 'name', 'context' );
 
 	}
 

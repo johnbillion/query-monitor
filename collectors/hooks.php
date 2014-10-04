@@ -33,6 +33,8 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		$hooks = $parts = $components = array();
 
+		$hide_qm = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF );
+
 		foreach ( $wp_actions as $name => $count ) {
 
 			$actions = array();
@@ -50,8 +52,13 @@ class QM_Collector_Hooks extends QM_Collector {
 
 						$callback = QM_Util::populate_callback( $callback );
 
-						if ( isset( $callback['component'] ) )
+						if ( isset( $callback['component'] ) ) {
+							if ( $hide_qm and ( 'query-monitor' === $callback['component']->context ) ) {
+								continue;
+							}
+
 							$c[$callback['component']->name] = $callback['component']->name;
+						}
 
 						$actions[] = array(
 							'priority'  => $priority,
