@@ -187,6 +187,7 @@ class QueryMonitor extends QM_Plugin {
 		}
 
 		foreach ( $this->get_collectors() as $collector ) {
+			$collector->tear_down();
 			$collector->process();
 		}
 

@@ -54,4 +54,6 @@ abstract class QM_Collector {
 
 	public function process() {}
 
+	public function tear_down() {}
+
 }

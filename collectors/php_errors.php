@@ -105,7 +105,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	}
 
-	public function process() {
+	public function tear_down() {
+		parent::tear_down();
 		restore_error_handler();
 	}
 
