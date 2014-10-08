@@ -26,7 +26,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

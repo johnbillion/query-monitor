@@ -38,7 +38,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		else
 			$screen = $data['screen'];
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

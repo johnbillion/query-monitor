@@ -29,7 +29,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
+		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<tbody>';
 

@@ -51,7 +51,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	protected function output_empty_queries() {
 
-		echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-wpdb">';
+		echo '<div class="qm qm-queries" id="' . esc_attr( $this->collector->id() ) . '-wpdb">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -139,7 +139,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( $db->has_trace )
 			$span++;
 
-		echo '<div class="qm qm-queries" id="' . $this->collector->id() . '-' . sanitize_title( $name ) . '">';
+		echo '<div class="qm qm-queries" id="' . esc_attr( $this->collector->id() ) . '-' . sanitize_title( $name ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';

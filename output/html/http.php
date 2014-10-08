@@ -29,7 +29,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$total_time = 0;
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

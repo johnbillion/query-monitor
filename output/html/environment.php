@@ -26,7 +26,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div id="' . $this->collector->id() . '">';
+		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
 
 		echo '<div class="qm qm-half">';
 		echo '<table cellspacing="0">';

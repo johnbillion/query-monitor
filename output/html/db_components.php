@@ -33,11 +33,11 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$total_calls = 0;
 		$span = count( $data['types'] ) + 2;
 
-		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
+		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $span . '">' . $this->collector->name() . '</th>';
+		echo '<th colspan="' . $span . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
 		echo '<th>' . _x( 'Component', 'Query component', 'query-monitor' ) . '</th>';

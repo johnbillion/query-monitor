@@ -19,11 +19,11 @@ class QM_Output_Html_Authentication extends QM_Output_Html {
 
 	public function output() {
 
-		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
+		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . $this->collector->name() . '</th>';
+		echo '<th>' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

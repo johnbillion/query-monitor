@@ -30,11 +30,11 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		$i = 0;
 		$w = floor( 100 / $cols );
 
-		echo '<div class="qm" id="' . $this->collector->id() . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $cols . '">' . $this->collector->name() . '</th>';
+		echo '<th colspan="' . $cols . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

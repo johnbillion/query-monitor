@@ -29,11 +29,11 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		if ( empty( $data ) )
 			return;
 
-		echo '<div class="qm qm-half" id="' . $this->collector->id() . '">';
+		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . $this->collector->name() . '</th>';
+		echo '<th colspan="2">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
