@@ -47,55 +47,25 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		// @TODO concat, do_concat, concat_version
 
 		$rowspan = count( $data['header_scripts'] );
-		$first   = true;
 
 		echo '<tr>';
 		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Header&nbsp;Scripts', 'query-monitor' ) . "</td>";	
 
-		foreach ( $data['header_scripts'] as $handle ) {
-			if ( !$first ) {
-				echo '<tr>';
-			}
-
-			$this->dependency_row( $data['raw_scripts']->registered[$handle], $data );
-
-			echo '</tr>';
-			$first = false;
-		}
+		$this->dependency_rows( $data['header_scripts'], $data['raw_scripts'] );
 
 		$rowspan = count( $data['footer_scripts'] );
-		$first   = true;
 
 		echo '<tr>';
 		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Footer&nbsp;Scripts', 'query-monitor' ) . "</td>";	
 
-		foreach ( $data['footer_scripts'] as $handle ) {
-			if ( !$first ) {
-				echo '<tr>';
-			}
-
-			$this->dependency_row( $data['raw_scripts']->registered[$handle], $data );
-
-			echo '</tr>';
-			$first = false;
-		}
+		$this->dependency_rows( $data['footer_scripts'], $data['raw_scripts'] );
 
 		$rowspan = count( $data['header_styles'] );
-		$first   = true;
 
 		echo '<tr>';
 		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Styles', 'query-monitor' ) . "</td>";	
 
-		foreach ( $data['header_styles'] as $handle ) {
-			if ( !$first ) {
-				echo '<tr>';
-			}
-
-			$this->dependency_row( $data['raw_styles']->registered[$handle], $data );
-
-			echo '</tr>';
-			$first = false;
-		}
+		$this->dependency_rows( $data['header_styles'], $data['raw_styles'] );
 
 		echo '</tbody>';
 		echo '</table>';
@@ -103,7 +73,24 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	}
 
-	protected function dependency_row( _WP_Dependency $script, array $data ) {
+	protected function dependency_rows( array $handles, WP_Dependencies $dependencies ) {
+
+		$first = true;
+
+		foreach ( $handles as $handle ) {
+			if ( !$first ) {
+				echo '<tr>';
+			}
+
+			$this->dependency_row( $dependencies->registered[$handle], $dependencies );
+
+			echo '</tr>';
+			$first = false;
+		}
+
+	}
+
+	protected function dependency_row( _WP_Dependency $script, WP_Dependencies $dependencies ) {
 
 	//	$path = $script->src;
 
@@ -120,7 +107,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	//	$component = QM_Util::get_file_component( $path );
 
 		if ( empty( $script->ver ) ) {
-			$ver = '<em class="qm-info">' . $data['raw_scripts']->default_version . '</em>';
+			$ver = '<em class="qm-info">' . $dependencies->default_version . '</em>';
 		} else {
 			$ver = esc_html( $script->ver );
 		}
