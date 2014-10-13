@@ -59,7 +59,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			foreach ( $data['http'] as $key => $row ) {
 				$ltime = $row['ltime'];
-				$total_time += $ltime;
 
 				if ( empty( $ltime ) )
 					$stime = '';
@@ -114,7 +113,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</tbody>';
 			echo '<tfoot>';
 
-			$total_stime = number_format_i18n( $total_time, 4 );
+			$total_stime = number_format_i18n( $data['ltime'], 4 );
 
 			echo '<tr>';
 			echo '<td colspan="6">' . $vars . '</td>';

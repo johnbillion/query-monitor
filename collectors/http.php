@@ -161,6 +161,8 @@ class QM_Collector_HTTP extends QM_Collector {
 			}
 		}
 
+		$this->data['ltime'] = 0;
+
 		if ( ! isset( $this->data['http'] ) ) {
 			return;
 		}
@@ -189,6 +191,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			}
 
 			$http['ltime'] = ( $http['end'] - $http['start'] );
+			$this->data['ltime'] += $http['ltime'];
 
 		}
 
