@@ -79,9 +79,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			foreach ( $data['db'] as $id => $db ) {
 
 				if ( 1 == count( $data['db'] ) )
-					$name = 'MySQL';
+					$name = 'Database';
 				else
-					$name = 'MySQL: ' . $id;
+					$name = 'Database: ' . $id;
 
 				echo '<div class="qm qm-half">';
 				echo '<table cellspacing="0">';
@@ -93,13 +93,13 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '<tbody>';
 
 				echo '<tr>';
-				echo '<td>version</td>';
-				echo '<td>' . $db['version'] . '</td>';
+				echo '<td>driver</td>';
+				echo '<td>' . $db['driver'] . '</td>';
 				echo '</tr>';
 
 				echo '<tr>';
-				echo '<td>driver</td>';
-				echo '<td>' . $db['driver'] . '</td>';
+				echo '<td>version</td>';
+				echo '<td>' . $db['version'] . '</td>';
 				echo '</tr>';
 
 				echo '<tr>';
