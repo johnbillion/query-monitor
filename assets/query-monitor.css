@@ -209,6 +209,8 @@ body.js #qm-wrapper {
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 }
 
 .qm tbody tr:hover th,
