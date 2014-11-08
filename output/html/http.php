@@ -66,7 +66,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$stime = number_format_i18n( $ltime, 4 );
 
 				if ( is_wp_error( $row['response'] ) ) {
-					$response = $row['response']->get_error_message();
+					$response = esc_html( $row['response']->get_error_message() );
 					$css      = 'qm-warn';
 				} else {
 					$response = wp_remote_retrieve_response_code( $row['response'] );
