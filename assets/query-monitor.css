@@ -139,7 +139,7 @@ GNU General Public License for more details.
 }
 
 body.wp-admin #qm {
-	margin: 0 !important;
+	margin: 0 0 0 160px !important;
 }
 
 body:not(.iframe).sticky-menu #qm {
