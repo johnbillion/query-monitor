@@ -123,12 +123,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				include $output->getPathname();
 		}
 
-		if ( !is_admin_bar_showing() )
-			$class = 'qm-show';
-		else
-			$class = '';
+		$class = array();
 
-		echo '<div id="qm" class="' . $class . '">';
+		if ( !is_admin() ) {
+			$absolute = function_exists( 'twentyfifteen_setup' );
+			if ( apply_filters( 'query_monitor_absolute_position', $absolute ) ) {
+				$class[] = 'qm-absolute';
+			}
+		}
+
+		if ( !is_admin_bar_showing() ) {
+			$class[] = 'qm-show';
+		}
+
+		echo '<div id="qm" class="' . implode( ' ', $class ) . '">';
 		echo '<div id="qm-wrapper">';
 		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
 

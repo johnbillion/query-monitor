@@ -125,6 +125,11 @@ GNU General Public License for more details.
 	display: none;
 }
 
+#qm.qm-absolute {
+	z-index: 9999 !important;
+	position: absolute !important;
+}
+
 #qm.qm-show,
 .no-js #qm,
 .nojs #qm {
