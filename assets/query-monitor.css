@@ -138,22 +138,19 @@ GNU General Public License for more details.
 	height: 0 !important;
 }
 
-body.wp-admin #qm {
-	margin: 0 !important;
+body:not(.iframe).wp-admin #qm {
+	margin: 0 0 0 160px !important;
 }
 
-body:not(.iframe).sticky-menu #qm {
-	margin-left: 160px !important;
-}
-
-@media all and (max-width: 900px) {
-	body:not(.iframe).sticky-menu #qm {
-		margin-left: 36px !important;
-	}
-}
-
-body:not(.iframe).sticky-menu.folded #qm {
+body:not(.iframe).wp-admin.auto-fold #qm,
+body:not(.iframe).wp-admin.folded #qm {
 	margin-left: 36px !important;
+}
+
+@media screen and (max-width: 782px) {
+	body:not(.iframe).wp-admin #qm {
+		margin-left: 0 !important;
+	}
 }
 
 #qm-wrapper {
