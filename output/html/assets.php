@@ -119,7 +119,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		echo '<td valign="top">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
-		echo '<td valign="top">' . implode( ', ', $script->deps ) . '</td>';
+		echo '<td valign="top">' . implode( '<br>', $script->deps ) . '</td>';
 	//	echo '<td valign="top">' . $component->name . '</td>';
 		echo '<td valign="top">' . $ver . '</td>';
 
