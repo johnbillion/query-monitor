@@ -195,6 +195,8 @@ body.js #qm-wrapper {
 	border-style: hidden !important;
 	box-shadow: 0 0 0 1px #ddd, 0 1px 2px 1px rgba(0,0,0,0.05) !important;
 	width: 100% !important;
+	table-layout: auto !important;
+	margin: 0 !important;
 }
 
 .qm td,
