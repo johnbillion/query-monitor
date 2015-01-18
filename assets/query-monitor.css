@@ -395,8 +395,8 @@ select.qm-filter {
 .qm .qm-sort {
 	color: #ddd !important;
 	display: block !important;
-	font-size: 11px !important;
-	line-height: 9px !important;
+	font-size: 14px !important;
+	line-height: 11px !important;
 	text-decoration: none !important;
 }
 
@@ -404,7 +404,7 @@ select.qm-filter {
 .qm .qm-sort:focus,
 .qm .qm-sorted-asc .qm-sort-asc,
 .qm .qm-sorted-desc .qm-sort-desc {
-	color: #888 !important;
+	color: #777 !important;
 	text-decoration: none !important;
 }
 
