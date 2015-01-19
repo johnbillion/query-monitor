@@ -185,6 +185,14 @@ body.js #qm-wrapper {
 	clear: none !important;
 }
 
+@media all and (max-width: 900px) {
+	.qm-half {
+		float: none !important;
+		width: 100% !important;
+		clear: both !important;
+	}
+}
+
 .qm-clear {
 	clear: left !important;
 }
