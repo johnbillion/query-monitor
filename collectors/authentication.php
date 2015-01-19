@@ -24,7 +24,9 @@ class QM_Collector_Authentication extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
+		add_action( 'plugins_loaded',      array( $this, 'action_plugins_loaded' ) );
+		add_action( 'wp_ajax_qm_auth_on',  array( $this, 'ajax_on' ) );
+		add_action( 'wp_ajax_qm_auth_off', array( $this, 'ajax_off' ) );
 	}
 
 	public function action_plugins_loaded() {
@@ -34,33 +36,56 @@ class QM_Collector_Authentication extends QM_Collector {
 
 	}
 
+	/**
+	 * Helper function. Should the authentication cookie be secure?
+	 *
+	 * @return bool Should the authentication cookie be secure?
+	 */
+	public static function secure_cookie() {
+		return ( is_ssl() and ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) ) );
+	}
+
+	public function ajax_on() {
+
+		if ( ! current_user_can( 'view_query_monitor' ) or ! check_ajax_referer( 'qm-auth-on', 'nonce', false ) ) {
+			wp_send_json_error( __( 'Could not set authentication cookie.', 'query-monitor' ) );
+		}
+
+		$expiration = time() + 172800; # 48 hours
+		$secure     = self::secure_cookie();
+		$cookie     = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
+
+		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
+
+		$text = __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' );
+
+		wp_send_json_success( $text );
+
+	}
+
+	public function ajax_off() {
+
+		if ( ! $this->user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
+			wp_send_json_error( __( 'Could not clear authentication cookie.', 'query-monitor' ) );
+		}
+
+		$expiration = time() - 31536000;
+
+		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, COOKIE_DOMAIN );
+
+		$text = __( 'Authentication cookie cleared.', 'query-monitor' );
+
+		wp_send_json_success( $text );
+
+	}
+
 	public function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) )
 			return $this->verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
 		return false;
 	}
 
-	public function get_cookie_attributes() {
-
-		return array(
-			'name'   => QM_COOKIE,
-			'path'   => COOKIEPATH,
-			'domain' => COOKIE_DOMAIN,
-		);
-
-	}
-
-	public function get_cookie_content() {
-
-		$expires = time() + 172800; # 48 hours
-		$value   = wp_generate_auth_cookie( get_current_user_id(), $expires, 'logged_in' );
-		$secure  = apply_filters( 'secure_logged_in_cookie', false, get_current_user_id(), is_ssl() );
-
-		return compact( 'expires', 'value', 'secure' );
-
-	}
-
-	public function verify_cookie( $value ) {
+	public static function verify_cookie( $value ) {
 
 		if ( $old_user_id = wp_validate_auth_cookie( $value, 'logged_in' ) ) {
 			return user_can( $old_user_id, 'view_query_monitor' );

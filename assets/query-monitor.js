@@ -187,6 +187,17 @@ jQuery( function($) {
 		$('#qm').detach().appendTo('#wpwrap');
 	}
 
+	$('.qm-auth').on('click',function(e){
+		var action = $(this).data('action');
+		$.post(qm_l10n.ajaxurl,{
+			action : 'qm_auth_' + action,
+			nonce  : qm_l10n.auth_nonce[action]
+		},function(response){
+			alert( response.data );
+		});
+		e.preventDefault();
+	})
+
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 
 } );
