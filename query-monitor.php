@@ -239,7 +239,11 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function filter_active_plugins( array $plugins ) {
+	public function filter_active_plugins( $plugins ) {
+
+		if ( empty( $plugins ) ) {
+			return $plugins;
+		}
 
 		$f = preg_quote( basename( $this->plugin_base() ) );
 
@@ -251,6 +255,10 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 	public function filter_active_sitewide_plugins( $plugins ) {
+
+		if ( empty( $plugins ) ) {
+			return $plugins;
+		}
 
 		$f = $this->plugin_base();
 
