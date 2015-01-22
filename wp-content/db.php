@@ -25,19 +25,22 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-if ( defined( 'QM_DISABLED' ) and QM_DISABLED )
+if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
+}
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
 foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util' ) as $qm_class ) {
-	if ( ! is_readable( $qm_file = "{$qm_dir}/{$qm_class}.php" ) )
+	if ( ! is_readable( $qm_file = "{$qm_dir}/{$qm_class}.php" ) ) {
 		return;
+	}
 	require_once $qm_file;
 }
 
-if ( !defined( 'SAVEQUERIES' ) )
+if ( !defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
+}
 
 class QueryMonitorDB extends wpdb {
 
@@ -55,8 +58,9 @@ class QueryMonitorDB extends wpdb {
 	 */
 	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
 
-		foreach ( $this->qm_php_vars as $setting => &$val )
+		foreach ( $this->qm_php_vars as $setting => &$val ) {
 			$val = ini_get( $setting );
+		}
 
 		parent::__construct( $dbuser, $dbpassword, $dbname, $dbhost );
 
@@ -71,26 +75,30 @@ class QueryMonitorDB extends wpdb {
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
 	function query( $query ) {
-		if ( ! $this->ready )
+		if ( ! $this->ready ) {
 			return false;
+		}
 
-		if ( $this->show_errors )
+		if ( $this->show_errors ) {
 			$this->hide_errors();
+		}
 
 		$result = parent::query( $query );
 
-		if ( ! SAVEQUERIES )
+		if ( ! SAVEQUERIES ) {
 			return $result;
+		}
 
 		$i = $this->num_queries - 1;
 		$this->queries[$i]['trace'] = new QM_Backtrace( array(
 			'ignore_items' => 1,
 		) );
 
-		if ( $this->last_error )
+		if ( $this->last_error ) {
 			$this->queries[$i]['result'] = new WP_Error( 'qmdb', $this->last_error );
-		else
+		} else {
 			$this->queries[$i]['result'] = $result;
+		}
 
 		return $result;
 	}

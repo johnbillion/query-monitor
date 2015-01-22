@@ -25,8 +25,9 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) )
+		if ( empty( $data ) ) {
 			return;
+		}
 
 		$total_time  = 0;
 		$span = count( $data['types'] ) + 2;
@@ -41,8 +42,9 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		echo '<th>' . _x( 'Caller', 'Query caller', 'query-monitor' ) . '</th>';
 
 		if ( !empty( $data['types'] ) ) {
-			foreach ( $data['types'] as $type_name => $type_count )
+			foreach ( $data['types'] as $type_name => $type_count ) {
 				echo '<th class="qm-num">' . $type_name . $this->build_sorter() . '</th>';
+			}
 		}
 
 		echo '<th class="qm-num qm-sorted-desc">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
@@ -61,10 +63,11 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				echo "<td valign='top' class='qm-ltr'>{$row['caller']}</td>";
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
-					if ( isset( $row['types'][$type_name] ) )
+					if ( isset( $row['types'][$type_name] ) ) {
 						echo "<td valign='top'>{$row['types'][$type_name]}</td>";
-					else
+					} else {
 						echo "<td valign='top'>&nbsp;</td>";
+					}
 				}
 
 				echo "<td valign='top'>{$stime}</td>";
@@ -80,8 +83,9 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td>&nbsp;</td>';
 
-			foreach ( $data['types'] as $type_name => $type_count )
+			foreach ( $data['types'] as $type_name => $type_count ) {
 				echo '<td>' . number_format_i18n( $type_count ) . '</td>';
+			}
 
 			echo "<td>{$total_stime}</td>";
 			echo '</tr>';

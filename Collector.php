@@ -47,10 +47,11 @@ abstract class QM_Collector {
 	}
 
 	public static function sort_ltime( $a, $b ) {
-		if ( $a['ltime'] == $b['ltime'] )
+		if ( $a['ltime'] == $b['ltime'] ) {
 			return 0;
-		else
+		} else {
 			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
+		}
 	}
 
 	public function process() {}

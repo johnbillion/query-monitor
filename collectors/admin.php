@@ -26,10 +26,11 @@ class QM_Collector_Admin extends QM_Collector {
 
 		global $pagenow;
 
-		if ( isset( $_GET['page'] ) )
+		if ( isset( $_GET['page'] ) ) {
 			$this->data['base'] = get_current_screen()->base;
-		else
+		} else {
 			$this->data['base'] = $pagenow;
+		}
 
 		$this->data['pagenow'] = $pagenow;
 		$this->data['current_screen'] = get_current_screen();
@@ -39,8 +40,9 @@ class QM_Collector_Admin extends QM_Collector {
 }
 
 function register_qm_collector_admin( array $qm ) {
-	if ( is_admin() )
+	if ( is_admin() ) {
 		$qm['admin'] = new QM_Collector_Admin;
+	}
 	return $qm;
 }
 

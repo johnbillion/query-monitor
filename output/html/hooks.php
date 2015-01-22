@@ -27,15 +27,17 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) )
+		if ( empty( $data ) ) {
 			return;
+		}
 
 		$row_attr = array();
 
-		if ( is_multisite() and is_network_admin() )
+		if ( is_multisite() and is_network_admin() ) {
 			$screen = preg_replace( '|-network$|', '', $data['screen'] );
-		else
+		} else {
 			$screen = $data['screen'];
+		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
@@ -51,10 +53,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			if ( !empty( $screen ) ) {
 
-				if ( false !== strpos( $hook['name'], $screen . '.php' ) )
+				if ( false !== strpos( $hook['name'], $screen . '.php' ) ) {
 					$hook['name'] = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', $hook['name'] );
-				else
+				} else {
 					$hook['name'] = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', $hook['name'] );
+				}
 
 			}
 
@@ -63,13 +66,15 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			$attr = '';
 
-			if ( !empty( $hook['actions'] ) )
+			if ( !empty( $hook['actions'] ) ) {
 				$rowspan = count( $hook['actions'] );
-			else
+			} else {
 				$rowspan = 1;
+			}
 
-			foreach ( $row_attr as $a => $v )
+			foreach ( $row_attr as $a => $v ) {
 				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+			}
 
 			echo "<tr{$attr}>";
 
@@ -80,13 +85,15 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 				foreach ( $hook['actions'] as $action ) {
 
-					if ( isset( $action['callback']['component'] ) )
+					if ( isset( $action['callback']['component'] ) ) {
 						$component = $action['callback']['component']->name;
-					else
+					} else {
 						$component = '';
+					}
 
-					if ( !$first )
+					if ( !$first ) {
 						echo "<tr{$attr}>";
+					}
 
 					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';

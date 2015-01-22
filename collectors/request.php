@@ -45,11 +45,13 @@ class QM_Collector_Request extends QM_Collector {
 
 		foreach ( $qvars as $k => $v ) {
 			if ( isset( $plugin_qvars[$k] ) ) {
-				if ( '' !== $v )
+				if ( '' !== $v ) {
 					$query_vars[$k] = $v;
+				}
 			} else {
-				if ( !empty( $v ) )
+				if ( !empty( $v ) ) {
 					$query_vars[$k] = $v;
+				}
 			}
 		}
 
@@ -65,8 +67,9 @@ class QM_Collector_Request extends QM_Collector {
 
 		# Now add all other vars to $this->data['qvars']:
 		foreach ( $query_vars as $k => $v ) {
-			if ( !isset( $plugin_qvars[$k] ) )
+			if ( !isset( $plugin_qvars[$k] ) ) {
 				$this->data['qvars'][$k] = $v;
+			}
 		}
 
 		switch ( true ) {

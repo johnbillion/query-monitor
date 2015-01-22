@@ -31,8 +31,9 @@ class QM_Collector_Authentication extends QM_Collector {
 
 	public function action_plugins_loaded() {
 
-		if ( !defined( 'QM_COOKIE' ) )
+		if ( !defined( 'QM_COOKIE' ) ) {
 			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
+		}
 
 	}
 
@@ -80,19 +81,17 @@ class QM_Collector_Authentication extends QM_Collector {
 	}
 
 	public function user_verified() {
-		if ( isset( $_COOKIE[QM_COOKIE] ) )
+		if ( isset( $_COOKIE[QM_COOKIE] ) ) {
 			return $this->verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
+		}
 		return false;
 	}
 
 	public static function verify_cookie( $value ) {
-
 		if ( $old_user_id = wp_validate_auth_cookie( $value, 'logged_in' ) ) {
 			return user_can( $old_user_id, 'view_query_monitor' );
 		}
-
 		return false;
-
 	}
 
 }

@@ -40,10 +40,11 @@ class QM_Collector_Environment extends QM_Collector {
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[$setting] ) )
+			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[$setting] ) ) {
 				$val = $wpdb->qm_php_vars[$setting];
-			else
+			} else {
 				$val = ini_get( $setting );
+			}
 			$this->data['php']['variables'][$setting]['before'] = $val;
 		}
 
@@ -75,8 +76,9 @@ class QM_Collector_Environment extends QM_Collector {
 		foreach ( $constants as $level ) {
 			if ( defined( $level ) ) {
 				$c = constant( $level );
-				if ( $error_reporting & $c ) 
+				if ( $error_reporting & $c ) {
 					$levels[$c] = $level;
+				}
 			}
 		}
 
@@ -101,8 +103,9 @@ class QM_Collector_Environment extends QM_Collector {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
-				if ( !is_a( $db, 'wpdb' ) )
+				if ( !is_a( $db, 'wpdb' ) ) {
 					continue;
+				}
 
 				$variables = $db->get_results( "
 					SHOW VARIABLES
@@ -143,8 +146,9 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['version'] = phpversion();
 		$this->data['php']['user']    = self::get_current_user();
 
-		foreach ( $this->php_vars as $setting )
+		foreach ( $this->php_vars as $setting ) {
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
+		}
 
 		$this->data['php']['error_reporting'] = error_reporting();
 
@@ -160,21 +164,24 @@ class QM_Collector_Environment extends QM_Collector {
 			'WP_LOCAL_DEV'        => self::format_bool_constant( 'WP_LOCAL_DEV' ),
 		);
 
-		if ( is_multisite() )
+		if ( is_multisite() ) {
 			$this->data['wp']['blog_id'] = $blog_id;
+		}
 
 		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );
 		$server = explode( '/', reset( $server ) );
 
-		if ( isset( $server[1] ) )
+		if ( isset( $server[1] ) ) {
 			$server_version = $server[1];
-		else
+		} else {
 			$server_version = null;
+		}
 
-		if ( isset( $_SERVER['SERVER_ADDR'] ) )
+		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
 			$address = $_SERVER['SERVER_ADDR'];
-		else
+		} else {
 			$address = null;
+		}
 
 		$this->data['server'] = array(
 			'name'    => $server[0],

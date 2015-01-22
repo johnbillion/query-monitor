@@ -25,8 +25,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) )
+		if ( empty( $data ) ) {
 			return;
+		}
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
@@ -57,8 +58,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 			foreach ( $data['body_class'] as $class ) {
 
-				if ( !$first )
+				if ( !$first ) {
 					echo '<tr>';
+				}
 
 				echo '<td>' . esc_html( $class ) . '</td>';
 				echo '</tr>';

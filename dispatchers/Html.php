@@ -120,11 +120,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
 		$output_iterator = new DirectoryIterator( $this->qm->plugin_path( 'output/html' ) );
 		foreach ( $output_iterator as $output ) {
-			if ( $output->getExtension() === 'php' )
+			if ( $output->getExtension() === 'php' ) {
 				include $output->getPathname();
+			}
 		}
 
 		$class = array();
@@ -171,8 +171,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$class = implode( ' ', apply_filters( 'query_monitor_class', array() ) );
 		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'query_monitor_title', array() ) );
 
-		if ( empty( $title ) )
+		if ( empty( $title ) ) {
 			$title = __( 'Query Monitor', 'query-monitor' );
+		}
 
 		$admin_bar_menu = array(
 			'top' => array(
@@ -182,8 +183,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'sub' => array()
 		);
 
-		foreach ( apply_filters( 'query_monitor_menus', array() ) as $menu )
+		foreach ( apply_filters( 'query_monitor_menus', array() ) as $menu ) {
 			$admin_bar_menu['sub'][] = $menu;
+		}
 
 		return $admin_bar_menu;
 

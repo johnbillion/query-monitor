@@ -29,14 +29,16 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function get_errors() {
-		if ( !empty( $this->data['errors'] ) )
+		if ( !empty( $this->data['errors'] ) ) {
 			return $this->data['errors'];
+		}
 		return false;
 	}
 
 	public function get_expensive() {
-		if ( !empty( $this->data['expensive'] ) )
+		if ( !empty( $this->data['expensive'] ) ) {
 			return $this->data['expensive'];
+		}
 		return false;
 	}
 
@@ -46,8 +48,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	public function process() {
 
-		if ( !SAVEQUERIES )
+		if ( !SAVEQUERIES ) {
 			return;
+		}
 
 		$this->data['total_qs']   = 0;
 		$this->data['total_time'] = 0;
@@ -58,18 +61,20 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		) );
 
 		foreach ( $this->db_objects as $name => $db ) {
-			if ( is_a( $db, 'wpdb' ) )
+			if ( is_a( $db, 'wpdb' ) ) {
 				$this->process_db_object( $name, $db );
+			}
 		}
 
 	}
 
 	protected function log_type( $type ) {
 
-		if ( isset( $this->data['types'][$type] ) )
+		if ( isset( $this->data['types'][$type] ) ) {
 			$this->data['types'][$type]++;
-		else
+		} else {
 			$this->data['types'][$type] = 1;
+		}
 
 	}
 
@@ -87,10 +92,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['times'][$caller]['calls']++;
 		$this->data['times'][$caller]['ltime'] += $ltime;
 
-		if ( isset( $this->data['times'][$caller]['types'][$type] ) )
+		if ( isset( $this->data['times'][$caller]['types'][$type] ) ) {
 			$this->data['times'][$caller]['types'][$type]++;
-		else
+		} else {
 			$this->data['times'][$caller]['types'][$type] = 1;
+		}
 
 	}
 
@@ -108,10 +114,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['component_times'][$component->name]['calls']++;
 		$this->data['component_times'][$component->name]['ltime'] += $ltime;
 
-		if ( isset( $this->data['component_times'][$component->name]['types'][$type] ) )
+		if ( isset( $this->data['component_times'][$component->name]['types'][$type] ) ) {
 			$this->data['component_times'][$component->name]['types'][$type]++;
-		else
+		} else {
 			$this->data['component_times'][$component->name]['types'][$type] = 1;
+		}
 
 	}
 
@@ -126,8 +133,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( (array) $db->queries as $query ) {
 
 			# @TODO: decide what I want to do with this:
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) )
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) ) {
 				continue;
+			}
 
 			$sql           = $query[0];
 			$ltime         = $query[1];
@@ -135,10 +143,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$has_trace     = isset( $query['trace'] );
 			$has_result    = isset( $query['result'] );
 
-			if ( isset( $query['result'] ) )
+			if ( isset( $query['result'] ) ) {
 				$result = $query['result'];
-			else
+			} else {
 				$result = null;
+			}
 
 			$total_time += $ltime;
 
@@ -157,10 +166,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$callers   = explode( ',', $stack );
 				$caller    = trim( end( $callers ) );
 
-				if ( false !== strpos( $caller, '(' ) )
+				if ( false !== strpos( $caller, '(' ) ) {
 					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
-				else
+				} else {
 					$caller_name = $caller;
+				}
 
 			}
 
@@ -171,26 +181,31 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$this->log_type( $type );
 			$this->log_caller( $caller_name, $ltime, $type );
 
-			if ( $component )
+			if ( $component ) {
 				$this->log_component( $component, $ltime, $type );
+			}
 
-			if ( !isset( $types[$type]['total'] ) )
+			if ( !isset( $types[$type]['total'] ) ) {
 				$types[$type]['total'] = 1;
-			else
+			} else {
 				$types[$type]['total']++;
+			}
 
-			if ( !isset( $types[$type]['callers'][$caller] ) )
+			if ( !isset( $types[$type]['callers'][$caller] ) ) {
 				$types[$type]['callers'][$caller] = 1;
-			else
+			} else {
 				$types[$type]['callers'][$caller]++;
+			}
 
 			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace' );
 
-			if ( is_wp_error( $result ) )
+			if ( is_wp_error( $result ) ) {
 				$this->data['errors'][] = $row;
+			}
 
-			if ( self::is_expensive( $row ) )
+			if ( self::is_expensive( $row ) ) {
 				$this->data['expensive'][] = $row;
+			}
 
 			$rows[] = $row;
 

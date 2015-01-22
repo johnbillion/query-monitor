@@ -72,8 +72,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo "<td>{$db_stime}</td>";
 			echo '<td>';
 
-			foreach ( $db_query_num as $type_name => $type_count )
+			foreach ( $db_query_num as $type_name => $type_count ) {
 				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
+			}
 
 			echo implode( '<br>', $db_query_types );
 

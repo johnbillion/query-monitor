@@ -43,10 +43,11 @@ class QM_Collector_Conditionals extends QM_Collector {
 					# Special case for is_main_site to prevent it from being annoying on single site installs
 					$na[] = $cond;
 				} else {
-					if ( call_user_func( $cond ) )
+					if ( call_user_func( $cond ) ) {
 						$true[] = $cond;
-					else
+					} else {
 						$false[] = $cond;
+					}
 				}
 
 			} else {

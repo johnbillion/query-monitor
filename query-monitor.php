@@ -26,13 +26,15 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-if ( defined( 'QM_DISABLED' ) and QM_DISABLED )
+if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
+}
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( __FILE__ );
-foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class )
+foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class ) {
 	require_once "{$qm_dir}/{$qm_class}.php";
+}
 
 class QueryMonitor extends QM_Plugin {
 
@@ -58,30 +60,32 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# Collectors:
-		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
 		$collector_iterator = new DirectoryIterator( $this->plugin_path( 'collectors' ) );
 		foreach ( $collector_iterator as $collector ) {
-			if ( $collector->getExtension() === 'php' )
+			if ( $collector->getExtension() === 'php' ) {
 				include $collector->getPathname();
+			}
 		}
 
-		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector )
+		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector ) {
 			$this->add_collector( $collector );
+		}
 
 	}
 
 	public function action_plugins_loaded() {
 
 		# Dispatchers:
-		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
 		$dispatcher_iterator = new DirectoryIterator( $this->plugin_path( 'dispatchers' ) );
 		foreach ( $dispatcher_iterator as $dispatcher ) {
-			if ( $dispatcher->getExtension() === 'php' )
+			if ( $dispatcher->getExtension() === 'php' ) {
 				include $dispatcher->getPathname();
+			}
 		}
 
-		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher )
+		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher ) {
 			$this->add_dispatcher( $dispatcher );
+		}
 
 	}
 
@@ -95,8 +99,9 @@ class QueryMonitor extends QM_Plugin {
 
 	public static function get_collector( $id ) {
 		$qm = self::init();
-		if ( isset( $qm->collectors[$id] ) )
+		if ( isset( $qm->collectors[$id] ) ) {
 			return $qm->collectors[$id];
+		}
 		return false;
 	}
 
@@ -110,41 +115,48 @@ class QueryMonitor extends QM_Plugin {
 
 	public function activate( $sitewide = false ) {
 
-		if ( $admins = QM_Util::get_admins() )
+		if ( $admins = QM_Util::get_admins() ) {
 			$admins->add_cap( 'view_query_monitor' );
+		}
 
-		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) )
+		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) ) {
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
+		}
 
-		if ( $sitewide )
+		if ( $sitewide ) {
 			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
-		else
+		} else {
 			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
+		}
 
 	}
 
 	public function deactivate() {
 
-		if ( $admins = QM_Util::get_admins() )
+		if ( $admins = QM_Util::get_admins() ) {
 			$admins->remove_cap( 'view_query_monitor' );
+		}
 
 		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QueryMonitorDB' ) )
+		if ( class_exists( 'QueryMonitorDB' ) ) {
 			unlink( WP_CONTENT_DIR . '/db.php' );
+		}
 
 	}
 
 	public function user_can_view() {
 
-		if ( !did_action( 'plugins_loaded' ) )
+		if ( !did_action( 'plugins_loaded' ) ) {
 			return false;
+		}
 
 		if ( current_user_can( 'view_query_monitor' ) ) {
 			return true;
 		}
 
-		if ( $auth = self::get_collector( 'authentication' ) )
+		if ( $auth = self::get_collector( 'authentication' ) ) {
 			return $auth->user_verified();
+		}
 
 		return false;
 
@@ -265,8 +277,9 @@ class QueryMonitor extends QM_Plugin {
 
 		static $instance = null;
 
-		if ( ! $instance )
+		if ( ! $instance ) {
 			$instance = new QueryMonitor( $file );
+		}
 
 		return $instance;
 

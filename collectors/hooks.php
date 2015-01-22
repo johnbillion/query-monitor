@@ -26,10 +26,11 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		global $wp_actions, $wp_filter;
 
-		if ( is_admin() and ( $admin = QueryMonitor::get_collector( 'admin' ) ) )
+		if ( is_admin() and ( $admin = QueryMonitor::get_collector( 'admin' ) ) ) {
 			$this->data['screen'] = $admin->data['base'];
-		else
+		} else {
 			$this->data['screen'] = '';
+		}
 
 		$hooks = $all_parts = $components = array();
 

@@ -26,8 +26,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['errors'] ) )
+		if ( empty( $data['errors'] ) ) {
 			return;
+		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
@@ -59,8 +60,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data['errors'][$type] as $error ) {
 
-					if ( !$first )
+					if ( !$first ) {
 						echo '<tr>';
+					}
 
 					$stack     = $error->trace->get_stack();
 					$component = $error->trace->get_component();
@@ -101,14 +103,15 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['warning'] ) )
+		if ( isset( $data['errors']['warning'] ) ) {
 			$class[] = 'qm-warning';
-		else if ( isset( $data['errors']['notice'] ) )
+		} else if ( isset( $data['errors']['notice'] ) ) {
 			$class[] = 'qm-notice';
-		else if ( isset( $data['errors']['strict'] ) )
+		} else if ( isset( $data['errors']['strict'] ) ) {
 			$class[] = 'qm-strict';
-		else if ( isset( $data['errors']['deprecated'] ) )
+		} else if ( isset( $data['errors']['deprecated'] ) ) {
 			$class[] = 'qm-deprecated';
+		}
 
 		return $class;
 

@@ -55,10 +55,11 @@ class QM_Timer {
 			'data'   => $data,
 		);
 
-		if ( !isset( $name ) )
+		if ( !isset( $name ) ) {
 			$i = sprintf( __( 'Lap %d', 'query-monitor' ), count( $this->laps ) + 1 );
-		else
+		} else {
 			$i = $name;
+		}
 
 		$this->laps[$i] = $lap;
 

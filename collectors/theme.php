@@ -48,16 +48,18 @@ class QM_Collector_Theme extends QM_Collector {
 		$this->data['stylesheet']    = get_stylesheet();
 		$this->data['template']      = get_template();
 
-		if ( isset( $this->data['body_class'] ) )
+		if ( isset( $this->data['body_class'] ) ) {
 			asort( $this->data['body_class'] );
+		}
 
 	}
 
 }
 
 function register_qm_collector_theme( array $qm ) {
-	if ( !is_admin() )
+	if ( !is_admin() ) {
 		$qm['theme'] = new QM_Collector_Theme;
+	}
 	return $qm;
 }
 

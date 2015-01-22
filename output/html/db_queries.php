@@ -86,8 +86,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		foreach ( $errors as $row )
+		foreach ( $errors as $row ) {
 			$this->output_query_row( $row, array( 'sql', 'stack', 'component', 'result' ) );
+		}
 
 		echo '</tbody>';
 		echo '</table>';
@@ -109,19 +110,22 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . '</th>';
 
-		if ( isset( $expensive[0]['component'] ) )
+		if ( isset( $expensive[0]['component'] ) ) {
 			echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . '</th>';
+		}
 
-		if ( isset( $expensive[0]['result'] ) )
+		if ( isset( $expensive[0]['result'] ) ) {
 			echo '<th scope="col">' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+		}
 
 		echo '<th class="qm-num">' . __( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
-		foreach ( $expensive as $row )
+		foreach ( $expensive as $row ) {
 			$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'result', 'time' ) );
+		}
 
 		echo '</tbody>';
 		echo '</table>';
@@ -133,10 +137,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$span = 4;
 
-		if ( $db->has_result )
+		if ( $db->has_result ) {
 			$span++;
-		if ( $db->has_trace )
+		}
+		if ( $db->has_trace ) {
 			$span++;
+		}
 
 		echo '<div class="qm qm-queries" id="' . esc_attr( $this->collector->id() ) . '-' . sanitize_title( $name ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
@@ -160,11 +166,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
 			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ) . '</th>';
 
-			if ( $db->has_trace )
+			if ( $db->has_trace ) {
 				echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
+			}
 
-			if ( $db->has_result )
+			if ( $db->has_result ) {
 				echo '<th scope="col">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
+			}
 
 			echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
 			echo '</tr>';
@@ -177,8 +185,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( $db->rows as $row )
+			foreach ( $db->rows as $row ) {
 				$this->output_query_row( $row, array( 'row', 'sql', 'caller', 'component', 'result', 'time' ) );
+			}
 
 			echo '</tbody>';
 			echo '<tfoot>';
@@ -215,12 +224,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$cols = array_flip( $cols );
 
-		if ( !isset( $row['component'] ) )
+		if ( !isset( $row['component'] ) ) {
 			unset( $cols['component'] );
-		if ( !isset( $row['result'] ) )
+		}
+		if ( !isset( $row['result'] ) ) {
 			unset( $cols['result'] );
-		if ( !isset( $row['stack'] ) )
+		}
+		if ( !isset( $row['stack'] ) ) {
 			unset( $cols['stack'] );
+		}
 
 		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
@@ -228,8 +240,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$sql = self::format_sql( $row['sql'] );
 
-		if ( 'SELECT' != $row['type'] )
+		if ( 'SELECT' != $row['type'] ) {
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
+		}
 
 		if ( is_wp_error( $row['result'] ) ) {
 			$error  = $row['result']->get_error_message();
@@ -260,12 +273,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		}
 
-		if ( isset( $cols['sql'] ) )
+		if ( isset( $cols['sql'] ) ) {
 			$row_attr['data-qm-db_queries-type'] = $row['type'];
-		if ( isset( $cols['component'] ) )
+		}
+		if ( isset( $cols['component'] ) ) {
 			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
-		if ( isset( $cols['caller'] ) )
+		}
+		if ( isset( $cols['caller'] ) ) {
 			$row_attr['data-qm-db_queries-caller'] = $row['caller_name'];
+		}
 		if ( isset( $cols['time'] ) ) {
 			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 			$row_attr['data-qm-time'] = $row['ltime'];
@@ -273,8 +289,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$attr = '';
 
-		foreach ( $row_attr as $a => $v )
+		foreach ( $row_attr as $a => $v ) {
 			$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+		}
 
 		echo "<tr{$attr}>";
 
@@ -282,8 +299,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo "<td valign='top'>" . ++$this->query_row . "</td>";
 		}
 
-		if ( isset( $cols['sql'] ) )
+		if ( isset( $cols['sql'] ) ) {
 			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$sql}</td>";
+		}
 
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";
@@ -302,14 +320,17 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-ltr">' . implode( '<br>', $stack ) . '</td>';
 		}
 
-		if ( isset( $cols['component'] ) )
+		if ( isset( $cols['component'] ) ) {
 			echo "<td valign='top' class='qm-row-component'>{$row['component']->name}</td>\n";
+		}
 
-		if ( isset( $cols['result'] ) )
+		if ( isset( $cols['result'] ) ) {
 			echo $result;
+		}
 
-		if ( isset( $cols['time'] ) )
+		if ( isset( $cols['time'] ) ) {
 			echo "<td valign='top' class='qm-row-time{$td}'>{$stime}</td>\n";
+		}
 
 		echo '</tr>';
 
@@ -336,10 +357,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_class( array $class ) {
 
-		if ( $this->collector->get_errors() )
+		if ( $this->collector->get_errors() ) {
 			$class[] = 'qm-error';
-		if ( $this->collector->get_expensive() )
+		}
+		if ( $this->collector->get_expensive() ) {
 			$class[] = 'qm-expensive';
+		}
 		return $class;
 
 	}
