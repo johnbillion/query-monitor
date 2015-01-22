@@ -250,7 +250,7 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function filter_active_sitewide_plugins( array $plugins ) {
+	public function filter_active_sitewide_plugins( $plugins ) {
 
 		$f = $this->plugin_base();
 
