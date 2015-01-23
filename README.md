@@ -4,7 +4,7 @@
 **Tags:** debug, debugging, development, developer, performance, profiler, profiling, queries, query monitor  
 **Requires at least:** 3.5  
 **Tested up to:** 4.1  
-**Stable tag:** 2.6.8  
+**Stable tag:** 2.6.9  
 **License:** GPL v2 or later  
 
 View debugging and performance information on database queries, hooks, conditionals, HTTP requests, redirects and more.
