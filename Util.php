@@ -200,5 +200,27 @@ class QM_Util {
 		return ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
+	public static function include_files( $path ) {
+
+ 		if ( class_exists( 'DirectoryIterator' ) and method_exists( 'DirectoryIterator', 'getExtension' ) ) {
+
+			$output_iterator = new DirectoryIterator( $path );
+
+			foreach ( $output_iterator as $output ) {
+				if ( $output->getExtension() === 'php' ) {
+					include $output->getPathname();
+				}
+			}
+
+		} else {
+
+			foreach ( glob( sprintf( '%s/*.php', $path ) ) as $file ) {
+				include $file;
+			}
+
+		}
+
+	}
+
 }
 }

@@ -60,12 +60,7 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# Collectors:
-		$collector_iterator = new DirectoryIterator( $this->plugin_path( 'collectors' ) );
-		foreach ( $collector_iterator as $collector ) {
-			if ( $collector->getExtension() === 'php' ) {
-				include $collector->getPathname();
-			}
-		}
+		QM_Util::include_files( $this->plugin_path( 'collectors' ) );
 
 		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector ) {
 			$this->add_collector( $collector );
@@ -76,12 +71,7 @@ class QueryMonitor extends QM_Plugin {
 	public function action_plugins_loaded() {
 
 		# Dispatchers:
-		$dispatcher_iterator = new DirectoryIterator( $this->plugin_path( 'dispatchers' ) );
-		foreach ( $dispatcher_iterator as $dispatcher ) {
-			if ( $dispatcher->getExtension() === 'php' ) {
-				include $dispatcher->getPathname();
-			}
-		}
+		QM_Util::include_files( $this->plugin_path( 'dispatchers' ) );
 
 		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher ) {
 			$this->add_dispatcher( $dispatcher );

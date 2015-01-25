@@ -38,13 +38,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
 
-		# Using DirectoryIterator rather than glob in order to support Google App Engine (tested on v1.9.10)
-		$output_iterator = new DirectoryIterator( $this->qm->plugin_path( 'output/headers' ) );
-		foreach ( $output_iterator as $output ) {
-			if ( $output->getExtension() === 'php' ) {
-				include $output->getPathname();
-			}
-		}
+		QM_Util::include_files( $this->qm->plugin_path( 'output/headers' ) );
 
 	}
 

@@ -120,12 +120,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		$output_iterator = new DirectoryIterator( $this->qm->plugin_path( 'output/html' ) );
-		foreach ( $output_iterator as $output ) {
-			if ( $output->getExtension() === 'php' ) {
-				include $output->getPathname();
-			}
-		}
+		QM_Util::include_files( $this->qm->plugin_path( 'output/html' ) );
 
 		$class = array();
 
