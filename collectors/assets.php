@@ -22,6 +22,16 @@ class QM_Collector_Assets extends QM_Collector {
 		parent::__construct();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
 		add_action( 'wp_print_footer_scripts',    array( $this, 'action_print_footer_scripts' ) );
+		add_action( 'admin_head',                 array( $this, 'action_head' ), 999 );
+		add_action( 'wp_head',                    array( $this, 'action_head' ), 999 );
+	}
+
+	public function action_head() {
+		global $wp_scripts, $wp_styles;
+
+		$this->data['header_styles'] = $wp_styles->done;
+		$this->data['header_scripts'] = $wp_scripts->done;
+
 	}
 
 	public function action_print_footer_scripts() {
@@ -30,9 +40,8 @@ class QM_Collector_Assets extends QM_Collector {
 		$this->data['raw_scripts'] = $wp_scripts;
 		$this->data['raw_styles']  = $wp_styles;
 
-		$this->data['header_scripts'] = array_diff( $wp_scripts->done, $wp_scripts->in_footer );
-		$this->data['footer_scripts'] = $wp_scripts->in_footer;
-		$this->data['header_styles']  = $wp_styles->done;
+		$this->data['footer_scripts'] = array_diff( $wp_scripts->done, $this->data['header_scripts'] );
+		$this->data['footer_styles']  = array_diff( $wp_styles->done, $this->data['header_styles'] );
 
 	}
 

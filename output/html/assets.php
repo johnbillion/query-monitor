@@ -62,9 +62,16 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$rowspan = count( $data['header_styles'] );
 
 		echo '<tr>';
-		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Styles', 'query-monitor' ) . "</td>";	
+		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Header&nbsp;Styles', 'query-monitor' ) . "</td>";	
 
 		$this->dependency_rows( $data['header_styles'], $data['raw_styles'] );
+
+		$rowspan = count( $data['footer_styles'] );
+
+		echo '<tr>';
+		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Footer&nbsp;Styles', 'query-monitor' ) . "</td>";	
+
+		$this->dependency_rows( $data['footer_styles'], $data['raw_styles'] );
 
 		echo '</tbody>';
 		echo '</table>';
@@ -75,6 +82,12 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	protected function dependency_rows( array $handles, WP_Dependencies $dependencies ) {
 
 		$first = true;
+
+		if ( empty( $handles ) ) {
+			echo '<td valign="top" colspan="3"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '</tr>';
+			return;
+		}
 
 		foreach ( $handles as $handle ) {
 			if ( !$first ) {
