@@ -40,14 +40,6 @@ class QM_Collector_Assets extends QM_Collector {
 		return __( 'Scripts & Styles', 'query-monitor' );
 	}
 
-	public function process() {
-
-		global $wp_scripts, $wp_styles;
-
-		// @TODO remove
-
-	}
-
 }
 
 function register_qm_collector_assets( array $qm ) {
