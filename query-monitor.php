@@ -155,7 +155,7 @@ class QueryMonitor extends QM_Plugin {
 		$e = error_get_last();
 
 		# Don't process if a fatal has occurred:
-		if ( ! empty( $e ) and ( 1 === $e['type'] ) ) {
+		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
 			return false;
 		}
 
