@@ -189,14 +189,24 @@ jQuery( function($) {
 
 	$('.qm-auth').on('click',function(e){
 		var action = $(this).data('action');
-		$.post(qm_l10n.ajaxurl,{
-			action : 'qm_auth_' + action,
-			nonce  : qm_l10n.auth_nonce[action]
-		},function(response){
-			alert( response.data );
+
+		$.ajax(qm_l10n.ajaxurl,{
+			type : 'POST',
+			data : {
+				action : 'qm_auth_' + action,
+				nonce  : qm_l10n.auth_nonce[action]
+			},
+			success : function(response){
+				alert( response.data );
+			},
+			dataType : 'json',
+			xhrFields: {
+				withCredentials: true
+			}
 		});
+
 		e.preventDefault();
-	})
+	});
 
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 
