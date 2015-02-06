@@ -24,7 +24,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->qm->user_can_view() ) {
+		if ( ! $this->user_can_view() ) {
 			return;
 		}
 
@@ -57,7 +57,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public function is_active() {
 
-		if ( ! $this->qm->user_can_view() ) {
+		if ( ! $this->user_can_view() ) {
 			return false;
 		}
 

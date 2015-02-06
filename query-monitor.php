@@ -134,24 +134,6 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function user_can_view() {
-
-		if ( !did_action( 'plugins_loaded' ) ) {
-			return false;
-		}
-
-		if ( current_user_can( 'view_query_monitor' ) ) {
-			return true;
-		}
-
-		if ( $auth = self::get_collector( 'authentication' ) ) {
-			return $auth->user_verified();
-		}
-
-		return false;
-
-	}
-
 	public function should_process() {
 
 		# Don't process if the minimum required actions haven't fired:
