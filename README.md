@@ -4,7 +4,7 @@
 **Tags:** debug, debugging, development, developer, performance, profiler, profiling, queries, query monitor  
 **Requires at least:** 3.5  
 **Tested up to:** 4.1  
-**Stable tag:** 2.6.9  
+**Stable tag:** 2.6.10  
 **License:** GPL v2 or later  
 
 View debugging and performance information on database queries, hooks, conditionals, HTTP requests, redirects and more.
@@ -117,6 +117,7 @@ Hands up who can remember the correct names for the filters and actions for cust
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
+ * Shows all *scripts and styles* which were enqueued on the current page, along with their path, dependencies, and version number
 
 ## Authentication ##
 
