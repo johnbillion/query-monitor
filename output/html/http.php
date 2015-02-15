@@ -49,7 +49,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			foreach ( $data['vars'] as $key => $value ) {
 				$vars[] = $key . ': ' . esc_html( $value );
 			}
-			$vars = implode( ', ', $vars );
+			$vars = implode( '<br>', $vars );
 		}
 
 		if ( !empty( $data['http'] ) ) {

@@ -155,9 +155,15 @@ class QM_Collector_HTTP extends QM_Collector {
 			'WP_PROXY_USERNAME',
 			'WP_PROXY_PASSWORD',
 			'WP_PROXY_BYPASS_HOSTS',
+			'WP_HTTP_BLOCK_EXTERNAL',
+			'WP_ACCESSIBLE_HOSTS',
 		) as $var ) {
 			if ( defined( $var ) and constant( $var ) ) {
-				$this->data['vars'][$var] = constant( $var );
+				$val = constant( $var );
+				if ( true === $val ) {
+					$val = 'true';
+				}
+				$this->data['vars'][$var] = $val;
 			}
 		}
 
