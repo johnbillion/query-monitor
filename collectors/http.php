@@ -29,7 +29,6 @@ class QM_Collector_HTTP extends QM_Collector {
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
 		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
 		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
-		add_filter( 'http_response',     array( $this, 'filter_http_response' ), 99, 3 );
 
 	}
 
@@ -83,7 +82,7 @@ class QM_Collector_HTTP extends QM_Collector {
 		}
 
 		// Something's filtering the response, so we'll log it
-		$this->filter_http_response( $response, $args, $url );
+		$this->log_http_response( $response, $args, $url );
 
 		return $response;
 	}
@@ -114,9 +113,7 @@ class QM_Collector_HTTP extends QM_Collector {
 					$this->data['http'][$args['_qm_key']]['transport'] = null;
 				}
 
-				if ( is_wp_error( $response ) ) {
-					$this->filter_http_response( $response, $args, $url );
-				}
+				$this->log_http_response( $response, $args, $url );
 
 				break;
 
@@ -129,22 +126,19 @@ class QM_Collector_HTTP extends QM_Collector {
 	}
 
 	/**
-	 * Filter the HTTP response in order to log the response.
+	 * Log an HTTP response.
 	 *
 	 * @param array|WP_Error $response The HTTP response.
 	 * @param array          $args     HTTP request arguments.
 	 * @param string         $url      The request URL.
-	 * @return array|WP_Error          The HTTP response.
 	 */
-	public function filter_http_response( $response, array $args, $url ) {
+	public function log_http_response( $response, array $args, $url ) {
 		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
 		$this->data['http'][$args['_qm_key']]['response'] = $response;
 		if ( isset( $args['_qm_original_key'] ) ) {
 			$this->data['http'][$args['_qm_original_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
 			$this->data['http'][$args['_qm_original_key']]['response'] = new WP_Error( 'http_request_not_executed', __( 'Request not executed due to a filter on pre_http_request', 'query-monitor' ) );
 		}
-
-		return $response;
 	}
 
 	public function process() {
