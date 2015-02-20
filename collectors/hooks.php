@@ -26,7 +26,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		global $wp_actions, $wp_filter;
 
-		if ( is_admin() and ( $admin = QueryMonitor::get_collector( 'admin' ) ) ) {
+		if ( is_admin() and ( $admin = QM_Collectors::get( 'admin' ) ) ) {
 			$this->data['screen'] = $admin->data['base'];
 		} else {
 			$this->data['screen'] = '';
@@ -92,9 +92,4 @@ class QM_Collector_Hooks extends QM_Collector {
 
 }
 
-function register_qm_collector_hooks( array $qm ) {
-	$qm['hooks'] = new QM_Collector_Hooks;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_hooks', 80 );
+QM_Collectors::add( new QM_Collector_Hooks );

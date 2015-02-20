@@ -224,9 +224,4 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 }
 
-function register_qm_collector_db_queries( array $qm ) {
-	$qm['db_queries'] = new QM_Collector_DB_Queries;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_db_queries', 20 );
+QM_Collectors::add( new QM_Collector_DB_Queries );

@@ -199,9 +199,4 @@ class QM_Collector_HTTP extends QM_Collector {
 
 }
 
-function register_qm_collector_http( array $qm ) {
-	$qm['http'] = new QM_Collector_HTTP;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_http', 100 );
+QM_Collectors::add( new QM_Collector_HTTP );

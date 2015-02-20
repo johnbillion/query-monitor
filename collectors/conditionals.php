@@ -60,9 +60,4 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 }
 
-function register_qm_collector_conditionals( array $qm ) {
-	$qm['conditionals'] = new QM_Collector_Conditionals;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_conditionals', 50 );
+QM_Collectors::add( new QM_Collector_Conditionals );

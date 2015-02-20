@@ -59,16 +59,17 @@ class QueryMonitor extends QM_Plugin {
 		# Parent setup:
 		parent::__construct( $file );
 
-		# Collectors:
+		# Load and register built-in collectors:
 		QM_Util::include_files( $this->plugin_path( 'collectors' ) );
-
-		foreach ( apply_filters( 'query_monitor_collectors', array() ) as $collector ) {
-			$this->add_collector( $collector );
-		}
 
 	}
 
 	public function action_plugins_loaded() {
+
+		# Register additional collectors:
+		foreach ( apply_filters( 'query_monitor_collectors', array(), $this ) as $collector ) {
+			QM_Collectors::add( $collector );
+		}
 
 		# Dispatchers:
 		QM_Util::include_files( $this->plugin_path( 'dispatchers' ) );
@@ -79,24 +80,8 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function add_collector( QM_Collector $collector ) {
-		$this->collectors[$collector->id] = $collector;
-	}
-
 	public function add_dispatcher( QM_Dispatcher $dispatcher ) {
 		$this->dispatchers[$dispatcher->id] = $dispatcher;
-	}
-
-	public static function get_collector( $id ) {
-		$qm = self::init();
-		if ( isset( $qm->collectors[$id] ) ) {
-			return $qm->collectors[$id];
-		}
-		return false;
-	}
-
-	public function get_collectors() {
-		return $this->collectors;
 	}
 
 	public function get_dispatchers() {
@@ -178,7 +163,9 @@ class QueryMonitor extends QM_Plugin {
 			return;
 		}
 
-		foreach ( $this->get_collectors() as $collector ) {
+		$collectors = QM_Collectors::init();
+
+		foreach ( $collectors as $collector ) {
 			$collector->tear_down();
 			$collector->process();
 		}
@@ -191,7 +178,7 @@ class QueryMonitor extends QM_Plugin {
 
 			$dispatcher->before_output();
 
-			foreach ( $this->get_collectors() as $collector ) {
+			foreach ( $collectors as $collector ) {
 				$dispatcher->output( $collector );
 			}
 
@@ -259,6 +246,40 @@ class QueryMonitor extends QM_Plugin {
 
 		if ( ! $instance ) {
 			$instance = new QueryMonitor( $file );
+		}
+
+		return $instance;
+
+	}
+
+}
+
+class QM_Collectors implements IteratorAggregate {
+
+	private $items = array();
+
+	public function getIterator() {
+		return new ArrayIterator( $this->items );
+	}
+
+	public static function add( QM_Collector $collector ) {
+		$collectors = self::init();
+		$collectors->items[ $collector->id ] = $collector;
+	}
+
+	public static function get( $id ) {
+		$collectors = self::init();
+		if ( isset( $collectors->items[ $id ] ) ) {
+			return $collectors->items[ $id ];
+		}
+		return false;
+	}
+
+	public static function init() {
+		static $instance;
+
+		if ( !$instance ) {
+			$instance = new QM_Collectors;
 		}
 
 		return $instance;

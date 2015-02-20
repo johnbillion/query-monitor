@@ -27,10 +27,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$db_query_num   = null;
 		$db_query_types = array();
-		# @TODO: make this less derpy:
-		$db_queries     = QueryMonitor::get_collector( 'db_queries' );
+		$db_queries     = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
+			# @TODO: make this less derpy:
 			$db_queries_data = $db_queries->get_data();
 			if ( isset( $db_queries_data['types'] ) ) {
 				$db_query_num = $db_queries_data['types'];

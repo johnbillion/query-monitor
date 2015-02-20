@@ -48,9 +48,4 @@ class QM_Collector_Overview extends QM_Collector {
 
 }
 
-function register_qm_collector_overview( array $qm ) {
-	$qm['overview'] = new QM_Collector_Overview;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_overview', 10 );
+QM_Collectors::add( new QM_Collector_Overview );

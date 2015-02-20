@@ -24,7 +24,7 @@ class QM_Collector_DB_Components extends QM_Collector {
 
 	public function process() {
 
-		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
+		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
 				usort( $this->data['times'], 'QM_Collector::sort_ltime' );
@@ -38,9 +38,4 @@ class QM_Collector_DB_Components extends QM_Collector {
 
 }
 
-function register_qm_collector_db_components( array $qm ) {
-	$qm['db_components'] = new QM_Collector_DB_Components;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_db_components', 40 );
+QM_Collectors::add( new QM_Collector_DB_Components );

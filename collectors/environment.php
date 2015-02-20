@@ -99,7 +99,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'query_cache_type'   => 'ON'   # Query cache on or off
 		);
 
-		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
+		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
@@ -227,9 +227,4 @@ class QM_Collector_Environment extends QM_Collector {
 
 }
 
-function register_qm_collector_environment( array $qm ) {
-	$qm['environment'] = new QM_Collector_Environment;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_environment', 120 );
+QM_Collectors::add( new QM_Collector_Environment );

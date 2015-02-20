@@ -51,9 +51,4 @@ class QM_Collector_Assets extends QM_Collector {
 
 }
 
-function register_qm_collector_assets( array $qm ) {
-	$qm['assets'] = new QM_Collector_Assets;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_assets', 80 );
+QM_Collectors::add( new QM_Collector_Assets );

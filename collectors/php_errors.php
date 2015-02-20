@@ -114,9 +114,4 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 }
 
-function register_qm_collector_php_errors( array $qm ) {
-	$qm['php_errors'] = new QM_Collector_PHP_Errors;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_php_errors', 110 );
+QM_Collectors::add( new QM_Collector_PHP_Errors );

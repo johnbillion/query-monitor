@@ -110,7 +110,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		if ( $dbq = QueryMonitor::get_collector( 'db_queries' ) ) {
+		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
 				$menu[] = $this->menu( array(

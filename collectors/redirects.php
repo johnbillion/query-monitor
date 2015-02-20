@@ -45,9 +45,4 @@ class QM_Collector_Redirects extends QM_Collector {
 
 }
 
-function register_qm_collector_redirects( array $qm ) {
-	$qm['redirects'] = new QM_Collector_Redirects;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_redirects', 140 );
+QM_Collectors::add( new QM_Collector_Redirects );

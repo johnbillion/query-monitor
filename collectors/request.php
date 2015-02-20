@@ -125,9 +125,4 @@ class QM_Collector_Request extends QM_Collector {
 
 }
 
-function register_qm_collector_request( array $qm ) {
-	$qm['request'] = new QM_Collector_Request;
-	return $qm;
-}
-
-add_filter( 'query_monitor_collectors', 'register_qm_collector_request', 60 );
+QM_Collectors::add( new QM_Collector_Request );
