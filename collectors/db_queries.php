@@ -63,6 +63,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( $this->db_objects as $name => $db ) {
 			if ( is_a( $db, 'wpdb' ) ) {
 				$this->process_db_object( $name, $db );
+			} else {
+				unset( $this->db_objects[ $name ] );
 			}
 		}
 

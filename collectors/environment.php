@@ -103,10 +103,6 @@ class QM_Collector_Environment extends QM_Collector {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
-				if ( !is_a( $db, 'wpdb' ) ) {
-					continue;
-				}
-
 				$variables = $db->get_results( "
 					SHOW VARIABLES
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
