@@ -96,16 +96,11 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @param array  $args     HTTP request arguments.
 	 * @param string $url      The request URL.
 	 */
-	public function action_http_api_debug( $response, $action, $class = null, $args = null, $url = null ) {
+	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
 
 		switch ( $action ) {
 
 			case 'response':
-
-				# https://core.trac.wordpress.org/ticket/18732
-				if ( empty( $args ) or empty( $args['_qm_key'] ) ) {
-					return;
-				}
 
 				if ( !empty( $class ) ) {
 					$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
