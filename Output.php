@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-if ( ! class_exists( 'QM_Output' ) ) {
+if ( ! interface_exists( 'QM_Output' ) ) {
 interface QM_Output {
 
 	public function __construct( QM_Collector $collector );
