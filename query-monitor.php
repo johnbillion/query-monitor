@@ -33,7 +33,7 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( __FILE__ );
 foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class ) {
-	require_once "{$qm_dir}/{$qm_class}.php";
+	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
 class QueryMonitor extends QM_Plugin {
