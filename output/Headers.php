@@ -20,9 +20,6 @@ abstract class QM_Output_Headers implements QM_Output {
 		$this->collector = $collector;
 	}
 
-	public function output() {
-		# Headers output does nothing by default
-		return false;
-	}
+	abstract public function output();
 
 }
