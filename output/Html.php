@@ -73,8 +73,9 @@ abstract class QM_Output_Html implements QM_Output {
 		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->collector->id . '-' . $name ) . '">';
 		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
-		foreach ( $values as $value )
+		foreach ( $values as $value ) {
 			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+		}
 
 		$out .= '</select>';
 
@@ -109,8 +110,9 @@ abstract class QM_Output_Html implements QM_Output {
 			'ALTER', 'AND', 'COMMIT', 'CREATE', 'DESCRIBE', 'DELETE', 'DROP', 'ELSE', 'END', 'FROM', 'GROUP',
 			'HAVING', 'INNER', 'INSERT', 'LEFT', 'LIMIT', 'ON', 'OR', 'ORDER', 'OUTER', 'REPLACE', 'RIGHT', 'ROLLBACK', 'SELECT', 'SET',
 			'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
-		) as $cmd )
+		) as $cmd ) {
 			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
+		}
 
 		return $sql;
 
@@ -139,10 +141,11 @@ abstract class QM_Output_Html implements QM_Output {
 		if ( !isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
 			$format = apply_filters( 'query_monitor_file_link_format', $format );
-			if ( empty( $format ) )
+			if ( empty( $format ) ) {
 				self::$file_link_format = false;
-			else
+			} else {
 				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
+			}
 		}
 
 		if ( false === self::$file_link_format ) {
