@@ -238,15 +238,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 	}
 
-	public function admin_menu( array $menu ) {
-
-		$menu[] = $this->menu( array(
-			'title' => __( 'Environment', 'query-monitor' )
-		) );
-		return $menu;
-
-	}
-
 }
 
 function register_qm_output_html_environment( array $output, QM_Collectors $collectors ) {

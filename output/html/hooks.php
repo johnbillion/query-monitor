@@ -132,15 +132,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	}
 
-	public function admin_menu( array $menu ) {
-
-		$menu[] = $this->menu( array(
-			'title' => __( 'Hooks', 'query-monitor' )
-		) );
-		return $menu;
-
-	}
-
 }
 
 function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {

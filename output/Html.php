@@ -24,6 +24,15 @@ abstract class QM_Output_Html implements QM_Output {
 		$this->collector = $collector;
 	}
 
+	public function admin_menu( array $menu ) {
+
+		$menu[] = $this->menu( array(
+			'title' => $this->collector->name(),
+		) );
+		return $menu;
+
+	}
+
 	public static function output_inner( $vars ) {
 
 		echo '<table cellspacing="0" class="qm-inner">';
