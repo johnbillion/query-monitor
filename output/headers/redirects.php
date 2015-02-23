@@ -32,8 +32,11 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 
 }
 
-function register_qm_output_headers_redirects( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Headers_Redirects( $collector );
+function register_qm_output_headers_redirects( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'redirects' ) ) {
+		$output['redirects'] = new QM_Output_Headers_Redirects( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_headers_redirects', 'register_qm_output_headers_redirects', 10, 2 );
+add_filter( 'query_monitor_output_headers', 'register_qm_output_headers_redirects', 140, 2 );

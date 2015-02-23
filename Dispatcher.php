@@ -40,8 +40,6 @@ abstract class QM_Dispatcher {
 		// nothing
 	}
 
-	abstract public function get_outputter( QM_Collector $collector );
-
 	public function user_can_view() {
 
 		if ( !did_action( 'plugins_loaded' ) ) {
@@ -68,23 +66,6 @@ abstract class QM_Dispatcher {
 			return user_can( $old_user_id, 'view_query_monitor' );
 		}
 		return false;
-	}
-
-	public function output( QM_Collector $collector ) {
-
-		$filter = 'query_monitor_output_' . $this->id . '_' . $collector->id;
-		$output = apply_filters( $filter, null, $collector );
-
-		if ( false === $output ) {
-			return;
-		}
-
-		if ( !is_a( $output, 'QM_Output' ) ) {
-			$output = $this->get_outputter( $collector );
-		}
-
-		$output->output();
-
 	}
 
 }

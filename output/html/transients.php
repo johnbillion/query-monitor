@@ -106,8 +106,11 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_transients( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Transients( $collector );
+function register_qm_output_html_transients( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'transients' ) ) {
+		$output['transients'] = new QM_Output_Html_Transients( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_transients', 'register_qm_output_html_transients', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_transients', 90, 2 );

@@ -143,8 +143,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_hooks( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Hooks( $collector );
+function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'hooks' ) ) {
+		$output['hooks'] = new QM_Output_Html_Hooks( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_hooks', 'register_qm_output_html_hooks', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_hooks', 80, 2 );

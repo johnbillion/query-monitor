@@ -133,8 +133,11 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_admin( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Admin( $collector );
+function register_qm_output_html_admin( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'admin' ) ) {
+		$output['admin'] = new QM_Output_Html_Admin( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_admin', 'register_qm_output_html_admin', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_admin', 70, 2 );

@@ -123,8 +123,11 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_db_callers( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_DB_Callers( $collector );
+function register_qm_output_html_db_callers( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'db_callers' ) ) {
+		$output['db_callers'] = new QM_Output_Html_DB_Callers( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_db_callers', 'register_qm_output_html_db_callers', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_db_callers', 30, 2 );

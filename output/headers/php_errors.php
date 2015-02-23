@@ -65,8 +65,11 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 }
 
-function register_qm_output_headers_php_errors( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Headers_PHP_Errors( $collector );
+function register_qm_output_headers_php_errors( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'php_errors' ) ) {
+		$output['php_errors'] = new QM_Output_Headers_PHP_Errors( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_headers_php_errors', 'register_qm_output_headers_php_errors', 10, 2 );
+add_filter( 'query_monitor_output_headers', 'register_qm_output_headers_php_errors', 110, 2 );

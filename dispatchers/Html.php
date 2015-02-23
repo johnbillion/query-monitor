@@ -236,10 +236,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function get_outputter( QM_Collector $collector ) {
-		return new QM_Output_Html( $collector );
-	}
-
 	public function js_admin_bar_menu() {
 
 		$class = implode( ' ', apply_filters( 'query_monitor_class', array() ) );

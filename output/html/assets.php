@@ -148,8 +148,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_assets( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Assets( $collector );
+function register_qm_output_html_assets( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'assets' ) ) {
+		$output['assets'] = new QM_Output_Html_Assets( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_assets', 'register_qm_output_html_assets', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_assets', 80, 2 );

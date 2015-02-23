@@ -74,6 +74,7 @@ class QueryMonitor extends QM_Plugin {
 		# Dispatchers:
 		QM_Util::include_files( $this->plugin_path( 'dispatchers' ) );
 
+		# Register built-in and additional dispatchers:
 		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher ) {
 			$this->add_dispatcher( $dispatcher );
 		}
@@ -178,8 +179,10 @@ class QueryMonitor extends QM_Plugin {
 
 			$dispatcher->before_output();
 
-			foreach ( $collectors as $collector ) {
-				$dispatcher->output( $collector );
+			$outputters = apply_filters( "query_monitor_output_{$dispatcher->id}", array(), $collectors );
+
+			foreach ( $outputters as $outputter ) {
+				$outputter->output();
 			}
 
 			$dispatcher->after_output();

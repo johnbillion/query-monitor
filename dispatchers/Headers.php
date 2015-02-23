@@ -51,10 +51,6 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	}
 
-	public function get_outputter( QM_Collector $collector ) {
-		return new QM_Output_Headers( $collector );
-	}
-
 	public function is_active() {
 
 		if ( ! $this->user_can_view() ) {

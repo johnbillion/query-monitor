@@ -92,8 +92,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_theme( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_Theme( $collector );
+function register_qm_output_html_theme( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'theme' ) ) {
+		$output['theme'] = new QM_Output_Html_Theme( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_theme', 'register_qm_output_html_theme', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_theme', 70, 2 );

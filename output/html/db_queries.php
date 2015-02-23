@@ -406,8 +406,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_db_queries( QM_Output $output = null, QM_Collector $collector ) {
-	return new QM_Output_Html_DB_Queries( $collector );
+function register_qm_output_html_db_queries( array $output, QM_Collectors $collectors ) {
+	if ( $collector = $collectors::get( 'db_queries' ) ) {
+		$output['db_queries'] = new QM_Output_Html_DB_Queries( $collector );
+	}
+	return $output;
 }
 
-add_filter( 'query_monitor_output_html_db_queries', 'register_qm_output_html_db_queries', 10, 2 );
+add_filter( 'query_monitor_output_html', 'register_qm_output_html_db_queries', 20, 2 );

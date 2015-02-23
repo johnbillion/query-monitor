@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-class QM_Output_Headers implements QM_Output {
+abstract class QM_Output_Headers implements QM_Output {
 
 	public function __construct( QM_Collector $collector ) {
 		$this->collector = $collector;

@@ -14,48 +14,14 @@ GNU General Public License for more details.
 
 */
 
-class QM_Output_Html implements QM_Output {
+abstract class QM_Output_Html implements QM_Output {
 
 	protected static $file_link_format = null;
 
+	abstract public function output();
+
 	public function __construct( QM_Collector $collector ) {
 		$this->collector = $collector;
-	}
-
-	public function output() {
-
-		$data = $this->collector->get_data();
-		$name = $this->collector->name();
-
-		if ( empty( $data ) )
-			return;
-
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
-		if ( !empty( $name ) ) {
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th colspan="2">' . esc_html( $name ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
-		}
-		echo '<tbody>';
-
-		foreach ( $data as $key => $value ) {
-			echo '<tr>';
-			echo '<td>' . esc_html( $key ) . '</td>';
-			if ( is_object( $value ) or is_array( $value ) ) {
-				echo '<td><pre>' . print_r( $value, true ) . '</pre></td>';
-			} else {
-				echo '<td>' . esc_html( $value ) . '</td>';
-			}
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
 	}
 
 	public static function output_inner( $vars ) {
