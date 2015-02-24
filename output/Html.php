@@ -136,7 +136,7 @@ abstract class QM_Output_Html implements QM_Output {
 
 		# Further reading:
 		# http://simonwheatley.co.uk/2012/07/clickable-stack-traces/
-		# https://github.com/dhoulb/subl
+		# https://github.com/grych/subl-handler
 
 		if ( !isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );

@@ -102,20 +102,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	protected function dependency_row( _WP_Dependency $script, WP_Dependencies $dependencies ) {
 
-	//	$path = $script->src;
-
-	//	if ( preg_match( '#^//#', $path ) ) {
-	//		$path = is_ssl() ? 'https:' . $path : 'http:' . $path;
-	//	} else if ( preg_match( '#^/#', $path ) ) {
-	//		$path = home_url( $path );
-	//	} else {
-	//		$path = set_url_scheme( $path );
-	//	}
-
-	//	$path      = str_replace( set_url_scheme( WP_PLUGIN_URL ), WP_PLUGIN_DIR, $path );
-	//	$path      = str_replace( set_url_scheme( WP_CONTENT_URL ), WP_CONTENT_DIR, $path );
-	//	$component = QM_Util::get_file_component( $path );
-
 		if ( empty( $script->ver ) ) {
 			$ver = '&nbsp;';
 		} else {
