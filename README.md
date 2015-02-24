@@ -1,15 +1,10 @@
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
+[![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
+[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://docs.querymonitor.com/en/latest/)
+[![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
+[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor.svg?style=flat-square)](https://travis-ci.org/johnbillion/query-monitor)
+
 # Query Monitor #
-
-**Contributors:** johnbillion  
-**Tags:** debug, debugging, development, developer, performance, profiler, profiling, queries, query monitor  
-**Requires at least:** 3.5  
-**Tested up to:** 4.1  
-**Stable tag:** 2.6.10  
-**License:** GPL v2 or later  
-
-View debugging and performance information on database queries, hooks, conditionals, HTTP requests, redirects and more.
-
-## Description ##
 
 Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging and the ability to narrow down things by plugin or theme.
 
