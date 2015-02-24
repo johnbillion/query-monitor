@@ -216,6 +216,13 @@ body.wp-admin.folded #qm {
 	text-transform: none !important;
 }
 
+.qm .qm-totally-legit-spacer td {
+	background-color: #f1f1f1 !important;
+	border-right-color: #f1f1f1 !important;
+	border-left-color: #f1f1f1 !important;
+	height: 10px !important;
+}
+
 .qm tbody tr:hover th,
 .qm tbody tr:hover td {
 	background: #f9f9f9 !important;

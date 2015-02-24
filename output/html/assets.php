@@ -31,47 +31,46 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '<th>' . __( 'Dependencies', 'query-monitor' ) . '</th>';
-	//	echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Version', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
 
-		// @TODO concat, do_concat, concat_version
+		foreach ( array(
+			'scripts' => __( 'Scripts', 'query-monitor' ),
+			'styles'  => __( 'Styles', 'query-monitor' ),
+		) as $type => $type_label ) {
 
-		$rowspan = count( $data['header_scripts'] );
+			echo '<thead>';
 
-		echo '<tr>';
-		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Header&nbsp;Scripts', 'query-monitor' ) . "</td>";	
+			if ( 'scripts' != $type ) {
+				echo '<tr class="qm-totally-legit-spacer">';
+				echo '<td colspan="6"></td>';
+				echo '</tr>';
+			}
 
-		$this->dependency_rows( $data['header_scripts'], $data['raw_scripts'] );
+			echo '<tr>';
+			echo '<th colspan="2">' . $type_label . '</th>';
+			echo '<th>' . __( 'Dependencies', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Version', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+			echo '<tbody>';
 
-		$rowspan = count( $data['footer_scripts'] );
+			foreach ( array(
+				'header' => __( 'Header %s', 'query-monitor' ),
+				'footer' => __( 'Footer %s', 'query-monitor' ),
+			) as $position => $position_label ) {
 
-		echo '<tr>';
-		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Footer&nbsp;Scripts', 'query-monitor' ) . "</td>";	
+				$rowspan = max( count( $data["{$position}_{$type}"] ), 1 );
 
-		$this->dependency_rows( $data['footer_scripts'], $data['raw_scripts'] );
+				echo '<tr>';
+				echo "<td valign='top' rowspan='{$rowspan}'>" . sprintf( $position_label, $type_label ) . "</td>";	
 
-		$rowspan = count( $data['header_styles'] );
+				$this->dependency_rows( $data["{$position}_{$type}"], $data["raw_{$type}"] );
 
-		echo '<tr>';
-		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Header&nbsp;Styles', 'query-monitor' ) . "</td>";	
+			}
 
-		$this->dependency_rows( $data['header_styles'], $data['raw_styles'] );
+			echo '</tbody>';
 
-		$rowspan = count( $data['footer_styles'] );
+		}
 
-		echo '<tr>';
-		echo "<td valign='top' rowspan='{$rowspan}'>" . __( 'Footer&nbsp;Styles', 'query-monitor' ) . "</td>";	
-
-		$this->dependency_rows( $data['footer_styles'], $data['raw_styles'] );
-
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
