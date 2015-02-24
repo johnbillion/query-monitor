@@ -62,7 +62,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				$rowspan = max( count( $data["{$position}_{$type}"] ), 1 );
 
 				echo '<tr>';
-				echo "<td valign='top' rowspan='{$rowspan}'>" . sprintf( $position_label, $type_label ) . "</td>";	
+				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . sprintf( $position_label, $type_label ) . "</td>";	
 
 				$this->dependency_rows( $data["{$position}_{$type}"], $data["raw_{$type}"] );
 
@@ -130,9 +130,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$dependents = self::get_dependents( $script, $dependencies );
 
-		echo '<td valign="top">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
-		echo '<td valign="top">' . implode( '<br>', $script->deps ) . '</td>';
-		echo '<td valign="top">' . implode( '<br>', $dependents ) . '</td>';
+		echo '<td valign="top" class="qm-wrap">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
+		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $script->deps ) . '</td>';
+		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $dependents ) . '</td>';
 		echo '<td valign="top">' . $ver . '</td>';
 
 	}

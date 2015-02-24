@@ -300,7 +300,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['sql'] ) ) {
-			echo "<td valign='top' class='qm-row-sql qm-ltr qm-sql'>{$sql}</td>";
+			echo "<td valign='top' class='qm-row-sql qm-ltr qm-wrap'>{$sql}</td>";
 		}
 
 		if ( isset( $cols['caller'] ) ) {

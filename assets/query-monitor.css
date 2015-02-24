@@ -297,9 +297,13 @@ body.wp-admin.folded #qm {
 	color: #ccc !important;
 }
 
-.qm .qm-sql {
+.qm .qm-wrap {
 	word-wrap: break-word !important;
 	word-break: break-all !important;
+}
+
+.qm .qm-nowrap {
+	white-space: nowrap !important;
 }
 
 .qm .qm-nonselectsql {
