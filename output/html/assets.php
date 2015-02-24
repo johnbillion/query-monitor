@@ -117,7 +117,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	//	$component = QM_Util::get_file_component( $path );
 
 		if ( empty( $script->ver ) ) {
-			$ver = '<em class="qm-info">' . $dependencies->default_version . '</em>';
+			$ver = '&nbsp;';
 		} else {
 			$ver = esc_html( $script->ver );
 		}
