@@ -25,7 +25,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		$cols = 5;
+		$cols = 6;
 		$i = 0;
 		$w = floor( 100 / $cols );
 
