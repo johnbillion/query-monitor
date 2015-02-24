@@ -194,4 +194,5 @@ class QM_Collector_HTTP extends QM_Collector {
 
 }
 
+# Load early in case a plugin is doing an HTTP request when it initialises instead of after the `plugins_loaded` hook
 QM_Collectors::add( new QM_Collector_HTTP );

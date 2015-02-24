@@ -114,4 +114,5 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 }
 
+# Load early to catch early errors
 QM_Collectors::add( new QM_Collector_PHP_Errors );

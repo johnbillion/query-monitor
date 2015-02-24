@@ -39,6 +39,11 @@ class QM_Collector_Admin extends QM_Collector {
 
 }
 
+function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
+	$collectors['admin'] = new QM_Collector_Admin;
+	return $collectors;
+}
+
 if ( is_admin() ) {
-	QM_Collectors::add( new QM_Collector_Admin );
+	add_filter( 'query_monitor_collectors', 'register_qm_collector_admin', 10, 2 );
 }

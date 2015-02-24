@@ -223,4 +223,9 @@ class QM_Collector_Environment extends QM_Collector {
 
 }
 
-QM_Collectors::add( new QM_Collector_Environment );
+function register_qm_collector_environment( array $collectors, QueryMonitor $qm ) {
+	$collectors['environment'] = new QM_Collector_Environment;
+	return $collectors;
+}
+
+add_filter( 'query_monitor_collectors', 'register_qm_collector_environment', 20, 2 );

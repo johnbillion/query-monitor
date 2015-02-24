@@ -38,4 +38,9 @@ class QM_Collector_DB_Callers extends QM_Collector {
 
 }
 
-QM_Collectors::add( new QM_Collector_DB_Callers );
+function register_qm_collector_db_callers( array $collectors, QueryMonitor $qm ) {
+	$collectors['db_callers'] = new QM_Collector_DB_Callers;
+	return $collectors;
+}
+
+add_filter( 'query_monitor_collectors', 'register_qm_collector_db_callers', 20, 2 );

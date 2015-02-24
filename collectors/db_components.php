@@ -38,4 +38,9 @@ class QM_Collector_DB_Components extends QM_Collector {
 
 }
 
-QM_Collectors::add( new QM_Collector_DB_Components );
+function register_qm_collector_db_components( array $collectors, QueryMonitor $qm ) {
+	$collectors['db_components'] = new QM_Collector_DB_Components;
+	return $collectors;
+}
+
+add_filter( 'query_monitor_collectors', 'register_qm_collector_db_components', 20, 2 );

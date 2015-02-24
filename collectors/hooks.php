@@ -105,4 +105,9 @@ class QM_Collector_Hooks extends QM_Collector {
 
 }
 
-QM_Collectors::add( new QM_Collector_Hooks );
+function register_qm_collector_hooks( array $collectors, QueryMonitor $qm ) {
+	$collectors['hooks'] = new QM_Collector_Hooks;
+	return $collectors;
+}
+
+add_filter( 'query_monitor_collectors', 'register_qm_collector_hooks', 20, 2 );

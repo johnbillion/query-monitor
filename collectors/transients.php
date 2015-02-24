@@ -58,4 +58,5 @@ class QM_Collector_Transients extends QM_Collector {
 
 }
 
+# Load early in case a plugin is setting transients when it initialises instead of after the `plugins_loaded` hook
 QM_Collectors::add( new QM_Collector_Transients );

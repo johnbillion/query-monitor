@@ -56,6 +56,11 @@ class QM_Collector_Theme extends QM_Collector {
 
 }
 
+function register_qm_collector_theme( array $collectors, QueryMonitor $qm ) {
+	$collectors['theme'] = new QM_Collector_Theme;
+	return $collectors;
+}
+
 if ( !is_admin() ) {
-	QM_Collectors::add( new QM_Collector_Theme );
+	add_filter( 'query_monitor_collectors', 'register_qm_collector_theme', 10, 2 );
 }
