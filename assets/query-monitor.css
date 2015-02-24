@@ -116,7 +116,7 @@ GNU General Public License for more details.
 
 #qm {
 	clear: both !important;
-	background: #f3f3f3 !important;
+	background: #f1f1f1 !important;
 	margin: 25px 0 0 !important;
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
@@ -163,7 +163,7 @@ body.wp-admin.folded #qm {
 #qm-wrapper > p {
 	color: #777 !important;
 	font: 13px/15px 'Open Sans', Arial !important;
-	margin: 20px 1% -15px !important;
+	margin: 20px 20px -15px !important;
 	font-style: italic !important;
 }
 
@@ -194,8 +194,7 @@ body.wp-admin.folded #qm {
 .qm>table {
 	color: #555 !important;
 	border-collapse: collapse !important;
-	border-style: hidden !important;
-	box-shadow: 0 0 0 1px #ddd, 0 1px 2px 1px rgba(0,0,0,0.05) !important;
+	box-shadow: none !important;
 	width: 100% !important;
 	table-layout: auto !important;
 	margin: 0 !important;
@@ -210,7 +209,7 @@ body.wp-admin.folded #qm {
 	font-weight: normal !important;
 	font-style: normal !important;
 	line-height: 16px !important;
-	border: 1px solid #eee !important;
+	border: 1px solid #e8e8e8 !important;
 	padding: 5px 8px 4px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
@@ -219,7 +218,7 @@ body.wp-admin.folded #qm {
 
 .qm tbody tr:hover th,
 .qm tbody tr:hover td {
-	background: #f5f5f5 !important;
+	background: #f9f9f9 !important;
 }
 
 #qm-conditionals tbody tr:hover td,
@@ -276,7 +275,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	line-height: 16px !important;
 	color: inherit !important;
-	background: #f3f3f3 !important;
+	background: #f1f1f1 !important;
 	padding: 3px 4px 2px !important;
 	margin: 0 !important;
 }
