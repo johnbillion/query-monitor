@@ -61,6 +61,14 @@ class QM_Util {
 	}
 
 	public static function get_file_dirs() {
+		if ( empty( self::$file_dirs ) ) {
+			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['muplugin']   = self::standard_dir( WPMU_PLUGIN_DIR );
+			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
+			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
+			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
+			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
+		}
 		return self::$file_dirs;
 	}
 
@@ -72,16 +80,7 @@ class QM_Util {
 			return self::$file_components[$file];
 		}
 
-		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['muplugin']   = self::standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
-		}
-
-		foreach ( self::$file_dirs as $type => $dir ) {
+		foreach ( self::get_file_dirs() as $type => $dir ) {
 			if ( 0 === strpos( $file, $dir ) ) {
 				break;
 			}
