@@ -21,6 +21,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 70 );
+		add_filter( 'query_monitor_class', array( $this, 'admin_class' ) );
 	}
 
 	public function output() {
@@ -78,7 +79,15 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			echo "<tr{$attr}>";
 
-			echo "<td valign='top' rowspan='{$rowspan}'>{$hook['name']}</td>";	
+			echo "<td valign='top' rowspan='{$rowspan}'>";
+			echo $hook['name'];
+			if ( 'all' === $hook['name'] ) {
+				echo '<br><span class="qm-warn">';
+				_e( 'Warning: The <code>all</code> action is extremely resource intensive. Try to avoid using it.', 'query-monitor' );
+				echo '<span>';
+			}
+			echo "</td>";
+
 			if ( !empty( $hook['actions'] ) ) {
 
 				$first = true;
@@ -129,6 +138,35 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
+
+	}
+
+	public function admin_class( array $class ) {
+
+		$data = $this->collector->get_data();
+
+		if ( isset( $data['warnings'] ) ) {
+			$class[] = 'qm-warning';
+		}
+
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->collector->get_data();
+		$args = array(
+			'title' => $this->collector->name(),
+		);
+
+		if ( isset( $data['warnings'] ) ) {
+			$args['meta']['classname'] = 'qm-warning';
+		}
+
+		$menu[] = $this->menu( $args );
+
+		return $menu;
 
 	}
 
