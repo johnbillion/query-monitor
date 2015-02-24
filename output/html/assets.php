@@ -48,6 +48,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<tr>';
 			echo '<th colspan="2">' . $type_label . '</th>';
 			echo '<th>' . __( 'Dependencies', 'query-monitor' ) . '</th>';
+			echo '<th>' . __( 'Dependents', 'query-monitor' ) . '</th>';
 			echo '<th>' . __( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -81,7 +82,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$first = true;
 
 		if ( empty( $handles ) ) {
-			echo '<td valign="top" colspan="3"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td valign="top" colspan="4"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			return;
 		}
@@ -127,10 +128,27 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$src = $script->src;
 		}
 
+		$dependents = self::get_dependents( $script, $dependencies );
+
 		echo '<td valign="top">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
 		echo '<td valign="top">' . implode( '<br>', $script->deps ) . '</td>';
-	//	echo '<td valign="top">' . $component->name . '</td>';
+		echo '<td valign="top">' . implode( '<br>', $dependents ) . '</td>';
 		echo '<td valign="top">' . $ver . '</td>';
+
+	}
+
+	protected static function get_dependents( _WP_Dependency $script, WP_Dependencies $dependencies ) {
+
+		$dependents = array();
+
+		foreach ( $dependencies->done as $handle ) {
+			$item = $dependencies->query( $handle );
+			if ( in_array( $script->handle, $item->deps ) ) {
+				$dependents[] = $handle;
+			}
+		}
+
+		return $dependents;
 
 	}
 
