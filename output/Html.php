@@ -68,6 +68,10 @@ abstract class QM_Output_Html implements QM_Output {
 
 	protected function build_filter( $name, array $values ) {
 
+		if ( empty( $values ) ) {
+			return '';
+		}
+
 		usort( $values, 'strcasecmp' );
 
 		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
