@@ -17,7 +17,10 @@ GNU General Public License for more details.
 if ( ! class_exists( 'QM_Collector' ) ) {
 abstract class QM_Collector {
 
-	protected $data = array();
+	protected $data = array(
+		'types'           => array(),
+		'component_times' => array(),
+	);
 
 	public function __construct() {}
 
@@ -26,6 +29,38 @@ abstract class QM_Collector {
 	}
 
 	abstract public function name();
+
+	protected function log_type( $type ) {
+
+		if ( isset( $this->data['types'][$type] ) ) {
+			$this->data['types'][$type]++;
+		} else {
+			$this->data['types'][$type] = 1;
+		}
+
+	}
+
+	protected function log_component( $component, $ltime, $type ) {
+
+		if ( !isset( $this->data['component_times'][$component->name] ) ) {
+			$this->data['component_times'][$component->name] = array(
+				'component' => $component->name,
+				'calls'     => 0,
+				'ltime'     => 0,
+				'types'     => array()
+			);
+		}
+
+		$this->data['component_times'][$component->name]['calls']++;
+		$this->data['component_times'][$component->name]['ltime'] += $ltime;
+
+		if ( isset( $this->data['component_times'][$component->name]['types'][$type] ) ) {
+			$this->data['component_times'][$component->name]['types'][$type]++;
+		} else {
+			$this->data['component_times'][$component->name]['types'][$type] = 1;
+		}
+
+	}
 
 	public static function timer_stop_float() {
 		global $timestart;

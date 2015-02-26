@@ -25,7 +25,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) ) {
+		if ( empty( $data['stylesheet'] ) ) {
 			return;
 		}
 

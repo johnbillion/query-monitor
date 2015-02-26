@@ -25,7 +25,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) ) {
+		if ( empty( $data['types'] ) ) {
 			return;
 		}
 
@@ -42,10 +42,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th>' . _x( 'Component', 'Query component', 'query-monitor' ) . '</th>';
 
-		if ( !empty( $data['types'] ) ) {
-			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<th class="qm-num">' . $type_name . $this->build_sorter() . '</th>';
-			}
+		foreach ( $data['types'] as $type_name => $type_count ) {
+			echo '<th class="qm-num">' . $type_name . $this->build_sorter() . '</th>';
 		}
 
 		echo '<th class="qm-num qm-sorted-desc">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';

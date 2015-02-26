@@ -28,7 +28,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data ) ) {
+		if ( empty( $data['hooks'] ) ) {
 			return;
 		}
 
