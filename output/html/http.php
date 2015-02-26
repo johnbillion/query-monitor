@@ -98,7 +98,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				}
 
 				$stack     = $row['trace']->get_stack();
-				$component = $row['trace']->get_component();
+				$component = $row['component'];
 
 				$stack = implode( '<br>', $stack );
 				echo "

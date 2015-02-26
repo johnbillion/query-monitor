@@ -188,6 +188,11 @@ class QM_Collector_HTTP extends QM_Collector {
 			$http['ltime'] = ( $http['end'] - $http['start'] );
 			$this->data['ltime'] += $http['ltime'];
 
+			$http['component'] = $http['trace']->get_component();
+
+			$this->log_type( $http['type'] );
+			$this->log_component( $http['component'], $http['ltime'], $http['type'] );
+
 		}
 
 	}
