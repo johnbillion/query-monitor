@@ -70,7 +70,7 @@ abstract class QM_Output_Html implements QM_Output {
 
 		usort( $values, 'strcasecmp' );
 
-		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $this->collector->id . '-' . $name ) . '">';
+		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
 		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {

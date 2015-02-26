@@ -274,16 +274,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['sql'] ) ) {
-			$row_attr['data-qm-db_queries-type'] = $row['type'];
+			$row_attr['data-qm-type'] = $row['type'];
 		}
 		if ( isset( $cols['component'] ) ) {
-			$row_attr['data-qm-db_queries-component'] = $row['component']->name;
+			$row_attr['data-qm-component'] = $row['component']->name;
 		}
 		if ( isset( $cols['caller'] ) ) {
-			$row_attr['data-qm-db_queries-caller'] = $row['caller_name'];
+			$row_attr['data-qm-caller'] = $row['caller_name'];
 		}
 		if ( isset( $cols['time'] ) ) {
-			$row_attr['data-qm-db_queries-time'] = $row['ltime'];
 			$row_attr['data-qm-time'] = $row['ltime'];
 		}
 

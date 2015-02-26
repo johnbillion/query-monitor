@@ -62,8 +62,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			}
 
-			$row_attr['data-qm-hooks-name']      = implode( ' ', $hook['parts'] );
-			$row_attr['data-qm-hooks-component'] = implode( ' ', $hook['components'] );
+			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
 			$attr = '';
 

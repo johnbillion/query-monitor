@@ -388,11 +388,10 @@ select.qm-filter {
 }
 
 .qm-hide,
-.qm-hide-hooks-component,
-.qm-hide-hooks-name,
-.qm-hide-db_queries-type,
-.qm-hide-db_queries-caller,
-.qm-hide-db_queries-component {
+.qm-hide-name,
+.qm-hide-type,
+.qm-hide-caller,
+.qm-hide-component {
 	display: none !important;
 }
 
