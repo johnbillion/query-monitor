@@ -29,16 +29,17 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$total_time = 0;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Response', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Transport', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Timeout', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Time', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
+		echo '<th scope="col">' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . __( 'Response', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $data['types'] ) ) . '</th>';
+		echo '<th scope="col">' . __( 'Transport', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . __( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
+		echo '<th scope="col">' . __( 'Timeout', 'query-monitor' ) . $this->build_sorter() . '</th>';
+		echo '<th scope="col">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -55,9 +56,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		if ( !empty( $data['http'] ) ) {
 
 			echo '<tbody>';
+			$i = 0;
 
 			foreach ( $data['http'] as $key => $row ) {
 				$ltime = $row['ltime'];
+				$i++;
+
+				$row_attr = array();
 
 				if ( empty( $ltime ) ) {
 					$stime = '';
@@ -100,10 +105,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$stack     = $row['trace']->get_stack();
 				$component = $row['component'];
 
+				$row_attr['data-qm-component'] = $component->name;
+				$row_attr['data-qm-type']      = $row['type'];
+
+				$attr = '';
+				foreach ( $row_attr as $a => $v ) {
+					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+				}
+
 				$stack = implode( '<br>', $stack );
 				echo "
-					<tr class='{$css}'>\n
-						<td valign='top' class='qm-url qm-ltr'>{$method}<br>{$url}</td>\n
+					<tr{$attr} class='{$css}'>\n
+						<td valign='top'>{$i}</td>
+						<td valign='top' class='qm-url qm-ltr qm-wrap'>{$method}<br>{$url}</td>\n
 						<td valign='top'>{$response}</td>\n
 						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-ltr'>{$stack}</td>\n
@@ -120,7 +134,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$total_stime = number_format_i18n( $data['ltime'], 4 );
 
 			echo '<tr>';
-			echo '<td colspan="6">' . $vars . '</td>';
+			echo '<td colspan="7">' . $vars . '</td>';
 			echo "<td>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
@@ -129,11 +143,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="7" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="8" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			if ( !empty( $vars ) ) {
 				echo '<tr>';
-				echo '<td colspan="7">' . $vars . '</td>';
+				echo '<td colspan="8">' . $vars . '</td>';
 				echo '</tr>';
 			}
 			echo '</tbody>';

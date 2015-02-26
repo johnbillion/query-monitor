@@ -179,8 +179,10 @@ class QM_Collector_HTTP extends QM_Collector {
 				if ( !in_array( $http['response']->get_error_code(), $silent ) ) {
 					$this->data['errors']['error'][] = $key;
 				}
+				$http['type'] = __( 'Error', 'query-monitor' );
 			} else {
-				if ( intval( wp_remote_retrieve_response_code( $http['response'] ) ) >= 400 ) {
+				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
+				if ( $http['type'] >= 400 ) {
 					$this->data['errors']['warning'][] = $key;
 				}
 			}
