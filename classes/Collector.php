@@ -81,6 +81,10 @@ abstract class QM_Collector {
 		return $this->data;
 	}
 
+	final public function set_id( $id ) {
+		$this->id = $id;
+	}
+
 	public static function sort_ltime( $a, $b ) {
 		if ( $a['ltime'] == $b['ltime'] ) {
 			return 0;
