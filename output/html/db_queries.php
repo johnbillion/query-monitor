@@ -115,7 +115,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $expensive[0]['result'] ) ) {
-			echo '<th scope="col">' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . __( 'Affected Rows', 'query-monitor' ) . '</th>';
 		}
 
 		echo '<th class="qm-num">' . __( 'Time', 'query-monitor' ) . '</th>';
@@ -162,7 +162,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
+			echo '<th scope="col" class="qm-sorted-asc qm-num">&nbsp;' . $this->build_sorter() . '</th>';
 			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
 			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ) . '</th>';
 
@@ -171,7 +171,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			if ( $db->has_result ) {
-				echo '<th scope="col">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
+				echo '<th scope="col" class="qm-num">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
 			}
 
 			echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
@@ -316,11 +316,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-ltr">' . implode( '<br>', $stack ) . '</td>';
+			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">' . implode( '<br>', $stack ) . '</td>';
 		}
 
 		if ( isset( $cols['component'] ) ) {
-			echo "<td valign='top' class='qm-row-component'>{$row['component']->name}</td>\n";
+			echo "<td valign='top' class='qm-row-component qm-nowrap'>{$row['component']->name}</td>\n";
 		}
 
 		if ( isset( $cols['result'] ) ) {

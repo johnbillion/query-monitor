@@ -35,7 +35,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . __( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
@@ -81,8 +81,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td>';
 					echo self::output_filename( $output, $error->file, $error->line );
 					echo '</td>';
-					echo '<td class="qm-ltr">' . $stack . '</td>';
-					echo '<td>' . $name . '</td>';
+					echo '<td class="qm-nowrap qm-ltr">' . $stack . '</td>';
+					echo '<td class="qm-nowrap">' . $name . '</td>';
 					echo '</tr>';
 
 					$first = false;

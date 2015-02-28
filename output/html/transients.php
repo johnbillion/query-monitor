@@ -65,8 +65,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 						<td valign='top'>{$transient}</td>\n
 						{$type}
 						{$expiration}
-						<td valign='top' class='qm-ltr'>{$stack}</td>\n
-						<td valign='top'>{$component->name}</td>\n
+						<td valign='top' class='qm-nowrap qm-ltr'>{$stack}</td>\n
+						<td valign='top' class='qm-nowrap'>{$component->name}</td>\n
 					</tr>\n
 				";
 			}
