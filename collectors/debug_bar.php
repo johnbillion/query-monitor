@@ -42,13 +42,16 @@ class QM_Collector_Debug_Bar extends QM_Collector {
 
 }
 
-function register_qm_collector_debug_bar( array $collectors, QueryMonitor $qm ) {
+function register_qm_collector_debug_bar() {
 
 	global $debug_bar;
 
 	if ( class_exists( 'Debug_Bar' ) ) {
-		return $collectors;
+		return;
 	}
+
+	$collectors = QM_Collectors::init();
+	$qm = QueryMonitor::init();
 
 	require_once $qm->plugin_path( 'classes/debug_bar.php' );
 
@@ -71,10 +74,9 @@ function register_qm_collector_debug_bar( array $collectors, QueryMonitor $qm ) 
 		$collector->set_id( "debug_bar_{$panel_id}" );
 		$collector->set_panel( $panel );
 
-		$collectors[ $collector->id ] = $collector;
+		$collectors->add( $collector );
 	}
 
-	return $collectors;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_collector_debug_bar', 10, 2 );
+add_action( 'init', 'register_qm_collector_debug_bar' );
