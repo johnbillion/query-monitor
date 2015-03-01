@@ -1,6 +1,6 @@
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
-[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://docs.querymonitor.com/en/latest/)
+[![Documentation](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://docs.querymonitor.com/en/stable/)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![Build Status](https://img.shields.io/travis/johnbillion/query-monitor.svg?style=flat-square)](https://travis-ci.org/johnbillion/query-monitor)
 
@@ -112,7 +112,7 @@ Hands up who can remember the correct names for the filters and actions for cust
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
- * Shows all *scripts and styles* which were enqueued on the current page, along with their path, dependencies, and version number
+ * Shows all *scripts and styles* which were enqueued on the current page, along with their URL, dependencies, dependents, and version number
 
 ## Authentication ##
 
@@ -130,7 +130,7 @@ However, it is likely that I will add some form of profiling functionality at so
 
 ## A Note on Query Monitor's Implementation ##
 
-In order to do a few clever things, Query Monitor loads earlier than you ever thought humanly possible (almost). It does this by symlinking a custom `db.php` in your `WP_CONTENT_DIR`. This file (when present) gets included before the database driver is loaded, meaning this portion of Query Monitor loads before WordPress even engages its brain.
+In order to do a few clever things, Query Monitor loads earlier than you ever thought humanly possible (almost). It does this by symlinking a custom `db.php` into your `WP_CONTENT_DIR`. This file gets included before the database driver is loaded, meaning this portion of Query Monitor loads before WordPress even engages its brain.
 
 In this file is Query Monitor's extension to the `wpdb` class which:
 
@@ -139,11 +139,11 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Logs the query result, which allows us to display the affected rows or error message if applicable
  * Logs various PHP configurations before anything has loaded, which allows us to display a message if these get altered at runtime by a plugin or theme
 
-If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can manually create the symlink to the plugin's `wp-content/db.php` if you have permission. ([Related GitHub issue](https://github.com/johnbillion/QueryMonitor/issues/5))
+If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
 # Screenshots #
 
-### Admin Menu ###
+### Admin Toolbar Menu ###
 
 ![Admin Menu](https://raw.github.com/johnbillion/QueryMonitor/master/assets-wp-repo/screenshot-1.png)
 
