@@ -238,8 +238,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function js_admin_bar_menu() {
 
-		$class = implode( ' ', apply_filters( 'query_monitor_class', array() ) );
-		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'query_monitor_title', array() ) );
+		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
+		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
 		if ( empty( $title ) ) {
 			$title = __( 'Query Monitor', 'query-monitor' );
@@ -253,7 +253,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'sub' => array()
 		);
 
-		foreach ( apply_filters( 'query_monitor_menus', array() ) as $menu ) {
+		foreach ( apply_filters( 'qm/output/menus', array() ) as $menu ) {
 			$admin_bar_menu['sub'][] = $menu;
 		}
 

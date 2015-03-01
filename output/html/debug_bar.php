@@ -18,7 +18,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'query_monitor_menus', array( $this, 'admin_menu' ), 200 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 200 );
 	}
 
 	public function output() {
