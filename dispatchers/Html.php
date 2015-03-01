@@ -172,7 +172,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		if ( !is_admin() ) {
 			$absolute = function_exists( 'twentyfifteen_setup' );
-			if ( apply_filters( 'query_monitor_absolute_position', $absolute ) ) {
+			if ( apply_filters( 'qm/output/absolute_position', $absolute ) ) {
 				$class[] = 'qm-absolute';
 			}
 		}

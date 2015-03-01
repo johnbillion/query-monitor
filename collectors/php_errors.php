@@ -103,7 +103,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		}
 
-		return apply_filters( 'query_monitor_php_errors_return_value', true );
+		return apply_filters( 'qm/collect/php_errors_return_value', true );
 
 	}
 

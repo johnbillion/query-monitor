@@ -200,10 +200,10 @@ class QM_Backtrace {
 		if ( !self::$filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
 			# Only run apply_filters on these once
-			self::$ignore_class  = apply_filters( 'query_monitor_ignore_class',  self::$ignore_class );
-			self::$ignore_method = apply_filters( 'query_monitor_ignore_method', self::$ignore_method );
-			self::$ignore_func   = apply_filters( 'query_monitor_ignore_func',   self::$ignore_func );
-			self::$show_args     = apply_filters( 'query_monitor_show_args',     self::$show_args );
+			self::$ignore_class  = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
+			self::$ignore_method = apply_filters( 'qm/trace/ignore_method', self::$ignore_method );
+			self::$ignore_func   = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
+			self::$show_args     = apply_filters( 'qm/trace/show_args',     self::$show_args );
 			self::$filtered = true;
 
 		}

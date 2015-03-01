@@ -162,7 +162,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			return;
 		}
 
-		$silent = apply_filters( 'query_monitor_silent_http_error_codes', array(
+		$silent = apply_filters( 'qm/collect/silent_http_errors', array(
 			'http_request_not_executed',
 			'airplane_mode_enabled'
 		) );

@@ -144,7 +144,7 @@ abstract class QM_Output_Html implements QM_Output {
 
 		if ( !isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
-			$format = apply_filters( 'query_monitor_file_link_format', $format );
+			$format = apply_filters( 'qm/output/file_link_format', $format );
 			if ( empty( $format ) ) {
 				self::$file_link_format = false;
 			} else {

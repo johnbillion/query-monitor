@@ -56,7 +56,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
 
-		$this->db_objects = apply_filters( 'query_monitor_db_objects', array(
+		$this->db_objects = apply_filters( 'qm/collect/db_objects', array(
 			'$wpdb' => $GLOBALS['wpdb']
 		) );
 
