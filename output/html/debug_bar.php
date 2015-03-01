@@ -38,7 +38,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		echo '<td valign="top">';
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
-		$this->collector->panel->render();
+		$this->collector->render();
 
 		echo '</div>';
 		echo '</td>';
@@ -63,7 +63,7 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 		$panel_id  = strtolower( get_class( $panel ) );
 		$collector = $collectors::get( "debug_bar_{$panel_id}" );
 
-		if ( $collector and $collector->get_panel()->is_visible() ) {
+		if ( $collector and $collector->is_visible() ) {
 			$output["debug_bar_{$panel_id}"] = new QM_Output_Html_Debug_Bar( $collector );
 		}
 	}

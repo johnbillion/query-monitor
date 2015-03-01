@@ -14,17 +14,17 @@ GNU General Public License for more details.
 
 */
 
-class QM_Collector_Debug_Bar extends QM_Collector {
+final class QM_Collector_Debug_Bar extends QM_Collector {
 
-	public $id    = 'debug_bar';
-	public $panel = null;
+	public $id     = 'debug_bar';
+	private $panel = null;
 
 	public function __construct() {
 		parent::__construct();
 	}
 
 	public function name() {
-		$title = $this->panel->title();
+		$title = $this->get_panel()->title();
 		return sprintf( 'Debug Bar: %s', $title );
 	}
 
@@ -37,12 +37,20 @@ class QM_Collector_Debug_Bar extends QM_Collector {
 	}
 
 	public function process() {
-		$this->panel->prerender();
+		$this->get_panel()->prerender();
+	}
+
+	public function is_visible() {
+		return $this->get_panel()->is_visible();
+	}
+
+	public function render() {
+		return $this->get_panel()->render();
 	}
 
 }
 
-function register_qm_collector_debug_bar() {
+function register_qm_collectors_debug_bar() {
 
 	global $debug_bar;
 
@@ -79,4 +87,4 @@ function register_qm_collector_debug_bar() {
 
 }
 
-add_action( 'init', 'register_qm_collector_debug_bar' );
+add_action( 'init', 'register_qm_collectors_debug_bar' );
