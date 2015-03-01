@@ -62,5 +62,5 @@ function register_qm_collector_theme( array $collectors, QueryMonitor $qm ) {
 }
 
 if ( !is_admin() ) {
-	add_filter( 'query_monitor_collectors', 'register_qm_collector_theme', 10, 2 );
+	add_filter( 'qm/collectors', 'register_qm_collector_theme', 10, 2 );
 }

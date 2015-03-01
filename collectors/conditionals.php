@@ -65,4 +65,4 @@ function register_qm_collector_conditionals( array $collectors, QueryMonitor $qm
 	return $collectors;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_collector_conditionals', 10, 2 );
+add_filter( 'qm/collectors', 'register_qm_collector_conditionals', 10, 2 );

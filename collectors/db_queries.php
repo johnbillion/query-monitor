@@ -199,4 +199,4 @@ function register_qm_collector_db_queries( array $collectors, QueryMonitor $qm )
 	return $collectors;
 }
 
-add_filter( 'query_monitor_collectors', 'register_qm_collector_db_queries', 10, 2 );
+add_filter( 'qm/collectors', 'register_qm_collector_db_queries', 10, 2 );

@@ -67,7 +67,7 @@ class QueryMonitor extends QM_Plugin {
 	public function action_plugins_loaded() {
 
 		# Register additional collectors:
-		foreach ( apply_filters( 'query_monitor_collectors', array(), $this ) as $collector ) {
+		foreach ( apply_filters( 'qm/collectors', array(), $this ) as $collector ) {
 			QM_Collectors::add( $collector );
 		}
 
