@@ -15,14 +15,28 @@ GNU General Public License for more details.
 */
 
 class Debug_Bar {
-	var $panels = array();
+	public $panels = array();
 
-	function __construct() {
+	public function __construct() {
+		$this->enqueue();
+		$this->init_panels();
+	}
 
+	public function enqueue() {
+		wp_register_style( 'debug-bar', false, array(
+			'query-monitor'
+		) );
+		wp_register_script( 'debug-bar', false, array(
+			'query-monitor'
+		) );
+
+		do_action( 'debug_bar_enqueue_scripts' );
+	}
+
+	public function init_panels() {
 		require_once 'debug_bar_panel.php';
 
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
-
 	}
 
 }

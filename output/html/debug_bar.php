@@ -23,6 +23,8 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 	public function output() {
 
+		$target = get_class( $this->collector->get_panel() );
+
 		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
@@ -34,9 +36,11 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td valign="top">';
+		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
 		$this->collector->panel->render();
 
+		echo '</div>';
 		echo '</td>';
 		echo '</tr>';
 
