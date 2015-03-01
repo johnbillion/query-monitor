@@ -158,4 +158,4 @@ function register_qm_output_html_php_errors( array $output, QM_Collectors $colle
 	return $output;
 }
 
-add_filter( 'query_monitor_output_html', 'register_qm_output_html_php_errors', 110, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_php_errors', 110, 2 );

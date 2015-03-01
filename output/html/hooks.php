@@ -179,4 +179,4 @@ function register_qm_output_html_hooks( array $output, QM_Collectors $collectors
 	return $output;
 }
 
-add_filter( 'query_monitor_output_html', 'register_qm_output_html_hooks', 80, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_hooks', 80, 2 );

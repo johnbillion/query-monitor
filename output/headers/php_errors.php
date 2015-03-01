@@ -72,4 +72,4 @@ function register_qm_output_headers_php_errors( array $output, QM_Collectors $co
 	return $output;
 }
 
-add_filter( 'query_monitor_output_headers', 'register_qm_output_headers_php_errors', 110, 2 );
+add_filter( 'qm/outputter/headers', 'register_qm_output_headers_php_errors', 110, 2 );

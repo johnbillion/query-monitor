@@ -131,4 +131,4 @@ function register_qm_output_html_admin( array $output, QM_Collectors $collectors
 	return $output;
 }
 
-add_filter( 'query_monitor_output_html', 'register_qm_output_html_admin', 70, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_admin', 70, 2 );

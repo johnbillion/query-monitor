@@ -39,4 +39,4 @@ function register_qm_output_headers_redirects( array $output, QM_Collectors $col
 	return $output;
 }
 
-add_filter( 'query_monitor_output_headers', 'register_qm_output_headers_redirects', 140, 2 );
+add_filter( 'qm/outputter/headers', 'register_qm_output_headers_redirects', 140, 2 );

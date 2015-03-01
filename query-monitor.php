@@ -179,7 +179,7 @@ class QueryMonitor extends QM_Plugin {
 
 			$dispatcher->before_output();
 
-			$outputters = apply_filters( "query_monitor_output_{$dispatcher->id}", array(), $collectors );
+			$outputters = apply_filters( "qm/outputter/{$dispatcher->id}", array(), $collectors );
 
 			foreach ( $outputters as $outputter ) {
 				$outputter->output();

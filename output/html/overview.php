@@ -118,4 +118,4 @@ function register_qm_output_html_overview( array $output, QM_Collectors $collect
 	return $output;
 }
 
-add_filter( 'query_monitor_output_html', 'register_qm_output_html_overview', 10, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_overview', 10, 2 );
