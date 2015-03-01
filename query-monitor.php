@@ -75,7 +75,7 @@ class QueryMonitor extends QM_Plugin {
 		QM_Util::include_files( $this->plugin_path( 'dispatchers' ) );
 
 		# Register built-in and additional dispatchers:
-		foreach ( apply_filters( 'query_monitor_dispatchers', array(), $this ) as $dispatcher ) {
+		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {
 			$this->add_dispatcher( $dispatcher );
 		}
 

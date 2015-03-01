@@ -73,4 +73,4 @@ function register_qm_dispatcher_headers( array $dispatchers, QM_Plugin $qm ) {
 	return $dispatchers;
 }
 
-add_filter( 'query_monitor_dispatchers', 'register_qm_dispatcher_headers', 10, 2 );
+add_filter( 'qm/dispatchers', 'register_qm_dispatcher_headers', 10, 2 );
