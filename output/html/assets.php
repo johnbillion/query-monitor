@@ -51,14 +51,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</thead>';
 			echo '<tbody>';
 
-			if ( !empty( $data["broken_{$type}"] ) ) {
+			if ( !empty( $data['broken'][ $type ] ) ) {
 
-				$rowspan = max( count( $data["broken_{$type}"] ), 1 );
+				$rowspan = max( count( $data['broken'][ $type ] ), 1 );
 
 				echo '<tr class="qm-warn">';
 				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . __( 'Broken Dependencies', 'query-monitor' ) . "</td>";	
 
-				$this->dependency_rows( $data["broken_{$type}"], $data["raw_{$type}"] );
+				$this->dependency_rows( $data['broken'][ $type ], $data['raw'][ $type ] );
 
 			}
 
@@ -67,12 +67,12 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				'footer' => __( 'Footer %s', 'query-monitor' ),
 			) as $position => $position_label ) {
 
-				$rowspan = max( count( $data["{$position}_{$type}"] ), 1 );
+				$rowspan = max( count( $data[ $position ][ $type ] ), 1 );
 
 				echo '<tr>';
 				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . sprintf( $position_label, $type_label ) . "</td>";	
 
-				$this->dependency_rows( $data["{$position}_{$type}"], $data["raw_{$type}"] );
+				$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ] );
 
 			}
 
@@ -162,7 +162,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( !empty( $data['broken_scripts'] ) or !empty( $data['broken_styles'] ) ) {
+		if ( !empty( $data['broken'] ) ) {
 			$class[] = 'qm-error';
 		}
 
@@ -177,7 +177,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			'title' => $this->collector->name()
 		);
 
-		if ( !empty( $data['broken_scripts'] ) or !empty( $data['broken_styles'] ) ) {
+		if ( !empty( $data['broken'] ) ) {
 			$args['meta']['classname'] = 'qm-error';
 		}
 

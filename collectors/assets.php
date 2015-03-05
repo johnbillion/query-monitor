@@ -30,8 +30,8 @@ class QM_Collector_Assets extends QM_Collector {
 	public function action_head() {
 		global $wp_scripts, $wp_styles;
 
-		$this->data['header_styles'] = $wp_styles->done;
-		$this->data['header_scripts'] = $wp_scripts->done;
+		$this->data['header']['styles'] = $wp_styles->done;
+		$this->data['header']['scripts'] = $wp_scripts->done;
 
 	}
 
@@ -39,32 +39,34 @@ class QM_Collector_Assets extends QM_Collector {
 		global $wp_scripts, $wp_styles;
 
 		// @TODO remove the need for these raw scripts & styles to be collected
-		$this->data['raw_scripts'] = $wp_scripts;
-		$this->data['raw_styles']  = $wp_styles;
+		$this->data['raw']['scripts'] = $wp_scripts;
+		$this->data['raw']['styles']  = $wp_styles;
 
-		$this->data['footer_scripts'] = array_diff( $wp_scripts->done, $this->data['header_scripts'] );
-		$this->data['footer_styles']  = array_diff( $wp_styles->done, $this->data['header_styles'] );
+		$this->data['footer']['scripts'] = array_diff( $wp_scripts->done, $this->data['header']['scripts'] );
+		$this->data['footer']['styles']  = array_diff( $wp_styles->done, $this->data['header']['styles'] );
 
 	}
 
 	public function process() {
 		foreach ( array( 'scripts', 'styles' ) as $type ) {
 			foreach ( array( 'header', 'footer' ) as $position ) {
-				if ( empty( $this->data[ "{$position}_{$type}" ] ) ) {
-					$this->data[ "{$position}_{$type}" ] = array();
+				if ( empty( $this->data[ $position ][ $type ] ) ) {
+					$this->data[ $position ][ $type ] = array();
 				} else {
-					sort( $this->data[ "{$position}_{$type}" ] );
+					sort( $this->data[ $position ][ $type ] );
 				}
 			}
-			$broken = array_diff( $this->data[ "raw_{$type}" ]->queue, $this->data[ "raw_{$type}" ]->done );
+			$broken = array_diff( $this->data['raw'][ $type ]->queue, $this->data['raw'][ $type ]->done );
 
-			foreach ( $broken as $handle ) {
-				$item   = $this->data[ "raw_{$type}" ]->query( $handle );
-				$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $this->data[ "raw_{$type}" ] ) );
+			if ( !empty( $broken ) ) {
+				foreach ( $broken as $handle ) {
+					$item   = $this->data['raw'][ $type ]->query( $handle );
+					$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $this->data['raw'][ $type ] ) );
+				}
+
+				$this->data['broken'][ $type ] = array_unique( $broken );
+				sort( $this->data['broken'][ $type ] );
 			}
-
-			$this->data[ "broken_{$type}" ] = array_unique( $broken );
-			sort( $this->data[ "broken_{$type}" ] );
 
 		}
 	}
