@@ -63,7 +63,8 @@ class QM_Util {
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['muplugin']   = self::standard_dir( WPMU_PLUGIN_DIR );
+			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
+			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
 			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
 			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
 			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
@@ -90,7 +91,7 @@ class QM_Util {
 
 		switch ( $type ) {
 			case 'plugin':
-			case 'muplugin':
+			case 'mu-plugin':
 				$plug = plugin_basename( $file );
 				if ( strpos( $plug, '/' ) ) {
 					$plug = explode( '/', $plug );
@@ -99,6 +100,18 @@ class QM_Util {
 					$plug = basename( $plug );
 				}
 				$name    = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+				$context = $plug;
+				break;
+			case 'vip-plugin':
+				$plug = str_replace( self::$file_dirs['vip-plugin'], '', $file );
+				$plug = trim( $plug, '/' );
+				if ( strpos( $plug, '/' ) ) {
+					$plug = explode( '/', $plug );
+					$plug = reset( $plug );
+				} else {
+					$plug = basename( $plug );
+				}
+				$name    = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
 				$context = $plug;
 				break;
 			case 'stylesheet':
