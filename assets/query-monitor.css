@@ -246,6 +246,10 @@ body.wp-admin.folded #qm {
 	width: 4em !important;
 }
 
+.qm td.qm-num {
+	text-align: right !important;
+}
+
 .qm .qm-inner-toggle {
 	padding: 5px 8px 4px !important;
 }
@@ -361,10 +365,6 @@ body.wp-admin.folded #qm {
 .qm span.qm-expensive,
 .qm td.qm-expensive {
 	color: #f44 !important;
-}
-
-.qm td.qm-priority {
-	text-align: right !important;
 }
 
 /* Filters */

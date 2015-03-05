@@ -32,7 +32,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th class="qm-sorted-asc qm-num">&nbsp;' . $this->build_sorter() . '</th>';
+		echo '<th class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
 		echo '<th scope="col">' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . __( 'Response', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $data['types'] ) ) . '</th>';
 		echo '<th scope="col">' . __( 'Transport', 'query-monitor' ) . '</th>';
@@ -116,14 +116,14 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$stack = implode( '<br>', $stack );
 				echo "
 					<tr{$attr} class='{$css}'>\n
-						<td valign='top'>{$i}</td>
+						<td valign='top' class='qm-num'>{$i}</td>
 						<td valign='top' class='qm-url qm-ltr qm-wrap'>{$method}<br>{$url}</td>\n
 						<td valign='top'>{$response}</td>\n
 						<td valign='top'>{$transport}</td>\n
 						<td valign='top' class='qm-nowrap qm-ltr'>{$stack}</td>\n
 						<td valign='top' class='qm-nowrap'>{$component->name}</td>\n
-						<td valign='top'>{$row['args']['timeout']}</td>\n
-						<td valign='top'>{$stime}</td>\n
+						<td valign='top' class='qm-num'>{$row['args']['timeout']}</td>\n
+						<td valign='top' class='qm-num'>{$stime}</td>\n
 					</tr>\n
 				";
 			}
@@ -135,7 +135,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td colspan="7">' . $vars . '</td>';
-			echo "<td>{$total_stime}</td>";
+			echo "<td class='qm-num'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 

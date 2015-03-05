@@ -162,7 +162,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc qm-num">&nbsp;' . $this->build_sorter() . '</th>';
+			echo '<th scope="col" class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
 			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
 			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ) . '</th>';
 
@@ -171,7 +171,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			if ( $db->has_result ) {
-				echo '<th scope="col" class="qm-num">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
+				if ( empty( $data['errors'] ) ) {
+					$class = 'qm-num';
+				} else {
+					$class = '';
+				}
+				echo '<th scope="col" class="' . $class . '">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
 			}
 
 			echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
@@ -196,12 +201,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tr class="qm-items-shown qm-hide">';
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Queries in filter: %s', 'query-monitor' ), '<span class="qm-items-number">' . number_format_i18n( $db->total_qs ) . '</span>' ) . '</td>';
-			echo "<td valign='top' class='qm-items-time'>{$total_stime}</td>";
+			echo "<td valign='top' class='qm-items-time qm-num'>{$total_stime}</td>";
 			echo '</tr>';
 
 			echo '<tr>';
 			echo '<td valign="top" colspan="' . ( $span - 1 ) . '">' . sprintf( __( 'Total Queries: %s', 'query-monitor' ), number_format_i18n( $db->total_qs ) ) . '</td>';
-			echo "<td valign='top'>{$total_stime}</td>";
+			echo "<td valign='top' class='qm-num'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -249,7 +254,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$result = "<td valign='top' class='qm-row-result qm-row-error'>{$error}</td>\n";
 			$row_attr['class'] = 'qm-warn';
 		} else {
-			$result = "<td valign='top' class='qm-row-result'>{$row['result']}</td>\n";
+			$result = "<td valign='top' class='qm-row-result qm-num'>{$row['result']}</td>\n";
 		}
 
 		if ( isset( $row['trace'] ) ) {
@@ -295,7 +300,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo "<tr{$attr}>";
 
 		if ( isset( $cols['row'] ) ) {
-			echo "<td valign='top'>" . ++$this->query_row . "</td>";
+			echo "<td valign='top' class='qm-row-num qm-num'>" . ++$this->query_row . "</td>";
 		}
 
 		if ( isset( $cols['sql'] ) ) {
@@ -328,7 +333,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['time'] ) ) {
-			echo "<td valign='top' class='qm-row-time{$td}'>{$stime}</td>\n";
+			echo "<td valign='top' class='qm-num qm-row-time{$td}'>{$stime}</td>\n";
 		}
 
 		echo '</tr>';

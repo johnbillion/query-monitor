@@ -64,13 +64,13 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) ) {
-						echo "<td valign='top'>{$row['types'][$type_name]}</td>";
+						echo "<td valign='top' class='qm-num'>{$row['types'][$type_name]}</td>";
 					} else {
-						echo "<td valign='top'>&nbsp;</td>";
+						echo "<td valign='top' class='qm-num'>&nbsp;</td>";
 					}
 				}
 
-				echo "<td valign='top'>{$stime}</td>";
+				echo "<td valign='top' class='qm-num'>{$stime}</td>";
 				echo '</tr>';
 
 			}
@@ -84,10 +84,10 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			echo '<td>&nbsp;</td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<td>' . number_format_i18n( $type_count ) . '</td>';
+				echo '<td class="qm-num">' . number_format_i18n( $type_count ) . '</td>';
 			}
 
-			echo "<td>{$total_stime}</td>";
+			echo "<td class='qm-num'>{$total_stime}</td>";
 			echo '</tr>';
 			echo '</tfoot>';
 

@@ -104,7 +104,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo "<tr{$attr}>";
 					}
 
-					echo '<td valign="top" class="qm-priority">' . $action['priority'] . '</td>';
+					echo '<td valign="top" class="qm-num">' . $action['priority'] . '</td>';
 					echo '<td valign="top" class="qm-ltr">';
 
 					if ( isset( $action['callback']['file'] ) ) {
