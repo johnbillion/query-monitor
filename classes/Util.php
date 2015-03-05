@@ -115,7 +115,11 @@ class QM_Util {
 				$context = $plug;
 				break;
 			case 'stylesheet':
-				$name = __( 'Theme', 'query-monitor' );
+				if ( is_child_theme() ) {
+					$name = __( 'Child Theme', 'query-monitor' );
+				} else {
+					$name = __( 'Theme', 'query-monitor' );
+				}
 				break;
 			case 'template':
 				$name = __( 'Parent Theme', 'query-monitor' );
