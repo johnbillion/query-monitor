@@ -18,7 +18,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 70 );
+		add_filter( 'qm/output/menus',      array( $this, 'admin_menu' ), 70 );
+		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
 	public function output() {
@@ -49,6 +50,17 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
+
+			if ( !empty( $data["broken_{$type}"] ) ) {
+
+				$rowspan = max( count( $data["broken_{$type}"] ), 1 );
+
+				echo '<tr class="qm-warn">';
+				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . __( 'Broken Dependencies', 'query-monitor' ) . "</td>";	
+
+				$this->dependency_rows( $data["broken_{$type}"], $data["raw_{$type}"] );
+
+			}
 
 			foreach ( array(
 				'header' => __( 'Header %s', 'query-monitor' ),
@@ -85,10 +97,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $handles as $handle ) {
 			if ( !$first ) {
-				echo '<tr>';
+				if ( in_array( $handle, $dependencies->done ) ) {
+					echo '<tr>';
+				} else {
+					echo '<tr class="qm-warn">';
+				}
 			}
 
-			$this->dependency_row( $dependencies->registered[$handle], $dependencies );
+			$this->dependency_row( $dependencies->query( $handle ), $dependencies );
 
 			echo '</tr>';
 			$first = false;
@@ -111,9 +127,16 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		$dependents = self::get_dependents( $script, $dependencies );
+		$deps = $script->deps;
+
+		foreach ( $deps as & $dep ) {
+			if ( ! $dependencies->query( $dep ) ) {
+				$dep = sprintf( '%s (missing)', $dep );
+			}
+		}
 
 		echo '<td valign="top" class="qm-wrap">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
-		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $script->deps ) . '</td>';
+		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $deps ) . '</td>';
 		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $dependents ) . '</td>';
 		echo '<td valign="top">' . $ver . '</td>';
 
@@ -121,9 +144,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	protected static function get_dependents( _WP_Dependency $script, WP_Dependencies $dependencies ) {
 
+		// @TODO move this into the collector
 		$dependents = array();
 
-		foreach ( $dependencies->done as $handle ) {
+		foreach ( $dependencies->queue as $handle ) {
 			$item = $dependencies->query( $handle );
 			if ( in_array( $script->handle, $item->deps ) ) {
 				$dependents[] = $handle;
@@ -131,6 +155,35 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		return $dependents;
+
+	}
+
+	public function admin_class( array $class ) {
+
+		$data = $this->collector->get_data();
+
+		if ( !empty( $data['broken_scripts'] ) or !empty( $data['broken_styles'] ) ) {
+			$class[] = 'qm-error';
+		}
+
+		return $class;
+
+	}
+
+	public function admin_menu( array $menu ) {
+
+		$data = $this->collector->get_data();
+		$args = array(
+			'title' => $this->collector->name()
+		);
+
+		if ( !empty( $data['broken_scripts'] ) or !empty( $data['broken_styles'] ) ) {
+			$args['meta']['classname'] = 'qm-error';
+		}
+
+		$menu[] = $this->menu( $args );
+
+		return $menu;
 
 	}
 

@@ -358,7 +358,8 @@ body.wp-admin.folded #qm {
 	background: #eee !important;
 }
 
-.qm .qm-warn {
+.qm .qm-warn,
+.qm .qm-warn .qm-info {
 	color: #f00 !important;
 }
 
