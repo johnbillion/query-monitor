@@ -48,6 +48,10 @@ class QM_Collector_Assets extends QM_Collector {
 	}
 
 	public function process() {
+		if ( !isset( $this->data['raw'] ) ) {
+			return;
+		}
+
 		foreach ( array( 'scripts', 'styles' ) as $type ) {
 			foreach ( array( 'header', 'footer' ) as $position ) {
 				if ( empty( $this->data[ $position ][ $type ] ) ) {
@@ -56,12 +60,13 @@ class QM_Collector_Assets extends QM_Collector {
 					sort( $this->data[ $position ][ $type ] );
 				}
 			}
-			$broken = array_diff( $this->data['raw'][ $type ]->queue, $this->data['raw'][ $type ]->done );
+			$raw = $this->data['raw'][ $type ];
+			$broken = array_diff( $raw->queue, $raw->done );
 
 			if ( !empty( $broken ) ) {
 				foreach ( $broken as $handle ) {
-					$item   = $this->data['raw'][ $type ]->query( $handle );
-					$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $this->data['raw'][ $type ] ) );
+					$item   = $raw->query( $handle );
+					$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
 				}
 
 				$this->data['broken'][ $type ] = array_unique( $broken );

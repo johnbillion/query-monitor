@@ -26,6 +26,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
+		if ( empty( $data['raw'] ) ) {
+			return;
+		}
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
@@ -51,28 +55,15 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</thead>';
 			echo '<tbody>';
 
-			if ( !empty( $data['broken'][ $type ] ) ) {
-
-				$rowspan = max( count( $data['broken'][ $type ] ), 1 );
-
-				echo '<tr class="qm-warn">';
-				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . __( 'Broken Dependencies', 'query-monitor' ) . "</td>";	
-
-				$this->dependency_rows( $data['broken'][ $type ], $data['raw'][ $type ] );
-
-			}
-
 			foreach ( array(
-				'header' => __( 'Header %s', 'query-monitor' ),
-				'footer' => __( 'Footer %s', 'query-monitor' ),
+				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
+				'header'  => __( 'Header %s', 'query-monitor' ),
+				'footer'  => __( 'Footer %s', 'query-monitor' ),
 			) as $position => $position_label ) {
 
-				$rowspan = max( count( $data[ $position ][ $type ] ), 1 );
-
-				echo '<tr>';
-				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . sprintf( $position_label, $type_label ) . "</td>";	
-
-				$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ] );
+				if ( isset( $data[ $position ][ $type ] ) ) {
+					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], sprintf( $position_label, $type_label ) );
+				}
 
 			}
 
@@ -85,23 +76,29 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	}
 
-	protected function dependency_rows( array $handles, WP_Dependencies $dependencies ) {
+	protected function dependency_rows( array $handles, WP_Dependencies $dependencies, $label ) {
 
 		$first = true;
 
 		if ( empty( $handles ) ) {
-			echo '<td valign="top" colspan="4"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<tr>';
+			echo '<td valign="top" class="qm-nowrap">' . $label . '</td>';	
+			echo '<td valign="top" colspan="5"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			return;
 		}
 
 		foreach ( $handles as $handle ) {
-			if ( !$first ) {
-				if ( in_array( $handle, $dependencies->done ) ) {
-					echo '<tr>';
-				} else {
-					echo '<tr class="qm-warn">';
-				}
+
+			if ( in_array( $handle, $dependencies->done ) ) {
+				echo '<tr>';
+			} else {
+				echo '<tr class="qm-warn">';
+			}
+
+			if ( $first ) {
+				$rowspan = count( $handles );
+				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . $label . "</td>";	
 			}
 
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies );
@@ -131,7 +128,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $deps as & $dep ) {
 			if ( ! $dependencies->query( $dep ) ) {
-				$dep = sprintf( '%s (missing)', $dep );
+				$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
 			}
 		}
 
