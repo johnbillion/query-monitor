@@ -66,7 +66,7 @@ abstract class QM_Output_Html implements QM_Output {
 
 	}
 
-	protected function build_filter( $name, array $values ) {
+	protected function build_filter( $name, array $values, $highlight = '' ) {
 
 		if ( empty( $values ) ) {
 			return '';
@@ -74,7 +74,7 @@ abstract class QM_Output_Html implements QM_Output {
 
 		usort( $values, 'strcasecmp' );
 
-		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '">';
+		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
 		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {

@@ -91,14 +91,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $handles as $handle ) {
 
 			if ( in_array( $handle, $dependencies->done ) ) {
-				echo '<tr>';
+				echo '<tr data-qm-subject="' . $handle . '">';
 			} else {
-				echo '<tr class="qm-warn">';
+				echo '<tr data-qm-subject="' . $handle . '" class="qm-warn">';
 			}
 
 			if ( $first ) {
 				$rowspan = count( $handles );
-				echo "<td valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . $label . "</td>";	
+				echo "<th valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . $label . "</th>";	
 			}
 
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies );
@@ -133,8 +133,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		echo '<td valign="top" class="qm-wrap">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
-		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $deps ) . '</td>';
-		echo '<td valign="top" class="qm-nowrap">' . implode( '<br>', $dependents ) . '</td>';
+		echo '<td valign="top" class="qm-nowrap qm-highlighter" data-qm-highlight="' . implode( ' ', $deps ) . '">' . implode( '<br>', $deps ) . '</td>';
+		echo '<td valign="top" class="qm-nowrap qm-highlighter" data-qm-highlight="' . implode( ' ', $dependents ) . '">' . implode( '<br>', $dependents ) . '</td>';
 		echo '<td valign="top">' . $ver . '</td>';
 
 	}

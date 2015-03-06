@@ -45,7 +45,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
-		echo '<th colspan="3">' . __( 'Actions', 'query-monitor' ) . $this->build_filter( 'component', $data['components'] ) . '</th>';
+		echo '<th colspan="3">' . __( 'Actions', 'query-monitor' ) . $this->build_filter( 'component', $data['components'], 'subject' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -77,17 +77,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 			}
 
-			echo "<tr{$attr}>";
-
-			echo "<td valign='top' rowspan='{$rowspan}'>";
-			echo $hook['name'];
-			if ( 'all' === $hook['name'] ) {
-				echo '<br><span class="qm-warn">';
-				_e( 'Warning: The <code>all</code> action is extremely resource intensive. Try to avoid using it.', 'query-monitor' );
-				echo '<span>';
-			}
-			echo "</td>";
-
 			if ( !empty( $hook['actions'] ) ) {
 
 				$first = true;
@@ -100,8 +89,21 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$component = '';
 					}
 
-					if ( !$first ) {
-						echo "<tr{$attr}>";
+					$trattr = $attr . ' data-qm-subject="' . esc_attr( $component ) . '"';
+
+					echo "<tr{$trattr}>";
+
+					if ( $first ) {
+
+						echo "<th valign='top' rowspan='{$rowspan}'>";
+						echo $hook['name'];
+						if ( 'all' === $hook['name'] ) {
+							echo '<br><span class="qm-warn">';
+							_e( 'Warning: The <code>all</code> action is extremely resource intensive. Try to avoid using it.', 'query-monitor' );
+							echo '<span>';
+						}
+						echo '</th>';
+
 					}
 
 					echo '<td valign="top" class="qm-num">' . $action['priority'] . '</td>';
@@ -130,9 +132,14 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				}
 
 			} else {
+				echo "<tr{$attr}>";
+				echo "<th valign='top'>";
+				echo $hook['name'];
+				echo '</th>';
 				echo '<td colspan="3">&nbsp;</td>';
+				echo '</tr>';
 			}
-			echo '</tr>';
+
 		}
 
 		echo '</tbody>';

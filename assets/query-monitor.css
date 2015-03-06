@@ -359,8 +359,15 @@ body.wp-admin.folded #qm {
 }
 
 .qm .qm-warn,
-.qm .qm-warn .qm-info {
+.qm .qm-warn td,
+.qm .qm-warn th,
+.qm .qm-warn td .qm-info {
 	color: #f00 !important;
+}
+
+.qm tbody tr td.qm-highlight,
+.qm .qm-highlight td {
+	background-color: #ffd !important;
 }
 
 .qm span.qm-expensive,
