@@ -125,6 +125,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$dependents = self::get_dependents( $script, $dependencies );
 		$deps = $script->deps;
+		sort( $deps );
 
 		foreach ( $deps as & $dep ) {
 			if ( ! $dependencies->query( $dep ) ) {
@@ -150,6 +151,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				$dependents[] = $handle;
 			}
 		}
+
+		sort( $dependents );
 
 		return $dependents;
 
