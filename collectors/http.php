@@ -150,6 +150,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			if ( defined( $var ) and constant( $var ) ) {
 				$val = constant( $var );
 				if ( true === $val ) {
+					# @TODO this transformation should happen in the output, not the collector
 					$val = 'true';
 				}
 				$this->data['vars'][$var] = $val;

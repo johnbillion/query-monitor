@@ -118,6 +118,9 @@ abstract class QM_Output_Html implements QM_Output {
 			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
 		}
 
+		# @TODO profile this as an alternative:
+		# $sql = preg_replace( '# (ALTER|AND|COMMIT|CREATE|DESCRIBE) #', '<br>$1 ', $sql );
+
 		return $sql;
 
 	}

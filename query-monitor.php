@@ -111,6 +111,8 @@ class QueryMonitor extends QM_Plugin {
 
 	public function should_process() {
 
+		# @TODO this decision should be moved to each dispatcher
+
 		# Don't process if the minimum required actions haven't fired:
 
 		if ( is_admin() ) {
@@ -155,6 +157,9 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 	public function action_shutdown() {
+
+		# @TODO this should move to each dispatcher so it can decide when it wants to do its output
+		# eg. the JSON dispatcher needs to output inside the 'json_post_dispatch' filter, not on shutdown
 
 		if ( ! $this->should_process() ) {
 			return;
