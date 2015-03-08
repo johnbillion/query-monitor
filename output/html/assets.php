@@ -144,8 +144,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		// @TODO move this into the collector
 		$dependents = array();
+		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
-		foreach ( $dependencies->queue as $handle ) {
+		foreach ( $handles as $handle ) {
 			$item = $dependencies->query( $handle );
 			if ( in_array( $script->handle, $item->deps ) ) {
 				$dependents[] = $handle;
