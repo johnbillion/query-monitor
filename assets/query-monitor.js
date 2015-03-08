@@ -118,9 +118,12 @@ jQuery( function($) {
 			hilite = $(this).attr('data-highlight'),
 			time   = 0;
 
+		if ( hilite ) {
+			table.find('tr').removeClass('qm-highlight');
+		}
+
 		if ( $(this).val() !== '' ) {
 			if ( hilite ) {
-				tr.removeClass('qm-highlight');
 				tr.filter('[data-qm-'+hilite+'*="' + val + '"]').addClass('qm-highlight');
 			}
 			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
