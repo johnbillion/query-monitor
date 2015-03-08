@@ -191,7 +191,7 @@ body.wp-admin.folded #qm {
 	clear: left !important;
 }
 
-.qm>table {
+.qm table {
 	color: #555 !important;
 	border-collapse: collapse !important;
 	box-shadow: none !important;
@@ -203,6 +203,7 @@ body.wp-admin.folded #qm {
 .qm td,
 .qm th {
 	background: #fff !important;
+	box-sizing: border-box !important;
 	text-align: left !important;
 	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
 	font-size: 11px !important;
@@ -220,7 +221,7 @@ body.wp-admin.folded #qm {
 	background-color: #f1f1f1 !important;
 	border-right-color: #f1f1f1 !important;
 	border-left-color: #f1f1f1 !important;
-	height: 10px !important;
+	height: 20px !important;
 }
 
 .qm tbody tr:hover th,
@@ -243,7 +244,8 @@ body.wp-admin.folded #qm {
 }
 
 .qm th.qm-num {
-	width: 4em !important;
+	width: 5.5em !important;
+	text-align: center !important;
 }
 
 .qm td.qm-num {
@@ -271,6 +273,12 @@ body.wp-admin.folded #qm {
 	padding: 0 !important;
 }
 
+.qm ol {
+	margin: 0 !important;
+	padding: 0 0 0 30px !important;
+	list-style: decimal !important;
+}
+
 .qm ul {
 	margin: 0 !important;
 	padding: 0 0 0 10px !important;
@@ -279,6 +287,19 @@ body.wp-admin.folded #qm {
 
 .qm li {
 	margin-bottom: 2px !important;
+}
+
+.qm pre {
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	line-height: 16px !important;
+	color: inherit !important;
+	background: transparent; !important;
+	border: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 .qm code {
@@ -358,6 +379,7 @@ body.wp-admin.folded #qm {
 	background: #eee !important;
 }
 
+.qm tr.error,
 .qm .qm-warn,
 .qm .qm-warn td,
 .qm .qm-warn th,
@@ -504,7 +526,15 @@ html[dir="rtl"] .qm th {
 	font-size: 13px !important;
 }
 
+.qm-debug-bar .qm-debug-bar-output {
+	position: relative !important;
+}
+
 .qm-debug-bar .qm-debug-bar-output table {
 	margin-top: 4px !important;
 	margin-bottom: 4px !important;
+}
+
+#qm #debug-menu-target-Debug_Bar_Console {
+	min-height: 400px !important;
 }
