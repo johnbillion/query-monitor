@@ -32,13 +32,12 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( __FILE__ );
-foreach ( array( 'Backtrace', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class ) {
+foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
 class QueryMonitor extends QM_Plugin {
 
-	protected $collectors  = array();
 	protected $dispatchers = array();
 
 	protected function __construct( $file ) {
@@ -254,40 +253,6 @@ class QueryMonitor extends QM_Plugin {
 
 		if ( ! $instance ) {
 			$instance = new QueryMonitor( $file );
-		}
-
-		return $instance;
-
-	}
-
-}
-
-class QM_Collectors implements IteratorAggregate {
-
-	private $items = array();
-
-	public function getIterator() {
-		return new ArrayIterator( $this->items );
-	}
-
-	public static function add( QM_Collector $collector ) {
-		$collectors = self::init();
-		$collectors->items[ $collector->id ] = $collector;
-	}
-
-	public static function get( $id ) {
-		$collectors = self::init();
-		if ( isset( $collectors->items[ $id ] ) ) {
-			return $collectors->items[ $id ];
-		}
-		return false;
-	}
-
-	public static function init() {
-		static $instance;
-
-		if ( !$instance ) {
-			$instance = new QM_Collectors;
 		}
 
 		return $instance;
