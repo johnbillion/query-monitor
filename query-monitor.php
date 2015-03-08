@@ -145,9 +145,10 @@ class QueryMonitor extends QM_Plugin {
 			return false;
 		}
 		
-		# Allow users to disable the stats
-		if ( ! apply_filters( 'query_monitor_process_stats', true, is_admin_bar_showing() ) )
+		# Allow users to disable the processing and output
+		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
 			return false;
+		}
 
 		foreach ( $this->get_dispatchers() as $dispatcher ) {
 
