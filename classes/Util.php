@@ -164,7 +164,7 @@ class QM_Util {
 
 				$ref  = new ReflectionFunction( $callback['function'] );
 				$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
-				$callback['name'] = sprintf( __( '{closure}() on line %1$d of %2$s', 'query-monitor' ), $ref->getEndLine(), $file );
+				$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
 
 			} else {
 
@@ -173,9 +173,19 @@ class QM_Util {
 
 			}
 
-			$callback['file']      = $ref->getFileName();
-			$callback['line']      = $ref->getStartLine();
-			$callback['component'] = self::get_file_component( $ref->getFileName() );
+			$callback['file'] = $ref->getFileName();
+			$callback['line'] = $ref->getStartLine();
+
+			if ( '__lambda_func' === $ref->getName() ) {
+				if ( preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
+					$callback['file'] = $matches['file'];
+					$callback['line'] = $matches['line'];
+					$file = trim( QM_Util::standard_dir( $callback['file'], '' ), '/' );
+					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );
+				}
+			}
+
+			$callback['component'] = self::get_file_component( $callback['file'] );
 
 		} catch ( ReflectionException $e ) {
 
