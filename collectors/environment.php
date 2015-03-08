@@ -88,7 +88,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 	public function process() {
 
-		global $wp_version, $blog_id;
+		global $wp_version;
 
 		$mysql_vars = array(
 			'key_buffer_size'    => true,  # Key cache size limit
@@ -161,7 +161,7 @@ class QM_Collector_Environment extends QM_Collector {
 		);
 
 		if ( is_multisite() ) {
-			$this->data['wp']['blog_id'] = $blog_id;
+			$this->data['wp']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
 		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );

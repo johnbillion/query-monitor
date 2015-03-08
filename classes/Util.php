@@ -238,5 +238,20 @@ class QM_Util {
 
 	}
 
+	public static function is_multi_network() {
+		global $wpdb;
+
+		if ( ! is_multisite() ) {
+			return false;
+		}
+
+		$num_sites = $wpdb->get_var( "
+			SELECT COUNT(*)
+			FROM {$wpdb->site}
+		" );
+
+		return ( $num_sites > 1 );
+	}
+
 }
 }

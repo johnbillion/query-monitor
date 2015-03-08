@@ -99,6 +99,34 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
+		if ( !empty( $data['multisite'] ) ) {
+
+			$rowspan = count( $data['multisite'] );
+
+			echo '<tr>';
+			echo '<td rowspan="' . $rowspan . '">' . __( 'Multisite', 'query-monitor' ) . '</td>';
+
+			$first = true;
+
+			foreach( $data['multisite'] as $var => $value ) {
+
+				if ( !$first ) {
+					echo '<tr>';
+				}
+
+				echo "<td valign='top'>{$var}</td>";
+
+				echo '<td valign="top"><pre>';
+				print_r( $value );
+				echo '</pre></td>';
+
+				echo '</tr>';
+
+				$first = false;
+
+			}
+		}
+
 		if ( !empty( $data['queried_object'] ) ) {
 
 			$vars = get_object_vars( $data['queried_object'] );

@@ -40,8 +40,8 @@ class QM_Collector_Conditionals extends QM_Collector {
 				if ( ( 'is_sticky' == $cond ) and !get_post( $id = null ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
-				} else if ( ( 'is_main_site' == $cond ) and !is_multisite() ) {
-					# Special case for is_main_site to prevent it from being annoying on single site installs
+				} else if ( ! is_multisite() and in_array( $cond, array( 'is_main_network', 'is_main_site' ) ) ) {
+					# Special case for multisite conditionals to prevent them from being annoying on single site installs
 					$na[] = $cond;
 				} else {
 					if ( call_user_func( $cond ) ) {
