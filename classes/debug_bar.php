@@ -18,6 +18,8 @@ class Debug_Bar {
 	public $panels = array();
 
 	public function __construct() {
+		add_action( 'wp_head', array( $this, 'ensure_ajaxurl' ), 1 );
+
 		$this->enqueue();
 		$this->init_panels();
 	}
@@ -37,6 +39,14 @@ class Debug_Bar {
 		require_once 'debug_bar_panel.php';
 
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
+	}
+
+	public function ensure_ajaxurl() {
+		?>
+		<script type="text/javascript">
+		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php' ); ?>';
+		</script>
+		<?php
 	}
 
 }
