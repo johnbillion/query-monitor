@@ -32,13 +32,11 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( __FILE__ );
-foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Util', 'Dispatcher', 'Output' ) as $qm_class ) {
+foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Util', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
 class QueryMonitor extends QM_Plugin {
-
-	protected $dispatchers = array();
 
 	protected function __construct( $file ) {
 
@@ -75,17 +73,9 @@ class QueryMonitor extends QM_Plugin {
 
 		# Register built-in and additional dispatchers:
 		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {
-			$this->add_dispatcher( $dispatcher );
+			QM_Dispatchers::add( $dispatcher );
 		}
 
-	}
-
-	public function add_dispatcher( QM_Dispatcher $dispatcher ) {
-		$this->dispatchers[$dispatcher->id] = $dispatcher;
-	}
-
-	public function get_dispatchers() {
-		return $this->dispatchers;
 	}
 
 	public function activate( $sitewide = false ) {
@@ -149,7 +139,9 @@ class QueryMonitor extends QM_Plugin {
 			return false;
 		}
 
-		foreach ( $this->get_dispatchers() as $dispatcher ) {
+		$dispatchers = QM_Dispatchers::init();
+
+		foreach ( $dispatchers as $dispatcher ) {
 
 			# At least one dispatcher is active, so we need to process:
 			if ( $dispatcher->is_active() ) {
@@ -168,14 +160,15 @@ class QueryMonitor extends QM_Plugin {
 			return;
 		}
 
-		$collectors = QM_Collectors::init();
+		$collectors  = QM_Collectors::init();
+		$dispatchers = QM_Dispatchers::init();
 
 		foreach ( $collectors as $collector ) {
 			$collector->tear_down();
 			$collector->process();
 		}
 
-		foreach ( $this->get_dispatchers() as $dispatcher ) {
+		foreach ( $dispatchers as $dispatcher ) {
 
 			if ( ! $dispatcher->is_active() ) {
 				continue;
@@ -199,7 +192,9 @@ class QueryMonitor extends QM_Plugin {
 
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
 
-		foreach ( $this->get_dispatchers() as $dispatcher ) {
+		$dispatchers = QM_Dispatchers::init();
+
+		foreach ( $dispatchers as $dispatcher ) {
 			$dispatcher->init();
 		}
 
