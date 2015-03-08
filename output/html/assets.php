@@ -56,7 +56,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( array(
-				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
+				'broken'  => __( 'Missing Dependencies', 'query-monitor' ),
 				'header'  => __( 'Header %s', 'query-monitor' ),
 				'footer'  => __( 'Footer %s', 'query-monitor' ),
 			) as $position => $position_label ) {

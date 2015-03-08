@@ -164,7 +164,7 @@ class QM_Util {
 
 				$ref  = new ReflectionFunction( $callback['function'] );
 				$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
-				$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
+				$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
 
 			} else {
 
