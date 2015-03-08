@@ -20,7 +20,6 @@ class QM_Backtrace {
 	protected static $ignore_class = array(
 		'wpdb'           => true,
 		'QueryMonitor'   => true,
-		'QueryMonitorDB' => true,
 		'ExtQuery'       => true,
 		'W3_Db'          => true,
 		'Debug_Bar_PHP'  => true,

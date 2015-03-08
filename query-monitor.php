@@ -103,7 +103,7 @@ class QueryMonitor extends QM_Plugin {
 		}
 
 		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QueryMonitorDB' ) ) {
+		if ( class_exists( 'QM_DB' ) ) {
 			unlink( WP_CONTENT_DIR . '/db.php' );
 		}
 

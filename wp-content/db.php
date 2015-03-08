@@ -42,7 +42,7 @@ if ( !defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
 }
 
-class QueryMonitorDB extends wpdb {
+class QM_DB extends wpdb {
 
 	public $qm_php_vars = array(
 		'max_execution_time'  => null,
@@ -105,4 +105,4 @@ class QueryMonitorDB extends wpdb {
 
 }
 
-$wpdb = new QueryMonitorDB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+$wpdb = new QM_DB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );

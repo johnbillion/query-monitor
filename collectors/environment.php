@@ -36,7 +36,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 		parent::__construct();
 
-		# If QueryMonitorDB is in place then we'll use the values which were
+		# If QM_DB is in place then we'll use the values which were
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
