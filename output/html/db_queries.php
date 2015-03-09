@@ -321,7 +321,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">' . implode( '<br>', $stack ) . '</td>';
+			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">' . $caller_name . '<br>' . implode( '<br>', $stack ) . '</td>';
 		}
 
 		if ( isset( $cols['component'] ) ) {
