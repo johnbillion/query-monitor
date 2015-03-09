@@ -22,6 +22,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Theme](#theme)
     * [PHP Errors](#php-errors)
     * [Request](#request)
+    * [Scripts & Styles](#scripts--styles)
     * [HTTP Requests](#http-requests)
     * [Redirects](#redirects)
     * [AJAX](#ajax)
@@ -54,7 +55,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## Hooks ##
 
- * Shows all hooks fired on the current page, along with hooked actions and their priorities
+ * Shows all hooks fired on the current page, along with hooked actions, their priorities, and their components
  * Filter hooks by **part of their name**
  * Filter actions by **component** (WordPress core, Plugin X, Plugin Y, theme)
 
@@ -74,6 +75,12 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows **matched rewrite rules** and associated query strings
  * Shows **query vars** for the current request, and highlights **custom query vars**
  * Shows the **queried object** details (collapsed by default)
+ * Shows details of the **current blog** (multisite only) and **current site** (multi-network only)
+
+## Scripts & Styles ##
+
+ * Shows all **enqueued scripts and styles** on the current page, along with their URL and version
+ * Shows their **dependencies and dependents**, and alerts you to any **broken dependencies**
 
 ## HTTP Requests ##
 
