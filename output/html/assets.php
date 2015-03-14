@@ -56,7 +56,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( array(
-				'broken'  => __( 'Missing Dependencies', 'query-monitor' ),
+				'missing' => __( 'Missing %s', 'query-monitor' ),
+				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
 				'header'  => __( 'Header %s', 'query-monitor' ),
 				'footer'  => __( 'Footer %s', 'query-monitor' ),
 			) as $position => $position_label ) {
@@ -164,7 +165,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( !empty( $data['broken'] ) ) {
+		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
 			$class[] = 'qm-error';
 		}
 
@@ -179,7 +180,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			'title' => $this->collector->name()
 		);
 
-		if ( !empty( $data['broken'] ) ) {
+		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
 			$args['meta']['classname'] = 'qm-error';
 		}
 
