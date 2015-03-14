@@ -496,9 +496,19 @@ html[dir="rtl"] .qm th {
 
 /* Debug bar add-ons */
 
+.qm-debug-bar textarea,
 .qm-debug-bar pre {
 	font-size: 11px !important;
 	padding: 10px !important;
+	border: 1px solid #e8e8e8 !important;
+	margin: 4px 0 !important;
+	color: inherit !important;
+	background: transparent !important;
+	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+}
+
+.qm-debug-bar textarea {
+	resize: vertical !important;
 }
 
 .qm-debug-bar .left {
