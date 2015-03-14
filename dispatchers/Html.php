@@ -232,6 +232,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+		?>
+		if ( 'undefined' === typeof QM_i18n ) {
+			document.getElementById( 'qm' ).style.display = 'block';
+		}
+		<?php
 		echo '</script>' . "\n\n";
 
 	}
