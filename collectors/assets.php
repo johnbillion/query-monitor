@@ -61,16 +61,21 @@ class QM_Collector_Assets extends QM_Collector {
 				}
 			}
 			$raw = $this->data['raw'][ $type ];
-			$broken = array_diff( $raw->queue, $raw->done );
+			$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 
 			if ( !empty( $broken ) ) {
-				foreach ( $broken as $handle ) {
-					$item   = $raw->query( $handle );
-					$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
+				foreach ( $broken as $key => $handle ) {
+					if ( $item = $raw->query( $handle ) ) {
+						$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
+					} else {
+						unset( $broken[ $key ] );
+					}
 				}
 
-				$this->data['broken'][ $type ] = array_unique( $broken );
-				sort( $this->data['broken'][ $type ] );
+				if ( !empty( $broken ) ) {
+					$this->data['broken'][ $type ] = array_unique( $broken );
+					sort( $this->data['broken'][ $type ] );
+				}
 			}
 
 		}
