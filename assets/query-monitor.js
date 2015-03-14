@@ -57,6 +57,8 @@ jQuery( function($) {
 
 	var is_admin = $('body').hasClass('wp-admin');
 
+	$('#qm').removeClass('qm-no-js').addClass('qm-js');
+
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
 		var container = document.createDocumentFragment();

@@ -484,6 +484,15 @@ html[dir="rtl"] .qm th {
 	text-align: right !important;
 }
 
+/* No-JS tweaks */
+
+.qm-no-js #qm-authentication,
+.qm-no-js .qm-sort-controls,
+.qm-no-js a.qm-toggle,
+.qm-no-js select.qm-filter {
+	display: none !important;
+}
+
 /* Debug bar add-ons */
 
 .qm-debug-bar pre {
