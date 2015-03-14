@@ -26,7 +26,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 		global $pagenow;
 
-		if ( isset( $_GET['page'] ) ) {
+		if ( isset( $_GET['page'] ) && get_current_screen() != null ) {
 			$this->data['base'] = get_current_screen()->base;
 		} else {
 			$this->data['base'] = $pagenow;
