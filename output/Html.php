@@ -18,8 +18,6 @@ abstract class QM_Output_Html implements QM_Output {
 
 	protected static $file_link_format = null;
 
-	abstract public function output();
-
 	public function __construct( QM_Collector $collector ) {
 		$this->collector = $collector;
 	}
