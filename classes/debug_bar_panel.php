@@ -62,4 +62,8 @@ abstract class Debug_Bar_Panel {
 		return $classes;
 	}
 
+	public function Debug_Bar_Panel( $title = '' ) {
+		Debug_Bar_Panel::__construct( $title );
+	}
+
 }

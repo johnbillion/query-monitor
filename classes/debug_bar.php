@@ -49,4 +49,8 @@ class Debug_Bar {
 		<?php
 	}
 
+	public function Debug_Bar() {
+		Debug_Bar::__construct();
+	}
+
 }
