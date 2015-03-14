@@ -141,7 +141,7 @@ jQuery( function($) {
 			time = QM_i18n.number_format( time, 4 );
 
 		var results = table.find('.qm-items-shown').removeClass('qm-hide');
-		results.find('.qm-items-number').text(matches.length);
+		results.find('.qm-items-number').text( QM_i18n.number_format( matches.length, 0 ) );
 		results.find('.qm-items-time').text(time);
 
 		$(this).blur();
