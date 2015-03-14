@@ -383,6 +383,7 @@ body.wp-admin.folded #qm {
 .qm .qm-warn,
 .qm .qm-warn td,
 .qm .qm-warn th,
+.qm .qm-warn td .qm-nonselectsql,
 .qm .qm-warn td .qm-info {
 	color: #f00 !important;
 }
