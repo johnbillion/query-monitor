@@ -24,6 +24,8 @@ abstract class QM_Dispatcher {
 			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
 		}
 
+		add_action( 'init', array( $this, 'init' ) );
+
 	}
 
 	abstract public function is_active();

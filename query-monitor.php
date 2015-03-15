@@ -201,12 +201,6 @@ class QueryMonitor extends QM_Plugin {
 
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
 
-		$dispatchers = QM_Dispatchers::init();
-
-		foreach ( $dispatchers as $dispatcher ) {
-			$dispatcher->init();
-		}
-
 	}
 
 	public function filter_active_plugins( $plugins ) {
