@@ -166,7 +166,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		QM_Util::include_files( $this->qm->plugin_path( 'output/html' ) );
+		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
+			include $file;
+		}
 
 		$class = array(
 			'qm-no-js',

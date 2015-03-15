@@ -57,7 +57,9 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# Load and register built-in collectors:
-		QM_Util::include_files( $this->plugin_path( 'collectors' ) );
+		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
+			include $file;
+		}
 
 	}
 
@@ -68,8 +70,10 @@ class QueryMonitor extends QM_Plugin {
 			QM_Collectors::add( $collector );
 		}
 
-		# Dispatchers:
-		QM_Util::include_files( $this->plugin_path( 'dispatchers' ) );
+		# Load dispatchers:
+		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $file ) {
+			include $file;
+		}
 
 		# Register built-in and additional dispatchers:
 		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {

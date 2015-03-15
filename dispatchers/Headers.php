@@ -38,8 +38,9 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
 
-		QM_Util::include_files( $this->qm->plugin_path( 'output/headers' ) );
-
+		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
+			include $file;
+		}
 	}
 
 	public function after_output() {
