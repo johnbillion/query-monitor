@@ -303,6 +303,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
+		# Back-compat filter. Please use `qm/dispatch/html` instead
+		if ( ! apply_filters( "qm/process", true, is_admin_bar_showing() ) ) {
+			return false;
+		}
+
 		return true;
 
 	}
