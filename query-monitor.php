@@ -43,7 +43,6 @@ class QueryMonitor extends QM_Plugin {
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_action( 'init',           array( $this, 'action_init' ) );
-		add_action( 'shutdown',       array( $this, 'action_shutdown' ), 0 );
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
@@ -115,23 +114,6 @@ class QueryMonitor extends QM_Plugin {
 
 	public function should_process() {
 
-		# @TODO this decision should be moved to each dispatcher
-
-		# Don't process if the minimum required actions haven't fired:
-
-		if ( is_admin() ) {
-
-			if ( ! did_action( 'admin_init' ) ) {
-				return false;
-			}
-
-		} else {
-
-			if ( ! ( did_action( 'wp' ) or did_action( 'login_init' ) ) ) {
-				return false;
-			}
-
-		}
 
 		$e = error_get_last();
 
@@ -145,55 +127,7 @@ class QueryMonitor extends QM_Plugin {
 			return false;
 		}
 
-		$dispatchers = QM_Dispatchers::init();
-
-		foreach ( $dispatchers as $dispatcher ) {
-
-			# At least one dispatcher is active, so we need to process:
-			if ( $dispatcher->is_active() ) {
-				return true;
-			}
-
-		}
-
-		return false;
-
-	}
-
-	public function action_shutdown() {
-
-		# @TODO this should move to each dispatcher so it can decide when it wants to do its output
-		# eg. the JSON dispatcher needs to output inside the 'json_post_dispatch' filter, not on shutdown
-
-		if ( ! $this->should_process() ) {
-			return;
-		}
-
-		$collectors  = QM_Collectors::init();
-		$dispatchers = QM_Dispatchers::init();
-
-		foreach ( $collectors as $collector ) {
-			$collector->tear_down();
-			$collector->process();
-		}
-
-		foreach ( $dispatchers as $dispatcher ) {
-
-			if ( ! $dispatcher->is_active() ) {
-				continue;
-			}
-
-			$dispatcher->before_output();
-
-			$outputters = apply_filters( "qm/outputter/{$dispatcher->id}", array(), $collectors );
-
-			foreach ( $outputters as $outputter ) {
-				$outputter->output();
-			}
-
-			$dispatcher->after_output();
-
-		}
+		return true;
 
 	}
 

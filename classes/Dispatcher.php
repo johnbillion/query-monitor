@@ -30,6 +30,53 @@ abstract class QM_Dispatcher {
 
 	abstract public function is_active();
 
+	public function should_process() {
+
+		if ( ! $this->qm->should_process() ) {
+			return;
+		}
+
+		# Don't process if the minimum required actions haven't fired:
+
+		if ( is_admin() ) {
+
+			if ( ! did_action( 'admin_init' ) ) {
+				return false;
+			}
+
+		} else {
+
+			if ( ! ( did_action( 'wp' ) or did_action( 'login_init' ) ) ) {
+				return false;
+			}
+
+		}
+
+		# If this dispatcher is active, we need to process:
+		return $this->is_active();
+
+	}
+
+	final public function dispatch() {
+
+		if ( ! $this->should_process() ) {
+			return;
+		}
+
+		$collectors = QM_Collectors::init();
+		$collectors->process();
+
+		$this->outputters = apply_filters( "qm/outputter/{$this->id}", array(), $collectors );
+		$this->before_output();
+
+		foreach ( $this->outputters as $outputter ) {
+			$outputter->output();
+		}
+
+		$this->after_output();
+
+	}
+
 	public function init() {
 		// nothing
 	}

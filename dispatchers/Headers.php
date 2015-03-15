@@ -20,6 +20,9 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
+
+		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+
 	}
 
 	public function init() {

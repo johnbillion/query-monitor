@@ -25,6 +25,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
+		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
+
 		parent::__construct( $qm );
 
 	}
