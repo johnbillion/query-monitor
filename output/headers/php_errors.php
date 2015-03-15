@@ -16,16 +16,17 @@ GNU General Public License for more details.
 
 class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
-	public function output() {
+	public function get_output() {
 
 		if ( ! QM_Util::is_ajax() ) {
-			return;
+			return array();
 		}
 
 		$data = $this->collector->get_data();
+		$headers = array();
 
 		if ( empty( $data['errors'] ) ) {
-			return;
+			return array();
 		}
 
 		$count = 0;
@@ -48,18 +49,15 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 					'component' => $component->name,
 				);
 
-				header( sprintf( 'X-QM-Error-%d: %s',
-					$count,
-					json_encode( $output_error )
-				) );
+				$key = sprintf( 'X-QM-Error-%d', $count );
+				$headers[ $key ] = json_encode( $output_error );
 
 			}
 
 		}
 
-		header( sprintf( 'X-QM-Errors: %d',
-			$count
-		) );
+		$headers['X-QM-Errors'] = $count;
+		return $headers;
 
 	}
 
