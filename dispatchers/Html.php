@@ -164,7 +164,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function before_output() {
+	public function dispatch() {
+
+		if ( ! $this->should_dispatch() ) {
+			return;
+		}
+
+		$out = $this->get_output();
+
+		echo $out['before'];
+
+		foreach ( $out['output'] as $id => $output ) {
+			echo $output;
+		}
+		echo $out['after'];
+
+	}
+
+	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
@@ -193,7 +210,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function after_output() {
+	protected function after_output() {
 
 		echo '<div class="qm qm-half" id="qm-authentication">';
 		echo '<table cellspacing="0">';

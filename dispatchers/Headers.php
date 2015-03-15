@@ -37,7 +37,23 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	}
 
-	public function before_output() {
+	public function dispatch() {
+
+		if ( ! $this->should_dispatch() ) {
+			return;
+		}
+
+		$out = $this->get_output();
+
+		foreach ( $out['output'] as $id => $output ) {
+			foreach ( $output as $key => $value ) {
+				header( sprintf( '%s: %s', $key, $value ) );
+			}
+		}
+
+	}
+
+	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
 
@@ -46,7 +62,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 		}
 	}
 
-	public function after_output() {
+	protected function after_output() {
 
 		# flush once, because we're nice
 		if ( QM_Util::is_ajax() and ob_get_length() ) {
