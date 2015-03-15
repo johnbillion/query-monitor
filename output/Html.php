@@ -14,13 +14,9 @@ GNU General Public License for more details.
 
 */
 
-abstract class QM_Output_Html implements QM_Output {
+abstract class QM_Output_Html extends QM_Output {
 
 	protected static $file_link_format = null;
-
-	public function __construct( QM_Collector $collector ) {
-		$this->collector = $collector;
-	}
 
 	public function admin_menu( array $menu ) {
 
