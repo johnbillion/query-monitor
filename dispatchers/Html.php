@@ -60,7 +60,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function ajax_off() {
 
-		if ( ! $this->user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
+		if ( ! self::user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
 			wp_send_json_error( __( 'Could not clear authentication cookie.', 'query-monitor' ) );
 		}
 
@@ -204,7 +204,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( !$this->user_verified() ) {
+		if ( ! self::user_verified() ) {
 
 			echo '<tr>';
 			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';

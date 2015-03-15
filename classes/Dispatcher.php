@@ -133,13 +133,13 @@ abstract class QM_Dispatcher {
 			return true;
 		}
 
-		return $this->user_verified();
+		return self::user_verified();
 
 	}
 
-	public function user_verified() {
+	public static function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) ) {
-			return $this->verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
+			return self::verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
 		}
 		return false;
 	}
