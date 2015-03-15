@@ -23,7 +23,11 @@ abstract class QM_Output {
 		$this->collector = $collector;
 	}
 
-	abstract public function output();
+	abstract public function get_output();
+
+	public function output() {
+		// nothing
+	}
 
 	public function get_collector() {
 		return $this->collector;

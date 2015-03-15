@@ -112,25 +112,6 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
-	public function should_process() {
-
-
-		$e = error_get_last();
-
-		# Don't process if a fatal has occurred:
-		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
-			return false;
-		}
-		
-		# Allow users to disable the processing and output
-		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
-			return false;
-		}
-
-		return true;
-
-	}
-
 	public function action_init() {
 
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );

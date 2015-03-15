@@ -27,6 +27,14 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	public function get_output() {
+		ob_start();
+		// compat until I convert all the existing outputters to use `get_output()`
+		$this->output();
+		$out = ob_get_clean();
+		return $out;
+	}
+
 	public static function output_inner( $vars ) {
 
 		echo '<table cellspacing="0" class="qm-inner">';

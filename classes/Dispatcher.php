@@ -30,10 +30,24 @@ abstract class QM_Dispatcher {
 
 	abstract public function is_active();
 
-	public function should_process() {
+	final public function dispatch_enabled() {
 
-		if ( ! $this->qm->should_process() ) {
-			return;
+		$e = error_get_last();
+
+		# Don't process if a fatal has occurred:
+		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+			return false;
+		}
+		
+		# Allow users to disable this dispatcher
+		return apply_filters( "qm/dispatch/{$this->id}", true );
+
+	}
+
+	public function should_dispatch() {
+
+		if ( ! $this->dispatch_enabled() ) {
+			return false;
 		}
 
 		# Don't process if the minimum required actions haven't fired:
@@ -52,28 +66,32 @@ abstract class QM_Dispatcher {
 
 		}
 
-		# If this dispatcher is active, we need to process:
 		return $this->is_active();
 
 	}
 
-	final public function dispatch() {
+	public function get_output() {
 
-		if ( ! $this->should_process() ) {
-			return;
-		}
+		$out = array(
+			'before' => null,
+			'output' => array(),
+			'after'  => null,
+		);
 
 		$collectors = QM_Collectors::init();
 		$collectors->process();
 
-		$this->outputters = apply_filters( "qm/outputter/{$this->id}", array(), $collectors );
-		$this->before_output();
+		$out['before'] = $this->get_before_output();
 
-		foreach ( $this->outputters as $outputter ) {
-			$outputter->output();
+		$this->outputters = apply_filters( "qm/outputter/{$this->id}", array(), $collectors );
+
+		foreach ( $this->outputters as $id => $outputter ) {
+			$out['output'][ $id ] = $outputter->get_output();
 		}
 
-		$this->after_output();
+		$out['after'] = $this->get_after_output();
+
+		return $out;
 
 	}
 
@@ -81,11 +99,27 @@ abstract class QM_Dispatcher {
 		// nothing
 	}
 
-	public function before_output() {
+	public function get_before_output() {
+		// compat until I convert all the existing outputters to use `get_before_output()`
+		ob_start();
+		$this->before_output();
+		$out = ob_get_clean();
+		return $out;
+	}
+
+	public function get_after_output() {
+		// compat until I convert all the existing outputters to use `get_after_output()`
+		ob_start();
+		$this->after_output();
+		$out = ob_get_clean();
+		return $out;
+	}
+
+	protected function before_output() {
 		// nothing
 	}
 
-	public function after_output() {
+	protected function after_output() {
 		// nothing
 	}
 
