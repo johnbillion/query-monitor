@@ -54,7 +54,7 @@ function register_qm_collectors_debug_bar() {
 
 	global $debug_bar;
 
-	if ( class_exists( 'Debug_Bar' ) ) {
+	if ( class_exists( 'Debug_Bar' ) || qm_debug_bar_being_activated() ) {
 		return;
 	}
 
@@ -84,6 +84,30 @@ function register_qm_collectors_debug_bar() {
 
 		$collectors->add( $collector );
 	}
+
+}
+
+function qm_debug_bar_being_activated() {
+
+	if ( ! is_admin() ) {
+
+		return false;
+
+	}
+
+	if ( ! isset( $_GET['plugin'] ) || ! isset( $_GET['action'] ) || ! isset( $_GET['_wpnonce'] ) ) {
+
+		return false;
+
+	}
+
+	if ( 'activate' === $_GET['action'] && false !== strpos( $_GET['plugin'], 'debug-bar.php' ) ) {
+
+		return true;
+
+	}
+
+	return false;
 
 }
 
