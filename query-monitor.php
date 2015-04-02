@@ -30,6 +30,12 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
 }
 
+if ( 'cli' == php_sapi_name() ) {
+	# For the time being, let's not load QM when using the CLI because we've no persistent storage and no means of
+	# outputting collected data on the CLI. This will change in a future version of QM.
+	return;
+}
+
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( __FILE__ );
 foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Util', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
