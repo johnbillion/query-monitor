@@ -47,7 +47,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 		foreach ( $out['output'] as $id => $output ) {
 			foreach ( $output as $key => $value ) {
-				header( sprintf( '%s: %s', $key, $value ) );
+				header( sprintf( 'X-QM-%s: %s', $key, $value ) );
 			}
 		}
 
