@@ -70,7 +70,7 @@ abstract class QM_Dispatcher {
 
 	}
 
-	public function get_output() {
+	public function get_output( $outputter_id ) {
 
 		$out = array(
 			'before' => null,
@@ -83,7 +83,7 @@ abstract class QM_Dispatcher {
 
 		$out['before'] = $this->get_before_output();
 
-		$this->outputters = apply_filters( "qm/outputter/{$this->id}", array(), $collectors );
+		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 
 		foreach ( $this->outputters as $id => $outputter ) {
 			$out['output'][ $id ] = $outputter->get_output();

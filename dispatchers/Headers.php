@@ -43,7 +43,7 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 			return;
 		}
 
-		$out = $this->get_output();
+		$out = $this->get_output( 'headers' );
 
 		foreach ( $out['output'] as $id => $output ) {
 			foreach ( $output as $key => $value ) {

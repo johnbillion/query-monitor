@@ -170,7 +170,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
-		$out = $this->get_output();
+		$out = $this->get_output( 'html' );
 
 		echo $out['before'];
 
