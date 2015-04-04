@@ -18,10 +18,6 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 	public function get_output() {
 
-		if ( ! QM_Util::is_ajax() ) {
-			return array();
-		}
-
 		$data = $this->collector->get_data();
 		$headers = array();
 
