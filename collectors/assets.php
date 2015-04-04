@@ -56,8 +56,6 @@ class QM_Collector_Assets extends QM_Collector {
 			foreach ( array( 'header', 'footer' ) as $position ) {
 				if ( empty( $this->data[ $position ][ $type ] ) ) {
 					$this->data[ $position ][ $type ] = array();
-				} else {
-					sort( $this->data[ $position ][ $type ] );
 				}
 			}
 			$raw = $this->data['raw'][ $type ];
@@ -76,13 +74,11 @@ class QM_Collector_Assets extends QM_Collector {
 
 				if ( !empty( $broken ) ) {
 					$this->data['broken'][ $type ] = array_unique( $broken );
-					sort( $this->data['broken'][ $type ] );
 				}
 			}
 
 			if ( ! empty( $missing ) ) {
 				$this->data['missing'][ $type ] = array_unique( $missing );
-				sort( $this->data['missing'][ $type ] );
 				foreach ( $this->data['missing'][ $type ] as $handle ) {
 					$raw->add( $handle, false );
 				}
