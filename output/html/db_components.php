@@ -123,7 +123,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_components( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'db_components' ) ) {
+	if ( $collector = QM_Collectors::get( 'db_components' ) ) {
 		$output['db_components'] = new QM_Output_Html_DB_Components( $collector );
 	}
 	return $output;

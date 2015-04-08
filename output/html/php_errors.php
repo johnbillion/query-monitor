@@ -152,7 +152,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 }
 
 function register_qm_output_html_php_errors( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'php_errors' ) ) {
+	if ( $collector = QM_Collectors::get( 'php_errors' ) ) {
 		$output['php_errors'] = new QM_Output_Html_PHP_Errors( $collector );
 	}
 	return $output;
