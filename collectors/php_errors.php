@@ -40,6 +40,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		parent::__construct();
 		set_error_handler( array( $this, 'error_handler' ) );
+		register_shutdown_function( array( $this, 'shutdown_handler' ) );
 
 		$this->display_errors = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
@@ -108,6 +109,46 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
+
+	}
+
+	public function shutdown_handler() {
+
+		$e = error_get_last();
+
+		if ( empty( $this->display_errors ) ) {
+			return;
+		}
+
+		if ( empty( $e ) or ! ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+			return;
+		}
+
+		if ( $e['type'] & E_RECOVERABLE_ERROR ) {
+			$error = 'Catchable fatal error';
+		} else {
+			$error = 'Fatal error';
+		}
+
+		if ( function_exists( 'xdebug_print_function_stack' ) ) {
+
+			xdebug_print_function_stack( sprintf( '%1$s: %2$s in %3$s on line %4$d. Output triggered ',
+				$error,
+				$e['message'],
+				$e['file'],
+				$e['line']
+			) );
+
+		} else {
+
+			printf( '<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
+				htmlentities( $error ),
+				htmlentities( $e['message'] ),
+				htmlentities( $e['file'] ),
+				intval( $e['line'] )
+			);
+
+		}
 
 	}
 
