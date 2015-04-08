@@ -202,7 +202,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 }
 
 function register_qm_output_html_http( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'http' ) ) {
+	if ( $collector = QM_Collectors::get( 'http' ) ) {
 		$output['http'] = new QM_Output_Html_HTTP( $collector );
 	}
 	return $output;

@@ -125,7 +125,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 }
 
 function register_qm_output_html_admin( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'admin' ) ) {
+	if ( $collector = QM_Collectors::get( 'admin' ) ) {
 		$output['admin'] = new QM_Output_Html_Admin( $collector );
 	}
 	return $output;

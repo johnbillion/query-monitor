@@ -103,7 +103,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 }
 
 function register_qm_output_html_theme( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'theme' ) ) {
+	if ( $collector = QM_Collectors::get( 'theme' ) ) {
 		$output['theme'] = new QM_Output_Html_Theme( $collector );
 	}
 	return $output;

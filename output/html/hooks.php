@@ -180,7 +180,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 }
 
 function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {
-	if ( $collector = $collectors::get( 'hooks' ) ) {
+	if ( $collector = QM_Collectors::get( 'hooks' ) ) {
 		$output['hooks'] = new QM_Output_Html_Hooks( $collector );
 	}
 	return $output;
