@@ -37,10 +37,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		$hooks = $all_parts = $components = array();
 
 		if ( has_filter( 'all' ) ) {
-
 			$hooks['all'] = $this->process_action( 'all', $wp_filter );
-			$this->data['warnings']['all_hooked'] = $hooks['all'];
-
 		}
 
 		foreach ( $wp_actions as $name => $count ) {

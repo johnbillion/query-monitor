@@ -18,12 +18,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	public $id = 'hooks';
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
-		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
-	}
-
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -145,35 +139,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
-
-	}
-
-	public function admin_class( array $class ) {
-
-		$data = $this->collector->get_data();
-
-		if ( isset( $data['warnings'] ) ) {
-			$class[] = 'qm-warning';
-		}
-
-		return $class;
-
-	}
-
-	public function admin_menu( array $menu ) {
-
-		$data = $this->collector->get_data();
-		$args = array(
-			'title' => $this->collector->name(),
-		);
-
-		if ( isset( $data['warnings'] ) ) {
-			$args['meta']['classname'] = 'qm-warning';
-		}
-
-		$menu[] = $this->menu( $args );
-
-		return $menu;
 
 	}
 

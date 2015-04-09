@@ -14,12 +14,15 @@ GNU General Public License for more details.
 
 */
 
-class QM_Dispatcher_Headers extends QM_Dispatcher {
+class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
-	public $id = 'headers';
+	public $id = 'ajax';
 
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
+
+		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+
 	}
 
 	public function init() {
@@ -34,24 +37,45 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 	}
 
-	public function before_output() {
+	public function dispatch() {
 
-		require_once $this->qm->plugin_path( 'output/Headers.php' );
+		if ( ! $this->should_dispatch() ) {
+			return;
+		}
 
-		QM_Util::include_files( $this->qm->plugin_path( 'output/headers' ) );
+		$out = $this->get_output( 'headers' );
+
+		foreach ( $out['output'] as $id => $output ) {
+			foreach ( $output as $key => $value ) {
+				header( sprintf( 'X-QM-%s: %s', $key, $value ) );
+			}
+		}
 
 	}
 
-	public function after_output() {
+	protected function before_output() {
+
+		require_once $this->qm->plugin_path( 'output/Headers.php' );
+
+		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
+			include $file;
+		}
+	}
+
+	protected function after_output() {
 
 		# flush once, because we're nice
-		if ( QM_Util::is_ajax() and ob_get_length() ) {
+		if ( ob_get_length() ) {
 			ob_flush();
 		}
 
 	}
 
 	public function is_active() {
+
+		if ( ! QM_Util::is_ajax() ) {
+			return false;
+		}
 
 		if ( ! $this->user_can_view() ) {
 			return false;
@@ -68,9 +92,9 @@ class QM_Dispatcher_Headers extends QM_Dispatcher {
 
 }
 
-function register_qm_dispatcher_headers( array $dispatchers, QM_Plugin $qm ) {
-	$dispatchers['headers'] = new QM_Dispatcher_Headers( $qm );
+function register_qm_dispatcher_ajax( array $dispatchers, QM_Plugin $qm ) {
+	$dispatchers['ajax'] = new QM_Dispatcher_AJAX( $qm );
 	return $dispatchers;
 }
 
-add_filter( 'qm/dispatchers', 'register_qm_dispatcher_headers', 10, 2 );
+add_filter( 'qm/dispatchers', 'register_qm_dispatcher_ajax', 10, 2 );

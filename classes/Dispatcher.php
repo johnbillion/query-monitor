@@ -24,19 +24,102 @@ abstract class QM_Dispatcher {
 			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
 		}
 
+		add_action( 'init', array( $this, 'init' ) );
+
 	}
 
 	abstract public function is_active();
+
+	final public function dispatch_enabled() {
+
+		$e = error_get_last();
+
+		# Don't process if a fatal has occurred:
+		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+			return false;
+		}
+		
+		# Allow users to disable this dispatcher
+		return apply_filters( "qm/dispatch/{$this->id}", true );
+
+	}
+
+	public function should_dispatch() {
+
+		if ( ! $this->dispatch_enabled() ) {
+			return false;
+		}
+
+		# Don't process if the minimum required actions haven't fired:
+
+		if ( is_admin() ) {
+
+			if ( ! did_action( 'admin_init' ) ) {
+				return false;
+			}
+
+		} else {
+
+			if ( ! ( did_action( 'wp' ) or did_action( 'login_init' ) ) ) {
+				return false;
+			}
+
+		}
+
+		return $this->is_active();
+
+	}
+
+	public function get_output( $outputter_id ) {
+
+		$out = array(
+			'before' => null,
+			'output' => array(),
+			'after'  => null,
+		);
+
+		$collectors = QM_Collectors::init();
+		$collectors->process();
+
+		$out['before'] = $this->get_before_output();
+
+		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
+
+		foreach ( $this->outputters as $id => $outputter ) {
+			$out['output'][ $id ] = $outputter->get_output();
+		}
+
+		$out['after'] = $this->get_after_output();
+
+		return $out;
+
+	}
 
 	public function init() {
 		// nothing
 	}
 
-	public function before_output() {
+	public function get_before_output() {
+		// compat until I convert all the existing outputters to use `get_before_output()`
+		ob_start();
+		$this->before_output();
+		$out = ob_get_clean();
+		return $out;
+	}
+
+	public function get_after_output() {
+		// compat until I convert all the existing outputters to use `get_after_output()`
+		ob_start();
+		$this->after_output();
+		$out = ob_get_clean();
+		return $out;
+	}
+
+	protected function before_output() {
 		// nothing
 	}
 
-	public function after_output() {
+	protected function after_output() {
 		// nothing
 	}
 
@@ -50,13 +133,13 @@ abstract class QM_Dispatcher {
 			return true;
 		}
 
-		return $this->user_verified();
+		return self::user_verified();
 
 	}
 
-	public function user_verified() {
+	public static function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) ) {
-			return $this->verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
+			return self::verify_cookie( stripslashes( $_COOKIE[QM_COOKIE] ) );
 		}
 		return false;
 	}

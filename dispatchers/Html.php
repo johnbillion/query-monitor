@@ -25,6 +25,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
+		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
+
 		parent::__construct( $qm );
 
 	}
@@ -58,7 +60,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function ajax_off() {
 
-		if ( ! $this->user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
+		if ( ! self::user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
 			wp_send_json_error( __( 'Could not clear authentication cookie.', 'query-monitor' ) );
 		}
 
@@ -162,11 +164,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function before_output() {
+	public function dispatch() {
+
+		if ( ! $this->should_dispatch() ) {
+			return;
+		}
+
+		$out = $this->get_output( 'html' );
+
+		echo $out['before'];
+
+		foreach ( $out['output'] as $id => $output ) {
+			echo $output;
+		}
+		echo $out['after'];
+
+	}
+
+	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		QM_Util::include_files( $this->qm->plugin_path( 'output/html' ) );
+		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
+			include $file;
+		}
 
 		$class = array(
 			'qm-no-js',
@@ -189,7 +210,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	public function after_output() {
+	protected function after_output() {
 
 		echo '<div class="qm qm-half" id="qm-authentication">';
 		echo '<table cellspacing="0">';
@@ -200,7 +221,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</thead>';
 		echo '<tbody>';
 
-		if ( !$this->user_verified() ) {
+		if ( ! self::user_verified() ) {
 
 			echo '<tr>';
 			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
@@ -279,6 +300,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		if ( QM_Util::is_async() ) {
+			return false;
+		}
+
+		# Back-compat filter. Please use `qm/dispatch/html` instead
+		if ( ! apply_filters( "qm/process", true, is_admin_bar_showing() ) ) {
 			return false;
 		}
 
