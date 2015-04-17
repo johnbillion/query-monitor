@@ -138,7 +138,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -150,7 +150,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -161,7 +161,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -172,7 +172,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -183,7 +183,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -194,7 +194,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -205,7 +205,7 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertTrue( is_wp_error( $actual['error'] ) );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
