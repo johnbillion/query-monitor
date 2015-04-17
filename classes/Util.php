@@ -163,11 +163,18 @@ class QM_Util {
 				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 
-			} else if ( is_object( $callback['function'] ) and is_a( $callback['function'], 'Closure' ) ) {
+			} else if ( is_object( $callback['function'] ) && is_callable( $callback['function'] ) ) {
 
+			if( is_a( $callback['function'], 'Closure' ) ) {
 				$ref  = new ReflectionFunction( $callback['function'] );
 				$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
 				$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
+			} else {
+				// the object is callable so it must have a __invoke() method
+				$class = get_class( $callback['function'] );
+				$callback['name'] = $class . $access . '__invoke()';
+				$ref = new ReflectionMethod( $class, '__invoke' );
+			}
 
 			} else {
 
