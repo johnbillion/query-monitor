@@ -6,3 +6,10 @@ class QM_Test_Object {
 	}
 
 }
+
+class QM_Test_Invokable {
+
+	public function __invoke() {
+	}
+
+}
