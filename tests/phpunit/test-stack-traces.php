@@ -90,19 +90,24 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	public function test_populate_callback_closure() {
 		global $wp_filter;
 
-		$function = function() {};
+		if ( version_compare( phpversion(), '5.3', '<' ) ) {
+			$this->markTestSkipped( 'PHP < 5.3 does not support closures' );
+			return;
+		}
+
+		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
 
 		add_action( 'qm/tests/' . __METHOD__, $function );
 
 		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
 		$ref     = new ReflectionFunction( $function );
 		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
-		$file    = trim( QM_Util::standard_dir( __FILE__, '' ), '/' );
+		$file    = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
 		$name    = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), $file );
 
 		$this->assertEquals( $function,            $actual['function'] );
 		$this->assertEquals( $name,                $actual['name'] );
-		$this->assertEquals( __FILE__,             $actual['file'] );
+		$this->assertEquals( $ref->getFileName(),  $actual['file'] );
 		$this->assertEquals( $ref->getStartLine(), $actual['line'] );
 
 	}
