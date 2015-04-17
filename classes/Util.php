@@ -144,11 +144,8 @@ class QM_Util {
 
 	public static function populate_callback( array $callback ) {
 
-		$access = '->';
-
 		if ( is_string( $callback['function'] ) and ( false !== strpos( $callback['function'], '::' ) ) ) {
 			$callback['function'] = explode( '::', $callback['function'] );
-			$access = '::';
 		}
 
 		try {
@@ -156,9 +153,11 @@ class QM_Util {
 			if ( is_array( $callback['function'] ) ) {
 
 				if ( is_object( $callback['function'][0] ) ) {
-					$class = get_class( $callback['function'][0] );
+					$class  = get_class( $callback['function'][0] );
+					$access = '->';
 				} else {
-					$class = $callback['function'][0];
+					$class  = $callback['function'][0];
+					$access = '::';
 				}
 
 				$callback['name'] = $class . $access . $callback['function'][1] . '()';
