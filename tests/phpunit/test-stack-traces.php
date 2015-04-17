@@ -2,16 +2,23 @@
 
 class Test_Stack_Traces extends WP_UnitTestCase {
 
+	protected static function get_callback( $function ) {
+
+		add_action( 'qm/tests', $function );
+
+		return reset( $GLOBALS['wp_filter']['qm/tests'][10] );
+
+	}
+
 	public function test_populate_callback_procedural_function() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, '__return_false' );
+		$function = '__return_false';
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionFunction( '__return_false' );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$ref    = new ReflectionFunction( $function );
+		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( '__return_false',     $actual['function'] );
+		$this->assertEquals( $function,            $actual['function'] );
 		$this->assertEquals( '__return_false()',   $actual['name'] );
 		$this->assertEquals( $ref->getFileName(),  $actual['file'] );
 		$this->assertEquals( $ref->getStartLine(), $actual['line'] );
@@ -19,17 +26,15 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_object_method() {
-		global $wp_filter;
 
-		$obj = new QM_Test_Object;
+		$obj      = new QM_Test_Object;
+		$function = array( $obj, 'hello' );
+		$callback = self::get_callback( $function );
 
-		add_action( 'qm/tests/' . __METHOD__, array( $obj, 'hello' ) );
+		$ref    = new ReflectionMethod( $function[0], $function[1] );
+		$actual = QM_Util::populate_callback( $callback );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionMethod( $obj, 'hello' );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
-
-		$this->assertEquals( array( $obj, 'hello' ),    $actual['function'] );
+		$this->assertEquals( $function,                 $actual['function'] );
 		$this->assertEquals( 'QM_Test_Object->hello()', $actual['name'] );
 		$this->assertEquals( $ref->getFileName(),       $actual['file'] );
 		$this->assertEquals( $ref->getStartLine(),      $actual['line'] );
@@ -37,16 +42,13 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_invokable() {
-		global $wp_filter;
 
 		$function = new QM_Test_Invokable;
+		$callback = self::get_callback( $function );
 
-		add_action( 'qm/tests/' . __METHOD__, $function );
-
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionMethod( $function, '__invoke' );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
-		$name    = 'QM_Test_Invokable->__invoke()';
+		$ref    = new ReflectionMethod( $function, '__invoke' );
+		$actual = QM_Util::populate_callback( $callback );
+		$name   = 'QM_Test_Invokable->__invoke()';
 
 		$this->assertEquals( $function,            $actual['function'] );
 		$this->assertEquals( $name,                $actual['name'] );
@@ -56,29 +58,27 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_static_method_array() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, array( 'QM_Test_Object', 'hello' ) );
+		$function = array( 'QM_Test_Object', 'hello' );
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionMethod( 'QM_Test_Object', 'hello' );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$ref    = new ReflectionMethod( $function[0], $function[1] );
+		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
-		$this->assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),                $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(),               $actual['line'] );
+		$this->assertEquals( $function,                 $actual['function'] );
+		$this->assertEquals( 'QM_Test_Object::hello()', $actual['name'] );
+		$this->assertEquals( $ref->getFileName(),       $actual['file'] );
+		$this->assertEquals( $ref->getStartLine(),      $actual['line'] );
 
 	}
 
 	public function test_populate_callback_static_method_string() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, 'QM_Test_Object::hello' );
+		$function = 'QM_Test_Object::hello';
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionMethod( 'QM_Test_Object', 'hello' );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$ref    = new ReflectionMethod( 'QM_Test_Object', 'hello' );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
 		$this->assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
@@ -88,7 +88,6 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_closure() {
-		global $wp_filter;
 
 		if ( version_compare( phpversion(), '5.3', '<' ) ) {
 			$this->markTestSkipped( 'PHP < 5.3 does not support closures' );
@@ -97,13 +96,12 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
 
-		add_action( 'qm/tests/' . __METHOD__, $function );
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionFunction( $function );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
-		$file    = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
-		$name    = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), $file );
+		$ref    = new ReflectionFunction( $function );
+		$actual = QM_Util::populate_callback( $callback );
+		$file   = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
+		$name   = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), $file );
 
 		$this->assertEquals( $function,            $actual['function'] );
 		$this->assertEquals( $name,                $actual['name'] );
@@ -113,16 +111,13 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_lambda() {
-		global $wp_filter;
 
 		$function = create_function( '', '' );
+		$callback = self::get_callback( $function );
 
-		add_action( 'qm/tests/' . __METHOD__, $function );
-
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$ref     = new ReflectionFunction( $function );
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
-		$file    = trim( QM_Util::standard_dir( __FILE__, '' ), '/' );
+		$ref    = new ReflectionFunction( $function );
+		$actual = QM_Util::populate_callback( $callback );
+		$file   = trim( QM_Util::standard_dir( __FILE__, '' ), '/' );
 
 		preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $ref->getFileName(), $matches );
 
@@ -137,87 +132,78 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 	}
 
 	public function test_populate_callback_invalid_procedural_function() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, 'invalid_function' );
+		$function = 'invalid_function';
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_object_method() {
-		global $wp_filter;
 
-		$obj = new QM_Test_Object;
-		add_action( 'qm/tests/' . __METHOD__, array( $obj, 'goodbye' ) );
+		$obj      = new QM_Test_Object;
+		$function = array( $obj, 'goodbye' );
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_invokable() {
-		global $wp_filter;
 
 		$function = new QM_Test_Object;
+		$callback = self::get_callback( $function );
 
-		add_action( 'qm/tests/' . __METHOD__, $function );
-
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_static_method_array() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, array( 'QM_Test_Object', 'goodbye' ) );
+		$function = array( 'QM_Test_Object', 'goodbye' );
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_static_method_string() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, 'QM_Test_Object::goodbye' );
+		$function = 'QM_Test_Object::goodbye';
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_static_class_array() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, array( 'Invalid_Class', 'goodbye' ) );
+		$function = array( 'Invalid_Class', 'goodbye' );
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
 	}
 
 	public function test_populate_callback_invalid_static_class_string() {
-		global $wp_filter;
 
-		add_action( 'qm/tests/' . __METHOD__, 'Invalid_Class::goodbye' );
+		$function = 'Invalid_Class::goodbye';
+		$callback = self::get_callback( $function );
 
-		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
-		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+		$actual = QM_Util::populate_callback( $callback );
 
 		$this->assertTrue( is_wp_error( $actual['error'] ) );
 
