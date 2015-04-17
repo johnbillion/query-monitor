@@ -182,10 +182,34 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 	}
 
+	public function test_populate_callback_invalid_static_method_string() {
+		global $wp_filter;
+
+		add_action( 'qm/tests/' . __METHOD__, 'QM_Test_Object::goodbye' );
+
+		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
+		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+
+		$this->assertTrue( is_wp_error( $actual['error'] ) );
+
+	}
+
 	public function test_populate_callback_invalid_static_class_array() {
 		global $wp_filter;
 
 		add_action( 'qm/tests/' . __METHOD__, array( 'Invalid_Class', 'goodbye' ) );
+
+		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
+		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
+
+		$this->assertTrue( is_wp_error( $actual['error'] ) );
+
+	}
+
+	public function test_populate_callback_invalid_static_class_string() {
+		global $wp_filter;
+
+		add_action( 'qm/tests/' . __METHOD__, 'Invalid_Class::goodbye' );
 
 		$actions = $wp_filter[ 'qm/tests/' . __METHOD__ ];
 		$actual  = QM_Util::populate_callback( reset( $actions[10] ) );
