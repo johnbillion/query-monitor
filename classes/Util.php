@@ -163,7 +163,7 @@ class QM_Util {
 				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 
-			} else if ( is_object( $callback['function'] ) && is_callable( $callback['function'] ) ) {
+			} else if ( is_object( $callback['function'] ) ) {
 
 			if( is_a( $callback['function'], 'Closure' ) ) {
 				$ref  = new ReflectionFunction( $callback['function'] );
@@ -172,7 +172,7 @@ class QM_Util {
 			} else {
 				// the object is callable so it must have a __invoke() method
 				$class = get_class( $callback['function'] );
-				$callback['name'] = $class . $access . '__invoke()';
+				$callback['name'] = $class . '->__invoke()';
 				$ref = new ReflectionMethod( $class, '__invoke' );
 			}
 
