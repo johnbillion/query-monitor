@@ -3,6 +3,9 @@
 class Test_Plugin extends WP_UnitTestCase {
 	private $readme_data;
 
+	/**
+	 * @slowThreshold 1000
+	 */
 	public function test_tested_up_to() {
 		if ( ! $readme_data = $this->get_readme() ) {
 			$this->markTestSkipped( 'There is no readme file' );

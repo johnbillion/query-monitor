@@ -22,4 +22,15 @@
 			</exclude>
 		</whitelist>
 	</filter>
+	<listeners>
+		<listener class="SpeedTrapListener" file="tests/phpunit/includes/SpeedTrapListener.php">
+			<arguments>
+				<array>
+					<element key="slowThreshold">
+						<integer>100</integer>
+					</element>
+				</array>
+			</arguments>
+		</listener>
+	</listeners>
 </phpunit>
