@@ -126,13 +126,13 @@ abstract class QM_Output_Html implements QM_Output {
 	public static function format_url( $url ) {
 		$url = str_replace( array(
 			'=',
-			'&',
+			'&amp;',
 			'?',
 		), array(
 			'<span class="qm-equals">=</span>',
 			'<br><span class="qm-param">&amp;</span>',
 			'<br><span class="qm-param">?</span>',
-		), $url );
+		), esc_html( $url ) );
 		return $url;
 
 	}
