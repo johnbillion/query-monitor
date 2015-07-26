@@ -34,7 +34,8 @@ class QM_Collector_Theme extends QM_Collector {
 
 	public function process() {
 
-		global $template;
+		// global $template;
+		$template  = get_page_template();
 
 		$template_path        = QM_Util::standard_dir( $template );
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
