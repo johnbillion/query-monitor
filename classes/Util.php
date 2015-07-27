@@ -186,16 +186,25 @@ class QM_Util {
 			$callback['file'] = $ref->getFileName();
 			$callback['line'] = $ref->getStartLine();
 
-			if ( '__lambda_func' === $ref->getName() ) {
+			$name = $ref->getName();
+
+			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
 				if ( preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
 					$callback['file'] = $matches['file'];
 					$callback['line'] = $matches['line'];
 					$file = trim( QM_Util::standard_dir( $callback['file'], '' ), '/' );
 					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );
+				} else {
+					// https://github.com/facebook/hhvm/issues/5807
+					unset( $callback['line'], $callback['file'] );
+					$callback['name'] = $name . '()';
+					$callback['error'] = new WP_Error( 'unknown_lambda', __( 'Unable to determine source of lambda function', 'query-monitor' ) );
 				}
 			}
 
-			$callback['component'] = self::get_file_component( $callback['file'] );
+			if ( ! empty( $callback['file'] ) ) {
+				$callback['component'] = self::get_file_component( $callback['file'] );
+			}
 
 		} catch ( ReflectionException $e ) {
 
