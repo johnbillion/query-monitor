@@ -44,7 +44,7 @@ class QM_Output_Logger_Transients extends QM_Output_Logger {
 				$transient,
 				$row['type'],
 				$expiration,
-				$row['trace']->get_component()
+				$row['trace']->get_component()->name
 			) );
 
 		}
