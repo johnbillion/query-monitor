@@ -51,7 +51,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<td>' . esc_html( $name ) . '</td>';
+			echo '<th>' . esc_html( $name ) . '</th>';
 			echo '<td colspan="2">' . $value . '</td>'; // WPCS: XSS ok.
 			echo '</tr>';
 		}
@@ -59,7 +59,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
 		echo '<tr>';
-		echo '<td rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Query Vars', 'query-monitor' ) . '</td>';
+		echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Query Vars', 'query-monitor' ) . '</th>';
 
 		if ( !empty( $data['qvars'] ) ) {
 
