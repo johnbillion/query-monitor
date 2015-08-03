@@ -437,19 +437,21 @@ select.qm-filter {
 }
 
 .qm .qm-sort {
-	color: #ddd !important;
+	color: #767676 !important;
 	display: block !important;
 	font-size: 14px !important;
 	line-height: 11px !important;
-	text-decoration: none !important;
+	border: 0 !important;
+	padding: 3px !important;
+	width: 100% !important;
+	background-color: transparent !important;
 }
 
 .qm .qm-sort:hover,
 .qm .qm-sort:focus,
 .qm .qm-sorted-asc .qm-sort-asc,
 .qm .qm-sorted-desc .qm-sort-desc {
-	color: #777 !important;
-	text-decoration: none !important;
+	color: #000 !important;
 }
 
 /* RTL */
