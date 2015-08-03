@@ -36,13 +36,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo $this->build_sorter(); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Response', 'query-monitor' );
-		echo $this->build_filter( 'type', array_keys( $data['types'] ) ); // WPCS: XSS ok.
+		echo '<th scope="col">';
+		echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Transport', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' );
-		echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ); // WPCS: XSS ok.
+		echo '<th scope="col">';
+		echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
 		echo $this->build_sorter(); // WPCS: XSS ok.

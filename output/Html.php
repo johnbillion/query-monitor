@@ -73,18 +73,22 @@ abstract class QM_Output_Html extends QM_Output {
 	 *
 	 * @param  string $name      The name for the `data-` attributes that get filtered by this control.
 	 * @param  array  $values    Possible values for this control.
+	 * @param  string $label     Label text for the filter control.
 	 * @param  string $highlight Optional. The name for the `data-` attributes that get highlighted by this control.
 	 * @return string            Markup for the table filter controls.
 	 */
-	protected function build_filter( $name, array $values, $highlight = '' ) {
+	protected function build_filter( $name, array $values, $label, $highlight = '' ) {
 
 		if ( empty( $values ) ) {
-			return '';
+			return esc_html( $label ); // Return label text, without being marked up as a label element.
 		}
 
 		usort( $values, 'strcasecmp' );
 
-		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
+		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
+
+		$out = '<label for="' . esc_attr( $filter_id ) .'">' . esc_html( $label ) . '</label>';
+		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
 		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {
