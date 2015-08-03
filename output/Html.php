@@ -108,8 +108,8 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected function build_sorter() {
 		$out = '<span class="qm-sort-controls">';
-		$out .= '<a href="#" class="qm-sort qm-sort-asc">&#9650;</a>';
-		$out .= '<a href="#" class="qm-sort qm-sort-desc">&#9660;</a>';
+		$out .= '<button class="qm-sort qm-sort-asc"><span class="screen-reader-text">Ascending</span>&#9650;</button>';
+		$out .= '<button class="qm-sort qm-sort-desc"><span class="screen-reader-text">Descending</span>&#9660;</button>';
 		$out .= '</span>';
 		return $out;
 	}
