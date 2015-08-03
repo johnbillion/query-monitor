@@ -64,15 +64,18 @@ abstract class QM_Output_Html implements QM_Output {
 
 	}
 
-	protected function build_filter( $name, array $values, $highlight = '' ) {
+	protected function build_filter( $name, array $values, $label, $highlight = '' ) {
 
 		if ( empty( $values ) ) {
-			return '';
+			return $label; // Return label text, without being marked up as a label element.
 		}
 
 		usort( $values, 'strcasecmp' );
 
-		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
+		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
+
+		$out = '<label for="' . esc_attr( $filter_id ) .'">' . esc_html( $label ) . '</label>';
+		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
 		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {

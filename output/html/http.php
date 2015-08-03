@@ -34,10 +34,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
 		echo '<th scope="col">' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Response', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $data['types'] ) ) . '</th>';
+		echo '<th scope="col">' . $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ) . '</th>';
 		echo '<th scope="col">' . __( 'Transport', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . __( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
+		echo '<th scope="col">' . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . __( 'Timeout', 'query-monitor' ) . $this->build_sorter() . '</th>';
 		echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
 		echo '</tr>';
@@ -151,7 +151,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo '</tr>';
 			}
 			echo '</tbody>';
-		
+
 		}
 
 		echo '</table>';

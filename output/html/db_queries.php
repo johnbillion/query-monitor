@@ -163,11 +163,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th scope="col" class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
-			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
-			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ) . '</th>';
+			echo '<th scope="col">' . $this->build_filter( 'type', array_keys( $db->types ), __( 'Query', 'query-monitor' ) ) . '</th>';
+			echo '<th scope="col">' . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ) ) . '</th>';
 
 			if ( $db->has_trace ) {
-				echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
+				echo '<th scope="col">' . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ) . '</th>';
 			}
 
 			if ( $db->has_result ) {
