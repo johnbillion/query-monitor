@@ -186,7 +186,7 @@ class QM_Util {
 			$callback['file'] = $ref->getFileName();
 			$callback['line'] = $ref->getStartLine();
 
-			$name = $ref->getName();
+			$name = trim( $ref->getName() );
 
 			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
 				if ( preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
