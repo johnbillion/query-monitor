@@ -99,7 +99,23 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
-		if ( !empty( $data['multisite'] ) ) {
+		if ( ! empty( $data['queried_object'] ) ) {
+
+			echo '<tr>';
+			echo '<td valign="top">' . __( 'Queried Object', 'query-monitor' ) . '</td>';
+			echo '<td valign="top" colspan="2" class="qm-has-inner">';
+			echo '<div class="qm-inner-toggle">' . esc_html( $data['queried_object']['title'] ) . ' (' . get_class( $data['queried_object']['data'] ) . ') (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Show', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Hide', 'query-monitor' ) . '">' . __( 'Show', 'query-monitor' ) . '</a>)</div>';
+
+			echo '<div class="qm-toggled">';
+			self::output_inner( $data['queried_object']['data'] );
+			echo '</div>';
+
+			echo '</td>';
+			echo '</tr>';
+
+		}
+
+		if ( ! empty( $data['multisite'] ) ) {
 
 			$rowspan = count( $data['multisite'] );
 
@@ -114,35 +130,18 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<tr>';
 				}
 
-				echo "<td valign='top'>{$var}</td>";
+				echo '<td valign="top" colspan="2" class="qm-has-inner">';
+				echo '<div class="qm-inner-toggle">' . esc_html( $value['title'] ) . ' (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Expand', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Collapse', 'query-monitor' ) . '">' . __( 'Expand', 'query-monitor' ) . '</a>)</div>';
 
-				echo '<td valign="top"><pre>';
-				print_r( $value );
-				echo '</pre></td>';
+				echo '<div class="qm-toggled">';
+				self::output_inner( $value['data'] );
+				echo '</div>';
 
-				echo '</tr>';
+				echo '</td>';
 
 				$first = false;
 
 			}
-		}
-
-		if ( !empty( $data['queried_object'] ) ) {
-
-			$vars = get_object_vars( $data['queried_object'] );
-
-			echo '<tr>';
-			echo '<td valign="top">' . __( 'Queried Object', 'query-monitor' ) . '</td>';
-			echo '<td valign="top" colspan="2" class="qm-has-inner">';
-			echo '<div class="qm-inner-toggle">' . $data['queried_object_title'] . ' (' . get_class( $data['queried_object'] ) . ' object) (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Show', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Hide', 'query-monitor' ) . '">' . __( 'Show', 'query-monitor' ) . '</a>)</div>';
-
-			echo '<div class="qm-toggled">';
-			self::output_inner( $vars );
-			echo '</div>';
-
-			echo '</td>';
-			echo '</tr>';
-
 		}
 
 		echo '</tbody>';
