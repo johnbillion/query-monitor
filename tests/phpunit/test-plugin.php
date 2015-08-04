@@ -3,6 +3,9 @@
 class Test_Plugin extends WP_UnitTestCase {
 	private $readme_data;
 
+	/**
+	 * @slowThreshold 1000
+	 */
 	public function test_tested_up_to() {
 		if ( ! $readme_data = $this->get_readme() ) {
 			$this->markTestSkipped( 'There is no readme file' );
@@ -30,14 +33,14 @@ class Test_Plugin extends WP_UnitTestCase {
 			$this->markTestSkipped( 'There is no readme file' );
 			return;
 		}
-		$plugin_data = get_plugin_data( dirname( dirname( __FILE__ ) ) . '/query-monitor.php' );
+		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );
 
 		$this->assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
 	}
 
 	private function get_readme() {
 		if( ! isset( $this->readme_data ) ) {
-			$file = dirname( dirname( __FILE__ ) ) . '/readme.md';
+			$file = dirname( dirname( dirname( __FILE__ ) ) ) . '/readme.txt';
 
 			if ( ! is_file( $file ) ) {
 				return false;

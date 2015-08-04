@@ -69,6 +69,7 @@ class QM_Util {
 			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
 			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
 			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
+			self::$file_dirs['unknown']    = null;
 		}
 		return self::$file_dirs;
 	}
@@ -82,7 +83,7 @@ class QM_Util {
 		}
 
 		foreach ( self::get_file_dirs() as $type => $dir ) {
-			if ( 0 === strpos( $file, $dir ) ) {
+			if ( $dir && ( 0 === strpos( $file, $dir ) ) ) {
 				break;
 			}
 		}
@@ -129,8 +130,11 @@ class QM_Util {
 				$context = $file;
 				break;
 			case 'core':
-			default:
 				$name = __( 'Core', 'query-monitor' );
+				break;
+			case 'unknown':
+			default:
+				$name = __( 'Unknown', 'query-monitor' );
 				break;
 		}
 
@@ -140,11 +144,8 @@ class QM_Util {
 
 	public static function populate_callback( array $callback ) {
 
-		$access = '->';
-
 		if ( is_string( $callback['function'] ) and ( false !== strpos( $callback['function'], '::' ) ) ) {
 			$callback['function'] = explode( '::', $callback['function'] );
-			$access = '::';
 		}
 
 		try {
@@ -152,19 +153,28 @@ class QM_Util {
 			if ( is_array( $callback['function'] ) ) {
 
 				if ( is_object( $callback['function'][0] ) ) {
-					$class = get_class( $callback['function'][0] );
+					$class  = get_class( $callback['function'][0] );
+					$access = '->';
 				} else {
-					$class = $callback['function'][0];
+					$class  = $callback['function'][0];
+					$access = '::';
 				}
 
 				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 
-			} else if ( is_object( $callback['function'] ) and is_a( $callback['function'], 'Closure' ) ) {
+			} else if ( is_object( $callback['function'] ) ) {
 
-				$ref  = new ReflectionFunction( $callback['function'] );
-				$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
-				$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
+				if ( is_a( $callback['function'], 'Closure' ) ) {
+					$ref  = new ReflectionFunction( $callback['function'] );
+					$file = trim( QM_Util::standard_dir( $ref->getFileName(), '' ), '/' );
+					$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
+				} else {
+					// the object should have a __invoke() method
+					$class = get_class( $callback['function'] );
+					$callback['name'] = $class . '->__invoke()';
+					$ref = new ReflectionMethod( $class, '__invoke' );
+				}
 
 			} else {
 
