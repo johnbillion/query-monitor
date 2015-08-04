@@ -46,7 +46,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<tbody>';
 		foreach ( $data['current_screen'] as $key => $value ) {
 			echo '<tr>';
-			echo '<td>' . esc_html( $key ) . '</td>';
+			echo '<th>' . esc_html( $key ) . '</th>';
 			echo '<td>' . esc_html( $value ) . '</td>';
 			echo '</tr>';
 		}

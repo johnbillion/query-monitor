@@ -44,8 +44,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Hook', 'query-monitor' ) . $this->build_filter( 'name', $data['parts'] ) . '</th>';
-		echo '<th colspan="3">' . __( 'Actions', 'query-monitor' ) . $this->build_filter( 'component', $data['components'], 'subject' ) . '</th>';
+		echo '<th>' . $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ) . '</th>';
+		echo '<th colspan="3">' . $this->build_filter( 'component', $data['components'], __( 'Actions', 'query-monitor' ), 'subject' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
