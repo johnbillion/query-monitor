@@ -316,12 +316,13 @@ body.wp-admin.folded #qm {
 
 .qm span.qm-true,
 .qm td.qm-true {
-	color: #4a4 !important;
+	background-color: #4a4 !important;
+	color: #fff !important;
 }
 
 .qm span.qm-false,
 .qm td.qm-false {
-	color: #ccc !important;
+	color: #767676 !important;
 }
 
 .qm .qm-wrap {
@@ -342,7 +343,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm .qm-info {
-	color: #999 !important;
+	color: #767676 !important;
 }
 
 .qm td .qm-toggled {
