@@ -3,31 +3,6 @@
 class Test_Plugin extends WP_UnitTestCase {
 	private $readme_data;
 
-	/**
-	 * @slowThreshold 1000
-	 */
-	public function test_tested_up_to() {
-		if ( ! $readme_data = $this->get_readme() ) {
-			$this->markTestSkipped( 'There is no readme file' );
-			return;
-		}
-
-		wp_version_check();
-
-		$cur = get_preferred_from_update_core();
-
-		if ( false === $cur ) {
-			$this->markTestSkipped( 'There is no internet connection' );
-			return;
-		}
-
-		if ( isset( $cur->current ) ) {
-			list( $display_version ) = explode( '-', $cur->current );
-
-			$this->assertTrue( version_compare( $readme_data['tested_up_to'], $display_version, '>=' ), sprintf( '%s >= %s', $readme_data['tested_up_to'], $display_version ) );
-		}
-	}
-
 	public function test_stable_tag() {
 		if ( ! $readme_data = $this->get_readme() ) {
 			$this->markTestSkipped( 'There is no readme file' );
