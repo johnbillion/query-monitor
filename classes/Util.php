@@ -249,6 +249,10 @@ class QM_Util {
 	public static function is_multi_network() {
 		global $wpdb;
 
+		if ( function_exists( 'is_multi_network' ) ) {
+			return is_multi_network();
+		}
+
 		if ( ! is_multisite() ) {
 			return false;
 		}
