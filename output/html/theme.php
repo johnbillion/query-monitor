@@ -35,14 +35,18 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<tbody>';
 
-		echo '<tr>';
-		echo '<td>' . __( 'Template File', 'query-monitor' ) . '</td>';
-		if ( $child_theme ) {
-			echo '<td>' . self::output_filename( $data['theme_template'], $data['template_path'] ) . '</td>';
-		} else {
-			echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>';
+		if ( ! empty( $data['template_path'] ) ) {
+
+			echo '<tr>';
+			echo '<td>' . __( 'Template File', 'query-monitor' ) . '</td>';
+			if ( $child_theme ) {
+				echo '<td>' . self::output_filename( $data['theme_template'], $data['template_path'] ) . '</td>';
+			} else {
+				echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>';
+			}
+			echo '</tr>';
+
 		}
-		echo '</tr>';
 
 		echo '<tr>';
 		if ( $child_theme ) {
