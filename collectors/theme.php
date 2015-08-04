@@ -24,7 +24,8 @@ class QM_Collector_Theme extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'body_class', array( $this, 'filter_body_class' ), 99 );
+		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 999 );
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), 999 );
 	}
 
 	public function filter_body_class( $class ) {
@@ -32,11 +33,14 @@ class QM_Collector_Theme extends QM_Collector {
 		return $class;
 	}
 
+	public function filter_template_include( $template_path ) {
+		$this->data['template_path'] = $template_path;
+		return $template_path;
+	}
+
 	public function process() {
 
-		global $template;
-
-		$template_path        = QM_Util::standard_dir( $template );
+		$template_path        = QM_Util::standard_dir( $this->data['template_path'] );
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
 		$template_directory   = QM_Util::standard_dir( get_template_directory() );
 		$theme_directory      = QM_Util::standard_dir( get_theme_root() );
