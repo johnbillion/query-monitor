@@ -121,13 +121,23 @@ class Test_Stack_Traces extends WP_UnitTestCase {
 
 		preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $ref->getFileName(), $matches );
 
-		$line = $matches['line'];
-		$name = sprintf( 'Anonymous function on line %1$d of %2$s', $line, $file );
+		// https://github.com/facebook/hhvm/issues/5807
+		if ( empty( $matches ) && defined( 'HHVM_VERSION' ) ) {
 
-		$this->assertEquals( $function, $actual['function'] );
-		$this->assertEquals( $name,     $actual['name'] );
-		$this->assertEquals( __FILE__,  $actual['file'] );
-		$this->assertEquals( $line,     $actual['line'] );
+			$this->assertWPError( $actual['error'] );
+			$this->assertSame( 'unknown_lambda', $actual['error']->get_error_code() );
+
+		} else {
+
+			$line = $matches['line'];
+			$name = sprintf( 'Anonymous function on line %1$d of %2$s', $line, $file );
+
+			$this->assertEquals( $function, $actual['function'] );
+			$this->assertEquals( $name,     $actual['name'] );
+			$this->assertEquals( __FILE__,  $actual['file'] );
+			$this->assertEquals( $line,     $actual['line'] );
+
+		}
 
 	}
 
