@@ -40,6 +40,19 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<td>version</td>';
 		echo "<td>{$data['php']['version']}</td>";
 		echo '</tr>';
+
+		echo '<tr>';
+		echo '<td>sapi</td>';
+		echo "<td>{$data['php']['sapi']}</td>";
+		echo '</tr>';
+
+		if ( isset( $data['php']['hhvm'] ) ) {
+			echo '<tr>';
+			echo '<td>hhvm</td>';
+			echo "<td>{$data['php']['hhvm']}</td>";
+			echo '</tr>';
+		}
+
 		echo '<tr>';
 		echo '<td>user</td>';
 		if ( !empty( $data['php']['user'] ) ) {
