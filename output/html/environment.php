@@ -106,30 +106,20 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '</thead>';
 				echo '<tbody>';
 
-				echo '<tr>';
-				echo '<td>driver</td>';
-				echo '<td>' . $db['driver'] . '</td>';
-				echo '</tr>';
+				foreach ( $db['info'] as $key => $value ) {
 
-				echo '<tr>';
-				echo '<td>version</td>';
-				echo '<td>' . $db['version'] . '</td>';
-				echo '</tr>';
+					echo '<tr>';
+					echo '<td>' . $key . '</td>';
 
-				echo '<tr>';
-				echo '<td>user</td>';
-				echo '<td>' . $db['user'] . '</td>';
-				echo '</tr>';
+					if ( ! isset( $value ) ) {
+						echo '<td><span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span></td>';
+					} else {
+						echo '<td>' . $value . '</td>';
+					}
 
-				echo '<tr>';
-				echo '<td>host</td>';
-				echo '<td>' . $db['host'] . '</td>';
-				echo '</tr>';
+					echo '</tr>';
 
-				echo '<tr>';
-				echo '<td>database</td>';
-				echo '<td>' . $db['name'] . '</td>';
-				echo '</tr>';
+				}
 
 				echo '<tr>';
 

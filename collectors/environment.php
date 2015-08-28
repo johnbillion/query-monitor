@@ -109,28 +109,50 @@ class QM_Collector_Environment extends QM_Collector {
 				" );
 
 				if ( is_resource( $db->dbh ) ) {
-					# Standard mysql extension
-					$driver = 'mysql';
+					# Old mysql extension
+					$extension = 'mysql';
 				} else if ( is_object( $db->dbh ) ) {
 					# mysqli or PDO
-					$driver = get_class( $db->dbh );
+					$extension = get_class( $db->dbh );
 				} else {
 					# Who knows?
-					$driver = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
+					$extension = null;
 				}
 
 				if ( method_exists( $db, 'db_version' ) ) {
-					$version = $db->db_version();
+					$server = $db->db_version();
 				} else {
-					$version = '<span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span>';
+					$server = null;
 				}
 
+				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
+					$client = mysqli_get_client_version( $db->dbh );
+				} else {
+					if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
+						$client = $matches[0];
+					} else {
+						$client = null;
+					}
+				}
+
+				if ( $client ) {
+					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
+					$client_version = sprintf( '%s (%s)', $client, $client_version );
+				} else {
+					$client_version = null;
+				}
+
+				$info = array(
+					'extension'      => $extension,
+					'server version' => $server,
+					'client version' => $client_version,
+					'user'           => $db->dbuser,
+					'host'           => $db->dbhost,
+					'database'       => $db->dbname,
+				);
+
 				$this->data['db'][$id] = array(
-					'version'   => $version,
-					'driver'    => $driver,
-					'user'      => $db->dbuser,
-					'host'      => $db->dbhost,
-					'name'      => $db->dbname,
+					'info'      => $info,
 					'vars'      => $mysql_vars,
 					'variables' => $variables
 				);

@@ -265,5 +265,19 @@ class QM_Util {
 		return ( $num_sites > 1 );
 	}
 
+	public static function get_client_version( $client ) {
+
+		$client = intval( $client );
+
+		$hello = $client % 10000;
+
+		$major = intval( floor( $client / 10000 ) );
+		$minor = intval( floor( $hello / 100 ) );
+		$patch = intval( $hello % 100 );
+
+		return compact( 'major', 'minor', 'patch' );
+
+	}
+
 }
 }
