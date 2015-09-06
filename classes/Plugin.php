@@ -17,6 +17,8 @@ GNU General Public License for more details.
 if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
+	private $plugin = array();
+
 	/**
 	 * Class constructor
 	 *
@@ -74,15 +76,21 @@ abstract class QM_Plugin {
 	 *
 	 * @author John Blackbourn
 	 **/
-	final protected function _plugin( $item, $file = '' ) {
-		if ( !isset( $this->plugin ) ) {
-			$this->plugin = array(
-				'url'  => plugin_dir_url( $this->file ),
-				'path' => plugin_dir_path( $this->file ),
-				'base' => plugin_basename( $this->file )
-			);
+	final private function _plugin( $item, $file = '' ) {
+		if ( ! array_key_exists( $item, $this->plugin ) ) {
+			switch ( $item ) {
+				case 'url':
+					$this->plugin[ $item ] = plugin_dir_url( $this->file );
+					break;
+				case 'path':
+					$this->plugin[ $item ] = plugin_dir_path( $this->file );
+					break;
+				case 'base':
+					$this->plugin[ $item ] = plugin_basename( $this->file );
+					break;
+			}
 		}
-		return $this->plugin[$item] . ltrim( $file, '/' );
+		return $this->plugin[ $item ] . ltrim( $file, '/' );
 	}
 
 }
