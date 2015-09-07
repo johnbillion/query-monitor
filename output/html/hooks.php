@@ -18,6 +18,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	public $id = 'hooks';
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();
