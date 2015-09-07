@@ -1,6 +1,6 @@
 <?php
 
-class Test_Dispatcher_HTML extends WP_UnitTestCase {
+class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 	/**
 	 * https://github.com/johnbillion/query-monitor/issues/137

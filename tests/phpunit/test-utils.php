@@ -1,6 +1,6 @@
 <?php
 
-class Test_Utils extends WP_UnitTestCase {
+class Test_Utils extends QM_UnitTestCase {
 
 	/**
 	 * @dataProvider clientVersionData

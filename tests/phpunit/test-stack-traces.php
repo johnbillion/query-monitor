@@ -1,6 +1,6 @@
 <?php
 
-class Test_Stack_Traces extends WP_UnitTestCase {
+class Test_Stack_Traces extends QM_UnitTestCase {
 
 	protected static function get_callback( $function ) {
 

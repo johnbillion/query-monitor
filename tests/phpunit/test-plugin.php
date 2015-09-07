@@ -1,6 +1,6 @@
 <?php
 
-class Test_Plugin extends WP_UnitTestCase {
+class Test_Plugin extends QM_UnitTestCase {
 	private $readme_data;
 
 	public function test_stable_tag() {
