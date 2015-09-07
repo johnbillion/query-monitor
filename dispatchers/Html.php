@@ -17,6 +17,7 @@ GNU General Public License for more details.
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public $id = 'html';
+	public $did_footer = false;
 
 	public function __construct( QM_Plugin $qm ) {
 
@@ -27,8 +28,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
 
+		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
+		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
+		add_action( 'login_footer',               array( $this, 'action_footer' ) );
+
 		parent::__construct( $qm );
 
+	}
+
+	public function action_footer() {
+		$this->did_footer = true;
 	}
 
 	/**
@@ -295,7 +304,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( ! ( did_action( 'wp_footer' ) or did_action( 'admin_footer' ) or did_action( 'login_footer' ) ) ) {
+		if ( ! $this->did_footer ) {
 			return false;
 		}
 
