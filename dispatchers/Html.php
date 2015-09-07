@@ -282,7 +282,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		foreach ( apply_filters( 'qm/output/menus', array() ) as $menu ) {
-			$admin_bar_menu['sub'][] = $menu;
+			$admin_bar_menu['sub'][ $menu['id'] ] = $menu;
 		}
 
 		return $admin_bar_menu;
