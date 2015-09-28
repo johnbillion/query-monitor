@@ -50,7 +50,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 			echo '<tr>';
 
-			echo '<td valign="top" class="qm-num">' . $mofile['domain'] . '</td>';
+			echo '<td valign="top">' . $mofile['domain'] . '</td>';
 
 			echo '<td valign="top" class="qm-nowrap">';
 			echo __( 'Translation File:', 'query-monitor' ) . ' ' . $mofile['mofile'] . '<br />';

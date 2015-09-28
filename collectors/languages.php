@@ -26,7 +26,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		parent::__construct();
 
-		add_filter(	'override_load_textdomain',	array ( $this, 'log_file_load' ), 99, 3	);
+		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 99, 3 );
 
 	}
 
@@ -34,13 +34,12 @@ class QM_Collector_Languages extends QM_Collector {
 	/**
 	 * Store log data.
 	 *
-	 * @wp-hook override_load_textdomain
-	 * @param   bool $false FALSE, passed through
-	 * @param   string $domain Text domain
-	 * @param   string $mofile Path to file.
-	 * @return  bool
+	 * @param bool   $override Whether to override the text domain. Default false.
+	 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
+	 * @param string $mofile   Path to the MO file.
+	 * @return bool
 	 */
-	public function log_file_load( $false, $domain, $mofile ) {
+	public function log_file_load( $override, $domain, $mofile ) {
 
 		// DEBUG_BACKTRACE_IGNORE_ARGS is available since 5.3.6
 		if ( version_compare(PHP_VERSION, '5.3.6') >= 0 )
@@ -55,7 +54,7 @@ class QM_Collector_Languages extends QM_Collector {
 			'found'  => file_exists( $mofile ) ? round( filesize( $mofile ) / 1024, 2 ): FALSE
 		);
 
-		return $false;
+		return $override;
 
 	}
 
