@@ -40,7 +40,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>' . __( 'Text Domain', 'query-monitor' ) . '</td>';
-		echo '<td>' . __( 'Files and Functions', 'query-monitor' ) . '</td>';
+		echo '<td>' . __( 'Caller', 'query-monitor' ) . '</td>';
+		echo '<td>' . __( 'MO File', 'query-monitor' ) . '</td>';
 		echo '<td>' . __( 'Loaded', 'query-monitor' ) . '</td>';
 		echo '</tr>';
 		echo '</thead>';
@@ -53,15 +54,16 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			echo '<td valign="top">' . $mofile['domain'] . '</td>';
 
 			echo '<td valign="top" class="qm-nowrap">';
-			echo __( 'Translation File:', 'query-monitor' ) . ' ' . $mofile['mofile'] . '<br />';
-			echo __( 'Function File:', 'query-monitor' ) . ' ' . $mofile['caller']['file'] . ' ';
-			echo __( '(line:', 'query-monitor' ) . ' ' . $mofile['caller']['line'] . ')';
+			echo $this->output_filename( QM_Util::standard_dir( $mofile['caller']['file'], '' ) . ':' . $mofile['caller']['line'], $mofile['caller']['file'], $mofile['caller']['line'] );
+			echo '</td>';
+			echo '<td valign="top" class="qm-nowrap">';
+			echo QM_Util::standard_dir( $mofile['mofile'], '' );
 			echo '</td>';
 
 			if ( isset($mofile['found']) && $mofile['found'] ) {
 				echo '<td valign="top" class="qm-nowrap">';
 				echo __( 'Found:', 'query-monitor' ) . '<br />';
-				echo $mofile['found'] . ' KiB';
+				echo size_format( $mofile['found'] );
 				echo '</td>';
 			} else {
 				echo '<td valign="top" class="qm-warn">';

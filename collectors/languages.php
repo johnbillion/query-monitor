@@ -51,7 +51,7 @@ class QM_Collector_Languages extends QM_Collector {
 			'caller' => $trace[ 4 ], // entry 4 is the calling file
 			'domain' => $domain,
 			'mofile' => $mofile,
-			'found'  => file_exists( $mofile ) ? round( filesize( $mofile ) / 1024, 2 ): FALSE
+			'found'  => file_exists( $mofile ) ? filesize( $mofile ): false,
 		);
 
 		return $override;
