@@ -29,9 +29,9 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
 }
 
-if ( defined( 'WP_CLI' ) and WP_CLI ) {
-	# For the time being, let's not load QM when using WP-CLI because we've no persistent storage and no means of
-	# outputting collected data on the CLI. This will change in a future version of QM.
+if ( 'cli' === php_sapi_name() && ! defined( 'QM_TESTS' ) ) {
+	# For the time being, let's not load QM when using the CLI because we've no persistent storage and no means of
+	# outputting collected data on the CLI. This will hopefully change in a future version of QM.
 	return;
 }
 

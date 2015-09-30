@@ -8,6 +8,7 @@ require_once $_tests_dir . '/includes/functions.php';
 require dirname( __FILE__ ) . '/dummy-objects.php';
 
 function _manually_load_plugin() {
+	define( 'QM_TESTS', true );
 	require dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/query-monitor.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
