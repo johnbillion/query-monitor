@@ -41,14 +41,12 @@ class QM_Collector_Languages extends QM_Collector {
 	 */
 	public function log_file_load( $override, $domain, $mofile ) {
 
-		// DEBUG_BACKTRACE_IGNORE_ARGS is available since 5.3.6
-		if ( version_compare(PHP_VERSION, '5.3.6') >= 0 )
-			$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
-		else
-			$trace = debug_backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_items' => 4,
+		) );
 
 		$this->data['languages'][] = array(
-			'caller' => $trace[ 4 ], // entry 4 is the calling file
+			'trace'  => $trace,
 			'domain' => $domain,
 			'mofile' => $mofile,
 			'found'  => file_exists( $mofile ) ? filesize( $mofile ): false,
