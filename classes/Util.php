@@ -78,6 +78,8 @@ class QM_Util {
 
 		# @TODO turn this into a class (eg QM_File_Component)
 
+		$file = self::standard_dir( $file );
+
 		if ( isset( self::$file_components[$file] ) ) {
 			return self::$file_components[$file];
 		}
