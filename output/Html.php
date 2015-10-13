@@ -141,13 +141,31 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
-	public static function output_filename( $text, $file, $line = 1 ) {
+	/**
+	 * Safely outputs a file path, name, and line number.
+	 *
+	 * If clickable file links are enabled, a link such as this is returned:
+	 *
+	 *     <a href="subl://open/?line={line}&url={file}">{text}</a>
+	 *
+	 * Otherwise, the display text and file details such as this is returned:
+	 *
+	 *     {text}<br>{file}:{line}
+	 * 
+	 * @param  string $text The display text, such as a function name or file name.
+	 * @param  string $file The full file path and name.
+	 * @param  int    $line Optional. A line number, if appropriate.
+	 * @return string The fully formatted file link or file name, safe for output.
+	 */
+	public static function output_filename( $text, $file, $line = 0 ) {
 
 		# Further reading:
 		# http://simonwheatley.co.uk/2012/07/clickable-stack-traces/
 		# https://github.com/grych/subl-handler
 
-		if ( !isset( self::$file_link_format ) ) {
+		$link_line = ( $line ) ? $line : 1;
+
+		if ( ! isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
 			$format = apply_filters( 'qm/output/file_link_format', $format );
 			if ( empty( $format ) ) {
@@ -158,11 +176,19 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		if ( false === self::$file_link_format ) {
-			return $text;
+			$fallback = QM_Util::standard_dir( $file, '' );
+			if ( $line ) {
+				$fallback .= ':' . $line;
+			}
+			$return = esc_html( $text );
+			if ( $fallback != $text ) {
+				$return .= '<br><span class="qm-info">' . esc_html( $fallback ) . '</span>';
+			}
+			return $return;
 		}
 
-		$link = sprintf( self::$file_link_format, urlencode( $file ), $line );
-		return sprintf( '<a href="%s">%s</a>', $link, $text );
+		$link = sprintf( self::$file_link_format, urlencode( $file ), intval( $link_line ) );
+		return sprintf( '<a href="%s">%s</a>', esc_attr( $link ), esc_html( $text ) );
 
 	}
 

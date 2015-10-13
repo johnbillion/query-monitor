@@ -68,12 +68,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$stack     = implode( '<br>', array_map( 'esc_html', $error->trace->get_stack() ) );
 					$message   = wp_strip_all_tags( $error->message );
 
-					$output = esc_html( $error->filename ) . ':' . $error->line;
-
 					echo '<td>' . esc_html( $message ) . '</td>';
 					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td>';
-					echo self::output_filename( $output, $error->file, $error->line );
+					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
 					echo '</td>';
 					echo '<td class="qm-nowrap qm-ltr">' . $stack . '</td>';
 					if ( $component ) {

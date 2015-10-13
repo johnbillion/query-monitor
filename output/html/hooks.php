@@ -112,7 +112,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					echo '<td class="qm-ltr">';
 
 					if ( isset( $action['callback']['file'] ) ) {
-						echo self::output_filename( esc_html( $action['callback']['name'] ), $action['callback']['file'], $action['callback']['line'] );
+						echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 					} else {
 						echo esc_html( $action['callback']['name'] );
 					}

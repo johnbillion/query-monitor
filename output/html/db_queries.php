@@ -288,10 +288,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		} else {
 
-			$caller_name = $row['caller'];
+			$caller_name = esc_html( $row['caller'] );
 			$stack       = explode( ', ', $row['stack'] );
 			$stack       = array_reverse( $stack );
 			array_shift( $stack );
+			$stack       = array_map( 'esc_html', $stack );
 
 		}
 
@@ -327,18 +328,20 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td class='qm-row-caller qm-ltr qm-has-toggle'>";
 
-			echo $caller_name;
+			echo $caller_name; // WPCS: XSS ok.
 
 			if ( !empty( $stack ) ) {
 				echo '<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>';
-				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>';
+				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>'; // WPCS: XSS ok.
 			}
 
 			echo "</td>";
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td valign="top" class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">' . $caller_name . '<br>' . implode( '<br>', $stack ) . '</td>';
+			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">';
+			echo $caller_name; // WPCS: XSS ok.
+			echo '<br>' . implode( '<br>', $stack ) . '</td>'; // WPCS: XSS ok.
 		}
 
 		if ( isset( $cols['component'] ) ) {
