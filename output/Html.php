@@ -140,18 +140,14 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	/**
+	 * Returns the given URL in a nicely presented format. Safe for output.
+	 *
+	 * @param  string $url A URL.
+	 * @return string      The URL formatted with markup.
+	 */
 	public static function format_url( $url ) {
-		$url = str_replace( array(
-			'=',
-			'&amp;',
-			'?',
-		), array(
-			'<span class="qm-equals">=</span>',
-			'<br><span class="qm-param">&amp;</span>',
-			'<br><span class="qm-param">?</span>',
-		), esc_html( $url ) );
-		return $url;
-
+		return str_replace( '&amp;', '<br>&amp;', esc_html( $url ) );
 	}
 
 	/**

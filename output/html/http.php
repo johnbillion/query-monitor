@@ -74,14 +74,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$row_attr = array();
 
-				if ( empty( $ltime ) ) {
-					$stime = '';
-				} else {
-					$stime = number_format_i18n( $ltime, 4 );
-				}
-
 				if ( is_wp_error( $row['response'] ) ) {
-					$response = esc_html( $row['response']->get_error_message() );
+					$response = $row['response']->get_error_message();
 					$css      = 'qm-warn';
 				} else {
 					$response = wp_remote_retrieve_response_code( $row['response'] );
@@ -91,7 +85,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					if ( empty( $response ) ) {
 						$response = __( 'n/a', 'query-monitor' );
 					} else {
-						$response = esc_html( $response . ' ' . $msg );
+						$response = $response . ' ' . $msg;
 					}
 
 					if ( intval( $response ) >= 400 ) {
@@ -123,19 +117,52 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 				}
 
-				$stack = implode( '<br>', $stack );
-				echo "
-					<tr{$attr} class='{$css}'>\n
-						<td valign='top' class='qm-num'>{$i}</td>
-						<td valign='top' class='qm-url qm-ltr qm-wrap'>{$method}<br>{$url}</td>\n
-						<td valign='top'>{$response}</td>\n
-						<td valign='top'>{$transport}</td>\n
-						<td valign='top' class='qm-nowrap qm-ltr'>{$stack}</td>\n
-						<td valign='top' class='qm-nowrap'>{$component->name}</td>\n
-						<td valign='top' class='qm-num'>{$row['args']['timeout']}</td>\n
-						<td valign='top' class='qm-num'>{$stime}</td>\n
-					</tr>\n
-				";
+				printf(
+					'<tr %s class="%s">',
+					$attr,
+					esc_attr( $css )
+				); // WPCS:: XSS ok.
+				printf(
+					'<td class="qm-num">%s</td>',
+					intval( $i )
+				);
+				printf(
+					'<td class="qm-url qm-ltr qm-wrap">%s<br>%s</td>',
+					esc_html( $method ),
+					$url
+				); // WPCS:: XSS ok.
+				printf(
+					'<td>%s</td>',
+					esc_html( $response )
+				);
+				printf(
+					'<td>%s</td>',
+					esc_html( $transport )
+				);
+				printf(
+					'<td class="qm-nowrap qm-ltr">%s</td>',
+					implode( '<br>', array_map( 'esc_html', $stack ) )
+				);
+				printf(
+					'<td class="qm-nowrap">%s</td>',
+					esc_html( $component->name )
+				);
+				printf(
+					'<td class="qm-num">%s</td>',
+					esc_html( $row['args']['timeout'] )
+				);
+
+				if ( empty( $ltime ) ) {
+					$stime = '';
+				} else {
+					$stime = number_format_i18n( $ltime, 4 );
+				}
+
+				printf(
+					'<td class="qm-num">%s</td>',
+					esc_html( $stime )
+				);
+				echo '</tr>';
 			}
 
 			echo '</tbody>';

@@ -51,8 +51,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<td valign="top">' . $name . '</td>';
-			echo '<td valign="top" colspan="2">' . $value . '</td>';
+			echo '<td>' . esc_html( $name ) . '</td>';
+			echo '<td colspan="2">' . $value . '</td>'; // WPCS: XSS ok.
 			echo '</tr>';
 		}
 
