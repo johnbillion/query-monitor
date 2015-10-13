@@ -64,15 +64,22 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		foreach ( $data['php']['variables'] as $key => $val ) {
 
-			$append = '';
+			echo '<tr>';
+			echo '<td>' . esc_html( $key ) . '</td>';
+			echo '<td>';
+			echo esc_html( $val['after'] );
 
 			if ( $val['after'] != $val['before'] ) {
-				$append .= '<br><span class="qm-info">' . esc_html( sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) ) . '</span>';
+				printf(
+					'<br><span class="qm-info">%s</span>',
+					esc_html( sprintf(
+						__( 'Overridden at runtime from %s', 'query-monitor' ),
+						$val['before']
+					) )
+				);
 			}
 
-			echo '<tr>';
-			echo "<td>{$key}</td>";
-			echo "<td>{$val['after']}{$append}</td>";
+			echo '</td>';
 			echo '</tr>';
 		}
 
@@ -80,7 +87,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
-		echo "<td>{$data['php']['error_reporting']}<br><span class='qm-info'>{$error_levels}</span></td>";
+		echo '<td>' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">';
+		echo $error_levels; // WPCS: XSS ok.
+		echo '</span></td>';
 		echo '</tr>';
 
 		echo '</tbody>';
@@ -140,11 +149,18 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					if ( $show_warning ) {
-						$prepend .= '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank">' . esc_html__( 'Help', 'query-monitor' ) . '</a>)</span>';
+						$prepend .= sprintf(
+							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+							esc_url( sprintf( $search, $key ) ),
+							esc_html__( 'Help', 'query-monitor' )
+						);
 					}
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
-						$prepend .= '<br><span class="qm-info">~' . size_format( $val ) . '</span>';
+						$prepend .= sprintf(
+							'<br><span class="qm-info">~%s</span>',
+							esc_html( size_format( $val ) )
+						);
 					}
 
 					$class = ( $show_warning ) ? 'qm-warn' : '';
@@ -153,11 +169,11 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 						echo '<tr class="' . esc_attr( $class ) . '"">';
 					}
 
-					$key = esc_html( $key );
-					$val = esc_html( $val );
-
-					echo "<td>{$key}</td>";
-					echo "<td>{$val}{$prepend}</td>";
+					echo '<td>' . esc_html( $key ) . '</td>';
+					echo '<td>';
+					echo esc_html( $val );
+					echo $prepend; // WPCS: XSS ok.
+					echo '</td>';
 
 					echo '</tr>';
 

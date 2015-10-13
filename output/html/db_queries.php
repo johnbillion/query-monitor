@@ -282,7 +282,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			unset( $cols['stack'] );
 		}
 
-		$row_attr = array();
 		$stime = number_format_i18n( $row['ltime'], 4 );
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
@@ -290,14 +289,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( 'SELECT' != $row['type'] ) {
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
-		}
-
-		if ( is_wp_error( $row['result'] ) ) {
-			$error  = $row['result']->get_error_message();
-			$result = "<td class='qm-row-result qm-row-error'>" . esc_html( $error ) . "</td>\n";
-			$row_attr['class'] = 'qm-warn';
-		} else {
-			$result = "<td class='qm-row-result qm-num'>" . esc_html( $row['result'] ) . "</td>\n";
 		}
 
 		if ( isset( $row['trace'] ) ) {
@@ -322,6 +313,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		}
 
+		$row_attr = array();
+
+		if ( is_wp_error( $row['result'] ) ) {
+			$row_attr['class'] = 'qm-warn';
+		}
 		if ( isset( $cols['sql'] ) ) {
 			$row_attr['data-qm-type'] = $row['type'];
 		}
@@ -341,14 +337,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 		}
 
-		echo "<tr{$attr}>";
+		echo "<tr{$attr}>"; // WPCS: XSS ok.
 
 		if ( isset( $cols['row'] ) ) {
 			echo '<td class="qm-row-num qm-num">' . absint( ++$this->query_row ) . '</td>';
 		}
 
 		if ( isset( $cols['sql'] ) ) {
-			echo "<td valign='top' class='qm-row-sql qm-ltr qm-wrap'>{$sql}</td>";
+			printf( '<td class="qm-row-sql qm-ltr qm-wrap">%s</td>',
+				$sql
+			); // WPCS: XSS ok.
 		}
 
 		if ( isset( $cols['caller'] ) ) {
@@ -375,7 +373,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['result'] ) ) {
-			echo $result;
+			if ( is_wp_error( $row['result'] ) ) {
+				echo "<td class='qm-row-result qm-row-error'>" . esc_html( $row['result']->get_error_message() ) . "</td>\n";
+			} else {
+				echo "<td class='qm-row-result qm-num'>" . esc_html( $row['result'] ) . "</td>\n";
+			}
+
 		}
 
 		if ( isset( $cols['time'] ) ) {

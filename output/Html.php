@@ -119,6 +119,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	/**
+	 * Returns the given SQL string in a nicely presented format. Safe for output.
+	 *
+	 * @param  string $sql An SQL query string.
+	 * @return string      The SQL formatted with markup.
+	 */
 	public static function format_sql( $sql ) {
 
 		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );

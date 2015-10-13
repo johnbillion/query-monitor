@@ -65,7 +65,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					$component = $error->trace->get_component();
-					$stack     = implode( '<br>', array_map( 'esc_html', $error->trace->get_stack() ) );
 					$message   = wp_strip_all_tags( $error->message );
 
 					echo '<td>' . esc_html( $message ) . '</td>';
@@ -73,7 +72,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td>';
 					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
 					echo '</td>';
-					echo '<td class="qm-nowrap qm-ltr">' . $stack . '</td>';
+					printf(
+						'<td class="qm-nowrap qm-ltr">%s</td>',
+						implode( '<br>', array_map( 'esc_html', $error->trace->get_stack() ) )
+					);
+
 					if ( $component ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
 					} else {

@@ -58,9 +58,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		if ( !empty( $data['vars'] ) ) {
 			$vars = array();
 			foreach ( $data['vars'] as $key => $value ) {
-				$vars[] = $key . ': ' . esc_html( $value );
+				$vars[] = $key . ': ' . $value;
 			}
-			$vars = implode( '<br>', $vars );
 		}
 
 		if ( !empty( $data['http'] ) ) {
@@ -171,7 +170,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$total_stime = number_format_i18n( $data['ltime'], 4 );
 
 			echo '<tr>';
-			echo '<td colspan="7">' . $vars . '</td>';
+			printf(
+				'<td colspan="7">%s</td>',
+				implode( '<br>', array_map( 'esc_html', $vars ) )
+			);
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
@@ -184,7 +186,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</tr>';
 			if ( !empty( $vars ) ) {
 				echo '<tr>';
-				echo '<td colspan="8">' . $vars . '</td>';
+				printf(
+					'<td colspan="8">%s</td>',
+					implode( '<br>', array_map( 'esc_html', $vars ) )
+				);
 				echo '</tr>';
 			}
 			echo '</tbody>';

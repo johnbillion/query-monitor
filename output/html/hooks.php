@@ -31,8 +31,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			return;
 		}
 
-		$row_attr = array();
-
 		if ( is_multisite() and is_network_admin() ) {
 			$screen = preg_replace( '|-network$|', '', $data['screen'] );
 		} else {
@@ -60,13 +58,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			if ( !empty( $screen ) ) {
 
 				if ( false !== strpos( $hook['name'], $screen . '.php' ) ) {
-					$hook['name'] = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', $hook['name'] );
+					$hook_name = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', esc_html( $hook['name'] ) );
 				} else {
-					$hook['name'] = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', $hook['name'] );
+					$hook_name = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', esc_html( $hook['name'] ) );
 				}
 
+			} else {
+				$hook_name = esc_html( $hook['name'] );
 			}
 
+			$row_attr = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
@@ -94,14 +95,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$component = '';
 					}
 
-					$trattr = $attr . ' data-qm-subject="' . esc_attr( $component ) . '"';
-
-					echo "<tr{$trattr}>";
+					printf(
+						'<tr data-qm-subject="%s" %s>',
+						esc_attr( $component ),
+						$attr
+					); // WPCS: XSS ok.
 
 					if ( $first ) {
 
 						echo "<th rowspan='" . absint( $rowspan ) . "'>";
-						echo $hook['name'];
+						echo $hook_name; // WPCS: XSS ok.
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
 							printf(
@@ -141,9 +144,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				}
 
 			} else {
-				echo "<tr{$attr}>";
-				echo "<th valign='top'>";
-				echo $hook['name'];
+				echo "<tr{$attr}>"; // WPCS: XSS ok.
+				echo "<th>";
+				echo $hook_name; // WPCS: XSS ok.
 				echo '</th>';
 				echo '<td colspan="3">&nbsp;</td>';
 				echo '</tr>';

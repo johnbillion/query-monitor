@@ -181,12 +181,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$out = $this->get_output( 'html' );
 
-		echo $out['before'];
+		echo $out['before']; // WPCS: XSS ok.
 
 		foreach ( $out['output'] as $id => $output ) {
-			echo $output;
+			echo $output; // WPCS: XSS ok.
 		}
-		echo $out['after'];
+
+		echo $out['after']; // WPCS: XSS ok.
 
 	}
 
@@ -213,7 +214,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = 'qm-show';
 		}
 
-		echo '<div id="qm" class="' . implode( ' ', $class ) . '">';
+		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-wrapper">';
 		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
 
