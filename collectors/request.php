@@ -107,6 +107,7 @@ class QM_Collector_Request extends QM_Collector {
 				);
 				break;
 
+			case is_a( $qo, 'WP_Term' ):
 			case property_exists( $qo, 'term_id' ):
 				// Term archive
 				$this->data['queried_object']['title'] = sprintf( __( 'Term archive: %s', 'query-monitor' ),
