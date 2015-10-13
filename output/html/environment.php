@@ -92,9 +92,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			foreach ( $data['db'] as $id => $db ) {
 
 				if ( 1 == count( $data['db'] ) ) {
-					$name = 'Database';
+					$name = __( 'Database', 'query-monitor' );
 				} else {
-					$name = 'Database: ' . $id;
+					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
 				}
 
 				echo '<div class="qm qm-half">';
