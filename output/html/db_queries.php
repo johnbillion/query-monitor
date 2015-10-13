@@ -162,9 +162,18 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			if ( ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
-				echo '<td colspan="' . $span . '" class="qm-warn">' . sprintf( __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its <code>db.php</code> file into place. <a href="%s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
+				echo '<td colspan="' . absint( $span ) . '" class="qm-warn">';
+				echo wp_kses( sprintf(
+					__( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
+					'<code>db.php</code>',
 					'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
-				) . '</td>';
+				), array(
+					'a' => array(
+						'href'   => array(),
+						'target' => array(),
+					),
+				) );
+				echo '</td>';
 				echo '</tr>';
 			}
 
