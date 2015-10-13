@@ -74,6 +74,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'environment'   => true,
 			'hooks'         => true,
 			'http'          => true,
+			'languages'     => true,
 			'overview'      => false,
 			'php_errors'    => false,
 			'redirects'     => false,
