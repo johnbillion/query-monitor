@@ -135,7 +135,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td colspan="7">' . $vars . '</td>';
-			echo "<td class='qm-num'>{$total_stime}</td>";
+			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -143,7 +143,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="8" style="text-align:center !important"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="8" style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			if ( !empty( $vars ) ) {
 				echo '<tr>';
@@ -184,7 +184,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			: __( 'HTTP Requests (%s)', 'query-monitor' );
 
 		$args = array(
-			'title' => sprintf( $title, number_format_i18n( $count ) ),
+			'title' => esc_html( sprintf(
+				$title,
+				number_format_i18n( $count )
+			) ),
 		);
 
 		if ( isset( $data['errors']['error'] ) ) {

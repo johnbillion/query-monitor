@@ -35,14 +35,14 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . __( 'Languages', 'query-monitor' ) . '</th>';
-		echo '<th colspan="3">' . __( 'Language Setting:', 'query-monitor' ) . ' ' . get_locale() . '</th>';
+		echo '<th>' . esc_html__( 'Languages', 'query-monitor' ) . '</th>';
+		echo '<th colspan="3">' . esc_html__( 'Language Setting:', 'query-monitor' ) . ' ' . esc_html( get_locale() ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
-		echo '<td>' . __( 'Text Domain', 'query-monitor' ) . '</td>';
-		echo '<td>' . __( 'Caller', 'query-monitor' ) . '</td>';
-		echo '<td>' . __( 'MO File', 'query-monitor' ) . '</td>';
-		echo '<td>' . __( 'Loaded', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html__( 'Caller', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html__( 'MO File', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html__( 'Loaded', 'query-monitor' ) . '</td>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -51,23 +51,22 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 			echo '<tr>';
 
-			echo '<td valign="top">' . $mofile['domain'] . '</td>';
-
-			echo '<td valign="top" class="qm-nowrap">';
+			echo '<td>' . esc_html( $mofile['domain'] ) . '</td>';
+			echo '<td>';
 			echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 			echo '</td>';
-			echo '<td valign="top" class="qm-nowrap">';
-			echo QM_Util::standard_dir( $mofile['mofile'], '' );
+			echo '<td>';
+			echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
 			echo '</td>';
 
-			if ( isset($mofile['found']) && $mofile['found'] ) {
-				echo '<td valign="top" class="qm-nowrap">';
-				echo __( 'Found:', 'query-monitor' ) . '<br />';
-				echo size_format( $mofile['found'] );
+			if ( $mofile['found'] ) {
+				echo '<td class="qm-nowrap">';
+				echo esc_html__( 'Found', 'query-monitor' ) . '<br />';
+				echo esc_html( size_format( $mofile['found'] ) );
 				echo '</td>';
 			} else {
-				echo '<td valign="top" class="qm-warn">';
-				echo __( 'Not Found', 'query-monitor' );
+				echo '<td class="qm-warn">';
+				echo esc_html__( 'Not Found', 'query-monitor' );
 				echo '</td>';
 			}
 
@@ -85,7 +84,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$args = array(
-			'title' => $this->collector->name(),
+			'title' => esc_html( $this->collector->name() ),
 		);
 
 		$menu[] = $this->menu( $args );

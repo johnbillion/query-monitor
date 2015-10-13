@@ -47,7 +47,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					$value = esc_html( $data['request'][$item] );
 				}
 			} else {
-				$value = '<em>' . __( 'none', 'query-monitor' ) . '</em>';
+				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
 			}
 
 			echo '<tr>';
@@ -59,7 +59,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
 		echo '<tr>';
-		echo '<td rowspan="' . $rowspan . '">' . __( 'Query Vars', 'query-monitor' ) . '</td>';
+		echo '<td rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Query Vars', 'query-monitor' ) . '</td>';
 
 		if ( !empty( $data['qvars'] ) ) {
 
@@ -72,18 +72,17 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				}
 
 				if ( isset( $data['plugin_qvars'][$var] ) ) {
-					echo "<td valign='top'><span class='qm-current'>{$var}</span></td>";
+					echo "<td><span class='qm-current'>" . esc_html( $var ) . "</span></td>";
 				} else {
-					echo "<td valign='top'>{$var}</td>";
+					echo "<td>" . esc_html( $var ) . "</td>";
 				}
 
 				if ( is_array( $value ) or is_object( $value ) ) {
-					echo '<td valign="top"><pre>';
-					print_r( $value );
+					echo '<td><pre>';
+					echo esc_html( print_r( $value, true ) );
 					echo '</pre></td>';
 				} else {
-					$value = esc_html( $value );
-					echo "<td valign='top'>{$value}</td>";
+					echo "<td>" . esc_html( $value ) . "</td>";
 				}
 
 				echo '</tr>';
@@ -94,7 +93,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		} else {
 
-			echo '<td colspan="2"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="2"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 
 		}
@@ -102,9 +101,17 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		if ( ! empty( $data['queried_object'] ) ) {
 
 			echo '<tr>';
-			echo '<td valign="top">' . __( 'Queried Object', 'query-monitor' ) . '</td>';
-			echo '<td valign="top" colspan="2" class="qm-has-inner">';
-			echo '<div class="qm-inner-toggle">' . esc_html( $data['queried_object']['title'] ) . ' (' . get_class( $data['queried_object']['data'] ) . ') (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Show', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Hide', 'query-monitor' ) . '">' . __( 'Show', 'query-monitor' ) . '</a>)</div>';
+			echo '<td>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</td>';
+			echo '<td colspan="2" class="qm-has-inner">';
+
+			printf(
+				'<div class="qm-inner-toggle">%1$s (%2$s) (<a href="#" class="qm-toggle" data-on="%3$s" data-off="%4$s">%5$s</a>)</div>',
+				esc_html( $data['queried_object']['title'] ),
+				esc_html( get_class( $data['queried_object']['data'] ) ),
+				esc_attr__( 'Show', 'query-monitor' ),
+				esc_attr__( 'Hide', 'query-monitor' ),
+				esc_html__( 'Show', 'query-monitor' )
+			);
 
 			echo '<div class="qm-toggled">';
 			self::output_inner( $data['queried_object']['data'] );
@@ -120,7 +127,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			$rowspan = count( $data['multisite'] );
 
 			echo '<tr>';
-			echo '<td rowspan="' . $rowspan . '">' . __( 'Multisite', 'query-monitor' ) . '</td>';
+			echo '<td rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</td>';
 
 			$first = true;
 
@@ -130,8 +137,15 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<tr>';
 				}
 
-				echo '<td valign="top" colspan="2" class="qm-has-inner">';
-				echo '<div class="qm-inner-toggle">' . esc_html( $value['title'] ) . ' (<a href="#" class="qm-toggle" data-on="' . esc_attr__( 'Expand', 'query-monitor' ) . '" data-off="' . esc_attr__( 'Collapse', 'query-monitor' ) . '">' . __( 'Expand', 'query-monitor' ) . '</a>)</div>';
+				echo '<td colspan="2" class="qm-has-inner">';
+
+				printf(
+					'<div class="qm-inner-toggle">%1$s (<a href="#" class="qm-toggle" data-on="%2$s" data-off="%3$s">%4$s</a>)</div>',
+					esc_html( $value['title'] ),
+					esc_attr__( 'Expand', 'query-monitor' ),
+					esc_attr__( 'Collapse', 'query-monitor' ),
+					esc_html__( 'Expand', 'query-monitor' )
+				);
 
 				echo '<div class="qm-toggled">';
 				self::output_inner( $value['data'] );
@@ -160,7 +174,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			: __( 'Request (+%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
-			'title' => sprintf( $title, number_format_i18n( $count ) )
+			'title' => esc_html( sprintf(
+				$title,
+				number_format_i18n( $count )
+			) ),
 		) );
 		return $menu;
 

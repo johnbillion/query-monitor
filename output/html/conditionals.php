@@ -33,7 +33,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . $cols . '">' . esc_html( $this->collector->name() ) . '</th>';
+		echo '<th colspan="' . absint( $cols ) . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -43,7 +43,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			if ( 1 === $i%$cols ) {
 				echo '<tr>';
 			}
-			echo '<td class="qm-ltr qm-true" width="' . $w . '%">' . $cond . '()</td>';
+			echo '<td class="qm-ltr qm-true" width="' . absint( $w ) . '%">' . esc_html( $cond ) . '()</td>';
 			if ( 0 === $i%$cols ) {
 				echo '</tr>';
 			}
@@ -54,7 +54,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			if ( 1 === $i%$cols ) {
 				echo '<tr>';
 			}
-			echo '<td class="qm-ltr qm-false" width="' . $w . '%">' . $cond . '()</td>';
+			echo '<td class="qm-ltr qm-false" width="' . absint( $w ) . '%">' . esc_html( $cond ) . '()</td>';
 			if ( 0 === $i%$cols ) {
 				echo '</tr>';
 			}
@@ -62,7 +62,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		$fill = ( $cols - ( $i % $cols ) );
 		if ( $fill and ( $fill != $cols ) ) {
-			echo '<td colspan="' . $fill . '">&nbsp;</td>';
+			echo '<td colspan="' . absint( $fill ) . '">&nbsp;</td>';
 			echo '</tr>';
 		}
 
@@ -78,8 +78,8 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		foreach ( $data['conds']['true'] as $cond ) {
 			$menu[] = $this->menu( array(
-				'title' => $cond . '()',
-				'id'    => 'query-monitor-' . $cond,
+				'title' => esc_html( $cond . '()' ),
+				'id'    => 'query-monitor-conditionals-' . esc_attr( $cond ),
 				'meta'  => array( 'classname' => 'qm-true qm-ltr' )
 			) );
 		}

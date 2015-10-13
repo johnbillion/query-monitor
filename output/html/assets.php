@@ -47,10 +47,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<th colspan="2">' . $type_label . '</th>';
-			echo '<th>' . __( 'Dependencies', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Dependents', 'query-monitor' ) . '</th>';
-			echo '<th>' . __( 'Version', 'query-monitor' ) . '</th>';
+			echo '<th colspan="2">' . esc_html( $type_label ) . '</th>';
+			echo '<th>' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
+			echo '<th>' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
+			echo '<th>' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
@@ -83,8 +83,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		if ( empty( $handles ) ) {
 			echo '<tr>';
-			echo '<td valign="top" class="qm-nowrap">' . $label . '</td>';	
-			echo '<td valign="top" colspan="5"><em>' . __( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
+			echo '<td colspan="5"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			return;
 		}
@@ -92,14 +92,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $handles as $handle ) {
 
 			if ( in_array( $handle, $dependencies->done ) ) {
-				echo '<tr data-qm-subject="' . $handle . '">';
+				echo '<tr data-qm-subject="' . esc_attr( $handle ) . '">';
 			} else {
-				echo '<tr data-qm-subject="' . $handle . '" class="qm-warn">';
+				echo '<tr data-qm-subject="' . esc_attr( $handle ) . '" class="qm-warn">';
 			}
 
 			if ( $first ) {
 				$rowspan = count( $handles );
-				echo "<th valign='top' rowspan='{$rowspan}' class='qm-nowrap'>" . $label . "</th>";	
+				echo '<th rowspan="' . esc_attr( $rowspan ) . '" class="qm-nowrap">' . esc_html( $label ) . '</th>';
 			}
 
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies );
@@ -113,13 +113,13 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	protected function dependency_row( _WP_Dependency $script, WP_Dependencies $dependencies ) {
 
 		if ( empty( $script->ver ) ) {
-			$ver = '&nbsp;';
+			$ver = '';
 		} else {
-			$ver = esc_html( $script->ver );
+			$ver = $script->ver;
 		}
 
 		if ( empty( $script->src ) ) {
-			$src = '&nbsp;';
+			$src = '';
 		} else {
 			$src = $script->src;
 		}
@@ -134,10 +134,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 		}
 
-		echo '<td valign="top" class="qm-wrap">' . $script->handle . '<br><span class="qm-info">' . $src . '</span></td>';
-		echo '<td valign="top" class="qm-nowrap qm-highlighter" data-qm-highlight="' . implode( ' ', $deps ) . '">' . implode( '<br>', $deps ) . '</td>';
-		echo '<td valign="top" class="qm-nowrap qm-highlighter" data-qm-highlight="' . implode( ' ', $dependents ) . '">' . implode( '<br>', $dependents ) . '</td>';
-		echo '<td valign="top">' . $ver . '</td>';
+		echo '<td class="qm-wrap">' . esc_html( $script->handle ) . '<br><span class="qm-info">' . esc_html( $src ) . '</span></td>';
+		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $deps ) ) . '">' . implode( '<br>', array_map( 'esc_html', $deps ) ) . '</td>';
+		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $dependents ) ) . '">' . implode( '<br>', array_map( 'esc_html', $dependents ) ) . '</td>';
+		echo '<td>' . esc_html( $ver ) . '</td>';
 
 	}
 
@@ -177,7 +177,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$args = array(
-			'title' => $this->collector->name()
+			'title' => esc_html( $this->collector->name() ),
 		);
 
 		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {

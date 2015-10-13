@@ -34,11 +34,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'PHP Error', 'query-monitor' ) . '</th>';
-		echo '<th class="qm-num">' . __( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th>' . __( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -55,7 +55,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			if ( isset( $data['errors'][$type] ) ) {
 
 				echo '<tr>';
-				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . $title . '</td>';
+				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . esc_html( $title ) . '</td>';
 				$first = true;
 
 				foreach ( $data['errors'][$type] as $error ) {
@@ -64,25 +64,24 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						echo '<tr>';
 					}
 
-					$stack     = $error->trace->get_stack();
 					$component = $error->trace->get_component();
-					if ( $component ) {
-						$name = $component->name;
-					} else {
-						$name = '<em>' . __( 'Unknown', 'query-monitor' ) . '</em>';
-					}
-					$stack     = implode( '<br>', $stack );
-					$message   = str_replace( "href='function.", "target='_blank' href='http://php.net/function.", $error->message );
+					$stack     = implode( '<br>', array_map( 'esc_html', $error->trace->get_stack() ) );
+					$message   = wp_strip_all_tags( $error->message );
 
 					$output = esc_html( $error->filename ) . ':' . $error->line;
 
-					echo '<td>' . $message . '</td>';
-					echo '<td>' . number_format_i18n( $error->calls ) . '</td>';
+					echo '<td>' . esc_html( $message ) . '</td>';
+					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td>';
 					echo self::output_filename( $output, $error->file, $error->line );
 					echo '</td>';
 					echo '<td class="qm-nowrap qm-ltr">' . $stack . '</td>';
-					echo '<td class="qm-nowrap">' . $name . '</td>';
+					if ( $component ) {
+						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
+					} else {
+						echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+					}
+
 					echo '</tr>';
 
 					$first = false;
@@ -124,25 +123,37 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		if ( isset( $data['errors']['warning'] ) ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-warnings',
-				'title' => sprintf( __( 'PHP Warnings (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['warning'] ) ) )
+				'title' => esc_html( sprintf(
+					__( 'PHP Warnings (%s)', 'query-monitor' ),
+					number_format_i18n( count( $data['errors']['warning'] ) )
+				) )
 			) );
 		}
 		if ( isset( $data['errors']['notice'] ) ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-notices',
-				'title' => sprintf( __( 'PHP Notices (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['notice'] ) ) )
+				'title' => esc_html( sprintf(
+					__( 'PHP Notices (%s)', 'query-monitor' ),
+					number_format_i18n( count( $data['errors']['notice'] ) )
+				) )
 			) );
 		}
 		if ( isset( $data['errors']['strict'] ) ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-stricts',
-				'title' => sprintf( __( 'PHP Stricts (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['strict'] ) ) )
+				'title' => esc_html( sprintf(
+					__( 'PHP Stricts (%s)', 'query-monitor' ),
+					number_format_i18n( count( $data['errors']['strict'] ) )
+				) )
 			) );
 		}
 		if ( isset( $data['errors']['deprecated'] ) ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-deprecated',
-				'title' => sprintf( __( 'PHP Deprecated (%s)', 'query-monitor' ), number_format_i18n( count( $data['errors']['deprecated'] ) ) )
+				'title' => esc_html( sprintf(
+					__( 'PHP Deprecated (%s)', 'query-monitor' ),
+					number_format_i18n( count( $data['errors']['deprecated'] ) )
+				) )
 			) );
 		}
 		return $menu;

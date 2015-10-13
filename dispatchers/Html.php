@@ -94,7 +94,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query-monitor',
-			'title' => $title,
+			'title' => esc_html( $title ),
 			'href'  => '#qm-overview',
 			'meta'  => array(
 				'classname' => $class
@@ -104,8 +104,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'query-monitor',
 			'id'     => 'query-monitor-placeholder',
-			'title'  => $title,
-			'href'   => '#qm-overview'
+			'title'  => esc_html( $title ),
+			'href'   => '#qm-overview',
 		) );
 
 	}
@@ -215,7 +215,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div id="qm" class="' . implode( ' ', $class ) . '">';
 		echo '<div id="qm-wrapper">';
-		echo '<p>' . __( 'Query Monitor', 'query-monitor' ) . '</p>';
+		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
 
 	}
 
@@ -233,19 +233,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		if ( ! self::user_verified() ) {
 
 			echo '<tr>';
-			echo '<td>' . __( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
 			echo '</tr>';
 			echo '<tr>';
-			echo '<td><a href="#" class="qm-auth" data-action="on">' . __( 'Set authentication cookie', 'query-monitor' ) . '</a></td>';
+			echo '<td><a href="#" class="qm-auth" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</a></td>';
 			echo '</tr>';
 
 		} else {
 
 			echo '<tr>';
-			echo '<td>' . __( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</td>';
 			echo '</tr>';
 			echo '<tr>';
-			echo '<td><a href="#" class="qm-auth" data-action="off">' . __( 'Clear authentication cookie', 'query-monitor' ) . '</a></td>';
+			echo '<td><a href="#" class="qm-auth" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</a></td>';
 			echo '</tr>';
 
 		}
@@ -279,7 +279,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
 		if ( empty( $title ) ) {
-			$title = __( 'Query Monitor', 'query-monitor' );
+			$title = esc_html__( 'Query Monitor', 'query-monitor' );
 		}
 
 		$admin_bar_menu = array(

@@ -94,19 +94,22 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo "<th valign='top' rowspan='{$rowspan}'>";
+						echo "<th rowspan='" . absint( $rowspan ) . "'>";
 						echo $hook['name'];
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
-							_e( 'Warning: The <code>all</code> action is extremely resource intensive. Try to avoid using it.', 'query-monitor' );
+							printf(
+								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
+								'<code>all</code>'
+							);
 							echo '<span>';
 						}
 						echo '</th>';
 
 					}
 
-					echo '<td valign="top" class="qm-num">' . $action['priority'] . '</td>';
-					echo '<td valign="top" class="qm-ltr">';
+					echo '<td class="qm-num">' . intval( $action['priority'] ) . '</td>';
+					echo '<td class="qm-ltr">';
 
 					if ( isset( $action['callback']['file'] ) ) {
 						echo self::output_filename( esc_html( $action['callback']['name'] ), $action['callback']['file'], $action['callback']['line'] );
@@ -116,9 +119,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( isset( $action['callback']['error'] ) ) {
 						echo '<br><span class="qm-warn">';
-						printf( __( 'Error: %s', 'query-monitor' ),
-							esc_html( $action['callback']['error']->get_error_message() )
-						);
+						echo esc_html( sprintf(
+							__( 'Error: %s', 'query-monitor' ),
+							$action['callback']['error']->get_error_message()
+						) );
 						echo '<span>';
 					}
 

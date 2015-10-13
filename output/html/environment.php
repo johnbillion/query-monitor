@@ -38,18 +38,18 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>version</td>';
-		echo "<td>{$data['php']['version']}</td>";
+		echo '<td>' . esc_html( $data['php']['version'] ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<td>sapi</td>';
-		echo "<td>{$data['php']['sapi']}</td>";
+		echo '<td>' . esc_html( $data['php']['sapi'] ) . '</td>';
 		echo '</tr>';
 
 		if ( isset( $data['php']['hhvm'] ) ) {
 			echo '<tr>';
 			echo '<td>hhvm</td>';
-			echo "<td>{$data['php']['hhvm']}</td>";
+			echo '<td>' . esc_html( $data['php']['hhvm'] ) . '</td>';
 			echo '</tr>';
 		}
 
@@ -58,7 +58,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		if ( !empty( $data['php']['user'] ) ) {
 			echo '<td>' . esc_html( $data['php']['user'] ) . '</td>';
 		} else {
-			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
 		echo '</tr>';
 
@@ -67,7 +67,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			$append = '';
 
 			if ( $val['after'] != $val['before'] ) {
-				$append .= '<br><span class="qm-info">' . sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) . '</span>';
+				$append .= '<br><span class="qm-info">' . esc_html( sprintf( __( 'Overridden at runtime from %s', 'query-monitor' ), $val['before'] ) ) . '</span>';
 			}
 
 			echo '<tr>';
@@ -76,7 +76,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '<br>', $this->collector->get_error_levels( $data['php']['error_reporting'] ) );
+		$error_levels = implode( '<br>', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
@@ -109,12 +109,12 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				foreach ( $db['info'] as $key => $value ) {
 
 					echo '<tr>';
-					echo '<td>' . $key . '</td>';
+					echo '<td>' . esc_html( $key ) . '</td>';
 
 					if ( ! isset( $value ) ) {
-						echo '<td><span class="qm-warn">' . __( 'Unknown', 'query-monitor' ) . '</span></td>';
+						echo '<td><span class="qm-warn">' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
-						echo '<td>' . $value . '</td>';
+						echo '<td>' . esc_html( $value ) . '</td>';
 					}
 
 					echo '</tr>';
@@ -124,7 +124,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '<tr>';
 
 				$first  = true;
-				$warn   = __( "This value may not be optimal. Check the recommended configuration for '%s'.", 'query-monitor' );
 				$search = __( 'https://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
 
 				foreach ( $db['variables'] as $setting ) {
@@ -141,7 +140,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					if ( $show_warning ) {
-						$prepend .= '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank" title="' . esc_attr( sprintf( $warn, $key ) ) . '">' . __( 'Help', 'query-monitor' ) . '</a>)</span>';
+						$prepend .= '&nbsp;<span class="qm-info">(<a href="' . esc_url( sprintf( $search, $key ) ) . '" target="_blank">' . esc_html__( 'Help', 'query-monitor' ) . '</a>)</span>';
 					}
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
@@ -151,7 +150,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$class = ( $show_warning ) ? 'qm-warn' : '';
 
 					if ( !$first ) {
-						echo "<tr class='{$class}'>";
+						echo '<tr class="' . esc_attr( $class ) . '"">';
 					}
 
 					$key = esc_html( $key );
@@ -186,8 +185,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		foreach ( $data['wp'] as $key => $val ) {
 
 			echo '<tr>';
-			echo "<td>{$key}</td>";
-			echo "<td>{$val}</td>";
+			echo '<td>' . esc_html( $key ) . '</td>';
+			echo '<td>' . esc_html( $val ) . '</td>';
 			echo '</tr>';
 
 		}
@@ -200,37 +199,37 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . __( 'Server', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . esc_html__( 'Server', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td>software</td>';
-		echo "<td>{$data['server']['name']}</td>";
+		echo '<td>' . esc_html__( 'software', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html( $data['server']['name'] ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td>version</td>';
+		echo '<td>' . esc_html__( 'version', 'query-monitor' ) . '</td>';
 		if ( !empty( $data['server']['version'] ) ) {
 			echo '<td>' . esc_html( $data['server']['version'] ) . '</td>';
 		} else {
-			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td>address</td>';
+		echo '<td>' . esc_html__( 'address', 'query-monitor' ) . '</td>';
 		if ( !empty( $data['server']['address'] ) ) {
 			echo '<td>' . esc_html( $data['server']['address'] ) . '</td>';
 		} else {
-			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
 		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td>host</td>';
-		echo "<td>{$data['server']['host']}</td>";
+		echo '<td>' . esc_html__( 'host', 'query-monitor' ) . '</td>';
+		echo '<td>' . esc_html( $data['server']['host'] ) . '</td>';
 		echo '</tr>';
 
 		echo '</tbody>';

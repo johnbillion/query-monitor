@@ -34,49 +34,65 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			$db_queries_data = $db_queries->get_data();
 			if ( isset( $db_queries_data['types'] ) ) {
 				$db_query_num = $db_queries_data['types'];
-				$db_stime = number_format_i18n( $db_queries_data['total_time'], 4 );
 			}
 		}
-
-		$total_stime = number_format_i18n( $data['time'], 4 );
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
-		$memory_usage = '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$s kB limit', 'query-monitor' ), number_format_i18n( $data['memory_usage'], 1 ), number_format_i18n( $data['memory_limit'] / 1024 ) ) . '</span>';
-
-		$time_usage = '<br><span class="qm-info">' . sprintf( __( '%1$s%% of %2$ss limit', 'query-monitor' ), number_format_i18n( $data['time_usage'], 1 ), number_format_i18n( $data['time_limit'] ) ) . '</span>';
-
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . __( 'Page generation time', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Peak memory usage', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Page generation time', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Peak memory usage', 'query-monitor' ) . '</th>';
 		if ( isset( $db_query_num ) ) {
-			echo '<th scope="col">' . __( 'Database query time', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . __( 'Database queries', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Database query time', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Database queries', 'query-monitor' ) . '</th>';
 		}
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
 		echo '<tr>';
-		echo "<td>{$total_stime}{$time_usage}</td>";
+		echo '<td>';
+		echo esc_html( number_format_i18n( $data['time'], 4 ) );
+		echo '<br><span class="qm-info">';
+		echo esc_html( sprintf(
+			__( '%1$s%% of %2$ss limit', 'query-monitor' ),
+			number_format_i18n( $data['time_usage'], 1 ),
+			number_format_i18n( $data['time_limit'] )
+		) );
+		echo '</span>';
+		echo '</td>';
 
 		if ( empty( $data['memory'] ) ) {
-			echo '<td><em>' . __( 'Unknown', 'query-monitor' ) . '</em><br><span class="qm-info">' . __( 'Neither memory_get_peak_usage() nor memory_get_usage() are available. Speak to your host and get them to sort it out.', 'query-monitor' ) . '</span></td>';
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		} else {
-			echo '<td>' . sprintf( __( '%s kB', 'query-monitor' ), number_format_i18n( $data['memory'] / 1024 ) ) . $memory_usage . '</td>';
+			echo '<td>';
+			echo esc_html( sprintf(
+				__( '%s kB', 'query-monitor' ),
+				number_format_i18n( $data['memory'] / 1024 )
+			) );
+			echo '<br><span class="qm-info">';
+			echo esc_html( sprintf(
+				__( '%1$s%% of %2$s kB limit', 'query-monitor' ),
+				number_format_i18n( $data['memory_usage'], 1 ),
+				number_format_i18n( $data['memory_limit'] / 1024 )
+			) );
+			echo '</span>';
+			echo '</td>';
 		}
 
 		if ( isset( $db_query_num ) ) {
-			echo "<td>{$db_stime}</td>";
+			echo '<td>';
+			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
+			echo '</td>';
 			echo '<td>';
 
 			foreach ( $db_query_num as $type_name => $type_count ) {
 				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
 			}
 
-			echo implode( '<br>', $db_query_types );
+			echo implode( '<br>', array_map( 'esc_html', $db_query_types ) );
 
 			echo '</td>';
 		}

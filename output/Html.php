@@ -21,7 +21,7 @@ abstract class QM_Output_Html extends QM_Output {
 	public function admin_menu( array $menu ) {
 
 		$menu[] = $this->menu( array(
-			'title' => $this->collector->name(),
+			'title' => esc_html( $this->collector->name() ),
 		) );
 		return $menu;
 
@@ -41,7 +41,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		foreach ( $vars as $key => $value ) {
 			echo '<tr>';
-			echo '<td valign="top">' . esc_html( $key ) . '</td>';
+			echo '<td>' . esc_html( $key ) . '</td>';
 			if ( is_array( $value ) ) {
 				echo '<td valign="top" class="qm-has-inner">';
 				self::output_inner( $value );
@@ -77,7 +77,7 @@ abstract class QM_Output_Html extends QM_Output {
 		usort( $values, 'strcasecmp' );
 
 		$out = '<select id="qm-filter-' . esc_attr( $this->collector->id . '-' . $name ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
-		$out .= '<option value="">' . _x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
+		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {
 			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';

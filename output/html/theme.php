@@ -38,7 +38,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( ! empty( $data['template_path'] ) ) {
 
 			echo '<tr>';
-			echo '<td>' . __( 'Template File', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'Template File', 'query-monitor' ) . '</td>';
 			if ( $child_theme ) {
 				echo '<td>' . self::output_filename( $data['theme_template'], $data['template_path'] ) . '</td>';
 			} else {
@@ -50,16 +50,16 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<tr>';
 		if ( $child_theme ) {
-			echo '<td>' . __( 'Child Theme', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'Child Theme', 'query-monitor' ) . '</td>';
 		} else {
-			echo '<td>' . __( 'Theme', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'Theme', 'query-monitor' ) . '</td>';
 		}
 		echo '<td>' . esc_html( $data['stylesheet'] ) . '</td>';
 		echo '</tr>';
 
 		if ( $child_theme ) {
 			echo '<tr>';
-			echo '<td>' . __( 'Parent Theme', 'query-monitor' ) . '</td>';
+			echo '<td>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</td>';
 			echo '<td>' . esc_html( $data['template'] ) . '</td>';
 			echo '</tr>';
 		}
@@ -67,7 +67,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( !empty( $data['body_class'] ) ) {
 
 			echo '<tr>';
-			echo '<td rowspan="' . count( $data['body_class'] ) . '">' . __( 'Body Classes', 'query-monitor' ) . '</td>';
+			echo '<td rowspan="' . count( $data['body_class'] ) . '">' . esc_html__( 'Body Classes', 'query-monitor' ) . '</td>';
 			$first = true;
 
 			foreach ( $data['body_class'] as $class ) {
@@ -97,7 +97,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( isset( $data['template_file'] ) ) {
 			$menu[] = $this->menu( array(
-				'title' => sprintf( __( 'Template: %s', 'query-monitor' ), $data['template_file'] )
+				'title' => esc_html( sprintf(
+					__( 'Template: %s', 'query-monitor' ),
+					$data['template_file']
+				) ),
 			) );
 		}
 		return $menu;
