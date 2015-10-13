@@ -43,21 +43,21 @@ abstract class QM_Output_Html extends QM_Output {
 			echo '<tr>';
 			echo '<td>' . esc_html( $key ) . '</td>';
 			if ( is_array( $value ) ) {
-				echo '<td valign="top" class="qm-has-inner">';
+				echo '<td class="qm-has-inner">';
 				self::output_inner( $value );
 				echo '</td>';
 			} else if ( is_object( $value ) ) {
-				echo '<td valign="top" class="qm-has-inner">';
+				echo '<td class="qm-has-inner">';
 				self::output_inner( get_object_vars( $value ) );
 				echo '</td>';
 			} else if ( is_bool( $value ) ) {
 				if ( $value ) {
-					echo '<td valign="top" class="qm-true">true</td>';
+					echo '<td class="qm-true">true</td>';
 				} else {
-					echo '<td valign="top" class="qm-false">false</td>';
+					echo '<td class="qm-false">false</td>';
 				}
 			} else {
-				echo '<td valign="top">';
+				echo '<td>';
 				echo nl2br( esc_html( $value ) );
 				echo '</td>';
 			}

@@ -325,7 +325,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo "<td valign='top' class='qm-row-caller qm-ltr qm-has-toggle'>";
+			echo "<td class='qm-row-caller qm-ltr qm-has-toggle'>";
 
 			echo $caller_name;
 

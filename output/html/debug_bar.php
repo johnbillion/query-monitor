@@ -35,7 +35,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td valign="top">';
+		echo '<td>';
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
 		$this->collector->render();

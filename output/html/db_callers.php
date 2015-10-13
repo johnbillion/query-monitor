@@ -64,7 +64,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 					if ( isset( $row['types'][$type_name] ) ) {
 						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][$type_name] ) ) . '</td>';
 					} else {
-						echo "<td valign='top' class='qm-num'>&nbsp;</td>";
+						echo "<td class='qm-num'>&nbsp;</td>";
 					}
 				}
 

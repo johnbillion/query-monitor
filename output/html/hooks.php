@@ -127,7 +127,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					}
 
 					echo '</td>';
-					echo '<td valign="top" class="qm-nowrap">';
+					echo '<td class="qm-nowrap">';
 					echo esc_html( $component );
 					echo '</td>';
 					echo '</tr>';
