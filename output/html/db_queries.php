@@ -169,12 +169,23 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
-			echo '<th scope="col">' . __( 'Query', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $db->types ) ) . '</th>';
-			echo '<th scope="col">' . __( 'Caller', 'query-monitor' ) . $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ) . '</th>';
+			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
+			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo '</th>';
+			echo '<th scope="col">';
+			esc_html_e( 'Query', 'query-monitor' );
+			echo $this->build_filter( 'type', array_keys( $db->types ) ); // WPCS: XSS ok;
+			echo '</th>';
+			echo '<th scope="col">';
+			esc_html_e( 'Caller', 'query-monitor' );
+			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ) ); // WPCS: XSS ok;
+			echo '</th>';
 
 			if ( $db->has_trace ) {
-				echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
+				echo '<th scope="col">';
+				esc_html_e( 'Component', 'query-monitor' );
+				echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ); // WPCS: XSS ok.
+				echo '</th>';
 			}
 
 			if ( $db->has_result ) {
@@ -183,10 +194,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				} else {
 					$class = '';
 				}
-				echo '<th scope="col" class="' . $class . '">' . __( 'Rows', 'query-monitor' ) . $this->build_sorter() . '</th>';
+				echo '<th scope="col" class="' . esc_attr( $class ) . '">';
+				esc_html_e( 'Rows', 'query-monitor' );
+				echo $this->build_sorter(); // WPCS: XSS ok.
+				echo '</th>';
 			}
 
-			echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
+			echo '<th scope="col" class="qm-num">';
+			esc_html_e( 'Time', 'query-monitor' );
+			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '</th>';
 			echo '</tr>';
 
 		}

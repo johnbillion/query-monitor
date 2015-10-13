@@ -32,14 +32,24 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th class="qm-sorted-asc">&nbsp;' . $this->build_sorter() . '</th>';
-		echo '<th scope="col">' . __( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Response', 'query-monitor' ) . $this->build_filter( 'type', array_keys( $data['types'] ) ) . '</th>';
-		echo '<th scope="col">' . __( 'Transport', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . __( 'Component', 'query-monitor' ) . $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . __( 'Timeout', 'query-monitor' ) . $this->build_sorter() . '</th>';
-		echo '<th scope="col" class="qm-num">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
+		echo '<th class="qm-sorted-asc">&nbsp;';
+		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Response', 'query-monitor' );
+		echo $this->build_filter( 'type', array_keys( $data['types'] ) ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col">' . esc_html__( 'Transport', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' );
+		echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ) ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
+		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' );
+		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 

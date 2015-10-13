@@ -68,6 +68,14 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	/**
+	 * Returns the table filter controls.
+	 *
+	 * @param  string $name      The name for the `data-` attributes that get filtered by this control.
+	 * @param  array  $values    Possible values for this control.
+	 * @param  string $highlight Optional. The name for the `data-` attributes that get highlighted by this control.
+	 * @return string            Markup for the table filter controls.
+	 */
 	protected function build_filter( $name, array $values, $highlight = '' ) {
 
 		if ( empty( $values ) ) {
@@ -89,6 +97,11 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	/**
+	 * Returns the column sorter controls.
+	 *
+	 * @return string Markup for the column sorter controls.
+	 */
 	protected function build_sorter() {
 		$out = '<span class="qm-sort-controls">';
 		$out .= '<a href="#" class="qm-sort qm-sort-asc">&#9650;</a>';

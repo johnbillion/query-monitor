@@ -42,10 +42,16 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		echo '<th>' . esc_html_x( 'Caller', 'Query caller', 'query-monitor' ) . '</th>';
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
-			echo '<th class="qm-num">' . $type_name . $this->build_sorter() . '</th>';
+			echo '<th class="qm-num">';
+			echo esc_html( $type_name );
+			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo '</th>';
 		}
 
-		echo '<th class="qm-num qm-sorted-desc">' . __( 'Time', 'query-monitor' ) . $this->build_sorter() . '</th>';
+		echo '<th class="qm-num qm-sorted-desc">';
+		esc_html_e( 'Time', 'query-monitor' );
+		echo $this->build_sorter(); // WPCS: XSS ok;
+		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
