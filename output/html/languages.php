@@ -54,7 +54,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			echo '<td valign="top">' . $mofile['domain'] . '</td>';
 
 			echo '<td valign="top" class="qm-nowrap">';
-			echo $this->output_filename( QM_Util::standard_dir( $mofile['caller']['file'], '' ) . ':' . $mofile['caller']['line'], $mofile['caller']['file'], $mofile['caller']['line'] );
+			echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 			echo '</td>';
 			echo '<td valign="top" class="qm-nowrap">';
 			echo QM_Util::standard_dir( $mofile['mofile'], '' );

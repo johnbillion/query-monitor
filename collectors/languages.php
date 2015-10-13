@@ -41,12 +41,33 @@ class QM_Collector_Languages extends QM_Collector {
 	 */
 	public function log_file_load( $override, $domain, $mofile ) {
 
-		$trace = new QM_Backtrace( array(
-			'ignore_items' => 4,
-		) );
+		$trace    = new QM_Backtrace;
+		$filtered = $trace->get_filtered_trace();
+		$caller   = array();
+
+		foreach ( $filtered as $i => $item ) {
+
+			if ( in_array( $item['function'], array(
+				'load_plugin_textdomain',
+				'load_theme_textdomain',
+				'load_default_textdomain',
+			), true ) ) {
+				$caller = $item;
+				$display = $i + 1;
+				if ( isset( $filtered[ $display ] ) ) {
+					$caller['display'] = $filtered[ $display ]['display'];
+				}
+				break;
+			}
+
+		}
+
+		if ( empty( $caller ) ) {
+			$caller = $filtered[1];
+		}
 
 		$this->data['languages'][] = array(
-			'trace'  => $trace,
+			'caller' => $caller,
 			'domain' => $domain,
 			'mofile' => $mofile,
 			'found'  => file_exists( $mofile ) ? filesize( $mofile ): false,
