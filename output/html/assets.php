@@ -40,7 +40,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			echo '<thead>';
 
-			if ( 'scripts' != $type ) {
+			if ( 'scripts' !== $type ) {
 				echo '<tr class="qm-totally-legit-spacer">';
 				echo '<td colspan="6"></td>';
 				echo '</tr>';

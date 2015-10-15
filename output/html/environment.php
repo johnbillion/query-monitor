@@ -139,7 +139,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					$key = $setting->Variable_name;
 					$val = $setting->Value;
-					$prepend = '';
+					$append = '';
 					$show_warning = false;
 
 					if ( ( true === $db['vars'][$key] ) and empty( $val ) ) {
@@ -149,7 +149,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					if ( $show_warning ) {
-						$prepend .= sprintf(
+						$append .= sprintf(
 							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
 							esc_url( sprintf( $search, $key ) ),
 							esc_html__( 'Help', 'query-monitor' )
@@ -157,7 +157,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
-						$prepend .= sprintf(
+						$append .= sprintf(
 							'<br><span class="qm-info">~%s</span>',
 							esc_html( size_format( $val ) )
 						);
@@ -172,7 +172,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					echo '<td>' . esc_html( $key ) . '</td>';
 					echo '<td>';
 					echo esc_html( $val );
-					echo $prepend; // WPCS: XSS ok.
+					echo $append; // WPCS: XSS ok.
 					echo '</td>';
 
 					echo '</tr>';

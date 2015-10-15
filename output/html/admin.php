@@ -75,6 +75,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 			'users-network'   => true,
 		);
 
+		// @TODO a lot of this logic can move to the collector
 		if ( !empty( $data['current_screen'] ) and isset( $screens[$data['current_screen']->base] ) ) {
 
 			# And now, WordPress' legendary inconsistency comes into play:

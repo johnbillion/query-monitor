@@ -96,6 +96,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public function init() {
+		// @TODO should be abstract?
 		// nothing
 	}
 

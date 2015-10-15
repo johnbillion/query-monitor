@@ -69,7 +69,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns the table filter controls.
+	 * Returns the table filter controls. Safe for output.
 	 *
 	 * @param  string $name      The name for the `data-` attributes that get filtered by this control.
 	 * @param  array  $values    Possible values for this control.
@@ -98,7 +98,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns the column sorter controls.
+	 * Returns the column sorter controls. Safe for output.
 	 *
 	 * @return string Markup for the column sorter controls.
 	 */
@@ -136,6 +136,7 @@ abstract class QM_Output_Html extends QM_Output {
 			'HAVING', 'INNER', 'INSERT', 'LEFT', 'LIMIT', 'ON', 'OR', 'ORDER', 'OUTER', 'REPLACE', 'RIGHT', 'ROLLBACK', 'SELECT', 'SET',
 			'SHOW', 'START', 'THEN', 'TRUNCATE', 'UPDATE', 'VALUES', 'WHEN', 'WHERE'
 		) as $cmd ) {
+			// Why does this trim() every time?
 			$sql = trim( str_replace( " $cmd ", "<br>$cmd ", $sql ) );
 		}
 
@@ -157,7 +158,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Safely outputs a file path, name, and line number.
+	 * Returns a file path, name, and line number. Safe for output.
 	 *
 	 * If clickable file links are enabled, a link such as this is returned:
 	 *

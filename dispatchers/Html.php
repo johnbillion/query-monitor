@@ -55,7 +55,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			wp_send_json_error( __( 'Could not set authentication cookie.', 'query-monitor' ) );
 		}
 
-		$expiration = time() + 172800; # 48 hours
+		$expiration = time() + ( 2 * DAY_IN_SECONDS );
 		$secure     = self::secure_cookie();
 		$cookie     = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
 
@@ -89,7 +89,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
-		$class = implode( ' ', array( 'hide-if-js' ) );
 		$title = __( 'Query Monitor', 'query-monitor' );
 
 		$wp_admin_bar->add_menu( array(
@@ -97,8 +96,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'title' => esc_html( $title ),
 			'href'  => '#qm-overview',
 			'meta'  => array(
-				'classname' => $class
-			)
+				'classname' => 'hide-if-js',
+			),
 		) );
 
 		$wp_admin_bar->add_menu( array(
@@ -314,7 +313,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		# Back-compat filter. Please use `qm/dispatch/html` instead
-		if ( ! apply_filters( "qm/process", true, is_admin_bar_showing() ) ) {
+		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
 			return false;
 		}
 

@@ -41,7 +41,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			}
 
 			if ( ! empty( $data['request'][$item] ) ) {
-				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ) ) ) {
+				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ), true ) ) {
 					$value = self::format_url( $data['request'][$item] );
 				} else {
 					$value = esc_html( $data['request'][$item] );
@@ -122,7 +122,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
-		if ( ! empty( $data['multisite'] ) ) {
+		if ( !empty( $data['multisite'] ) ) {
 
 			$rowspan = count( $data['multisite'] );
 
