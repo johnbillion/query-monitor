@@ -10,7 +10,18 @@
 			"homepage": "https://johnblackbourn.com/"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/johnbillion/query-monitor/issues",
+		"forum": "https://wordpress.org/support/plugin/query-monitor",
+		"source": "https://github.com/johnbillion/query-monitor"
+	},
 	"require": {
 		"composer/installers": "~1.0"
-	}
+	},
+	"require-dev" : {
+		"phpunit/phpunit": ">=3.7@stable"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
 }
