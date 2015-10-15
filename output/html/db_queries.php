@@ -448,18 +448,18 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $data['dbs'] ) and count( $data['dbs'] ) > 1 ) {
 			foreach ( $data['dbs'] as $name => $db ) {
 				$menu[] = $this->menu( array(
-					'id'    => sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ),
+					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ) ),
 					'title' => esc_html( sprintf(
 						__( 'Queries - %s', 'query-monitor' ),
 						$name
 					) ),
-					'href'  => sprintf( '#%s-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ),
+					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ) ),
 				) );
 			}
 		} else {
 			$menu[] = $this->menu( array(
 				'title' => esc_html__( 'Queries', 'query-monitor' ),
-				'href'  => sprintf( '#%s-wpdb', $this->collector->id() ),
+				'href'  => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
 			) );
 		}
 
