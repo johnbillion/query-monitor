@@ -1,34 +1,51 @@
+# run on container environment
+sudo: false
+
 language: php
 
+notifications:
+    email:
+        on_success: change
+        on_failure: always
+
 php:
+    - 7.0
     - 5.6
     - 5.3
     - 5.2
     - hhvm
 
 env:
-    # trunk:
+    # latest stable:
     - WP_VERSION=latest WP_MULTISITE=0
     - WP_VERSION=latest WP_MULTISITE=1
-    # latest stable:
-    - WP_VERSION=4.1 WP_MULTISITE=0
-    - WP_VERSION=4.1 WP_MULTISITE=1
     # previous stable:
+    - WP_VERSION=4.2 WP_MULTISITE=0
+    - WP_VERSION=4.2 WP_MULTISITE=1
+    # earliest supported version with a non-buggy unit test suite:
     - WP_VERSION=4.0 WP_MULTISITE=0
     - WP_VERSION=4.0 WP_MULTISITE=1
-    # earliest supported:
-    - WP_VERSION=3.5 WP_MULTISITE=0
-    - WP_VERSION=3.5 WP_MULTISITE=1
 
 matrix:
-    exclude:
-        # don't test 3.5 on hiphop:
-        - php: hhvm
-          env: WP_VERSION=3.5 WP_MULTISITE=0
-        - php: hhvm
-          env: WP_VERSION=3.5 WP_MULTISITE=1
+exclude:
+    # don't test 4.0 on hiphop:
+    - php: hhvm
+      env: WP_VERSION=4.0 WP_MULTISITE=0
+    - php: hhvm
+      env: WP_VERSION=4.0 WP_MULTISITE=1
+    # don't test 4.0 on PHP 7:
+    - php: 7.0
+      env: WP_VERSION=4.0 WP_MULTISITE=0
+    - php: 7.0
+      env: WP_VERSION=4.0 WP_MULTISITE=1
+
+allow_failures:
+    # allow failures on PHP 7 for now:
+    - php: 7.0
 
 before_script:
     - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION 
 
-script: phpunit
+script:
+    - if [[ "$WP_VERSION" == "latest" ]]; then if find . -not \( -path ./vendor -prune \) -not \( -path ./features -prune \) -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi;
+    - phpunit -v
