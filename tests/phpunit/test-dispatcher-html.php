@@ -27,6 +27,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
 	public function test_dispatcher_respects_late_change_of_https() {
+		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {
 			$https = $_SERVER['HTTPS'];
@@ -36,7 +37,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 		do_action( 'wp_enqueue_scripts' );
 
-		$registered = wp_scripts()->registered;
+		$registered = $wp_scripts->registered;
 
 		$this->assertArrayHasKey( 'query-monitor', $registered );
 		$this->assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );

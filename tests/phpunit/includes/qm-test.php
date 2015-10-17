@@ -12,6 +12,10 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 
 	public function go_to_with_template( $url ) {
 
+		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) ) {
+			$_SERVER['REQUEST_METHOD'] = 'GET';
+		}
+
 		remove_action( 'template_redirect', 'redirect_canonical' );
 
 		$go = $this->go_to( $url );
