@@ -53,10 +53,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '</tr>';
 		echo '</thead>';
 
-		$vars = '';
+		$vars = array();
 
 		if ( !empty( $data['vars'] ) ) {
-			$vars = array();
 			foreach ( $data['vars'] as $key => $value ) {
 				$vars[] = $key . ': ' . $value;
 			}
