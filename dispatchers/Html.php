@@ -178,15 +178,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
-		$out = $this->get_output( 'html' );
+		$this->before_output();
 
-		echo $out['before']; // WPCS: XSS ok.
-
-		foreach ( $out['output'] as $id => $output ) {
-			echo $output; // WPCS: XSS ok.
+		/* @var QM_Output_Html[] */
+		foreach ( $this->get_outputters( 'html' ) as $id => $output ) {
+			$output->output();
 		}
 
-		echo $out['after']; // WPCS: XSS ok.
+		$this->after_output();
 
 	}
 

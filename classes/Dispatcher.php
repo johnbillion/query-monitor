@@ -48,26 +48,19 @@ abstract class QM_Dispatcher {
 
 	}
 
-	public function get_output( $outputter_id ) {
+	public function get_outputters( $outputter_id ) {
 
-		$out = array(
-			'before' => null,
-			'output' => array(),
-			'after'  => null,
-		);
+		$out = array();
 
 		$collectors = QM_Collectors::init();
 		$collectors->process();
 
-		$out['before'] = $this->get_before_output();
-
 		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 
+		/* @var QM_Output[] */
 		foreach ( $this->outputters as $id => $outputter ) {
-			$out['output'][ $id ] = $outputter->get_output();
+			$out[ $id ] = $outputter;
 		}
-
-		$out['after'] = $this->get_after_output();
 
 		return $out;
 
@@ -76,22 +69,6 @@ abstract class QM_Dispatcher {
 	public function init() {
 		// @TODO should be abstract?
 		// nothing
-	}
-
-	public function get_before_output() {
-		// compat until I convert all the existing outputters to use `get_before_output()`
-		ob_start();
-		$this->before_output();
-		$out = ob_get_clean();
-		return $out;
-	}
-
-	public function get_after_output() {
-		// compat until I convert all the existing outputters to use `get_after_output()`
-		ob_start();
-		$this->after_output();
-		$out = ob_get_clean();
-		return $out;
 	}
 
 	protected function before_output() {

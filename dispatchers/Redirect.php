@@ -36,13 +36,14 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 			return $location;
 		}
 
-		$out = $this->get_output( 'headers' );
+		$this->before_output();
 
-		foreach ( $out['output'] as $id => $output ) {
-			foreach ( $output as $key => $value ) {
-				header( sprintf( 'X-QM-%s: %s', $key, $value ) );
-			}
+		/* @var QM_Output_Headers[] */
+		foreach ( $this->get_outputters( 'headers' ) as $id => $output ) {
+			$output->output();
 		}
+
+		$this->after_output();
 
 		return $location;
 
