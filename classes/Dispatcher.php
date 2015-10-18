@@ -30,40 +30,18 @@ abstract class QM_Dispatcher {
 
 	abstract public function is_active();
 
-	final public function dispatch_enabled() {
+	final public function should_dispatch() {
 
 		$e = error_get_last();
 
-		# Don't process if a fatal has occurred:
+		# Don't dispatch if a fatal has occurred:
 		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
 			return false;
 		}
 		
 		# Allow users to disable this dispatcher
-		return apply_filters( "qm/dispatch/{$this->id}", true );
-
-	}
-
-	public function should_dispatch() {
-
-		if ( ! $this->dispatch_enabled() ) {
+		if ( ! apply_filters( "qm/dispatch/{$this->id}", true ) ) {
 			return false;
-		}
-
-		# Don't process if the minimum required actions haven't fired:
-
-		if ( is_admin() ) {
-
-			if ( ! did_action( 'admin_init' ) ) {
-				return false;
-			}
-
-		} else {
-
-			if ( ! ( did_action( 'wp' ) or did_action( 'login_init' ) ) ) {
-				return false;
-			}
-
 		}
 
 		return $this->is_active();

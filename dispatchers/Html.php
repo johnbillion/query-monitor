@@ -312,6 +312,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
+		# Don't process if the minimum required actions haven't fired:
+		if ( is_admin() ) {
+			if ( ! did_action( 'admin_init' ) ) {
+				return false;
+			}
+		} else {
+			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) ) ) {
+				return false;
+			}
+		}
+
 		# Back-compat filter. Please use `qm/dispatch/html` instead
 		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
 			return false;
