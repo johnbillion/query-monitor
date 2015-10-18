@@ -32,6 +32,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_author',
 			'is_blog_admin',
 			'is_category',
+			'is_comment_feed',
 			'is_comments_popup',
 			'is_customize_preview',
 			'is_date',
