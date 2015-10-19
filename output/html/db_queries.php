@@ -350,7 +350,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo "<td class='qm-row-caller qm-ltr qm-has-toggle'>";
+			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'>";
 
 			echo $caller_name; // WPCS: XSS ok.
 
