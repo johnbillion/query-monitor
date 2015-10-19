@@ -71,7 +71,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			if ( $val['after'] != $val['before'] ) {
 				printf(
-					'<br><span class="qm-info">%s</span>',
+					'<br><span class="qm-info">&nbsp;%s</span>',
 					esc_html( sprintf(
 						__( 'Overridden at runtime from %s', 'query-monitor' ),
 						$val['before']
@@ -83,11 +83,11 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '<br>', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
+		$error_levels = implode( '<br>&nbsp;', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
-		echo '<td>' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">';
+		echo '<td>' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">&nbsp;';
 		echo $error_levels; // WPCS: XSS ok.
 		echo '</span></td>';
 		echo '</tr>';
@@ -158,7 +158,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
 						$append .= sprintf(
-							'<br><span class="qm-info">~%s</span>',
+							'<br><span class="qm-info">&nbsp;~%s</span>',
 							esc_html( size_format( $val ) )
 						);
 					}

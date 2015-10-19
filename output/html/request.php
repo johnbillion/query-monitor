@@ -140,11 +140,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				echo '<td colspan="2" class="qm-has-inner">';
 
 				printf(
-					'<div class="qm-inner-toggle">%1$s (<a href="#" class="qm-toggle" data-on="%2$s" data-off="%3$s">%4$s</a>)</div>',
-					esc_html( $value['title'] ),
-					esc_attr__( 'Expand', 'query-monitor' ),
-					esc_attr__( 'Collapse', 'query-monitor' ),
-					esc_html__( 'Expand', 'query-monitor' )
+					'<div class="qm-inner-toggle">%1$s (<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>)</div>',
+					esc_html( $value['title'] )
 				);
 
 				echo '<div class="qm-toggled">';

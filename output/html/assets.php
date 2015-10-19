@@ -134,7 +134,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 		}
 
-		echo '<td class="qm-wrap">' . esc_html( $script->handle ) . '<br><span class="qm-info">' . esc_html( $src ) . '</span></td>';
+		echo '<td class="qm-wrap">' . esc_html( $script->handle ) . '<br><span class="qm-info">&nbsp;' . esc_html( $src ) . '</span></td>';
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $deps ) ) . '">' . implode( '<br>', array_map( 'esc_html', $deps ) ) . '</td>';
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $dependents ) ) . '">' . implode( '<br>', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td>' . esc_html( $ver ) . '</td>';

@@ -215,6 +215,7 @@ body.wp-admin.folded #qm {
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
+	position: relative !important;
 }
 
 .qm .qm-totally-legit-spacer td {
@@ -367,8 +368,13 @@ body.wp-admin.folded #qm {
 
 .qm a.qm-toggle {
 	color: #bbb !important;
-	padding: 0 3px !important;
-	border: 1px solid transparent !important;
+	padding: 2px 7px !important;
+	border-left: 1px solid #e1e1e1 !important;
+	border-bottom: 1px solid #e1e1e1 !important;
+	position: absolute !important;
+	top: 0 !important;
+	right: 0 !important;
+	background: #fff !important;
 }
 
 .qm a.qm-toggle:focus,
