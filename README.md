@@ -6,7 +6,7 @@
 
 # Query Monitor #
 
-Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging and the ability to narrow down things by plugin or theme.
+Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging, REST API debugging, and the ability to narrow down things by plugin or theme.
 
 Query Monitor adds a toolbar menu showing an overview of the current page. Complete data is shown in the footer once you select a menu item.
 
@@ -23,9 +23,11 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [PHP Errors](#php-errors)
     * [Request](#request)
     * [Scripts & Styles](#scripts--styles)
+    * [Languages](#languages)
     * [HTTP Requests](#http-requests)
     * [Redirects](#redirects)
     * [AJAX](#ajax)
+    * [REST API](#rest-api)
     * [Admin Screen](#admin-screen)
     * [Environment Information](#environment-information)
     * [Everything Else](#everything-else)
@@ -49,7 +51,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
  * Filter queries by **component** (WordPress core, Plugin X, Plugin Y, theme)
  * Filter queries by **calling function**
  * View **aggregate query information** grouped by component, calling function, and type
- * Super advanced: Supports **multiple instances of wpdb** on one page
+ * Super advanced: Supports **multiple instances of wpdb** on one page (more info in the FAQ)
 
 Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries.
 
@@ -67,14 +69,14 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## PHP Errors ##
 
- * PHP errors (warnings, notices, stricts and deprecated) are presented nicely along with their component and call stack
+ * PHP errors (warnings, notices, stricts, and deprecated) are presented nicely along with their component and call stack
  * Shows an easily visible warning in the admin toolbar
 
 ## Request ##
 
  * Shows **matched rewrite rules** and associated query strings
  * Shows **query vars** for the current request, and highlights **custom query vars**
- * Shows the **queried object** details (collapsed by default)
+ * Shows the **queried object** details
  * Shows details of the **current blog** (multisite only) and **current site** (multi-network only)
 
 ## Scripts & Styles ##
@@ -82,25 +84,34 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows all **enqueued scripts and styles** on the current page, along with their URL and version
  * Shows their **dependencies and dependents**, and alerts you to any **broken dependencies**
 
+## Languages ##
+
+ * Shows you **language settings** and text domains
+ * Shows you the **MO files** for each text domain and which ones were loaded or not
+
 ## HTTP Requests ##
 
  * Shows all HTTP requests performed on the current page (as long as they use WordPress' HTTP API)
- * Shows the response code, call stack, transport, timeout, and time taken
+ * Shows the response code, call stack, transport, component, timeout, and time taken
  * Highlights **erroneous responses**, such as failed requests and anything without a `200` response code
 
 ## Redirects ##
 
- * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector to easily trace where a redirect has come from
+ * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from
 
 ## AJAX ##
 
-The response from any jQuery AJAX request on the page will contain various debugging information in its header that gets output to the developer console. **No hooking required**.
+The response from any jQuery AJAX request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. **No hooking required**.
 
-AJAX debugging is in its early stages. Currently it only includes PHP errors (warnings, notices and stricts), but this will be built upon in future versions.
+Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
+
+## REST API ##
+
+The response from an authenticated WordPress REST API (v2 or later) request will contain various debugging information in its headers, as long as the authenticated user has permission to view Query Monitor's output.
+
+Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
 
 ## Admin Screen ##
-
-Hands up who can remember the correct names for the filters and actions for custom admin screen columns?
 
  * Shows the correct names for **custom column filters and actions** on all admin screens that have a listing table
  * Shows the state of `get_current_screen()` and a few variables
