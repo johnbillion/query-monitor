@@ -130,7 +130,6 @@ Currently this includes PHP errors and some overview information such as memory 
  * Shows any **transients that were set**, along with their timeout, component, and call stack
  * Shows all **WordPress conditionals** on the current page, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
- * Shows all *scripts and styles* which were enqueued on the current page, along with their URL, dependencies, dependents, and version number
 
 ## Authentication ##
 
@@ -148,11 +147,11 @@ However, it is likely that I will add some form of profiling functionality at so
 
 ## A Note on Query Monitor's Implementation ##
 
-In order to do a few clever things, Query Monitor loads earlier than you ever thought humanly possible (almost). It does this by symlinking a custom `db.php` into your `WP_CONTENT_DIR`. This file gets included before the database driver is loaded, meaning this portion of Query Monitor loads before WordPress even engages its brain.
+In order to do a few clever things, Query Monitor symlinks a custom `db.php` into your `WP_CONTENT_DIR` which means it loads very early. This file gets included before the database driver is loaded, meaning this portion of Query Monitor loads before WordPress even engages its brain.
 
 In this file is Query Monitor's extension to the `wpdb` class which:
 
- * Allows us to log **all** database queries (including ones that happen before plugins are loaded)
+ * Allows us to log details about **all** database queries (including ones that happen before plugins are loaded)
  * Logs the full stack trace for each query, which allows us to determine the component that's responsible for the query
  * Logs the query result, which allows us to display the affected rows or error message if applicable
  * Logs various PHP configurations before anything has loaded, which allows us to display a message if these get altered at runtime by a plugin or theme
@@ -198,6 +197,40 @@ Hook listing panel showing all hooks, and the controls for filtering by name and
 Showing an HTTP request with an error
 
 ![HTTP](https://raw.github.com/johnbillion/QueryMonitor/master/assets-wp-repo/screenshot-6.png)
+
+# Frequently Asked Questions #
+
+## Who can see Query Monitor's output? ##
+
+By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
+
+## Does Query Monitor itself impact the page generation time or memory usage? ##
+
+Short answer: Yes, but only a little.
+
+Long answer: Query Monitor has a small impact on page generation time because it hooks into a few places in WordPress in the same way that other plugins do. The impact is negligible.
+
+On pages that have an especially high number of database queries (in the hundreds), Query Monitor currently uses more memory than I would like it to. This is due to the amount of data that is captured in the stack trace for each query. I have been and will be working to continually reduce this.
+
+## Are there any add-on plugins for Query Monitor? ##
+
+[A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
+
+In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, just deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
+
+## Where can I suggest a new feature or report a bug? ##
+
+Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
+
+## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
+
+You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array with your connection name as the key and the `wpdb` instance as the value. Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+
+## Do you accept donations? ##
+
+No, I do not accept donations. If you like the plugin, I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about the plugin too!
 
 # Contributing #
 
