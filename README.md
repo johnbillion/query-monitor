@@ -35,6 +35,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Profiling](#a-note-on-profiling)
     * [Implementation](#a-note-on-query-monitors-implementation)
  * [Screenshots](#screenshots)
+ * [FAQ](#frequently-asked-questions)
  * [Contributing](#contributing)
  * [License](#license-gplv2)
 
