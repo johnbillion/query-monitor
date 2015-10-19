@@ -104,8 +104,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$transport = '';
 				}
 
-				$stack     = $row['trace']->get_stack();
 				$component = $row['component'];
+
+				$stack          = array();
+				$filtered_trace = $row['trace']->get_filtered_trace();
+				array_shift( $filtered_trace );
+
+				foreach ( $filtered_trace as $item ) {
+					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				}
 
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type']      = $row['type'];
@@ -139,7 +146,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				);
 				printf(
 					'<td class="qm-nowrap qm-ltr">%s</td>',
-					implode( '<br>', array_map( 'esc_html', $stack ) )
+					implode( '<br>', $stack ) // WPCS: XSS ok.
 				);
 				printf(
 					'<td class="qm-nowrap">%s</td>',

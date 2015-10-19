@@ -46,7 +46,6 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $data['trans'] as $row ) {
-				$stack = $row['trace']->get_stack();
 				$transient = str_replace( array(
 					'_site_transient_',
 					'_transient_'
@@ -80,9 +79,17 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					}
 				}
 
+				$stack          = array();
+				$filtered_trace = $row['trace']->get_filtered_trace();
+				array_shift( $filtered_trace );
+
+				foreach ( $filtered_trace as $item ) {
+					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				}
+
 				printf(
 					'<td class="qm-nowrap qm-ltr">%s</td>',
-					implode( '<br>', array_map( 'esc_html', $stack ) )
+					implode( '<br>', $stack ) // WPCS: XSS ok.
 				);
 				printf(
 					'<td class="qm-nowrap">%s</td>',
