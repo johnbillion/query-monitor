@@ -150,7 +150,7 @@ jQuery( function($) {
 
 	$('#qm').find('.qm-toggle').on('click',function(e){
 		var el = $(this);
-		$(this).closest('td').find('.qm-toggled').toggle(0,function(){
+		$(this).closest('td').find('.qm-toggled').slideToggle(100,function(){
 			if ( el.attr('data-off') == el.text() )
 				el.text(el.attr('data-on'));
 			else
@@ -183,7 +183,7 @@ jQuery( function($) {
 
 	$( document ).ajaxSuccess( function( event, response, options ) {
 
-		var errors = response.getResponseHeader( 'X-QM-Errors' );
+		var errors = response.getResponseHeader( 'X-QM-error-count' );
 
 		if ( !errors )
 			return event;
@@ -192,7 +192,7 @@ jQuery( function($) {
 
 		for ( var key = 1; key <= errors; key++ ) {
 
-			error = $.parseJSON( response.getResponseHeader( 'X-QM-Error-' + key ) );
+			error = $.parseJSON( response.getResponseHeader( 'X-QM-error-' + key ) );
 
 			if ( window.console ) {
 				console.debug( '=== ' + qm_l10n.ajax_error + ' ===' );

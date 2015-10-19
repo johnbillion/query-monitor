@@ -45,15 +45,16 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 					'component' => $component->name,
 				);
 
-				$key = sprintf( 'Error-%d', $count );
+				$key = sprintf( 'error-%d', $count );
 				$headers[ $key ] = json_encode( $output_error );
 
 			}
 
 		}
 
-		$headers['Errors'] = $count;
-		return $headers;
+		return array_merge( array(
+			'error-count' => $count,
+		), $headers );
 
 	}
 
