@@ -77,12 +77,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 	}
 
-
 }
 
-function register_qm_collector_languages( array $collectors, QueryMonitor $qm ) {
-	$collectors['languages'] = new QM_Collector_Languages;
-	return $collectors;
-}
-
-add_filter( 'qm/collectors', 'register_qm_collector_languages', 21, 2 );
+# Load early to catch early errors
+QM_Collectors::add( new QM_Collector_Languages );
