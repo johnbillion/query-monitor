@@ -51,7 +51,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	}
 
-	public function before_output() {
+	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
 
