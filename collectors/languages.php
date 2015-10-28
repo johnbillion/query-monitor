@@ -63,7 +63,16 @@ class QM_Collector_Languages extends QM_Collector {
 		}
 
 		if ( empty( $caller ) ) {
-			$caller = $filtered[1];
+			if ( isset( $filtered[1] ) ) {
+				$caller = $filtered[1];
+			} else {
+				$caller = $filtered[0];
+			}
+		}
+
+		if ( ! isset( $caller['file'] ) && isset( $filtered[0]['file'] ) && isset( $filtered[0]['line'] ) ) {
+			$caller['file'] = $filtered[0]['file'];
+			$caller['line'] = $filtered[0]['line'];
 		}
 
 		$this->data['languages'][] = array(
