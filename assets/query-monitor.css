@@ -215,7 +215,6 @@ body.wp-admin.folded #qm {
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
-	position: relative !important;
 }
 
 .qm .qm-totally-legit-spacer td {
@@ -253,6 +252,15 @@ body.wp-admin.folded #qm {
 	text-align: right !important;
 }
 
+.qm td.qm-has-toggle {
+	padding: 0 !important;
+}
+
+.qm td .qm-toggler {
+	padding: 5px 8px 4px !important;
+	position: relative !important;
+}
+
 .qm .qm-inner-toggle {
 	padding: 5px 8px 4px !important;
 }
@@ -270,6 +278,7 @@ body.wp-admin.folded #qm {
 	width: 100% !important;
 }
 
+.qm td.qm-has-inner .qm-toggler,
 .qm td.qm-has-inner {
 	padding: 0 !important;
 }
