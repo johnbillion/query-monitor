@@ -126,7 +126,7 @@ class QM_Collector_Environment extends QM_Collector {
 				}
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
-					$client = mysqli_get_client_version( $db->dbh );
+					$client = mysqli_get_client_version();
 				} else {
 					if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
 						$client = $matches[0];
