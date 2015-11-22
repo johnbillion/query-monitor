@@ -32,7 +32,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( $db_queries ) {
 			# @TODO: make this less derpy:
 			$db_queries_data = $db_queries->get_data();
-			if ( isset( $db_queries_data['types'] ) ) {
+			if ( isset( $db_queries_data['types'] ) && isset( $db_queries_data['total_time'] ) ) {
 				$db_query_num = $db_queries_data['types'];
 			}
 		}
