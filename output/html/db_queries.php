@@ -382,7 +382,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['time'] ) ) {
-			echo '<td class="qm-num qm-row-time"' . esc_attr( $td ) . '">'. esc_html( $stime ) . "</td>\n";
+			echo '<td class="qm-num qm-row-time' . esc_attr( $td ) . '">'. esc_html( $stime ) . "</td>\n";
 		}
 
 		echo '</tr>';
