@@ -391,3 +391,35 @@ jQuery( function($) {
 		});
 	};
 })(jQuery);
+
+/**
+ * Jump to top
+ * @since Hopefully soon;)
+ */
+(function($){
+$( document ).ready(function() {
+
+	// Create a button
+	var qm_back_to_top_button = ['<a href="#top" class="qm-back-to-top">Top</a>'].join("");
+	$("body").append(qm_back_to_top_button)
+
+	// hide 
+	$(".qm-back-to-top").hide();
+
+	// Scrolling behavior
+	$(function () {
+		$(window).scroll(function () {
+			if ($(this).scrollTop() > 1000) { // Only visible after scrolling 1000px
+				$('.qm-back-to-top').fadeIn();
+			} else {
+				$('.qm-back-to-top').fadeOut();
+			}
+		});
+
+		$('.qm-back-to-top').click(function () { // Fire
+                        scroll(0,0);
+			return false;
+		});
+	});
+    });
+})(jQuery);
