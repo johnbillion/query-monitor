@@ -573,3 +573,16 @@ html[dir="rtl"] .qm th {
 #qm #debug-menu-target-Debug_Bar_Console {
 	min-height: 400px !important;
 }
+
+.qm-back-to-top {
+    background: #3c3c3c;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 5px;
+    color: #ffffff;
+    text-decoration: none;
+    size: 10px;
+    font-size: 10px;
+    opacity: 0.7;
+}
