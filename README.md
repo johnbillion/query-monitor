@@ -226,6 +226,12 @@ In addition, Query Monitor transparently supports add-ons for the Debug Bar plug
 
 Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
 
+## Is Query Monitor available on WordPress.com VIP Go? ##
+
+Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-config/vip-config.php` file.
+
+(It's not available on standard WordPress.com VIP though.)
+
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
 You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array with your connection name as the key and the `wpdb` instance as the value. Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
