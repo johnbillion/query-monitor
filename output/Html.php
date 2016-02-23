@@ -154,7 +154,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string      The URL formatted with markup.
 	 */
 	public static function format_url( $url ) {
-		return str_replace( '&amp;', '<br>&amp;', esc_html( $url ) );
+		return str_replace( array( '?', '&amp;' ), array( '<br>?', '<br>&amp;' ), esc_html( $url ) );
 	}
 
 	/**
