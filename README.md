@@ -36,6 +36,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Implementation](#a-note-on-query-monitors-implementation)
  * [Screenshots](#screenshots)
  * [FAQ](#frequently-asked-questions)
+ * [Related Tools](#related-tools)
  * [Contributing](#contributing)
  * [License](#license-gplv2)
 
@@ -232,6 +233,20 @@ You'll need to hook into the `qm/collect/db_objects` filter and add an item to t
 ## Do you accept donations? ##
 
 No, I do not accept donations. If you like the plugin, I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about the plugin too!
+
+# Related Tools #
+
+Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
+
+ * [XHProf](https://github.com/facebook/xhprof) for low level profiling of PHP.
+ * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
+ * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
+ * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
+ * [New Relic](https://newrelic.com/) for complete software performance analytics.
+
+Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
+
+See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
 # Contributing #
 
