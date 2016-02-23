@@ -205,7 +205,7 @@ body.wp-admin.folded #qm {
 	background: #fff !important;
 	box-sizing: border-box !important;
 	text-align: left !important;
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
 	font-style: normal !important;
@@ -215,7 +215,6 @@ body.wp-admin.folded #qm {
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
-	position: relative !important;
 }
 
 .qm .qm-totally-legit-spacer td {
@@ -253,6 +252,15 @@ body.wp-admin.folded #qm {
 	text-align: right !important;
 }
 
+.qm td.qm-has-toggle {
+	padding: 0 !important;
+}
+
+.qm td .qm-toggler {
+	padding: 5px 8px 4px !important;
+	position: relative !important;
+}
+
 .qm .qm-inner-toggle {
 	padding: 5px 8px 4px !important;
 }
@@ -270,6 +278,7 @@ body.wp-admin.folded #qm {
 	width: 100% !important;
 }
 
+.qm td.qm-has-inner .qm-toggler,
 .qm td.qm-has-inner {
 	padding: 0 !important;
 }
@@ -291,7 +300,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm pre {
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
 	font-style: normal !important;
@@ -304,7 +313,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm code {
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	font-size: 11px !important;
 	font-weight: normal !important;
 	font-style: normal !important;
@@ -408,7 +417,7 @@ body.wp-admin.folded #qm {
 
 select.qm-filter {
 	display: block !important;
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	font-weight: normal !important;
 	font-size: 10px !important;
 	margin: 4px 0 2px !important;
@@ -510,7 +519,7 @@ html[dir="rtl"] .qm th {
 	margin: 4px 0 !important;
 	color: inherit !important;
 	background: transparent !important;
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
 .qm-debug-bar textarea {
@@ -526,7 +535,7 @@ html[dir="rtl"] .qm th {
 }
 
 .qm-debug-bar h1, .qm-debug-bar h2, .qm-debug-bar h3 {
-	font-family: Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	font-weight: normal !important;
 }
 

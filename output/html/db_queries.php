@@ -350,7 +350,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'>";
+			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><div class='qm-toggler'>";
 
 			echo $caller_name; // WPCS: XSS ok.
 
@@ -359,7 +359,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>'; // WPCS: XSS ok.
 			}
 
-			echo '</td>';
+			echo '</div></td>';
 		}
 
 		if ( isset( $cols['stack'] ) ) {
@@ -382,7 +382,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['time'] ) ) {
-			echo '<td class="qm-num qm-row-time"' . esc_attr( $td ) . '">'. esc_html( $stime ) . "</td>\n";
+			echo '<td class="qm-num qm-row-time' . esc_attr( $td ) . '">'. esc_html( $stime ) . "</td>\n";
 		}
 
 		echo '</tr>';

@@ -102,7 +102,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</td>';
-			echo '<td colspan="2" class="qm-has-inner">';
+			echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
 
 			printf(
 				'<div class="qm-inner-toggle">%1$s (%2$s) <a href="#" class="qm-toggle" data-on="+" data-off="-">+</a></div>',
@@ -114,7 +114,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			self::output_inner( $data['queried_object']['data'] );
 			echo '</div>';
 
-			echo '</td>';
+			echo '</div></td>';
 			echo '</tr>';
 
 		}
@@ -134,7 +134,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<tr>';
 				}
 
-				echo '<td colspan="2" class="qm-has-inner">';
+				echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
 
 				printf(
 					'<div class="qm-inner-toggle">%1$s <a href="#" class="qm-toggle" data-on="+" data-off="-">+</a></div>',
@@ -145,7 +145,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				self::output_inner( $value['data'] );
 				echo '</div>';
 
-				echo '</td>';
+				echo '</div></td>';
 
 				$first = false;
 
