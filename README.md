@@ -22,6 +22,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Theme](#theme)
     * [PHP Errors](#php-errors)
     * [Request](#request)
+    * [Rewrite Rules](#rewrite-rules)
     * [Scripts & Styles](#scripts--styles)
     * [Languages](#languages)
     * [HTTP Requests](#http-requests)
@@ -80,6 +81,10 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows **query vars** for the current request, and highlights **custom query vars**
  * Shows the **queried object** details
  * Shows details of the **current blog** (multisite only) and **current site** (multi-network only)
+
+## Rewrite Rules ##
+
+ * Shows **all matching rewrite rules** for a given request
 
 ## Scripts & Styles ##
 
