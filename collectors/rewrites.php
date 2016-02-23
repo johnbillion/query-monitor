@@ -34,6 +34,10 @@ class QM_Collector_Rewrites extends QM_Collector {
 			return;
 		}
 
+		if ( empty( $wp_rewrite->rules ) ) {
+			return;
+		}
+
 		$req = $request->data['request']['request'];
 		$matching = array();
 
