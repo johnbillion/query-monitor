@@ -145,7 +145,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
-				echo "<th>";
+				echo '<th>';
 				echo $hook_name; // WPCS: XSS ok.
 				echo '</th>';
 				echo '<td colspan="3">&nbsp;</td>';

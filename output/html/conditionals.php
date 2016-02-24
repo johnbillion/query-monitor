@@ -40,28 +40,28 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		foreach ( $data['conds']['true'] as $cond ) {
 			$i++;
-			if ( 1 === $i%$cols ) {
+			if ( 1 === $i % $cols ) {
 				echo '<tr>';
 			}
 			echo '<td class="qm-ltr qm-true" width="' . absint( $w ) . '%">' . esc_html( $cond ) . '()</td>';
-			if ( 0 === $i%$cols ) {
+			if ( 0 === $i % $cols ) {
 				echo '</tr>';
 			}
 		}
 
 		foreach ( $data['conds']['false'] as $cond ) {
 			$i++;
-			if ( 1 === $i%$cols ) {
+			if ( 1 === $i % $cols ) {
 				echo '<tr>';
 			}
 			echo '<td class="qm-ltr qm-false" width="' . absint( $w ) . '%">' . esc_html( $cond ) . '()</td>';
-			if ( 0 === $i%$cols ) {
+			if ( 0 === $i % $cols ) {
 				echo '</tr>';
 			}
 		}
 
 		$fill = ( $cols - ( $i % $cols ) );
-		if ( $fill and ( $fill != $cols ) ) {
+		if ( $fill && ( $fill !== $cols ) ) {
 			echo '<td colspan="' . absint( $fill ) . '">&nbsp;</td>';
 			echo '</tr>';
 		}

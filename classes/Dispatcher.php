@@ -38,7 +38,7 @@ abstract class QM_Dispatcher {
 		if ( ! empty( $e ) and ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
 			return false;
 		}
-		
+
 		# Allow users to disable this dispatcher
 		if ( ! apply_filters( "qm/dispatch/{$this->id}", true ) ) {
 			return false;

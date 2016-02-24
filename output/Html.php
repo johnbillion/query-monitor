@@ -167,7 +167,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * Otherwise, the display text and file details such as this is returned:
 	 *
 	 *     {text}<br>{file}:{line}
-	 * 
+	 *
 	 * @param  string $text The display text, such as a function name or file name.
 	 * @param  string $file The full file path and name.
 	 * @param  int    $line Optional. A line number, if appropriate.

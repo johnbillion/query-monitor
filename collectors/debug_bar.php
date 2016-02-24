@@ -90,43 +90,31 @@ function register_qm_collectors_debug_bar() {
 function qm_debug_bar_being_activated() {
 
 	if ( ! is_admin() ) {
-
 		return false;
-
 	}
 
 	if ( ! isset( $_REQUEST['action'] ) ) {
-
 		return false;
-
 	}
 
 	if ( isset( $_GET['action'] ) ) {
 
 		if ( ! isset( $_GET['plugin'] ) || ! isset( $_GET['_wpnonce'] ) ) {
-
 			return false;
-
 		}
 
 		if ( 'activate' === $_GET['action'] && false !== strpos( $_GET['plugin'], 'debug-bar.php' ) ) {
-
 			return true;
-
 		}
 
 	} elseif ( isset( $_POST['action'] ) ) {
 
 		if ( ! isset( $_POST['checked'] ) || ! is_array( $_POST['checked'] ) || ! isset( $_POST['_wpnonce'] ) ) {
-
 			return false;
-
 		}
 
 		if ( 'activate-selected' === $_POST['action'] && in_array( 'debug-bar/debug-bar.php', $_POST['checked'] ) ) {
-
 			return true;
-
 		}
 
 	}
