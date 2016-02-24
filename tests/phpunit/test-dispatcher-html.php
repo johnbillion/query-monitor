@@ -80,6 +80,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'php_errors'    => false,
 			'redirects'     => false,
 			'request'       => true,
+			'rewrites'      => true,
 			'theme'         => true,
 			'transients'    => true,
 		);
