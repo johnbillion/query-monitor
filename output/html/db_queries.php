@@ -166,7 +166,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			 * By default QM shows a prompt to install the QM db.php drop-in,
 			 * this filter allows a dev to choose not to show the prompt.
 			 *
-			 * @param string $show_prompt  Whether to show the prompt
+			 * @param bool $show_prompt Whether to show the prompt.
 			 */
 			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
