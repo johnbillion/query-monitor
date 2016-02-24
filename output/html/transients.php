@@ -89,8 +89,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				printf(
 					'<td class="qm-nowrap qm-ltr">%s</td>',
-					implode( '<br>', $stack ) // WPCS: XSS ok.
-				);
+					implode( '<br>', $stack )
+				); // WPCS: XSS ok.
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )

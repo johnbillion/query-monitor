@@ -44,7 +44,9 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 
 				echo '<tr>';
 				echo '<td valign="top">' . esc_html( $rule ) . '</td>';
-				echo '<td valign="top">' . self::format_url( $query ) . '</td>';
+				echo '<td valign="top">';
+				echo self::format_url( $query ); // WPCS: XSS ok.
+				echo '</td>';
 				echo '</tr>';
 
 			}
