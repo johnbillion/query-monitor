@@ -287,7 +287,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$sql = self::format_sql( $row['sql'] );
 
-		if ( 'SELECT' != $row['type'] ) {
+		if ( 'SELECT' !== $row['type'] ) {
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
 		}
 

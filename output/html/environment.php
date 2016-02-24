@@ -69,7 +69,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '<td>';
 			echo esc_html( $val['after'] );
 
-			if ( $val['after'] != $val['before'] ) {
+			if ( $val['after'] !== $val['before'] ) {
 				printf(
 					'<br><span class="qm-info">&nbsp;%s</span>',
 					esc_html( sprintf(
@@ -100,7 +100,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			foreach ( $data['db'] as $id => $db ) {
 
-				if ( 1 == count( $data['db'] ) ) {
+				if ( 1 === count( $data['db'] ) ) {
 					$name = __( 'Database', 'query-monitor' );
 				} else {
 					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );

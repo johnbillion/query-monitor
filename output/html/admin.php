@@ -94,11 +94,11 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 				$cols = $data['current_screen']->id;
 			}
 
-			if ( 'edit-comments' == $col ) {
+			if ( 'edit-comments' === $col ) {
 				$col = 'comments';
-			} else if ( 'upload' == $col ) {
+			} else if ( 'upload' === $col ) {
 				$col = 'media';
-			} else if ( 'link-manager' == $col ) {
+			} else if ( 'link-manager' === $col ) {
 				$col = 'link';
 			}
 

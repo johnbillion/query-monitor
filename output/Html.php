@@ -197,7 +197,7 @@ abstract class QM_Output_Html extends QM_Output {
 				$fallback .= ':' . $line;
 			}
 			$return = esc_html( $text );
-			if ( $fallback != $text ) {
+			if ( $fallback !== $text ) {
 				$return .= '<br><span class="qm-info">&nbsp;' . esc_html( $fallback ) . '</span>';
 			}
 			return $return;

@@ -29,7 +29,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			return;
 		}
 
-		$child_theme = ( $data['stylesheet'] != $data['template'] );
+		$child_theme = ( $data['stylesheet'] !== $data['template'] );
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
