@@ -160,7 +160,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( !empty( $db->rows ) ) {
 
-			if ( ! $db->has_trace && ( '$wpdb' === $name ) ) {
+			/**
+			 * Filter whether to show the QM extended query information prompt.
+			 *
+			 * By default QM shows a prompt to install the QM db.php drop-in,
+			 * this filter allows a dev to choose not to show the prompt.
+			 *
+			 * @param string $show_prompt  Whether to show the prompt
+			 */
+			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
 				echo '<td colspan="' . absint( $span ) . '" class="qm-warn">';
 				echo wp_kses( sprintf(
