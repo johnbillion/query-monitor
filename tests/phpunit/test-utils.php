@@ -39,12 +39,4 @@ class Test_Utils extends QM_UnitTestCase {
 		);
 	}
 
-	public function testCurrentUrl() {
-
-		$url = add_query_arg( 'foo', 'bar', home_url( 'baz' ) );
-		$this->go_to( $url );
-		$this->assertSame( QM_Util::get_current_url(), $url );
-
-	}
-
 }
