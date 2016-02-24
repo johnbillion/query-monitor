@@ -239,8 +239,9 @@ class QM_Backtrace {
 				} else {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
-						if ( isset( $trace['args'][$i] ) )
+						if ( isset( $trace['args'][$i] ) ) {
 							$args[] = '\'' . $trace['args'][$i] . '\'';
+						}
 					}
 					$return['id']      = $trace['function'] . '()';
 					$return['display'] = $trace['function'] . '(' . implode( ',', $args ) . ')';
