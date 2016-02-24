@@ -23,8 +23,8 @@ env:
     - WP_VERSION=latest WP_MULTISITE=0
     - WP_VERSION=latest WP_MULTISITE=1
     # previous stable:
-    - WP_VERSION=4.2 WP_MULTISITE=0
-    - WP_VERSION=4.2 WP_MULTISITE=1
+    - WP_VERSION=4.3 WP_MULTISITE=0
+    - WP_VERSION=4.3 WP_MULTISITE=1
     # earliest supported version with a non-buggy unit test suite:
     - WP_VERSION=4.0 WP_MULTISITE=0
     - WP_VERSION=4.0 WP_MULTISITE=1
