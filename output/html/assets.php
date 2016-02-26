@@ -118,10 +118,23 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$ver = $script->ver;
 		}
 
-		if ( empty( $script->src ) ) {
+		/**
+		 * Filter the script loader source.
+		 *
+		 * @param string $src    Script loader source path.
+		 * @param string $handle Script handle.
+		 */
+		$source = apply_filters( 'script_loader_src', $script->src, $script->handle );
+
+		if ( is_wp_error( $source ) ) {
+			$src = $source->get_error_message();
+			if ( ( $error_data = $source->get_error_data() ) && isset( $error_data['src'] ) ) {
+				$src .= ' (' . $error_data['src'] . ')';
+			}
+		} elseif ( empty( $source ) ) {
 			$src = '';
 		} else {
-			$src = $script->src;
+			$src = $source;
 		}
 
 		$dependents = self::get_dependents( $script, $dependencies );
@@ -134,7 +147,15 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 		}
 
-		echo '<td class="qm-wrap">' . esc_html( $script->handle ) . '<br><span class="qm-info">&nbsp;' . esc_html( $src ) . '</span></td>';
+		echo '<td class="qm-wrap">' . esc_html( $script->handle ) . '<br><span class="qm-info">&nbsp;';
+		if ( is_wp_error( $source ) ) {
+			printf( '<span class="qm-warn">%s</span>',
+				esc_html( $src )
+			);
+		} else {
+			echo esc_html( $src );
+		}
+		echo '</span></td>';
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $deps ) ) . '">' . implode( '<br>', array_map( 'esc_html', $deps ) ) . '</td>';
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $dependents ) ) . '">' . implode( '<br>', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td>' . esc_html( $ver ) . '</td>';
