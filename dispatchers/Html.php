@@ -122,6 +122,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'send_headers',          'nocache_headers' );
 
 	}
 
