@@ -46,12 +46,11 @@ class QM_Util {
 
 	public static function standard_dir( $dir, $abspath_replace = null ) {
 
-		$dir = str_replace( '\\', '/', $dir );
-		$dir = str_replace( '//', '/', $dir );
+		$dir = wp_normalize_path( $dir );
 
 		if ( is_string( $abspath_replace ) ) {
 			if ( !self::$abspath ) {
-				self::$abspath = self::standard_dir( ABSPATH );
+				self::$abspath = wp_normalize_path( ABSPATH );
 			}
 			$dir = str_replace( self::$abspath, $abspath_replace, $dir );
 		}
