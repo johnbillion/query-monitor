@@ -43,8 +43,6 @@ exclude:
       env: WP_VERSION=4.0 WP_MULTISITE=1
 
 allow_failures:
-    # allow failures on PHP 7 for now:
-    - php: 7.0
     # allow failures on nightlies:
     - env: WP_VERSION=nightly WP_MULTISITE=0
     - env: WP_VERSION=nightly WP_MULTISITE=1
