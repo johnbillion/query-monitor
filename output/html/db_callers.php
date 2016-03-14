@@ -64,7 +64,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
-				echo '<td class="qm-ltr">' . esc_html( $row['caller'] ) . '</td>';
+				echo '<td class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '">' . esc_html( $row['caller'] ) . '</a></td>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) ) {

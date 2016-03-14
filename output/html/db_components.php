@@ -65,7 +65,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				$total_calls += $row['calls'];
 
 				echo '<tr>';
-				echo '<td>' . esc_html( $row['component'] ) . '</td>';
+				echo '<td><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</a></td>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) ) {

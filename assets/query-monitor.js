@@ -110,7 +110,7 @@ jQuery( function($) {
 
 	}
 
-	$('#qm').find('select.qm-filter').on('change',function(e){
+	$('#qm').find('.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
 			table  = $(this).closest('table'),
@@ -146,6 +146,19 @@ jQuery( function($) {
 
 		$(this).blur();
 
+	});
+
+	$('#qm').find('.qm-filter-trigger').on('click',function(e){
+		var filter = $(this).data('qm-filter'),
+		    value  = $(this).data('qm-value'),
+		    target = $(this).data('qm-target');
+		$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').change();
+		$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).change();
+		$('html, body').scrollTop( $(this).closest('.qm').offset().top );
+		$('html, body').animate({
+			scrollTop: $('#qm-' + target).offset().top
+		}, 500);
+		e.preventDefault();
 	});
 
 	$('#qm').find('.qm-toggle').on('click',function(e){
