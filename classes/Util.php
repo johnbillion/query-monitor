@@ -62,6 +62,7 @@ class QM_Util {
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
 			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
 			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
 			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
@@ -104,8 +105,9 @@ class QM_Util {
 				$name    = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
 				$context = $plug;
 				break;
+			case 'go-plugin':
 			case 'vip-plugin':
-				$plug = str_replace( self::$file_dirs['vip-plugin'], '', $file );
+				$plug = str_replace( self::$file_dirs[ $type ], '', $file );
 				$plug = trim( $plug, '/' );
 				if ( strpos( $plug, '/' ) ) {
 					$plug = explode( '/', $plug );
