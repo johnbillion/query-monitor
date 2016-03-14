@@ -115,7 +115,7 @@ jQuery( function($) {
 		var filter = $(this).attr('data-filter'),
 			table  = $(this).closest('table'),
 			tr     = table.find('tbody tr[data-qm-' + filter + ']'),
-			val    = $(this).val().replace(/[[\]()'"]/g, "\\$&"),
+			val    = $(this).val().replace(/[[\]()'"\\]/g, "\\$&"),
 			total  = tr.removeClass('qm-hide-' + filter).length,
 			hilite = $(this).attr('data-highlight'),
 			time   = 0;
