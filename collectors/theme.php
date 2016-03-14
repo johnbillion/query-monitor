@@ -47,14 +47,14 @@ class QM_Collector_Theme extends QM_Collector {
 			$template_directory   = QM_Util::standard_dir( get_template_directory() );
 			$theme_directory      = QM_Util::standard_dir( get_theme_root() );
 
-			$template_file  = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_path );
-			$template_file  = ltrim( $template_file, '/' );
-			$theme_template = str_replace( $theme_directory, '', $template_path );
-			$theme_template = ltrim( $theme_template, '/' );
+			$template_file       = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_path );
+			$template_file       = ltrim( $template_file, '/' );
+			$theme_template_file = str_replace( $theme_directory, '', $template_path );
+			$theme_template_file = ltrim( $theme_template_file, '/' );
 
-			$this->data['template_path']  = $template_path;
-			$this->data['template_file']  = $template_file;
-			$this->data['theme_template'] = $theme_template;
+			$this->data['template_path']       = $template_path;
+			$this->data['template_file']       = $template_file;
+			$this->data['theme_template_file'] = $theme_template_file;
 
 		}
 

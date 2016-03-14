@@ -122,7 +122,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $expensive[0]['result'] ) ) {
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Affected Rows', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Rows', 'query-monitor' ) . '</th>';
 		}
 
 		echo '<th class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';

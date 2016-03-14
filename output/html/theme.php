@@ -40,7 +40,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td>' . esc_html__( 'Template File', 'query-monitor' ) . '</td>';
 			if ( $child_theme ) {
-				echo '<td>' . self::output_filename( $data['theme_template'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
+				echo '<td>' . self::output_filename( $data['theme_template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			} else {
 				echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			}

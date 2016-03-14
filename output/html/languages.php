@@ -35,17 +35,17 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Languages', 'query-monitor' ) . '</th>';
-		echo '<th colspan="3">' . esc_html__( 'Language Setting:', 'query-monitor' ) . ' ' . esc_html( get_locale() ) . '</th>';
+		echo '<th colspan="4">' . esc_html__( 'Language Setting:', 'query-monitor' ) . ' ' . esc_html( $data['locale'] ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</td>';
 		echo '<td>' . esc_html__( 'Caller', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html__( 'MO File', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html__( 'Loaded', 'query-monitor' ) . '</td>';
+		echo '<td colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</td>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
+
+		$not_found_class = ( 'en_US' === $data['locale'] ) ? '' : 'qm-warn';
 
 		foreach ( $data['languages'] as $mofile ) {
 
@@ -61,11 +61,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 			if ( $mofile['found'] ) {
 				echo '<td class="qm-nowrap">';
-				echo esc_html__( 'Found', 'query-monitor' ) . '<br />';
 				echo esc_html( size_format( $mofile['found'] ) );
 				echo '</td>';
 			} else {
-				echo '<td class="qm-warn">';
+				echo '<td class="' . esc_attr( $not_found_class ) . '">';
 				echo esc_html__( 'Not Found', 'query-monitor' );
 				echo '</td>';
 			}
