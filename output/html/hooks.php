@@ -95,11 +95,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$component = '';
 					}
 
-					printf(
+					printf( // WPCS: XSS ok.
 						'<tr data-qm-subject="%s" %s>',
 						esc_attr( $component ),
 						$attr
-					); // WPCS: XSS ok.
+					);
 
 					if ( $first ) {
 

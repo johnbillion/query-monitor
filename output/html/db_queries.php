@@ -352,9 +352,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['sql'] ) ) {
-			printf( '<td class="qm-row-sql qm-ltr qm-wrap">%s</td>',
+			printf( // WPCS: XSS ok.
+				'<td class="qm-row-sql qm-ltr qm-wrap">%s</td>',
 				$sql
-			); // WPCS: XSS ok.
+			);
 		}
 
 		if ( isset( $cols['caller'] ) ) {

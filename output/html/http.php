@@ -122,20 +122,20 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 				}
 
-				printf(
+				printf( // WPCS: XSS ok.
 					'<tr %s class="%s">',
 					$attr,
 					esc_attr( $css )
-				); // WPCS:: XSS ok.
+				);
 				printf(
 					'<td class="qm-num">%s</td>',
 					intval( $i )
 				);
-				printf(
+				printf( // WPCS: XSS ok.
 					'<td class="qm-url qm-ltr qm-wrap">%s<br>%s</td>',
 					esc_html( $method ),
 					$url
-				); // WPCS:: XSS ok.
+				);
 				printf(
 					'<td>%s</td>',
 					esc_html( $response )
@@ -144,10 +144,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td>%s</td>',
 					esc_html( $transport )
 				);
-				printf(
+				printf( // WPCS: XSS ok.
 					'<td class="qm-nowrap qm-ltr">%s</td>',
 					implode( '<br>', $stack )
-				); // WPCS: XSS ok.
+				);
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )

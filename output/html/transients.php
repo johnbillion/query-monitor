@@ -87,10 +87,10 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				printf(
+				printf( // WPCS: XSS ok.
 					'<td class="qm-nowrap qm-ltr">%s</td>',
 					implode( '<br>', $stack )
-				); // WPCS: XSS ok.
+				);
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
