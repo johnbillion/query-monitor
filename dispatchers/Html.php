@@ -31,6 +31,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
+		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
@@ -122,6 +123,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'send_headers',          'nocache_headers' );
 
 	}
@@ -202,7 +204,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'qm-no-js',
 		);
 
-		if ( !is_admin() ) {
+		if ( did_action( 'wp_head' ) ) {
 			$absolute = function_exists( 'twentyfifteen_setup' );
 			if ( apply_filters( 'qm/output/absolute_position', $absolute ) ) {
 				$class[] = 'qm-absolute';

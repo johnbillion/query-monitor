@@ -49,7 +49,7 @@ class QM_Collector_Theme extends QM_Collector {
 
 			$template_file       = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_path );
 			$template_file       = ltrim( $template_file, '/' );
-			$theme_template_file = str_replace( $theme_directory, '', $template_path );
+			$theme_template_file = str_replace( array( $theme_directory, ABSPATH ), '', $template_path );
 			$theme_template_file = ltrim( $theme_template_file, '/' );
 
 			$this->data['template_path']       = $template_path;

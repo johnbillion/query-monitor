@@ -25,6 +25,7 @@ class QM_Collector_Assets extends QM_Collector {
 		add_action( 'admin_head',                 array( $this, 'action_head' ), 999 );
 		add_action( 'wp_head',                    array( $this, 'action_head' ), 999 );
 		add_action( 'login_head',                 array( $this, 'action_head' ), 999 );
+		add_action( 'embed_head',                 array( $this, 'action_head' ), 999 );
 	}
 
 	public function action_head() {
