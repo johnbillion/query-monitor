@@ -146,11 +146,19 @@ body.wp-admin #qm {
 	margin: 0 0 0 160px !important;
 }
 
+@media only screen and (max-width: 960px) {
+	body.wp-admin.auto-fold #qm {
+		margin-left: 36px !important;
+		margin-right: 0 !important;
+	}
+}
+
 body.wp-admin.folded #qm {
 	margin-left: 36px !important;
 }
 
 @media screen and (max-width: 782px) {
+	body.wp-admin.auto-fold #qm,
 	body.wp-admin #qm {
 		margin-left: 0 !important;
 	}
@@ -496,6 +504,13 @@ html[dir="rtl"] body.wp-admin #qm {
 
 @media all and (max-width: 782px) {
 	html[dir="rtl"] body.wp-admin #qm {
+		margin-right: 36px !important;
+		margin-left: 0 !important;
+	}
+}
+
+@media only screen and (max-width: 960px) {
+	html[dir="rtl"] body.wp-admin.auto-fold #qm {
 		margin-right: 36px !important;
 		margin-left: 0 !important;
 	}
