@@ -515,6 +515,13 @@ html[dir="rtl"] .qm th {
 	text-align: right !important;
 }
 
+html[dir="rtl"] .qm a.qm-toggle {
+	border-left: none !important;
+	border-right: 1px solid #e8e8e8 !important;
+	right: auto !important;
+	left: 1px !important;
+}
+
 /* No-JS tweaks */
 
 .qm-no-js #qm-authentication,
