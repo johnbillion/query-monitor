@@ -29,18 +29,22 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			return;
 		}
 
+		$colspan = empty( $data['dupe_components'] ) ? 4 : 5;
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="5">' . esc_html( $this->collector->name() ) . '</th>';
+		echo '<th colspan="' . absint( $colspan ) . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th>' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th>' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
+		if ( ! empty( $data['dupe_components'] ) ) {
+			echo '<th>' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
+		}
 		echo '<th>' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 
@@ -69,18 +73,20 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				);
 			}
 			echo '</td>';
-			echo '<td class="qm-nowrap">';
-			foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
-				printf(
-					'%s<br><span class="qm-info">&nbsp;%s</span><br>',
-					esc_html( $component ),
-					esc_html( sprintf(
-						_n( '%s call', '%s calls', $calls, 'query-monitor' ),
-						number_format_i18n( $calls )
-					) )
-				);
+			if ( isset( $data['dupe_components'][ $sql ] ) ) {
+				echo '<td class="qm-nowrap">';
+				foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
+					printf(
+						'%s<br><span class="qm-info">&nbsp;%s</span><br>',
+						esc_html( $component ),
+						esc_html( sprintf(
+							_n( '%s call', '%s calls', $calls, 'query-monitor' ),
+							number_format_i18n( $calls )
+						) )
+					);
+				}
+				echo '</td>';
 			}
-			echo '</td>';
 			echo '<td class="qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_sources'][ $sql ] as $source => $calls ) {
 				printf(

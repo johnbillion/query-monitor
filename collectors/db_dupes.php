@@ -48,27 +48,28 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 			// Loop over each query
 			foreach ( $query_ids as $query_id ) {
 
-				$trace     = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'];
+				if ( isset( $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'] ) ) {
 
-				if ( empty( $trace ) ) {
-					continue;
+					$trace     = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'];
+					$stack     = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
+					$component = $trace->get_component();
+
+					// Populate the component counts for this query
+					if ( isset( $components[ $sql ][ $component->name ] ) ) {
+						$components[ $sql ][ $component->name ]++;
+					} else {
+						$components[ $sql ][ $component->name ] = 1;
+					}
+
+				} else {
+					$stack = array_reverse( explode( ', ', $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'] ) );
 				}
-
-				$stack     = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
-				$component = $trace->get_component();
 
 				// Populate the caller counts for this query
 				if ( isset( $callers[ $sql ][ $stack[0] ] ) ) {
 					$callers[ $sql ][ $stack[0] ]++;
 				} else {
 					$callers[ $sql ][ $stack[0] ] = 1;
-				}
-
-				// Populate the component counts for this query
-				if ( isset( $components[ $sql ][ $component->name ] ) ) {
-					$components[ $sql ][ $component->name ]++;
-				} else {
-					$components[ $sql ][ $component->name ] = 1;
 				}
 
 				// Populate the stack for this query
