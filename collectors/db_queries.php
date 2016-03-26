@@ -101,6 +101,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$total_time = 0;
 		$has_result = false;
 		$has_trace  = false;
+		$i          = 0;
 
 		foreach ( (array) $db->queries as $query ) {
 
@@ -159,6 +160,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$this->log_type( $type );
 			$this->log_caller( $caller_name, $ltime, $type );
 
+			$this->maybe_log_dupe( $sql, $i );
+
 			if ( $component ) {
 				$this->log_component( $component, $ltime, $type );
 			}
@@ -185,7 +188,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$this->data['expensive'][] = $row;
 			}
 
-			$rows[] = $row;
+			$rows[ $i ] = $row;
+			$i++;
 
 		}
 
