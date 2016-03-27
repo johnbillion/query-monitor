@@ -102,7 +102,11 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				$name    = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+				if ( 'mu-plugin' === $type ) {
+					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
+				} else {
+					$name = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
+				}
 				$context = $plug;
 				break;
 			case 'go-plugin':
