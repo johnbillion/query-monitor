@@ -27,7 +27,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
 
-		echo '<div class="qm qm-half">';
+		echo '<div class="qm qm-third">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -66,7 +66,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td>' . esc_html( $key ) . '</td>';
-			echo '<td>';
+			echo '<td class="qm-wrap">';
 			echo esc_html( $val['after'] );
 
 			if ( $val['after'] !== $val['before'] ) {
@@ -87,7 +87,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>error_reporting</td>';
-		echo '<td>' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">&nbsp;';
+		echo '<td class="qm-wrap">' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">&nbsp;';
 		echo $error_levels; // WPCS: XSS ok.
 		echo '</span></td>';
 		echo '</tr>';
@@ -106,7 +106,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
 				}
 
-				echo '<div class="qm qm-half">';
+				echo '<div class="qm qm-third">';
 				echo '<table cellspacing="0">';
 				echo '<thead>';
 				echo '<tr>';
@@ -123,7 +123,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					if ( ! isset( $value ) ) {
 						echo '<td><span class="qm-warn">' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
-						echo '<td>' . esc_html( $value ) . '</td>';
+						echo '<td class="qm-wrap">' . esc_html( $value ) . '</td>';
 					}
 
 					echo '</tr>';
@@ -170,7 +170,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					echo '<td>' . esc_html( $key ) . '</td>';
-					echo '<td>';
+					echo '<td class="qm-wrap">';
 					echo esc_html( $val );
 					echo $append; // WPCS: XSS ok.
 					echo '</td>';
@@ -189,7 +189,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		}
 
-		echo '<div class="qm qm-half qm-clear">';
+		echo '<div class="qm qm-third" style="float:right !important">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -202,7 +202,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td>' . esc_html( $key ) . '</td>';
-			echo '<td>' . esc_html( $val ) . '</td>';
+			echo '<td class="qm-wrap">' . esc_html( $val ) . '</td>';
 			echo '</tr>';
 
 		}
@@ -211,7 +211,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</table>';
 		echo '</div>';
 
-		echo '<div class="qm qm-half">';
+		echo '<div class="qm qm-third">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
@@ -222,13 +222,13 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'software', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html( $data['server']['name'] ) . '</td>';
+		echo '<td class="qm-wrap">' . esc_html( $data['server']['name'] ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'version', 'query-monitor' ) . '</td>';
 		if ( !empty( $data['server']['version'] ) ) {
-			echo '<td>' . esc_html( $data['server']['version'] ) . '</td>';
+			echo '<td class="qm-wrap">' . esc_html( $data['server']['version'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
@@ -237,7 +237,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'address', 'query-monitor' ) . '</td>';
 		if ( !empty( $data['server']['address'] ) ) {
-			echo '<td>' . esc_html( $data['server']['address'] ) . '</td>';
+			echo '<td class="qm-wrap">' . esc_html( $data['server']['address'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
@@ -245,7 +245,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'host', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html( $data['server']['host'] ) . '</td>';
+		echo '<td class="qm-wrap">' . esc_html( $data['server']['host'] ) . '</td>';
 		echo '</tr>';
 
 		echo '</tbody>';

@@ -226,7 +226,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		echo '<div class="qm qm-half" id="qm-authentication">';
+		$collectors = QM_Collectors::init();
+
+		echo '<div class="qm qm-half qm-clear" id="qm-authentication">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
