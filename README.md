@@ -49,7 +49,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
 
  * Shows all database queries performed on the current page
  * Shows **affected rows** and time for all queries
- * Show notifications for **slow queries** and **queries with errors**
+ * Shows notifications for **slow queries**, **duplicate queries**, and **queries with errors**
  * Filter queries by **query type** (`SELECT`, `UPDATE`, `DELETE`, etc)
  * Filter queries by **component** (WordPress core, Plugin X, Plugin Y, theme)
  * Filter queries by **calling function**
