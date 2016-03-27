@@ -390,7 +390,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm a {
-	color: #2ea2cc !important;
+	color: #00a0d2 !important;
 	text-decoration: none !important;
 	text-shadow: none !important;
 	font-weight: normal !important;
@@ -398,7 +398,7 @@ body.wp-admin.folded #qm {
 .qm a:focus,
 .qm a:hover {
 	text-decoration: underline !important;
-	color: #2ea2cc !important;
+	color: #00a0d2 !important;
 }
 
 .qm a.qm-warn {
@@ -406,7 +406,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm a.qm-toggle {
-	color: #999 !important;
+	color: #00a0d2 !important;
 	padding: 4px 8px 3px !important;
 	border-left: 1px solid #e8e8e8 !important;
 	border-bottom: 1px solid #e8e8e8 !important;
@@ -420,7 +420,7 @@ body.wp-admin.folded #qm {
 .qm a.qm-toggle:hover {
 	text-decoration: none !important;
 	border-color: #e8e8e8 !important;
-	color: #444 !important;
+	color: #00a0d2 !important;
 	background: #eee !important;
 }
 
