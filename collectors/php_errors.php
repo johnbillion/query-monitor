@@ -49,9 +49,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public function error_handler( $errno, $message, $file = null, $line = null ) {
 
-		#if ( !( error_reporting() & $errno ) )
-		#	return false;
-
 		switch ( $errno ) {
 
 			case E_WARNING:
@@ -79,35 +76,31 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		}
 
-		if ( error_reporting() > 0 ) {
+		if ( ! class_exists( 'QM_Backtrace' ) ) {
+			return false;
+		}
 
-			if ( ! class_exists( 'QM_Backtrace' ) ) {
-				return false;
-			}
+		$trace  = new QM_Backtrace( array(
+			'ignore_current_filter' => false,
+		) );
+		$caller = $trace->get_caller();
+		$key    = md5( $message . $file . $line . $caller['id'] );
 
-			$trace  = new QM_Backtrace( array(
-				'ignore_current_filter' => false,
-			) );
-			$caller = $trace->get_caller();
-			$key    = md5( $message . $file . $line . $caller['id'] );
+		$filename = QM_Util::standard_dir( $file, '' );
 
-			$filename = QM_Util::standard_dir( $file, '' );
-
-			if ( isset( $this->data['errors'][$type][$key] ) ) {
-				$this->data['errors'][$type][$key]->calls++;
-			} else {
-				$this->data['errors'][$type][$key] = (object) array(
-					'errno'    => $errno,
-					'type'     => $type,
-					'message'  => $message,
-					'file'     => $file,
-					'filename' => $filename,
-					'line'     => $line,
-					'trace'    => $trace,
-					'calls'    => 1
-				);
-			}
-
+		if ( isset( $this->data['errors'][$type][$key] ) ) {
+			$this->data['errors'][$type][$key]->calls++;
+		} else {
+			$this->data['errors'][$type][$key] = (object) array(
+				'errno'    => $errno,
+				'type'     => $type,
+				'message'  => $message,
+				'file'     => $file,
+				'filename' => $filename,
+				'line'     => $line,
+				'trace'    => $trace,
+				'calls'    => 1
+			);
 		}
 
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
