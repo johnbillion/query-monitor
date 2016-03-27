@@ -133,6 +133,8 @@ class QM_Collector_Request extends QM_Collector {
 			$this->data['queried_object']['data'] = $qo;
 		}
 
+		$this->data['request_method'] = strtoupper( $_SERVER['REQUEST_METHOD'] );
+
 	}
 
 }

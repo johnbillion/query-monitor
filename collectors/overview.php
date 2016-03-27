@@ -44,6 +44,7 @@ class QM_Collector_Overview extends QM_Collector {
 		$this->data['memory_limit'] = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) );
 		$this->data['memory_usage'] = ( 100 / $this->data['memory_limit'] ) * $this->data['memory'];
 
+		$this->data['is_admin'] = is_admin();
 	}
 
 }
