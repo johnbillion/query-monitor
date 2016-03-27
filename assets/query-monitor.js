@@ -91,6 +91,8 @@ jQuery( function($) {
 		$('#wp-admin-bar-query-monitor ul').append(container);
 
 		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
+			var paused = true;
+
 			if ( is_admin ) {
 				$('#wpfooter').css('position','relative');
 			}
@@ -99,10 +101,6 @@ jQuery( function($) {
 
 				$( infinite_scroll.contentSelector ).infinitescroll('pause');
 
-				if ( window.console ) {
-					console.debug( qm_l10n.infinitescroll_paused );
-				}
-
 			} else if ( window.infiniteScroll && infiniteScroll.scroller ) {
 				// Jetpack Infinite Scroll module
 
@@ -110,11 +108,20 @@ jQuery( function($) {
 					return false;
 				};
 
-				if ( window.console ) {
-					console.debug( qm_l10n.infinitescroll_paused );
-				}
+			} else if ( window.wp && wp.themes && wp.themes.RunInstaller ) {
+				// Infinite scrolling on Appearance -> Add New screens
 
+				var view = wp.themes.RunInstaller.view.view;
+				view.stopListening( view.parent, 'theme:scroll' );
+
+			} else {
+				paused = false;
 			}
+
+			if ( paused && window.console ) {
+				console.debug( qm_l10n.infinitescroll_paused );
+			}
+
 			$('#qm').show();
 		});
 
