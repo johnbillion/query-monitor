@@ -266,6 +266,11 @@ body.wp-admin.folded #qm {
 	margin: 0 !important;
 }
 
+#qm-conditionals table,
+#qm-overview table {
+	table-layout: fixed !important;
+}
+
 .qm td,
 .qm th {
 	background: #fff !important;
