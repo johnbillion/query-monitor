@@ -32,6 +32,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
 		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
+		add_action( 'amp_post_template_footer',   array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
@@ -126,6 +127,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'send_headers',          'nocache_headers' );
 
+		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ) );
+		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ), 11 );
+
+	}
+
+	public function manually_print_assets() {
+		wp_print_scripts( array(
+			'query-monitor',
+		) );
+		wp_print_styles( array(
+			'query-monitor',
+		) );
 	}
 
 	public function enqueue_assets() {
@@ -214,10 +227,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = sprintf( 'qm-theme-%s', get_stylesheet() );
 		}
 
-		if ( !is_admin_bar_showing() ) {
-			$class[] = 'qm-show';
-		}
-
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-wrapper">';
 		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
@@ -272,7 +281,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		?>
-		if ( 'undefined' === typeof QM_i18n ) {
+		if ( ( 'undefined' === typeof QM_i18n ) || ( ! document.getElementById( 'wpadminbar' ) ) ) {
 			document.getElementById( 'qm' ).style.display = 'block';
 		}
 		<?php
