@@ -227,9 +227,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = sprintf( 'qm-theme-%s', get_stylesheet() );
 		}
 
+		if ( !is_admin_bar_showing() ) {
+			$class[] = 'qm-peek';
+		}
+
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-wrapper">';
+		echo '<div id="qm-title">';
 		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
+		echo '</div>';
 
 	}
 
@@ -281,8 +287,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		?>
-		if ( ( 'undefined' === typeof QM_i18n ) || ( ! document.getElementById( 'wpadminbar' ) ) ) {
+		if ( 'undefined' === typeof QM_i18n ) {
 			document.getElementById( 'qm' ).style.display = 'block';
+		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
+			document.getElementById( 'qm' ).className += ' qm-peek';
 		}
 		<?php
 		echo '</script>' . "\n\n";

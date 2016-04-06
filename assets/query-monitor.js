@@ -122,11 +122,31 @@ jQuery( function($) {
 				console.debug( qm_l10n.infinitescroll_paused );
 			}
 
-			$('#qm').show();
+			$('#qm').addClass('qm-show').removeClass('qm-hide');
 		});
 
 		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
+	} else {
+
+		var container = document.createDocumentFragment();
+
+		$.each( qm.menu.sub, function( i, el ) {
+
+			var new_menu = $('<li><a/></li>');
+			new_menu
+				.find('a').eq(0)
+				.html(el.title)
+				.attr('href',el.href)
+			;
+
+			container.appendChild( new_menu.get(0) );
+
+		} );
+
+		$('<ul/>').appendTo('#qm-title').append(container).find('a').on('click',function(e){
+			$('#qm').addClass('qm-show').removeClass('qm-hide qm-peek');
+		} );
 	}
 
 	$('#qm').find('.qm-filter').on('change',function(e){
