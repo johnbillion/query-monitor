@@ -47,7 +47,7 @@ class QM_Collector_Theme extends QM_Collector {
 			$template_directory   = QM_Util::standard_dir( get_template_directory() );
 			$theme_directory      = QM_Util::standard_dir( get_theme_root() );
 
-			$template_file       = str_replace( array( $stylesheet_directory, $template_directory ), '', $template_path );
+			$template_file       = str_replace( array( $stylesheet_directory, $template_directory, ABSPATH ), '', $template_path );
 			$template_file       = ltrim( $template_file, '/' );
 			$theme_template_file = str_replace( array( $theme_directory, ABSPATH ), '', $template_path );
 			$theme_template_file = ltrim( $theme_template_file, '/' );
@@ -58,8 +58,9 @@ class QM_Collector_Theme extends QM_Collector {
 
 		}
 
-		$this->data['stylesheet'] = get_stylesheet();
-		$this->data['template']   = get_template();
+		$this->data['stylesheet']     = get_stylesheet();
+		$this->data['template']       = get_template();
+		$this->data['is_child_theme'] = ( $this->data['stylesheet'] != $this->data['template'] );
 
 		if ( isset( $this->data['body_class'] ) ) {
 			asort( $this->data['body_class'] );
