@@ -53,14 +53,23 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $data['dupes'] as $sql => $queries ) {
+
+			// This should probably happen in the collector's processor
+			$type    = QM_Util::get_query_type( $sql );
+			$sql_out = self::format_sql( $sql );
+
+			if ( 'SELECT' !== $type ) {
+				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";
+			}
+
 			echo '<tr>';
-			echo '<td>';
-			echo self::format_sql( $sql ); // WPCS: XSS ok;
+			echo '<td class="qm-row-sql qm-ltr qm-wrap">';
+			echo $sql_out; // WPCS: XSS ok;
 			echo '</td>';
 			echo '<td class="qm-num">';
 			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
 			echo '</td>';
-			echo '<td class="qm-nowrap qm-ltr">';
+			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
 				printf(
 					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s">%s</a><br><span class="qm-info">&nbsp;%s</span><br>',
@@ -74,7 +83,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			}
 			echo '</td>';
 			if ( isset( $data['dupe_components'][ $sql ] ) ) {
-				echo '<td class="qm-nowrap">';
+				echo '<td class="qm-row-component qm-nowrap">';
 				foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
 					printf(
 						'%s<br><span class="qm-info">&nbsp;%s</span><br>',
@@ -87,7 +96,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				}
 				echo '</td>';
 			}
-			echo '<td class="qm-nowrap qm-ltr">';
+			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_sources'][ $sql ] as $source => $calls ) {
 				printf(
 					'%s<br><span class="qm-info">&nbsp;%s</span><br>',
