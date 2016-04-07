@@ -37,6 +37,15 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
+		$cache = QM_Collectors::get( 'cache' );
+
+		if ( $cache ) {
+			$cache_data = $cache->get_data();
+			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
+				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
+			}
+		}
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
@@ -47,6 +56,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( isset( $db_query_num ) ) {
 			echo '<th scope="col">' . esc_html__( 'Database query time', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Database queries', 'query-monitor' ) . '</th>';
+		}
+		if ( isset( $cache_hit_percentage ) ) {
+			echo '<th scope="col">' . esc_html__( 'Object cache', 'query-monitor' ) . '</th>';
 		}
 		echo '</tr>';
 		echo '</thead>';
@@ -96,6 +108,20 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			echo '</td>';
 		}
+
+		if ( isset( $cache_hit_percentage ) ) {
+			echo '<td>';
+			echo esc_html( sprintf(
+				'%s%% hit rate',
+				number_format_i18n( $cache_hit_percentage, 1 )
+			) );
+			echo '<br>' . esc_html( sprintf(
+				__( 'External object cache: %s'),
+				( $cache_data['ext_object_cache'] ? 'true' : 'false' )
+			) );
+			echo '</td>';
+		}
+
 		echo '</tr>';
 		echo '</tbody>';
 
