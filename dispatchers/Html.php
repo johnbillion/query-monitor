@@ -241,8 +241,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		$collectors = QM_Collectors::init();
-
 		echo '<div class="qm qm-half qm-clear" id="qm-authentication">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
@@ -332,7 +330,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( QM_Util::is_async() ) {
+		if ( QM_Util::is_async() && ! is_customize_preview() ) {
 			return false;
 		}
 
