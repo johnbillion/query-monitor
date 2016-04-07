@@ -329,7 +329,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['sql'] ) ) {
 			$row_attr['data-qm-type'] = $row['type'];
 		}
-		if ( isset( $cols['component'] ) ) {
+		if ( isset( $cols['component'] ) && $row['component'] ) {
 			$row_attr['data-qm-component'] = $row['component']->name;
 		}
 		if ( isset( $cols['caller'] ) ) {
@@ -378,7 +378,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['component'] ) ) {
+			if ( $row['component'] ) {
 			echo "<td class='qm-row-component qm-nowrap'>" . esc_html( $row['component']->name ) . "</td>\n";
+			} else {
+				echo "<td class='qm-row-component qm-nowrap'>" . esc_html__( 'Unknown', 'query-monitor' ) . "</td>\n";
+			}
 		}
 
 		if ( isset( $cols['result'] ) ) {
