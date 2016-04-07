@@ -92,10 +92,22 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				}
 
-				$method = $row['args']['method'];
-				if ( !$row['args']['blocking'] ) {
-					$method .= '&nbsp;' . _x( '(non-blocking)', 'non-blocking HTTP transport', 'query-monitor' );
+				$method = esc_html( $row['args']['method'] );
+
+				if ( ! $row['args']['blocking'] ) {
+					$method .= '<br><span class="qm-info">' . esc_html( sprintf(
+						_x( '(Non-blocking request: %s)', 'non-blocking HTTP transport', 'query-monitor' ),
+						'blocking=false'
+					) ) . '</span>';
 				}
+
+				if ( $row['args']['ssl'] && ! $row['args']['sslverify'] && ! $row['args']['local'] ) {
+					$method .= '<br><span class="qm-warn">' . esc_html( sprintf(
+						__( '(Certificate verification disabled: %s)', 'query-monitor' ),
+						'sslverify=false'
+					) ) . '</span>';
+				}
+
 				$url = self::format_url( $row['url'] );
 
 				if ( isset( $row['transport'] ) ) {
@@ -133,7 +145,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				);
 				printf( // WPCS: XSS ok.
 					'<td class="qm-url qm-ltr qm-wrap">%s<br>%s</td>',
-					esc_html( $method ),
+					$method,
 					$url
 				);
 				printf(
