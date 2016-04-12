@@ -285,7 +285,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		?>
-		if ( 'undefined' === typeof QM_i18n ) {
+		if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! jQuery ) {
 			document.getElementById( 'qm' ).style.display = 'block';
 		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
 			document.getElementById( 'qm' ).className += ' qm-peek';
