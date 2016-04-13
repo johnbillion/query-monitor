@@ -212,6 +212,10 @@ body.wp-admin.folded #qm {
 	padding: 4px 7px !important;
 }
 
+#qm-wrapper .qm-export {
+	float:right;
+}
+
 .qm {
 	margin: 0 0 -20px !important;
 	padding: 40px 10px 0 !important;

@@ -12,6 +12,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+// Add the id to our script in the HTML
+var scripts = document.getElementsByTagName('script');
+scripts[scripts.length - 1].setAttribute('id','query-monitor-js');
 
 var QM_i18n = {
 
@@ -292,6 +295,33 @@ jQuery( function($) {
 
 		e.preventDefault();
 	});
+    
+    $('#qm').find('.qm-export').on('click',function(e){
+        jQuery('#qm-wrapper').find('.qm-export').remove();
+        var head = '<!DOCTYPE html><html><head><script type="text/javascript">window.qm=true;</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script><script type="text/javascript" src="' + jQuery('#query-monitor-js')[0].src + '"></script>' + "\n";
+        head += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' + qm_get_css('query-monitor-css') + qm_get_css('common-css') + qm_get_css('forms-css');
+        var body = '</head><body><div id="qm" class="qm-no-js" style="display:block">' + jQuery('#qm').html() + '</div></body></html>';
+        var page = head + body;
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(page));
+        element.setAttribute('download', 'qm-export.html');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    });
+    
+    // Extract and wrap the css rules
+    function qm_get_css(id) {
+        var css_rules = document.querySelector('link[id="' + id + '"]').sheet.cssRules || document.querySelector('link[id="' + id + '"]').sheet.rules;
+        var css = '<style type="text/css">' + Array.prototype.map.call(css_rules, function (x) {
+          return x.cssText;
+        }).join('\n') + '</style>' + "\n";
+        return css;
+    }
 
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 

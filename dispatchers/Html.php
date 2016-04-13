@@ -234,7 +234,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-wrapper">';
 		echo '<div id="qm-title">';
-		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
+		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . ' <button class="button button-primary qm-export">' . esc_html__( 'Export', 'query-monitor' ) . '</button></p>';
 		echo '</div>';
 
 	}
