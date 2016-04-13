@@ -130,9 +130,14 @@ GNU General Public License for more details.
 }
 
 #qm.qm-show,
+#qm.qm-peek,
 .no-js #qm,
 .nojs #qm {
 	display: block;
+}
+
+#qm.qm-peek .qm {
+	display: none;
 }
 
 #qm:after {
@@ -168,11 +173,43 @@ body.wp-admin.folded #qm {
 	margin: 0 auto 60px !important;
 }
 
-#qm-wrapper > p {
+#qm.qm-peek #qm-wrapper {
+	margin: 0 auto !important;
+}
+
+#qm-title {
 	color: #777 !important;
 	font: 13px/15px 'Open Sans', Arial !important;
-	margin: 20px 20px -15px !important;
+	margin: 35px 0 -15px !important;
+}
+
+#qm-title p {
 	font-style: italic !important;
+	margin: 0 20px !important;
+}
+
+#qm-title ul {
+	margin: 10px 10px 0 !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	line-height: 16px !important;
+	list-style: none !important;
+	padding: 0 !important;
+}
+
+#qm-title li {
+	display: inline-block !important;
+	width: 24em !important;
+	background: #fff !important;
+	border: 1px solid #e8e8e8 !important;
+	margin: 0 5px 5px 0 !important;
+}
+
+#qm-title li a {
+	display: block !important;
+	padding: 4px 7px !important;
 }
 
 .qm {
@@ -203,7 +240,7 @@ body.wp-admin.folded #qm {
 	margin-bottom: -45px !important;
 }
 
-#qm.qm-theme-twentysixteen #qm-wrapper > p {
+#qm.qm-theme-twentysixteen #qm-title {
 	margin-bottom: -45px !important;
 }
 
@@ -227,6 +264,11 @@ body.wp-admin.folded #qm {
 	width: 100% !important;
 	table-layout: auto !important;
 	margin: 0 !important;
+}
+
+#qm-conditionals table,
+#qm-overview table {
+	table-layout: fixed !important;
 }
 
 .qm td,
@@ -389,12 +431,16 @@ body.wp-admin.folded #qm {
 	display: none;
 }
 
+#qm-title a,
 .qm a {
 	color: #00a0d2 !important;
 	text-decoration: none !important;
 	text-shadow: none !important;
 	font-weight: normal !important;
 }
+
+#qm-title a:focus,
+#qm-title a:hover,
 .qm a:focus,
 .qm a:hover {
 	text-decoration: underline !important;

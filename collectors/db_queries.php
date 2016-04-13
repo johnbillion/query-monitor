@@ -95,6 +95,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function process_db_object( $id, wpdb $db ) {
+		global $EZSQL_ERROR;
 
 		$rows       = array();
 		$types      = array();
@@ -147,15 +148,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			}
 
-			$sql = $type = trim( $sql );
-
-			if ( 0 === strpos( $sql, '/*' ) ) {
-				// Strip out leading comments such as `/*NO_SELECT_FOUND_ROWS*/` before calculating the query type
-				$type = preg_replace( '|^/\*[^\*/]+\*/|', '', $sql );
-			}
-
-			$type = preg_split( '/\b/', trim( $type ), 2, PREG_SPLIT_NO_EMPTY );
-			$type = strtoupper( $type[0] );
+			$sql  = trim( $sql );
+			$type = QM_Util::get_query_type( $sql );
 
 			$this->log_type( $type );
 			$this->log_caller( $caller_name, $ltime, $type );
@@ -191,6 +185,23 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$rows[ $i ] = $row;
 			$i++;
 
+		}
+
+		if ( '$wpdb' === $id && ! $has_result && ! empty( $EZSQL_ERROR ) && is_array( $EZSQL_ERROR ) ) {
+			// Fallback for displaying database errors when wp-content/db.php isn't in place
+			foreach ( $EZSQL_ERROR as $error ) {
+				$row = array(
+					'caller'      => 'Unknown',
+					'caller_name' => 'Unknown',
+					'stack'       => array(),
+					'sql'         => $error['query'],
+					'result'      => new WP_Error( 'qmdb', $error['error_str'] ),
+					'type'        => '',
+					'component'   => false,
+					'trace'       => null,
+				);
+				$this->data['errors'][] = $row;
+			}
 		}
 
 		$total_qs = count( $rows );

@@ -67,6 +67,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 		$expected = array(
 			'admin'         => false,
 			'assets'        => true,
+			'cache'         => false,
 			'conditionals'  => false,
 			'db_callers'    => true,
 			'db_components' => true,

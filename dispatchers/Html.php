@@ -32,6 +32,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
 		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
+		add_action( 'amp_post_template_footer',   array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
@@ -95,7 +96,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query-monitor',
 			'title' => esc_html( $title ),
-			'href'  => '#qm-overview',
+			'href'  => '#qm',
 			'meta'  => array(
 				'classname' => 'hide-if-js',
 			),
@@ -105,7 +106,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'parent' => 'query-monitor',
 			'id'     => 'query-monitor-placeholder',
 			'title'  => esc_html( $title ),
-			'href'   => '#qm-overview',
+			'href'   => '#qm',
 		) );
 
 	}
@@ -126,6 +127,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'send_headers',          'nocache_headers' );
 
+		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ) );
+		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ), 11 );
+
+	}
+
+	public function manually_print_assets() {
+		wp_print_scripts( array(
+			'query-monitor',
+		) );
+		wp_print_styles( array(
+			'query-monitor',
+		) );
 	}
 
 	public function enqueue_assets() {
@@ -215,18 +228,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		if ( !is_admin_bar_showing() ) {
-			$class[] = 'qm-show';
+			$class[] = 'qm-peek';
 		}
 
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-wrapper">';
+		echo '<div id="qm-title">';
 		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
+		echo '</div>';
 
 	}
 
 	protected function after_output() {
-
-		$collectors = QM_Collectors::init();
 
 		echo '<div class="qm qm-half qm-clear" id="qm-authentication">';
 		echo '<table cellspacing="0">';
@@ -274,6 +287,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		?>
 		if ( 'undefined' === typeof QM_i18n ) {
 			document.getElementById( 'qm' ).style.display = 'block';
+		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
+			document.getElementById( 'qm' ).className += ' qm-peek';
 		}
 		<?php
 		echo '</script>' . "\n\n";
@@ -315,7 +330,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( QM_Util::is_async() ) {
+		if ( QM_Util::is_async() && ! is_customize_preview() ) {
 			return false;
 		}
 
