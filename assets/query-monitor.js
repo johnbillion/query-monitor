@@ -316,7 +316,9 @@ jQuery( function($) {
     
     // Extract and wrap the css rules
     function qm_get_css(id) {
-        var css_rules = document.querySelector('link[id="' + id + '"]').sheet.cssRules || document.querySelector('link[id="' + id + '"]').sheet.rules;
+        var css_selector = document.querySelector( 'link[id="' + id + '"]' );
+        if ( ! css_selector ) return '';
+        var css_rules = css_selector.sheet.cssRules || css_selector.sheet.rules;
         var css = '<style type="text/css">' + Array.prototype.map.call(css_rules, function (x) {
           return x.cssText;
         }).join('\n') + '</style>' + "\n";
