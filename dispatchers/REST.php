@@ -67,6 +67,10 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			return false;
 		}
 
+		if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+			return false;
+		}
+
 		if ( ! $this->user_can_view() ) {
 			return false;
 		}
