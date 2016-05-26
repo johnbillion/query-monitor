@@ -94,14 +94,14 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$method = esc_html( $row['args']['method'] );
 
-				if ( ! $row['args']['blocking'] ) {
+				if ( empty( $row['args']['blocking'] ) ) {
 					$method .= '<br><span class="qm-info">' . esc_html( sprintf(
 						_x( '(Non-blocking request: %s)', 'non-blocking HTTP transport', 'query-monitor' ),
 						'blocking=false'
 					) ) . '</span>';
 				}
 
-				if ( $row['args']['ssl'] && ! $row['args']['sslverify'] && ! $row['args']['local'] ) {
+				if ( ! empty( $row['args']['ssl'] ) && empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) ) {
 					$method .= '<br><span class="qm-warn">' . esc_html( sprintf(
 						__( '(Certificate verification disabled: %s)', 'query-monitor' ),
 						'sslverify=false'
