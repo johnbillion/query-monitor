@@ -28,7 +28,7 @@ class QM_Collector_Theme extends QM_Collector {
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), 999 );
 	}
 
-	public function filter_body_class( $class ) {
+	public function filter_body_class( array $class ) {
 		$this->data['body_class'] = $class;
 		return $class;
 	}
