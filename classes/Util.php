@@ -20,6 +20,7 @@ class QM_Util {
 	protected static $file_components = array();
 	protected static $file_dirs       = array();
 	protected static $abspath         = null;
+	protected static $contentpath     = null;
 
 	private function __construct() {}
 
@@ -44,15 +45,19 @@ class QM_Util {
 
 	}
 
-	public static function standard_dir( $dir, $abspath_replace = null ) {
+	public static function standard_dir( $dir, $path_replace = null ) {
 
 		$dir = wp_normalize_path( $dir );
 
-		if ( is_string( $abspath_replace ) ) {
-			if ( !self::$abspath ) {
-				self::$abspath = wp_normalize_path( ABSPATH );
+		if ( is_string( $path_replace ) ) {
+			if ( ! self::$abspath ) {
+				self::$abspath     = wp_normalize_path( ABSPATH );
+				self::$contentpath = wp_normalize_path( dirname( WP_CONTENT_DIR ) . '/' );
 			}
-			$dir = str_replace( self::$abspath, $abspath_replace, $dir );
+			$dir = str_replace( array(
+				self::$abspath,
+				self::$contentpath,
+			), $path_replace, $dir );
 		}
 
 		return $dir;
