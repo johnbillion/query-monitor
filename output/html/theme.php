@@ -33,18 +33,21 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<tbody>';
 
+		echo '<tr>';
+		echo '<td>' . esc_html__( 'Template File', 'query-monitor' ) . '</td>';
 		if ( ! empty( $data['template_path'] ) ) {
 
-			echo '<tr>';
-			echo '<td>' . esc_html__( 'Template File', 'query-monitor' ) . '</td>';
 			if ( $data['is_child_theme'] ) {
 				echo '<td>' . self::output_filename( $data['theme_template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			} else {
 				echo '<td>' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			}
-			echo '</tr>';
 
+		} else {
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
+
+		echo '</tr>';
 
 		echo '<tr>';
 		if ( $data['is_child_theme'] ) {
