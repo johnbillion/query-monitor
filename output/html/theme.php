@@ -49,6 +49,39 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '</tr>';
 
+		if ( ! empty( $data['template_parts'] ) ) {
+
+			$count = count( $data['template_parts'] );
+			echo '<tr>';
+			echo '<td rowspan="' . absint( $count ) . '">' . esc_html__( 'Template Parts', 'query-monitor' ) . '</td>';
+			if ( $data['is_child_theme'] ) {
+				$parts = $data['theme_template_parts'];
+			} else {
+				$parts = $data['template_parts'];
+			}
+			$first = true;
+
+			foreach ( $parts as $filename => $display ) {
+
+				if ( ! $first ) {
+					echo '<tr>';
+				}
+
+				echo '<td>' . self::output_filename( $display, $filename ) . '</td>'; // WPCS: XSS ok.
+				echo '</tr>';
+
+				$first = false;
+
+			}
+
+		} else {
+			echo '<tr>';
+			echo '<td>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</td>';
+			echo '<td><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></td>';
+			echo '</tr>';
+		}
+
+
 		echo '<tr>';
 		if ( $data['is_child_theme'] ) {
 			echo '<td>' . esc_html__( 'Child Theme', 'query-monitor' ) . '</td>';

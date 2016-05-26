@@ -56,6 +56,28 @@ class QM_Collector_Theme extends QM_Collector {
 			$this->data['template_file']       = $template_file;
 			$this->data['theme_template_file'] = $theme_template_file;
 
+			foreach ( get_included_files() as $file ) {
+				$filename = str_replace( array(
+					$stylesheet_directory,
+					$template_directory,
+				), '', $file );
+				if ( $filename !== $file ) {
+					$slug          = trim( str_replace( '.php', '', $filename ), '/' );
+					$display       = trim( $filename, '/' );
+					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
+					if ( did_action( "get_template_part_{$slug}" ) ) {
+						$this->data['template_parts'][ $file ]       = $display;
+						$this->data['theme_template_parts'][ $file ] = $theme_display;
+					} else {
+						$slug = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
+						if ( did_action( "get_template_part_{$slug}" ) ) {
+							$this->data['template_parts'][ $file ]       = $display;
+							$this->data['theme_template_parts'][ $file ] = $theme_display;
+						}
+					}
+				}
+			}
+
 		}
 
 		$this->data['stylesheet']     = get_stylesheet();
