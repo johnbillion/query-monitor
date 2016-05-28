@@ -6,7 +6,7 @@
 
 # Query Monitor #
 
-Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging, REST API debugging, and the ability to narrow down things by plugin or theme.
+Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging, REST API debugging, and the ability to narrow down its output by plugin or theme.
 
 Query Monitor adds a toolbar menu showing an overview of the current page. Complete data is shown in the footer once you select a menu item.
 
@@ -47,27 +47,28 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
 
 ## Database Queries ##
 
- * Shows all database queries performed on the current page
+ * Shows all database queries performed on the current request
  * Shows affected rows and time for all queries
  * Shows notifications for slow queries, duplicate queries, and queries with errors
  * Filter queries by query type (`SELECT`, `UPDATE`, `DELETE`, etc)
  * Filter queries by component (WordPress core, Plugin X, Plugin Y, theme)
  * Filter queries by calling function
  * View aggregate query information grouped by component, calling function, and type
- * Super advanced: Supports multiple instances of wpdb on one page (more info in the FAQ)
+ * Super advanced: Supports multiple instances of wpdb (more info in the FAQ)
 
 Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries.
 
 ## Hooks ##
 
- * Shows all hooks fired on the current page, along with hooked actions, their priorities, and their components
+ * Shows all hooks fired on the current request, along with hooked actions, their priorities, and their components
  * Filter hooks by part of their name
  * Filter actions by component (WordPress core, Plugin X, Plugin Y, theme)
 
 ## Theme ##
 
- * Shows the template filename for the current page
- * Shows the available body classes for the current page
+ * Shows the template filename for the current request
+ * Shows all template parts used on the current request
+ * Shows the available body classes for the current request
  * Shows the active theme name
 
 ## PHP Errors ##
@@ -88,7 +89,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## Scripts & Styles ##
 
- * Shows all enqueued scripts and styles on the current page, along with their URL and version
+ * Shows all enqueued scripts and styles on the current request, along with their URL and version
  * Shows their dependencies and dependents, and alerts you to any broken dependencies
 
 ## Languages ##
@@ -98,7 +99,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## HTTP Requests ##
 
- * Shows all HTTP requests performed on the current page (as long as they use WordPress' HTTP API)
+ * Shows all HTTP requests performed on the current request (as long as they use WordPress' HTTP API)
  * Shows the response code, call stack, transport, component, timeout, and time taken
  * Highlights erroneous responses, such as failed requests and anything without a `200` response code
 
@@ -135,7 +136,7 @@ Currently this includes PHP errors and some overview information such as memory 
 ## Everything Else ##
 
  * Shows any transients that were set, along with their timeout, component, and call stack
- * Shows all WordPress conditionals on the current page, highlighted nicely
+ * Shows all WordPress conditionals on the current request, highlighted nicely
  * Shows an overview at the top, including page generation time and memory limit as absolute values and as % of their respective limits
 
 ## Authentication ##
@@ -253,6 +254,9 @@ Debugging is rarely done with just one tool. Along with Query Monitor, you shoul
  * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
  * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
  * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
+ * [Laps](https://github.com/Rarst/laps) for lightweight WordPress profiling.
+ * [Clockwork](https://github.com/itsgoingd/clockwork) for debugging and profiling PHP applications.
+ * [Blackfire](https://blackfire.io/) for PHP performance testing.
  * [New Relic](https://newrelic.com/) for complete software performance analytics.
 
 Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
