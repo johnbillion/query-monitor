@@ -48,7 +48,7 @@ class QM_Collector_Cache extends QM_Collector {
 
 		}
 
-		if ( isset( $this->data['stats']['cache_hits'] ) && $this->data['stats']['cache_misses'] ) {
+		if ( isset( $this->data['stats']['cache_hits'] ) && isset( $this->data['stats']['cache_misses'] ) ) {
 			$total = $this->data['stats']['cache_misses'] + $this->data['stats']['cache_hits'];
 			$this->data['cache_hit_percentage'] = ( 100 / $total ) * $this->data['stats']['cache_hits'];
 		}
