@@ -35,6 +35,11 @@ if ( 'cli' === php_sapi_name() && ! defined( 'QM_TESTS' ) ) {
 	return;
 }
 
+if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+	# Let's not load QM during cron events for the same reason as above.
+	return;
+}
+
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
 if ( ! is_readable( $backtrace = "{$qm_dir}/classes/Backtrace.php" ) ) {
