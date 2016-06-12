@@ -101,7 +101,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					) ) . '</span>';
 				}
 
-				if ( ! empty( $row['args']['ssl'] ) && empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) ) {
+				if ( empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) && 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					$method .= '<br><span class="qm-warn">' . esc_html( sprintf(
 						__( '(Certificate verification disabled: %s)', 'query-monitor' ),
 						'sslverify=false'
