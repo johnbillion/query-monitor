@@ -99,7 +99,8 @@ class QueryMonitor extends QM_Plugin {
 		}
 
 		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) ) {
-			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
+			$target = str_replace(WP_CONTENT_DIR . '/', '', $this->plugin_path( 'wp-content/db.php' ));
+			@symlink( $target, $db );
 		}
 
 		if ( $sitewide ) {
