@@ -26,6 +26,45 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
+$qm_dir = dirname( __FILE__ );
+
+require_once "{$qm_dir}/classes/Util.php";
+
+# Activation and deactivation
+register_activation_hook(   __FILE__, 'query_monitor_activate' );
+register_deactivation_hook( __FILE__, 'query_monitor_deactivate' );
+
+function query_monitor_activate( $sitewide = false ) {
+
+	if ( $admins = QM_Util::get_admins() ) {
+		$admins->add_cap( 'view_query_monitor' );
+	}
+
+	if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) && function_exists( 'symlink' ) ) {
+		@symlink( plugin_dir_path( __FILE__ ) . 'wp-content/db.php', $db );
+	}
+
+	if ( $sitewide ) {
+		update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
+	} else {
+		update_option( 'active_plugins', get_option( 'active_plugins'  ) );
+	}
+
+}
+
+function query_monitor_deactivate() {
+
+	if ( $admins = QM_Util::get_admins() ) {
+		$admins->remove_cap( 'view_query_monitor' );
+	}
+
+	# Only delete db.php if it belongs to Query Monitor
+	if ( class_exists( 'QM_DB' ) ) {
+		unlink( WP_CONTENT_DIR . '/db.php' );
+	}
+
+}
+
 if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
 }
@@ -42,8 +81,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 }
 
 # No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
-$qm_dir = dirname( __FILE__ );
-foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Util', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
+foreach ( array( 'Backtrace', 'Collectors', 'Collector', 'Plugin', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
@@ -58,10 +96,6 @@ class QueryMonitor extends QM_Plugin {
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
-
-		# [Dea|A]ctivation
-		register_activation_hook(   __FILE__, array( $this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -88,37 +122,6 @@ class QueryMonitor extends QM_Plugin {
 		# Register built-in and additional dispatchers:
 		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {
 			QM_Dispatchers::add( $dispatcher );
-		}
-
-	}
-
-	public function activate( $sitewide = false ) {
-
-		if ( $admins = QM_Util::get_admins() ) {
-			$admins->add_cap( 'view_query_monitor' );
-		}
-
-		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) and function_exists( 'symlink' ) ) {
-			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db );
-		}
-
-		if ( $sitewide ) {
-			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
-		} else {
-			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
-		}
-
-	}
-
-	public function deactivate() {
-
-		if ( $admins = QM_Util::get_admins() ) {
-			$admins->remove_cap( 'view_query_monitor' );
-		}
-
-		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QM_DB' ) ) {
-			unlink( WP_CONTENT_DIR . '/db.php' );
 		}
 
 	}
