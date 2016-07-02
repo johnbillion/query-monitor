@@ -52,6 +52,7 @@ class QM_Backtrace {
 		'get_sidebar'                => 1,
 		'get_footer'                 => 1,
 		'get_site_by_path'           => 3,
+		'class_exists'               => 2,
 	);
 	protected static $filtered = false;
 	protected $trace           = null;
