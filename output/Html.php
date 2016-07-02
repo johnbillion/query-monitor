@@ -166,6 +166,10 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	public static function output_filename( $text, $file, $line = 0 ) {
 
+		if ( empty( $file ) ) {
+			return esc_html( $text );
+		}
+
 		# Further reading:
 		# http://simonwheatley.co.uk/2012/07/clickable-stack-traces/
 		# https://github.com/grych/subl-handler
