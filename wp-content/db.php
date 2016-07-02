@@ -85,6 +85,10 @@ class QM_DB extends wpdb {
 	 */
 	function query( $query ) {
 		if ( ! $this->ready ) {
+			if ( isset( $this->check_current_query ) ) {
+				// This property was introduced in WP 4.2
+				$this->check_current_query = true;
+			}
 			return false;
 		}
 
