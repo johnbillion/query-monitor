@@ -26,6 +26,7 @@ class QM_Collector_Theme extends QM_Collector {
 		parent::__construct();
 		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 999 );
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), 999 );
+		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 999, 3 );
 	}
 
 	public function filter_body_class( array $class ) {
@@ -36,6 +37,14 @@ class QM_Collector_Theme extends QM_Collector {
 	public function filter_template_include( $template_path ) {
 		$this->data['template_path'] = $template_path;
 		return $template_path;
+	}
+
+	public function filter_timber_output( $output, $data = null, $file = null ) {
+		if ( $file ) {
+			$this->data['timber_files'][] = $file;
+		}
+
+		return $output;
 	}
 
 	public function process() {

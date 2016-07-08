@@ -81,6 +81,27 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '</tr>';
 		}
 
+		if ( ! empty( $data['timber_files'] ) ) {
+
+			$count = count( $data['timber_files'] );
+			echo '<tr>';
+			echo '<td rowspan="' . absint( $count ) . '">' . esc_html__( 'Timber Files', 'query-monitor' ) . '</td>';
+			$first = true;
+
+			foreach ( $data['timber_files'] as $filename ) {
+
+				if ( ! $first ) {
+					echo '<tr>';
+				}
+
+				echo '<td>' . esc_html( $filename ) . '</td>';
+				echo '</tr>';
+
+				$first = false;
+
+			}
+
+		}
 
 		echo '<tr>';
 		if ( $data['is_child_theme'] ) {
