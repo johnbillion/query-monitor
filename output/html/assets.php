@@ -196,7 +196,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
-			$class[] = 'qm-error';
+			$class[] = 'qm-alert';
 		}
 
 		return $class;
@@ -211,7 +211,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		);
 
 		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
-			$args['meta']['classname'] = 'qm-error';
+			$args['meta']['classname'] = 'qm-alert';
 		}
 
 		$menu[] = $this->menu( $args );

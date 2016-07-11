@@ -68,7 +68,12 @@ GNU General Public License for more details.
 	background-color: #c00 !important;
 }
 
-#wpadminbar .qm-error > a {
+#wpadminbar .qm-alert {
+	background-color: #c75411 !important;
+}
+
+#wpadminbar .qm-error > a,
+#wpadminbar .qm-alert > a {
 	color: #fff !important;
 }
 
