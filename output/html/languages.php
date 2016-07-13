@@ -35,7 +35,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="4">' . esc_html__( 'Language Setting:', 'query-monitor' ) . ' ' . esc_html( $data['locale'] ) . '</th>';
+		echo '<th colspan="4">' . esc_html( sprintf(
+			/* translators: %s: Name of current language */
+			__( 'Language Setting: %s', 'query-monitor' ),
+			$data['locale']
+		) ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
 		echo '<td>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</td>';

@@ -153,6 +153,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( isset( $data['template_file'] ) ) {
 			$menu[] = $this->menu( array(
 				'title' => esc_html( sprintf(
+					/* translators: %s: Template file name */
 					__( 'Template: %s', 'query-monitor' ),
 					( $data['is_child_theme'] ? $data['theme_template_file'] : $data['template_file'] )
 				) ),

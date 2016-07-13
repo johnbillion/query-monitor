@@ -133,7 +133,11 @@ class QM_Collector_HTTP extends QM_Collector {
 		$this->data['http'][$args['_qm_key']]['args']     = $args;
 		if ( isset( $args['_qm_original_key'] ) ) {
 			$this->data['http'][$args['_qm_original_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
-			$this->data['http'][$args['_qm_original_key']]['response'] = new WP_Error( 'http_request_not_executed', __( 'Request not executed due to a filter on pre_http_request', 'query-monitor' ) );
+			$this->data['http'][$args['_qm_original_key']]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
+				/* translators: %s: Hook name */
+				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
+				'pre_http_request'
+			) );
 		}
 	}
 

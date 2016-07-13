@@ -108,6 +108,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
 							printf(
+								/* translators: %s: Action name */
 								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
 								'<code>all</code>'
 							);
@@ -129,6 +130,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					if ( isset( $action['callback']['error'] ) ) {
 						echo '<br><span class="qm-warn">';
 						echo esc_html( sprintf(
+							/* translators: %s: Error message text */
 							__( 'Error: %s', 'query-monitor' ),
 							$action['callback']['error']->get_error_message()
 						) );

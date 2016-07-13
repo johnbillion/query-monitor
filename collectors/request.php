@@ -94,6 +94,7 @@ class QM_Collector_Request extends QM_Collector {
 
 			case is_a( $qo, 'WP_Post' ):
 				// Single post
+				/* translators: 1: Post type name, 2: Post ID */
 				$this->data['queried_object']['title'] = sprintf( __( 'Single %s: #%d', 'query-monitor' ),
 					get_post_type_object( $qo->post_type )->labels->singular_name,
 					$qo->ID
@@ -102,6 +103,7 @@ class QM_Collector_Request extends QM_Collector {
 
 			case is_a( $qo, 'WP_User' ):
 				// Author archive
+				/* translators: %s: Author name */
 				$this->data['queried_object']['title'] = sprintf( __( 'Author archive: %s', 'query-monitor' ),
 					$qo->user_nicename
 				);
@@ -110,6 +112,7 @@ class QM_Collector_Request extends QM_Collector {
 			case is_a( $qo, 'WP_Term' ):
 			case property_exists( $qo, 'term_id' ):
 				// Term archive
+				/* translators: %s: Taxonomy term name */
 				$this->data['queried_object']['title'] = sprintf( __( 'Term archive: %s', 'query-monitor' ),
 					$qo->slug
 				);
@@ -117,6 +120,7 @@ class QM_Collector_Request extends QM_Collector {
 
 			case property_exists( $qo, 'has_archive' ):
 				// Post type archive
+				/* translators: %s: Post type name */
 				$this->data['queried_object']['title'] = sprintf( __( 'Post type archive: %s', 'query-monitor' ),
 					$qo->name
 				);

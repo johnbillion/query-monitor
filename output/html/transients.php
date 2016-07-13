@@ -124,6 +124,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		$title = ( empty( $count ) )
 			? __( 'Transients Set', 'query-monitor' )
+			/* translators: %s: Number of transient values that were set */
 			: __( 'Transients Set (%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(

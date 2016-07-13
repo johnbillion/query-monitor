@@ -80,7 +80,8 @@ abstract class QM_Collector {
 
 	public static function format_bool_constant( $constant ) {
 		if ( !defined( $constant ) ) {
-			return 'undefined';
+			/* translators: Undefined PHP constant */
+			return __( 'undefined', 'query-monitor' );
 		} else if ( !constant( $constant ) ) {
 			return 'false';
 		} else {

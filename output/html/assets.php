@@ -33,6 +33,21 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
+		$position_labels = array(
+			'scripts' => array(
+				'missing' => __( 'Missing Scripts', 'query-monitor' ),
+				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
+				'header'  => __( 'Header Scripts', 'query-monitor' ),
+				'footer'  => __( 'Footer Scripts', 'query-monitor' ),
+			),
+			'styles' => array(
+				'missing'  => __( 'Missing Styles', 'query-monitor' ),
+				'broken'   => __( 'Broken Dependencies', 'query-monitor' ),
+				'header'   => __( 'Header Styles', 'query-monitor' ),
+				'footer'   => __( 'Footer Styles', 'query-monitor' ),
+			),
+		);
+
 		foreach ( array(
 			'scripts' => __( 'Scripts', 'query-monitor' ),
 			'styles'  => __( 'Styles', 'query-monitor' ),
@@ -56,14 +71,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( array(
-				'missing' => __( 'Missing %s', 'query-monitor' ),
-				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
-				'header'  => __( 'Header %s', 'query-monitor' ),
-				'footer'  => __( 'Footer %s', 'query-monitor' ),
-			) as $position => $position_label ) {
+				'missing',
+				'broken',
+				'header',
+				'footer',
+			) as $position ) {
 
 				if ( isset( $data[ $position ][ $type ] ) ) {
-					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], sprintf( $position_label, $type_label ), $type );
+					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $type ][ $position ], $type );
 				}
 
 			}
@@ -143,6 +158,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $deps as & $dep ) {
 			if ( ! $dependencies->query( $dep ) ) {
+				/* translators: %s: Script or style dependency name */
 				$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
 			}
 		}

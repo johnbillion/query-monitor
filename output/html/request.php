@@ -165,6 +165,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		$title = ( empty( $count ) )
 			? __( 'Request', 'query-monitor' )
+			/* translators: %s: Number of additional query variables */
 			: __( 'Request (+%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(

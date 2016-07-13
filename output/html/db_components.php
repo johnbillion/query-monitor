@@ -40,7 +40,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '<th colspan="' . esc_attr( $span ) . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
-		echo '<th>' . esc_html_x( 'Component', 'Query component', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
 			echo '<th class="qm-num">';

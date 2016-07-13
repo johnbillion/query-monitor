@@ -52,6 +52,9 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 		echo '<tbody>';
 
+		/* translators: %s: Number of calls to a PHP function */
+		$call_text = _n_noop( '%s call', '%s calls', 'query-monitor' );
+
 		foreach ( $data['dupes'] as $sql => $queries ) {
 
 			// This should probably happen in the collector's processor
@@ -76,7 +79,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 					esc_attr( $caller ),
 					esc_html( $caller ),
 					esc_html( sprintf(
-						_n( '%s call', '%s calls', $calls, 'query-monitor' ),
+						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
 						number_format_i18n( $calls )
 					) )
 				);
@@ -89,7 +92,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 						'%s<br><span class="qm-info">&nbsp;%s</span><br>',
 						esc_html( $component ),
 						esc_html( sprintf(
-							_n( '%s call', '%s calls', $calls, 'query-monitor' ),
+							translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
 							number_format_i18n( $calls )
 						) )
 					);
@@ -102,7 +105,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 					'%s<br><span class="qm-info">&nbsp;%s</span><br>',
 					esc_html( $source ),
 					esc_html( sprintf(
-						_n( '%s call', '%s calls', $calls, 'query-monitor' ),
+						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
 						number_format_i18n( $calls )
 					) )
 				);
@@ -124,6 +127,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			if ( isset( $dbq_data['dupes'] ) && count( $dbq_data['dupes'] ) ) {
 				$menu[] = $this->menu( array(
 					'title' => esc_html( sprintf(
+						/* translators: %s: Number of duplicate database queries */
 						__( 'Duplicate Queries (%s)', 'query-monitor' ),
 						count( $dbq_data['dupes'] )
 					) ),

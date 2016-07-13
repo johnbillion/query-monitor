@@ -23,6 +23,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 		$headers['time'] = number_format_i18n( $data['time'], 4 );
 		$headers['time_usage'] = sprintf(
+			/* translators: 1: Percentage of time limit used, 2: Time limit in seconds */
 			__( '%1$s%% of %2$ss limit', 'query-monitor' ),
 			number_format_i18n( $data['time_usage'], 1 ),
 			number_format_i18n( $data['time_limit'] )
@@ -30,10 +31,12 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 		if ( ! empty( $data['memory'] ) ) {
 			$headers['memory'] = sprintf(
+				/* translators: %s: Memory used in kilobytes */
 				__( '%s kB', 'query-monitor' ),
 				number_format_i18n( $data['memory'] / 1024 )
 			);
 			$headers['memory_usage'] = sprintf(
+				/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
 				__( '%1$s%% of %2$s kB limit', 'query-monitor' ),
 				number_format_i18n( $data['memory_usage'], 1 ),
 				number_format_i18n( $data['memory_limit'] / 1024 )

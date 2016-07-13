@@ -58,6 +58,7 @@ class QueryMonitor extends QM_Plugin {
 	public static function symlink_warning() {
 		$db = WP_CONTENT_DIR . '/db.php';
 		trigger_error( sprintf(
+			/* translators: %s: Symlink file location */
 			esc_html__( 'The symlink at %s is no longer pointing to the correct location. Please remove the symlink, then deactivate and reactivate Query Monitor.', 'query-monitor' ),
 			'<code>' . esc_html( $db ) . '</code>'
 		), E_USER_WARNING );

@@ -108,8 +108,10 @@ class QM_Util {
 					$plug = basename( $plug );
 				}
 				if ( 'mu-plugin' === $type ) {
+					/* translators: %s: Plugin name */
 					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
 				} else {
+					/* translators: %s: Plugin name */
 					$name = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
 				}
 				$context = $plug;
@@ -124,6 +126,7 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
+				/* translators: %s: Plugin name */
 				$name    = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
 				$context = $plug;
 				break;
@@ -180,6 +183,7 @@ class QM_Util {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
 					$ref  = new ReflectionFunction( $callback['function'] );
 					$file = QM_Util::standard_dir( $ref->getFileName(), '' );
+					/* translators: 1: Line number, 2: File name */
 					$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
 				} else {
 					// the object should have a __invoke() method
@@ -206,6 +210,7 @@ class QM_Util {
 					$callback['file'] = $matches['file'];
 					$callback['line'] = $matches['line'];
 					$file = trim( QM_Util::standard_dir( $callback['file'], '' ), '/' );
+					/* translators: 1: Line number, 2: File name */
 					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );
 				} else {
 					// https://github.com/facebook/hhvm/issues/5807

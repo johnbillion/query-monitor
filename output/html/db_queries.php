@@ -60,6 +60,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<tbody>';
 		echo '<tr>';
 		echo '<td class="qm-warn">';
+		/* translators: 1: Name of PHP constant, 2: Value of PHP constant */
 		printf( esc_html__( 'No database queries were logged because the %s constant is set to %s', 'query-monitor' ),
 			'<code>SAVEQUERIES</code>',
 			'<code>false</code>'
@@ -108,6 +109,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="5" class="qm-expensive">';
+		/* translators: %s Database query time in seconds */
 		printf( esc_html__( 'Slow Database Queries (above %ss)', 'query-monitor' ),
 			'<span class="qm-expensive">' . esc_html( number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</span>'
 		);
@@ -155,6 +157,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
+		/* translators: %s: Name of database controller */
 		echo '<th colspan="' . absint( $span ) . '">' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</th>';
 		echo '</tr>';
 
@@ -172,6 +175,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '<tr>';
 				echo '<td colspan="' . absint( $span ) . '" class="qm-warn">';
 				echo wp_kses( sprintf(
+					/* translators: 1: Symlink file name, 2: URL to wiki page */
 					__( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
 					'<code>db.php</code>',
 					'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
@@ -243,6 +247,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<tr class="qm-items-shown qm-hide">';
 			echo '<td colspan="' . absint( $span - 1 ) . '">';
 			printf(
+				/* translators: %s: Number of database queries in the current filtered view */
 				esc_html__( 'Queries in filter: %s', 'query-monitor' ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $db->total_qs ) ) . '</span>'
 			);
@@ -253,6 +258,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td colspan="' . absint( $span - 1 ) . '">';
 			echo esc_html( sprintf(
+				/* translators: %s: Number of database queries */
 				__( 'Total Queries: %s', 'query-monitor' ),
 				number_format_i18n( $db->total_qs )
 			) );
@@ -409,12 +415,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
 				$title[] = sprintf(
-					_x( '%s%s<small>S</small>', 'database query time', 'query-monitor' ),
+					/* translators: %s: Database query time in seconds */
+					'%s' . _x( '%s<small>S</small>', 'Query time', 'query-monitor' ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
 					number_format_i18n( $db->total_time, 4 )
 				);
 				$title[] = sprintf(
-					_x( '%s<small>Q</small>', 'database query number', 'query-monitor' ),
+					/* translators: %s: Number of database queries */
+					_x( '%s<small>Q</small>', 'Query count', 'query-monitor' ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
@@ -443,6 +451,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-query-errors',
 				'title' => esc_html( sprintf(
+					/* translators: %s: number of database errors */
 					__( 'Database Errors (%s)', 'query-monitor' ),
 					number_format_i18n( count( $errors ) )
 				) ),
@@ -453,6 +462,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'id'    => 'query-monitor-expensive',
 				'href'  => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
+					/* translators: %s: number of slow database queries */
 					__( 'Slow Queries (%s)', 'query-monitor' ),
 					number_format_i18n( count( $expensive ) )
 				) ),
@@ -464,6 +474,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$menu[] = $this->menu( array(
 					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ) ),
 					'title' => esc_html( sprintf(
+						/* translators: %s: Name of database controller */
 						__( 'Queries - %s', 'query-monitor' ),
 						$name
 					) ),

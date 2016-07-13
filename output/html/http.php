@@ -76,19 +76,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$response = $row['response']->get_error_message();
 					$css      = 'qm-warn';
 				} else {
-					$response = wp_remote_retrieve_response_code( $row['response'] );
+					$code     = wp_remote_retrieve_response_code( $row['response'] );
 					$msg      = wp_remote_retrieve_response_message( $row['response'] );
 					$css      = '';
 
-					if ( empty( $response ) ) {
-						$response = __( 'n/a', 'query-monitor' );
-					} else {
-						$response = $response . ' ' . $msg;
-					}
-
-					if ( intval( $response ) >= 400 ) {
+					if ( intval( $code ) >= 400 ) {
 						$css = 'qm-warn';
 					}
+
+					$response = $code . ' ' . $msg;
 
 				}
 
@@ -96,13 +92,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( empty( $row['args']['blocking'] ) ) {
 					$method .= '<br><span class="qm-info">' . esc_html( sprintf(
-						_x( '(Non-blocking request: %s)', 'non-blocking HTTP transport', 'query-monitor' ),
+						/* translators: A non-blocking HTTP API request. %s: Relevant argument name */
+						__( '(Non-blocking request: %s)', 'query-monitor' ),
 						'blocking=false'
 					) ) . '</span>';
 				}
 
 				if ( empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) && 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					$method .= '<br><span class="qm-warn">' . esc_html( sprintf(
+						/* translators: An HTTP API request has disabled certificate verification. %s: Relevant argument name */
 						__( '(Certificate verification disabled: %s)', 'query-monitor' ),
 						'sslverify=false'
 					) ) . '</span>';
@@ -241,6 +239,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$title = ( empty( $count ) )
 			? __( 'HTTP Requests', 'query-monitor' )
+			/* translators: %s: Number of HTTP requests */
 			: __( 'HTTP Requests (%s)', 'query-monitor' );
 
 		$args = array(
