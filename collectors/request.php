@@ -118,6 +118,7 @@ class QM_Collector_Request extends QM_Collector {
 				);
 				break;
 
+			case is_a( $qo, 'WP_Post_Type' ):
 			case property_exists( $qo, 'has_archive' ):
 				// Post type archive
 				/* translators: %s: Post type name */
