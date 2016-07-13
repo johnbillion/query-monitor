@@ -22,6 +22,10 @@ GNU General Public License for more details.
 	color: #4a4 !important;
 }
 
+#wpadminbar .qm-alert {
+	background-color: #f60;
+}
+
 #wp-admin-bar-query-monitor-notices {
 	background-color: #740 !important;
 }
@@ -66,10 +70,6 @@ GNU General Public License for more details.
 
 #wpadminbar .qm-error {
 	background-color: #c00 !important;
-}
-
-#wpadminbar .qm-alert {
-	background-color: #f70 !important;
 }
 
 #wpadminbar .qm-error > a,
