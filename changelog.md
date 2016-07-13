@@ -1,5 +1,9 @@
 ## Changelog ##
 
+### 2.11.4 ###
+
+* Fix an issue that prevented QM's output from being shown when the plugin was newly activated.
+
 ### 2.11.3 ###
 
 * Fix a fatal error due to a class that's not included in the distribution.
