@@ -40,7 +40,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-# No autoloaders for us. See https://github.com/johnbillion/QueryMonitor/issues/7
+# No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
 if ( ! is_readable( $backtrace = "{$qm_dir}/classes/Backtrace.php" ) ) {
 	return;
