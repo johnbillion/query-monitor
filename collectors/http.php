@@ -183,7 +183,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			if ( is_wp_error( $http['response'] ) ) {
 				if ( !in_array( $http['response']->get_error_code(), $silent ) ) {
-					$this->data['errors']['error'][] = $key;
+					$this->data['errors']['alert'][] = $key;
 				}
 				$http['type'] = __( 'Error', 'query-monitor' );
 			} else {

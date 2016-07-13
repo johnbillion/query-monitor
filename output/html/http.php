@@ -221,8 +221,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['error'] ) ) {
-			$class[] = 'qm-error';
+		if ( isset( $data['errors']['alert'] ) ) {
+			$class[] = 'qm-alert';
 		} else if ( isset( $data['errors']['warning'] ) ) {
 			$class[] = 'qm-warning';
 		}
@@ -249,8 +249,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			) ),
 		);
 
-		if ( isset( $data['errors']['error'] ) ) {
-			$args['meta']['classname'] = 'qm-error';
+		if ( isset( $data['errors']['alert'] ) ) {
+			$args['meta']['classname'] = 'qm-alert';
 		} else if ( isset( $data['errors']['warning'] ) ) {
 			$args['meta']['classname'] = 'qm-warning';
 		}
