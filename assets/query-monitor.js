@@ -108,7 +108,7 @@ jQuery( function($) {
 					return false;
 				};
 
-			} else if ( window.wp && wp.themes && wp.themes.RunInstaller ) {
+			} else if ( window.wp && wp.themes && wp.themes.RunInstaller && wp.themes.RunInstaller.view ) {
 				// Infinite scrolling on Appearance -> Add New screens
 
 				var view = wp.themes.RunInstaller.view.view;
