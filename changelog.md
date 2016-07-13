@@ -1,5 +1,15 @@
 ## Changelog ##
 
+### 2.11.2 ###
+
+* Ensure that QM's activation and deactivation hooks get fired when activating or deactivating on the CLI.
+* Add support for displaying a basic list of the twig files that Timber loads. Requires Timber 1.1.0+
+* Skip reporting core's "An unexpected error occurred" PHP warnings when requests to the wp.org API fail.
+* Add a min-width to the main container for QM, so it's at least somewhat usable on very narrow viewports.
+* Use new alert style for HTTP request errors.
+* Prevent a JavaScript error when opening QM on the Appearance admin menu.
+* Big pile of i18n improvements.
+
 ### 2.11.1 ###
 
 * Fix Undefined index: `cache_misses`.
