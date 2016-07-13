@@ -1,5 +1,9 @@
 ## Changelog ##
 
+### 2.11.3 ###
+
+* Fix a fatal error due to a class that's not included in the distribution.
+
 ### 2.11.2 ###
 
 * Ensure that QM's activation and deactivation hooks get fired when activating or deactivating on the CLI.
