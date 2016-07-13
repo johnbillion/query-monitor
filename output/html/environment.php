@@ -154,7 +154,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					if ( $show_warning ) {
 						$append .= sprintf(
 							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
-							esc_url( sprintf( $search, $key ) ),
+							esc_url( sprintf( $search, urlencode( $key ) ) ),
 							esc_html__( 'Help', 'query-monitor' )
 						);
 					}
