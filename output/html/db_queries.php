@@ -109,7 +109,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th colspan="5" class="qm-expensive">';
-		/* translators: %s Database query time in seconds */
+		/* translators: %s: Database query time in seconds */
 		printf( esc_html__( 'Slow Database Queries (above %ss)', 'query-monitor' ),
 			'<span class="qm-expensive">' . esc_html( number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</span>'
 		);
@@ -451,7 +451,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-query-errors',
 				'title' => esc_html( sprintf(
-					/* translators: %s: number of database errors */
+					/* translators: %s: Number of database errors */
 					__( 'Database Errors (%s)', 'query-monitor' ),
 					number_format_i18n( count( $errors ) )
 				) ),
@@ -462,7 +462,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'id'    => 'query-monitor-expensive',
 				'href'  => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
-					/* translators: %s: number of slow database queries */
+					/* translators: %s: Number of slow database queries */
 					__( 'Slow Queries (%s)', 'query-monitor' ),
 					number_format_i18n( count( $expensive ) )
 				) ),
