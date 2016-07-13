@@ -126,6 +126,7 @@ GNU General Public License for more details.
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
 	text-align: left !important;
+	min-width: 800px !important;
 	display: none;
 }
 
