@@ -44,9 +44,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<tbody>';
 
 		$types = array(
+			/* translators: PHP error level */
 			'warning'    => __( 'Warning', 'query-monitor' ),
+			/* translators: PHP error level */
 			'notice'     => __( 'Notice', 'query-monitor' ),
+			/* translators: PHP error level */
 			'strict'     => __( 'Strict', 'query-monitor' ),
+			/* translators: PHP error level */
 			'deprecated' => __( 'Deprecated', 'query-monitor' ),
 		);
 
