@@ -50,7 +50,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Output', 'Timer' ) as $qm_class ) {
+foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
