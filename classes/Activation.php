@@ -23,8 +23,8 @@ class QM_Activation extends QM_Plugin {
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
 		# Activation and deactivation
-		register_activation_hook(   __FILE__, array( $this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+		register_activation_hook(   $file, array( $this, 'activate' ) );
+		register_deactivation_hook( $file, array( $this, 'deactivate' ) );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -38,7 +38,7 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) && function_exists( 'symlink' ) ) {
-			@symlink( plugin_dir_path( __FILE__ ) . 'wp-content/db.php', $db );
+			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db );
 		}
 
 		if ( $sitewide ) {
