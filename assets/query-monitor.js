@@ -203,10 +203,13 @@ jQuery( function($) {
 	$('#qm').find('.qm-toggle').on('click',function(e){
 		var el = $(this);
 		$(this).closest('td').find('.qm-toggled').slideToggle(100,function(){
-			if ( el.attr('data-off') == el.text() )
+			if ( el.attr('data-off') == el.text() ) {
+				el.closest('td').removeClass('qm-toggled-on');
 				el.text(el.attr('data-on'));
-			else
+			} else {
+				el.closest('td').addClass('qm-toggled-on');
 				el.text(el.attr('data-off'));
+			}
 		});
 		e.preventDefault();
 	});
