@@ -237,6 +237,12 @@ body.wp-admin.folded #qm {
 	clear: none !important;
 }
 
+.qm-two-thirds {
+	float: left !important;
+	width: 66.66% !important;
+	clear: none !important;
+}
+
 .qm:focus {
 	outline: 0 !important;
 }
@@ -252,6 +258,7 @@ body.wp-admin.folded #qm {
 
 @media all and (max-width: 900px) {
 	.qm-third,
+	.qm-two-thirds,
 	.qm-half {
 		float: none !important;
 		width: 100% !important;
@@ -262,6 +269,8 @@ body.wp-admin.folded #qm {
 .qm-clear {
 	clear: left !important;
 }
+
+#qm-authentication { margin-top: 20px !important; }
 
 .qm table {
 	color: #444 !important;
