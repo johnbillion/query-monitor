@@ -66,6 +66,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<th>' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
 			echo '<th>' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
 			echo '<th>' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
+			echo '<th>' . esc_html__( 'Extras', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
@@ -99,7 +100,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		if ( empty( $handles ) ) {
 			echo '<tr>';
 			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
-			echo '<td colspan="5"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="6"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			return;
 		}
@@ -180,6 +181,21 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( '<br>', array_map( 'esc_html', $deps ) ) . '</td>';
 		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( '<br>', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td>' . esc_html( $ver ) . '</td>';
+		echo '<td class="qm-has-inner">';
+			if ( is_array( $dependency->extra ) && count ( $dependency->extra ) ) {
+				echo '<table cellspacing="0" class="qm-inner"' . ( count( $deps ) > count( $dependency->extra ) || count( $dependents ) > count( $dependency->extra ) ? ' style="border-bottom-style: solid !important; border-bottom-width: 1px;"' : '' ) . '>';
+					foreach ( $dependency->extra as $key => $value ) {
+						echo '<tr>';
+							echo '<td' . ( !is_array( $value ) && !is_object( $value ) ? ' colspan="2"' : '' ) . '>' . esc_html( $key ) . '</td>';
+							if ( is_array( $value ) )
+								echo '<td>' . count( $value ) . '</td>';
+							else if ( is_object( $value ) )
+								echo '<td>' . count( get_object_vars( $value ) ) . '</td>';
+						echo '</tr>';
+					}
+				echo '</table>';
+			}
+		echo '</td>';
 
 	}
 
