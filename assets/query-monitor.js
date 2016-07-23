@@ -130,7 +130,7 @@ jQuery( function($) {
 
 		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
-	} else {
+	} else if ( window.qm && qm.menu && qm.menu.sub ) {
 
 		var container = document.createDocumentFragment();
 
@@ -299,6 +299,7 @@ jQuery( function($) {
     $('#qm').find('.qm-export').on('click',function(e){
         jQuery('#qm-wrapper').find('.qm-export').remove();
         var head = '<!DOCTYPE html><html><head><script type="text/javascript">window.qm=true;</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script><script type="text/javascript" src="' + jQuery('#query-monitor-js')[0].src + '"></script>' + "\n";
+        head += '<script>var qm_locale = ' + JSON.stringify( window.qm_locale ) + ';</script>';
         head += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' + qm_get_css('query-monitor-css') + qm_get_css('common-css') + qm_get_css('forms-css');
         var body = '</head><body><div id="qm" class="qm-no-js" style="display:block">' + jQuery('#qm').html() + '</div></body></html>';
         var page = head + body;
