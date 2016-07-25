@@ -180,8 +180,13 @@ jQuery( function($) {
 			time = QM_i18n.number_format( time, 4 );
 
 		if ( tr.length === matches.length ) {
-			table.find('.qm-items-shown').addClass('qm-hide');
+			table.find('.qm-items-shown,.qm-items-highlighted').addClass('qm-hide');
 		} else {
+			if ( hilite ) {
+				var results = table.find('.qm-items-highlighted').removeClass('qm-hide');
+				results.find('.qm-items-number').text( QM_i18n.number_format( tr.filter('.qm-highlight').length, 0 ) );
+				results.find('.qm-items-time').text(time);
+			}
 			var results = table.find('.qm-items-shown').removeClass('qm-hide');
 			results.find('.qm-items-number').text( QM_i18n.number_format( matches.length, 0 ) );
 			results.find('.qm-items-time').text(time);
