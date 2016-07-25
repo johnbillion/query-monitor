@@ -376,6 +376,8 @@ jQuery( function($) {
 			var table = $(this);
 			
 			table.find('.qm-sort').on('click', function (e) {
+				table.trigger('qm-sort-click');
+
 				var desc = $(this).hasClass('qm-sort-desc');
 				
 				var index = $(this).closest('th').index();
@@ -442,7 +444,9 @@ jQuery( function($) {
 					data[data.length-1].index = data.length-1;
 					
 					tbody.prepend(anomalies);
-					
+
+					table.trigger('qm-sort-tbody',[tbody]);
+
 					table.append(tbody);
 					
 					
