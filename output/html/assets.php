@@ -133,13 +133,17 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$ver = $dependency->ver;
 		}
 
+		$loader = rtrim( $type, 's' );
+
 		/**
-		 * Filter the script loader source.
+		 * Filter the asset loader source.
 		 *
-		 * @param string $src    Script loader source path.
-		 * @param string $handle Script handle.
+		 * The variable {$loader} can be either 'script' or 'style'.
+		 *
+		 * @param string $src    Script or style loader source path.
+		 * @param string $handle Script or style handle.
 		 */
-		$source = apply_filters( 'script_loader_src', $dependency->src, $dependency->handle );
+		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
 		if ( is_wp_error( $source ) ) {
 			$src = $source->get_error_message();
