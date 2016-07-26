@@ -330,7 +330,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( QM_Util::is_async() && ! is_customize_preview() ) {
+		// If this is an async request and not a customizer preview:
+		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
 			return false;
 		}
 
