@@ -270,6 +270,8 @@ body.wp-admin.folded #qm {
 	clear: left !important;
 }
 
+#qm-authentication { margin-top: 20px !important; }
+
 .qm table {
 	color: #444 !important;
 	border-collapse: collapse !important;
