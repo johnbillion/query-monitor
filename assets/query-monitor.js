@@ -335,10 +335,10 @@ jQuery( function($) {
 				
 				for (var k = 0, l = row_width; k < l; k++) {
 					var e = columns[i+k];
-					
-					var data = e.dataset.qmSortWeight;
-					
-					if (data === undefined) {
+
+					var data = e.getAttribute('data-qm-sort-value');
+
+					if (data === undefined || data === null) {
 						data = e.textContent || e.innerText;
 					}
 					
