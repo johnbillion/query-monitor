@@ -174,7 +174,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				}
 
 				printf(
-					'<td class="qm-num">%s</td>',
+					'<td class="qm-num" data-qm-sort-weight="' . esc_attr( number_format( $ltime, 4, '.', '' ) ) . '">%s</td>',
 					esc_html( $stime )
 				);
 				echo '</tr>';
@@ -209,7 +209,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo '</tr>';
 			}
 			echo '</tbody>';
-		
+
 		}
 
 		echo '</table>';
