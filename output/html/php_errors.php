@@ -90,8 +90,20 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">';
-					echo implode( '<br>', $stack ); // WPCS: XSS ok.
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr' . ( 1 < count( $stack ) ? ' qm-has-inner qm-has-toggle' : '' ) . '">';
+					if ( 1 < count( $stack ) ) {
+						echo '<div class="qm-toggler">';
+						echo '<div class="qm-inner-toggle">';
+						echo $stack[0];
+						unset( $stack[0] );
+						echo '<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>';
+						echo '<div class="qm-toggled" style="display: none;">';
+							echo implode( '<br />', $stack );
+						echo '</div>';
+						echo '</div>';
+						echo '</div>';
+					} else
+						echo implode( '<br>', $stack ); // WPCS: XSS ok.
 					echo '</td>';
 
 					if ( $component ) {
