@@ -74,7 +74,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 					}
 				}
 
-				echo '<td class="qm-num">' . esc_html( $stime ) . '</td>';
+				echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">' . esc_html( $stime ) . '</td>';
 				echo '</tr>';
 
 			}
