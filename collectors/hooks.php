@@ -41,7 +41,15 @@ class QM_Collector_Hooks extends QM_Collector {
 			$hooks['all'] = $this->process_action( 'all', $wp_filter );
 		}
 
-		foreach ( $wp_actions as $name => $count ) {
+		if ( defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS ) {
+			// Show all hooks
+			$hook_names = array_keys( $wp_filter );
+		} else {
+			// Only show action hooks that have been called at least once
+			$hook_names = array_keys( $wp_actions );
+		}
+
+		foreach ( $hook_names as $name ) {
 
 			$hooks[$name] = $this->process_action( $name, $wp_filter );
 
