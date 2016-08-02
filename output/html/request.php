@@ -105,7 +105,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
 
 			printf(
-				'<div class="qm-inner-toggle">%1$s (%2$s) <a href="#" class="qm-toggle" data-on="+" data-off="-">+</a></div>',
+				'<div class="qm-inner-toggle">%1$s (%2$s) <button class="qm-toggle" data-on="+" data-off="-">+</button></div>',
 				esc_html( $data['queried_object']['title'] ),
 				esc_html( get_class( $data['queried_object']['data'] ) )
 			);
@@ -137,7 +137,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
 
 				printf(
-					'<div class="qm-inner-toggle">%1$s <a href="#" class="qm-toggle" data-on="+" data-off="-">+</a></div>',
+					'<div class="qm-inner-toggle">%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button></div>',
 					esc_html( $value['title'] )
 				);
 

@@ -367,7 +367,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo $caller_name; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
-				echo '<a href="#" class="qm-toggle" data-on="+" data-off="-">+</a>';
+				echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
 				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>'; // WPCS: XSS ok.
 			}
 

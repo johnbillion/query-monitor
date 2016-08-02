@@ -465,19 +465,25 @@ body.wp-admin.folded #qm {
 	text-decoration: underline !important;
 }
 
-.qm a.qm-toggle {
+.qm .qm-toggle {
 	color: #0073aa !important;
-	padding: 4px 8px 3px !important;
+	padding: 5px 8px !important;
+	border-top: none !important;
+	border-right: none !important;
 	border-left: 1px solid #e8e8e8 !important;
 	border-bottom: 1px solid #e8e8e8 !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
 	position: absolute !important;
 	top: 0 !important;
 	right: 0 !important;
 	background: #fff !important;
+	cursor: pointer !important;
 }
 
-.qm a.qm-toggle:focus,
-.qm a.qm-toggle:hover {
+.qm .qm-toggle:focus,
+.qm .qm-toggle:hover {
 	text-decoration: none !important;
 	border-color: #e8e8e8 !important;
 	color: #0073aa !important;
@@ -637,9 +643,11 @@ html[dir="rtl"] .qm th {
 	text-align: right !important;
 }
 
-html[dir="rtl"] .qm a.qm-toggle {
-	border-left: none !important;
+html[dir="rtl"] .qm .qm-toggle {
+	border-top: none !important;
 	border-right: 1px solid #e8e8e8 !important;
+	border-bottom: 1px solid #e8e8e8 !important;
+	border-left: none !important;
 	right: auto !important;
 	left: 1px !important;
 }
@@ -648,7 +656,7 @@ html[dir="rtl"] .qm a.qm-toggle {
 
 .qm-no-js #qm-authentication,
 .qm-no-js .qm-sort-controls,
-.qm-no-js a.qm-toggle,
+.qm-no-js .qm-toggle,
 .qm-no-js select.qm-filter {
 	display: none !important;
 }
