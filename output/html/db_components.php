@@ -39,21 +39,25 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th colspan="' . esc_attr( $span ) . '">' . esc_html( $this->collector->name() ) . '</th>';
 		echo '</tr>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
-		foreach ( $data['types'] as $type_name => $type_count ) {
-			echo '<th class="qm-num">';
-			echo esc_html( $type_name );
+		if ( !empty( $data['times'] ) ) {
+			echo '<tr>';
+			echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+
+			foreach ( $data['types'] as $type_name => $type_count ) {
+				echo '<th class="qm-num">';
+				echo esc_html( $type_name );
+				echo $this->build_sorter(); // WPCS: XSS ok;
+				echo '</th>';
+			}
+
+			echo '<th class="qm-num qm-sorted-desc">';
+			esc_html_e( 'Time', 'query-monitor' );
 			echo $this->build_sorter(); // WPCS: XSS ok;
 			echo '</th>';
+			echo '</tr>';
 		}
 
-		echo '<th class="qm-num qm-sorted-desc">';
-		esc_html_e( 'Time', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok;
-		echo '</th>';
-		echo '</tr>';
 		echo '</thead>';
 
 		if ( !empty( $data['times'] ) ) {
