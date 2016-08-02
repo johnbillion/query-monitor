@@ -30,14 +30,22 @@ class QM_Collector_Request extends QM_Collector {
 
 		if ( is_multisite() ) {
 			$this->data['multisite']['current_blog'] = array(
-				'title' => sprintf( 'Current blog: #%d', $current_blog->blog_id ),
+				'title' => sprintf(
+					/* translators: 1: Blog ID */
+					__( 'Current blog: #%d', 'query-monitor' ),
+					$current_blog->blog_id
+				),
 				'data'  => $current_blog,
 			);
 		}
 
 		if ( QM_Util::is_multi_network() ) {
 			$this->data['multisite']['current_site'] = array(
-				'title' => sprintf( 'Current site: #%d', $current_site->id ),
+				'title' => sprintf(
+					/* translators: 1: Site ID */
+					__( 'Current site: #%d', 'query-monitor' ),
+					$current_site->id
+				),
 				'data'  => $current_site,
 			);
 		}
