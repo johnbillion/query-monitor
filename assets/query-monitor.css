@@ -505,6 +505,10 @@ body.wp-admin.folded #qm {
 
 /* Filters */
 
+.qm label {
+	cursor: pointer !important;
+}
+
 select.qm-filter {
 	display: block !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
@@ -539,6 +543,18 @@ select.qm-filter {
 	display: block !important;
 	margin-top: 4px !important;
 	text-align: center !important;
+}
+
+.qm button,
+.qm a,
+.qm select {
+	outline: none !important;
+}
+
+.qm button:focus,
+.qm a:focus,
+.qm select:focus {
+	box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8) !important;
 }
 
 .qm .qm-sort {
