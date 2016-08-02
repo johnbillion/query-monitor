@@ -27,6 +27,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		global $wp_actions, $wp_filter;
 
 		$this->hide_qm = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF );
+		$this->hide_core = ( defined( 'QM_HIDE_CORE_HOOKS' ) and QM_HIDE_CORE_HOOKS );
 
 		if ( is_admin() and ( $admin = QM_Collectors::get( 'admin' ) ) ) {
 			$this->data['screen'] = $admin->data['base'];
@@ -71,7 +72,10 @@ class QM_Collector_Hooks extends QM_Collector {
 					$callback = QM_Util::populate_callback( $callback );
 
 					if ( isset( $callback['component'] ) ) {
-						if ( $this->hide_qm and ( 'query-monitor' === $callback['component']->context ) ) {
+						if (
+							( $this->hide_qm and 'query-monitor' === $callback['component']->context )
+							or ( $this->hide_core and 'core' === $callback['component']->context ) 
+						) {
 							continue;
 						}
 
