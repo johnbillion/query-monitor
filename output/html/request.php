@@ -101,7 +101,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		if ( ! empty( $data['queried_object'] ) ) {
 
 			echo '<tr>';
-			echo '<td>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</td>';
+			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
 
 			printf(
@@ -124,7 +124,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			$rowspan = count( $data['multisite'] );
 
 			echo '<tr>';
-			echo '<td rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</td>';
+			echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</th>';
 
 			$first = true;
 

@@ -42,9 +42,9 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		) ) . '</th>';
 		echo '</tr>';
 		echo '<tr>';
-		echo '<td>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html__( 'Caller', 'query-monitor' ) . '</td>';
-		echo '<td colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</td>';
+		echo '<th>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
