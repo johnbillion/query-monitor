@@ -97,9 +97,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'id'    => 'query-monitor',
 			'title' => esc_html( $title ),
 			'href'  => '#qm',
-			'meta'  => array(
-				'classname' => 'hide-if-js',
-			),
 		) );
 
 		$wp_admin_bar->add_menu( array(
