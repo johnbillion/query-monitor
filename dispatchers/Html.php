@@ -298,16 +298,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public function js_admin_bar_menu() {
 
 		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
-		if (
-			   false === stripos($class,'qm-deprecated')
-			&& false === stripos($class,'qm-expensive')
-			&& false === stripos($class,'qm-warning')
-			&& false === stripos($class,'qm-notice')
-			&& false === stripos($class,'qm-strict')
-			&& false === stripos($class,'qm-alert')
-			&& false === stripos($class,'qm-error')
-		)
+
+		if ( false === strpos( $class, 'qm-' ) ) {
 			$class .= ' qm-all-clear';
+		}
+
 		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
 		if ( empty( $title ) ) {
