@@ -120,14 +120,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['warning'] ) ) {
-			$class[] = 'qm-warning';
-		} else if ( isset( $data['errors']['notice'] ) ) {
-			$class[] = 'qm-notice';
-		} else if ( isset( $data['errors']['strict'] ) ) {
-			$class[] = 'qm-strict';
-		} else if ( isset( $data['errors']['deprecated'] ) ) {
-			$class[] = 'qm-deprecated';
+		if ( ! empty( $data['errors'] ) ) {
+			foreach ( $data['errors'] as $type => $errors ) {
+				$class[] = 'qm-' . $type;
+			}
 		}
 
 		return $class;

@@ -233,7 +233,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( isset( $data['errors']['alert'] ) ) {
 			$class[] = 'qm-alert';
-		} else if ( isset( $data['errors']['warning'] ) ) {
+		}
+		if ( isset( $data['errors']['warning'] ) ) {
 			$class[] = 'qm-warning';
 		}
 
