@@ -30,6 +30,7 @@ if ( defined( 'E_USER_DEPRECATED' ) ) {
 class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public $id = 'php_errors';
+	private $error_reporting = null;
 	private $display_errors = null;
 	private static $unexpected_error;
 	private static $wordpress_couldnt;
@@ -44,6 +45,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		set_error_handler( array( $this, 'error_handler' ) );
 		register_shutdown_function( array( $this, 'shutdown_handler' ) );
 
+		$this->error_reporting = error_reporting();
 		$this->display_errors = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
 
@@ -80,6 +82,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		if ( ! class_exists( 'QM_Backtrace' ) ) {
 			return false;
+		}
+
+		if ( error_reporting() === 0 && $this->error_reporting !== 0 ) {
+			// This is most likely an @-suppressed error
+			$type .= '-suppressed';
 		}
 
 		if ( ! isset( self::$unexpected_error ) ) {

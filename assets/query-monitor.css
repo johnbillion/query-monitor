@@ -26,7 +26,7 @@ GNU General Public License for more details.
 	background-color: #f60;
 }
 
-#wp-admin-bar-query-monitor-deprecated,
+#wp-admin-bar-query-monitor-deprecateds,
 #wp-admin-bar-query-monitor-stricts {
 	background-color: #555 !important;
 }
@@ -78,7 +78,7 @@ GNU General Public License for more details.
 }
 
 body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
-#wp-admin-bar-query-monitor-deprecated a,
+#wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
 #wp-admin-bar-query-monitor-expensive a,

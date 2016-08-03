@@ -44,10 +44,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<tbody>';
 
 		$types = array(
-			'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-			'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-			'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-			'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			'warning'               => _x( 'Warning', 'PHP error level', 'query-monitor' ),
+			'notice'                => _x( 'Notice', 'PHP error level', 'query-monitor' ),
+			'strict'                => _x( 'Strict', 'PHP error level', 'query-monitor' ),
+			'deprecated'            => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			'warning-suppressed'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			'notice-suppressed'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			'strict-suppressed'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			'deprecated-suppressed' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $title ) {
@@ -134,46 +138,43 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['warning'] ) ) {
+		$types = array(
+			/* translators: %s: Number of PHP warnings */
+			'warning'    => _x( 'Warnings (%s)', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of PHP notices */
+			'notice'     => _x( 'Notices (%s)', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of strict PHP errors */
+			'strict'     => _x( 'Stricts (%s)', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of deprecated PHP errors */
+			'deprecated' => _x( 'Deprecated (%s)', 'PHP error level', 'query-monitor' ),
+		);
+
+		foreach ( $types as $type => $label ) {
+
+			$count = 0;
+
+			if ( isset( $data['errors']["{$type}-suppressed"] ) ) {
+				$key   = "{$type}-suppressed";
+				$count = count( $data['errors'][ $key ] );
+			}
+			if ( isset( $data['errors'][ $type ] ) ) {
+				$key   = $type;
+				$count += count( $data['errors'][ $key ] );
+			}
+
+			if ( ! $count ) {
+				continue;
+			}
+
 			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-warnings',
+				'id'    => "query-monitor-{$key}s",
 				'title' => esc_html( sprintf(
-					/* translators: %s: Number of PHP warnings */
-					__( 'PHP Warnings (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['warning'] ) )
+					$label,
+					number_format_i18n( $count )
 				) )
 			) );
 		}
-		if ( isset( $data['errors']['notice'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-notices',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of PHP notices */
-					__( 'PHP Notices (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['notice'] ) )
-				) )
-			) );
-		}
-		if ( isset( $data['errors']['strict'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-stricts',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of strict PHP errors */
-					__( 'PHP Stricts (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['strict'] ) )
-				) )
-			) );
-		}
-		if ( isset( $data['errors']['deprecated'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-deprecated',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of deprecated PHP errors */
-					__( 'PHP Deprecated (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['deprecated'] ) )
-				) )
-			) );
-		}
+
 		return $menu;
 
 	}
