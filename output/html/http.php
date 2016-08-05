@@ -30,29 +30,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th class="qm-sorted-asc">&nbsp;';
-		echo $this->build_sorter(); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">';
-		echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col">' . esc_html__( 'Transport', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">';
-		echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok.
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
 		$vars = array();
 
 		if ( !empty( $data['vars'] ) ) {
@@ -62,6 +39,29 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		}
 
 		if ( !empty( $data['http'] ) ) {
+
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th class="qm-sorted-asc">&nbsp;';
+			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '</th>';
+			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">';
+			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo '</th>';
+			echo '<th scope="col">' . esc_html__( 'Transport', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">';
+			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
+			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' );
+			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '</th>';
+			echo '</tr>';
+			echo '</thead>';
 
 			echo '<tbody>';
 			$i = 0;
@@ -206,14 +206,20 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		} else {
 
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th scope="col">' . esc_html__( 'HTTP Requests', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="8" style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
+			echo '<td style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 			if ( !empty( $vars ) ) {
 				echo '<tr>';
 				printf(
-					'<td colspan="8">%s</td>',
+					'<td>%s</td>',
 					implode( '<br>', array_map( 'esc_html', $vars ) )
 				);
 				echo '</tr>';
