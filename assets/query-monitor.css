@@ -77,7 +77,7 @@ GNU General Public License for more details.
 	color: #fff !important;
 }
 
-body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(.qm-only-suppresseds):not(:hover):not(.hover) .ab-label,
 #wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,

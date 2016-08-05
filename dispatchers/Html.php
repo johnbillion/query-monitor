@@ -294,11 +294,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function js_admin_bar_menu() {
 
-		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
+		$classes = apply_filters( 'qm/output/menu_class', array() );
 
-		if ( false === strpos( $class, 'qm-' ) ) {
-			$class .= ' qm-all-clear';
-		}
+		if ( 0 === count( $classes ) )
+			$classes[] = 'qm-all-clear';
+		else if ( count( preg_grep( "/^qm-(?:.*)-suppressed/", $classes ) ) === count( $classes ) )
+			$classes[] = 'qm-only-suppresseds';
+
+		$class = implode( ' ', apply_filters( 'qm/output/menu_class/final', $classes ) );
 
 		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
