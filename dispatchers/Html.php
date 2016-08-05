@@ -296,7 +296,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$classes = apply_filters( 'qm/output/menu_class', array() );
 
-		if ( 0 === count( $classes ) )
+		if ( 0 === count( preg_grep( "/^qm-(?:.*)/", $classes ) ) )
 			$classes[] = 'qm-all-clear';
 		else if ( count( preg_grep( "/^qm-(?:.*)-suppressed/", $classes ) ) === count( $classes ) )
 			$classes[] = 'qm-only-suppresseds';
