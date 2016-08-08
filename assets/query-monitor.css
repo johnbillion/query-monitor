@@ -286,7 +286,8 @@ body.wp-admin.folded #qm {
 }
 
 .qm td,
-.qm th {
+.qm th,
+.qm caption {
 	background: #fff !important;
 	box-sizing: border-box !important;
 	text-align: left !important;
@@ -303,11 +304,9 @@ body.wp-admin.folded #qm {
 	-webkit-font-smoothing: auto !important;
 }
 
-.qm .qm-totally-legit-spacer td {
-	background-color: #f1f1f1 !important;
-	border-right-color: #f1f1f1 !important;
-	border-left-color: #f1f1f1 !important;
-	height: 20px !important;
+.qm caption,
+.qm th[scope=col] {
+	border-bottom-width: 0 !important;
 }
 
 .qm tbody tr:hover th,

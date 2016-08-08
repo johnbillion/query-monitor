@@ -33,14 +33,12 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="4">' . esc_html( sprintf(
+		echo '<caption>' . esc_html( sprintf(
 			/* translators: %s: Name of current language */
 			__( 'Language Setting: %s', 'query-monitor' ),
 			$data['locale']
-		) ) . '</th>';
-		echo '</tr>';
+		) ) . '</caption>';
+		echo '<thead>';
 		echo '<tr>';
 		echo '<th>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
 		echo '<th>' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';

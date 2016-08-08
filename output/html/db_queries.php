@@ -52,11 +52,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo '<div class="qm qm-queries" id="' . esc_attr( $this->collector->id() ) . '-wpdb">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
 		echo '<tr>';
 		echo '<td class="qm-warn">';
@@ -77,15 +73,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo '<div class="qm qm-queries" id="qm-query-errors">';
 		echo '<table cellspacing="0">';
+		echo '<caption>' . esc_html__( 'Database Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="4">' . esc_html__( 'Database Errors', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Error', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Error', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -106,15 +100,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo '<div class="qm qm-queries" id="qm-query-expensive">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="5" class="qm-expensive">';
+		echo '<caption>';
 		/* translators: %s: Database query time in seconds */
 		printf( esc_html__( 'Slow Database Queries (above %ss)', 'query-monitor' ),
 			'<span class="qm-expensive">' . esc_html( number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</span>'
 		);
-		echo '</th>';
-		echo '</tr>';
+		echo '</caption>';
+		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
@@ -127,7 +119,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Rows', 'query-monitor' ) . '</th>';
 		}
 
-		echo '<th class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -155,11 +147,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		echo '<div class="qm qm-queries" id="' . esc_attr( $this->collector->id() . '-' . sanitize_title_with_dashes( $name ) ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
-		echo '<thead>';
-		echo '<tr>';
 		/* translators: %s: Name of database controller */
-		echo '<th colspan="' . absint( $span ) . '">' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</th>';
-		echo '</tr>';
+		echo '<caption>' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</caption>';
+		echo '<thead>';
 
 		if ( !empty( $db->rows ) ) {
 

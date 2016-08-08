@@ -27,6 +27,13 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
+		echo '<thead class="screen-reader-text">';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" colspan="2">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
 		echo '<tbody>';
 
 		foreach ( array(
