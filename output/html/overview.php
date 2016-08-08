@@ -48,7 +48,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-
+		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ). '</caption>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Page generation time', 'query-monitor' ) . '</th>';
