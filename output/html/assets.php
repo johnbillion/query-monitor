@@ -30,8 +30,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
 
 		$position_labels = array(
 			'scripts' => array(
@@ -48,24 +47,29 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			),
 		);
 
-		foreach ( array(
-			'scripts' => __( 'Scripts', 'query-monitor' ),
-			'styles'  => __( 'Styles', 'query-monitor' ),
-		) as $type => $type_label ) {
+		$type_labels = array(
+			'scripts' => array(
+				'singular' => __( 'Script', 'query-monitor' ),
+				'plural'   => __( 'Scripts', 'query-monitor' ),
+			),
+			'styles' => array(
+				'singular' => __( 'Style', 'query-monitor' ),
+				'plural'   => __( 'Styles', 'query-monitor' ),
+			),
+		);
 
+		foreach ( $type_labels as $type => $type_label ) {
+
+			echo '<div class="qm">';
+			echo '<table cellspacing="0">';
+			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
 			echo '<thead>';
-
-			if ( 'scripts' !== $type ) {
-				echo '<tr class="qm-totally-legit-spacer">';
-				echo '<td colspan="6"></td>';
-				echo '</tr>';
-			}
-
 			echo '<tr>';
-			echo '<th colspan="2">' . esc_html( $type_label ) . '</th>';
-			echo '<th>' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
-			echo '<th>' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
-			echo '<th>' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html( $type_label['singular'] ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
@@ -84,10 +88,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 
 			echo '</tbody>';
+			echo '</table>';
+			echo '</div>';
 
 		}
 
-		echo '</table>';
 		echo '</div>';
 
 	}
@@ -114,7 +119,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			if ( $first ) {
 				$rowspan = count( $handles );
-				echo '<th rowspan="' . esc_attr( $rowspan ) . '" class="qm-nowrap">' . esc_html( $label ) . '</th>';
+				echo '<th scope="row" rowspan="' . esc_attr( $rowspan ) . '" class="qm-nowrap">' . esc_html( $label ) . '</th>';
 			}
 
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies, $type );
@@ -172,7 +177,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<td class="qm-wrap">' . esc_html( $dependency->handle ) . '<br><span class="qm-info">&nbsp;';
+		echo '<th scope="row" class="qm-wrap">' . esc_html( $dependency->handle ) . '<br><span class="qm-info">&nbsp;';
 		if ( is_wp_error( $source ) ) {
 			printf( '<span class="qm-warn">%s</span>',
 				esc_html( $src )
