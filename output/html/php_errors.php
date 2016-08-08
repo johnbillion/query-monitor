@@ -32,13 +32,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<caption class="screen-reader-text">' . esc_html( 'PHP Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
-		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -59,7 +60,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			if ( isset( $data['errors'][$type] ) ) {
 
 				echo '<tr>';
-				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . esc_html( $title ) . '</td>';
+				echo '<th scope="row" rowspan="' . count( $data['errors'][$type] ) . '">' . esc_html( $title ) . '</th>';
 				$first = true;
 
 				foreach ( $data['errors'][$type] as $error ) {
@@ -71,7 +72,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$component = $error->trace->get_component();
 					$message   = wp_strip_all_tags( $error->message );
 
-					echo '<td>' . esc_html( $message ) . '</td>';
+					echo '<th scope="row">' . esc_html( $message ) . '</th>';
 					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td>';
 					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
