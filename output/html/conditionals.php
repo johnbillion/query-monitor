@@ -30,11 +30,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="' . absint( $cols ) . '">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
 
 		foreach ( $data['conds']['true'] as $cond ) {
