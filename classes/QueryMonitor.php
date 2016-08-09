@@ -25,9 +25,10 @@ class QueryMonitor extends QM_Plugin {
 		# Parent setup:
 		parent::__construct( $file );
 
-		# Load and register built-in collectors:
-		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
-			include $file;
+		# Load and register built-in collectors, and provide hook for extensions:
+		foreach ( apply_filters( 'qm/files/collectors', glob( $this->plugin_path( 'collectors/*.php' ) ) ) as $file ) {
+			if ( file_exists( $file ) )
+				include $file;
 		}
 
 	}
