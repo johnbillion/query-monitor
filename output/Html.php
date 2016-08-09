@@ -223,10 +223,10 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	protected function get_user_pref( $key, $default = false ) {
-		$qm_prefs = get_user_option( 'qm_prefs' );
+		$prefs = get_user_option( 'qm_prefs' );
 
-		if ( false !== $qm_prefs && array_key_exists( $key, $qm_prefs ) )
-			return $qm_prefs[$key];
+		if ( $this->has_user_pref( $key, $prefs ) )
+			return $prefs[$key];
 
 		return $default;
 	}
@@ -234,6 +234,13 @@ abstract class QM_Output_Html extends QM_Output {
 		protected function get_user_pref_sort( $key, $default = false ) {
 			return $this->user_pref_sort = $this->get_user_pref( $key, $default );
 		}
+
+	protected function has_user_pref( $key, $prefs = false ) {
+		if ( false === $prefs )
+			$prefs = get_user_option( 'qm_prefs' );
+
+		return $prefs && is_array( $prefs ) && count( $prefs ) && array_key_exists( $key, $prefs );
+	}
 
 	protected function get_user_pref_sort_class( $col, $default = '' ) {
 		if (
