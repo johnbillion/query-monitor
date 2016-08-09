@@ -206,7 +206,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		foreach ( array apply_filters( 'qm/files/outputters', glob( $this->qm->plugin_path( 'output/html/*.php' ) ) ) as $file ) {
+		foreach ( ( array ) apply_filters( 'qm/files/outputters', glob( $this->qm->plugin_path( 'output/html/*.php' ) ) ) as $file ) {
 			if ( file_exists( $file ) )
 				require_once $file;
 		}
