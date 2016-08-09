@@ -36,7 +36,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * Filter the arguments used in an HTTP request.
 	 *
 	 * Used to log the request, and to add the logging key to the arguments array.
-	 * 
+	 *
 	 * @param  array  $args HTTP request arguments.
 	 * @param  string $url  The request URL.
 	 * @return array        HTTP request arguments.
@@ -89,7 +89,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	/**
 	 * Debugging action for the HTTP API.
-	 * 
+	 *
 	 * @param mixed  $response A parameter which varies depending on $action.
 	 * @param string $action   The debug action. Currently one of 'response' or 'transports_list'.
 	 * @param string $class    The HTTP transport class name.
@@ -173,7 +173,9 @@ class QM_Collector_HTTP extends QM_Collector {
 			'airplane_mode_enabled'
 		) );
 
+		$i = 0;
 		foreach ( $this->data['http'] as $key => & $http ) {
+			$this->data['http'][$key]['i'] = $i;
 
 			if ( !isset( $http['response'] ) ) {
 				// Timed out
@@ -201,6 +203,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			$this->log_type( $http['type'] );
 			$this->log_component( $http['component'], $http['ltime'], $http['type'] );
 
+			$i++;
 		}
 
 	}

@@ -172,7 +172,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$types[$type]['callers'][$caller]++;
 			}
 
-			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace' );
+			$row = compact( 'i', 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace' );
 
 			if ( is_wp_error( $result ) ) {
 				$this->data['errors'][] = $row;

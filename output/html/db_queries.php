@@ -20,6 +20,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
+
+		$this->get_user_pref_sort(
+            $collector->id . '/sort', // user preference key name
+            array(
+                'col' => 'i',       // default column sorted
+                'order' => 'asc'      // default sort order
+            )
+        );
+
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 20 );
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 20 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
@@ -190,8 +199,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
-			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo '<th scope="col" class="' . $this->get_user_pref_sort_class( 'i', 'qm-sorted-asc' ) . '">&nbsp;';
+			echo $this->build_sorter( 'i' ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">';
 			echo $this->build_filter( 'type', array_keys( $db->types ), __( 'Query', 'query-monitor' ) ); // WPCS: XSS ok;
@@ -212,15 +221,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				} else {
 					$class = '';
 				}
+				$class .= $this->get_user_pref_sort_class( 'result' );
 				echo '<th scope="col" class="' . esc_attr( $class ) . '">';
 				esc_html_e( 'Rows', 'query-monitor' );
-				echo $this->build_sorter(); // WPCS: XSS ok.
+				echo $this->build_sorter( 'result' ); // WPCS: XSS ok.
 				echo '</th>';
 			}
 
-			echo '<th scope="col" class="qm-num">';
+			echo '<th scope="col" class="qm-num' . $this->get_user_pref_sort_class( 'ltime' ) . '">';
 			esc_html_e( 'Time', 'query-monitor' );
-			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo $this->build_sorter( 'ltime' ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
 
@@ -230,9 +240,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( !empty( $db->rows ) ) {
 
+			$db->rows = $this->get_data_sorted_by_user_pref( $db->rows );
+
 			echo '<tbody>';
 
-			foreach ( $db->rows as $row ) {
+			foreach ( $db->rows as $i => $row ) {
 				$this->output_query_row( $row, array( 'row', 'sql', 'caller', 'component', 'result', 'time' ) );
 			}
 
@@ -351,7 +363,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo "<tr{$attr}>"; // WPCS: XSS ok.
 
 		if ( isset( $cols['row'] ) ) {
-			echo '<td class="qm-row-num qm-num">' . absint( ++$this->query_row ) . '</td>';
+			echo '<td class="qm-row-num qm-num">' . absint( $row['i'] + 1 ) . '</td>';
 		}
 
 		if ( isset( $cols['sql'] ) ) {

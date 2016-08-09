@@ -577,6 +577,8 @@ select.qm-filter {
 	margin: 0 auto !important;
 }
 
+.qm .qm-sort:focus { box-shadow: none !important; }
+
 .qm .qm-sort-asc {
 	margin-bottom: 1px !important;
 }
@@ -588,7 +590,10 @@ select.qm-filter {
 .qm .qm-sorted-asc .qm-sort-asc:before {
 	color: #333 !important;
 	content: "\25b2" !important;
+	transition: 0.4s;
 }
+
+	.qm .qm-sort-asc.qm-user-option-saved:before { color: #2196F3 !important; }
 
 .qm .qm-sort-desc {
 	margin-top: 1px !important;
@@ -601,7 +606,10 @@ select.qm-filter {
 .qm .qm-sorted-desc .qm-sort-desc:before {
 	color: #333 !important;
 	content: "\25bc" !important;
+	transition: 0.4s;
 }
+
+	.qm .qm-sort-desc.qm-user-option-saved:before { color: #2196F3 !important; }
 
 /* RTL */
 

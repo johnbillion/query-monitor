@@ -19,12 +19,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public $id = 'html';
 	public $did_footer = false;
 
+	public static $user_prefs = false;
+
 	public function __construct( QM_Plugin $qm ) {
+
+		if ( false === self::$user_prefs )
+			self::$user_prefs = get_user_option( 'qm_prefs' );
 
 		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
 		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
 		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
+		add_action( 'wp_ajax_qm_save_user_pref',  array( $this, 'ajax_save_user_pref' ) );
 
 		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
 
@@ -82,6 +88,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$text = __( 'Authentication cookie cleared.', 'query-monitor' );
 
 		wp_send_json_success( $text );
+
+	}
+
+	public function ajax_save_user_pref() {
+		$qm_prefs = get_user_option( 'qm_prefs' );
+		$key = $_REQUEST['key'];
+
+		if ( false === $qm_prefs )
+			$qm_prefs = array();
+
+		if ( !array_key_exists( $key, $qm_prefs ) || !is_array( $qm_prefs[$key] ) )
+			$qm_prefs[$key] = array();
+
+		if ( 'true' === $_REQUEST['value'] )
+			$_REQUEST['value'] = true;
+
+		if ( 'false' === $_REQUEST['value'] )
+			$_REQUEST['value'] = false;
+
+		$qm_prefs[$key] = $_REQUEST['value'];
+
+		update_user_option( get_current_user_id(), 'qm_prefs', $qm_prefs );
+
+		die(print_r($qm_prefs));
 
 	}
 
