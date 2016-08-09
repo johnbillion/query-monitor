@@ -18,6 +18,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
+
+		$this->get_user_pref_sort(
+            $collector->id . '/sort', // user preference key name
+            array(
+                'col' => 'i',         // default column sorted
+                'order' => 'asc'      // default sort order
+            )
+        );
+
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 90 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
@@ -32,8 +41,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th class="qm-sorted-asc">&nbsp;';
-		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '<th class="' . $this->get_user_pref_sort_class( 'i', 'qm-sorted-asc' ) . '">&nbsp;';
+		echo $this->build_sorter( 'i' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">';
@@ -44,11 +53,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '<th scope="col">';
 		echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '<th scope="col" class="qm-num' . $this->get_user_pref_sort_class( 'timeout' ) . '">' . esc_html__( 'Timeout', 'query-monitor' );
+		echo $this->build_sorter( 'timeout' ); // WPCS: XSS ok.
 		echo '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok.
+		echo '<th scope="col" class="qm-num' . $this->get_user_pref_sort_class( 'ltime' ) . '">' . esc_html__( 'Time', 'query-monitor' );
+		echo $this->build_sorter( 'ltime' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -62,6 +71,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		}
 
 		if ( !empty( $data['http'] ) ) {
+
+			$data['http'] = $this->get_data_sorted_by_user_pref( $data['http'] );
 
 			echo '<tbody>';
 			$i = 0;
@@ -148,7 +159,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				);
 				printf(
 					'<td class="qm-num">%s</td>',
-					intval( $i )
+					intval( $row['i'] + 1 )
 				);
 				printf( // WPCS: XSS ok.
 					'<td class="qm-url qm-ltr qm-wrap">%s<br>%s</td>',
@@ -225,6 +236,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		echo '</table>';
 		echo '</div>';
 
+	}
+
+	public function get_sort_column_values( $data ) {
+		$sorter = array();
+		foreach ( $data as $row )
+			if ( 'timeout' === $this->user_pref_sort['col'] )
+				$sorter[] = $row['args']['timeout'];
+			else
+				$sorter[] = $row[$this->user_pref_sort['col']];
+		return $sorter;
 	}
 
 	public function admin_class( array $class ) {

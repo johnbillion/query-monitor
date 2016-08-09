@@ -173,7 +173,9 @@ class QM_Collector_HTTP extends QM_Collector {
 			'airplane_mode_enabled'
 		) );
 
+		$i = 0;
 		foreach ( $this->data['http'] as $key => & $http ) {
+			$this->data['http'][$key]['i'] = $i;
 
 			if ( !isset( $http['response'] ) ) {
 				// Timed out
@@ -201,6 +203,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			$this->log_type( $http['type'] );
 			$this->log_component( $http['component'], $http['ltime'], $http['type'] );
 
+			$i++;
 		}
 
 	}

@@ -18,6 +18,15 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
+
+		$this->get_user_pref_sort(
+            $collector->id . '/sort', // user preference key name
+            array(
+                'col' => 'ltime',     // default column sorted
+                'order' => 'asc'      // default sort order
+            )
+        );
+
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 40 );
 	}
 
@@ -45,15 +54,15 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<th class="qm-num">';
+				echo '<th class="qm-num' . $this->get_user_pref_sort_class( $type_name ) . '">';
 				echo esc_html( $type_name );
-				echo $this->build_sorter(); // WPCS: XSS ok;
+				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
 				echo '</th>';
 			}
 
-			echo '<th class="qm-num qm-sorted-desc">';
+			echo '<th class="qm-num' . $this->get_user_pref_sort_class( 'ltime', ' qm-sorted-desc' ) . '">';
 			esc_html_e( 'Time', 'query-monitor' );
-			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo $this->build_sorter( 'ltime' ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '</tr>';
 		}
@@ -61,6 +70,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '</thead>';
 
 		if ( !empty( $data['times'] ) ) {
+
+			$data['times'] = $this->get_data_sorted_by_user_pref( $data['times'] );
 
 			echo '<tbody>';
 
@@ -113,6 +124,20 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '</table>';
 		echo '</div>';
 
+	}
+
+	public function get_sort_column_values( $data ) {
+		$sorter = array();
+
+		foreach ( $data as $row )
+			if ( 'ltime' !== $this->user_pref_sort['col'] )
+				$sorter[] = array_key_exists( $this->user_pref_sort['col'], $row['types'] )
+					? $row['types'][$this->user_pref_sort['col']]
+					: 0;
+			else
+				$sorter[] = $row[$this->user_pref_sort['col']];
+
+		return $sorter;
 	}
 
 	public function admin_menu( array $menu ) {

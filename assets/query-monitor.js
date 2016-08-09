@@ -233,6 +233,44 @@ jQuery( function($) {
 
 	});
 
+	$('#qm').find('[data-qm-user-option-key]').on('click',function(ev) {
+		if (
+			'undefined' !== ev.shiftKey
+			&& ev.shiftKey
+		) {
+			var el = $(this),
+				value = el.val();
+
+			if ('undefined' !== typeof el.data('qm-user-option-value'))
+				value = el.data('qm-user-option-value');
+			else if (
+				el.is('[type="checkbox"]')
+				|| el.is('[type="radio"]')
+			)
+				value = el.is(':checked');
+			else if (el.is('select'))
+				value = el.find('option[selected="selected"]').val();
+
+			var ajax_data = {
+				action : 'qm_save_user_pref',
+				key : el.data('qm-user-option-key'),
+				value : value
+			};
+
+			$.ajax(qm_l10n.ajaxurl,{
+				type : 'POST',
+				data : ajax_data,
+				success : function(response) {
+					el.addClass('qm-user-option-saved');
+					setTimeout(function() {
+						el.removeClass('qm-user-option-saved');
+					},1500);
+				}
+			});
+		}
+		return ev;
+	});
+
 	$( document ).ajaxSuccess( function( event, response, options ) {
 
 		var errors = response.getResponseHeader( 'X-QM-error-count' );

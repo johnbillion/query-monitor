@@ -88,7 +88,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
 		$out = '<label for="' . esc_attr( $filter_id ) .'">' . esc_html( $label ) . '</label>';
-		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
+		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '" data-qm-user-option-key="qm/' . esc_attr( $this->collector->id ) . '/filter/' . esc_attr( $name ) . '">';
 		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
 		foreach ( $values as $value ) {
@@ -106,12 +106,25 @@ abstract class QM_Output_Html extends QM_Output {
 	 *
 	 * @return string Markup for the column sorter controls.
 	 */
-	protected function build_sorter() {
+	protected function build_sorter( $col = false ) {
 		$out = '<span class="qm-sort-controls">';
 		/* translators: Button for sorting table columns in ascending order */
-		$out .= '<button class="qm-sort qm-sort-asc"><span class="screen-reader-text">' . esc_html__( 'Ascending', 'query-monitor' ) . '</span></button>';
+		$out .= '<button ' .
+			'class="qm-sort qm-sort-asc"' .
+				( false !== $col
+					? ' data-qm-user-option-key="' . esc_attr( $this->collector->id ) . '/sort"' .
+					  ' data-qm-user-option-value="' . esc_attr( json_encode( array( 'col' => $col, 'order' => 'asc' ) ) ) . '"'
+					: ''
+				) .
+			'><span class="screen-reader-text">' . esc_html__( 'Ascending', 'query-monitor' ) . '</span></button>';
 		/* translators: Button for sorting table columns in descending order */
-		$out .= '<button class="qm-sort qm-sort-desc"><span class="screen-reader-text">' . esc_html__( 'Descending', 'query-monitor' ) . '</span></button>';
+		$out .= '<button ' .
+			'class="qm-sort qm-sort-desc"' .
+				( false !== $col
+					? ' data-qm-user-option-key="' . esc_attr( $this->collector->id ) . '/sort"' .
+					  ' data-qm-user-option-value="' . esc_attr( json_encode( array( 'col' => $col, 'order' => 'desc' ) ) ) . '"'
+					: ''
+				) . '><span class="screen-reader-text">' . esc_html__( 'Descending', 'query-monitor' ) . '</span></button>';
 		$out .= '</span>';
 		return $out;
 	}
@@ -207,6 +220,76 @@ abstract class QM_Output_Html extends QM_Output {
 		$link = sprintf( self::$file_link_format, urlencode( $file ), intval( $link_line ) );
 		return sprintf( '<a href="%s">%s</a>', esc_attr( $link ), esc_html( $text ) );
 
+	}
+
+	protected function get_user_pref( $key, $default = false ) {
+		$qm_prefs = get_user_option( 'qm_prefs' );
+
+		if ( false !== $qm_prefs && array_key_exists( $key, $qm_prefs ) )
+			return $qm_prefs[$key];
+
+		return $default;
+	}
+
+		protected function get_user_pref_sort( $key, $default = false ) {
+			return $this->user_pref_sort = $this->get_user_pref( $key, $default );
+		}
+
+	protected function get_user_pref_sort_class( $col, $default = '' ) {
+		if (
+			false === $this->user_pref_sort
+			|| !is_array( $this->user_pref_sort )
+			|| !array_key_exists( 'col', $this->user_pref_sort )
+		)
+			return $default;
+
+		return (
+			$col === $this->user_pref_sort['col']
+			&& array_key_exists( 'order', $this->user_pref_sort )
+				? ' qm-sorted-' . $this->user_pref_sort['order']
+				: ''
+		);
+	}
+
+	protected function get_data_sorted_by_user_pref( $data ) {
+		$temp = $data;
+		$first = array_shift( $temp );
+		unset( $temp );
+
+		$type = array_key_exists( $this->user_pref_sort['col'], $first )
+			? is_numeric( $first[$this->user_pref_sort['col']] )
+				? 'SORT_NUMERIC'
+				: 'SORT_REGULAR'
+			: 'SORT_REGULAR'
+		;
+		unset($first);
+
+		$sorter = $this->get_sort_column_values( $data );
+
+		if ( 'SORT_NUMERIC' === $type )
+			array_map( 'intval', $sorter );
+
+		array_multisort(
+			$sorter,
+			( 'asc' === $this->user_pref_sort['order']
+				? SORT_ASC
+				: SORT_DESC
+			),
+			( 'SORT_NUMERIC' === $type
+				? SORT_NUMERIC
+				: SORT_REGULAR
+			),
+			$data
+		);
+
+		return $data;
+	}
+
+	public function get_sort_column_values( $data ) {
+		$sorter = array();
+		foreach ( $data as $row )
+			$sorter[] = strtolower( $row[$this->user_pref_sort['col']] );
+		return $sorter;
 	}
 
 }
