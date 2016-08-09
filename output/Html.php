@@ -223,10 +223,8 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	protected function get_user_pref( $key, $default = false ) {
-		$prefs = get_user_option( 'qm_prefs' );
-
-		if ( $this->has_user_pref( $key, $prefs ) )
-			return $prefs[$key];
+		if ( $this->has_user_pref( $key, QM_Dispatcher_Html::$user_prefs ) )
+			return QM_Dispatcher_Html::$user_prefs[$key];
 
 		return $default;
 	}
@@ -237,7 +235,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function has_user_pref( $key, $prefs = false ) {
 		if ( false === $prefs )
-			$prefs = get_user_option( 'qm_prefs' );
+			$prefs = QM_Dispatcher_Html::$user_prefs;
 
 		return $prefs && is_array( $prefs ) && count( $prefs ) && array_key_exists( $key, $prefs );
 	}

@@ -19,7 +19,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public $id = 'html';
 	public $did_footer = false;
 
+	public static $user_prefs = false;
+
 	public function __construct( QM_Plugin $qm ) {
+
+		if ( false === self::$user_prefs )
+			self::$user_prefs = get_user_option( 'qm_prefs' );
 
 		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
 		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
