@@ -31,34 +31,30 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<thead>';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
+		echo '<thead class="screen-reader-text">';
 		echo '<tr>';
-		echo '<th colspan="2">' . esc_html( $this->collector->name() ) . '</th>';
+		echo '<th>' . esc_html__( 'Data', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<td class="qm-ltr">get_current_screen()</td>';
-		echo '<td class="qm-has-inner">';
+		echo '<th class="qm-ltr" rowspan="' . absint( count( get_object_vars( $data['current_screen'] ) ) + 1 ) . '">get_current_screen()</th>';
+		echo '</tr>';
 
-		echo '<table class="qm-inner" cellspacing="0">';
-		echo '<tbody>';
 		foreach ( $data['current_screen'] as $key => $value ) {
 			echo '<tr>';
 			echo '<th>' . esc_html( $key ) . '</th>';
 			echo '<td>' . esc_html( $value ) . '</td>';
 			echo '</tr>';
 		}
-		echo '</tbody>';
-		echo '</table>';
-
-		echo '</td>';
-		echo '</tr>';
 
 		echo '<tr>';
-		echo '<td class="qm-ltr">$pagenow</td>';
-		echo '<td>' . esc_html( $data['pagenow'] ) . '</td>';
+		echo '<th class="qm-ltr">$pagenow</th>';
+		echo '<td colspan="2">' . esc_html( $data['pagenow'] ) . '</td>';
 		echo '</tr>';
 
 		$screens = array(
@@ -103,7 +99,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 			}
 
 			echo '<tr>';
-			echo '<td rowspan="2">' . esc_html__( 'Column Filters', 'query-monitor' ) . '</td>';
+			echo '<th rowspan="2">' . esc_html__( 'Column Filters', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2">manage_<span class="qm-current">' . esc_html( $cols ) . '</span>_columns</td>';
 			echo '</tr>';
 			echo '<tr>';
@@ -111,7 +107,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 			echo '</tr>';
 
 			echo '<tr>';
-			echo '<td rowspan="1">' . esc_html__( 'Column Action', 'query-monitor' ) . '</td>';
+			echo '<th>' . esc_html__( 'Column Action', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2">manage_<span class="qm-current">' . esc_html( $col ) . '</span>_custom_column</td>';
 			echo '</tr>';
 

@@ -31,10 +31,17 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
+		echo '<thead>';
+		echo '<tr class="screen-reader-text">';
+		echo '<th scope="col">' . esc_html__( 'Data', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Template File', 'query-monitor' ) . '</th>';
+		echo '<th scope="row">' . esc_html__( 'Template File', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['template_path'] ) ) {
 
 			if ( $data['is_child_theme'] ) {
@@ -53,7 +60,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 			$count = count( $data['template_parts'] );
 			echo '<tr>';
-			echo '<th rowspan="' . absint( $count ) . '">' . esc_html__( 'Template Parts', 'query-monitor' ) . '</th>';
+			echo '<th scope="row" rowspan="' . absint( $count ) . '">' . esc_html__( 'Template Parts', 'query-monitor' ) . '</th>';
 			if ( $data['is_child_theme'] ) {
 				$parts = $data['theme_template_parts'];
 			} else {
@@ -76,7 +83,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		} else {
 			echo '<tr>';
-			echo '<th>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</th>';
+			echo '<th scope="row">' . esc_html__( 'Template Parts', 'query-monitor' ) . '</th>';
 			echo '<td><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
 		}
@@ -85,7 +92,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 			$count = count( $data['timber_files'] );
 			echo '<tr>';
-			echo '<th rowspan="' . absint( $count ) . '">' . esc_html__( 'Timber Files', 'query-monitor' ) . '</th>';
+			echo '<th scope="row" rowspan="' . absint( $count ) . '">' . esc_html__( 'Timber Files', 'query-monitor' ) . '</th>';
 			$first = true;
 
 			foreach ( $data['timber_files'] as $filename ) {
@@ -105,16 +112,16 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<tr>';
 		if ( $data['is_child_theme'] ) {
-			echo '<th>' . esc_html__( 'Child Theme', 'query-monitor' ) . '</th>';
+			echo '<th scope="row">' . esc_html__( 'Child Theme', 'query-monitor' ) . '</th>';
 		} else {
-			echo '<th>' . esc_html__( 'Theme', 'query-monitor' ) . '</th>';
+			echo '<th scope="row">' . esc_html__( 'Theme', 'query-monitor' ) . '</th>';
 		}
 		echo '<td>' . esc_html( $data['stylesheet'] ) . '</td>';
 		echo '</tr>';
 
 		if ( $data['is_child_theme'] ) {
 			echo '<tr>';
-			echo '<th>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</th>';
+			echo '<th scope="row">' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</th>';
 			echo '<td>' . esc_html( $data['template'] ) . '</td>';
 			echo '</tr>';
 		}
@@ -122,7 +129,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( !empty( $data['body_class'] ) ) {
 
 			echo '<tr>';
-			echo '<th rowspan="' . count( $data['body_class'] ) . '">' . esc_html__( 'Body Classes', 'query-monitor' ) . '</th>';
+			echo '<th row="scope" rowspan="' . count( $data['body_class'] ) . '">' . esc_html__( 'Body Classes', 'query-monitor' ) . '</th>';
 			$first = true;
 
 			foreach ( $data['body_class'] as $class ) {

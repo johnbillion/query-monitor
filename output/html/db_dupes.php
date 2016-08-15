@@ -33,19 +33,17 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="' . absint( $colspan ) . '">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
 
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['dupe_components'] ) ) {
 			echo '<th>' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
 		}
-		echo '<th>' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 
 		echo '</thead>';

@@ -34,21 +34,19 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
+		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="' . absint( $span ) . '">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
-			echo '<th class="qm-num">';
+			echo '<th scope="col" class="qm-num">';
 			echo esc_html( $type_name );
 			echo $this->build_sorter(); // WPCS: XSS ok;
 			echo '</th>';
 		}
 
-		echo '<th class="qm-num qm-sorted-desc">';
+		echo '<th scope="col" class="qm-num qm-sorted-desc">';
 		esc_html_e( 'Time', 'query-monitor' );
 		echo $this->build_sorter(); // WPCS: XSS ok;
 		echo '</th>';
@@ -64,7 +62,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
-				echo '<td class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '">' . esc_html( $row['caller'] ) . '</a></td>';
+				echo '<th scope="row" class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '">' . esc_html( $row['caller'] ) . '</a></th>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][$type_name] ) ) {
