@@ -52,7 +52,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $type_labels as $type => $type_label ) {
 
-			echo '<div class="qm">';
+			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-' . esc_attr( $type ) . '">';
 			echo '<table cellspacing="0">';
 			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
 			echo '<thead>';
@@ -223,15 +223,24 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
-		$args = array(
-			'title' => esc_html( $this->collector->name() ),
+		$labels = array(
+			'scripts' => 'Scripts',
+			'styles'  => 'Styles',
 		);
 
-		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
-			$args['meta']['classname'] = 'qm-error';
-		}
+		foreach ( $labels as $type => $label ) {
+			$args = array(
+				'title' => esc_html( $label ),
+				'id'    => esc_attr( "query-monitor-{$this->collector->id}-{$type}" ),
+				'href'  => esc_attr( '#' . $this->collector->id() . '-' . $type )
+			);
 
-		$menu[] = $this->menu( $args );
+			if ( ! empty( $data['broken'][ $type ] ) or ! empty( $data['missing'][ $type ] ) ) {
+				$args['meta']['classname'] = 'qm-error';
+			}
+
+			$menu[] = $this->menu( $args );
+		}
 
 		return $menu;
 
