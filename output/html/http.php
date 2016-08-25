@@ -30,6 +30,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
+
 		$vars = array();
 
 		if ( !empty( $data['vars'] ) ) {
@@ -40,9 +41,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( !empty( $data['http'] ) ) {
 
+			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP Requests', 'query-monitor' ) . '</caption>';
+
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th class="qm-sorted-asc">&nbsp;';
+			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
 			echo $this->build_sorter(); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';

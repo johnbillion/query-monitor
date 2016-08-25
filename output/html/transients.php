@@ -30,17 +30,19 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		if ( !empty( $data['trans'] ) ) {
 
+			echo '<caption class="screen-reader-text">' . esc_html__( 'Transients', 'query-monitor' ) . '</caption>';
+
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th>' . esc_html__( 'Transient Set', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Transient Set', 'query-monitor' ) . '</th>';
 			if ( is_multisite() ) {
 				echo '<th>' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 			}
 			if ( !empty( $data['trans'] ) and isset( $data['trans'][0]['expiration'] ) ) {
-				echo '<th>' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
+				echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
 			}
-			echo '<th>' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-			echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 
