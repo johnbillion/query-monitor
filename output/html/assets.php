@@ -33,18 +33,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
 
 		$position_labels = array(
-			'scripts' => array(
-				'missing' => __( 'Missing Scripts', 'query-monitor' ),
-				'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
-				'header'  => __( 'Header Scripts', 'query-monitor' ),
-				'footer'  => __( 'Footer Scripts', 'query-monitor' ),
-			),
-			'styles' => array(
-				'missing'  => __( 'Missing Styles', 'query-monitor' ),
-				'broken'   => __( 'Broken Dependencies', 'query-monitor' ),
-				'header'   => __( 'Header Styles', 'query-monitor' ),
-				'footer'   => __( 'Footer Styles', 'query-monitor' ),
-			),
+			'missing' => __( 'Missing', 'query-monitor' ),
+			'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
+			'header'  => __( 'Header', 'query-monitor' ),
+			'footer'  => __( 'Footer', 'query-monitor' ),
 		);
 
 		$type_labels = array(
@@ -82,7 +74,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			) as $position ) {
 
 				if ( isset( $data[ $position ][ $type ] ) ) {
-					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $type ][ $position ], $type );
+					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $position ], $type );
 				}
 
 			}
