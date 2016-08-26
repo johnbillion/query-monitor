@@ -54,6 +54,15 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
 
+		if ( ! empty( $data['template_hierarchy'] ) ) {
+
+			echo '<tr>';
+			echo '<td>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</td>';
+			echo '<td>' . implode( '<br>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</td>';
+			echo '</tr>';
+
+		}
+
 		echo '</tr>';
 
 		if ( ! empty( $data['template_parts'] ) ) {

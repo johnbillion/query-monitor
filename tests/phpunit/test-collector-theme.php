@@ -46,6 +46,33 @@ class Test_Collector_Theme extends QM_UnitTestCase {
 
 	}
 
+	public function testTemplateHierarchyAssumptionsAreAccurate() {
+
+		$file = ABSPATH . WPINC . '/template-loader.php';
+
+		$this->assertFileExists( $file );
+
+		$contents = file_get_contents( $file );
+
+		$this->assertNotEmpty( $contents );
+
+		$regex = '#^\s*(?:else)?if\s+\(\s*(is_[a-z0-9_]+)\(\)(?:.*?)get_([a-z0-9_]+)_template\(\)#m';
+		$count = preg_match_all( $regex, $contents, $matches );
+
+		$this->assertGreaterThan( 0, $count );
+
+		list( , $conditionals, $templates ) = $matches;
+
+		$conditionals[] = '__return_true';
+		$templates[]    = 'index';
+
+		$names = QM_Collector_Theme::get_query_template_names();
+
+		$this->assertEquals( array_values( $names ), $conditionals );
+		$this->assertEquals( array_keys( $names ), $templates );
+
+	}
+
 	protected static function get_theme_data( $item ) {
 
 		// @TODO this should be abstracted into a more general method which can be used for any of the collectors
