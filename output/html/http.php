@@ -52,7 +52,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col">';
 			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'Transport', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
@@ -120,12 +119,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					}
 				}
 
-				if ( isset( $row['transport'] ) ) {
-					$transport = $row['transport'];
-				} else {
-					$transport = '';
-				}
-
 				$component = $row['component'];
 
 				$stack          = array();
@@ -162,10 +155,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td>%s</td>',
 					esc_html( $response )
 				);
-				printf(
-					'<td>%s</td>',
-					esc_html( $transport )
-				);
 				printf( // WPCS: XSS ok.
 					'<td class="qm-nowrap qm-ltr">%s</td>',
 					implode( '<br>', $stack )
@@ -200,7 +189,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="7">%s</td>',
+				'<td colspan="6">%s</td>',
 				implode( '<br>', array_map( 'esc_html', $vars ) )
 			);
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
