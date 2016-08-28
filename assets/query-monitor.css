@@ -368,20 +368,16 @@ body.wp-admin.folded #qm {
 	padding: 0 !important;
 }
 
-.qm ol {
-	margin: 0 !important;
-	padding: 0 0 0 30px !important;
-	list-style: decimal !important;
-}
-
+.qm ol,
 .qm ul {
 	margin: 0 !important;
-	padding: 0 0 0 10px !important;
+	padding: 0 !important;
 	list-style: none !important;
 }
 
 .qm li {
-	margin-bottom: 2px !important;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 .qm pre {

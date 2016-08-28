@@ -86,13 +86,13 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '<br>&nbsp;', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
+		$error_levels = implode( '</li><li>&nbsp;', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
 
 		echo '<tr>';
 		echo '<th scope="row">error_reporting</th>';
-		echo '<td class="qm-wrap">' . esc_html( $data['php']['error_reporting'] ) . '<br><span class="qm-info">&nbsp;';
-		echo $error_levels; // WPCS: XSS ok.
-		echo '</span></td>';
+		echo '<td class="qm-wrap">' . esc_html( $data['php']['error_reporting'] );
+		echo "<ul class='qm-info'><li>&nbsp;{$error_levels}</li></ul>"; // WPCS: XSS ok.
+		echo '</td>';
 		echo '</tr>';
 
 		echo '</tbody>';

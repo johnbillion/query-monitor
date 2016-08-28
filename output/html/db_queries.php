@@ -352,22 +352,23 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><div class='qm-toggler'>";
+			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><ol class='qm-toggler'>";
 
-			echo $caller_name; // WPCS: XSS ok.
+			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
 				echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
-				echo '<div class="qm-toggled">' . implode( '<br>', $stack ) . '</div>'; // WPCS: XSS ok.
+				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
 
-			echo '</div></td>';
+			echo '</ol></td>';
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">';
-			echo $caller_name; // WPCS: XSS ok.
-			echo '<br>' . implode( '<br>', $stack ) . '</td>'; // WPCS: XSS ok.
+			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol>';
+			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+			echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
+			echo '</ol></td>';
 		}
 
 		if ( isset( $cols['component'] ) ) {
