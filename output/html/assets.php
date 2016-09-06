@@ -224,8 +224,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$labels = array(
-			'scripts' => 'Scripts',
-			'styles'  => 'Styles',
+			'scripts' => __( 'Scripts', 'query-monitor' ),
+			'styles'  => __( 'Styles', 'query-monitor' ),
 		);
 
 		foreach ( $labels as $type => $label ) {
