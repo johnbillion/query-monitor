@@ -89,6 +89,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #wp-admin-bar-query-monitor small {
 	font-size: 11px !important;
+	text-transform: uppercase !important;
 }
 
 #wp-admin-bar-query-monitor.hover a small,

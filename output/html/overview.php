@@ -141,19 +141,24 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( empty( $data['memory'] ) ) {
 			$memory = '??';
 		} else {
-			$memory = number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 2 );
+			$memory = number_format_i18n( ( $data['memory'] / 1024 ), 0 );
 		}
 
 		$title[] = sprintf(
 			/* translators: %s: Page load time in seconds */
-			_x( '%s<small>S</small>', 'Page load time', 'query-monitor' ),
-			number_format_i18n( $data['time'], 2 )
+			esc_html_x( '%s S', 'Page load time', 'query-monitor' ),
+			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
-			/* translators: %s: Memory usage in megabytes */
-			_x( '%s<small>MB</small>', 'Memory usage', 'query-monitor' ),
+			/* translators: %s: Memory usage in kilobytes */
+			esc_html_x( '%s kB', 'Memory usage', 'query-monitor' ),
 			$memory
 		);
+
+		foreach ( $title as &$t ) {
+			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
+		}
+
 		return $title;
 	}
 

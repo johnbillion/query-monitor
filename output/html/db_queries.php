@@ -404,17 +404,22 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			foreach ( $data['dbs'] as $key => $db ) {
 				$title[] = sprintf(
 					/* translators: %s: Database query time in seconds */
-					'%s' . _x( '%s<small>S</small>', 'Query time', 'query-monitor' ),
+					'%s' . esc_html_x( '%s S', 'Query time', 'query-monitor' ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
 					number_format_i18n( $db->total_time, 4 )
 				);
 				$title[] = sprintf(
 					/* translators: %s: Number of database queries */
-					_x( '%s<small>Q</small>', 'Query count', 'query-monitor' ),
+					esc_html_x( '%s Q', 'Query count', 'query-monitor' ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
 		}
+
+		foreach ( $title as &$t ) {
+			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
+		}
+
 		return $title;
 	}
 
