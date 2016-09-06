@@ -105,6 +105,17 @@ abstract class QM_Collector {
 		}
 	}
 
+	public static function format_user( WP_User $user_object ) {
+		$user = get_object_vars( $user_object->data );
+		unset(
+			$user['user_pass'],
+			$user['user_activation_key']
+		);
+		$user['roles'] = $user_object->roles;
+
+		return $user;
+	}
+
 	public function process() {}
 
 	public function tear_down() {}
