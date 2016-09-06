@@ -21,7 +21,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 		$data = $this->collector->get_data();
 		$headers = array();
 
-		$headers['time'] = number_format_i18n( $data['time'], 4 );
+		$headers['time_taken'] = number_format_i18n( $data['time_taken'], 4 );
 		$headers['time_usage'] = sprintf(
 			/* translators: 1: Percentage of time limit used, 2: Time limit in seconds */
 			__( '%1$s%% of %2$ss limit', 'query-monitor' ),

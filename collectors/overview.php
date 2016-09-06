@@ -24,11 +24,12 @@ class QM_Collector_Overview extends QM_Collector {
 
 	public function process() {
 
-		$this->data['time']       = self::timer_stop_float();
+		$this->data['time_taken'] = self::timer_stop_float();
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
+		$this->data['time_start'] = $GLOBALS['timestart'];
 
 		if ( !empty( $this->data['time_limit'] ) ) {
-			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time'];
+			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time_taken'];
 		} else {
 			$this->data['time_usage'] = 0;
 		}

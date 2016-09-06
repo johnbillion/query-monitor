@@ -66,7 +66,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<tbody>';
 		echo '<tr>';
 		echo '<td>';
-		echo esc_html( number_format_i18n( $data['time'], 4 ) );
+		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 		echo '<br><span class="qm-info">';
 		echo esc_html( sprintf(
 			/* translators: 1: Percentage of time limit used, 2: Time limit in seconds*/
