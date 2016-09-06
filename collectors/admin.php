@@ -26,14 +26,16 @@ class QM_Collector_Admin extends QM_Collector {
 
 		global $pagenow;
 
-		if ( isset( $_GET['page'] ) && get_current_screen() !== null ) {
-			$this->data['base'] = get_current_screen()->base;
+		$current_screen = get_current_screen();
+
+		if ( isset( $_GET['page'] ) && $current_screen !== null ) {
+			$this->data['base'] = $current_screen->base;
 		} else {
 			$this->data['base'] = $pagenow;
 		}
 
 		$this->data['pagenow'] = $pagenow;
-		$this->data['current_screen'] = get_object_vars( get_current_screen() );
+		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
 
 		$screens = array(
 			'edit'            => true,
