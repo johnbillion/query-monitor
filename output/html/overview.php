@@ -82,6 +82,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		} else {
 			echo '<td>';
 			echo esc_html( sprintf(
+				/* translators: %s: Memory used in kilobytes */
 				__( '%s kB', 'query-monitor' ),
 				number_format_i18n( $data['memory'] / 1024 )
 			) );

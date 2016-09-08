@@ -57,7 +57,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<tr>';
 		echo '<td class="qm-warn">';
 		/* translators: 1: Name of PHP constant, 2: Value of PHP constant */
-		printf( esc_html__( 'No database queries were logged because the %s constant is set to %s', 'query-monitor' ),
+		printf( esc_html__( 'No database queries were logged because the %1$s constant is set to %2$s', 'query-monitor' ),
 			'<code>SAVEQUERIES</code>',
 			'<code>false</code>'
 		);
