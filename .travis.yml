@@ -30,6 +30,7 @@ env:
 matrix:
   fast_finish: true
   allow_failures:
+    - php: 7.1
     # allow failures on WP nightlies:
     - env: WP_VERSION=nightly WP_MULTISITE=0
     - env: WP_VERSION=nightly WP_MULTISITE=1
