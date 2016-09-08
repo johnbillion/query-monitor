@@ -8,13 +8,20 @@ notifications:
         on_success: change
         on_failure: always
 
-php:
-    - 7.1
-    - 7.0
-    - 5.6
-    - 5.3
-    - 5.2
-    - hhvm
+matrix:
+  include:
+    - php: 7.1
+    - php: 7.0
+    - php: 5.6
+    - php: 5.3
+    - php: 5.2
+    - php: hhvm
+  allow_failures:
+    # allow failures on nightlies:
+    - env: WP_VERSION=nightly WP_MULTISITE=0
+    - env: WP_VERSION=nightly WP_MULTISITE=1
+    # allow failures on PHP beta:
+    - php: 7.1
 
 env:
     # nightly:
@@ -26,13 +33,6 @@ env:
     # previous stable:
     - WP_VERSION=4.5 WP_MULTISITE=0
     - WP_VERSION=4.5 WP_MULTISITE=1
-
-allow_failures:
-    # allow failures on nightlies:
-    - env: WP_VERSION=nightly WP_MULTISITE=0
-    - env: WP_VERSION=nightly WP_MULTISITE=1
-    # allow failures on PHP beta:
-    - php: 7.1
 
 before_script:
     - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION 
