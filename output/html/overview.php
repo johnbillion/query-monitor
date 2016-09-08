@@ -118,11 +118,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				__( '%s%% hit rate', 'query-monitor' ),
 				number_format_i18n( $cache_hit_percentage, 1 )
 			) );
-			echo '<br>' . esc_html( sprintf(
-				/* translators: %s: External object cache status */
-				__( 'External object cache: %s'),
-				( $cache_data['ext_object_cache'] ? 'true' : 'false' )
-			) );
+			echo '<br><span class="qm-info">';
+			echo ( $cache_data['ext_object_cache'] )
+				? esc_html__( 'External object cache in use', 'query-monitor' )
+				: esc_html__( 'External object cache not in use', 'query-monitor' );
+			echo '</span>';
 			echo '</td>';
 		}
 
