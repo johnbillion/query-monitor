@@ -6,7 +6,10 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 		add_action( 'qm/tests', $function );
 
-		return reset( $GLOBALS['wp_filter']['qm/tests'][10] );
+		$actions = $GLOBALS['wp_filter']['qm/tests'][10];
+		$keys    = array_keys( $actions );
+
+		return $actions[ $keys[0] ];
 
 	}
 
