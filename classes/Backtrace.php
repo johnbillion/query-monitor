@@ -23,6 +23,7 @@ class QM_Backtrace {
 		'ExtQuery'       => true,
 		'W3_Db'          => true,
 		'Debug_Bar_PHP'  => true,
+		'WP_Hook'        => true,
 	);
 	protected static $ignore_method = array();
 	protected static $ignore_func = array(
