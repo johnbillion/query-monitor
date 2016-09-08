@@ -103,7 +103,7 @@ class QM_Collector_Request extends QM_Collector {
 			case is_a( $qo, 'WP_Post' ):
 				// Single post
 				/* translators: 1: Post type name, 2: Post ID */
-				$this->data['queried_object']['title'] = sprintf( __( 'Single %s: #%d', 'query-monitor' ),
+				$this->data['queried_object']['title'] = sprintf( __( 'Single %1$s: #%2$d', 'query-monitor' ),
 					get_post_type_object( $qo->post_type )->labels->singular_name,
 					$qo->ID
 				);
