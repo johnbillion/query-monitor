@@ -15,6 +15,15 @@ php:
   - 5.3
   - 5.2
   - hhvm
+    sudo: required
+    dist: trusty
+    group: edge
+    addons:
+      apt:
+        packages:
+          - mysql-server-5.6
+          - mysql-client-core-5.6
+          - mysql-client-5.6
 
 env:
   # WP nightly:
@@ -36,7 +45,7 @@ matrix:
     - env: WP_VERSION=nightly WP_MULTISITE=1
 
 before_script:
-    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION 
+    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
     - if [[ "$WP_VERSION" == "latest" ]]; then if find . -not \( -path ./vendor -prune \) -not \( -path ./features -prune \) -not \( -path ./tests/phpunit/includes/dummy-closures.php -prune \) -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then exit 1; fi; fi;
