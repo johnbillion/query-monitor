@@ -47,12 +47,12 @@ class QM_Util {
 
 	public static function standard_dir( $dir, $path_replace = null ) {
 
-		$dir = wp_normalize_path( $dir );
+		$dir = self::normalize_path( $dir );
 
 		if ( is_string( $path_replace ) ) {
 			if ( ! self::$abspath ) {
-				self::$abspath     = wp_normalize_path( ABSPATH );
-				self::$contentpath = wp_normalize_path( dirname( WP_CONTENT_DIR ) . '/' );
+				self::$abspath     = self::normalize_path( ABSPATH );
+				self::$contentpath = self::normalize_path( dirname( WP_CONTENT_DIR ) . '/' );
 			}
 			$dir = str_replace( array(
 				self::$abspath,
@@ -62,6 +62,17 @@ class QM_Util {
 
 		return $dir;
 
+	}
+
+	public static function normalize_path( $path ) {
+		if ( function_exists( 'wp_normalize_path' ) ) {
+			$path = wp_normalize_path( $path );
+		} else {
+			$path = str_replace( '\\', '/', $path );
+			$path = str_replace( '//', '/', $path );
+		}
+
+		return $path;
 	}
 
 	public static function get_file_dirs() {
