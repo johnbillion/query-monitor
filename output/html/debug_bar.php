@@ -27,6 +27,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
 

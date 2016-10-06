@@ -27,6 +27,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 
 		if ( !empty( $data['trans'] ) ) {
 

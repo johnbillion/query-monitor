@@ -54,6 +54,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-' . esc_attr( $type ) . '">';
 			echo '<table cellspacing="0">';
+			echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
 			echo '<thead>';
 			echo '<tr>';

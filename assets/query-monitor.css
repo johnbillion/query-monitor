@@ -732,3 +732,17 @@ html[dir="rtl"] .qm .qm-toggle {
 #qm #debug-menu-target-Debug_Bar_Console {
 	min-height: 400px !important;
 }
+
+.qm .qm-goto-top {
+	float: right;
+    font-weight: bold !important;
+	box-sizing: border-box !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	line-height: 16px !important;
+	text-shadow: none !important;
+	text-transform: none !important;
+	-webkit-font-smoothing: auto !important;
+}

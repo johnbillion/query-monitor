@@ -30,6 +30,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 
 		$vars = array();
 
