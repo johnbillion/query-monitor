@@ -58,7 +58,7 @@ class QM_Collector_Theme extends QM_Collector {
 
 		foreach ( self::get_query_template_names() as $template => $conditional ) {
 
-			if ( call_user_func( $conditional ) ) {
+			if ( function_exists( $conditional ) && call_user_func( $conditional ) ) {
 				$filter = str_replace( '_', '', $template );
 				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), 999 );
 				call_user_func( "get_{$template}_template" );
