@@ -273,7 +273,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm table {
-	color: #444 !important;
+	color: #333 !important;
 	border-collapse: collapse !important;
 	box-shadow: none !important;
 	width: 100% !important;
@@ -326,7 +326,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm th {
-	color: #444 !important;
+	color: #333 !important;
 }
 
 .qm th.qm-num {
@@ -359,7 +359,7 @@ body.wp-admin.folded #qm {
 	border-collapse: collapse !important;
 	margin: 0 !important;
 	background: #fff !important;
-	color: #444 !important;
+	color: #333 !important;
 	border-style: hidden !important;
 	width: 100% !important;
 }
@@ -434,7 +434,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm .qm-info {
-	color: #999 !important;
+	color: #777 !important;
 }
 
 .qm td .qm-toggled {
@@ -520,7 +520,7 @@ select.qm-filter {
 	border: 1px solid #e6e6e6 !important;
 	padding: 1px !important;
 	background: #fff !important;
-	color: #444 !important;
+	color: #333 !important;
 	height: 2em !important;
 	width: auto !important;
 	border-radius: 0 !important;
