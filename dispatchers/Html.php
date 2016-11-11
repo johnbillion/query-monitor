@@ -215,7 +215,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		if ( did_action( 'wp_head' ) ) {
-			$absolute = function_exists( 'twentyfifteen_setup' );
+			$absolute = function_exists( 'twentyfifteen_setup' ) || function_exists( 'twentyseventeen_setup' );
 			if ( apply_filters( 'qm/output/absolute_position', $absolute ) ) {
 				$class[] = 'qm-absolute';
 			}
