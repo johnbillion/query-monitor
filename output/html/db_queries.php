@@ -164,9 +164,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
 				echo '<td colspan="' . absint( $span ) . '" class="qm-warn">';
-				echo wp_kses( sprintf(
+				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					__( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' ),
+					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );
+				} else {
+					/* translators: 1: Symlink file name, 2: URL to wiki page */
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );	
+				}
+				echo wp_kses( sprintf(
+					$message,
 					'<code>db.php</code>',
 					'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
 				), array(
