@@ -21,6 +21,10 @@ if ( !defined( 'QM_DB_EXPENSIVE' ) ) {
 	define( 'QM_DB_EXPENSIVE', 0.05 );
 }
 
+if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
+	$GLOBALS['wpdb']->save_queries = true;
+}
+
 class QM_Collector_DB_Queries extends QM_Collector {
 
 	public $id = 'db_queries';
