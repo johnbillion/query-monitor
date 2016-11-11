@@ -379,6 +379,11 @@ body.wp-admin.folded #qm {
 .qm li {
 	margin: 0 !important;
 	padding: 0 !important;
+	display: list-item !important;
+}
+
+.qm li::before {
+	content: '' !important;
 }
 
 .qm pre {
@@ -509,6 +514,10 @@ body.wp-admin.folded #qm {
 
 .qm label {
 	cursor: pointer !important;
+	color: #333 !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
+	margin: 0 !important;
 }
 
 select.qm-filter {
