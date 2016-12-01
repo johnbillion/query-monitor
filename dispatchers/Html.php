@@ -33,6 +33,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
 		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
 		add_action( 'amp_post_template_footer',   array( $this, 'action_footer' ) );
+		add_action( 'gp_footer',                  array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
@@ -126,6 +127,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ) );
 		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ), 11 );
+
+		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
 
 	}
 
@@ -343,7 +346,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				return false;
 			}
 		} else {
-			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) ) ) {
+			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
 				return false;
 			}
 		}
