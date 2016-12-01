@@ -49,7 +49,6 @@ class QM_Collector_Theme extends QM_Collector {
 			'author'            => 'is_author',
 			'date'              => 'is_date',
 			'archive'           => 'is_archive',
-			'paged'             => 'is_paged',
 			'index'             => '__return_true',
 		);
 	}

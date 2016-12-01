@@ -68,8 +68,17 @@ class Test_Collector_Theme extends QM_UnitTestCase {
 
 		$names = QM_Collector_Theme::get_query_template_names();
 
-		$this->assertEquals( array_values( $names ), $conditionals );
-		$this->assertEquals( array_keys( $names ), $templates );
+		if ( false !== $paged = array_search( 'paged', $templates, true ) ) {
+			// The paged template was removed in WP 4.7. On older WP versions,
+			// skip testing for it.
+			unset(
+				$conditionals[ $paged ],
+				$templates[ $paged ]
+			);
+		}
+
+		$this->assertEquals( array_values( $names ), array_values( $conditionals ) );
+		$this->assertEquals( array_keys( $names ), array_values( $templates ) );
 
 	}
 
