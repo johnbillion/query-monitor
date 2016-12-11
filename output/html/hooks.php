@@ -68,7 +68,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			$row_attr = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
-			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
+			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] ) . ' ';
 
 			$attr = '';
 
@@ -95,7 +95,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					}
 
 					printf( // WPCS: XSS ok.
-						'<tr data-qm-subject="%s" %s>',
+						'<tr data-qm-subject="%s " %s>',
 						esc_attr( $component ),
 						$attr
 					);

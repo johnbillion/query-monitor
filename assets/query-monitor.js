@@ -165,9 +165,9 @@ jQuery( function($) {
 
 		if ( $(this).val() !== '' ) {
 			if ( hilite ) {
-				tr.filter('[data-qm-'+hilite+'*="' + val + '"]').addClass('qm-highlight');
+				tr.filter('[data-qm-'+hilite+'*="' + val + ' "]').addClass('qm-highlight');
 			}
-			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
+			tr.not('[data-qm-' + filter + '*="' + val + ' "]').addClass('qm-hide-' + filter);
 		}
 
 		var matches = tr.filter(':visible');
@@ -223,7 +223,7 @@ jQuery( function($) {
 		$(this).addClass('qm-highlight');
 
 		$.each( subject.split(' '), function( i, el ){
-			table.find('tr[data-qm-subject="'+el+'"]').addClass('qm-highlight');
+			table.find('tr[data-qm-subject="'+el+' "]').addClass('qm-highlight');
 		});
 
 	}).on('mouseleave',function(e){

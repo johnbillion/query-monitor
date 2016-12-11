@@ -104,9 +104,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $handles as $handle ) {
 
 			if ( in_array( $handle, $dependencies->done ) ) {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . ' " data-test="caleb">';
 			} else {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" class="qm-warn">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . ' " class="qm-warn">';
 			}
 
 			if ( $first ) {
@@ -178,8 +178,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo esc_html( $src );
 		}
 		echo '</span></td>';
-		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $deps ) ) . '</li></ul></td>';
-		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $dependents ) ) . '</li></ul></td>';
+		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . ' "><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $deps ) ) . '</li></ul></td>';
+		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . ' "><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $dependents ) ) . '</li></ul></td>';
 		echo '<td>' . esc_html( $ver ) . '</td>';
 
 	}
