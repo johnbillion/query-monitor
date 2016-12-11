@@ -104,7 +104,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $handles as $handle ) {
 
 			if ( in_array( $handle, $dependencies->done ) ) {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . ' " data-test="caleb">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . ' ">';
 			} else {
 				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . ' " class="qm-warn">';
 			}
