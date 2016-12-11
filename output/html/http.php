@@ -129,7 +129,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				$row_attr['data-qm-component'] = $component->name;
+				$row_attr['data-qm-component'] = $component->name . ' ';
 				$row_attr['data-qm-type']      = $row['type'];
 
 				$attr = '';
