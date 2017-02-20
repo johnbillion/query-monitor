@@ -45,8 +45,8 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 				$query = str_replace( 'index.php?', '', $query );
 
 				echo '<tr>';
-				echo '<td>' . esc_html( $rule ) . '</td>';
-				echo '<td>';
+				echo '<td class="qm-ltr">' . esc_html( $rule ) . '</td>';
+				echo '<td class="qm-ltr">';
 				echo self::format_url( $query ); // WPCS: XSS ok.
 				echo '</td>';
 				echo '</tr>';

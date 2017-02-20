@@ -73,7 +73,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
 				printf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s">%s</a><br><span class="qm-info">&nbsp;%s</span><br>',
+					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s">%s</a><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_attr( $caller ),
 					esc_html( $caller ),
 					esc_html( sprintf(
@@ -87,7 +87,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				echo '<td class="qm-row-component qm-nowrap">';
 				foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
 					printf(
-						'%s<br><span class="qm-info">&nbsp;%s</span><br>',
+						'%s<br><span class="qm-info qm-supplemental">%s</span><br>',
 						esc_html( $component ),
 						esc_html( sprintf(
 							translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
@@ -100,7 +100,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_sources'][ $sql ] as $source => $calls ) {
 				printf(
-					'%s<br><span class="qm-info">&nbsp;%s</span><br>',
+					'%s<br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_html( $source ),
 					esc_html( sprintf(
 						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),

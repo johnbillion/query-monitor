@@ -59,7 +59,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th>' . esc_html( $name ) . '</th>';
-			echo '<td colspan="2">' . $value . '</td>'; // WPCS: XSS ok.
+			echo '<td colspan="2" class="qm-ltr">' . $value . '</td>'; // WPCS: XSS ok.
 			echo '</tr>';
 		}
 
@@ -79,17 +79,17 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				}
 
 				if ( isset( $data['plugin_qvars'][$var] ) ) {
-					echo '<td><span class="qm-current">' . esc_html( $var ) . '</span></td>';
+					echo '<td class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
 				} else {
-					echo '<td>' . esc_html( $var ) . '</td>';
+					echo '<td class="qm-ltr">' . esc_html( $var ) . '</td>';
 				}
 
 				if ( is_array( $value ) or is_object( $value ) ) {
-					echo '<td><pre>';
+					echo '<td class="qm-ltr"><pre>';
 					echo esc_html( print_r( $value, true ) );
 					echo '</pre></td>';
 				} else {
-					echo '<td>' . esc_html( $value ) . '</td>';
+					echo '<td class="qm-ltr">' . esc_html( $value ) . '</td>';
 				}
 
 				echo '</tr>';
@@ -109,7 +109,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
-			echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
+			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
 			printf(
 				'<div class="qm-inner-toggle">%1$s (%2$s) <button class="qm-toggle" data-on="+" data-off="-">+</button></div>',
@@ -141,7 +141,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<tr>';
 				}
 
-				echo '<td colspan="2" class="qm-has-inner qm-has-toggle"><div class="qm-toggler">';
+				echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
 				printf(
 					'<div class="qm-inner-toggle">%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button></div>',

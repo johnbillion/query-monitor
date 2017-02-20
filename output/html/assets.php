@@ -169,7 +169,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<th scope="row" class="qm-wrap">' . esc_html( $dependency->handle ) . '<br><span class="qm-info">&nbsp;';
+		echo '<th scope="row" class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
 		if ( is_wp_error( $source ) ) {
 			printf( '<span class="qm-warn">%s</span>',
 				esc_html( $src )
@@ -178,9 +178,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo esc_html( $src );
 		}
 		echo '</span></td>';
-		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $deps ) ) . '</li></ul></td>';
-		echo '<td class="qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $dependents ) ) . '</li></ul></td>';
-		echo '<td>' . esc_html( $ver ) . '</td>';
+		echo '<td class="qm-ltr qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $deps ) ) . '</li></ul></td>';
+		echo '<td class="qm-ltr qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $dependents ) ) . '</li></ul></td>';
+		echo '<td class="qm-ltr">' . esc_html( $ver ) . '</td>';
 
 	}
 

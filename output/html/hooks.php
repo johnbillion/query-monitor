@@ -102,7 +102,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap">';
+						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr">';
 						echo $hook_name; // WPCS: XSS ok.
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
@@ -146,7 +146,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
-				echo '<th scope="row">';
+				echo '<th scope="row" class="qm-ltr">';
 				echo $hook_name; // WPCS: XSS ok.
 				echo '</th>';
 				echo '<td colspan="3">&nbsp;</td>';

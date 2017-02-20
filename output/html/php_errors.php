@@ -74,7 +74,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '<th scope="row">' . esc_html( $message ) . '</th>';
 					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
-					echo '<td>';
+					echo '<td class="qm-ltr">';
 					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
 					echo '</td>';
 
@@ -91,7 +91,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						} else if ( 0 === $i ) {
 							$stack[] = self::output_filename( $item['display'], $error->file, $error->line );
 						} else {
-							$stack[] = $item['display'] . '<br>&nbsp;<span class="qm-info"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
+							$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
 						}
 					}
 

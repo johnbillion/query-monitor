@@ -442,6 +442,11 @@ body.wp-admin.folded #qm {
 	color: #777 !important;
 }
 
+.qm .qm-supplemental {
+	margin-right: 0.75em !important;
+	margin-left: 0.75em !important;
+}
+
 .qm td .qm-toggled {
 	display: none;
 }
@@ -466,7 +471,8 @@ body.wp-admin.folded #qm {
 	text-decoration: underline !important;
 }
 
-.qm .qm-toggle {
+.qm .qm-toggle,
+html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #0073aa !important;
 	padding: 5px 8px !important;
 	border-top: none !important;
@@ -479,6 +485,7 @@ body.wp-admin.folded #qm {
 	position: absolute !important;
 	top: 0 !important;
 	right: 0 !important;
+	left: auto !important;
 	background: #fff !important;
 	cursor: pointer !important;
 }
@@ -621,11 +628,6 @@ select.qm-filter {
 
 /* RTL */
 
-html[dir="rtl"] .qm-ltr {
-	direction: ltr !important;
-	text-align: right !important;
-}
-
 html[dir="rtl"] body.wp-admin #qm {
 	margin-right: 160px !important;
 	margin-left: 0 !important;
@@ -650,19 +652,22 @@ html[dir="rtl"] body.wp-admin.folded #qm {
 	margin-left: 0 !important;
 }
 
-html[dir="rtl"] #qm {
-	text-align: right !important;
-}
-
+html[dir="rtl"] #qm,
+html[dir="rtl"] .qm caption,
 html[dir="rtl"] .qm td,
 html[dir="rtl"] .qm th {
 	text-align: right !important;
 }
 
+html[dir="rtl"] #wpadminbar .quicklinks .menupop ul li.qm-ltr,
+html[dir="rtl"] .qm .qm-filter,
+html[dir="rtl"] .qm .qm-ltr {
+	direction: ltr !important;
+	text-align: left !important;
+}
+
 html[dir="rtl"] .qm .qm-toggle {
-	border-top: none !important;
 	border-right: 1px solid #e8e8e8 !important;
-	border-bottom: 1px solid #e8e8e8 !important;
 	border-left: none !important;
 	right: auto !important;
 	left: 1px !important;

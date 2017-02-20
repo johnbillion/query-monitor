@@ -53,7 +53,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 			echo '<tr>';
 
-			echo '<td>' . esc_html( $mofile['domain'] ) . '</td>';
+			echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
 			echo '<td class="qm-nowrap qm-ltr">';
 			echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 			echo '</td>';
