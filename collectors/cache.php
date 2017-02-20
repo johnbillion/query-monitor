@@ -26,18 +26,19 @@ class QM_Collector_Cache extends QM_Collector {
 		global $wp_object_cache;
 
 		$this->data['ext_object_cache'] = (bool) wp_using_ext_object_cache();
+		$this->data['cache_hit_percentage'] = 0;
 
 		if ( is_object( $wp_object_cache ) ) {
 
-			if ( isset( $wp_object_cache->cache_hits ) ) {
-				$this->data['stats']['cache_hits'] = $wp_object_cache->cache_hits;
+			if ( property_exists( $wp_object_cache, 'cache_hits' ) ) {
+				$this->data['stats']['cache_hits'] = (int) $wp_object_cache->cache_hits;
 			}
 
-			if ( isset( $wp_object_cache->cache_misses ) ) {
-				$this->data['stats']['cache_misses'] = $wp_object_cache->cache_misses;
+			if ( property_exists( $wp_object_cache, 'cache_misses' ) ) {
+				$this->data['stats']['cache_misses'] = (int) $wp_object_cache->cache_misses;
 			}
 
-			if ( isset( $wp_object_cache->stats ) ) {
+			if ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
 				foreach ( $wp_object_cache->stats as $key => $value ) {
 					if ( ! is_scalar( $value ) ) {
 						continue;
@@ -52,6 +53,8 @@ class QM_Collector_Cache extends QM_Collector {
 			$total = $this->data['stats']['cache_misses'] + $this->data['stats']['cache_hits'];
 			$this->data['cache_hit_percentage'] = ( 100 / $total ) * $this->data['stats']['cache_hits'];
 		}
+
+		$this->data['display_hit_rate_warning'] = ( 100 == $this->data['cache_hit_percentage'] );
 
 	}
 

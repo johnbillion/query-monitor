@@ -113,10 +113,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<td>';
 		if ( isset( $cache_hit_percentage ) ) {
 			echo esc_html( sprintf(
-				/* translators: %s: Cache hit rate percentage */
-				__( '%s%% hit rate', 'query-monitor' ),
-				number_format_i18n( $cache_hit_percentage, 1 )
+				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
+				__( '%s%% hit rate (%s hits, %s misses)', 'query-monitor' ),
+				number_format_i18n( $cache_hit_percentage, 1 ),
+				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
+				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 			) );
+			if ( $cache_data['display_hit_rate_warning'] ) {
+				printf(
+					'<br><a href="%s">%s</a>',
+					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
+					esc_html__( "Why is this value 100%?", 'query-monitor' )
+				);
+			}
 			echo '<br><span class="qm-info">';
 			if ( $cache_data['ext_object_cache'] ) {
 				printf(
