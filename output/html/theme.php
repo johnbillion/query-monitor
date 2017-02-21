@@ -97,7 +97,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<td><ul>';
 
 			foreach ( $data['timber_files'] as $filename ) {
-				echo '<li>' . self::output_filename( $filename ) . '</li>'; // WPCS: XSS ok.
+				echo '<li>' . esc_html( $filename ) . '</li>'; // WPCS: XSS ok.
 			}
 
 			echo '</ul></td>';
@@ -120,7 +120,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		if ( !empty( $data['body_class'] ) ) {
+		if ( ! empty( $data['body_class'] ) ) {
 
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html__( 'Body Classes', 'query-monitor' ) . '</th>';
