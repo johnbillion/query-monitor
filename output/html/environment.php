@@ -172,7 +172,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$class = ( $show_warning ) ? 'qm-warn' : '';
 
 					if ( !$first ) {
-						echo '<tr class="' . esc_attr( $class ) . '"">';
+						echo '<tr class="' . esc_attr( $class ) . '">';
 					}
 
 					echo '<th scope="row">' . esc_html( $key ) . '</th>';
