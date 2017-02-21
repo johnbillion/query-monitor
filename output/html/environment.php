@@ -73,7 +73,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			if ( $val['after'] !== $val['before'] ) {
 				printf(
-					'<br><span class="qm-info">&nbsp;%s</span>',
+					'<br><span class="qm-info qm-supplemental">%s</span>',
 					esc_html( sprintf(
 						/* translators: %s: Original value of a variable */
 						__( 'Overridden at runtime from %s', 'query-monitor' ),
@@ -86,12 +86,12 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '</li><li>&nbsp;', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
+		$error_levels = implode( '</li><li>', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
 
 		echo '<tr>';
 		echo '<th scope="row">error_reporting</th>';
 		echo '<td class="qm-wrap">' . esc_html( $data['php']['error_reporting'] );
-		echo "<ul class='qm-info'><li>&nbsp;{$error_levels}</li></ul>"; // WPCS: XSS ok.
+		echo "<ul class='qm-info qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
 		echo '</td>';
 		echo '</tr>';
 
@@ -139,8 +139,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '<tr>';
 
 				$first  = true;
-				/* translators: %s: Search term */
-				$search = __( 'https://www.google.com/search?q=mysql+performance+%s', 'query-monitor' );
+				$search = 'https://www.google.com/search?q=mysql+performance+%s';
 
 				foreach ( $db['variables'] as $setting ) {
 
@@ -165,7 +164,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
 						$append .= sprintf(
-							'<br><span class="qm-info">&nbsp;~%s</span>',
+							'<br><span class="qm-info qm-supplemental">~%s</span>',
 							esc_html( size_format( $val ) )
 						);
 					}

@@ -72,7 +72,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$component = $error->trace->get_component();
 					$message   = wp_strip_all_tags( $error->message );
 
-					echo '<th scope="row">' . esc_html( $message ) . '</th>';
+					echo '<th scope="row" class="qm-ltr">' . esc_html( $message ) . '</th>';
 					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td class="qm-ltr">';
 					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
