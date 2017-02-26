@@ -130,7 +130,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			if ( $cache_data['ext_object_cache'] ) {
 				printf(
 					'<a href="%s">%s</a>',
-					admin_url( 'plugins.php?plugin_status=dropins' ),
+					network_admin_url( 'plugins.php?plugin_status=dropins' ),
 					esc_html__( 'External object cache in use', 'query-monitor' )
 				);
 			} else {
