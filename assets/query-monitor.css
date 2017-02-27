@@ -355,6 +355,15 @@ body.wp-admin.folded #qm {
 	position: relative !important;
 }
 
+.qm td.qm-has-toggle p {
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
+	margin: 0 !important;
+}
+
 .qm .qm-inner-toggle {
 	padding: 4px 6px 3px !important;
 }
@@ -444,6 +453,7 @@ body.wp-admin.folded #qm {
 	white-space: nowrap !important;
 }
 
+.qm td.qm-has-toggle p,
 .qm .qm-nonselectsql {
 	color: #a0a !important;
 }

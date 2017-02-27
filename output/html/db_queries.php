@@ -387,7 +387,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</ol>';
 			if ( $row['is_main_query'] ) {
 				printf(
-					'<p class="qm-nonselectsql">%s</p>',
+					'<p>%s</p>',
 					esc_html__( 'Main Query', 'query-monitor' )
 				);
 			}
