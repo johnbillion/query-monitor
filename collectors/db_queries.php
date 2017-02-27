@@ -99,7 +99,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function process_db_object( $id, wpdb $db ) {
-		global $EZSQL_ERROR;
+		global $EZSQL_ERROR, $wp_the_query;
 
 		$rows       = array();
 		$types      = array();
@@ -176,7 +176,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$types[$type]['callers'][$caller]++;
 			}
 
-			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace' );
+			$is_main_query = ( $sql === trim( $wp_the_query->request ) && ( false !== strpos( $stack, ' WP->main,' ) ) );
+
+			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 
 			if ( is_wp_error( $result ) ) {
 				$this->data['errors'][] = $row;

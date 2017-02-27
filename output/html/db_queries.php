@@ -333,6 +333,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 		if ( isset( $cols['caller'] ) ) {
 			$row_attr['data-qm-caller'] = $row['caller_name'];
+
+			if ( $row['is_main_query'] ) {
+				$row_attr['data-qm-caller'] .= ' qm-main-query';
+			}
+
 		}
 		if ( isset( $cols['time'] ) ) {
 			$row_attr['data-qm-time'] = $row['ltime'];
@@ -367,7 +372,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
 
-			echo '</ol></td>';
+			echo '</ol>';
+			if ( $row['is_main_query'] ) {
+				printf(
+					'<p class="qm-nonselectsql">%s</p>',
+					esc_html__( 'Main Query', 'query-monitor' )
+				);
+			}
+			echo '</td>';
 		}
 
 		if ( isset( $cols['stack'] ) ) {

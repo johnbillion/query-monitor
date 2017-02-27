@@ -349,6 +349,7 @@ body.wp-admin.folded #qm {
 	padding: 0 !important;
 }
 
+.qm td.qm-has-toggle p,
 .qm td .qm-toggler {
 	padding: 4px 6px 3px !important;
 	position: relative !important;
