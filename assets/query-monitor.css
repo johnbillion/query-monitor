@@ -198,11 +198,11 @@ body.wp-admin.folded #qm {
 
 #qm-title ul {
 	margin: 10px 10px 0 !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	font-size: 11px !important;
-	font-weight: normal !important;
 	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
 	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	list-style: none !important;
 	padding: 0 !important;
 }
@@ -218,6 +218,7 @@ body.wp-admin.folded #qm {
 #qm-title li a {
 	display: block !important;
 	padding: 4px 7px !important;
+	font: 13px/15px 'Open Sans', Arial !important;
 }
 
 .qm {
@@ -290,24 +291,30 @@ body.wp-admin.folded #qm {
 .qm th,
 .qm caption {
 	background: #fff !important;
+	color: #333 !important;
 	box-sizing: border-box !important;
 	text-align: left !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	font-size: 11px !important;
-	font-weight: normal !important;
 	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
 	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 1px solid #e8e8e8 !important;
 	padding: 4px 6px 3px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
 	-webkit-font-smoothing: auto !important;
+	letter-spacing: normal !important;
 }
 
 .qm caption,
 .qm th[scope=col] {
 	border-bottom-width: 0 !important;
+}
+
+.qm caption {
+	caption-side: top !important;
 }
 
 .qm tbody tr:hover th,
@@ -380,6 +387,12 @@ body.wp-admin.folded #qm {
 	margin: 0 !important;
 	padding: 0 !important;
 	display: list-item !important;
+	list-style: none !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
 .qm li::before {
@@ -387,11 +400,11 @@ body.wp-admin.folded #qm {
 }
 
 .qm pre {
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	font-size: 11px !important;
-	font-weight: normal !important;
 	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
 	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: transparent !important;
 	border: none !important;
@@ -400,11 +413,11 @@ body.wp-admin.folded #qm {
 }
 
 .qm code {
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	font-size: 11px !important;
-	font-weight: normal !important;
 	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
 	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: #f1f1f1 !important;
 	padding: 3px 4px 2px !important;
@@ -440,6 +453,11 @@ body.wp-admin.folded #qm {
 
 .qm .qm-info {
 	color: #777 !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
 .qm .qm-supplemental {
@@ -479,9 +497,11 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	border-right: none !important;
 	border-left: 1px solid #e8e8e8 !important;
 	border-bottom: 1px solid #e8e8e8 !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
 	top: 0 !important;
 	right: 0 !important;
@@ -524,14 +544,17 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #333 !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
+	font-style: normal !important;
 	margin: 0 !important;
 }
 
 select.qm-filter {
 	display: block !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-style: normal !important;
 	font-weight: normal !important;
-	font-size: 10px !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 4px 0 2px !important;
 	border: 1px solid #e6e6e6 !important;
 	padding: 1px !important;
@@ -545,6 +568,7 @@ select.qm-filter {
 	text-transform: none !important;
 	-webkit-appearance: menulist !important;
 	-moz-appearance: menulist !important;
+	letter-spacing: normal !important;
 }
 
 .qm-hide,
@@ -567,6 +591,13 @@ select.qm-filter {
 .qm a,
 .qm select {
 	outline: none !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	transition: none !important;
+	height: auto !important;
+	width: auto !important;
+	background: none !important;
+	box-shadow: none !important;
 }
 
 .qm button:focus,
@@ -578,9 +609,11 @@ select.qm-filter {
 .qm .qm-sort {
 	color: #767676 !important;
 	display: block !important;
+	font-style: normal !important;
+	font-weight: normal !important;
 	font-size: 15px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 	line-height: 11px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 0 !important;
 	padding: 0 !important;
 	width: 30px !important;
@@ -686,12 +719,15 @@ html[dir="rtl"] .qm .qm-toggle {
 
 .qm-debug-bar textarea,
 .qm-debug-bar pre {
-	font-size: 11px !important;
 	padding: 10px !important;
 	border: 1px solid #e8e8e8 !important;
 	margin: 4px 0 !important;
 	color: inherit !important;
 	background: transparent !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -708,8 +744,11 @@ html[dir="rtl"] .qm .qm-toggle {
 }
 
 .qm-debug-bar h1, .qm-debug-bar h2, .qm-debug-bar h3 {
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-style: normal !important;
 	font-weight: normal !important;
+	font-size: 11px !important;
+	line-height: 16px !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
 .qm-debug-bar h2 {
