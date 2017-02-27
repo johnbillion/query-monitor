@@ -193,7 +193,19 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo $this->build_filter( 'type', array_keys( $db->types ), __( 'Query', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">';
-			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ) ); // WPCS: XSS ok;
+
+			$prepend = array();
+			$has_main_query = wp_list_filter( $db->rows, array(
+				'is_main_query' => true,
+			) );
+
+			if ( $has_main_query ) {
+				$prepend['qm-main-query'] = __( 'Main Query', 'query-monitor' );
+			}
+
+			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ), array(
+				'prepend' => $prepend,
+			) ); // WPCS: XSS ok;
 			echo '</th>';
 
 			if ( $db->has_trace ) {

@@ -74,22 +74,42 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param  string $name      The name for the `data-` attributes that get filtered by this control.
 	 * @param  array  $values    Possible values for this control.
 	 * @param  string $label     Label text for the filter control.
-	 * @param  string $highlight Optional. The name for the `data-` attributes that get highlighted by this control.
+	 * @param  array  $args {
+	 *     @type string $highlihgt The name for the `data-` attributes that get highlighted by this control.
+	 *     @type array  $prepend   Associative array of options to prepend to the list of values.
+	 * }
 	 * @return string            Markup for the table filter controls.
 	 */
-	protected function build_filter( $name, array $values, $label, $highlight = '' ) {
+	protected function build_filter( $name, array $values, $label, $args = array() ) {
 
 		if ( empty( $values ) ) {
 			return esc_html( $label ); // Return label text, without being marked up as a label element.
 		}
+
+		if ( ! is_array( $args ) ) {
+			$args = array(
+				'highlight' => $args,
+			);
+		}
+
+		$args = array_merge( array(
+			'highlight' => '',
+			'prepend'   => array(),
+		), $args );
 
 		usort( $values, 'strcasecmp' );
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
 		$out = '<label for="' . esc_attr( $filter_id ) .'">' . esc_html( $label ) . '</label>';
-		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $highlight ) . '">';
+		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">';
 		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
+
+		if ( ! empty( $args['prepend'] ) ) {
+			foreach ( $args['prepend'] as $value => $label ) {
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
+			}
+		}
 
 		foreach ( $values as $value ) {
 			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
