@@ -88,7 +88,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			$total_stime = number_format_i18n( $total_time, 4 );
 
 			echo '<tr>';
-			echo '<td>&nbsp;</td>';
+			echo '<td>' . esc_html__( 'Total', 'query-monitor' ) . '</td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
 				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
