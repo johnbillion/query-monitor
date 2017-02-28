@@ -10,7 +10,6 @@ notifications:
 
 php:
   - 7.1
-  - 7.0
   - 5.6
   - 5.3
 
@@ -51,7 +50,6 @@ matrix:
             - mysql-client-core-5.6
             - mysql-client-5.6
   allow_failures:
-    - php: 7.1
     # allow failures on WP nightlies:
     - env: WP_VERSION=nightly WP_MULTISITE=0
     - env: WP_VERSION=nightly WP_MULTISITE=1
