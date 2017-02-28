@@ -4,6 +4,30 @@ class Test_Collector_Theme extends QM_UnitTestCase {
 
 	// @TODO need to ideally use a known theme
 
+	/**
+	 * @dataProvider dataThemeFiles
+	 */
+	public function testAssumptionsAboutThemeBeingTested( $file ) {
+		$this->assertNotEmpty( locate_template( array( $file . '.php' ) ), "Theme: " . get_stylesheet_directory() );
+	}
+
+	public function dataThemeFiles() {
+		return array(
+			array(
+				'search',
+			),
+			array(
+				'index',
+			),
+			array(
+				'page',
+			),
+			array(
+				'single',
+			),
+		);
+	}
+
 	public function testThemeTemplateIsCorrectForSearch() {
 
 		$this->go_to_with_template( get_search_link( 'foo' ) );
