@@ -55,6 +55,8 @@ matrix:
     - env: WP_VERSION=nightly WP_MULTISITE=1
 
 before_script:
+    - stable='^[0-9\.]+$'; if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then phpenv config-rm xdebug.ini; fi
+    - php --version
     - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
