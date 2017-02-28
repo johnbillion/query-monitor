@@ -20,6 +20,9 @@ env:
   # WP latest stable:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=1
+  # WP previous stable:
+  - WP_VERSION=4.6 WP_MULTISITE=0
+  - WP_VERSION=4.6 WP_MULTISITE=1
 
 matrix:
   fast_finish: true
