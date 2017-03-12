@@ -21,8 +21,8 @@ env:
   - WP_VERSION=nightly WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=1
   # WP latest stable:
-  - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=latest WP_MULTISITE=1
+  - WP_VERSION=4.7 WP_MULTISITE=0
+  - WP_VERSION=4.7 WP_MULTISITE=1
 
 matrix:
   fast_finish: true
