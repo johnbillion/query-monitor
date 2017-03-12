@@ -1,74 +1,6 @@
 <?php
 
-class Test_Collector_Theme extends QM_UnitTestCase {
-
-	// @TODO need to ideally use a known theme
-
-	/**
-	 * @dataProvider dataThemeFiles
-	 */
-	public function testAssumptionsAboutThemeBeingTested( $file ) {
-		$this->assertNotEmpty( locate_template( array( $file . '.php' ) ), "Theme: " . get_stylesheet_directory() );
-	}
-
-	public function dataThemeFiles() {
-		return array(
-			array(
-				'search',
-			),
-			array(
-				'index',
-			),
-			array(
-				'page',
-			),
-			array(
-				'single',
-			),
-		);
-	}
-
-	public function testThemeTemplateIsCorrectForSearch() {
-
-		$this->go_to_with_template( get_search_link( 'foo' ) );
-
-		$this->assertTrue( is_search() );
-		$this->assertSame( 'search.php', self::get_theme_data( 'template_file' ) );
-
-	}
-
-	public function testThemeTemplateIsCorrectForHome() {
-
-		$this->go_to_with_template( home_url() );
-
-		$this->assertTrue( is_home() );
-		$this->assertSame( 'index.php', self::get_theme_data( 'template_file' ) );
-
-	}
-
-	public function testThemeTemplateIsCorrectForPage() {
-
-		$page = $this->factory->post->create( array(
-			'post_type' => 'page',
-		) );
-
-		$this->go_to_with_template( get_permalink( $page ) );
-
-		$this->assertTrue( is_page() );
-		$this->assertSame( 'page.php', self::get_theme_data( 'template_file' ) );
-
-	}
-
-	public function testThemeTemplateIsCorrectForPost() {
-
-		$post = $this->factory->post->create();
-
-		$this->go_to_with_template( get_permalink( $post ) );
-
-		$this->assertTrue( is_single() );
-		$this->assertSame( 'single.php', self::get_theme_data( 'template_file' ) );
-
-	}
+class TestCollectorTheme extends QM_UnitTestCase {
 
 	public function testTemplateHierarchyAssumptionsAreAccurate() {
 
@@ -104,18 +36,6 @@ class Test_Collector_Theme extends QM_UnitTestCase {
 		$this->assertEquals( array_values( $names ), array_values( $conditionals ) );
 		$this->assertEquals( array_keys( $names ), array_values( $templates ) );
 
-	}
-
-	protected static function get_theme_data( $item ) {
-
-		// @TODO this should be abstracted into a more general method which can be used for any of the collectors
-
-		$theme = QM_Collectors::get( 'theme' );
-		$theme->process();
-
-		$data = $theme->get_data();
-
-		return $data[ $item ];
 	}
 
 }
