@@ -351,7 +351,7 @@ body.wp-admin.folded #qm {
 
 .qm td.qm-has-toggle p,
 .qm td .qm-toggler {
-	padding: 4px 6px 3px !important;
+	padding: 4px 20px 3px 6px !important;
 	position: relative !important;
 }
 
@@ -550,6 +550,19 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 
 /* Filters */
 
+.qm button,
+.qm a,
+.qm select {
+	outline: none !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
+	transition: none !important;
+	height: auto !important;
+	width: auto !important;
+	background: none !important;
+	box-shadow: none !important;
+}
+
 .qm label {
 	cursor: pointer !important;
 	color: #333 !important;
@@ -567,7 +580,7 @@ select.qm-filter {
 	line-height: 16px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 4px 0 2px !important;
-	border: 1px solid #e6e6e6 !important;
+	border: 1px solid #ccc !important;
 	padding: 1px !important;
 	background: #fff !important;
 	color: #333 !important;
@@ -596,19 +609,6 @@ select.qm-filter {
 	display: block !important;
 	margin-top: 4px !important;
 	text-align: center !important;
-}
-
-.qm button,
-.qm a,
-.qm select {
-	outline: none !important;
-	margin: 0 !important;
-	border-radius: 0 !important;
-	transition: none !important;
-	height: auto !important;
-	width: auto !important;
-	background: none !important;
-	box-shadow: none !important;
 }
 
 .qm button:focus,
