@@ -39,7 +39,7 @@ if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
 	return;
 }
 
-if ( 'cli' === php_sapi_name() && ! defined( 'QM_TESTS' ) ) {
+if ( 'cli' === php_sapi_name() && ! defined( 'QM_TESTS' ) && ( ! defined( 'WP_CLI' ) || ! WP_CLI ) ) {
 	# For the time being, let's not load QM when using the CLI because we've no persistent storage and no means of
 	# outputting collected data on the CLI. This will hopefully change in a future version of QM.
 	return;
