@@ -100,3 +100,19 @@ function register_qm_collector_conditionals( array $collectors, QueryMonitor $qm
 }
 
 add_filter( 'qm/collectors', 'register_qm_collector_conditionals', 10, 2 );
+
+function remove_deprecated_qm_collector_conditionals( array $conditionals ) {
+	global $wp_version;
+	if ( version_compare( $wp_version, '4.5', '<=' ) ) {
+		/**
+		 * Remove 'is_comments_popup' from $conditionals in WP 4.5 or later
+		 * @see http://stackoverflow.com/a/1883596/102699
+		 */
+		foreach( array_keys( $conditionals, 'is_comments_popup' ) as $key ) {
+			unset( $conditionals[ $key ] );
+		}
+	}
+	return $conditionals;
+}
+
+add_filter( 'qm/collect/conditionals', 'remove_deprecated_qm_collector_conditionals' );
