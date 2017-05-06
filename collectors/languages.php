@@ -51,8 +51,10 @@ class QM_Collector_Languages extends QM_Collector {
 		foreach ( $filtered as $i => $item ) {
 
 			if ( in_array( $item['function'], array(
+				'load_muplugin_textdomain',
 				'load_plugin_textdomain',
 				'load_theme_textdomain',
+				'load_child_theme_textdomain',
 				'load_default_textdomain',
 			), true ) ) {
 				$caller = $item;
