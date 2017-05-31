@@ -503,7 +503,7 @@ body.wp-admin.folded #qm {
 .qm .qm-toggle,
 html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #0073aa !important;
-	padding: 5px 8px !important;
+	padding: 4px 7px 3px !important;
 	border-top: none !important;
 	border-right: none !important;
 	border-left: 1px solid #e8e8e8 !important;
