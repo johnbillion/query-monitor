@@ -311,6 +311,7 @@ body.wp-admin.folded #qm {
 .qm caption,
 .qm th[scope=col] {
 	border-bottom-width: 0 !important;
+	margin-bottom: 0 !important;
 }
 
 .qm caption {
@@ -486,6 +487,8 @@ body.wp-admin.folded #qm {
 	text-decoration: none !important;
 	text-shadow: none !important;
 	font-weight: normal !important;
+	border: none !important;
+	cursor: pointer !important;
 }
 
 #qm-title a:focus,
