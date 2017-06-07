@@ -32,7 +32,7 @@ class QM_Collector_Assets extends QM_Collector {
 		global $wp_scripts, $wp_styles;
 
 		$this->data['header']['styles'] = $wp_styles->done;
-		$this->data['header']['scripts'] = $wp_scripts->done;
+		$this->data['header']['scripts'] = $wp_scripts ? $wp_scripts->done : array();
 
 	}
 
@@ -47,7 +47,7 @@ class QM_Collector_Assets extends QM_Collector {
 		$this->data['raw']['scripts'] = $wp_scripts;
 		$this->data['raw']['styles']  = $wp_styles;
 
-		$this->data['footer']['scripts'] = array_diff( $wp_scripts->done, $this->data['header']['scripts'] );
+		$this->data['footer']['scripts'] = array_diff( $wp_scripts ? $wp_scripts->done : array(), $this->data['header']['scripts'] );
 		$this->data['footer']['styles']  = array_diff( $wp_styles->done, $this->data['header']['styles'] );
 
 	}
