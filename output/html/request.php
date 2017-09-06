@@ -59,7 +59,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th>' . esc_html( $name ) . '</th>';
-			echo '<td colspan="2" class="qm-ltr">' . $value . '</td>'; // WPCS: XSS ok.
+			echo '<td colspan="2" class="qm-ltr qm-wrap">' . $value . '</td>'; // WPCS: XSS ok.
 			echo '</tr>';
 		}
 
@@ -89,7 +89,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo esc_html( print_r( $value, true ) );
 					echo '</pre></td>';
 				} else {
-					echo '<td class="qm-ltr">' . esc_html( $value ) . '</td>';
+					echo '<td class="qm-ltr qm-wrap">' . esc_html( $value ) . '</td>';
 				}
 
 				echo '</tr>';

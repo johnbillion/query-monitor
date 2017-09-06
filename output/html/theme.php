@@ -61,7 +61,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</th>';
-			echo '<td class="qm-ltr"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ul></td>';
+			echo '<td class="qm-ltr qm-wrap"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ul></td>';
 			echo '</tr>';
 
 		}
