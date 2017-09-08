@@ -26,7 +26,7 @@ class QueryMonitor extends QM_Plugin {
 		parent::__construct( $file );
 
 		# Load and register built-in collectors:
-		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
+		foreach ( apply_filters( 'qm/built-in-collectors', glob( $this->plugin_path( 'collectors/*.php' ) ) ) as $file ) {
 			include $file;
 		}
 
