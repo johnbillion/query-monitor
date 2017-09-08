@@ -51,7 +51,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	}
 
-	public function error_handler( $errno, $message, $file = null, $line = null ) {
+	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
+
+		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
 
 		switch ( $errno ) {
 
