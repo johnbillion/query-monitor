@@ -31,6 +31,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 		echo '<tr class="screen-reader-text">';

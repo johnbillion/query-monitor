@@ -208,6 +208,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<div class="qm qm-third" style="float:right !important">';
 		echo '<table cellspacing="0">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 		echo '<caption>WordPress</caption>';
 		echo '<thead class="screen-reader-text">';
 		echo '<tr>';
@@ -232,6 +233,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<div class="qm qm-third">';
 		echo '<table cellspacing="0">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 		echo '<caption>' . esc_html__( 'Server', 'query-monitor' ) . '</caption>';
 		echo '<thead class="screen-reader-text">';
 		echo '<tr>';

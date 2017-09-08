@@ -35,6 +35,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
+		echo '<a href="#qm-wrapper" class="qm-goto-top">Top</a>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 
