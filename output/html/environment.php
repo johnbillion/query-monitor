@@ -86,7 +86,18 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = implode( '</li><li>', array_map( 'esc_html', $this->collector->get_error_levels( $data['php']['error_reporting'] ) ) );
+		$error_levels = $this->collector->get_error_levels( $data['php']['error_reporting'] );
+		$out = array();
+
+		foreach ( $error_levels as $level => $reported ) {
+			if ( $reported ) {
+				$out[] = '<span class="qm-true">' . esc_html( $level ) . '&nbsp;&#x2713;</span>';
+			} else {
+				$out[] = '<span class="qm-false">' . esc_html( $level ) . '</span>';
+			}
+		}
+
+		$error_levels = implode( '</li><li>', $out );
 
 		echo '<tr>';
 		echo '<th scope="row">error_reporting</th>';

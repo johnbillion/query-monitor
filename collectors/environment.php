@@ -51,39 +51,35 @@ class QM_Collector_Environment extends QM_Collector {
 	}
 
 	public static function get_error_levels( $error_reporting ) {
-
-		$levels = array();
-
-		$constants = array(
-			'E_ERROR',
-			'E_WARNING',
-			'E_PARSE',
-			'E_NOTICE',
-			'E_CORE_ERROR',
-			'E_CORE_WARNING',
-			'E_COMPILE_ERROR',
-			'E_COMPILE_WARNING',
-			'E_USER_ERROR',
-			'E_USER_WARNING',
-			'E_USER_NOTICE',
-			'E_STRICT',
-			'E_RECOVERABLE_ERROR',
-			'E_DEPRECATED',
-			'E_USER_DEPRECATED',
-			'E_ALL'
+		$levels = array(
+			'E_ERROR'             => false,
+			'E_WARNING'           => false,
+			'E_PARSE'             => false,
+			'E_NOTICE'            => false,
+			'E_CORE_ERROR'        => false,
+			'E_CORE_WARNING'      => false,
+			'E_COMPILE_ERROR'     => false,
+			'E_COMPILE_WARNING'   => false,
+			'E_USER_ERROR'        => false,
+			'E_USER_WARNING'      => false,
+			'E_USER_NOTICE'       => false,
+			'E_STRICT'            => false,
+			'E_RECOVERABLE_ERROR' => false,
+			'E_DEPRECATED'        => false,
+			'E_USER_DEPRECATED'   => false,
+			'E_ALL'               => false,
 		);
 
-		foreach ( $constants as $level ) {
+		foreach ( $levels as $level => $reported ) {
 			if ( defined( $level ) ) {
 				$c = constant( $level );
 				if ( $error_reporting & $c ) {
-					$levels[$c] = $level;
+					$levels[ $level ] = true;
 				}
 			}
 		}
 
 		return $levels;
-
 	}
 
 	public function process() {
