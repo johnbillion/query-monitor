@@ -28,7 +28,7 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
-		echo '<caption>' . esc_html__( 'Matching Rewrite Rules', 'query-monitor' ) . '</caption>';
+		echo '<caption>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</caption>';
 		echo '<thead class="screen-reader-text">';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Rule', 'query-monitor' ) . '</th>';

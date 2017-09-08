@@ -114,7 +114,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( isset( $cache_hit_percentage ) ) {
 			echo esc_html( sprintf(
 				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
-				__( '%s%% hit rate (%s hits, %s misses)', 'query-monitor' ),
+				__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
 				number_format_i18n( $cache_hit_percentage, 1 ),
 				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
 				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
