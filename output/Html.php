@@ -177,13 +177,31 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns a file path, name, and line number. Safe for output.
 	 *
-	 * If clickable file links are enabled, a link such as this is returned:
+	 * If clickable file links are enabled via the `xdebug.file_link_format` setting in the PHP configuration,
+	 * a link such as this is returned:
 	 *
 	 *     <a href="subl://open/?line={line}&url={file}">{text}</a>
 	 *
 	 * Otherwise, the display text and file details such as this is returned:
 	 *
 	 *     {text}<br>{file}:{line}
+	 *
+	 * Further information on clickable stack traces for your editor:
+	 *
+	 * PhpStorm: (support is built in)
+	 * `phpstorm://open?file=%f&line=%l`
+	 *
+	 * Visual Studio Code: (support is built in)
+	 * `vscode://file/%f:%l`
+	 *
+	 * Sublime Text: https://github.com/corysimmons/subl-handler
+	 * `subl://open/?url=file://%f&line=%l`
+	 *
+	 * Atom: https://github.com/WizardOfOgz/atom-handler
+	 * `atm://open/?url=file://%f&line=%l`
+	 *
+	 * Netbeans: http://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/
+	 * `nbopen://%f:%l`
 	 *
 	 * @param  string $text The display text, such as a function name or file name.
 	 * @param  string $file The full file path and name.
@@ -195,10 +213,6 @@ abstract class QM_Output_Html extends QM_Output {
 		if ( empty( $file ) ) {
 			return esc_html( $text );
 		}
-
-		# Further reading:
-		# http://simonwheatley.co.uk/2012/07/clickable-stack-traces/
-		# https://github.com/grych/subl-handler
 
 		$link_line = ( $line ) ? $line : 1;
 
