@@ -148,7 +148,15 @@ jQuery( function($) {
 			$('#qm').addClass('qm-show').removeClass('qm-hide qm-peek');
 		} );
 	}
-
+	
+	$('.qm-filter').each(function () {
+		var filter = $(this).attr('data-filter');
+		var value = localStorage.getItem('qm-' + filter);
+		if (value !== null) {
+		  $(this).val(value).change();
+		}
+	});
+  
 	$('#qm').find('.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
@@ -158,6 +166,7 @@ jQuery( function($) {
 			total  = tr.removeClass('qm-hide-' + filter).length,
 			hilite = $(this).attr('data-highlight'),
 			time   = 0;
+		localStorage.setItem('qm-' + filter, $(this).find('option:selected').val());
 
 		if ( hilite ) {
 			table.find('tr').removeClass('qm-highlight');
