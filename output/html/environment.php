@@ -91,7 +91,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		foreach ( $error_levels as $level => $reported ) {
 			if ( $reported ) {
-				$out[] = '<span class="qm-true">' . esc_html( $level ) . '&nbsp;&#x2713;</span>';
+				$out[] = esc_html( $level ) . '&nbsp;&#x2713;';
 			} else {
 				$out[] = '<span class="qm-false">' . esc_html( $level ) . '</span>';
 			}
