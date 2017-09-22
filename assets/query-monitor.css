@@ -201,7 +201,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	list-style: none !important;
 	padding: 0 !important;
@@ -297,7 +297,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 1px solid #e8e8e8 !important;
 	padding: 4px 6px 3px !important;
@@ -360,7 +360,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 0 !important;
 }
@@ -402,7 +402,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -414,7 +414,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: transparent !important;
@@ -427,7 +427,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: #f1f1f1 !important;
@@ -468,7 +468,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -506,7 +506,7 @@ body.wp-admin.folded #qm {
 .qm .qm-toggle,
 html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #0073aa !important;
-	padding: 4px 7px 3px !important;
+	padding: 4px 9px 3px !important;
 	border-top: none !important;
 	border-right: none !important;
 	border-left: 1px solid #e8e8e8 !important;
@@ -514,7 +514,7 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
 	top: 0 !important;
@@ -581,7 +581,7 @@ select.qm-filter {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 4px 0 2px !important;
 	border: 1px solid #ccc !important;
@@ -742,7 +742,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -762,7 +762,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -772,7 +772,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	padding: 5px 10px 15px !important;
 	clear: none !important;
 	text-align: center !important;
-	font-size: 16px !important;
+	font-size: 18px !important;
 	margin: 3px 8px 15px 0 !important;
 }
 
