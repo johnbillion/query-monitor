@@ -541,6 +541,7 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #f00 !important;
 }
 
+select.qm-filter.qm-highlight,
 .qm tbody tr td.qm-highlight,
 .qm .qm-highlight td {
 	background-color: #ffd !important;

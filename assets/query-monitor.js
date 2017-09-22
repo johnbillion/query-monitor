@@ -168,6 +168,9 @@ jQuery( function($) {
 				tr.filter('[data-qm-'+hilite+'*="' + val + '"]').addClass('qm-highlight');
 			}
 			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
+			$(this).addClass('qm-highlight');
+		} else {
+			$(this).removeClass('qm-highlight');
 		}
 
 		var matches = tr.filter(':visible');
@@ -188,8 +191,8 @@ jQuery( function($) {
 		var filter = $(this).data('qm-filter'),
 		    value  = $(this).data('qm-value'),
 		    target = $(this).data('qm-target');
-		$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').change();
-		$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).change();
+		$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
+		$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
 		$('html, body').scrollTop( $(this).closest('.qm').offset().top );
 		$('html, body').animate({
 			scrollTop: $('#qm-' + target).offset().top
