@@ -1,6 +1,6 @@
 <?php
 /**
- * User Switching plugin for WordPress
+ * Query Monitor plugin for WordPress
  *
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
