@@ -102,10 +102,15 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '<td>';
 
 			foreach ( $db_query_num as $type_name => $type_count ) {
-				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
+				$db_query_types[] = sprintf(
+					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s</a>: %3$s',
+					esc_attr( $type_name ),
+					esc_html( $type_name ),
+					esc_html( number_format_i18n( $type_count ) )
+				);
 			}
 
-			echo implode( '<br>', array_map( 'esc_html', $db_query_types ) );
+			echo implode( '<br>', $db_query_types ); // WPCS: XSS ok;
 
 			echo '</td>';
 		}
