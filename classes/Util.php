@@ -78,6 +78,7 @@ class QM_Util {
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['mu-vendor']  = self::standard_dir( WPMU_PLUGIN_DIR . '/vendor' );
 			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
 			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
 			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
@@ -101,7 +102,8 @@ class QM_Util {
 		}
 
 		foreach ( self::get_file_dirs() as $type => $dir ) {
-			if ( $dir && ( 0 === strpos( $file, $dir ) ) ) {
+			// this slash makes paths such as plugins-mu match mu-plugin not plugin
+			if ( $dir && ( 0 === strpos( $file, trailingslashit( $dir ) ) ) ) {
 				break;
 			}
 		}
@@ -111,14 +113,16 @@ class QM_Util {
 		switch ( $type ) {
 			case 'plugin':
 			case 'mu-plugin':
-				$plug = plugin_basename( $file );
+			case 'mu-vendor':
+				$plug = str_replace( '/vendor/', '/', $file );
+				$plug = plugin_basename( $plug );
 				if ( strpos( $plug, '/' ) ) {
 					$plug = explode( '/', $plug );
 					$plug = reset( $plug );
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'mu-plugin' === $type ) {
+				if ( 'plugin' !== $type ) {
 					/* translators: %s: Plugin name */
 					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
 				} else {
