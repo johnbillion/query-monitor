@@ -169,7 +169,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<th scope="row" class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
+		echo '<td class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
 		if ( is_wp_error( $source ) ) {
 			printf( '<span class="qm-warn">%s</span>',
 				esc_html( $src )
