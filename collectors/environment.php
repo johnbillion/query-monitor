@@ -169,6 +169,20 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
 		}
 
+		if ( is_callable( 'get_loaded_extensions' ) ) {
+			$this->data['php']['extensions'] = get_loaded_extensions();
+		} else {
+			$this->data['php']['extensions'] = array();
+		}
+
+		if ( defined( 'SORT_FLAG_CASE' ) ) {
+			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
+		} else {
+			$sort_flags = SORT_STRING;
+		}
+
+		sort( $this->data['php']['extensions'], $sort_flags );
+
 		$this->data['php']['error_reporting'] = error_reporting();
 
 		$this->data['wp'] = array(
