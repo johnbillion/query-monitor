@@ -79,7 +79,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '</td>';
 
 					$stack          = array();
-					$filtered_trace = $error->trace->get_filtered_trace();
+					$filtered_trace = $error->trace->get_display_trace();
 
 					// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 					// we need to handle its somewhat unreliable stack trace items.
@@ -95,9 +95,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">';
-					echo implode( '<br>', $stack ); // WPCS: XSS ok.
-					echo '</td>';
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol class="qm-numbered"><li>';
+					echo implode( '</li><li>', $stack ); // WPCS: XSS ok.
+					echo '</li></ol></td>';
 
 					if ( $component ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';

@@ -151,6 +151,10 @@ class QM_Backtrace {
 		return $this->trace;
 	}
 
+	public function get_display_trace() {
+		return array_reverse( $this->get_filtered_trace() );
+	}
+
 	public function get_filtered_trace() {
 
 		if ( !isset( $this->filtered_trace ) ) {

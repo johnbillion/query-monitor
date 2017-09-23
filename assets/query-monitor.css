@@ -417,6 +417,17 @@ body.wp-admin.folded #qm {
 	content: '' !important;
 }
 
+.qm .qm-has-toggle ol.qm-numbered li {
+	list-style: none !important;
+	margin-left: 0 !important;
+}
+
+.qm .qm-toggled-on ol.qm-numbered li,
+.qm ol.qm-numbered li {
+	list-style: decimal !important;
+	margin-left: 1.8em !important;
+}
+
 .qm pre {
 	font-style: normal !important;
 	font-weight: normal !important;
