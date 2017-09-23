@@ -102,7 +102,14 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="' . esc_attr( $span ) . '" style="text-align:center !important"><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="' . esc_attr( $span ) . '" style="text-align:center !important">';
+			echo '<em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em>';
+			printf(
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink',
+				esc_html__( 'Help', 'query-monitor' )
+			);
+			echo '</td>';
 			echo '</tr>';
 			echo '</tbody>';
 
