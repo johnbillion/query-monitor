@@ -101,16 +101,20 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</td>';
 			echo '<td>';
 
-			foreach ( $db_query_num as $type_name => $type_count ) {
-				$db_query_types[] = sprintf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s</a>: %3$s',
-					esc_attr( $type_name ),
-					esc_html( $type_name ),
-					esc_html( number_format_i18n( $type_count ) )
-				);
+			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
+				foreach ( $db_query_num as $type_name => $type_count ) {
+					$db_query_types[] = sprintf(
+						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s</a>: %3$s',
+						esc_attr( $type_name ),
+						esc_html( $type_name ),
+						esc_html( number_format_i18n( $type_count ) )
+					);
+				}
+
+				echo implode( '<br>', $db_query_types ) . '<br>'; // WPCS: XSS ok;
 			}
 
-			echo implode( '<br>', $db_query_types ); // WPCS: XSS ok;
+			echo esc_html__( 'Total', 'query-monitor' ) . ': ' . esc_html( number_format_i18n( $db_queries_data['total_qs'] ) );
 
 			echo '</td>';
 		}
