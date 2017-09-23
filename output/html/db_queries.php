@@ -195,11 +195,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<th scope="col">';
 
 			$prepend = array();
-			$has_main_query = wp_list_filter( $db->rows, array(
-				'is_main_query' => true,
-			) );
 
-			if ( $has_main_query ) {
+			if ( $db->has_main_query ) {
 				$prepend['qm-main-query'] = __( 'Main Query', 'query-monitor' );
 			}
 

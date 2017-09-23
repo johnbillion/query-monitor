@@ -25,6 +25,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
+		$db_queries = QM_Collectors::get( 'db_queries' );
+
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
@@ -66,7 +68,21 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
 		echo '<tr>';
-		echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Query Vars', 'query-monitor' ) . '</th>';
+		echo '<th rowspan="' . absint( $rowspan ) . '">';
+		esc_html_e( 'Query Vars', 'query-monitor' );
+
+		if ( $db_queries ) {
+			$db_queries_data = $db_queries->get_data();
+			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
+				echo '<br>';
+				printf(
+					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a>',
+					esc_html__( 'View Main Query', 'query-monitor' )
+				);
+			}
+		}
+
+		echo '</th>';
 
 		if ( !empty( $data['qvars'] ) ) {
 
