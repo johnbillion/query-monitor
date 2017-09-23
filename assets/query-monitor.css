@@ -60,6 +60,13 @@ GNU General Public License for more details.
 	background-color: #c00;
 }
 
+.qm .qm-php-error-warning td,
+.qm .qm-php-error-warning th,
+.qm .qm-php-error-warning-suppressed td,
+.qm .qm-php-error-warning-suppressed th {
+		color: #c00 !important;
+}
+
 #wpadminbar .qm-warning > a {
 	color: #fff !important;
 }
@@ -539,6 +546,13 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 .qm .qm-warn td .qm-nonselectsql,
 .qm .qm-warn td .qm-info {
 	color: #f00 !important;
+}
+
+.qm .dashicons {
+	font-size: 16px !important;
+	width: 16px !important;
+	height: 16px !important;
+	margin-right: 0.3em !important;
 }
 
 select.qm-filter.qm-highlight,
