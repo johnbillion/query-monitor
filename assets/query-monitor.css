@@ -411,6 +411,7 @@ body.wp-admin.folded #qm {
 	font-size: 11px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
+	margin-left: 0 !important;
 }
 
 .qm li::before {
@@ -419,13 +420,11 @@ body.wp-admin.folded #qm {
 
 .qm .qm-has-toggle ol.qm-numbered li {
 	list-style: none !important;
-	margin-left: 0 !important;
 }
 
 .qm .qm-toggled-on ol.qm-numbered li,
 .qm ol.qm-numbered li {
-	list-style: decimal !important;
-	margin-left: 1.8em !important;
+	list-style: decimal inside !important;
 }
 
 .qm pre {
