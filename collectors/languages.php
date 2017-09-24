@@ -32,7 +32,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 	public function process() {
 		$this->data['locale'] = get_locale();
-		QM_Util::sort( $this->data['languages'], 'domain' );
+		ksort( $this->data['languages'] );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class QM_Collector_Languages extends QM_Collector {
 			$caller['line'] = $filtered[0]['line'];
 		}
 
-		$this->data['languages'][] = array(
+		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
 			'domain' => $domain,
 			'mofile' => $mofile,

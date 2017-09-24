@@ -49,29 +49,36 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$not_found_class = ( substr( $data['locale'], 0, 3 ) === "en_" ) ? '' : 'qm-warn';
 
-		foreach ( $data['languages'] as $mofile ) {
+		foreach ( $data['languages'] as $textdomain => $mofiles ) {
+			$first = true;
 
-			echo '<tr>';
+			foreach ( $mofiles as $mofile ) {
+				echo '<tr>';
 
-			echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
-			echo '<td class="qm-nowrap qm-ltr">';
-			echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
-			echo '</td>';
-			echo '<td class="qm-ltr">';
-			echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
-			echo '</td>';
+				if ( $first ) {
+					echo '<th class="qm-ltr" rowspan="' . count( $mofiles ) . '">' . esc_html( $mofile['domain'] ) . '</th>';
+				}
 
-			if ( $mofile['found'] ) {
-				echo '<td class="qm-nowrap">';
-				echo esc_html( size_format( $mofile['found'] ) );
+				echo '<td class="qm-nowrap qm-ltr">';
+				echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 				echo '</td>';
-			} else {
-				echo '<td class="' . esc_attr( $not_found_class ) . '">';
-				echo esc_html__( 'Not Found', 'query-monitor' );
+				echo '<td class="qm-ltr">';
+				echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
 				echo '</td>';
+
+				if ( $mofile['found'] ) {
+					echo '<td class="qm-nowrap">';
+					echo esc_html( size_format( $mofile['found'] ) );
+					echo '</td>';
+				} else {
+					echo '<td class="' . esc_attr( $not_found_class ) . '">';
+					echo esc_html__( 'Not Found', 'query-monitor' );
+					echo '</td>';
+				}
+
+				echo '</tr>';
+				$first = false;
 			}
-
-			echo '</tr>';
 
 		}
 
