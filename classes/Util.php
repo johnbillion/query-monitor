@@ -21,6 +21,7 @@ class QM_Util {
 	protected static $file_dirs       = array();
 	protected static $abspath         = null;
 	protected static $contentpath     = null;
+	protected static $sort_field      = null;
 
 	private function __construct() {}
 
@@ -325,6 +326,36 @@ class QM_Util {
 		$type = strtoupper( $type[0] );
 
 		return $type;
+	}
+
+	public static function sort( array &$array, $field ) {
+		self::$sort_field = $field;
+		usort( $array, array( self, '_sort' ) );
+	}
+
+	public static function rsort( array &$array, $field ) {
+		self::$sort_field = $field;
+		usort( $array, array( self, '_rsort' ) );
+	}
+
+	private static function _rsort( $a, $b ) {
+		$field = self::$sort_field;
+
+		if ( $a[ $field ] == $b[ $field ] ) {
+			return 0;
+		} else {
+			return ( $a[ $field ] > $b[ $field ] ) ? -1 : 1;
+		}
+	}
+
+	private static function _sort( $a, $b ) {
+		$field = self::$sort_field;
+
+		if ( $a[ $field ] == $b[ $field ] ) {
+			return 0;
+		} else {
+			return ( $a[ $field ] > $b[ $field ] ) ? 1 : -1;
+		}
 	}
 
 }

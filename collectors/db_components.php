@@ -27,7 +27,7 @@ class QM_Collector_DB_Components extends QM_Collector {
 		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
-				usort( $this->data['times'], 'QM_Collector::sort_ltime' );
+				QM_Util::rsort( $this->data['times'], 'ltime' );
 			}
 			if ( isset( $dbq->data['types'] ) ) {
 				$this->data['types'] = $dbq->data['types'];

@@ -97,14 +97,6 @@ abstract class QM_Collector {
 		$this->id = $id;
 	}
 
-	public static function sort_ltime( $a, $b ) {
-		if ( $a['ltime'] == $b['ltime'] ) {
-			return 0;
-		} else {
-			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
-		}
-	}
-
 	public static function format_user( WP_User $user_object ) {
 		$user = get_object_vars( $user_object->data );
 		unset(
