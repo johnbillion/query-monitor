@@ -94,7 +94,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
 			}
 
-			echo '<td class="qm-num">'  . esc_html( $total_stime ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 

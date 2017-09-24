@@ -54,7 +54,7 @@ class QM_Collector_Cache extends QM_Collector {
 			$this->data['cache_hit_percentage'] = ( 100 / $total ) * $this->data['stats']['cache_hits'];
 		}
 
-		$this->data['display_hit_rate_warning'] = ( 100 == $this->data['cache_hit_percentage'] );
+		$this->data['display_hit_rate_warning'] = ( 100 === $this->data['cache_hit_percentage'] );
 
 	}
 

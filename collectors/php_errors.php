@@ -86,7 +86,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return false;
 		}
 
-		if ( error_reporting() === 0 && $this->error_reporting !== 0 ) {
+		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
 			// This is most likely an @-suppressed error
 			$type .= '-suppressed';
 		}
@@ -167,7 +167,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		} else {
 
-			printf( '<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
+			printf( // WPCS: XSS ok.
+				'<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
 				htmlentities( $error ),
 				htmlentities( $e['message'] ),
 				htmlentities( $e['file'] ),

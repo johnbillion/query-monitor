@@ -211,8 +211,8 @@ class QM_Collector_Environment extends QM_Collector {
 			$server_version = null;
 		}
 
-		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
-			$address = $_SERVER['SERVER_ADDR'];
+		if ( isset( $_SERVER['SERVER_ADDR'] ) ) { // WPCS: input var ok
+			$address = wp_unslash( $_SERVER['SERVER_ADDR'] ); // WPCS: sanitization ok, input var ok
 		} else {
 			$address = null;
 		}
@@ -243,8 +243,8 @@ class QM_Collector_Environment extends QM_Collector {
 			}
 		}
 
-		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) {
-			$php_u = $_SERVER['USER'];
+		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) { // WPCS: input var ok
+			$php_u = wp_unslash( $_SERVER['USER'] ); // WPCS: sanitization ok, input var ok
 		}
 
 		if ( empty( $php_u ) and function_exists( 'exec' ) ) {

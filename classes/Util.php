@@ -35,7 +35,7 @@ class QM_Util {
 
 		if ( $bytes ) {
 			$last = strtolower( substr( $size, -1 ) );
-			$pos = strpos( ' kmg', $last, 1);
+			$pos = strpos( ' kmg', $last, 1 );
 			if ( $pos ) {
 				$bytes *= pow( 1024, $pos );
 			}
@@ -267,7 +267,7 @@ class QM_Util {
 		if ( self::is_ajax() ) {
 			return true;
 		}
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) {
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) {
 			return true;
 		}
 		return false;

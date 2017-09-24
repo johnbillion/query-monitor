@@ -86,7 +86,7 @@ class QM_Collector_Assets extends QM_Collector {
 				$this->data['missing'][ $type ] = array_unique( $missing );
 				foreach ( $this->data['missing'][ $type ] as $handle ) {
 					$raw->add( $handle, false );
-					if ( false !== ( $key = array_search( $handle, $raw->done ) ) ) {
+					if ( false !== ( $key = array_search( $handle, $raw->done, true ) ) ) {
 						unset( $raw->done[ $key ] );
 					}
 				}

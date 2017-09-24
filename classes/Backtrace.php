@@ -73,7 +73,7 @@ class QM_Backtrace {
 		 * If error_handler() is in the trace, QM fails later when it tries
 		 * to get $lowest['file'] in get_filtered_trace()
 		 */
-		if ( $this->trace[0]['function'] === 'error_handler' ) {
+		if ( 'error_handler' === $this->trace[0]['function'] ) {
 			$this->ignore( 1 );
 		}
 
@@ -162,7 +162,7 @@ class QM_Backtrace {
 			$trace = array_map( array( $this, 'filter_trace' ), $this->trace );
 			$trace = array_values( array_filter( $trace ) );
 
-			if ( empty( $trace ) && !empty($this->trace) ) {
+			if ( empty( $trace ) && ! empty( $this->trace ) ) {
 				$lowest                 = $this->trace[0];
 				$file                   = QM_Util::standard_dir( $lowest['file'], '' );
 				$lowest['calling_file'] = $lowest['file'];
@@ -193,7 +193,7 @@ class QM_Backtrace {
 	public function ignore_current_filter() {
 
 		if ( isset( $this->trace[2] ) and isset( $this->trace[2]['function'] ) ) {
-			if ( in_array( $this->trace[2]['function'], array( 'apply_filters', 'do_action' ) ) ) {
+			if ( in_array( $this->trace[2]['function'], array( 'apply_filters', 'do_action' ), true ) ) {
 				$this->ignore( 3 ); # Ignore filter and action callbacks
 			}
 		}

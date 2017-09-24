@@ -23,7 +23,7 @@ class QM_Activation extends QM_Plugin {
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
 		# Activation and deactivation
-		register_activation_hook(   $file, array( $this, 'activate' ) );
+		register_activation_hook( $file, array( $this, 'activate' ) );
 		register_deactivation_hook( $file, array( $this, 'deactivate' ) );
 
 		# Parent setup:
@@ -42,9 +42,9 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		if ( $sitewide ) {
-			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
+			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins' ) );
 		} else {
-			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
+			update_option( 'active_plugins', get_option( 'active_plugins' ) );
 		}
 
 	}

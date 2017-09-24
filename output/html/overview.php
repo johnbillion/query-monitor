@@ -48,7 +48,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ). '</caption>';
+		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Page generation time', 'query-monitor' ) . '</th>';
@@ -132,7 +132,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				printf(
 					'<br><a href="%s">%s</a>',
 					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
-					esc_html__( "Why is this value 100%?", 'query-monitor' )
+					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
 			}
 			echo '<br><span class="qm-info">';

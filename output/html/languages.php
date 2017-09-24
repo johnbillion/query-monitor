@@ -47,7 +47,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		$not_found_class = ( substr( $data['locale'], 0, 3 ) === "en_" ) ? '' : 'qm-warn';
+		$not_found_class = ( substr( $data['locale'], 0, 3 ) === 'en_' ) ? '' : 'qm-warn';
 
 		foreach ( $data['languages'] as $textdomain => $mofiles ) {
 			$first = true;
