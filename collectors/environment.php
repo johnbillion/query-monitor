@@ -248,7 +248,7 @@ class QM_Collector_Environment extends QM_Collector {
 		}
 
 		if ( empty( $php_u ) and function_exists( 'exec' ) ) {
-			$php_u = exec( 'whoami' );
+			$php_u = exec( 'whoami' ); // @codingStandardsIgnoreLine
 		}
 
 		if ( empty( $php_u ) and function_exists( 'getenv' ) ) {

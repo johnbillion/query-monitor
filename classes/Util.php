@@ -292,10 +292,12 @@ class QM_Util {
 			return false;
 		}
 
+		// @codingStandardsIgnoreStart
 		$num_sites = $wpdb->get_var( "
 			SELECT COUNT(*)
 			FROM {$wpdb->site}
 		" );
+		// @codingStandardsIgnoreEnd
 
 		return ( $num_sites > 1 );
 	}

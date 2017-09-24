@@ -88,6 +88,7 @@ function register_qm_collectors_debug_bar() {
 }
 
 function qm_debug_bar_being_activated() {
+	// @codingStandardsIgnoreStart
 
 	if ( ! is_admin() ) {
 		return false;
@@ -120,7 +121,7 @@ function qm_debug_bar_being_activated() {
 	}
 
 	return false;
-
+	// @codingStandardsIgnoreEnd
 }
 
 add_action( 'init', 'register_qm_collectors_debug_bar' );
