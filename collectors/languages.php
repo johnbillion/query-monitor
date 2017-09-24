@@ -32,6 +32,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 	public function process() {
 		$this->data['locale'] = get_locale();
+		QM_Util::sort( $this->data['languages'], 'domain' );
 	}
 
 	/**
