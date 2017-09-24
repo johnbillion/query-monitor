@@ -83,16 +83,16 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 				}
 
 				$stack          = array();
-				$filtered_trace = $row['trace']->get_filtered_trace();
-				array_shift( $filtered_trace );
+				$filtered_trace = $row['trace']->get_display_trace();
+				array_pop( $filtered_trace );
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
 				printf( // WPCS: XSS ok.
-					'<td class="qm-nowrap qm-ltr">%s</td>',
-					implode( '<br>', $stack )
+					'<td class="qm-nowrap qm-ltr"><ol class="qm-numbered"><li>%s</li></ol></td>',
+					implode( '</li><li>', $stack )
 				);
 				printf(
 					'<td class="qm-nowrap">%s</td>',
