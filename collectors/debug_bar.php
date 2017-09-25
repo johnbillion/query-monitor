@@ -74,7 +74,7 @@ function register_qm_collectors_debug_bar() {
 	foreach ( $debug_bar->panels as $panel ) {
 		$panel_id = strtolower( get_class( $panel ) );
 
-		if ( in_array( $panel_id, $redundant ) ) {
+		if ( in_array( $panel_id, $redundant, true ) ) {
 			continue;
 		}
 
@@ -104,7 +104,7 @@ function qm_debug_bar_being_activated() {
 			return false;
 		}
 
-		if ( 'activate' === $_GET['action'] && false !== strpos( $_GET['plugin'], 'debug-bar.php' ) ) {
+		if ( 'activate' === $_GET['action'] && false !== strpos( wp_unslash( $_GET['plugin'] ), 'debug-bar.php' ) ) {
 			return true;
 		}
 
@@ -114,7 +114,7 @@ function qm_debug_bar_being_activated() {
 			return false;
 		}
 
-		if ( 'activate-selected' === $_POST['action'] && in_array( 'debug-bar/debug-bar.php', $_POST['checked'] ) ) {
+		if ( 'activate-selected' === wp_unslash( $_POST['action'] ) && in_array( 'debug-bar/debug-bar.php', wp_unslash( $_POST['checked'] ), true ) ) {
 			return true;
 		}
 

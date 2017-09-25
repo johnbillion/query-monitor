@@ -202,8 +202,12 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['wp']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
-		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );
-		$server = explode( '/', reset( $server ) );
+		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) { // WPCS: input var ok
+			$server = explode( ' ', wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ); // WPCS: sanitization ok, input var ok
+			$server = explode( '/', reset( $server ) );
+		} else {
+			$server = array( '' );
+		}
 
 		if ( isset( $server[1] ) ) {
 			$server_version = $server[1];

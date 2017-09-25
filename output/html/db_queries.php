@@ -200,9 +200,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$prepend['qm-main-query'] = __( 'Main Query', 'query-monitor' );
 			}
 
-			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ), array(
+			$args = array(
 				'prepend' => $prepend,
-			) ); // WPCS: XSS ok;
+			);
+			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ), $args ); // WPCS: XSS ok.
 			echo '</th>';
 
 			if ( $db->has_trace ) {
