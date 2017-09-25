@@ -96,8 +96,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			// but do not get seen by GlotPress when it populates its database of translatable strings for QM.
 			$unexpected_error  = 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.';
 			$wordpress_couldnt = '(WordPress could not establish a secure connection to WordPress.org. Please contact your server administrator.)';
-			self::$unexpected_error  = __( $unexpected_error );
-			self::$wordpress_couldnt = __( $wordpress_couldnt );
+			self::$unexpected_error  = call_user_func( '__', $unexpected_error );
+			self::$wordpress_couldnt = call_user_func( '__', $wordpress_couldnt );
 		}
 
 		// Intentionally skip reporting these core warnings. They're a distraction when developing offline.
