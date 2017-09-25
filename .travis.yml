@@ -26,10 +26,6 @@ env:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    # allow failures on WP nightlies:
-    - env: WP_VERSION=nightly WP_MULTISITE=0
-    - env: WP_VERSION=nightly WP_MULTISITE=1
 
 before_script:
     - phpenv config-rm xdebug.ini
