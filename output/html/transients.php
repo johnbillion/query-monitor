@@ -38,9 +38,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			if ( is_multisite() ) {
 				echo '<th>' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 			}
-			if ( !empty( $data['trans'] ) and isset( $data['trans'][0]['expiration'] ) ) {
-				echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
-			}
+			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -68,18 +66,16 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					);
 				}
 
-				if ( isset( $row['expiration'] ) ) {
-					if ( 0 === $row['expiration'] ) {
-						printf(
-							'<td><em>%s</em></td>',
-							esc_html__( 'none', 'query-monitor' )
-						);
-					} else {
-						printf(
-							'<td>%s</td>',
-							esc_html( $row['expiration'] )
-						);
-					}
+				if ( 0 === $row['expiration'] ) {
+					printf(
+						'<td><em>%s</em></td>',
+						esc_html__( 'none', 'query-monitor' )
+					);
+				} else {
+					printf(
+						'<td>%s</td>',
+						esc_html( $row['expiration'] )
+					);
 				}
 
 				$stack          = array();
