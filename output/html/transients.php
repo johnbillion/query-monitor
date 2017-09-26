@@ -39,6 +39,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 				echo '<th>' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -77,6 +78,11 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 						esc_html( $row['expiration'] )
 					);
 				}
+
+				printf(
+					'<td>~%s</td>',
+					esc_html( size_format( $row['size'] ) )
+				);
 
 				$stack          = array();
 				$filtered_trace = $row['trace']->get_display_trace();

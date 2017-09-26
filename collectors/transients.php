@@ -52,6 +52,7 @@ class QM_Collector_Transients extends QM_Collector {
 			'type'       => $type,
 			'value'      => $value,
 			'expiration' => $expiration,
+			'size'       => strlen( maybe_serialize( $value ) ),
 		);
 	}
 
