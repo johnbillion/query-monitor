@@ -42,7 +42,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		$types = array(
 			'warning'               => _x( 'Warning', 'PHP error level', 'query-monitor' ),
@@ -59,6 +58,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			if ( isset( $data['errors'][$type] ) ) {
 
+				echo '<tbody class="qm-group">';
 				echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
 				echo '<th scope="row" rowspan="' . count( $data['errors'][$type] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
 				$first = true;
@@ -72,7 +72,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$component = $error->trace->get_component();
 					$message   = wp_strip_all_tags( $error->message );
 
-					echo '<th scope="row" class="qm-ltr">' . esc_html( $message ) . '</th>';
+					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td class="qm-ltr">';
 					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
@@ -111,11 +111,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				}
 
+				echo '</tbody>';
 			}
 
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 

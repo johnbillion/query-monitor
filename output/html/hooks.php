@@ -50,11 +50,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		self::output_hook_table( $data['hooks'], $screen );
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
@@ -63,6 +61,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	public static function output_hook_table( array $hooks, $screen = '' ) {
 
 		foreach ( $hooks as $hook ) {
+
+			echo '<tbody class="qm-group">';
 
 			if ( !empty( $screen ) ) {
 
@@ -162,6 +162,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				echo '<td colspan="3">&nbsp;</td>';
 				echo '</tr>';
 			}
+
+			echo '</tbody>';
 
 		}
 

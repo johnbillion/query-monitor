@@ -64,7 +64,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
-			echo '<tbody>';
 
 			foreach ( array(
 				'missing',
@@ -79,7 +78,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			}
 
-			echo '</tbody>';
 			echo '</table>';
 			echo '</div>';
 
@@ -94,12 +92,16 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$first = true;
 
 		if ( empty( $handles ) ) {
+			echo '<tbody>';
 			echo '<tr>';
 			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 			echo '<td colspan="5"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
+			echo '</tbody>';
 			return;
 		}
+
+		echo '<tbody class="qm-group">';
 
 		foreach ( $handles as $handle ) {
 
@@ -117,8 +119,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies, $type );
 
 			echo '</tr>';
+
 			$first = false;
 		}
+
+		echo '</tbody>';
 
 	}
 

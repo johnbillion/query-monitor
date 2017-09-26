@@ -325,18 +325,17 @@ body.wp-admin.folded #qm {
 	caption-side: top !important;
 }
 
+.qm tbody.qm-group:hover th,
 .qm tbody tr:hover th,
 .qm tbody tr:hover td {
-	background: #f9f9f9 !important;
+	background: #f7f7f7 !important;
 }
 
 .qm-debug-bar tbody tr:hover th,
 .qm-debug-bar tbody tr:hover td,
 #qm-conditionals tbody tr:hover td,
 #qm-overview tbody tr:hover td,
-#qm-authentication tbody tr:hover td,
-.qm tbody tr:hover th[rowspan],
-.qm tbody tr:hover td[rowspan] {
+#qm-authentication tbody tr:hover td {
 	background: #fff !important;
 }
 

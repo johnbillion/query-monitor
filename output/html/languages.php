@@ -45,12 +45,13 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<th colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
 
 		$not_found_class = ( substr( $data['locale'], 0, 3 ) === 'en_' ) ? '' : 'qm-warn';
 
 		foreach ( $data['languages'] as $textdomain => $mofiles ) {
 			$first = true;
+
+			echo '<tbody class="qm-group">';
 
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
@@ -80,9 +81,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				$first = false;
 			}
 
+			echo '</tbody>';
+
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
