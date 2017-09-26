@@ -41,7 +41,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( !empty( $data['http'] ) ) {
 
-			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP Requests', 'query-monitor' ) . '</caption>';
+			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
@@ -50,7 +50,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
-			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
@@ -247,9 +247,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$count = isset( $data['http'] ) ? count( $data['http'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'HTTP Requests', 'query-monitor' )
-			/* translators: %s: Number of HTTP requests */
-			: __( 'HTTP Requests (%s)', 'query-monitor' );
+			? __( 'HTTP API Calls', 'query-monitor' )
+			/* translators: %s: Number of calls to the HTTP API */
+			: __( 'HTTP API Calls (%s)', 'query-monitor' );
 
 		$args = array(
 			'title' => esc_html( sprintf(

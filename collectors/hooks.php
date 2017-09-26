@@ -21,7 +21,7 @@ class QM_Collector_Hooks extends QM_Collector {
 	protected static $hide_qm;
 
 	public function name() {
-		return __( 'Hooks', 'query-monitor' );
+		return __( 'Hooks & Actions', 'query-monitor' );
 	}
 
 	public function process() {

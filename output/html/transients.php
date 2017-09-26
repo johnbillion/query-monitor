@@ -30,13 +30,13 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		if ( !empty( $data['trans'] ) ) {
 
-			echo '<caption class="screen-reader-text">' . esc_html__( 'Transients', 'query-monitor' ) . '</caption>';
+			echo '<caption class="screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'Transient Set', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>';
 			if ( is_multisite() ) {
-				echo '<th>' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
+				echo '<th>' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>';
@@ -111,7 +111,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th>' . esc_html__( 'Transients Set', 'query-monitor' ) . '</th>';
+			echo '<th>' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 
@@ -134,9 +134,9 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'Transients Set', 'query-monitor' )
-			/* translators: %s: Number of transient values that were set */
-			: __( 'Transients Set (%s)', 'query-monitor' );
+			? __( 'Transient Updates', 'query-monitor' )
+			/* translators: %s: Number of transient values that were updated */
+			: __( 'Transient Updates (%s)', 'query-monitor' );
 
 		$menu[] = $this->menu( array(
 			'title' => esc_html( sprintf(

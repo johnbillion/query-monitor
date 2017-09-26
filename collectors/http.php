@@ -19,7 +19,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	public $id = 'http';
 
 	public function name() {
-		return __( 'HTTP Requests', 'query-monitor' );
+		return __( 'HTTP API Requests', 'query-monitor' );
 	}
 
 	public function __construct() {
