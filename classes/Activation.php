@@ -56,7 +56,7 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QM_DB' ) ) {
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB' ) ) {
 			unlink( WP_CONTENT_DIR . '/db.php' ); // @codingStandardsIgnoreLine
 		}
 
