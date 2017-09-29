@@ -332,12 +332,12 @@ class QM_Util {
 
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
-		usort( $array, array( self, '_sort' ) );
+		usort( $array, array( __CLASS__, '_sort' ) );
 	}
 
 	public static function rsort( array &$array, $field ) {
 		self::$sort_field = $field;
-		usort( $array, array( self, '_rsort' ) );
+		usort( $array, array( __CLASS__, '_rsort' ) );
 	}
 
 	private static function _rsort( $a, $b ) {
