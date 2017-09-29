@@ -94,7 +94,6 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 		if ( version_compare( phpversion(), '5.3', '<' ) ) {
 			$this->markTestSkipped( 'PHP < 5.3 does not support closures' );
-			return;
 		}
 
 		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
@@ -115,7 +114,12 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	public function test_populate_callback_lambda() {
 
-		$function = create_function( '', '' );
+		if ( version_compare( phpversion(), '7.2', '>=' ) ) {
+			$this->markTestSkipped( 'Lambda functions are deprecated in PHP 7.2' );
+		}
+
+		require_once dirname( __FILE__ ) . '/includes/dummy-lambdas.php';
+
 		$callback = self::get_callback( $function );
 
 		$ref    = new ReflectionFunction( $function );
