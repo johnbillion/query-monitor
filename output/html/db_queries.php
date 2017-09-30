@@ -393,9 +393,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol>';
+			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol class="qm-numbered">';
+			if ( ! empty( $stack ) ) {
+				echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
+			}
 			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
-			echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 			echo '</ol></td>';
 		}
 
