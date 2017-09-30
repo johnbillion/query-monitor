@@ -79,13 +79,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Error', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Error Code', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Error Message', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
 
 		foreach ( $errors as $row ) {
-			$this->output_query_row( $row, array( 'sql', 'stack', 'component', 'result' ) );
+			$this->output_query_row( $row, array( 'sql', 'stack', 'component', 'errno', 'result' ) );
 		}
 
 		echo '</tbody>';
@@ -293,7 +294,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			unset( $cols['component'] );
 		}
 		if ( !isset( $row['result'] ) ) {
-			unset( $cols['result'] );
+			unset( $cols['result'], $cols['errno'] );
 		}
 		if ( !isset( $row['stack'] ) ) {
 			unset( $cols['stack'] );
@@ -407,6 +408,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			} else {
 				echo "<td class='qm-row-component qm-nowrap'>" . esc_html__( 'Unknown', 'query-monitor' ) . "</td>\n";
 			}
+		}
+
+		if ( isset( $cols['errno'] ) && is_wp_error( $row['result'] ) ) {
+			echo "<td class='qm-row-result qm-row-error'>" . esc_html( $row['result']->get_error_code() ) . "</td>\n";
 		}
 
 		if ( isset( $cols['result'] ) ) {
