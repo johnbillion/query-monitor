@@ -169,7 +169,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );
 				} else {
 					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );	
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );
 				}
 				echo wp_kses( sprintf(
 					$message,
@@ -299,7 +299,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			unset( $cols['stack'] );
 		}
 
-		$stime = number_format_i18n( $row['ltime'], 4 );
+		$stime = '';
+		if( !isset( $row['ltime'] ) ) {
+                    $stime = number_format_i18n( $row['ltime'], 4 );
+		}
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';
 
 		$sql = self::format_sql( $row['sql'] );

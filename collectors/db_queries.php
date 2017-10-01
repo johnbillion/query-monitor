@@ -49,6 +49,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public static function is_expensive( array $row ) {
+		if( !isset( $row['ltime'] ) ) {
+			return '';
+		}
 		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
