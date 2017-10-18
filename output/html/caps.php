@@ -36,7 +36,6 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">';
 		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
@@ -69,31 +68,38 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			);
 
 			$stack          = array();
+			$trace          = $row['trace']->get_trace();
 			$filtered_trace = $row['trace']->get_display_trace();
-			array_pop( $filtered_trace );
 
-			$pure = $row['trace']->get_trace();
-			$purest = count( $filtered_trace ) - 2;
+			array_pop( $filtered_trace ); // remove the WP_User->has_cap() call
+			array_pop( $filtered_trace ); // remove the *_user_can() call
 
-			if ( isset( $filtered_trace[ $purest ]['display'] ) ) {
-				$pure_name = $filtered_trace[ $purest ]['display'];
-			} else {
-				$pure_name = QM_Util::standard_dir( $pure[1]['file'], '' ) . ':' . $pure[1]['line'];
+			if ( ! count( $filtered_trace ) ) {
+				$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
+
+				$responsible_item = $trace[1];
+				$responsible_item['display'] = $responsible_name;
+				$responsible_item['calling_file'] = $trace[1]['file'];
+				$responsible_item['calling_line'] = $trace[1]['line'];
+				array_unshift( $filtered_trace, $responsible_item );
 			}
-
-			printf( // WPCS: XSS ok.
-				'<td class="qm-wrap qm-ltr">%s</td>',
-				self::output_filename( $pure_name, $pure[1]['file'], $pure[1]['line'] )
-			);
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 			}
 
-			printf( // WPCS: XSS ok.
-				'<td class="qm-nowrap qm-ltr"><ol class="qm-numbered"><li>%s</li></ol></td>',
-				implode( '</li><li>', $stack )
-			);
+			echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+
+			$caller = array_pop( $stack );
+
+			if ( ! empty( $stack ) ) {
+				echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+			}
+
+			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+			echo '</ol></td>';
+
 			printf(
 				'<td class="qm-nowrap">%s</td>',
 				esc_html( $component->name )
