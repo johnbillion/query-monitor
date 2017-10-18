@@ -248,7 +248,15 @@ class QM_Backtrace {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
 						if ( isset( $trace['args'][$i] ) ) {
-							$args[] = '\'' . $trace['args'][$i] . '\'';
+							if ( is_string( $trace['args'][$i] ) ) {
+								$args[] = '\'' . $trace['args'][$i] . '\'';
+							} elseif ( is_scalar( $trace['args'][$i] ) ) {
+								$args[] = $trace['args'][$i];
+							} elseif ( is_object( $trace['args'][$i] ) ) {
+								$args[] = get_class( $trace['args'][$i] );
+							} else {
+								$args[] = gettype( $trace['args'][$i] );
+							}
 						}
 					}
 					$return['id']      = $trace['function'] . '()';
