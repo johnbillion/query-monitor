@@ -53,6 +53,10 @@ class QM_Backtrace {
 		'get_sidebar'                => 1,
 		'get_footer'                 => 1,
 		'class_exists'               => 2,
+		'current_user_can'           => 3,
+		'user_can'                   => 4,
+		'current_user_can_for_blog'  => 4,
+		'author_can'                 => 4,
 	);
 	protected static $filtered = false;
 	protected $trace           = null;
