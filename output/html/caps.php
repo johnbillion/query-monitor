@@ -64,7 +64,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			);
 
 			printf(
-				'<td class="qm-ltr">%s</td>',
+				'<td class="qm-ltr qm-nowrap">%s</td>',
 				esc_html( $row['name'] )
 			);
 
@@ -82,7 +82,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			}
 
 			printf( // WPCS: XSS ok.
-				'<td class="qm-nowrap qm-ltr">%s</td>',
+				'<td class="qm-wrap qm-ltr">%s</td>',
 				self::output_filename( $pure_name, $pure[1]['file'], $pure[1]['line'] )
 			);
 
