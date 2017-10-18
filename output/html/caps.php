@@ -33,7 +33,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">';
-		echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ), $args ); // WPCS: XSS ok;
+		echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
