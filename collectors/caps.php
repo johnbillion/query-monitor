@@ -28,22 +28,6 @@ class QM_Collector_Caps extends QM_Collector {
 	}
 
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args, WP_User $user ) {
-		$current = current_action();
-		$ignore  = array(
-			'_admin_menu',
-			'admin_menu',
-			'admin_bar_init',
-			'add_admin_bar_menus',
-			'adminmenu',
-			'admin_bar_menu',
-			'wp_before_admin_bar_render',
-			'wp_after_admin_bar_render',
-		);
-
-		if ( in_array( $current, $ignore, true ) ) {
-			// return $user_caps;
-		}
-
 		$trace = new QM_Backtrace;
 
 		$this->data['caps'][] = array(
