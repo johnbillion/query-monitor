@@ -330,6 +330,40 @@ class QM_Util {
 		return $type;
 	}
 
+	public static function display_variable( $value ) {
+		if ( is_string( $value ) ) {
+			return $value;
+		} elseif ( is_bool( $value ) ) {
+			return ( $value ) ? 'true' : 'false';
+		} elseif ( is_scalar( $value ) ) {
+			return $value;
+		} elseif ( is_object( $value ) ) {
+			$class = get_class( $value );
+			$id = false;
+
+			switch ( $class ) {
+
+				case 'WP_Post':
+				case 'WP_User':
+					$id = $value->ID;
+					break;
+
+				case 'WP_Term':
+					$id = $value->term_id;
+					break;
+
+			}
+
+			if ( $id ) {
+				return sprintf( '%s (ID:%d)', $class, $id );
+			}
+
+			return $class;
+		} else {
+			return gettype( $value );
+		}
+	}
+
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );

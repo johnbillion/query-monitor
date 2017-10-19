@@ -254,12 +254,8 @@ class QM_Backtrace {
 						if ( isset( $trace['args'][$i] ) ) {
 							if ( is_string( $trace['args'][$i] ) ) {
 								$args[] = '\'' . $trace['args'][$i] . '\'';
-							} elseif ( is_scalar( $trace['args'][$i] ) ) {
-								$args[] = $trace['args'][$i];
-							} elseif ( is_object( $trace['args'][$i] ) ) {
-								$args[] = get_class( $trace['args'][$i] );
 							} else {
-								$args[] = gettype( $trace['args'][$i] );
+								$args[] = QM_Util::display_variable( $trace['args'][$i] );
 							}
 						}
 					}

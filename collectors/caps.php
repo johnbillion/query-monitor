@@ -39,8 +39,8 @@ class QM_Collector_Caps extends QM_Collector {
 		}
 
 		$this->data['caps'][] = array(
-			'name'  => $args[0],
-			'trace' => $trace,
+			'args'   => $args,
+			'trace'  => $trace,
 			'result' => $result,
 		);
 
@@ -52,8 +52,11 @@ class QM_Collector_Caps extends QM_Collector {
 		$components = array();
 
 		foreach ( $this->data['caps'] as $i => $cap ) {
-			$parts = array_filter( preg_split( '#[_/-]#', $cap['name'] ) );
+			$name = $cap['args'][0];
+			$parts = array_filter( preg_split( '#[_/-]#', $name ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
+			$this->data['caps'][ $i ]['name']  = $name;
+			$this->data['caps'][ $i ]['args']  = array_slice( $cap['args'], 2 );
 			$all_parts = array_merge( $all_parts, $parts );
 			$component = $cap['trace']->get_component();
 			$components[$component->name] = $component->name;

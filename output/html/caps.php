@@ -70,9 +70,17 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				$attr
 			);
 
-			printf(
+			$name = esc_html( $row['name'] );
+
+			if ( ! empty( $row['args'] ) ) {
+				foreach ( $row['args'] as $arg ) {
+					$name .= '<br>' . esc_html( QM_Util::display_variable( $arg ) );
+				}
+			}
+
+			printf( // WPCS: XSS ok.
 				'<td class="qm-ltr qm-nowrap">%s</td>',
-				esc_html( $row['name'] )
+				$name
 			);
 
 			$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : '<span class="qm-false">false</span>';
