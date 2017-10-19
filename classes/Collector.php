@@ -21,6 +21,7 @@ abstract class QM_Collector {
 		'types'           => array(),
 		'component_times' => array(),
 	);
+	protected static $hide_qm = null;
 
 	public function __construct() {}
 
@@ -106,6 +107,19 @@ abstract class QM_Collector {
 		$user['roles'] = $user_object->roles;
 
 		return $user;
+	}
+
+	public static function hide_qm() {
+		if ( null === self::$hide_qm ) {
+			self::$hide_qm = ( defined( 'QM_HIDE_SELF' ) && QM_HIDE_SELF );
+		}
+
+		return self::$hide_qm;
+	}
+
+	public function filter_remove_qm( array $item ) {
+		$component = $item['trace']->get_component();
+		return ( 'query-monitor' !== $component->context );
 	}
 
 	public function process() {}

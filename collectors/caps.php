@@ -52,6 +52,10 @@ class QM_Collector_Caps extends QM_Collector {
 		$all_users = array();
 		$components = array();
 
+		if ( self::hide_qm() ) {
+			$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_qm' ) );
+		}
+
 		foreach ( $this->data['caps'] as $i => $cap ) {
 			$name = $cap['args'][0];
 			$parts = array_filter( preg_split( '#[_/-]#', $name ) );

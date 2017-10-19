@@ -18,7 +18,6 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	public $id = 'hooks';
 	protected static $hide_core;
-	protected static $hide_qm;
 
 	public function name() {
 		return __( 'Hooks & Actions', 'query-monitor' );
@@ -28,7 +27,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		global $wp_actions, $wp_filter;
 
-		self::$hide_qm = ( defined( 'QM_HIDE_SELF' ) && QM_HIDE_SELF );
+		self::$hide_qm   = self::hide_qm();
 		self::$hide_core = ( defined( 'QM_HIDE_CORE_HOOKS' ) && QM_HIDE_CORE_HOOKS );
 
 		if ( is_admin() and ( $admin = QM_Collectors::get( 'admin' ) ) ) {
