@@ -623,6 +623,7 @@ select.qm-filter {
 }
 
 .qm-hide,
+.qm-hide-user,
 .qm-hide-result,
 .qm-hide-name,
 .qm-hide-type,
