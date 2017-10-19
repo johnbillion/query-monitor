@@ -28,11 +28,20 @@ class QM_Collector_Caps extends QM_Collector {
 	}
 
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args, WP_User $user ) {
-		$trace = new QM_Backtrace;
+		$trace  = new QM_Backtrace;
+		$result = true;
+
+		foreach ( $caps as $cap ) {
+			if ( empty( $user_caps[ $cap ] ) ) {
+				$result = false;
+				break;
+			}
+		}
 
 		$this->data['caps'][] = array(
 			'name'  => $args[0],
 			'trace' => $trace,
+			'result' => $result,
 		);
 
 		return $user_caps;

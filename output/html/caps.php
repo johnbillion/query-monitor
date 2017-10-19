@@ -24,6 +24,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	public function output() {
 
 		$data = $this->collector->get_data();
+		$results = array(
+			'true',
+			'false',
+		);
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
@@ -34,6 +38,9 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="col">';
 		echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
+		echo '</th>';
+		echo '<th scope="col">';
+		echo $this->build_filter( 'result', $results, __( 'Result', 'query-monitor' ) ); // WPCS: XSS ok;
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">';
@@ -50,6 +57,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$row_attr = array();
 			$row_attr['data-qm-name']      = implode( ' ', $row['parts'] );
 			$row_attr['data-qm-component'] = $component->name;
+			$row_attr['data-qm-result']    = ( $row['result'] ) ? 'true' : 'false';
 
 			$attr = '';
 
@@ -65,6 +73,12 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			printf(
 				'<td class="qm-ltr qm-nowrap">%s</td>',
 				esc_html( $row['name'] )
+			);
+
+			$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : '<span class="qm-false">false</span>';
+			printf( // WPCS: XSS ok.
+				'<td class="qm-ltr qm-nowrap">%s</td>',
+				$result
 			);
 
 			$stack          = array();
