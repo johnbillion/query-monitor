@@ -52,6 +52,8 @@ class QM_Collector_Caps extends QM_Collector {
 		$all_users = array();
 		$components = array();
 
+		$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) );
+
 		if ( self::hide_qm() ) {
 			$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_qm' ) );
 		}
@@ -72,6 +74,30 @@ class QM_Collector_Caps extends QM_Collector {
 		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
 		$this->data['users'] = array_unique( array_filter( $all_users ) );
 		$this->data['components'] = $components;
+	}
+
+	public function filter_remove_noise( array $cap ) {
+		$trace = $cap['trace']->get_trace();
+
+		$exclude_files = array(
+			ABSPATH . 'wp-admin/menu.php',
+			ABSPATH . 'wp-admin/includes/menu.php',
+		);
+		$exclude_functions = array(
+			'_wp_menu_output',
+			'wp_admin_bar_render',
+		);
+
+		foreach ( $trace as $item ) {
+			if ( isset( $item['file'] ) && in_array( $item['file'], $exclude_files, true ) ) {
+				return false;
+			}
+			if ( isset( $item['function'] ) && in_array( $item['function'], $exclude_functions, true ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }
