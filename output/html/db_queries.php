@@ -186,12 +186,23 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '</tr>';
 			}
 
+			$types   = array_keys( $db->types );
+			$prepend = array();
+
+			if ( count( $types ) > 1 ) {
+				$prepend['non-select'] = __( 'Non-SELECT', 'query-monitor' );
+			}
+
+			$args = array(
+				'prepend' => $prepend,
+			);
+
 			echo '<tr>';
 			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
 			echo $this->build_sorter(); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">';
-			echo $this->build_filter( 'type', array_keys( $db->types ), __( 'Query', 'query-monitor' ) ); // WPCS: XSS ok;
+			echo $this->build_filter( 'type', $types, __( 'Query', 'query-monitor' ), $args ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">';
 
@@ -338,6 +349,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 		if ( isset( $cols['sql'] ) ) {
 			$row_attr['data-qm-type'] = $row['type'];
+			if ( 'SELECT' !== $row['type'] ) {
+				$row_attr['data-qm-type'] .=  ' non-select';
+			}
 		}
 		if ( isset( $cols['component'] ) && $row['component'] ) {
 			$row_attr['data-qm-component'] = $row['component']->name;
