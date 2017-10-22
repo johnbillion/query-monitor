@@ -132,6 +132,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type']      = $row['type'];
 
+				if ( 'core' !== $component->context ) {
+					$row_attr['data-qm-component'] .= ' non-core';
+				}
+
 				$attr = '';
 				foreach ( $row_attr as $a => $v ) {
 					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';

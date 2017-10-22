@@ -80,6 +80,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
+			if ( ! empty( $row_attr['data-qm-component'] ) && 'Core' !== $row_attr['data-qm-component'] ) {
+				$row_attr['data-qm-component'] .= ' non-core';
+			}
+
 			$attr = '';
 
 			if ( !empty( $hook['actions'] ) ) {

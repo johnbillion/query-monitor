@@ -341,6 +341,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 		if ( isset( $cols['component'] ) && $row['component'] ) {
 			$row_attr['data-qm-component'] = $row['component']->name;
+
+			if ( 'core' !== $row['component']->context ) {
+				$row_attr['data-qm-component'] .= ' non-core';
+			}
 		}
 		if ( isset( $cols['caller'] ) ) {
 			$row_attr['data-qm-caller'] = $row['caller_name'];

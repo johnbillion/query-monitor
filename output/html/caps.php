@@ -68,6 +68,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$row_attr['data-qm-component'] = $component->name;
 			$row_attr['data-qm-result']    = ( $row['result'] ) ? 'true' : 'false';
 
+			if ( 'core' !== $component->context ) {
+				$row_attr['data-qm-component'] .= ' non-core';
+			}
+
 			$attr = '';
 
 			foreach ( $row_attr as $a => $v ) {
