@@ -109,7 +109,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		);
 
 		echo '<div class="qm-toggled">';
-		echo "<ul class='qm-info qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
+		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
 		echo '</div>';
 
 		echo '</div></td>';
@@ -125,7 +125,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) )
 			);
 
-			echo '<div class="qm-toggled"><ul class="qm-info qm-supplemental"><li>';
+			echo '<div class="qm-toggled"><ul class="qm-supplemental"><li>';
 			echo implode( '</li><li>', array_map( 'esc_html', $data['php']['extensions'] ) );
 			echo '</li></ul></div>';
 
