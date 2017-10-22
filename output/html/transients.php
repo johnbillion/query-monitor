@@ -40,7 +40,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -86,16 +86,25 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				$stack          = array();
 				$filtered_trace = $row['trace']->get_display_trace();
-				array_pop( $filtered_trace );
+				array_pop( $filtered_trace ); // remove do_action('setted_(site_)?transient')
+				array_pop( $filtered_trace ); // remove set_(site_)?transient()
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				printf( // WPCS: XSS ok.
-					'<td class="qm-nowrap qm-ltr"><ol class="qm-numbered"><li>%s</li></ol></td>',
-					implode( '</li><li>', $stack )
-				);
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+
+				$caller = array_pop( $stack );
+
+				if ( ! empty( $stack ) ) {
+					echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+				}
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+				echo '</ol></td>';
+
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
