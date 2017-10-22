@@ -649,43 +649,51 @@ select.qm-filter {
 .qm .qm-sort {
 	color: #767676 !important;
 	display: block !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 15px !important;
-	line-height: 11px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 0 !important;
 	padding: 0 !important;
 	width: 30px !important;
 	background-color: transparent !important;
 	cursor: pointer !important;
 	margin: 0 auto !important;
+	height: 10px !important;
+}
+
+.qm .qm-sort:before {
+	border-width: 7px 5px !important;
+	border-style: solid !important;
+	border-color: transparent !important;
+	display: block !important;
+	content: '' !important;
+	width: 0 !important;
+	height: 0 !important;
+	position: relative !important;
+	left: 10px !important;
 }
 
 .qm .qm-sort-asc {
-	margin-bottom: 1px !important;
+	margin-bottom: 2px !important;
 }
 .qm .qm-sort-asc:before {
-	content: "\25b3" !important;
+	border-bottom-color: #aaa !important;
+	top: -4px !important;
 }
 .qm .qm-sort-asc:hover:before,
 .qm .qm-sort-asc:focus:before,
 .qm .qm-sorted-asc .qm-sort-asc:before {
-	color: #333 !important;
-	content: "\25b2" !important;
+	border-bottom-color: #333 !important;
 }
 
 .qm .qm-sort-desc {
-	margin-top: 1px !important;
+	margin-top: 2px !important;
 }
 .qm .qm-sort-desc:before {
-	content: "\25bd" !important;
+	border-top-color: #aaa !important;
+	top: 0px !important;
 }
 .qm .qm-sort-desc:hover:before,
 .qm .qm-sort-desc:focus:before,
 .qm .qm-sorted-desc .qm-sort-desc:before {
-	color: #333 !important;
-	content: "\25bc" !important;
+	border-top-color: #333 !important;
 }
 
 .qm .screen-reader-text {
