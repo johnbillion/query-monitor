@@ -52,7 +52,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col">';
 			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
@@ -123,7 +123,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$stack          = array();
 				$filtered_trace = $row['trace']->get_display_trace();
-				array_pop( $filtered_trace );
+				array_pop( $filtered_trace ); // remove WP_Http->request()
+				array_pop( $filtered_trace ); // remove WP_Http->{$method}()
+				array_pop( $filtered_trace ); // remove wp_remote_{$method}()
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
@@ -159,10 +161,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td>%s</td>',
 					esc_html( $response )
 				);
-				printf( // WPCS: XSS ok.
-					'<td class="qm-nowrap qm-ltr"><ol class="qm-numbered"><li>%s</li></ol></td>',
-					implode( '</li><li>', $stack )
-				);
+
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+
+				$caller = array_pop( $stack );
+
+				if ( ! empty( $stack ) ) {
+					echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+				}
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+				echo '</ol></td>';
+
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
