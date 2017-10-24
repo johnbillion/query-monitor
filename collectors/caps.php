@@ -48,6 +48,10 @@ class QM_Collector_Caps extends QM_Collector {
 	}
 
 	public function process() {
+		if ( empty( $this->data['caps'] ) ) {
+			return;
+		}
+
 		$all_parts = array();
 		$all_users = array();
 		$components = array();
