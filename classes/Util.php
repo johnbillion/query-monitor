@@ -157,7 +157,12 @@ class QM_Util {
 				$name = __( 'Parent Theme', 'query-monitor' );
 				break;
 			case 'other':
-				$name    = self::standard_dir( $file, '' );
+				// Anything else that's within the content directory should appear as
+				// `wp-content/{dir}` or `wp-content/{file}`
+				$name    = self::standard_dir( $file );
+				$name    = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$parts   = explode( '/', trim( $name, '/' ) );
+				$name    = $parts[0] . '/' . $parts[1];
 				$context = $file;
 				break;
 			case 'core':
