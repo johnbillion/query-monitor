@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -64,7 +64,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
-			echo '<tbody>';
 
 			foreach ( array(
 				'missing',
@@ -79,7 +78,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			}
 
-			echo '</tbody>';
 			echo '</table>';
 			echo '</div>';
 
@@ -94,16 +92,20 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$first = true;
 
 		if ( empty( $handles ) ) {
+			echo '<tbody>';
 			echo '<tr>';
 			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 			echo '<td colspan="5"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
+			echo '</tbody>';
 			return;
 		}
 
+		echo '<tbody class="qm-group">';
+
 		foreach ( $handles as $handle ) {
 
-			if ( in_array( $handle, $dependencies->done ) ) {
+			if ( in_array( $handle, $dependencies->done, true ) ) {
 				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '">';
 			} else {
 				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" class="qm-warn">';
@@ -117,8 +119,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies, $type );
 
 			echo '</tr>';
+
 			$first = false;
 		}
+
+		echo '</tbody>';
 
 	}
 
@@ -169,7 +174,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<th scope="row" class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
+		echo '<td class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
 		if ( is_wp_error( $source ) ) {
 			printf( '<span class="qm-warn">%s</span>',
 				esc_html( $src )
@@ -196,7 +201,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $handles as $handle ) {
 			if ( $item = $dependencies->query( $handle ) ) {
-				if ( in_array( $dependency->handle, $item->deps ) ) {
+				if ( in_array( $dependency->handle, $item->deps, true ) ) {
 					$dependents[] = $handle;
 				}
 			}

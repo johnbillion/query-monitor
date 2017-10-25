@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
 			}
 
-			echo '<td class="qm-num">'  . esc_html( $total_stime ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 
@@ -102,7 +102,14 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 			echo '<tbody>';
 			echo '<tr>';
-			echo '<td colspan="' . esc_attr( $span ) . '" style="text-align:center !important"><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td colspan="' . esc_attr( $span ) . '" style="text-align:center !important">';
+			echo '<em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em>';
+			printf(
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink',
+				esc_html__( 'Help', 'query-monitor' )
+			);
+			echo '</td>';
 			echo '</tr>';
 			echo '</tbody>';
 

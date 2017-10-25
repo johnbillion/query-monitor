@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ abstract class QM_Collector {
 		'types'           => array(),
 		'component_times' => array(),
 	);
+	protected static $hide_qm = null;
 
 	public function __construct() {}
 
@@ -97,14 +98,6 @@ abstract class QM_Collector {
 		$this->id = $id;
 	}
 
-	public static function sort_ltime( $a, $b ) {
-		if ( $a['ltime'] == $b['ltime'] ) {
-			return 0;
-		} else {
-			return ( $a['ltime'] > $b['ltime'] ) ? -1 : 1;
-		}
-	}
-
 	public static function format_user( WP_User $user_object ) {
 		$user = get_object_vars( $user_object->data );
 		unset(
@@ -114,6 +107,19 @@ abstract class QM_Collector {
 		$user['roles'] = $user_object->roles;
 
 		return $user;
+	}
+
+	public static function hide_qm() {
+		if ( null === self::$hide_qm ) {
+			self::$hide_qm = ( defined( 'QM_HIDE_SELF' ) && QM_HIDE_SELF );
+		}
+
+		return self::$hide_qm;
+	}
+
+	public function filter_remove_qm( array $item ) {
+		$component = $item['trace']->get_component();
+		return ( 'query-monitor' !== $component->context );
 	}
 
 	public function process() {}

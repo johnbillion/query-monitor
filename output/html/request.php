@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 	public function output() {
 
 		$data = $this->collector->get_data();
+
+		$db_queries = QM_Collectors::get( 'db_queries' );
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
@@ -63,10 +65,27 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '</tr>';
 		}
 
+		echo '</tbody>';
+
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
+		echo '<tbody class="qm-group">';
 		echo '<tr>';
-		echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Query Vars', 'query-monitor' ) . '</th>';
+		echo '<th rowspan="' . absint( $rowspan ) . '">';
+		esc_html_e( 'Query Vars', 'query-monitor' );
+
+		if ( $db_queries ) {
+			$db_queries_data = $db_queries->get_data();
+			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
+				echo '<br>';
+				printf(
+					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a>',
+					esc_html__( 'View Main Query', 'query-monitor' )
+				);
+			}
+		}
+
+		echo '</th>';
 
 		if ( !empty( $data['qvars'] ) ) {
 
@@ -105,8 +124,11 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
+		echo '</tbody>';
+
 		if ( ! empty( $data['queried_object'] ) ) {
 
+			echo '<tbody class="qm-group">';
 			echo '<tr>';
 			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
@@ -123,6 +145,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '</div></td>';
 			echo '</tr>';
+			echo '</tbody>';
 
 		}
 
@@ -130,6 +153,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			$rowspan = count( $data['multisite'] );
 
+			echo '<tbody class="qm-group">';
 			echo '<tr>';
 			echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</th>';
 
@@ -154,12 +178,14 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 				echo '</div></td>';
 
+				echo '</tr>';
+
 				$first = false;
 
 			}
+			echo '</tbody>';
 		}
 
-		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 

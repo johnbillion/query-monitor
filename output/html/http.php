@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( !empty( $data['http'] ) ) {
 
-			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP Requests', 'query-monitor' ) . '</caption>';
+			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
@@ -50,9 +50,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
-			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Response', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
@@ -122,8 +122,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$component = $row['component'];
 
 				$stack          = array();
-				$filtered_trace = $row['trace']->get_filtered_trace();
-				array_shift( $filtered_trace );
+				$filtered_trace = $row['trace']->get_display_trace();
+				array_pop( $filtered_trace ); // remove WP_Http->request()
+				array_pop( $filtered_trace ); // remove WP_Http->{$method}()
+				array_pop( $filtered_trace ); // remove wp_remote_{$method}()
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
@@ -131,6 +133,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type']      = $row['type'];
+
+				if ( 'core' !== $component->context ) {
+					$row_attr['data-qm-component'] .= ' non-core';
+				}
 
 				$attr = '';
 				foreach ( $row_attr as $a => $v ) {
@@ -155,10 +161,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td>%s</td>',
 					esc_html( $response )
 				);
-				printf( // WPCS: XSS ok.
-					'<td class="qm-nowrap qm-ltr">%s</td>',
-					implode( '<br>', $stack )
-				);
+
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+
+				$caller = array_pop( $stack );
+
+				if ( ! empty( $stack ) ) {
+					echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+				}
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+				echo '</ol></td>';
+
 				printf(
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
@@ -247,9 +262,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$count = isset( $data['http'] ) ? count( $data['http'] ) : 0;
 
 		$title = ( empty( $count ) )
-			? __( 'HTTP Requests', 'query-monitor' )
-			/* translators: %s: Number of HTTP requests */
-			: __( 'HTTP Requests (%s)', 'query-monitor' );
+			? __( 'HTTP API Calls', 'query-monitor' )
+			/* translators: %s: Number of calls to the HTTP API */
+			: __( 'HTTP API Calls (%s)', 'query-monitor' );
 
 		$args = array(
 			'title' => esc_html( sprintf(

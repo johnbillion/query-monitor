@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	public $id = 'http';
 
 	public function name() {
-		return __( 'HTTP Requests', 'query-monitor' );
+		return __( 'HTTP API Requests', 'query-monitor' );
 	}
 
 	public function __construct() {
@@ -182,7 +182,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			}
 
 			if ( is_wp_error( $http['response'] ) ) {
-				if ( !in_array( $http['response']->get_error_code(), $silent ) ) {
+				if ( ! in_array( $http['response']->get_error_code(), $silent, true ) ) {
 					$this->data['errors']['alert'][] = $key;
 				}
 				$http['type'] = __( 'Error', 'query-monitor' );

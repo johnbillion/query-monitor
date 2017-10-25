@@ -68,6 +68,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'admin'         => false,
 			'assets'        => false,
 			'cache'         => false,
+			'caps'          => true,
 			'conditionals'  => false,
 			'db_callers'    => true,
 			'db_components' => true,

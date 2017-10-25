@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ class QM_Util {
 	protected static $file_dirs       = array();
 	protected static $abspath         = null;
 	protected static $contentpath     = null;
+	protected static $sort_field      = null;
 
 	private function __construct() {}
 
@@ -34,7 +35,7 @@ class QM_Util {
 
 		if ( $bytes ) {
 			$last = strtolower( substr( $size, -1 ) );
-			$pos = strpos( ' kmg', $last, 1);
+			$pos = strpos( ' kmg', $last, 1 );
 			if ( $pos ) {
 				$bytes *= pow( 1024, $pos );
 			}
@@ -78,6 +79,7 @@ class QM_Util {
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
+			self::$file_dirs['mu-vendor']  = self::standard_dir( WPMU_PLUGIN_DIR . '/vendor' );
 			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
 			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
 			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
@@ -101,7 +103,8 @@ class QM_Util {
 		}
 
 		foreach ( self::get_file_dirs() as $type => $dir ) {
-			if ( $dir && ( 0 === strpos( $file, $dir ) ) ) {
+			// this slash makes paths such as plugins-mu match mu-plugin not plugin
+			if ( $dir && ( 0 === strpos( $file, trailingslashit( $dir ) ) ) ) {
 				break;
 			}
 		}
@@ -111,14 +114,16 @@ class QM_Util {
 		switch ( $type ) {
 			case 'plugin':
 			case 'mu-plugin':
-				$plug = plugin_basename( $file );
+			case 'mu-vendor':
+				$plug = str_replace( '/vendor/', '/', $file );
+				$plug = plugin_basename( $plug );
 				if ( strpos( $plug, '/' ) ) {
 					$plug = explode( '/', $plug );
 					$plug = reset( $plug );
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'mu-plugin' === $type ) {
+				if ( 'plugin' !== $type ) {
 					/* translators: %s: Plugin name */
 					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
 				} else {
@@ -152,7 +157,12 @@ class QM_Util {
 				$name = __( 'Parent Theme', 'query-monitor' );
 				break;
 			case 'other':
-				$name    = self::standard_dir( $file, '' );
+				// Anything else that's within the content directory should appear as
+				// `wp-content/{dir}` or `wp-content/{file}`
+				$name    = self::standard_dir( $file );
+				$name    = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$parts   = explode( '/', trim( $name, '/' ) );
+				$name    = $parts[0] . '/' . $parts[1];
 				$context = $file;
 				break;
 			case 'core':
@@ -262,7 +272,7 @@ class QM_Util {
 		if ( self::is_ajax() ) {
 			return true;
 		}
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) {
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) {
 			return true;
 		}
 		return false;
@@ -287,10 +297,12 @@ class QM_Util {
 			return false;
 		}
 
+		// @codingStandardsIgnoreStart
 		$num_sites = $wpdb->get_var( "
 			SELECT COUNT(*)
 			FROM {$wpdb->site}
 		" );
+		// @codingStandardsIgnoreEnd
 
 		return ( $num_sites > 1 );
 	}
@@ -321,6 +333,70 @@ class QM_Util {
 		$type = strtoupper( $type[0] );
 
 		return $type;
+	}
+
+	public static function display_variable( $value ) {
+		if ( is_string( $value ) ) {
+			return $value;
+		} elseif ( is_bool( $value ) ) {
+			return ( $value ) ? 'true' : 'false';
+		} elseif ( is_scalar( $value ) ) {
+			return $value;
+		} elseif ( is_object( $value ) ) {
+			$class = get_class( $value );
+			$id = false;
+
+			switch ( $class ) {
+
+				case 'WP_Post':
+				case 'WP_User':
+					$id = $value->ID;
+					break;
+
+				case 'WP_Term':
+					$id = $value->term_id;
+					break;
+
+			}
+
+			if ( $id ) {
+				return sprintf( '%s (ID:%d)', $class, $id );
+			}
+
+			return $class;
+		} else {
+			return gettype( $value );
+		}
+	}
+
+	public static function sort( array &$array, $field ) {
+		self::$sort_field = $field;
+		usort( $array, array( __CLASS__, '_sort' ) );
+	}
+
+	public static function rsort( array &$array, $field ) {
+		self::$sort_field = $field;
+		usort( $array, array( __CLASS__, '_rsort' ) );
+	}
+
+	private static function _rsort( $a, $b ) {
+		$field = self::$sort_field;
+
+		if ( $a[ $field ] == $b[ $field ] ) {
+			return 0;
+		} else {
+			return ( $a[ $field ] > $b[ $field ] ) ? -1 : 1;
+		}
+	}
+
+	private static function _sort( $a, $b ) {
+		$field = self::$sort_field;
+
+		if ( $a[ $field ] == $b[ $field ] ) {
+			return 0;
+		} else {
+			return ( $a[ $field ] > $b[ $field ] ) ? 1 : -1;
+		}
 	}
 
 }

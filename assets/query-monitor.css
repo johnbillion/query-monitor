@@ -1,5 +1,5 @@
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -58,6 +58,13 @@ GNU General Public License for more details.
 
 #wpadminbar .qm-warning {
 	background-color: #c00;
+}
+
+.qm .qm-php-error-warning td,
+.qm .qm-php-error-warning th,
+.qm .qm-php-error-warning-suppressed td,
+.qm .qm-php-error-warning-suppressed th {
+		color: #c00 !important;
 }
 
 #wpadminbar .qm-warning > a {
@@ -201,7 +208,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	list-style: none !important;
 	padding: 0 !important;
@@ -297,7 +304,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 1px solid #e8e8e8 !important;
 	padding: 4px 6px 3px !important;
@@ -318,18 +325,17 @@ body.wp-admin.folded #qm {
 	caption-side: top !important;
 }
 
+.qm tbody.qm-group:hover th,
 .qm tbody tr:hover th,
 .qm tbody tr:hover td {
-	background: #f9f9f9 !important;
+	background: #f7f7f7 !important;
 }
 
 .qm-debug-bar tbody tr:hover th,
 .qm-debug-bar tbody tr:hover td,
 #qm-conditionals tbody tr:hover td,
 #qm-overview tbody tr:hover td,
-#qm-authentication tbody tr:hover td,
-.qm tbody tr:hover th[rowspan],
-.qm tbody tr:hover td[rowspan] {
+#qm-authentication tbody tr:hover td {
 	background: #fff !important;
 }
 
@@ -360,7 +366,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 0 !important;
 }
@@ -402,19 +408,29 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
+	margin-left: 0 !important;
 }
 
 .qm li::before {
 	content: '' !important;
 }
 
+.qm .qm-has-toggle ol.qm-numbered li {
+	list-style: none !important;
+}
+
+.qm .qm-toggled-on ol.qm-numbered li,
+.qm ol.qm-numbered li {
+	list-style: decimal inside !important;
+}
+
 .qm pre {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: transparent !important;
@@ -427,7 +443,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	color: inherit !important;
 	background: #f1f1f1 !important;
@@ -468,7 +484,7 @@ body.wp-admin.folded #qm {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -506,7 +522,7 @@ body.wp-admin.folded #qm {
 .qm .qm-toggle,
 html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #0073aa !important;
-	padding: 4px 7px 3px !important;
+	padding: 4px 9px 3px !important;
 	border-top: none !important;
 	border-right: none !important;
 	border-left: 1px solid #e8e8e8 !important;
@@ -514,7 +530,7 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
 	top: 0 !important;
@@ -541,6 +557,14 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	color: #f00 !important;
 }
 
+.qm .dashicons {
+	font-size: 16px !important;
+	width: 16px !important;
+	height: 16px !important;
+	margin-right: 0.3em !important;
+}
+
+select.qm-filter.qm-highlight,
 .qm tbody tr td.qm-highlight,
 .qm .qm-highlight td {
 	background-color: #ffd !important;
@@ -580,7 +604,7 @@ select.qm-filter {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 4px 0 2px !important;
 	border: 1px solid #ccc !important;
@@ -599,6 +623,8 @@ select.qm-filter {
 }
 
 .qm-hide,
+.qm-hide-user,
+.qm-hide-result,
 .qm-hide-name,
 .qm-hide-type,
 .qm-hide-caller,
@@ -623,43 +649,51 @@ select.qm-filter {
 .qm .qm-sort {
 	color: #767676 !important;
 	display: block !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 15px !important;
-	line-height: 11px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 	border: 0 !important;
 	padding: 0 !important;
 	width: 30px !important;
 	background-color: transparent !important;
 	cursor: pointer !important;
 	margin: 0 auto !important;
+	height: 10px !important;
+}
+
+.qm .qm-sort:before {
+	border-width: 7px 5px !important;
+	border-style: solid !important;
+	border-color: transparent !important;
+	display: block !important;
+	content: '' !important;
+	width: 0 !important;
+	height: 0 !important;
+	position: relative !important;
+	left: 10px !important;
 }
 
 .qm .qm-sort-asc {
-	margin-bottom: 1px !important;
+	margin-bottom: 2px !important;
 }
 .qm .qm-sort-asc:before {
-	content: "\25b3" !important;
+	border-bottom-color: #aaa !important;
+	top: -4px !important;
 }
 .qm .qm-sort-asc:hover:before,
 .qm .qm-sort-asc:focus:before,
 .qm .qm-sorted-asc .qm-sort-asc:before {
-	color: #333 !important;
-	content: "\25b2" !important;
+	border-bottom-color: #333 !important;
 }
 
 .qm .qm-sort-desc {
-	margin-top: 1px !important;
+	margin-top: 2px !important;
 }
 .qm .qm-sort-desc:before {
-	content: "\25bd" !important;
+	border-top-color: #aaa !important;
+	top: 0px !important;
 }
 .qm .qm-sort-desc:hover:before,
 .qm .qm-sort-desc:focus:before,
 .qm .qm-sorted-desc .qm-sort-desc:before {
-	color: #333 !important;
-	content: "\25bc" !important;
+	border-top-color: #333 !important;
 }
 
 .qm .screen-reader-text {
@@ -741,7 +775,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -761,7 +795,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -771,7 +805,7 @@ html[dir="rtl"] .qm .qm-toggle {
 	padding: 5px 10px 15px !important;
 	clear: none !important;
 	text-align: center !important;
-	font-size: 16px !important;
+	font-size: 18px !important;
 	margin: 3px 8px 15px 0 !important;
 }
 

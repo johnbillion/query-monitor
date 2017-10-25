@@ -1,6 +1,6 @@
 <?php
 /**
- * User Switching plugin for WordPress
+ * Query Monitor plugin for WordPress
  *
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
@@ -10,7 +10,7 @@
  *
  * Plugin Name: Query Monitor
  * Description: Monitoring of database queries, hooks, conditionals and more.
- * Version:     2.14.0
+ * Version:     2.15.0
  * Plugin URI:  https://github.com/johnbillion/query-monitor
  * Author:      John Blackbourn
  * Author URI:  https://johnblackbourn.com/

@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -153,7 +153,7 @@ class QM_Collector_Theme extends QM_Collector {
 
 		$this->data['stylesheet']     = get_stylesheet();
 		$this->data['template']       = get_template();
-		$this->data['is_child_theme'] = ( $this->data['stylesheet'] != $this->data['template'] );
+		$this->data['is_child_theme'] = ( $this->data['stylesheet'] !== $this->data['template'] );
 
 		if ( isset( $this->data['body_class'] ) ) {
 			asort( $this->data['body_class'] );

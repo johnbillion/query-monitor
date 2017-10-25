@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ class QM_Collector_Assets extends QM_Collector {
 				$this->data['missing'][ $type ] = array_unique( $missing );
 				foreach ( $this->data['missing'][ $type ] as $handle ) {
 					$raw->add( $handle, false );
-					if ( false !== ( $key = array_search( $handle, $raw->done ) ) ) {
+					if ( false !== ( $key = array_search( $handle, $raw->done, true ) ) ) {
 						unset( $raw->done[ $key ] );
 					}
 				}

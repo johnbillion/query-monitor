@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -169,6 +169,20 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
 		}
 
+		if ( is_callable( 'get_loaded_extensions' ) ) {
+			$this->data['php']['extensions'] = get_loaded_extensions();
+		} else {
+			$this->data['php']['extensions'] = array();
+		}
+
+		if ( defined( 'SORT_FLAG_CASE' ) ) {
+			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
+		} else {
+			$sort_flags = SORT_STRING;
+		}
+
+		sort( $this->data['php']['extensions'], $sort_flags );
+
 		$this->data['php']['error_reporting'] = error_reporting();
 
 		$this->data['wp'] = array(
@@ -188,8 +202,12 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['wp']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
-		$server = explode( ' ', $_SERVER['SERVER_SOFTWARE'] );
-		$server = explode( '/', reset( $server ) );
+		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) { // WPCS: input var ok
+			$server = explode( ' ', wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ); // WPCS: sanitization ok, input var ok
+			$server = explode( '/', reset( $server ) );
+		} else {
+			$server = array( '' );
+		}
 
 		if ( isset( $server[1] ) ) {
 			$server_version = $server[1];
@@ -197,8 +215,8 @@ class QM_Collector_Environment extends QM_Collector {
 			$server_version = null;
 		}
 
-		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
-			$address = $_SERVER['SERVER_ADDR'];
+		if ( isset( $_SERVER['SERVER_ADDR'] ) ) { // WPCS: input var ok
+			$address = wp_unslash( $_SERVER['SERVER_ADDR'] ); // WPCS: sanitization ok, input var ok
 		} else {
 			$address = null;
 		}
@@ -229,12 +247,12 @@ class QM_Collector_Environment extends QM_Collector {
 			}
 		}
 
-		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) {
-			$php_u = $_SERVER['USER'];
+		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) { // WPCS: input var ok
+			$php_u = wp_unslash( $_SERVER['USER'] ); // WPCS: sanitization ok, input var ok
 		}
 
 		if ( empty( $php_u ) and function_exists( 'exec' ) ) {
-			$php_u = exec( 'whoami' );
+			$php_u = exec( 'whoami' ); // @codingStandardsIgnoreLine
 		}
 
 		if ( empty( $php_u ) and function_exists( 'getenv' ) ) {

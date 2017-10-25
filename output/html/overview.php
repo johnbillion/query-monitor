@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
-		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ). '</caption>';
+		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Page generation time', 'query-monitor' ) . '</th>';
@@ -101,11 +101,20 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</td>';
 			echo '<td>';
 
-			foreach ( $db_query_num as $type_name => $type_count ) {
-				$db_query_types[] = sprintf( '%1$s: %2$s', $type_name, number_format_i18n( $type_count ) );
+			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
+				foreach ( $db_query_num as $type_name => $type_count ) {
+					$db_query_types[] = sprintf(
+						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s</a>: %3$s',
+						esc_attr( $type_name ),
+						esc_html( $type_name ),
+						esc_html( number_format_i18n( $type_count ) )
+					);
+				}
+
+				echo implode( '<br>', $db_query_types ) . '<br>'; // WPCS: XSS ok;
 			}
 
-			echo implode( '<br>', array_map( 'esc_html', $db_query_types ) );
+			echo esc_html__( 'Total', 'query-monitor' ) . ': ' . esc_html( number_format_i18n( $db_queries_data['total_qs'] ) );
 
 			echo '</td>';
 		}
@@ -123,7 +132,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				printf(
 					'<br><a href="%s">%s</a>',
 					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
-					esc_html__( "Why is this value 100%?", 'query-monitor' )
+					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
 			}
 			echo '<br><span class="qm-info">';

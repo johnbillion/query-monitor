@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 	public function process() {
 		$this->data['locale'] = get_locale();
+		ksort( $this->data['languages'] );
 	}
 
 	/**
@@ -80,7 +81,7 @@ class QM_Collector_Languages extends QM_Collector {
 			$caller['line'] = $filtered[0]['line'];
 		}
 
-		$this->data['languages'][] = array(
+		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
 			'domain' => $domain,
 			'mofile' => $mofile,

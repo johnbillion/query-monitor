@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,17 +17,18 @@ GNU General Public License for more details.
 class QM_Collector_Hooks extends QM_Collector {
 
 	public $id = 'hooks';
+	protected static $hide_core;
 
 	public function name() {
-		return __( 'Hooks', 'query-monitor' );
+		return __( 'Hooks & Actions', 'query-monitor' );
 	}
 
 	public function process() {
 
 		global $wp_actions, $wp_filter;
 
-		$this->hide_qm = ( defined( 'QM_HIDE_SELF' ) and QM_HIDE_SELF );
-		$this->hide_core = ( defined( 'QM_HIDE_CORE_HOOKS' ) and QM_HIDE_CORE_HOOKS );
+		self::$hide_qm   = self::hide_qm();
+		self::$hide_core = ( defined( 'QM_HIDE_CORE_HOOKS' ) && QM_HIDE_CORE_HOOKS );
 
 		if ( is_admin() and ( $admin = QM_Collectors::get( 'admin' ) ) ) {
 			$this->data['screen'] = $admin->data['base'];
@@ -38,7 +39,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		$hooks = $all_parts = $components = array();
 
 		if ( has_filter( 'all' ) ) {
-			$hooks['all'] = $this->process_action( 'all', $wp_filter );
+			$hooks['all'] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
 		if ( defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS ) {
@@ -51,7 +52,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		foreach ( $hook_names as $name ) {
 
-			$hooks[$name] = $this->process_action( $name, $wp_filter );
+			$hooks[$name] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
 
 			$all_parts    = array_merge( $all_parts, $hooks[$name]['parts'] );
 			$components   = array_merge( $components, $hooks[$name]['components'] );
@@ -64,7 +65,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	}
 
-	protected function process_action( $name, array $wp_filter ) {
+	public static function process_action( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
 		$actions = $components = array();
 
@@ -81,8 +82,8 @@ class QM_Collector_Hooks extends QM_Collector {
 
 					if ( isset( $callback['component'] ) ) {
 						if (
-							( $this->hide_qm and 'query-monitor' === $callback['component']->context )
-							or ( $this->hide_core and 'core' === $callback['component']->context ) 
+							( $hide_qm && 'query-monitor' === $callback['component']->context )
+							|| ( $hide_core && 'core' === $callback['component']->context ) 
 						) {
 							continue;
 						}

@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 		$current_screen = get_current_screen();
 
-		if ( isset( $_GET['page'] ) && $current_screen !== null ) {
+		if ( isset( $_GET['page'] ) && null !== $current_screen ) {
 			$this->data['base'] = $current_screen->base;
 		} else {
 			$this->data['base'] = $pagenow;

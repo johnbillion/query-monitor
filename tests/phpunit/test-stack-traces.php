@@ -94,7 +94,6 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 		if ( version_compare( phpversion(), '5.3', '<' ) ) {
 			$this->markTestSkipped( 'PHP < 5.3 does not support closures' );
-			return;
 		}
 
 		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
@@ -115,32 +114,29 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	public function test_populate_callback_lambda() {
 
-		$function = create_function( '', '' );
+		if ( version_compare( phpversion(), '7.2', '>=' ) ) {
+			$this->markTestSkipped( 'Lambda functions are deprecated in PHP 7.2' );
+		}
+
+		$file_name = dirname( __FILE__ ) . '/includes/dummy-lambdas.php';
+
+		require_once $file_name;
+
 		$callback = self::get_callback( $function );
 
 		$ref    = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
-		$file   = trim( QM_Util::standard_dir( __FILE__, '' ), '/' );
+		$file   = trim( QM_Util::standard_dir( $file_name, '' ), '/' );
 
 		preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $ref->getFileName(), $matches );
 
-		// https://github.com/facebook/hhvm/issues/5807
-		if ( empty( $matches ) && defined( 'HHVM_VERSION' ) ) {
+		$line = $matches['line'];
+		$name = sprintf( 'Anonymous function on line %1$d of %2$s', $line, $file );
 
-			$this->assertWPError( $actual['error'] );
-			$this->assertSame( 'unknown_lambda', $actual['error']->get_error_code() );
-
-		} else {
-
-			$line = $matches['line'];
-			$name = sprintf( 'Anonymous function on line %1$d of %2$s', $line, $file );
-
-			$this->assertEquals( $function, $actual['function'] );
-			$this->assertEquals( $name,     $actual['name'] );
-			$this->assertEquals( __FILE__,  $actual['file'] );
-			$this->assertEquals( $line,     $actual['line'] );
-
-		}
+		$this->assertEquals( $function,  $actual['function'] );
+		$this->assertEquals( $name,      $actual['name'] );
+		$this->assertEquals( $file_name, $actual['file'] );
+		$this->assertEquals( $line,      $actual['line'] );
 
 	}
 

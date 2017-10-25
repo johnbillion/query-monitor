@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<th>' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody>';
+		echo '<tbody class="qm-group">';
 
 		$first = true;
 
@@ -50,13 +50,16 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 				echo '<th class="qm-ltr" rowspan="' . count( $data['current_screen'] ) . '">get_current_screen()</th>';
 			}
 
-			echo '<th>' . esc_html( $key ) . '</th>';
+			echo '<td>' . esc_html( $key ) . '</td>';
 			echo '<td>' . esc_html( $value ) . '</td>';
 			echo '</tr>';
 
 			$first = false;
 		}
 
+		echo '</tbody>';
+
+		echo '<tbody>';
 		echo '<tr>';
 		echo '<th class="qm-ltr">$pagenow</th>';
 		echo '<td colspan="2">' . esc_html( $data['pagenow'] ) . '</td>';

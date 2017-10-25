@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 				if ( ( 'is_sticky' === $cond ) and !get_post( $id = null ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
-				} else if ( ! is_multisite() and in_array( $cond, array( 'is_main_network', 'is_main_site' ) ) ) {
+				} else if ( ! is_multisite() && in_array( $cond, array( 'is_main_network', 'is_main_site' ), true ) ) {
 					# Special case for multisite conditionals to prevent them from being annoying on single site installs
 					$na[] = $cond;
 				} else {

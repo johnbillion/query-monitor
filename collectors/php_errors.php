@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return false;
 		}
 
-		if ( error_reporting() === 0 && $this->error_reporting !== 0 ) {
+		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
 			// This is most likely an @-suppressed error
 			$type .= '-suppressed';
 		}
@@ -96,8 +96,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			// but do not get seen by GlotPress when it populates its database of translatable strings for QM.
 			$unexpected_error  = 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.';
 			$wordpress_couldnt = '(WordPress could not establish a secure connection to WordPress.org. Please contact your server administrator.)';
-			self::$unexpected_error  = __( $unexpected_error );
-			self::$wordpress_couldnt = __( $wordpress_couldnt );
+			self::$unexpected_error  = call_user_func( '__', $unexpected_error );
+			self::$wordpress_couldnt = call_user_func( '__', $wordpress_couldnt );
 		}
 
 		// Intentionally skip reporting these core warnings. They're a distraction when developing offline.
@@ -167,7 +167,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		} else {
 
-			printf( '<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
+			printf( // WPCS: XSS ok.
+				'<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
 				htmlentities( $error ),
 				htmlentities( $e['message'] ),
 				htmlentities( $e['file'] ),

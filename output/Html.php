@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -97,11 +97,15 @@ abstract class QM_Output_Html extends QM_Output {
 			'prepend'   => array(),
 		), $args );
 
+		if ( 'component' === $name ) {
+			$args['prepend']['non-core'] = __( 'Non-Core', 'query-monitor' );
+		}
+
 		usort( $values, 'strcasecmp' );
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
-		$out = '<label for="' . esc_attr( $filter_id ) .'">' . esc_html( $label ) . '</label>';
+		$out = '<label for="' . esc_attr( $filter_id ) . '">' . esc_html( $label ) . '</label>';
 		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">';
 		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 

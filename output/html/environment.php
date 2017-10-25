@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		foreach ( $error_levels as $level => $reported ) {
 			if ( $reported ) {
-				$out[] = '<span class="qm-true">' . esc_html( $level ) . '&nbsp;&#x2713;</span>';
+				$out[] = esc_html( $level ) . '&nbsp;&#x2713;';
 			} else {
 				$out[] = '<span class="qm-false">' . esc_html( $level ) . '</span>';
 			}
@@ -100,11 +100,38 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		$error_levels = implode( '</li><li>', $out );
 
 		echo '<tr>';
-		echo '<th scope="row">error_reporting</th>';
-		echo '<td class="qm-wrap">' . esc_html( $data['php']['error_reporting'] );
-		echo "<ul class='qm-info qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
-		echo '</td>';
+		echo '<th scope="row">' . esc_html__( 'Error Reporting', 'query-monitor' ) . '</th>';
+		echo '<td class="qm-has-toggle qm-ltr"><div class="qm-toggler">';
+
+		printf(
+			'%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button>',
+			esc_html( $data['php']['error_reporting'] )
+		);
+
+		echo '<div class="qm-toggled">';
+		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
+		echo '</div>';
+
+		echo '</div></td>';
 		echo '</tr>';
+
+		if ( ! empty( $data['php']['extensions'] ) ) {
+			echo '<tr>';
+			echo '<th scope="row">' . esc_html__( 'Extensions', 'query-monitor' ) . '</th>';
+			echo '<td class="qm-has-toggle qm-ltr"><div class="qm-toggler">';
+
+			printf(
+				'%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button>',
+				esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) )
+			);
+
+			echo '<div class="qm-toggled"><ul class="qm-supplemental"><li>';
+			echo implode( '</li><li>', array_map( 'esc_html', $data['php']['extensions'] ) );
+			echo '</li></ul></div>';
+
+			echo '</div></td>';
+			echo '</tr>';
+		}
 
 		echo '</tbody>';
 		echo '</table>';

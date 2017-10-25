@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ class QM_Activation extends QM_Plugin {
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
 		# Activation and deactivation
-		register_activation_hook(   $file, array( $this, 'activate' ) );
+		register_activation_hook( $file, array( $this, 'activate' ) );
 		register_deactivation_hook( $file, array( $this, 'deactivate' ) );
 
 		# Parent setup:
@@ -38,13 +38,13 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) && function_exists( 'symlink' ) ) {
-			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db );
+			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db ); // @codingStandardsIgnoreLine
 		}
 
 		if ( $sitewide ) {
-			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
+			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins' ) );
 		} else {
-			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
+			update_option( 'active_plugins', get_option( 'active_plugins' ) );
 		}
 
 	}
@@ -56,8 +56,8 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QM_DB' ) ) {
-			unlink( WP_CONTENT_DIR . '/db.php' );
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB' ) ) {
+			unlink( WP_CONTENT_DIR . '/db.php' ); // @codingStandardsIgnoreLine
 		}
 
 	}

@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,7 +51,11 @@ class QM_Collector_Request extends QM_Collector {
 		}
 
 		if ( is_admin() ) {
-			$this->data['request']['request'] = $_SERVER['REQUEST_URI'];
+			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+				$this->data['request']['request'] = wp_unslash( $_SERVER['REQUEST_URI'] ); // @codingStandardsIgnoreLine
+			} else {
+				$this->data['request']['request'] = '';
+			}
 			foreach ( array( 'query_string' ) as $item ) {
 				$this->data['request'][$item] = $wp->$item;
 			}
@@ -146,7 +150,11 @@ class QM_Collector_Request extends QM_Collector {
 			$this->data['queried_object']['data'] = $qo;
 		}
 
-		$this->data['request_method'] = strtoupper( $_SERVER['REQUEST_METHOD'] );
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
+			$this->data['request_method'] = strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ); // @codingStandardsIgnoreLine
+		} else {
+			$this->data['request_method'] = '';
+		}
 
 	}
 

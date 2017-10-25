@@ -9,7 +9,7 @@ additional database query information in Query Monitor's output.
 
 *********************************************************************
 
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,7 +42,8 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
-if ( ! is_readable( $backtrace = "{$qm_dir}/classes/Backtrace.php" ) ) {
+$backtrace = "{$qm_dir}/classes/Backtrace.php";
+if ( ! is_readable( $backtrace ) ) {
 	return;
 }
 require_once $backtrace;
@@ -108,7 +109,17 @@ class QM_DB extends wpdb {
 		) );
 
 		if ( $this->last_error ) {
-			$this->queries[$i]['result'] = new WP_Error( 'qmdb', $this->last_error );
+			$code = 'qmdb';
+			if ( $this->use_mysqli ) {
+				if ( $this->dbh instanceof mysqli ) {
+					$code = mysqli_errno( $this->dbh );
+				}
+			} else {
+				if ( is_resource( $this->dbh ) ) {
+					$code = mysql_errno( $this->dbh );
+				}
+			}
+			$this->queries[$i]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
 			$this->queries[$i]['result'] = $result;
 		}

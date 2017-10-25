@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2009-2016 John Blackbourn
+Copyright 2009-2017 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -215,9 +215,13 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['total_qs'] += $total_qs;
 		$this->data['total_time'] += $total_time;
 
+		$has_main_query = wp_list_filter( $rows, array(
+			'is_main_query' => true,
+		) );
+
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs' );
+		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
 
 	}
 
