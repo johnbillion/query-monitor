@@ -160,7 +160,12 @@ jQuery( function($) {
 			time   = 0;
 
 		if ( window.localStorage ) {
-			localStorage.setItem('qm-' + filter, $(this).find('option:selected').val());
+			key = $(this).attr('id');
+			if ( val ) {
+				localStorage.setItem( key, val );
+			} else {
+				localStorage.removeItem( key );
+			}
 		}
 
 		if ( hilite ) {
@@ -193,8 +198,8 @@ jQuery( function($) {
 
 	if ( window.localStorage ) {
 		$('#qm').find('.qm-filter').each(function () {
-			var filter = $(this).attr('data-filter');
-			var value = localStorage.getItem('qm-' + filter);
+			var key = $(this).attr('id');
+			var value = localStorage.getItem( key );
 			if ( value !== null ) {
 				$(this).val(value).change();
 			}
