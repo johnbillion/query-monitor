@@ -156,18 +156,6 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '</tbody>';
 
-		} elseif ( is_super_admin() ) {
-
-			echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
-
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td>';
-			esc_html_e( "Capability checks aren't currently available when logged in as a Super Admin.", 'query-monitor' );
-			echo '</td>';
-			echo '</tr>';
-			echo '</tbody>';
-
 		} else {
 
 			echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';

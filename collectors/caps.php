@@ -25,8 +25,25 @@ class QM_Collector_Caps extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999, 3 );
+		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
 	}
 
+	/**
+	 * Logs user capability checks.
+	 *
+	 * This does not get called for Super Admins. See filter_map_meta_cap() below.
+	 *
+	 * @param bool[]   $user_caps     Concerned user's capabilities.
+	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
+	 * @param array    $args {
+	 *     Arguments that accompany the requested capability check.
+	 *
+	 *     @type string    $0 Requested capability.
+	 *     @type int       $1 Concerned user ID.
+	 *     @type mixed  ...$2 Optional second and further parameters.
+	 * }
+	 * @return bool[] Concerned user's capabilities.
+	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
 		$trace  = new QM_Backtrace;
 		$result = true;
@@ -45,6 +62,45 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 
 		return $user_caps;
+	}
+
+	/**
+	 * Logs user capability checks for Super Admins on Multisite.
+	 *
+	 * This is needed because the `user_has_cap` filter doesn't fire for Super Admins.
+	 *
+	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
+	 * @param string   $cap           Capability or meta capability being checked.
+	 * @param int      $user_id       Concerned user ID.
+	 * @param array    $args {
+	 *     Arguments that accompany the requested capability check.
+	 *
+	 *     @type mixed ...$0 Optional second and further parameters.
+	 * }
+	 * @return string[] Required capabilities for the requested action.
+	 */
+	public function filter_map_meta_cap( array $required_caps, $cap, $user_id, array $args ) {
+		if ( ! is_multisite() ) {
+			return $required_caps;
+		}
+
+		if ( ! is_super_admin( $user_id ) ) {
+			return $required_caps;
+		}
+
+		$trace  = new QM_Backtrace;
+		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
+
+		array_unshift( $args, $user_id );
+		array_unshift( $args, $cap );
+
+		$this->data['caps'][] = array(
+			'args'   => $args,
+			'trace'  => $trace,
+			'result' => $result,
+		);
+
+		return $required_caps;
 	}
 
 	public function process() {
