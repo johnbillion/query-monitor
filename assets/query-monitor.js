@@ -200,7 +200,7 @@ jQuery( function($) {
 		$('#qm').find('.qm-filter').each(function () {
 			var key = $(this).attr('id');
 			var value = localStorage.getItem( key );
-			if ( value !== null ) {
+			if ( value !== null && $(this).find('option[value="' + value + '"]').length ) {
 				$(this).val(value).change();
 			}
 		});
