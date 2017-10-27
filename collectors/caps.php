@@ -24,10 +24,10 @@ class QM_Collector_Caps extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999, 4 );
+		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999, 3 );
 	}
 
-	public function filter_user_has_cap( array $user_caps, array $caps, array $args, WP_User $user ) {
+	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
 		$trace  = new QM_Backtrace;
 		$result = true;
 
