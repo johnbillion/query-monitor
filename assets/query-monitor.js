@@ -154,6 +154,7 @@ jQuery( function($) {
 		var filter = $(this).attr('data-filter'),
 			table  = $(this).closest('table'),
 			tr     = table.find('tbody tr[data-qm-' + filter + ']'),
+			// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
 			val    = $(this).val().replace(/[[\]()'"\\]/g, "\\$&"),
 			total  = tr.removeClass('qm-hide-' + filter).length,
 			hilite = $(this).attr('data-highlight'),
@@ -162,7 +163,7 @@ jQuery( function($) {
 		if ( window.localStorage ) {
 			key = $(this).attr('id');
 			if ( val ) {
-				localStorage.setItem( key, val );
+				localStorage.setItem( key, $(this).val() );
 			} else {
 				localStorage.removeItem( key );
 			}
@@ -200,7 +201,12 @@ jQuery( function($) {
 		$('#qm').find('.qm-filter').each(function () {
 			var key = $(this).attr('id');
 			var value = localStorage.getItem( key );
-			if ( value !== null && $(this).find('option[value="' + value + '"]').length ) {
+			if ( value !== null ) {
+				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
+				var val = value.replace(/[[\]()'"\\]/g, "\\$&");
+				if ( ! $(this).find('option[value="' + val + '"]').length ) {
+					$('<option>').attr('value',value).text(value).appendTo(this);
+				}
 				$(this).val(value).change();
 			}
 		});
