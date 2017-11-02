@@ -103,6 +103,10 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows the response code, call stack, component, timeout, and time taken
  * Highlights erroneous responses, such as failed requests and anything without a `200` response code
 
+## User Capability Checks ##
+
+ * Shows every user capability check that is performed on the page, along with the result and any parameters passed along with the capability check.
+
 ## Redirects ##
 
  * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from
