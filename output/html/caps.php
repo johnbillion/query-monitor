@@ -116,6 +116,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				$trace          = $row['trace']->get_trace();
 				$filtered_trace = $row['trace']->get_display_trace();
 
+				$last = end( $filtered_trace );
+				if ( isset( $last['function'] ) && 'map_meta_cap' === $last['function'] ) {
+					array_pop( $filtered_trace ); // remove the map_meta_cap() call
+				}
+
 				array_pop( $filtered_trace ); // remove the WP_User->has_cap() call
 				array_pop( $filtered_trace ); // remove the *_user_can() call
 
