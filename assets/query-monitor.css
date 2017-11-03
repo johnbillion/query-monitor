@@ -137,11 +137,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	text-align: left !important;
 	min-width: 800px !important;
 	display: none;
-}
-
-#qm.qm-absolute {
-	z-index: 9999 !important;
-	position: absolute !important;
+	position: relative !important;
+	z-index: 99998 !important;
 }
 
 #qm.qm-show,
