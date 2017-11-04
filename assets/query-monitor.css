@@ -130,7 +130,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm {
 	clear: both !important;
-	background: #f1f1f1 !important;
+	background: #eee !important;
 	margin: 25px 0 0 !important;
 	border-top: 1px solid #ccc !important;
 	padding: 0 0 35px !important;
@@ -215,7 +215,7 @@ body.wp-admin.folded #qm {
 	display: inline-block !important;
 	width: 24em !important;
 	background: #fff !important;
-	border: 1px solid #e8e8e8 !important;
+	border: 1px solid #e0e0e0 !important;
 	margin: 0 5px 5px 0 !important;
 }
 
@@ -303,8 +303,8 @@ body.wp-admin.folded #qm {
 	font-size: 11px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
-	border: 1px solid #e8e8e8 !important;
-	padding: 4px 6px 3px !important;
+	border: 1px solid #e0e0e0 !important;
+	padding: 5px 8px 4px !important;
 	vertical-align: top !important;
 	text-shadow: none !important;
 	text-transform: none !important;
@@ -355,7 +355,7 @@ body.wp-admin.folded #qm {
 
 .qm td.qm-has-toggle p,
 .qm td .qm-toggler {
-	padding: 4px 20px 3px 6px !important;
+	padding: 5px 22px 4px 8px !important;
 	position: relative !important;
 }
 
@@ -369,7 +369,7 @@ body.wp-admin.folded #qm {
 }
 
 .qm .qm-inner-toggle {
-	padding: 4px 6px 3px !important;
+	padding: 5px 8px 4px !important;
 }
 
 .qm-has-inner .qm-toggled > table {
@@ -518,31 +518,28 @@ body.wp-admin.folded #qm {
 
 .qm .qm-toggle,
 html[dir="rtl"] .qm .qm-ltr .qm-toggle {
-	color: #0073aa !important;
-	padding: 4px 9px 3px !important;
-	border-top: none !important;
-	border-right: none !important;
-	border-left: 1px solid #e8e8e8 !important;
-	border-bottom: 1px solid #e8e8e8 !important;
+	color: #555 !important;
+	padding: 1px 6px 0 !important;
+	border: none !important;
 	font-style: normal !important;
-	font-weight: normal !important;
+	font-weight: bold !important;
 	font-size: 11px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
-	top: 0 !important;
-	right: 0 !important;
+	top: 4px !important;
+	right: 4px !important;
 	left: auto !important;
-	background: #fff !important;
+	background: #f1f1f1 !important;
 	cursor: pointer !important;
 }
 
 .qm .qm-toggle:focus,
 .qm .qm-toggle:hover {
 	text-decoration: none !important;
-	border-color: #e8e8e8 !important;
+	border-color: #e0e0e0 !important;
 	color: #0073aa !important;
-	background: #eee !important;
+	background: #e0e0e0 !important;
 }
 
 .qm tr.error,
@@ -745,7 +742,7 @@ html[dir="rtl"] .qm .qm-ltr {
 }
 
 html[dir="rtl"] .qm .qm-toggle {
-	border-right: 1px solid #e8e8e8 !important;
+	border-right: 1px solid #e0e0e0 !important;
 	border-left: none !important;
 	right: auto !important;
 	left: 1px !important;
@@ -765,7 +762,7 @@ html[dir="rtl"] .qm .qm-toggle {
 .qm-debug-bar textarea,
 .qm-debug-bar pre {
 	padding: 10px !important;
-	border: 1px solid #e8e8e8 !important;
+	border: 1px solid #e0e0e0 !important;
 	margin: 4px 0 !important;
 	color: inherit !important;
 	background: transparent !important;
