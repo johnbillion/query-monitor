@@ -395,7 +395,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><ol class='qm-toggler qm-numbered'>";
 
 			if ( ! empty( $stack ) ) {
-				echo '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+				echo $this->build_toggler(); // WPCS: XSS ok;
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
 

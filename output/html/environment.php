@@ -103,10 +103,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<th scope="row">' . esc_html__( 'Error Reporting', 'query-monitor' ) . '</th>';
 		echo '<td class="qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
-		printf(
-			'%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button>',
-			esc_html( $data['php']['error_reporting'] )
-		);
+		echo esc_html( $data['php']['error_reporting'] );
+		echo $this->build_toggler(); // WPCS: XSS ok;
 
 		echo '<div class="qm-toggled">';
 		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
@@ -120,10 +118,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '<th scope="row">' . esc_html__( 'Extensions', 'query-monitor' ) . '</th>';
 			echo '<td class="qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
-			printf(
-				'%1$s <button class="qm-toggle" data-on="+" data-off="-">+</button>',
-				esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) )
-			);
+			echo esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) );
+			echo $this->build_toggler(); // WPCS: XSS ok;
 
 			echo '<div class="qm-toggled"><ul class="qm-supplemental"><li>';
 			echo implode( '</li><li>', array_map( 'esc_html', $data['php']['extensions'] ) );
