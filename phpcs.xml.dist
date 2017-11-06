@@ -13,8 +13,6 @@
 
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="WordPress.WhiteSpace" />
-		<!-- @TODO remove this exclusion: -->
-		<exclude name="WordPress.Arrays" />
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions" />

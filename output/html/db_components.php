@@ -70,7 +70,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 				echo '<th scope="row"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</a></th>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
-					if ( isset( $row['types'][$type_name] ) ) {
+					if ( isset( $row['types'][ $type_name ] ) ) {
 						echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
 					} else {
 						echo '<td class="qm-num">&nbsp;</td>';
@@ -126,7 +126,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
 				$menu[] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Component', 'query-monitor' )
+					'title' => esc_html__( 'Queries by Component', 'query-monitor' ),
 				) );
 			}
 		}

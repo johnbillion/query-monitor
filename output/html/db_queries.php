@@ -57,7 +57,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<tr>';
 		echo '<td class="qm-warn">';
 		/* translators: 1: Name of PHP constant, 2: Value of PHP constant */
-		printf( esc_html__( 'No database queries were logged because the %1$s constant is set to %2$s', 'query-monitor' ),
+		printf(
+			 esc_html__( 'No database queries were logged because the %1$s constant is set to %2$s', 'query-monitor' ),
 			'<code>SAVEQUERIES</code>',
 			'<code>false</code>'
 		);
@@ -103,7 +104,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<table cellspacing="0">';
 		echo '<caption>';
 		/* translators: %s: Database query time in seconds */
-		printf( esc_html__( 'Slow Database Queries (above %ss)', 'query-monitor' ),
+		printf(
+			 esc_html__( 'Slow Database Queries (above %ss)', 'query-monitor' ),
 			'<span class="qm-expensive">' . esc_html( number_format_i18n( QM_DB_EXPENSIVE, $dp ) ) . '</span>'
 		);
 		echo '</caption>';

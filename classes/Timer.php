@@ -62,7 +62,7 @@ class QM_Timer {
 			$i = $name;
 		}
 
-		$this->laps[$i] = $lap;
+		$this->laps[ $i ] = $lap;
 
 		return $this;
 
@@ -78,7 +78,7 @@ class QM_Timer {
 			$lap['time_used']   = $lap['time']   - $prev['time'];
 			$lap['memory_used'] = $lap['memory'] - $prev['memory'];
 
-			$laps[$lap_id] = $prev = $lap;
+			$laps[ $lap_id ] = $prev = $lap;
 
 		}
 

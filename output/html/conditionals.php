@@ -75,7 +75,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			$menu[] = $this->menu( array(
 				'title' => esc_html( $cond . '()' ),
 				'id'    => 'query-monitor-conditionals-' . esc_attr( $cond ),
-				'meta'  => array( 'classname' => 'qm-true qm-ltr' )
+				'meta'  => array(
+					'classname' => 'qm-true qm-ltr',
+				),
 			) );
 		}
 

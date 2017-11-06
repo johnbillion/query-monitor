@@ -50,7 +50,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			foreach ( $data['trans'] as $row ) {
 				$transient = str_replace( array(
 					'_site_transient_',
-					'_transient_'
+					'_transient_',
 				), '', $row['transient'] );
 
 				$component = $row['trace']->get_component();

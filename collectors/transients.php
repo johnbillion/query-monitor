@@ -44,7 +44,7 @@ class QM_Collector_Transients extends QM_Collector {
 
 	public function setted_transient( $transient, $type, $value, $expiration ) {
 		$trace = new QM_Backtrace( array(
-			'ignore_items' => 1 # Ignore the action_setted_(site|blog)_transient method
+			'ignore_items' => 1, # Ignore the action_setted_(site|blog)_transient method
 		) );
 		$this->data['trans'][] = array(
 			'transient'  => $transient,

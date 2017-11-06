@@ -134,7 +134,7 @@ class QM_Backtrace {
 				}
 
 				$comp = QM_Util::get_file_component( $file );
-				$components[$comp->type] = $comp;
+				$components[ $comp->type ] = $comp;
 			} catch ( ReflectionException $e ) {
 				# nothing
 			}
@@ -142,8 +142,8 @@ class QM_Backtrace {
 		}
 
 		foreach ( QM_Util::get_file_dirs() as $type => $dir ) {
-			if ( isset( $components[$type] ) ) {
-				return $components[$type];
+			if ( isset( $components[ $type ] ) ) {
+				return $components[ $type ];
 			}
 		}
 
@@ -188,7 +188,7 @@ class QM_Backtrace {
 
 	public function ignore( $num ) {
 		for ( $i = 0; $i < absint( $num ); $i++ ) {
-			unset( $this->trace[$i] );
+			unset( $this->trace[ $i ] );
 		}
 		$this->trace = array_values( $this->trace );
 		return $this;
@@ -221,9 +221,9 @@ class QM_Backtrace {
 
 		if ( isset( $trace['class'] ) ) {
 
-			if ( isset( self::$ignore_class[$trace['class']] ) ) {
+			if ( isset( self::$ignore_class[ $trace['class'] ] ) ) {
 				$return = null;
-			} else if ( isset( self::$ignore_method[$trace['class']][$trace['function']] ) ) {
+			} else if ( isset( self::$ignore_method[ $trace['class'] ][ $trace['function'] ] ) ) {
 				$return = null;
 			} else if ( 0 === strpos( $trace['class'], 'QM_' ) ) {
 				$return = null;
@@ -234,13 +234,13 @@ class QM_Backtrace {
 
 		} else {
 
-			if ( isset( self::$ignore_func[$trace['function']] ) ) {
+			if ( isset( self::$ignore_func[ $trace['function'] ] ) ) {
 
 				$return = null;
 
-			} else if ( isset( self::$show_args[$trace['function']] ) ) {
+			} else if ( isset( self::$show_args[ $trace['function'] ] ) ) {
 
-				$show = self::$show_args[$trace['function']];
+				$show = self::$show_args[ $trace['function'] ];
 
 				if ( 'dir' === $show ) {
 					if ( isset( $trace['args'][0] ) ) {
@@ -251,11 +251,11 @@ class QM_Backtrace {
 				} else {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
-						if ( isset( $trace['args'][$i] ) ) {
-							if ( is_string( $trace['args'][$i] ) ) {
-								$args[] = '\'' . $trace['args'][$i] . '\'';
+						if ( isset( $trace['args'][ $i ] ) ) {
+							if ( is_string( $trace['args'][ $i ] ) ) {
+								$args[] = '\'' . $trace['args'][ $i ] . '\'';
 							} else {
-								$args[] = QM_Util::display_variable( $trace['args'][$i] );
+								$args[] = QM_Util::display_variable( $trace['args'][ $i ] );
 							}
 						}
 					}

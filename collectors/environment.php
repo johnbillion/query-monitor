@@ -40,12 +40,12 @@ class QM_Collector_Environment extends QM_Collector {
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[$setting] ) ) {
-				$val = $wpdb->qm_php_vars[$setting];
+			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[ $setting ] ) ) {
+				$val = $wpdb->qm_php_vars[ $setting ];
 			} else {
 				$val = ini_get( $setting );
 			}
-			$this->data['php']['variables'][$setting]['before'] = $val;
+			$this->data['php']['variables'][ $setting ]['before'] = $val;
 		}
 
 	}
@@ -92,7 +92,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'max_connections'    => false, # Max number of client connections
 			'query_cache_limit'  => true,  # Individual query cache size limit
 			'query_cache_size'   => true,  # Total cache size limit
-			'query_cache_type'   => 'ON'   # Query cache on or off
+			'query_cache_type'   => 'ON',  # Query cache on or off
 		);
 
 		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
@@ -147,10 +147,10 @@ class QM_Collector_Environment extends QM_Collector {
 					'database'       => $db->dbname,
 				);
 
-				$this->data['db'][$id] = array(
+				$this->data['db'][ $id ] = array(
 					'info'      => $info,
 					'vars'      => $mysql_vars,
-					'variables' => $variables
+					'variables' => $variables,
 				);
 
 			}
@@ -166,7 +166,7 @@ class QM_Collector_Environment extends QM_Collector {
 		}
 
 		foreach ( $this->php_vars as $setting ) {
-			$this->data['php']['variables'][$setting]['after'] = ini_get( $setting );
+			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
 		}
 
 		if ( is_callable( 'get_loaded_extensions' ) ) {
@@ -225,7 +225,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'name'    => $server[0],
 			'version' => $server_version,
 			'address' => $address,
-			'host'    => php_uname( 'n' )
+			'host'    => php_uname( 'n' ),
 		);
 
 	}

@@ -45,15 +45,15 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			'query_string'  => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
 
-			if ( !isset( $data['request'][$item] ) ) {
+			if ( !isset( $data['request'][ $item ] ) ) {
 				continue;
 			}
 
-			if ( ! empty( $data['request'][$item] ) ) {
+			if ( ! empty( $data['request'][ $item ] ) ) {
 				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ), true ) ) {
-					$value = self::format_url( $data['request'][$item] );
+					$value = self::format_url( $data['request'][ $item ] );
 				} else {
-					$value = esc_html( $data['request'][$item] );
+					$value = esc_html( $data['request'][ $item ] );
 				}
 			} else {
 				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
@@ -97,7 +97,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<tr>';
 				}
 
-				if ( isset( $data['plugin_qvars'][$var] ) ) {
+				if ( isset( $data['plugin_qvars'][ $var ] ) ) {
 					echo '<td class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
 				} else {
 					echo '<td class="qm-ltr">' . esc_html( $var ) . '</td>';

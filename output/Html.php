@@ -154,7 +154,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		return array_merge( array(
 			'id'   => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href' => esc_attr( '#' . $this->collector->id() )
+			'href' => esc_attr( '#' . $this->collector->id() ),
 		), $args );
 
 	}

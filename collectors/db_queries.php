@@ -63,7 +63,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['errors']     = array();
 
 		$this->db_objects = apply_filters( 'qm/collect/db_objects', array(
-			'$wpdb' => $GLOBALS['wpdb']
+			'$wpdb' => $GLOBALS['wpdb'],
 		) );
 
 		foreach ( $this->db_objects as $name => $db ) {
@@ -78,22 +78,22 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	protected function log_caller( $caller, $ltime, $type ) {
 
-		if ( !isset( $this->data['times'][$caller] ) ) {
-			$this->data['times'][$caller] = array(
+		if ( !isset( $this->data['times'][ $caller ] ) ) {
+			$this->data['times'][ $caller ] = array(
 				'caller' => $caller,
 				'calls' => 0,
 				'ltime' => 0,
-				'types' => array()
+				'types' => array(),
 			);
 		}
 
-		$this->data['times'][$caller]['calls']++;
-		$this->data['times'][$caller]['ltime'] += $ltime;
+		$this->data['times'][ $caller ]['calls']++;
+		$this->data['times'][ $caller ]['ltime'] += $ltime;
 
-		if ( isset( $this->data['times'][$caller]['types'][$type] ) ) {
-			$this->data['times'][$caller]['types'][$type]++;
+		if ( isset( $this->data['times'][ $caller ]['types'][ $type ] ) ) {
+			$this->data['times'][ $caller ]['types'][ $type ]++;
 		} else {
-			$this->data['times'][$caller]['types'][$type] = 1;
+			$this->data['times'][ $caller ]['types'][ $type ] = 1;
 		}
 
 	}
@@ -164,16 +164,16 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$this->log_component( $component, $ltime, $type );
 			}
 
-			if ( !isset( $types[$type]['total'] ) ) {
-				$types[$type]['total'] = 1;
+			if ( !isset( $types[ $type ]['total'] ) ) {
+				$types[ $type ]['total'] = 1;
 			} else {
-				$types[$type]['total']++;
+				$types[ $type ]['total']++;
 			}
 
-			if ( !isset( $types[$type]['callers'][$caller] ) ) {
-				$types[$type]['callers'][$caller] = 1;
+			if ( !isset( $types[ $type ]['callers'][ $caller ] ) ) {
+				$types[ $type ]['callers'][ $caller ] = 1;
 			} else {
-				$types[$type]['callers'][$caller]++;
+				$types[ $type ]['callers'][ $caller ]++;
 			}
 
 			$is_main_query = ( trim( $wp_the_query->request ) === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
@@ -221,7 +221,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data['dbs'][$id] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
+		$this->data['dbs'][ $id ] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
 
 	}
 

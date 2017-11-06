@@ -87,9 +87,9 @@ class QM_Activation extends QM_Plugin {
 
 		$f = $this->plugin_base();
 
-		if ( isset( $plugins[$f] ) ) {
+		if ( isset( $plugins[ $f ] ) ) {
 
-			unset( $plugins[$f] );
+			unset( $plugins[ $f ] );
 
 			return array_merge( array(
 				$f => time(),

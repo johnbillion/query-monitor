@@ -117,10 +117,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$filename = QM_Util::standard_dir( $file, '' );
 
-		if ( isset( $this->data['errors'][$type][$key] ) ) {
-			$this->data['errors'][$type][$key]->calls++;
+		if ( isset( $this->data['errors'][ $type ][ $key ] ) ) {
+			$this->data['errors'][ $type ][ $key ]->calls++;
 		} else {
-			$this->data['errors'][$type][$key] = (object) array(
+			$this->data['errors'][ $type ][ $key ] = (object) array(
 				'errno'    => $errno,
 				'type'     => $type,
 				'message'  => $message,
@@ -128,7 +128,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'filename' => $filename,
 				'line'     => $line,
 				'trace'    => $trace,
-				'calls'    => 1
+				'calls'    => 1,
 			);
 		}
 

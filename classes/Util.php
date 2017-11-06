@@ -98,8 +98,8 @@ class QM_Util {
 
 		$file = self::standard_dir( $file );
 
-		if ( isset( self::$file_components[$file] ) ) {
-			return self::$file_components[$file];
+		if ( isset( self::$file_components[ $file ] ) ) {
+			return self::$file_components[ $file ];
 		}
 
 		foreach ( self::get_file_dirs() as $type => $dir ) {
@@ -174,7 +174,7 @@ class QM_Util {
 				break;
 		}
 
-		return self::$file_components[$file] = (object) compact( 'type', 'name', 'context' );
+		return self::$file_components[ $file ] = (object) compact( 'type', 'name', 'context' );
 
 	}
 

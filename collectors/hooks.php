@@ -52,10 +52,10 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		foreach ( $hook_names as $name ) {
 
-			$hooks[$name] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hooks[ $name ] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
 
-			$all_parts    = array_merge( $all_parts, $hooks[$name]['parts'] );
-			$components   = array_merge( $components, $hooks[$name]['components'] );
+			$all_parts    = array_merge( $all_parts, $hooks[ $name ]['parts'] );
+			$components   = array_merge( $components, $hooks[ $name ]['components'] );
 
 		}
 
@@ -69,10 +69,10 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		$actions = $components = array();
 
-		if ( isset( $wp_filter[$name] ) ) {
+		if ( isset( $wp_filter[ $name ] ) ) {
 
 			# http://core.trac.wordpress.org/ticket/17817
-			$action = $wp_filter[$name];
+			$action = $wp_filter[ $name ];
 
 			foreach ( $action as $priority => $callbacks ) {
 
@@ -88,7 +88,7 @@ class QM_Collector_Hooks extends QM_Collector {
 							continue;
 						}
 
-						$components[$callback['component']->name] = $callback['component']->name;
+						$components[ $callback['component']->name ] = $callback['component']->name;
 					}
 
 					$actions[] = array(

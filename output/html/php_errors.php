@@ -56,14 +56,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		foreach ( $types as $type => $title ) {
 
-			if ( isset( $data['errors'][$type] ) ) {
+			if ( isset( $data['errors'][ $type ] ) ) {
 
 				echo '<tbody class="qm-group">';
 				echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
-				echo '<th scope="row" rowspan="' . count( $data['errors'][$type] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
+				echo '<th scope="row" rowspan="' . count( $data['errors'][ $type ] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
 				$first = true;
 
-				foreach ( $data['errors'][$type] as $error ) {
+				foreach ( $data['errors'][ $type ] as $error ) {
 
 					if ( !$first ) {
 						echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
@@ -154,7 +154,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			$count = 0;
 
-			if ( isset( $data['errors']["{$type}-suppressed"] ) ) {
+			if ( isset( $data['errors'][ "{$type}-suppressed" ] ) ) {
 				$key   = "{$type}-suppressed";
 				$count = count( $data['errors'][ $key ] );
 			}
@@ -172,7 +172,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				'title' => esc_html( sprintf(
 					$label,
 					number_format_i18n( $count )
-				) )
+				) ),
 			) );
 		}
 

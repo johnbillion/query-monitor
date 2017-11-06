@@ -26,10 +26,10 @@ class Debug_Bar {
 
 	public function enqueue() {
 		wp_register_style( 'debug-bar', false, array(
-			'query-monitor'
+			'query-monitor',
 		) );
 		wp_register_script( 'debug-bar', false, array(
-			'query-monitor'
+			'query-monitor',
 		) );
 
 		do_action( 'debug_bar_enqueue_scripts' );

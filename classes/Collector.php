@@ -33,10 +33,10 @@ abstract class QM_Collector {
 
 	protected function log_type( $type ) {
 
-		if ( isset( $this->data['types'][$type] ) ) {
-			$this->data['types'][$type]++;
+		if ( isset( $this->data['types'][ $type ] ) ) {
+			$this->data['types'][ $type ]++;
 		} else {
-			$this->data['types'][$type] = 1;
+			$this->data['types'][ $type ] = 1;
 		}
 
 	}
@@ -54,22 +54,22 @@ abstract class QM_Collector {
 
 	protected function log_component( $component, $ltime, $type ) {
 
-		if ( !isset( $this->data['component_times'][$component->name] ) ) {
-			$this->data['component_times'][$component->name] = array(
+		if ( !isset( $this->data['component_times'][ $component->name ] ) ) {
+			$this->data['component_times'][ $component->name ] = array(
 				'component' => $component->name,
 				'calls'     => 0,
 				'ltime'     => 0,
-				'types'     => array()
+				'types'     => array(),
 			);
 		}
 
-		$this->data['component_times'][$component->name]['calls']++;
-		$this->data['component_times'][$component->name]['ltime'] += $ltime;
+		$this->data['component_times'][ $component->name ]['calls']++;
+		$this->data['component_times'][ $component->name ]['ltime'] += $ltime;
 
-		if ( isset( $this->data['component_times'][$component->name]['types'][$type] ) ) {
-			$this->data['component_times'][$component->name]['types'][$type]++;
+		if ( isset( $this->data['component_times'][ $component->name ]['types'][ $type ] ) ) {
+			$this->data['component_times'][ $component->name ]['types'][ $type ]++;
 		} else {
-			$this->data['component_times'][$component->name]['types'][$type] = 1;
+			$this->data['component_times'][ $component->name ]['types'][ $type ] = 1;
 		}
 
 	}

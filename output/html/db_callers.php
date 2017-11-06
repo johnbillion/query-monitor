@@ -65,8 +65,8 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				echo '<th scope="row" class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '">' . esc_html( $row['caller'] ) . '</a></th>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
-					if ( isset( $row['types'][$type_name] ) ) {
-						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][$type_name] ) ) . '</td>';
+					if ( isset( $row['types'][ $type_name ] ) ) {
+						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
 					} else {
 						echo "<td class='qm-num'>&nbsp;</td>";
 					}
@@ -115,7 +115,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['times'] ) ) {
 				$menu[] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Caller', 'query-monitor' )
+					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );
 			}
 		}

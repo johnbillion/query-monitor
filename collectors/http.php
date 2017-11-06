@@ -47,12 +47,12 @@ class QM_Collector_HTTP extends QM_Collector {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$start = $this->data['http'][$args['_qm_key']]['start'];
+			$start = $this->data['http'][ $args['_qm_key'] ]['start'];
 		} else {
 			$start = microtime( true );
 		}
 		$key = microtime( true ) . $url;
-		$this->data['http'][$key] = array(
+		$this->data['http'][ $key ] = array(
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $start,
@@ -103,9 +103,9 @@ class QM_Collector_HTTP extends QM_Collector {
 			case 'response':
 
 				if ( !empty( $class ) ) {
-					$this->data['http'][$args['_qm_key']]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
+					$this->data['http'][ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
 				} else {
-					$this->data['http'][$args['_qm_key']]['transport'] = null;
+					$this->data['http'][ $args['_qm_key'] ]['transport'] = null;
 				}
 
 				$this->log_http_response( $response, $args, $url );
@@ -128,12 +128,12 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @param string         $url      The request URL.
 	 */
 	public function log_http_response( $response, array $args, $url ) {
-		$this->data['http'][$args['_qm_key']]['end']      = microtime( true );
-		$this->data['http'][$args['_qm_key']]['response'] = $response;
-		$this->data['http'][$args['_qm_key']]['args']     = $args;
+		$this->data['http'][ $args['_qm_key'] ]['end']      = microtime( true );
+		$this->data['http'][ $args['_qm_key'] ]['response'] = $response;
+		$this->data['http'][ $args['_qm_key'] ]['args']     = $args;
 		if ( isset( $args['_qm_original_key'] ) ) {
-			$this->data['http'][$args['_qm_original_key']]['end']      = $this->data['http'][$args['_qm_original_key']]['start'];
-			$this->data['http'][$args['_qm_original_key']]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
+			$this->data['http'][ $args['_qm_original_key'] ]['end']      = $this->data['http'][ $args['_qm_original_key'] ]['start'];
+			$this->data['http'][ $args['_qm_original_key'] ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
 				/* translators: %s: Hook name */
 				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
 				'pre_http_request'
@@ -158,7 +158,7 @@ class QM_Collector_HTTP extends QM_Collector {
 					# @TODO this transformation should happen in the output, not the collector
 					$val = 'true';
 				}
-				$this->data['vars'][$var] = $val;
+				$this->data['vars'][ $var ] = $val;
 			}
 		}
 
@@ -170,7 +170,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		$silent = apply_filters( 'qm/collect/silent_http_errors', array(
 			'http_request_not_executed',
-			'airplane_mode_enabled'
+			'airplane_mode_enabled',
 		) );
 
 		foreach ( $this->data['http'] as $key => & $http ) {

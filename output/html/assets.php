@@ -176,7 +176,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		echo '<td class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
 		if ( is_wp_error( $source ) ) {
-			printf( '<span class="qm-warn">%s</span>',
+			printf(
+				 '<span class="qm-warn">%s</span>',
 				esc_html( $src )
 			);
 		} else {
@@ -237,7 +238,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$args = array(
 				'title' => esc_html( $label ),
 				'id'    => esc_attr( "query-monitor-{$this->collector->id}-{$type}" ),
-				'href'  => esc_attr( '#' . $this->collector->id() . '-' . $type )
+				'href'  => esc_attr( '#' . $this->collector->id() . '-' . $type ),
 			);
 
 			if ( ! empty( $data['broken'][ $type ] ) or ! empty( $data['missing'][ $type ] ) ) {

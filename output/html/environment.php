@@ -182,9 +182,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$append = '';
 					$show_warning = false;
 
-					if ( ( true === $db['vars'][$key] ) and empty( $val ) ) {
+					if ( ( true === $db['vars'][ $key ] ) and empty( $val ) ) {
 						$show_warning = true;
-					} elseif ( is_string( $db['vars'][$key] ) and ( $val !== $db['vars'][$key] ) ) {
+					} elseif ( is_string( $db['vars'][ $key ] ) and ( $val !== $db['vars'][ $key ] ) ) {
 						$show_warning = true;
 					}
 

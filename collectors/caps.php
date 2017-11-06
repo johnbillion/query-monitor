@@ -128,7 +128,7 @@ class QM_Collector_Caps extends QM_Collector {
 			$all_parts = array_merge( $all_parts, $parts );
 			$all_users[] = $cap['args'][1];
 			$component = $cap['trace']->get_component();
-			$components[$component->name] = $component->name;
+			$components[ $component->name ] = $component->name;
 		}
 
 		$this->data['parts'] = array_unique( array_filter( $all_parts ) );

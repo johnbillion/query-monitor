@@ -104,7 +104,7 @@ class QM_DB extends wpdb {
 		}
 
 		$i = $this->num_queries - 1;
-		$this->queries[$i]['trace'] = new QM_Backtrace( array(
+		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
 			'ignore_items' => 1,
 		) );
 
@@ -119,9 +119,9 @@ class QM_DB extends wpdb {
 					$code = mysql_errno( $this->dbh );
 				}
 			}
-			$this->queries[$i]['result'] = new WP_Error( $code, $this->last_error );
+			$this->queries[ $i ]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
-			$this->queries[$i]['result'] = $result;
+			$this->queries[ $i ]['result'] = $result;
 		}
 
 		return $result;

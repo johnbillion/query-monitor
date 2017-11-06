@@ -274,7 +274,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$json = array(
 			'menu'        => $this->js_admin_bar_menu(),
-			'ajax_errors' => array() # @TODO move this into the php_errors collector
+			'ajax_errors' => array(), # @TODO move this into the php_errors collector
 		);
 
 		echo '<script type="text/javascript">' . "\n\n";
@@ -307,9 +307,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$admin_bar_menu = array(
 			'top' => array(
 				'title'     => sprintf( '<span class="ab-icon">QM</span><span class="ab-label">%s</span>', $title ),
-				'classname' => $class
+				'classname' => $class,
 			),
-			'sub' => array()
+			'sub' => array(),
 		);
 
 		foreach ( apply_filters( 'qm/output/menus', array() ) as $menu ) {
