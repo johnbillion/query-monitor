@@ -26,6 +26,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	}
 
 	/**
+	 * Filters a REST API response in order to add QM's headers.
 	 *
 	 * @param WP_HTTP_Response $result  Result to send to the client. Usually a WP_REST_Response.
 	 * @param WP_REST_Server   $server  Server instance.

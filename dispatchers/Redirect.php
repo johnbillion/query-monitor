@@ -26,6 +26,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	}
 
 	/**
+	 * Filters a redirect location in order to output QM's headers.
 	 *
 	 * @param string $location The path to redirect to.
 	 * @param int    $status   Status code to use.

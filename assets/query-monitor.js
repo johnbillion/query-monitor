@@ -326,9 +326,9 @@ jQuery( function($) {
 } );
 
 /**
- * This is a modified version of:
- * 
- * jQuery table-sort v0.1.1
+ * Table sorting library.
+ *
+ * This is a modified version of jQuery table-sort v0.1.1
  * https://github.com/gajus/table-sort
  *
  * Licensed under the BSD.
