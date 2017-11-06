@@ -26,7 +26,7 @@
 		<!-- QM currently supports WordPress versions older than 4.1: -->
 		<exclude name="WordPress.WP.AlternativeFunctions.json_encode_json_encode" />
 
-		<!-- @TODO remove this exclusion: -->
+		<!-- QM currently supports PHP versions older than 5.3: -->
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode" />
 
 		<exclude name="Squiz.Commenting" />
