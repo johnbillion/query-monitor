@@ -39,7 +39,6 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 		echo '<tbody>';
 
 		if ( ! empty( $data['matching'] ) ) {
-
 			foreach ( $data['matching'] as $rule => $query ) {
 
 				$query = str_replace( 'index.php?', '', $query );
@@ -52,7 +51,6 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 				echo '</tr>';
 
 			}
-
 		} else {
 
 			echo '<tr>';

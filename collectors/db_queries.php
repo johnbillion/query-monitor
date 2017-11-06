@@ -14,10 +14,10 @@ GNU General Public License for more details.
 
 */
 
-if ( !defined( 'SAVEQUERIES' ) ) {
+if ( ! defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
 }
-if ( !defined( 'QM_DB_EXPENSIVE' ) ) {
+if ( ! defined( 'QM_DB_EXPENSIVE' ) ) {
 	define( 'QM_DB_EXPENSIVE', 0.05 );
 }
 
@@ -35,14 +35,14 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function get_errors() {
-		if ( !empty( $this->data['errors'] ) ) {
+		if ( ! empty( $this->data['errors'] ) ) {
 			return $this->data['errors'];
 		}
 		return false;
 	}
 
 	public function get_expensive() {
-		if ( !empty( $this->data['expensive'] ) ) {
+		if ( ! empty( $this->data['expensive'] ) ) {
 			return $this->data['expensive'];
 		}
 		return false;
@@ -54,7 +54,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	public function process() {
 
-		if ( !SAVEQUERIES ) {
+		if ( ! SAVEQUERIES ) {
 			return;
 		}
 
@@ -78,7 +78,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	protected function log_caller( $caller, $ltime, $type ) {
 
-		if ( !isset( $this->data['times'][ $caller ] ) ) {
+		if ( ! isset( $this->data['times'][ $caller ] ) ) {
 			$this->data['times'][ $caller ] = array(
 				'caller' => $caller,
 				'calls' => 0,
@@ -149,7 +149,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				} else {
 					$caller_name = $caller;
 				}
-
 			}
 
 			$sql  = trim( $sql );
@@ -164,13 +163,13 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$this->log_component( $component, $ltime, $type );
 			}
 
-			if ( !isset( $types[ $type ]['total'] ) ) {
+			if ( ! isset( $types[ $type ]['total'] ) ) {
 				$types[ $type ]['total'] = 1;
 			} else {
 				$types[ $type ]['total']++;
 			}
 
-			if ( !isset( $types[ $type ]['callers'][ $caller ] ) ) {
+			if ( ! isset( $types[ $type ]['callers'][ $caller ] ) ) {
 				$types[ $type ]['callers'][ $caller ] = 1;
 			} else {
 				$types[ $type ]['callers'][ $caller ]++;

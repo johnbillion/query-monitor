@@ -48,7 +48,7 @@ if ( ! is_readable( $backtrace ) ) {
 }
 require_once $backtrace;
 
-if ( !defined( 'SAVEQUERIES' ) ) {
+if ( ! defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
 }
 

@@ -53,7 +53,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		echo '</tr>';
 		echo '</thead>';
 
-		if ( !empty( $data['times'] ) ) {
+		if ( ! empty( $data['times'] ) ) {
 
 			echo '<tbody>';
 

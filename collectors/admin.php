@@ -57,15 +57,15 @@ class QM_Collector_Admin extends QM_Collector {
 
 			# And now, WordPress' legendary inconsistency comes into play:
 
-			if ( !empty( $this->data['current_screen']['taxonomy'] ) ) {
+			if ( ! empty( $this->data['current_screen']['taxonomy'] ) ) {
 				$list_table['column'] = $this->data['current_screen']['taxonomy'];
-			} else if ( !empty( $this->data['current_screen']['post_type'] ) ) {
+			} else if ( ! empty( $this->data['current_screen']['post_type'] ) ) {
 				$list_table['column'] = $this->data['current_screen']['post_type'] . '_posts';
 			} else {
 				$list_table['column'] = $this->data['current_screen']['base'];
 			}
 
-			if ( !empty( $this->data['current_screen']['post_type'] ) and empty( $this->data['current_screen']['taxonomy'] ) ) {
+			if ( ! empty( $this->data['current_screen']['post_type'] ) and empty( $this->data['current_screen']['taxonomy'] ) ) {
 				$list_table['columns'] = $this->data['current_screen']['post_type'] . '_posts';
 			} else {
 				$list_table['columns'] = $this->data['current_screen']['id'];

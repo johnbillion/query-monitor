@@ -49,7 +49,6 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 				$headers[ $key ] = json_encode( $output_error );
 
 			}
-
 		}
 
 		return array_merge( array(

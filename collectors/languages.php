@@ -65,7 +65,6 @@ class QM_Collector_Languages extends QM_Collector {
 				}
 				break;
 			}
-
 		}
 
 		if ( empty( $caller ) ) {
@@ -85,7 +84,7 @@ class QM_Collector_Languages extends QM_Collector {
 			'caller' => $caller,
 			'domain' => $domain,
 			'mofile' => $mofile,
-			'found'  => file_exists( $mofile ) ? filesize( $mofile ): false,
+			'found'  => file_exists( $mofile ) ? filesize( $mofile ) : false,
 		);
 
 		return $override;

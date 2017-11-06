@@ -44,13 +44,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<th scope="row">' . esc_html__( 'Template File', 'query-monitor' ) . '</th>';
 
 		if ( ! empty( $data['template_path'] ) ) {
-
 			if ( $data['is_child_theme'] ) {
 				echo '<td class="qm-ltr">' . self::output_filename( $data['theme_template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			} else {
 				echo '<td class="qm-ltr">' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
 			}
-
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}

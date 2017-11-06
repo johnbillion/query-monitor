@@ -28,7 +28,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
-		if ( !empty( $data['trans'] ) ) {
+		if ( ! empty( $data['trans'] ) ) {
 
 			echo '<caption class="screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
 

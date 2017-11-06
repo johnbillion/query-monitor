@@ -57,7 +57,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<th scope="row">user</th>';
-		if ( !empty( $data['php']['user'] ) ) {
+		if ( ! empty( $data['php']['user'] ) ) {
 			echo '<td>' . esc_html( $data['php']['user'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
@@ -196,7 +196,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 						);
 					}
 
-					if ( is_numeric( $val ) and ( $val >= ( 1024*1024 ) ) ) {
+					if ( is_numeric( $val ) and ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
 							'<br><span class="qm-info qm-supplemental">~%s</span>',
 							esc_html( size_format( $val ) )
@@ -205,7 +205,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					$class = ( $show_warning ) ? 'qm-warn' : '';
 
-					if ( !$first ) {
+					if ( ! $first ) {
 						echo '<tr class="' . esc_attr( $class ) . '">';
 					}
 
@@ -226,7 +226,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '</div>';
 
 			}
-
 		}
 
 		echo '<div class="qm qm-third" style="float:right !important">';
@@ -271,7 +270,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'version', 'query-monitor' ) . '</th>';
-		if ( !empty( $data['server']['version'] ) ) {
+		if ( ! empty( $data['server']['version'] ) ) {
 			echo '<td class="qm-wrap">' . esc_html( $data['server']['version'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
@@ -280,7 +279,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'address', 'query-monitor' ) . '</th>';
-		if ( !empty( $data['server']['address'] ) ) {
+		if ( ! empty( $data['server']['address'] ) ) {
 			echo '<td class="qm-wrap">' . esc_html( $data['server']['address'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';

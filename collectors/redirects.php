@@ -29,7 +29,7 @@ class QM_Collector_Redirects extends QM_Collector {
 
 	public function filter_wp_redirect( $location, $status ) {
 
-		if ( !$location ) {
+		if ( ! $location ) {
 			return $location;
 		}
 

@@ -38,7 +38,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 
-		if ( !empty( $data['times'] ) ) {
+		if ( ! empty( $data['times'] ) ) {
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
@@ -58,7 +58,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 		echo '</thead>';
 
-		if ( !empty( $data['times'] ) ) {
+		if ( ! empty( $data['times'] ) ) {
 
 			echo '<tbody>';
 

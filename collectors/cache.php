@@ -29,7 +29,6 @@ class QM_Collector_Cache extends QM_Collector {
 		$this->data['cache_hit_percentage'] = 0;
 
 		if ( is_object( $wp_object_cache ) ) {
-
 			if ( property_exists( $wp_object_cache, 'cache_hits' ) ) {
 				$this->data['stats']['cache_hits'] = (int) $wp_object_cache->cache_hits;
 			}
@@ -46,7 +45,6 @@ class QM_Collector_Cache extends QM_Collector {
 					$this->data['stats'][ $key ] = $value;
 				}
 			}
-
 		}
 
 		if ( isset( $this->data['stats']['cache_hits'] ) && isset( $this->data['stats']['cache_misses'] ) ) {

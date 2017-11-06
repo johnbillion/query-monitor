@@ -20,7 +20,7 @@ abstract class QM_Dispatcher {
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
-		if ( !defined( 'QM_COOKIE' ) ) {
+		if ( ! defined( 'QM_COOKIE' ) ) {
 			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
 		}
 
@@ -81,7 +81,7 @@ abstract class QM_Dispatcher {
 
 	public function user_can_view() {
 
-		if ( !did_action( 'plugins_loaded' ) ) {
+		if ( ! did_action( 'plugins_loaded' ) ) {
 			return false;
 		}
 

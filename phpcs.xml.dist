@@ -11,9 +11,6 @@
 		<exclude name="WordPress.NamingConventions" />
 		<exclude name="WordPress.Files.FileName" />
 
-		<!-- @TODO remove this exclusion: -->
-		<exclude name="WordPress.WhiteSpace" />
-
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />

@@ -22,7 +22,7 @@ var QM_i18n = {
 		if ( isNaN( number ) )
 			return;
 
-		if ( !decimals )
+		if ( ! decimals )
 			decimals = 0;
 
 		number = parseFloat( number );
@@ -52,7 +52,7 @@ var QM_i18n = {
 
 jQuery( function($) {
 
-	if ( !window.qm )
+	if ( ! window.qm )
 		return;
 
 	var is_admin = $('body').hasClass('wp-admin');
@@ -73,7 +73,7 @@ jQuery( function($) {
 
 			var new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 				.clone()
-				.attr('id','wp-admin-bar-'+el.id)
+				.attr('id','wp-admin-bar-' + el.id)
 			;
 			new_menu
 				.find('a').eq(0)
@@ -175,7 +175,7 @@ jQuery( function($) {
 
 		if ( $(this).val() !== '' ) {
 			if ( hilite ) {
-				tr.filter('[data-qm-'+hilite+'*="' + val + '"]').addClass('qm-highlight');
+				tr.filter('[data-qm-' + hilite + '*="' + val + '"]').addClass('qm-highlight');
 			}
 			tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
 			$(this).addClass('qm-highlight');
@@ -244,14 +244,14 @@ jQuery( function($) {
 		var subject = $(this).data('qm-highlight');
 		var table   = $(this).closest('table');
 
-		if ( !subject ) {
+		if ( ! subject ) {
 			return;
 		}
 
 		$(this).addClass('qm-highlight');
 
 		$.each( subject.split(' '), function( i, el ){
-			table.find('tr[data-qm-subject="'+el+'"]').addClass('qm-highlight');
+			table.find('tr[data-qm-subject="' + el + '"]').addClass('qm-highlight');
 		});
 
 	}).on('mouseleave',function(e){
@@ -265,7 +265,7 @@ jQuery( function($) {
 
 		var errors = response.getResponseHeader( 'X-QM-error-count' );
 
-		if ( !errors )
+		if ( ! errors )
 			return event;
 
 		errors = parseInt( errors, 10 );
@@ -282,8 +282,8 @@ jQuery( function($) {
 			if ( $('#wp-admin-bar-query-monitor').length ) {
 				if ( ! qm.ajax_errors[error.type] ) {
 					$('#wp-admin-bar-query-monitor')
-						.addClass('qm-'+error.type)
-						.find('a').first().append('<span class="ab-label qm-ajax-'+ error.type +'"> &nbsp; AJAX: '+ error.type +'</span>')
+						.addClass('qm-' + error.type)
+						.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; AJAX: ' + error.type + '</span>')
 					;
 				}
 			}
@@ -359,7 +359,7 @@ jQuery( function($) {
 				var row	= [];
 				
 				for (var k = 0, l = row_width; k < l; k++) {
-					var e = columns[i+k];
+					var e = columns[i + k];
 					
 					var data = e.dataset.qmSortWeight;
 					
@@ -384,7 +384,7 @@ jQuery( function($) {
 			return rows;
 		};
 		
-		if (!settings.target || !settings.target instanceof $) {
+		if ( ! settings.target || ! settings.target instanceof $) {
 			throw 'Target is not defined or it is not instance of jQuery.';
 		}
 		
@@ -445,9 +445,9 @@ jQuery( function($) {
 					// Convert NodeList into an array.
 					rows = Array.prototype.slice.call(rows, 0);
 					
-					var last_row = rows[data[data.length-1].index];
+					var last_row = rows[data[data.length - 1].index];
 					
-					for (var i = 0, j = data.length-1; i < j; i++) {
+					for (var i = 0, j = data.length - 1; i < j; i++) {
 						tbody[0].insertBefore(rows[data[i].index], last_row);
 						
 						// Restore the index.
@@ -455,7 +455,7 @@ jQuery( function($) {
 					}
 					
 					// // Restore the index.
-					data[data.length-1].index = data.length-1;
+					data[data.length - 1].index = data.length - 1;
 					
 					tbody.prepend(anomalies);
 					

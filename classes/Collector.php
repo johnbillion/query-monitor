@@ -54,7 +54,7 @@ abstract class QM_Collector {
 
 	protected function log_component( $component, $ltime, $type ) {
 
-		if ( !isset( $this->data['component_times'][ $component->name ] ) ) {
+		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
 			$this->data['component_times'][ $component->name ] = array(
 				'component' => $component->name,
 				'calls'     => 0,
@@ -80,10 +80,10 @@ abstract class QM_Collector {
 	}
 
 	public static function format_bool_constant( $constant ) {
-		if ( !defined( $constant ) ) {
+		if ( ! defined( $constant ) ) {
 			/* translators: Undefined PHP constant */
 			return __( 'undefined', 'query-monitor' );
-		} else if ( !constant( $constant ) ) {
+		} else if ( ! constant( $constant ) ) {
 			return 'false';
 		} else {
 			return 'true';

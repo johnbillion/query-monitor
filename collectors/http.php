@@ -102,7 +102,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			case 'response':
 
-				if ( !empty( $class ) ) {
+				if ( ! empty( $class ) ) {
 					$this->data['http'][ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
 				} else {
 					$this->data['http'][ $args['_qm_key'] ]['transport'] = null;
@@ -175,7 +175,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		foreach ( $this->data['http'] as $key => & $http ) {
 
-			if ( !isset( $http['response'] ) ) {
+			if ( ! isset( $http['response'] ) ) {
 				// Timed out
 				$http['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
 				$http['end']      = floatval( $http['start'] + $http['args']['timeout'] );

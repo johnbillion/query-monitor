@@ -55,7 +55,7 @@ class QM_Timer {
 			'data'   => $data,
 		);
 
-		if ( !isset( $name ) ) {
+		if ( ! isset( $name ) ) {
 			/* translators: %s: Timing lap number */
 			$i = sprintf( __( 'Lap %d', 'query-monitor' ), count( $this->laps ) + 1 );
 		} else {
@@ -75,7 +75,7 @@ class QM_Timer {
 
 		foreach ( $this->laps as $lap_id => $lap ) {
 
-			$lap['time_used']   = $lap['time']   - $prev['time'];
+			$lap['time_used']   = $lap['time'] - $prev['time'];
 			$lap['memory_used'] = $lap['memory'] - $prev['memory'];
 
 			$laps[ $lap_id ] = $prev = $lap;

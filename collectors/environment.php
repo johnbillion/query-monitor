@@ -154,7 +154,6 @@ class QM_Collector_Environment extends QM_Collector {
 				);
 
 			}
-
 		}
 
 		$this->data['php']['version'] = phpversion();

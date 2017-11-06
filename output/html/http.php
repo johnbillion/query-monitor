@@ -33,13 +33,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$vars = array();
 
-		if ( !empty( $data['vars'] ) ) {
+		if ( ! empty( $data['vars'] ) ) {
 			foreach ( $data['vars'] as $key => $value ) {
 				$vars[] = $key . ': ' . $value;
 			}
 		}
 
-		if ( !empty( $data['http'] ) ) {
+		if ( ! empty( $data['http'] ) ) {
 
 			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
 
@@ -223,7 +223,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tr>';
 			echo '<td style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
 			echo '</tr>';
-			if ( !empty( $vars ) ) {
+			if ( ! empty( $vars ) ) {
 				echo '<tr>';
 				printf(
 					'<td>%s</td>',

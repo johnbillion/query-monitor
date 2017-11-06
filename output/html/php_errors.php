@@ -65,7 +65,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data['errors'][ $type ] as $error ) {
 
-					if ( !$first ) {
+					if ( ! $first ) {
 						echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
 					}
 
@@ -113,7 +113,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				echo '</tbody>';
 			}
-
 		}
 
 		echo '</table>';

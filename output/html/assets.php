@@ -71,11 +71,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				'header',
 				'footer',
 			) as $position ) {
-
 				if ( isset( $data[ $position ][ $type ] ) ) {
 					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $position ], $type );
 				}
-
 			}
 
 			echo '</table>';
@@ -218,7 +216,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( !empty( $data['broken'] ) or !empty( $data['missing'] ) ) {
+		if ( ! empty( $data['broken'] ) or ! empty( $data['missing'] ) ) {
 			$class[] = 'qm-error';
 		}
 

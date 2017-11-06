@@ -222,7 +222,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = sprintf( 'qm-theme-%s', get_stylesheet() );
 		}
 
-		if ( !is_admin_bar_showing() ) {
+		if ( ! is_admin_bar_showing() ) {
 			$class[] = 'qm-peek';
 		}
 

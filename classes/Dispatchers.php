@@ -38,7 +38,7 @@ class QM_Dispatchers implements IteratorAggregate {
 	public static function init() {
 		static $instance;
 
-		if ( !$instance ) {
+		if ( ! $instance ) {
 			$instance = new QM_Dispatchers;
 		}
 

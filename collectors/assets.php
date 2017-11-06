@@ -53,7 +53,7 @@ class QM_Collector_Assets extends QM_Collector {
 	}
 
 	public function process() {
-		if ( !isset( $this->data['raw'] ) ) {
+		if ( ! isset( $this->data['raw'] ) ) {
 			return;
 		}
 
@@ -67,7 +67,7 @@ class QM_Collector_Assets extends QM_Collector {
 			$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 			$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 
-			if ( !empty( $broken ) ) {
+			if ( ! empty( $broken ) ) {
 				foreach ( $broken as $key => $handle ) {
 					if ( $item = $raw->query( $handle ) ) {
 						$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
@@ -77,7 +77,7 @@ class QM_Collector_Assets extends QM_Collector {
 					}
 				}
 
-				if ( !empty( $broken ) ) {
+				if ( ! empty( $broken ) ) {
 					$this->data['broken'][ $type ] = array_unique( $broken );
 				}
 			}
@@ -91,7 +91,6 @@ class QM_Collector_Assets extends QM_Collector {
 					}
 				}
 			}
-
 		}
 	}
 
@@ -100,13 +99,11 @@ class QM_Collector_Assets extends QM_Collector {
 		$broken = array();
 
 		foreach ( $item->deps as $handle ) {
-
 			if ( $dep = $dependencies->query( $handle ) ) {
 				$broken = array_merge( $broken, $this->get_broken_dependencies( $dep, $dependencies ) );
 			} else {
 				$broken[] = $item->handle;
 			}
-
 		}
 
 		return $broken;

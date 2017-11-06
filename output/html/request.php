@@ -45,7 +45,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			'query_string'  => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
 
-			if ( !isset( $data['request'][ $item ] ) ) {
+			if ( ! isset( $data['request'][ $item ] ) ) {
 				continue;
 			}
 
@@ -87,13 +87,13 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '</th>';
 
-		if ( !empty( $data['qvars'] ) ) {
+		if ( ! empty( $data['qvars'] ) ) {
 
 			$first = true;
 
-			foreach( $data['qvars'] as $var => $value ) {
+			foreach ( $data['qvars'] as $var => $value ) {
 
-				if ( !$first ) {
+				if ( ! $first ) {
 					echo '<tr>';
 				}
 
@@ -116,7 +116,6 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				$first = false;
 
 			}
-
 		} else {
 
 			echo '<td colspan="2"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
@@ -178,7 +177,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '</tbody>';
 
-		if ( !empty( $data['multisite'] ) ) {
+		if ( ! empty( $data['multisite'] ) ) {
 
 			$rowspan = count( $data['multisite'] );
 
@@ -188,9 +187,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			$first = true;
 
-			foreach( $data['multisite'] as $var => $value ) {
+			foreach ( $data['multisite'] as $var => $value ) {
 
-				if ( !$first ) {
+				if ( ! $first ) {
 					echo '<tr>';
 				}
 

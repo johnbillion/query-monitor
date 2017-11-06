@@ -97,9 +97,7 @@ class QM_Collector_Hooks extends QM_Collector {
 					);
 
 				}
-
 			}
-
 		}
 
 		$parts = array_filter( preg_split( '#[_/-]#', $name ) );
