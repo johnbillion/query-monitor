@@ -19,6 +19,7 @@
 		"composer/installers": "~1.0"
 	},
 	"require-dev" : {
+        "wp-coding-standards/wpcs": "^0.13",
 		"phpunit/phpunit": "~5.7"
   }
 }
