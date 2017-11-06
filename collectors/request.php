@@ -59,7 +59,7 @@ class QM_Collector_Request extends QM_Collector {
 		if ( QM_Util::is_multi_network() ) {
 			$this->data['multisite']['current_site'] = array(
 				'title' => sprintf(
-					/* translators: 1: Site ID */
+					/* translators: %d: Site ID */
 					__( 'Current site: #%d', 'query-monitor' ),
 					$current_site->id
 				),
