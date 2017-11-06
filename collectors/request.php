@@ -27,11 +27,28 @@ class QM_Collector_Request extends QM_Collector {
 		global $wp, $wp_query, $current_blog, $current_site;
 
 		$qo = get_queried_object();
+		$user = wp_get_current_user();
+
+		if ( $user->exists() ) {
+			$user_title = sprintf(
+				/* translators: %d: User ID */
+				__( 'Current user: #%d', 'query-monitor' ),
+				$user->ID
+			);
+		} else {
+			/* translators: No user */
+			$user_title = _x( 'None', 'user', 'query-monitor' );
+		}
+
+		$this->data['user'] = array(
+			'title' => $user_title,
+			'data'  => ( $user->exists() ? $user : false ),
+		);
 
 		if ( is_multisite() ) {
 			$this->data['multisite']['current_blog'] = array(
 				'title' => sprintf(
-					/* translators: 1: Blog ID */
+					/* translators: %d: Blog ID */
 					__( 'Current blog: #%d', 'query-monitor' ),
 					$current_blog->blog_id
 				),

@@ -150,6 +150,34 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
+		echo '<tbody class="qm-group">';
+		echo '<tr>';
+		echo '<th>' . esc_html__( 'User', 'query-monitor' ) . '</th>';
+
+		if ( $data['user']['data'] ) {
+			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
+
+			printf( // WPCS: XSS ok.
+				'<div class="qm-inner-toggle">%1$s %2$s</div>',
+				esc_html( $data['user']['title'] ),
+				$this->build_toggler()
+			);
+
+			echo '<div class="qm-toggled">';
+			self::output_inner( $data['user']['data'] );
+			echo '</div>';
+
+			echo '</div></td>';
+		} else {
+			echo '<td colspan="2">';
+			esc_html_e( 'No current user', 'query-monitor' );
+			echo '</td>';
+		}
+
+		echo '</tr>';
+
+		echo '</tbody>';
+
 		if ( !empty( $data['multisite'] ) ) {
 
 			$rowspan = count( $data['multisite'] );
