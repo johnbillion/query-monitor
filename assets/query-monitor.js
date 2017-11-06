@@ -214,8 +214,8 @@ jQuery( function($) {
 
 	$('#qm').find('.qm-filter-trigger').on('click',function(e){
 		var filter = $(this).data('qm-filter'),
-		    value  = $(this).data('qm-value'),
-		    target = $(this).data('qm-target');
+			value  = $(this).data('qm-value'),
+			target = $(this).data('qm-target');
 		$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
 		$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
 		$('html, body').scrollTop( $(this).closest('.qm').offset().top );

@@ -111,7 +111,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( (array) $db->queries as $query ) {
 
 			# @TODO: decide what I want to do with this:
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) ) {
+			if ( false !== strpos( $query[2], 'wp_admin_bar' ) and !isset( $_REQUEST['qm_display_admin_bar'] ) ) { // @codingStandardsIgnoreLine
 				continue;
 			}
 
@@ -176,7 +176,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$types[$type]['callers'][$caller]++;
 			}
 
-			$is_main_query = ( $sql === trim( $wp_the_query->request ) && ( false !== strpos( $stack, ' WP->main,' ) ) );
+			$is_main_query = ( trim( $wp_the_query->request ) === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
 
 			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 

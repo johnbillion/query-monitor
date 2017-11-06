@@ -94,8 +94,8 @@ abstract class QM_Dispatcher {
 	}
 
 	public static function user_verified() {
-		if ( isset( $_COOKIE[QM_COOKIE] ) ) {
-			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) );
+		if ( isset( $_COOKIE[QM_COOKIE] ) ) { // @codingStandardsIgnoreLine
+			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) ); // @codingStandardsIgnoreLine
 		}
 		return false;
 	}

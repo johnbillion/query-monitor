@@ -133,7 +133,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
-			printf(
+			printf( // WPCS: XSS ok.
 				'<div class="qm-inner-toggle">%1$s (%2$s) %3$s</div>',
 				esc_html( $data['queried_object']['title'] ),
 				esc_html( get_class( $data['queried_object']['data'] ) ),
@@ -196,7 +196,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 				echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
-				printf(
+				printf( // WPCS: XSS ok.
 					'<div class="qm-inner-toggle">%1$s %2$s</div>',
 					esc_html( $value['title'] ),
 					$this->build_toggler()

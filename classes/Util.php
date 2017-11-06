@@ -272,7 +272,7 @@ class QM_Util {
 		if ( self::is_ajax() ) {
 			return true;
 		}
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) {
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 		return false;
@@ -382,7 +382,7 @@ class QM_Util {
 	private static function _rsort( $a, $b ) {
 		$field = self::$sort_field;
 
-		if ( $a[ $field ] == $b[ $field ] ) {
+		if ( $a[ $field ] === $b[ $field ] ) {
 			return 0;
 		} else {
 			return ( $a[ $field ] > $b[ $field ] ) ? -1 : 1;
@@ -392,7 +392,7 @@ class QM_Util {
 	private static function _sort( $a, $b ) {
 		$field = self::$sort_field;
 
-		if ( $a[ $field ] == $b[ $field ] ) {
+		if ( $a[ $field ] === $b[ $field ] ) {
 			return 0;
 		} else {
 			return ( $a[ $field ] > $b[ $field ] ) ? 1 : -1;
