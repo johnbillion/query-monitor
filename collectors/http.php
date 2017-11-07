@@ -36,7 +36,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * Filter the arguments used in an HTTP request.
 	 *
 	 * Used to log the request, and to add the logging key to the arguments array.
-	 * 
+	 *
 	 * @param  array  $args HTTP request arguments.
 	 * @param  string $url  The request URL.
 	 * @return array        HTTP request arguments.
@@ -89,7 +89,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	/**
 	 * Debugging action for the HTTP API.
-	 * 
+	 *
 	 * @param mixed  $response A parameter which varies depending on $action.
 	 * @param string $action   The debug action. Currently one of 'response' or 'transports_list'.
 	 * @param string $class    The HTTP transport class name.
@@ -101,7 +101,6 @@ class QM_Collector_HTTP extends QM_Collector {
 		switch ( $action ) {
 
 			case 'response':
-
 				if ( ! empty( $class ) ) {
 					$this->data['http'][ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
 				} else {

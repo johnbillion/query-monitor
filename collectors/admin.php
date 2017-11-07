@@ -59,7 +59,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 			if ( ! empty( $this->data['current_screen']['taxonomy'] ) ) {
 				$list_table['column'] = $this->data['current_screen']['taxonomy'];
-			} else if ( ! empty( $this->data['current_screen']['post_type'] ) ) {
+			} elseif ( ! empty( $this->data['current_screen']['post_type'] ) ) {
 				$list_table['column'] = $this->data['current_screen']['post_type'] . '_posts';
 			} else {
 				$list_table['column'] = $this->data['current_screen']['base'];
@@ -73,9 +73,9 @@ class QM_Collector_Admin extends QM_Collector {
 
 			if ( 'edit-comments' === $list_table['column'] ) {
 				$list_table['column'] = 'comments';
-			} else if ( 'upload' === $list_table['column'] ) {
+			} elseif ( 'upload' === $list_table['column'] ) {
 				$list_table['column'] = 'media';
-			} else if ( 'link-manager' === $list_table['column'] ) {
+			} elseif ( 'link-manager' === $list_table['column'] ) {
 				$list_table['column'] = 'link';
 			}
 

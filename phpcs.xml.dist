@@ -30,6 +30,7 @@
 		<!-- QM currently supports PHP versions older than 5.3: -->
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode" />
 
+		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.Commenting" />
 		<exclude name="Squiz.PHP.CommentedOutCode" />
 		<!-- @TODO remove this exclusion: -->
@@ -37,7 +38,8 @@
 
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 
-		<exclude name="PSR2" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 
 	</rule>
 

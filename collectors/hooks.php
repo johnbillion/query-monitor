@@ -83,7 +83,7 @@ class QM_Collector_Hooks extends QM_Collector {
 					if ( isset( $callback['component'] ) ) {
 						if (
 							( $hide_qm && 'query-monitor' === $callback['component']->context )
-							|| ( $hide_core && 'core' === $callback['component']->context ) 
+							|| ( $hide_core && 'core' === $callback['component']->context )
 						) {
 							continue;
 						}

@@ -150,7 +150,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		if ( $e['type'] & E_RECOVERABLE_ERROR ) {
 			$error = 'Catchable fatal error';
-		} else if ( $e['type'] & E_COMPILE_WARNING ) {
+		} elseif ( $e['type'] & E_COMPILE_WARNING ) {
 			$error = 'Warning';
 		} else {
 			$error = 'Fatal error';

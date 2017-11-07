@@ -36,7 +36,7 @@ class QM_Collector_Overview extends QM_Collector {
 
 		if ( function_exists( 'memory_get_peak_usage' ) ) {
 			$this->data['memory'] = memory_get_peak_usage();
-		} else if ( function_exists( 'memory_get_usage' ) ) {
+		} elseif ( function_exists( 'memory_get_usage' ) ) {
 			$this->data['memory'] = memory_get_usage();
 		} else {
 			$this->data['memory'] = 0;

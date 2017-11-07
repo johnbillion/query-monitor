@@ -107,7 +107,7 @@ class QM_Collector_Environment extends QM_Collector {
 				if ( is_resource( $db->dbh ) ) {
 					# Old mysql extension
 					$extension = 'mysql';
-				} else if ( is_object( $db->dbh ) ) {
+				} elseif ( is_object( $db->dbh ) ) {
 					# mysqli or PDO
 					$extension = get_class( $db->dbh );
 				} else {

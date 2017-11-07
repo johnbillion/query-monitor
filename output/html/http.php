@@ -84,7 +84,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css      = '';
 
 					if ( intval( $code ) >= 400 ) {
-						$is_error = true;;
+						$is_error = true;
 					}
 
 					$response = $code . ' ' . $msg;
@@ -275,7 +275,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( isset( $data['errors']['alert'] ) ) {
 			$args['meta']['classname'] = 'qm-alert';
-		} else if ( isset( $data['errors']['warning'] ) ) {
+		} elseif ( isset( $data['errors']['warning'] ) ) {
 			$args['meta']['classname'] = 'qm-warning';
 		}
 

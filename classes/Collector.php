@@ -83,7 +83,7 @@ abstract class QM_Collector {
 		if ( ! defined( $constant ) ) {
 			/* translators: Undefined PHP constant */
 			return __( 'undefined', 'query-monitor' );
-		} else if ( ! constant( $constant ) ) {
+		} elseif ( ! constant( $constant ) ) {
 			return 'false';
 		} else {
 			return 'true';

@@ -197,7 +197,7 @@ class QM_Util {
 
 				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
-			} else if ( is_object( $callback['function'] ) ) {
+			} elseif ( is_object( $callback['function'] ) ) {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
 					$ref  = new ReflectionFunction( $callback['function'] );
 					$file = QM_Util::standard_dir( $ref->getFileName(), '' );

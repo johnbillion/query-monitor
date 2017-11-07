@@ -88,7 +88,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					foreach ( $filtered_trace as $i => $item ) {
 						if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
 							$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
-						} else if ( 0 === $i ) {
+						} elseif ( 0 === $i ) {
 							$stack[] = self::output_filename( $item['display'], $error->file, $error->line );
 						} else {
 							$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';

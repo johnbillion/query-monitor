@@ -123,10 +123,10 @@ class QM_Backtrace {
 					}
 					$ref = new ReflectionMethod( $item['class'], $item['function'] );
 					$file = $ref->getFileName();
-				} else if ( function_exists( $item['function'] ) ) {
+				} elseif ( function_exists( $item['function'] ) ) {
 					$ref = new ReflectionFunction( $item['function'] );
 					$file = $ref->getFileName();
-				} else if ( isset( $item['file'] ) ) {
+				} elseif ( isset( $item['file'] ) ) {
 					$file = $item['file'];
 				} else {
 					continue;
@@ -220,9 +220,9 @@ class QM_Backtrace {
 		if ( isset( $trace['class'] ) ) {
 			if ( isset( self::$ignore_class[ $trace['class'] ] ) ) {
 				$return = null;
-			} else if ( isset( self::$ignore_method[ $trace['class'] ][ $trace['function'] ] ) ) {
+			} elseif ( isset( self::$ignore_method[ $trace['class'] ][ $trace['function'] ] ) ) {
 				$return = null;
-			} else if ( 0 === strpos( $trace['class'], 'QM_' ) ) {
+			} elseif ( 0 === strpos( $trace['class'], 'QM_' ) ) {
 				$return = null;
 			} else {
 				$return['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';
@@ -231,7 +231,7 @@ class QM_Backtrace {
 		} else {
 			if ( isset( self::$ignore_func[ $trace['function'] ] ) ) {
 				$return = null;
-			} else if ( isset( self::$show_args[ $trace['function'] ] ) ) {
+			} elseif ( isset( self::$show_args[ $trace['function'] ] ) ) {
 				$show = self::$show_args[ $trace['function'] ];
 
 				if ( 'dir' === $show ) {
