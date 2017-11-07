@@ -19,11 +19,13 @@ var QM_i18n = {
 
 	number_format : function( number, decimals ) {
 
-		if ( isNaN( number ) )
+		if ( isNaN( number ) ) {
 			return;
+		}
 
-		if ( ! decimals )
+		if ( ! decimals ) {
 			decimals = 0;
+		}
 
 		number = parseFloat( number );
 
@@ -34,15 +36,17 @@ var QM_i18n = {
 			o = '';
 
 		if ( num_str.length > 3 ) {
-			for ( i = num_str.length; i > 3; i -= 3 )
+			for ( i = num_str.length; i > 3; i -= 3 ) {
 				o = qm_locale.number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
+			}
 			o = num_str.slice( 0, i ) + o;
 		} else {
 			o = num_str;
 		}
 
-		if ( decimals )
+		if ( decimals ) {
 			o = o + qm_locale.number_format.decimal_point + fraction;
+		}
 
 		return o;
 
@@ -52,8 +56,9 @@ var QM_i18n = {
 
 jQuery( function($) {
 
-	if ( ! window.qm )
+	if ( ! window.qm ) {
 		return;
+	}
 
 	var is_admin = $('body').hasClass('wp-admin');
 
@@ -81,8 +86,9 @@ jQuery( function($) {
 				.attr('href',el.href)
 			;
 
-			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) )
+			if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) ) {
 				new_menu.addClass(el.meta.classname);
+			}
 
 			container.appendChild( new_menu.get(0) );
 
@@ -186,11 +192,13 @@ jQuery( function($) {
 		var matches = tr.filter(':visible');
 		matches.each(function(i){
 			var row_time = $(this).attr('data-qm-time');
-			if ( row_time )
+			if ( row_time ) {
 				time += parseFloat( row_time );
+			}
 		});
-		if ( time )
+		if ( time ) {
 			time = QM_i18n.number_format( time, 4 );
+		}
 
 		var results = table.find('.qm-items-shown').removeClass('qm-hide');
 		results.find('.qm-items-number').text( QM_i18n.number_format( matches.length, 0 ) );
@@ -265,8 +273,9 @@ jQuery( function($) {
 
 		var errors = response.getResponseHeader( 'X-QM-error-count' );
 
-		if ( ! errors )
+		if ( ! errors ) {
 			return event;
+		}
 
 		errors = parseInt( errors, 10 );
 
@@ -398,10 +407,11 @@ jQuery( function($) {
 
 				table.find('th').removeClass('qm-sorted-asc qm-sorted-desc');
 
-				if ( desc )
+				if ( desc ) {
 					$(this).closest('th').addClass('qm-sorted-desc');
-				else
+				} else {
 					$(this).closest('th').addClass('qm-sorted-asc');
+				}
 
 				table.find('tbody:not(.qm-sort-no)').each(function () {
 					var tbody = $(this);
@@ -460,7 +470,6 @@ jQuery( function($) {
 					tbody.prepend(anomalies);
 
 					table.append(tbody);
-
 
 					if (settings.debug) {
 						console.timeEnd('build table');
