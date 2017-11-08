@@ -40,10 +40,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	public function __construct() {
-		if ( defined( 'QM_PHP_ERRORS_DISABLED' ) and QM_PHP_ERRORS_DISABLED ) {
+		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) and QM_DISABLE_ERROR_HANDLER ) {
 			return;
 		}
-		
+
 		parent::__construct();
 		set_error_handler( array( $this, 'error_handler' ) );
 		register_shutdown_function( array( $this, 'shutdown_handler' ) );
