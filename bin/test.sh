@@ -3,7 +3,6 @@
 set -e
 
 # Lint all the PHP files for syntax errors:
-# (This is primarily used to ensure newer PHP syntax isn't accidentally used.)
 if find . -not \( -path ./vendor -prune \) -not \( -path ./features -prune \) -name "*.php" -exec php -l {} \; | grep "^[Parse error|Fatal error]"; then
 	exit 1;
 fi;
