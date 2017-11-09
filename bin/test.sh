@@ -8,8 +8,9 @@ if find . -not \( -path ./vendor -prune \) -not \( -path ./features -prune \) -n
 fi;
 
 # Specify the directory where the WordPress test library lives:
+TMPDIR=${TMPDIR-/tmp}
 if [ -z "$WP_TESTS_DIR" ]; then
-	WP_TESTS_DIR="/tmp/wordpress-tests-lib"
+	WP_TESTS_DIR="${TMPDIR}/wordpress-tests-lib"
 fi
 
 # Nicer error message if the setup script hasn't been run:
