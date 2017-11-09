@@ -11,7 +11,10 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 		$admin = $this->factory->user->create_and_get( array(
 			'role' => 'administrator',
 		) );
-		$admin->add_cap( 'view_query_monitor' );
+
+		if ( is_multisite() ) {
+			grant_super_admin( $admin->ID );
+		}
 
 		wp_set_current_user( $admin->ID );
 
