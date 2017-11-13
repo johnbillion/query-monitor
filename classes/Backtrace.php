@@ -68,7 +68,7 @@ class QM_Backtrace {
 		# @TODO save the args as a property and process the trace JIT
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
-			'ignore_items'          => 0,
+			'ignore_frames'         => 0,
 		), $args );
 		$this->trace = debug_backtrace( false );
 		$this->ignore( 1 ); # Self-awareness
@@ -81,8 +81,8 @@ class QM_Backtrace {
 			$this->ignore( 1 );
 		}
 
-		if ( $args['ignore_items'] ) {
-			$this->ignore( $args['ignore_items'] );
+		if ( $args['ignore_frames'] ) {
+			$this->ignore( $args['ignore_frames'] );
 		}
 		if ( $args['ignore_current_filter'] ) {
 			$this->ignore_current_filter();
@@ -131,23 +131,23 @@ class QM_Backtrace {
 
 		$components = array();
 
-		foreach ( $this->trace as $item ) {
+		foreach ( $this->trace as $frame ) {
 			try {
 
-				if ( isset( $item['class'] ) ) {
-					if ( ! is_object( $item['class'] ) and ! class_exists( $item['class'], false ) ) {
+				if ( isset( $frame['class'] ) ) {
+					if ( ! is_object( $frame['class'] ) and ! class_exists( $frame['class'], false ) ) {
 						continue;
 					}
-					if ( ! method_exists( $item['class'], $item['function'] ) ) {
+					if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
 						continue;
 					}
-					$ref = new ReflectionMethod( $item['class'], $item['function'] );
+					$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
 					$file = $ref->getFileName();
-				} elseif ( function_exists( $item['function'] ) ) {
-					$ref = new ReflectionFunction( $item['function'] );
+				} elseif ( function_exists( $frame['function'] ) ) {
+					$ref = new ReflectionFunction( $frame['function'] );
 					$file = $ref->getFileName();
-				} elseif ( isset( $item['file'] ) ) {
-					$file = $item['file'];
+				} elseif ( isset( $frame['file'] ) ) {
+					$file = $frame['file'];
 				} else {
 					continue;
 				}

@@ -105,7 +105,7 @@ class QM_DB extends wpdb {
 
 		$i = $this->num_queries - 1;
 		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
-			'ignore_items' => 1,
+			'ignore_frames' => 1,
 		) );
 
 		if ( $this->last_error ) {
