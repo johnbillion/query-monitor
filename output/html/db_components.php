@@ -30,7 +30,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		}
 
 		$total_time  = 0;
-		$total_calls = 0;
 		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
@@ -64,7 +63,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 			foreach ( $data['times'] as $row ) {
 				$total_time  += $row['ltime'];
-				$total_calls += $row['calls'];
 
 				echo '<tr>';
 				echo '<th scope="row"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</a></th>';

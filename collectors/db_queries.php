@@ -81,13 +81,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		if ( ! isset( $this->data['times'][ $caller ] ) ) {
 			$this->data['times'][ $caller ] = array(
 				'caller' => $caller,
-				'calls' => 0,
 				'ltime' => 0,
 				'types' => array(),
 			);
 		}
 
-		$this->data['times'][ $caller ]['calls']++;
 		$this->data['times'][ $caller ]['ltime'] += $ltime;
 
 		if ( isset( $this->data['times'][ $caller ]['types'][ $type ] ) ) {

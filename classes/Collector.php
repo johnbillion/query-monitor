@@ -57,13 +57,11 @@ abstract class QM_Collector {
 		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
 			$this->data['component_times'][ $component->name ] = array(
 				'component' => $component->name,
-				'calls'     => 0,
 				'ltime'     => 0,
 				'types'     => array(),
 			);
 		}
 
-		$this->data['component_times'][ $component->name ]['calls']++;
 		$this->data['component_times'][ $component->name ]['ltime'] += $ltime;
 
 		if ( isset( $this->data['component_times'][ $component->name ]['types'][ $type ] ) ) {
