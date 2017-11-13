@@ -88,6 +88,26 @@ class QM_Backtrace {
 			$this->ignore_current_filter();
 		}
 
+		foreach ( $this->trace as $k => $frame ) {
+			if ( ! isset( $frame['args'] ) ) {
+				continue;
+			}
+
+			if ( isset( self::$show_args[ $frame['function'] ] ) ) {
+				$show = self::$show_args[ $frame['function'] ];
+
+				if ( 'dir' === $show ) {
+					$show = 1;
+				}
+
+				$frame['args'] = array_slice( $frame['args'], 0, $show );
+
+			} else {
+				unset( $frame['args'] );
+			}
+
+			$this->trace[ $k ] = $frame;
+		}
 	}
 
 	public function get_stack() {
