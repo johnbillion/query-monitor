@@ -309,9 +309,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( ! isset( $row['result'] ) ) {
 			unset( $cols['result'], $cols['errno'] );
 		}
-		if ( ! isset( $row['stack'] ) ) {
-			unset( $cols['stack'] );
-		}
 
 		$stime = number_format_i18n( $row['ltime'], 4 );
 		$td = $this->collector->is_expensive( $row ) ? ' qm-expensive' : '';

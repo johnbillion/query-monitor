@@ -175,7 +175,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			$is_main_query = ( trim( $wp_the_query->request ) === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
 
-			$row = compact( 'caller', 'caller_name', 'stack', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
+			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
+
+			if ( ! isset( $trace ) ) {
+				$row['stack'] = $stack;
+			}
 
 			if ( is_wp_error( $result ) ) {
 				$this->data['errors'][] = $row;
