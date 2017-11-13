@@ -91,6 +91,9 @@ class QM_Collector_Hooks extends QM_Collector {
 						$components[ $callback['component']->name ] = $callback['component']->name;
 					}
 
+					// This isn't used and takes up a ton of memory:
+					unset( $callback['function'] );
+
 					$actions[] = array(
 						'priority'  => $priority,
 						'callback'  => $callback,
