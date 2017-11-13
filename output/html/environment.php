@@ -116,14 +116,17 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		if ( ! empty( $data['php']['extensions'] ) ) {
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html__( 'Extensions', 'query-monitor' ) . '</th>';
-			echo '<td class="qm-has-toggle qm-ltr"><div class="qm-toggler">';
+			echo '<td class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
 
-			echo esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) );
-			echo $this->build_toggler(); // WPCS: XSS ok;
+			printf( // WPCS: XSS ok.
+				'<div class="qm-inner-toggle">%1$s %2$s</div>',
+				esc_html( number_format_i18n( count( $data['php']['extensions'] ) ) ),
+				$this->build_toggler()
+			);
 
-			echo '<div class="qm-toggled"><ul class="qm-supplemental"><li>';
-			echo implode( '</li><li>', array_map( 'esc_html', $data['php']['extensions'] ) );
-			echo '</li></ul></div>';
+			echo '<div class="qm-toggled">';
+			self::output_inner( $data['php']['extensions'] );
+			echo '</div>';
 
 			echo '</div></td>';
 			echo '</tr>';

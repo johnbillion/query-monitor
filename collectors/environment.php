@@ -168,19 +168,19 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
 		}
 
-		if ( is_callable( 'get_loaded_extensions' ) ) {
-			$this->data['php']['extensions'] = get_loaded_extensions();
-		} else {
-			$this->data['php']['extensions'] = array();
-		}
-
 		if ( defined( 'SORT_FLAG_CASE' ) ) {
 			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
 		} else {
 			$sort_flags = SORT_STRING;
 		}
 
-		sort( $this->data['php']['extensions'], $sort_flags );
+		if ( is_callable( 'get_loaded_extensions' ) ) {
+			$extensions = get_loaded_extensions();
+			sort( $extensions, $sort_flags );
+			$this->data['php']['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+		} else {
+			$this->data['php']['extensions'] = array();
+		}
 
 		$this->data['php']['error_reporting'] = error_reporting();
 
@@ -227,6 +227,27 @@ class QM_Collector_Environment extends QM_Collector {
 			'host'    => php_uname( 'n' ),
 		);
 
+	}
+
+	public function get_extension_version( $extension ) {
+		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
+		// crap to their version number, so we need to pluck out the first numeric value in the string.
+		$version = phpversion( $extension );
+
+		if ( ! $version ) {
+			return $version;
+		}
+
+		$parts = explode( ' ', $version );
+
+		foreach ( $parts as $part ) {
+			if ( is_numeric( $part[0] ) ) {
+				$version = $part;
+				break;
+			}
+		}
+
+		return $version;
 	}
 
 	protected static function get_current_user() {
