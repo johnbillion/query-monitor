@@ -156,7 +156,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$src = $source;
 		}
 
-		$dependents = $this->collector::get_dependents( $dependency, $dependencies );
+		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
 		$deps = $dependency->deps;
 		sort( $deps );
 

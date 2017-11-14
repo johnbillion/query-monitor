@@ -108,7 +108,7 @@ class QM_Collector_Assets extends QM_Collector {
 		return $broken;
 	}
 
-	public static function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
 		$dependents = array();
 		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
