@@ -13,7 +13,11 @@
 		<exclude name="WordPress.Files.FileName" />
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
-		<exclude name="WordPress.PHP.DevelopmentFunctions" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_trigger_error" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_print_r" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
 		<exclude name="WordPress.DB.RestrictedFunctions" />
