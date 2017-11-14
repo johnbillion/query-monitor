@@ -70,7 +70,7 @@ class QM_Collector_Assets extends QM_Collector {
 			if ( ! empty( $broken ) ) {
 				foreach ( $broken as $key => $handle ) {
 					if ( $item = $raw->query( $handle ) ) {
-						$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
+						$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
 					} else {
 						unset( $broken[ $key ] );
 						$missing[] = $handle;
@@ -94,20 +94,18 @@ class QM_Collector_Assets extends QM_Collector {
 		}
 	}
 
-	protected function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
-
+	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
 		$broken = array();
 
 		foreach ( $item->deps as $handle ) {
 			if ( $dep = $dependencies->query( $handle ) ) {
-				$broken = array_merge( $broken, $this->get_broken_dependencies( $dep, $dependencies ) );
+				$broken = array_merge( $broken, self::get_broken_dependencies( $dep, $dependencies ) );
 			} else {
 				$broken[] = $item->handle;
 			}
 		}
 
 		return $broken;
-
 	}
 
 	public static function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
