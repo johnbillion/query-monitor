@@ -21,6 +21,6 @@
 	"require-dev" : {
 		"wimg/php-compatibility": "^8",
 		"wp-coding-standards/wpcs": "^0.13",
-		"phpunit/phpunit": "~5.7"
+		"phpunit/phpunit": "5.7.23"
   }
 }
