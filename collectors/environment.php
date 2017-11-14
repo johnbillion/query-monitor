@@ -50,7 +50,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
-	public static function get_error_levels( $error_reporting ) {
+	protected static function get_error_levels( $error_reporting ) {
 		$levels = array(
 			'E_ERROR'             => false,
 			'E_WARNING'           => false,
@@ -183,6 +183,7 @@ class QM_Collector_Environment extends QM_Collector {
 		}
 
 		$this->data['php']['error_reporting'] = error_reporting();
+		$this->data['php']['error_levels']    = self::get_error_levels( $this->data['php']['error_reporting'] );
 
 		$this->data['wp'] = array(
 			'version'             => $wp_version,

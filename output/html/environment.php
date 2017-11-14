@@ -86,10 +86,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		$error_levels = $this->collector->get_error_levels( $data['php']['error_reporting'] );
 		$out = array();
 
-		foreach ( $error_levels as $level => $reported ) {
+		foreach ( $data['php']['error_levels'] as $level => $reported ) {
 			if ( $reported ) {
 				$out[] = esc_html( $level ) . '&nbsp;&#x2713;';
 			} else {
