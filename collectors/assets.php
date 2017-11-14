@@ -110,6 +110,23 @@ class QM_Collector_Assets extends QM_Collector {
 
 	}
 
+	public static function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+		$dependents = array();
+		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
+
+		foreach ( $handles as $handle ) {
+			if ( $item = $dependencies->query( $handle ) ) {
+				if ( in_array( $dependency->handle, $item->deps, true ) ) {
+					$dependents[] = $handle;
+				}
+			}
+		}
+
+		sort( $dependents );
+
+		return $dependents;
+	}
+
 	public function name() {
 		return __( 'Scripts & Styles', 'query-monitor' );
 	}

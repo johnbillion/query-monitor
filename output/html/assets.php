@@ -156,7 +156,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$src = $source;
 		}
 
-		$dependents = self::get_dependents( $dependency, $dependencies, $type );
+		$dependents = $this->collector::get_dependents( $dependency, $dependencies );
 		$deps = $dependency->deps;
 		sort( $deps );
 
@@ -190,26 +190,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	public function _prefix_type( $val ) {
 		return $this->type . '-' . $val;
-	}
-
-	protected static function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
-
-		// @TODO move this into the collector
-		$dependents = array();
-		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
-
-		foreach ( $handles as $handle ) {
-			if ( $item = $dependencies->query( $handle ) ) {
-				if ( in_array( $dependency->handle, $item->deps, true ) ) {
-					$dependents[] = $handle;
-				}
-			}
-		}
-
-		sort( $dependents );
-
-		return $dependents;
-
 	}
 
 	public function admin_class( array $class ) {
