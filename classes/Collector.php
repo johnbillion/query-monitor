@@ -17,6 +17,7 @@ GNU General Public License for more details.
 if ( ! class_exists( 'QM_Collector' ) ) {
 abstract class QM_Collector {
 
+	protected $timer;
 	protected $data = array(
 		'types'           => array(),
 		'component_times' => array(),
@@ -123,6 +124,14 @@ abstract class QM_Collector {
 	public function process() {}
 
 	public function tear_down() {}
+
+	public function get_timer() {
+		return $this->timer;
+	}
+
+	public function set_timer( QM_Timer $timer ) {
+		$this->timer = $timer;
+	}
 
 }
 }

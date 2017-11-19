@@ -198,7 +198,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		/* @var QM_Output_Html[] */
 		foreach ( $this->get_outputters( 'html' ) as $id => $output ) {
+			$timer = new QM_Timer;
+			$timer->start();
+
 			$output->output();
+
+			$output->set_timer( $timer->stop() );
 		}
 
 		$this->after_output();
