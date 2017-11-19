@@ -49,21 +49,12 @@ abstract class QM_Dispatcher {
 	}
 
 	public function get_outputters( $outputter_id ) {
-
-		$out = array();
-
 		$collectors = QM_Collectors::init();
 		$collectors->process();
 
 		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 
-		/* @var QM_Output[] */
-		foreach ( $this->outputters as $id => $outputter ) {
-			$out[ $id ] = $outputter;
-		}
-
-		return $out;
-
+		return $this->outputters;
 	}
 
 	public function init() {
