@@ -274,6 +274,93 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</table>';
 		echo '</div>';
 
+		echo '<div class="qm qm-half" id="qm-self">';
+		echo '<table cellspacing="0">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th>' . esc_html__( 'Self Awareness', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html__( 'Data', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num" colspan="2">' . esc_html__( 'Processing', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num" colspan="2">' . esc_html__( 'Output', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<th>&nbsp;</th>';
+		echo '<th class="qm-num">' . esc_html_x( 'kB', 'kilobytes', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html_x( 'ms', 'milliseconds', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html_x( 'kB', 'kilobytes', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html_x( 'ms', 'milliseconds', 'query-monitor' ) . '</th>';
+		echo '<th class="qm-num">' . esc_html_x( 'kB', 'kilobytes', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		$total_time = $total_memory = array(
+			'data'       => 0,
+			'processing' => 0,
+			'output'     => 0,
+		);
+
+		foreach ( $this->outputters as $outputter ) {
+			$collector       = $outputter->get_collector();
+			$collector_timer = $collector->get_timer();
+			$output_timer    = $outputter->get_timer();
+
+			$processing_time = $collector_timer->get_time();
+			$total_time['processing'] += $processing_time;
+
+			$processing_memory = $collector_timer->get_memory();
+			$total_memory['processing'] += $processing_memory;
+
+			$output_time = $output_timer->get_time();
+			$total_time['output'] += $output_time;
+
+			$output_memory = $output_timer->get_memory();
+			$total_memory['output'] += $output_memory;
+
+			if ( $collector instanceof QM_Collector_Debug_Bar ) {
+				$data_kb = '-';
+			} else {
+				$data_size = self::size( $collector->get_data() );
+
+				if ( $data_size instanceof Exception ) {
+					$data_kb = $data_size->getMessage();
+				} elseif ( ! is_numeric( $data_size ) ) {
+					$data_kb = $data_size;
+				} else {
+					$total_memory['data'] += $data_size;
+					$data_kb = number_format_i18n( $data_size / 1024, 1 );
+				}
+			}
+
+			echo '<tr>';
+			echo '<td>' . esc_html( $collector->name() ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( $data_kb ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $processing_time * 1000, 1 ) ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $processing_memory / 1024, 1 ) ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $output_time * 1000, 1 ) ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $output_memory / 1024, 1 ) ) . '</td>';
+			echo '</tr>';
+		}
+
+		echo '</tbody>';
+
+		echo '<tfoot>';
+		echo '<tr>';
+		echo '<td style="text-align:right !important">' . esc_html__( 'Total', 'query-monitor' ) . '</td>';
+		echo '<td class="qm-num">' . esc_html( number_format_i18n( $total_memory['data'] / 1024, 1 ) ) . '</td>';
+		echo '<td class="qm-num">' . esc_html( number_format_i18n( $total_time['processing'] * 1000, 1 ) ) . '</td>';
+		echo '<td class="qm-num">' . esc_html( number_format_i18n( $total_memory['processing'] / 1024, 1 ) ) . '</td>';
+		echo '<td class="qm-num">' . esc_html( number_format_i18n( $total_time['output'] * 1000, 1 ) ) . '</td>';
+		echo '<td class="qm-num">' . esc_html( number_format_i18n( $total_memory['output'] / 1024, 1 ) ) . '</td>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td colspan="6" style="text-align:right !important" class="qm-info"><em>' . esc_html__( 'Note: A negative value for "Processing kB" means data was filtered out during processing', 'query-monitor' ) . '</em></td>';
+		echo '</tr>';
+		echo '</tfoot>';
+
+		echo '</table>';
+		echo '</div>';
+
 		echo '</div>';
 		echo '</div>';
 
@@ -293,6 +380,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		<?php
 		echo '</script>' . "\n\n";
 
+	}
+
+	protected static function size( $var ) {
+		$start_memory = memory_get_usage();
+
+		try {
+			$var = unserialize( serialize( $var ) ); // @codingStandardsIgnoreLine
+		} catch ( Exception $e ) {
+			return $e;
+		}
+
+		return memory_get_usage() - $start_memory - ( PHP_INT_SIZE * 8 );
 	}
 
 	public function js_admin_bar_menu() {
