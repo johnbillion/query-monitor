@@ -124,9 +124,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['errors'] ) ) {
-			foreach ( $data['errors'] as $type => $errors ) {
-				$class[] = 'qm-' . $type;
+		if ( ! empty( $data['filtered_errors'] ) ) {
+			foreach ( $data['filtered_errors'] as $type => $errors ) {
+				if ( ! empty( $errors ) ) {
+					$class[] = 'qm-' . $type;
+				}
 			}
 		}
 
