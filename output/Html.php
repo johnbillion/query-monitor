@@ -146,7 +146,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string Markup for the column sorter controls.
 	 */
 	protected function build_toggler() {
-		$out = '<button class="qm-toggle" data-on="+" data-off="-">+</button>';
+		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-pressed="false">+</button>';
 		return $out;
 	}
 
