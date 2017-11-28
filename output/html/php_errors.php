@@ -155,13 +155,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			$count = 0;
 
-			if ( isset( $data['errors'][ "{$type}-suppressed" ] ) ) {
+			if ( isset( $data['filtered_errors'][ "{$type}-suppressed" ] ) ) {
 				$key   = "{$type}-suppressed";
-				$count = count( $data['errors'][ $key ] );
+				$count = count( $data['filtered_errors'][ $key ] );
 			}
-			if ( isset( $data['errors'][ $type ] ) ) {
+			if ( isset( $data['filtered_errors'][ $type ] ) ) {
 				$key   = $type;
-				$count += count( $data['errors'][ $key ] );
+				$count += count( $data['filtered_errors'][ $key ] );
 			}
 
 			if ( ! $count ) {
