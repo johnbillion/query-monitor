@@ -235,12 +235,12 @@ jQuery( function($) {
 
 	$('#qm').find('.qm-toggle').on('click',function(e){
 		var el = $(this);
-		var currentState = el.attr('aria-pressed');
+		var currentState = el.attr('aria-expanded');
 		var newState = 'true';
 		if (currentState === 'true') {
 			newState = 'false';
 		}
-		el.attr('aria-pressed', newState);
+		el.attr('aria-expanded', newState);
 		$(this).closest('td').find('.qm-toggled').slideToggle(100,function(){
 			if ( el.attr('data-off') == el.text() ) {
 				el.closest('td').removeClass('qm-toggled-on');
