@@ -37,7 +37,7 @@ var QM_i18n = {
 
 		if ( num_str.length > 3 ) {
 			for ( i = num_str.length; i > 3; i -= 3 ) {
-				o = qm_locale.number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
+				o = qm_number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
 			}
 			o = num_str.slice( 0, i ) + o;
 		} else {
@@ -45,7 +45,7 @@ var QM_i18n = {
 		}
 
 		if ( decimals ) {
-			o = o + qm_locale.number_format.decimal_point + fraction;
+			o = o + qm_number_format.decimal_point + fraction;
 		}
 
 		return o;

@@ -160,8 +160,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 		wp_localize_script(
 			'query-monitor',
-			'qm_locale',
-			(array) $wp_locale
+			'qm_number_format',
+			$wp_locale->number_format
 		);
 		wp_localize_script(
 			'query-monitor',
