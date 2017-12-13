@@ -36,7 +36,7 @@ class QM_Dispatcher_JSON extends QM_Dispatcher_Html {
 
 		require_once $this->qm->plugin_path( 'output/JSON.php' );
 
-		$out = [];
+		$out = array();
 
 		foreach ( $collectors as $id => $collector ) {
 			$outputter = new QM_Output_JSON( $collector );
