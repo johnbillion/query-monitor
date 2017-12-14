@@ -41,6 +41,10 @@ class QM_Dispatcher_JSON extends QM_Dispatcher_Html {
 		foreach ( $collectors as $id => $collector ) {
 			$outputter = new QM_Output_JSON( $collector );
 			$out[ $id ] = $outputter->get_output();
+			$out[ $id ]['_collector'] = array(
+				'id'   => $collector->id(),
+				'name' => $collector->name(),
+			);
 		}
 
 		echo '<script>var qm_json = ' . wp_json_encode( $out ) . ';</script>';
