@@ -197,12 +197,21 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		$json = array();
+
 		$this->before_output();
 
 		/* @var QM_Output_Html[] */
 		foreach ( $this->get_outputters( 'html' ) as $id => $output ) {
 			$timer = new QM_Timer;
 			$timer->start();
+
+			$collector   = $output->get_collector();
+			$json[ $id ] = $collector->get_data();
+			$json[ $id ]['_collector'] = array(
+				'id'   => $collector->id(),
+				'name' => $collector->name(),
+			);
 
 			if ( method_exists( $output, 'template' ) ) {
 				?>
@@ -217,6 +226,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 			$output->set_timer( $timer->stop() );
 		}
+
+		echo '<script>var qm_json = ' . wp_json_encode( $json ) . ';</script>';
 
 		$this->after_output();
 
