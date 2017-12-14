@@ -99,6 +99,13 @@ jQuery( function($) {
 		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
 			var paused = true;
 
+			_.each( qm_json, function( data, id ) {
+				if ( $( '#tmpl-qm-' + id ).length ) {
+					var panel_template = wp.template( 'qm-' + id );
+					$( '#qm-out-' + id ).html( panel_template( data ) );
+				}
+			} );
+
 			if ( is_admin ) {
 				$('#wpfooter').css('position','relative');
 			}

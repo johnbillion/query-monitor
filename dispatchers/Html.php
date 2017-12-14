@@ -204,7 +204,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer = new QM_Timer;
 			$timer->start();
 
-			$output->output();
+			if ( method_exists( $output, 'template' ) ) {
+				?>
+				<script type="text/html" id="tmpl-qm-<?php echo esc_attr( $id ); ?>">
+					<?php $output->template(); ?>
+				</script>
+				<div id="qm-out-<?php echo esc_attr( $id ); ?>"></div>
+				<?php
+			} else {
+				$output->output();
+			}
 
 			$output->set_timer( $timer->stop() );
 		}
