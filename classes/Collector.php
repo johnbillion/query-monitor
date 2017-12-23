@@ -123,6 +123,8 @@ abstract class QM_Collector {
 
 	public function process() {}
 
+	public function post_process() {}
+
 	public function tear_down() {}
 
 	public function get_timer() {

@@ -52,6 +52,7 @@ class QM_Collectors implements IteratorAggregate {
 		if ( $this->processed ) {
 			return;
 		}
+
 		foreach ( $this as $collector ) {
 			$collector->tear_down();
 
@@ -62,6 +63,11 @@ class QM_Collectors implements IteratorAggregate {
 
 			$collector->set_timer( $timer->stop() );
 		}
+
+		foreach ( $this as $collector ) {
+			$collector->post_process();
+		}
+
 		$this->processed = true;
 	}
 
