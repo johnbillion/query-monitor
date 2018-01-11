@@ -169,6 +169,7 @@ class QM_Collector_Environment extends QM_Collector {
 		}
 
 		if ( defined( 'SORT_FLAG_CASE' ) ) {
+			// phpcs:ignore PHPCompatibility.PHP.NewConstants
 			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
 		} else {
 			$sort_flags = SORT_STRING;

@@ -16,12 +16,14 @@ GNU General Public License for more details.
 
 # E_DEPRECATED and E_USER_DEPRECATED were introduced in PHP 5.3 so we need to use back-compat constants that work on 5.2.
 if ( defined( 'E_DEPRECATED' ) ) {
+	// phpcs:ignore PHPCompatibility.PHP.NewConstants
 	define( 'QM_E_DEPRECATED', E_DEPRECATED );
 } else {
 	define( 'QM_E_DEPRECATED', 0 );
 }
 
 if ( defined( 'E_USER_DEPRECATED' ) ) {
+	// phpcs:ignore PHPCompatibility.PHP.NewConstants
 	define( 'QM_E_USER_DEPRECATED', E_USER_DEPRECATED );
 } else {
 	define( 'QM_E_USER_DEPRECATED', 0 );
