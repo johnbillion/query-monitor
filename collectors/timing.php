@@ -31,19 +31,24 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function action_function_time_start( $function ) {
-		$start = microtime( true );
+		$start = array(
+			$function => microtime( true ),
+		);
 		$this->start = $start;
 	}
 
 	public function action_function_time_stop( $function ) {
-		$stop = microtime( true );
-		var_dump($stop);
+		$stop = array(
+			$function => microtime( true ),
+		);
 		$this->stop = $stop;
 		$this->calculate_time( $function );
 	}
 
 	public function calculate_time( $function ) {
-		$function_time = $this->start - $this->stop;
+		$start = $this->start[ $function ];
+		$stop = $this->stop[ $function ];
+		$function_time = $start - $stop;
 		$this->qm_function_time( $function, $function_time );
 	}
 
