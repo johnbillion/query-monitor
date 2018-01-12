@@ -17,8 +17,7 @@ GNU General Public License for more details.
 class QM_Collector_Timing extends QM_Collector {
 
 	public $id = 'timing';
-	private $start = null;
-	private $stop = null;
+	private $track_timer = array();
 
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
@@ -31,24 +30,17 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function action_function_time_start( $function ) {
-		$start = array(
-			$function => microtime( true ),
-		);
-		$this->start = $start;
+		$this->track_timer[ $function ] = new QM_Timer;
+		$this->track_timer[ $function ]->start();
 	}
 
 	public function action_function_time_stop( $function ) {
-		$stop = array(
-			$function => microtime( true ),
-		);
-		$this->stop = $stop;
+		$this->track_timer[ $function ]->stop();
 		$this->calculate_time( $function );
 	}
 
 	public function calculate_time( $function ) {
-		$start = $this->start[ $function ];
-		$stop = $this->stop[ $function ];
-		$function_time = $start - $stop;
+		$function_time = $this->track_timer[ $function ]->get_time();
 		$this->qm_function_time( $function, $function_time );
 	}
 

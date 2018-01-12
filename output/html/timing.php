@@ -54,7 +54,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 				printf(
 					'<td>%s</td>',
-					esc_html( $row['function_time'] )
+					esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
 				);
 
 				$stack          = array();
