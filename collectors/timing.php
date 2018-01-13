@@ -18,6 +18,8 @@ class QM_Collector_Timing extends QM_Collector {
 
 	public $id = 'timing';
 	private $track_timer = array();
+	private $start = array();
+	private $stop = array();
 
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
@@ -32,11 +34,11 @@ class QM_Collector_Timing extends QM_Collector {
 
 	public function action_function_time_start( $function ) {
 		$this->track_timer[ $function ] = new QM_Timer;
-		$this->track_timer[ $function ]->start();
+		$this->start[ $function ] = $this->track_timer[ $function ]->start();
 	}
 
 	public function action_function_time_stop( $function ) {
-		$this->track_timer[ $function ]->stop();
+		$this->stop[ $function ] = $this->track_timer[ $function ]->stop();
 		$this->calculate_time( $function );
 	}
 
@@ -57,6 +59,19 @@ class QM_Collector_Timing extends QM_Collector {
 			'function_time' => $function_time,
 			'trace'         => $trace,
 		);
+	}
+
+	public function process() {
+		foreach ( $this->start as $function => $value ) {
+			if ( ! isset( $this->stop[ $function ] ) ) {
+				$trace = new QM_Backtrace();
+				$this->data['warning'][] = array(
+					'function'  => $function,
+					'message' 	=> 'Please add the stop hook',
+					'trace'         => $trace,
+				);
+			}
+		}
 	}
 
 }

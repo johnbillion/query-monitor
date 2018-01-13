@@ -28,7 +28,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0">';
 
-		if ( ! empty( $data['timing'] ) ) {
+		if ( ! empty( $data['timing'] ) || ! empty( $data['warning'] ) ) {
 
 			echo '<caption class="screen-reader-text">' . esc_html__( 'Function Timing', 'query-monitor' ) . '</caption>';
 
@@ -41,54 +41,69 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			echo '</thead>';
 
 			echo '<tbody>';
+			if ( ! empty( $data['timing'] ) ) {
+				foreach ( $data['timing'] as $row ) {
 
-			foreach ( $data['timing'] as $row ) {
+					$component = $row['trace']->get_component();
 
-				$component = $row['trace']->get_component();
+					echo '<tr>';
+					printf(
+						'<td class="qm-ltr">%s</td>',
+						esc_html( $row['function'] )
+					);
 
-				echo '<tr>';
-				printf(
-					'<td class="qm-ltr">%s</td>',
-					esc_html( $row['function'] )
-				);
+					printf(
+						'<td>%s</td>',
+						esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
+					);
 
-				printf(
-					'<td>%s</td>',
-					esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
-				);
+					$stack          = array();
+					$filtered_trace = $row['trace']->get_display_trace();
+					array_pop( $filtered_trace );
+					array_pop( $filtered_trace );
 
-				$stack          = array();
-				$filtered_trace = $row['trace']->get_display_trace();
-				array_pop( $filtered_trace );
-				array_pop( $filtered_trace );
+					foreach ( $filtered_trace as $item ) {
+						$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+					}
 
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+					$caller = array_pop( $stack );
+
+					if ( ! empty( $stack ) ) {
+						echo $this->build_toggler(); // WPCS: XSS ok;
+						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					}
+
+					echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+					echo '</ol></td>';
+
+					printf(
+						'<td class="qm-nowrap">%s</td>',
+						esc_html( $component->name )
+					);
+
+					echo '</tr>';
+
 				}
-
-				$caller = array_pop( $stack );
-
-				if ( ! empty( $stack ) ) {
-					echo $this->build_toggler(); // WPCS: XSS ok;
-					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
-				}
-
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
-				echo '</ol></td>';
-
-				printf(
-					'<td class="qm-nowrap">%s</td>',
-					esc_html( $component->name )
-				);
-
-				echo '</tr>';
-
 			}
+			if ( ! empty( $data['warning'] ) ) {
+				foreach ( $data['warning'] as $warning ) {
 
+					echo '<tr>';
+					printf(
+						'<td class="qm-ltr">%s</td>',
+						esc_html( $warning['function'] )
+					);
+
+					printf(
+						'<td class="qm-ltr">%s</td>',
+						esc_html( $warning['message'] )
+					);
+
+					echo '<td class="qm-ltr"></td></tr>';
+				}
+			}
 			echo '</tbody>';
-
 		} else {
-
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th>' . esc_html__( 'Function timing', 'query-monitor' ) . '</th>';
