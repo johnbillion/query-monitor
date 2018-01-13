@@ -20,6 +20,7 @@ class QM_Collector_Timing extends QM_Collector {
 	private $track_timer = array();
 	private $start = array();
 	private $stop = array();
+	private $laps = array();
 
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
@@ -43,7 +44,7 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function action_function_time_lap( $function ) {
-		$this->track_timer[ $function ]->lap();
+		$this->laps[ $function ] = $this->track_timer[ $function ]->get_laps();
 	}
 
 	public function calculate_time( $function ) {
@@ -57,6 +58,7 @@ class QM_Collector_Timing extends QM_Collector {
 		$this->data['timing'][] = array(
 			'function'      => $function,
 			'function_time' => $function_time,
+			'laps'          => $this->laps[ $function ],
 			'trace'         => $trace,
 		);
 	}
