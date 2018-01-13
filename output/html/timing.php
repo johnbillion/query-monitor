@@ -56,26 +56,6 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 						'<td>%s</td>',
 						esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
 					);
-
-					$stack          = array();
-					$filtered_trace = $row['trace']->get_display_trace();
-					array_pop( $filtered_trace );
-					array_pop( $filtered_trace );
-
-					foreach ( $filtered_trace as $item ) {
-						$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
-					}
-
-					$caller = array_pop( $stack );
-
-					if ( ! empty( $stack ) ) {
-						echo $this->build_toggler(); // WPCS: XSS ok;
-						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
-					}
-
-					echo "<li>{$caller}</li>"; // WPCS: XSS ok.
-					echo '</ol></td>';
-
 					printf(
 						'<td class="qm-nowrap">%s</td>',
 						esc_html( $component->name )
@@ -87,6 +67,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			}
 			if ( ! empty( $data['warning'] ) ) {
 				foreach ( $data['warning'] as $warning ) {
+					$component = $row['trace']->get_component();
 
 					echo '<tr>';
 					printf(
@@ -99,7 +80,10 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 						esc_html( $warning['message'] )
 					);
 
-					echo '<td class="qm-ltr"></td></tr>';
+					printf(
+						'<td class="qm-nowrap">%s</td>',
+						esc_html( $component->name )
+					);
 				}
 			}
 			echo '</tbody>';
