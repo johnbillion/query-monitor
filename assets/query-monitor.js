@@ -67,6 +67,7 @@ jQuery( function($) {
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
 		var container = document.createDocumentFragment();
+		var has_rendered = false;
 
 		$('#wp-admin-bar-query-monitor')
 			.addClass(qm.menu.top.classname)
@@ -98,6 +99,16 @@ jQuery( function($) {
 
 		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
 			var paused = true;
+
+			if ( ! has_rendered ) {
+				_.each( qm_json, function( data, id ) {
+					if ( $( '#tmpl-qm-' + id ).length ) {
+						var panel_template = wp.template( 'qm-' + id );
+						$( '#qm-out-' + id ).html( panel_template( data ) );
+					}
+				} );
+				has_rendered = true;
+			}
 
 			if ( is_admin ) {
 				$('#wpfooter').css('position','relative');

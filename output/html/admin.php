@@ -21,71 +21,8 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
 	}
 
-	public function output() {
-
-		$data = $this->collector->get_data();
-
-		if ( empty( $data['current_screen'] ) ) {
-			return;
-		}
-
-		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
-		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<thead class="screen-reader-text">';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Data', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody class="qm-group">';
-
-		$first = true;
-
-		foreach ( $data['current_screen'] as $key => $value ) {
-			echo '<tr>';
-
-			if ( $first ) {
-				echo '<th class="qm-ltr" rowspan="' . count( $data['current_screen'] ) . '">get_current_screen()</th>';
-			}
-
-			echo '<td>' . esc_html( $key ) . '</td>';
-			echo '<td>' . esc_html( $value ) . '</td>';
-			echo '</tr>';
-
-			$first = false;
-		}
-
-		echo '</tbody>';
-
-		echo '<tbody>';
-		echo '<tr>';
-		echo '<th class="qm-ltr">$pagenow</th>';
-		echo '<td colspan="2">' . esc_html( $data['pagenow'] ) . '</td>';
-		echo '</tr>';
-
-		if ( ! empty( $data['list_table'] ) ) {
-
-			echo '<tr>';
-			echo '<th rowspan="2">' . esc_html__( 'Column Filters', 'query-monitor' ) . '</th>';
-			echo '<td colspan="2">' . $data['list_table_markup']['columns_filter'] . '</td>'; // WPCS: XSS ok;
-			echo '</tr>';
-			echo '<tr>';
-			echo '<td colspan="2">' . $data['list_table_markup']['sortables_filter'] . '</td>'; // WPCS: XSS ok;
-			echo '</tr>';
-
-			echo '<tr>';
-			echo '<th>' . esc_html__( 'Column Action', 'query-monitor' ) . '</th>';
-			echo '<td colspan="2">' . $data['list_table_markup']['column_action'] . '</td>'; // WPCS: XSS ok;
-			echo '</tr>';
-
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
+	public function template() {
+		require_once dirname( dirname( __FILE__ ) ) . '/templates/admin.php';
 	}
 
 }

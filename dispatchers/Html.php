@@ -154,7 +154,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
-			array( 'jquery' ),
+			array(
+				'jquery',
+				'wp-util',
+			),
 			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
 			true
 		);
@@ -194,6 +197,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		$json = array();
+
 		$this->before_output();
 
 		/* @var QM_Output_Html[] */
@@ -201,10 +206,28 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer = new QM_Timer;
 			$timer->start();
 
-			$output->output();
+			$collector   = $output->get_collector();
+			$json[ $id ] = $collector->get_data();
+			$json[ $id ]['_collector'] = array(
+				'id'   => $collector->id(),
+				'name' => $collector->name(),
+			);
+
+			if ( method_exists( $output, 'template' ) ) {
+				?>
+				<script type="text/html" id="tmpl-qm-<?php echo esc_attr( $id ); ?>">
+					<?php $output->template(); ?>
+				</script>
+				<div id="qm-out-<?php echo esc_attr( $id ); ?>"></div>
+				<?php
+			} else {
+				$output->output();
+			}
 
 			$output->set_timer( $timer->stop() );
 		}
+
+		echo '<script>var qm_json = ' . wp_json_encode( $json ) . ';</script>';
 
 		$this->after_output();
 
