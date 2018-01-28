@@ -154,7 +154,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
-			array( 'jquery' ),
+			array( 'jquery-core' ),
 			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
 			true
 		);
