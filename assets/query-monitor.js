@@ -235,15 +235,17 @@ jQuery( function($) {
 
 	$('#qm').find('.qm-toggle').on('click',function(e){
 		var el = $(this);
-		$(this).closest('td').find('.qm-toggled').slideToggle(100,function(){
-			if ( el.attr('data-off') == el.text() ) {
+		var toggle = $(this).closest('td').find('.qm-toggled');
+		if ( el.attr('data-off') == el.text() ) {
+			toggle.slideToggle(100,function(){
 				el.closest('td').removeClass('qm-toggled-on');
 				el.text(el.attr('data-on'));
-			} else {
-				el.closest('td').addClass('qm-toggled-on');
-				el.text(el.attr('data-off'));
-			}
-		});
+			});
+		} else {
+			el.closest('td').addClass('qm-toggled-on');
+			el.text(el.attr('data-off'));
+			toggle.slideToggle(100);
+		}
 		e.preventDefault();
 	});
 
