@@ -39,7 +39,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 				$output_error = array(
 					'type'      => $error->type,
 					'message'   => wp_strip_all_tags( $error->message ),
-					'file'      => $error->file,
+					'file'      => QM_Util::standard_dir( $error->file, '' ),
 					'line'      => $error->line,
 					'stack'     => $error->trace->get_stack(),
 					'component' => $component->name,

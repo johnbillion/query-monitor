@@ -284,8 +284,8 @@ jQuery( function($) {
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 			if ( window.console ) {
-				console.debug( '=== ' + qm_l10n.ajax_error + ' ===' );
-				console.debug( error );
+				console.error( qm_l10n.ajax_error );
+				console.error( error );
 			}
 
 			if ( $('#wp-admin-bar-query-monitor').length ) {
