@@ -140,13 +140,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$types = array(
 			/* translators: %s: Number of PHP warnings */
-			'warning'    => _x( 'Warnings (%s)', 'PHP error level', 'query-monitor' ),
+			'warning'    => _nx_noop( 'PHP Warning (%s)', 'PHP Warnings (%s)', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of PHP notices */
-			'notice'     => _x( 'Notices (%s)', 'PHP error level', 'query-monitor' ),
+			'notice'     => _nx_noop( 'PHP Notice (%s)', 'PHP Notices (%s)', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of strict PHP errors */
-			'strict'     => _x( 'Stricts (%s)', 'PHP error level', 'query-monitor' ),
+			'strict'     => _nx_noop( 'PHP Strict (%s)', 'PHP Stricts (%s)', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of deprecated PHP errors */
-			'deprecated' => _x( 'Deprecated (%s)', 'PHP error level', 'query-monitor' ),
+			'deprecated' => _nx_noop( 'PHP Deprecated (%s)', 'PHP Deprecated (%s)', 'PHP error level', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $label ) {
@@ -169,7 +169,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			$menu[] = $this->menu( array(
 				'id'    => "query-monitor-{$key}s",
 				'title' => esc_html( sprintf(
-					$label,
+					translate_nooped_plural(
+						$label,
+						$count,
+						'query-monitor'
+					),
 					number_format_i18n( $count )
 				) ),
 			) );
