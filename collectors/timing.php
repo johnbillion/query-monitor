@@ -30,7 +30,7 @@ class QM_Collector_Timing extends QM_Collector {
 		parent::__construct();
 		add_action( 'qm/start', array( $this, 'action_function_time_start' ), 10, 1 );
 		add_action( 'qm/stop', array( $this, 'action_function_time_stop' ), 10, 1 );
-		add_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10, 1 );
+		add_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10, 2 );
 	}
 
 	public function action_function_time_start( $function ) {
@@ -43,8 +43,9 @@ class QM_Collector_Timing extends QM_Collector {
 		$this->calculate_time( $function );
 	}
 
-	public function action_function_time_lap( $function ) {
-		$this->laps[ $function ] = $this->track_timer[ $function ]->get_laps();
+	public function action_function_time_lap( $function, $name = null ) {
+		// @TODO guard against lapping non-existant timer
+		$this->track_timer[ $function ]->lap( $name );
 	}
 
 	public function calculate_time( $function ) {
@@ -54,11 +55,12 @@ class QM_Collector_Timing extends QM_Collector {
 
 	public function qm_function_time( $function, $function_time ) {
 		$trace = new QM_Backtrace();
+		$function_laps = $this->track_timer[ $function ]->get_laps();
 
 		$this->data['timing'][] = array(
 			'function'      => $function,
 			'function_time' => $function_time,
-			'laps'          => $this->laps[ $function ],
+			'laps'          => $function_laps,
 			'trace'         => $trace,
 		);
 	}
