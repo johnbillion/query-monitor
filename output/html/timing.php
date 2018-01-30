@@ -107,6 +107,30 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 	}
 
+	public function admin_menu( array $menu ) {
+		$data = $this->collector->get_data();
+
+		if ( ! empty( $data['timing'] ) || ! empty( $data['warning'] ) ) {
+			$count = 0;
+			if ( ! empty( $data['timing'] ) ) {
+				$count += count( $data['timing'] );
+			}
+			if ( ! empty( $data['warning'] ) ) {
+				$count += count( $data['warning'] );
+			}
+			/* translators: %s: Number of function timing results that are available */
+			$label = _n( 'Timings (%s)', 'Timings (%s)', $count, 'query-monitor' );
+			$menu[] = $this->menu( array(
+				'title' => esc_html( sprintf(
+					$label,
+					number_format_i18n( $count )
+				) ),
+			) );
+		}
+
+		return $menu;
+	}
+
 }
 
 function register_qm_output_html_timing( array $output, QM_Collectors $collectors ) {
