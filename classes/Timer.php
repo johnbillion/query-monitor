@@ -21,9 +21,6 @@ class QM_Timer {
 	protected $trace = null;
 	protected $laps  = array();
 
-	public function __construct() {
-	}
-
 	public function start( array $data = null ) {
 		$this->trace = new QM_Backtrace;
 		$this->start = array(
