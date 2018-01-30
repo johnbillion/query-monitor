@@ -39,6 +39,7 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function action_function_time_stop( $function ) {
+		// @TODO guard against stopping non-existant timer
 		$this->stop[ $function ] = $this->track_timer[ $function ]->stop();
 		$this->calculate_time( $function );
 	}

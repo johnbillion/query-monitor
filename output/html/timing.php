@@ -50,7 +50,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 					echo '<tr>';
-					printf(
+					printf( // WPCS: XSS ok;
 						'<td class="qm-ltr">%s</td>',
 						$file
 					);
@@ -78,7 +78,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 					echo '<tr>';
-					printf(
+					printf( // WPCS: XSS ok;
 						'<td class="qm-ltr">%s</td>',
 						$file
 					);
