@@ -69,8 +69,8 @@ class QM_Collector_Timing extends QM_Collector {
 				$trace = new QM_Backtrace();
 				$this->data['warning'][] = array(
 					'function'  => $function,
-					'message' 	=> 'Please add the stop hook',
-					'trace'         => $trace,
+					'message'   => __( 'Please add the stop hook', 'query-monitor' ),
+					'trace'     => $trace,
 				);
 			}
 		}
