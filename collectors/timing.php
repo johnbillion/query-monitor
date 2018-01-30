@@ -39,13 +39,29 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function action_function_time_stop( $function ) {
-		// @TODO guard against stopping non-existant timer
+		if ( ! isset( $this->track_timer[ $function ] ) ) {
+			$trace = new QM_Backtrace;
+			$this->data['warning'][] = array(
+				'function'  => $function,
+				'message'   => __( 'Timer was not started', 'query-monitor' ),
+				'trace'     => $trace,
+			);
+			return;
+		}
 		$this->stop[ $function ] = $this->track_timer[ $function ]->stop();
 		$this->calculate_time( $function );
 	}
 
 	public function action_function_time_lap( $function, $name = null ) {
-		// @TODO guard against lapping non-existant timer
+		if ( ! isset( $this->track_timer[ $function ] ) ) {
+			$trace = new QM_Backtrace;
+			$this->data['warning'][] = array(
+				'function'  => $function,
+				'message'   => __( 'Timer was not started', 'query-monitor' ),
+				'trace'     => $trace,
+			);
+			return;
+		}
 		$this->track_timer[ $function ]->lap( $name );
 	}
 
@@ -70,7 +86,7 @@ class QM_Collector_Timing extends QM_Collector {
 				$trace = $this->track_timer[ $function ]->get_trace();
 				$this->data['warning'][] = array(
 					'function'  => $function,
-					'message'   => __( 'Please add the stop hook', 'query-monitor' ),
+					'message'   => __( 'Timer was not stopped', 'query-monitor' ),
 					'trace'     => $trace,
 				);
 			}
