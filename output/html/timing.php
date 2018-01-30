@@ -35,7 +35,8 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Tracked function', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Memory (B)', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -57,6 +58,10 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 						esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
 					);
 					printf(
+						'<td class="qm-num">%s</td>',
+						esc_html( number_format_i18n( $row['function_memory'] ) )
+					);
+					printf(
 						'<td class="qm-nowrap">%s</td>',
 						esc_html( $component->name )
 					);
@@ -76,7 +81,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					);
 
 					printf(
-						'<td class="qm-ltr">%s</td>',
+						'<td class="qm-warn" colspan="2">%s</td>',
 						esc_html( $warning['message'] )
 					);
 

@@ -49,19 +49,17 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function calculate_time( $function ) {
-		$function_time = $this->track_timer[ $function ]->get_time();
-		$this->qm_function_time( $function, $function_time );
-	}
-
-	public function qm_function_time( $function, $function_time ) {
 		$trace = $this->track_timer[ $function ]->get_trace();
+		$function_time = $this->track_timer[ $function ]->get_time();
+		$function_memory = $this->track_timer[ $function ]->get_memory();
 		$function_laps = $this->track_timer[ $function ]->get_laps();
 
 		$this->data['timing'][] = array(
-			'function'      => $function,
-			'function_time' => $function_time,
-			'laps'          => $function_laps,
-			'trace'         => $trace,
+			'function'        => $function,
+			'function_time'   => $function_time,
+			'function_memory' => $function_memory,
+			'laps'            => $function_laps,
+			'trace'           => $trace,
 		);
 	}
 
