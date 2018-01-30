@@ -37,7 +37,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Tracked function', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( '~kB', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 
