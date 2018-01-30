@@ -29,8 +29,8 @@ class QM_Collector_Timing extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'qm/start', array( $this, 'action_function_time_start' ), 10, 1 );
-		add_action( 'qm/stop', array( $this, 'action_function_time_stop' ), 10, 1 );
-		add_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10, 2 );
+		add_action( 'qm/stop',  array( $this, 'action_function_time_stop' ), 10, 1 );
+		add_action( 'qm/lap',   array( $this, 'action_function_time_lap' ), 10, 2 );
 	}
 
 	public function action_function_time_start( $function ) {
@@ -66,10 +66,10 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function calculate_time( $function ) {
-		$trace = $this->track_timer[ $function ]->get_trace();
-		$function_time = $this->track_timer[ $function ]->get_time();
+		$trace           = $this->track_timer[ $function ]->get_trace();
+		$function_time   = $this->track_timer[ $function ]->get_time();
 		$function_memory = $this->track_timer[ $function ]->get_memory();
-		$function_laps = $this->track_timer[ $function ]->get_laps();
+		$function_laps   = $this->track_timer[ $function ]->get_laps();
 
 		$this->data['timing'][] = array(
 			'function'        => $function,
