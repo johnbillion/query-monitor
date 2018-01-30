@@ -241,15 +241,17 @@ jQuery( function($) {
 			newState = 'false';
 		}
 		el.attr('aria-expanded', newState);
-		$(this).closest('td').find('.qm-toggled').slideToggle(100,function(){
-			if ( el.attr('data-off') == el.text() ) {
+		var toggle = $(this).closest('td').find('.qm-toggled');
+		if ( el.attr('data-off') == el.text() ) {
+			toggle.slideToggle(100,function(){
 				el.closest('td').removeClass('qm-toggled-on');
 				el.text(el.attr('data-on'));
-			} else {
-				el.closest('td').addClass('qm-toggled-on');
-				el.text(el.attr('data-off'));
-			}
-		});
+			});
+		} else {
+			el.closest('td').addClass('qm-toggled-on');
+			el.text(el.attr('data-off'));
+			toggle.slideToggle(100);
+		}
 		e.preventDefault();
 	});
 
@@ -277,7 +279,7 @@ jQuery( function($) {
 
 	$( document ).ajaxSuccess( function( event, response, options ) {
 
-		var errors = response.getResponseHeader( 'X-QM-error-count' );
+		var errors = response.getResponseHeader( 'X-QM-php_errors-error-count' );
 
 		if ( ! errors ) {
 			return event;
@@ -287,11 +289,11 @@ jQuery( function($) {
 
 		for ( var key = 1; key <= errors; key++ ) {
 
-			error = $.parseJSON( response.getResponseHeader( 'X-QM-error-' + key ) );
+			error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 			if ( window.console ) {
-				console.debug( '=== ' + qm_l10n.ajax_error + ' ===' );
-				console.debug( error );
+				console.error( qm_l10n.ajax_error );
+				console.error( error );
 			}
 
 			if ( $('#wp-admin-bar-query-monitor').length ) {
