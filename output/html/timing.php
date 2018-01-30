@@ -46,15 +46,16 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				foreach ( $data['timing'] as $row ) {
 
 					$component = $row['trace']->get_component();
+					$trace     = $row['trace']->get_filtered_trace();
+					$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 					echo '<tr>';
 					printf(
 						'<td class="qm-ltr">%s</td>',
-						esc_html( $row['function'] )
+						$file
 					);
-
 					printf(
-						'<td>%s</td>',
+						'<td class="qm-num">%s</td>',
 						esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
 					);
 					printf(
@@ -71,18 +72,20 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				}
 			}
 			if ( ! empty( $data['warning'] ) ) {
-				foreach ( $data['warning'] as $warning ) {
+				foreach ( $data['warning'] as $row ) {
 					$component = $row['trace']->get_component();
+					$trace     = $row['trace']->get_filtered_trace();
+					$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 					echo '<tr>';
 					printf(
 						'<td class="qm-ltr">%s</td>',
-						esc_html( $warning['function'] )
+						$file
 					);
 
 					printf(
 						'<td class="qm-warn" colspan="2">%s</td>',
-						esc_html( $warning['message'] )
+						esc_html( $row['message'] )
 					);
 
 					printf(
