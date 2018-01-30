@@ -36,7 +36,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Tracked function', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Memory (B)', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( '~kB', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -60,7 +60,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					);
 					printf(
 						'<td class="qm-num">%s</td>',
-						esc_html( number_format_i18n( $row['function_memory'] ) )
+						esc_html( number_format_i18n( $row['function_memory'] / 1024 ) )
 					);
 					printf(
 						'<td class="qm-nowrap">%s</td>',
