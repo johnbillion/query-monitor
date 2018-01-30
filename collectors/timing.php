@@ -54,7 +54,7 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function qm_function_time( $function, $function_time ) {
-		$trace = new QM_Backtrace();
+		$trace = $this->track_timer[ $function ]->get_trace();
 		$function_laps = $this->track_timer[ $function ]->get_laps();
 
 		$this->data['timing'][] = array(
@@ -68,7 +68,7 @@ class QM_Collector_Timing extends QM_Collector {
 	public function process() {
 		foreach ( $this->start as $function => $value ) {
 			if ( ! isset( $this->stop[ $function ] ) ) {
-				$trace = new QM_Backtrace();
+				$trace = $this->track_timer[ $function ]->get_trace();
 				$this->data['warning'][] = array(
 					'function'  => $function,
 					'message'   => __( 'Please add the stop hook', 'query-monitor' ),
