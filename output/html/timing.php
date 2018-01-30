@@ -18,7 +18,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 100 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
 	}
 
 	public function output() {
@@ -116,4 +116,4 @@ function register_qm_output_html_timing( array $output, QM_Collectors $collector
 	return $output;
 }
 
-add_filter( 'qm/outputter/html', 'register_qm_output_html_timing', 100, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_timing', 15, 2 );
