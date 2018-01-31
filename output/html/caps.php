@@ -22,6 +22,31 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function output() {
+		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) ) {
+			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+			echo '<table cellspacing="0">';
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th>' . esc_html( $this->collector->name() ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+			echo '<tbody>';
+			echo '<tr>';
+			echo '<td>';
+			printf(
+				/* translators: 1: PHP constant name, 2: Configuration file name. */
+				esc_html__( 'For performance reasons, the Capability Checks panel is not enabled by default. To enable it, add %1$s to your %2$s file.', 'query-monitor' ),
+				"<code>define( 'QM_ENABLE_CAPS_PANEL', true );</code>",
+				'<code>wp-config.php</code>'
+			);
+			echo '</td>';
+			echo '</tr>';
+			echo '</tbody>';
+			echo '</table>';
+			echo '</div>';
+
+			return;
+		}
 
 		$data = $this->collector->get_data();
 
