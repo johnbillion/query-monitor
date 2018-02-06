@@ -214,11 +214,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * } );
 			 * ```
 			 */
-			$table = apply_filters( 'qm/collect/silent_php_errors', array() );
-
-			$this->data['filtered_errors'] = $this->filter_reportable_errors(
-				$this->data['errors'], $table
-			);
+			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
 			/**
 			 * Hides silent php errors from Query Monitor entirely.
@@ -230,11 +226,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * } );
 			 * ```
 			 */
-			$hide_silent_php_errors = apply_filters( 'qm/collect/hide_silent_php_errors', false );
+			$this->hide_silenced_php_errors = apply_filters( 'qm/collect/hide_silenced_php_errors', false );
 
-			if ( $hide_silent_php_errors ) {
-				$this->data['errors'] = $this->data['filtered_errors'];
-			}
+			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
 		}
 	}
 
@@ -247,23 +241,31 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param array $table The table of flags by plugin name
 	 * @return void Returns the filtered errors excluded non-reportable errors
 	 */
-	public function filter_reportable_errors( $errors, $table ) {
-		foreach ( $errors as $type => $type_errors ) {
-			foreach ( $type_errors as $error_id => $error ) {
-				$error_no   = $error->errno;
-				$error_file = $error->file;
+	public function filter_reportable_errors( array $components, $component_type ) {
+		$all_errors = $this->data['errors'];
 
-				foreach ( $table as $plugin_name => $flags ) {
-					if ( $this->is_plugin_file( $plugin_name, $error_file ) ) {
-						if ( ! $this->is_reportable_error( $error_no, $flags ) ) {
-							unset( $errors[ $type ][ $error_id ] );
-						}
+		foreach ( $components as $component_context => $allowed_level ) {
+			foreach ( $all_errors as $error_level => $errors ) {
+				foreach ( $errors as $error_id => $error ) {
+					if ( $this->is_reportable_error( $error->errno, $allowed_level ) ) {
+						continue;
 					}
+					if ( ! $this->is_affected_component( $error->trace->get_component(), $component_type, $component_context ) ) {
+						continue;
+					}
+
+					unset( $this->data['errors'][ $error_level ][ $error_id ] );
+
+					if ( $this->hide_silenced_php_errors ) {
+						continue;
+					}
+
+					$this->data['errors'][ "{$error_level}-silenced" ][ $error_id ] = $error;
 				}
 			}
 		}
 
-		return $errors;
+		$this->data['errors'] = array_filter( $this->data['errors'] );
 	}
 
 	/**
@@ -274,18 +276,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param string $file_path The full path to the file
 	 * @return bool
 	 */
-	public function is_plugin_file( $plugin_name, $file_path ) {
-		$plugin_name = trim( $plugin_name );
-		$file_path   = trim( $file_path );
-
-		if ( ! empty( $plugin_name ) && ! empty( $file_path ) ) {
-			$file_dir   = dirname( $file_path ) . '/';
-			$plugin_dir = WP_PLUGIN_DIR . '/' . $plugin_name . '/';
-
-			return strpos( $file_dir, $plugin_dir ) === 0;
-		} else {
+	public function is_affected_component( $component, $component_type, $component_context ) {
+		if ( empty( $component ) ) {
 			return false;
 		}
+		return ( $component->type === $component_type && $component->context === $component_context );
 	}
 
 	/**

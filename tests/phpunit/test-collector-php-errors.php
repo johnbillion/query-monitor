@@ -49,122 +49,122 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 	}
 
 	function test_it_knows_core_file_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-includes/plugin.php'
+		$component = QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_knows_theme_file_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-content/themes/foo/taxonomy.php'
+		$component = QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_knows_another_plugin_file_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-content/plugins/another-plugin/taxonomy.php'
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_knows_empty_file_path_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . ''
+		$component = QM_Util::get_file_component( ABSPATH );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_knows_empty_plugin_name_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'', ABSPATH . 'wp-content/plugins/foo/foo.php'
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, '', ''
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_knows_plugin_file_is_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-content/plugins/foo/foo.php'
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
+		);
+
+		$this->assertTrue( $actual );
+	}
+
+	function test_it_knows_theme_file_is_in_theme() {
+		$component = QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'theme', 'stylesheet'
+		);
+
+		$this->assertTrue( $actual );
+	}
+
+	function test_it_knows_core_file_is_in_core() {
+		$component = QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'core', 'core'
+		);
+
+		$this->assertTrue( $actual );
+	}
+
+	function test_it_knows_folderless_plugin_file_is_in_plugin() {
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo.php'
 		);
 
 		$this->assertTrue( $actual );
 	}
 
 	function test_it_knows_internal_plugin_file_is_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-content/plugins/foo/includes/A/B/foo.php'
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertTrue( $actual );
 	}
 
 	function test_it_knows_plugin_extension_file_is_not_in_plugin() {
-		$actual = $this->collector->is_plugin_file(
-			'foo', ABSPATH . 'wp-content/plugins/foo-extension/foo-extension.php'
+		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
+		$actual = $this->collector->is_affected_component(
+			$component, 'plugin', 'foo'
 		);
 
 		$this->assertFalse( $actual );
 	}
 
 	function test_it_will_not_filter_any_error_by_default() {
-		$table = array();
-		$errors = array(
-			'notice' => array(
-				'abc' => array(
-					(object) array(
-						'errno' => 2,
-						'file'  => ABSPATH . 'wp-content/plugins/foo/foo.php'
-					)
-				)
-			)
-		);
-
-		$actual = $this->collector->filter_reportable_errors( $errors, $table );
-		$this->assertEquals( 1, count( $actual['notice'] ) );
-	}
-
-	function test_it_will_filter_notices_from_plugin() {
-		$table = array(
-			'foo' => ~E_NOTICE,
-		);
+		$trace = new QM_Test_Backtrace;
+		$trace->set_trace( [
+			[
+				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
+			],
+		] );
 
 		$errors = array(
 			'notice' => array(
 				'abc' => (object) array(
 					'errno' => E_NOTICE,
-					'file'  => ABSPATH . 'wp-content/plugins/foo/foo.php'
-				)
-			)
-		);
-
-		$actual = $this->collector->filter_reportable_errors( $errors, $table );
-		$this->assertEmpty( $actual['notice'] );
-	}
-
-	function test_it_can_process_and_filter_out_unreportable_errors() {
-		add_filter( 'qm/collect/silent_php_errors', function( $table ) {
-			$table['foo'] = ~E_NOTICE;
-			$table['bar'] = E_ALL;
-
-			return $table;
-		} );
-
-		$errors = array(
-			'notice' => array(
-				'abc' => (object) array(
-					'errno' => E_NOTICE,
-					'file'  => ABSPATH . 'wp-content/plugins/foo/foo.php'
+					'trace' => $trace,
 				),
-				'efg' => (object) array(
+				'def' => (object) array(
 					'errno' => E_NOTICE,
-					'file'  => ABSPATH . 'wp-content/plugins/bar/bar.php'
-				)
+					'trace' => $trace,
+				),
 			),
 		);
 
@@ -173,6 +173,48 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 
 		$actual = $this->collector->get_data();
 
-		$this->assertEquals( 1, count( $actual['filtered_errors']['notice'] ) );
+		$this->assertArrayHasKey( 'notice', $actual['errors'] );
+		$this->assertEquals( 2, count( $actual['errors']['notice'] ) );
+		$this->assertArrayNotHasKey( 'notice-silenced', $actual['errors'] );
+	}
+
+	function test_it_will_filter_notices_from_plugin() {
+		add_filter( 'qm/collect/php_error_levels', function( $table ) {
+			$table['plugin']['foo'] = E_ALL & ~E_NOTICE;
+			return $table;
+		} );
+
+		$trace = new QM_Test_Backtrace;
+		$trace->set_trace( [
+			[
+				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
+			],
+		] );
+
+		$errors = array(
+			'warning' => array(
+				'abc' => (object) array(
+					'errno' => E_WARNING,
+					'trace' => $trace,
+				),
+			),
+			'notice' => array(
+				'abc' => (object) array(
+					'errno' => E_NOTICE,
+					'trace' => $trace,
+				),
+			),
+		);
+
+		$this->collector->set_php_errors( $errors );
+		$this->collector->process();
+		$actual = $this->collector->get_data();
+
+		$this->assertArrayHasKey( 'warning', $actual['errors'] );
+		$this->assertArrayNotHasKey( 'warning-silenced', $actual['errors'] );
+		$this->assertArrayNotHasKey( 'notice', $actual['errors'] );
+		$this->assertArrayHasKey( 'notice-silenced', $actual['errors'] );
+		$this->assertEquals( 1, count( $actual['errors']['notice-silenced'] ) );
+		$this->assertEquals( 1, count( $actual['errors']['warning'] ) );
 	}
 }

@@ -48,10 +48,16 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'notice'                => _x( 'Notice', 'PHP error level', 'query-monitor' ),
 			'strict'                => _x( 'Strict', 'PHP error level', 'query-monitor' ),
 			'deprecated'            => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+
 			'warning-suppressed'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'notice-suppressed'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'strict-suppressed'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'deprecated-suppressed' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+
+			'warning-silenced'      => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'notice-silenced'       => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'strict-silenced'       => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'deprecated-silenced'   => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $title ) {
