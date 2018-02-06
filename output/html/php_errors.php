@@ -48,10 +48,16 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'notice'                => _x( 'Notice', 'PHP error level', 'query-monitor' ),
 			'strict'                => _x( 'Strict', 'PHP error level', 'query-monitor' ),
 			'deprecated'            => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+
 			'warning-suppressed'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'notice-suppressed'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'strict-suppressed'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			'deprecated-suppressed' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+
+			'warning-silenced'      => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'notice-silenced'       => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'strict-silenced'       => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'deprecated-silenced'   => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $title ) {
@@ -148,22 +154,42 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			/* translators: %s: Number of deprecated PHP errors */
 			'deprecated' => _nx_noop( 'PHP Deprecated (%s)', 'PHP Deprecated (%s)', 'PHP error level', 'query-monitor' ),
 		);
+		$empties = array(
+			/* translators: PHP warnings */
+			'warning'    => _x( 'Warnings', 'PHP error level', 'query-monitor' ),
+			/* translators: PHP notices */
+			'notice'     => _x( 'Notices', 'PHP error level', 'query-monitor' ),
+			/* translators: Strict PHP errors */
+			'strict'     => _x( 'Stricts', 'PHP error level', 'query-monitor' ),
+			/* translators: Deprecated PHP errors */
+			'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+		);
 
 		foreach ( $types as $type => $label ) {
 
 			$count = 0;
+			$has_errors = false;
 
 			if ( isset( $data['errors'][ "{$type}-suppressed" ] ) ) {
+				$has_errors = true;
 				$key   = "{$type}-suppressed";
-				$count = count( $data['errors'][ $key ] );
+			}
+			if ( isset( $data['errors'][ "{$type}-silenced" ] ) ) {
+				$has_errors = true;
+				$key   = "{$type}-silenced";
 			}
 			if ( isset( $data['errors'][ $type ] ) ) {
+				$has_errors = true;
 				$key   = $type;
-				$count += count( $data['errors'][ $key ] );
+				$count += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+			}
+
+			if ( ! $has_errors ) {
+				continue;
 			}
 
 			if ( ! $count ) {
-				continue;
+				$label = $empties[ $type ];
 			}
 
 			$menu[] = $this->menu( array(

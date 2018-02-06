@@ -61,10 +61,8 @@ GNU General Public License for more details.
 }
 
 .qm .qm-php-error-warning td,
-.qm .qm-php-error-warning th,
-.qm .qm-php-error-warning-suppressed td,
-.qm .qm-php-error-warning-suppressed th {
-		color: #f00 !important;
+.qm .qm-php-error-warning th {
+		color: #c00 !important;
 }
 
 #wpadminbar .qm-warning > a {
