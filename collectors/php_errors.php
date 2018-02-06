@@ -198,33 +198,51 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	public function process() {
 		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
 			/**
-			 * Filters out non-reportable errors based on the errors
-			 * table.
+			 * Filters the levels used for reported PHP errors on a per-component basis.
 			 *
-			 * The table is empty by default. Users can specify errors
-			 * to filter by overriding it and adding PHP Error flags.
+			 * Error levels can be specified in order to silence certain error levels from
+			 * plugins or the current theme. Most commonly, you may wish to use this filter
+			 * in order to silence annoying notices from third party plugins that you do not
+			 * have control over.
 			 *
-			 * Eg:- To show all errors in the 'foo' plugin except
-			 * phu notices use,
+			 * Silenced errors will still appear in Query Monitor's output, but will not
+			 * cause highlighting to appear in the top level admin toolbar.
 			 *
-			 * ```php
-			 * add_filter( 'qm/collect/silent_php_errors', function( $table ) {
-			 *   $table['foo'] = E_ALL & ~E_NOTICE;
-			 *   return $table;
-			 * } );
-			 * ```
+			 * For example, to show all errors in the 'foo' plugin except PHP notices use:
+			 *
+			 *     add_filter( 'qm/collect/php_error_levels', function( array $levels ) {
+			 *         $levels['plugin']['foo'] = ( E_ALL & ~E_NOTICE );
+			 *         return $levels;
+			 *     } );
+			 *
+			 * Errors from themes, WordPress core, and other components can also be filtered:
+			 *
+			 *     add_filter( 'qm/collect/php_error_levels', function( array $levels ) {
+			 *         $levels['theme']['stylesheet'] = ( E_WARNING & E_USER_WARNING );
+			 *         $levels['theme']['template']   = ( E_WARNING & E_USER_WARNING );
+			 *         $levels['core']['core']        = ( 0 );
+			 *         return $levels;
+			 *     } );
+			 *
+			 * Any component which doesn't have an error level specified via this filter is
+			 * assumed to have the default level of `E_ALL`, which shows all errors.
+			 *
+			 * Valid PHP error level bitmasks are supported for each component, including `0`
+			 * to silence all errors from a component. See the PHP documentation on error
+			 * reporting for more info: http://php.net/manual/en/function.error-reporting.php
+			 *
+			 * @param int[] $levels The error levels used for each component.
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
 			/**
-			 * Hides silent php errors from Query Monitor entirely.
-			 * Default is false, ie:- no hiding of silent php errors.
+			 * Controls whether silenced PHP errors are hidden entirely by Query Monitor.
 			 *
-			 * ```php
-			 * add_filter( 'qm/collect/silent_php_errors', function( $hide ) {
-			 *   return false;
-			 * } );
-			 * ```
+			 * To hide silenced errors, use:
+			 *
+			 *     add_filter( 'qm/collect/hide_silenced_php_errors', '__return_true' );
+			 *
+			 * @param bool $hide Whether to hide silenced PHP errors. Default false.
 			 */
 			$this->hide_silenced_php_errors = apply_filters( 'qm/collect/hide_silenced_php_errors', false );
 
@@ -233,13 +251,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	/**
-	 * Filters the reportable php errors using the table specified. The
-	 * table used is empty by default. Users can customize the table
-	 * using the qm/collect/silent_php_errors filter.
+	 * Filters the reportable PHP errors using the table specified. Users can customize the levels
+	 * using the `qm/collect/php_error_levels` filter.
 	 *
-	 * @param array $errors The collected errors
-	 * @param array $table The table of flags by plugin name
-	 * @return void Returns the filtered errors excluded non-reportable errors
+	 * @param int[]  $components     The error levels keyed by component name.
+	 * @param string $component_type The component type, for example 'plugin' or 'theme'.
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {
 		$all_errors = $this->data['errors'];
