@@ -130,11 +130,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['filtered_errors'] ) ) {
-			foreach ( $data['filtered_errors'] as $type => $errors ) {
-				if ( ! empty( $errors ) ) {
-					$class[] = 'qm-' . $type;
-				}
+		if ( ! empty( $data['errors'] ) ) {
+			foreach ( $data['errors'] as $type => $errors ) {
+				$class[] = 'qm-' . $type;
 			}
 		}
 
@@ -156,22 +154,42 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			/* translators: %s: Number of deprecated PHP errors */
 			'deprecated' => _x( 'Deprecated (%s)', 'PHP error level', 'query-monitor' ),
 		);
+		$empties = array(
+			/* translators: PHP warnings */
+			'warning'    => _x( 'Warnings', 'PHP error level', 'query-monitor' ),
+			/* translators: PHP notices */
+			'notice'     => _x( 'Notices', 'PHP error level', 'query-monitor' ),
+			/* translators: Strict PHP errors */
+			'strict'     => _x( 'Stricts', 'PHP error level', 'query-monitor' ),
+			/* translators: Deprecated PHP errors */
+			'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+		);
 
 		foreach ( $types as $type => $label ) {
 
 			$count = 0;
+			$has_errors = false;
 
-			if ( isset( $data['filtered_errors'][ "{$type}-suppressed" ] ) ) {
+			if ( isset( $data['errors'][ "{$type}-suppressed" ] ) ) {
+				$has_errors = true;
 				$key   = "{$type}-suppressed";
-				$count = count( $data['filtered_errors'][ $key ] );
 			}
-			if ( isset( $data['filtered_errors'][ $type ] ) ) {
+			if ( isset( $data['errors'][ "{$type}-silenced" ] ) ) {
+				$has_errors = true;
+				$key   = "{$type}-silenced";
+			}
+			if ( isset( $data['errors'][ $type ] ) ) {
+				$has_errors = true;
 				$key   = $type;
-				$count += count( $data['filtered_errors'][ $key ] );
+				$count += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+			}
+
+			if ( ! $has_errors ) {
+				continue;
 			}
 
 			if ( ! $count ) {
-				continue;
+				$label = $empties[ $type ];
 			}
 
 			$menu[] = $this->menu( array(
