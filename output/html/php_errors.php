@@ -190,18 +190,20 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			if ( ! $count ) {
 				$label = $empties[ $type ];
-			}
-
-			$menu[] = $this->menu( array(
-				'id'    => "query-monitor-{$key}s",
-				'title' => esc_html( sprintf(
+			} else {
+				$label = sprintf(
 					translate_nooped_plural(
 						$label,
 						$count,
 						'query-monitor'
 					),
 					number_format_i18n( $count )
-				) ),
+				);
+			}
+
+			$menu[] = $this->menu( array(
+				'id'    => "query-monitor-{$key}s",
+				'title' => esc_html( $label ),
 			) );
 		}
 
