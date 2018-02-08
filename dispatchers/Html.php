@@ -119,13 +119,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			define( 'DONOTCACHEPAGE', 1 );
 		}
 
-		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -999 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -999 );
+		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -999 );
+		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'send_headers',          'nocache_headers' );
 
-		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ) );
+		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ), 11 );
 
 		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
@@ -156,7 +156,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
 			array( 'jquery-core' ),
 			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
-			true
+			false
 		);
 		wp_localize_script(
 			'query-monitor',
