@@ -143,7 +143,7 @@ class QM_Backtrace {
 					}
 					$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
 					$file = $ref->getFileName();
-				} elseif ( function_exists( $frame['function'] ) ) {
+				} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
 					$ref = new ReflectionFunction( $frame['function'] );
 					$file = $ref->getFileName();
 				} elseif ( isset( $frame['file'] ) ) {

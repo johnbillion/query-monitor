@@ -173,9 +173,13 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 
 		$actual = $this->collector->get_data();
 
+		// errors:
+		$this->assertArrayHasKey( 'errors', $actual );
 		$this->assertArrayHasKey( 'notice', $actual['errors'] );
 		$this->assertEquals( 2, count( $actual['errors']['notice'] ) );
-		$this->assertArrayNotHasKey( 'notice-silenced', $actual['errors'] );
+
+		// silenced errors:
+		$this->assertArrayNotHasKey( 'silenced', $actual );
 	}
 
 	function test_it_will_filter_notices_from_plugin() {
@@ -210,11 +214,16 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 		$this->collector->process();
 		$actual = $this->collector->get_data();
 
+		// errors:
+		$this->assertArrayHasKey( 'errors', $actual );
 		$this->assertArrayHasKey( 'warning', $actual['errors'] );
-		$this->assertArrayNotHasKey( 'warning-silenced', $actual['errors'] );
 		$this->assertArrayNotHasKey( 'notice', $actual['errors'] );
-		$this->assertArrayHasKey( 'notice-silenced', $actual['errors'] );
-		$this->assertEquals( 1, count( $actual['errors']['notice-silenced'] ) );
 		$this->assertEquals( 1, count( $actual['errors']['warning'] ) );
+
+		// silenced errors:
+		$this->assertArrayHasKey( 'silenced', $actual );
+		$this->assertArrayHasKey( 'notice', $actual['silenced'] );
+		$this->assertArrayNotHasKey( 'warning', $actual['silenced'] );
+		$this->assertEquals( 1, count( $actual['silenced']['notice'] ) );
 	}
 }

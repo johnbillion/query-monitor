@@ -88,6 +88,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'request'       => true,
 			'rewrites'      => true,
 			'theme'         => true,
+			'timing'        => false,
 			'transients'    => true,
 		);
 		$collectors = QM_Collectors::init();
