@@ -461,6 +461,7 @@ body.wp-admin.folded #qm {
 	word-break: break-all !important;
 }
 
+.qm code,
 .qm .qm-nowrap {
 	white-space: nowrap !important;
 }
