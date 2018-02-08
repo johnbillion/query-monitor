@@ -9,7 +9,6 @@
 
 	<rule ref="WordPress-VIP">
 
-		<exclude name="WordPress.NamingConventions" />
 		<exclude name="WordPress.Files.FileName" />
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
@@ -69,6 +68,12 @@
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
 			<property name="minimum_supported_version" value="3.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="-/"/>
 		</properties>
 	</rule>
 
