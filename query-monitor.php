@@ -12,8 +12,8 @@
  * Description: Monitoring of database queries, hooks, conditionals and more.
  * Version:     2.17.0
  * Plugin URI:  https://github.com/johnbillion/query-monitor
- * Author:      John Blackbourn
- * Author URI:  https://johnblackbourn.com/
+ * Author:      John Blackbourn & contributors
+ * Author URI:  https://github.com/johnbillion/query-monitor/graphs/contributors
  * Text Domain: query-monitor
  * Domain Path: /languages/
  *
