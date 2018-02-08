@@ -26,7 +26,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['errors'] ) ) {
+		if ( empty( $data['errors'] ) && empty( $data['silenced'] ) && empty( $data['suppressed'] ) ) {
 			return;
 		}
 
@@ -44,32 +44,37 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '</thead>';
 
 		$types = array(
-			'warning'               => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-			'notice'                => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-			'strict'                => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-			'deprecated'            => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
-
-			'warning-suppressed'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			'notice-suppressed'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			'strict-suppressed'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			'deprecated-suppressed' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-
-			'warning-silenced'      => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			'notice-silenced'       => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			'strict-silenced'       => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			'deprecated-silenced'   => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'errors' => array(
+				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			),
+			'suppressed' => array(
+				'warning'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			),
+			'silenced' => array(
+				'warning'    => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			),
 		);
 
-		foreach ( $types as $type => $title ) {
+		foreach ( $types as $error_group => $error_types ) {
+			foreach ( $error_types as $type => $title ) {
 
-			if ( isset( $data['errors'][ $type ] ) ) {
+			if ( isset( $data[ $error_group ][ $type ] ) ) {
 
 				echo '<tbody class="qm-group">';
 				echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
-				echo '<th scope="row" rowspan="' . count( $data['errors'][ $type ] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
+				echo '<th scope="row" rowspan="' . count( $data[ $error_group ][ $type ] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
 				$first = true;
 
-				foreach ( $data['errors'][ $type ] as $error ) {
+				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
 					if ( ! $first ) {
 						echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
@@ -118,6 +123,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				}
 
 				echo '</tbody>';
+			}
 			}
 		}
 
@@ -170,11 +176,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			$count = 0;
 			$has_errors = false;
 
-			if ( isset( $data['errors'][ "{$type}-suppressed" ] ) ) {
+			if ( isset( $data['suppressed'][ $type ] ) ) {
 				$has_errors = true;
 				$key   = "{$type}-suppressed";
 			}
-			if ( isset( $data['errors'][ "{$type}-silenced" ] ) ) {
+			if ( isset( $data['silenced'][ $type ] ) ) {
 				$has_errors = true;
 				$key   = "{$type}-silenced";
 			}

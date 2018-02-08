@@ -91,9 +91,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return false;
 		}
 
+		$error_group = 'errors';
+
 		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
 			// This is most likely an @-suppressed error
-			$type .= '-suppressed';
+			$error_group = 'suppressed';
 		}
 
 		if ( ! isset( self::$unexpected_error ) ) {
@@ -122,10 +124,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$filename = QM_Util::standard_dir( $file, '' );
 
-		if ( isset( $this->data['errors'][ $type ][ $key ] ) ) {
-			$this->data['errors'][ $type ][ $key ]->calls++;
+		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
+			$this->data[ $error_group ][ $type ][ $key ]->calls++;
 		} else {
-			$this->data['errors'][ $type ][ $key ] = (object) array(
+			$this->data[ $error_group ][ $type ][ $key ] = (object) array(
 				'errno'    => $errno,
 				'type'     => $type,
 				'message'  => $message,
@@ -278,7 +280,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					$this->data['errors'][ "{$error_level}-silenced" ][ $error_id ] = $error;
+					$this->data['silenced'][ $error_level ][ $error_id ] = $error;
 				}
 			}
 		}
