@@ -32,7 +32,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
 		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
-		add_action( 'amp_post_template_footer',   array( $this, 'action_footer' ) );
 		add_action( 'gp_footer',                  array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
@@ -124,9 +123,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'send_headers',          'nocache_headers' );
-
-		add_action( 'amp_post_template_head', array( $this, 'enqueue_assets' ), -999 );
-		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ), 11 );
 
 		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
 
