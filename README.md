@@ -26,7 +26,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Languages](#languages)
     * [HTTP Requests](#http-requests)
     * [Redirects](#redirects)
-    * [AJAX](#ajax)
+    * [Ajax](#ajax)
     * [REST API](#rest-api)
     * [Admin Screen](#admin-screen)
     * [Environment Information](#environment-information)
@@ -111,9 +111,9 @@ Filtering queries by component or calling function makes it easy to see which pl
 
  * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from
 
-## AJAX ##
+## Ajax ##
 
-The response from any jQuery AJAX request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. No hooking required.
+The response from any jQuery Ajax request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. No hooking required.
 
 Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
 

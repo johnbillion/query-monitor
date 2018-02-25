@@ -301,7 +301,7 @@ jQuery( function($) {
 				if ( ! qm.ajax_errors[error.type] ) {
 					$('#wp-admin-bar-query-monitor')
 						.addClass('qm-' + error.type)
-						.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; AJAX: ' + error.type + '</span>')
+						.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>')
 					;
 				}
 			}
