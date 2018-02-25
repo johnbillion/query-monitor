@@ -9,7 +9,7 @@
  * @license   GPL v2 or later
  *
  * Plugin Name: Query Monitor
- * Description: Monitoring of database queries, hooks, conditionals and more.
+ * Description: The Developer Tools panel for WordPress.
  * Version:     2.17.0
  * Plugin URI:  https://github.com/johnbillion/query-monitor
  * Author:      John Blackbourn & contributors
