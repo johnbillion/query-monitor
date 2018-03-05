@@ -25,9 +25,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 
-		echo '<div class="qm qm-third">';
 		echo '<table cellspacing="0">';
 		echo '<caption>PHP</caption>';
 		echo '<thead class="screen-reader-text">';
@@ -133,7 +132,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>';
 
 		if ( isset( $data['db'] ) ) {
 
@@ -146,7 +144,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
 				}
 
-				echo '<div class="qm qm-third">';
 				echo '<table cellspacing="0">';
 				echo '<caption>' . esc_html( $name ) . '</caption>';
 				echo '<thead class="screen-reader-text">';
@@ -228,12 +225,10 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 				echo '</tbody>';
 				echo '</table>';
-				echo '</div>';
 
 			}
 		}
 
-		echo '<div class="qm qm-third" style="float:right !important">';
 		echo '<table cellspacing="0">';
 		echo '<caption>WordPress</caption>';
 		echo '<thead class="screen-reader-text">';
@@ -255,9 +250,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>';
 
-		echo '<div class="qm qm-third">';
 		echo '<table cellspacing="0">';
 		echo '<caption>' . esc_html__( 'Server', 'query-monitor' ) . '</caption>';
 		echo '<thead class="screen-reader-text">';
@@ -298,7 +291,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>';
 
 		echo '</div>';
 

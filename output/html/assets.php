@@ -30,8 +30,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div id="' . esc_attr( $this->collector->id() ) . '">';
-
 		$position_labels = array(
 			'missing' => __( 'Missing', 'query-monitor' ),
 			'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
@@ -80,8 +78,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</div>';
 
 		}
-
-		echo '</div>';
 
 	}
 

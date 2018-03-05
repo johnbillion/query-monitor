@@ -126,162 +126,130 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 }
 
+/* === Main QM Panel === */
+
 #qm {
-	clear: both !important;
-	background: #eee !important;
+	background: #fff !important;
 	margin: 25px 0 0 !important;
-	border-top: 1px solid #ccc !important;
-	padding: 0 0 35px !important;
+	border-top: 1px solid #aaa !important;
 	text-align: left !important;
-	min-width: 800px !important;
 	display: none;
-	position: relative !important;
+	position: fixed;
 	z-index: 99998 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	width: 100% !important;
+	grid-template-columns: 15em auto;
+	grid-template-rows: 25px auto;
+	grid-template-areas: "qm-title qm-title" "qm-menu qm-panels";
 }
 
 #qm.qm-show,
 #qm.qm-peek,
 .no-js #qm,
 .nojs #qm {
-	display: block;
+	display: grid;
+	height: 40%;
 }
 
 #qm.qm-peek .qm {
 	display: none;
 }
 
-#qm:after {
-	display: block !important;
-	content: '' !important;
-	clear: both !important;
-	height: 0 !important;
-}
-
-body.wp-admin #qm {
-	margin: 0 0 0 160px !important;
-}
-
-@media only screen and (max-width: 960px) {
-	body.wp-admin.auto-fold #qm {
-		margin-left: 36px !important;
-		margin-right: 0 !important;
-	}
-}
-
-body.wp-admin.folded #qm {
-	margin-left: 36px !important;
-}
-
-@media screen and (max-width: 782px) {
-	body.wp-admin.auto-fold #qm,
-	body.wp-admin #qm {
-		margin-left: 0 !important;
-	}
-}
-
-#qm-wrapper {
-	margin: 0 auto 60px !important;
-}
-
-#qm.qm-peek #qm-wrapper {
-	margin: 0 auto !important;
+#qm * {
+	/* reset */
+	background: transparent !important;
+	color: #444 !important;
+	box-sizing: border-box !important;
+	text-align: left !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 12px !important;
+	line-height: 16px !important;
+	font-family: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	vertical-align: top !important;
+	text-shadow: none !important;
+	text-transform: none !important;
+	-webkit-font-smoothing: auto !important;
+	letter-spacing: normal !important;
+	border-radius: 0 !important;
+	transition: none !important;
 }
 
 #qm-title {
-	color: #555d66 !important;
-	font: 13px/15px 'Open Sans', Arial !important;
-	margin: 35px 0 -15px !important;
+	background: #f7f7f7 !important;
+	grid-area: qm-title;
+	border-bottom: 1px solid #ccc !important;
+	cursor: ns-resize !important;
+	align-items:  center;
+	display: grid !important;
+	padding: 0 5px !important;
 }
 
-#qm-title p {
-	font-style: italic !important;
-	margin: 0 20px !important;
+#qm .qm {
+	display: none !important;
 }
 
-#qm-title ul {
-	margin: 10px 10px 0 !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	list-style: none !important;
-	padding: 0 !important;
+#qm-panel-menu {
+	border-right: 1px solid #e0e0e0 !important;
+	overflow-y:  scroll !important;
+	grid-area: qm-menu;
+	background: #f3f3f3 !important;
 }
 
-#qm-title li {
-	display: inline-block !important;
-	width: 24em !important;
-	background: #fff !important;
-	border: 1px solid #e0e0e0 !important;
-	margin: 0 5px 5px 0 !important;
+#qm-panel-menu ul {
+    padding: 0 !important;
+    margin: 0 !important;
+    border-top: 1px solid #e6e6e6 !important;
 }
 
-#qm-title li a {
+#qm-panel-menu li {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#qm-panel-menu li a {
 	display: block !important;
-	padding: 4px 7px !important;
-	font: 13px/15px 'Open Sans', Arial !important;
+	padding: 3px 5px !important;
+	color: #555 !important;
+	text-decoration: none !important;
 }
 
-.qm {
-	margin: 0 0 -20px !important;
-	padding: 40px 10px 0 !important;
-	box-sizing: border-box !important;
-	clear: both !important;
+#qm-panel-menu li a:hover {
+    background: rgb( 238, 243, 250 ) !important;
+    color: #222 !important;
 }
 
-.qm-half {
-	float: left !important;
-	width: 50% !important;
-	clear: none !important;
+#qm-panel-menu li a.qm-selected-menu {
+    background: rgb(221, 238, 255) !important;
+    color: #222 !important;
 }
 
-.qm-third {
-	float: left !important;
-	width: 33.33% !important;
-	clear: none !important;
+#qm-panels {
+    grid-area: qm-panels;
+    overflow-y: scroll;
 }
 
-.qm-two-thirds {
-	float: left !important;
-	width: 66.66% !important;
-	clear: none !important;
+#qm .qm.qm-panel-show {
+	display: block !important;
 }
 
-.qm:focus {
-	outline: 0 !important;
+#qm .qm:focus {
+	outline: 0 !important; /* @TODO might not need this any more */
 }
 
-#qm.qm-theme-twentysixteen .qm {
-	padding-top: 65px !important;
-	margin-bottom: -45px !important;
-}
-
-#qm.qm-theme-twentysixteen #qm-title {
-	margin-bottom: -45px !important;
-}
-
-@media all and (max-width: 900px) {
-	.qm-third,
-	.qm-two-thirds,
-	.qm-half {
-		float: none !important;
-		width: 100% !important;
-		clear: both !important;
-	}
-}
-
-.qm-clear {
-	clear: left !important;
-}
-
-.qm table {
+#qm .qm table {
 	color: #333 !important;
 	border-collapse: collapse !important;
 	box-shadow: none !important;
 	width: 100% !important;
 	table-layout: auto !important;
-	margin: 0 !important;
+	margin: 0 0 10px 0 !important;
+	border: none !important;
 }
 
 #qm-conditionals table,
@@ -289,41 +257,53 @@ body.wp-admin.folded #qm {
 	table-layout: fixed !important;
 }
 
-.qm td,
-.qm th,
-.qm caption {
-	background: #fff !important;
-	color: #333 !important;
-	box-sizing: border-box !important;
-	text-align: left !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	border: 1px solid #e0e0e0 !important;
-	padding: 5px 8px 4px !important;
-	vertical-align: top !important;
-	text-shadow: none !important;
-	text-transform: none !important;
-	-webkit-font-smoothing: auto !important;
-	letter-spacing: normal !important;
+#qm .qm tr {
+	border: none !important;
 }
 
-.qm caption,
-.qm th[scope=col] {
-	border-bottom-width: 0 !important;
-	margin-bottom: 0 !important;
+#qm .qm tbody th,
+#qm .qm tbody td {
+	border-top: none !important;
+	border-right: 1px solid #e0e0e0 !important;
+	border-bottom: none !important;
+	border-left: 1px solid #e0e0e0 !important;
+	padding: 3px 4px !important;
 }
 
-.qm caption {
+#qm .qm thead th {
+	border-top: none !important;
+	border-right: 1px solid #e0e0e0 !important;
+	border-bottom: 1px solid #e0e0e0 !important;
+	border-left: 1px solid #e0e0e0 !important;
+	padding: 2px 4px !important;
+}
+
+#qm .qm th:first-child,
+#qm .qm td:first-child {
+	border-left: none !important;
+}
+
+#qm .qm th:last-child,
+#qm .qm td:last-child {
+	border-right: none !important;
+}
+
+#qm .qm caption {
 	caption-side: top !important;
+	border: none !important;
+	display: none !important; /* @TODO remove */
 }
 
-.qm tbody.qm-group:hover th,
-.qm tbody tr:hover th,
-.qm tbody tr:hover td {
+/* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
+#qm .qm tbody tr:nth-child(odd) td,
+#qm .qm tbody tr:nth-child(odd) th {
 	background: #f7f7f7 !important;
+}
+
+#qm .qm tbody.qm-group:hover th,
+#qm .qm tbody tr:hover th,
+#qm .qm tbody tr:hover td {
+	background: rgb( 238, 243, 250 ) !important;
 }
 
 .qm-debug-bar tbody tr:hover th,
@@ -334,40 +314,27 @@ body.wp-admin.folded #qm {
 	background: #fff !important;
 }
 
-.qm th {
-	color: #333 !important;
-}
-
-.qm th.qm-num {
+#qm .qm th.qm-num {
 	width: 5.5em !important;
 	text-align: center !important;
 }
 
-.qm td.qm-num {
+#qm .qm td.qm-num {
 	text-align: right !important;
 }
 
-.qm td.qm-has-toggle {
+#qm .qm td.qm-has-toggle {
 	padding: 0 !important;
 }
 
-.qm td.qm-has-toggle p,
-.qm td .qm-toggler {
-	padding: 5px 22px 4px 8px !important;
+#qm .qm td.qm-has-toggle p,
+#qm .qm td .qm-toggler {
+	padding: 3px 22px 3px 4px !important;
 	position: relative !important;
 }
 
-.qm td.qm-has-toggle p {
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	margin: 0 !important;
-}
-
-.qm .qm-inner-toggle {
-	padding: 5px 8px 4px !important;
+#qm .qm .qm-inner-toggle {
+	padding: 3px 4px !important;
 }
 
 .qm-has-inner .qm-toggled > table {
@@ -377,154 +344,128 @@ body.wp-admin.folded #qm {
 .qm-inner {
 	border-collapse: collapse !important;
 	margin: 0 !important;
-	background: #fff !important;
-	color: #333 !important;
 	border-style: hidden !important;
 	width: 100% !important;
 }
 
-.qm td.qm-has-inner .qm-toggler,
-.qm td.qm-has-inner {
+#qm .qm td.qm-has-inner .qm-toggler,
+#qm .qm td.qm-has-inner {
 	padding: 0 !important;
 }
 
-.qm ol,
-.qm ul {
-	margin: 0 !important;
-	padding: 0 !important;
+#qm .qm ol,
+#qm .qm ul {
 	list-style: none !important;
 }
 
-.qm li {
-	margin: 0 !important;
-	padding: 0 !important;
+#qm .qm li {
 	display: list-item !important;
 	list-style: none !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-	margin-left: 0 !important;
 }
 
-.qm li::before {
+#qm .qm li::before {
 	content: '' !important;
 }
 
-.qm .qm-has-toggle ol.qm-numbered li {
+#qm .qm .qm-has-toggle ol.qm-numbered li {
 	list-style: none !important;
 }
 
-.qm .qm-toggled-on ol.qm-numbered li,
-.qm ol.qm-numbered li {
+#qm .qm .qm-toggled-on ol.qm-numbered li,
+#qm .qm ol.qm-numbered li {
 	list-style: decimal inside !important;
 }
 
-.qm pre {
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
+#qm .qm pre {
+	font-size: 12px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
-	color: inherit !important;
 	background: transparent !important;
-	border: none !important;
-	margin: 0 !important;
-	padding: 0 !important;
 }
 
-.qm code {
-	font-style: normal !important;
-	font-weight: normal !important;
+#qm .qm code {
 	font-size: 11px !important;
-	line-height: 18px !important;
+	line-height: 16px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
-	color: inherit !important;
+}
+
+#qm .qm code.qm-inline-code {
 	background: #f1f1f1 !important;
 	padding: 3px 4px 2px !important;
-	margin: 0 !important;
 }
 
-.qm span.qm-true,
-.qm td.qm-true {
+#qm .qm span.qm-true,
+#qm .qm td.qm-true {
 	color: #4a4 !important;
 }
 
-.qm span.qm-false,
-.qm td.qm-false {
+#qm .qm span.qm-false,
+#qm .qm td.qm-false {
 	color: #bbb !important;
 }
 
-.qm .qm-wrap {
+#qm .qm .qm-wrap {
 	word-wrap: break-word !important;
 	word-break: break-all !important;
 }
 
-.qm code,
-.qm .qm-nowrap {
+#qm .qm code,
+#qm .qm .qm-nowrap {
 	white-space: nowrap !important;
 }
 
-.qm td.qm-has-toggle p,
-.qm .qm-nonselectsql {
+#qm .qm td.qm-has-toggle p,
+#qm .qm .qm-nonselectsql {
 	color: #a0a !important;
 }
 
-.qm .qm-current {
+#qm .qm .qm-current {
 	color: #a0a !important;
 }
 
-.qm .qm-info {
+#qm .qm .qm-info {
 	color: #777 !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
-.qm .qm-supplemental {
+#qm .qm .qm-supplemental {
 	margin-right: 0.75em !important;
 	margin-left: 0.75em !important;
 }
 
-.qm td .qm-toggled {
+#qm .qm td .qm-toggled {
 	display: none;
 }
 
+#qm .qm .qm-php-error-warning td,
+#qm .qm .qm-php-error-warning th {
+		color: #c00 !important;
+}
+
 #qm-title a,
-.qm a {
+#qm .qm a code,
+#qm .qm a {
 	color: #0073aa !important;
 	text-decoration: none !important;
-	text-shadow: none !important;
-	font-weight: normal !important;
-	border: none !important;
 	cursor: pointer !important;
 }
 
 #qm-title a:focus,
 #qm-title a:hover,
-.qm a:focus,
-.qm a:hover {
+#qm .qm a:focus,
+#qm .qm a:hover {
 	text-decoration: underline !important;
 	color: #0073aa !important;
 }
 
-.qm a.qm-warn {
+#qm .qm a.qm-warn {
 	text-decoration: underline !important;
 }
 
-.qm .qm-toggle,
-html[dir="rtl"] .qm .qm-ltr .qm-toggle {
+#qm .qm .qm-toggle,
+html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	color: #555 !important;
 	padding: 1px 6px 0 !important;
-	border: none !important;
-	font-style: normal !important;
 	font-weight: bold !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
 	top: 4px !important;
 	right: 4px !important;
@@ -533,24 +474,23 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 	cursor: pointer !important;
 }
 
-.qm .qm-toggle:focus,
-.qm .qm-toggle:hover {
+#qm .qm .qm-toggle:focus,
+#qm .qm .qm-toggle:hover {
 	text-decoration: none !important;
-	border-color: #e0e0e0 !important;
 	color: #0073aa !important;
 	background: #e0e0e0 !important;
 }
 
-.qm tr.error,
-.qm .qm-warn,
-.qm .qm-warn td,
-.qm .qm-warn th,
-.qm .qm-warn td .qm-nonselectsql,
-.qm .qm-warn td .qm-info {
+#qm .qm tr.error,
+#qm .qm .qm-warn,
+#qm .qm .qm-warn td,
+#qm .qm .qm-warn th,
+#qm .qm .qm-warn td .qm-nonselectsql,
+#qm .qm .qm-warn td .qm-info {
 	color: #f00 !important;
 }
 
-.qm .dashicons {
+#qm .qm .dashicons {
 	font-size: 16px !important;
 	width: 16px !important;
 	height: 16px !important;
@@ -558,47 +498,40 @@ html[dir="rtl"] .qm .qm-ltr .qm-toggle {
 }
 
 select.qm-filter.qm-highlight,
-.qm tbody tr td.qm-highlight,
-.qm .qm-highlight td {
+#qm .qm tbody tr td.qm-highlight,
+#qm .qm .qm-highlight td {
 	background-color: #ffd !important;
 }
 
-.qm span.qm-expensive,
-.qm td.qm-expensive {
+#qm .qm span.qm-expensive,
+#qm .qm td.qm-expensive {
 	color: #f44 !important;
 }
 
 /* Filters */
 
-.qm button,
-.qm a,
-.qm select {
-	outline: none !important;
+#qm .qm button,
+#qm .qm a,
+#qm .qm select {
+	outline: none !important; /* a11y */
 	margin: 0 !important;
-	border-radius: 0 !important;
-	transition: none !important;
 	height: auto !important;
 	width: auto !important;
 	background: none !important;
 	box-shadow: none !important;
 }
 
-.qm label {
+#qm .qm label {
 	cursor: pointer !important;
 	color: #333 !important;
 	font-weight: normal !important;
-	font-size: 11px !important;
+	font-size: 12px !important;
 	font-style: normal !important;
 	margin: 0 !important;
 }
 
 select.qm-filter {
 	display: block !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 	margin: 4px 0 2px !important;
 	border: 1px solid #ccc !important;
 	padding: 1px !important;
@@ -606,10 +539,8 @@ select.qm-filter {
 	color: #333 !important;
 	height: 2em !important;
 	width: auto !important;
-	border-radius: 0 !important;
 	float: none !important;
 	cursor: pointer !important;
-	text-transform: none !important;
 	-webkit-appearance: menulist !important;
 	-moz-appearance: menulist !important;
 	letter-spacing: normal !important;
@@ -627,23 +558,21 @@ select.qm-filter {
 
 /* Sorters */
 
-.qm .qm-sort-controls {
+#qm .qm .qm-sort-controls {
 	display: block !important;
 	margin-top: 4px !important;
 	text-align: center !important;
 }
 
-.qm button:focus,
-.qm a:focus,
-.qm select:focus {
+#qm .qm button:focus,
+#qm .qm a:focus,
+#qm .qm select:focus {
 	box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8) !important;
 }
 
-.qm .qm-sort {
+#qm .qm .qm-sort {
 	color: #767676 !important;
 	display: block !important;
-	border: 0 !important;
-	padding: 0 !important;
 	width: 30px !important;
 	background-color: transparent !important;
 	cursor: pointer !important;
@@ -651,7 +580,7 @@ select.qm-filter {
 	height: 10px !important;
 }
 
-.qm .qm-sort:before {
+#qm .qm .qm-sort:before {
 	border-width: 7px 5px !important;
 	border-style: solid !important;
 	border-color: transparent !important;
@@ -663,33 +592,33 @@ select.qm-filter {
 	left: 10px !important;
 }
 
-.qm .qm-sort-asc {
+#qm .qm .qm-sort-asc {
 	margin-bottom: 2px !important;
 }
-.qm .qm-sort-asc:before {
+#qm .qm .qm-sort-asc:before {
 	border-bottom-color: #aaa !important;
 	top: -4px !important;
 }
-.qm .qm-sort-asc:hover:before,
-.qm .qm-sort-asc:focus:before,
-.qm .qm-sorted-asc .qm-sort-asc:before {
+#qm .qm .qm-sort-asc:hover:before,
+#qm .qm .qm-sort-asc:focus:before,
+#qm .qm .qm-sorted-asc .qm-sort-asc:before {
 	border-bottom-color: #333 !important;
 }
 
-.qm .qm-sort-desc {
+#qm .qm .qm-sort-desc {
 	margin-top: 2px !important;
 }
-.qm .qm-sort-desc:before {
+#qm .qm .qm-sort-desc:before {
 	border-top-color: #aaa !important;
 	top: 0px !important;
 }
-.qm .qm-sort-desc:hover:before,
-.qm .qm-sort-desc:focus:before,
-.qm .qm-sorted-desc .qm-sort-desc:before {
+#qm .qm .qm-sort-desc:hover:before,
+#qm .qm .qm-sort-desc:focus:before,
+#qm .qm .qm-sorted-desc .qm-sort-desc:before {
 	border-top-color: #333 !important;
 }
 
-.qm .screen-reader-text {
+#qm .qm .screen-reader-text {
 	position: absolute !important;
 	margin: -1px !important;
 	padding: 0 !important;
@@ -702,47 +631,21 @@ select.qm-filter {
 
 /* RTL */
 
-html[dir="rtl"] body.wp-admin #qm {
-	margin-right: 160px !important;
-	margin-left: 0 !important;
-}
-
-@media all and (max-width: 782px) {
-	html[dir="rtl"] body.wp-admin #qm {
-		margin-right: 36px !important;
-		margin-left: 0 !important;
-	}
-}
-
-@media only screen and (max-width: 960px) {
-	html[dir="rtl"] body.wp-admin.auto-fold #qm {
-		margin-right: 36px !important;
-		margin-left: 0 !important;
-	}
-}
-
-html[dir="rtl"] body.wp-admin.folded #qm {
-	margin-right: 36px !important;
-	margin-left: 0 !important;
-}
-
 html[dir="rtl"] #qm,
-html[dir="rtl"] .qm caption,
-html[dir="rtl"] .qm td,
-html[dir="rtl"] .qm th {
+html[dir="rtl"] #qm .qm caption,
+html[dir="rtl"] #qm .qm td,
+html[dir="rtl"] #qm .qm th {
 	text-align: right !important;
 }
 
 html[dir="rtl"] #wpadminbar .quicklinks .menupop ul li.qm-ltr,
-html[dir="rtl"] .qm .qm-filter,
-html[dir="rtl"] .qm .qm-ltr {
+html[dir="rtl"] #qm .qm .qm-filter,
+html[dir="rtl"] #qm .qm .qm-ltr {
 	direction: ltr !important;
 	text-align: left !important;
 }
 
-html[dir="rtl"] .qm .qm-toggle {
-	border-right: 1px solid #e0e0e0 !important;
-	border-left: none !important;
+html[dir="rtl"] #qm .qm .qm-toggle {
 	right: auto !important;
 	left: 1px !important;
 }
@@ -763,13 +666,6 @@ html[dir="rtl"] .qm .qm-toggle {
 	padding: 10px !important;
 	border: 1px solid #e0e0e0 !important;
 	margin: 4px 0 !important;
-	color: inherit !important;
-	background: transparent !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
 .qm-debug-bar textarea {
@@ -784,14 +680,6 @@ html[dir="rtl"] .qm .qm-toggle {
 	float: right !important;
 }
 
-.qm-debug-bar h1, .qm-debug-bar h2, .qm-debug-bar h3 {
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: 11px !important;
-	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
-}
-
 .qm-debug-bar h2 {
 	float: left !important;
 	min-width: 150px !important;
@@ -803,7 +691,6 @@ html[dir="rtl"] .qm .qm-toggle {
 }
 
 .qm-debug-bar h2 span {
-	font-size: 11px !important;
 	white-space: nowrap !important;
 	display: block !important;
 	margin-bottom: 8px !important;

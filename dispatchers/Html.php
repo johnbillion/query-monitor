@@ -19,6 +19,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public $id = 'html';
 	public $did_footer = false;
 
+	protected $outputters     = array();
+	protected $admin_bar_menu = array();
+
 	public function __construct( QM_Plugin $qm ) {
 
 		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
@@ -96,14 +99,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'query-monitor',
 			'title' => esc_html( $title ),
-			'href'  => '#qm',
+			'href'  => '#qm-overview',
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'query-monitor',
 			'id'     => 'query-monitor-placeholder',
 			'title'  => esc_html( $title ),
-			'href'   => '#qm',
+			'href'   => '#qm-overview',
 		) );
 
 	}
@@ -193,7 +196,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$this->before_output();
 
 		/* @var QM_Output_Html[] */
-		foreach ( $this->get_outputters( 'html' ) as $id => $output ) {
+		foreach ( $this->outputters as $id => $output ) {
 			$timer = new QM_Timer;
 			$timer->start();
 
@@ -214,6 +217,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			require_once $file;
 		}
 
+		$this->outputters     = $this->get_outputters( 'html' );
+		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
+
 		$class = array(
 			'qm-no-js',
 		);
@@ -228,10 +234,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
-		echo '<div id="qm-wrapper">';
 		echo '<div id="qm-title">';
 		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
-		echo '</div>';
+		echo '</div>'; // #qm-title
+
+		echo '<div id="qm-panel-menu">';
+		echo '<ul>';
+
+		printf(
+			'<li><a href="%1$s">%2$s</li>',
+			'#qm-overview',
+			esc_html__( 'Overview', 'query-monitor' )
+		);
+
+		foreach ( $this->admin_bar_menu as $menu ) {
+			printf(
+				'<li><a href="%1$s">%2$s</li>',
+				esc_attr( $menu['href'] ),
+				esc_html( $menu['title'] )
+			);
+		}
+		echo '</ul>';
+		echo '</div>'; // #qm-panel-menu
+
+		echo '<div id="qm-panels">';
 
 	}
 
@@ -268,10 +294,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>';
+		echo '</div>'; // #qm-authentication
 
-		echo '</div>';
-		echo '</div>';
+		echo '</div>'; // #qm-panels
+		echo '</div>'; // #qm
 
 		$json = array(
 			'menu'        => $this->js_admin_bar_menu(),
@@ -325,7 +351,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'sub' => array(),
 		);
 
-		foreach ( apply_filters( 'qm/output/menus', array() ) as $menu ) {
+		foreach ( $this->admin_bar_menu as $menu ) {
 			$admin_bar_menu['sub'][ $menu['id'] ] = $menu;
 		}
 
