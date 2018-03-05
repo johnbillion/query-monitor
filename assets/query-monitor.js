@@ -59,6 +59,50 @@ jQuery( function($) {
 
 	$('#qm').removeClass('qm-no-js').addClass('qm-js');
 
+	var link_click = function(e){
+		e.preventDefault();
+
+		var paused = true;
+
+		if ( is_admin ) {
+			$('#wpfooter').css('position','relative');
+		}
+		if ( window.infinite_scroll && infinite_scroll.contentSelector ) {
+			// Infinite Scroll plugin
+
+			$( infinite_scroll.contentSelector ).infinitescroll('pause');
+
+		} else if ( window.infiniteScroll && infiniteScroll.scroller ) {
+			// Jetpack Infinite Scroll module
+
+			infiniteScroll.scroller.check = function(){
+				return false;
+			};
+
+		} else if ( window.wp && wp.themes && wp.themes.RunInstaller && wp.themes.RunInstaller.view ) {
+			// Infinite scrolling on Appearance -> Add New screens
+
+			var view = wp.themes.RunInstaller.view.view;
+			view.stopListening( view.parent, 'theme:scroll' );
+
+		} else {
+			paused = false;
+		}
+
+		if ( paused && window.console ) {
+			console.debug( qm_l10n.infinitescroll_paused );
+		}
+
+		var href = $( this ).attr('href');
+
+		$('#qm').addClass('qm-show').removeClass('qm-hide');
+		$( '.qm' ).removeClass('qm-panel-show');
+		$( href ).addClass('qm-panel-show');
+
+		$('#qm-panel-menu').find('a').removeClass('qm-selected-menu');
+		$('#qm-panel-menu').find('a[href="' + href + '"]').addClass('qm-selected-menu');
+	}
+
 	if ( $('#wp-admin-bar-query-monitor').length ) {
 
 		var container = document.createDocumentFragment();
@@ -93,40 +137,7 @@ jQuery( function($) {
 			$('#wp-admin-bar-query-monitor ul').append(container);
 		}
 
-		$('#wp-admin-bar-query-monitor').find('a').on('click',function(e){
-			var paused = true;
-
-			if ( is_admin ) {
-				$('#wpfooter').css('position','relative');
-			}
-			if ( window.infinite_scroll && infinite_scroll.contentSelector ) {
-				// Infinite Scroll plugin
-
-				$( infinite_scroll.contentSelector ).infinitescroll('pause');
-
-			} else if ( window.infiniteScroll && infiniteScroll.scroller ) {
-				// Jetpack Infinite Scroll module
-
-				infiniteScroll.scroller.check = function(){
-					return false;
-				};
-
-			} else if ( window.wp && wp.themes && wp.themes.RunInstaller && wp.themes.RunInstaller.view ) {
-				// Infinite scrolling on Appearance -> Add New screens
-
-				var view = wp.themes.RunInstaller.view.view;
-				view.stopListening( view.parent, 'theme:scroll' );
-
-			} else {
-				paused = false;
-			}
-
-			if ( paused && window.console ) {
-				console.debug( qm_l10n.infinitescroll_paused );
-			}
-
-			$('#qm').addClass('qm-show').removeClass('qm-hide');
-		});
+		$('#wp-admin-bar-query-monitor').find('a').on('click',link_click);
 
 		$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
