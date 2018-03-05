@@ -120,7 +120,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				}
 
 				printf( // WPCS: XSS ok.
-					'<td class="qm-ltr qm-nowrap">%s</td>',
+					'<td class="qm-ltr qm-nowrap"><code>%s</code></td>',
 					$name
 				);
 

@@ -41,7 +41,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
 			echo '<th scope="col" class="qm-num qm-ltr">';
-			echo esc_html( $type_name );
+			echo '<code>' . esc_html( $type_name ) . '</code>';
 			echo $this->build_sorter(); // WPCS: XSS ok;
 			echo '</th>';
 		}
@@ -62,7 +62,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
-				echo '<th scope="row" class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '">' . esc_html( $row['caller'] ) . '</a></th>';
+				echo '<th scope="row" class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '"><code>' . esc_html( $row['caller'] ) . '</code></a></th>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][ $type_name ] ) ) {

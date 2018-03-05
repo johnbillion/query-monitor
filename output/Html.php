@@ -174,7 +174,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$regex = 'ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DESCRIBE|DELETE|DROP|ELSE|END|EXCEPT|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USING|VALUES|WHEN|WHERE|XOR';
 		$sql = preg_replace( '# (' . $regex . ') #', '<br>$1 ', $sql );
 
-		return $sql;
+		return '<code>' . $sql . '</code>';
 
 	}
 
@@ -225,7 +225,7 @@ abstract class QM_Output_Html extends QM_Output {
 	public static function output_filename( $text, $file, $line = 0 ) {
 
 		if ( empty( $file ) ) {
-			return esc_html( $text );
+			return '<code>' . esc_html( $text ) . '</code>';
 		}
 
 		$link_line = ( $line ) ? $line : 1;
@@ -245,7 +245,7 @@ abstract class QM_Output_Html extends QM_Output {
 			if ( $line ) {
 				$fallback .= ':' . $line;
 			}
-			$return = esc_html( $text );
+			$return = '<code>' . esc_html( $text ) . '</code>';
 			if ( $fallback !== $text ) {
 				$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
 			}
@@ -253,7 +253,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		$link = sprintf( self::$file_link_format, urlencode( $file ), intval( $link_line ) );
-		return sprintf( '<a href="%s">%s</a>', esc_attr( $link ), esc_html( $text ) );
+		return sprintf( '<a href="%s"><code>%s</code></a>', esc_attr( $link ), esc_html( $text ) );
 
 	}
 
