@@ -167,6 +167,8 @@ jQuery( function($) {
 		}
 	}
 
+	$('#qm-panel-menu').find('a').on('click',link_click);
+
 	$('#qm').find('.qm-filter').on('change',function(e){
 
 		var filter = $(this).attr('data-filter'),
@@ -238,10 +240,7 @@ jQuery( function($) {
 			target = $(this).data('qm-target');
 		$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
 		$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
-		$('html, body').scrollTop( $(this).closest('.qm').offset().top );
-		$('html, body').animate({
-			scrollTop: $('#qm-' + target).offset().top
-		}, 500);
+		$('#qm-panel-menu').find('a[href="#qm-' + target + '"]').click();
 		e.preventDefault();
 	});
 
