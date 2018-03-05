@@ -32,7 +32,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		$total_time  = 0;
 		$span = count( $data['types'] ) + 2;
 
-		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table cellspacing="0" class="qm-sortable">';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';

@@ -263,7 +263,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		echo '<div class="qm qm-half qm-clear" id="qm-authentication">';
+		echo '<div class="qm" id="qm-authentication">';
 		echo '<table cellspacing="0">';
 		echo '<thead>';
 		echo '<tr>';

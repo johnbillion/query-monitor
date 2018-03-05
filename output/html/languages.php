@@ -48,17 +48,13 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$not_found_class = ( substr( $data['locale'], 0, 3 ) === 'en_' ) ? '' : 'qm-warn';
 
+		echo '<tbody>';
+
 		foreach ( $data['languages'] as $textdomain => $mofiles ) {
-			$first = true;
-
-			echo '<tbody class="qm-group">';
-
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
 
-				if ( $first ) {
-					echo '<th class="qm-ltr" rowspan="' . count( $mofiles ) . '">' . esc_html( $mofile['domain'] ) . '</th>';
-				}
+				echo '<th class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</th>';
 
 				echo '<td class="qm-nowrap qm-ltr">';
 				echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
@@ -80,10 +76,9 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '</tr>';
 				$first = false;
 			}
-
-			echo '</tbody>';
-
 		}
+
+		echo '</tbody>';
 
 		echo '</table>';
 		echo '</div>';
