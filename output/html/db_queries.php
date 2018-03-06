@@ -517,7 +517,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ) ),
 					'title' => esc_html( sprintf(
 						/* translators: %s: Name of database controller */
-						__( 'Queries - %s', 'query-monitor' ),
+						__( 'Queries: %s', 'query-monitor' ),
 						$name
 					) ),
 					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), sanitize_title_with_dashes( $name ) ) ),
