@@ -351,6 +351,29 @@ jQuery( function($) {
 
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 
+	var startY, resizerHeight;
+	var panel = $('#qm');
+
+	$(document).on('mousedown', '#qm-title', function(event) {
+		resizerHeight = $(this).outerHeight();
+		startY        = panel.outerHeight() + event.clientY;
+
+		$(document).on('mousemove', qm_do_resizer_drag);
+		$(document).on('mouseup', qm_stop_resizer_drag);
+	});
+
+	function qm_do_resizer_drag(event) {
+		var h = ( startY - event.clientY );
+		if ( h >= resizerHeight ) {
+			panel.height( h );
+		}
+	}
+
+	function qm_stop_resizer_drag(event) {
+		$(document).off('mousemove', qm_do_resizer_drag);
+		$(document).off('mouseup', qm_stop_resizer_drag);
+	}
+
 } );
 
 /**
