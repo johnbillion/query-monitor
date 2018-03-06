@@ -69,7 +69,10 @@ class QM_Collector_Request extends QM_Collector {
 
 		if ( is_admin() ) {
 			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-				$this->data['request']['request'] = wp_unslash( $_SERVER['REQUEST_URI'] ); // @codingStandardsIgnoreLine
+				$home_path = trim( parse_url( home_url(), PHP_URL_PATH ), '/' );
+				$request   = wp_unslash( $_SERVER['REQUEST_URI'] ); // @codingStandardsIgnoreLine
+
+				$this->data['request']['request'] = str_replace( "/{$home_path}/", '', $request );
 			} else {
 				$this->data['request']['request'] = '';
 			}
