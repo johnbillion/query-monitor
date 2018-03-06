@@ -56,7 +56,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html( $type_label['singular'] ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Host', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
@@ -132,6 +133,12 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		 */
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
+		$host = wp_parse_url( $source, PHP_URL_HOST );
+
+		if ( empty( $host ) && isset( $_SERVER['HTTP_HOST'] ) ) {
+			$host = wp_unslash( $_SERVER['HTTP_HOST'] ); // WPCS: sanitization ok
+		}
+
 		if ( is_wp_error( $source ) ) {
 			$src = $source->get_error_message();
 			if ( ( $error_data = $source->get_error_data() ) && isset( $error_data['src'] ) ) {
@@ -159,6 +166,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
+		echo '<td>' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
 		if ( is_wp_error( $source ) ) {
 			printf(
