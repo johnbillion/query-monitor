@@ -525,7 +525,7 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	margin-right: 0.3em !important;
 }
 
-select.qm-filter.qm-highlight,
+#qm .qm select.qm-filter.qm-highlight,
 #qm .qm tbody tr td.qm-highlight,
 #qm .qm .qm-highlight td {
 	background-color: #ffd !important;
@@ -558,11 +558,11 @@ select.qm-filter.qm-highlight,
 	margin: 0 !important;
 }
 
-select.qm-filter {
+#qm .qm select.qm-filter {
 	display: block !important;
-	margin: 4px 0 2px !important;
+	margin: 3px 0 0 !important;
 	border: 1px solid #ccc !important;
-	padding: 1px !important;
+	padding: 0 1px !important;
 	background: #fff !important;
 	color: #333 !important;
 	height: 2em !important;
