@@ -374,6 +374,10 @@ jQuery( function($) {
 		$(document).off('mouseup', qm_stop_resizer_drag);
 	}
 
+	$('.qm-panel-close').click(function(){
+		$('#qm').removeClass('qm-show');
+	});
+
 } );
 
 /**

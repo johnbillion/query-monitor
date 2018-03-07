@@ -196,6 +196,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	align-items:  center;
 	display: grid !important;
 	padding: 0 5px !important;
+	grid-template-columns: auto 20px;
+}
+
+#qm-title button {
+	color: #666 !important;
+}
+
+#qm-title button:focus,
+#qm-title button:hover {
+	color: #000 !important;
 }
 
 #qm .qm {
