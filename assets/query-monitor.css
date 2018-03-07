@@ -281,12 +281,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm .qm tbody th,
+#qm .qm tbody td,
+#qm .qm tfoot th,
+#qm .qm tfoot td {
+	border: 1px solid #e0e0e0 !important;
+	padding: 3px 5px !important;
+}
+
+#qm .qm tbody th,
 #qm .qm tbody td {
 	border-top: none !important;
-	border-right: 1px solid #e0e0e0 !important;
 	border-bottom: none !important;
-	border-left: 1px solid #e0e0e0 !important;
-	padding: 3px 5px !important;
 }
 
 #qm .qm thead th {
@@ -295,6 +300,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border-bottom: 1px solid #e0e0e0 !important;
 	border-left: 1px solid #e0e0e0 !important;
 	padding: 5px 5px !important;
+}
+
+#qm .qm tfoot td,
+#qm .qm tfoot th {
+	background: #f3f3f3 !important;
 }
 
 #qm .qm th:first-child,
