@@ -353,9 +353,10 @@ jQuery( function($) {
 
 	var startY, resizerHeight;
 	var panel = $('#qm');
+	var panel_storage_key = 'qm-panel-height';
 
 	$(document).on('mousedown', '#qm-title', function(event) {
-		resizerHeight = $(this).outerHeight();
+		resizerHeight = $(this).outerHeight() - 1;
 		startY        = panel.outerHeight() + event.clientY;
 
 		$(document).on('mousemove', qm_do_resizer_drag);
@@ -372,6 +373,26 @@ jQuery( function($) {
 	function qm_stop_resizer_drag(event) {
 		$(document).off('mousemove', qm_do_resizer_drag);
 		$(document).off('mouseup', qm_stop_resizer_drag);
+
+		if ( window.localStorage ) {
+			localStorage.setItem( panel_storage_key, panel.height() );
+		}
+	}
+
+	var minheight = 100;
+	var maxheight = ( $(window).height() - 50 );
+
+	if ( window.localStorage ) {
+		var h = localStorage.getItem( panel_storage_key );
+		if ( h !== null ) {
+			if ( h < minheight ) {
+				h = minheight;
+			}
+			if ( h > maxheight ) {
+				h = maxheight;
+			}
+			panel.height( h );
+		}
 	}
 
 	$('.qm-panel-close').click(function(){
