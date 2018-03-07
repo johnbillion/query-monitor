@@ -154,7 +154,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
-#qm * {
+#qm button,
+#qm select,
+#qm table,
+#qm td,
+#qm th,
+#qm ul,
+#qm ol,
+#qm li,
+#qm code,
+#qm a,
+#qm caption,
+#qm p {
 	/* reset */
 	background: transparent !important;
 	color: #444 !important;
