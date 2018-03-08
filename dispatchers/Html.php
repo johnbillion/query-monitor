@@ -235,10 +235,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-title">';
-		echo '<p>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
-		echo '<p><button class="qm-panel-close" title="' . esc_attr__( 'Close', 'query-monitor' ) . '" aria-label="' . esc_attr__( 'Close', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt"></span></button></p>';
+		echo '<p class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</p>';
+		echo '<p class="qm-title-button"><button class="qm-panel-close" title="' . esc_attr__( 'Close', 'query-monitor' ) . '" aria-label="' . esc_attr__( 'Close', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt"></span></button></p>';
 		echo '</div>'; // #qm-title
 
+		echo '<div id="qm-wrapper">';
 		echo '<div id="qm-panel-menu">';
 		echo '<ul>';
 
@@ -298,6 +299,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-authentication
 
 		echo '</div>'; // #qm-panels
+		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #qm
 
 		$json = array(

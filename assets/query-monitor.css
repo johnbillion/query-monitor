@@ -137,17 +137,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	left: 0 !important;
 	right: 0 !important;
 	width: 100% !important;
-	grid-template-columns: 15em auto;
-	grid-template-rows: 27px auto;
-	grid-template-areas: "qm-title qm-title" "qm-menu qm-panels";
 }
 
 #qm.qm-show,
 #qm.qm-peek,
 .no-js #qm,
 .nojs #qm {
-	display: grid;
+	display: flex;
 	height: 40%;
+	flex-direction: column;
 }
 
 #qm.qm-peek .qm {
@@ -188,15 +186,28 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	transition: none !important;
 }
 
+#qm-wrapper {
+    display: flex;
+    flex-grow: 1;
+}
+
 #qm-title {
 	background: #f3f3f3 !important;
-	grid-area: qm-title;
 	border-bottom: 1px solid #ccc !important;
 	cursor: ns-resize !important;
 	align-items:  center;
-	display: grid !important;
+	display: flex !important;
 	padding: 0 5px !important;
-	grid-template-columns: auto 20px;
+	height: 27px !important;
+	flex-shrink: 0;
+}
+
+#qm-title .qm-title-heading {
+	flex-grow: 1;
+}
+
+#qm-title .qm-title-button {
+	flex-shrink: 0;
 }
 
 #qm-title button {
@@ -215,7 +226,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panel-menu {
 	border-right: 1px solid #aaa !important;
 	overflow-y:  scroll !important;
-	grid-area: qm-menu;
+	flex-shrink: 0;
 	background: #f3f3f3 !important;
 }
 
@@ -249,7 +260,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm-panels {
-    grid-area: qm-panels;
+    flex-grow: 1;
     overflow-y: scroll;
 }
 
