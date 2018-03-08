@@ -56,6 +56,10 @@ var QM_i18n = {
 
 jQuery( function($) {
 	var is_admin = $('body').hasClass('wp-admin');
+	var minheight = 100;
+	var maxheight = ( $(window).height() - 50 );
+	var panel = $('#qm');
+	var panel_storage_key = 'qm-panel-height';
 
 	$('#qm').removeClass('qm-no-js').addClass('qm-js');
 
@@ -98,6 +102,10 @@ jQuery( function($) {
 		$('#qm').addClass('qm-show').removeClass('qm-hide');
 		$( '.qm' ).removeClass('qm-panel-show');
 		$( href ).addClass('qm-panel-show');
+
+		if ( panel.height() < minheight ) {
+			panel.height( minheight );
+		}
 
 		$('#qm-panel-menu').find('a').removeClass('qm-selected-menu');
 		$('#qm-panel-menu').find('a[href="' + href + '"]').addClass('qm-selected-menu');
@@ -352,8 +360,6 @@ jQuery( function($) {
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 
 	var startY, resizerHeight;
-	var panel = $('#qm');
-	var panel_storage_key = 'qm-panel-height';
 
 	$(document).on('mousedown', '#qm-title', function(event) {
 		resizerHeight = $(this).outerHeight() - 1;
@@ -379,9 +385,6 @@ jQuery( function($) {
 		}
 	}
 
-	var minheight = 100;
-	var maxheight = ( $(window).height() - 50 );
-
 	if ( window.localStorage ) {
 		var h = localStorage.getItem( panel_storage_key );
 		if ( h !== null ) {
@@ -394,6 +397,21 @@ jQuery( function($) {
 			panel.height( h );
 		}
 	}
+
+	$(window).on('resize', function(){
+		var maxheight = ( $(window).height() - 50 );
+		var h = panel.height();
+
+		if ( h < minheight ) {
+			panel.height( minheight );
+		}
+		if ( h > maxheight ) {
+			panel.height( maxheight );
+		}
+		if ( window.localStorage ) {
+			localStorage.setItem( panel_storage_key, panel.height() );
+		}
+	});
 
 	$('.qm-panel-close').click(function(){
 		$('#qm').removeClass('qm-show');
