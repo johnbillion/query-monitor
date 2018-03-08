@@ -128,15 +128,24 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns the column sorter controls. Safe for output.
 	 *
+	 * @param string $heading Heading text for the column. Optional.
 	 * @return string Markup for the column sorter controls.
 	 */
-	protected function build_sorter() {
-		$out = '<span class="qm-sort-controls">';
+	protected function build_sorter( $heading = '' ) {
+		$out = '';
+		$out .= '<div class="qm-th">';
+		$out .= '<span class="qm-sort-heading">';
+		if ( $heading ) {
+			$out .= esc_html( $heading );
+		}
+		$out .= '</span>';
+		$out .= '<span class="qm-sort-controls">';
 		/* translators: Button for sorting table columns in ascending order */
 		$out .= '<button class="qm-sort qm-sort-asc"><span class="screen-reader-text">' . esc_html__( 'Ascending', 'query-monitor' ) . '</span></button>';
 		/* translators: Button for sorting table columns in descending order */
 		$out .= '<button class="qm-sort qm-sort-desc"><span class="screen-reader-text">' . esc_html__( 'Descending', 'query-monitor' ) . '</span></button>';
 		$out .= '</span>';
+		$out .= '</div>';
 		return $out;
 	}
 

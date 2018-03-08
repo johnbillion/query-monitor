@@ -318,6 +318,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	box-shadow: 0px 1px 0px #e0e0e0;
 }
 
+#qm .qm thead .qm-th {
+	display: flex !important;
+}
+
 #qm .qm tfoot td,
 #qm .qm tfoot th {
 	background: #f3f3f3 !important;
@@ -602,10 +606,13 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 
 /* Sorters */
 
+#qm .qm .qm-sort-heading {
+	flex-grow: 1;
+}
+
 #qm .qm .qm-sort-controls {
-	display: block !important;
-	margin-top: 4px !important;
-	text-align: center !important;
+	text-align: right !important;
+	flex-shrink: 0;
 }
 
 #qm .qm button:focus,
@@ -616,11 +623,11 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 
 #qm .qm .qm-sort {
 	color: #767676 !important;
-	display: block !important;
-	width: 30px !important;
+	display: inline-block !important;
+	width: 10px !important;
 	background-color: transparent !important;
 	cursor: pointer !important;
-	margin: 0 auto !important;
+	margin: 0 !important;
 	height: 10px !important;
 }
 
@@ -633,15 +640,11 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	width: 0 !important;
 	height: 0 !important;
 	position: relative !important;
-	left: 10px !important;
 }
 
-#qm .qm .qm-sort-asc {
-	margin-bottom: 2px !important;
-}
 #qm .qm .qm-sort-asc:before {
 	border-bottom-color: #aaa !important;
-	top: -4px !important;
+	top: -3px !important;
 }
 #qm .qm .qm-sort-asc:hover:before,
 #qm .qm .qm-sort-asc:focus:before,
@@ -650,7 +653,7 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 }
 
 #qm .qm .qm-sort-desc {
-	margin-top: 2px !important;
+	margin-top: 4px !important;
 }
 #qm .qm .qm-sort-desc:before {
 	border-top-color: #aaa !important;

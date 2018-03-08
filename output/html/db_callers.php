@@ -41,14 +41,12 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
 			echo '<th scope="col" class="qm-num qm-ltr">';
-			echo '<code>' . esc_html( $type_name ) . '</code>';
-			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
 			echo '</th>';
 		}
 
 		echo '<th scope="col" class="qm-num qm-sorted-desc">';
-		esc_html_e( 'Time', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok;
+		echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';

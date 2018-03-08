@@ -200,8 +200,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			);
 
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
-			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo '<th scope="col" class="qm-sorted-asc">';
+			echo $this->build_sorter( '#' ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">';
 			echo $this->build_filter( 'type', $types, __( 'Query', 'query-monitor' ), $args ); // WPCS: XSS ok;
@@ -233,14 +233,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					$class = '';
 				}
 				echo '<th scope="col" class="' . esc_attr( $class ) . '">';
-				esc_html_e( 'Rows', 'query-monitor' );
-				echo $this->build_sorter(); // WPCS: XSS ok.
+				echo $this->build_sorter( __( 'Rows', 'query-monitor' ) ); // WPCS: XSS ok.
 				echo '</th>';
 			}
 
 			echo '<th scope="col" class="qm-num">';
-			esc_html_e( 'Time', 'query-monitor' );
-			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
 

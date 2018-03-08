@@ -45,8 +45,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc">&nbsp;';
-			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '<th scope="col" class="qm-sorted-asc">';
+			echo $this->build_sorter( '#' ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">';
@@ -56,11 +56,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col">';
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' );
-			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '<th scope="col" class="qm-num">';
+			echo $this->build_sorter (__( 'Timeout', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' );
-			echo $this->build_sorter(); // WPCS: XSS ok.
+			echo '<th scope="col" class="qm-num">';
+			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
 			echo '</thead>';
