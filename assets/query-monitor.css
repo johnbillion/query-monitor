@@ -163,6 +163,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm code,
 #qm a,
 #qm caption,
+#qm h1,
 #qm p {
 	/* reset */
 	background: transparent !important;
@@ -197,13 +198,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	cursor: ns-resize !important;
 	align-items:  center;
 	display: flex !important;
-	padding: 0 5px !important;
+	padding: 0 2px 0 5px !important;
 	height: 27px !important;
 	flex-shrink: 0;
 }
 
 #qm-title .qm-title-heading {
 	flex-grow: 1;
+	border-right: 1px solid #bbb !important;
+	margin-right: 8px !important;
 }
 
 #qm-title .qm-title-button {
@@ -211,7 +214,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm-title button {
-	color: #666 !important;
+	color: #777 !important;
+	cursor: pointer !important;
+	margin: 0 0 0 0px !important;
+	display: inline-block !important;
+	padding: 0px 2px !important;
 }
 
 #qm-title button:focus,
@@ -243,7 +250,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-panel-menu li a {
 	display: block !important;
-	padding: 4px 6px !important;
+	padding: 4px 18px 4px 6px !important;
 	color: #555 !important;
 	text-decoration: none !important;
 }
@@ -278,7 +285,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	box-shadow: none !important;
 	width: 100% !important;
 	table-layout: auto !important;
-	margin: 0 0 10px 0 !important;
+	margin: 0 !important;
 	border: none !important;
 }
 
@@ -363,8 +370,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	background: #fff !important;
 }
 
+#qm .qm tfoot td.qm-num,
 #qm .qm th.qm-num {
-	width: 5.5em !important;
+	width: 6em !important;
 }
 
 #qm .qm td.qm-num {
@@ -582,10 +590,10 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	display: block !important;
 	margin: 3px 0 0 !important;
 	border: 1px solid #ccc !important;
-	padding: 0 1px !important;
+	padding: 0 !important;
 	background: #fff !important;
 	color: #333 !important;
-	height: 2em !important;
+	height: auto !important;
 	width: auto !important;
 	float: none !important;
 	cursor: pointer !important;
