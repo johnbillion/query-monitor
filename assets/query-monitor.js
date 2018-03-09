@@ -517,17 +517,17 @@ jQuery( function($) {
 		settings.target.each(function () {
 			var table = $(this);
 
-			table.find('.qm-sort').on('click', function (e) {
-				var desc = $(this).hasClass('qm-sort-desc');
+			table.find('.qm-sortable-column').on('click', function (e) {
+				var desc = ! $(this).hasClass('qm-sorted-desc');
 
-				var index = $(this).closest('th').index();
+				var index = $(this).index();
 
 				table.find('th').removeClass('qm-sorted-asc qm-sorted-desc');
 
 				if ( desc ) {
-					$(this).closest('th').addClass('qm-sorted-desc');
+					$(this).addClass('qm-sorted-desc');
 				} else {
-					$(this).closest('th').addClass('qm-sorted-asc');
+					$(this).addClass('qm-sorted-asc');
 				}
 
 				table.find('tbody:not(.qm-sort-no)').each(function () {

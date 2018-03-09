@@ -140,10 +140,8 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 		$out .= '</span>';
 		$out .= '<span class="qm-sort-controls">';
-		/* translators: Button for sorting table columns in ascending order */
-		$out .= '<button class="qm-sort qm-sort-asc"><span class="screen-reader-text">' . esc_html__( 'Ascending', 'query-monitor' ) . '</span></button>';
-		/* translators: Button for sorting table columns in descending order */
-		$out .= '<button class="qm-sort qm-sort-desc"><span class="screen-reader-text">' . esc_html__( 'Descending', 'query-monitor' ) . '</span></button>';
+		$out .= '<span class="dashicons dashicons-arrow-up"></span>';
+		$out .= '<span class="dashicons dashicons-arrow-down"></span>';
 		$out .= '</span>';
 		$out .= '</div>';
 		return $out;

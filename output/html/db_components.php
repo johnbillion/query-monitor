@@ -42,12 +42,12 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<th scope="col" class="qm-num">';
+				echo '<th scope="col" class="qm-num qm-sortable-column">';
 				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
 				echo '</th>';
 			}
 
-			echo '<th scope="col" class="qm-num qm-sorted-desc">';
+			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column">';
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '</tr>';
