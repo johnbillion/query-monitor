@@ -60,6 +60,7 @@ jQuery( function($) {
 	var maxheight = ( $(window).height() - 50 );
 	var panel = $('#qm');
 	var panel_storage_key = 'qm-panel-height';
+	var panel_pinned_key ='qm-panel-pinned';
 
 	$('#qm').removeClass('qm-no-js').addClass('qm-js');
 
@@ -109,6 +110,11 @@ jQuery( function($) {
 
 		$('#qm-panel-menu').find('a').removeClass('qm-selected-menu');
 		$('#qm-panel-menu').find('a[href="' + href + '"]').addClass('qm-selected-menu');
+
+		if ( localStorage.getItem( panel_pinned_key ) ) {
+			localStorage.setItem( panel_pinned_key, href );
+		}
+
 	}
 
 	if ( $('#wp-admin-bar-query-monitor').length ) {
@@ -413,9 +419,28 @@ jQuery( function($) {
 		}
 	});
 
-	$('.qm-panel-close').click(function(){
+	$('.qm-button-panel-close').click(function(){
 		$('#qm').removeClass('qm-show');
+		localStorage.removeItem( panel_pinned_key );
+		$('.qm-button-panel-pin').removeClass( 'qm-button-active' );
 	});
+
+	$('.qm-button-panel-pin').click(function(){
+
+		if ( $(this).hasClass( 'qm-button-active' ) ) {
+			localStorage.removeItem( panel_pinned_key );
+		} else {
+			localStorage.setItem( panel_pinned_key, '#' + $('.qm-panel-show').first().attr('id') );
+		}
+
+		$(this).toggleClass( 'qm-button-active' );
+	});
+
+	var pinned = localStorage.getItem( panel_pinned_key );
+	if ( pinned ) {
+		$('#qm-panel-menu').find('a[href="' + pinned+'"]').click();
+		$('.qm-button-panel-pin').addClass( 'qm-button-active' );
+	}
 
 } );
 

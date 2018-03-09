@@ -236,7 +236,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-title">';
 		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
-		echo '<div class="qm-title-button"><button class="qm-panel-close" title="' . esc_attr__( 'Close', 'query-monitor' ) . '"><span class="screen-reader-text">' . esc_html__( 'Close', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-panel-pin" title="' . esc_attr__( 'Pin', 'query-monitor' ) . '"><span class="screen-reader-text">' . esc_html__( 'Pin', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-post"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-panel-close" title="' . esc_attr__( 'Close', 'query-monitor' ) . '"><span class="screen-reader-text">' . esc_html__( 'Close', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt"></span></button></div>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
