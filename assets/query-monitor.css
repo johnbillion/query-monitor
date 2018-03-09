@@ -190,6 +190,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-wrapper {
     display: flex;
     flex-grow: 1;
+	/* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
+	min-height: 0;
 }
 
 #qm-title {
