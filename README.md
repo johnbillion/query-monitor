@@ -269,7 +269,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
 # Contributing #
 
-Code contributions are very welcome, as are bug reports in the form of GitHub issues. Development happens in the `develop` branch, and any pull requests should be made to that branch please.
+Contributions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
 
 # License: GPLv2 #
 
