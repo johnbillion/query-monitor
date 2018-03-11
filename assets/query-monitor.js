@@ -117,6 +117,8 @@ jQuery( function($) {
 			localStorage.setItem( panel_pinned_key, href );
 		}
 
+		$( href ).find('.qm-filter').change();
+
 	}
 
 	if ( $('#wp-admin-bar-query-monitor').length ) {
