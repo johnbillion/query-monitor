@@ -119,7 +119,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$has_trace     = isset( $query['trace'] );
 			$has_result    = isset( $query['result'] );
 
-			if ( isset( $query['result'] ) ) {
+			if ( $has_result ) {
 				$result = $query['result'];
 			} else {
 				$result = null;
@@ -127,7 +127,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			$total_time += $ltime;
 
-			if ( isset( $query['trace'] ) ) {
+			if ( $has_trace ) {
 
 				$trace       = $query['trace'];
 				$component   = $query['trace']->get_component();
