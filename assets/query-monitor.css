@@ -483,14 +483,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	color: #bbb !important;
 }
 
-#qm .qm .qm-wrap {
-	word-wrap: break-word !important;
-	word-break: break-all !important;
-}
-
 #qm .qm code,
 #qm .qm .qm-nowrap {
 	white-space: nowrap !important;
+}
+
+#qm .qm .qm-wrap code,
+#qm .qm .qm-wrap {
+	word-wrap: break-word !important;
+	word-break: break-all !important;
+	white-space: normal !important;
 }
 
 #qm .qm td.qm-has-toggle p,
