@@ -72,7 +72,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				'header',
 				'footer',
 			) as $position ) {
-				if ( isset( $data[ $position ][ $type ] ) ) {
+				if ( ! empty( $data[ $position ][ $type ] ) ) {
 					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $position ], $type );
 				}
 			}
@@ -86,16 +86,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	protected function dependency_rows( array $handles, WP_Dependencies $dependencies, $label, $type ) {
-		if ( empty( $handles ) ) {
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
-			echo '<td colspan="6"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			echo '</tbody>';
-			return;
-		}
-
 		foreach ( $handles as $handle ) {
 
 			if ( in_array( $handle, $dependencies->done, true ) ) {
@@ -104,8 +94,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" class="qm-warn">';
 			}
 
-			// @TODO this isn't a proper row header any more:
-			echo '<th scope="row" class="qm-nowrap">' . esc_html( $label ) . '</th>';
+			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 
 			$this->dependency_row( $dependencies->query( $handle ), $dependencies, $type );
 
