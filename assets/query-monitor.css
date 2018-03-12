@@ -307,6 +307,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	table-layout: auto !important;
 	margin: 0 !important;
 	border: none !important;
+	border-bottom: 1px solid #cccccc !important;
 }
 
 #qm-conditionals table,
@@ -352,6 +353,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm .qm tfoot td,
 #qm .qm tfoot th {
 	background: #f3f3f3 !important;
+	position: sticky !important;
+	bottom: 0 !important;
 }
 
 #qm .qm th:first-child,
