@@ -233,6 +233,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = 'qm-peek';
 		}
 
+		$json = array(
+			'menu'        => $this->js_admin_bar_menu(),
+			'ajax_errors' => array(), # @TODO move this into the php_errors collector
+		);
+
+		echo '<script type="text/javascript">' . "\n\n";
+		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+		echo '</script>' . "\n\n";
+
 		echo '<div id="qm" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '">';
 		echo '<div id="qm-title">';
 		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
@@ -322,13 +331,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #qm
 
-		$json = array(
-			'menu'        => $this->js_admin_bar_menu(),
-			'ajax_errors' => array(), # @TODO move this into the php_errors collector
-		);
-
 		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		?>
 		if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! jQuery ) {
 			document.getElementById( 'qm' ).style.display = 'block';
