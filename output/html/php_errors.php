@@ -43,6 +43,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '</tr>';
 		echo '</thead>';
 
+		echo '<tbody>';
+
 		$types = array(
 			'errors' => array(
 				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
@@ -69,16 +71,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			if ( isset( $data[ $error_group ][ $type ] ) ) {
 
-				echo '<tbody class="qm-group">';
-				echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
-				echo '<th scope="row" rowspan="' . count( $data[ $error_group ][ $type ] ) . '"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
-				$first = true;
-
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
-					if ( ! $first ) {
-						echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
-					}
+					echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
+					echo '<th scope="row"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
 
 					$component = $error->trace->get_component();
 					$message   = wp_strip_all_tags( $error->message );
@@ -117,16 +113,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '</tr>';
-
-					$first = false;
-
 				}
-
-				echo '</tbody>';
 			}
 			}
 		}
 
+		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 
