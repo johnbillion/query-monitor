@@ -369,7 +369,9 @@ jQuery( function($) {
 
 	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
 
-	var startY, resizerHeight;
+	var startY, resizerHeight, toolbarHeight;
+
+	toolbarHeight = $('#wpadminbar').outerHeight();
 
 	$(document).on('mousedown', '#qm-title', function(event) {
 		resizerHeight = $(this).outerHeight() - 1;
@@ -381,7 +383,7 @@ jQuery( function($) {
 
 	function qm_do_resizer_drag(event) {
 		var h = ( startY - event.clientY );
-		if ( h >= resizerHeight ) {
+		if ( h >= resizerHeight && h < ( $(window).height() - toolbarHeight ) ) {
 			panel.height( h );
 		}
 	}
@@ -409,7 +411,7 @@ jQuery( function($) {
 	}
 
 	$(window).on('resize', function(){
-		var maxheight = ( $(window).height() - 50 );
+		var maxheight = ( $(window).height() - toolbarHeight );
 		var h = panel.height();
 
 		if ( h < minheight ) {
