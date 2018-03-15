@@ -122,7 +122,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		 */
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
-		$host = wp_parse_url( $source, PHP_URL_HOST );
+		$host = (string) wp_parse_url( $source, PHP_URL_HOST );
 
 		if ( empty( $host ) && isset( $_SERVER['HTTP_HOST'] ) ) {
 			$host = wp_unslash( $_SERVER['HTTP_HOST'] ); // WPCS: sanitization ok
@@ -132,9 +132,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$src = $source->get_error_message();
 			if ( ( $error_data = $source->get_error_data() ) && isset( $error_data['src'] ) ) {
 				$src .= ' (' . $error_data['src'] . ')';
+				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
 			}
 		} elseif ( empty( $source ) ) {
 			$src = '';
+			$host = '';
 		} else {
 			$src = $source;
 		}
