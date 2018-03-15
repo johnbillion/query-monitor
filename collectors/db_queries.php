@@ -105,6 +105,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$has_result = false;
 		$has_trace  = false;
 		$i          = 0;
+		$request    = trim( $wp_the_query->request );
+
+		if ( method_exists( $db, 'remove_placeholder_escape' ) ) {
+			$request = $db->remove_placeholder_escape( $request );
+		}
 
 		foreach ( (array) $db->queries as $query ) {
 
@@ -173,7 +178,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$types[ $type ]['callers'][ $caller ]++;
 			}
 
-			$is_main_query = ( trim( $wp_the_query->request ) === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
+			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
 
 			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 
