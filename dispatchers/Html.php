@@ -273,14 +273,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<ul>';
 
 		printf(
-			'<li><a href="%1$s">%2$s</li>',
+			'<li><a href="%1$s">%2$s</a></li>',
 			'#qm-overview',
 			esc_html__( 'Overview', 'query-monitor' )
 		);
 
 		foreach ( $this->admin_bar_menu as $menu ) {
 			printf(
-				'<li><a href="%1$s">%2$s</li>',
+				'<li><a href="%1$s">%2$s</a></li>',
 				esc_attr( $menu['href'] ),
 				esc_html( $menu['title'] )
 			);
