@@ -65,21 +65,21 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 
 			if ( $show_user ) {
-				echo '<th scope="col">';
+				echo '<th scope="col" class="qm-filterable-column">';
 				echo $this->build_filter( 'user', $data['users'], __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
 				echo '</th>';
 			}
 
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'result', $results, __( 'Result', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';

@@ -611,9 +611,21 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	margin: 0 !important;
 }
 
+#qm .qm thead label {
+	flex-grow: 1;
+}
+
+#qm .qm .qm-filter-container {
+    display: flex;
+}
+
+#qm .qm .qm-filter-container label {
+	cursor: default !important;
+}
+
 #qm .qm select.qm-filter {
 	display: block !important;
-	margin: 3px 0 0 !important;
+	margin: 0 0 0 5px !important;
 	border: 1px solid #ccc !important;
 	padding: 0 !important;
 	background: #fff !important;
@@ -656,14 +668,28 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	flex-shrink: 0;
 }
 
-#qm .qm .qm-sortable-column .dashicons {
-	display: none;
+#qm .qm .qm-sortable-column .qm-sort-arrow {
+	font-size: 30px !important;
+	color: #ccc !important;
 	margin: 0 !important;
+	width: 16px !important;
+	height: 10px !important;
 }
 
-#qm .qm  .qm-sorted-desc .dashicons-arrow-down,
-#qm .qm  .qm-sorted-asc .dashicons-arrow-up {
-	display: block;
+#qm .qm  .qm-sorted-desc .qm-sort-arrow,
+#qm .qm  .qm-sorted-asc .qm-sort-arrow {
+	color: #3878d9 !important;
+}
+
+#qm .qm .qm-sortable-column .qm-sort-arrow:before {
+    content: "\f140";
+    top: -1px;
+    right: 0;
+    position: absolute;
+}
+
+#qm .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
+    content: "\f142";
 }
 
 #qm .qm button:focus,

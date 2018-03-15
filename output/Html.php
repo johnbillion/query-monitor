@@ -105,7 +105,8 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
-		$out = '<label for="' . esc_attr( $filter_id ) . '">' . esc_html( $label ) . '</label>';
+		$out = '<div class="qm-filter-container">';
+		$out .= '<label for="' . esc_attr( $filter_id ) . '">' . esc_html( $label ) . '</label>';
 		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">';
 		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
 
@@ -120,6 +121,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		$out .= '</select>';
+		$out .= '</div>';
 
 		return $out;
 
@@ -140,8 +142,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 		$out .= '</span>';
 		$out .= '<span class="qm-sort-controls">';
-		$out .= '<span class="dashicons dashicons-arrow-up"></span>';
-		$out .= '<span class="dashicons dashicons-arrow-down"></span>';
+		$out .= '<span class="dashicons qm-sort-arrow"></span>';
 		$out .= '</span>';
 		$out .= '</div>';
 		return $out;

@@ -49,11 +49,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo $this->build_sorter( '#' ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-num qm-sortable-column">';

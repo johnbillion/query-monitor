@@ -203,10 +203,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<th scope="col" class="qm-sorted-asc qm-sortable-column">';
 			echo $this->build_sorter( '#' ); // WPCS: XSS ok;
 			echo '</th>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', $types, __( 'Query', 'query-monitor' ), $args ); // WPCS: XSS ok;
 			echo '</th>';
-			echo '<th scope="col">';
+			echo '<th scope="col" class="qm-filterable-column">';
 
 			$prepend = array();
 
@@ -221,7 +221,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</th>';
 
 			if ( $db->has_trace ) {
-				echo '<th scope="col">';
+				echo '<th scope="col" class="qm-filterable-column">';
 				echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 				echo '</th>';
 			}

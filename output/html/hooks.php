@@ -42,10 +42,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<caption class="screen-reader-text">' . esc_html__( 'Hooks', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">';
+		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
-		echo '<th  scope="col" colspan="3">';
+		echo '<th  scope="col" class="qm-filterable-column" colspan="3">';
 		echo $this->build_filter( 'component', $data['components'], __( 'Actions', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
