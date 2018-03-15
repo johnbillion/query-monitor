@@ -21,6 +21,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected $outputters     = array();
 	protected $admin_bar_menu = array();
+	protected $panel_menu     = array();
 
 	public function __construct( QM_Plugin $qm ) {
 
@@ -219,6 +220,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->outputters     = $this->get_outputters( 'html' );
 		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
+		$this->panel_menu     = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
 		$class = array(
 			'qm-no-js',
@@ -254,7 +256,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			esc_html__( 'Overview', 'query-monitor' )
 		);
 
-		foreach ( $this->admin_bar_menu as $menu ) {
+		foreach ( $this->panel_menu as $menu ) {
 			printf(
 				'<option value="%1$s">%2$s</option>',
 				esc_attr( $menu['href'] ),
@@ -278,7 +280,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			esc_html__( 'Overview', 'query-monitor' )
 		);
 
-		foreach ( $this->admin_bar_menu as $menu ) {
+		foreach ( $this->panel_menu as $menu ) {
 			printf(
 				'<li><a href="%1$s">%2$s</a></li>',
 				esc_attr( $menu['href'] ),
