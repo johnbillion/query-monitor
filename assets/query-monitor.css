@@ -164,6 +164,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm a,
 #qm caption,
 #qm h1,
+#qm h2,
+#qm h3,
+#qm h4,
+#qm h5,
+#qm h6,
 #qm p {
 	/* reset */
 	background: transparent !important;
@@ -765,55 +770,73 @@ html[dir="rtl"] #qm .qm .qm-toggle {
 
 /* Debug bar add-ons */
 
-.qm-debug-bar textarea,
-.qm-debug-bar pre {
+#qm .qm.qm-debug-bar textarea,
+#qm .qm.qm-debug-bar pre {
 	padding: 10px !important;
 	border: 1px solid #e0e0e0 !important;
 	margin: 4px 0 !important;
 }
 
-.qm-debug-bar textarea {
+#qm .qm.qm-debug-bar textarea {
 	resize: vertical !important;
 }
 
-.qm-debug-bar .left {
+#qm .qm.qm-debug-bar .left {
 	float: left !important;
 }
 
-.qm-debug-bar .right {
+#qm .qm.qm-debug-bar .right {
 	float: right !important;
 }
 
-.qm-debug-bar h2 {
+#qm .qm.qm-debug-bar h1 {
+	margin: 4px 6px 15px !important;
+}
+
+#qm .qm.qm-debug-bar h2 {
 	float: left !important; /* why */
 	min-width: 150px !important;
 	padding: 5px 10px 15px !important;
 	clear: none !important;
 	text-align: center !important;
-	font-size: 18px !important;
+	font-size: 14px !important;
 	margin: 3px 8px 15px 0 !important;
 }
 
-.qm-debug-bar h2 span {
+#qm .qm.qm-debug-bar h2 small {
+	font-size: 14px !important;
+}
+
+#qm .qm.qm-debug-bar h2 span {
 	white-space: nowrap !important;
 	display: block !important;
 	margin-bottom: 8px !important;
 }
 
-.qm-debug-bar h3 {
+#qm .qm.qm-debug-bar h3 {
 	margin: 15px 0 5px !important;
 	font-size: 13px !important;
 }
 
-.qm-debug-bar .qm-debug-bar-output {
+#qm .qm.qm-debug-bar .qm-debug-bar-output {
 	position: relative !important;
 }
 
-.qm-debug-bar .qm-debug-bar-output table {
+#qm .qm.qm-debug-bar .qm-debug-bar-output table {
 	margin-top: 4px !important;
 	margin-bottom: 4px !important;
 }
 
 #qm #debug-menu-target-Debug_Bar_Console {
 	min-height: 400px !important;
+}
+
+#qm #debug-menu-target-Debug_Bar_Cache_Lookup,
+#qm #debug-menu-target-Debug_Bar_Rewrite_Rules,
+#qm #debug-menu-target-Debug_Bar_Widgets {
+	margin: 4px 6px !important;
+}
+
+#qm #debug-menu-target-Debug_Bar_Rewrite_Rules .dbrr {
+	margin: 0;
 }

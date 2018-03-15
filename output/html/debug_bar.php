@@ -26,22 +26,11 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		$target = get_class( $this->collector->get_panel() );
 
 		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
-		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<tbody>';
-
-		echo '<tr>';
-		echo '<td>';
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
 		$this->collector->render();
 
 		echo '</div>';
-		echo '</td>';
-		echo '</tr>';
-
-		echo '</tbody>';
-		echo '</table>';
 		echo '</div>';
 
 	}
