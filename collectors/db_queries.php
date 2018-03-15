@@ -121,6 +121,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$sql           = $query[0];
 			$ltime         = $query[1];
 			$stack         = $query[2];
+			$has_start     = isset( $query[3] );
 			$has_trace     = isset( $query['trace'] );
 			$has_result    = isset( $query['result'] );
 

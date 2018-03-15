@@ -108,6 +108,10 @@ class QM_DB extends wpdb {
 			'ignore_frames' => 1,
 		) );
 
+		if ( ! isset( $this->queries[ $i ][3] ) ) {
+			$this->queries[ $i ][3] = $this->time_start;
+		}
+
 		if ( $this->last_error ) {
 			$code = 'qmdb';
 			if ( $this->use_mysqli ) {
