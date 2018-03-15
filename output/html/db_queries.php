@@ -138,7 +138,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	}
 
 	protected function output_queries( $name, stdClass $db, array $data ) {
-
+		$this->query_row = 0;
 		$span = 4;
 
 		if ( $db->has_result ) {
