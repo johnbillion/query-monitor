@@ -102,6 +102,7 @@ jQuery( function($) {
 
 		$('#qm').addClass('qm-show').removeClass('qm-hide');
 		$( '.qm' ).removeClass('qm-panel-show');
+		$('#qm-panels').scrollTop(0);
 		$( href ).addClass('qm-panel-show');
 
 		if ( panel.height() < minheight ) {
