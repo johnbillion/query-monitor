@@ -136,7 +136,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				'<div class="qm-inner-toggle">%1$s (%2$s) %3$s</div>',
 				esc_html( $data['queried_object']['title'] ),
 				esc_html( get_class( $data['queried_object']['data'] ) ),
-				$this->build_toggler()
+				self::build_toggler()
 			);
 
 			echo '<div class="qm-toggled">';
@@ -159,7 +159,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			printf( // WPCS: XSS ok.
 				'<div class="qm-inner-toggle">%1$s %2$s</div>',
 				esc_html( $data['user']['title'] ),
-				$this->build_toggler()
+				self::build_toggler()
 			);
 
 			echo '<div class="qm-toggled">';
@@ -198,7 +198,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				printf( // WPCS: XSS ok.
 					'<div class="qm-inner-toggle">%1$s %2$s</div>',
 					esc_html( $value['title'] ),
-					$this->build_toggler()
+					self::build_toggler()
 				);
 
 				echo '<div class="qm-toggled">';

@@ -153,7 +153,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 *
 	 * @return string Markup for the column sorter controls.
 	 */
-	protected function build_toggler() {
+	protected static function build_toggler() {
 		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false">+<span class="screen-reader-text">' . esc_html__( ' Toggle button', 'query-monitor' ) . '</span></button>';
 		return $out;
 	}
@@ -238,17 +238,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$link_line = ( $line ) ? $line : 1;
 
-		if ( ! isset( self::$file_link_format ) ) {
-			$format = ini_get( 'xdebug.file_link_format' );
-			$format = apply_filters( 'qm/output/file_link_format', $format );
-			if ( empty( $format ) ) {
-				self::$file_link_format = false;
-			} else {
-				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
-			}
-		}
-
-		if ( false === self::$file_link_format ) {
+		if ( ! self::has_clickable_links() ) {
 			$fallback = QM_Util::standard_dir( $file, '' );
 			if ( $line ) {
 				$fallback .= ':' . $line;
@@ -260,9 +250,27 @@ abstract class QM_Output_Html extends QM_Output {
 			return $return;
 		}
 
-		$link = sprintf( self::$file_link_format, urlencode( $file ), intval( $link_line ) );
+		$link = sprintf( self::get_file_link_format(), urlencode( $file ), intval( $link_line ) );
 		return sprintf( '<a href="%s"><code>%s</code></a>', esc_attr( $link ), esc_html( $text ) );
 
+	}
+
+	public static function get_file_link_format() {
+		if ( ! isset( self::$file_link_format ) ) {
+			$format = ini_get( 'xdebug.file_link_format' );
+			$format = apply_filters( 'qm/output/file_link_format', $format );
+			if ( empty( $format ) ) {
+				self::$file_link_format = false;
+			} else {
+				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
+			}
+		}
+
+		return self::$file_link_format;
+	}
+
+	public static function has_clickable_links() {
+		return ( false !== self::get_file_link_format() );
 	}
 
 }

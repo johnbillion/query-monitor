@@ -56,9 +56,19 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 				echo '<th class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</th>';
 
-				echo '<td class="qm-nowrap qm-ltr">';
-				echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
-				echo '</td>';
+				if ( self::has_clickable_links() ) {
+					echo '<td class="qm-nowrap qm-ltr">';
+					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
+					echo '</td>';
+				} else {
+					echo '<td class="qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler">';
+					echo self::build_toggler(); // WPCS: XSS ok;
+					echo '<li>';
+					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
+					echo '</li>';
+					echo '</ol></td>';
+				}
+
 				echo '<td class="qm-ltr">';
 				echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
 				echo '</td>';

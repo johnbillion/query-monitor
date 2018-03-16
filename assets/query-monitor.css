@@ -418,6 +418,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	position: relative !important;
 }
 
+#qm .qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
+	display: none;
+}
+
 #qm .qm .qm-inner-toggle {
 	padding: 4px 6px !important;
 }

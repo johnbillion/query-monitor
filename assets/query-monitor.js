@@ -272,11 +272,16 @@ jQuery( function($) {
 		}
 		el.attr('aria-expanded', newState);
 		var toggle = $(this).closest('td').find('.qm-toggled');
-		if ( el.attr('data-off') == el.text() ) {
-			toggle.slideToggle(100,function(){
+		if ( currentState === 'true' ) {
+			if ( toggle.length ) {
+				toggle.slideToggle(100,function(){
+					el.closest('td').removeClass('qm-toggled-on');
+					el.text(el.attr('data-on'));
+				});
+			} else {
 				el.closest('td').removeClass('qm-toggled-on');
 				el.text(el.attr('data-on'));
-			});
+			}
 		} else {
 			el.closest('td').addClass('qm-toggled-on');
 			el.text(el.attr('data-off'));

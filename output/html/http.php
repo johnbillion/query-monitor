@@ -167,7 +167,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$caller = array_pop( $stack );
 
 				if ( ! empty( $stack ) ) {
-					echo $this->build_toggler(); // WPCS: XSS ok;
+					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 

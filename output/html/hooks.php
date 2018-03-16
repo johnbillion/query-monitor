@@ -131,11 +131,25 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					}
 
 					echo '<td class="qm-num">' . intval( $action['priority'] ) . '</td>';
-					echo '<td class="qm-ltr qm-wrap">';
 
 					if ( isset( $action['callback']['file'] ) ) {
-						echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+
+
+						if ( self::has_clickable_links() ) {
+							echo '<td class="qm-wrap qm-ltr">';
+							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+							echo '</td>';
+						} else {
+							echo '<td class="qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler">';
+							echo self::build_toggler(); // WPCS: XSS ok;
+							echo '<li>';
+							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+							echo '</li>';
+							echo '</ol></td>';
+						}
+
 					} else {
+						echo '<td class="qm-ltr qm-wrap">';
 						echo esc_html( $action['callback']['name'] );
 					}
 
