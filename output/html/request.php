@@ -65,11 +65,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '</tr>';
 		}
 
-		echo '</tbody>';
-
 		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
 
-		echo '<tbody class="qm-group">';
 		echo '<tr>';
 		echo '<th rowspan="' . absint( $rowspan ) . '">';
 		esc_html_e( 'Query Vars', 'query-monitor' );
@@ -123,11 +120,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
-		echo '</tbody>';
-
 		if ( ! empty( $data['queried_object'] ) ) {
 
-			echo '<tbody class="qm-group">';
 			echo '<tr>';
 			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
 			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
@@ -145,11 +139,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			echo '</div></td>';
 			echo '</tr>';
-			echo '</tbody>';
 
 		}
 
-		echo '<tbody class="qm-group">';
 		echo '<tr>';
 		echo '<th>' . esc_html__( 'User', 'query-monitor' ) . '</th>';
 
@@ -175,13 +167,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '</tr>';
 
-		echo '</tbody>';
-
 		if ( ! empty( $data['multisite'] ) ) {
 
 			$rowspan = count( $data['multisite'] );
 
-			echo '<tbody class="qm-group">';
 			echo '<tr>';
 			echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</th>';
 
@@ -212,9 +201,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				$first = false;
 
 			}
-			echo '</tbody>';
 		}
 
+		echo '</tbody>';
 		echo '</table>';
 		echo '</div>';
 

@@ -385,7 +385,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	background: #f7f7f7 !important;
 }
 
-#qm .qm tbody.qm-group:hover th,
 #qm .qm tbody tr:hover th,
 #qm .qm tbody tr:hover td {
 	background: rgb( 238, 243, 250 ) !important;

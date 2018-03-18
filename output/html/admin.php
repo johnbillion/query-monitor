@@ -39,7 +39,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<th>' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-		echo '<tbody class="qm-group">';
+		echo '<tbody>';
 
 		$first = true;
 
@@ -57,9 +57,6 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 			$first = false;
 		}
 
-		echo '</tbody>';
-
-		echo '<tbody>';
 		echo '<tr>';
 		echo '<th class="qm-ltr">$pagenow</th>';
 		echo '<td colspan="2">' . esc_html( $data['pagenow'] ) . '</td>';
