@@ -322,12 +322,15 @@ jQuery( function($) {
 
 		errors = parseInt( errors, 10 );
 
+		if ( window.console ) {
+			console.group( qm_l10n.ajax_error );
+		}
+
 		for ( var key = 1; key <= errors; key++ ) {
 
 			error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 			if ( window.console ) {
-				console.error( qm_l10n.ajax_error );
 				console.error( error );
 			}
 
@@ -342,6 +345,10 @@ jQuery( function($) {
 
 			qm.ajax_errors[error.type] = true;
 
+		}
+
+		if ( window.console ) {
+			console.groupEnd();
 		}
 
 		return event;
