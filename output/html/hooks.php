@@ -114,8 +114,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr">';
-						echo $hook_name; // WPCS: XSS ok.
+						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
+						echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
 							printf(
@@ -125,7 +125,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							);
 							echo '<span>';
 						}
-						echo '</th>';
+						echo '</span></th>';
 
 					}
 
@@ -149,7 +149,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					} else {
 						echo '<td class="qm-ltr qm-wrap">';
-						echo esc_html( $action['callback']['name'] );
+						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
 					}
 
 					if ( isset( $action['callback']['error'] ) ) {
@@ -172,7 +172,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
 				echo '<th scope="row" class="qm-ltr">';
-				echo $hook_name; // WPCS: XSS ok.
+				echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
 				echo '</th>';
 				echo '<td colspan="3">&nbsp;</td>';
 				echo '</tr>';

@@ -601,6 +601,11 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	color: #c00 !important;
 }
 
+#qm .qm .qm-sticky {
+	position: sticky;
+	top: 36px;
+}
+
 /* Filters */
 
 #qm button,
