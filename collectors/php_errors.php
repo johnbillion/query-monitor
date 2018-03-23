@@ -14,21 +14,6 @@ GNU General Public License for more details.
 
 */
 
-# E_DEPRECATED and E_USER_DEPRECATED were introduced in PHP 5.3 so we need to use back-compat constants that work on 5.2.
-if ( defined( 'E_DEPRECATED' ) ) {
-	// phpcs:ignore PHPCompatibility.PHP.NewConstants
-	define( 'QM_E_DEPRECATED', E_DEPRECATED );
-} else {
-	define( 'QM_E_DEPRECATED', 0 );
-}
-
-if ( defined( 'E_USER_DEPRECATED' ) ) {
-	// phpcs:ignore PHPCompatibility.PHP.NewConstants
-	define( 'QM_E_USER_DEPRECATED', E_USER_DEPRECATED );
-} else {
-	define( 'QM_E_USER_DEPRECATED', 0 );
-}
-
 class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public $id = 'php_errors';
@@ -77,8 +62,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				$type = 'strict';
 				break;
 
-			case QM_E_DEPRECATED:
-			case QM_E_USER_DEPRECATED:
+			case E_DEPRECATED:
+			case E_USER_DEPRECATED:
 				$type = 'deprecated';
 				break;
 

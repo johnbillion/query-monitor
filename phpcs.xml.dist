@@ -2,7 +2,7 @@
 <ruleset name="Query Monitor">
 
 	<config name="installed_paths" value="../../wp-coding-standards/wpcs,../../wimg/php-compatibility" />
-	<config name="testVersion" value="5.2-"/>
+	<config name="testVersion" value="5.3-"/>
 
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
@@ -29,9 +29,6 @@
 
 		<!-- QM currently supports WordPress versions older than 4.1: -->
 		<exclude name="WordPress.WP.AlternativeFunctions.json_encode_json_encode" />
-
-		<!-- QM currently supports PHP versions older than 5.3: -->
-		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode" />
 
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.Commenting" />
@@ -75,11 +72,6 @@
 		<properties>
 			<property name="additionalWordDelimiters" value="-/"/>
 		</properties>
-	</rule>
-
-	<!-- debug_backtrace( false ) gets flagged as an error. Ignore it as it only affects PHP 5.2.4 -->
-	<rule ref="PHPCompatibility">
-		<exclude name="PHPCompatibility.PHP.NewFunctionParameters.debug_backtrace_optionsFound" />
 	</rule>
 
 	<!-- The following files use mysql_*() functions within mysqli conditional logic -->

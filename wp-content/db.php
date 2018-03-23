@@ -42,6 +42,17 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
+$plugin = "{$qm_dir}/classes/Plugin.php";
+
+if ( ! is_readable( $plugin ) ) {
+	return;
+}
+require_once $plugin;
+
+if ( ! QM_Plugin::php_version_met() ) {
+	return;
+}
+
 $backtrace = "{$qm_dir}/classes/Backtrace.php";
 if ( ! is_readable( $backtrace ) ) {
 	return;

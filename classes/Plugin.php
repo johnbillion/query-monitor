@@ -18,6 +18,7 @@ if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
 	private $plugin = array();
+	public static $minimum_php_version = '5.3.6';
 
 	/**
 	 * Class constructor
@@ -91,6 +92,16 @@ abstract class QM_Plugin {
 			}
 		}
 		return $this->plugin[ $item ] . ltrim( $file, '/' );
+	}
+
+	public static function php_version_met() {
+		static $met = null;
+
+		if ( null === $met ) {
+			$met = version_compare( PHP_VERSION, self::$minimum_php_version, '>=' );
+		}
+
+		return $met;
 	}
 
 }

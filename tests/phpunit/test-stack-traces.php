@@ -92,10 +92,6 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	public function test_populate_callback_closure() {
 
-		if ( version_compare( phpversion(), '5.3', '<' ) ) {
-			$this->markTestSkipped( 'PHP < 5.3 does not support closures' );
-		}
-
 		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
 
 		$callback = self::get_callback( $function );
