@@ -76,7 +76,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
 					echo '<td class="qm-ltr">';
-					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
+					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line, true ); // WPCS: XSS ok.
 					echo '</td>';
 
 					$stack          = array();

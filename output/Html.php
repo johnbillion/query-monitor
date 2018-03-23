@@ -225,15 +225,20 @@ abstract class QM_Output_Html extends QM_Output {
 	 * Netbeans: http://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/
 	 * `nbopen://%f:%l`
 	 *
-	 * @param  string $text The display text, such as a function name or file name.
-	 * @param  string $file The full file path and name.
-	 * @param  int    $line Optional. A line number, if appropriate.
+	 * @param  string $text        The display text, such as a function name or file name.
+	 * @param  string $file        The full file path and name.
+	 * @param  int    $line        Optional. A line number, if appropriate.
+	 * @param  bool   $is_filename Optional. Is the text a plain file name? Default false.
 	 * @return string The fully formatted file link or file name, safe for output.
 	 */
-	public static function output_filename( $text, $file, $line = 0 ) {
+	public static function output_filename( $text, $file, $line = 0, $is_filename = false ) {
 
 		if ( empty( $file ) ) {
-			return '<code>' . esc_html( $text ) . '</code>';
+			if ( $is_filename ) {
+				return esc_html( $text );
+			} else {
+				return '<code>' . esc_html( $text ) . '</code>';
+			}
 		}
 
 		$link_line = ( $line ) ? $line : 1;
@@ -243,7 +248,11 @@ abstract class QM_Output_Html extends QM_Output {
 			if ( $line ) {
 				$fallback .= ':' . $line;
 			}
-			$return = '<code>' . esc_html( $text ) . '</code>';
+			if ( $is_filename ) {
+				$return = esc_html( $text );
+			} else {
+				$return = '<code>' . esc_html( $text ) . '</code>';
+			}
 			if ( $fallback !== $text ) {
 				$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
 			}
@@ -251,8 +260,18 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		$link = sprintf( self::get_file_link_format(), urlencode( $file ), intval( $link_line ) );
-		return sprintf( '<a href="%s"><code>%s</code></a>', esc_attr( $link ), esc_html( $text ) );
 
+		if ( $is_filename ) {
+			$format = '<a href="%s">%s</a>';
+		} else {
+			$format = '<a href="%s"><code>%s</code></a>';
+		}
+
+		return sprintf(
+			$format,
+			esc_attr( $link ),
+			esc_html( $text )
+		);
 	}
 
 	public static function get_file_link_format() {
