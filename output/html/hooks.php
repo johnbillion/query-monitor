@@ -45,8 +45,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
-		echo '<th  scope="col" class="qm-filterable-column" colspan="3">';
-		echo $this->build_filter( 'component', $data['components'], __( 'Actions', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
+		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Action', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -174,7 +176,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				echo '<th scope="row" class="qm-ltr">';
 				echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
 				echo '</th>';
-				echo '<td colspan="3">&nbsp;</td>';
+				echo '<td>&nbsp;</td>';
+				echo '<td>&nbsp;</td>';
+				echo '<td>&nbsp;</td>';
 				echo '</tr>';
 			}
 		}
