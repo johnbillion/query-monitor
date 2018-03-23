@@ -35,7 +35,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<caption class="screen-reader-text">' . esc_html( 'PHP Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col" colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';

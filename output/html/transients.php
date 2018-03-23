@@ -57,7 +57,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				echo '<tr>';
 				printf(
-					'<td class="qm-ltr">%s</td>',
+					'<td class="qm-ltr"><code>%s</code></td>',
 					esc_html( $transient )
 				);
 				if ( is_multisite() ) {

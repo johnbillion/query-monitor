@@ -42,7 +42,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
 		echo '<th>' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
+		echo '<th>' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 

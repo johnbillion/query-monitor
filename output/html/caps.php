@@ -131,7 +131,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					);
 				}
 
-				$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : '<span class="qm-false">false</span>';
+				$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : 'false';
 				printf( // WPCS: XSS ok.
 					'<td class="qm-ltr qm-nowrap">%s</td>',
 					$result

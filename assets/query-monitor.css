@@ -201,7 +201,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-title {
 	background: #f3f3f3 !important;
-	border-bottom: 1px solid #ccc !important;
+	border-bottom: 1px solid #aaa !important;
 	cursor: ns-resize !important;
 	align-items:  center;
 	display: flex !important;
@@ -265,7 +265,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panel-menu ul {
     padding: 0 !important;
     margin: 0 0 30px 0 !important;
-    border-top: 1px solid #e6e6e6 !important;
 }
 
 #qm-panel-menu li {
@@ -316,8 +315,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border-bottom: 1px solid #cccccc !important;
 }
 
-#qm-conditionals table,
-#qm-overview table {
+#qm #qm-conditionals table,
+#qm #qm-overview table {
 	table-layout: fixed !important;
 }
 
@@ -379,25 +378,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none !important; /* @TODO remove */
 }
 
-/* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
-#qm .qm tbody tr:nth-child(odd) td,
-#qm .qm tbody tr:nth-child(odd) th {
-	background: #f7f7f7 !important;
-}
-
-#qm .qm tbody tr:hover th,
-#qm .qm tbody tr:hover td {
-	background: rgb( 238, 243, 250 ) !important;
-}
-
-.qm-debug-bar tbody tr:hover th,
-.qm-debug-bar tbody tr:hover td,
-#qm-conditionals tbody tr:hover td,
-#qm-overview tbody tr:hover td,
-#qm-authentication tbody tr:hover td {
-	background: #fff !important;
-}
-
 #qm .qm tfoot td.qm-num,
 #qm .qm th.qm-num {
 	width: 6.5em !important;
@@ -413,7 +393,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm .qm td.qm-has-toggle p,
 #qm .qm td .qm-toggler {
-	padding: 3px 22px 3px 4px !important;
+	padding: 4px 22px 4px 6px !important;
 	position: relative !important;
 }
 
@@ -527,16 +507,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
-#qm .qm .qm-php-error-warning td,
-#qm .qm .qm-php-error-warning td code,
-#qm .qm .qm-php-error-warning td ol,
-#qm .qm .qm-php-error-warning td ul,
-#qm .qm .qm-php-error-warning td li,
-#qm .qm .qm-php-error-warning td .qm-info,
-#qm .qm .qm-php-error-warning th {
-		color: #c00 !important;
-}
-
 #qm-title a,
 #qm .qm a code,
 #qm .qm a {
@@ -559,35 +529,53 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm .qm .qm-toggle,
 html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
-	color: #555 !important;
-	padding: 1px 6px 0 !important;
-	font-weight: bold !important;
+	color: #ffffff !important;
+	padding: 0px 5px 1px !important;
+	font-weight: normal !important;
 	position: absolute !important;
 	top: 4px !important;
 	right: 4px !important;
 	left: auto !important;
-	background: #f1f1f1 !important;
+	background: #589cbd !important;
 	cursor: pointer !important;
+	bottom: auto !important;
 }
 
 #qm .qm .qm-toggle:focus,
 #qm .qm .qm-toggle:hover {
 	text-decoration: none !important;
-	color: #0073aa !important;
-	background: #e0e0e0 !important;
+	color: #ffffff !important;
+	background: #3878d9 !important;
 }
 
-#qm .qm tr.error,
-#qm .qm .qm-warn,
-#qm .qm .qm-warn td,
-#qm .qm .qm-warn th,
-#qm .qm .qm-warn td .qm-nonselectsql,
-#qm .qm .qm-warn td code,
-#qm .qm .qm-warn td ul,
-#qm .qm .qm-warn td ol,
-#qm .qm .qm-warn td li,
-#qm .qm .qm-warn td .qm-info {
-	color: #c00 !important;
+/* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
+#qm .qm tbody tr:nth-child(odd) td,
+#qm .qm tbody tr:nth-child(odd) th {
+	background: #f7f7f7 !important;
+}
+
+.qm-debug-bar tbody tr:hover th,
+.qm-debug-bar tbody tr:hover td,
+#qm-conditionals tbody tr:hover td,
+#qm-overview tbody tr:hover td,
+#qm-authentication tbody tr:hover td {
+	background: #fff !important;
+}
+
+#qm .qm tbody tr.qm-php-error-warning th,
+#qm .qm tbody tr.qm-php-error-warning td,
+#qm .qm tbody tr.error,
+#qm .qm tbody tr.qm-warn td,
+#qm .qm tbody tr.qm-warn th {
+	background-color: #fff0f0 !important;
+	box-shadow: inset 0 -1px #ffd6d6 !important;
+	border-color: #ffd6d6 !important;
+	color: #800 !important;
+}
+
+#qm .qm tbody .qm-warn,
+#qm .qm tbody tr.qm-php-error-warning td > code {
+	color: #800 !important;
 }
 
 #qm .qm .dashicons {
@@ -599,8 +587,13 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 
 #qm .qm select.qm-filter.qm-highlight,
 #qm .qm tbody tr td.qm-highlight,
-#qm .qm .qm-highlight td {
+#qm .qm tbody tr.qm-highlight td {
 	background-color: #ffd !important;
+}
+
+#qm .qm tbody tr:hover th,
+#qm .qm tbody tr:hover td {
+	background: rgb( 238, 243, 250 ) !important;
 }
 
 #qm .qm span.qm-expensive,
@@ -645,7 +638,8 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 #qm .qm select.qm-filter {
 	display: block !important;
 	margin: 0 0 0 5px !important;
-	border: 1px solid #ccc !important;
+	outline: 1px solid #aaa !important;
+	border: none !important;
 	padding: 0 !important;
 	background: #fff !important;
 	color: #333 !important;
