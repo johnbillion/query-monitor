@@ -29,8 +29,6 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			return;
 		}
 
-		$colspan = empty( $data['dupe_components'] ) ? 4 : 5;
-
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
