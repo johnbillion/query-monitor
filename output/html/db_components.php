@@ -33,7 +33,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0" class="qm-sortable">';
+		echo '<table class="qm-sortable">';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';
 

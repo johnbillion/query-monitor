@@ -51,7 +51,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $type_labels as $type => $type_label ) {
 
 			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-' . esc_attr( $type ) . '">';
-			echo '<table cellspacing="0">';
+			echo '<table>';
 			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
 			echo '<thead>';
 			echo '<tr>';

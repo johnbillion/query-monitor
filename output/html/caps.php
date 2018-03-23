@@ -24,7 +24,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	public function output() {
 		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) ) {
 			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-			echo '<table cellspacing="0">';
+			echo '<table>';
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th>' . esc_html( $this->collector->name() ) . '</th>';
@@ -51,7 +51,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 
 		if ( ! empty( $data['caps'] ) ) {
 

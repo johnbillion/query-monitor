@@ -26,7 +26,7 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 
 		echo '<caption>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</caption>';
 		echo '<thead class="screen-reader-text">';

@@ -26,7 +26,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 
 		if ( ! empty( $data['timing'] ) || ! empty( $data['warning'] ) ) {
 

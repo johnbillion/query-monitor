@@ -51,7 +51,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	protected function output_empty_queries() {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-wpdb">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
 		echo '<tr>';
@@ -73,7 +73,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	protected function output_error_queries( array $errors ) {
 
 		echo '<div class="qm" id="qm-query-errors">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 		echo '<caption>' . esc_html__( 'Database Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
@@ -101,7 +101,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$dp = strlen( substr( strrchr( QM_DB_EXPENSIVE, '.' ), 1 ) );
 
 		echo '<div class="qm" id="qm-query-expensive">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 		echo '<caption>';
 		printf(
 			/* translators: %s: Database query time in seconds */
@@ -149,7 +149,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() . '-' . sanitize_title_with_dashes( $name ) ) . '">';
-		echo '<table cellspacing="0" class="qm-sortable">';
+		echo '<table class="qm-sortable">';
 		/* translators: %s: Name of database controller */
 		echo '<caption>' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</caption>';
 		echo '<thead>';

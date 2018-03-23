@@ -37,7 +37,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 	public static function output_inner( $vars ) {
 
-		echo '<table cellspacing="0" class="qm-inner">';
+		echo '<table class="qm-inner">';
 
 		foreach ( $vars as $key => $value ) {
 			echo '<tr>';

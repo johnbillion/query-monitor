@@ -38,7 +38,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		echo '<table>';
 		echo '<caption class="screen-reader-text">' . esc_html__( 'Hooks', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
