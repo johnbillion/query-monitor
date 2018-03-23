@@ -78,7 +78,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Error Code', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Error Message', 'query-monitor' ) . '</th>';
@@ -87,7 +87,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $errors as $row ) {
-			$this->output_query_row( $row, array( 'sql', 'stack', 'component', 'errno', 'result' ) );
+			$this->output_query_row( $row, array( 'sql', 'caller', 'component', 'errno', 'result' ) );
 		}
 
 		echo '</tbody>';
@@ -388,9 +388,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['caller'] ) ) {
 			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><ol class='qm-toggler qm-numbered'>";
+			echo self::build_toggler(); // WPCS: XSS ok;
 
 			if ( ! empty( $stack ) ) {
-				echo self::build_toggler(); // WPCS: XSS ok;
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
 

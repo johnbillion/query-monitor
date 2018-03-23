@@ -38,7 +38,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col" colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -102,9 +102,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol class="qm-numbered"><li>';
-					echo implode( '</li><li>', $stack ); // WPCS: XSS ok.
-					echo '</li></ol></td>';
+					$caller_name = array_pop( $stack );
+
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
+
+					echo self::build_toggler(); // WPCS: XSS ok;
+					if ( ! empty( $stack ) ) {
+						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					}
+
+					echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+
+					echo '</ol></td>';
 
 					if ( $component ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
