@@ -287,6 +287,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				esc_html( $menu['title'] )
 			);
 		}
+
+		printf(
+			'<li><a href="%1$s">%2$s</a></li>',
+			'#qm-authentication',
+			esc_html__( 'Authentication', 'query-monitor' )
+		);
+
 		echo '</ul>';
 		echo '</div>'; // #qm-panel-menu
 
