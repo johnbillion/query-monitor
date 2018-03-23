@@ -330,11 +330,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		} else {
 
-			$caller_name = esc_html( $row['caller'] );
+			$caller_name = '<code>' . esc_html( $row['caller'] ) . '</code>';
 			$stack       = explode( ', ', $row['stack'] );
 			$stack       = array_reverse( $stack );
 			array_shift( $stack );
-			$stack       = array_map( 'esc_html', $stack );
+			$stack       = array_map( function( $item ) {
+				return '<code>' . esc_html( $item ) . '</code>';
+			}, $stack );
 
 		}
 
