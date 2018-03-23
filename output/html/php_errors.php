@@ -40,45 +40,38 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
 
-		$types = array(
-			'errors' => array(
-				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
-			),
-			'suppressed' => array(
-				'warning'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			),
-			'silenced' => array(
-				'warning'    => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			),
-		);
-
-		foreach ( $types as $error_group => $error_types ) {
+		foreach ( $this->collector->types as $error_group => $error_types ) {
 			foreach ( $error_types as $type => $title ) {
 
 			if ( isset( $data[ $error_group ][ $type ] ) ) {
 
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
-					echo '<tr class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">';
-					echo '<th scope="row"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
-
 					$component = $error->trace->get_component();
 					$message   = wp_strip_all_tags( $error->message );
+					$row_attr  = array();
+					$row_attr['data-qm-component'] = $component->name;
+
+					if ( 'core' !== $component->context ) {
+						$row_attr['data-qm-component'] .= ' non-core';
+					}
+
+					$attr = '';
+
+					foreach ( $row_attr as $a => $v ) {
+						$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+					}
+
+					echo '<tr ' . $attr . 'class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">'; // WPCS: XSS ok.
+					echo '<th scope="row"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
@@ -164,13 +157,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		);
 		$empties = array(
 			/* translators: PHP warnings */
-			'warning'    => _x( 'Warnings', 'PHP error level', 'query-monitor' ),
+			'warning'    => _x( 'PHP Warnings', 'PHP error level', 'query-monitor' ),
 			/* translators: PHP notices */
-			'notice'     => _x( 'Notices', 'PHP error level', 'query-monitor' ),
+			'notice'     => _x( 'PHP Notices', 'PHP error level', 'query-monitor' ),
 			/* translators: Strict PHP errors */
-			'strict'     => _x( 'Stricts', 'PHP error level', 'query-monitor' ),
+			'strict'     => _x( 'PHP Stricts', 'PHP error level', 'query-monitor' ),
 			/* translators: Deprecated PHP errors */
-			'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			'deprecated' => _x( 'PHP Deprecated', 'PHP error level', 'query-monitor' ),
 		);
 
 		foreach ( $types as $type => $label ) {

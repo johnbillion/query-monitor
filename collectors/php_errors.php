@@ -32,6 +32,7 @@ if ( defined( 'E_USER_DEPRECATED' ) ) {
 class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public $id = 'php_errors';
+	public $types = array();
 	private $error_reporting = null;
 	private $display_errors = null;
 	private static $unexpected_error;
@@ -200,6 +201,27 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * property.
 	 */
 	public function process() {
+		$this->types = array(
+			'errors' => array(
+				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			),
+			'suppressed' => array(
+				'warning'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			),
+			'silenced' => array(
+				'warning'    => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'notice'     => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'strict'     => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			),
+		);
+
 		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
 			/**
 			 * Filters the levels used for reported PHP errors on a per-component basis.
@@ -251,6 +273,22 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$this->hide_silenced_php_errors = apply_filters( 'qm/collect/hide_silenced_php_errors', false );
 
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
+
+			$components = array();
+
+			foreach ( $this->types as $error_group => $error_types ) {
+				foreach ( $error_types as $type => $title ) {
+					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
+						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
+							$component = $error->trace->get_component();
+							$components[ $component->name ] = $component->name;
+						}
+					}
+				}
+			}
+
+			$this->data['components'] = $components;
+
 		}
 	}
 
