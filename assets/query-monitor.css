@@ -573,6 +573,7 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	color: #800 !important;
 }
 
+#qm .qm thead .qm-warn,
 #qm .qm tbody .qm-warn,
 #qm .qm tbody tr.qm-php-error-warning td > code {
 	color: #800 !important;
