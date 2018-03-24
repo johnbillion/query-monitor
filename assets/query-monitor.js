@@ -274,7 +274,7 @@ jQuery( function($) {
 		var toggle = $(this).closest('td').find('.qm-toggled');
 		if ( currentState === 'true' ) {
 			if ( toggle.length ) {
-				toggle.slideToggle(100,function(){
+				toggle.slideToggle(200,function(){
 					el.closest('td').removeClass('qm-toggled-on');
 					el.text(el.attr('data-on'));
 				});
@@ -285,7 +285,7 @@ jQuery( function($) {
 		} else {
 			el.closest('td').addClass('qm-toggled-on');
 			el.text(el.attr('data-off'));
-			toggle.slideToggle(100);
+			toggle.slideToggle(200);
 		}
 		e.preventDefault();
 	});

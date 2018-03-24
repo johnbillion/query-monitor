@@ -178,7 +178,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	font-style: normal !important;
 	font-weight: normal !important;
 	font-size: 12px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif !important;
 	border: none !important;
 	padding: 0 !important;
@@ -329,7 +329,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm .qm tfoot th,
 #qm .qm tfoot td {
 	border: 1px solid #e0e0e0 !important;
-	padding: 4px 6px !important;
+	padding: 5px !important;
 }
 
 #qm .qm tbody th,
@@ -343,7 +343,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border-right: 1px solid #e0e0e0 !important;
 	border-bottom: 1px solid #e0e0e0 !important;
 	border-left: 1px solid #e0e0e0 !important;
-	padding: 6px 6px !important;
+	padding: 5px !important;
 	position: sticky !important;
 	top: 0 !important;
 	background: #fff !important;
@@ -380,20 +380,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm .qm tfoot td.qm-num,
 #qm .qm th.qm-num {
-	width: 6.5em !important;
+	width: 5em !important;
 }
 
 #qm .qm td.qm-num {
 	text-align: right !important;
 }
 
-#qm .qm td.qm-has-toggle {
-	padding: 0 !important;
-}
-
 #qm .qm td.qm-has-toggle p,
 #qm .qm td .qm-toggler {
-	padding: 4px 22px 4px 6px !important;
+	padding: 0 22px 0 0 !important;
 	position: relative !important;
 }
 
@@ -453,7 +449,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm .qm code {
 	font-size: 11px !important;
-	line-height: 16px !important;
+	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -530,11 +526,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm .qm .qm-toggle,
 html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	color: #ffffff !important;
-	padding: 0px 5px 1px !important;
+	padding: 0px 5px !important;
 	font-weight: normal !important;
+	font-family: Menlo, Monaco, Consolas, monospace !important;
 	position: absolute !important;
-	top: 4px !important;
-	right: 4px !important;
+	top: 0 !important;
+	right: 0 !important;
 	left: auto !important;
 	background: #589cbd !important;
 	cursor: pointer !important;

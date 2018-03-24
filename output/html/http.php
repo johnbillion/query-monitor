@@ -46,7 +46,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col" class="qm-sorted-asc qm-sortable-column">';
-			echo $this->build_sorter( '#' ); // WPCS: XSS ok.
+			echo $this->build_sorter(); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';

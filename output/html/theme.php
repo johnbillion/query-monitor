@@ -45,9 +45,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['template_path'] ) ) {
 			if ( $data['is_child_theme'] ) {
-				echo '<td class="qm-ltr">' . self::output_filename( $data['theme_template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
+				echo '<td class="qm-ltr">' . self::output_filename( $data['theme_template_file'], $data['template_path'], 0, true ) . '</td>'; // WPCS: XSS ok.
 			} else {
-				echo '<td class="qm-ltr">' . self::output_filename( $data['template_file'], $data['template_path'] ) . '</td>'; // WPCS: XSS ok.
+				echo '<td class="qm-ltr">' . self::output_filename( $data['template_file'], $data['template_path'], 0, true ) . '</td>'; // WPCS: XSS ok.
 			}
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
@@ -78,7 +78,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<td class="qm-ltr"><ul>';
 
 			foreach ( $parts as $filename => $display ) {
-				echo '<li>' . self::output_filename( $display, $filename ) . '</li>'; // WPCS: XSS ok.
+				echo '<li>' . self::output_filename( $display, $filename, 0, true ) . '</li>'; // WPCS: XSS ok.
 			}
 
 			echo '</ul></td>';

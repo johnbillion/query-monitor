@@ -201,7 +201,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th scope="col" class="qm-sorted-asc qm-sortable-column">';
-			echo $this->build_sorter( '#' ); // WPCS: XSS ok;
+			echo $this->build_sorter(); // WPCS: XSS ok;
 			echo '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', $types, __( 'Query', 'query-monitor' ), $args ); // WPCS: XSS ok;

@@ -28,10 +28,9 @@ class QM_Output_Html_Rewrites extends QM_Output_Html {
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
 
-		echo '<caption>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</caption>';
-		echo '<thead class="screen-reader-text">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Rule', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Matching Rewrite Rule', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
