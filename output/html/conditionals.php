@@ -39,7 +39,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			if ( 1 === $i % $cols ) {
 				echo '<tr>';
 			}
-			echo '<td class="qm-ltr qm-true">' . esc_html( $cond ) . '()&nbsp;&#x2713;</td>';
+			echo '<td class="qm-ltr qm-true"><code>' . esc_html( $cond ) . '()</code>&nbsp;&#x2713;</td>';
 			if ( 0 === $i % $cols ) {
 				echo '</tr>';
 			}
@@ -50,7 +50,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 			if ( 1 === $i % $cols ) {
 				echo '<tr>';
 			}
-			echo '<td class="qm-ltr qm-false">' . esc_html( $cond ) . '()</td>';
+			echo '<td class="qm-ltr qm-false"><code>' . esc_html( $cond ) . '()</code></td>';
 			if ( 0 === $i % $cols ) {
 				echo '</tr>';
 			}

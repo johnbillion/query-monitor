@@ -28,11 +28,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 
 		echo '<table>';
-		echo '<caption>PHP</caption>';
-		echo '<thead class="screen-reader-text">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">PHP</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -145,11 +143,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				}
 
 				echo '<table>';
-				echo '<caption>' . esc_html( $name ) . '</caption>';
-				echo '<thead class="screen-reader-text">';
+				echo '<thead>';
 				echo '<tr>';
-				echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-				echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+				echo '<th colspan="2">' . esc_html( $name ) . '</th>';
 				echo '</tr>';
 				echo '</thead>';
 				echo '<tbody>';
@@ -230,11 +226,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		}
 
 		echo '<table>';
-		echo '<caption>WordPress</caption>';
-		echo '<thead class="screen-reader-text">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">WordPress</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
@@ -252,11 +246,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</table>';
 
 		echo '<table>';
-		echo '<caption>' . esc_html__( 'Server', 'query-monitor' ) . '</caption>';
-		echo '<thead class="screen-reader-text">';
+		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '<th colspan="2">' . esc_html( 'Server', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
