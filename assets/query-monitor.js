@@ -233,9 +233,15 @@ jQuery( function($) {
 			time = QM_i18n.number_format( time, 4 );
 		}
 
-		var results = table.find('.qm-items-shown').removeClass('qm-hide');
+		var results = table.find('.qm-items-shown');
 		results.find('.qm-items-number').text( QM_i18n.number_format( matches.length, 0 ) );
 		results.find('.qm-items-time').text(time);
+
+		if ( table.find('.qm-filter.qm-highlight').length ) {
+			results.removeClass('qm-hide');
+		} else {
+			results.addClass('qm-hide');
+		}
 	});
 
 	if ( window.localStorage ) {

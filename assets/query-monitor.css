@@ -360,11 +360,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: flex !important;
 }
 
-#qm .qm tfoot td,
-#qm .qm tfoot th {
+#qm .qm tfoot tr td,
+#qm .qm tfoot tr th {
 	background: #f3f3f3 !important;
 	position: sticky !important;
 	bottom: 0 !important;
+}
+
+#qm .qm tfoot tr.qm-items-shown td,
+#qm .qm tfoot tr.qm-items-shown th {
+	bottom: 28px !important;
 }
 
 #qm .qm th:first-child,
