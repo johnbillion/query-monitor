@@ -20,7 +20,6 @@ class QM_Backtrace {
 	protected static $ignore_class = array(
 		'wpdb'           => true,
 		'QueryMonitor'   => true,
-		'ExtQuery'       => true,
 		'W3_Db'          => true,
 		'Debug_Bar_PHP'  => true,
 		'WP_Hook'        => true,
@@ -65,7 +64,6 @@ class QM_Backtrace {
 	protected $calling_file    = '';
 
 	public function __construct( array $args = array() ) {
-		# @TODO save the args as a property and process the trace JIT
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
 			'ignore_frames'         => 0,
@@ -135,7 +133,7 @@ class QM_Backtrace {
 			try {
 
 				if ( isset( $frame['class'] ) ) {
-					if ( ! is_object( $frame['class'] ) and ! class_exists( $frame['class'], false ) ) {
+					if ( ! class_exists( $frame['class'], false ) ) {
 						continue;
 					}
 					if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
@@ -154,6 +152,12 @@ class QM_Backtrace {
 
 				$comp = QM_Util::get_file_component( $file );
 				$components[ $comp->type ] = $comp;
+
+				if ( 'plugin' === $comp->type ) {
+					// If the component is a plugin then it can't be anything else,
+					// so short-circuit and return early.
+					return $comp;
+				}
 			} catch ( ReflectionException $e ) {
 				# nothing
 			}

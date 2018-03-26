@@ -120,7 +120,7 @@ class QM_Collector_Request extends QM_Collector {
 
 		switch ( true ) {
 
-			case is_null( $qo ):
+			case ! is_object( $qo ):
 				// Nada
 				break;
 
@@ -170,7 +170,7 @@ class QM_Collector_Request extends QM_Collector {
 
 		}
 
-		if ( ! is_null( $qo ) ) {
+		if ( $qo ) {
 			$this->data['queried_object']['data'] = $qo;
 		}
 
