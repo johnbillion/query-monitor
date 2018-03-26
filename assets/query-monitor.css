@@ -125,7 +125,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 /* === Main QM Panel === */
 
-#qm {
+#query-monitor {
 	background: #fff !important;
 	margin: 0 !important;
 	border-top: 1px solid #aaa !important;
@@ -139,37 +139,37 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	width: 100% !important;
 }
 
-#qm.qm-show,
-#qm.qm-peek,
-.no-js #qm,
-.nojs #qm {
+#query-monitor.qm-show,
+#query-monitor.qm-peek,
+.no-js #query-monitor,
+.nojs #query-monitor {
 	display: flex;
 	height: 40%;
 	flex-direction: column;
 }
 
-#qm.qm-peek .qm {
+#query-monitor.qm-peek .qm {
 	display: none;
 }
 
-#qm button,
-#qm select,
-#qm table,
-#qm td,
-#qm th,
-#qm ul,
-#qm ol,
-#qm li,
-#qm code,
-#qm a,
-#qm caption,
-#qm h1,
-#qm h2,
-#qm h3,
-#qm h4,
-#qm h5,
-#qm h6,
-#qm p {
+#query-monitor button,
+#query-monitor select,
+#query-monitor table,
+#query-monitor td,
+#query-monitor th,
+#query-monitor ul,
+#query-monitor ol,
+#query-monitor li,
+#query-monitor code,
+#query-monitor a,
+#query-monitor caption,
+#query-monitor h1,
+#query-monitor h2,
+#query-monitor h3,
+#query-monitor h4,
+#query-monitor h5,
+#query-monitor h6,
+#query-monitor p {
 	/* reset */
 	background: transparent !important;
 	color: #333 !important;
@@ -251,7 +251,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	transform: rotate( -45deg ) !important;
 }
 
-#qm .qm {
+#query-monitor .qm {
 	display: none !important;
 }
 
@@ -296,15 +296,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
     overflow-y: scroll;
 }
 
-#qm .qm.qm-panel-show {
+#query-monitor .qm.qm-panel-show {
 	display: block !important;
 }
 
-#qm .qm:focus {
+#query-monitor .qm:focus {
 	outline: 0 !important; /* @TODO might not need this any more */
 }
 
-#qm .qm table {
+#query-monitor .qm table {
 	color: #333 !important;
 	border-collapse: collapse !important;
 	box-shadow: none !important;
@@ -315,35 +315,35 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border-bottom: 1px solid #cccccc !important;
 }
 
-#qm .qm table + table {
+#query-monitor .qm table + table {
 	margin-top: 5px !important;
 	border-top: 1px solid #cccccc !important;
 }
 
-#qm #qm-conditionals table,
-#qm #qm-overview table {
+#query-monitor #qm-conditionals table,
+#query-monitor #qm-overview table {
 	table-layout: fixed !important;
 }
 
-#qm .qm tr {
+#query-monitor .qm tr {
 	border: none !important;
 }
 
-#qm .qm tbody th,
-#qm .qm tbody td,
-#qm .qm tfoot th,
-#qm .qm tfoot td {
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td,
+#query-monitor .qm tfoot th,
+#query-monitor .qm tfoot td {
 	border: 1px solid #e0e0e0 !important;
 	padding: 5px !important;
 }
 
-#qm .qm tbody th,
-#qm .qm tbody td {
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td {
 	border-top: none !important;
 	border-bottom: none !important;
 }
 
-#qm .qm thead th {
+#query-monitor .qm thead th {
 	border-top: none !important;
 	border-right: 1px solid #e0e0e0 !important;
 	border-bottom: 1px solid #e0e0e0 !important;
@@ -356,58 +356,58 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	box-shadow: 0px 1px 0px #e0e0e0;
 }
 
-#qm .qm thead .qm-th {
+#query-monitor .qm thead .qm-th {
 	display: flex !important;
 }
 
-#qm .qm tfoot tr td,
-#qm .qm tfoot tr th {
+#query-monitor .qm tfoot tr td,
+#query-monitor .qm tfoot tr th {
 	background: #f3f3f3 !important;
 	position: sticky !important;
 	bottom: 0 !important;
 }
 
-#qm .qm tfoot tr.qm-items-shown td,
-#qm .qm tfoot tr.qm-items-shown th {
+#query-monitor .qm tfoot tr.qm-items-shown td,
+#query-monitor .qm tfoot tr.qm-items-shown th {
 	bottom: 28px !important;
 }
 
-#qm .qm th:first-child,
-#qm .qm td:first-child {
+#query-monitor .qm th:first-child,
+#query-monitor .qm td:first-child {
 	border-left: none !important;
 }
 
-#qm .qm th:last-child,
-#qm .qm td:last-child {
+#query-monitor .qm th:last-child,
+#query-monitor .qm td:last-child {
 	border-right: none !important;
 }
 
-#qm .qm caption {
+#query-monitor .qm caption {
 	caption-side: top !important;
 	border: none !important;
 	display: none !important; /* @TODO remove */
 }
 
-#qm .qm tfoot td.qm-num,
-#qm .qm th.qm-num {
+#query-monitor .qm tfoot td.qm-num,
+#query-monitor .qm th.qm-num {
 	width: 5em !important;
 }
 
-#qm .qm td.qm-num {
+#query-monitor .qm td.qm-num {
 	text-align: right !important;
 }
 
-#qm .qm td.qm-has-toggle p,
-#qm .qm td .qm-toggler {
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm td .qm-toggler {
 	padding: 0 22px 0 0 !important;
 	position: relative !important;
 }
 
-#qm .qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
+#query-monitor .qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
 	display: none;
 }
 
-#qm .qm .qm-inner-toggle {
+#query-monitor .qm .qm-inner-toggle {
 	padding: 4px 6px !important;
 }
 
@@ -422,102 +422,102 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	width: 100% !important;
 }
 
-#qm .qm td.qm-has-inner .qm-toggler,
-#qm .qm td.qm-has-inner {
+#query-monitor .qm td.qm-has-inner .qm-toggler,
+#query-monitor .qm td.qm-has-inner {
 	padding: 0 !important;
 }
 
-#qm .qm ol,
-#qm .qm ul {
+#query-monitor .qm ol,
+#query-monitor .qm ul {
 	list-style: none !important;
 }
 
-#qm .qm li {
+#query-monitor .qm li {
 	display: list-item !important;
 	list-style: none !important;
 }
 
-#qm .qm li::before {
+#query-monitor .qm li::before {
 	content: '' !important;
 }
 
-#qm .qm .qm-has-toggle ol.qm-numbered li {
+#query-monitor .qm .qm-has-toggle ol.qm-numbered li {
 	list-style: none !important;
 }
 
-#qm .qm .qm-toggled-on ol.qm-numbered li,
-#qm .qm ol.qm-numbered li {
+#query-monitor .qm .qm-toggled-on ol.qm-numbered li,
+#query-monitor .qm ol.qm-numbered li {
 	list-style: decimal inside !important;
 }
 
-#qm .qm pre {
+#query-monitor .qm pre {
 	font-size: 12px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 	background: transparent !important;
 }
 
-#qm .qm code {
+#query-monitor .qm code {
 	font-size: 11px !important;
 	line-height: 18px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
-#qm .qm code.qm-inline-code {
+#query-monitor .qm code.qm-inline-code {
 	background: #f1f1f1 !important;
 	padding: 3px 4px 2px !important;
 }
 
-#qm .qm .qm-true code,
-#qm .qm span.qm-true,
-#qm .qm td.qm-true {
+#query-monitor .qm .qm-true code,
+#query-monitor .qm span.qm-true,
+#query-monitor .qm td.qm-true {
 	color: #4a4 !important;
 }
 
-#qm .qm .qm-false code,
-#qm .qm span.qm-false,
-#qm .qm td.qm-false {
+#query-monitor .qm .qm-false code,
+#query-monitor .qm span.qm-false,
+#query-monitor .qm td.qm-false {
 	color: #999 !important;
 }
 
-#qm .qm code,
-#qm .qm .qm-nowrap {
+#query-monitor .qm code,
+#query-monitor .qm .qm-nowrap {
 	white-space: nowrap !important;
 }
 
-#qm .qm .qm-wrap code,
-#qm .qm .qm-wrap {
+#query-monitor .qm .qm-wrap code,
+#query-monitor .qm .qm-wrap {
 	word-wrap: break-word !important;
 	word-break: break-all !important;
 	white-space: normal !important;
 }
 
-#qm .qm td.qm-has-toggle p,
-#qm .qm .qm-nonselectsql code,
-#qm .qm .qm-nonselectsql {
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm .qm-nonselectsql code,
+#query-monitor .qm .qm-nonselectsql {
 	color: #a0a !important;
 }
 
-#qm .qm .qm-current {
+#query-monitor .qm .qm-current {
 	color: #a0a !important;
 }
 
-#qm .qm .qm-info {
+#query-monitor .qm .qm-info {
 	color: #777 !important;
 }
 
-#qm .qm .qm-supplemental {
+#query-monitor .qm .qm-supplemental {
 	margin-right: 0.75em !important;
 	margin-left: 0.75em !important;
 }
 
-#qm .qm td .qm-toggled {
+#query-monitor .qm td .qm-toggled {
 	display: none;
 }
 
 #qm-title a,
-#qm .qm a code,
-#qm .qm a {
+#query-monitor .qm a code,
+#query-monitor .qm a {
 	color: #0073aa !important;
 	text-decoration: none !important;
 	cursor: pointer !important;
@@ -525,18 +525,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-title a:focus,
 #qm-title a:hover,
-#qm .qm a:focus,
-#qm .qm a:hover {
+#query-monitor .qm a:focus,
+#query-monitor .qm a:hover {
 	text-decoration: underline !important;
 	color: #0073aa !important;
 }
 
-#qm .qm a.qm-warn {
+#query-monitor .qm a.qm-warn {
 	text-decoration: underline !important;
 }
 
-#qm .qm .qm-toggle,
-html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
+#query-monitor .qm .qm-toggle,
+html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	color: #ffffff !important;
 	padding: 0px 5px !important;
 	font-weight: normal !important;
@@ -550,16 +550,16 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	bottom: auto !important;
 }
 
-#qm .qm .qm-toggle:focus,
-#qm .qm .qm-toggle:hover {
+#query-monitor .qm .qm-toggle:focus,
+#query-monitor .qm .qm-toggle:hover {
 	text-decoration: none !important;
 	color: #ffffff !important;
 	background: #3878d9 !important;
 }
 
 /* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
-#qm .qm tbody tr:nth-child(odd) td,
-#qm .qm tbody tr:nth-child(odd) th {
+#query-monitor .qm tbody tr:nth-child(odd) td,
+#query-monitor .qm tbody tr:nth-child(odd) th {
 	background: #f7f7f7 !important;
 }
 
@@ -571,56 +571,56 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	background: #fff !important;
 }
 
-#qm .qm tbody tr.qm-php-error-warning th,
-#qm .qm tbody tr.qm-php-error-warning td,
-#qm .qm tbody tr.error,
-#qm .qm tbody tr.qm-warn td,
-#qm .qm tbody tr.qm-warn th {
+#query-monitor .qm tbody tr.qm-php-error-warning th,
+#query-monitor .qm tbody tr.qm-php-error-warning td,
+#query-monitor .qm tbody tr.error,
+#query-monitor .qm tbody tr.qm-warn td,
+#query-monitor .qm tbody tr.qm-warn th {
 	background-color: #fff0f0 !important;
 	box-shadow: inset 0 -1px #ffd6d6 !important;
 	border-color: #ffd6d6 !important;
 	color: #800 !important;
 }
 
-#qm .qm thead .qm-warn,
-#qm .qm tbody .qm-warn,
-#qm .qm tbody tr.qm-php-error-warning td > code {
+#query-monitor .qm thead .qm-warn,
+#query-monitor .qm tbody .qm-warn,
+#query-monitor .qm tbody tr.qm-php-error-warning td > code {
 	color: #800 !important;
 }
 
-#qm .qm .dashicons {
+#query-monitor .qm .dashicons {
 	font-size: 16px !important;
 	width: 16px !important;
 	height: 16px !important;
 	margin-right: 0.3em !important;
 }
 
-#qm .qm select.qm-filter.qm-highlight,
-#qm .qm tbody tr td.qm-highlight,
-#qm .qm tbody tr.qm-highlight td {
+#query-monitor .qm select.qm-filter.qm-highlight,
+#query-monitor .qm tbody tr td.qm-highlight,
+#query-monitor .qm tbody tr.qm-highlight td {
 	background-color: #ffd !important;
 }
 
-#qm .qm tbody tr:hover th,
-#qm .qm tbody tr:hover td {
+#query-monitor .qm tbody tr:hover th,
+#query-monitor .qm tbody tr:hover td {
 	background: rgb( 238, 243, 250 ) !important;
 }
 
-#qm .qm span.qm-expensive,
-#qm .qm td.qm-expensive {
+#query-monitor .qm span.qm-expensive,
+#query-monitor .qm td.qm-expensive {
 	color: #c00 !important;
 }
 
-#qm .qm .qm-sticky {
+#query-monitor .qm .qm-sticky {
 	position: sticky;
 	top: 36px;
 }
 
 /* Filters */
 
-#qm button,
-#qm a,
-#qm select {
+#query-monitor button,
+#query-monitor a,
+#query-monitor select {
 	outline: none !important; /* a11y */
 	margin: 0 !important;
 	height: auto !important;
@@ -629,7 +629,7 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	box-shadow: none !important;
 }
 
-#qm .qm label {
+#query-monitor .qm label {
 	cursor: pointer !important;
 	color: #333 !important;
 	font-weight: normal !important;
@@ -638,19 +638,19 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	margin: 0 !important;
 }
 
-#qm .qm thead label {
+#query-monitor .qm thead label {
 	flex-grow: 1;
 }
 
-#qm .qm .qm-filter-container {
+#query-monitor .qm .qm-filter-container {
     display: flex;
 }
 
-#qm .qm .qm-filter-container label {
+#query-monitor .qm .qm-filter-container label {
 	cursor: default !important;
 }
 
-#qm .qm select.qm-filter {
+#query-monitor .qm select.qm-filter {
 	display: block !important;
 	margin: 0 0 0 5px !important;
 	outline: 1px solid #aaa !important;
@@ -680,24 +680,24 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 
 /* Sorters */
 
-#qm .qm thead th.qm-sortable-column {
+#query-monitor .qm thead th.qm-sortable-column {
 	cursor: pointer !important;
 }
 
-#qm .qm thead th.qm-sortable-column:hover {
+#query-monitor .qm thead th.qm-sortable-column:hover {
 	background: #f3f3f3 !important;
 }
 
-#qm .qm .qm-sort-heading {
+#query-monitor .qm .qm-sort-heading {
 	flex-grow: 1;
 }
 
-#qm .qm .qm-sort-controls {
+#query-monitor .qm .qm-sort-controls {
 	text-align: right !important;
 	flex-shrink: 0;
 }
 
-#qm .qm .qm-sortable-column .qm-sort-arrow {
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow {
 	font-size: 26px !important;
 	color: #ccc !important;
 	margin: 0 !important;
@@ -705,29 +705,29 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 	height: 10px !important;
 }
 
-#qm .qm  .qm-sorted-desc .qm-sort-arrow,
-#qm .qm  .qm-sorted-asc .qm-sort-arrow {
+#query-monitor .qm  .qm-sorted-desc .qm-sort-arrow,
+#query-monitor .qm  .qm-sorted-asc .qm-sort-arrow {
 	color: #3878d9 !important;
 }
 
-#qm .qm .qm-sortable-column .qm-sort-arrow:before {
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
     content: "\f140";
     top: 1px;
     right: 0;
     position: absolute;
 }
 
-#qm .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
+#query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
     content: "\f142";
 }
 
-#qm .qm button:focus,
-#qm .qm a:focus,
-#qm .qm select:focus {
+#query-monitor .qm button:focus,
+#query-monitor .qm a:focus,
+#query-monitor .qm select:focus {
 	box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8) !important;
 }
 
-#qm .qm .screen-reader-text {
+#query-monitor .qm .screen-reader-text {
 	position: absolute !important;
 	margin: -1px !important;
 	padding: 0 !important;
@@ -753,21 +753,21 @@ html[dir="rtl"] #qm .qm .qm-ltr .qm-toggle {
 
 /* RTL */
 
-html[dir="rtl"] #qm,
-html[dir="rtl"] #qm .qm caption,
-html[dir="rtl"] #qm .qm td,
-html[dir="rtl"] #qm .qm th {
+html[dir="rtl"] #query-monitor,
+html[dir="rtl"] #query-monitor .qm caption,
+html[dir="rtl"] #query-monitor .qm td,
+html[dir="rtl"] #query-monitor .qm th {
 	text-align: right !important;
 }
 
 html[dir="rtl"] #wpadminbar .quicklinks .menupop ul li.qm-ltr,
-html[dir="rtl"] #qm .qm .qm-filter,
-html[dir="rtl"] #qm .qm .qm-ltr {
+html[dir="rtl"] #query-monitor .qm .qm-filter,
+html[dir="rtl"] #query-monitor .qm .qm-ltr {
 	direction: ltr !important;
 	text-align: left !important;
 }
 
-html[dir="rtl"] #qm .qm .qm-toggle {
+html[dir="rtl"] #query-monitor .qm .qm-toggle {
 	right: auto !important;
 	left: 1px !important;
 }
@@ -783,30 +783,30 @@ html[dir="rtl"] #qm .qm .qm-toggle {
 
 /* Debug bar add-ons */
 
-#qm .qm.qm-debug-bar textarea,
-#qm .qm.qm-debug-bar pre {
+#query-monitor .qm.qm-debug-bar textarea,
+#query-monitor .qm.qm-debug-bar pre {
 	padding: 10px !important;
 	border: 1px solid #e0e0e0 !important;
 	margin: 4px 0 !important;
 }
 
-#qm .qm.qm-debug-bar textarea {
+#query-monitor .qm.qm-debug-bar textarea {
 	resize: vertical !important;
 }
 
-#qm .qm.qm-debug-bar .left {
+#query-monitor .qm.qm-debug-bar .left {
 	float: left !important;
 }
 
-#qm .qm.qm-debug-bar .right {
+#query-monitor .qm.qm-debug-bar .right {
 	float: right !important;
 }
 
-#qm .qm.qm-debug-bar h1 {
+#query-monitor .qm.qm-debug-bar h1 {
 	margin: 4px 6px 15px !important;
 }
 
-#qm .qm.qm-debug-bar h2 {
+#query-monitor .qm.qm-debug-bar h2 {
 	float: left !important; /* why */
 	min-width: 150px !important;
 	padding: 5px 10px 15px !important;
@@ -816,40 +816,40 @@ html[dir="rtl"] #qm .qm .qm-toggle {
 	margin: 3px 8px 15px 0 !important;
 }
 
-#qm .qm.qm-debug-bar h2 small {
+#query-monitor .qm.qm-debug-bar h2 small {
 	font-size: 14px !important;
 }
 
-#qm .qm.qm-debug-bar h2 span {
+#query-monitor .qm.qm-debug-bar h2 span {
 	white-space: nowrap !important;
 	display: block !important;
 	margin-bottom: 8px !important;
 }
 
-#qm .qm.qm-debug-bar h3 {
+#query-monitor .qm.qm-debug-bar h3 {
 	margin: 15px 0 5px !important;
 	font-size: 13px !important;
 }
 
-#qm .qm.qm-debug-bar .qm-debug-bar-output {
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output {
 	position: relative !important;
 }
 
-#qm .qm.qm-debug-bar .qm-debug-bar-output table {
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output table {
 	margin-top: 4px !important;
 	margin-bottom: 4px !important;
 }
 
-#qm #debug-menu-target-Debug_Bar_Console {
+#query-monitor #debug-menu-target-Debug_Bar_Console {
 	min-height: 400px !important;
 }
 
-#qm #debug-menu-target-Debug_Bar_Cache_Lookup,
-#qm #debug-menu-target-Debug_Bar_Rewrite_Rules,
-#qm #debug-menu-target-Debug_Bar_Widgets {
+#query-monitor #debug-menu-target-Debug_Bar_Cache_Lookup,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules,
+#query-monitor #debug-menu-target-Debug_Bar_Widgets {
 	margin: 4px 6px !important;
 }
 
-#qm #debug-menu-target-Debug_Bar_Rewrite_Rules .dbrr {
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules .dbrr {
 	margin: 0;
 }
