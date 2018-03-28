@@ -60,7 +60,7 @@ jQuery( function($) {
 	var maxheight = ( $(window).height() - 50 );
 	var panel = $('#query-monitor');
 	var panel_storage_key = 'qm-panel-height';
-	var panel_pinned_key ='qm-panel-pinned';
+	var panel_pinned_key = 'qm-panel-pinned';
 
 	$('#query-monitor').removeClass('qm-no-js').addClass('qm-js');
 
@@ -463,7 +463,7 @@ jQuery( function($) {
 
 	var pinned = localStorage.getItem( panel_pinned_key );
 	if ( pinned ) {
-		$('#qm-panel-menu').find('a[href="' + pinned+'"]').click();
+		$('#qm-panel-menu').find('a[href="' + pinned + '"]').click();
 		$('.qm-button-panel-pin').addClass( 'qm-button-active' );
 	}
 

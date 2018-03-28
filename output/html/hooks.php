@@ -134,8 +134,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					echo '<td class="qm-num">' . intval( $action['priority'] ) . '</td>';
 
 					if ( isset( $action['callback']['file'] ) ) {
-
-
 						if ( self::has_clickable_links() ) {
 							echo '<td class="qm-wrap qm-ltr">';
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
@@ -148,7 +146,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							echo '</li>';
 							echo '</ol></td>';
 						}
-
 					} else {
 						echo '<td class="qm-ltr qm-wrap">';
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';

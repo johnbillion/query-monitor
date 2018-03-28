@@ -57,7 +57,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-num qm-sortable-column">';
-			echo $this->build_sorter (__( 'Timeout', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_sorter( __( 'Timeout', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-num qm-sortable-column">';
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
