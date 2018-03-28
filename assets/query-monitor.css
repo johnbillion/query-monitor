@@ -193,8 +193,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm-wrapper {
-    display: flex;
-    flex-grow: 1;
+	display: flex;
+	flex-grow: 1;
 	/* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
 	min-height: 0;
 }
@@ -226,7 +226,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-title .qm-button-panel-pin .dashicons {
 	font-size: 17px !important;
-    margin-top: 3px !important;
+	margin-top: 3px !important;
 }
 
 #qm-title button {
@@ -263,13 +263,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm-panel-menu ul {
-    padding: 0 !important;
-    margin: 0 0 30px 0 !important;
+	padding: 0 !important;
+	margin: 0 0 30px 0 !important;
 }
 
 #qm-panel-menu li {
-    padding: 0 !important;
-    margin: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 #qm-panel-menu li a {
@@ -282,18 +282,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-panel-menu li a:focus,
 #qm-panel-menu li a:hover {
-    background: #def !important;
-    color: #222 !important;
+	background: #def !important;
+	color: #222 !important;
 }
 
 #qm-panel-menu li a.qm-selected-menu {
-    background: #3879d9 !important;
-    color: #fff !important;
+	background: #3879d9 !important;
+	color: #fff !important;
 }
 
 #qm-panels {
-    flex-grow: 1;
-    overflow-y: scroll;
+	flex-grow: 1;
+	overflow-y: scroll;
 }
 
 #query-monitor .qm.qm-panel-show {
@@ -643,7 +643,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 }
 
 #query-monitor .qm .qm-filter-container {
-    display: flex;
+	display: flex;
 }
 
 #query-monitor .qm .qm-filter-container label {
@@ -711,14 +711,14 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 }
 
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
-    content: "\f140";
-    top: 1px;
-    right: 0;
-    position: absolute;
+	content: "\f140";
+	top: 1px;
+	right: 0;
+	position: absolute;
 }
 
 #query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
-    content: "\f142";
+	content: "\f142";
 }
 
 #query-monitor .qm button:focus,
