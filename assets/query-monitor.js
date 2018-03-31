@@ -386,7 +386,7 @@ jQuery( function($) {
 		e.preventDefault();
 	});
 
-	$.qm.tableSort({target: $('.qm-sortable'), debug: false});
+	$.qm.tableSort({target: $('.qm-sortable')});
 
 	var startY, resizerHeight, toolbarHeight;
 
@@ -487,18 +487,10 @@ jQuery( function($) {
  */
 (function ($) {
 	$.qm = $.qm || {};
-	$.qm.tableSort = function (options) {
-		var settings = $.extend({
-			'debug': false
-		}, options);
-
+	$.qm.tableSort = function (settings) {
 		// @param	object	columns	NodeList table colums.
 		// @param	integer	row_width	defines the number of columns per row.
 		var table_to_array	= function (columns, row_width) {
-			if (settings.debug) {
-				console.time('table to array');
-			}
-
 			columns = Array.prototype.slice.call(columns, 0);
 
 			var rows      = [];
@@ -507,9 +499,8 @@ jQuery( function($) {
 			for (var i = 0, j = columns.length; i < j; i += row_width) {
 				var row	= [];
 
-				for (var k = 0, l = row_width; k < l; k++) {
+				for (var k = 0; k < row_width; k++) {
 					var e = columns[i + k];
-
 					var data = e.dataset.qmSortWeight;
 
 					if (data === undefined) {
@@ -526,14 +517,10 @@ jQuery( function($) {
 				rows.push({index: row_index++, data: row});
 			}
 
-			if (settings.debug) {
-				console.timeEnd('table to array');
-			}
-
 			return rows;
 		};
 
-		if ( ! settings.target || ! settings.target instanceof $) {
+		if ( ! settings.target || ! ( settings.target instanceof $) ) {
 			throw 'Target is not defined or it is not instance of jQuery.';
 		}
 
@@ -542,10 +529,9 @@ jQuery( function($) {
 
 			table.find('.qm-sortable-column').on('click', function (e) {
 				var desc = ! $(this).hasClass('qm-sorted-desc');
-
 				var index = $(this).index();
 
-				table.find('th').removeClass('qm-sorted-asc qm-sorted-desc');
+				table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc');
 
 				if ( desc ) {
 					$(this).addClass('qm-sorted-desc');
@@ -553,13 +539,9 @@ jQuery( function($) {
 					$(this).addClass('qm-sorted-asc');
 				}
 
-				table.find('tbody:not(.qm-sort-no)').each(function () {
+				table.find('tbody').each(function () {
 					var tbody = $(this);
-
 					var rows = this.rows;
-
-					var anomalies = $(rows).has('[colspan]').detach();
-
 					var columns = this.getElementsByTagName('td');
 
 					if (this.data_matrix === undefined) {
@@ -567,10 +549,6 @@ jQuery( function($) {
 					}
 
 					var data = this.data_matrix;
-
-					if (settings.debug) {
-						console.time('sort data');
-					}
 
 					data.sort(function (a, b) {
 						if (a.data[index] == b.data[index]) {
@@ -580,15 +558,7 @@ jQuery( function($) {
 						return (desc ? a.data[index] > b.data[index] : a.data[index] < b.data[index]) ? -1 : 1;
 					});
 
-					if (settings.debug) {
-						console.timeEnd('sort data');
-						console.time('build table');
-					}
-
-					// Will use this to re-attach the tbody object.
-					var table = tbody.parent();
-
-					// Detach the tbody to prevent unnecassy overhead related
+					// Detach the tbody to prevent unnecessary overhead related
 					// to the browser environment.
 					tbody = tbody.detach();
 
@@ -604,16 +574,10 @@ jQuery( function($) {
 						data[i].index = i;
 					}
 
-					// // Restore the index.
+					// Restore the index.
 					data[data.length - 1].index = data.length - 1;
 
-					tbody.prepend(anomalies);
-
 					table.append(tbody);
-
-					if (settings.debug) {
-						console.timeEnd('build table');
-					}
 				});
 				e.preventDefault();
 			});
