@@ -260,7 +260,7 @@ class QM_Backtrace {
 
 				if ( 'dir' === $show ) {
 					if ( isset( $trace['args'][0] ) ) {
-						$arg = QM_Util::standard_dir( $trace['args'][0], '~/' );
+						$arg = QM_Util::standard_dir( $trace['args'][0], '' );
 						$return['id']      = $trace['function'] . '()';
 						$return['display'] = $trace['function'] . "('{$arg}')";
 					}
