@@ -515,26 +515,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
-#qm-title a,
-#query-monitor .qm a code,
-#query-monitor .qm a {
-	color: #0073aa !important;
-	text-decoration: none !important;
-	cursor: pointer !important;
-}
-
-#qm-title a:focus,
-#qm-title a:hover,
-#query-monitor .qm a:focus,
-#query-monitor .qm a:hover {
-	text-decoration: underline !important;
-	color: #0073aa !important;
-}
-
-#query-monitor .qm a.qm-warn {
-	text-decoration: underline !important;
-}
-
 #query-monitor .qm .qm-toggle,
 html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	color: #ffffff !important;
@@ -571,9 +551,13 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	background: #fff !important;
 }
 
-#query-monitor .qm tbody tr.qm-php-error-warning th,
-#query-monitor .qm tbody tr.qm-php-error-warning td,
-#query-monitor .qm tbody tr.error,
+#query-monitor .qm tbody tr .qm-warn {
+	background-color: #fff0f0 !important;
+	color: #800 !important;
+}
+
+#query-monitor .qm tbody tr th.qm-warn,
+#query-monitor .qm tbody tr td.qm-warn,
 #query-monitor .qm tbody tr.qm-warn td,
 #query-monitor .qm tbody tr.qm-warn th {
 	background-color: #fff0f0 !important;
@@ -582,10 +566,11 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	color: #800 !important;
 }
 
-#query-monitor .qm thead .qm-warn,
-#query-monitor .qm tbody .qm-warn,
-#query-monitor .qm tbody tr.qm-php-error-warning td > code {
+#query-monitor .qm tbody .qm-warn li,
+#query-monitor .qm tbody .qm-warn .qm-info,
+#query-monitor .qm tbody .qm-warn code {
 	color: #800 !important;
+	background-color: transparent !important;
 }
 
 #query-monitor .qm .dashicons {
@@ -595,25 +580,37 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	margin-right: 0.3em !important;
 }
 
+#query-monitor .qm tbody tr:hover th,
+#query-monitor .qm tbody tr:hover td {
+	background: rgb( 238, 243, 250 ) !important;
+}
+
 #query-monitor .qm select.qm-filter.qm-highlight,
 #query-monitor .qm tbody tr td.qm-highlight,
 #query-monitor .qm tbody tr.qm-highlight td {
 	background-color: #ffd !important;
 }
 
-#query-monitor .qm tbody tr:hover th,
-#query-monitor .qm tbody tr:hover td {
-	background: rgb( 238, 243, 250 ) !important;
-}
-
-#query-monitor .qm span.qm-expensive,
-#query-monitor .qm td.qm-expensive {
-	color: #c00 !important;
-}
-
 #query-monitor .qm .qm-sticky {
 	position: sticky;
 	top: 36px;
+}
+
+#query-monitor .qm tbody .qm-warn a code,
+#qm-title a,
+#query-monitor .qm a code,
+#query-monitor .qm a {
+	color: #0073aa !important;
+	text-decoration: none !important;
+	cursor: pointer !important;
+}
+
+#qm-title a:focus,
+#qm-title a:hover,
+#query-monitor .qm a:focus,
+#query-monitor .qm a:hover {
+	text-decoration: underline !important;
+	color: #0073aa !important;
 }
 
 /* Filters */
