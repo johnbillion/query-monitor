@@ -208,10 +208,12 @@ class QM_Collector_DB_Queries extends QM_Collector {
 					'caller_name' => __( 'Unknown', 'query-monitor' ),
 					'stack'       => '',
 					'sql'         => $error['query'],
+					'ltime'       => 0,
 					'result'      => new WP_Error( 'qmdb', $error['error_str'] ),
 					'type'        => '',
 					'component'   => false,
 					'trace'       => null,
+					'is_main_query' => false,
 				);
 				$this->data['errors'][] = $row;
 			}
