@@ -43,7 +43,7 @@ class QM_Collector_Timing extends QM_Collector {
 			$trace = new QM_Backtrace;
 			$this->data['warning'][] = array(
 				'function'  => $function,
-				'message'   => __( 'Timer was not started', 'query-monitor' ),
+				'message'   => __( 'Timer not started', 'query-monitor' ),
 				'trace'     => $trace,
 			);
 			return;
@@ -57,7 +57,7 @@ class QM_Collector_Timing extends QM_Collector {
 			$trace = new QM_Backtrace;
 			$this->data['warning'][] = array(
 				'function'  => $function,
-				'message'   => __( 'Timer was not started', 'query-monitor' ),
+				'message'   => __( 'Timer not started', 'query-monitor' ),
 				'trace'     => $trace,
 			);
 			return;
@@ -86,7 +86,7 @@ class QM_Collector_Timing extends QM_Collector {
 				$trace = $this->track_timer[ $function ]->get_trace();
 				$this->data['warning'][] = array(
 					'function'  => $function,
-					'message'   => __( 'Timer was not stopped', 'query-monitor' ),
+					'message'   => __( 'Timer not stopped', 'query-monitor' ),
 					'trace'     => $trace,
 				);
 			}
