@@ -213,6 +213,9 @@ class QM_Collector_HTTP extends QM_Collector {
 					$this->data['errors']['alert'][] = $key;
 				}
 				$http['type'] = __( 'Error', 'query-monitor' );
+			} elseif ( ! $http['args']['blocking'] ) {
+				/* translators: A non-blocking HTTP API request */
+				$http['type'] = __( 'Non-blocking', 'query-monitor' );
 			} else {
 				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
 				if ( $http['type'] >= 400 ) {

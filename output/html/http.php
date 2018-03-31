@@ -48,7 +48,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col" class="qm-sorted-asc qm-sortable-column">';
 			echo $this->build_sorter(); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'HTTP Request', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Method', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'URL', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', array_keys( $data['types'] ), __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
@@ -78,6 +79,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				if ( is_wp_error( $row['response'] ) ) {
 					$response = $row['response']->get_error_message();
 					$is_error = true;
+				} elseif ( ! $row['args']['blocking'] ) {
+					/* translators: A non-blocking HTTP API request */
+					$response = __( 'Non-blocking', 'query-monitor' );
 				} else {
 					$code     = wp_remote_retrieve_response_code( $row['response'] );
 					$msg      = wp_remote_retrieve_response_message( $row['response'] );
@@ -94,26 +98,18 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css = 'qm-warn';
 				}
 
-				$method = esc_html( $row['args']['method'] );
-
-				if ( empty( $row['args']['blocking'] ) ) {
-					$method .= '<br><span class="qm-info">' . esc_html( sprintf(
-						/* translators: A non-blocking HTTP API request. %s: Relevant argument name */
-						__( '(Non-blocking request: %s)', 'query-monitor' ),
-						'blocking=false'
-					) ) . '</span>';
-				}
-
 				$url = self::format_url( $row['url'] );
+				$info = '';
 
 				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					if ( empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) ) {
-						$method .= '<br><span class="qm-warn">' . esc_html( sprintf(
+						$info .= '<span class="qm-warn"><span class="dashicons dashicons-warning"></span>' . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
-							__( '(Certificate verification disabled: %s)', 'query-monitor' ),
+							__( 'Certificate verification disabled (%s)', 'query-monitor' ),
 							'sslverify=false'
-						) ) . '</span>';
-					} elseif ( ! $is_error ) {
+						) ) . '</span><br>';
+						$url = preg_replace( '|^https:|', '<span class="qm-warn">https</span>:', $url );
+					} elseif ( ! $is_error && $row['args']['blocking'] ) {
 						$url = preg_replace( '|^https:|', '<span class="qm-true">https</span>:', $url );
 					}
 				}
@@ -151,9 +147,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td class="qm-num">%s</td>',
 					intval( $i )
 				);
+				printf(
+					'<td>%s</td>',
+					esc_html( $row['args']['method'] )
+				);
 				printf( // WPCS: XSS ok.
-					'<td class="qm-url qm-ltr qm-wrap">%s<br>%s</td>',
-					$method,
+					'<td class="qm-url qm-ltr qm-wrap">%s%s</td>',
+					$info,
 					$url
 				);
 
@@ -266,7 +266,12 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="6">%s</td>',
+				'<td colspan="7">%1$s<br>%2$s</td>',
+				esc_html( sprintf(
+					/* translators: %s: Number of HTTP API requests */
+					__( 'Total Requests: %s', 'query-monitor' ),
+					number_format_i18n( count( $data['http'] ) )
+				) ),
 				implode( '<br>', array_map( 'esc_html', $vars ) )
 			);
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
