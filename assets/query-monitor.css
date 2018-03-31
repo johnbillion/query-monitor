@@ -390,7 +390,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm tfoot td.qm-num,
 #query-monitor .qm th.qm-num {
-	width: 5em !important;
+	width: 5.5em !important;
 }
 
 #query-monitor .qm td.qm-num {
@@ -492,13 +492,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	white-space: normal !important;
 }
 
+#query-monitor .qm .qm-current,
 #query-monitor .qm td.qm-has-toggle p,
 #query-monitor .qm .qm-nonselectsql code,
 #query-monitor .qm .qm-nonselectsql {
-	color: #a0a !important;
-}
-
-#query-monitor .qm .qm-current {
 	color: #a0a !important;
 }
 
