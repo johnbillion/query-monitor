@@ -66,14 +66,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( array(
-				'missing',
-				'broken',
-				'header',
-				'footer',
-			) as $position ) {
+			foreach ( $position_labels as $position => $label ) {
 				if ( ! empty( $data[ $position ][ $type ] ) ) {
-					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $position_labels[ $position ], $type );
+					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $label, $type );
 				}
 			}
 
