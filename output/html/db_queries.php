@@ -425,16 +425,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		}
 
-		if ( isset( $cols['errno'] ) && is_wp_error( $row['result'] ) ) {
-			echo "<td class='qm-row-result qm-row-error'>" . esc_html( $row['result']->get_error_code() ) . "</td>\n";
-		}
-
 		if ( isset( $cols['result'] ) ) {
 			if ( is_wp_error( $row['result'] ) ) {
 				echo "<td class='qm-row-result qm-row-error'><span class='dashicons dashicons-warning'></span>" . esc_html( $row['result']->get_error_message() ) . "</td>\n";
 			} else {
 				echo "<td class='qm-row-result qm-num'>" . esc_html( $row['result'] ) . "</td>\n";
 			}
+		}
+
+		if ( isset( $cols['errno'] ) && is_wp_error( $row['result'] ) ) {
+			echo "<td class='qm-row-result qm-row-error'>" . esc_html( $row['result']->get_error_code() ) . "</td>\n";
 		}
 
 		if ( isset( $cols['time'] ) ) {
