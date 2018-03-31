@@ -17,6 +17,8 @@ GNU General Public License for more details.
 class QM_Collector_HTTP extends QM_Collector {
 
 	public $id = 'http';
+	private $transport = null;
+	private $info = null;
 
 	public function name() {
 		return __( 'HTTP API Requests', 'query-monitor' );
@@ -29,6 +31,11 @@ class QM_Collector_HTTP extends QM_Collector {
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
 		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
 		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
+
+		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 99 );
+		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 99, 2 );
+		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 99 );
+		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 99, 2 );
 
 	}
 
@@ -119,6 +126,22 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	public function action_curl_before_request() {
+		$this->transport = 'curl';
+	}
+
+	public function action_curl_after_request( $headers, array $info = null ) {
+		$this->info = $info;
+	}
+
+	public function action_fsockopen_before_request() {
+		$this->transport = 'fsockopen';
+	}
+
+	public function action_fsockopen_after_request( $headers, array $info = null ) {
+		$this->info = $info;
+	}
+
 	/**
 	 * Log an HTTP response.
 	 *
@@ -138,6 +161,11 @@ class QM_Collector_HTTP extends QM_Collector {
 				'pre_http_request'
 			) );
 		}
+
+		$this->data['http'][ $args['_qm_key'] ]['info']      = $this->info;
+		$this->data['http'][ $args['_qm_key'] ]['transport'] = $this->transport;
+		$this->info = null;
+		$this->transport = null;
 	}
 
 	public function process() {
@@ -192,7 +220,12 @@ class QM_Collector_HTTP extends QM_Collector {
 				}
 			}
 
-			$http['ltime'] = ( $http['end'] - $http['start'] );
+			if ( isset( $http['info'] ) && isset( $http['info']['total_time'] ) ) {
+				$http['ltime'] = $http['info']['total_time'];
+			} else {
+				$http['ltime'] = ( $http['end'] - $http['start'] );
+			}
+
 			$this->data['ltime'] += $http['ltime'];
 
 			$http['component'] = $http['trace']->get_component();
