@@ -35,7 +35,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<caption class="screen-reader-text">' . esc_html( 'PHP Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
+		echo '<th scope="col"><span class="dashicons"></span>' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
@@ -70,8 +70,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 					}
 
-					echo '<tr ' . $attr . 'class="qm-php-error qm-php-error-' . esc_attr( $type ) . '">'; // WPCS: XSS ok.
-					echo '<th scope="row"><span class="dashicons dashicons-warning"></span>' . esc_html( $title ) . '</th>';
+					if ( 'warning' === $type ) {
+						$class = 'qm-warn';
+					} else {
+						$class = '';
+					}
+
+					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+					echo '<th scope="row"><span class="dashicons dashicons-' . esc_attr( $type ) . '"></span>' . esc_html( $title ) . '</th>';
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
