@@ -349,6 +349,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 		<?php
 		echo '</script>' . "\n\n";
+		echo '<!-- End of Query Monitor output -->' . "\n\n";
 
 	}
 
