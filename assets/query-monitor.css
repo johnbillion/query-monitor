@@ -635,10 +635,35 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 
 #qm-title a:focus,
 #qm-title a:hover,
+#query-monitor .qm a:after,
 #query-monitor .qm a:focus,
 #query-monitor .qm a:hover {
 	text-decoration: underline !important;
 	color: #0073aa !important;
+}
+
+#query-monitor .qm a.qm-edit-link:after,
+#query-monitor .qm a.qm-filter-trigger:after {
+	font-family: dashicons !important;
+	text-decoration: none !important;
+	visibility: hidden !important;
+	display: inline-block !important;
+}
+
+#query-monitor .qm a.qm-edit-link:hover:after,
+#query-monitor .qm a.qm-edit-link:focus:after,
+#query-monitor .qm a.qm-filter-trigger:hover:after,
+#query-monitor .qm a.qm-filter-trigger:focus:after {
+	visibility: visible !important;
+}
+
+#query-monitor .qm a.qm-filter-trigger:after {
+	content: '\f536' !important;
+}
+
+#query-monitor .qm a.qm-edit-link:after {
+	content: '\f464' !important;
+	font-size: 15px !important;
 }
 
 /* Filters */

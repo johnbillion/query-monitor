@@ -262,9 +262,9 @@ abstract class QM_Output_Html extends QM_Output {
 		$link = sprintf( self::get_file_link_format(), rawurlencode( $file ), intval( $link_line ) );
 
 		if ( $is_filename ) {
-			$format = '<a href="%s">%s</a>';
+			$format = '<a href="%s" class="qm-edit-link">%s</a>';
 		} else {
-			$format = '<a href="%s"><code>%s</code></a>';
+			$format = '<a href="%s" class="qm-edit-link"><code>%s</code></a>';
 		}
 
 		return sprintf(
