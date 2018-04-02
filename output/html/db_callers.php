@@ -30,28 +30,27 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		}
 
 		$total_time  = 0;
-		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table class="qm-sortable">';
-		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-
-		foreach ( $data['types'] as $type_name => $type_count ) {
-			echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column">';
-			echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
-			echo '</th>';
-		}
-
-		echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column">';
-		echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
 
 		if ( ! empty( $data['times'] ) ) {
+			echo '<table class="qm-sortable">';
+			echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+
+			foreach ( $data['types'] as $type_name => $type_count ) {
+				echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column">';
+				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
+				echo '</th>';
+			}
+
+			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column">';
+			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
+			echo '</th>';
+			echo '</tr>';
+			echo '</thead>';
 
 			echo '<tbody>';
 
@@ -91,18 +90,16 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			echo '</tr>';
 
 			echo '</tfoot>';
+			echo '</table>';
 
 		} else {
 
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td colspan="3" style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			echo '</tbody>';
+			echo '<div class="qm-none">';
+			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
+			echo '</div>';
 
 		}
 
-		echo '</table>';
 		echo '</div>';
 
 	}

@@ -149,12 +149,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() . '-' . sanitize_title_with_dashes( $name ) ) . '">';
-		echo '<table class="qm-sortable">';
-		/* translators: %s: Name of database controller */
-		echo '<caption>' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</caption>';
-		echo '<thead>';
 
 		if ( ! empty( $db->rows ) ) {
+			echo '<table class="qm-sortable">';
+			/* translators: %s: Name of database controller */
+			echo '<caption>' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</caption>';
+			echo '<thead>';
 
 			/**
 			 * Filter whether to show the QM extended query information prompt.
@@ -241,12 +241,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
-
-		}
-
-		echo '</thead>';
-
-		if ( ! empty( $db->rows ) ) {
+			echo '</thead>';
 
 			echo '<tbody>';
 
@@ -281,18 +276,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
+			echo '</table>';
 
 		} else {
 
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td colspan="' . absint( $span ) . '" style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			echo '</tbody>';
+			echo '<div class="qm-none">';
+			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
+			echo '</div>';
 
 		}
 
-		echo '</table>';
 		echo '</div>';
 
 	}

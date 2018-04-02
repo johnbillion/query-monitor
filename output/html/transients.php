@@ -26,10 +26,10 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table>';
 
 		if ( ! empty( $data['trans'] ) ) {
 
+			echo '<table>';
 			echo '<caption class="screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
@@ -115,24 +115,16 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			}
 
 			echo '</tbody>';
+			echo '</table>';
 
 		} else {
 
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th>' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
-
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			echo '</tbody>';
+			echo '<div class="qm-none">';
+			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
+			echo '</div>';
 
 		}
 
-		echo '</table>';
 		echo '</div>';
 
 	}

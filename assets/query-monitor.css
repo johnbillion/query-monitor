@@ -334,6 +334,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	outline: 0 !important; /* @TODO might not need this any more */
 }
 
+#query-monitor .qm .qm-none {
+	margin: 2em !important;
+}
+
+#query-monitor .qm .qm-none p {
+	text-align: center !important;
+	font-style: italic !important;
+}
+
 #query-monitor .qm table {
 	color: #333 !important;
 	border-collapse: collapse !important;

@@ -29,7 +29,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$total_time = 0;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table class="qm-sortable">';
 
 		$vars = array();
 
@@ -40,6 +39,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		}
 
 		if ( ! empty( $data['http'] ) ) {
+			echo '<table class="qm-sortable">';
 
 			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
 
@@ -277,32 +277,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
+			echo '</table>';
 
 		} else {
 
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'HTTP Requests', 'query-monitor' ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
-
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td style="text-align:center !important"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			if ( ! empty( $vars ) ) {
-				echo '<tr>';
-				printf(
-					'<td>%s</td>',
-					implode( '<br>', array_map( 'esc_html', $vars ) )
-				);
-				echo '</tr>';
-			}
-			echo '</tbody>';
+			echo '<div class="qm-none">';
+			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
+			echo '</div>';
 
 		}
 
-		echo '</table>';
 		echo '</div>';
 
 	}
