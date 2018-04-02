@@ -206,6 +206,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 			),
 		);
+		$components = array();
 
 		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
 			/**
@@ -259,8 +260,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
 
-			$components = array();
-
 			foreach ( $this->types as $error_group => $error_types ) {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
@@ -271,10 +270,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 					}
 				}
 			}
-
-			$this->data['components'] = $components;
-
 		}
+
+		$this->data['components'] = $components;
 	}
 
 	/**
