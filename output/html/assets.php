@@ -50,13 +50,32 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $type_labels as $type => $type_label ) {
 
+			$types = array();
+
+			foreach ( $position_labels as $position => $label ) {
+				if ( ! empty( $data[ $position ][ $type ] ) ) {
+					$types[ $position ] = $label;
+				}
+			}
+
+			$hosts = array(
+				__( 'Other', 'query-monitor' ),
+			);
+
 			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-' . esc_attr( $type ) . '">';
 			echo '<table>';
 			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Host', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-filterable-column">';
+			$args = array(
+				'prepend' => array(
+					'local' => wp_unslash( $_SERVER['HTTP_HOST'] ), // WPCS: sanitization ok
+				),
+			);
+			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
+			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
@@ -83,28 +102,27 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	protected function dependency_rows( array $handles, WP_Dependencies $dependencies, $label, $type ) {
 		foreach ( $handles as $handle ) {
 
+			$dependency = $dependencies->query( $handle );
+
+			list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
+
+			$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
+
 			if ( in_array( $handle, $dependencies->done, true ) ) {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '">';
+				echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 			} else {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" class="qm-warn">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" class="qm-warn">';
+				echo '<td class="qm-nowrap"><span class="dashicons dashicons-warning"></span>' . esc_html( $label ) . '</td>';
 			}
 
-			echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
-
-			$this->dependency_row( $dependencies->query( $handle ), $dependencies, $type );
+			$this->dependency_row( $dependency, $dependencies, $type );
 
 			echo '</tr>';
 		}
 	}
 
-	protected function dependency_row( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
-
-		if ( empty( $dependency->ver ) ) {
-			$ver = '';
-		} else {
-			$ver = $dependency->ver;
-		}
-
+	protected function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
 		$loader = rtrim( $type, 's' );
 
 		/**
@@ -118,9 +136,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
 		$host = (string) wp_parse_url( $source, PHP_URL_HOST );
+		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] ); // WPCS: sanitization ok
 
 		if ( empty( $host ) && isset( $_SERVER['HTTP_HOST'] ) ) {
-			$host = wp_unslash( $_SERVER['HTTP_HOST'] ); // WPCS: sanitization ok
+			$host = $http_host;
 		}
 
 		if ( is_wp_error( $source ) ) {
@@ -135,6 +154,21 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		} else {
 			$src = $source;
 		}
+
+		$local = ( $http_host === $host );
+
+		return array( $src, $host, $source, $local );
+	}
+
+	protected function dependency_row( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
+
+		if ( empty( $dependency->ver ) ) {
+			$ver = '';
+		} else {
+			$ver = $dependency->ver;
+		}
+
+		list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
 
 		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
 		$deps = $dependency->deps;

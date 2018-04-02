@@ -728,6 +728,8 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 }
 
 .qm-hide,
+.qm-hide-scripts-host,
+.qm-hide-styles-host,
 .qm-hide-user,
 .qm-hide-result,
 .qm-hide-name,
