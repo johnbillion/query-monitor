@@ -19,6 +19,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 10 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 10 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
@@ -70,14 +71,25 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 					}
 
-					if ( 'warning' === $type ) {
+					$is_warning = ( 'errors' === $error_group && 'warning' === $type );
+
+					if ( $is_warning ) {
 						$class = 'qm-warn';
 					} else {
 						$class = '';
 					}
 
 					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
-					echo '<th scope="row"><span class="dashicons dashicons-' . esc_attr( $type ) . '"></span>' . esc_html( $title ) . '</th>';
+					echo '<th scope="row">';
+
+					if ( $is_warning ) {
+						echo '<span class="dashicons dashicons-warning"></span>';
+					} else {
+						echo '<span class="dashicons"></span>';
+					}
+
+					echo esc_html( $title );
+					echo '</th>';
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
@@ -150,27 +162,21 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
+		$menu_label = array();
 
 		$types = array(
-			/* translators: %s: Number of PHP warnings */
-			'warning'    => _nx_noop( 'PHP Warning (%s)', 'PHP Warnings (%s)', 'PHP error level', 'query-monitor' ),
-			/* translators: %s: Number of PHP notices */
-			'notice'     => _nx_noop( 'PHP Notice (%s)', 'PHP Notices (%s)', 'PHP error level', 'query-monitor' ),
-			/* translators: %s: Number of strict PHP errors */
-			'strict'     => _nx_noop( 'PHP Strict (%s)', 'PHP Stricts (%s)', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of deprecated PHP errors */
-			'deprecated' => _nx_noop( 'PHP Deprecated (%s)', 'PHP Deprecated (%s)', 'PHP error level', 'query-monitor' ),
+			'deprecated' => _nx_noop( '%s Deprecated', '%s Deprecated', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of strict PHP errors */
+			'strict'     => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of PHP notices */
+			'notice'     => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of PHP warnings */
+			'warning'    => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
-		$empties = array(
-			/* translators: PHP warnings */
-			'warning'    => _x( 'PHP Warnings', 'PHP error level', 'query-monitor' ),
-			/* translators: PHP notices */
-			'notice'     => _x( 'PHP Notices', 'PHP error level', 'query-monitor' ),
-			/* translators: Strict PHP errors */
-			'strict'     => _x( 'PHP Stricts', 'PHP error level', 'query-monitor' ),
-			/* translators: Deprecated PHP errors */
-			'deprecated' => _x( 'PHP Deprecated', 'PHP error level', 'query-monitor' ),
-		);
+
+		$key = 'quiet';
+		$generic = false;
 
 		foreach ( $types as $type => $label ) {
 
@@ -179,11 +185,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 			if ( isset( $data['suppressed'][ $type ] ) ) {
 				$has_errors = true;
-				$key   = "{$type}-suppressed";
+				$generic = true;
 			}
 			if ( isset( $data['silenced'][ $type ] ) ) {
 				$has_errors = true;
-				$key   = "{$type}-silenced";
+				$generic = true;
 			}
 			if ( isset( $data['errors'][ $type ] ) ) {
 				$has_errors = true;
@@ -195,9 +201,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				continue;
 			}
 
-			if ( ! $count ) {
-				$label = $empties[ $type ];
-			} else {
+			if ( $count ) {
 				$label = sprintf(
 					translate_nooped_plural(
 						$label,
@@ -206,16 +210,44 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					),
 					number_format_i18n( $count )
 				);
+				$menu_label[] = $label;
 			}
 
-			$menu[] = $this->menu( array(
-				'id'    => "query-monitor-{$key}s",
-				'title' => esc_html( $label ),
-			) );
+		}
+
+		if ( empty( $menu_label ) && ! $generic ) {
+			return $menu;
+		}
+
+		/* translators: %s: Number of PHP errors */
+		$title = __( 'PHP Errors (%s)', 'query-monitor' );
+
+		/* translators: used between list items, there is a space after the comma */
+		$sep = __( ', ', 'query-monitor' );
+
+		if ( count( $menu_label ) ) {
+			$title = sprintf(
+				$title,
+				implode( $sep, array_reverse( $menu_label ) )
+			);
+		} else {
+			$title = __( 'PHP Errors', 'query-monitor' );
+		}
+
+		$menu['php_errors'] = $this->menu( array(
+			'id'    => "query-monitor-{$key}s",
+			'title' => $title,
+		) );
+		return $menu;
+
+	}
+
+	public function panel_menu( array $menu ) {
+		if ( isset( $menu['php_errors'] ) ) {
+			$menu['php_errors']['title'] = __( 'PHP Errors', 'query-monitor' );
 		}
 
 		return $menu;
-
 	}
 
 }
