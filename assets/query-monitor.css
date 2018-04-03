@@ -567,6 +567,11 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	bottom: auto !important;
 }
 
+#query-monitor .qm .qm-has-inner .qm-toggle {
+	top: 5px !important;
+	right: 5px !important;
+}
+
 #query-monitor .qm .qm-toggle:focus,
 #query-monitor .qm .qm-toggle:hover {
 	text-decoration: none !important;
