@@ -388,6 +388,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border: 1px solid #e0e0e0 !important;
 	border-top: none !important;
 	padding: 5px !important;
+	position: -webkit-sticky !important;
 	position: sticky !important;
 	top: 0 !important;
 	background: #fff !important;
@@ -404,6 +405,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border: 1px solid #e0e0e0 !important;
 	border-bottom: none !important;
 	background: #f3f3f3 !important;
+	position: -webkit-sticky !important;
 	position: sticky !important;
 	bottom: 0 !important;
 }
