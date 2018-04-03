@@ -125,33 +125,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 /* === Main QM Panel === */
 
-#query-monitor {
-	background: #fff !important;
-	margin: 0 !important;
-	border-top: 1px solid #aaa !important;
-	text-align: left !important;
-	display: none;
-	position: fixed;
-	z-index: 99998 !important;
-	bottom: 0 !important;
-	left: 0 !important;
-	right: 0 !important;
-	width: 100% !important;
-}
-
-#query-monitor.qm-show,
-#query-monitor.qm-peek,
-.no-js #query-monitor,
-.nojs #query-monitor {
-	display: flex;
-	height: 40%;
-	flex-direction: column;
-}
-
-#query-monitor.qm-peek .qm {
-	display: none;
-}
-
+#query-monitor,
 #query-monitor button,
 #query-monitor select,
 #query-monitor table,
@@ -190,6 +164,33 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	letter-spacing: normal !important;
 	border-radius: 0 !important;
 	transition: none !important;
+}
+
+#query-monitor {
+	background: #fff !important;
+	margin: 0 !important;
+	border-top: 1px solid #aaa !important;
+	text-align: left !important;
+	display: none;
+	position: fixed;
+	z-index: 99998 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	width: 100% !important;
+}
+
+#query-monitor.qm-show,
+#query-monitor.qm-peek,
+.no-js #query-monitor,
+.nojs #query-monitor {
+	display: flex;
+	height: 40%;
+	flex-direction: column;
+}
+
+#query-monitor.qm-peek .qm {
+	display: none;
 }
 
 #qm-wrapper {
