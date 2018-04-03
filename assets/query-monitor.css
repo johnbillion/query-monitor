@@ -384,16 +384,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm thead th {
+	box-shadow: 0px 1px 0px #e0e0e0;
+	border: 1px solid #e0e0e0 !important;
 	border-top: none !important;
-	border-right: 1px solid #e0e0e0 !important;
-	border-bottom: 1px solid #e0e0e0 !important;
-	border-left: 1px solid #e0e0e0 !important;
 	padding: 5px !important;
 	position: sticky !important;
 	top: 0 !important;
 	background: #fff !important;
 	z-index: 1 !important;
-	box-shadow: 0px 1px 0px #e0e0e0;
 }
 
 #query-monitor .qm thead .qm-th {
@@ -402,6 +400,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm tfoot tr td,
 #query-monitor .qm tfoot tr th {
+	box-shadow: inset 0px 1px 0px #e0e0e0;
+	border: 1px solid #e0e0e0 !important;
+	border-bottom: none !important;
 	background: #f3f3f3 !important;
 	position: sticky !important;
 	bottom: 0 !important;
