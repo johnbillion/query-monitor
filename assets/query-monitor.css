@@ -127,6 +127,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor,
 #query-monitor button,
+#query-monitor label,
 #query-monitor select,
 #query-monitor table,
 #query-monitor td,
@@ -164,6 +165,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	letter-spacing: normal !important;
 	border-radius: 0 !important;
 	transition: none !important;
+	word-wrap: normal !important;
+	word-break: normal !important;
 }
 
 #query-monitor {
@@ -716,6 +719,11 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 
 #query-monitor .qm .qm-filter-container label {
 	cursor: default !important;
+}
+
+#query-monitor .qm .qm-filter-container div {
+	/* Some themes use Select2 etc on all selects. This hides that. */
+	display: none !important;
 }
 
 #query-monitor .qm select.qm-filter {
