@@ -70,7 +70,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '</th>';
 
 			if ( $show_user ) {
-				echo '<th scope="col" class="qm-filterable-column">';
+				echo '<th scope="col" class="qm-filterable-column qm-num">';
 				echo $this->build_filter( 'user', $data['users'], __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
 				echo '</th>';
 			}
