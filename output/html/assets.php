@@ -39,11 +39,13 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$type_labels = array(
 			'scripts' => array(
-				'singular' => __( 'Script', 'query-monitor' ),
+				/* translators: %s: Total number of scripts */
+				'total'    => __( 'Total Scripts: %s', 'query-monitor' ),
 				'plural'   => __( 'Scripts', 'query-monitor' ),
 			),
 			'styles' => array(
-				'singular' => __( 'Style', 'query-monitor' ),
+				/* translators: %s: Total number of styles */
+				'total'    => __( 'Total Styles: %s', 'query-monitor' ),
 				'plural'   => __( 'Styles', 'query-monitor' ),
 			),
 		);
@@ -85,13 +87,30 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			echo '<tbody>';
 
+			$total = 0;
+
 			foreach ( $position_labels as $position => $label ) {
 				if ( ! empty( $data[ $position ][ $type ] ) ) {
 					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $label, $type );
+					$total += count( $data[ $position ][ $type ] );
 				}
 			}
 
 			echo '</tbody>';
+
+			echo '<tfoot>';
+
+			echo '<tr>';
+			printf(
+				'<td colspan="6">%1$s</td>',
+				esc_html( sprintf(
+					$type_label['total'],
+					number_format_i18n( $total )
+				) )
+			);
+			echo '</tr>';
+			echo '</tfoot>';
+
 			echo '</table>';
 			echo '</div>';
 
