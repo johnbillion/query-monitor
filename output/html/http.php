@@ -151,6 +151,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td>%s</td>',
 					esc_html( $row['args']['method'] )
 				);
+
+				if ( ! empty( $row['redirected_to'] ) ) {
+					$url .= sprintf(
+						'<br><span class="qm-warn">%1$s</span><br>%2$s',
+						/* translators: An HTTP API request redirected to another URL */
+						__( 'Redirected to:', 'query-monitor' ),
+						self::format_url( $row['redirected_to'] )
+					);
+				}
+
 				printf( // WPCS: XSS ok.
 					'<td class="qm-url qm-ltr qm-wrap">%s%s</td>',
 					$info,

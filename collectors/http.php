@@ -223,10 +223,16 @@ class QM_Collector_HTTP extends QM_Collector {
 				}
 			}
 
-			if ( isset( $http['info'] ) && isset( $http['info']['total_time'] ) ) {
-				$http['ltime'] = $http['info']['total_time'];
-			} else {
-				$http['ltime'] = ( $http['end'] - $http['start'] );
+			$http['ltime'] = ( $http['end'] - $http['start'] );
+
+			if ( isset( $http['info'] ) ) {
+				if ( isset( $http['info']['total_time'] ) ) {
+					$http['ltime'] = $http['info']['total_time'];
+				}
+
+				if ( ! empty( $http['info']['url'] ) && ( $http['url'] !== $http['info']['url'] ) ) {
+					$http['redirected_to'] = $http['info']['url'];
+				}
 			}
 
 			$this->data['ltime'] += $http['ltime'];
