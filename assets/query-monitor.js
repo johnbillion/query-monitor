@@ -110,7 +110,14 @@ jQuery( function($) {
 		}
 
 		$('#qm-panel-menu').find('a').removeClass('qm-selected-menu');
-		$('#qm-panel-menu').find('a[href="' + href + '"]').addClass('qm-selected-menu');
+		var selected_menu = $('#qm-panel-menu').find('a[href="' + href + '"]').addClass('qm-selected-menu');
+		var selected_menu_pos = selected_menu.position();
+		var panel_height = $('#qm-panel-menu').height();
+		var panel_scroll = $('#qm-panel-menu').scrollTop();
+
+		if ( ( selected_menu_pos.top > ( panel_height + panel_scroll ) ) || ( selected_menu_pos.top < panel_scroll ) ) {
+			$('#qm-panel-menu').scrollTop( selected_menu_pos.top - ( panel_height / 2 ) );
+		}
 
 		$('.qm-title-heading select').val(href);
 
