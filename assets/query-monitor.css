@@ -232,6 +232,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	transition: none !important;
 }
 
+#qm-title .qm-button-panel-settings .dashicons,
 #qm-title .qm-button-panel-pin .dashicons {
 	font-size: 17px !important;
 	margin-top: 3px !important;
@@ -595,7 +596,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 .qm-debug-bar tbody tr:hover td,
 #qm-conditionals tbody tr:hover td,
 #qm-overview tbody tr:hover td,
-#qm-authentication tbody tr:hover td {
+#qm-settings tbody tr:hover td {
 	background: #fff !important;
 }
 
@@ -856,7 +857,6 @@ html[dir="rtl"] #query-monitor .qm .qm-toggle {
 
 /* No-JS tweaks */
 
-.qm-no-js #qm-authentication,
 .qm-no-js .qm-sort-controls,
 .qm-no-js .qm-toggle,
 .qm-no-js select.qm-filter {

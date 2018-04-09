@@ -406,7 +406,6 @@ jQuery( function($) {
 	});
 
 	$('.qm-button-panel-pin').click(function(){
-
 		if ( $(this).hasClass( 'qm-button-active' ) ) {
 			localStorage.removeItem( panel_pinned_key );
 		} else {
@@ -414,6 +413,10 @@ jQuery( function($) {
 		}
 
 		$(this).toggleClass( 'qm-button-active' );
+	});
+
+	$('.qm-button-panel-settings').click(function(){
+		$('#qm-panel-menu').find('a[href="#qm-settings"]').click();
 	});
 
 	var pinned = localStorage.getItem( panel_pinned_key );

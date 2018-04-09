@@ -264,6 +264,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</select>';
 
 		echo '</div>';
+		echo '<div class="qm-title-button"><button class="qm-button-panel-settings"><span class="screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-generic"></span></button></div>';
 		echo '<div class="qm-title-button"><button class="qm-button-panel-pin"><span class="screen-reader-text">' . esc_html__( 'Pin Panel Open', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-post"></span></button></div>';
 		echo '<div class="qm-title-button"><button class="qm-button-panel-close"><span class="screen-reader-text">' . esc_html__( 'Close Panel', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt"></span></button></div>';
 		echo '</div>'; // #qm-title
@@ -288,8 +289,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		printf(
 			'<li><a href="%1$s">%2$s</a></li>',
-			'#qm-authentication',
-			esc_html__( 'Authentication', 'query-monitor' )
+			'#qm-settings',
+			esc_html__( 'Settings', 'query-monitor' )
 		);
 
 		echo '</ul>';
@@ -301,7 +302,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		echo '<div class="qm" id="qm-authentication">';
+		echo '<div class="qm" id="qm-settings">';
 		echo '<table>';
 		echo '<thead>';
 		echo '<tr>';
@@ -332,7 +333,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>'; // #qm-authentication
+		echo '</div>'; // #qm-settings
 
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
