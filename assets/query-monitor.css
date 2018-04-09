@@ -909,7 +909,7 @@ html[dir="rtl"] #query-monitor .qm .qm-toggle {
 }
 
 #query-monitor .qm.qm-debug-bar h3 {
-	margin: 15px 0 5px !important;
+	margin: 15px 6px 5px !important;
 	font-size: 13px !important;
 }
 
@@ -932,6 +932,7 @@ html[dir="rtl"] #query-monitor .qm .qm-toggle {
 	margin: 4px 6px !important;
 }
 
-#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules .dbrr {
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .filterui,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
 	margin: 0;
 }
