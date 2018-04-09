@@ -67,37 +67,6 @@ jQuery( function($) {
 	var link_click = function(e){
 		e.preventDefault();
 
-		var paused = true;
-
-		if ( is_admin ) {
-			$('#wpfooter').css('position','relative');
-		}
-		if ( window.infinite_scroll && infinite_scroll.contentSelector ) {
-			// Infinite Scroll plugin
-
-			$( infinite_scroll.contentSelector ).infinitescroll('pause');
-
-		} else if ( window.infiniteScroll && infiniteScroll.scroller ) {
-			// Jetpack Infinite Scroll module
-
-			infiniteScroll.scroller.check = function(){
-				return false;
-			};
-
-		} else if ( window.wp && wp.themes && wp.themes.RunInstaller && wp.themes.RunInstaller.view ) {
-			// Infinite scrolling on Appearance -> Add New screens
-
-			var view = wp.themes.RunInstaller.view.view;
-			view.stopListening( view.parent, 'theme:scroll' );
-
-		} else {
-			paused = false;
-		}
-
-		if ( paused && window.console ) {
-			console.debug( qm_l10n.infinitescroll_paused );
-		}
-
 		var href = $( this ).attr('href');
 
 		$('#query-monitor').addClass('qm-show').removeClass('qm-hide');
