@@ -29,13 +29,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';
+		echo '<h2>PHP</h2>';
 
 		echo '<table>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">PHP</th>';
-		echo '</tr>';
-		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
@@ -148,13 +144,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				}
 
 				echo '<div class="qm-section">';
+				echo '<h2>' . esc_html( $name ) . '</h2>';
 
 				echo '<table>';
-				echo '<thead>';
-				echo '<tr>';
-				echo '<th colspan="2">' . esc_html( $name ) . '</th>';
-				echo '</tr>';
-				echo '</thead>';
 				echo '<tbody>';
 
 				foreach ( $db['info'] as $key => $value ) {
@@ -235,13 +227,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		}
 
 		echo '<div class="qm-section">';
+		echo '<h2>WordPress</h2>';
 
 		echo '<table>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">WordPress</th>';
-		echo '</tr>';
-		echo '</thead>';
 		echo '<tbody>';
 
 		foreach ( $data['wp'] as $key => $val ) {
@@ -259,13 +247,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</div>';
 
 		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html( 'Server', 'query-monitor' ) . '</h2>';
 
 		echo '<table>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="2">' . esc_html( 'Server', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
 		echo '<tbody>';
 
 		echo '<tr>';
