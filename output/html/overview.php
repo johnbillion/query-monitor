@@ -22,7 +22,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	}
 
 	public function output() {
-
 		$data = $this->collector->get_data();
 
 		$db_query_num   = null;
@@ -46,24 +45,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table>';
-		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Page generation time', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Peak memory usage', 'query-monitor' ) . '</th>';
-		if ( isset( $db_query_num ) ) {
-			echo '<th scope="col">' . esc_html__( 'Database query time', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Database queries', 'query-monitor' ) . '</th>';
-		}
-		echo '<th scope="col">' . esc_html__( 'Object cache', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm-boxed qm-boxed-wrap">';
 
-		echo '<tbody>';
-		echo '<tr>';
-		echo '<td>';
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h2>';
+		echo '<p class="qm-item">';
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 		echo '<br><span class="qm-info">';
 		echo esc_html( sprintf(
@@ -73,12 +60,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			number_format_i18n( $data['time_limit'] )
 		) );
 		echo '</span>';
-		echo '</td>';
+		echo '</p>';
+		echo '</div>';
+
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h2>';
+		echo '<p class="qm-item">';
 
 		if ( empty( $data['memory'] ) ) {
-			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+			esc_html_e( 'Unknown', 'query-monitor' );
 		} else {
-			echo '<td>';
 			echo esc_html( sprintf(
 				/* translators: %s: Memory used in kilobytes */
 				__( '%s kB', 'query-monitor' ),
@@ -92,34 +83,44 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( $data['memory_limit'] / 1024 )
 			) );
 			echo '</span>';
-			echo '</td>';
 		}
 
+		echo '</p>';
+		echo '</div>';
+
 		if ( isset( $db_query_num ) ) {
-			echo '<td>';
+			echo '<div class="qm-section">';
+			echo '<h2>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h2>';
+			echo '<p class="qm-item">';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
-			echo '</td>';
-			echo '<td>';
+			echo '</p>';
+			echo '</div>';
+
+			echo '<div class="qm-section">';
+			echo '<h2>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h2>';
+			echo '<p class="qm-item">';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
 				foreach ( $db_query_num as $type_name => $type_count ) {
-					$db_query_types[] = sprintf(
-						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s</a>: %3$s',
+					printf(
+						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</a><br>',
 						esc_attr( $type_name ),
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )
 					);
 				}
-
-				echo implode( '<br>', $db_query_types ) . '<br>'; // WPCS: XSS ok;
 			}
 
 			echo esc_html__( 'Total', 'query-monitor' ) . ': ' . esc_html( number_format_i18n( $db_queries_data['total_qs'] ) );
 
-			echo '</td>';
+			echo '</p>';
+			echo '</div>';
 		}
 
-		echo '<td>';
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h2>';
+		echo '<p class="qm-item">';
+
 		if ( isset( $cache_hit_percentage ) ) {
 			echo esc_html( sprintf(
 				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
@@ -151,14 +152,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo esc_html__( 'Object cache information is not available', 'query-monitor' );
 			echo '</span>';
 		}
-		echo '</td>';
 
-		echo '</tr>';
-		echo '</tbody>';
-
-		echo '</table>';
+		echo '</p>';
 		echo '</div>';
 
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function admin_title( array $title ) {
