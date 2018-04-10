@@ -296,37 +296,26 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		echo '<div class="qm" id="qm-settings">';
-		echo '<table>';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Authentication', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		echo '<div class="qm qm-non-tabular" id="qm-settings">';
+
+		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h2>';
 
 		if ( ! self::user_verified() ) {
 
-			echo '<tr>';
-			echo '<td>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</td>';
-			echo '</tr>';
-			echo '<tr>';
-			echo '<td><a href="#" class="qm-auth" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</a></td>';
-			echo '</tr>';
+			echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</p>';
+			echo '<p><a href="#" class="qm-auth" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</a></p>';
 
 		} else {
 
-			echo '<tr>';
-			echo '<td>' . esc_html__( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</td>';
-			echo '</tr>';
-			echo '<tr>';
-			echo '<td><a href="#" class="qm-auth" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</a></td>';
-			echo '</tr>';
+			echo '<p>' . esc_html__( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</p>';
+			echo '<p><a href="#" class="qm-auth" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</a></p>';
 
 		}
 
-		echo '</tbody>';
-		echo '</table>';
+		echo '</div>';
+		echo '</div>';
 
 		echo '</div>'; // #qm-settings
 		echo '</div>'; // #qm-panels
