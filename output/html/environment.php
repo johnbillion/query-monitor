@@ -34,22 +34,31 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<table>';
 		echo '<tbody>';
 
-		echo '<tr>';
+		$append      = '';
+		$class       = '';
+		$php_warning = $data['php']['old'];
+
+		if ( $php_warning ) {
+			$append .= sprintf(
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+				'https://wordpress.org/support/upgrade-php/',
+				esc_html__( 'Help', 'query-monitor' )
+			);
+			$class = 'qm-warn';
+		}
+
+		echo '<tr class="' . esc_attr( $class ) . '">';
 		echo '<th scope="row">version</th>';
-		echo '<td>' . esc_html( $data['php']['version'] ) . '</td>';
+		echo '<td>';
+		echo esc_html( $data['php']['version'] );
+		echo $append; // WPCS: XSS ok.
+		echo '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th scope="row">sapi</th>';
 		echo '<td>' . esc_html( $data['php']['sapi'] ) . '</td>';
 		echo '</tr>';
-
-		if ( isset( $data['php']['hhvm'] ) ) {
-			echo '<tr>';
-			echo '<th scope="row">hhvm</th>';
-			echo '<td>' . esc_html( $data['php']['hhvm'] ) . '</td>';
-			echo '</tr>';
-		}
 
 		echo '<tr>';
 		echo '<th scope="row">user</th>';

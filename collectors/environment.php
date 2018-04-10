@@ -159,10 +159,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['version'] = phpversion();
 		$this->data['php']['sapi']    = php_sapi_name();
 		$this->data['php']['user']    = self::get_current_user();
-
-		if ( defined( 'HHVM_VERSION' ) ) {
-			$this->data['php']['hhvm'] = HHVM_VERSION;
-		}
+		$this->data['php']['old']     = version_compare( $this->data['php']['version'], 7, '<' );
 
 		foreach ( $this->php_vars as $setting ) {
 			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
