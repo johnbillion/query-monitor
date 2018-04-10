@@ -157,13 +157,11 @@ jQuery( function($) {
 			hilite = $(this).attr('data-highlight'),
 			time   = 0;
 
-		if ( window.localStorage ) {
-			key = $(this).attr('id');
-			if ( val ) {
-				localStorage.setItem( key, $(this).val() );
-			} else {
-				localStorage.removeItem( key );
-			}
+		key = $(this).attr('id');
+		if ( val ) {
+			localStorage.setItem( key, $(this).val() );
+		} else {
+			localStorage.removeItem( key );
 		}
 
 		if ( hilite ) {
@@ -202,20 +200,18 @@ jQuery( function($) {
 		}
 	});
 
-	if ( window.localStorage ) {
-		$('#query-monitor').find('.qm-filter').each(function () {
-			var key = $(this).attr('id');
-			var value = localStorage.getItem( key );
-			if ( value !== null ) {
-				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
-				var val = value.replace(/[[\]()'"\\]/g, "\\$&");
-				if ( ! $(this).find('option[value="' + val + '"]').length ) {
-					$('<option>').attr('value',value).text(value).appendTo(this);
-				}
-				$(this).val(value).change();
+	$('#query-monitor').find('.qm-filter').each(function () {
+		var key = $(this).attr('id');
+		var value = localStorage.getItem( key );
+		if ( value !== null ) {
+			// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
+			var val = value.replace(/[[\]()'"\\]/g, "\\$&");
+			if ( ! $(this).find('option[value="' + val + '"]').length ) {
+				$('<option>').attr('value',value).text(value).appendTo(this);
 			}
-		});
-	}
+			$(this).val(value).change();
+		}
+	});
 
 	$('#query-monitor').find('.qm-filter-trigger').on('click',function(e){
 		var filter = $(this).data('qm-filter'),
@@ -365,22 +361,18 @@ jQuery( function($) {
 		$(document).off('mousemove', qm_do_resizer_drag);
 		$(document).off('mouseup', qm_stop_resizer_drag);
 
-		if ( window.localStorage ) {
-			localStorage.setItem( container_storage_key, container.height() );
-		}
+		localStorage.setItem( container_storage_key, container.height() );
 	}
 
-	if ( window.localStorage ) {
-		var h = localStorage.getItem( container_storage_key );
-		if ( h !== null ) {
-			if ( h < minheight ) {
-				h = minheight;
-			}
-			if ( h > maxheight ) {
-				h = maxheight;
-			}
-			container.height( h );
+	var h = localStorage.getItem( container_storage_key );
+	if ( h !== null ) {
+		if ( h < minheight ) {
+			h = minheight;
 		}
+		if ( h > maxheight ) {
+			h = maxheight;
+		}
+		container.height( h );
 	}
 
 	$(window).on('resize', function(){
@@ -393,9 +385,7 @@ jQuery( function($) {
 		if ( h > maxheight ) {
 			container.height( maxheight );
 		}
-		if ( window.localStorage ) {
-			localStorage.setItem( container_storage_key, container.height() );
-		}
+		localStorage.setItem( container_storage_key, container.height() );
 	});
 
 	$('.qm-button-container-close').click(function(){
