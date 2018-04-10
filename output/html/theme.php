@@ -19,6 +19,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 60 );
 	}
 
 	public function output() {
@@ -125,7 +126,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( isset( $data['template_file'] ) ) {
-			$menu[] = $this->menu( array(
+			$menu['theme'] = $this->menu( array(
 				'title' => esc_html( sprintf(
 					/* translators: %s: Template file name */
 					__( 'Template: %s', 'query-monitor' ),
@@ -137,11 +138,19 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 	}
 
+	public function panel_menu( array $menu ) {
+		if ( isset( $menu['theme'] ) ) {
+			$menu['theme']['title'] = __( 'Template', 'query-monitor' );
+		}
+
+		return $menu;
+	}
+
 }
 
 function register_qm_output_html_theme( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'theme' ) ) {
-		$output['theme'] = new QM_Output_Html_Theme( $collector );
+	if ( ! is_admin() && $collector = QM_Collectors::get( 'response' ) ) {
+		$output['response'] = new QM_Output_Html_Theme( $collector );
 	}
 	return $output;
 }
