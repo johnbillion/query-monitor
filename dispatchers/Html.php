@@ -264,9 +264,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</select>';
 
 		echo '</div>';
-		echo '<div class="qm-title-button"><button class="qm-button-panel-settings"><span class="screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-generic"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-panel-pin"><span class="screen-reader-text">' . esc_html__( 'Pin Panel Open', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-post"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-panel-close"><span class="screen-reader-text">' . esc_html__( 'Close Panel', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-settings"><span class="screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-generic"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-pin"><span class="screen-reader-text">' . esc_html__( 'Pin Panel Open', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-post"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-close"><span class="screen-reader-text">' . esc_html__( 'Close Panel', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt"></span></button></div>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
@@ -286,12 +286,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				esc_html( $menu['title'] )
 			);
 		}
-
-		printf(
-			'<li><a href="%1$s">%2$s</a></li>',
-			'#qm-settings',
-			esc_html__( 'Settings', 'query-monitor' )
-		);
 
 		echo '</ul>';
 		echo '</div>'; // #qm-panel-menu
@@ -333,8 +327,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>'; // #qm-settings
 
+		echo '</div>'; // #qm-settings
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #qm
