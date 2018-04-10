@@ -409,7 +409,7 @@ jQuery( function($) {
 	});
 
 	var pinned = localStorage.getItem( container_pinned_key );
-	if ( pinned ) {
+	if ( pinned && $( pinned ).length ) {
 		show_panel( pinned );
 		$('.qm-button-container-pin').addClass( 'qm-button-active' );
 	}

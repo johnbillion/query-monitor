@@ -97,7 +97,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
 
 		if ( $data['is_child_theme'] ) {
-			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
+			echo '<h3>' . esc_html__( 'Parent Theme:', 'query-monitor' ) . '</h3>';
 			echo '<p>' . esc_html( $data['template'] ) . '</p>';
 		}
 
