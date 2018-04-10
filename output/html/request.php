@@ -36,8 +36,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			'matched_query' => __( 'Matched Query', 'query-monitor' ),
 			'query_string'  => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
-
-			if ( ! isset( $data['request'][ $item ] ) ) {
+			if ( is_admin() && ! isset( $data['request'][ $item ] ) ) {
 				continue;
 			}
 
