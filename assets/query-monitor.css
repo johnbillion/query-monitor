@@ -253,7 +253,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-title button.qm-button-active {
 	color: #3879d9 !important;
-	background: #ddd !important;
 }
 
 #qm-title .qm-button-container-pin.qm-button-active .dashicons {
@@ -340,11 +339,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm-non-tabular {
-	padding: 20px !important;
+	padding: 10px 20px !important;
 }
 
 #query-monitor .qm-boxed {
 	display: flex !important;
+}
+
+#query-monitor .qm-boxed + .qm-boxed {
+	border-top: 1px solid #dddddd !important;
+	padding-top: 10px !important;
 }
 
 #query-monitor .qm-boxed-wrap {
@@ -492,6 +496,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	color: #444 !important;
 }
 
+#query-monitor .qm-non-tabular h3 {
+	margin: 15px 0 !important;
+	font-size: 12px !important;
+	color: #444 !important;
+}
+
 #query-monitor .qm-non-tabular .qm-item {
 	display: inline-block !important;
 	margin: 0 20px 5px 0 !important;
@@ -502,15 +512,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm-non-tabular .qm-boxed .qm-section {
-	margin: 0 30px 30px 0 !important;
+	margin: 0 20px 10px 0 !important;
 	border-right: 1px solid #ddd !important;
-	padding: 10px 30px 10px 0 !important;
+	padding: 10px 20px 10px 0 !important;
 }
 
 #query-monitor .qm-non-tabular .qm-boxed .qm-section:last-child {
 	margin-right: 0 !important;
 	border-right: none !important;
 	padding-right: 20px !important;
+}
+
+#query-monitor .qm-non-tabular table {
+	border-bottom-color: #e0e0e0 !important;
 }
 
 #query-monitor .qm ol,
