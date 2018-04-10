@@ -32,7 +32,7 @@ class QM_Collector_Request extends QM_Collector {
 		if ( $user->exists() ) {
 			$user_title = sprintf(
 				/* translators: %d: User ID */
-				__( 'Current user: #%d', 'query-monitor' ),
+				__( 'Current User: #%d', 'query-monitor' ),
 				$user->ID
 			);
 		} else {
@@ -46,10 +46,10 @@ class QM_Collector_Request extends QM_Collector {
 		);
 
 		if ( is_multisite() ) {
-			$this->data['multisite']['current_blog'] = array(
+			$this->data['multisite']['current_site'] = array(
 				'title' => sprintf(
-					/* translators: %d: Blog ID */
-					__( 'Current blog: #%d', 'query-monitor' ),
+					/* translators: %d: Multisite site ID */
+					__( 'Current Site: #%d', 'query-monitor' ),
 					$current_blog->blog_id
 				),
 				'data'  => $current_blog,
@@ -57,10 +57,10 @@ class QM_Collector_Request extends QM_Collector {
 		}
 
 		if ( QM_Util::is_multi_network() ) {
-			$this->data['multisite']['current_site'] = array(
+			$this->data['multisite']['current_network'] = array(
 				'title' => sprintf(
-					/* translators: %d: Site ID */
-					__( 'Current site: #%d', 'query-monitor' ),
+					/* translators: %d: Multisite network ID */
+					__( 'Current Network: #%d', 'query-monitor' ),
 					$current_site->id
 				),
 				'data'  => $current_site,

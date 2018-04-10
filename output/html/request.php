@@ -27,16 +27,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		$db_queries = QM_Collectors::get( 'db_queries' );
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table>';
-		echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<thead class="screen-reader-text">';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" colspan="2">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		foreach ( array(
 			'request'       => __( 'Request', 'query-monitor' ),
@@ -59,40 +51,39 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
 			}
 
-			echo '<tr>';
-			echo '<th>' . esc_html( $name ) . '</th>';
-			echo '<td colspan="2" class="qm-ltr qm-wrap">' . $value . '</td>'; // WPCS: XSS ok.
-			echo '</tr>';
+			echo '<div class="qm-section">';
+			echo '<h2>' . esc_html( $name ) . '</h2>';
+			echo '<p class="qm-ltr"><code>' . $value . '</code></p>'; // WPCS: XSS ok.
+			echo '</div>';
 		}
 
-		$rowspan = isset( $data['qvars'] ) ? count( $data['qvars'] ) : 1;
+		echo '</div>';
 
-		echo '<tr>';
-		echo '<th rowspan="' . absint( $rowspan ) . '">';
+		echo '<div class="qm-boxed qm-boxed-wrap">';
+
+		echo '<div class="qm-section">';
+		echo '<h2>';
 		esc_html_e( 'Query Vars', 'query-monitor' );
 
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
-				echo '<br>';
 				printf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a>',
+					' <a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a>',
 					esc_html__( 'View Main Query', 'query-monitor' )
 				);
 			}
 		}
 
-		echo '</th>';
+		echo '</h2>';
 
 		if ( ! empty( $data['qvars'] ) ) {
 
-			$first = true;
+			echo '<table>';
 
 			foreach ( $data['qvars'] as $var => $value ) {
 
-				if ( ! $first ) {
-					echo '<tr>';
-				}
+				echo '<tr>';
 
 				if ( isset( $data['plugin_qvars'][ $var ] ) ) {
 					echo '<td class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
@@ -110,103 +101,62 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 				echo '</tr>';
 
-				$first = false;
-
 			}
+			echo '</table>';
+
 		} else {
 
-			echo '<td colspan="2"><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 
 		}
 
-		if ( ! empty( $data['queried_object'] ) ) {
-
-			echo '<tr>';
-			echo '<th>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</th>';
-			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
-
-			printf( // WPCS: XSS ok.
-				'<div class="qm-inner-toggle">%1$s (%2$s) %3$s</div>',
-				esc_html( $data['queried_object']['title'] ),
-				esc_html( get_class( $data['queried_object']['data'] ) ),
-				self::build_toggler()
-			);
-
-			echo '<div class="qm-toggled">';
-			self::output_inner( $data['queried_object']['data'] );
-			echo '</div>';
-
-			echo '</div></td>';
-			echo '</tr>';
-
-		}
-
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'User', 'query-monitor' ) . '</th>';
-
-		if ( $data['user']['data'] ) {
-			echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
-
-			printf( // WPCS: XSS ok.
-				'<div class="qm-inner-toggle">%1$s %2$s</div>',
-				esc_html( $data['user']['title'] ),
-				self::build_toggler()
-			);
-
-			echo '<div class="qm-toggled">';
-			self::output_inner( $data['user']['data'] );
-			echo '</div>';
-
-			echo '</div></td>';
-		} else {
-			echo '<td colspan="2">';
-			esc_html_e( 'No current user', 'query-monitor' );
-			echo '</td>';
-		}
-
-		echo '</tr>';
-
-		if ( ! empty( $data['multisite'] ) ) {
-
-			$rowspan = count( $data['multisite'] );
-
-			echo '<tr>';
-			echo '<th rowspan="' . absint( $rowspan ) . '">' . esc_html__( 'Multisite', 'query-monitor' ) . '</th>';
-
-			$first = true;
-
-			foreach ( $data['multisite'] as $var => $value ) {
-
-				if ( ! $first ) {
-					echo '<tr>';
-				}
-
-				echo '<td colspan="2" class="qm-has-inner qm-has-toggle qm-ltr"><div class="qm-toggler">';
-
-				printf( // WPCS: XSS ok.
-					'<div class="qm-inner-toggle">%1$s %2$s</div>',
-					esc_html( $value['title'] ),
-					self::build_toggler()
-				);
-
-				echo '<div class="qm-toggled">';
-				self::output_inner( $value['data'] );
-				echo '</div>';
-
-				echo '</div></td>';
-
-				echo '</tr>';
-
-				$first = false;
-
-			}
-		}
-
-		echo '</tbody>';
-		echo '</table>';
 		echo '</div>';
 
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h2>';
+
+		if ( ! empty( $data['queried_object'] ) ) {
+			printf( // WPCS: XSS ok.
+				'<p>%1$s (%2$s)</p>',
+				esc_html( $data['queried_object']['title'] ),
+				esc_html( get_class( $data['queried_object']['data'] ) )
+			);
+		} else {
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
+		}
+
+		echo '</div>';
+
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Current User', 'query-monitor' ) . '</h2>';
+
+		if ( ! empty( $data['user']['data'] ) ) {
+			printf( // WPCS: XSS ok.
+				'<p>%1$s</p>',
+				esc_html( $data['user']['title'] )
+			);
+		} else {
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
+		}
+
+		echo '</div>';
+
+		if ( ! empty( $data['multisite'] ) ) {
+			echo '<div class="qm-section">';
+			echo '<h2>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h2>';
+
+			foreach ( $data['multisite'] as $var => $value ) {
+				printf( // WPCS: XSS ok.
+					'<p>%1$s</p>',
+					esc_html( $value['title'] )
+				);
+			}
+
+			echo '</div>';
+		}
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function admin_menu( array $menu ) {
