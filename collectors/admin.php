@@ -86,11 +86,6 @@ class QM_Collector_Admin extends QM_Collector {
 				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
 				'column_action'    => "manage_{$list_table['column']}_custom_column",
 			);
-			$this->data['list_table_markup'] = array(
-				'columns_filter'   => 'manage_<span class="qm-current">' . esc_html( $list_table['columns'] ) . '</span>_columns',
-				'sortables_filter' => 'manage_<span class="qm-current">' . esc_html( $list_table['sortables'] ) . '</span>_sortable_columns',
-				'column_action'    => 'manage_<span class="qm-current">' . esc_html( $list_table['column'] ) . '</span>_custom_column',
-			);
 
 		}
 

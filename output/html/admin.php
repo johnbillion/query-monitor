@@ -65,10 +65,10 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 			echo '<div class="qm-section">';
 			echo '<h2>' . esc_html__( 'List Table', 'query-monitor' ) . '</h2>';
 			echo '<h3>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h3>';
-			echo '<p><code>' . $data['list_table_markup']['columns_filter'] . '</code></p>'; // WPCS: XSS ok;
-			echo '<p><code>' . $data['list_table_markup']['sortables_filter'] . '</code></p>'; // WPCS: XSS ok;
+			echo '<p><code>' . esc_html( $data['list_table']['columns_filter'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data['list_table']['sortables_filter'] ) . '</code></p>';
 			echo '<h3>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h3>';
-			echo '<p><code>' . $data['list_table_markup']['column_action'] . '</code></p>'; // WPCS: XSS ok;
+			echo '<p><code>' . esc_html( $data['list_table']['column_action'] ) . '</code></p>';
 			echo '</div>';
 
 		}
