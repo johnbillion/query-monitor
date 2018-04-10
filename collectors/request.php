@@ -24,7 +24,7 @@ class QM_Collector_Request extends QM_Collector {
 
 	public function process() {
 
-		global $wp, $wp_query, $current_blog, $current_site;
+		global $wp, $wp_query, $current_blog, $current_site, $wp_rewrite;
 
 		$qo = get_queried_object();
 		$user = wp_get_current_user();
@@ -180,6 +180,19 @@ class QM_Collector_Request extends QM_Collector {
 			$this->data['request_method'] = '';
 		}
 
+		if ( is_admin() || QM_Util::is_async() || empty( $wp_rewrite->rules ) ) {
+			return;
+		}
+
+		$matching = array();
+
+		foreach ( $wp_rewrite->rules as $match => $query ) {
+			if ( preg_match( "#^{$match}#", $this->data['request']['request'] ) ) {
+				$matching[ $match ] = $query;
+			}
+		}
+
+		$this->data['matching_rewrites'] = $matching;
 	}
 
 }

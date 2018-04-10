@@ -61,6 +61,26 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
+		if ( ! empty( $data['matching_rewrites'] ) ) {
+			echo '<div class="qm-section">';
+			echo '<h2>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</h2>';
+			echo '<table>';
+
+			foreach ( $data['matching_rewrites'] as $rule => $query ) {
+				$query = str_replace( 'index.php?', '', $query );
+
+				echo '<tr>';
+				echo '<td class="qm-ltr"><code>' . esc_html( $rule ) . '</code></td>';
+				echo '<td class="qm-ltr"><code>';
+				echo self::format_url( $query ); // WPCS: XSS ok.
+				echo '</code></td>';
+				echo '</tr>';
+			}
+
+			echo '</table>';
+			echo '</div>';
+		}
+
 		echo '<div class="qm-section">';
 		echo '<h2>';
 		esc_html_e( 'Query Vars', 'query-monitor' );
