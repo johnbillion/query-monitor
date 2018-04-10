@@ -64,6 +64,12 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 			echo '<div class="qm-section">';
 			echo '<h2>' . esc_html__( 'List Table', 'query-monitor' ) . '</h2>';
+
+			if ( ! empty( $data['list_table']['class_name'] ) ) {
+				echo '<h3>' . esc_html__( 'Class:', 'query-monitor' ) . '</h3>';
+				echo '<p><code>' . esc_html( $data['list_table']['class_name'] ) . '</code></p>';
+			}
+
 			echo '<h3>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h3>';
 			echo '<p><code>' . esc_html( $data['list_table']['columns_filter'] ) . '</code></p>';
 			echo '<p><code>' . esc_html( $data['list_table']['sortables_filter'] ) . '</code></p>';

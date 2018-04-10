@@ -24,7 +24,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 	public function process() {
 
-		global $pagenow;
+		global $pagenow, $wp_list_table;
 
 		$current_screen = get_current_screen();
 
@@ -87,6 +87,9 @@ class QM_Collector_Admin extends QM_Collector {
 				'column_action'    => "manage_{$list_table['column']}_custom_column",
 			);
 
+			if ( ! empty( $wp_list_table ) ) {
+				$this->data['list_table']['class_name'] = get_class( $wp_list_table );
+			}
 		}
 
 	}
