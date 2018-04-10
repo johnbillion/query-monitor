@@ -23,49 +23,27 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	}
 
 	public function output() {
-
 		$data = $this->collector->get_data();
 
-		$cols = 6;
-		$i = 0;
+		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table>';
-		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
-		echo '<tbody>';
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h2>';
 
 		foreach ( $data['conds']['true'] as $cond ) {
-			$i++;
-			if ( 1 === $i % $cols ) {
-				echo '<tr>';
-			}
-			echo '<td class="qm-ltr qm-true"><code>' . esc_html( $cond ) . '()</code>&nbsp;&#x2713;</td>';
-			if ( 0 === $i % $cols ) {
-				echo '</tr>';
-			}
+			echo '<p class="qm-item qm-ltr qm-true"><code>' . esc_html( $cond ) . '()</code></p>';
 		}
+
+		echo '</div>';
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h2>';
 
 		foreach ( $data['conds']['false'] as $cond ) {
-			$i++;
-			if ( 1 === $i % $cols ) {
-				echo '<tr>';
-			}
-			echo '<td class="qm-ltr qm-false"><code>' . esc_html( $cond ) . '()</code></td>';
-			if ( 0 === $i % $cols ) {
-				echo '</tr>';
-			}
+			echo '<p class="qm-item qm-ltr qm-false"><code>' . esc_html( $cond ) . '()</code></p>';
 		}
 
-		$fill = ( $cols - ( $i % $cols ) );
-		if ( $fill && ( $fill !== $cols ) ) {
-			echo '<td colspan="' . absint( $fill ) . '">&nbsp;</td>';
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-		echo '</table>';
 		echo '</div>';
-
+		echo '</div>';
 	}
 
 	public function admin_menu( array $menu ) {
