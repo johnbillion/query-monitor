@@ -25,7 +25,10 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm-boxed qm-boxed-wrap">';
+
+		echo '<div class="qm-section">';
 
 		echo '<table>';
 		echo '<thead>';
@@ -65,7 +68,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
-			echo '<td class="qm-wrap">';
+			echo '<td>';
 			echo esc_html( $val['after'] );
 
 			if ( $val['after'] !== $val['before'] ) {
@@ -131,6 +134,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 
+		echo '</div>';
+
 		if ( isset( $data['db'] ) ) {
 
 			foreach ( $data['db'] as $id => $db ) {
@@ -141,6 +146,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					/* translators: %s: Name of database controller */
 					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
 				}
+
+				echo '<div class="qm-section">';
 
 				echo '<table>';
 				echo '<thead>';
@@ -158,7 +165,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					if ( ! isset( $value ) ) {
 						echo '<td><span class="qm-warn">' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
-						echo '<td class="qm-wrap">' . esc_html( $value ) . '</td>';
+						echo '<td>' . esc_html( $value ) . '</td>';
 					}
 
 					echo '</tr>';
@@ -208,7 +215,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					}
 
 					echo '<th scope="row">' . esc_html( $key ) . '</th>';
-					echo '<td class="qm-wrap">';
+					echo '<td>';
 					echo esc_html( $val );
 					echo $append; // WPCS: XSS ok.
 					echo '</td>';
@@ -222,8 +229,12 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '</tbody>';
 				echo '</table>';
 
+				echo '</div>';
+
 			}
 		}
+
+		echo '<div class="qm-section">';
 
 		echo '<table>';
 		echo '<thead>';
@@ -237,13 +248,17 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
-			echo '<td class="qm-wrap">' . esc_html( $val ) . '</td>';
+			echo '<td>' . esc_html( $val ) . '</td>';
 			echo '</tr>';
 
 		}
 
 		echo '</tbody>';
 		echo '</table>';
+
+		echo '</div>';
+
+		echo '<div class="qm-section">';
 
 		echo '<table>';
 		echo '<thead>';
@@ -255,13 +270,13 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'software', 'query-monitor' ) . '</th>';
-		echo '<td class="qm-wrap">' . esc_html( $data['server']['name'] ) . '</td>';
+		echo '<td>' . esc_html( $data['server']['name'] ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'version', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['server']['version'] ) ) {
-			echo '<td class="qm-wrap">' . esc_html( $data['server']['version'] ) . '</td>';
+			echo '<td>' . esc_html( $data['server']['version'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
@@ -270,7 +285,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'address', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['server']['address'] ) ) {
-			echo '<td class="qm-wrap">' . esc_html( $data['server']['address'] ) . '</td>';
+			echo '<td>' . esc_html( $data['server']['address'] ) . '</td>';
 		} else {
 			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
 		}
@@ -278,14 +293,15 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '<tr>';
 		echo '<th scope="row">' . esc_html__( 'host', 'query-monitor' ) . '</th>';
-		echo '<td class="qm-wrap">' . esc_html( $data['server']['host'] ) . '</td>';
+		echo '<td>' . esc_html( $data['server']['host'] ) . '</td>';
 		echo '</tr>';
 
 		echo '</tbody>';
 		echo '</table>';
-
 		echo '</div>';
 
+		echo '</div>';
+		echo '</div>';
 	}
 
 }

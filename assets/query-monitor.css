@@ -504,7 +504,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm-non-tabular .qm-boxed .qm-section {
 	margin: 0 30px 30px 0 !important;
 	border-right: 1px solid #ddd !important;
-	padding: 10px 40px 10px 0 !important;
+	padding: 10px 30px 10px 0 !important;
 }
 
 #query-monitor .qm-non-tabular .qm-boxed .qm-section:last-child {
