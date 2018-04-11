@@ -123,12 +123,20 @@ class QM_Collector_Environment extends QM_Collector {
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
 					$client = mysqli_get_client_version();
+					$info   = mysqli_get_server_info( $db->dbh );
 				} else {
 					if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
 						$client = $matches[0];
 					} else {
 						$client = null;
 					}
+					$info = mysql_get_server_info( $db->dbh );
+				}
+
+				if ( false !== strpos( $info, 'MariaDB' ) ) {
+					$rdbms = 'MariaDB';
+				} else {
+					$rdbms = 'MySQL';
 				}
 
 				if ( $client ) {
@@ -139,8 +147,9 @@ class QM_Collector_Environment extends QM_Collector {
 				}
 
 				$info = array(
-					'extension'      => $extension,
+					'rdbms'          => $rdbms,
 					'server version' => $server,
+					'extension'      => $extension,
 					'client version' => $client_version,
 					'user'           => $db->dbuser,
 					'host'           => $db->dbhost,
