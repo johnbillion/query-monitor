@@ -90,6 +90,16 @@ class QM_Collector_Environment extends QM_Collector {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 
+				if ( method_exists( $db, 'db_version' ) ) {
+					$server = $db->db_version();
+					// query_cache_* deprecated since MySQL 5.7.20
+					if ( version_compare( $server, '5.7.20', '>=' ) ) {
+						unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
+					}
+				} else {
+					$server = null;
+				}
+
 				$variables = $db->get_results( "
 					SHOW VARIABLES
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
@@ -104,12 +114,6 @@ class QM_Collector_Environment extends QM_Collector {
 				} else {
 					# Who knows?
 					$extension = null;
-				}
-
-				if ( method_exists( $db, 'db_version' ) ) {
-					$server = $db->db_version();
-				} else {
-					$server = null;
 				}
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
