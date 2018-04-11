@@ -136,17 +136,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
 			}
-			echo '<br><span class="qm-info">';
 			if ( $cache_data['ext_object_cache'] ) {
+				echo '<br><span class="qm-info">';
 				printf(
 					'<a href="%s">%s</a>',
 					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
 					esc_html__( 'External object cache in use', 'query-monitor' )
 				);
+				echo '</span>';
 			} else {
+				echo '<br><span class="qm-warn">';
 				echo esc_html__( 'External object cache not in use', 'query-monitor' );
+				echo '</span>';
 			}
-			echo '</span>';
 		} else {
 			echo '<span class="qm-info">';
 			echo esc_html__( 'Object cache information is not available', 'query-monitor' );
