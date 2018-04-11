@@ -36,7 +36,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
+		$qm_broken = __( 'A JavaScript error on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
+
 		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<div class="qm-boxed" id="qm-broken">';
+
+		echo '<div class="qm-section">';
+		echo '<h2 class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</h2>';
+		echo '</div>';
+
+		echo '</div>';
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';

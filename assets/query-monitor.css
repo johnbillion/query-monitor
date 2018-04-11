@@ -346,7 +346,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: flex !important;
 }
 
-#query-monitor .qm-boxed + .qm-boxed {
+#query-monitor .qm-boxed:not(#qm-broken) + .qm-boxed {
 	border-top: 1px solid #dddddd !important;
 	padding-top: 10px !important;
 }
@@ -995,4 +995,28 @@ html[dir="rtl"] #query-monitor .qm .qm-toggle {
 #query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .filterui,
 #query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
 	margin: 0;
+}
+
+/* Broken output handling */
+
+#query-monitor.qm-broken #qm-title {
+	cursor: default !important;
+}
+
+#query-monitor #qm-broken,
+#query-monitor.qm-broken .qm-title-button {
+	display: none !important;
+}
+
+#query-monitor.qm-broken #qm-broken,
+#query-monitor.qm-broken .qm {
+	display: block !important;
+}
+
+#query-monitor.qm-broken .qm {
+	margin-bottom: 50px !important;
+}
+
+#query-monitor.qm-broken #qm-broken h2 {
+	padding: 20px !important;
 }

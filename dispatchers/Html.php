@@ -316,7 +316,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		?>
 		if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! jQuery ) {
-			document.getElementById( 'qm' ).style.display = 'block';
+			/* Fallback for worst case scenario */
+			document.getElementById( 'query-monitor' ).className += ' qm-broken';
+			console.error( document.getElementById( 'qm-broken' ).textContent );
+			var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
+			if ( menu_item ) {
+				menu_item.addEventListener( 'click', function() {
+					document.getElementById( 'query-monitor' ).className += ' qm-show';
+				} );
+			}
 		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
 			document.getElementById( 'qm' ).className += ' qm-peek';
 		}
