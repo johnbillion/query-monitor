@@ -32,7 +32,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$position_labels = array(
 			'missing' => __( 'Missing', 'query-monitor' ),
-			'broken'  => __( 'Broken Dependencies', 'query-monitor' ),
+			'broken'  => __( 'Missing Dependencies', 'query-monitor' ),
 			'header'  => __( 'Header', 'query-monitor' ),
 			'footer'  => __( 'Footer', 'query-monitor' ),
 		);
