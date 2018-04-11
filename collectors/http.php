@@ -230,8 +230,12 @@ class QM_Collector_HTTP extends QM_Collector {
 					$http['ltime'] = $http['info']['total_time'];
 				}
 
-				if ( ! empty( $http['info']['url'] ) && ( $http['url'] !== $http['info']['url'] ) ) {
-					$http['redirected_to'] = $http['info']['url'];
+				if ( ! empty( $http['info']['url'] ) ) {
+					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
+						$http['redirected_to'] = $http['info']['url'];
+					}
+
+					$http['url'] = $http['info']['url'];
 				}
 			}
 
