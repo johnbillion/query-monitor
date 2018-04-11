@@ -264,6 +264,14 @@ abstract class QM_Output_Html extends QM_Output {
 			return $return;
 		}
 
+		$map = self::get_file_path_map();
+
+		if ( ! empty( $map ) ) {
+			foreach ( $map as $from => $to ) {
+				$file = str_replace( $from, $to, $file );
+			}
+		}
+
 		$link = sprintf( self::get_file_link_format(), rawurlencode( $file ), intval( $link_line ) );
 
 		if ( $is_filename ) {
@@ -291,6 +299,11 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		return self::$file_link_format;
+	}
+
+	public static function get_file_path_map() {
+		// @TODO document this!
+		return apply_filters( 'qm/output/file_path_map', array() );
 	}
 
 	public static function has_clickable_links() {
