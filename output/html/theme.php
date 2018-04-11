@@ -149,8 +149,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 }
 
 function register_qm_output_html_theme( array $output, QM_Collectors $collectors ) {
-	if ( ! is_admin() && $collector = QM_Collectors::get( 'response' ) ) {
-		$output['response'] = new QM_Output_Html_Theme( $collector );
+	if ( ! is_admin() && $collector = QM_Collectors::get( 'theme' ) ) {
+		$output['theme'] = new QM_Output_Html_Theme( $collector );
 	}
 	return $output;
 }
