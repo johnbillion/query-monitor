@@ -109,9 +109,33 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$stack          = array();
 				$filtered_trace = $row['trace']->get_display_trace();
-				array_pop( $filtered_trace ); // remove WP_Http->request()
-				array_pop( $filtered_trace ); // remove WP_Http->{$method}()
-				array_pop( $filtered_trace ); // remove wp_remote_{$method}()
+
+				$filtered_trace = array_filter( $filtered_trace, function( $item ) {
+					// @TODO This should happen during collection.
+					if ( isset( $item['class'] ) ) {
+						return ! in_array( $item['class'], array(
+							'WP_Http',
+						), true );
+					}
+
+					if ( isset( $item['function'] ) ) {
+						return ! in_array( $item['function'], array(
+							'wp_safe_remote_request',
+							'wp_safe_remote_get',
+							'wp_safe_remote_post',
+							'wp_safe_remote_head',
+							'wp_remote_request',
+							'wp_remote_get',
+							'wp_remote_post',
+							'wp_remote_head',
+							'wp_remote_fopen',
+							'download_url',
+							'wpcom_vip_file_get_contents',
+						), true );
+					}
+
+					return true;
+				} );
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
