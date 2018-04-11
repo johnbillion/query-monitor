@@ -132,7 +132,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 			} else {
 				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" class="qm-warn">';
-				echo '<td class="qm-nowrap"><span class="dashicons dashicons-warning"></span>' . esc_html( $label ) . '</td>';
+				echo '<td class="qm-nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $label ) . '</td>';
 			}
 
 			$this->dependency_row( $dependency, $dependencies, $type );

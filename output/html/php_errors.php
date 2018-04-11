@@ -83,9 +83,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<th scope="row">';
 
 					if ( $is_warning ) {
-						echo '<span class="dashicons dashicons-warning"></span>';
+						echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 					} else {
-						echo '<span class="dashicons"></span>';
+						echo '<span class="dashicons" aria-hidden="true"></span>';
 					}
 
 					echo esc_html( $title );

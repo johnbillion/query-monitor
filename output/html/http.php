@@ -103,7 +103,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					if ( empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) ) {
-						$info .= '<span class="qm-warn"><span class="dashicons dashicons-warning"></span>' . esc_html( sprintf(
+						$info .= '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
 							__( 'Certificate verification disabled (%s)', 'query-monitor' ),
 							'sslverify=false'
@@ -169,7 +169,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle"><div class="qm-toggler">';
 				if ( $is_error ) {
-					echo '<span class="dashicons dashicons-warning"></span>';
+					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				}
 				echo esc_html( $response );
 				echo self::build_toggler(); // WPCS: XSS ok;

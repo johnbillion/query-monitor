@@ -55,7 +55,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
 		echo '<tr>';
-		echo '<td class="qm-warn"><span class="dashicons dashicons-warning"></span>';
+		echo '<td class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 
 		if ( ! SAVEQUERIES ) {
 			printf(
@@ -172,7 +172,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			 */
 			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
-				echo '<th colspan="' . absint( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning"></span>';
+				echo '<th colspan="' . absint( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 					/* translators: 1: Symlink file name, 2: URL to wiki page */
 					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank">See this wiki page for more information.</a>', 'query-monitor' );
@@ -426,7 +426,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['result'] ) ) {
 			if ( is_wp_error( $row['result'] ) ) {
-				echo "<td class='qm-row-result qm-row-error'><span class='dashicons dashicons-warning'></span>" . esc_html( $row['result']->get_error_message() ) . "</td>\n";
+				echo "<td class='qm-row-result qm-row-error'><span class='dashicons dashicons-warning' aria-hidden='true'></span>" . esc_html( $row['result']->get_error_message() ) . "</td>\n";
 			} else {
 				echo "<td class='qm-row-result qm-num'>" . esc_html( $row['result'] ) . "</td>\n";
 			}
