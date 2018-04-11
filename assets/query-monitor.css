@@ -658,6 +658,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	background: #fff !important;
 }
 
+#query-monitor .qm thead tr .qm-warn,
 #query-monitor .qm tbody tr .qm-warn {
 	background-color: #fff0f0 !important;
 	color: #800 !important;
@@ -697,11 +698,6 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #query-monitor .qm tbody tr td.qm-highlight,
 #query-monitor .qm tbody tr.qm-highlight td {
 	background-color: #ffd !important;
-}
-
-#query-monitor .qm .qm-sticky {
-	position: sticky;
-	top: 36px;
 }
 
 #query-monitor .qm tbody .qm-warn a code,

@@ -86,8 +86,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Error Code', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Error Message', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Error Code', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';
