@@ -63,6 +63,10 @@ if ( window.jQuery ) {
 		var container_storage_key = 'qm-container-height';
 		var container_pinned_key = 'qm-container-pinned';
 
+		if ( $('#query-monitor').hasClass('qm-peek') ) {
+			minheight = 27;
+		}
+
 		$('#query-monitor').removeClass('qm-no-js').addClass('qm-js');
 
 		var link_click = function(e){
@@ -142,8 +146,7 @@ if ( window.jQuery ) {
 			$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
 		} else {
-
-			$('#query-monitor').addClass('qm-show').removeClass('qm-hide qm-peek');
+			$('#query-monitor').addClass('qm-peek').removeClass('qm-hide');
 		}
 
 		$('#qm-panel-menu').find('a').on('click',link_click);
@@ -367,7 +370,7 @@ if ( window.jQuery ) {
 		}
 
 		var h = localStorage.getItem( container_storage_key );
-		if ( h !== null ) {
+		if ( h !== null && ! $('#query-monitor').hasClass('qm-peek') ) {
 			if ( h < minheight ) {
 				h = minheight;
 			}

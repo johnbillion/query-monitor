@@ -326,7 +326,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				} );
 			}
 		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
-			document.getElementById( 'qm' ).className += ' qm-peek';
+			document.getElementById( 'query-monitor' ).className += ' qm-peek';
 		}
 		<?php
 		echo '</script>' . "\n\n";

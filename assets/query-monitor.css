@@ -187,13 +187,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor.qm-peek,
 .no-js #query-monitor,
 .nojs #query-monitor {
+	height: 27px;
 	display: flex;
-	height: 40%;
 	flex-direction: column;
 }
 
-#query-monitor.qm-peek .qm {
-	display: none;
+#query-monitor.qm-show {
+	height: 40%;
 }
 
 #qm-wrapper {
