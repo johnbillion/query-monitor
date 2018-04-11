@@ -147,6 +147,7 @@ if ( window.jQuery ) {
 
 		} else {
 			$('#query-monitor').addClass('qm-peek').removeClass('qm-hide');
+			$('#qm-overview').addClass('qm-panel-show');
 		}
 
 		$('#qm-panel-menu').find('a').on('click',link_click);
