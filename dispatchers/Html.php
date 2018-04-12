@@ -133,8 +133,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	}
 
 	public function enqueue_assets() {
-
 		global $wp_locale, $wp_version;
+
+		$deps = array(
+			'jquery-core',
+		);
+
+		if ( defined( 'QM_NO_JQUERY' ) && QM_NO_JQUERY ) {
+			$deps = array();
+		}
 
 		wp_enqueue_style(
 			'query-monitor',
@@ -145,7 +152,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
-			array( 'jquery-core' ),
+			$deps,
 			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
 			false
 		);

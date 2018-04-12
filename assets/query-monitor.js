@@ -538,3 +538,17 @@ if ( window.jQuery ) {
 	})(jQuery);
 
 }
+
+if ( ( 'undefined' === typeof jQuery ) || ! jQuery ) {
+	window.addEventListener('load', function() {
+		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
+		document.getElementById( 'query-monitor' ).className += ' qm-broken';
+		console.error( document.getElementById( 'qm-broken' ).textContent );
+		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
+		if ( menu_item ) {
+			menu_item.addEventListener( 'click', function() {
+				document.getElementById( 'query-monitor' ).className += ' qm-show';
+			} );
+		}
+	} );
+}
