@@ -225,8 +225,6 @@ class QM_Collector_HTTP extends QM_Collector {
 					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
 						$http['redirected_to'] = $http['info']['url'];
 					}
-
-					$http['url'] = $http['info']['url'];
 				}
 			}
 
