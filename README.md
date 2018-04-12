@@ -5,7 +5,7 @@
 
 # Query Monitor #
 
-Query Monitor is the Developer Tools panel for WordPress. It includes some advanced features not available in other debugging plugins, including automatic Ajax and REST API debugging, and the ability to narrow down its output by plugin or theme.
+Query Monitor is the Developer Tools panel for WordPress. It includes some advanced features not available in other debugging plugins, including Ajax and REST API debugging, and the ability to narrow down its output by plugin or theme.
 
 Query Monitor focuses heavily on presenting its information in a useful manner. It adds an admin toolbar menu showing an overview of the current page, with complete data shown in a panel once you select a menu item.
 
@@ -78,14 +78,8 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## Request ##
 
- * Shows matched rewrite rules and associated query strings
  * Shows query vars for the current request, and highlights custom query vars
- * Shows the queried object details
- * Shows details of the current blog (multisite only) and current site (multi-network only)
-
-## Rewrite Rules ##
-
- * Shows all matching rewrite rules for a given request
+ * Shows all matched rewrite rules and associated query strings
 
 ## Scripts & Styles ##
 
