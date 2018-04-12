@@ -203,7 +203,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				);
 				$menu_label[] = $label;
 			}
-
 		}
 
 		if ( empty( $menu_label ) && ! $generic ) {

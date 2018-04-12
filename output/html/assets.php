@@ -64,7 +64,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			$args = array(
 				'prepend' => array(
-					'local' => wp_unslash( $_SERVER['HTTP_HOST'] ), // WPCS: sanitization ok
+					// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
+					'local' => wp_unslash( $_SERVER['HTTP_HOST'] ),
 				),
 			);
 			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
@@ -146,9 +147,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
 		$host = (string) wp_parse_url( $source, PHP_URL_HOST );
-		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] ); // WPCS: sanitization ok
+		// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
+		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] );
 
-		if ( empty( $host ) && isset( $_SERVER['HTTP_HOST'] ) ) {
+		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
 		}
 
