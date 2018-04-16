@@ -136,7 +136,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		global $wp_locale, $wp_version;
 
 		$deps = array(
-			'jquery-core',
+			'jquery',
 		);
 
 		if ( defined( 'QM_NO_JQUERY' ) && QM_NO_JQUERY ) {
