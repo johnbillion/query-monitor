@@ -296,7 +296,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm qm-non-tabular" id="qm-settings">';
 
-		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<div class="qm-boxed">';
 		echo '<div class="qm-section">';
 		echo '<h2>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h2>';
 
@@ -313,6 +313,83 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		echo '</div>';
+
+		$default_expensive = 0.05;
+		$constants = array(
+			'QM_DB_EXPENSIVE' => array(
+				/* translators: %s: The default value for a PHP constant */
+				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning. Default value: %s.', 'query-monitor' ),
+				'default' => 0.05,
+			),
+			'QM_DISABLED' => array(
+				'label'   => __( 'Disable Query Monitor entirely.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_DISABLE_ERROR_HANDLER' => array(
+				'label'   => __( 'Disable the handling of PHP errors.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_ENABLE_CAPS_PANEL' => array(
+				'label'   => __( 'Enable the Capability Checks panel.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_HIDE_CORE_ACTIONS' => array(
+				'label'   => __( 'Hide WordPress core on the Hooks & Actions panel.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_HIDE_SELF' => array(
+				'label'   => __( 'Hide Query Monitor itself on various panels (currently Hooks & Actions and Capability Checks).', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_NO_JQUERY' => array(
+				'label'   => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_SHOW_ALL_HOOKS' => array(
+				'label'   => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
+				'default' => false,
+			),
+		);
+
+		echo '<div class="qm-section">';
+		echo '<h2>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h2>';
+		echo '<p>';
+		printf(
+			/* translators: %s: Name of the config file */
+			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behaviour of Query Monitor.', 'query-monitor' ),
+			'<code>wp-config.php</code>'
+		);
+		echo '</p>';
+
+		foreach ( $constants as $name => $constant ) {
+			echo '<h3><code>' . esc_html( $name ) . '</code></h3>';
+			echo '<p>';
+			printf(
+				esc_html( $constant['label'] ),
+				'<code>' . esc_html( $constant['default'] ) . '</code>'
+			);
+
+			if ( defined( $name ) ) {
+				$current_value = constant( $name );
+				if ( is_bool( $current_value ) ) {
+					$current_value = QM_Collector::format_bool_constant( $name );
+				}
+			}
+
+			if ( defined( $name ) && ( constant( $name ) !== $constant['default'] ) ) {
+				echo '<br><span class="qm-warn">';
+				printf(
+					/* translators: %s: Current value for a PHP constant */
+					esc_html__( 'Current value: %s', 'query-monitor' ),
+					'<code>' . esc_html( $current_value ) . '</code>'
+				);
+				echo '</span>';
+			}
+			echo '</p>';
+		}
+
+		echo '</div>';
+
 		echo '</div>';
 
 		echo '</div>'; // #qm-settings

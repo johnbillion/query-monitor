@@ -70,6 +70,8 @@ abstract class QM_Collector {
 	}
 
 	public static function format_bool_constant( $constant ) {
+		// @TODO this should be in QM_Util
+
 		if ( ! defined( $constant ) ) {
 			/* translators: Undefined PHP constant */
 			return __( 'undefined', 'query-monitor' );
