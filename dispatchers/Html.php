@@ -172,16 +172,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				),
 			)
 		);
-
-		if ( floatval( $wp_version ) <= 3.7 ) {
-			wp_enqueue_style(
-				'query-monitor-compat',
-				$this->qm->plugin_url( 'assets/compat.css' ),
-				null,
-				$this->qm->plugin_ver( 'assets/compat.css' )
-			);
-		}
-
 	}
 
 	public function dispatch() {
