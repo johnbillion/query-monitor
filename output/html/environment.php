@@ -249,36 +249,27 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<div class="qm-section">';
 		echo '<h2>' . esc_html( 'Server', 'query-monitor' ) . '</h2>';
 
+		$server = array(
+			'name'    => __( 'software', 'query-monitor' ),
+			'version' => __( 'version', 'query-monitor' ),
+			'address' => __( 'address', 'query-monitor' ),
+			'host'    => __( 'host', 'query-monitor' ),
+			'OS'      => __( 'OS', 'query-monitor' ),
+		);
+
 		echo '<table>';
 		echo '<tbody>';
 
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'software', 'query-monitor' ) . '</th>';
-		echo '<td>' . esc_html( $data['server']['name'] ) . '</td>';
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'version', 'query-monitor' ) . '</th>';
-		if ( ! empty( $data['server']['version'] ) ) {
-			echo '<td>' . esc_html( $data['server']['version'] ) . '</td>';
-		} else {
-			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+		foreach ( $server as $field => $label ) {
+			echo '<tr>';
+			echo '<th scope="row">' . esc_html( $label ) . '</th>';
+			if ( ! empty( $data['server'][ $field ] ) ) {
+				echo '<td>' . esc_html( $data['server'][ $field ] ) . '</td>';
+			} else {
+				echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+			}
+			echo '</tr>';
 		}
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'address', 'query-monitor' ) . '</th>';
-		if ( ! empty( $data['server']['address'] ) ) {
-			echo '<td>' . esc_html( $data['server']['address'] ) . '</td>';
-		} else {
-			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
-		}
-		echo '</tr>';
-
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'host', 'query-monitor' ) . '</th>';
-		echo '<td>' . esc_html( $data['server']['host'] ) . '</td>';
-		echo '</tr>';
 
 		echo '</tbody>';
 		echo '</table>';

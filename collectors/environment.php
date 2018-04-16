@@ -227,8 +227,14 @@ class QM_Collector_Environment extends QM_Collector {
 			'name'    => $server[0],
 			'version' => $server_version,
 			'address' => $address,
-			'host'    => php_uname( 'n' ),
+			'host'    => null,
+			'OS'      => null,
 		);
+
+		if ( function_exists( 'php_uname' ) ) {
+			$this->data['server']['host'] = php_uname( 'n' );
+			$this->data['server']['OS']   = php_uname( 's' ) . ' ' . php_uname( 'r' );
+		}
 
 	}
 
