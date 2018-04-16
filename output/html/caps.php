@@ -13,12 +13,12 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function output() {
-		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) ) {
+		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' )|| ! QM_ENABLE_CAPS_PANEL ) {
 			echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
 			echo '<div class="qm-boxed qm-boxed-wrap">';
 			echo '<div class="qm-section">';
 			echo '<h2>' . esc_html( $this->collector->name() ) . '</h2>';
-			echo '<p class="qm-warn">';
+			echo '<p>';
 			printf(
 				/* translators: %s: Configuration file name. */
 				esc_html__( 'For performance reasons, this panel is not enabled by default. To enable it, add the following code to your %s file:', 'query-monitor' ),
