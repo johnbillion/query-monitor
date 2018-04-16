@@ -45,6 +45,18 @@ class QM_Collector_Cache extends QM_Collector {
 
 		$this->data['display_hit_rate_warning'] = ( 100 === $this->data['cache_hit_percentage'] );
 
+		if ( function_exists( 'extension_loaded' ) ) {
+			$this->data['extensions'] = array_map( 'extension_loaded', array(
+				'APC'          => 'APC',
+				'APCu'         => 'APCu',
+				'Memcache'     => 'Memcache',
+				'Memcached'    => 'Memcached',
+				'Redis'        => 'Redis',
+				'Zend OPcache' => 'Zend OPcache',
+			) );
+		} else {
+			$this->data['extensions'] = array();
+		}
 	}
 
 }
