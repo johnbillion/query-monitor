@@ -497,7 +497,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm-non-tabular h3 {
-	margin: 15px 0 !important;
+	margin: 20px 0 10px !important;
 	font-size: 12px !important;
 	color: #444 !important;
 }
@@ -567,7 +567,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm code {
 	font-size: 11px !important;
-	line-height: 18px !important;
+	line-height: 19px !important;
 	font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 
@@ -741,11 +741,16 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 
 #query-monitor .qm a.qm-filter-trigger:after {
 	content: '\f536' !important;
+	font-size: 13px !important;
+	line-height: 15px !important;
+	position: absolute;
 }
 
 #query-monitor .qm a.qm-edit-link:after {
 	content: '\f464' !important;
 	font-size: 15px !important;
+	line-height: 15px !important;
+	position: absolute;
 }
 
 /* Filters */
