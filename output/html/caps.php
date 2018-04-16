@@ -13,7 +13,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function output() {
-		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' )|| ! QM_ENABLE_CAPS_PANEL ) {
+		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) || ! QM_ENABLE_CAPS_PANEL ) {
 			echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
 			echo '<div class="qm-boxed qm-boxed-wrap">';
 			echo '<div class="qm-section">';
