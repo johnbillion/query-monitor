@@ -28,12 +28,37 @@ class QM_Collector_Cache extends QM_Collector {
 				$this->data['stats']['cache_misses'] = (int) $wp_object_cache->cache_misses;
 			}
 
-			if ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
-				foreach ( $wp_object_cache->stats as $key => $value ) {
+			if ( method_exists( $wp_object_cache, 'getStats' ) ) {
+				$stats = $wp_object_cache->getStats();
+			} elseif ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
+				$stats = $wp_object_cache->stats;
+			}
+
+			if ( ! empty( $stats ) ) {
+				if ( is_array( $stats ) && ! isset( $stats['get_hits'] ) && 1 === count( $stats ) ) {
+					$first_server = reset( $stats );
+					if ( isset( $first_server['get_hits'] ) ) {
+						$stats = $first_server;
+					}
+				}
+
+				foreach ( $stats as $key => $value ) {
 					if ( ! is_scalar( $value ) ) {
 						continue;
 					}
 					$this->data['stats'][ $key ] = $value;
+				}
+			}
+
+			if ( ! isset( $this->data['stats']['cache_hits'] ) ) {
+				if ( isset( $this->data['stats']['get_hits'] ) ) {
+					$this->data['stats']['cache_hits'] = (int) $this->data['stats']['get_hits'];
+				}
+			}
+
+			if ( ! isset( $this->data['stats']['cache_misses'] ) ) {
+				if ( isset( $this->data['stats']['get_misses'] ) ) {
+					$this->data['stats']['cache_misses'] = (int) $this->data['stats']['get_misses'];
 				}
 			}
 		}
