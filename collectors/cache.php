@@ -32,6 +32,8 @@ class QM_Collector_Cache extends QM_Collector {
 				$stats = $wp_object_cache->getStats();
 			} elseif ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
 				$stats = $wp_object_cache->stats;
+			} elseif ( function_exists( 'wp_cache_get_stats' ) ) {
+				$stats = wp_cache_get_stats();
 			}
 
 			if ( ! empty( $stats ) ) {
