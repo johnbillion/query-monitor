@@ -278,7 +278,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		} else {
 
 			echo '<div class="qm-none">';
-			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
+			echo '<p>' . esc_html__( 'No queries! Nice work.', 'query-monitor' ) . ' 😎</p>';
 			echo '</div>';
 
 		}
