@@ -1,3 +1,5 @@
+@import "colours-default";
+
 /**
  * All the styles for Query Monitor.
  *
@@ -662,25 +664,25 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #query-monitor .qm-non-tabular .qm-warn,
 #query-monitor .qm thead tr .qm-warn,
 #query-monitor .qm tbody tr .qm-warn {
-	background-color: #fff0f0 !important;
-	color: #800 !important;
+	background-color: $warn-bg !important;
+	color: $warn-fg !important;
 }
 
 #query-monitor .qm tbody tr th.qm-warn,
 #query-monitor .qm tbody tr td.qm-warn,
 #query-monitor .qm tbody tr.qm-warn td,
 #query-monitor .qm tbody tr.qm-warn th {
-	background-color: #fff0f0 !important;
-	box-shadow: inset 0 -1px #ffd6d6 !important;
-	border-color: #ffd6d6 !important;
-	color: #800 !important;
+	background-color: $warn-bg !important;
+	box-shadow: inset 0 -1px $warn-border !important;
+	border-color: $warn-border !important;
+	color: $warn-fg !important;
 }
 
 #query-monitor .qm-non-tabular .qm-warn code,
 #query-monitor .qm tbody .qm-warn li,
 #query-monitor .qm tbody .qm-warn .qm-info,
 #query-monitor .qm tbody .qm-warn code {
-	color: #800 !important;
+	color: $warn-fg !important;
 	background-color: transparent !important;
 }
 
