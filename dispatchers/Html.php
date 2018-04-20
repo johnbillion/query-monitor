@@ -346,14 +346,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<p>';
 		printf(
 			/* translators: %s: Name of the config file */
-			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behaviour of Query Monitor.', 'query-monitor' ),
+			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behaviour of Query Monitor:', 'query-monitor' ),
 			'<code>wp-config.php</code>'
 		);
 		echo '</p>';
 
+		echo '<dl>';
+
 		foreach ( $constants as $name => $constant ) {
-			echo '<h3><code>' . esc_html( $name ) . '</code></h3>';
-			echo '<p>';
+			echo '<dt><code>' . esc_html( $name ) . '</code></dt>';
+			echo '<dd>';
 			printf(
 				esc_html( $constant['label'] ),
 				'<code>' . esc_html( $constant['default'] ) . '</code>'
@@ -367,7 +369,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 
 			if ( defined( $name ) && ( constant( $name ) !== $constant['default'] ) ) {
-				echo '<br><span class="qm-warn">';
+				echo '<br><span class="qm-info">';
 				printf(
 					/* translators: %s: Current value for a PHP constant */
 					esc_html__( 'Current value: %s', 'query-monitor' ),
@@ -375,9 +377,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 				echo '</span>';
 			}
-			echo '</p>';
+			echo '</dd>';
 		}
 
+		echo '</dl>';
 		echo '</div>';
 
 		echo '</div>';

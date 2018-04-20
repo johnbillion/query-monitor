@@ -116,6 +116,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 /* === Main QM Panel === */
 
 #query-monitor,
+#query-monitor dl,
+#query-monitor dt,
+#query-monitor dd,
 #query-monitor button,
 #query-monitor label,
 #query-monitor select,
@@ -494,6 +497,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm-non-tabular p {
 	margin-bottom: 10px !important;
+}
+
+#query-monitor .qm-non-tabular dd {
+	margin: 0 0 10px 10px !important;
 }
 
 #query-monitor .qm-non-tabular h2 a {
