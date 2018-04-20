@@ -1,0 +1,17 @@
+{
+  "name": "query-monitor",
+  "version": "3.0.0",
+  "description": "The Developer Tools panel for WordPress.",
+  "license": "GPL-2.0-or-later",
+  "author": "John Blackbourn",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnbillion/query-monitor.git"
+  },
+  "devDependencies": {
+    "grunt": "^1",
+    "grunt-contrib-cssmin": "^2",
+    "grunt-contrib-sass": "^1",
+    "grunt-contrib-watch": "^1"
+  }
+}
