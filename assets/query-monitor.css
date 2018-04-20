@@ -1,0 +1,1012 @@
+/**
+ * All the styles for Query Monitor.
+ *
+ * @package query-monitor
+ */
+/* === Admin Toolbar === */
+#wpadminbar .quicklinks .menupop ul li.qm-true > a {
+  color: #8c8 !important;
+}
+
+#wpadminbar .quicklinks .menupop ul li.qm-true > a:focus,
+#wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
+  color: #4a4 !important;
+}
+
+#wpadminbar .qm-alert {
+  background-color: #f60;
+}
+
+#wp-admin-bar-query-monitor-deprecateds,
+#wp-admin-bar-query-monitor-stricts {
+  background-color: #555 !important;
+}
+
+#wpadminbar .qm-deprecated,
+#wpadminbar .qm-strict {
+  background-color: #3c3c3c;
+}
+
+#wp-admin-bar-query-monitor-notices {
+  background-color: #740 !important;
+}
+
+#wpadminbar .qm-notice {
+  background-color: #740;
+}
+
+#wp-admin-bar-query-monitor-expensive {
+  background-color: #b60 !important;
+}
+
+#wpadminbar .qm-expensive {
+  background-color: #b60;
+}
+
+#wp-admin-bar-query-monitor-warnings {
+  background-color: #c00 !important;
+}
+
+#wpadminbar .qm-warning {
+  background-color: #c00;
+}
+
+#wpadminbar .qm-warning > a {
+  color: #fff !important;
+}
+
+#wp-admin-bar-query-monitor-errors {
+  background-color: #c00 !important;
+}
+
+#wpadminbar .qm-error {
+  background-color: #c00 !important;
+}
+
+#wpadminbar .qm-error > a,
+#wpadminbar .qm-alert > a {
+  color: #fff !important;
+}
+
+body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+#wp-admin-bar-query-monitor-deprecateds a,
+#wp-admin-bar-query-monitor-stricts a,
+#wp-admin-bar-query-monitor-notices a,
+#wp-admin-bar-query-monitor-expensive a,
+#wp-admin-bar-query-monitor-warnings a,
+#wp-admin-bar-query-monitor-errors a {
+  color: #eee !important;
+}
+
+#wp-admin-bar-query-monitor small {
+  font-size: 11px !important;
+}
+
+#wp-admin-bar-query-monitor.hover a small,
+#wp-admin-bar-query-monitor.hover a .ab-label {
+  text-shadow: none !important;
+}
+
+#wp-admin-bar-query-monitor-placeholder,
+#wp-admin-bar-query-monitor-default {
+  display: none;
+}
+
+#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+  font: 18px/44px 'Open Sans', sans-serif !important;
+  /* @todo remove open sans */
+  width: auto !important;
+  padding: 0 10px !important;
+  color: #aaa !important;
+  display: none !important;
+}
+
+@media screen and (max-width: 782px) {
+  /* force menu icon to show up */
+  #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+    display: block !important;
+  }
+
+  /* hide menu text */
+  #wpadminbar #wp-admin-bar-query-monitor .ab-label {
+    display: none !important;
+  }
+}
+/* === Main QM Panel === */
+#query-monitor,
+#query-monitor button,
+#query-monitor label,
+#query-monitor select,
+#query-monitor table,
+#query-monitor td,
+#query-monitor th,
+#query-monitor ul,
+#query-monitor ol,
+#query-monitor li,
+#query-monitor code,
+#query-monitor a,
+#query-monitor caption,
+#query-monitor h1,
+#query-monitor h2,
+#query-monitor h3,
+#query-monitor h4,
+#query-monitor h5,
+#query-monitor h6,
+#query-monitor p {
+  /* reset */
+  background: transparent !important;
+  color: #333 !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-family: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  vertical-align: top !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+  -webkit-font-smoothing: auto !important;
+  letter-spacing: normal !important;
+  border-radius: 0 !important;
+  transition: none !important;
+  word-wrap: normal !important;
+  word-break: normal !important;
+}
+
+#query-monitor {
+  background: #fff !important;
+  margin: 0 !important;
+  border-top: 1px solid #aaa !important;
+  text-align: left !important;
+  display: none;
+  position: fixed;
+  z-index: 99998 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+}
+
+#query-monitor.qm-show,
+#query-monitor.qm-peek,
+.no-js #query-monitor,
+.nojs #query-monitor {
+  height: 27px;
+  display: flex;
+  flex-direction: column;
+}
+
+#query-monitor.qm-show {
+  height: 40%;
+}
+
+#qm-wrapper {
+  display: flex;
+  flex-grow: 1;
+  /* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
+  min-height: 0;
+}
+
+#qm-title {
+  background: #f3f3f3 !important;
+  border-bottom: 1px solid #aaa !important;
+  cursor: ns-resize !important;
+  align-items: center;
+  display: flex !important;
+  padding: 0 2px 0 5px !important;
+  height: 27px !important;
+  flex-shrink: 0;
+}
+
+#qm-title .qm-title-heading {
+  flex-grow: 1;
+  border-right: 1px solid #bbb !important;
+  margin-right: 8px !important;
+}
+
+#qm-title div.qm-title-heading {
+  display: none;
+}
+
+#qm-title .qm-title-button {
+  flex-shrink: 0;
+}
+
+#qm-title .dashicons {
+  transition: none !important;
+}
+
+#qm-title .qm-button-container-settings .dashicons,
+#qm-title .qm-button-container-pin .dashicons {
+  font-size: 17px !important;
+  margin-top: 3px !important;
+}
+
+#qm-title button {
+  color: #777 !important;
+  cursor: pointer !important;
+  margin: 0 0 0 0px !important;
+  display: inline-block !important;
+  padding: 0px 2px !important;
+}
+
+#qm-title button:focus,
+#qm-title button:hover {
+  color: #000 !important;
+}
+
+#qm-title button.qm-button-active {
+  color: #3879d9 !important;
+}
+
+#qm-title .qm-button-container-pin.qm-button-active .dashicons {
+  transform: rotate(-45deg) !important;
+}
+
+#qm-title .qm-button-container-pin.qm-button-active .dashicons:before {
+  margin-left: 2px !important;
+}
+
+#query-monitor .qm {
+  display: none !important;
+}
+
+#qm-panel-menu {
+  overflow-y: scroll !important;
+  flex-shrink: 0;
+  background: #ececec !important;
+}
+
+#qm-panel-menu ul {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#qm-panel-menu ul:after {
+  height: 30px !important;
+  content: " ";
+  display: block;
+  border-right: 1px solid #aaaaaa !important;
+}
+
+#qm-panel-menu li {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#qm-panel-menu li a {
+  display: block !important;
+  padding: 8px 28px 8px 6px !important;
+  color: #555 !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid #ddd !important;
+  position: relative !important;
+  border-right: 1px solid #aaa !important;
+  background: #f3f3f3 !important;
+}
+
+#qm-panel-menu li a:focus,
+#qm-panel-menu li a:hover {
+  background: #def !important;
+  color: #222 !important;
+}
+
+#qm-panel-menu li a.qm-selected-menu {
+  background: #0372aa !important;
+  color: #fff !important;
+}
+
+#qm-panel-menu li a.qm-selected-menu:after {
+  right: -1px;
+  border: solid 8px transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #fff;
+  top: 50%;
+  margin-top: -8px;
+}
+
+#qm-panels {
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
+#query-monitor .qm.qm-panel-show {
+  display: block !important;
+}
+
+#query-monitor .qm:focus {
+  outline: 0 !important;
+  /* @TODO might not need this any more */
+}
+
+#query-monitor .qm-non-tabular {
+  padding: 10px 20px !important;
+}
+
+#query-monitor .qm-boxed {
+  display: flex !important;
+}
+
+#query-monitor .qm-boxed:not(#qm-broken) + .qm-boxed {
+  border-top: 1px solid #dddddd !important;
+  padding-top: 10px !important;
+}
+
+#query-monitor .qm-boxed-wrap {
+  flex-wrap: wrap !important;
+}
+
+#query-monitor .qm .qm-none {
+  margin: 2em !important;
+}
+
+#query-monitor .qm .qm-none p {
+  text-align: center !important;
+  font-style: italic !important;
+}
+
+#query-monitor .qm table {
+  color: #333 !important;
+  border-collapse: collapse !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  table-layout: auto !important;
+  margin: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #cccccc !important;
+}
+
+#query-monitor .qm table + table {
+  margin-top: 5px !important;
+  border-top: 1px solid #cccccc !important;
+}
+
+#query-monitor #qm-conditionals table,
+#query-monitor #qm-overview table {
+  table-layout: fixed !important;
+}
+
+#query-monitor .qm tr {
+  border: none !important;
+}
+
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td,
+#query-monitor .qm tfoot th,
+#query-monitor .qm tfoot td {
+  border: 1px solid #e0e0e0 !important;
+  padding: 5px !important;
+}
+
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+#query-monitor .qm thead th {
+  box-shadow: 0px 1px 0px #e0e0e0;
+  border: 1px solid #e0e0e0 !important;
+  border-top: none !important;
+  padding: 5px !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  background: #fff !important;
+  z-index: 1 !important;
+}
+
+#query-monitor .qm thead .qm-th {
+  display: flex !important;
+}
+
+#query-monitor .qm tfoot tr td,
+#query-monitor .qm tfoot tr th {
+  box-shadow: inset 0px 1px 0px #e0e0e0;
+  border: 1px solid #e0e0e0 !important;
+  border-bottom: none !important;
+  background: #f3f3f3 !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  bottom: 0 !important;
+}
+
+#query-monitor .qm tfoot tr.qm-items-shown td,
+#query-monitor .qm tfoot tr.qm-items-shown th {
+  bottom: 28px !important;
+}
+
+#query-monitor .qm th:first-child,
+#query-monitor .qm td:first-child {
+  border-left: none !important;
+}
+
+#query-monitor .qm th:last-child,
+#query-monitor .qm td:last-child {
+  border-right: none !important;
+}
+
+#query-monitor .qm caption {
+  caption-side: top !important;
+  border: none !important;
+  display: none !important;
+  /* @TODO remove */
+}
+
+#query-monitor .qm tfoot td.qm-num,
+#query-monitor .qm th.qm-num {
+  width: 5.5em !important;
+}
+
+#query-monitor .qm td.qm-num {
+  text-align: right !important;
+}
+
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm td .qm-toggler {
+  padding: 0 22px 0 0 !important;
+  position: relative !important;
+}
+
+#query-monitor .qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
+  display: none;
+}
+
+#query-monitor .qm .qm-inner-toggle {
+  padding: 4px 6px !important;
+}
+
+.qm-has-inner .qm-toggled > table {
+  border-top: 1px solid #eee !important;
+}
+
+.qm-inner {
+  border-collapse: collapse !important;
+  margin: 0 !important;
+  border-style: hidden !important;
+  width: 100% !important;
+}
+
+#query-monitor .qm td.qm-has-inner .qm-toggler,
+#query-monitor .qm td.qm-has-inner {
+  padding: 0 !important;
+}
+
+#query-monitor .qm-non-tabular h2 {
+  margin: 0 0 15px 0 !important;
+  font-size: 14px !important;
+  color: #444 !important;
+}
+
+#query-monitor .qm-non-tabular h3 {
+  margin: 20px 0 10px !important;
+  font-size: 12px !important;
+  color: #444 !important;
+}
+
+#query-monitor .qm-non-tabular p {
+  margin-bottom: 10px !important;
+}
+
+#query-monitor .qm-non-tabular h2 a {
+  float: right !important;
+}
+
+#query-monitor .qm-non-tabular .qm-item {
+  display: inline-block !important;
+  margin: 0 20px 5px 0 !important;
+}
+
+#query-monitor .qm-non-tabular .qm-section {
+  margin: 0 0 30px 0 !important;
+}
+
+#query-monitor .qm-non-tabular .qm-boxed .qm-section {
+  margin: 0 20px 10px 0 !important;
+  border-right: 1px solid #ddd !important;
+  padding: 10px 20px 10px 0 !important;
+}
+
+#query-monitor .qm-non-tabular .qm-boxed .qm-section:last-child {
+  margin-right: 0 !important;
+  border-right: none !important;
+  padding-right: 20px !important;
+}
+
+#query-monitor .qm-non-tabular table {
+  border-bottom-color: #e0e0e0 !important;
+}
+
+#query-monitor .qm ol,
+#query-monitor .qm ul {
+  list-style: none !important;
+}
+
+#query-monitor .qm li {
+  display: list-item !important;
+  list-style: none !important;
+}
+
+#query-monitor .qm li::before {
+  content: '' !important;
+}
+
+#query-monitor .qm .qm-has-toggle ol.qm-numbered li {
+  list-style: none !important;
+}
+
+#query-monitor .qm .qm-toggled-on ol.qm-numbered li,
+#query-monitor .qm ol.qm-numbered li {
+  list-style: decimal inside !important;
+}
+
+#query-monitor .qm pre {
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+  background: transparent !important;
+}
+
+#query-monitor .qm code {
+  font-size: 11px !important;
+  line-height: 19px !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+}
+
+#query-monitor .qm code.qm-inline-code {
+  background: #f1f1f1 !important;
+  padding: 3px 4px 2px !important;
+}
+
+#query-monitor .qm .qm-true code,
+#query-monitor .qm p.qm-true,
+#query-monitor .qm span.qm-true,
+#query-monitor .qm td.qm-true {
+  color: #4a4 !important;
+}
+
+#query-monitor .qm .qm-false code,
+#query-monitor .qm span.qm-false,
+#query-monitor .qm td.qm-false {
+  color: #999 !important;
+}
+
+#query-monitor .qm code,
+#query-monitor .qm .qm-nowrap {
+  white-space: nowrap !important;
+}
+
+#query-monitor .qm .qm-wrap code,
+#query-monitor .qm .qm-wrap {
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  white-space: normal !important;
+}
+
+#query-monitor .qm .qm-current,
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm .qm-nonselectsql code,
+#query-monitor .qm .qm-nonselectsql {
+  color: #a0a !important;
+}
+
+#query-monitor .qm .qm-info {
+  color: #777 !important;
+}
+
+#query-monitor .qm .qm-supplemental {
+  margin-right: 0.75em !important;
+  margin-left: 0.75em !important;
+}
+
+#query-monitor .qm td .qm-toggled {
+  display: none;
+}
+
+#query-monitor .qm .qm-toggle,
+html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
+  color: #ffffff !important;
+  padding: 0px 5px !important;
+  font-weight: normal !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  background: #589cbd !important;
+  cursor: pointer !important;
+  bottom: auto !important;
+}
+
+#query-monitor .qm .qm-has-inner .qm-toggle {
+  top: 5px !important;
+  right: 5px !important;
+}
+
+#query-monitor .qm .qm-toggle:focus,
+#query-monitor .qm .qm-toggle:hover {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  background: #3878d9 !important;
+}
+
+/* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
+#query-monitor .qm tbody tr:nth-child(odd) td,
+#query-monitor .qm tbody tr:nth-child(odd) th {
+  background: #f7f7f7 !important;
+}
+
+.qm-debug-bar tbody tr:hover th,
+.qm-debug-bar tbody tr:hover td,
+#qm-conditionals tbody tr:hover td,
+#qm-overview tbody tr:hover td,
+#qm-settings tbody tr:hover td {
+  background: #fff !important;
+}
+
+#query-monitor .qm-non-tabular .qm-warn,
+#query-monitor .qm thead tr .qm-warn,
+#query-monitor .qm tbody tr .qm-warn {
+  background-color: #fff0f0 !important;
+  color: #800 !important;
+}
+
+#query-monitor .qm tbody tr th.qm-warn,
+#query-monitor .qm tbody tr td.qm-warn,
+#query-monitor .qm tbody tr.qm-warn td,
+#query-monitor .qm tbody tr.qm-warn th {
+  background-color: #fff0f0 !important;
+  box-shadow: inset 0 -1px #ffd6d6 !important;
+  border-color: #ffd6d6 !important;
+  color: #800 !important;
+}
+
+#query-monitor .qm-non-tabular .qm-warn code,
+#query-monitor .qm tbody .qm-warn li,
+#query-monitor .qm tbody .qm-warn .qm-info,
+#query-monitor .qm tbody .qm-warn code {
+  color: #800 !important;
+  background-color: transparent !important;
+}
+
+#query-monitor .qm .dashicons {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 0.3em !important;
+  transition: none !important;
+}
+
+#query-monitor .qm tbody tr:hover th,
+#query-monitor .qm tbody tr:hover td {
+  background: #eef3fa !important;
+}
+
+#query-monitor .qm select.qm-filter.qm-highlight,
+#query-monitor .qm tbody tr td.qm-highlight,
+#query-monitor .qm tbody tr.qm-highlight td {
+  background-color: #ffd !important;
+}
+
+#query-monitor .qm tbody .qm-warn a code,
+#qm-title a,
+#query-monitor .qm a code,
+#query-monitor .qm a {
+  color: #0073aa !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+#qm-title a:focus,
+#qm-title a:hover,
+#query-monitor .qm a:after,
+#query-monitor .qm a:focus,
+#query-monitor .qm a:hover {
+  text-decoration: underline !important;
+  color: #0073aa !important;
+}
+
+#query-monitor .qm a.qm-edit-link:after,
+#query-monitor .qm a.qm-filter-trigger:after {
+  font-family: dashicons !important;
+  text-decoration: none !important;
+  visibility: hidden !important;
+  display: inline-block !important;
+}
+
+#query-monitor .qm a.qm-edit-link:hover:after,
+#query-monitor .qm a.qm-edit-link:focus:after,
+#query-monitor .qm a.qm-filter-trigger:hover:after,
+#query-monitor .qm a.qm-filter-trigger:focus:after {
+  visibility: visible !important;
+}
+
+#query-monitor .qm a.qm-filter-trigger:after {
+  content: '\f536' !important;
+  font-size: 13px !important;
+  line-height: 15px !important;
+  position: absolute;
+}
+
+#query-monitor .qm a.qm-edit-link:after {
+  content: '\f464' !important;
+  font-size: 15px !important;
+  line-height: 15px !important;
+  position: absolute;
+}
+
+/* Filters */
+#query-monitor button,
+#query-monitor a,
+#query-monitor select {
+  outline: none !important;
+  /* a11y */
+  margin: 0 !important;
+  height: auto !important;
+  width: auto !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#query-monitor .qm label {
+  cursor: pointer !important;
+  color: #333 !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  margin: 0 !important;
+}
+
+#query-monitor .qm thead label {
+  flex-grow: 1;
+}
+
+#query-monitor .qm .qm-filter-container {
+  display: flex;
+}
+
+#query-monitor .qm .qm-filter-container label {
+  cursor: default !important;
+}
+
+#query-monitor .qm .qm-filter-container div {
+  /* Some themes use Select2 etc on all selects. This hides that. */
+  display: none !important;
+}
+
+#query-monitor .qm select.qm-filter {
+  display: block !important;
+  margin: 0 0 0 5px !important;
+  outline: 1px solid #aaa !important;
+  border: none !important;
+  padding: 0 !important;
+  background: #fff !important;
+  color: #333 !important;
+  height: auto !important;
+  width: auto !important;
+  float: none !important;
+  cursor: pointer !important;
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  letter-spacing: normal !important;
+  max-width: 15em !important;
+}
+
+.qm-hide,
+.qm-hide-scripts-host,
+.qm-hide-styles-host,
+.qm-hide-user,
+.qm-hide-result,
+.qm-hide-name,
+.qm-hide-type,
+.qm-hide-caller,
+.qm-hide-component {
+  display: none !important;
+}
+
+/* Sorters */
+#query-monitor .qm thead th.qm-sortable-column {
+  cursor: pointer !important;
+}
+
+#query-monitor .qm thead th.qm-sortable-column:hover {
+  background: #f3f3f3 !important;
+}
+
+#query-monitor .qm .qm-sort-heading {
+  flex-grow: 1;
+}
+
+#query-monitor .qm .qm-sort-controls {
+  text-align: right !important;
+  flex-shrink: 0;
+}
+
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow {
+  font-size: 24px !important;
+  color: #ccc !important;
+  margin: 0 !important;
+  width: 16px !important;
+  height: 10px !important;
+}
+
+#query-monitor .qm .qm-sorted-desc .qm-sort-arrow,
+#query-monitor .qm .qm-sorted-asc .qm-sort-arrow {
+  color: #444444 !important;
+}
+
+#query-monitor .qm thead th.qm-sortable-column:hover .qm-sort-arrow {
+  color: #3878d9 !important;
+}
+
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
+  content: "\f140";
+  top: 1px;
+  right: 0;
+  position: absolute;
+}
+
+#query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
+  content: "\f142";
+}
+
+#query-monitor .qm button:focus,
+#query-monitor .qm a:focus,
+#query-monitor .qm select:focus {
+  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8) !important;
+}
+
+#query-monitor .screen-reader-text {
+  position: absolute !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+  #qm-panel-menu,
+  #qm-title h1.qm-title-heading {
+    display: none;
+  }
+
+  #qm-title div.qm-title-heading {
+    display: block;
+  }
+}
+/* RTL */
+html[dir="rtl"] #query-monitor,
+html[dir="rtl"] #query-monitor .qm caption,
+html[dir="rtl"] #query-monitor .qm td,
+html[dir="rtl"] #query-monitor .qm th {
+  text-align: right !important;
+}
+
+html[dir="rtl"] #wpadminbar .quicklinks .menupop ul li.qm-ltr,
+html[dir="rtl"] #query-monitor .qm .qm-filter,
+html[dir="rtl"] #query-monitor .qm .qm-ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+html[dir="rtl"] #query-monitor .qm .qm-toggle {
+  right: auto !important;
+  left: 1px !important;
+}
+
+/* No-JS tweaks */
+.qm-no-js .qm-sort-controls,
+.qm-no-js .qm-toggle,
+.qm-no-js select.qm-filter {
+  display: none !important;
+}
+
+/* Debug bar add-ons */
+#query-monitor .qm.qm-debug-bar textarea,
+#query-monitor .qm.qm-debug-bar pre {
+  padding: 10px !important;
+  border: 1px solid #e0e0e0 !important;
+  margin: 4px 0 !important;
+}
+
+#query-monitor .qm.qm-debug-bar textarea {
+  resize: vertical !important;
+}
+
+#query-monitor .qm.qm-debug-bar .left {
+  float: left !important;
+}
+
+#query-monitor .qm.qm-debug-bar .right {
+  float: right !important;
+}
+
+#query-monitor .qm.qm-debug-bar h1 {
+  margin: 4px 6px 15px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h2 {
+  float: left !important;
+  /* why */
+  min-width: 150px !important;
+  padding: 5px 10px 15px !important;
+  clear: none !important;
+  text-align: center !important;
+  font-size: 14px !important;
+  margin: 3px 8px 15px 0 !important;
+}
+
+#query-monitor .qm.qm-debug-bar h2 small {
+  font-size: 14px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h2 span {
+  white-space: nowrap !important;
+  display: block !important;
+  margin-bottom: 8px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h3 {
+  margin: 15px 6px 5px !important;
+  font-size: 13px !important;
+}
+
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output {
+  position: relative !important;
+}
+
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output table {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Console {
+  min-height: 400px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Cache_Lookup,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules,
+#query-monitor #debug-menu-target-Debug_Bar_Widgets {
+  margin: 4px 6px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .filterui,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
+  margin: 0;
+}
+
+/* Broken output handling */
+#query-monitor.qm-broken #qm-title {
+  cursor: default !important;
+}
+
+#query-monitor #qm-broken,
+#query-monitor.qm-broken .qm-title-button {
+  display: none !important;
+}
+
+#query-monitor.qm-broken #qm-broken,
+#query-monitor.qm-broken .qm {
+  display: block !important;
+}
+
+#query-monitor.qm-broken .qm {
+  margin-bottom: 50px !important;
+}
+
+#query-monitor.qm-broken #qm-broken h2 {
+  padding: 20px !important;
+}
+
+/*# sourceMappingURL=query-monitor.css.map */
