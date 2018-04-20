@@ -1,5 +1,8 @@
 @import "colours-default";
 
+$font-default: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif;
+$font-code: Menlo, Monaco, Consolas, monospace;
+
 /**
  * All the styles for Query Monitor.
  *
@@ -149,7 +152,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	font-weight: normal !important;
 	font-size: 12px !important;
 	line-height: 18px !important;
-	font-family: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif !important;
+	font-family: $font-default !important;
 	border: none !important;
 	padding: 0 !important;
 	margin: 0 !important;
@@ -560,14 +563,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm pre {
 	font-size: 12px !important;
 	line-height: 18px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-family: $font-code !important;
 	background: transparent !important;
 }
 
 #query-monitor .qm code {
 	font-size: 11px !important;
 	line-height: 19px !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-family: $font-code !important;
 }
 
 #query-monitor .qm code.qm-inline-code {
@@ -625,7 +628,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 	color: #ffffff !important;
 	padding: 0px 5px !important;
 	font-weight: normal !important;
-	font-family: Menlo, Monaco, Consolas, monospace !important;
+	font-family: $font-code !important;
 	position: absolute !important;
 	top: 0 !important;
 	right: 0 !important;
