@@ -145,7 +145,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor p {
 	/* reset */
 	background: transparent !important;
-	color: #333 !important;
+	color: $container-fg !important;
 	box-sizing: border-box !important;
 	text-align: left !important;
 	font-style: normal !important;
@@ -168,9 +168,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor {
-	background: #fff !important;
+	background: $panel-bg !important;
 	margin: 0 !important;
-	border-top: 1px solid #aaa !important;
+	border-top: 1px solid $panel-border !important;
 	text-align: left !important;
 	display: none;
 	position: fixed;
@@ -202,8 +202,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #qm-title {
-	background: #f3f3f3 !important;
-	border-bottom: 1px solid #aaa !important;
+	background: $container-bg !important;
+	border-bottom: 1px solid $panel-border !important;
 	cursor: ns-resize !important;
 	align-items:  center;
 	display: flex !important;
@@ -268,7 +268,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panel-menu {
 	overflow-y:  scroll !important;
 	flex-shrink: 0;
-	background: #ececec !important;
+	background: $container-overflow !important;
 }
 
 #qm-panel-menu ul {
@@ -280,7 +280,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	height: 30px !important;
 	content: " ";
 	display: block;
-	border-right: 1px solid #aaaaaa !important;
+	border-right: 1px solid $panel-border !important;
 }
 
 #qm-panel-menu li {
@@ -291,23 +291,23 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panel-menu li a {
 	display: block !important;
 	padding: 8px 28px 8px 6px !important;
-	color: #555 !important;
+	color: $panel-menu-fg !important;
 	text-decoration: none !important;
-	border-bottom: 1px solid #ddd !important;
+	border-bottom: 1px solid $panel-menu-border !important;
 	position: relative !important;
-	border-right: 1px solid #aaa !important;
-	background: #f3f3f3 !important;
+	border-right: 1px solid $panel-border !important;
+	background: $panel-menu-bg !important;
 }
 
 #qm-panel-menu li a:focus,
 #qm-panel-menu li a:hover {
-	background: #def !important;
-	color: #222 !important;
+	background: $panel-menu-bg-hover !important;
+	color: $panel-menu-fg-hover !important;
 }
 
 #qm-panel-menu li a.qm-selected-menu {
-	background: #0372aa !important;
-	color: #fff !important;
+	background: $panel-menu-bg-selected !important;
+	color: $panel-menu-fg-selected !important;
 }
 
 #qm-panel-menu li a.qm-selected-menu:after {
@@ -318,7 +318,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-right-color: #fff;
+	border-right-color: $panel-bg;
 	top: 50%;
 	margin-top: -8px;
 }
@@ -345,7 +345,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm-boxed:not(#qm-broken) + .qm-boxed {
-	border-top: 1px solid #dddddd !important;
+	border-top: 1px solid $panel-separator !important;
 	padding-top: 10px !important;
 }
 
@@ -363,19 +363,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm table {
-	color: #333 !important;
+	color: $panel-fg !important;
 	border-collapse: collapse !important;
 	box-shadow: none !important;
 	width: 100% !important;
 	table-layout: auto !important;
 	margin: 0 !important;
 	border: none !important;
-	border-bottom: 1px solid #cccccc !important;
+	border-bottom: 1px solid $cell-border !important;
 }
 
 #query-monitor .qm table + table {
 	margin-top: 5px !important;
-	border-top: 1px solid #cccccc !important;
+	border-top: 1px solid $cell-border !important;
 }
 
 #query-monitor #qm-conditionals table,
@@ -391,7 +391,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm tbody td,
 #query-monitor .qm tfoot th,
 #query-monitor .qm tfoot td {
-	border: 1px solid #e0e0e0 !important;
+	border: 1px solid $cell-border !important;
 	padding: 5px !important;
 }
 
@@ -402,14 +402,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm thead th {
-	box-shadow: 0px 1px 0px #e0e0e0;
-	border: 1px solid #e0e0e0 !important;
+	box-shadow: 0px 1px 0px $cell-border;
+	border: 1px solid $cell-border !important;
 	border-top: none !important;
 	padding: 5px !important;
 	position: -webkit-sticky !important;
 	position: sticky !important;
 	top: 0 !important;
-	background: #fff !important;
+	background: $table-header-bg !important;
 	z-index: 1 !important;
 }
 
@@ -419,10 +419,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm tfoot tr td,
 #query-monitor .qm tfoot tr th {
-	box-shadow: inset 0px 1px 0px #e0e0e0;
-	border: 1px solid #e0e0e0 !important;
+	box-shadow: inset 0px 1px 0px $cell-border;
+	border: 1px solid $cell-border !important;
 	border-bottom: none !important;
-	background: #f3f3f3 !important;
+	background: $table-footer-bg !important;
 	position: -webkit-sticky !important;
 	position: sticky !important;
 	bottom: 0 !important;
@@ -473,7 +473,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 .qm-has-inner .qm-toggled > table {
-	border-top: 1px solid #eee !important;
+	border-top: 1px solid $cell-border !important;
 }
 
 .qm-inner {
@@ -523,7 +523,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm-non-tabular .qm-boxed .qm-section {
 	margin: 0 20px 10px 0 !important;
-	border-right: 1px solid #ddd !important;
+	border-right: 1px solid $panel-separator !important;
 	padding: 10px 20px 10px 0 !important;
 }
 
@@ -534,7 +534,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm-non-tabular table {
-	border-bottom-color: #e0e0e0 !important;
+	border-bottom-color: $cell-border !important;
 }
 
 #query-monitor .qm ol,
@@ -661,7 +661,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #qm-conditionals tbody tr:hover td,
 #qm-overview tbody tr:hover td,
 #qm-settings tbody tr:hover td {
-	background: #fff !important;
+	background: #fff !important; /* transparent? */
 }
 
 #query-monitor .qm-non-tabular .qm-warn,
@@ -712,7 +712,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #qm-title a,
 #query-monitor .qm a code,
 #query-monitor .qm a {
-	color: #0073aa !important;
+	color: $link-fg !important;
 	text-decoration: none !important;
 	cursor: pointer !important;
 }
@@ -723,7 +723,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #query-monitor .qm a:focus,
 #query-monitor .qm a:hover {
 	text-decoration: underline !important;
-	color: #0073aa !important;
+	color: $link-fg !important;
 }
 
 #query-monitor .qm a.qm-edit-link:after,
@@ -770,7 +770,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 
 #query-monitor .qm label {
 	cursor: pointer !important;
-	color: #333 !important;
+	color: $panel-fg !important;
 	font-weight: normal !important;
 	font-size: 12px !important;
 	font-style: normal !important;
@@ -797,11 +797,11 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 #query-monitor .qm select.qm-filter {
 	display: block !important;
 	margin: 0 0 0 5px !important;
-	outline: 1px solid #aaa !important;
+	outline: 1px solid $panel-border !important;
 	border: none !important;
 	padding: 0 !important;
-	background: #fff !important;
-	color: #333 !important;
+	background: $table-header-bg !important;
+	color: $panel-fg !important;
 	height: auto !important;
 	width: auto !important;
 	float: none !important;
@@ -831,7 +831,7 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 }
 
 #query-monitor .qm thead th.qm-sortable-column:hover {
-	background: #f3f3f3 !important;
+	background: $container-bg !important;
 }
 
 #query-monitor .qm .qm-sort-heading {
@@ -935,7 +935,7 @@ html[dir="rtl"] #query-monitor .qm .qm-toggle {
 #query-monitor .qm.qm-debug-bar textarea,
 #query-monitor .qm.qm-debug-bar pre {
 	padding: 10px !important;
-	border: 1px solid #e0e0e0 !important;
+	border: 1px solid $panel-separator !important;
 	margin: 4px 0 !important;
 }
 

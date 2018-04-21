@@ -1,3 +1,32 @@
+// Main container
+$container-fg: #333;
+$container-bg: #f3f3f3;
+$container-overflow: #ececec;
+
+// Panels
+$panel-border: #aaa;
+$panel-fg: $container-fg;
+$panel-bg: #fff;
+$panel-separator: #ddd;
+
+// Panel menus
+$panel-menu-border: #ddd;
+$panel-menu-fg: #555;
+$panel-menu-bg: $container-bg;
+$panel-menu-fg-hover: #222;
+$panel-menu-bg-hover: #def;
+$panel-menu-fg-selected: #fff;
+$panel-menu-bg-selected: #0372aa;
+
+// Tables
+$cell-border: #e0e0e0;
+$table-header-bg: #fff;
+$table-footer-bg: $container-bg;
+
+// Links
+$link-fg: #0073aa;
+
+// Warnings
 $warn-fg: #800;
 $warn-bg: #fff0f0;
 $warn-border: #ffd6d6;
