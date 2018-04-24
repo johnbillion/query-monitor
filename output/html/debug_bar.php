@@ -14,7 +14,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 	public function output() {
 
-		$target = get_class( $this->collector->get_panel() );
+		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 
 		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
@@ -36,7 +36,7 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 	}
 
 	foreach ( $debug_bar->panels as $panel ) {
-		$panel_id  = strtolower( get_class( $panel ) );
+		$panel_id  = strtolower( sanitize_html_class( get_class( $panel ) ) );
 		$collector = QM_Collectors::get( "debug_bar_{$panel_id}" );
 
 		if ( $collector and $collector->is_visible() ) {
