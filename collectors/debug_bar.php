@@ -63,7 +63,7 @@ function register_qm_collectors_debug_bar() {
 	);
 
 	foreach ( $debug_bar->panels as $panel ) {
-		$panel_id = strtolower( get_class( $panel ) );
+		$panel_id = strtolower( sanitize_html_class( get_class( $panel ) ) );
 
 		if ( in_array( $panel_id, $redundant, true ) ) {
 			continue;
