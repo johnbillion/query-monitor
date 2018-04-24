@@ -105,6 +105,7 @@ if ( window.jQuery ) {
 			if ( window.qm && window.qm.menu ) {
 				$('#wp-admin-bar-query-monitor')
 					.addClass(qm.menu.top.classname)
+					.attr('dir','ltr')
 					.find('a').eq(0)
 					.html(qm.menu.top.title)
 				;

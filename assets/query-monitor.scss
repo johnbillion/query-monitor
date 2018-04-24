@@ -24,6 +24,12 @@ $font-code: Menlo, Monaco, Consolas, monospace;
 	background-color: #f60;
 }
 
+#wp-admin-bar-query-monitor *,
+#wp-admin-bar-query-monitor {
+	direction: ltr !important;
+	text-align: left !important;
+}
+
 #wp-admin-bar-query-monitor-deprecateds,
 #wp-admin-bar-query-monitor-stricts {
 	background-color: #555 !important;
@@ -179,6 +185,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	left: 0 !important;
 	right: 0 !important;
 	width: 100% !important;
+	direction: ltr !important;
 }
 
 #query-monitor.qm-show,
@@ -616,8 +623,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
-#query-monitor .qm .qm-toggle,
-html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
+#query-monitor .qm .qm-toggle {
 	color: #ffffff !important;
 	padding: 0px 5px !important;
 	font-weight: normal !important;
@@ -895,27 +901,6 @@ html[dir="rtl"] #query-monitor .qm .qm-ltr .qm-toggle {
 		display: block;
 	}
 
-}
-
-/* RTL */
-
-html[dir="rtl"] #query-monitor,
-html[dir="rtl"] #query-monitor .qm caption,
-html[dir="rtl"] #query-monitor .qm td,
-html[dir="rtl"] #query-monitor .qm th {
-	text-align: right !important;
-}
-
-html[dir="rtl"] #wpadminbar .quicklinks .menupop ul li.qm-ltr,
-html[dir="rtl"] #query-monitor .qm .qm-filter,
-html[dir="rtl"] #query-monitor .qm .qm-ltr {
-	direction: ltr !important;
-	text-align: left !important;
-}
-
-html[dir="rtl"] #query-monitor .qm .qm-toggle {
-	right: auto !important;
-	left: 1px !important;
 }
 
 /* No-JS tweaks */
