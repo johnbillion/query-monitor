@@ -30,13 +30,13 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$type_labels = array(
 			'scripts' => array(
-				/* translators: %s: Total number of scripts */
-				'total'    => __( 'Total Scripts: %s', 'query-monitor' ),
+				/* translators: %s: Total number of enqueued scripts */
+				'total'    => __( 'Total Enqueued Scripts: %s', 'query-monitor' ),
 				'plural'   => __( 'Scripts', 'query-monitor' ),
 			),
 			'styles' => array(
-				/* translators: %s: Total number of styles */
-				'total'    => __( 'Total Styles: %s', 'query-monitor' ),
+				/* translators: %s: Total number of enqueued styles */
+				'total'    => __( 'Total Enqueued Styles: %s', 'query-monitor' ),
 				'plural'   => __( 'Styles', 'query-monitor' ),
 			),
 		);
