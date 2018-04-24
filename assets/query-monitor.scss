@@ -491,13 +491,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm-non-tabular h2 {
 	margin: 0 0 15px 0 !important;
 	font-size: 14px !important;
-	color: #444 !important;
 }
 
 #query-monitor .qm-non-tabular h3 {
 	margin: 20px 0 10px !important;
 	font-size: 12px !important;
-	color: #444 !important;
 }
 
 #query-monitor .qm-non-tabular p {
@@ -571,11 +569,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	font-size: 11px !important;
 	line-height: 19px !important;
 	font-family: $font-code !important;
-}
-
-#query-monitor .qm code.qm-inline-code {
-	background: #f1f1f1 !important;
-	padding: 3px 4px 2px !important;
 }
 
 #query-monitor .qm .qm-true code,
