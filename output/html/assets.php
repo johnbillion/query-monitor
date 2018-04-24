@@ -71,6 +71,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
@@ -94,7 +95,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="6">%1$s</td>',
+				'<td colspan="7">%1$s</td>',
 				esc_html( sprintf(
 					$type_label['total'],
 					number_format_i18n( $total )
@@ -198,8 +199,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<td>' . esc_html( $host ) . '</td>';
-		echo '<td class="qm-wrap qm-ltr">' . esc_html( $dependency->handle ) . '<br><span class="qm-info qm-supplemental">';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $dependency->handle ) . '</td>';
+		echo '<td class="qm-ltr">';
 		if ( is_wp_error( $source ) ) {
 			printf(
 				 '<span class="qm-warn">%s</span>',
@@ -208,9 +210,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		} else {
 			echo esc_html( $src );
 		}
-		echo '</span></td>';
-		echo '<td class="qm-ltr qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $deps ) ) . '</li></ul></td>';
-		echo '<td class="qm-ltr qm-nowrap qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '"><ul><li>' . implode( '</li><li>', array_map( 'esc_html', $dependents ) ) . '</li></ul></td>';
+		echo '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ' ', array_map( 'esc_html', $deps ) ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ' ', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td class="qm-ltr">' . esc_html( $ver ) . '</td>';
 
 	}
