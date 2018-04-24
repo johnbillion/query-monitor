@@ -16,6 +16,10 @@ class Debug_Bar {
 	}
 
 	public function enqueue() {
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
+
 		wp_register_style( 'debug-bar', false, array(
 			'query-monitor',
 		) );
@@ -33,6 +37,10 @@ class Debug_Bar {
 	}
 
 	public function ensure_ajaxurl() {
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
+
 		?>
 		<script type="text/javascript">
 		var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';

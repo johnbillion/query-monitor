@@ -105,7 +105,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! $this->user_can_view() || ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) ) {
 			return;
 		}
 
