@@ -11,11 +11,18 @@ class Debug_Bar {
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'ensure_ajaxurl' ), 1 );
 
-		$this->enqueue();
+		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'login_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue' ) );
 		$this->init_panels();
 	}
 
 	public function enqueue() {
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
+
 		wp_register_style( 'debug-bar', false, array(
 			'query-monitor',
 		) );
@@ -33,6 +40,10 @@ class Debug_Bar {
 	}
 
 	public function ensure_ajaxurl() {
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
+
 		?>
 		<script type="text/javascript">
 		var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
