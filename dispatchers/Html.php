@@ -105,7 +105,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->user_can_view() || ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) ) {
+		if ( ! $this->user_can_view() ) {
 			return;
 		}
 
@@ -134,6 +134,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function enqueue_assets() {
 		global $wp_locale, $wp_version;
+		if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+			return;
+		}
 
 		$deps = array(
 			'jquery-core',

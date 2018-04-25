@@ -11,7 +11,10 @@ class Debug_Bar {
 	public function __construct() {
 		add_action( 'wp_head', array( $this, 'ensure_ajaxurl' ), 1 );
 
-		$this->enqueue();
+		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'login_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue' ) );
 		$this->init_panels();
 	}
 
