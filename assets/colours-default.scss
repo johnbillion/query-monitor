@@ -27,8 +27,13 @@ $cell-border-highlight: #eec;
 $table-header-bg: #fff;
 $table-footer-bg: $container-bg;
 
-// Links
+// Links and Buttons
 $link-fg: #0073aa;
+$button-fg: #fff;
+$button-bg: $panel-menu-bg-selected;
+$button-border: $button-bg;
+$button-fg-hover: $button-fg;
+$button-bg-hover: lighten( $button-bg, 6% );
 
 // Warnings
 $warn-fg: #800;

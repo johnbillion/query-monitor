@@ -293,12 +293,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		if ( ! self::user_verified() ) {
 
 			echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</p>';
-			echo '<p><a href="#" class="qm-auth" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</a></p>';
+			echo '<p><button class="qm-auth qm-button" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</button></p>';
 
 		} else {
 
 			echo '<p>' . esc_html__( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</p>';
-			echo '<p><a href="#" class="qm-auth" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</a></p>';
+			echo '<p><button class="qm-auth qm-button" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</button></p>';
 
 		}
 

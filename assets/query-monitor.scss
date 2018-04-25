@@ -171,6 +171,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	transition: none !important;
 	word-wrap: normal !important;
 	word-break: normal !important;
+	outline: none !important;
+	box-shadow: none !important;
 }
 
 #query-monitor {
@@ -623,18 +625,33 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
+#query-monitor .qm button.qm-button,
 #query-monitor .qm .qm-toggle {
-	color: #ffffff !important;
-	padding: 0px 5px !important;
+	color: $button-fg !important;
 	font-weight: normal !important;
+	background: $button-bg !important;
+	cursor: pointer !important;
+	border: 1px solid $button-border !important;
+	border-radius: 2px !important;
+}
+
+#query-monitor .qm .qm-toggle {
+	padding: 0px 4px !important;
 	font-family: $font-code !important;
 	position: absolute !important;
 	top: 0 !important;
 	right: 0 !important;
 	left: auto !important;
-	background: #589cbd !important;
-	cursor: pointer !important;
 	bottom: auto !important;
+	line-height: 17px !important;
+}
+
+#query-monitor .qm button {
+	cursor: pointer !important;
+}
+
+#query-monitor .qm button.qm-button {
+	padding: 4px 10px !important;
 }
 
 #query-monitor .qm .qm-has-inner .qm-toggle {
@@ -642,11 +659,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	right: 5px !important;
 }
 
+#query-monitor .qm button.qm-button:hover,
+#query-monitor .qm button.qm-button:focus,
 #query-monitor .qm .qm-toggle:focus,
 #query-monitor .qm .qm-toggle:hover {
 	text-decoration: none !important;
-	color: #ffffff !important;
-	background: #3878d9 !important;
+	color: $button-fg-hover !important;
+	background: $button-bg-hover !important;
 }
 
 /* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
@@ -760,14 +779,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 /* Filters */
 
 #query-monitor button,
-#query-monitor a,
 #query-monitor select {
-	outline: none !important; /* a11y */
 	margin: 0 !important;
 	height: auto !important;
 	width: auto !important;
 	background: none !important;
-	box-shadow: none !important;
 }
 
 #query-monitor .qm label {
