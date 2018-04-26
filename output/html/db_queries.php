@@ -351,7 +351,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['caller'] ) ) {
 			$row_attr['data-qm-caller'] = $row['caller_name'];
 
-			if ( $row['is_main_query'] ) {
+			$is_main_query = isset( $row['is_main_query'] ) ? $row['is_main_query'] : false;
+			if ( $is_main_query ) {
 				$row_attr['data-qm-caller'] .= ' qm-main-query';
 			}
 		}
@@ -389,7 +390,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
 
 			echo '</ol>';
-			if ( $row['is_main_query'] ) {
+
+			$is_main_query = isset( $row['is_main_query'] ) ? $row['is_main_query'] : false;
+			if ( $is_main_query ) {
 				printf(
 					'<p>%s</p>',
 					esc_html__( 'Main Query', 'query-monitor' )
