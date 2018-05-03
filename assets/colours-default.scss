@@ -16,7 +16,8 @@ $panel-menu-bg: $container-bg;
 $panel-menu-fg-hover: #222;
 $panel-menu-bg-hover: #def;
 $panel-menu-fg-selected: #fff;
-$panel-menu-bg-selected: #0372aa;
+$panel-menu-bg-selected: #0073aa;
+$panel-menu-shadow: darken( $panel-menu-bg-selected, 5% );
 
 // Tables
 $cell-border: #e0e0e0;
@@ -30,10 +31,11 @@ $table-footer-bg: $container-bg;
 // Links and Buttons
 $link-fg: #0073aa;
 $button-fg: #fff;
-$button-bg: $panel-menu-bg-selected;
-$button-border: $button-bg;
+$button-bg: #0085ba;
+$button-border: darken( $button-bg, 5% );
 $button-fg-hover: $button-fg;
-$button-bg-hover: lighten( $button-bg, 6% );
+$button-bg-hover: lighten( $button-bg, 4% );
+$button-shadow: darken( $button-bg, 5% );
 
 // Warnings
 $warn-fg: #800;

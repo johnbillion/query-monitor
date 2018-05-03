@@ -317,6 +317,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panel-menu li a.qm-selected-menu {
 	background: $panel-menu-bg-selected !important;
 	color: $panel-menu-fg-selected !important;
+	text-shadow: 0 -1px 1px $panel-menu-shadow, 1px 0 1px $panel-menu-shadow, 0 1px 1px $panel-menu-shadow, -1px 0 1px $panel-menu-shadow !important;
 }
 
 #qm-panel-menu li a.qm-selected-menu:after {
@@ -633,6 +634,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	cursor: pointer !important;
 	border: 1px solid $button-border !important;
 	border-radius: 2px !important;
+	text-shadow: 0 -1px 1px $button-shadow, 1px 0 1px $button-shadow, 0 1px 1px $button-shadow, -1px 0 1px $button-shadow !important;
 }
 
 #query-monitor .qm .qm-toggle {
