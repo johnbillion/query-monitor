@@ -74,6 +74,11 @@ class QM_Util {
 			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
 			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
 			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
+
+			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
+				self::$file_dirs['vip-client-mu-plugin'] = self::standard_dir( WPCOM_VIP_CLIENT_MU_PLUGIN_DIR );
+			}
+
 			self::$file_dirs['theme']      = null;
 			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
 			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
@@ -126,6 +131,7 @@ class QM_Util {
 				break;
 			case 'go-plugin':
 			case 'vip-plugin':
+			case 'vip-client-mu-plugin':
 				$plug = str_replace( self::$file_dirs[ $type ], '', $file );
 				$plug = trim( $plug, '/' );
 				if ( strpos( $plug, '/' ) ) {
@@ -134,8 +140,13 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				/* translators: %s: Plugin name */
-				$name    = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
+				if ( 'vip-client-mu-plugin' === $type ) {
+					/* translators: %s: Plugin name */
+					$name = sprintf( __( 'VIP Client MU Plugin: %s', 'query-monitor' ), $plug );
+				} else {
+					/* translators: %s: Plugin name */
+					$name = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
+				}
 				$context = $plug;
 				break;
 			case 'stylesheet':
