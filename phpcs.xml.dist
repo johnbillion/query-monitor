@@ -46,9 +46,12 @@
 
 	<rule ref="WordPress-Docs" />
 
-	<!-- Not interested in whitespace issues in JS files at the moment -->
+	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
 	<rule ref="PEAR.Functions.FunctionCallSignature">
 		<exclude-pattern>*.js</exclude-pattern>
+	</rule>
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
+		<exclude-pattern>*.css</exclude-pattern>
 	</rule>
 
 	<!-- The VIP sniffer triggers false positives for this rule -->
