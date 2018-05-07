@@ -395,8 +395,9 @@ if ( window.jQuery ) {
 		});
 
 		$('.qm-button-container-close').click(function(){
-			$('#query-monitor').removeClass('qm-show');
+			$('#query-monitor').removeClass('qm-show').height('');
 			localStorage.removeItem( container_pinned_key );
+			localStorage.removeItem( container_storage_key );
 			$('.qm-button-container-pin').removeClass( 'qm-button-active' );
 		});
 
