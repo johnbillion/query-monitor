@@ -672,10 +672,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 .qm-debug-bar tbody tr:hover th,
-.qm-debug-bar tbody tr:hover td,
-#qm-conditionals tbody tr:hover td,
-#qm-overview tbody tr:hover td,
-#qm-settings tbody tr:hover td {
+.qm-debug-bar tbody tr:hover td {
   background: #fff !important;
   /* transparent? */
 }
@@ -711,6 +708,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   height: 16px !important;
   margin-right: 0.3em !important;
   transition: none !important;
+}
+
+#query-monitor .qm .qm-dashicons-yes {
+  color: #fff;
+  background-color: #0a0;
+  border-radius: 50%;
 }
 
 #query-monitor .qm tbody tr:hover th,
@@ -912,6 +915,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
     display: block;
   }
 }
+/* State Toggle */
+#query-monitor [data-qm-state="off"] [data-qm-state-visibility="on"],
+#query-monitor [data-qm-state="on"] [data-qm-state-visibility="off"] {
+  display: none;
+}
+
 /* No-JS tweaks */
 .qm-no-js .qm-sort-controls,
 .qm-no-js .qm-toggle,
