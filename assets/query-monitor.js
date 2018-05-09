@@ -325,7 +325,7 @@ if ( window.jQuery ) {
 					nonce  : qm_l10n.auth_nonce[action]
 				},
 				success : function(response){
-					$(this).text( $(this).data('qm-text-'+action) );
+					$(this).text( $(this).data('qm-text-' + action) );
 					$('#qm-settings').attr('data-qm-state',action).data('qm-state',action);
 				},
 				dataType : 'json',
