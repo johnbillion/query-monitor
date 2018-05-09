@@ -59,7 +59,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 				printf(
 					'<td class="qm-num">%s</td>',
-					esc_html( number_format_i18n( $row['function_time'] * 1000, 4 ) )
+					esc_html( number_format_i18n( $row['function_time'], 4 ) )
 				);
 
 				$mem = sprintf(
@@ -88,7 +88,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 						printf(
 							'<td class="qm-num">%s</td>',
-							esc_html( number_format_i18n( $lap['time_used'] * 1000, 4 ) )
+							esc_html( number_format_i18n( $lap['time_used'], 4 ) )
 						);
 
 						$mem = sprintf(
