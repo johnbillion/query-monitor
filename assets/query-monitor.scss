@@ -677,10 +677,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 .qm-debug-bar tbody tr:hover th,
-.qm-debug-bar tbody tr:hover td,
-#qm-conditionals tbody tr:hover td,
-#qm-overview tbody tr:hover td,
-#qm-settings tbody tr:hover td {
+.qm-debug-bar tbody tr:hover td {
 	background: #fff !important; /* transparent? */
 }
 
