@@ -78,6 +78,33 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 				echo '</tr>';
 
+				if ( ! empty( $row['laps'] ) ) {
+					foreach ( $row['laps'] as $lap_id => $lap ) {
+						echo '<tr>';
+
+						echo '<td class="qm-ltr"><code>&mdash;&nbsp;';
+						echo esc_html( $row['function'] . ': ' . $lap_id );
+						echo '</code></td>';
+
+						printf(
+							'<td class="qm-num">%s</td>',
+							esc_html( number_format_i18n( $lap['time_used'] * 1000, 4 ) )
+						);
+
+						$mem = sprintf(
+							/* translators: %s: Approximate memory used in kilobytes */
+							__( '~%s kB', 'query-monitor' ),
+							number_format_i18n( $lap['memory_used'] / 1024 )
+						);
+						printf(
+							'<td class="qm-num">%s</td>',
+							esc_html( $mem )
+						);
+						echo '<td class="qm-nowrap"></td>';
+
+						echo '</tr>';
+					}
+				}
 			}
 		}
 		if ( ! empty( $data['warning'] ) ) {

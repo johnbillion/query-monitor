@@ -53,7 +53,7 @@ class QM_Collector_Timing extends QM_Collector {
 			);
 			return;
 		}
-		$this->track_timer[ $function ]->lap( $name );
+		$this->track_timer[ $function ]->lap( array(), $name );
 	}
 
 	public function calculate_time( $function ) {
