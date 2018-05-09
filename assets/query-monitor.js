@@ -314,16 +314,19 @@ if ( window.jQuery ) {
 		} );
 
 		$('.qm-auth').on('click',function(e){
-			var action = $(this).data('action');
+			var state = $('#qm-settings').data('qm-state');
+			var action = ( 'off' === state ? 'on' : 'off' );
 
 			$.ajax(qm_l10n.ajaxurl,{
 				type : 'POST',
+				context : this,
 				data : {
 					action : 'qm_auth_' + action,
 					nonce  : qm_l10n.auth_nonce[action]
 				},
 				success : function(response){
-					alert( response.data );
+					$(this).text( $(this).data('qm-text-'+action) );
+					$('#qm-settings').attr('data-qm-state',action).data('qm-state',action);
 				},
 				dataType : 'json',
 				xhrFields: {

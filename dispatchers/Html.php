@@ -284,24 +284,23 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 
-		echo '<div class="qm qm-non-tabular" id="qm-settings">';
+		$state = self::user_verified() ? 'on' : 'off';
+		$text  = array(
+			'on'  => __( 'Clear authentication cookie', 'query-monitor' ),
+			'off' => __( 'Set authentication cookie', 'query-monitor' ),
+		);
+
+		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
 
 		echo '<div class="qm-boxed">';
 		echo '<div class="qm-section">';
 		echo '<h2>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h2>';
 
-		if ( ! self::user_verified() ) {
+		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
 
-			echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in.', 'query-monitor' ) . '</p>';
-			echo '<p><button class="qm-auth qm-button" data-action="on">' . esc_html__( 'Set authentication cookie', 'query-monitor' ) . '</button></p>';
+		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
-		} else {
-
-			echo '<p>' . esc_html__( 'You currently have an authentication cookie which allows you to view Query Monitor output.', 'query-monitor' ) . '</p>';
-			echo '<p><button class="qm-auth qm-button" data-action="off">' . esc_html__( 'Clear authentication cookie', 'query-monitor' ) . '</button></p>';
-
-		}
-
+		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 		echo '</div>';
 
 		$default_expensive = 0.05;

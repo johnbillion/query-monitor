@@ -717,6 +717,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	transition: none !important;
 }
 
+#query-monitor .qm .qm-dashicons-yes {
+	color: #fff;
+	background-color: #0a0;
+	border-radius: 50%;
+}
+
 #query-monitor .qm tbody tr:hover th,
 #query-monitor .qm tbody tr:hover td {
 	background: $cell-bg-hover !important;
@@ -919,6 +925,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: block;
 	}
 
+}
+
+/* State Toggle */
+
+#query-monitor [data-qm-state="off"] [data-qm-state-visibility="on"],
+#query-monitor [data-qm-state="on"] [data-qm-state-visibility="off"] {
+	display: none;
 }
 
 /* No-JS tweaks */
