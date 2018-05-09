@@ -49,7 +49,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public function ajax_on() {
 
 		if ( ! current_user_can( 'view_query_monitor' ) or ! check_ajax_referer( 'qm-auth-on', 'nonce', false ) ) {
-			wp_send_json_error( __( 'Could not set authentication cookie.', 'query-monitor' ) );
+			wp_send_json_error();
 		}
 
 		$expiration = time() + ( 2 * DAY_IN_SECONDS );
@@ -58,25 +58,21 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
 
-		$text = __( 'Authentication cookie set. You can now view Query Monitor output while logged out or while logged in as a different user.', 'query-monitor' );
-
-		wp_send_json_success( $text );
+		wp_send_json_success();
 
 	}
 
 	public function ajax_off() {
 
 		if ( ! self::user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
-			wp_send_json_error( __( 'Could not clear authentication cookie.', 'query-monitor' ) );
+			wp_send_json_error();
 		}
 
 		$expiration = time() - 31536000;
 
 		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, COOKIE_DOMAIN );
 
-		$text = __( 'Authentication cookie cleared.', 'query-monitor' );
-
-		wp_send_json_success( $text );
+		wp_send_json_success();
 
 	}
 
