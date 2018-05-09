@@ -16,6 +16,7 @@
 		"source": "https://github.com/johnbillion/query-monitor"
 	},
 	"require": {
+		"php": ">=5.3",
 		"composer/installers": "~1.0"
 	},
 	"require-dev" : {
