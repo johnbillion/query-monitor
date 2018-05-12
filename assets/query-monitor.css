@@ -665,9 +665,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   background: #0094ce !important;
 }
 
-/* @TODO this striping breaks when rows are filtered out. can visible rows be targeted? */
-#query-monitor .qm tbody tr:nth-child(odd) td,
-#query-monitor .qm tbody tr:nth-child(odd) th {
+#query-monitor .qm tbody tr.qm-odd td,
+#query-monitor .qm tbody tr.qm-odd th {
   background: #f7f7f7 !important;
 }
 

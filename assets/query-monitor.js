@@ -65,6 +65,10 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		};
 
+		var stripes = function( table ) {
+			table.find('tr').removeClass('qm-odd').not('[class*="qm-hide-"]').filter(':odd').addClass('qm-odd');
+		};
+
 		var show_panel = function( panel ) {
 			$('#query-monitor').addClass('qm-show').removeClass('qm-hide');
 			$( '.qm' ).removeClass('qm-panel-show');
@@ -94,7 +98,13 @@ if ( window.jQuery ) {
 				localStorage.setItem( container_pinned_key, panel );
 			}
 
-			$( panel ).find('.qm-filter').change();
+			var filters = $( panel ).find('.qm-filter');
+
+			if ( filters.length ) {
+				filters.change();
+			} else {
+				stripes( $(panel) );
+			}
 
 		};
 
@@ -196,6 +206,8 @@ if ( window.jQuery ) {
 			} else {
 				results.addClass('qm-hide');
 			}
+
+			stripes(table);
 		});
 
 		$('#query-monitor').find('.qm-filter').each(function () {
