@@ -31,7 +31,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
@@ -86,9 +85,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
-					echo '<td class="qm-ltr">';
-					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line, true ); // WPCS: XSS ok.
-					echo '</td>';
 
 					$stack          = array();
 					$filtered_trace = $error->trace->get_display_trace();
@@ -107,8 +103,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					$caller_name = array_pop( $stack );
-
 					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
 
 					echo self::build_toggler(); // WPCS: XSS ok;
@@ -116,7 +110,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 					}
 
-					echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+					echo '<li>';
+					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line, true ); // WPCS: XSS ok.
+					echo '</li>';
 
 					echo '</ol></td>';
 
