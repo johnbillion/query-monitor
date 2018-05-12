@@ -73,7 +73,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
-					echo '<th scope="row">';
+					echo '<td scope="row" class="qm-nowrap">';
 
 					if ( $is_warning ) {
 						echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
@@ -82,7 +82,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo esc_html( $title );
-					echo '</th>';
+					echo '</td>';
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
