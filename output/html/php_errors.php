@@ -43,7 +43,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		foreach ( $this->collector->types as $error_group => $error_types ) {
 			foreach ( $error_types as $type => $title ) {
 
-			if ( isset( $data[ $error_group ][ $type ] ) ) {
+				if ( ! isset( $data[ $error_group ][ $type ] ) ) {
+					continue;
+				}
 
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
@@ -126,7 +128,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '</tr>';
 				}
-			}
 			}
 		}
 
