@@ -85,6 +85,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					$row_attr['data-qm-component'] .= ' non-core';
 				}
 
+				if ( '' === $row['name'] ) {
+					$row_attr['class'] = 'qm-warn';
+				}
+
 				$attr = '';
 
 				foreach ( $row_attr as $a => $v ) {
