@@ -7,7 +7,7 @@
 
 class QM_Collector_Admin extends QM_Collector {
 
-	public $id = 'admin';
+	public $id = 'response';
 
 	public function name() {
 		return __( 'Admin Screen', 'query-monitor' );
@@ -88,7 +88,7 @@ class QM_Collector_Admin extends QM_Collector {
 }
 
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
-	$collectors['admin'] = new QM_Collector_Admin;
+	$collectors['response'] = new QM_Collector_Admin;
 	return $collectors;
 }
 

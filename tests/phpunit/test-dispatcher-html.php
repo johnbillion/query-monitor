@@ -69,7 +69,6 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 		$this->assertNotEmpty( $output );
 
 		$expected = array(
-			'admin'         => false,
 			'assets'        => false,
 			'cache'         => false,
 			'caps'          => true,
@@ -86,8 +85,8 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'php_errors'    => false,
 			'redirects'     => false,
 			'request'       => true,
+			'response'      => true,
 			'rewrites'      => true,
-			'theme'         => true,
 			'timing'        => false,
 			'transients'    => true,
 		);

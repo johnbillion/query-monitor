@@ -51,7 +51,7 @@ class QM_Collector_Hooks extends QM_Collector {
 	}
 
 	public function post_process() {
-		$admin = QM_Collectors::get( 'admin' );
+		$admin = QM_Collectors::get( 'response' );
 
 		if ( is_admin() && $admin ) {
 			$this->data['screen'] = $admin->data['base'];

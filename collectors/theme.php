@@ -7,7 +7,7 @@
 
 class QM_Collector_Theme extends QM_Collector {
 
-	public $id = 'theme';
+	public $id = 'response';
 	protected $got_theme_compat = false;
 
 	public function name() {
@@ -156,7 +156,7 @@ class QM_Collector_Theme extends QM_Collector {
 }
 
 function register_qm_collector_theme( array $collectors, QueryMonitor $qm ) {
-	$collectors['theme'] = new QM_Collector_Theme;
+	$collectors['response'] = new QM_Collector_Theme;
 	return $collectors;
 }
 
