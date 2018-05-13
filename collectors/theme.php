@@ -142,9 +142,10 @@ class QM_Collector_Theme extends QM_Collector {
 			}
 		}
 
-		$this->data['stylesheet']     = get_stylesheet();
-		$this->data['template']       = get_template();
-		$this->data['is_child_theme'] = ( $this->data['stylesheet'] !== $this->data['template'] );
+		$this->data['stylesheet']         = get_stylesheet();
+		$this->data['template']           = get_template();
+		$this->data['is_child_theme']     = ( $this->data['stylesheet'] !== $this->data['template'] );
+		$this->data['template_hierarchy'] = array_unique( $this->data['template_hierarchy'] );
 
 		if ( isset( $this->data['body_class'] ) ) {
 			asort( $this->data['body_class'] );
