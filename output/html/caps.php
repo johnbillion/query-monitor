@@ -104,7 +104,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				if ( ! empty( $row['args'] ) ) {
 					foreach ( $row['args'] as $arg ) {
-						$name .= '<br>' . esc_html( QM_Util::display_variable( $arg ) );
+						$name .= ',&nbsp;' . esc_html( QM_Util::display_variable( $arg ) );
 					}
 				}
 
