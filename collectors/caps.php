@@ -114,6 +114,11 @@ class QM_Collector_Caps extends QM_Collector {
 
 		foreach ( $this->data['caps'] as $i => $cap ) {
 			$name = $cap['args'][0];
+
+			if ( ! is_string( $name ) ) {
+				$name = '';
+			}
+
 			$parts = array_filter( preg_split( '#[_/-]#', $name ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
 			$this->data['caps'][ $i ]['name']  = $name;
