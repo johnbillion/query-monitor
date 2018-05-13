@@ -36,6 +36,10 @@ class QM_Collector_Languages extends QM_Collector {
 	 */
 	public function log_file_load( $override, $domain, $mofile ) {
 
+		if ( 'query-monitor' === $domain && self::hide_qm() ) {
+			return $override;
+		}
+
 		$trace    = new QM_Backtrace;
 		$filtered = $trace->get_filtered_trace();
 		$caller   = array();
