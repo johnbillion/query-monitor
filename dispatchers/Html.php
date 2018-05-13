@@ -322,7 +322,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'default' => false,
 			),
 			'QM_HIDE_SELF' => array(
-				'label'   => __( 'Hide Query Monitor itself on various panels (currently Hooks & Actions and Capability Checks).', 'query-monitor' ),
+				'label'   => __( 'Hide Query Monitor itself from various panels.', 'query-monitor' ),
 				'default' => false,
 			),
 			'QM_NO_JQUERY' => array(
