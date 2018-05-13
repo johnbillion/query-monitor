@@ -285,19 +285,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	margin: 0 !important;
 }
 
-#qm-panel-menu ul:after {
-	height: 30px !important;
-	content: " ";
-	display: block;
-	border-right: 1px solid $panel-border !important;
-}
-
 #qm-panel-menu li {
 	padding: 0 !important;
 	margin: 0 !important;
 }
 
-#qm-panel-menu li a {
+#qm-panel-menu li button {
 	display: block !important;
 	padding: 8px 28px 8px 6px !important;
 	color: $panel-menu-fg !important;
@@ -306,21 +299,23 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	position: relative !important;
 	border-right: 1px solid $panel-border !important;
 	background: $panel-menu-bg !important;
+	width: 100% !important;
+	cursor: pointer !important;
 }
 
-#qm-panel-menu li a:focus,
-#qm-panel-menu li a:hover {
+#qm-panel-menu li button:focus,
+#qm-panel-menu li button:hover {
 	background: $panel-menu-bg-hover !important;
 	color: $panel-menu-fg-hover !important;
 }
 
-#qm-panel-menu li a.qm-selected-menu {
+#qm-panel-menu li button.qm-selected-menu {
 	background: $panel-menu-bg-selected !important;
 	color: $panel-menu-fg-selected !important;
 	text-shadow: 0 -1px 1px $panel-menu-shadow, 1px 0 1px $panel-menu-shadow, 0 1px 1px $panel-menu-shadow, -1px 0 1px $panel-menu-shadow !important;
 }
 
-#qm-panel-menu li a.qm-selected-menu:after {
+#qm-panel-menu li button.qm-selected-menu:after {
 	right: -1px;
 	border: solid 8px transparent;
 	content: " ";
