@@ -830,6 +830,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	cursor: pointer !important;
 	-webkit-appearance: menulist !important;
 	-moz-appearance: menulist !important;
+	appearance: menulist !important;
 	letter-spacing: normal !important;
 	max-width: 10em !important;
 }
