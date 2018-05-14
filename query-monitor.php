@@ -36,7 +36,7 @@ $qm_dir = dirname( __FILE__ );
 require_once "{$qm_dir}/classes/Plugin.php";
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Activation', 'Util' ) as $qm_class ) {
+foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
