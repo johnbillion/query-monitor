@@ -37,13 +37,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		echo '<tbody>';
 
-		foreach ( $this->collector->get_levels() as $level ) {
-
-			if ( empty( $data['logs'][ $level ] ) ) {
-				continue;
-			}
-
-			foreach ( $data['logs'][ $level ] as $row ) {
+			foreach ( $data['logs'] as $row ) {
 				$component = $row['trace']->get_component();
 
 				$row_attr  = array();
@@ -55,7 +49,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 				}
 
-				$is_warning = in_array( $level, $this->collector->get_warning_levels(), true );
+				$is_warning = in_array( $row['level'], $this->collector->get_warning_levels(), true );
 
 				if ( $is_warning ) {
 					$class = 'qm-warn';
@@ -73,7 +67,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 					echo '<span class="dashicons" aria-hidden="true"></span>';
 				}
 
-				echo esc_html( ucfirst( $level ) );
+				echo esc_html( ucfirst( $row['level'] ) );
 				echo '</td>';
 
 				printf(
@@ -108,7 +102,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 				echo '</tr>';
 
 			}
-		}
 
 		echo '</tbody>';
 		echo '</table>';
@@ -119,8 +112,8 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	public function admin_class( array $class ) {
 		$data = $this->collector->get_data();
 
-		foreach ( $this->collector->get_warning_levels() as $level ) {
-			if ( ! empty( $data['logs'][ $level ] ) ) {
+		foreach ( $data['logs'] as $log ) {
+			if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
 				$class[] = 'qm-warning';
 				break;
 			}
@@ -136,26 +129,19 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			return $menu;
 		}
 
-		$count = 0;
-		$key   = 'log';
+		$key = 'log';
 
-		foreach ( $this->collector->get_warning_levels() as $level ) {
-			if ( ! empty( $data['logs'][ $level ] ) ) {
+		foreach ( $data['logs'] as $log ) {
+			if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
 				$key = 'warning';
 				break;
 			}
 		}
 
-		foreach ( $data['logs'] as $level => $logs ) {
-			$count += count( $logs );
-		}
-
-		/* translators: %s: Number of logs that are available */
-		$label = _n( 'Logs (%s)', 'Logs (%s)', $count, 'query-monitor' );
 		$menu[] = $this->menu( array(
 			'id'    => "query-monitor-logger-{$key}",
 			'title' => esc_html( sprintf(
-				$label,
+				__( 'Logs', 'query-monitor' ),
 				number_format_i18n( $count )
 			) ),
 		) );

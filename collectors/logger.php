@@ -88,10 +88,11 @@ class QM_Collector_Logger extends QM_Collector {
 			$message = $message->getMessage();
 		}
 
-		$this->data['logs'][ $level ][] = array(
+		$this->data['logs'][] = array(
 			'message' => $this->interpolate( $message, $context ),
 			'context' => $context,
 			'trace'   => $trace,
+			'level'   => $level,
 		);
 	}
 
@@ -117,11 +118,9 @@ class QM_Collector_Logger extends QM_Collector {
 
 		$components = array();
 
-		foreach ( $this->data['logs'] as $level => $logs ) {
-			foreach ( $logs as $row ) {
-				$component = $row['trace']->get_component();
-				$components[ $component->name ] = $component->name;
-			}
+		foreach ( $this->data['logs'] as $row ) {
+			$component = $row['trace']->get_component();
+			$components[ $component->name ] = $component->name;
 		}
 
 		$this->data['components'] = $components;
