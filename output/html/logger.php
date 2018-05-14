@@ -37,71 +37,71 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		echo '<tbody>';
 
-			foreach ( $data['logs'] as $row ) {
-				$component = $row['trace']->get_component();
+		foreach ( $data['logs'] as $row ) {
+			$component = $row['trace']->get_component();
 
-				$row_attr  = array();
-				$row_attr['data-qm-component'] = $component->name;
+			$row_attr  = array();
+			$row_attr['data-qm-component'] = $component->name;
 
-				$attr = '';
+			$attr = '';
 
-				foreach ( $row_attr as $a => $v ) {
-					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
-				}
-
-				$is_warning = in_array( $row['level'], $this->collector->get_warning_levels(), true );
-
-				if ( $is_warning ) {
-					$class = 'qm-warn';
-				} else {
-					$class = '';
-				}
-
-				echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
-
-				echo '<td scope="row" class="qm-nowrap">';
-
-				if ( $is_warning ) {
-					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-				} else {
-					echo '<span class="dashicons" aria-hidden="true"></span>';
-				}
-
-				echo esc_html( ucfirst( $row['level'] ) );
-				echo '</td>';
-
-				printf(
-					'<td>%s</td>',
-					esc_html( $row['message'] )
-				);
-
-				$stack          = array();
-				$filtered_trace = $row['trace']->get_display_trace();
-
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
-				}
-
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
-
-				$caller = array_pop( $stack );
-
-				if ( ! empty( $stack ) ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
-					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
-				}
-
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
-				echo '</ol></td>';
-
-				printf(
-					'<td class="qm-nowrap">%s</td>',
-					esc_html( $component->name )
-				);
-
-				echo '</tr>';
-
+			foreach ( $row_attr as $a => $v ) {
+				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
 			}
+
+			$is_warning = in_array( $row['level'], $this->collector->get_warning_levels(), true );
+
+			if ( $is_warning ) {
+				$class = 'qm-warn';
+			} else {
+				$class = '';
+			}
+
+			echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+
+			echo '<td scope="row" class="qm-nowrap">';
+
+			if ( $is_warning ) {
+				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			} else {
+				echo '<span class="dashicons" aria-hidden="true"></span>';
+			}
+
+			echo esc_html( ucfirst( $row['level'] ) );
+			echo '</td>';
+
+			printf(
+				'<td>%s</td>',
+				esc_html( $row['message'] )
+			);
+
+			$stack          = array();
+			$filtered_trace = $row['trace']->get_display_trace();
+
+			foreach ( $filtered_trace as $item ) {
+				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+			}
+
+			echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+
+			$caller = array_pop( $stack );
+
+			if ( ! empty( $stack ) ) {
+				echo self::build_toggler(); // WPCS: XSS ok;
+				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+			}
+
+			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+			echo '</ol></td>';
+
+			printf(
+				'<td class="qm-nowrap">%s</td>',
+				esc_html( $component->name )
+			);
+
+			echo '</tr>';
+
+		}
 
 		echo '</tbody>';
 		echo '</table>';
