@@ -26,10 +26,12 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
+		echo '<th scope="col"><span class="dashicons" aria-hidden="true"></span>' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -42,13 +44,37 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			}
 
 			foreach ( $data['logs'][ $level ] as $row ) {
+				$component = $row['trace']->get_component();
 
-				echo '<tr>';
+				$row_attr  = array();
+				$row_attr['data-qm-component'] = $component->name;
 
-				printf(
-					'<td>%s</td>',
-					esc_html( ucfirst( $level ) )
-				);
+				$attr = '';
+
+				foreach ( $row_attr as $a => $v ) {
+					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+				}
+
+				$is_warning = in_array( $level, $this->collector->get_warning_levels(), true );
+
+				if ( $is_warning ) {
+					$class = 'qm-warn';
+				} else {
+					$class = '';
+				}
+
+				echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+
+				echo '<td scope="row" class="qm-nowrap">';
+
+				if ( $is_warning ) {
+					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				} else {
+					echo '<span class="dashicons" aria-hidden="true"></span>';
+				}
+
+				echo esc_html( ucfirst( $level ) );
+				echo '</td>';
 
 				printf(
 					'<td>%s</td>',
@@ -57,7 +83,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 				$stack          = array();
 				$filtered_trace = $row['trace']->get_display_trace();
-				$component      = $row['trace']->get_component();
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );

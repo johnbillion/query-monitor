@@ -110,6 +110,23 @@ class QM_Collector_Logger extends QM_Collector {
 		return strtr( $message, $replace );
 	}
 
+	public function process() {
+		if ( empty( $this->data['logs'] ) ) {
+			return;
+		}
+
+		$components = array();
+
+		foreach ( $this->data['logs'] as $level => $logs ) {
+			foreach ( $logs as $row ) {
+				$component = $row['trace']->get_component();
+				$components[ $component->name ] = $component->name;
+			}
+		}
+
+		$this->data['components'] = $components;
+	}
+
 	public function get_levels() {
 		return array(
 			self::EMERGENCY,
