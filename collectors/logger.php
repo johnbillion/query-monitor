@@ -65,7 +65,7 @@ class QM_Collector_Logger extends QM_Collector {
 
 	public function log( $level, $message, array $context = array() ) {
 		if ( ! in_array( $level, $this->get_levels(), true ) ) {
-			throw new InvalidArgumentException( 'Unsupported log level.' );
+			throw new InvalidArgumentException( __( 'Unsupported log level', 'query-monitor' ) );
 		}
 
 		$this->store( $level, $message, $context );
