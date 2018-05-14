@@ -5,7 +5,7 @@
  * @package query-monitor
  */
 
-class QM_Output_Html_Logging extends QM_Output_Html {
+class QM_Output_Html_Logger extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
@@ -128,7 +128,7 @@ class QM_Output_Html_Logging extends QM_Output_Html {
 		/* translators: %s: Number of logs that are available */
 		$label = _n( 'Logs (%s)', 'Logs (%s)', $count, 'query-monitor' );
 		$menu[] = $this->menu( array(
-			'id'    => "query-monitor-logging-{$key}",
+			'id'    => "query-monitor-logger-{$key}",
 			'title' => esc_html( sprintf(
 				$label,
 				number_format_i18n( $count )
@@ -140,11 +140,11 @@ class QM_Output_Html_Logging extends QM_Output_Html {
 
 }
 
-function register_qm_output_html_logging( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'logging' ) ) {
-		$output['logging'] = new QM_Output_Html_Logging( $collector );
+function register_qm_output_html_logger( array $output, QM_Collectors $collectors ) {
+	if ( $collector = QM_Collectors::get( 'logger' ) ) {
+		$output['logger'] = new QM_Output_Html_Logger( $collector );
 	}
 	return $output;
 }
 
-add_filter( 'qm/outputter/html', 'register_qm_output_html_logging', 12, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_logger', 12, 2 );

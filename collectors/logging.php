@@ -5,9 +5,9 @@
  * @package query-monitor
  */
 
-class QM_Collector_Logging extends QM_Collector {
+class QM_Collector_Logger extends QM_Collector {
 
-	public $id = 'logging';
+	public $id = 'logger';
 
 	const EMERGENCY = 'emergency';
 	const ALERT     = 'alert';
@@ -19,7 +19,7 @@ class QM_Collector_Logging extends QM_Collector {
 	const DEBUG     = 'debug';
 
 	public function name() {
-		return __( 'Logging', 'query-monitor' );
+		return __( 'Logger', 'query-monitor' );
 	}
 
 	public function __construct() {
@@ -136,4 +136,4 @@ class QM_Collector_Logging extends QM_Collector {
 }
 
 # Load early in case a plugin wants to log a message early in the bootstrap process
-QM_Collectors::add( new QM_Collector_Logging );
+QM_Collectors::add( new QM_Collector_Logger );
