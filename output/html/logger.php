@@ -21,12 +21,16 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			return;
 		}
 
+		$levels = array_map( 'ucfirst', $this->collector->get_levels() );
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
 
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col"><span class="dashicons" aria-hidden="true"></span>' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
@@ -42,6 +46,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			$row_attr  = array();
 			$row_attr['data-qm-component'] = $component->name;
+			$row_attr['data-qm-type']      = ucfirst( $row['level'] );
 
 			$attr = '';
 
