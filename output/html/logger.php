@@ -145,10 +145,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		$menu[] = $this->menu( array(
 			'id'    => "query-monitor-logger-{$key}",
-			'title' => esc_html( sprintf(
-				__( 'Logs', 'query-monitor' ),
-				number_format_i18n( $count )
-			) ),
+			'title' => esc_html__( 'Logs', 'query-monitor' ),
 		) );
 
 		return $menu;
