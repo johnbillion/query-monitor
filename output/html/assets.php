@@ -61,6 +61,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
 			$args = array(
 				'prepend' => array(
@@ -70,7 +71,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			);
 			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
@@ -199,8 +199,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $dependency->handle ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';
 		if ( is_wp_error( $source ) ) {
 			printf(
