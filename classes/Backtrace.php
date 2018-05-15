@@ -241,7 +241,7 @@ class QM_Backtrace {
 				$return = null;
 			} else {
 				$return['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';
-				$return['display'] = $trace['class'] . $trace['type'] . $trace['function'] . '()';
+				$return['display'] = $this->shorten_fqn( $trace['class'] . $trace['type'] . $trace['function'] ) . '()';
 			}
 		} else {
 			if ( isset( self::$ignore_func[ $trace['function'] ] ) ) {
@@ -253,7 +253,7 @@ class QM_Backtrace {
 					if ( isset( $trace['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $trace['args'][0], '' );
 						$return['id']      = $trace['function'] . '()';
-						$return['display'] = $trace['function'] . "('{$arg}')";
+						$return['display'] = $this->shorten_fqn( $trace['function'] ) . "('{$arg}')";
 					}
 				} else {
 					$args = array();
@@ -267,11 +267,11 @@ class QM_Backtrace {
 						}
 					}
 					$return['id']      = $trace['function'] . '()';
-					$return['display'] = $trace['function'] . '(' . implode( ',', $args ) . ')';
+					$return['display'] = $this->shorten_fqn( $trace['function'] ) . '(' . implode( ',', $args ) . ')';
 				}
 			} else {
 				$return['id']      = $trace['function'] . '()';
-				$return['display'] = $trace['function'] . '()';
+				$return['display'] = $this->shorten_fqn( $trace['function'] ) . '()';
 			}
 		}
 
@@ -291,6 +291,27 @@ class QM_Backtrace {
 
 		return $return;
 
+	}
+
+	/**
+	 * Shortens a fully qualified name to reduce the length of the names of long namespaced symbols.
+	 *
+	 * This initialises portions that do not form the first or last portion of the name. For example:
+	 *
+	 *     Inpsyde\Wonolog\HookListener\HookListenersRegistry->hook_callback()
+	 *
+	 * becomes:
+	 *
+	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
+	 *
+	 * @param string $fqn A fully qualified name.
+	 * @return string A shortened version of the name.
+	 */
+	protected function shorten_fqn( $fqn ) {
+		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]+\\\\#', function( array $matches ) {
+			preg_match_all( '#\\\\([a-zA-Z0-9_])#', $matches[0], $m );
+			return '\\' . implode( '\\', $m[1] ) . '\\';
+		}, $fqn );
 	}
 
 }
