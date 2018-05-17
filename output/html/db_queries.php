@@ -185,8 +185,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '</tr>';
 			}
 
-			$types   = array_keys( $db->types );
-			$prepend = array();
+			$types      = array_keys( $db->types );
+			$prepend    = array();
+			$callers    = wp_list_pluck( $data['times'], 'caller' );
+
+			sort( $types );
+			usort( $callers, 'strcasecmp' );
 
 			if ( count( $types ) > 1 ) {
 				$prepend['non-select'] = __( 'Non-SELECT', 'query-monitor' );
@@ -214,12 +218,16 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$args = array(
 				'prepend' => $prepend,
 			);
-			echo $this->build_filter( 'caller', wp_list_pluck( $data['times'], 'caller' ), __( 'Caller', 'query-monitor' ), $args ); // WPCS: XSS ok.
+			echo $this->build_filter( 'caller', $callers, __( 'Caller', 'query-monitor' ), $args ); // WPCS: XSS ok.
 			echo '</th>';
 
 			if ( $db->has_trace ) {
+				$components = wp_list_pluck( $data['component_times'], 'component' );
+
+				usort( $components, 'strcasecmp' );
+
 				echo '<th scope="col" class="qm-filterable-column">';
-				echo $this->build_filter( 'component', wp_list_pluck( $data['component_times'], 'component' ), __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+				echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 				echo '</th>';
 			}
 

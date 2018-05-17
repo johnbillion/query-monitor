@@ -28,6 +28,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'Strict',
 			'Deprecated',
 		);
+		$components = $data['components'];
+
+		usort( $components, 'strcasecmp' );
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
@@ -41,7 +44,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';

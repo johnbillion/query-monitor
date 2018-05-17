@@ -94,8 +94,6 @@ abstract class QM_Output_Html extends QM_Output {
 			$args['prepend']['non-core'] = __( 'Non-Core', 'query-monitor' );
 		}
 
-		usort( $values, 'strcasecmp' );
-
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
 		$out = '<div class="qm-filter-container">';
