@@ -117,6 +117,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	public function admin_class( array $class ) {
 		$data = $this->collector->get_data();
 
+		if ( empty( $data['logs'] ) ) {
+			return $class;
+		}
+
 		foreach ( $data['logs'] as $log ) {
 			if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
 				$class[] = 'qm-warning';
