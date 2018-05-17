@@ -200,7 +200,7 @@ class QM_Util {
 					$access = '::';
 				}
 
-				$callback['name'] = $class . $access . $callback['function'][1] . '()';
+				$callback['name'] = QM_Util::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
@@ -211,11 +211,11 @@ class QM_Util {
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
-					$callback['name'] = $class . '->__invoke()';
+					$callback['name'] = QM_Util::shorten_fqn( $class ) . '->__invoke()';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
-				$callback['name'] = $callback['function'] . '()';
+				$callback['name'] = QM_Util::shorten_fqn( $callback['function'] ) . '()';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
 
@@ -365,6 +365,27 @@ class QM_Util {
 		} else {
 			return gettype( $value );
 		}
+	}
+
+	/**
+	 * Shortens a fully qualified name to reduce the length of the names of long namespaced symbols.
+	 *
+	 * This initialises portions that do not form the first or last portion of the name. For example:
+	 *
+	 *     Inpsyde\Wonolog\HookListener\HookListenersRegistry->hook_callback()
+	 *
+	 * becomes:
+	 *
+	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
+	 *
+	 * @param string $fqn A fully qualified name.
+	 * @return string A shortened version of the name.
+	 */
+	public static function shorten_fqn( $fqn ) {
+		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]{4,}\\\\#', function( array $matches ) {
+			preg_match_all( '#\\\\([a-zA-Z0-9_])#', $matches[0], $m );
+			return '\\' . implode( '\\', $m[1] ) . '\\';
+		}, $fqn );
 	}
 
 	public static function sort( array &$array, $field ) {
