@@ -62,14 +62,14 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns the table filter controls. Safe for output.
 	 *
-	 * @param  string $name      The name for the `data-` attributes that get filtered by this control.
-	 * @param  array  $values    Possible values for this control.
-	 * @param  string $label     Label text for the filter control.
-	 * @param  array  $args {
+	 * @param  string   $name   The name for the `data-` attributes that get filtered by this control.
+	 * @param  string[] $values Option values for this control.
+	 * @param  string   $label  Label text for the filter control.
+	 * @param  array    $args {
 	 *     @type string $highlihgt The name for the `data-` attributes that get highlighted by this control.
 	 *     @type array  $prepend   Associative array of options to prepend to the list of values.
 	 * }
-	 * @return string            Markup for the table filter controls.
+	 * @return string Markup for the table filter controls.
 	 */
 	protected function build_filter( $name, array $values, $label, $args = array() ) {
 
@@ -90,11 +90,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$core = __( 'Core', 'query-monitor' );
 
-		if ( 'component' === $name && isset( $values[ $core ] ) ) {
+		if ( 'component' === $name && count( $values ) > 1 && in_array( $core, $values, true ) ) {
 			$args['prepend']['non-core'] = __( 'Non-Core', 'query-monitor' );
 		}
-
-		usort( $values, 'strcasecmp' );
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 

@@ -22,17 +22,29 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return;
 		}
 
+		$levels = array(
+			'Warning',
+			'Notice',
+			'Strict',
+			'Deprecated',
+		);
+		$components = $data['components'];
+
+		usort( $components, 'strcasecmp' );
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
 		echo '<caption class="screen-reader-text">' . esc_html( 'PHP Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col"><span class="dashicons"></span>' . esc_html__( 'Level', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -52,6 +64,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$message   = wp_strip_all_tags( $error->message );
 					$row_attr  = array();
 					$row_attr['data-qm-component'] = $component->name;
+					$row_attr['data-qm-type']      = ucfirst( $type );
 
 					if ( 'core' !== $component->context ) {
 						$row_attr['data-qm-component'] .= ' non-core';

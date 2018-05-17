@@ -28,18 +28,24 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			$screen = $data['screen'];
 		}
 
+		$parts = $data['parts'];
+		$components = $data['components'];
+
+		usort( $parts, 'strcasecmp' );
+		usort( $components, 'strcasecmp' );
+
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<table>';
 		echo '<caption class="screen-reader-text">' . esc_html__( 'Hooks', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'name', $parts, __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Action', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
+		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';

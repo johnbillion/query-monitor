@@ -241,7 +241,7 @@ class QM_Backtrace {
 				$return = null;
 			} else {
 				$return['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';
-				$return['display'] = $trace['class'] . $trace['type'] . $trace['function'] . '()';
+				$return['display'] = QM_Util::shorten_fqn( $trace['class'] . $trace['type'] . $trace['function'] ) . '()';
 			}
 		} else {
 			if ( isset( self::$ignore_func[ $trace['function'] ] ) ) {
@@ -253,7 +253,7 @@ class QM_Backtrace {
 					if ( isset( $trace['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $trace['args'][0], '' );
 						$return['id']      = $trace['function'] . '()';
-						$return['display'] = $trace['function'] . "('{$arg}')";
+						$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . "('{$arg}')";
 					}
 				} else {
 					$args = array();
@@ -267,11 +267,11 @@ class QM_Backtrace {
 						}
 					}
 					$return['id']      = $trace['function'] . '()';
-					$return['display'] = $trace['function'] . '(' . implode( ',', $args ) . ')';
+					$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . '(' . implode( ',', $args ) . ')';
 				}
 			} else {
 				$return['id']      = $trace['function'] . '()';
-				$return['display'] = $trace['function'] . '()';
+				$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . '()';
 			}
 		}
 

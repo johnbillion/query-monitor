@@ -44,19 +44,28 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				'true',
 				'false',
 			);
-			$show_user = ( count( $data['users'] ) > 1 );
+			$show_user  = ( count( $data['users'] ) > 1 );
+			$parts      = $data['parts'];
+			$components = $data['components'];
+
+			usort( $parts, 'strcasecmp' );
+			usort( $components, 'strcasecmp' );
 
 			echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'name', $data['parts'], __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
+			echo $this->build_filter( 'name', $parts, __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 
 			if ( $show_user ) {
+				$users = $data['users'];
+
+				usort( $users, 'strcasecmp' );
+
 				echo '<th scope="col" class="qm-filterable-column qm-num">';
-				echo $this->build_filter( 'user', $data['users'], __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
+				echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
 				echo '</th>';
 			}
 
@@ -65,7 +74,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
 			echo '</thead>';
