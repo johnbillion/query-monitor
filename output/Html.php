@@ -90,7 +90,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$core = __( 'Core', 'query-monitor' );
 
-		if ( 'component' === $name && isset( $values[ $core ] ) ) {
+		if ( 'component' === $name && count( $values ) > 1 && in_array( $core, $values, true ) ) {
 			$args['prepend']['non-core'] = __( 'Non-Core', 'query-monitor' );
 		}
 
