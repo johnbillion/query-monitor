@@ -104,7 +104,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## Redirects ##
 
- * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from
+ * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from.
 
 ## Ajax ##
 
@@ -140,9 +140,9 @@ Currently this includes PHP errors and some overview information such as memory 
 
 ## Authentication ##
 
-By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 # Notes #
 
@@ -158,10 +158,10 @@ In order to do a few clever things, Query Monitor symlinks a custom `db.php` int
 
 In this file is Query Monitor's extension to the `wpdb` class which:
 
- * Allows us to log details about **all** database queries (including ones that happen before plugins are loaded)
- * Logs the full stack trace for each query, which allows us to determine the component that's responsible for the query
- * Logs the query result, which allows us to display the affected rows or error message if applicable
- * Logs various PHP configurations before anything has loaded, which allows us to display a message if these get altered at runtime by a plugin or theme
+ * Allows it to log details about **all** database queries (including ones that happen before plugins are loaded)
+ * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
+ * Logs the query result, which allows it to display the affected rows or error message if applicable
+ * Logs various PHP configurations before anything has loaded, which allows it to display a message if these get altered at runtime by a plugin or theme
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
@@ -209,7 +209,7 @@ Showing an HTTP request with an error
 
 ## Who can see Query Monitor's output? ##
 
-By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installations.
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
 
