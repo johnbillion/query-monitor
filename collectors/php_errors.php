@@ -99,8 +99,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$caller = $trace->get_caller();
 		$key    = md5( $message . $file . $line . $caller['id'] );
 
-		$filename = QM_Util::standard_dir( $file, '' );
-
 		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
 			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
 		} else {
@@ -109,7 +107,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'type'     => $type,
 				'message'  => $message,
 				'file'     => $file,
-				'filename' => $filename,
+				'filename' => QM_Util::standard_dir( $file, '' ),
 				'line'     => $line,
 				'trace'    => $trace,
 				'calls'    => 1,
