@@ -82,7 +82,7 @@ class QM_Backtrace {
 				continue;
 			}
 
-			if ( isset( self::$show_args[ $frame['function'] ] ) ) {
+			if ( isset( $frame['function'] ) && isset( self::$show_args[ $frame['function'] ] ) ) {
 				$show = self::$show_args[ $frame['function'] ];
 
 				if ( 'dir' === $show ) {
