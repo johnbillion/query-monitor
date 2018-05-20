@@ -129,7 +129,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$trace       = $query['trace'];
 				$component   = $query['trace']->get_component();
 				$caller      = $query['trace']->get_caller();
-				$caller_name = $caller['id'];
+				$caller_name = $caller['display'];
 				$caller      = $caller['display'];
 
 			} else {
