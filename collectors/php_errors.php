@@ -102,9 +102,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$filename = QM_Util::standard_dir( $file, '' );
 
 		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
-			$this->data[ $error_group ][ $type ][ $key ]->calls++;
+			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
 		} else {
-			$this->data[ $error_group ][ $type ][ $key ] = (object) array(
+			$this->data[ $error_group ][ $type ][ $key ] = array(
 				'errno'    => $errno,
 				'type'     => $type,
 				'message'  => $message,
@@ -255,7 +255,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							$component = $error->trace->get_component();
+							$component = $error['trace']->get_component();
 							$components[ $component->name ] = $component->name;
 						}
 					}
@@ -279,10 +279,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		foreach ( $components as $component_context => $allowed_level ) {
 			foreach ( $all_errors as $error_level => $errors ) {
 				foreach ( $errors as $error_id => $error ) {
-					if ( $this->is_reportable_error( $error->errno, $allowed_level ) ) {
+					if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
 						continue;
 					}
-					if ( ! $this->is_affected_component( $error->trace->get_component(), $component_type, $component_context ) ) {
+					if ( ! $this->is_affected_component( $error['trace']->get_component(), $component_type, $component_context ) ) {
 						continue;
 					}
 

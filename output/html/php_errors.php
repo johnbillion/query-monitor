@@ -60,8 +60,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
-					$component = $error->trace->get_component();
-					$message   = wp_strip_all_tags( $error->message );
+					$component = $error['trace']->get_component();
+					$message   = wp_strip_all_tags( $error['message'] );
 					$row_attr  = array();
 					$row_attr['data-qm-component'] = $component->name;
 					$row_attr['data-qm-type']      = ucfirst( $type );
@@ -97,10 +97,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '</td>';
 
 					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
-					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
 					$stack          = array();
-					$filtered_trace = $error->trace->get_display_trace();
+					$filtered_trace = $error['trace']->get_display_trace();
 
 					// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 					// we need to handle its somewhat unreliable stack trace items.
@@ -110,7 +110,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
 							$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
 						} elseif ( 0 === $i ) {
-							$stack[] = self::output_filename( $item['display'], $error->file, $error->line );
+							$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
 						} else {
 							$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
 						}
@@ -124,7 +124,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '<li>';
-					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line, true ); // WPCS: XSS ok.
+					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 
 					echo '</ol></td>';
