@@ -206,6 +206,9 @@ class QM_Util {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
 					$ref  = new ReflectionFunction( $callback['function'] );
 					$file = QM_Util::standard_dir( $ref->getFileName(), '' );
+					if ( 0 === strpos( $file, '/' ) ) {
+						$file = basename( $ref->getFileName() );
+					}
 					/* translators: 1: Line number, 2: File name */
 					$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
 				} else {
