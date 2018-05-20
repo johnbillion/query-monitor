@@ -380,6 +380,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>';
 
 		echo '</div>'; // #qm-settings
+
+		do_action( 'qm/output/after', $this, $this->outputters );
+
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #qm
@@ -405,7 +408,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
-	protected static function size( $var ) {
+	public static function size( $var ) {
 		$start_memory = memory_get_usage();
 
 		try {
