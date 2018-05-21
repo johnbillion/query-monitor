@@ -66,7 +66,9 @@ if ( window.jQuery ) {
 		};
 
 		var stripes = function( table ) {
-			table.find('tr').removeClass('qm-odd').not('[class*="qm-hide-"]').filter(':odd').addClass('qm-odd');
+			table.each(function() {
+				$(this).find('tbody tr').removeClass('qm-odd').not('[class*="qm-hide-"]').filter(':even').addClass('qm-odd');
+			} );
 		};
 
 		var show_panel = function( panel ) {
@@ -103,7 +105,7 @@ if ( window.jQuery ) {
 			if ( filters.length ) {
 				filters.change();
 			} else {
-				stripes( $(panel) );
+				stripes( $(panel).find('table') );
 			}
 
 		};
