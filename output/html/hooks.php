@@ -97,6 +97,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 				$first = true;
 
+				if ( count( $hook['actions'] ) > 1 ) {
+					$span_class = 'qm-sticky';
+				} else {
+					$span_class = '';
+				}
+
 				foreach ( $hook['actions'] as $action ) {
 
 					if ( isset( $action['callback']['component'] ) ) {
@@ -113,7 +119,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
+						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="' . esc_attr( $span_class ) . '">';
 						echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';

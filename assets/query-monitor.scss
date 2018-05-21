@@ -605,6 +605,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	white-space: normal !important;
 }
 
+#query-monitor .qm .qm-sticky {
+	position: sticky !important;
+	top: 36px !important;
+}
+
 #query-monitor .qm .qm-current,
 #query-monitor .qm td.qm-has-toggle p,
 #query-monitor .qm .qm-nonselectsql code,
