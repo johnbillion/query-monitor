@@ -407,7 +407,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm thead th {
-	box-shadow: 0px 1px 0px $cell-border;
+	box-shadow: 0px 1px 0px $cell-border !important;
 	border: 1px solid $cell-border !important;
 	border-top: none !important;
 	padding: 5px !important;
@@ -424,7 +424,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm tfoot tr td,
 #query-monitor .qm tfoot tr th {
-	box-shadow: inset 0px 1px 0px $cell-border;
+	box-shadow: inset 0px 1px 0px $cell-border !important;
 	border: 1px solid $cell-border !important;
 	border-bottom: none !important;
 	background: $table-footer-bg !important;
