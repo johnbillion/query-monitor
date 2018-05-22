@@ -184,12 +184,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor.qm-show,
-#query-monitor.qm-peek,
-.no-js #query-monitor,
-.nojs #query-monitor {
-  height: 27px;
-  display: flex;
-  flex-direction: column;
+#query-monitor.qm-peek {
+	height: 27px;
+	display: flex;
+	flex-direction: column;
 }
 
 #query-monitor.qm-show {

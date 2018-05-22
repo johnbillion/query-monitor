@@ -404,7 +404,7 @@ if ( window.jQuery ) {
 		});
 
 		$('.qm-button-container-close').click(function(){
-			$('#query-monitor').removeClass('qm-show');
+			$('#query-monitor').removeClass('qm-show').height('');
 			localStorage.removeItem( container_pinned_key );
 			$('.qm-button-container-pin').removeClass( 'qm-button-active' );
 		});
@@ -548,16 +548,25 @@ if ( window.jQuery ) {
 
 }
 
-if ( ( 'undefined' === typeof jQuery ) || ! jQuery ) {
-	window.addEventListener('load', function() {
+window.addEventListener('load', function() {
+	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
 		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
 		document.getElementById( 'query-monitor' ).className += ' qm-broken';
 		console.error( document.getElementById( 'qm-broken' ).textContent );
+
+		if ( 'undefined' === typeof jQuery ) {
+			console.error( 'QM error from JS: undefined jQuery' );
+		}
+
+		if ( ! window.jQuery ) {
+			console.error( 'QM error from JS: no jQuery' );
+		}
+
 		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
 		if ( menu_item ) {
 			menu_item.addEventListener( 'click', function() {
 				document.getElementById( 'query-monitor' ).className += ' qm-show';
 			} );
 		}
-	} );
-}
+	}
+} );

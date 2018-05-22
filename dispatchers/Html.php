@@ -389,19 +389,34 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<script type="text/javascript">' . "\n\n";
 		?>
-		if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! jQuery ) {
-			/* Fallback for worst case scenario */
-			document.getElementById( 'query-monitor' ).className += ' qm-broken';
-			console.error( document.getElementById( 'qm-broken' ).textContent );
-			var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-			if ( menu_item ) {
-				menu_item.addEventListener( 'click', function() {
-					document.getElementById( 'query-monitor' ).className += ' qm-show';
-				} );
+		window.addEventListener('load', function() {
+			if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
+				/* Fallback for worst case scenario */
+				document.getElementById( 'query-monitor' ).className += ' qm-broken';
+				console.error( document.getElementById( 'qm-broken' ).textContent );
+
+				if ( 'undefined' === typeof QM_i18n ) {
+					console.error( 'QM error from page: undefined QM_i18n' );
+				}
+
+				if ( 'undefined' === typeof jQuery ) {
+					console.error( 'QM error from page: undefined jQuery' );
+				}
+
+				if ( ! window.jQuery ) {
+					console.error( 'QM error from page: no jQuery' );
+				}
+
+				var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
+				if ( menu_item ) {
+					menu_item.addEventListener( 'click', function() {
+						document.getElementById( 'query-monitor' ).className += ' qm-show';
+					} );
+				}
+			} else if ( ! document.getElementById( 'wpadminbar' ) ) {
+				document.getElementById( 'query-monitor' ).className += ' qm-peek';
 			}
-		} else if ( ! document.getElementById( 'wpadminbar' ) ) {
-			document.getElementById( 'query-monitor' ).className += ' qm-peek';
-		}
+		} );
 		<?php
 		echo '</script>' . "\n\n";
 		echo '<!-- End of Query Monitor output -->' . "\n\n";
