@@ -185,9 +185,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor.qm-show,
 #query-monitor.qm-peek {
-	height: 27px;
-	display: flex;
-	flex-direction: column;
+  height: 27px;
+  display: flex;
+  flex-direction: column;
 }
 
 #query-monitor.qm-show {
@@ -596,6 +596,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   word-wrap: break-word !important;
   word-break: break-all !important;
   white-space: normal !important;
+}
+
+#query-monitor .qm .qm-sticky {
+  position: sticky !important;
+  top: 36px !important;
 }
 
 #query-monitor .qm .qm-current,
