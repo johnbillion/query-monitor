@@ -284,6 +284,10 @@ if ( window.jQuery ) {
 
 		});
 
+		$('#query-monitor').find('.qm table').on('sorted.qm',function(){
+			stripes( $(this) );
+		});
+
 		$( document ).ajaxSuccess( function( event, response, options ) {
 
 			var errors = response.getResponseHeader( 'X-QM-php_errors-error-count' );
@@ -540,6 +544,9 @@ if ( window.jQuery ) {
 
 						table.append(tbody);
 					});
+
+					table.trigger('sorted.qm');
+
 					e.preventDefault();
 				});
 			});
