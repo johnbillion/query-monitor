@@ -217,6 +217,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	padding: 0 2px 0 5px !important;
 	height: 27px !important;
 	flex-shrink: 0 !important;
+	-moz-user-select: none !important;
+	-ms-user-select: none !important;
+	-webkit-user-select: none !important;
+	user-select: none !important;
 }
 
 #qm-title .qm-title-heading {
