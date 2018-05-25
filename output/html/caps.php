@@ -18,6 +18,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '<div class="qm-boxed qm-boxed-wrap">';
 			echo '<div class="qm-section">';
 			echo '<h2>' . esc_html( $this->collector->name() ) . '</h2>';
+			echo '<div class="qm-notice">';
 			echo '<p>';
 			printf(
 				/* translators: %s: Configuration file name. */
@@ -26,6 +27,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			);
 			echo '</p>';
 			echo "<p><code>define( 'QM_ENABLE_CAPS_PANEL', true );</code></p>";
+			echo '</div>';
 			echo '</div>';
 			echo '</div>';
 			echo '</div>';
