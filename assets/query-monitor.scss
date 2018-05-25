@@ -842,6 +842,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	max-width: 10em !important;
 }
 
+#query-monitor .qm select.qm-filter:hover {
+	background: $container-bg !important;
+}
+
 .qm-hide,
 .qm-hide-scripts-host,
 .qm-hide-styles-host,
