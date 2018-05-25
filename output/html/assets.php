@@ -208,7 +208,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				esc_html( $src )
 			);
 		} else {
-			echo esc_html( $src );
+			printf(
+				'<a href="%s">%s</a>',
+				esc_attr( $src ),
+				esc_html( $src )
+			);
 		}
 		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ' ', array_map( 'esc_html', $deps ) ) . '</td>';
