@@ -105,7 +105,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$this->data[ $error_group ][ $type ][ $key ] = array(
 				'errno'    => $errno,
 				'type'     => $type,
-				'message'  => $message,
+				'message'  => wp_strip_all_tags( $message ),
 				'file'     => $file,
 				'filename' => QM_Util::standard_dir( $file, '' ),
 				'line'     => $line,

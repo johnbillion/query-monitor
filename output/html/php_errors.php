@@ -61,7 +61,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
 					$component = $error['trace']->get_component();
-					$message   = wp_strip_all_tags( $error['message'] );
 					$row_attr  = array();
 					$row_attr['data-qm-component'] = $component->name;
 					$row_attr['data-qm-type']      = ucfirst( $type );
@@ -96,7 +95,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo esc_html( $title );
 					echo '</td>';
 
-					echo '<td class="qm-ltr">' . esc_html( $message ) . '</td>';
+					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
 					$stack          = array();
