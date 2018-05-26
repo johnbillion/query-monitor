@@ -1,43 +1,43 @@
 // Main container
-$container-fg: #222;
-$container-bg: #f3f3f3;
-$container-overflow: #ececec;
+$qm-container-fg: #222;
+$qm-container-bg: #f3f3f3;
+$qm-container-overflow: #ececec;
 
 // Panels
-$panel-border: #aaa;
-$panel-fg: $container-fg;
-$panel-bg: #fff;
-$panel-separator: #ddd;
+$qm-panel-border: #aaa;
+$qm-panel-fg: $qm-container-fg;
+$qm-panel-bg: #fff;
+$qm-panel-separator: #ddd;
 
 // Panel menus
-$panel-menu-border: #ddd;
-$panel-menu-fg: #333;
-$panel-menu-bg: $container-bg;
-$panel-menu-fg-hover: #222;
-$panel-menu-bg-hover: #def;
-$panel-menu-fg-selected: #fff;
-$panel-menu-bg-selected: #0073aa;
-$panel-menu-shadow: darken( $panel-menu-bg-selected, 5% );
+$qm-panel-menu-border: #ddd;
+$qm-panel-menu-fg: #333;
+$qm-panel-menu-bg: $qm-container-bg;
+$qm-panel-menu-fg-hover: #222;
+$qm-panel-menu-bg-hover: #def;
+$qm-panel-menu-fg-selected: #fff;
+$qm-panel-menu-bg-selected: #0073aa;
+$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% );
 
 // Tables
-$cell-border: #e0e0e0;
-$cell-bg-hover: #eef3fa;
-$cell-fg-highlight: $container-fg;
-$cell-bg-highlight: #ffd;
-$cell-border-highlight: #eec;
-$table-header-bg: #fff;
-$table-footer-bg: $container-bg;
+$qm-cell-border: #e0e0e0 !default;
+$qm-cell-bg-hover: #eef3fa !default;
+$qm-cell-fg-highlight: $qm-container-fg !default;
+$qm-cell-bg-highlight: #ffd !default;
+$qm-cell-border-highlight: #eec !default;
+$qm-table-header-bg: #fff !default;
+$qm-table-footer-bg: $qm-container-bg !default;
 
 // Links and Buttons
-$link-fg: #0073aa;
-$button-fg: #fff;
-$button-bg: #0085ba;
-$button-border: darken( $button-bg, 5% );
-$button-fg-hover: $button-fg;
-$button-bg-hover: lighten( $button-bg, 4% );
-$button-shadow: darken( $button-bg, 5% );
+$qm-link-fg: #0073aa !default;
+$qm-button-fg: #fff !default;
+$qm-button-bg: #0085ba !default;
+$qm-button-border: darken( $qm-button-bg, 5% ) !default;
+$qm-button-fg-hover: $qm-button-fg !default;
+$qm-button-bg-hover: lighten( $qm-button-bg, 4% ) !default;
+$qm-button-shadow: darken( $qm-button-bg, 5% ) !default;
 
 // Warnings
-$warn-fg: #800;
-$warn-bg: #fff0f0;
-$warn-border: #ffd6d6;
+$qm-warn-fg: #800 !default;
+$qm-warn-bg: #fff0f0 !default;
+$qm-warn-border: #ffd6d6 !default;
