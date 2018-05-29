@@ -1,23 +1,23 @@
 // Main container
-$qm-container-fg: #222;
-$qm-container-bg: #f3f3f3;
-$qm-container-overflow: #ececec;
+$qm-container-fg: #222 !default;
+$qm-container-bg: #f3f3f3 !default;
+$qm-container-overflow: #ececec !default;
 
 // Panels
-$qm-panel-border: #aaa;
-$qm-panel-fg: $qm-container-fg;
-$qm-panel-bg: #fff;
-$qm-panel-separator: #ddd;
+$qm-panel-border: #aaa !default;
+$qm-panel-fg: $qm-container-fg !default;
+$qm-panel-bg: #fff !default;
+$qm-panel-separator: #ddd !default;
 
 // Panel menus
-$qm-panel-menu-border: #ddd;
-$qm-panel-menu-fg: #333;
-$qm-panel-menu-bg: $qm-container-bg;
-$qm-panel-menu-fg-hover: #222;
-$qm-panel-menu-bg-hover: #def;
-$qm-panel-menu-fg-selected: #fff;
-$qm-panel-menu-bg-selected: #0073aa;
-$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% );
+$qm-panel-menu-border: #ddd !default;
+$qm-panel-menu-fg: #333 !default;
+$qm-panel-menu-bg: $qm-container-bg !default;
+$qm-panel-menu-fg-hover: #222 !default;
+$qm-panel-menu-bg-hover: #def !default;
+$qm-panel-menu-fg-selected: #fff !default;
+$qm-panel-menu-bg-selected: #0073aa !default;
+$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
 
 // Tables
 $qm-cell-border: #e0e0e0 !default;
