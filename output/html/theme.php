@@ -24,7 +24,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Template File', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['template_path'] ) ) {
 			if ( $data['is_child_theme'] ) {
@@ -40,13 +40,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['template_hierarchy'] ) ) {
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr qm-numbered"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
 			echo '</div>';
 		}
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['template_parts'] ) ) {
 
@@ -72,7 +72,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['timber_files'] ) ) {
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html__( 'Timber Files', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'Timber Files', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
 			foreach ( $data['timber_files'] as $filename ) {
@@ -84,7 +84,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		}
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Theme', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Theme', 'query-monitor' ) . '</h3>';
 		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
 
 		if ( $data['is_child_theme'] ) {
@@ -97,7 +97,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		if ( ! empty( $data['body_class'] ) ) {
 			echo '<div class="qm-section">';
 
-			echo '<h2>' . esc_html__( 'Body Classes', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'Body Classes', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
 			foreach ( $data['body_class'] as $class ) {

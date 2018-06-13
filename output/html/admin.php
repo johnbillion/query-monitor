@@ -24,7 +24,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';
-		echo '<h2>get_current_screen()</h2>';
+		echo '<h3>get_current_screen()</h3>';
 
 		echo '<table>';
 		echo '<thead class="screen-reader-text">';
@@ -47,24 +47,24 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</div>';
 
 		echo '<div class="qm-section">';
-		echo '<h2>$pagenow</h2>';
+		echo '<h3>$pagenow</h3>';
 		echo '<p>' . esc_html( $data['pagenow'] ) . '</p>';
 		echo '</div>';
 
 		if ( ! empty( $data['list_table'] ) ) {
 
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html__( 'List Table', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'List Table', 'query-monitor' ) . '</h3>';
 
 			if ( ! empty( $data['list_table']['class_name'] ) ) {
-				echo '<h3>' . esc_html__( 'Class:', 'query-monitor' ) . '</h3>';
+				echo '<h4>' . esc_html__( 'Class:', 'query-monitor' ) . '</h4>';
 				echo '<p><code>' . esc_html( $data['list_table']['class_name'] ) . '</code></p>';
 			}
 
-			echo '<h3>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h3>';
+			echo '<h4>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h4>';
 			echo '<p><code>' . esc_html( $data['list_table']['columns_filter'] ) . '</code></p>';
 			echo '<p><code>' . esc_html( $data['list_table']['sortables_filter'] ) . '</code></p>';
-			echo '<h3>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h3>';
+			echo '<h4>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h4>';
 			echo '<p><code>' . esc_html( $data['list_table']['column_action'] ) . '</code></p>';
 			echo '</div>';
 

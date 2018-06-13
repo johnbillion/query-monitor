@@ -20,7 +20,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '<div class="qm-boxed">';
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>';
 
 		foreach ( $data['conds']['true'] as $cond ) {
 			echo '<p class="qm-item qm-ltr qm-true"><code>' . esc_html( $cond ) . '()</code></p>';
@@ -28,7 +28,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		echo '</div>';
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
 
 		foreach ( $data['conds']['false'] as $cond ) {
 			echo '<p class="qm-item qm-ltr qm-false"><code>' . esc_html( $cond ) . '()</code></p>';

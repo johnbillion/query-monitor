@@ -49,7 +49,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 
@@ -71,7 +71,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</div>';
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 
 		if ( empty( $data['memory'] ) ) {
@@ -104,14 +104,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		if ( isset( $db_query_num ) ) {
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
 			echo '<p class="qm-item">';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
 			echo '</p>';
 			echo '</div>';
 
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h2>';
+			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
 			echo '<p class="qm-item">';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
@@ -132,7 +132,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 
 		if ( isset( $cache_hit_percentage ) ) {

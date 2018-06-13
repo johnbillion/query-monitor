@@ -20,7 +20,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		echo '<div class="qm-section">';
-		echo '<h2>PHP</h2>';
+		echo '<h3>PHP</h3>';
 
 		echo '<table>';
 		echo '<tbody>';
@@ -144,7 +144,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				}
 
 				echo '<div class="qm-section">';
-				echo '<h2>' . esc_html( $name ) . '</h2>';
+				echo '<h3>' . esc_html( $name ) . '</h3>';
 
 				echo '<table>';
 				echo '<tbody>';
@@ -227,7 +227,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		}
 
 		echo '<div class="qm-section">';
-		echo '<h2>WordPress</h2>';
+		echo '<h3>WordPress</h3>';
 
 		echo '<table>';
 		echo '<tbody>';
@@ -247,7 +247,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</div>';
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html( 'Server', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html( 'Server', 'query-monitor' ) . '</h3>';
 
 		$server = array(
 			'name'    => __( 'software', 'query-monitor' ),
