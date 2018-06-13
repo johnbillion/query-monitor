@@ -284,6 +284,12 @@ if ( window.jQuery ) {
 
 		});
 
+		$('.qm').find('table a').on('focus',function(e){
+			$(this).closest('tr').addClass('qm-hovered');
+		}).on('blur',function(e){
+			$(this).closest('tr').removeClass('qm-hovered');
+		});
+
 		$('#query-monitor').find('.qm table').on('sorted.qm',function(){
 			stripes( $(this) );
 		});

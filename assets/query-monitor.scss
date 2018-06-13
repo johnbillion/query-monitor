@@ -744,6 +744,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		border-radius: 50% !important;
 	}
 
+	.qm tbody tr.qm-hovered th,
+	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
 	.qm tbody tr:hover td {
 		background: $qm-cell-bg-hover !important;
