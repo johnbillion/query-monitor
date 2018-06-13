@@ -11,74 +11,60 @@ $qm-font-code: Menlo, Monaco, Consolas, monospace;
 
 /* === Admin Toolbar === */
 
-#wpadminbar .quicklinks .menupop ul li.qm-true > a {
-	color: #8c8 !important;
-}
+#wpadminbar {
+	.quicklinks .menupop ul li.qm-true > a {
+		color: $qm-toolbar-true-fg !important;
 
-#wpadminbar .quicklinks .menupop ul li.qm-true > a:focus,
-#wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
-	color: #4a4 !important;
-}
+		&:focus,
+		&:hover {
+			color: $qm-toolbar-true-fg-hover !important;
+		}
+	}
 
-#wpadminbar .qm-alert {
-	background-color: #f60;
+	.qm-alert {
+		background-color: $qm-toolbar-alert-bg;
+	}
+
+	#wp-admin-bar-query-monitor-notices a,
+	.qm-notice {
+		background-color: #740;
+	}
+
+	#wp-admin-bar-query-monitor-deprecateds a,
+	.qm-deprecated {
+		background-color: #3c3c3c;
+	}
+
+	#wp-admin-bar-query-monitor-stricts a,
+	.qm-strict {
+		background-color: #3c3c3c;
+	}
+
+	#wp-admin-bar-query-monitor-expensive a,
+	.qm-expensive {
+		background-color: #b60;
+	}
+
+	#wp-admin-bar-query-monitor-warnings a,
+	.qm-warning {
+		background-color: #c00;
+
+		&:hover {
+			background-color: #b00;
+			color: #ddd !important;
+		}
+	}
+
+	#wp-admin-bar-query-monitor-errors a,
+	.qm-error {
+		background-color: #c00;
+	}
 }
 
 #wp-admin-bar-query-monitor *,
 #wp-admin-bar-query-monitor {
 	direction: ltr !important;
 	text-align: left !important;
-}
-
-#wp-admin-bar-query-monitor-deprecateds,
-#wp-admin-bar-query-monitor-stricts {
-	background-color: #555 !important;
-}
-
-#wpadminbar .qm-deprecated,
-#wpadminbar .qm-strict {
-	background-color: #3c3c3c;
-}
-
-#wp-admin-bar-query-monitor-notices {
-	background-color: #740 !important;
-}
-
-#wpadminbar .qm-notice {
-	background-color: #740;
-}
-
-#wp-admin-bar-query-monitor-expensive {
-	background-color: #b60 !important;
-}
-
-#wpadminbar .qm-expensive {
-	background-color: #b60;
-}
-
-#wp-admin-bar-query-monitor-warnings {
-	background-color: #c00 !important;
-}
-
-#wpadminbar .qm-warning {
-	background-color: #c00;
-}
-
-#wpadminbar .qm-warning > a {
-	color: #fff !important;
-}
-
-#wp-admin-bar-query-monitor-errors {
-	background-color: #c00 !important;
-}
-
-#wpadminbar .qm-error {
-	background-color: #c00 !important;
-}
-
-#wpadminbar .qm-error > a,
-#wpadminbar .qm-alert > a {
-	color: #fff !important;
 }
 
 body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
