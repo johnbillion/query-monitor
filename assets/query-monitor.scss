@@ -1,13 +1,13 @@
-@import "colours-default";
-
-$qm-font-default: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif;
-$qm-font-code: Menlo, Monaco, Consolas, monospace;
-
 /**
  * All the styles for Query Monitor.
  *
  * @package query-monitor
  */
+
+@import "colours-default";
+
+$qm-font-default: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif;
+$qm-font-code: Menlo, Monaco, Consolas, monospace;
 
 /* === Admin Toolbar === */
 
