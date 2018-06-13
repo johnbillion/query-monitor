@@ -275,6 +275,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	overflow-y:  scroll !important;
 	flex-shrink: 0 !important;
 	background: $qm-container-overflow !important;
+	overscroll-behavior: contain !important;
 }
 
 #qm-panel-menu ul {
@@ -328,6 +329,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #qm-panels {
 	flex-grow: 1 !important;
 	overflow-y: scroll !important;
+	overscroll-behavior: contain !important;
 }
 
 #query-monitor .qm.qm-panel-show {
