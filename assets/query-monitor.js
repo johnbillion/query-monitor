@@ -284,7 +284,7 @@ if ( window.jQuery ) {
 
 		});
 
-		$('.qm').find('table a').on('focus',function(e){
+		$('.qm').find('table a,table button').on('focus',function(e){
 			$(this).closest('tr').addClass('qm-hovered');
 		}).on('blur',function(e){
 			$(this).closest('tr').removeClass('qm-hovered');
