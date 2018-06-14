@@ -22,6 +22,7 @@ $qm-panel-menu-fg-hover: #222 !default;
 $qm-panel-menu-bg-hover: #def !default;
 $qm-panel-menu-fg-selected: #fff !default;
 $qm-panel-menu-bg-selected: #0073aa !default;
+$qm-panel-menu-bg-selected-focus: lighten( $qm-panel-menu-bg-selected, 5% ) !default;
 $qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
 
 // Tables
