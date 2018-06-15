@@ -28,7 +28,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>';
 			if ( is_multisite() ) {
-				echo '<th>' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
+				echo '<th scope="col">' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>';

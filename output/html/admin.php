@@ -30,8 +30,8 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '<table>';
 		echo '<thead class="screen-reader-text">';
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 		echo '<tbody>';

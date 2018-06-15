@@ -32,10 +32,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		) ) . '</caption>';
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -47,7 +47,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
 
-				echo '<th class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</th>';
+				echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
 
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-nowrap qm-ltr">';

@@ -31,7 +31,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['dupe_components'] ) ) {
-			echo '<th>' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
 		}
 		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
 		echo '</tr>';
