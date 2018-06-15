@@ -932,6 +932,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8) !important;
 }
 
+#query-monitor .qm-screen-reader-text,
 #query-monitor .screen-reader-text {
 	position: absolute !important;
 	margin: -1px !important;

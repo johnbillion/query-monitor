@@ -254,7 +254,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
-		echo '<div id="qm-panel-menu">';
+		echo '<div id="qm-panel-menu" role="navigation">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Panel Menu', 'query-monitor' ) . '</h2>';
 		echo '<ul>';
 
 		printf(
@@ -290,7 +291,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-boxed">';
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
 
 		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
 
@@ -336,7 +337,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		echo '<div class="qm-section">';
-		echo '<h2>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h2>';
+		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>';
 		echo '<p>';
 		printf(
 			/* translators: %s: Name of the config file */
