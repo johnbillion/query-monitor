@@ -61,7 +61,10 @@ if ( window.jQuery ) {
 		$('#query-monitor').removeClass('qm-no-js').addClass('qm-js');
 
 		var link_click = function(e){
-			show_panel( $( this ).attr('href') || $( this ).data('qm-href') );
+			var href = $( this ).attr('href') || $( this ).data('qm-href');
+			show_panel( href );
+			$(href).focus();
+			$('#wp-admin-bar-query-monitor').removeClass('hover');
 			e.preventDefault();
 		};
 
@@ -232,6 +235,7 @@ if ( window.jQuery ) {
 			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
 			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
 			show_panel( '#qm-' + target );
+			$('#qm-' + target).focus();
 			e.preventDefault();
 		});
 
@@ -289,6 +293,8 @@ if ( window.jQuery ) {
 		}).on('blur',function(e){
 			$(this).closest('tr').removeClass('qm-hovered');
 		});
+
+		$('.qm').attr('tabindex','-1');
 
 		$('#query-monitor').find('.qm table').on('sorted.qm',function(){
 			stripes( $(this) );
@@ -431,16 +437,19 @@ if ( window.jQuery ) {
 
 		$('.qm-button-container-settings').click(function(){
 			show_panel( '#qm-settings' );
+			$('#qm-settings').focus();
 		});
 
 		var pinned = localStorage.getItem( container_pinned_key );
 		if ( pinned && $( pinned ).length ) {
 			show_panel( pinned );
+			// Don't auto-focus the pinned QM panel
 			$('.qm-button-container-pin').addClass( 'qm-button-active' );
 		}
 
 		$('.qm-title-heading select').change(function(){
 			show_panel( $(this).val() );
+			$($(this).val()).focus();
 		});
 
 	} );
