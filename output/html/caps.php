@@ -54,7 +54,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			usort( $parts, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
 
-			echo '<caption class="screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
+			echo '<caption class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';

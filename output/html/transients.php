@@ -22,7 +22,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		if ( ! empty( $data['trans'] ) ) {
 
 			echo '<table>';
-			echo '<caption class="screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
+			echo '<caption class="qm-screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';

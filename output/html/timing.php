@@ -24,7 +24,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 		echo '<table>';
 
-		echo '<caption class="screen-reader-text">' . esc_html__( 'Function Timing', 'query-monitor' ) . '</caption>';
+		echo '<caption class="qm-screen-reader-text">' . esc_html__( 'Function Timing', 'query-monitor' ) . '</caption>';
 
 		echo '<thead>';
 		echo '<tr>';

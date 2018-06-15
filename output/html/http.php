@@ -39,7 +39,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<table class="qm-sortable">';
 
-			echo '<caption class="screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
+			echo '<caption class="qm-screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
