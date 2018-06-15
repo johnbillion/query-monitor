@@ -186,9 +186,9 @@ if ( window.jQuery ) {
 					tr.filter('[data-qm-' + hilite + '*="' + val + '"]').addClass('qm-highlight');
 				}
 				tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
-				$(this).addClass('qm-highlight');
+				$(this).closest('th').addClass('qm-filtered');
 			} else {
-				$(this).removeClass('qm-highlight');
+				$(this).closest('th').removeClass('qm-filtered');
 			}
 
 			var matches = tr.filter(':visible');

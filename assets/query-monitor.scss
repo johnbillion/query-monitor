@@ -751,7 +751,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		background: $qm-cell-bg-hover !important;
 	}
 
-	.qm select.qm-filter.qm-highlight,
+	.qm thead th.qm-filtered select.qm-filter {
+		background-color: $qm-cell-bg-highlight !important;
+		color: $qm-cell-fg-highlight !important;
+	}
+
 	.qm tbody tr td.qm-highlight,
 	.qm tbody tr.qm-highlight td {
 		background-color: $qm-cell-bg-highlight !important;
