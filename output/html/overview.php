@@ -43,7 +43,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 
 		echo '<div class="qm-section">';
-		echo '<h2 class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</h2>';
+		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</p>';
 		echo '</div>';
 
 		echo '</div>';
