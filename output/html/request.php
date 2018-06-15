@@ -20,6 +20,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 
 		foreach ( array(
 			'request'       => __( 'Request', 'query-monitor' ),

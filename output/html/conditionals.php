@@ -18,6 +18,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
 		echo '<div class="qm-boxed">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 
 		echo '<div class="qm-section">';
 		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>';

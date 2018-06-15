@@ -42,6 +42,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	protected function output_empty_queries() {
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-wpdb">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 		echo '<table>';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<tbody>';
@@ -70,6 +71,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	protected function output_error_queries( array $errors ) {
 
 		echo '<div class="qm" id="qm-query-errors">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Database Errors', 'query-monitor' ) . '</h2>';
 		echo '<table>';
 		echo '<caption>' . esc_html__( 'Database Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
@@ -98,6 +100,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$dp = strlen( substr( strrchr( QM_DB_EXPENSIVE, '.' ), 1 ) );
 
 		echo '<div class="qm" id="qm-query-expensive">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Slow Database Queries', 'query-monitor' ) . '</h2>';
 		echo '<table>';
 		echo '<caption>';
 		printf(
@@ -146,6 +149,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() . '-' . sanitize_title_with_dashes( $name ) ) . '">';
+		/* translators: %s: Name of database controller */
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( sprintf( __( '%s Queries', 'query-monitor' ), $name ) ) . '</h2>';
 
 		if ( ! empty( $db->rows ) ) {
 			echo '<table class="qm-sortable">';

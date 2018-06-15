@@ -17,6 +17,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 
 		if ( ! empty( $data['trans'] ) ) {
 

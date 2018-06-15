@@ -20,6 +20,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$total_time = 0;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 
 		$vars = array();
 

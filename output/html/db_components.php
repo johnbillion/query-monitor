@@ -24,6 +24,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$span = count( $data['types'] ) + 2;
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 		echo '<table class="qm-sortable">';
 		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
 		echo '<thead>';

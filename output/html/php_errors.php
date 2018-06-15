@@ -33,6 +33,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		usort( $components, 'strcasecmp' );
 
 		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
 		echo '<table>';
 		echo '<caption class="screen-reader-text">' . esc_html( 'PHP Errors', 'query-monitor' ) . '</caption>';
 		echo '<thead>';
