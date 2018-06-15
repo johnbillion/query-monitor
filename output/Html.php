@@ -121,23 +121,21 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns the column sorter controls. Safe for output.
 	 *
-	 * @TODO needs to be converted to use a button for semantics and a11y.
-	 *
 	 * @param string $heading Heading text for the column. Optional.
 	 * @return string Markup for the column sorter controls.
 	 */
 	protected function build_sorter( $heading = '' ) {
 		$out = '';
-		$out .= '<div class="qm-th">';
+		$out .= '<label class="qm-th">';
 		$out .= '<span class="qm-sort-heading">';
 		if ( $heading ) {
 			$out .= esc_html( $heading );
 		}
 		$out .= '</span>';
-		$out .= '<span class="qm-sort-controls">';
+		$out .= '<button class="qm-sort-controls">';
 		$out .= '<span class="dashicons qm-sort-arrow" aria-hidden="true"></span>';
-		$out .= '</span>';
-		$out .= '</div>';
+		$out .= '</button>';
+		$out .= '</label>';
 		return $out;
 	}
 
