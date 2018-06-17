@@ -41,7 +41,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
-		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';

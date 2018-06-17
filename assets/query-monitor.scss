@@ -472,6 +472,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		text-align: right !important;
 	}
 
+	.qm td.qm-row-sql {
+		min-width: 25em !important;
+	}
+
+	.qm td.qm-url,
+	.qm td.qm-col-message,
+	.qm td.qm-row-component {
+		min-width: 12em !important;
+	}
+
 	.qm td.qm-has-toggle p,
 	.qm td .qm-toggler {
 		padding: 0 22px 0 0 !important;
