@@ -288,6 +288,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
+		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
 
 		echo '<div class="qm-boxed">';
 		echo '<div class="qm-section">';
