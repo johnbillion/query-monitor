@@ -157,11 +157,11 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 
 		$errors = array(
 			'notice' => array(
-				'abc' => (object) array(
+				'abc' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
 				),
-				'def' => (object) array(
+				'def' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
 				),
@@ -197,13 +197,13 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 
 		$errors = array(
 			'warning' => array(
-				'abc' => (object) array(
+				'abc' => array(
 					'errno' => E_WARNING,
 					'trace' => $trace,
 				),
 			),
 			'notice' => array(
-				'abc' => (object) array(
+				'abc' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
 				),
