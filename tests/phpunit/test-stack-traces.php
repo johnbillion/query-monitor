@@ -99,7 +99,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 		$ref    = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
 		$file   = QM_Util::standard_dir( $ref->getFileName(), '' );
-		$name   = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), $file );
+		$name   = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'dummy-closures.php' );
 
 		$this->assertEquals( $function,            $actual['function'] );
 		$this->assertEquals( $name,                $actual['name'] );
