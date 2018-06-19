@@ -345,26 +345,49 @@ class QM_Util {
 			return $value;
 		} elseif ( is_object( $value ) ) {
 			$class = get_class( $value );
-			$id = false;
 
-			switch ( $class ) {
+			switch ( true ) {
 
-				case 'WP_Post':
-				case 'WP_User':
-					$id = $value->ID;
+				case ( $value instanceof WP_Post ):
+				case ( $value instanceof WP_User ):
+					return sprintf( '%s (ID: %s)', $class, $value->ID );
 					break;
 
-				case 'WP_Term':
-					$id = $value->term_id;
+				case ( $value instanceof WP_Term ):
+					return sprintf( '%s (term_id: %s)', $class, $value->term_id );
+					break;
+
+				case ( $value instanceof WP_Comment ):
+					return sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
+					break;
+
+				case ( $value instanceof WP_Error ):
+					return sprintf( '%s (%s)', $class, $value->get_error_code() );
+					break;
+
+				case ( $value instanceof WP_Role ):
+				case ( $value instanceof WP_Post_Type ):
+				case ( $value instanceof WP_Taxonomy ):
+					return sprintf( '%s (%s)', $class, $value->name );
+					break;
+
+				case ( $value instanceof WP_Network ):
+					return sprintf( '%s (id: %s)', $class, $value->id );
+					break;
+
+				case ( $value instanceof WP_Site ):
+					return sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
+					break;
+
+				case ( $value instanceof WP_Theme ):
+					return sprintf( '%s (%s)', $class, $value->get_stylesheet() );
+					break;
+
+				default:
+					return $class;
 					break;
 
 			}
-
-			if ( $id ) {
-				return sprintf( '%s (ID:%d)', $class, $id );
-			}
-
-			return $class;
 		} else {
 			return gettype( $value );
 		}
