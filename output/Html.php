@@ -128,9 +128,13 @@ abstract class QM_Output_Html extends QM_Output {
 		$out = '';
 		$out .= '<label class="qm-th">';
 		$out .= '<span class="qm-sort-heading">';
-		if ( $heading ) {
+
+		if ( '#' === $heading ) {
+			$out .= '<span class="qm-screen-reader-text">' . esc_html__( 'Sequence', 'query-monitor' ) . '</span>';
+		} elseif ( $heading ) {
 			$out .= esc_html( $heading );
 		}
+
 		$out .= '</span>';
 		$out .= '<button class="qm-sort-controls">';
 		$out .= '<span class="dashicons qm-sort-arrow" aria-hidden="true"></span>';
