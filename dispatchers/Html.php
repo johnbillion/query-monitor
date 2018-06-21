@@ -161,6 +161,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'query-monitor',
 			'qm_l10n',
 			array(
+				'ajax_error' => __( 'PHP Errors in Ajax Response', 'query-monitor' ),
 				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 				'auth_nonce' => array(
 					'on'  => wp_create_nonce( 'qm-auth-on' ),
