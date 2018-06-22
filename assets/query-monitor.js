@@ -508,12 +508,12 @@ if ( window.jQuery ) {
 					var desc = ! $(this).hasClass('qm-sorted-desc');
 					var index = $(this).index();
 
-					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc');
+					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').attr('aria-sort','none');
 
 					if ( desc ) {
-						$(this).addClass('qm-sorted-desc');
+						$(this).addClass('qm-sorted-desc').attr('aria-sort','descending');
 					} else {
-						$(this).addClass('qm-sorted-asc');
+						$(this).addClass('qm-sorted-asc').attr('aria-sort','ascending');
 					}
 
 					table.find('tbody').each(function () {
