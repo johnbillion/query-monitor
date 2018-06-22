@@ -94,12 +94,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 				$first = true;
 
-				if ( count( $hook['actions'] ) > 1 ) {
-					$span_class = 'qm-sticky';
-				} else {
-					$span_class = '';
-				}
-
 				foreach ( $hook['actions'] as $action ) {
 
 					if ( isset( $action['callback']['component'] ) ) {
@@ -116,7 +110,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="' . esc_attr( $span_class ) . '">';
+						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
 						echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
@@ -175,9 +169,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				}
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
-				echo '<th scope="row" class="qm-ltr">';
+				echo '<th scope="row" class="qm-ltr"><span class="qm-sticky">';
 				echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
-				echo '</th>';
+				echo '</span></th>';
 				echo '<td>&nbsp;</td>';
 				echo '<td>&nbsp;</td>';
 				echo '<td>&nbsp;</td>';
