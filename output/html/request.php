@@ -73,18 +73,17 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '<div class="qm-section">';
 		echo '<h3>';
 		esc_html_e( 'Query Vars', 'query-monitor' );
+		echo '</h3>';
 
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
 				printf(
-					' <a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a>',
+					'<p><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a></p>',
 					esc_html__( 'View Main Query', 'query-monitor' )
 				);
 			}
 		}
-
-		echo '</h3>';
 
 		if ( ! empty( $data['qvars'] ) ) {
 
