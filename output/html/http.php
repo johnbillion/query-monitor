@@ -38,9 +38,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<thead>';
 			echo '<tr>';
-			echo '<th scope="col" class="qm-sorted-asc qm-sortable-column">';
-			echo $this->build_sorter(); // WPCS: XSS ok.
-			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Method', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'URL', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
@@ -50,12 +47,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col" class="qm-num qm-sortable-column">';
-			echo $this->build_sorter( __( 'Timeout', 'query-monitor' ) ); // WPCS: XSS ok.
-			echo '</th>';
-			echo '<th scope="col" class="qm-num qm-sortable-column">';
-			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
-			echo '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
 
@@ -160,10 +153,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<tr %s class="%s">',
 					$attr,
 					esc_attr( $css )
-				);
-				printf(
-					'<td class="qm-num">%s</td>',
-					intval( $i )
 				);
 				printf(
 					'<td>%s</td>',
@@ -280,8 +269,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				}
 
 				printf(
-					'<td class="qm-num" data-qm-sort-weight="%s">%s</td>',
-					esc_attr( $ltime ),
+					'<td class="qm-num">%s</td>',
 					esc_html( $stime )
 				);
 				echo '</tr>';
@@ -294,7 +282,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="7">%1$s<br>%2$s</td>',
+				'<td colspan="6">%1$s<br>%2$s</td>',
 				esc_html( sprintf(
 					/* translators: %s: Number of HTTP API requests */
 					__( 'Total Requests: %s', 'query-monitor' ),
