@@ -31,12 +31,12 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$type_labels = array(
 			'scripts' => array(
 				/* translators: %s: Total number of enqueued scripts */
-				'total'    => __( 'Total Enqueued Scripts: %s', 'query-monitor' ),
+				'total'    => _x( 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
 				'plural'   => __( 'Scripts', 'query-monitor' ),
 			),
 			'styles' => array(
 				/* translators: %s: Total number of enqueued styles */
-				'total'    => __( 'Total Enqueued Styles: %s', 'query-monitor' ),
+				'total'    => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
 				'plural'   => __( 'Styles', 'query-monitor' ),
 			),
 		);
@@ -101,10 +101,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<tr>';
 			printf(
 				'<td colspan="7">%1$s</td>',
-				esc_html( sprintf(
-					$type_label['total'],
-					number_format_i18n( $total )
-				) )
+				sprintf(
+					esc_html( $type_label['total'] ),
+					'<span class="qm-items-number">' . esc_html( number_format_i18n( $total ) ) . '</span>'
+				)
 			);
 			echo '</tr>';
 			echo '</tfoot>';

@@ -254,26 +254,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			$total_stime = number_format_i18n( $db->total_time, 4 );
 
-			echo '<tr class="qm-items-shown qm-hide">';
+			echo '<tr>';
 			echo '<td colspan="' . absint( $span - 1 ) . '">';
 			printf(
-				/* translators: %s: Number of database queries in the current filtered view */
-				esc_html__( 'Queries in filter: %s', 'query-monitor' ),
+				/* translators: %s: Number of database queries */
+				esc_html_x( 'Total: %s', 'Database queries', 'query-monitor' ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $db->total_qs ) ) . '</span>'
 			);
 			echo '</td>';
-			echo '<td class="qm-items-time qm-num">' . esc_html( $total_stime ) . '</td>';
-			echo '</tr>';
-
-			echo '<tr>';
-			echo '<td colspan="' . absint( $span - 1 ) . '">';
-			echo esc_html( sprintf(
-				/* translators: %s: Number of database queries */
-				__( 'Total Queries: %s', 'query-monitor' ),
-				number_format_i18n( $db->total_qs )
-			) );
-			echo '</td>';
-			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
+			echo '<td class="qm-num qm-items-time">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 

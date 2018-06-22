@@ -186,15 +186,13 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$colspan = ( $show_user ) ? 5 : 4;
 
 			echo '<tr>';
+			echo '<td colspan="' . absint( $colspan ) . '">';
 			printf(
-				'<td colspan="%1$d">%2$s</td>',
-				esc_attr( $colspan ),
-				esc_html( sprintf(
-					/* translators: %s: Number of user capability checks */
-					__( 'Total Checks: %s', 'query-monitor' ),
-					number_format_i18n( count( $data['caps'] ) )
-				) )
+				/* translators: %s: Number of user capability checks */
+				esc_html_x( 'Total: %s', 'User capability checks', 'query-monitor' ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data['caps'] ) ) ) . '</span>'
 			);
+			echo '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 

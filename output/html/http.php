@@ -139,6 +139,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type']      = $row['type'];
+				$row_attr['data-qm-time']      = $row['ltime'];
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';
@@ -283,14 +284,14 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tr>';
 			printf(
 				'<td colspan="6">%1$s<br>%2$s</td>',
-				esc_html( sprintf(
+				sprintf(
 					/* translators: %s: Number of HTTP API requests */
-					__( 'Total Requests: %s', 'query-monitor' ),
-					number_format_i18n( count( $data['http'] ) )
-				) ),
+					esc_html_x( 'Total: %s', 'HTTP API calls', 'query-monitor' ),
+					'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data['http'] ) ) ) . '</span>'
+				),
 				implode( '<br>', array_map( 'esc_html', $vars ) )
 			);
-			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
+			echo '<td class="qm-num qm-items-time">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
 
