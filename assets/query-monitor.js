@@ -294,8 +294,6 @@ if ( window.jQuery ) {
 			$(this).closest('tr').removeClass('qm-hovered');
 		});
 
-		$('.qm').attr('tabindex','-1');
-
 		$('#query-monitor').find('.qm table').on('sorted.qm',function(){
 			stripes( $(this) );
 		});
