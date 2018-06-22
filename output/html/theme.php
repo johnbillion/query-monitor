@@ -20,9 +20,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<div class="qm-boxed qm-boxed-wrap">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
+		$this->before_non_tabular_output();
 
 		echo '<div class="qm-section">';
 		echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
@@ -109,8 +107,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '</div>';
 		}
 
-		echo '</div>';
-		echo '</div>';
+		$this->after_non_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {

@@ -14,10 +14,9 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 	public function output() {
 		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) || ! QM_ENABLE_CAPS_PANEL ) {
-			echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
-			echo '<div class="qm-boxed qm-boxed-wrap">';
+			$this->before_non_tabular_output();
+
 			echo '<div class="qm-section">';
-			echo '<h2>' . esc_html( $this->collector->name() ) . '</h2>';
 			echo '<div class="qm-notice">';
 			echo '<p>';
 			printf(
@@ -29,19 +28,16 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo "<p><code>define( 'QM_ENABLE_CAPS_PANEL', true );</code></p>";
 			echo '</div>';
 			echo '</div>';
-			echo '</div>';
-			echo '</div>';
+
+			$this->after_non_tabular_output();
 
 			return;
 		}
 
 		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-		echo '<table>';
-
 		if ( ! empty( $data['caps'] ) ) {
+			$this->before_tabular_output();
 
 			$results = array(
 				'true',
@@ -53,8 +49,6 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			usort( $parts, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
-
-			echo '<caption class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</caption>';
 
 			echo '<thead>';
 			echo '<tr>';
@@ -204,23 +198,15 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '</tr>';
 			echo '</tfoot>';
 
+			$this->after_tabular_output();
 		} else {
+			$this->before_non_tabular_output();
 
-			echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
+			$notice = __( 'No capability checks were recorded.', 'query-monitor' );
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
 
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td>';
-			esc_html_e( 'No capability checks were recorded.', 'query-monitor' );
-			echo '</td>';
-			echo '</tr>';
-			echo '</tbody>';
-
+			$this->after_non_tabular_output();
 		}
-
-		echo '</table>';
-		echo '</div>';
-
 	}
 
 	public function admin_menu( array $menu ) {

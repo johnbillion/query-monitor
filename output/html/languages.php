@@ -22,14 +22,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-		echo '<table>';
-		echo '<caption>' . esc_html( sprintf(
-			/* translators: %s: Name of current language */
-			__( 'Language Setting: %s', 'query-monitor' ),
-			$data['locale']
-		) ) . '</caption>';
+		$this->before_tabular_output();
+
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
@@ -83,9 +77,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		echo '</tbody>';
 
-		echo '</table>';
-		echo '</div>';
-
+		$this->after_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {

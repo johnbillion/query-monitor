@@ -26,6 +26,72 @@ abstract class QM_Output_Html extends QM_Output {
 		return $out;
 	}
 
+	protected function before_tabular_output( $id = null, $name = null ) {
+		if ( null === $id ) {
+			$id = $this->collector->id();
+		}
+		if ( null === $name ) {
+			$name = $this->collector->name();
+		}
+
+		printf(
+			'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			esc_attr( $id )
+		);
+
+		echo '<table class="qm-sortable">';
+
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
+			esc_attr( $id ),
+			esc_html( $name )
+		);
+	}
+
+	protected function after_tabular_output() {
+		echo '</table>';
+		echo '</div>';
+	}
+
+	protected function before_non_tabular_output( $id = null, $name = null ) {
+		if ( null === $id ) {
+			$id = $this->collector->id();
+		}
+		if ( null === $name ) {
+			$name = $this->collector->name();
+		}
+
+		printf(
+			'<div class="qm qm-non-tabular" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			esc_attr( $id )
+		);
+
+		echo '<div class="qm-boxed">';
+
+		printf(
+			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
+			esc_attr( $id ),
+			esc_html( $name )
+		);
+	}
+
+	protected function after_non_tabular_output() {
+		echo '</div>';
+		echo '</div>';
+	}
+
+	protected function build_notice( $notice ) {
+		$return = '<div class="qm-section">';
+		$return .= '<div class="qm-notice">';
+		$return .= '<p>';
+		$return .= $notice;
+		$return .= '</p>';
+		$return .= '</div>';
+		$return .= '</div>';
+
+		return $return;
+	}
+
 	public static function output_inner( $vars ) {
 
 		echo '<table class="qm-inner">';

@@ -34,10 +34,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		usort( $parts, 'strcasecmp' );
 		usort( $components, 'strcasecmp' );
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-		echo '<table>';
-		echo '<caption class="qm-screen-reader-text">' . esc_html__( 'Hooks', 'query-monitor' ) . '</caption>';
+		$this->before_tabular_output();
+
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
@@ -55,9 +53,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		self::output_hook_table( $data['hooks'], $screen );
 		echo '</tbody>';
 
-		echo '</table>';
-		echo '</div>';
-
+		$this->after_tabular_output();
 	}
 
 	public static function output_hook_table( array $hooks, $screen = '' ) {

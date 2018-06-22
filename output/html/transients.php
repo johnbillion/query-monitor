@@ -16,13 +16,9 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-
 		if ( ! empty( $data['trans'] ) ) {
 
-			echo '<table>';
-			echo '<caption class="qm-screen-reader-text">' . esc_html__( 'Transient Updates', 'query-monitor' ) . '</caption>';
+			$this->before_tabular_output();
 
 			echo '<thead>';
 			echo '<tr>';
@@ -106,19 +102,15 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 			}
 
-			echo '</tbody>';
-			echo '</table>';
-
+			$this->after_tabular_output();
 		} else {
+			$this->before_non_tabular_output();
 
-			echo '<div class="qm-none">';
-			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
-			echo '</div>';
+			$notice = __( 'No transients set.', 'query-monitor' );
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
 
+			$this->after_non_tabular_output();
 		}
-
-		echo '</div>';
-
 	}
 
 	public function admin_menu( array $menu ) {

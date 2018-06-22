@@ -19,9 +19,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$total_time = 0;
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-
 		$vars = array();
 
 		if ( ! empty( $data['vars'] ) ) {
@@ -37,9 +34,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			usort( $statuses, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
 
-			echo '<table class="qm-sortable">';
-
-			echo '<caption class="qm-screen-reader-text">' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</caption>';
+			$this->before_tabular_output();
 
 			echo '<thead>';
 			echo '<tr>';
@@ -310,18 +305,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
 			echo '</tfoot>';
-			echo '</table>';
 
+			$this->after_tabular_output();
 		} else {
+			$this->before_non_tabular_output();
 
-			echo '<div class="qm-none">';
-			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
-			echo '</div>';
+			$notice = __( 'No HTTP API calls.', 'query-monitor' );
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
 
+			$this->after_non_tabular_output();
 		}
-
-		echo '</div>';
-
 	}
 
 	public function admin_class( array $class ) {

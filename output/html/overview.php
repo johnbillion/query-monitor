@@ -38,16 +38,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$qm_broken = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
 
-		echo '<div class="qm qm-non-tabular" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<div class="qm-boxed" id="qm-broken">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
+		$this->before_non_tabular_output();
 
-		echo '<div class="qm-section">';
+		echo '<div class="qm-section" id="qm-broken">';
 		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</p>';
 		echo '</div>';
 
 		echo '</div>';
-		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<div class="qm-boxed">';
 
 		echo '<div class="qm-section">';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
@@ -189,8 +187,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</p>';
 		echo '</div>';
 
-		echo '</div>';
-		echo '</div>';
+		$this->after_non_tabular_output();
 	}
 
 	public function admin_title( array $title ) {

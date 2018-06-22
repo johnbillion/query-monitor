@@ -20,10 +20,8 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html( $this->collector->name() ) . '</h2>';
-		echo '<table>';
-		echo '<caption>' . esc_html( $this->collector->name() ) . '</caption>';
+		$this->before_tabular_output();
+
 		echo '<thead>';
 
 		echo '<tr>';
@@ -103,9 +101,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		}
 		echo '</tbody>';
 
-		echo '</table>';
-		echo '</div>';
-
+		$this->after_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {

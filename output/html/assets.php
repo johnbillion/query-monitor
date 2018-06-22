@@ -55,10 +55,14 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				__( 'Other', 'query-monitor' ),
 			);
 
-			echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '-' . esc_attr( $type ) . '">';
-			echo '<h2 class="qm-screen-reader-text">' . esc_html( $type_label['plural'] ) . '</h2>';
-			echo '<table>';
-			echo '<caption>' . esc_html( $type_label['plural'] ) . '</caption>';
+			$panel_id = sprintf(
+				'%s-%s',
+				$this->collector->id(),
+				$type
+			);
+
+			$this->before_tabular_output( $panel_id, $type_label['plural'] );
+
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
@@ -105,9 +109,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</tr>';
 			echo '</tfoot>';
 
-			echo '</table>';
-			echo '</div>';
-
+			$this->after_tabular_output();
 		}
 
 	}
