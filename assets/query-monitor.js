@@ -202,7 +202,13 @@ if ( window.jQuery ) {
 				time = QM_i18n.number_format( time, 4 );
 			}
 
-			table.find('.qm-items-number').text( QM_i18n.number_format( matches.length, 0 ) );
+			if ( table.find('.qm-filtered').length ) {
+				var count = matches.length + ' / ' + tr.length;
+			} else {
+				var count = matches.length;
+			}
+
+			table.find('.qm-items-number').text(count);
 			table.find('.qm-items-time').text(time);
 
 			stripes(table);
