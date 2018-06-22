@@ -513,10 +513,10 @@ if ( window.jQuery ) {
 					table.find('tbody').each(function () {
 						var tbody = $(this);
 						var rows = this.rows;
-						var columns = this.getElementsByTagName('td');
+						var columns = this.querySelectorAll('th,td');
 
 						if (this.data_matrix === undefined) {
-							this.data_matrix = table_to_array(columns, $(rows[0]).find('td').length);
+							this.data_matrix = table_to_array(columns, $(rows[0]).find('th,td').length);
 						}
 
 						var data = this.data_matrix;
