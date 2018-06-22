@@ -369,7 +369,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo "<tr{$attr}>"; // WPCS: XSS ok.
 
 		if ( isset( $cols['row'] ) ) {
-			echo '<td class="qm-row-num qm-num">' . absint( ++$this->query_row ) . '</td>';
+			echo '<th scope="row" class="qm-row-num qm-num">' . absint( ++$this->query_row ) . '</th>';
 		}
 
 		if ( isset( $cols['sql'] ) ) {

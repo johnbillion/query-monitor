@@ -419,7 +419,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   border-right: none !important;
 }
 #query-monitor .qm tfoot td.qm-num,
-#query-monitor .qm th.qm-num {
+#query-monitor .qm tfoot th.qm-num,
+#query-monitor .qm thead td.qm-num,
+#query-monitor .qm thead th.qm-num {
   width: 5.5em !important;
 }
 #query-monitor .qm td.qm-num {

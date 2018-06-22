@@ -95,9 +95,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				echo '<tr>';
 
 				if ( isset( $data['plugin_qvars'][ $var ] ) ) {
-					echo '<td class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
+					echo '<th scope="row" class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
 				} else {
-					echo '<td class="qm-ltr">' . esc_html( $var ) . '</td>';
+					echo '<th scope="row" class="qm-ltr">' . esc_html( $var ) . '</td>';
 				}
 
 				if ( is_array( $value ) or is_object( $value ) ) {

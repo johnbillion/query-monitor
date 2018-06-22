@@ -457,7 +457,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm tfoot td.qm-num,
-	.qm th.qm-num {
+	.qm tfoot th.qm-num,
+	.qm thead td.qm-num,
+	.qm thead th.qm-num {
 		width: 5.5em !important;
 	}
 
