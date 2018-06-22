@@ -30,12 +30,12 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column">';
+				echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column" role="columnheader" aria-sort="none">';
 				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
 				echo '</th>';
 			}
 
-			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column">';
+			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column" role="columnheader" aria-sort="descending">';
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 			echo '</tr>';
