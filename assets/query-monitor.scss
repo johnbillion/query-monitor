@@ -6,8 +6,12 @@
 
 @import "colours-default";
 
-$qm-font-default: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif;
-$qm-font-code: Menlo, Monaco, Consolas, monospace;
+$qm-font-default-face: 'Helvetica Neue', 'Lucida Grande', 'Arial', sans-serif;
+$qm-font-default-size: 12px;
+$qm-font-default-line-height: 18px;
+$qm-font-code-face: Menlo, Monaco, Consolas, monospace;
+$qm-font-code-size: 11px;
+$qm-font-code-line-height: 19px;
 
 /* === Admin Toolbar === */
 
@@ -141,9 +145,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	text-align: left !important;
 	font-style: normal !important;
 	font-weight: normal !important;
-	font-size: 12px !important;
-	line-height: 18px !important;
-	font-family: $qm-font-default !important;
+	font-size: $qm-font-default-size !important;
+	line-height: $qm-font-default-line-height !important;
+	font-family: $qm-font-default-face !important;
 	border: none !important;
 	padding: 0 !important;
 	margin: 0 !important;
@@ -576,21 +580,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		list-style: decimal inside !important;
 	}
 
+	.qm code,
 	.qm pre {
-		font-size: 11px !important;
-		line-height: 19px !important;
-		font-family: $qm-font-code !important;
+		font-size: $qm-font-code-size !important;
+		line-height: $qm-font-code-line-height !important;
+		font-family: $qm-font-code-face !important;
+	}
+
+	.qm pre {
 		background: transparent !important;
 		margin: 0 !important;
 		width: auto !important;
 		height: auto !important;
 		padding: 0 !important;
-	}
-
-	.qm code {
-		font-size: 11px !important;
-		line-height: 19px !important;
-		font-family: $qm-font-code !important;
 	}
 
 	.qm .qm-true code,
@@ -656,7 +658,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm .qm-toggle {
 		padding: 0px 4px !important;
-		font-family: $qm-font-code !important;
+		font-family: $qm-font-code-face !important;
 		position: absolute !important;
 		top: 0 !important;
 		right: 0 !important;
