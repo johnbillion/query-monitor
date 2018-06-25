@@ -1000,11 +1000,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	float: right !important;
 }
 
-#query-monitor .qm.qm-debug-bar h1 {
+#query-monitor .qm.qm-debug-bar h2 {
 	margin: 4px 6px 15px !important;
 }
 
-#query-monitor .qm.qm-debug-bar h2 {
+#query-monitor .qm.qm-debug-bar h3 {
 	float: left !important; /* why */
 	min-width: 150px !important;
 	padding: 5px 10px 15px !important;
@@ -1014,17 +1014,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	margin: 3px 8px 15px 0 !important;
 }
 
-#query-monitor .qm.qm-debug-bar h2 small {
+#query-monitor .qm.qm-debug-bar h3 small {
 	font-size: 14px !important;
 }
 
-#query-monitor .qm.qm-debug-bar h2 span {
+#query-monitor .qm.qm-debug-bar h3 span {
 	white-space: nowrap !important;
 	display: block !important;
 	margin-bottom: 8px !important;
 }
 
-#query-monitor .qm.qm-debug-bar h3 {
+#query-monitor .qm.qm-debug-bar h4 {
 	margin: 15px 6px 5px !important;
 	font-size: 13px !important;
 }

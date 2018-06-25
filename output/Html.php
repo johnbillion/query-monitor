@@ -80,6 +80,30 @@ abstract class QM_Output_Html extends QM_Output {
 		echo '</div>';
 	}
 
+	protected function before_debug_bar_output( $id = null, $name = null ) {
+		if ( null === $id ) {
+			$id = $this->collector->id();
+		}
+		if ( null === $name ) {
+			$name = $this->collector->name();
+		}
+
+		printf(
+			'<div class="qm qm-debug-bar" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			esc_attr( $id )
+		);
+
+		printf(
+			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
+			esc_attr( $id ),
+			esc_html( $name )
+		);
+	}
+
+	protected function after_debug_bar_output() {
+		echo '</div>';
+	}
+
 	protected function build_notice( $notice ) {
 		$return = '<div class="qm-section">';
 		$return .= '<div class="qm-notice">';

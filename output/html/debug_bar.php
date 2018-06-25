@@ -13,17 +13,41 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	}
 
 	public function output() {
-
 		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 
-		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
+		$this->before_debug_bar_output();
+
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
+		ob_start();
 		$this->collector->render();
+		$panel = ob_get_clean();
+
+		$panel = str_replace( array(
+			'<h4',
+			'<h3',
+			'<h2',
+			'<h1',
+			'</h4>',
+			'</h3>',
+			'</h2>',
+			'</h1>',
+		), array(
+			'<h5',
+			'<h4',
+			'<h3',
+			'<h2',
+			'</h5>',
+			'</h4>',
+			'</h3>',
+			'</h2>',
+		), $panel );
+
+		echo $panel;
 
 		echo '</div>';
-		echo '</div>';
 
+		$this->after_debug_bar_output();
 	}
 
 }
