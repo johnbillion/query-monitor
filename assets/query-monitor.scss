@@ -11,7 +11,7 @@ $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
-$qm-font-code-line-height: 19px;
+$qm-font-code-line-height: 18px;
 
 /* === Admin Toolbar === */
 
@@ -151,7 +151,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	border: none !important;
 	padding: 0 !important;
 	margin: 0 !important;
-	vertical-align: top !important;
+	vertical-align: baseline !important;
 	text-shadow: none !important;
 	text-transform: none !important;
 	-webkit-font-smoothing: auto !important;
