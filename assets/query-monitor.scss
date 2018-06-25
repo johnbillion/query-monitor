@@ -190,161 +190,162 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	height: 40%;
 }
 
-#qm-wrapper {
-	display: flex;
-	flex-grow: 1 !important;
-	/* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
-	min-height: 0;
-}
-
-#qm-title {
-	background: $qm-container-bg !important;
-	border-bottom: 1px solid $qm-panel-border !important;
-	cursor: ns-resize !important;
-	align-items:  center !important;
-	display: flex !important;
-	padding: 0 0 0 5px !important;
-	height: 27px !important;
-	flex-shrink: 0 !important;
-	-moz-user-select: none !important;
-	-ms-user-select: none !important;
-	-webkit-user-select: none !important;
-	user-select: none !important;
-}
-
-#qm-title .qm-title-heading {
-	flex-grow: 1 !important;
-	border-right: 1px solid #bbb !important;
-	margin-right: 8px !important;
-}
-
-#qm-title div.qm-title-heading {
-	display: none;
-}
-
-#qm-title .qm-title-button {
-	flex-shrink: 0 !important;
-}
-
-#qm-title .dashicons {
-	transition: none !important;
-}
-
-#qm-title .qm-button-container-settings .dashicons,
-#qm-title .qm-button-container-pin .dashicons {
-	font-size: 17px !important;
-	margin: 3px 0 2px !important;
-}
-
-#qm-title .qm-button-container-close .dashicons {
-	margin: 2px 0 3px !important;
-}
-
-#qm-title button {
-	color: #666 !important;
-	cursor: pointer !important;
-	margin: 0 0 0 0px !important;
-	display: inline-block !important;
-	padding: 0px 4px !important;
-}
-
-#qm-title button:focus,
-#qm-title button:hover {
-	color: #000 !important;
-	background: #e6e6e6 !important;
-}
-
-#qm-title button:active {
-	background: #ccc !important;
-}
-
-#qm-title button.qm-button-active {
-	color: #3879d9 !important;
-}
-
-#qm-title .qm-button-container-pin.qm-button-active .dashicons {
-	transform: rotate( -45deg ) !important;
-}
-
-#qm-title .qm-button-container-pin.qm-button-active .dashicons:before {
-	margin-left: 2px !important;
-}
-
-#query-monitor .qm {
-	display: none !important;
-}
-
-#qm-panel-menu {
-	overflow-y:  scroll !important;
-	flex-shrink: 0 !important;
-	background: $qm-container-overflow !important;
-	overscroll-behavior: contain !important;
-}
-
-#qm-panel-menu ul {
-	padding: 0 !important;
-	margin: 0 !important;
-}
-
-#qm-panel-menu li {
-	padding: 0 !important;
-	margin: 0 !important;
-}
-
-#qm-panel-menu li button {
-	display: block !important;
-	padding: 8px 28px 8px 6px !important;
-	color: $qm-panel-menu-fg !important;
-	text-decoration: none !important;
-	border-bottom: 1px solid $qm-panel-menu-border !important;
-	position: relative !important;
-	border-right: 1px solid $qm-panel-border !important;
-	background: $qm-panel-menu-bg !important;
-	width: 100% !important;
-	cursor: pointer !important;
-}
-
-#qm-panel-menu li button:focus,
-#qm-panel-menu li button:hover {
-	background: $qm-panel-menu-bg-hover !important;
-	color: $qm-panel-menu-fg-hover !important;
-}
-
-#qm-panel-menu li button:focus {
-	text-decoration: underline !important;
-}
-
-#qm-panel-menu li button.qm-selected-menu {
-	background: $qm-panel-menu-bg-selected !important;
-	color: $qm-panel-menu-fg-selected !important;
-	text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
-}
-
-#qm-panel-menu li button.qm-selected-menu:focus {
-	background: $qm-panel-menu-bg-selected-focus !important;
-	color: $qm-panel-menu-fg-selected !important;
-}
-
-#qm-panel-menu li button.qm-selected-menu:after {
-	right: -1px;
-	border: solid 8px transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-	border-right-color: $qm-panel-bg;
-	top: 50%;
-	margin-top: -8px;
-}
-
-#qm-panels {
-	flex-grow: 1 !important;
-	overflow-y: scroll !important;
-	overscroll-behavior: contain !important;
-}
-
 #query-monitor {
+
+	#qm-wrapper {
+		display: flex;
+		flex-grow: 1 !important;
+		/* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
+		min-height: 0;
+	}
+
+	#qm-title {
+		background: $qm-container-bg !important;
+		border-bottom: 1px solid $qm-panel-border !important;
+		cursor: ns-resize !important;
+		align-items:  center !important;
+		display: flex !important;
+		padding: 0 0 0 5px !important;
+		height: 27px !important;
+		flex-shrink: 0 !important;
+		-moz-user-select: none !important;
+		-ms-user-select: none !important;
+		-webkit-user-select: none !important;
+		user-select: none !important;
+	}
+
+	#qm-title .qm-title-heading {
+		flex-grow: 1 !important;
+		border-right: 1px solid #bbb !important;
+		margin-right: 8px !important;
+	}
+
+	#qm-title div.qm-title-heading {
+		display: none;
+	}
+
+	#qm-title .qm-title-button {
+		flex-shrink: 0 !important;
+	}
+
+	#qm-title .dashicons {
+		transition: none !important;
+	}
+
+	#qm-title .qm-button-container-settings .dashicons,
+	#qm-title .qm-button-container-pin .dashicons {
+		font-size: 17px !important;
+		margin: 3px 0 2px !important;
+	}
+
+	#qm-title .qm-button-container-close .dashicons {
+		margin: 2px 0 3px !important;
+	}
+
+	#qm-title button {
+		color: #666 !important;
+		cursor: pointer !important;
+		margin: 0 0 0 0px !important;
+		display: inline-block !important;
+		padding: 0px 4px !important;
+	}
+
+	#qm-title button:focus,
+	#qm-title button:hover {
+		color: #000 !important;
+		background: #e6e6e6 !important;
+	}
+
+	#qm-title button:active {
+		background: #ccc !important;
+	}
+
+	#qm-title button.qm-button-active {
+		color: #3879d9 !important;
+	}
+
+	#qm-title .qm-button-container-pin.qm-button-active .dashicons {
+		transform: rotate( -45deg ) !important;
+	}
+
+	#qm-title .qm-button-container-pin.qm-button-active .dashicons:before {
+		margin-left: 2px !important;
+	}
+
+	.qm {
+		display: none !important;
+	}
+
+	#qm-panel-menu {
+		overflow-y:  scroll !important;
+		flex-shrink: 0 !important;
+		background: $qm-container-overflow !important;
+		overscroll-behavior: contain !important;
+	}
+
+	#qm-panel-menu ul {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	#qm-panel-menu li {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	#qm-panel-menu li button {
+		display: block !important;
+		padding: 8px 28px 8px 6px !important;
+		color: $qm-panel-menu-fg !important;
+		text-decoration: none !important;
+		border-bottom: 1px solid $qm-panel-menu-border !important;
+		position: relative !important;
+		border-right: 1px solid $qm-panel-border !important;
+		background: $qm-panel-menu-bg !important;
+		width: 100% !important;
+		cursor: pointer !important;
+	}
+
+	#qm-panel-menu li button:focus,
+	#qm-panel-menu li button:hover {
+		background: $qm-panel-menu-bg-hover !important;
+		color: $qm-panel-menu-fg-hover !important;
+	}
+
+	#qm-panel-menu li button:focus {
+		text-decoration: underline !important;
+	}
+
+	#qm-panel-menu li button.qm-selected-menu {
+		background: $qm-panel-menu-bg-selected !important;
+		color: $qm-panel-menu-fg-selected !important;
+		text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
+	}
+
+	#qm-panel-menu li button.qm-selected-menu:focus {
+		background: $qm-panel-menu-bg-selected-focus !important;
+		color: $qm-panel-menu-fg-selected !important;
+	}
+
+	#qm-panel-menu li button.qm-selected-menu:after {
+		right: -1px;
+		border: solid 8px transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-right-color: $qm-panel-bg;
+		top: 50%;
+		margin-top: -8px;
+	}
+
+	#qm-panels {
+		flex-grow: 1 !important;
+		overflow-y: scroll !important;
+		overscroll-behavior: contain !important;
+	}
+
 	.qm.qm-panel-show {
 		display: block !important;
 	}
