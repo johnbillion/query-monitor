@@ -187,8 +187,8 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['error_reporting'] = error_reporting();
 		$this->data['php']['error_levels']    = self::get_error_levels( $this->data['php']['error_reporting'] );
 
-		$this->data['wp'] = array(
-			'version'             => $wp_version,
+		$this->data['wp']['version']   = $wp_version;
+		$this->data['wp']['constants'] = array(
 			'WP_DEBUG'            => self::format_bool_constant( 'WP_DEBUG' ),
 			'WP_DEBUG_DISPLAY'    => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
 			'WP_DEBUG_LOG'        => self::format_bool_constant( 'WP_DEBUG_LOG' ),
@@ -201,7 +201,7 @@ class QM_Collector_Environment extends QM_Collector {
 		);
 
 		if ( is_multisite() ) {
-			$this->data['wp']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
+			$this->data['wp']['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
 		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) { // WPCS: input var ok
