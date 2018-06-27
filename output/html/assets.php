@@ -218,8 +218,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			);
 		}
 		echo '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ' ', array_map( 'esc_html', $deps ) ) . '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ' ', array_map( 'esc_html', $dependents ) ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ', ', array_map( 'esc_html', $deps ) ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td class="qm-ltr">' . esc_html( $ver ) . '</td>';
 
 	}
