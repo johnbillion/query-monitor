@@ -184,7 +184,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer = new QM_Timer;
 			$timer->start();
 
+			printf(
+				"\n" . '<!-- Begin %s output -->' . "\n",
+				esc_html( $id )
+			);
 			$output->output();
+			printf(
+				"\n" . '<!-- End %s output -->' . "\n",
+				esc_html( $id )
+			);
 
 			$output->set_timer( $timer->stop() );
 		}
