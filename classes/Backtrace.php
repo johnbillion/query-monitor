@@ -237,7 +237,7 @@ class QM_Backtrace {
 				$return = null;
 			} elseif ( isset( self::$ignore_method[ $trace['class'] ][ $trace['function'] ] ) ) {
 				$return = null;
-			} elseif ( 0 === strpos( $trace['class'], 'QM_' ) ) {
+			} elseif ( 0 === strpos( $trace['class'], 'QM' ) ) {
 				$return = null;
 			} else {
 				$return['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';

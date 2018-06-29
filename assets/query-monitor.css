@@ -54,6 +54,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
 #wp-admin-bar-query-monitor-expensive a,
+#wp-admin-bar-query-monitor-logger-warning a,
 #wp-admin-bar-query-monitor-warnings a,
 #wp-admin-bar-query-monitor-errors a {
   color: #eee !important;
