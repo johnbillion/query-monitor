@@ -53,7 +53,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 
 		if ( $data['time_limit'] > 0 ) {
-			echo '<br><span class="qm-info">';
+			if ( $data['display_time_usage_warning'] ) {
+				echo '<br><span class="qm-warn">';
+			} else {
+				echo '<br><span class="qm-info">';
+			}
 			echo esc_html( sprintf(
 				/* translators: 1: Percentage of time limit used, 2: Time limit in seconds */
 				__( '%1$s%% of %2$ss limit', 'query-monitor' ),
@@ -83,7 +87,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			) );
 
 			if ( $data['memory_limit'] > 0 ) {
-				echo '<br><span class="qm-info">';
+				if ( $data['display_memory_usage_warning'] ) {
+					echo '<br><span class="qm-warn">';
+				} else {
+					echo '<br><span class="qm-info">';
+				}
 				echo esc_html( sprintf(
 					/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
 					__( '%1$s%% of %2$s kB limit', 'query-monitor' ),

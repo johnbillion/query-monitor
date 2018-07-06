@@ -53,6 +53,9 @@ class QM_Collector_Overview extends QM_Collector {
 			$this->data['memory_usage'] = 0;
 		}
 
+		$this->data['display_time_usage_warning']   = ( $this->data['time_usage'] >= 75 );
+		$this->data['display_memory_usage_warning'] = ( $this->data['memory_usage'] >= 75 );
+
 		$this->data['is_admin'] = is_admin();
 	}
 
