@@ -362,6 +362,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm-boxed {
 		display: flex !important;
+		flex-wrap: wrap !important;
 	}
 
 	.qm-boxed:not(#qm-broken) + .qm-boxed {
