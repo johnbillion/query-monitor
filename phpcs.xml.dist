@@ -24,6 +24,7 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions.cookies_setcookie" />
 		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE" />
 		<exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />
+		<exclude name="WordPress.VIP.RestrictedFunctions.wp_is_mobile_wp_is_mobile" />
 
 		<!-- QM currently supports WordPress versions older than 4.4: -->
 		<exclude name="WordPress.WP.AlternativeFunctions.parse_url_parse_url" />

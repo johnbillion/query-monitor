@@ -226,6 +226,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$class[] = 'qm-peek';
 		}
 
+		if ( wp_is_mobile() ) {
+			$class[] = 'qm-touch';
+		}
+
 		$json = array(
 			'menu'        => $this->js_admin_bar_menu(),
 			'ajax_errors' => array(), # @TODO move this into the php_errors collector

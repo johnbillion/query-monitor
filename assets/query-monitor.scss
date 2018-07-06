@@ -798,8 +798,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: inline-block !important;
 }
 
+#query-monitor.qm-touch .qm a.qm-edit-link:after,
 #query-monitor .qm a.qm-edit-link:hover:after,
 #query-monitor .qm a.qm-edit-link:focus:after,
+#query-monitor.qm-touch .qm a.qm-filter-trigger:after,
 #query-monitor .qm a.qm-filter-trigger:hover:after,
 #query-monitor .qm a.qm-filter-trigger:focus:after {
 	visibility: visible !important;
