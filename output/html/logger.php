@@ -23,8 +23,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		$levels = array_map( 'ucfirst', $this->collector->get_levels() );
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table>';
+		$this->before_tabular_output();
 
 		echo '<thead>';
 		echo '<tr>';
@@ -109,9 +108,8 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		}
 
 		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
 
+		$this->after_tabular_output();
 	}
 
 	public function admin_class( array $class ) {
