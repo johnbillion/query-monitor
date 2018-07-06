@@ -150,9 +150,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 				$info = array(
 					'rdbms'          => __( 'RDBMS', 'query-monitor' ),
-					'server version' => __( 'Server Version', 'query-monitor' ),
+					'server-version' => __( 'Server Version', 'query-monitor' ),
 					'extension'      => __( 'Extension', 'query-monitor' ),
-					'client version' => __( 'Client Version', 'query-monitor' ),
+					'client-version' => __( 'Client Version', 'query-monitor' ),
 					'user'           => __( 'User', 'query-monitor' ),
 					'host'           => __( 'Host', 'query-monitor' ),
 					'database'       => __( 'Database', 'query-monitor' ),

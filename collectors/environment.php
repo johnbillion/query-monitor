@@ -143,9 +143,9 @@ class QM_Collector_Environment extends QM_Collector {
 
 				$info = array(
 					'rdbms'          => $rdbms,
-					'server version' => $server,
+					'server-version' => $server,
 					'extension'      => $extension,
-					'client version' => $client_version,
+					'client-version' => $client_version,
 					'user'           => $db->dbuser,
 					'host'           => $db->dbhost,
 					'database'       => $db->dbname,
