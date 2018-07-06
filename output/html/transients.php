@@ -50,25 +50,26 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 				);
 				if ( is_multisite() ) {
 					printf(
-						'<td class="qm-ltr">%s</td>',
+						'<td class="qm-ltr qm-nowrap">%s</td>',
 						esc_html( $row['type'] )
 					);
 				}
 
 				if ( 0 === $row['expiration'] ) {
 					printf(
-						'<td><em>%s</em></td>',
+						'<td class="qm-nowrap"><em>%s</em></td>',
 						esc_html__( 'none', 'query-monitor' )
 					);
 				} else {
 					printf(
-						'<td>%s</td>',
-						esc_html( $row['expiration'] )
+						'<td class="qm-nowrap">%s <span class="qm-info">(~%s)</span></td>',
+						esc_html( $row['expiration'] ),
+						esc_html( human_time_diff( 0, $row['expiration'] ) )
 					);
 				}
 
 				printf(
-					'<td>~%s</td>',
+					'<td class="qm-nowrap">~%s</td>',
 					esc_html( size_format( $row['size'] ) )
 				);
 
