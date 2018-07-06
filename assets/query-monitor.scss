@@ -930,6 +930,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow {
+	font-family: dashicons !important;
 	font-size: 24px !important;
 	color: #ccc !important;
 	margin: 0 !important;
@@ -948,7 +949,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
 	content: "\f140" !important;
-	top: 1px !important;
+	top: 3px !important;
 	right: 0 !important;
 	position: absolute !important;
 }
