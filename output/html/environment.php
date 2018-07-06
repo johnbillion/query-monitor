@@ -204,7 +204,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					if ( is_numeric( $val ) and ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
-							'<br><span class="qm-info qm-supplemental">~%s</span>',
+							'&nbsp;<span class="qm-info">(~%s)</span>',
 							esc_html( size_format( $val ) )
 						);
 					}
