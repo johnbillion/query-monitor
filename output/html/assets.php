@@ -210,9 +210,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				 '<span class="qm-warn">%s</span>',
 				esc_html( $src )
 			);
-		} else {
+		} elseif ( ! empty( $src ) ) {
 			printf(
-				'<a href="%s">%s</a>',
+				'<a href="%s" class="qm-link">%s</a>',
 				esc_attr( $src ),
 				esc_html( $src )
 			);

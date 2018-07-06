@@ -794,14 +794,25 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	color: $qm-link-fg-hover !important;
 }
 
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor .qm a.qm-link:after,
 #query-monitor .qm a.qm-edit-link:after,
 #query-monitor .qm a.qm-filter-trigger:after {
 	font-family: dashicons !important;
 	text-decoration: none !important;
 	visibility: hidden !important;
 	display: inline-block !important;
+	font-size: 13px !important;
+	line-height: 15px !important;
+	position: relative !important;
+	top: 2px !important;
+	left: 2px !important;
 }
 
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor.qm-touch .qm a.qm-link:after,
+#query-monitor .qm a.qm-link:hover:after,
+#query-monitor .qm a.qm-link:focus:after,
 #query-monitor.qm-touch .qm a.qm-edit-link:after,
 #query-monitor .qm a.qm-edit-link:hover:after,
 #query-monitor .qm a.qm-edit-link:focus:after,
@@ -813,18 +824,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm a.qm-filter-trigger:after {
 	content: '\f536' !important;
-	font-size: 13px !important;
-	line-height: 15px !important;
-	position: relative !important;
-	top: 2px !important;
 }
 
 #query-monitor .qm a.qm-edit-link:after {
 	content: '\f464' !important;
-	font-size: 15px !important;
-	line-height: 15px !important;
-	position: relative !important;
-	top: 2px !important;
+}
+
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor .qm a.qm-link:after {
+	content: '\f504' !important;
 }
 
 #query-monitor #qm-ajax-errors {

@@ -157,7 +157,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			) );
 			if ( $cache_data['display_hit_rate_warning'] ) {
 				printf(
-					'<br><a href="%s">%s</a>',
+					'<br><a href="%s" class="qm-external-link">%s</a>',
 					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
 					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
@@ -165,7 +165,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			if ( $cache_data['ext_object_cache'] ) {
 				echo '<br><span class="qm-info">';
 				printf(
-					'<a href="%s">%s</a>',
+					'<a href="%s" class="qm-link">%s</a>',
 					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
 					esc_html__( 'External object cache in use', 'query-monitor' )
 				);

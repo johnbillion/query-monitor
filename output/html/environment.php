@@ -30,7 +30,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		if ( $php_warning ) {
 			$append .= sprintf(
-				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
 				'https://wordpress.org/support/upgrade-php/',
 				esc_html__( 'Help', 'query-monitor' )
 			);
@@ -196,7 +196,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					if ( $show_warning ) {
 						$append .= sprintf(
-							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank">%s</a>)</span>',
+							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
 							esc_url( sprintf( $search, rawurlencode( $key ) ) ),
 							esc_html__( 'Help', 'query-monitor' )
 						);
