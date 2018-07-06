@@ -135,7 +135,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( isset( $action['callback']['file'] ) ) {
 						if ( self::has_clickable_links() ) {
-							echo '<td class="qm-wrap qm-ltr' . esc_attr( $class ) . '">';
+							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</td>';
 						} else {
@@ -147,7 +147,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							echo '</ol></td>';
 						}
 					} else {
-						echo '<td class="qm-ltr qm-wrap' . esc_attr( $class ) . '">';
+						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
 					}
 

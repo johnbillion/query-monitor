@@ -177,7 +177,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$show_toggle = ( ! empty( $row['transport'] ) && ! empty( $row['info'] ) );
 
-				echo '<td class="qm-has-toggle"><div class="qm-toggler">';
+				echo '<td class="qm-has-toggle qm-col-status"><div class="qm-toggler">';
 				if ( $is_error ) {
 					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				}
