@@ -336,6 +336,8 @@ if ( window.jQuery ) {
 				console.groupEnd();
 			}
 
+			$( '#qm-ajax-errors' ).show();
+
 			return event;
 
 		} );

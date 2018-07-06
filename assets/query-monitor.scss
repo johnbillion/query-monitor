@@ -818,6 +818,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	position: absolute !important;
 }
 
+#query-monitor #qm-ajax-errors {
+	display: none;
+}
+
 /* Filters */
 
 #query-monitor button,
