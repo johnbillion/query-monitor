@@ -121,6 +121,7 @@ class QM_Collector_Theme extends QM_Collector {
 			$this->data['template_hierarchy']   = array_unique( $this->data['template_hierarchy'] );
 
 			foreach ( get_included_files() as $file ) {
+				$file = wp_normalize_path( $file );
 				$filename = str_replace( array(
 					$stylesheet_directory,
 					$template_directory,
