@@ -931,11 +931,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow {
 	font-family: dashicons !important;
-	font-size: 24px !important;
+	font-size: 23px !important;
 	color: #ccc !important;
 	margin: 0 !important;
 	width: 16px !important;
 	height: 10px !important;
+	display: block !important;
 }
 
 #query-monitor .qm  .qm-sorted-desc .qm-sort-arrow,
@@ -949,7 +950,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
 	content: "\f140" !important;
-	top: 3px !important;
+	top: 4px !important;
 	right: 0 !important;
 	position: absolute !important;
 }
