@@ -355,7 +355,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<p>';
 		printf(
 			/* translators: %s: Name of the config file */
-			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behaviour of Query Monitor:', 'query-monitor' ),
+			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behavior of Query Monitor:', 'query-monitor' ),
 			'<code>wp-config.php</code>'
 		);
 		echo '</p>';
