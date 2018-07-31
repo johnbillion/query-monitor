@@ -224,7 +224,7 @@ class QM_Backtrace {
 			/**
 			 * Whether or not to ignore classes.
 			 *
-			 * @since {version}
+			 * @since 2.7.0
 			 *
 			 * @param  bool $ignore_class Ignore the class or not.
 			 */
@@ -233,7 +233,7 @@ class QM_Backtrace {
 			/**
 			 * Whether or not to ignore class method.
 			 *
-			 * @since {version}
+			 * @since 2.7.0
 			 *
 			 * @param  bool $ignore_method Ignore the method or not.
 			 */
@@ -242,7 +242,7 @@ class QM_Backtrace {
 			/**
 			 * Whether or not to ignore functions.
 			 *
-			 * @since {version}
+			 * @since 2.7.0
 			 *
 			 * @param  bool $ignore_func Ignore the function or not.
 			 */
@@ -251,9 +251,9 @@ class QM_Backtrace {
 			/**
 			 * Whether or not to show the passed arguements.
 			 *
-			 * @since {version}
+			 * @since 2.7.0
 			 *
-			 * @param  bool $show_args Ignore the args or not.
+			 * @param  bool $show_args Show the args or not.
 			 */
 			self::$show_args     = apply_filters( 'qm/trace/show_args',     self::$show_args );
 

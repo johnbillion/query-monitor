@@ -377,7 +377,7 @@ abstract class QM_Output_Html extends QM_Output {
 			/**
 			 * Filters the file link format.
 			 *
-			 * @since {version}
+			 * @since 3.0.0
 			 *
 			 * @param string $format The format of the file link.
 			 */
@@ -396,7 +396,7 @@ abstract class QM_Output_Html extends QM_Output {
 		/**
 		 * The file path map.
 		 *
-		 * @since {version}
+		 * @since 3.0.0
 		 *
 		 * @param array $file_map Array of file paths.
 		 */

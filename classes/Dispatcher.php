@@ -35,7 +35,7 @@ abstract class QM_Dispatcher {
 		 *
 		 * The dynamic portion of the hook name, `$this->id`, refers to the dispatcher ID.
 		 *
-		 * @since  {version}
+		 * @since  2.8.0
 		 *
 		 * @param bool $true Whether or not to disable.
 		 */
@@ -56,7 +56,7 @@ abstract class QM_Dispatcher {
 		 *
 		 * The dynamic portion of the hook name, `$outputter_id`, refers to the outputter ID.
 		 *
-		 * @since  {version}
+		 * @since  2.8.0
 		 *
 		 * @param array $array The list of outputters.
 		 * @param array $collectors List of collectors.

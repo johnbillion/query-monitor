@@ -18,7 +18,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 		/**
 		 * Allows users to filter the conditionals.
 		 *
-		 * @since {version}
+		 * @since 2.7.0
 		 *
 		 * @param array $conditionals The list of WordPress conditional functions.
 		 */

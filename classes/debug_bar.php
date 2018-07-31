@@ -26,7 +26,7 @@ class Debug_Bar {
 		/**
 		 * Fires after scripts have been enqueued.
 		 *
-		 * @since  {version}
+		 * @since  2.7.0
 		 */
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
@@ -37,7 +37,7 @@ class Debug_Bar {
 		/**
 		 * Filters the debug bar panel list.
 		 *
-		 * @since  {version}
+		 * @since  2.7.0
 		 *
 		 * @param array array() List of panels.
 		 */

@@ -79,7 +79,7 @@ class QM_Collector_Request extends QM_Collector {
 		/**
 		 * A list of the plugin's query variables.
 		 *
-		 * @since  {version}
+		 * @since  2.6.0
 		 *
 		 * @param array $plugin_qvars Array of query_vars.
 		 */

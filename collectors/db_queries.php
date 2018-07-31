@@ -56,7 +56,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		/**
 		 * Allows the user to filter the database objects.
 		 *
-		 * @since {version}
+		 * @since 2.7.0
 		 *
 		 * @param array $db_objects Associative array of globals.
 		 */

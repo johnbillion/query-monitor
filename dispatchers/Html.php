@@ -214,7 +214,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Allows the user to filter the menu.
 		 *
-		 * @since {version}
+		 * @since 3.0.0
 		 *
 		 * @param array $menus Array of menus.
 		 */
@@ -223,7 +223,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Allows the user to filter the panel menu.
 		 *
-		 * @since {version}
+		 * @since 3.0.0
 		 *
 		 * @param array $admin_bar_men Array of menus.
 		 * @var [type]
@@ -416,7 +416,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Fires after settings but before the panel closing tag.
 		 *
-		 * @since  {version}
+		 * @since  3.1.0
 		 *
 		 * @param  obj $this The HTML dispatcher instance.
 		 * @param  array $this->outputters The list of outputters.
@@ -480,7 +480,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Allows user to filter the menu classes used on output.
 		 *
-		 * @since {version}
+		 * @since 2.7.0
 		 *
 		 * @param array $menu_classes Array of menu classes.
 		 */
@@ -493,7 +493,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Allows the user to filter the title.
 		 *
-		 * @since {version}
+		 * @since 2.7.0
 		 *
 		 * @param array $output_title List of titles.
 		 */
