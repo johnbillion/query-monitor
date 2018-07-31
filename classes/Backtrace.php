@@ -221,11 +221,42 @@ class QM_Backtrace {
 
 		if ( ! self::$filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
-			# Only run apply_filters on these once
+			/**
+			 * Whether or not to ignore classes.
+			 *
+			 * @since {version}
+			 *
+			 * @param  bool $ignore_class Ignore the class or not.
+			 */
 			self::$ignore_class  = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
+
+			/**
+			 * Whether or not to ignore class method.
+			 *
+			 * @since {version}
+			 *
+			 * @param  bool $ignore_method Ignore the method or not.
+			 */
 			self::$ignore_method = apply_filters( 'qm/trace/ignore_method', self::$ignore_method );
+
+			/**
+			 * Whether or not to ignore functions.
+			 *
+			 * @since {version}
+			 *
+			 * @param  bool $ignore_func Ignore the function or not.
+			 */
 			self::$ignore_func   = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
+
+			/**
+			 * Whether or not to show the passed arguements.
+			 *
+			 * @since {version}
+			 *
+			 * @param  bool $show_args Ignore the args or not.
+			 */
 			self::$show_args     = apply_filters( 'qm/trace/show_args',     self::$show_args );
+
 			self::$filtered = true;
 
 		}

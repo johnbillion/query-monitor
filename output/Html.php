@@ -373,6 +373,14 @@ abstract class QM_Output_Html extends QM_Output {
 	public static function get_file_link_format() {
 		if ( ! isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
+
+			/**
+			 * Filters the file link format.
+			 *
+			 * @since {version}
+			 *
+			 * @param string $format The format of the file link.
+			 */
 			$format = apply_filters( 'qm/output/file_link_format', $format );
 			if ( empty( $format ) ) {
 				self::$file_link_format = false;
@@ -385,7 +393,13 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	public static function get_file_path_map() {
-		// @TODO document this!
+		/**
+		 * The file path map.
+		 *
+		 * @since {version}
+		 *
+		 * @param array $file_map Array of file paths.
+		 */
 		return apply_filters( 'qm/output/file_path_map', array() );
 	}
 

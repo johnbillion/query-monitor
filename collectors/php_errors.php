@@ -35,6 +35,17 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
 
+		/**
+		 * Fires before setting the error type.
+		 *
+		 * @since  {version}
+		 *
+		 * @param  int $errno The error number.
+		 * @param  string $message The error message.
+		 * @param string $file The file location.
+		 * @param string $line The line number.
+		 * @param string $context The context being passed.
+		 */
 		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
 
 		switch ( $errno ) {
@@ -114,6 +125,13 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			);
 		}
 
+		/**
+		 * Whether or not the error handler should return values.
+		 *
+		 * @since  {version}
+		 *
+		 * @param bool $return_value true|false.
+		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
 	}

@@ -186,6 +186,13 @@ class QM_Collector_HTTP extends QM_Collector {
 			return;
 		}
 
+		/**
+		 * List of silent HTTP errors to check for.
+		 *
+		 * @since {version}
+		 *
+		 * @param array $http_errors List of HTTP errors.
+		 */
 		$silent = apply_filters( 'qm/collect/silent_http_errors', array(
 			'http_request_not_executed',
 			'airplane_mode_enabled',
