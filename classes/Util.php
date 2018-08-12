@@ -263,10 +263,8 @@ class QM_Util {
 	}
 
 	public static function is_ajax() {
-		if ( defined( 'DOING_AJAX' ) and DOING_AJAX ) {
-			return true;
-		}
-		return false;
+
+		return function_exists( 'wp_doing_ajax' ) ? wp_doing_ajax() : apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
 	}
 
 	public static function is_async() {
