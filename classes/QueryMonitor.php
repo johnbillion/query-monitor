@@ -12,6 +12,8 @@ class QueryMonitor extends QM_Plugin {
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_action( 'init',           array( $this, 'action_init' ) );
+		add_action( 'members_register_caps',       array( $this, 'action_register_members_caps' ) );
+		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
 
 		# Filters
 		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 3 );
@@ -97,6 +99,34 @@ class QueryMonitor extends QM_Plugin {
 			esc_html__( 'The symlink at %s is no longer pointing to the correct location. Please remove the symlink, then deactivate and reactivate Query Monitor.', 'query-monitor' ),
 			'<code>' . esc_html( $db ) . '</code>'
 		), E_USER_WARNING );
+	}
+
+	/**
+	 * Registers the Query Monitor user capability group for the Members plugin.
+	 *
+	 * @link https://wordpress.org/plugins/members/
+	 */
+	public function action_register_members_groups() {
+		members_register_cap_group( 'query_monitor', array(
+			'label'    => __( 'Query Monitor', 'query-monitor' ),
+			'caps'     => array(
+				'view_query_monitor',
+			),
+			'icon'     => 'dashicons-admin-tools',
+			'priority' => 30,
+		) );
+	}
+
+	/**
+	 * Registers the View Query Monitor user capability for the Members plugin.
+	 *
+	 * @link https://wordpress.org/plugins/members/
+	 */
+	public function action_register_members_caps() {
+		members_register_cap( 'view_query_monitor', array(
+			'label' => _x( 'View Query Monitor', 'Human readable label for the user capability required to view Query Monitor.', 'query-monitor' ),
+			'group' => 'query_monitor'
+		) );
 	}
 
 	public static function init( $file = null ) {
