@@ -17,6 +17,8 @@ class QueryMonitor extends QM_Plugin {
 
 		# Filters
 		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 3 );
+		add_filter( 'ure_built_in_wp_caps',         array( $this, 'filter_ure_caps' ) );
+		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -127,6 +129,41 @@ class QueryMonitor extends QM_Plugin {
 			'label' => _x( 'View Query Monitor', 'Human readable label for the user capability required to view Query Monitor.', 'query-monitor' ),
 			'group' => 'query_monitor'
 		) );
+	}
+
+	/**
+	 * Registers the Query Monitor user capability group for the User Role Editor plugin.
+	 *
+	 * @link https://wordpress.org/plugins/user-role-editor/
+	 *
+	 * @param array[] $groups Array of existing groups.
+	 * @return array[] Updated array of groups.
+	 */
+	public function filter_ure_groups( array $groups ) {
+        $groups['query_monitor'] = array(
+			'caption' => esc_html__( 'Query Monitor', 'query-monitor' ),
+			'parent'  => 'custom',
+			'level'   => 2,
+		);
+
+		return $groups;
+	}
+
+	/**
+	 * Registers the View Query Monitor user capability for the User Role Editor plugin.
+	 *
+	 * @link https://wordpress.org/plugins/user-role-editor/
+	 *
+	 * @param array[] $caps Array of existing capabilities.
+	 * @return array[] Updated array of capabilities.
+	 */
+	public function filter_ure_caps( array $caps ) {
+		$caps['view_query_monitor'] = array(
+			'custom',
+			'query_monitor',
+		);
+
+		return $caps;
 	}
 
 	public static function init( $file = null ) {
