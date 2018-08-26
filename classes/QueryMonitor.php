@@ -56,6 +56,10 @@ class QueryMonitor extends QM_Plugin {
 			return $user_caps;
 		}
 
+		if ( array_key_exists( 'view_query_monitor', $user_caps ) ) {
+			return $user_caps;
+		}
+
 		if ( ! is_multisite() && user_can( $args[1], 'manage_options' ) ) {
 			$user_caps['view_query_monitor'] = true;
 		}
