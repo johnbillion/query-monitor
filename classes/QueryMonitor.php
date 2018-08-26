@@ -16,7 +16,7 @@ class QueryMonitor extends QM_Plugin {
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
 
 		# Filters
-		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 3 );
+		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 4 );
 		add_filter( 'ure_built_in_wp_caps',         array( $this, 'filter_ure_caps' ) );
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 
@@ -44,7 +44,8 @@ class QueryMonitor extends QM_Plugin {
 	 *
 	 * This does not get called for Super Admins.
 	 *
-	 * @param bool[]   $user_caps     Concerned user's capabilities.
+	 * @param bool[]   $user_caps     Array of key/value pairs where keys represent a capability name and boolean values
+	 *                                represent whether the user has that capability.
 	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
 	 * @param array    $args {
 	 *     Arguments that accompany the requested capability check.
@@ -53,9 +54,10 @@ class QueryMonitor extends QM_Plugin {
 	 *     @type int       $1 Concerned user ID.
 	 *     @type mixed  ...$2 Optional second and further parameters.
 	 * }
+	 * @param WP_User  $user          Concerned user object.
 	 * @return bool[] Concerned user's capabilities.
 	 */
-	public function filter_user_has_cap( array $user_caps, array $required_caps, array $args ) {
+	public function filter_user_has_cap( array $user_caps, array $required_caps, array $args, WP_User $user ) {
 		if ( 'view_query_monitor' !== $args[0] ) {
 			return $user_caps;
 		}
