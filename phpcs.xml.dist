@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 
-	<config name="installed_paths" value="../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility" />
+	<config name="installed_paths" value="../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility,../../phpcompatibility/phpcompatibility-wp" />
 	<config name="testVersion" value="5.3-"/>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
@@ -78,6 +78,8 @@
 			<property name="additionalWordDelimiters" value="-/"/>
 		</properties>
 	</rule>
+
+	<rule ref="PHPCompatibilityWP"/>
 
 	<!-- The following files use mysql_*() functions within mysqli conditional logic -->
 	<rule ref="PHPCompatibility.PHP.RemovedExtensions.mysql_DeprecatedRemoved">
