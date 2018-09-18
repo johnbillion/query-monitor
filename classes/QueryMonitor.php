@@ -129,7 +129,7 @@ class QueryMonitor extends QM_Plugin {
 	public function action_register_members_caps() {
 		members_register_cap( 'view_query_monitor', array(
 			'label' => _x( 'View Query Monitor', 'Human readable label for the user capability required to view Query Monitor.', 'query-monitor' ),
-			'group' => 'query_monitor'
+			'group' => 'query_monitor',
 		) );
 	}
 
@@ -142,7 +142,7 @@ class QueryMonitor extends QM_Plugin {
 	 * @return array[] Updated array of groups.
 	 */
 	public function filter_ure_groups( array $groups ) {
-        $groups['query_monitor'] = array(
+		$groups['query_monitor'] = array(
 			'caption' => esc_html__( 'Query Monitor', 'query-monitor' ),
 			'parent'  => 'custom',
 			'level'   => 2,
