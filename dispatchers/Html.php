@@ -185,6 +185,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		$switched_locale = function_exists( 'switch_to_locale' ) && switch_to_locale( get_user_locale() );
+
 		$this->before_output();
 
 		/* @var QM_Output_Html[] */
@@ -206,6 +208,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$this->after_output();
+
+		if ( $switched_locale ) {
+			restore_previous_locale();
+		}
 
 	}
 
