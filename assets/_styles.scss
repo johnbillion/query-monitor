@@ -243,7 +243,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	#qm-title button {
-		color: #666 !important;
+		color: $qm-title-button-fg !important;
+		background: $qm-title-button-bg !important;
 		cursor: pointer !important;
 		margin: 0 0 0 0px !important;
 		display: inline-block !important;
@@ -252,8 +253,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	#qm-title button:focus,
 	#qm-title button:hover {
-		color: #000 !important;
-		background: #e6e6e6 !important;
+		color: $qm-title-button-fg-hover !important;
+		background: $qm-title-button-bg-hover !important;
 	}
 
 	#qm-title button:active {
@@ -632,7 +633,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm td.qm-has-toggle p,
 	.qm .qm-nonselectsql code,
 	.qm .qm-nonselectsql {
-		color: #a0a !important;
+		color: $qm-nonselect-fg !important;
 	}
 
 	.qm .qm-info {
@@ -697,7 +698,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm tbody tr.qm-odd td,
 	.qm tbody tr.qm-odd th {
-		background: #f7f7f7 !important;
+		background: $qm-cell-bg-stripe !important;
 	}
 }
 

@@ -31,6 +31,7 @@ $qm-cell-bg-hover: #eef3fa !default;
 $qm-cell-fg-highlight: $qm-container-fg !default;
 $qm-cell-bg-highlight: #ffd !default;
 $qm-cell-border-highlight: #eec !default;
+$qm-cell-bg-stripe: #f7f7f7 !default;
 $qm-table-header-bg: #fff !default;
 $qm-table-footer-bg: $qm-container-bg !default;
 
@@ -43,8 +44,13 @@ $qm-button-border: darken( $qm-button-bg, 5% ) !default;
 $qm-button-fg-hover: $qm-button-fg !default;
 $qm-button-bg-hover: lighten( $qm-button-bg, 4% ) !default;
 $qm-button-shadow: darken( $qm-button-bg, 5% ) !default;
+$qm-title-button-fg: #666 !default;
+$qm-title-button-bg: transparent !default;
+$qm-title-button-fg-hover: #000 !default;
+$qm-title-button-bg-hover: #e6e6e6 !default;
 
-// Warnings
+// Formatting
 $qm-warn-fg: #800 !default;
 $qm-warn-bg: #fff0f0 !default;
 $qm-warn-border: #ffd6d6 !default;
+$qm-nonselect-fg: #a0a !default;
