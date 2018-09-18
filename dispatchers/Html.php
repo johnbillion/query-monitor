@@ -139,11 +139,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
+		$css = 'query-monitor';
+
+		if ( method_exists( 'Dark_Mode', 'is_using_dark_mode' ) && is_user_logged_in() ) {
+			if ( Dark_Mode::is_using_dark_mode() ) {
+				$css .= '-dark';
+			}
+		}
+
 		wp_enqueue_style(
 			'query-monitor',
-			$this->qm->plugin_url( 'assets/query-monitor.css' ),
+			$this->qm->plugin_url( "assets/{$css}.css" ),
 			array( 'dashicons' ),
-			$this->qm->plugin_ver( 'assets/query-monitor.css' )
+			$this->qm->plugin_ver( "assets/{$css}.css" )
 		);
 		wp_enqueue_script(
 			'query-monitor',
