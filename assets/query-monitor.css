@@ -251,7 +251,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor #qm-panel-menu ul {
   padding: 0 !important;
   margin: 0 !important;
-  list-style: none;
+  list-style: none !important;
 }
 #query-monitor #qm-panel-menu li {
   padding: 0 !important;
