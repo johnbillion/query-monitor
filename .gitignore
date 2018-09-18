@@ -5,5 +5,3 @@
 /node_modules
 /.sass-cache
 /package-lock.json
-*.css.map
-*.js.map
