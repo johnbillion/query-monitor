@@ -1,0 +1,998 @@
+/**
+ * The standard colour scheme for Query Monitor.
+ *
+ * @package query-monitor
+ */
+/**
+ * Dark Mode Colours
+ */
+/** 
+ * The colours below are loosely based on the WordPress branding colours.
+ * https://make.wordpress.org/design/handbook/design-guide/foundations/colors/
+ */
+/**
+ * All the styles for Query Monitor.
+ *
+ * @package query-monitor
+ */
+/* === Admin Toolbar === */
+#wpadminbar .quicklinks .menupop ul li.qm-true > a {
+  color: #8c8 !important;
+}
+#wpadminbar .quicklinks .menupop ul li.qm-true > a:focus, #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
+  color: #52b552 !important;
+}
+#wpadminbar .qm-alert {
+  background-color: #f60;
+}
+#wpadminbar #wp-admin-bar-query-monitor-notices a,
+#wpadminbar .qm-notice {
+  background-color: #740;
+}
+#wpadminbar #wp-admin-bar-query-monitor-deprecateds a,
+#wpadminbar .qm-deprecated {
+  background-color: #3c3c3c;
+}
+#wpadminbar #wp-admin-bar-query-monitor-stricts a,
+#wpadminbar .qm-strict {
+  background-color: #3c3c3c;
+}
+#wpadminbar #wp-admin-bar-query-monitor-expensive a,
+#wpadminbar .qm-expensive {
+  background-color: #b60;
+}
+#wpadminbar #wp-admin-bar-query-monitor-logger-warning a,
+#wpadminbar #wp-admin-bar-query-monitor-warnings a,
+#wpadminbar .qm-warning {
+  background-color: #c00;
+}
+#wpadminbar #wp-admin-bar-query-monitor-logger-warning a:hover,
+#wpadminbar #wp-admin-bar-query-monitor-warnings a:hover,
+#wpadminbar .qm-warning:hover {
+  background-color: #b00;
+  color: #ddd !important;
+}
+#wpadminbar #wp-admin-bar-query-monitor-errors a,
+#wpadminbar .qm-error {
+  background-color: #c00;
+}
+
+#wp-admin-bar-query-monitor *,
+#wp-admin-bar-query-monitor {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+#wp-admin-bar-query-monitor-deprecateds a,
+#wp-admin-bar-query-monitor-stricts a,
+#wp-admin-bar-query-monitor-notices a,
+#wp-admin-bar-query-monitor-expensive a,
+#wp-admin-bar-query-monitor-logger-warning a,
+#wp-admin-bar-query-monitor-warnings a,
+#wp-admin-bar-query-monitor-errors a {
+  color: #eee !important;
+}
+
+#wp-admin-bar-query-monitor small {
+  font-size: 11px !important;
+}
+
+#wp-admin-bar-query-monitor.hover a small,
+#wp-admin-bar-query-monitor.hover a .ab-label {
+  text-shadow: none !important;
+}
+
+#wp-admin-bar-query-monitor-placeholder,
+#wp-admin-bar-query-monitor-default {
+  display: none;
+}
+
+#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+  font: 18px/44px 'Open Sans', sans-serif !important;
+  /* @todo remove open sans */
+  width: auto !important;
+  padding: 0 10px !important;
+  color: #aaa !important;
+  display: none !important;
+}
+
+@media screen and (max-width: 782px) {
+  /* force menu icon to show up */
+  #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
+    display: block !important;
+  }
+
+  /* hide menu text */
+  #wpadminbar #wp-admin-bar-query-monitor .ab-label {
+    display: none !important;
+  }
+}
+/* === Main QM Panel === */
+#query-monitor,
+#query-monitor dl,
+#query-monitor dt,
+#query-monitor dd,
+#query-monitor button,
+#query-monitor label,
+#query-monitor select,
+#query-monitor table,
+#query-monitor td,
+#query-monitor th,
+#query-monitor ul,
+#query-monitor ol,
+#query-monitor li,
+#query-monitor code,
+#query-monitor a,
+#query-monitor h1,
+#query-monitor h2,
+#query-monitor h3,
+#query-monitor h4,
+#query-monitor h5,
+#query-monitor h6,
+#query-monitor p {
+  /* reset */
+  background: transparent !important;
+  color: #bbc8d4 !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  vertical-align: baseline !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+  -webkit-font-smoothing: auto !important;
+  letter-spacing: normal !important;
+  border-radius: 0 !important;
+  transition: none !important;
+  word-wrap: normal !important;
+  word-break: normal !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#query-monitor {
+  background: #23282d !important;
+  margin: 0 !important;
+  border-top: 1px solid #bbc8d4 !important;
+  text-align: left !important;
+  display: none;
+  position: fixed;
+  z-index: 99998 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  direction: ltr !important;
+}
+
+#query-monitor.qm-show,
+#query-monitor.qm-peek {
+  height: 27px;
+  display: flex;
+  flex-direction: column !important;
+}
+
+#query-monitor.qm-show {
+  height: 40%;
+}
+
+#query-monitor #qm-wrapper {
+  display: flex;
+  flex-grow: 1 !important;
+  /* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
+  min-height: 0;
+}
+#query-monitor #qm-title {
+  background: #32373c !important;
+  border-bottom: 1px solid #bbc8d4 !important;
+  cursor: ns-resize !important;
+  align-items: center !important;
+  display: flex !important;
+  padding: 0 0 0 5px !important;
+  height: 27px !important;
+  flex-shrink: 0 !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+#query-monitor #qm-title .qm-title-heading {
+  flex-grow: 1 !important;
+  border-right: 1px solid #bbb !important;
+  margin-right: 8px !important;
+}
+#query-monitor #qm-title div.qm-title-heading {
+  display: none;
+}
+#query-monitor #qm-title .qm-title-button {
+  flex-shrink: 0 !important;
+}
+#query-monitor #qm-title .dashicons {
+  transition: none !important;
+}
+#query-monitor #qm-title .qm-button-container-settings .dashicons,
+#query-monitor #qm-title .qm-button-container-pin .dashicons {
+  font-size: 17px !important;
+  margin: 3px 0 2px !important;
+}
+#query-monitor #qm-title .qm-button-container-close .dashicons {
+  margin: 2px 0 3px !important;
+}
+#query-monitor #qm-title button {
+  color: #bbc8d4 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  margin: 0 0 0 0px !important;
+  display: inline-block !important;
+  padding: 0px 4px !important;
+}
+#query-monitor #qm-title button:focus,
+#query-monitor #qm-title button:hover {
+  color: #32373c !important;
+  background: #bbc8d4 !important;
+}
+#query-monitor #qm-title button:active {
+  background: #ccc !important;
+}
+#query-monitor #qm-title button.qm-button-active {
+  color: #3879d9 !important;
+}
+#query-monitor #qm-title .qm-button-container-pin.qm-button-active .dashicons {
+  transform: rotate(-45deg) !important;
+}
+#query-monitor #qm-title .qm-button-container-pin.qm-button-active .dashicons:before {
+  margin-left: 2px !important;
+}
+#query-monitor .qm {
+  display: none !important;
+}
+#query-monitor #qm-panel-menu {
+  overflow-y: scroll !important;
+  flex-shrink: 0 !important;
+  background: #23282d !important;
+  overscroll-behavior: contain !important;
+}
+#query-monitor #qm-panel-menu ul {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#query-monitor #qm-panel-menu li {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#query-monitor #qm-panel-menu li button {
+  display: block !important;
+  padding: 8px 28px 8px 6px !important;
+  color: #bbc8d4 !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid #32373c !important;
+  position: relative !important;
+  border-right: 1px solid #bbc8d4 !important;
+  background: #23282d !important;
+  width: 100% !important;
+  cursor: pointer !important;
+}
+#query-monitor #qm-panel-menu li button:focus,
+#query-monitor #qm-panel-menu li button:hover {
+  background: #def !important;
+  color: #222 !important;
+}
+#query-monitor #qm-panel-menu li button:focus {
+  text-decoration: underline !important;
+}
+#query-monitor #qm-panel-menu li button.qm-selected-menu {
+  background: #0073aa !important;
+  color: #fff !important;
+  text-shadow: 0 -1px 1px #006291, 1px 0 1px #006291, 0 1px 1px #006291, -1px 0 1px #006291 !important;
+}
+#query-monitor #qm-panel-menu li button.qm-selected-menu:focus {
+  background: #0084c4 !important;
+  color: #fff !important;
+}
+#query-monitor #qm-panel-menu li button.qm-selected-menu:after {
+  right: -1px;
+  border: solid 8px transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #23282d;
+  top: 50%;
+  margin-top: -8px;
+}
+#query-monitor #qm-panels {
+  flex-grow: 1 !important;
+  overflow-y: scroll !important;
+  overscroll-behavior: contain !important;
+}
+#query-monitor .qm.qm-panel-show {
+  display: block !important;
+}
+#query-monitor .qm:focus {
+  outline: 0 !important;
+  /* @TODO might not need this any more */
+}
+#query-monitor .qm-non-tabular {
+  padding: 10px 20px !important;
+}
+#query-monitor .qm-boxed {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+#query-monitor .qm-boxed:not(#qm-broken) + .qm-boxed {
+  border-top: 1px solid #bbc8d4 !important;
+  padding-top: 10px !important;
+}
+#query-monitor .qm-boxed-wrap {
+  flex-wrap: wrap !important;
+}
+#query-monitor .qm .qm-none {
+  margin: 2em !important;
+}
+#query-monitor .qm .qm-none p {
+  text-align: center !important;
+  font-style: italic !important;
+}
+#query-monitor .qm table {
+  color: #bbc8d4 !important;
+  border-collapse: collapse !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  table-layout: auto !important;
+  margin: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #23282d !important;
+}
+#query-monitor .qm table + table {
+  margin-top: 5px !important;
+  border-top: 1px solid #23282d !important;
+}
+#query-monitor #qm-conditionals table,
+#query-monitor #qm-overview table {
+  table-layout: fixed !important;
+}
+#query-monitor .qm tr {
+  border: none !important;
+}
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td,
+#query-monitor .qm tfoot th,
+#query-monitor .qm tfoot td {
+  border: 1px solid #23282d !important;
+  padding: 5px 5px 4px 5px !important;
+}
+#query-monitor .qm tbody th,
+#query-monitor .qm tbody td {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+#query-monitor .qm thead th {
+  box-shadow: 0px 1px 0px #23282d !important;
+  border: 1px solid #23282d !important;
+  border-top: none !important;
+  padding: 5px !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  background: #32373c !important;
+  z-index: 1 !important;
+}
+#query-monitor .qm thead .qm-th {
+  display: flex !important;
+}
+#query-monitor .qm tfoot tr td,
+#query-monitor .qm tfoot tr th {
+  box-shadow: inset 0px 1px 0px #23282d !important;
+  border: 1px solid #23282d !important;
+  border-bottom: none !important;
+  background: #32373c !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  bottom: 0 !important;
+}
+#query-monitor .qm th:first-child,
+#query-monitor .qm td:first-child {
+  border-left: none !important;
+}
+#query-monitor .qm th:last-child,
+#query-monitor .qm td:last-child {
+  border-right: none !important;
+}
+#query-monitor .qm tfoot td.qm-num,
+#query-monitor .qm tfoot th.qm-num,
+#query-monitor .qm thead td.qm-num,
+#query-monitor .qm thead th.qm-num {
+  width: 5.5em !important;
+}
+#query-monitor .qm th.qm-num,
+#query-monitor .qm td.qm-num {
+  text-align: right !important;
+}
+#query-monitor .qm td.qm-row-sql {
+  min-width: 25em !important;
+}
+#query-monitor .qm tr.qm-warn td.qm-col-status,
+#query-monitor .qm td.qm-url,
+#query-monitor .qm th.qm-col-message,
+#query-monitor .qm td.qm-row-component {
+  min-width: 15em !important;
+}
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm td .qm-toggler {
+  padding: 0 22px 0 0 !important;
+  position: relative !important;
+}
+#query-monitor .qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
+  display: none;
+}
+#query-monitor .qm .qm-inner-toggle {
+  padding: 4px 6px !important;
+}
+
+.qm-has-inner .qm-toggled > table {
+  border-top: 1px solid #23282d !important;
+}
+
+.qm-inner {
+  border-collapse: collapse !important;
+  margin: 0 !important;
+  border-style: hidden !important;
+  width: 100% !important;
+}
+
+#query-monitor .qm td.qm-has-inner .qm-toggler,
+#query-monitor .qm td.qm-has-inner {
+  padding: 0 !important;
+}
+#query-monitor .qm-non-tabular h3 {
+  margin: 0 0 15px 0 !important;
+  font-size: 14px !important;
+}
+#query-monitor .qm-non-tabular h4 {
+  margin: 20px 0 10px !important;
+  font-size: 12px !important;
+}
+#query-monitor .qm-non-tabular p {
+  margin-bottom: 10px !important;
+}
+#query-monitor .qm-non-tabular dd {
+  margin: 0 0 10px 10px !important;
+}
+#query-monitor .qm-non-tabular h3 a {
+  float: right !important;
+}
+#query-monitor .qm-non-tabular .qm-item {
+  display: inline-block !important;
+  margin: 0 20px 5px 0 !important;
+}
+#query-monitor .qm-non-tabular .qm-section {
+  margin: 0 0 30px 0 !important;
+}
+#query-monitor .qm-non-tabular .qm-boxed .qm-section {
+  margin: 0 20px 10px 0 !important;
+  border-right: 1px solid #bbc8d4 !important;
+  padding: 10px 20px 10px 0 !important;
+}
+#query-monitor .qm-non-tabular .qm-boxed .qm-section:last-child {
+  margin-right: 0 !important;
+  border-right: none !important;
+  padding-right: 20px !important;
+}
+#query-monitor .qm-non-tabular table {
+  border-bottom-color: #23282d !important;
+}
+#query-monitor .qm ol,
+#query-monitor .qm ul {
+  list-style: none !important;
+}
+#query-monitor .qm li {
+  display: list-item !important;
+  list-style: none !important;
+}
+#query-monitor .qm li::before {
+  content: '' !important;
+}
+#query-monitor .qm .qm-has-toggle ol.qm-numbered li {
+  list-style: none !important;
+}
+#query-monitor .qm .qm-toggled-on ol.qm-numbered li,
+#query-monitor .qm ol.qm-numbered li {
+  list-style: decimal inside !important;
+}
+#query-monitor .qm code,
+#query-monitor .qm pre {
+  font-size: 11px !important;
+  line-height: 18px !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+}
+#query-monitor .qm pre {
+  background: transparent !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+#query-monitor .qm .qm-true code,
+#query-monitor .qm p.qm-true,
+#query-monitor .qm span.qm-true,
+#query-monitor .qm td.qm-true {
+  color: #4a4 !important;
+}
+#query-monitor .qm .qm-false code,
+#query-monitor .qm span.qm-false,
+#query-monitor .qm td.qm-false {
+  color: #999 !important;
+}
+#query-monitor .qm code,
+#query-monitor .qm .qm-nowrap {
+  white-space: nowrap !important;
+}
+#query-monitor .qm .qm-wrap code,
+#query-monitor .qm .qm-wrap {
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  white-space: normal !important;
+}
+#query-monitor .qm .qm-sticky {
+  position: sticky !important;
+  top: 36px !important;
+}
+#query-monitor .qm .qm-current,
+#query-monitor .qm td.qm-has-toggle p,
+#query-monitor .qm .qm-nonselectsql code,
+#query-monitor .qm .qm-nonselectsql {
+  color: #a6a !important;
+}
+#query-monitor .qm .qm-info {
+  color: #777 !important;
+}
+#query-monitor .qm .qm-supplemental {
+  margin-right: 0.75em !important;
+  margin-left: 0.75em !important;
+}
+#query-monitor .qm td .qm-toggled {
+  display: none;
+}
+#query-monitor .qm button.qm-button,
+#query-monitor .qm .qm-toggle {
+  color: #fff !important;
+  font-weight: normal !important;
+  background: #0085ba !important;
+  cursor: pointer !important;
+  border: 1px solid #0073a1 !important;
+  border-radius: 2px !important;
+  text-shadow: 0 -1px 1px #0073a1, 1px 0 1px #0073a1, 0 1px 1px #0073a1, -1px 0 1px #0073a1 !important;
+}
+#query-monitor .qm .qm-toggle {
+  padding: 0 !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  bottom: auto !important;
+  text-align: center !important;
+  line-height: 16px !important;
+  height: 18px !important;
+  width: 18px !important;
+}
+#query-monitor .qm button {
+  cursor: pointer !important;
+}
+#query-monitor .qm button.qm-button {
+  padding: 4px 10px !important;
+}
+#query-monitor .qm .qm-has-inner .qm-toggle {
+  top: 5px !important;
+  right: 5px !important;
+}
+#query-monitor .qm button.qm-button:hover,
+#query-monitor .qm button.qm-button:focus,
+#query-monitor .qm .qm-toggle:focus,
+#query-monitor .qm .qm-toggle:hover {
+  text-decoration: none !important;
+  color: #fff !important;
+  background: #0094ce !important;
+}
+#query-monitor .qm tbody tr.qm-odd td,
+#query-monitor .qm tbody tr.qm-odd th {
+  background: #32373c !important;
+}
+
+.qm-debug-bar tbody tr:hover th,
+.qm-debug-bar tbody tr:hover td {
+  background: #fff !important;
+  /* transparent? */
+}
+
+#query-monitor .qm-non-tabular .qm-warn,
+#query-monitor .qm thead tr .qm-warn,
+#query-monitor .qm tbody tr .qm-warn {
+  background-color: #800 !important;
+  color: #fff0f0 !important;
+}
+#query-monitor .qm tbody tr th.qm-warn,
+#query-monitor .qm tbody tr td.qm-warn,
+#query-monitor .qm tbody tr.qm-warn td,
+#query-monitor .qm tbody tr.qm-warn th {
+  background-color: #800 !important;
+  box-shadow: inset 0 -1px #ffd6d6 !important;
+  border-color: #ffd6d6 !important;
+  color: #fff0f0 !important;
+}
+#query-monitor .qm-non-tabular .qm-warn code,
+#query-monitor .qm tbody .qm-warn li,
+#query-monitor .qm tbody .qm-warn .qm-info,
+#query-monitor .qm tbody .qm-warn code {
+  color: #fff0f0 !important;
+  background-color: transparent !important;
+}
+#query-monitor .qm .qm-notice {
+  background: #def !important;
+  border: 1px solid #aad5ff !important;
+  padding: 10px 20px 0 !important;
+  margin: 0 0 10px 0 !important;
+}
+#query-monitor .qm .dashicons {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 0.3em !important;
+  transition: none !important;
+}
+#query-monitor .qm .qm-dashicons-yes {
+  color: #fff !important;
+  background-color: #0a0 !important;
+  border-radius: 50% !important;
+}
+#query-monitor .qm tbody tr.qm-hovered th,
+#query-monitor .qm tbody tr.qm-hovered td,
+#query-monitor .qm tbody tr:hover th,
+#query-monitor .qm tbody tr:hover td {
+  background: #3e444a !important;
+}
+#query-monitor .qm thead th.qm-filtered select.qm-filter {
+  background-color: #57572a !important;
+  color: #bbc8d4 !important;
+}
+#query-monitor .qm tbody tr td.qm-highlight,
+#query-monitor .qm tbody tr.qm-highlight td {
+  background-color: #57572a !important;
+  box-shadow: inset 0 -1px #660 !important;
+  border-color: #660 !important;
+  color: #bbc8d4 !important;
+}
+
+#query-monitor .qm tbody .qm-warn a code,
+#qm-title a,
+#query-monitor .qm a code,
+#query-monitor .qm a {
+  color: #30ceff !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+#query-monitor .qm tbody .qm-warn a code:after, #query-monitor .qm tbody .qm-warn a code:focus, #query-monitor .qm tbody .qm-warn a code:hover,
+#qm-title a:after,
+#qm-title a:focus,
+#qm-title a:hover,
+#query-monitor .qm a code:after,
+#query-monitor .qm a code:focus,
+#query-monitor .qm a code:hover,
+#query-monitor .qm a:after,
+#query-monitor .qm a:focus,
+#query-monitor .qm a:hover {
+  text-decoration: underline !important;
+  color: #4092d2 !important;
+}
+
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor .qm a.qm-link:after,
+#query-monitor .qm a.qm-edit-link:after,
+#query-monitor .qm a.qm-filter-trigger:after {
+  font-family: dashicons !important;
+  text-decoration: none !important;
+  visibility: hidden !important;
+  display: inline-block !important;
+  font-size: 13px !important;
+  line-height: 15px !important;
+  position: relative !important;
+  top: 2px !important;
+  left: 2px !important;
+}
+
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor.qm-touch .qm a.qm-link:after,
+#query-monitor .qm a.qm-link:hover:after,
+#query-monitor .qm a.qm-link:focus:after,
+#query-monitor.qm-touch .qm a.qm-edit-link:after,
+#query-monitor .qm a.qm-edit-link:hover:after,
+#query-monitor .qm a.qm-edit-link:focus:after,
+#query-monitor.qm-touch .qm a.qm-filter-trigger:after,
+#query-monitor .qm a.qm-filter-trigger:hover:after,
+#query-monitor .qm a.qm-filter-trigger:focus:after {
+  visibility: visible !important;
+}
+
+#query-monitor .qm a.qm-filter-trigger:after {
+  content: '\f536' !important;
+}
+
+#query-monitor .qm a.qm-edit-link:after {
+  content: '\f464' !important;
+}
+
+#query-monitor .qm a.qm-external-link:after,
+#query-monitor .qm a.qm-link:after {
+  content: '\f504' !important;
+}
+
+#query-monitor #qm-ajax-errors {
+  display: none;
+}
+
+/* Filters */
+#query-monitor button,
+#query-monitor select {
+  margin: 0 !important;
+  height: auto !important;
+  width: auto !important;
+  background: none !important;
+}
+
+#query-monitor .qm label {
+  cursor: pointer !important;
+  color: #bbc8d4 !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  margin: 0 !important;
+}
+
+#query-monitor .qm thead label {
+  flex-grow: 1 !important;
+}
+
+#query-monitor .qm .qm-filter-container {
+  display: flex !important;
+}
+
+#query-monitor .qm .qm-filter-container label {
+  cursor: default !important;
+}
+
+#query-monitor .qm .qm-filter-container div {
+  /* Some themes use Select2 etc on all selects. This hides that. */
+  display: none !important;
+}
+
+#query-monitor .qm select.qm-filter {
+  display: block !important;
+  margin: 0 0 0 5px !important;
+  outline: 1px solid #bbc8d4 !important;
+  border: none !important;
+  padding: 0 !important;
+  background: #32373c !important;
+  color: #bbc8d4 !important;
+  height: auto !important;
+  width: auto !important;
+  float: none !important;
+  cursor: pointer !important;
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  appearance: menulist !important;
+  letter-spacing: normal !important;
+  max-width: 10em !important;
+}
+
+#query-monitor .qm select.qm-filter:hover {
+  background: #32373c !important;
+}
+
+.qm-hide,
+.qm-hide-scripts-host,
+.qm-hide-styles-host,
+.qm-hide-user,
+.qm-hide-result,
+.qm-hide-name,
+.qm-hide-type,
+.qm-hide-caller,
+.qm-hide-component {
+  display: none !important;
+}
+
+/* Sorters */
+#query-monitor .qm thead th.qm-sortable-column {
+  cursor: pointer !important;
+}
+
+#query-monitor .qm thead th.qm-sortable-column:hover {
+  background: #32373c !important;
+}
+
+#query-monitor .qm .qm-sort-heading {
+  flex-grow: 1 !important;
+}
+
+#query-monitor .qm .qm-sort-controls {
+  text-align: right !important;
+  flex-shrink: 0 !important;
+}
+
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow {
+  font-family: dashicons !important;
+  font-size: 23px !important;
+  color: #ccc !important;
+  margin: 0 !important;
+  width: 16px !important;
+  height: 10px !important;
+  display: block !important;
+}
+
+#query-monitor .qm .qm-sorted-desc .qm-sort-arrow,
+#query-monitor .qm .qm-sorted-asc .qm-sort-arrow {
+  color: #bbc8d4 !important;
+}
+
+#query-monitor .qm thead th.qm-sortable-column:hover .qm-sort-arrow {
+  color: #0073aa !important;
+}
+
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
+  content: "\f140" !important;
+  top: 4px !important;
+  right: 0 !important;
+  position: absolute !important;
+}
+
+#query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
+  content: "\f142" !important;
+}
+
+#query-monitor .qm button:focus,
+#query-monitor .qm a:focus,
+#query-monitor .qm select:focus {
+  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8) !important;
+}
+
+#query-monitor .qm-screen-reader-text,
+#query-monitor .screen-reader-text {
+  position: absolute !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+  #query-monitor #qm-panel-menu,
+  #query-monitor #qm-title h1.qm-title-heading {
+    display: none;
+  }
+
+  #query-monitor #qm-title div.qm-title-heading {
+    display: block;
+  }
+}
+/* State Toggle */
+#query-monitor [data-qm-state="off"] [data-qm-state-visibility="on"],
+#query-monitor [data-qm-state="on"] [data-qm-state-visibility="off"] {
+  display: none;
+}
+
+/* No-JS tweaks */
+.qm-no-js .qm-sort-controls,
+.qm-no-js .qm-toggle,
+.qm-no-js select.qm-filter {
+  display: none !important;
+}
+
+/* Debug bar add-ons */
+#query-monitor .qm.qm-debug-bar textarea,
+#query-monitor .qm.qm-debug-bar pre {
+  padding: 10px !important;
+  border: 1px solid #bbc8d4 !important;
+  margin: 4px 0 !important;
+}
+
+#query-monitor .qm.qm-debug-bar textarea {
+  resize: vertical !important;
+}
+
+#query-monitor .qm.qm-debug-bar .left {
+  float: left !important;
+}
+
+#query-monitor .qm.qm-debug-bar .right {
+  float: right !important;
+}
+
+#query-monitor .qm.qm-debug-bar h2 {
+  font-size: 14px !important;
+  margin: 4px 6px 15px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h3 {
+  float: left !important;
+  /* why */
+  min-width: 150px !important;
+  padding: 5px 10px 15px !important;
+  clear: none !important;
+  text-align: center !important;
+  font-size: 14px !important;
+  margin: 3px 8px 15px 0 !important;
+}
+
+#query-monitor .qm.qm-debug-bar h3 small {
+  font-size: 14px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h3 span {
+  white-space: nowrap !important;
+  display: block !important;
+  margin-bottom: 8px !important;
+}
+
+#query-monitor .qm.qm-debug-bar h4 {
+  margin: 15px 6px 5px !important;
+  font-size: 13px !important;
+}
+
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output {
+  position: relative !important;
+}
+
+#query-monitor .qm.qm-debug-bar .qm-debug-bar-output table {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Console {
+  min-height: 400px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Cache_Lookup,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules,
+#query-monitor #debug-menu-target-Debug_Bar_Widgets {
+  margin: 4px 6px !important;
+}
+
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .filterui,
+#query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
+  margin: 0 !important;
+}
+
+/* Broken output handling */
+#query-monitor.qm-broken #qm-title {
+  cursor: default !important;
+}
+
+#query-monitor #qm-broken,
+#query-monitor.qm-broken .qm-title-button {
+  display: none !important;
+}
+
+#query-monitor.qm-broken #qm-broken,
+#query-monitor.qm-broken .qm {
+  display: block !important;
+}
+
+#query-monitor.qm-broken .qm {
+  margin-bottom: 50px !important;
+}
+
+#query-monitor.qm-broken #qm-broken h2 {
+  padding: 20px !important;
+}
+
+/*# sourceMappingURL=query-monitor-dark.css.map */
