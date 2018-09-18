@@ -7,6 +7,7 @@ module.exports = function (grunt) {
 					style: 'expanded'
 				},
 				files: {
+					'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
 					'assets/query-monitor.css': 'assets/query-monitor.scss'
 				}
 			}
