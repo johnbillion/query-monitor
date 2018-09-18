@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The Developer Tools Panel for WordPress.
- * Version:      3.1.0
+ * Version:      3.1.1
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn & contributors
  * Author URI:   https://querymonitor.com/
