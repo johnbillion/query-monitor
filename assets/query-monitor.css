@@ -672,9 +672,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   text-decoration: none !important;
   cursor: pointer !important;
 }
-
+#query-monitor .qm tbody .qm-warn a code:after, #query-monitor .qm tbody .qm-warn a code:focus, #query-monitor .qm tbody .qm-warn a code:hover,
+#qm-title a:after,
 #qm-title a:focus,
 #qm-title a:hover,
+#query-monitor .qm a code:after,
+#query-monitor .qm a code:focus,
+#query-monitor .qm a code:hover,
 #query-monitor .qm a:after,
 #query-monitor .qm a:focus,
 #query-monitor .qm a:hover {

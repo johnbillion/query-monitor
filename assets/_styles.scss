@@ -782,15 +782,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	color: $qm-link-fg !important;
 	text-decoration: none !important;
 	cursor: pointer !important;
-}
 
-#qm-title a:focus,
-#qm-title a:hover,
-#query-monitor .qm a:after,
-#query-monitor .qm a:focus,
-#query-monitor .qm a:hover {
-	text-decoration: underline !important;
-	color: $qm-link-fg-hover !important;
+	&:after,
+	&:focus,
+	&:hover {
+		text-decoration: underline !important;
+		color: $qm-link-fg-hover !important;
+	}
 }
 
 #query-monitor .qm a.qm-external-link:after,
