@@ -19,6 +19,8 @@ class QueryMonitor extends QM_Plugin {
 		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 4 );
 		add_filter( 'ure_built_in_wp_caps',         array( $this, 'filter_ure_caps' ) );
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
+		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_query-monitor/query-monitor.php',               array( $this, 'filter_plugin_action_links' ) );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -34,6 +36,12 @@ class QueryMonitor extends QM_Plugin {
 			include $file;
 		}
 
+	}
+
+	public function filter_plugin_action_links( array $actions ) {
+		return array_merge( array(
+			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
+		), $actions );
 	}
 
 	/**

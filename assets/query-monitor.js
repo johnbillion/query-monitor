@@ -434,7 +434,7 @@ if ( window.jQuery ) {
 			$(this).toggleClass( 'qm-button-active' );
 		});
 
-		$('.qm-button-container-settings').click(function(){
+		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
 			show_panel( '#qm-settings' );
 			$('#qm-settings').focus();
 		});
