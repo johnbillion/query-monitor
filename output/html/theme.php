@@ -115,14 +115,19 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( isset( $data['template_file'] ) ) {
-			$menu['theme'] = $this->menu( array(
-				'title' => esc_html( sprintf(
-					/* translators: %s: Template file name */
-					__( 'Template: %s', 'query-monitor' ),
-					( $data['is_child_theme'] ? $data['theme_template_file'] : $data['template_file'] )
-				) ),
-			) );
+			$name = ( $data['is_child_theme'] ) ? $data['theme_template_file'] : $data['template_file'];
+		} else {
+			$name = __( 'Unknown', 'query-monitor' );
 		}
+
+		$menu['theme'] = $this->menu( array(
+			'title' => esc_html( sprintf(
+				/* translators: %s: Template file name */
+				__( 'Template: %s', 'query-monitor' ),
+				$name
+			) ),
+		) );
+
 		return $menu;
 
 	}
