@@ -97,14 +97,18 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				foreach ( $hook['actions'] as $action ) {
 
 					if ( isset( $action['callback']['component'] ) ) {
-						$component = $action['callback']['component']->name;
+						$component = $subject = $action['callback']['component']->name;
 					} else {
-						$component = '';
+						$component = $subject = '';
+					}
+
+					if ( __( 'Core', 'query-monitor' ) !== $component ) {
+						$subject .= ' non-core';
 					}
 
 					printf( // WPCS: XSS ok.
 						'<tr data-qm-subject="%s" %s>',
-						esc_attr( $component ),
+						esc_attr( $subject ),
 						$attr
 					);
 
