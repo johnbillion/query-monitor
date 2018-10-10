@@ -3,6 +3,11 @@
  *
  * @package query-monitor
  */
+/**
+ * All the styles for Query Monitor.
+ *
+ * @package query-monitor
+ */
 /* === Admin Toolbar === */
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
   color: #8c8 !important;
@@ -221,6 +226,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 0 0 0 0px !important;
   display: inline-block !important;
   padding: 0px 4px !important;
+  min-width: auto !important;
 }
 #query-monitor #qm-title button:focus,
 #query-monitor #qm-title button:hover {

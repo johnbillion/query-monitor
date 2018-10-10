@@ -250,6 +250,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin: 0 0 0 0px !important;
 		display: inline-block !important;
 		padding: 0px 4px !important;
+		min-width: auto !important;
 	}
 
 	#qm-title button:focus,
