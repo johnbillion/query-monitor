@@ -898,6 +898,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 .qm-hide,
+.qm-hide-scripts-dependencies,
+.qm-hide-styles-dependencies,
+.qm-hide-scripts-dependents,
+.qm-hide-styles-dependents,
 .qm-hide-scripts-host,
 .qm-hide-styles-host,
 .qm-hide-user,

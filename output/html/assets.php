@@ -44,12 +44,35 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		foreach ( $type_labels as $type => $type_label ) {
 
 			$types = array();
+			$all_dependencies = array();
+			$all_dependents = array();
 
 			foreach ( $position_labels as $position => $label ) {
 				if ( ! empty( $data[ $position ][ $type ] ) ) {
 					$types[ $position ] = $label;
+
+					$handles = $data[ $position ][ $type ];
+
+					foreach ( $handles as $handle ) {
+						$dependency = $data['raw'][ $type ]->query( $handle );
+
+						if ( ! $dependency ) {
+							continue;
+						}
+
+						$dependencies = $dependency->deps;
+						$all_dependencies = array_merge( $all_dependencies, $dependencies );
+
+						$dependents = $this->collector->get_dependents( $dependency, $data['raw'][ $type ] );
+						$all_dependents = array_merge( $all_dependents, $dependents );
+					}
 				}
 			}
+			$all_dependencies = array_unique( $all_dependencies );
+			sort( $all_dependencies );
+
+			$all_dependents = array_unique( $all_dependents );
+			sort( $all_dependents );
 
 			$hosts = array(
 				__( 'Other', 'query-monitor' ),
@@ -77,8 +100,12 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Dependencies', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Dependents', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-filterable-column">';
+			echo $this->build_filter( $type . '-dependencies', $all_dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo '</th>';
+			echo '<th scope="col" class="qm-filterable-column">';
+			echo $this->build_filter( $type . '-dependents', $all_dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -121,13 +148,21 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
 
+			$dependencies_list   = $dependency->deps;
+			// $dependencies_list[] = $handle;
+			$dependencies_list   = implode( ' ', $dependencies_list );
+
+			$dependents_list   = $this->collector->get_dependents( $dependency, $dependencies );
+			// $dependents_list[] = $handle;
+			$dependents_list   = implode( ' ', $dependents_list );
+
 			$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
 
 			if ( in_array( $handle, $dependencies->done, true ) ) {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '">';
 				echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
 			} else {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" class="qm-warn">';
+				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="qm-warn">';
 				echo '<td class="qm-nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $label ) . '</td>';
 			}
 
