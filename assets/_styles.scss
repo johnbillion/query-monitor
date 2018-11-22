@@ -166,6 +166,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	text-indent: 0 !important;
 	float: none !important;
 	clear: both !important;
+
+	&:before,
+	&:after {
+		display: none !important;
+	}
 }
 
 #query-monitor {
