@@ -135,6 +135,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   vertical-align: baseline !important;
   text-shadow: none !important;
   text-transform: none !important;
+  text-decoration: none !important;
   -webkit-font-smoothing: auto !important;
   letter-spacing: normal !important;
   border-radius: 0 !important;
@@ -144,6 +145,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   outline: none !important;
   box-shadow: none !important;
   text-indent: 0 !important;
+  float: none !important;
+  clear: both !important;
 }
 
 #query-monitor {
