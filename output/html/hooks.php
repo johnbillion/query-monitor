@@ -153,18 +153,19 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					} else {
 						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
+
+						if ( isset( $action['callback']['error'] ) ) {
+							echo '<br>';
+							echo esc_html( sprintf(
+								/* translators: %s: Error message text */
+								__( 'Error: %s', 'query-monitor' ),
+								$action['callback']['error']->get_error_message()
+							) );
+						}
+
+						echo '</td>';
 					}
 
-					if ( isset( $action['callback']['error'] ) ) {
-						echo '<br>';
-						echo esc_html( sprintf(
-							/* translators: %s: Error message text */
-							__( 'Error: %s', 'query-monitor' ),
-							$action['callback']['error']->get_error_message()
-						) );
-					}
-
-					echo '</td>';
 					echo '<td class="qm-nowrap' . esc_attr( $class ) . '">';
 					echo esc_html( $component );
 					echo '</td>';
