@@ -75,9 +75,9 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 			echo '<tr class="' . esc_attr( $row_class ) . '">';
 
-			echo '<th scope="row" class="qm-row-num qm-num">' . absint( ++$i ) . '</th>';
+			echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . absint( ++$i ) . '</span></th>';
 
-			echo '<td class="qm-row-block-name">';
+			echo '<td class="qm-row-block-name"><span class="qm-sticky">';
 
 			if ( $block_error ) {
 				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
@@ -103,7 +103,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<a href="' . esc_url( get_edit_post_link( $block['attrs']['ref'] ) ) . '" class="qm-link">' . esc_html( $reused_pto->labels->edit_item ) . '</a>';
 			}
 
-			echo '</td>';
+			echo '</span></td>';
 
 			echo '<td class="qm-row-block-attrs">';
 			if ( $block['attrs'] ) {
