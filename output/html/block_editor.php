@@ -61,6 +61,14 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			$block_error = ( empty( $block['blockName'] ) && ! empty( $inner_html ) );
 			$row_class = '';
 
+			if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
+				$reused_type = get_post( $block['attrs']['ref'] )->post_type;
+				$reused_pto  = get_post_type_object( $reused_type );
+				if ( 'wp_block' !== $reused_type ) {
+					$block_error = true;
+				}
+			}
+
 			if ( $block_error ) {
 				$row_class = 'qm-warn';
 			}
@@ -71,17 +79,28 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 			echo '<td class="qm-row-block-name">';
 
+			if ( $block_error ) {
+				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			}
+
 			if ( $block['blockName'] ) {
 				echo esc_html( $block['blockName'] );
-			} elseif ( $block_error ) {
-				echo '<em><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
 			} else {
 				echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
 			}
 
 			if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
+				if ( 'wp_block' !== $reused_type ) {
+					echo '<br>';
+					printf(
+						/* translators: %1$s: Erroneous post type name, %2$s: WordPress block post type name */
+						esc_html__( 'Referenced post is of type %1$s instead of %2$s.', 'query-monitor' ),
+						'<code>' . esc_html( $reused_type ) . '</code>',
+						'<code>wp_block</code>'
+					);
+				}
 				echo '<br>';
-				echo '<a href="' . esc_url( get_edit_post_link( $block['attrs']['ref'] ) ) . '" class="qm-link">' . esc_html__( 'Edit Block', 'query-monitor' ) . '</a>';
+				echo '<a href="' . esc_url( get_edit_post_link( $block['attrs']['ref'] ) ) . '" class="qm-link">' . esc_html( $reused_pto->labels->edit_item ) . '</a>';
 			}
 
 			echo '</td>';
