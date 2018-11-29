@@ -41,6 +41,7 @@ class QueryMonitor extends QM_Plugin {
 	public function filter_plugin_action_links( array $actions ) {
 		return array_merge( array(
 			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
+			'add-ons'  => '<a href="https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
 		), $actions );
 	}
 
