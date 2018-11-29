@@ -148,49 +148,49 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   float: none !important;
   clear: both !important;
 }
-#query-monitor:before, #query-monitor:after,
-#query-monitor dl:before,
-#query-monitor dl:after,
-#query-monitor dt:before,
-#query-monitor dt:after,
-#query-monitor dd:before,
-#query-monitor dd:after,
-#query-monitor button:before,
-#query-monitor button:after,
-#query-monitor label:before,
-#query-monitor label:after,
-#query-monitor select:before,
-#query-monitor select:after,
-#query-monitor table:before,
-#query-monitor table:after,
-#query-monitor td:before,
-#query-monitor td:after,
-#query-monitor th:before,
-#query-monitor th:after,
-#query-monitor ul:before,
-#query-monitor ul:after,
-#query-monitor ol:before,
-#query-monitor ol:after,
-#query-monitor li:before,
-#query-monitor li:after,
-#query-monitor code:before,
-#query-monitor code:after,
-#query-monitor a:before,
-#query-monitor a:after,
-#query-monitor h1:before,
-#query-monitor h1:after,
-#query-monitor h2:before,
-#query-monitor h2:after,
-#query-monitor h3:before,
-#query-monitor h3:after,
-#query-monitor h4:before,
-#query-monitor h4:after,
-#query-monitor h5:before,
-#query-monitor h5:after,
-#query-monitor h6:before,
-#query-monitor h6:after,
-#query-monitor p:before,
-#query-monitor p:after {
+#query-monitor::before, #query-monitor::after,
+#query-monitor dl::before,
+#query-monitor dl::after,
+#query-monitor dt::before,
+#query-monitor dt::after,
+#query-monitor dd::before,
+#query-monitor dd::after,
+#query-monitor button::before,
+#query-monitor button::after,
+#query-monitor label::before,
+#query-monitor label::after,
+#query-monitor select::before,
+#query-monitor select::after,
+#query-monitor table::before,
+#query-monitor table::after,
+#query-monitor td::before,
+#query-monitor td::after,
+#query-monitor th::before,
+#query-monitor th::after,
+#query-monitor ul::before,
+#query-monitor ul::after,
+#query-monitor ol::before,
+#query-monitor ol::after,
+#query-monitor li::before,
+#query-monitor li::after,
+#query-monitor code::before,
+#query-monitor code::after,
+#query-monitor a::before,
+#query-monitor a::after,
+#query-monitor h1::before,
+#query-monitor h1::after,
+#query-monitor h2::before,
+#query-monitor h2::after,
+#query-monitor h3::before,
+#query-monitor h3::after,
+#query-monitor h4::before,
+#query-monitor h4::after,
+#query-monitor h5::before,
+#query-monitor h5::after,
+#query-monitor h6::before,
+#query-monitor h6::after,
+#query-monitor p::before,
+#query-monitor p::after {
   display: none !important;
 }
 
@@ -284,7 +284,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor #qm-title .qm-button-container-pin.qm-button-active .dashicons {
   transform: rotate(-45deg) !important;
 }
-#query-monitor #qm-title .qm-button-container-pin.qm-button-active .dashicons:before {
+#query-monitor #qm-title .qm-button-container-pin.qm-button-active .dashicons::before {
   margin-left: 2px !important;
 }
 #query-monitor .qm {
@@ -890,14 +890,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #0073aa !important;
 }
 
-#query-monitor .qm .qm-sortable-column .qm-sort-arrow:before {
+#query-monitor .qm .qm-sortable-column .qm-sort-arrow::before {
   content: "\f140" !important;
   top: 4px !important;
   right: 0 !important;
   position: absolute !important;
 }
 
-#query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow:before {
+#query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow::before {
   content: "\f142" !important;
 }
 
