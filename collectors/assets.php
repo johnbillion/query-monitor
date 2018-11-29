@@ -48,6 +48,8 @@ class QM_Collector_Assets extends QM_Collector {
 			return;
 		}
 
+		$this->data['is_ssl'] = is_ssl();
+
 		foreach ( array( 'scripts', 'styles' ) as $type ) {
 			foreach ( array( 'header', 'footer' ) as $position ) {
 				if ( empty( $this->data[ $position ][ $type ] ) ) {

@@ -173,6 +173,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	protected function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
+		$data = $this->collector->get_data();
+
 		$loader = rtrim( $type, 's' );
 
 		/**
@@ -186,11 +188,20 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
 		$host = (string) wp_parse_url( $source, PHP_URL_HOST );
+		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
 		// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
 		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] );
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
+		}
+
+		$insecure = ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) );
+
+		if ( $insecure ) {
+			$source = new WP_Error( 'insecure_content', __( 'Insecure content', 'query-monitor' ), array(
+				'src' => $source,
+			) );
 		}
 
 		if ( is_wp_error( $source ) ) {
