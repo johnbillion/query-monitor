@@ -121,14 +121,18 @@ class QM_Collector_Theme extends QM_Collector {
 				$slug          = trim( str_replace( '.php', '', $filename ), '/' );
 				$display       = trim( $filename, '/' );
 				$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
-				if ( did_action( "get_template_part_{$slug}" ) ) {
+				$count         = did_action( "get_template_part_{$slug}" );
+				if ( $count ) {
 					$this->data['template_parts'][ $file ]       = $display;
 					$this->data['theme_template_parts'][ $file ] = $theme_display;
+					$this->data['count_template_parts'][ $file ] = $count;
 				} else {
 					$slug = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
-					if ( did_action( "get_template_part_{$slug}" ) ) {
+					$count = did_action( "get_template_part_{$slug}" );
+					if ( $count ) {
 						$this->data['template_parts'][ $file ]       = $display;
 						$this->data['theme_template_parts'][ $file ] = $theme_display;
+						$this->data['count_template_parts'][ $file ] = $count;
 					}
 				}
 			}

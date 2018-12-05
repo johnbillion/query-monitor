@@ -58,7 +58,22 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<ul class="qm-ltr">';
 
 			foreach ( $parts as $filename => $display ) {
-				echo '<li>' . self::output_filename( $display, $filename, 0, true ) . '</li>'; // WPCS: XSS ok.
+				echo '<li>';
+
+				if ( self::has_clickable_links() ) {
+					echo self::output_filename( $display, $filename, 0, true ); // WPCS: XSS ok.
+				} else {
+					echo esc_html( $display );
+				}
+
+				if ( $data['count_template_parts'][ $filename ] > 1 ) {
+					$count = sprintf(
+						__( 'Included %s times', 'query-monitor' ),
+						intval( $data['count_template_parts'][ $filename ] )
+					);
+					echo '<br><span class="qm-info qm-supplemental">' . esc_html( $count ) . '</span>';
+				}
+				echo '</li>';
 			}
 
 			echo '</ul>';
