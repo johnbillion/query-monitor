@@ -74,8 +74,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 				if ( $data['count_template_parts'][ $filename ] > 1 ) {
 					$count = sprintf(
-						__( 'Included %s times', 'query-monitor' ),
-						intval( $data['count_template_parts'][ $filename ] )
+						/* translators: %s: The number of times that a template part file was included in the page */
+						_nx( 'Included %s time', 'Included %s times', $data['count_template_parts'][ $filename ], 'template parts', 'query-monitor' ),
+						esc_html( number_format_i18n( $data['count_template_parts'][ $filename ] ) )
 					);
 					echo '<br><span class="qm-info qm-supplemental">' . esc_html( $count ) . '</span>';
 				}
