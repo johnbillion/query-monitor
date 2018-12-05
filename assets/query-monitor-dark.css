@@ -3,6 +3,13 @@
  *
  * @package query-monitor
  */
+/**
+ * Dark Mode Colours
+ */
+/** 
+ * The colours below are loosely based on the WordPress branding colours.
+ * https://make.wordpress.org/design/handbook/design-guide/foundations/colors/
+ */
 /* === Admin Toolbar === */
 #wpadminbar .quicklinks .menupop ul li.qm-true > a {
   color: #8c8 !important;
