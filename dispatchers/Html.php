@@ -276,7 +276,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
-		echo '<div id="qm-panel-menu" role="navigation" aria-labelledby="qm-panel-menu-caption">';
+		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">';
 		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>';
 		echo '<ul>';
 
@@ -295,7 +295,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		echo '</ul>';
-		echo '</div>'; // #qm-panel-menu
+		echo '</nav>'; // #qm-panel-menu
 
 		echo '<div id="qm-panels">';
 
