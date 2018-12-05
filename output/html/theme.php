@@ -27,10 +27,16 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['template_path'] ) ) {
 			if ( $data['is_child_theme'] ) {
-				echo '<p class="qm-ltr">' . self::output_filename( $data['theme_template_file'], $data['template_path'], 0, true ) . '</p>'; // WPCS: XSS ok.
+				$display = $data['theme_template_file'];
 			} else {
-				echo '<p class="qm-ltr">' . self::output_filename( $data['template_file'], $data['template_path'], 0, true ) . '</p>'; // WPCS: XSS ok.
+				$display = $data['template_file'];
 			}
+			if ( self::has_clickable_links() ) {
+				$file = $data['template_path'];
+			} else {
+				$file = false;
+			}
+			echo '<p class="qm-ltr">' . self::output_filename( $display, $file, 0, true ) . '</p>'; // WPCS: XSS ok.
 		} else {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
