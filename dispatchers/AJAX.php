@@ -26,6 +26,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			ob_start();
 		}
 
+		parent::init();
 	}
 
 	public function dispatch() {

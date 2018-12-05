@@ -105,18 +105,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
-		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-			define( 'DONOTCACHEPAGE', 1 );
-		}
-
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -999 );
-		add_action( 'send_headers',          'nocache_headers' );
 
 		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
 
+		parent::init();
 	}
 
 	public function manually_print_assets() {

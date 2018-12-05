@@ -49,8 +49,15 @@ abstract class QM_Dispatcher {
 	}
 
 	public function init() {
-		// @TODO should be abstract?
-		// nothing
+		if ( ! $this->user_can_view() ) {
+			return;
+		}
+
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', 1 );
+		}
+
+		add_action( 'send_headers', 'nocache_headers' );
 	}
 
 	protected function before_output() {
