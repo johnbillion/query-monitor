@@ -99,9 +99,7 @@ if ( window.jQuery ) {
 
 			$('.qm-title-heading select').val(panel);
 
-			if ( localStorage.getItem( container_pinned_key ) ) {
-				localStorage.setItem( container_pinned_key, panel );
-			}
+			localStorage.setItem( container_pinned_key, panel );
 
 			var filters = $( panel ).find('.qm-filter');
 
@@ -421,17 +419,6 @@ if ( window.jQuery ) {
 		$('.qm-button-container-close').click(function(){
 			$('#query-monitor').removeClass('qm-show').height('');
 			localStorage.removeItem( container_pinned_key );
-			$('.qm-button-container-pin').removeClass( 'qm-button-active' );
-		});
-
-		$('.qm-button-container-pin').click(function(){
-			if ( $(this).hasClass( 'qm-button-active' ) ) {
-				localStorage.removeItem( container_pinned_key );
-			} else {
-				localStorage.setItem( container_pinned_key, '#' + $('.qm-panel-show').first().attr('id') );
-			}
-
-			$(this).toggleClass( 'qm-button-active' );
 		});
 
 		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
@@ -442,8 +429,6 @@ if ( window.jQuery ) {
 		var pinned = localStorage.getItem( container_pinned_key );
 		if ( pinned && $( pinned ).length ) {
 			show_panel( pinned );
-			// Don't auto-focus the pinned QM panel
-			$('.qm-button-container-pin').addClass( 'qm-button-active' );
 		}
 
 		$('.qm-title-heading select').change(function(){
