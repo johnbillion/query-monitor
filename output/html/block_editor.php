@@ -23,13 +23,8 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( ! $data['post_has_blocks'] ) {
 			$this->before_non_tabular_output();
 
-			echo '<div class="qm-section">';
-			echo '<div class="qm-notice">';
-			echo '<p>';
-			esc_html_e( 'This post contains no blocks.', 'query-monitor' );
-			echo '</p>';
-			echo '</div>';
-			echo '</div>';
+			$notice = __( 'This post contains no blocks.', 'query-monitor' );
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
 
 			$this->after_non_tabular_output();
 

@@ -18,7 +18,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>PHP</h3>';
 
 		echo '<table>';
@@ -129,7 +129,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 
-		echo '</div>';
+		echo '</section>';
 
 		if ( isset( $data['db'] ) ) {
 
@@ -142,7 +142,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
 				}
 
-				echo '<div class="qm-section">';
+				echo '<section>';
 				echo '<h3>' . esc_html( $name ) . '</h3>';
 
 				echo '<table>';
@@ -230,12 +230,12 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '</tbody>';
 				echo '</table>';
 
-				echo '</div>';
+				echo '</section>';
 
 			}
 		}
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>WordPress</h3>';
 
 		echo '<table>';
@@ -258,9 +258,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tbody>';
 		echo '</table>';
 
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Server', 'query-monitor' ) . '</h3>';
 
 		$server = array(
@@ -287,7 +287,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo '</tbody>';
 		echo '</table>';
-		echo '</div>';
+		echo '</section>';
 
 		$this->after_non_tabular_output();
 	}

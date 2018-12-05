@@ -132,6 +132,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor h4,
 #query-monitor h5,
 #query-monitor h6,
+#query-monitor section,
 #query-monitor p {
 	/* reset */
 	background: transparent !important;
@@ -546,16 +547,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin: 0 20px 5px 0 !important;
 	}
 
+	.qm-non-tabular section,
 	.qm-non-tabular .qm-section {
 		margin: 0 0 30px 0 !important;
 	}
 
+	.qm-non-tabular .qm-boxed section,
 	.qm-non-tabular .qm-boxed .qm-section {
 		margin: 0 20px 10px 0 !important;
 		border-right: 1px solid $qm-panel-separator !important;
 		padding: 10px 20px 10px 0 !important;
 	}
 
+	.qm-non-tabular .qm-boxed section:last-child,
 	.qm-non-tabular .qm-boxed .qm-section:last-child {
 		margin-right: 0 !important;
 		border-right: none !important;

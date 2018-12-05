@@ -40,10 +40,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
 			}
 
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html( $name ) . '</h3>';
 			echo '<p class="qm-ltr"><code>' . $value . '</code></p>'; // WPCS: XSS ok.
-			echo '</div>';
+			echo '</section>';
 		}
 
 		echo '</div>';
@@ -51,7 +51,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '<div class="qm-boxed qm-boxed-wrap">';
 
 		if ( ! empty( $data['matching_rewrites'] ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</h3>';
 			echo '<table>';
 
@@ -67,10 +67,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			}
 
 			echo '</table>';
-			echo '</div>';
+			echo '</section>';
 		}
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>';
 		esc_html_e( 'Query Vars', 'query-monitor' );
 		echo '</h3>';
@@ -118,9 +118,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		}
 
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['queried_object'] ) ) {
@@ -133,9 +133,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Current User', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['user']['data'] ) ) {
@@ -147,10 +147,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
 		if ( ! empty( $data['multisite'] ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h3>';
 
 			foreach ( $data['multisite'] as $var => $value ) {
@@ -160,7 +160,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				);
 			}
 
-			echo '</div>';
+			echo '</section>';
 		}
 
 		$this->after_non_tabular_output();

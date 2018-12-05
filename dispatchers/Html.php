@@ -313,7 +313,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
 
 		echo '<div class="qm-boxed">';
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
 
 		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
@@ -321,7 +321,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
-		echo '</div>';
+		echo '</section>';
 
 		$constants = array(
 			'QM_DB_EXPENSIVE' => array(
@@ -359,7 +359,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			),
 		);
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>';
 		echo '<p>';
 		printf(
@@ -399,7 +399,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		echo '</dl>';
-		echo '</div>';
+		echo '</section>';
 
 		echo '</div>';
 

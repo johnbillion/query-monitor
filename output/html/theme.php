@@ -22,7 +22,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Theme', 'query-monitor' ) . '</h3>';
 		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
 
@@ -31,9 +31,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p>' . esc_html( $data['template'] ) . '</p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['template_path'] ) ) {
@@ -52,16 +52,16 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
 		if ( ! empty( $data['template_hierarchy'] ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr qm-numbered"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
-			echo '</div>';
+			echo '</section>';
 		}
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
 
 		if ( ! empty( $data['template_parts'] ) ) {
@@ -100,10 +100,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
 		if ( ! empty( $data['timber_files'] ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'Timber Files', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
@@ -112,11 +112,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			}
 
 			echo '</ul>';
-			echo '</div>';
+			echo '</section>';
 		}
 
 		if ( ! empty( $data['body_class'] ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 
 			echo '<h3>' . esc_html__( 'Body Classes', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
@@ -126,7 +126,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			}
 
 			echo '</ul>';
-			echo '</div>';
+			echo '</section>';
 		}
 
 		$this->after_non_tabular_output();

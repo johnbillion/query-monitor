@@ -16,7 +16,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) || ! QM_ENABLE_CAPS_PANEL ) {
 			$this->before_non_tabular_output();
 
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<div class="qm-notice">';
 			echo '<p>';
 			printf(
@@ -27,7 +27,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '</p>';
 			echo "<p><code>define( 'QM_ENABLE_CAPS_PANEL', true );</code></p>";
 			echo '</div>';
-			echo '</div>';
+			echo '</section>';
 
 			$this->after_non_tabular_output();
 

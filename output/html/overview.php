@@ -41,18 +41,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<div class="qm-section" id="qm-broken">';
+		echo '<section id="qm-broken">';
 		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</p>';
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section" id="qm-ajax-errors">';
+		echo '<section id="qm-ajax-errors">';
 		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $ajax_errors ) . '</p>';
-		echo '</div>';
+		echo '</section>';
 
 		echo '</div>';
 		echo '<div class="qm-boxed">';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
@@ -76,9 +76,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</span>';
 		}
 		echo '</p>';
-		echo '</div>';
+		echo '</section>';
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 
@@ -112,17 +112,17 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		echo '</p>';
-		echo '</div>';
+		echo '</section>';
 
 		if ( isset( $db_query_num ) ) {
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
 			echo '<p class="qm-item">';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
 			echo '</p>';
-			echo '</div>';
+			echo '</section>';
 
-			echo '<div class="qm-section">';
+			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
 			echo '<p class="qm-item">';
 
@@ -140,10 +140,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo esc_html__( 'Total', 'query-monitor' ) . ': ' . esc_html( number_format_i18n( $db_queries_data['total_qs'] ) );
 
 			echo '</p>';
-			echo '</div>';
+			echo '</section>';
 		}
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 		echo '<p class="qm-item">';
 
@@ -198,7 +198,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		echo '</p>';
-		echo '</div>';
+		echo '</section>';
 
 		$this->after_non_tabular_output();
 	}

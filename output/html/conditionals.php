@@ -18,22 +18,22 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<div class="qm-section">';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>';
 
 		foreach ( $data['conds']['true'] as $cond ) {
 			echo '<p class="qm-item qm-ltr qm-true"><code>' . esc_html( $cond ) . '()</code></p>';
 		}
 
-		echo '</div>';
-		echo '<div class="qm-section">';
+		echo '</section>';
+		echo '<section>';
 		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
 
 		foreach ( $data['conds']['false'] as $cond ) {
 			echo '<p class="qm-item qm-ltr qm-false"><code>' . esc_html( $cond ) . '()</code></p>';
 		}
 
-		echo '</div>';
+		echo '</section>';
 
 		$this->after_non_tabular_output();
 	}
