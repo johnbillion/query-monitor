@@ -181,6 +181,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	right: 0 !important;
 	width: 100% !important;
 	direction: ltr !important;
+
+	::selection {
+		background-color: #B9D6FB !important;
+		color: $qm-container-fg !important;
+	}
 }
 
 #query-monitor.qm-show,

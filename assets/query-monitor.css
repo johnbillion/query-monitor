@@ -208,6 +208,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   width: 100% !important;
   direction: ltr !important;
 }
+#query-monitor ::selection {
+  background-color: #B9D6FB !important;
+  color: #222 !important;
+}
 
 #query-monitor.qm-show,
 #query-monitor.qm-peek {
