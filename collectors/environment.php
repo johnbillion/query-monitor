@@ -128,11 +128,7 @@ class QM_Collector_Environment extends QM_Collector {
 					$info = mysql_get_server_info( $db->dbh );
 				}
 
-				if ( false !== strpos( $info, 'MariaDB' ) ) {
-					$rdbms = 'MariaDB';
-				} else {
-					$rdbms = 'MySQL';
-				}
+				$rdbms = trim( preg_replace( '#[^a-zA-Z ]#', '', $info ) );
 
 				if ( $client ) {
 					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
