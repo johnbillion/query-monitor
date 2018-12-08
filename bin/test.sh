@@ -36,4 +36,4 @@ export WP_MULTISITE=1
 ./vendor/bin/phpunit -v --exclude-group=ms-excluded
 
 # Run the code sniffer:
-./vendor/bin/phpcs -p -s --colors .
+./vendor/bin/phpcs -psn --colors .
