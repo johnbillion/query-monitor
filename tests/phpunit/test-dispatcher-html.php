@@ -70,6 +70,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 		$expected = array(
 			'assets'        => false,
+			'block_editor'  => false,
 			'cache'         => false,
 			'caps'          => true,
 			'conditionals'  => false,
