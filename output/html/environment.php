@@ -40,6 +40,11 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<tr class="' . esc_attr( $class ) . '">';
 		echo '<th scope="row">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 		echo '<td>';
+
+		if ( $php_warning ) {
+			echo '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+		}
+
 		echo esc_html( $data['php']['version'] );
 		echo $append; // WPCS: XSS ok.
 		echo '</td>';
@@ -60,10 +65,24 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tr>';
 
 		foreach ( $data['php']['variables'] as $key => $val ) {
+			$class   = '';
+			$warners = array(
+				'max_execution_time',
+				'memory_limit',
+			);
 
-			echo '<tr>';
+			if ( ! $val && in_array( $key, $warners, true ) ) {
+				$class = 'qm-warn';
+			}
+
+			echo '<tr class="' . esc_attr( $class ) . '">';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>';
+
+			if ( 'qm-warn' === $class ) {
+				echo '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			}
+
 			echo esc_html( $val['after'] );
 
 			if ( $val['after'] !== $val['before'] ) {

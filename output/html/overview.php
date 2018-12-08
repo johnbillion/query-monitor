@@ -72,7 +72,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</span>';
 		} else {
 			echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-			esc_html_e( 'No execution time limit', 'query-monitor' );
+			printf(
+				/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
+				esc_html__( 'No execution time limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
+				'<code>max_execution_time</code>',
+				'0'
+			);
 			echo '</span>';
 		}
 		echo '</p>';
@@ -106,7 +111,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo '</span>';
 			} else {
 				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-				esc_html_e( 'No memory limit', 'query-monitor' );
+				printf(
+					/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
+					esc_html__( 'No memory limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
+					'<code>memory_limit</code>',
+					'0'
+				);
 				echo '</span>';
 			}
 		}
