@@ -251,7 +251,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * to silence all errors from a component. See the PHP documentation on error
 			 * reporting for more info: http://php.net/manual/en/function.error-reporting.php
 			 *
-			 *
 			 * @since 2.7.0
 			 *
 			 * @param int[] $levels The error levels used for each component.
