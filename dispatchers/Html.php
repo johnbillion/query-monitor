@@ -220,7 +220,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$this->outputters     = $this->get_outputters( 'html' );
+
+		/**
+		 * Allows the user to filter the menu.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array $menus Array of menus.
+		 */
 		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
+
+		/**
+		 * Allows the user to filter the panel menu.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array $admin_bar_men Array of menus.
+		 * @var [type]
+		 */
 		$this->panel_menu     = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
 		$class = array(
@@ -405,6 +422,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</div>'; // #qm-settings
 
+		/**
+		 * Fires after settings but before the panel closing tag.
+		 *
+		 * @since  3.1.0
+		 *
+		 * @param  obj $this The HTML dispatcher instance.
+		 * @param  array $this->outputters The list of outputters.
+		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
 		echo '</div>'; // #qm-panels
@@ -461,12 +486,26 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function js_admin_bar_menu() {
 
+		/**
+		 * Allows user to filter the menu classes used on output.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param array $menu_classes Array of menu classes.
+		 */
 		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
 
 		if ( false === strpos( $class, 'qm-' ) ) {
 			$class .= ' qm-all-clear';
 		}
 
+		/**
+		 * Allows the user to filter the title.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param array $output_title List of titles.
+		 */
 		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
 		if ( empty( $title ) ) {
@@ -515,7 +554,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
-		# Back-compat filter. Please use `qm/dispatch/html` instead
+		/** Back-compat filter. Please use `qm/dispatch/html` instead */
 		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
 			return false;
 		}

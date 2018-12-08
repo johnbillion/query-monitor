@@ -30,7 +30,15 @@ abstract class QM_Dispatcher {
 			return false;
 		}
 
-		# Allow users to disable this dispatcher
+		/**
+		 * Allows users to disable this dispatcher
+		 *
+		 * The dynamic portion of the hook name, `$this->id`, refers to the dispatcher ID.
+		 *
+		 * @since  2.8.0
+		 *
+		 * @param bool $true Whether or not to disable.
+		 */
 		if ( ! apply_filters( "qm/dispatch/{$this->id}", true ) ) {
 			return false;
 		}
@@ -43,6 +51,16 @@ abstract class QM_Dispatcher {
 		$collectors = QM_Collectors::init();
 		$collectors->process();
 
+		/**
+		 * Allows users to filter what outputs.
+		 *
+		 * The dynamic portion of the hook name, `$outputter_id`, refers to the outputter ID.
+		 *
+		 * @since  2.8.0
+		 *
+		 * @param array $array The list of outputters.
+		 * @param array $collectors List of collectors.
+		 */
 		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 
 		return $this->outputters;

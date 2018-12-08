@@ -182,6 +182,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		 *
 		 * The variable {$loader} can be either 'script' or 'style'.
 		 *
+		 * @since 2.9.0
+		 *
 		 * @param string $src    Script or style loader source path.
 		 * @param string $handle Script or style handle.
 		 */

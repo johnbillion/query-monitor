@@ -15,6 +15,13 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 	public function process() {
 
+		/**
+		 * Allows users to filter the conditionals.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param array $conditionals The list of WordPress conditional functions.
+		 */
 		$conds = apply_filters( 'qm/collect/conditionals', array(
 			'is_404',
 			'is_admin',
@@ -54,6 +61,8 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_user_admin',
 			'is_year',
 		) );
+
+		/** This filter is documented in collectors/conditionals.php */
 		$conds = apply_filters( 'query_monitor_conditionals', $conds );
 
 		$true = $false = $na = array();

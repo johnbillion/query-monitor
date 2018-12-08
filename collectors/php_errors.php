@@ -35,6 +35,17 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
 
+		/**
+		 * Fires before setting the error type.
+		 *
+		 * @since  2.7.0
+		 *
+		 * @param int $errno The error number.
+		 * @param string $message The error message.
+		 * @param string $file The file location.
+		 * @param string $line The line number.
+		 * @param string $context The context being passed.
+		 */
 		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
 
 		switch ( $errno ) {
@@ -114,6 +125,13 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			);
 		}
 
+		/**
+		 * Whether or not the error handler should return values.
+		 *
+		 * @since  2.7.0
+		 *
+		 * @param bool $return_value Whether to return error values. Default is true.
+		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
 	}
@@ -232,6 +250,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * to silence all errors from a component. See the PHP documentation on error
 			 * reporting for more info: http://php.net/manual/en/function.error-reporting.php
 			 *
+			 *
+			 * @since  2.7.0
+			 *
 			 * @param int[] $levels The error levels used for each component.
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
@@ -242,6 +263,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * To hide silenced errors, use:
 			 *
 			 *     add_filter( 'qm/collect/hide_silenced_php_errors', '__return_true' );
+			 *
+			 * @since  2.7.0
 			 *
 			 * @param bool $hide Whether to hide silenced PHP errors. Default false.
 			 */

@@ -53,6 +53,13 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
 
+		/**
+		 * Allows the user to filter the database objects.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param array $db_objects Associative array of globals.
+		 */
 		$this->db_objects = apply_filters( 'qm/collect/db_objects', array(
 			'$wpdb' => $GLOBALS['wpdb'],
 		) );

@@ -23,12 +23,24 @@ class Debug_Bar {
 			'query-monitor',
 		) );
 
+		/**
+		 * Fires after scripts have been enqueued.
+		 *
+		 * @since  2.7.0
+		 */
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
 
 	public function init_panels() {
 		require_once 'debug_bar_panel.php';
 
+		/**
+		 * Filters the debug bar panel list.
+		 *
+		 * @since  2.7.0
+		 *
+		 * @param array array() List of panels.
+		 */
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
 	}
 
