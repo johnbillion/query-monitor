@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 
-	<config name="installed_paths" value="../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility,../../phpcompatibility/phpcompatibility-wp" />
 	<config name="testVersion" value="5.3-"/>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
@@ -82,7 +81,7 @@
 	<rule ref="PHPCompatibilityWP"/>
 
 	<!-- The following files use mysql_*() functions within mysqli conditional logic -->
-	<rule ref="PHPCompatibility.PHP.RemovedExtensions.mysql_DeprecatedRemoved">
+	<rule ref="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved">
 		<exclude-pattern>collectors/environment.php</exclude-pattern>
 		<exclude-pattern>wp-content/db.php</exclude-pattern>
 	</rule>
