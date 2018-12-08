@@ -54,11 +54,13 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$this->data['errors']     = array();
 
 		/**
-		 * Allows the user to filter the database objects.
+		 * Filters the `wpdb` instances that are exposed to QM.
+		 *
+		 * This allows Query Monitor to display multiple instances of `wpdb` on one page load.
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param array $db_objects Associative array of globals.
+		 * @param wpdb[] $db_objects Array of `wpdb` instances, keyed by their name.
 		 */
 		$this->db_objects = apply_filters( 'qm/collect/db_objects', array(
 			'$wpdb' => $GLOBALS['wpdb'],

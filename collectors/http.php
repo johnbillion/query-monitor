@@ -187,7 +187,7 @@ class QM_Collector_HTTP extends QM_Collector {
 		}
 
 		/**
-		 * List of silent HTTP errors to check for.
+		 * List of HTTP API error codes to ignore.
 		 *
 		 * @since 2.7.0
 		 *

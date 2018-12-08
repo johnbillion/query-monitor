@@ -24,9 +24,9 @@ class Debug_Bar {
 		) );
 
 		/**
-		 * Fires after scripts have been enqueued.
+		 * Fires after scripts have been enqueued. This mimics the same action fired in the Debug Bar plugin.
 		 *
-		 * @since  2.7.0
+		 * @since 2.7.0
 		 */
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
@@ -35,11 +35,11 @@ class Debug_Bar {
 		require_once 'debug_bar_panel.php';
 
 		/**
-		 * Filters the debug bar panel list.
+		 * Filters the debug bar panel list. This mimics the same filter called in the Debug Bar plugin.
 		 *
-		 * @since  2.7.0
+		 * @since 2.7.0
 		 *
-		 * @param array array() List of panels.
+		 * @param Debug_Bar_Panel[] $panels Array of Debug Bar panel instances.
 		 */
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
 	}

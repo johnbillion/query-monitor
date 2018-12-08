@@ -222,7 +222,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$this->outputters     = $this->get_outputters( 'html' );
 
 		/**
-		 * Allows the user to filter the menu.
+		 * Filters the menu items shown in Query Monitor's admin toolbar menu.
 		 *
 		 * @since 3.0.0
 		 *
@@ -231,12 +231,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
 
 		/**
-		 * Allows the user to filter the panel menu.
+		 * Filters the menu items shown in the panel navigation menu in Query Monitor's output.
 		 *
 		 * @since 3.0.0
 		 *
 		 * @param array $admin_bar_men Array of menus.
-		 * @var [type]
 		 */
 		$this->panel_menu     = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
@@ -427,8 +426,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since  3.1.0
 		 *
-		 * @param  obj $this The HTML dispatcher instance.
-		 * @param  array $this->outputters The list of outputters.
+		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
+		 * @param QM_Output[]        $this->outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
@@ -487,7 +486,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public function js_admin_bar_menu() {
 
 		/**
-		 * Allows user to filter the menu classes used on output.
+		 * Filters the CSS class names used on Query Monitor's admin toolbar menu.
 		 *
 		 * @since 2.7.0
 		 *
@@ -500,7 +499,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		/**
-		 * Allows the user to filter the title.
+		 * Filters the title used in Query Monitor's admin toolbar menu.
 		 *
 		 * @since 2.7.0
 		 *

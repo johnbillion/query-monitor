@@ -9,9 +9,9 @@ class QM {
 
 	public static function emergency( $message, array $context = array() ) {
 		/**
-		 * Fires when an emergency is logged.
+		 * Fires when an `emergency` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -21,9 +21,9 @@ class QM {
 
 	public static function alert( $message, array $context = array() ) {
 		/**
-		 * Fires when an alert is logged.
+		 * Fires when an `alert` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -33,9 +33,9 @@ class QM {
 
 	public static function critical( $message, array $context = array() ) {
 		/**
-		 * Fires when a critical is logged.
+		 * Fires when a `critical` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -45,9 +45,9 @@ class QM {
 
 	public static function error( $message, array $context = array() ) {
 		/**
-		 * Fires when an error is logged.
+		 * Fires when an `error` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -57,9 +57,9 @@ class QM {
 
 	public static function warning( $message, array $context = array() ) {
 		/**
-		 * Fires when a warning is logged.
+		 * Fires when a `warning` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -69,9 +69,9 @@ class QM {
 
 	public static function notice( $message, array $context = array() ) {
 		/**
-		 * Fires when a notice is logged.
+		 * Fires when a `notice` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -81,9 +81,9 @@ class QM {
 
 	public static function info( $message, array $context = array() ) {
 		/**
-		 * Fires when info is logged.
+		 * Fires when an `info` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.
@@ -93,9 +93,9 @@ class QM {
 
 	public static function debug( $message, array $context = array() ) {
 		/**
-		 * Fires when debug is logged.
+		 * Fires when a `debug` level message is logged.
 		 *
-		 * @since  3.1.0
+		 * @since 3.1.0
 		 *
 		 * @param string $message The message.
 		 * @param array $context  The context passed.

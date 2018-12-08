@@ -76,13 +76,7 @@ class QM_Collector_Request extends QM_Collector {
 			}
 		}
 
-		/**
-		 * A list of the plugin's query variables.
-		 *
-		 * @since  2.6.0
-		 *
-		 * @param array $plugin_qvars Array of query_vars.
-		 */
+		/** This filter is documented in wp-includes/class-wp.php */
 		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
 		$qvars        = $wp_query->query_vars;
 		$query_vars   = array();

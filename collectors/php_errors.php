@@ -36,14 +36,14 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
 
 		/**
-		 * Fires before setting the error type.
+		 * Fires before logging the PHP error in Query Monitor.
 		 *
-		 * @since  2.7.0
+		 * @since 2.7.0
 		 *
-		 * @param int $errno The error number.
+		 * @param int    $errno   The error number.
 		 * @param string $message The error message.
-		 * @param string $file The file location.
-		 * @param string $line The line number.
+		 * @param string $file    The file location.
+		 * @param string $line    The line number.
 		 * @param string $context The context being passed.
 		 */
 		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
@@ -126,11 +126,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		/**
-		 * Whether or not the error handler should return values.
+		 * Filters the PHP error handler return value. This can be used to control whether or not additional error
+		 * handlers are called after Query Monitor's.
 		 *
-		 * @since  2.7.0
+		 * @since 2.7.0
 		 *
-		 * @param bool $return_value Whether to return error values. Default is true.
+		 * @param bool $return_value Error handler return value. Default true.
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
@@ -251,7 +252,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 * reporting for more info: http://php.net/manual/en/function.error-reporting.php
 			 *
 			 *
-			 * @since  2.7.0
+			 * @since 2.7.0
 			 *
 			 * @param int[] $levels The error levels used for each component.
 			 */
@@ -264,7 +265,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 *
 			 *     add_filter( 'qm/collect/hide_silenced_php_errors', '__return_true' );
 			 *
-			 * @since  2.7.0
+			 * @since 2.7.0
 			 *
 			 * @param bool $hide Whether to hide silenced PHP errors. Default false.
 			 */

@@ -16,11 +16,11 @@ class QM_Collector_Conditionals extends QM_Collector {
 	public function process() {
 
 		/**
-		 * Allows users to filter the conditionals.
+		 * Allows users to filter the names of conditional functions that are exposed by QM.
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param array $conditionals The list of WordPress conditional functions.
+		 * @param string[] $conditionals The list of conditional function names.
 		 */
 		$conds = apply_filters( 'qm/collect/conditionals', array(
 			'is_404',
@@ -62,7 +62,13 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_year',
 		) );
 
-		/** This filter is documented in collectors/conditionals.php */
+		/**
+		 * This filter is deprecated. Please use `qm/collect/conditionals` instead.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string[] $conditionals The list of conditional function names.
+		 */
 		$conds = apply_filters( 'query_monitor_conditionals', $conds );
 
 		$true = $false = $na = array();

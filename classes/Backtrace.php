@@ -222,38 +222,44 @@ class QM_Backtrace {
 		if ( ! self::$filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
 
 			/**
-			 * Whether or not to ignore classes.
+			 * Filters which classes to ignore when constructing user-facing call stacks.
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param  bool $ignore_class Ignore the class or not.
+			 * @param bool[] $ignore_class Array of class names to ignore. The array keys are class names to ignore,
+			 *                             the array values are whether to ignore the class or not (usually true).
 			 */
 			self::$ignore_class  = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
 
 			/**
-			 * Whether or not to ignore class method.
+			 * Filters which class methods to ignore when constructing user-facing call stacks.
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param  bool $ignore_method Ignore the method or not.
+			 * @param bool[] $ignore_method Array of method names to ignore. The array keys are method names to ignore,
+			 *                              the array values are whether to ignore the method or not (usually true).
 			 */
 			self::$ignore_method = apply_filters( 'qm/trace/ignore_method', self::$ignore_method );
 
 			/**
-			 * Whether or not to ignore functions.
+			 * Filters which functions to ignore when constructing user-facing call stacks.
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param  bool $ignore_func Ignore the function or not.
+			 * @param bool[] $ignore_func Array of function names to ignore. The array keys are function names to ignore,
+			 *                            the array values are whether to ignore the function or not (usually true).
 			 */
 			self::$ignore_func   = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
 
 			/**
-			 * Whether or not to show the passed arguements.
+			 * Filters the number of argument values to show for the given function name when constructing user-facing
+			 * call stacks.
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param  bool $show_args Show the args or not.
+			 * @param (int|string)[] $show_args The number of argument values to show for the given function name. The
+			 *                                  array keys are function names, the array values are either integers or
+			 *                                  "dir" to specifically treat the function argument as a directory path.
 			 */
 			self::$show_args     = apply_filters( 'qm/trace/show_args',     self::$show_args );
 

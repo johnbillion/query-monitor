@@ -37,7 +37,7 @@ class QueryMonitor extends QM_Plugin {
 		 *
 		 * @since 2.14.0
 		 *
-		 * @param  array $collectors List of files to be loaded.
+		 * @param string[] $collectors Array of file paths to be loaded.
 		 */
 		foreach ( apply_filters( 'qm/built-in-collectors', $collectors ) as $file ) {
 			include $file;
@@ -96,8 +96,8 @@ class QueryMonitor extends QM_Plugin {
 		 *
 		 * @since 2.11.2
 		 *
-		 * @param array $collectors Array of collecters.
-		 * @param object $this QueryMonitor instance.
+		 * @param QM_Collector[] $collectors Array of collecter instances.
+		 * @param QueryMonitor   $this       QueryMonitor instance.
 		 */
 		foreach ( apply_filters( 'qm/collectors', array(), $this ) as $collector ) {
 			QM_Collectors::add( $collector );
@@ -113,8 +113,8 @@ class QueryMonitor extends QM_Plugin {
 		 *
 		 * @since 2.11.2
 		 *
-		 * @param array $dispatchers Array of dispatchers.
-		 * @param object $this QueryMonitor instance.
+		 * @param QM_Dispatcher[] $dispatchers Array of dispatcher instances.
+		 * @param QueryMonitor    $this        QueryMonitor instance.
 		 */
 		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {
 			QM_Dispatchers::add( $dispatcher );
