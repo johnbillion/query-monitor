@@ -262,7 +262,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',
 				esc_attr( $src ),
-				esc_html( str_replace( home_url(), '', $src ) )
+				esc_html( ltrim( str_replace( home_url(), '', $src ), '/' ) )
 			);
 		}
 		echo '</td>';
