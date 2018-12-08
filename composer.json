@@ -39,7 +39,7 @@
 	},
 	"require-dev" : {
 		"squizlabs/php_codesniffer": "^3.2",
-		"phpcompatibility/php-compatibility": "~8.2",
+		"phpcompatibility/phpcompatibility-wp": "^1.0",
 		"danieltj27/dark-mode": "3.1.1",
 		"wp-coding-standards/wpcs": "0.13",
 		"phpunit/phpunit": "^5"
