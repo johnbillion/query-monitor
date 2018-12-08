@@ -16,9 +16,11 @@ class Debug_Bar {
 	}
 
 	public function enqueue() {
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_style( 'debug-bar', false, array(
 			'query-monitor',
 		) );
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_script( 'debug-bar', false, array(
 			'query-monitor',
 		) );

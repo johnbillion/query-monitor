@@ -43,12 +43,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return bool Should the authentication cookie be secure?
 	 */
 	public static function secure_cookie() {
-		return ( is_ssl() and ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) ) );
+		return ( is_ssl() && ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) ) );
 	}
 
 	public function ajax_on() {
 
-		if ( ! current_user_can( 'view_query_monitor' ) or ! check_ajax_referer( 'qm-auth-on', 'nonce', false ) ) {
+		if ( ! current_user_can( 'view_query_monitor' ) || ! check_ajax_referer( 'qm-auth-on', 'nonce', false ) ) {
 			wp_send_json_error();
 		}
 
@@ -64,7 +64,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function ajax_off() {
 
-		if ( ! self::user_verified() or ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
+		if ( ! self::user_verified() || ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
 			wp_send_json_error();
 		}
 

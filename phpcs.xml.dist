@@ -20,10 +20,6 @@
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
 		<exclude name="WordPress.DB.RestrictedFunctions" />
-		<exclude name="WordPress.VIP.RestrictedFunctions.cookies_setcookie" />
-		<exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE" />
-		<exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />
-		<exclude name="WordPress.VIP.RestrictedFunctions.wp_is_mobile_wp_is_mobile" />
 
 		<!-- QM currently supports WordPress versions older than 4.4: -->
 		<exclude name="WordPress.WP.AlternativeFunctions.parse_url_parse_url" />
@@ -33,12 +29,12 @@
 
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.Commenting" />
-		<exclude name="Squiz.PHP.CommentedOutCode" />
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 
-		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
-
+		<!-- Not interested in whitespace issues at the moment -->
+		<exclude name="PEAR.Functions.FunctionCallSignature" />
+		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 
@@ -47,15 +43,7 @@
 	<rule ref="WordPress-Docs" />
 
 	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
-	<rule ref="PEAR.Functions.FunctionCallSignature">
-		<exclude-pattern>*.js</exclude-pattern>
-	</rule>
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
-		<exclude-pattern>*.css</exclude-pattern>
-	</rule>
-
-	<!-- The VIP sniffer triggers false positives for this rule -->
-	<rule ref="WordPress.VIP.AdminBarRemoval">
 		<exclude-pattern>*.css</exclude-pattern>
 	</rule>
 

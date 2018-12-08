@@ -19,7 +19,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	public function __construct() {
-		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) and QM_DISABLE_ERROR_HANDLER ) {
+		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
 		}
 
@@ -145,7 +145,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return;
 		}
 
-		if ( empty( $e ) or ! ( $e['type'] & ( E_ERROR | E_PARSE | E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+		if ( empty( $e ) || ! ( $e['type'] & ( E_ERROR | E_PARSE | E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
 			return;
 		}
 

@@ -63,7 +63,7 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 		$panel_id  = strtolower( sanitize_html_class( get_class( $panel ) ) );
 		$collector = QM_Collectors::get( "debug_bar_{$panel_id}" );
 
-		if ( $collector and $collector->is_visible() ) {
+		if ( $collector && $collector->is_visible() ) {
 			$output[ "debug_bar_{$panel_id}" ] = new QM_Output_Html_Debug_Bar( $collector );
 		}
 	}

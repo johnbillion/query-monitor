@@ -170,7 +170,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			'WP_HTTP_BLOCK_EXTERNAL',
 			'WP_ACCESSIBLE_HOSTS',
 		) as $var ) {
-			if ( defined( $var ) and constant( $var ) ) {
+			if ( defined( $var ) && constant( $var ) ) {
 				$val = constant( $var );
 				if ( true === $val ) {
 					# @TODO this transformation should happen in the output, not the collector

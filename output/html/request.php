@@ -99,7 +99,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					echo '<th scope="row" class="qm-ltr">' . esc_html( $var ) . '</td>';
 				}
 
-				if ( is_array( $value ) or is_object( $value ) ) {
+				if ( is_array( $value ) || is_object( $value ) ) {
 					echo '<td class="qm-ltr"><pre>';
 					echo esc_html( print_r( $value, true ) );
 					echo '</pre></td>';

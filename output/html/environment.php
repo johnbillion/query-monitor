@@ -188,9 +188,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					$append       = '';
 					$show_warning = false;
 
-					if ( ( true === $db['vars'][ $key ] ) and empty( $val ) ) {
+					if ( ( true === $db['vars'][ $key ] ) && empty( $val ) ) {
 						$show_warning = true;
-					} elseif ( is_string( $db['vars'][ $key ] ) and ( $val !== $db['vars'][ $key ] ) ) {
+					} elseif ( is_string( $db['vars'][ $key ] ) && ( $val !== $db['vars'][ $key ] ) ) {
 						$show_warning = true;
 					}
 
@@ -202,7 +202,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 						);
 					}
 
-					if ( is_numeric( $val ) and ( $val >= ( 1024 * 1024 ) ) ) {
+					if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
 							'&nbsp;<span class="qm-info">(~%s)</span>',
 							esc_html( size_format( $val ) )

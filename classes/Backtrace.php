@@ -149,6 +149,7 @@ class QM_Backtrace {
 					// so short-circuit and return early.
 					return $comp;
 				}
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( ReflectionException $e ) {
 				# nothing
 			}
@@ -209,7 +210,7 @@ class QM_Backtrace {
 
 	public function ignore_current_filter() {
 
-		if ( isset( $this->trace[2] ) and isset( $this->trace[2]['function'] ) ) {
+		if ( isset( $this->trace[2] ) && isset( $this->trace[2]['function'] ) ) {
 			if ( in_array( $this->trace[2]['function'], array( 'apply_filters', 'do_action' ), true ) ) {
 				$this->ignore( 3 ); # Ignore filter and action callbacks
 			}
@@ -219,7 +220,7 @@ class QM_Backtrace {
 
 	public function filter_trace( array $trace ) {
 
-		if ( ! self::$filtered and function_exists( 'did_action' ) and did_action( 'plugins_loaded' ) ) {
+		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
 
 			/**
 			 * Filters which classes to ignore when constructing user-facing call stacks.

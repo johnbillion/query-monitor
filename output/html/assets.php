@@ -280,7 +280,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['broken'] ) or ! empty( $data['missing'] ) ) {
+		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
 			$class[] = 'qm-error';
 		}
 
@@ -303,7 +303,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				'href'  => esc_attr( '#' . $this->collector->id() . '-' . $type ),
 			);
 
-			if ( ! empty( $data['broken'][ $type ] ) or ! empty( $data['missing'][ $type ] ) ) {
+			if ( ! empty( $data['broken'][ $type ] ) || ! empty( $data['missing'][ $type ] ) ) {
 				$args['meta']['classname'] = 'qm-error';
 			}
 

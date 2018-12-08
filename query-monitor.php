@@ -29,7 +29,7 @@
  * GNU General Public License for more details.
  */
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 $qm_dir = dirname( __FILE__ );
 
@@ -46,7 +46,7 @@ foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
 
 QM_Activation::init( __FILE__ );
 
-if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
+if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;
 }
 

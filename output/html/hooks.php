@@ -22,7 +22,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			return;
 		}
 
-		if ( is_multisite() and is_network_admin() ) {
+		if ( is_multisite() && is_network_admin() ) {
 			$screen = preg_replace( '|-network$|', '', $data['screen'] );
 		} else {
 			$screen = $data['screen'];

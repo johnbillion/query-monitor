@@ -42,7 +42,7 @@ class QM_Collector_Admin extends QM_Collector {
 			'users-network'   => true,
 		);
 
-		if ( ! empty( $this->data['current_screen'] ) and isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
+		if ( ! empty( $this->data['current_screen'] ) && isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
 
 			$list_table = array();
 
@@ -56,7 +56,7 @@ class QM_Collector_Admin extends QM_Collector {
 				$list_table['column'] = $this->data['current_screen']['base'];
 			}
 
-			if ( ! empty( $this->data['current_screen']['post_type'] ) and empty( $this->data['current_screen']['taxonomy'] ) ) {
+			if ( ! empty( $this->data['current_screen']['post_type'] ) && empty( $this->data['current_screen']['taxonomy'] ) ) {
 				$list_table['columns'] = $this->data['current_screen']['post_type'] . '_posts';
 			} else {
 				$list_table['columns'] = $this->data['current_screen']['id'];

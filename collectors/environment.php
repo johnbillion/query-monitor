@@ -31,7 +31,7 @@ class QM_Collector_Environment extends QM_Collector {
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars ) and isset( $wpdb->qm_php_vars[ $setting ] ) ) {
+			if ( isset( $wpdb->qm_php_vars ) && isset( $wpdb->qm_php_vars[ $setting ] ) ) {
 				$val = $wpdb->qm_php_vars[ $setting ];
 			} else {
 				$val = ini_get( $setting );
@@ -266,22 +266,22 @@ class QM_Collector_Environment extends QM_Collector {
 			$php_u = $u['name'] . ':' . $g['name'];
 		}
 
-		if ( empty( $php_u ) and isset( $_ENV['APACHE_RUN_USER'] ) ) {
+		if ( empty( $php_u ) && isset( $_ENV['APACHE_RUN_USER'] ) ) {
 			$php_u = $_ENV['APACHE_RUN_USER'];
 			if ( isset( $_ENV['APACHE_RUN_GROUP'] ) ) {
 				$php_u .= ':' . $_ENV['APACHE_RUN_GROUP'];
 			}
 		}
 
-		if ( empty( $php_u ) and isset( $_SERVER['USER'] ) ) { // WPCS: input var ok
+		if ( empty( $php_u ) && isset( $_SERVER['USER'] ) ) { // WPCS: input var ok
 			$php_u = wp_unslash( $_SERVER['USER'] ); // WPCS: sanitization ok, input var ok
 		}
 
-		if ( empty( $php_u ) and function_exists( 'exec' ) ) {
+		if ( empty( $php_u ) && function_exists( 'exec' ) ) {
 			$php_u = exec( 'whoami' ); // @codingStandardsIgnoreLine
 		}
 
-		if ( empty( $php_u ) and function_exists( 'getenv' ) ) {
+		if ( empty( $php_u ) && function_exists( 'getenv' ) ) {
 			$php_u = getenv( 'USERNAME' );
 		}
 

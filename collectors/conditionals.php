@@ -75,7 +75,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 		foreach ( $conds as $cond ) {
 			if ( function_exists( $cond ) ) {
-				if ( ( 'is_sticky' === $cond ) and ! get_post( $id = null ) ) {
+				if ( ( 'is_sticky' === $cond ) && ! get_post( $id = null ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
 				} elseif ( ! is_multisite() && in_array( $cond, array( 'is_main_network', 'is_main_site' ), true ) ) {
