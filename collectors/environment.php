@@ -7,7 +7,7 @@
 
 class QM_Collector_Environment extends QM_Collector {
 
-	public $id = 'environment';
+	public $id          = 'environment';
 	protected $php_vars = array(
 		'max_execution_time',
 		'memory_limit',
@@ -184,7 +184,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['error_levels']    = self::get_error_levels( $this->data['php']['error_reporting'] );
 
 		$this->data['wp']['version']   = $wp_version;
-		$constants = array(
+		$constants                     = array(
 			'WP_DEBUG'            => self::format_bool_constant( 'WP_DEBUG' ),
 			'WP_DEBUG_DISPLAY'    => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
 			'WP_DEBUG_LOG'        => self::format_bool_constant( 'WP_DEBUG_LOG' ),
@@ -261,8 +261,8 @@ class QM_Collector_Environment extends QM_Collector {
 		$php_u = null;
 
 		if ( function_exists( 'posix_getpwuid' ) ) {
-			$u = posix_getpwuid( posix_getuid() );
-			$g = posix_getgrgid( $u['gid'] );
+			$u     = posix_getpwuid( posix_getuid() );
+			$g     = posix_getgrgid( $u['gid'] );
 			$php_u = $u['name'] . ':' . $g['name'];
 		}
 
@@ -292,7 +292,7 @@ class QM_Collector_Environment extends QM_Collector {
 }
 
 function register_qm_collector_environment( array $collectors, QueryMonitor $qm ) {
-	$collectors['environment'] = new QM_Collector_Environment;
+	$collectors['environment'] = new QM_Collector_Environment();
 	return $collectors;
 }
 

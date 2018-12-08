@@ -16,7 +16,7 @@ class QM_Collector_Cache extends QM_Collector {
 	public function process() {
 		global $wp_object_cache;
 
-		$this->data['ext_object_cache'] = (bool) wp_using_ext_object_cache();
+		$this->data['ext_object_cache']     = (bool) wp_using_ext_object_cache();
 		$this->data['cache_hit_percentage'] = 0;
 
 		if ( is_object( $wp_object_cache ) ) {
@@ -66,7 +66,7 @@ class QM_Collector_Cache extends QM_Collector {
 		}
 
 		if ( isset( $this->data['stats']['cache_hits'] ) && isset( $this->data['stats']['cache_misses'] ) ) {
-			$total = $this->data['stats']['cache_misses'] + $this->data['stats']['cache_hits'];
+			$total                              = $this->data['stats']['cache_misses'] + $this->data['stats']['cache_hits'];
 			$this->data['cache_hit_percentage'] = ( 100 / $total ) * $this->data['stats']['cache_hits'];
 		}
 
@@ -89,7 +89,7 @@ class QM_Collector_Cache extends QM_Collector {
 }
 
 function register_qm_collector_cache( array $collectors, QueryMonitor $qm ) {
-	$collectors['cache'] = new QM_Collector_Cache;
+	$collectors['cache'] = new QM_Collector_Cache();
 	return $collectors;
 }
 

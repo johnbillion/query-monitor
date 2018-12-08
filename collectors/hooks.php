@@ -39,13 +39,13 @@ class QM_Collector_Hooks extends QM_Collector {
 
 			$hooks[ $name ] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
 
-			$all_parts    = array_merge( $all_parts, $hooks[ $name ]['parts'] );
-			$components   = array_merge( $components, $hooks[ $name ]['components'] );
+			$all_parts  = array_merge( $all_parts, $hooks[ $name ]['parts'] );
+			$components = array_merge( $components, $hooks[ $name ]['components'] );
 
 		}
 
-		$this->data['hooks'] = $hooks;
-		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
+		$this->data['hooks']      = $hooks;
+		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
 		$this->data['components'] = array_unique( array_filter( $components ) );
 
 	}
@@ -90,8 +90,8 @@ class QM_Collector_Hooks extends QM_Collector {
 					unset( $callback['function'] );
 
 					$actions[] = array(
-						'priority'  => $priority,
-						'callback'  => $callback,
+						'priority' => $priority,
+						'callback' => $callback,
 					);
 
 				}
@@ -112,4 +112,4 @@ class QM_Collector_Hooks extends QM_Collector {
 }
 
 # Load early to catch all hooks
-QM_Collectors::add( new QM_Collector_Hooks );
+QM_Collectors::add( new QM_Collector_Hooks() );

@@ -31,21 +31,21 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$type_labels = array(
 			'scripts' => array(
 				/* translators: %s: Total number of enqueued scripts */
-				'total'    => _x( 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
-				'plural'   => __( 'Scripts', 'query-monitor' ),
+				'total'  => _x( 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
+				'plural' => __( 'Scripts', 'query-monitor' ),
 			),
-			'styles' => array(
+			'styles'  => array(
 				/* translators: %s: Total number of enqueued styles */
-				'total'    => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
-				'plural'   => __( 'Styles', 'query-monitor' ),
+				'total'  => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
+				'plural' => __( 'Styles', 'query-monitor' ),
 			),
 		);
 
 		foreach ( $type_labels as $type => $type_label ) {
 
-			$types = array();
+			$types            = array();
 			$all_dependencies = array();
-			$all_dependents = array();
+			$all_dependents   = array();
 
 			foreach ( $position_labels as $position => $label ) {
 				if ( ! empty( $data[ $position ][ $type ] ) ) {
@@ -60,10 +60,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 							continue;
 						}
 
-						$dependencies = $dependency->deps;
+						$dependencies     = $dependency->deps;
 						$all_dependencies = array_merge( $all_dependencies, $dependencies );
 
-						$dependents = $this->collector->get_dependents( $dependency, $data['raw'][ $type ] );
+						$dependents     = $this->collector->get_dependents( $dependency, $data['raw'][ $type ] );
 						$all_dependents = array_merge( $all_dependents, $dependents );
 					}
 				}
@@ -148,13 +148,13 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
 
-			$dependencies_list   = $dependency->deps;
+			$dependencies_list = $dependency->deps;
 			// $dependencies_list[] = $handle;
-			$dependencies_list   = implode( ' ', $dependencies_list );
+			$dependencies_list = implode( ' ', $dependencies_list );
 
-			$dependents_list   = $this->collector->get_dependents( $dependency, $dependencies );
+			$dependents_list = $this->collector->get_dependents( $dependency, $dependencies );
 			// $dependents_list[] = $handle;
-			$dependents_list   = implode( ' ', $dependents_list );
+			$dependents_list = implode( ' ', $dependents_list );
 
 			$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
 
@@ -189,7 +189,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		 */
 		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
 
-		$host = (string) wp_parse_url( $source, PHP_URL_HOST );
+		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
 		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
 		// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
 		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] );
@@ -213,7 +213,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
 			}
 		} elseif ( empty( $source ) ) {
-			$src = '';
+			$src  = '';
 			$host = '';
 		} else {
 			$src = $source;
@@ -235,7 +235,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
 
 		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
-		$deps = $dependency->deps;
+		$deps       = $dependency->deps;
 		sort( $deps );
 
 		foreach ( $deps as & $dep ) {
@@ -290,7 +290,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->collector->get_data();
+		$data   = $this->collector->get_data();
 		$labels = array(
 			'scripts' => __( 'Scripts', 'query-monitor' ),
 			'styles'  => __( 'Styles', 'query-monitor' ),

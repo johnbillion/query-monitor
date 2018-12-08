@@ -69,8 +69,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					/* translators: A non-blocking HTTP API request */
 					$response = __( 'Non-blocking', 'query-monitor' );
 				} else {
-					$code     = wp_remote_retrieve_response_code( $row['response'] );
-					$msg      = wp_remote_retrieve_response_message( $row['response'] );
+					$code = wp_remote_retrieve_response_code( $row['response'] );
+					$msg  = wp_remote_retrieve_response_message( $row['response'] );
 
 					if ( intval( $code ) >= 400 ) {
 						$is_error = true;
@@ -84,7 +84,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css = 'qm-warn';
 				}
 
-				$url = self::format_url( $row['url'] );
+				$url  = self::format_url( $row['url'] );
 				$info = '';
 
 				$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );

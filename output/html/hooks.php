@@ -28,7 +28,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			$screen = $data['screen'];
 		}
 
-		$parts = $data['parts'];
+		$parts      = $data['parts'];
 		$components = $data['components'];
 
 		usort( $parts, 'strcasecmp' );
@@ -70,7 +70,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				$hook_name = esc_html( $hook['name'] );
 			}
 
-			$row_attr = array();
+			$row_attr                      = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 

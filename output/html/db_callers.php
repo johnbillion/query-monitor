@@ -20,7 +20,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			return;
 		}
 
-		$total_time  = 0;
+		$total_time = 0;
 
 		if ( ! empty( $data['times'] ) ) {
 			$this->before_tabular_output();
@@ -44,8 +44,8 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $data['times'] as $row ) {
-				$total_time  += $row['ltime'];
-				$stime = number_format_i18n( $row['ltime'], 4 );
+				$total_time += $row['ltime'];
+				$stime       = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
 				echo '<td class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '"><code>' . esc_html( $row['caller'] ) . '</code></a></td>';

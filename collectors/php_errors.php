@@ -7,10 +7,10 @@
 
 class QM_Collector_PHP_Errors extends QM_Collector {
 
-	public $id = 'php_errors';
-	public $types = array();
+	public $id               = 'php_errors';
+	public $types            = array();
 	private $error_reporting = null;
-	private $display_errors = null;
+	private $display_errors  = null;
 	private static $unexpected_error;
 	private static $wordpress_couldnt;
 
@@ -28,7 +28,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		register_shutdown_function( array( $this, 'shutdown_handler' ) );
 
 		$this->error_reporting = error_reporting();
-		$this->display_errors = ini_get( 'display_errors' );
+		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
 
 	}
@@ -89,8 +89,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		if ( ! isset( self::$unexpected_error ) ) {
 			// These strings are from core. They're passed through `__()` as variables so they get translated at runtime
 			// but do not get seen by GlotPress when it populates its database of translatable strings for QM.
-			$unexpected_error  = 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.';
-			$wordpress_couldnt = '(WordPress could not establish a secure connection to WordPress.org. Please contact your server administrator.)';
+			$unexpected_error        = 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.';
+			$wordpress_couldnt       = '(WordPress could not establish a secure connection to WordPress.org. Please contact your server administrator.)';
 			self::$unexpected_error  = call_user_func( '__', $unexpected_error );
 			self::$wordpress_couldnt = call_user_func( '__', $wordpress_couldnt );
 		}
@@ -195,7 +195,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 */
 	public function process() {
 		$this->types = array(
-			'errors' => array(
+			'errors'     => array(
 				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
 				'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
 				'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
@@ -207,14 +207,14 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'strict'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			),
-			'silenced' => array(
+			'silenced'   => array(
 				'warning'    => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 				'notice'     => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 				'strict'     => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 			),
 		);
-		$components = array();
+		$components  = array();
 
 		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
 			/**
@@ -276,7 +276,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							$component = $error['trace']->get_component();
+							$component                      = $error['trace']->get_component();
 							$components[ $component->name ] = $component->name;
 						}
 					}
@@ -378,4 +378,4 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 }
 
 # Load early to catch early errors
-QM_Collectors::add( new QM_Collector_PHP_Errors );
+QM_Collectors::add( new QM_Collector_PHP_Errors() );

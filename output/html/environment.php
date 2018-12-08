@@ -34,7 +34,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				'https://wordpress.org/support/upgrade-php/',
 				esc_html__( 'Help', 'query-monitor' )
 			);
-			$class = 'qm-warn';
+			$class   = 'qm-warn';
 		}
 
 		echo '<tr class="' . esc_attr( $class ) . '">';
@@ -185,7 +185,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
 					$val = $setting->Value;
 
-					$append = '';
+					$append       = '';
 					$show_warning = false;
 
 					if ( ( true === $db['vars'][ $key ] ) and empty( $val ) ) {

@@ -28,7 +28,7 @@ class QueryMonitor extends QM_Plugin {
 		# Load and register built-in collectors:
 		$collectors = array();
 		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
-			$key = basename( $file, '.php' );
+			$key                = basename( $file, '.php' );
 			$collectors[ $key ] = $file;
 		}
 

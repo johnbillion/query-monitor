@@ -42,7 +42,7 @@
 		"squizlabs/php_codesniffer": "^3.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"danieltj27/dark-mode": "3.1.1",
-		"wp-coding-standards/wpcs": "0.13",
+		"wp-coding-standards/wpcs": "^1.2",
 		"phpunit/phpunit": "^5"
 	}
 }

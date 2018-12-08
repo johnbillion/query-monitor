@@ -76,7 +76,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 }
 
 function register_qm_collector_block_editor( array $collectors, QueryMonitor $qm ) {
-	$collectors['block_editor'] = new QM_Collector_Block_Editor;
+	$collectors['block_editor'] = new QM_Collector_Block_Editor();
 	return $collectors;
 }
 

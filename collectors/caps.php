@@ -44,7 +44,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @return bool[] Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
-		$trace  = new QM_Backtrace;
+		$trace  = new QM_Backtrace();
 		$result = true;
 
 		foreach ( $caps as $cap ) {
@@ -87,7 +87,7 @@ class QM_Collector_Caps extends QM_Collector {
 			return $required_caps;
 		}
 
-		$trace  = new QM_Backtrace;
+		$trace  = new QM_Backtrace();
 		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
 
 		array_unshift( $args, $user_id );
@@ -107,8 +107,8 @@ class QM_Collector_Caps extends QM_Collector {
 			return;
 		}
 
-		$all_parts = array();
-		$all_users = array();
+		$all_parts  = array();
+		$all_users  = array();
 		$components = array();
 
 		$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) );
@@ -124,26 +124,26 @@ class QM_Collector_Caps extends QM_Collector {
 				$name = '';
 			}
 
-			$parts = array_filter( preg_split( '#[_/-]#', $name ) );
+			$parts                             = array_filter( preg_split( '#[_/-]#', $name ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
 			$this->data['caps'][ $i ]['name']  = $name;
 			$this->data['caps'][ $i ]['user']  = $cap['args'][1];
 			$this->data['caps'][ $i ]['args']  = array_slice( $cap['args'], 2 );
-			$all_parts = array_merge( $all_parts, $parts );
-			$all_users[] = $cap['args'][1];
-			$component = $cap['trace']->get_component();
-			$components[ $component->name ] = $component->name;
+			$all_parts                         = array_merge( $all_parts, $parts );
+			$all_users[]                       = $cap['args'][1];
+			$component                         = $cap['trace']->get_component();
+			$components[ $component->name ]    = $component->name;
 		}
 
-		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
-		$this->data['users'] = array_unique( array_filter( $all_users ) );
+		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
+		$this->data['users']      = array_unique( array_filter( $all_users ) );
 		$this->data['components'] = $components;
 	}
 
 	public function filter_remove_noise( array $cap ) {
 		$trace = $cap['trace']->get_trace();
 
-		$exclude_files = array(
+		$exclude_files     = array(
 			ABSPATH . 'wp-admin/menu.php',
 			ABSPATH . 'wp-admin/includes/menu.php',
 		);
@@ -167,7 +167,7 @@ class QM_Collector_Caps extends QM_Collector {
 }
 
 function register_qm_collector_caps( array $collectors, QueryMonitor $qm ) {
-	$collectors['caps'] = new QM_Collector_Caps;
+	$collectors['caps'] = new QM_Collector_Caps();
 	return $collectors;
 }
 

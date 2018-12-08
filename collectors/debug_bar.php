@@ -54,11 +54,11 @@ function register_qm_collectors_debug_bar() {
 	}
 
 	$collectors = QM_Collectors::init();
-	$qm = QueryMonitor::init();
+	$qm         = QueryMonitor::init();
 
 	require_once $qm->plugin_path( 'classes/debug_bar.php' );
 
-	$debug_bar = new Debug_Bar;
+	$debug_bar = new Debug_Bar();
 	$redundant = array(
 		'debug_bar_actions_addon_panel', // Debug Bar Actions and Filters Addon
 		'debug_bar_remote_requests_panel', // Debug Bar Remote Requests
@@ -73,7 +73,7 @@ function register_qm_collectors_debug_bar() {
 			continue;
 		}
 
-		$collector = new QM_Collector_Debug_Bar;
+		$collector = new QM_Collector_Debug_Bar();
 		$collector->set_id( "debug_bar_{$panel_id}" );
 		$collector->set_panel( $panel );
 

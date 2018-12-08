@@ -25,7 +25,7 @@ class QM_Collector_Admin extends QM_Collector {
 			$this->data['base'] = $pagenow;
 		}
 
-		$this->data['pagenow'] = $pagenow;
+		$this->data['pagenow']        = $pagenow;
 		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
 
 		$screens = array(
@@ -88,7 +88,7 @@ class QM_Collector_Admin extends QM_Collector {
 }
 
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
-	$collectors['response'] = new QM_Collector_Admin;
+	$collectors['response'] = new QM_Collector_Admin();
 	return $collectors;
 }
 

@@ -9,7 +9,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 	public function get_output() {
 
-		$data = $this->collector->get_data();
+		$data    = $this->collector->get_data();
 		$headers = array();
 
 		$headers['time_taken'] = number_format_i18n( $data['time_taken'], 4 );

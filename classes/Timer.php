@@ -13,7 +13,7 @@ class QM_Timer {
 	protected $laps  = array();
 
 	public function start( array $data = null ) {
-		$this->trace = new QM_Backtrace;
+		$this->trace = new QM_Backtrace();
 		$this->start = array(
 			'time'   => microtime( true ),
 			'memory' => memory_get_usage(),

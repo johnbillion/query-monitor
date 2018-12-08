@@ -7,7 +7,7 @@
 
 class QM_Collector_Theme extends QM_Collector {
 
-	public $id = 'response';
+	public $id                  = 'response';
 	protected $got_theme_compat = false;
 
 	public function name() {
@@ -127,7 +127,7 @@ class QM_Collector_Theme extends QM_Collector {
 					$this->data['theme_template_parts'][ $file ] = $theme_display;
 					$this->data['count_template_parts'][ $file ] = $count;
 				} else {
-					$slug = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
+					$slug  = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
 					$count = did_action( "get_template_part_{$slug}" );
 					if ( $count ) {
 						$this->data['template_parts'][ $file ]       = $display;
@@ -150,9 +150,9 @@ class QM_Collector_Theme extends QM_Collector {
 			$this->data['theme_template_file'] = $theme_template_file;
 		}
 
-		$this->data['stylesheet']         = get_stylesheet();
-		$this->data['template']           = get_template();
-		$this->data['is_child_theme']     = ( $this->data['stylesheet'] !== $this->data['template'] );
+		$this->data['stylesheet']     = get_stylesheet();
+		$this->data['template']       = get_template();
+		$this->data['is_child_theme'] = ( $this->data['stylesheet'] !== $this->data['template'] );
 
 		if ( isset( $this->data['body_class'] ) ) {
 			asort( $this->data['body_class'] );
@@ -163,7 +163,7 @@ class QM_Collector_Theme extends QM_Collector {
 }
 
 function register_qm_collector_theme( array $collectors, QueryMonitor $qm ) {
-	$collectors['response'] = new QM_Collector_Theme;
+	$collectors['response'] = new QM_Collector_Theme();
 	return $collectors;
 }
 

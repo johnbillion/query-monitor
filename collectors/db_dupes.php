@@ -99,7 +99,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 }
 
 function register_qm_collector_db_dupes( array $collectors, QueryMonitor $qm ) {
-	$collectors['db_dupes'] = new QM_Collector_DB_Dupes;
+	$collectors['db_dupes'] = new QM_Collector_DB_Dupes();
 	return $collectors;
 }
 

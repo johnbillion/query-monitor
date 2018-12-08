@@ -24,7 +24,7 @@ var QM_i18n = {
 			num_int   = Math.floor( number ),
 			num_str   = num_int.toString(),
 			fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
-			o = '';
+			o         = '';
 
 		if ( num_str.length > 3 ) {
 			for ( i = num_str.length; i > 3; i -= 3 ) {
@@ -48,11 +48,11 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var minheight = 100;
-		var maxheight = ( $(window).height() - 50 );
-		var container = $('#query-monitor');
+		var minheight             = 100;
+		var maxheight             = ( $(window).height() - 50 );
+		var container             = $('#query-monitor');
 		var container_storage_key = 'qm-container-height';
-		var container_pinned_key = 'qm-container-pinned';
+		var container_pinned_key  = 'qm-container-pinned';
 
 		if ( $('#query-monitor').hasClass('qm-peek') ) {
 			minheight = 27;
@@ -89,8 +89,8 @@ if ( window.jQuery ) {
 
 			if ( selected_menu.length ) {
 				var selected_menu_pos = selected_menu.position();
-				var menu_height = $('#qm-panel-menu').height();
-				var menu_scroll = $('#qm-panel-menu').scrollTop();
+				var menu_height       = $('#qm-panel-menu').height();
+				var menu_scroll       = $('#qm-panel-menu').scrollTop();
 
 				if ( ( selected_menu_pos.top > ( menu_height + menu_scroll ) ) || ( selected_menu_pos.top < menu_scroll ) ) {
 					$('#qm-panel-menu').scrollTop( selected_menu_pos.top - ( menu_height / 2 ) );
@@ -120,20 +120,17 @@ if ( window.jQuery ) {
 					.addClass(qm.menu.top.classname)
 					.attr('dir','ltr')
 					.find('a').eq(0)
-					.html(qm.menu.top.title)
-				;
+					.html(qm.menu.top.title);
 
 				$.each( qm.menu.sub, function( i, el ) {
 
 					var new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 						.clone()
-						.attr('id','wp-admin-bar-' + el.id)
-					;
+						.attr('id','wp-admin-bar-' + el.id);
 					new_menu
 						.find('a').eq(0)
 						.html(el.title)
-						.attr('href',el.href)
-					;
+						.attr('href',el.href);
 
 					if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) ) {
 						new_menu.addClass(el.meta.classname);
@@ -213,7 +210,7 @@ if ( window.jQuery ) {
 		});
 
 		$('#query-monitor').find('.qm-filter').each(function () {
-			var key = $(this).attr('id');
+			var key   = $(this).attr('id');
 			var value = localStorage.getItem( key );
 			if ( value !== null ) {
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
@@ -237,9 +234,9 @@ if ( window.jQuery ) {
 		});
 
 		$('#query-monitor').find('.qm-toggle').on('click',function(e){
-			var el = $(this);
+			var el           = $(this);
 			var currentState = el.attr('aria-expanded');
-			var newState = 'true';
+			var newState     = 'true';
 			if (currentState === 'true') {
 				newState = 'false';
 			}
@@ -321,8 +318,7 @@ if ( window.jQuery ) {
 					if ( ! qm.ajax_errors[error.type] ) {
 						$('#wp-admin-bar-query-monitor')
 							.addClass('qm-' + error.type)
-							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>')
-						;
+							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>');
 					}
 				}
 
@@ -341,7 +337,7 @@ if ( window.jQuery ) {
 		} );
 
 		$('.qm-auth').on('click',function(e){
-			var state = $('#qm-settings').data('qm-state');
+			var state  = $('#qm-settings').data('qm-state');
 			var action = ( 'off' === state ? 'on' : 'off' );
 
 			$.ajax(qm_l10n.ajaxurl,{
@@ -405,7 +401,7 @@ if ( window.jQuery ) {
 
 		$(window).on('resize', function(){
 			var maxheight = ( $(window).height() - toolbarHeight );
-			var h = container.height();
+			var h         = container.height();
 
 			if ( h < minheight ) {
 				container.height( minheight );
@@ -450,11 +446,11 @@ if ( window.jQuery ) {
 	 * Author: Gajus Kuizinas <g.kuizinas@anuary.com>
 	 */
 	(function ($) {
-		$.qm = $.qm || {};
+		$.qm           = $.qm || {};
 		$.qm.tableSort = function (settings) {
 			// @param	object	columns	NodeList table colums.
 			// @param	integer	row_width	defines the number of columns per row.
-			var table_to_array	= function (columns, row_width) {
+			var table_to_array = function (columns, row_width) {
 				columns = Array.prototype.slice.call(columns, 0);
 
 				var rows      = [];
@@ -464,7 +460,7 @@ if ( window.jQuery ) {
 					var row	= [];
 
 					for (var k = 0; k < row_width; k++) {
-						var e = columns[i + k];
+						var e    = columns[i + k];
 						var data = e.dataset.qmSortWeight;
 
 						if (data === undefined) {
@@ -492,7 +488,7 @@ if ( window.jQuery ) {
 				var table = $(this);
 
 				table.find('.qm-sortable-column').on('click', function (e) {
-					var desc = ! $(this).hasClass('qm-sorted-desc');
+					var desc  = ! $(this).hasClass('qm-sorted-desc');
 					var index = $(this).index();
 
 					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').attr('aria-sort','none');
@@ -504,8 +500,8 @@ if ( window.jQuery ) {
 					}
 
 					table.find('tbody').each(function () {
-						var tbody = $(this);
-						var rows = this.rows;
+						var tbody   = $(this);
+						var rows    = this.rows;
 						var columns = this.querySelectorAll('th,td');
 
 						if (this.data_matrix === undefined) {

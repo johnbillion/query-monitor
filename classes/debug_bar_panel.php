@@ -7,7 +7,7 @@
 
 abstract class Debug_Bar_Panel {
 
-	public $_title = '';
+	public $_title   = '';
 	public $_visible = true;
 
 	public function __construct( $title = '' ) {
@@ -54,7 +54,7 @@ abstract class Debug_Bar_Panel {
 	}
 
 	public function Debug_Bar_Panel( $title = '' ) {
-		Debug_Bar_Panel::__construct( $title );
+		self::__construct( $title );
 	}
 
 }

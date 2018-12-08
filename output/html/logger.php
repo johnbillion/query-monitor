@@ -43,7 +43,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		foreach ( $data['logs'] as $row ) {
 			$component = $row['trace']->get_component();
 
-			$row_attr  = array();
+			$row_attr                      = array();
 			$row_attr['data-qm-component'] = $component->name;
 			$row_attr['data-qm-type']      = ucfirst( $row['level'] );
 

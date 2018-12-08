@@ -7,7 +7,7 @@
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
-	<rule ref="WordPress-VIP">
+	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
 

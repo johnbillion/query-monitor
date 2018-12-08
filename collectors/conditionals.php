@@ -99,7 +99,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 }
 
 function register_qm_collector_conditionals( array $collectors, QueryMonitor $qm ) {
-	$collectors['conditionals'] = new QM_Collector_Conditionals;
+	$collectors['conditionals'] = new QM_Collector_Conditionals();
 	return $collectors;
 }
 

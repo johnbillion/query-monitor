@@ -8,7 +8,7 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 
 	public function get_output() {
 
-		$data = $this->collector->get_data();
+		$data    = $this->collector->get_data();
 		$headers = array();
 
 		if ( empty( $data['trace'] ) ) {

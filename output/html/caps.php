@@ -39,7 +39,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		if ( ! empty( $data['caps'] ) ) {
 			$this->before_tabular_output();
 
-			$results = array(
+			$results    = array(
 				'true',
 				'false',
 			);
@@ -81,7 +81,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			foreach ( $data['caps'] as $row ) {
 				$component = $row['trace']->get_component();
 
-				$row_attr = array();
+				$row_attr                      = array();
 				$row_attr['data-qm-name']      = implode( ' ', $row['parts'] );
 				$row_attr['data-qm-user']      = $row['user'];
 				$row_attr['data-qm-component'] = $component->name;
@@ -147,8 +147,8 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				if ( ! count( $filtered_trace ) ) {
 					$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
 
-					$responsible_item = $trace[1];
-					$responsible_item['display'] = $responsible_name;
+					$responsible_item                 = $trace[1];
+					$responsible_item['display']      = $responsible_name;
 					$responsible_item['calling_file'] = $trace[1]['file'];
 					$responsible_item['calling_line'] = $trace[1]['line'];
 					array_unshift( $filtered_trace, $responsible_item );

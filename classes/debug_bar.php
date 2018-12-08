@@ -53,7 +53,7 @@ class Debug_Bar {
 	}
 
 	public function Debug_Bar() {
-		Debug_Bar::__construct();
+		self::__construct();
 	}
 
 }

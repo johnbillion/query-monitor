@@ -22,7 +22,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return;
 		}
 
-		$levels = array(
+		$levels     = array(
 			'Warning',
 			'Notice',
 			'Strict',
@@ -59,8 +59,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
-					$component = $error['trace']->get_component();
-					$row_attr  = array();
+					$component                     = $error['trace']->get_component();
+					$row_attr                      = array();
 					$row_attr['data-qm-component'] = $component->name;
 					$row_attr['data-qm-type']      = ucfirst( $type );
 
@@ -159,7 +159,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->collector->get_data();
+		$data       = $this->collector->get_data();
 		$menu_label = array();
 
 		$types = array(
@@ -173,26 +173,26 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'warning'    => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
 
-		$key = 'quiet';
+		$key     = 'quiet';
 		$generic = false;
 
 		foreach ( $types as $type => $label ) {
 
-			$count = 0;
+			$count      = 0;
 			$has_errors = false;
 
 			if ( isset( $data['suppressed'][ $type ] ) ) {
 				$has_errors = true;
-				$generic = true;
+				$generic    = true;
 			}
 			if ( isset( $data['silenced'][ $type ] ) ) {
 				$has_errors = true;
-				$generic = true;
+				$generic    = true;
 			}
 			if ( isset( $data['errors'][ $type ] ) ) {
 				$has_errors = true;
-				$key   = $type;
-				$count += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+				$key        = $type;
+				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
 			}
 
 			if ( ! $has_errors ) {
@@ -200,7 +200,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			}
 
 			if ( $count ) {
-				$label = sprintf(
+				$label        = sprintf(
 					translate_nooped_plural(
 						$label,
 						$count,

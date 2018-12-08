@@ -14,7 +14,7 @@ class QM_Dispatchers implements IteratorAggregate {
 	}
 
 	public static function add( QM_Dispatcher $dispatcher ) {
-		$dispatchers = self::init();
+		$dispatchers                           = self::init();
 		$dispatchers->items[ $dispatcher->id ] = $dispatcher;
 	}
 
@@ -30,7 +30,7 @@ class QM_Dispatchers implements IteratorAggregate {
 		static $instance;
 
 		if ( ! $instance ) {
-			$instance = new QM_Dispatchers;
+			$instance = new QM_Dispatchers();
 		}
 
 		return $instance;

@@ -7,9 +7,9 @@
 
 class QM_Collector_HTTP extends QM_Collector {
 
-	public $id = 'http';
+	public $id         = 'http';
 	private $transport = null;
-	private $info = null;
+	private $info      = null;
 
 	public function name() {
 		return __( 'HTTP API Requests', 'query-monitor' );
@@ -40,23 +40,23 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @return array        HTTP request arguments.
 	 */
 	public function filter_http_request_args( array $args, $url ) {
-		$trace = new QM_Backtrace;
+		$trace = new QM_Backtrace();
 		if ( isset( $args['_qm_key'] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$start = $this->data['http'][ $args['_qm_key'] ]['start'];
+			$start                    = $this->data['http'][ $args['_qm_key'] ]['start'];
 		} else {
 			$start = microtime( true );
 		}
-		$key = microtime( true ) . $url;
+		$key                        = microtime( true ) . $url;
 		$this->data['http'][ $key ] = array(
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $start,
 			'trace' => $trace,
 		);
-		$args['_qm_key'] = $key;
+		$args['_qm_key']            = $key;
 		return $args;
 	}
 
@@ -155,7 +155,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		$this->data['http'][ $args['_qm_key'] ]['info']      = $this->info;
 		$this->data['http'][ $args['_qm_key'] ]['transport'] = $this->transport;
-		$this->info = null;
+		$this->info      = null;
 		$this->transport = null;
 	}
 
@@ -249,4 +249,4 @@ class QM_Collector_HTTP extends QM_Collector {
 }
 
 # Load early in case a plugin is doing an HTTP request when it initialises instead of after the `plugins_loaded` hook
-QM_Collectors::add( new QM_Collector_HTTP );
+QM_Collectors::add( new QM_Collector_HTTP() );

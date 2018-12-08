@@ -119,7 +119,7 @@ class QM_Collector_Logger extends QM_Collector {
 		$components = array();
 
 		foreach ( $this->data['logs'] as $row ) {
-			$component = $row['trace']->get_component();
+			$component                      = $row['trace']->get_component();
 			$components[ $component->name ] = $component->name;
 		}
 
@@ -152,4 +152,4 @@ class QM_Collector_Logger extends QM_Collector {
 }
 
 # Load early in case a plugin wants to log a message early in the bootstrap process
-QM_Collectors::add( new QM_Collector_Logger );
+QM_Collectors::add( new QM_Collector_Logger() );
