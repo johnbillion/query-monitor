@@ -55,12 +55,29 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 			$block_error = ( empty( $block['blockName'] ) && ! empty( $inner_html ) );
 			$row_class = '';
+			$reused_post = null;
+			$reused_type = null;
+			$reused_pto  = null;
+			$error_message = null;
 
 			if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
-				$reused_type = get_post( $block['attrs']['ref'] )->post_type;
-				$reused_pto  = get_post_type_object( $reused_type );
-				if ( 'wp_block' !== $reused_type ) {
+				$reused_post = get_post( $block['attrs']['ref'] );
+
+				if ( ! $reused_post ) {
 					$block_error = true;
+					$error_message = esc_html__( 'Referenced block does not exist.', 'query-monitor' );
+				} else {
+					$reused_type = get_post( $block['attrs']['ref'] )->post_type;
+					$reused_pto  = get_post_type_object( $reused_type );
+					if ( 'wp_block' !== $reused_type ) {
+						$block_error = true;
+						$error_message = sprintf(
+							/* translators: %1$s: Erroneous post type name, %2$s: WordPress block post type name */
+							esc_html__( 'Referenced post is of type %1$s instead of %2$s.', 'query-monitor' ),
+							'<code>' . esc_html( $reused_type ) . '</code>',
+							'<code>wp_block</code>'
+						);
+					}
 				}
 			}
 
@@ -84,16 +101,12 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
 			}
 
-			if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
-				if ( 'wp_block' !== $reused_type ) {
-					echo '<br>';
-					printf(
-						/* translators: %1$s: Erroneous post type name, %2$s: WordPress block post type name */
-						esc_html__( 'Referenced post is of type %1$s instead of %2$s.', 'query-monitor' ),
-						'<code>' . esc_html( $reused_type ) . '</code>',
-						'<code>wp_block</code>'
-					);
-				}
+			if ( $error_message ) {
+				echo '<br>';
+				echo $error_message; // WPCS: XSS ok;
+			}
+
+			if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) && ! empty( $reused_pto ) ) {
 				echo '<br>';
 				echo '<a href="' . esc_url( get_edit_post_link( $block['attrs']['ref'] ) ) . '" class="qm-link">' . esc_html( $reused_pto->labels->edit_item ) . '</a>';
 			}
