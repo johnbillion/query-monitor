@@ -184,7 +184,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['error_levels']    = self::get_error_levels( $this->data['php']['error_reporting'] );
 
 		$this->data['wp']['version']   = $wp_version;
-		$this->data['wp']['constants'] = array(
+		$constants = array(
 			'WP_DEBUG'            => self::format_bool_constant( 'WP_DEBUG' ),
 			'WP_DEBUG_DISPLAY'    => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
 			'WP_DEBUG_LOG'        => self::format_bool_constant( 'WP_DEBUG_LOG' ),
@@ -195,6 +195,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'COMPRESS_CSS'        => self::format_bool_constant( 'COMPRESS_CSS' ),
 			'WP_LOCAL_DEV'        => self::format_bool_constant( 'WP_LOCAL_DEV' ),
 		);
+		$this->data['wp']['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
 		if ( is_multisite() ) {
 			$this->data['wp']['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
