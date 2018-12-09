@@ -20,13 +20,13 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return;
 		}
 
-		$block_type_registry = WP_Block_Type_Registry::get_instance();
-
 		$this->data['post_has_blocks']    = self::wp_has_blocks( get_post()->post_content );
 		$this->data['post_blocks']        = self::wp_parse_blocks( get_post()->post_content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 
 		if ( $this->data['post_has_blocks'] ) {
+			$block_type_registry = WP_Block_Type_Registry::get_instance();
+
 			foreach ( $this->data['post_blocks'] as $i => $block ) {
 				$block_type = $block_type_registry->get_registered( $block['blockName'] );
 				$dynamic    = false;
@@ -70,7 +70,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	}
 
 	protected static function wp_get_dynamic_block_names() {
-		return get_dynamic_block_names();
+		if ( function_exists( 'get_dynamic_block_names' ) ) {
+			return get_dynamic_block_names();
+		}
+
+		return array();
 	}
 
 }
