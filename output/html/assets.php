@@ -198,7 +198,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$host = $http_host;
 		}
 
-		$insecure = ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) );
+		$insecure = ( $scheme && isset( $data['is_ssl'] ) && $data['is_ssl'] && ( 'https' !== $scheme ) );
 
 		if ( $insecure ) {
 			$source = new WP_Error( 'insecure_content', __( 'Insecure content', 'query-monitor' ), array(
