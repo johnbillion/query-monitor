@@ -54,13 +54,6 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	}
 
 	protected static function render_block( $i, array $block, array $data ) {
-		$inner_html = trim( $block['innerHTML'] );
-
-		// Don't display empty blocks caused by two consecutive line breaks in content
-		if ( ! $block['blockName'] && ! $inner_html ) {
-			return;
-		}
-
 		$block_error   = ( empty( $block['blockName'] ) && ! empty( $inner_html ) );
 		$row_class     = '';
 		$reused_post   = null;
