@@ -51,6 +51,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		$block['dynamic']  = $dynamic;
 		$block['callback'] = $callback;
+		$block['size']     = strlen( $block['innerHTML'] );
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			$block['innerBlocks'] = array_values( array_filter( array_map( array( self, 'process_block' ), $block['innerBlocks'] ) ) );

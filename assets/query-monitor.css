@@ -606,6 +606,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin-right: 0.75em !important;
   margin-left: 0.75em !important;
 }
+#query-monitor .qm td.qm-toggled-on .qm-inverse-toggled,
 #query-monitor .qm td .qm-toggled {
   display: none;
 }

@@ -160,11 +160,21 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '<td></td>';
 		}
 
-		echo '<td class="qm-row-block-html">';
-		if ( $block['innerHTML'] ) {
+		if ( $block['size'] > 600 ) {
+			echo '<td class="qm-ltr qm-has-toggle"><div class="qm-toggler">';
+			echo self::build_toggler(); // WPCS: XSS ok;
+			echo '<div class="qm-inverse-toggled">';
+			echo esc_html( substr( $block['innerHTML'], 0, 500 ) ) . '<br><b>&hellip;</b>';
+			echo '</div>';
+			echo '<div class="qm-toggled">';
 			echo esc_html( $block['innerHTML'] );
+			echo '</div>';
+			echo '</div></td>';
+		} else {
+			echo '<td class="qm-row-block-html">';
+			echo esc_html( $block['innerHTML'] );
+			echo '</td>';
 		}
-		echo '</td>';
 
 		echo '</tr>';
 
