@@ -8,6 +8,7 @@
 class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
+	protected static $block_type_registry = null;
 
 	public function name() {
 		return __( 'Blocks', 'query-monitor' );
@@ -25,10 +26,17 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 
 		if ( $this->data['post_has_blocks'] ) {
-			$block_type_registry = WP_Block_Type_Registry::get_instance();
+			self::$block_type_registry = WP_Block_Type_Registry::get_instance();
 
 			foreach ( $this->data['post_blocks'] as $i => $block ) {
-				$block_type = $block_type_registry->get_registered( $block['blockName'] );
+				$this->data['post_blocks'][ $i ] = self::process_block( $block );
+			}
+		}
+	}
+
+	protected static function process_block( array $block ) {
+				$return     = $block;
+				$block_type = self::$block_type_registry->get_registered( $block['blockName'] );
 				$dynamic    = false;
 				$callback   = null;
 
@@ -39,10 +47,16 @@ class QM_Collector_Block_Editor extends QM_Collector {
 					) );
 				}
 
-				$this->data['post_blocks'][ $i ]['dynamic']  = $dynamic;
-				$this->data['post_blocks'][ $i ]['callback'] = $callback;
-			}
-		}
+				$return['dynamic']  = $dynamic;
+				$return['callback'] = $callback;
+
+				if ( ! empty( $return['innerBlocks'] ) ) {
+					foreach ( $return['innerBlocks'] as $i => $inner_block ) {
+						$return['innerBlocks'][ $i ] = self::process_block( $inner_block );
+					}
+				}
+
+				return $return;
 	}
 
 	protected static function wp_block_editor_enabled() {

@@ -14,7 +14,6 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 	public function output() {
 		$data = $this->collector->get_data();
-		$i    = 0;
 
 		if ( empty( $data['block_editor_enabled'] ) || empty( $data['post_blocks'] ) ) {
 			return;
@@ -45,7 +44,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<tbody>';
 
-		foreach ( $data['post_blocks'] as $block ) {
+		foreach ( $data['post_blocks'] as $i => $block ) {
 			self::render_block( ++$i, $block, $data );
 		}
 
@@ -96,7 +95,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<tr class="' . esc_attr( $row_class ) . '">';
 
-		echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . absint( $i ) . '</span></th>';
+		echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . esc_html( $i ) . '</span></th>';
 
 		echo '<td class="qm-row-block-name"><span class="qm-sticky">';
 
@@ -175,6 +174,13 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '</td>';
 
 		echo '</tr>';
+
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			foreach ( $block['innerBlocks'] as $j => $inner_block ) {
+				$x = ++$j;
+				self::render_block( "{$i}-{$x}", $inner_block, $data );
+			}
+		}
 	}
 
 	public function admin_menu( array $menu ) {
