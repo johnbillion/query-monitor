@@ -35,28 +35,28 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	}
 
 	protected static function process_block( array $block ) {
-				$return     = $block;
-				$block_type = self::$block_type_registry->get_registered( $block['blockName'] );
-				$dynamic    = false;
-				$callback   = null;
+		$return     = $block;
+		$block_type = self::$block_type_registry->get_registered( $block['blockName'] );
+		$dynamic    = false;
+		$callback   = null;
 
-				if ( $block_type && $block_type->is_dynamic() ) {
-					$dynamic  = true;
-					$callback = QM_Util::populate_callback( array(
-						'function' => $block_type->render_callback,
-					) );
-				}
+		if ( $block_type && $block_type->is_dynamic() ) {
+			$dynamic  = true;
+			$callback = QM_Util::populate_callback( array(
+				'function' => $block_type->render_callback,
+			) );
+		}
 
-				$return['dynamic']  = $dynamic;
-				$return['callback'] = $callback;
+		$return['dynamic']  = $dynamic;
+		$return['callback'] = $callback;
 
-				if ( ! empty( $return['innerBlocks'] ) ) {
-					foreach ( $return['innerBlocks'] as $i => $inner_block ) {
-						$return['innerBlocks'][ $i ] = self::process_block( $inner_block );
-					}
-				}
+		if ( ! empty( $return['innerBlocks'] ) ) {
+			foreach ( $return['innerBlocks'] as $i => $inner_block ) {
+				$return['innerBlocks'][ $i ] = self::process_block( $inner_block );
+			}
+		}
 
-				return $return;
+		return $return;
 	}
 
 	protected static function wp_block_editor_enabled() {
