@@ -33,10 +33,8 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	}
 
 	protected static function process_block( array $block ) {
-		$inner_html = trim( $block['innerHTML'] );
-
 		// Remove empty blocks caused by two consecutive line breaks in content
-		if ( ! $block['blockName'] && ! $inner_html ) {
+		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
 			return null;
 		}
 
