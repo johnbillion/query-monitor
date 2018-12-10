@@ -46,11 +46,20 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $data['post_blocks'] as $block ) {
+			self::render_block( ++$i, $block, $data );
+		}
+
+		echo '</tbody>';
+
+		$this->after_tabular_output();
+	}
+
+	protected static function render_block( $i, array $block, array $data ) {
 			$inner_html = trim( $block['innerHTML'] );
 
 			// Don't display empty blocks caused by two consecutive line breaks in content
 			if ( ! $block['blockName'] && ! $inner_html ) {
-				continue;
+				return;
 			}
 
 			$block_error   = ( empty( $block['blockName'] ) && ! empty( $inner_html ) );
@@ -87,7 +96,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 			echo '<tr class="' . esc_attr( $row_class ) . '">';
 
-			echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . absint( ++$i ) . '</span></th>';
+			echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . absint( $i ) . '</span></th>';
 
 			echo '<td class="qm-row-block-name"><span class="qm-sticky">';
 
@@ -166,11 +175,6 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '</td>';
 
 			echo '</tr>';
-		}
-
-		echo '</tbody>';
-
-		$this->after_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {
