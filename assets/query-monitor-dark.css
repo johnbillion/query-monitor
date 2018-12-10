@@ -586,6 +586,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm td.qm-false {
   color: #999 !important;
 }
+#query-monitor .qm .qm-num,
 #query-monitor .qm code,
 #query-monitor .qm .qm-nowrap {
   white-space: nowrap !important;

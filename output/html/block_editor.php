@@ -161,7 +161,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		}
 
 		if ( $block['size'] > 600 ) {
-			echo '<td class="qm-ltr qm-has-toggle"><div class="qm-toggler">';
+			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html"><div class="qm-toggler">';
 			echo self::build_toggler(); // WPCS: XSS ok;
 			echo '<div class="qm-inverse-toggled">';
 			echo esc_html( substr( $block['innerHTML'], 0, 500 ) ) . '<br><b>&hellip;</b>';
