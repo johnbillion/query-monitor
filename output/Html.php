@@ -156,7 +156,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param  string[] $values Option values for this control.
 	 * @param  string   $label  Label text for the filter control.
 	 * @param  array    $args {
-	 *     @type string $highlihgt The name for the `data-` attributes that get highlighted by this control.
+	 *     @type string $highlight The name for the `data-` attributes that get highlighted by this control.
 	 *     @type array  $prepend   Associative array of options to prepend to the list of values.
 	 * }
 	 * @return string Markup for the table filter controls.
