@@ -176,6 +176,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$loader = rtrim( $type, 's' );
+		$src    = $dependency->src;
+
+		if ( ! empty( $src ) && ! empty( $dependency->ver ) ) {
+			$src = add_query_arg( 'ver', $dependency->ver, $src );
+		}
 
 		/**
 		 * Filter the asset loader source.
@@ -187,7 +192,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		 * @param string $src    Script or style loader source path.
 		 * @param string $handle Script or style handle.
 		 */
-		$source = apply_filters( "{$loader}_loader_src", $dependency->src, $dependency->handle );
+		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
 		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
 		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
@@ -262,7 +267,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',
 				esc_attr( $src ),
-				esc_html( ltrim( str_replace( home_url(), '', $src ), '/' ) )
+				esc_html( ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $src ) ), '/' ) )
 			);
 		}
 		echo '</td>';
