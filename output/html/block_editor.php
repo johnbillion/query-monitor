@@ -50,6 +50,19 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '</tbody>';
 
+		echo '<tfoot>';
+		echo '<tr>';
+		printf(
+			'<td colspan="5">%1$s</td>',
+			sprintf(
+				/* translators: %s: Total number of content blocks used */
+				esc_html_x( 'Total: %s', 'Content blocks used', 'query-monitor' ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data['total_blocks'] ) ) . '</span>'
+			)
+		);
+		echo '</tr>';
+		echo '</tfoot>';
+
 		$this->after_tabular_output();
 	}
 

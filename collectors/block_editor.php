@@ -24,19 +24,22 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['post_has_blocks']    = self::wp_has_blocks( get_post()->post_content );
 		$this->data['post_blocks']        = self::wp_parse_blocks( get_post()->post_content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
+		$this->data['total_blocks']       = 0;
 
 		if ( $this->data['post_has_blocks'] ) {
 			self::$block_type_registry = WP_Block_Type_Registry::get_instance();
 
-			$this->data['post_blocks'] = array_values( array_filter( array_map( array( self, 'process_block' ), $this->data['post_blocks'] ) ) );
+			$this->data['post_blocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data['post_blocks'] ) ) );
 		}
 	}
 
-	protected static function process_block( array $block ) {
+	protected function process_block( array $block ) {
 		// Remove empty blocks caused by two consecutive line breaks in content
 		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
 			return null;
 		}
+
+		$this->data['total_blocks']++;
 
 		$block_type = self::$block_type_registry->get_registered( $block['blockName'] );
 		$dynamic    = false;
@@ -54,7 +57,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$block['size']     = strlen( $block['innerHTML'] );
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
-			$block['innerBlocks'] = array_values( array_filter( array_map( array( self, 'process_block' ), $block['innerBlocks'] ) ) );
+			$block['innerBlocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
 		}
 
 		return $block;
