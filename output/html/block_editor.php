@@ -54,7 +54,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	}
 
 	protected static function render_block( $i, array $block, array $data ) {
-		$block_error   = ( empty( $block['blockName'] ) && ! empty( $inner_html ) );
+		$block_error   = ( empty( $block['blockName'] ) && trim( $block['innerHTML'] ) );
 		$row_class     = '';
 		$reused_post   = null;
 		$reused_type   = null;
@@ -160,20 +160,22 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '<td></td>';
 		}
 
+		$inner_html = trim( $block['innerHTML'] );
+
 		if ( $block['size'] > 600 ) {
 			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html"><div class="qm-toggler">';
 			echo self::build_toggler(); // WPCS: XSS ok;
-			echo '<div class="qm-inverse-toggled">';
-			echo esc_html( substr( $block['innerHTML'], 0, 500 ) ) . '<br><b>&hellip;</b>';
-			echo '</div>';
-			echo '<div class="qm-toggled">';
-			echo esc_html( $block['innerHTML'] );
-			echo '</div>';
+			echo '<div class="qm-inverse-toggled"><pre class="qm-pre-wrap"><code>';
+			echo esc_html( substr( $inner_html, 0, 500 ) ) . '<br><b>&hellip;</b>';
+			echo '</code></pre></div>';
+			echo '<div class="qm-toggled"><pre class="qm-pre-wrap"><code>';
+			echo esc_html( $inner_html );
+			echo '</code></pre></div>';
 			echo '</div></td>';
 		} else {
-			echo '<td class="qm-row-block-html">';
-			echo esc_html( $block['innerHTML'] );
-			echo '</td>';
+			echo '<td class="qm-row-block-html"><pre class="qm-pre-wrap"><code>';
+			echo esc_html( $inner_html );
+			echo '</code></pre></td>';
 		}
 
 		echo '</tr>';

@@ -469,7 +469,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   min-width: 25em !important;
 }
 #query-monitor .qm td.qm-row-block-html {
-  max-width: 25em !important;
+  max-width: 40em !important;
 }
 #query-monitor .qm tr.qm-warn td.qm-col-status,
 #query-monitor .qm td.qm-url,
@@ -596,6 +596,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   word-wrap: break-word !important;
   word-break: break-all !important;
   white-space: normal !important;
+}
+#query-monitor .qm .qm-pre-wrap code {
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  white-space: pre-wrap !important;
 }
 #query-monitor .qm .qm-sticky {
   position: sticky !important;
