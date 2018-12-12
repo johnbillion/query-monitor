@@ -67,12 +67,12 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	}
 
 	protected static function render_block( $i, array $block, array $data ) {
-		$block_error   = ( empty( $block['blockName'] ) && trim( $block['innerHTML'] ) );
-		$row_class     = '';
+		$block_error     = ( empty( $block['blockName'] ) && trim( $block['innerHTML'] ) );
+		$row_class       = '';
 		$referenced_post = null;
 		$referenced_type = null;
 		$referenced_pto  = null;
-		$error_message = null;
+		$error_message   = null;
 
 		if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
 			$referenced_post = get_post( $block['attrs']['ref'] );
