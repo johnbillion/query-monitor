@@ -20,14 +20,14 @@
 			"type": "package",
 			"package": {
 			  "name": "danieltj27/dark-mode",
-			  "version": "3.1.1",
+			  "version": "3.2",
 			  "source": {
 				"type" : "git",
 				"url" : "git://github.com/danieltj27/Dark-Mode.git",
-				"reference" : "3.1.1"
+				"reference" : "3.2"
 			  },
 			  "dist": {
-				"url": "https://github.com/danieltj27/Dark-Mode/archive/90236dc3d60c559c3a29209c0057aabcfb95a8d1.zip",
+				"url": "https://github.com/danieltj27/Dark-Mode/archive/31e1407ef72af69bcd5d94cc3c502163547d4898.zip",
 				"type": "zip"
 			  }
 			}
@@ -41,7 +41,7 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"squizlabs/php_codesniffer": "^3.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"danieltj27/dark-mode": "3.1.1",
+		"danieltj27/dark-mode": "3.2",
 		"wp-coding-standards/wpcs": "^1.2",
 		"phpunit/phpunit": "^5"
 	}
