@@ -160,7 +160,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<td class="qm-row-block-attrs">';
 		if ( $block['attrs'] ) {
 			$json = json_encode( $block['attrs'], JSON_PRETTY_PRINT );
-			echo '<pre>' . esc_html( $json ) . '</pre>';
+			echo '<pre class="qm-pre-wrap"><code>' . esc_html( $json ) . '</code></pre>';
 		}
 		echo '</td>';
 
