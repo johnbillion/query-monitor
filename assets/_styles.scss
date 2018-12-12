@@ -188,6 +188,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		background-color: #B9D6FB !important;
 		color: $qm-container-fg !important;
 	}
+
+	strong,
+	b {
+		font-weight: bold !important;
+	}
+
+	em,
+	i {
+		font-style: italic !important;
+	}
 }
 
 #query-monitor.qm-show,
