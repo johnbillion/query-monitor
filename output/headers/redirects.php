@@ -23,7 +23,8 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 }
 
 function register_qm_output_headers_redirects( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'redirects' ) ) {
+	$collector = $collectors::get( 'redirects' );
+	if ( $collector ) {
 		$output['redirects'] = new QM_Output_Headers_Redirects( $collector );
 	}
 	return $output;

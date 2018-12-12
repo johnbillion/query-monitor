@@ -322,7 +322,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 }
 
 function register_qm_output_html_assets( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'assets' ) ) {
+	$collector = $collectors::get( 'assets' );
+	if ( $collector ) {
 		$output['assets'] = new QM_Output_Html_Assets( $collector );
 	}
 	return $output;

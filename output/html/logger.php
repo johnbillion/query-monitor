@@ -156,7 +156,8 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 }
 
 function register_qm_output_html_logger( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'logger' ) ) {
+	$collector = $collectors::get( 'logger' );
+	if ( $collector ) {
 		$output['logger'] = new QM_Output_Html_Logger( $collector );
 	}
 	return $output;

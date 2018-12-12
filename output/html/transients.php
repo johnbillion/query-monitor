@@ -137,7 +137,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 }
 
 function register_qm_output_html_transients( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'transients' ) ) {
+	$collector = $collectors::get( 'transients' );
+	if ( $collector ) {
 		$output['transients'] = new QM_Output_Html_Transients( $collector );
 	}
 	return $output;

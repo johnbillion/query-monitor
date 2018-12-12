@@ -77,7 +77,8 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 }
 
 function register_qm_output_html_conditionals( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'conditionals' ) ) {
+	$collector = $collectors::get( 'conditionals' );
+	if ( $collector ) {
 		$output['conditionals'] = new QM_Output_Html_Conditionals( $collector );
 	}
 	return $output;

@@ -109,7 +109,8 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_callers( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'db_callers' ) ) {
+	$collector = $collectors::get( 'db_callers' );
+	if ( $collector ) {
 		$output['db_callers'] = new QM_Output_Html_DB_Callers( $collector );
 	}
 	return $output;

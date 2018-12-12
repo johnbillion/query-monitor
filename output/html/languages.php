@@ -96,7 +96,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 }
 
 function register_qm_output_html_languages( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'languages' ) ) {
+	$collector = $collectors::get( 'languages' );
+	if ( $collector ) {
 		$output['languages'] = new QM_Output_Html_Languages( $collector );
 	}
 	return $output;
