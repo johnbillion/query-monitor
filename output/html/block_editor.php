@@ -95,6 +95,36 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			}
 		}
 
+		$media_blocks = array(
+			'core/audio'       => 'id',
+			'core/cover-image' => 'id',
+			'core/file'        => 'id',
+			'core/image'       => 'id',
+			'core/media-text'  => 'mediaId', // (╯°□°）╯︵ ┻━┻
+			'core/video'       => 'id',
+		);
+
+		if ( isset( $media_blocks[ $block['blockName'] ] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
+			$referenced_post = get_post( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] );
+
+			if ( ! $referenced_post ) {
+				$block_error   = true;
+				$error_message = esc_html__( 'Referenced media does not exist.', 'query-monitor' );
+			} else {
+				$referenced_type = $referenced_post->post_type;
+				$referenced_pto  = get_post_type_object( $referenced_type );
+				if ( 'attachment' !== $referenced_type ) {
+					$block_error   = true;
+					$error_message = sprintf(
+						/* translators: %1$s: Erroneous post type name, %2$s: WordPress attachment post type name */
+						esc_html__( 'Referenced media is of type %1$s instead of %2$s.', 'query-monitor' ),
+						'<code>' . esc_html( $referenced_type ) . '</code>',
+						'<code>attachment</code>'
+					);
+				}
+			}
+		}
+
 		if ( $block_error ) {
 			$row_class = 'qm-warn';
 		}
