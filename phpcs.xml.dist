@@ -68,10 +68,4 @@
 
 	<rule ref="PHPCompatibilityWP"/>
 
-	<!-- The following files use mysql_*() functions within mysqli conditional logic -->
-	<rule ref="PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved">
-		<exclude-pattern>collectors/environment.php</exclude-pattern>
-		<exclude-pattern>wp-content/db.php</exclude-pattern>
-	</rule>
-
 </ruleset>
