@@ -123,14 +123,14 @@ class QM_Collector_Environment extends QM_Collector {
 					$info   = mysqli_get_server_info( $db->dbh );
 				} else {
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
+					// @codingStandardsIgnoreLine
 					if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
 						$client = $matches[0];
 					} else {
 						$client = null;
 					}
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
+					// @codingStandardsIgnoreLine
 					$info = mysql_get_server_info( $db->dbh );
 				}
 
