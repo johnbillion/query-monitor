@@ -293,7 +293,7 @@ Showing an HTTP request with an error
 
 ## Who can see Query Monitor's output? ##
 
-By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installations.
+By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
 
