@@ -179,8 +179,9 @@ class QM_Util {
 				break;
 		}
 
-		return self::$file_components[ $file ] = (object) compact( 'type', 'name', 'context' );
+		self::$file_components[ $file ] = (object) compact( 'type', 'name', 'context' );
 
+		return self::$file_components[ $file ];
 	}
 
 	public static function populate_callback( array $callback ) {
@@ -323,7 +324,8 @@ class QM_Util {
 	}
 
 	public static function get_query_type( $sql ) {
-		$sql = $type = trim( $sql );
+		$sql  = trim( $sql );
+		$type = $sql;
 
 		if ( 0 === strpos( $sql, '/*' ) ) {
 			// Strip out leading comments such as `/*NO_SELECT_FOUND_ROWS*/` before calculating the query type

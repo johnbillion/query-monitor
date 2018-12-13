@@ -108,7 +108,8 @@ abstract class QM_Dispatcher {
 	}
 
 	public static function verify_cookie( $value ) {
-		if ( $old_user_id = wp_validate_auth_cookie( $value, 'logged_in' ) ) {
+		$old_user_id = wp_validate_auth_cookie( $value, 'logged_in' );
+		if ( $old_user_id ) {
 			return user_can( $old_user_id, 'view_query_monitor' );
 		}
 		return false;

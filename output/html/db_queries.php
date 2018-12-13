@@ -469,9 +469,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->collector->get_data();
+		$data      = $this->collector->get_data();
+		$errors    = $this->collector->get_errors();
+		$expensive = $this->collector->get_expensive();
 
-		if ( $errors = $this->collector->get_errors() ) {
+		if ( $errors ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-query-errors',
@@ -482,7 +484,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				) ),
 			) );
 		}
-		if ( $expensive = $this->collector->get_expensive() ) {
+		if ( $expensive ) {
 			$menu[] = $this->menu( array(
 				'id'    => 'query-monitor-expensive',
 				'href'  => '#qm-query-expensive',

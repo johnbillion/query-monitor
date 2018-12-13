@@ -14,8 +14,9 @@ class QM_Collector_DB_Callers extends QM_Collector {
 	}
 
 	public function process() {
+		$dbq = QM_Collectors::get( 'db_queries' );
 
-		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
+		if ( $dbq ) {
 			if ( isset( $dbq->data['times'] ) ) {
 				$this->data['times'] = $dbq->data['times'];
 				QM_Util::rsort( $this->data['times'], 'ltime' );

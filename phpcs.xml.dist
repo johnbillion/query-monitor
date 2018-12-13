@@ -29,8 +29,6 @@
 
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.Commenting" />
-		<!-- @TODO remove this exclusion: -->
-		<exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
 
 		<!-- Not interested in whitespace issues at the moment -->
 		<exclude name="PEAR.Functions.FunctionCallSignature" />

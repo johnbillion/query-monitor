@@ -86,7 +86,9 @@ class QM_Collector_Environment extends QM_Collector {
 			'query_cache_type'   => 'ON',  # Query cache on or off
 		);
 
-		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
+		$dbq = QM_Collectors::get( 'db_queries' );
+
+		if ( $dbq ) {
 
 			foreach ( $dbq->db_objects as $id => $db ) {
 

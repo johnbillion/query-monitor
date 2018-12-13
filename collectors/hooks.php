@@ -21,7 +21,9 @@ class QM_Collector_Hooks extends QM_Collector {
 		self::$hide_qm   = self::hide_qm();
 		self::$hide_core = ( defined( 'QM_HIDE_CORE_ACTIONS' ) && QM_HIDE_CORE_ACTIONS );
 
-		$hooks = $all_parts = $components = array();
+		$hooks      = array();
+		$all_parts  = array();
+		$components = array();
 
 		if ( has_filter( 'all' ) ) {
 			$hooks['all'] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
@@ -62,7 +64,8 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	public static function process_action( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
-		$actions = $components = array();
+		$actions    = array();
+		$components = array();
 
 		if ( isset( $wp_filter[ $name ] ) ) {
 

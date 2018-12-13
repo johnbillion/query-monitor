@@ -41,7 +41,8 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 }
 
 function register_qm_output_headers_overview( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'overview' ) ) {
+	$collector = $collectors::get( 'overview' );
+	if ( $collector ) {
 		$output['overview'] = new QM_Output_Headers_Overview( $collector );
 	}
 	return $output;

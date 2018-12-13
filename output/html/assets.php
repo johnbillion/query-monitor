@@ -212,8 +212,9 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		if ( is_wp_error( $source ) ) {
-			$src = $source->get_error_message();
-			if ( ( $error_data = $source->get_error_data() ) && isset( $error_data['src'] ) ) {
+			$src        = $source->get_error_message();
+			$error_data = $source->get_error_data();
+			if ( $error_data && isset( $error_data['src'] ) ) {
 				$src .= ' (' . $error_data['src'] . ')';
 				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
 			}
