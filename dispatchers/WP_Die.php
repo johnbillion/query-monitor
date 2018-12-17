@@ -36,47 +36,32 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
 		$switched_locale = function_exists( 'switch_to_locale' ) && switch_to_locale( get_user_locale() );
+		$component       = $this->trace->get_component();
+		$stack           = array();
+		$filtered_trace  = $this->trace->get_display_trace();
+
+		foreach ( $filtered_trace as $i => $item ) {
+			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
+		}
 
 		echo '<h1>Query Monitor</h1>';
-		echo '<p>This error message was triggered by:</p>';
-
-		$component      = $this->trace->get_component();
-		$stack          = array();
-		$filtered_trace = $this->trace->get_display_trace();
-
-		// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
-		// we need to handle its somewhat unreliable stack trace items.
-		// https://bugs.php.net/bug.php?id=39070
-		// https://bugs.php.net/bug.php?id=64987
-		foreach ( $filtered_trace as $i => $item ) {
-			if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
-				$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
-			} elseif ( 0 === $i ) {
-				$stack[] = QM_Output_Html::output_filename( $item['display'], $error['file'], $error['line'] );
-			} else {
-				$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
-			}
-		}
-
-		echo '<ol>';
-
-		if ( ! empty( $stack ) ) {
-			echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
-		}
-
-		echo '</ol>';
 
 		if ( $component ) {
+			echo '<p>';
+			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
-				'<p>Component: %s</p>',
-				esc_html( $component->name )
+				/* translators: %s: Plugin or theme name */
+				esc_html__( 'The above message was triggered by %s.', 'query-monitor' ),
+				'<b>' . esc_html( $name ) . '</b>'
 			);
-		} else {
-			printf(
-				'<p>Component: %s</p>',
-				esc_html__( 'Unknown', 'query-monitor' )
-			);
+			echo '</p>';
 		}
+
+		echo '<p>Call stack:</p>';
+
+		echo '<ol>';
+		echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
+		echo '</ol>';
 
 		if ( $switched_locale ) {
 			restore_previous_locale();
