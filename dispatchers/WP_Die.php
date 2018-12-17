@@ -44,21 +44,20 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
 
-		echo '<h1>Query Monitor</h1>';
+		echo '<h1>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
 
 		if ( $component ) {
 			echo '<p>';
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
-				esc_html__( 'The above message was triggered by %s.', 'query-monitor' ),
+				esc_html__( 'The message above was triggered by %s.', 'query-monitor' ),
 				'<b>' . esc_html( $name ) . '</b>'
 			);
 			echo '</p>';
 		}
 
-		echo '<p>Call stack:</p>';
-
+		echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
 		echo '<ol>';
 		echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 		echo '</ol>';
@@ -66,7 +65,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		if ( $switched_locale ) {
 			restore_previous_locale();
 		}
-
 	}
 
 	public function is_active() {
