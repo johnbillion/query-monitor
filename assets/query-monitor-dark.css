@@ -364,6 +364,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   border-right-color: #23282d;
   top: 50%;
   margin-top: -8px;
+  display: inline-block !important;
 }
 #query-monitor #qm-panels {
   flex-grow: 1 !important;
