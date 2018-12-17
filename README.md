@@ -5,9 +5,11 @@
 
 # Query Monitor #
 
-Query Monitor is the developer tools panel for WordPress. It includes some advanced features such as debugging of Ajax, REST API, and Gutenberg blocks, and the ability to narrow down its output by plugin or theme.
+Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-Query Monitor focuses heavily on presenting its information in a useful manner. For example, aggregate database query information is made available, allowing you to quickly determine poorly performing plugins, themes, or functions. It adds an admin toolbar menu showing an overview of the current page, with complete data shown in a panel once you select a menu item.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
+
+Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
 Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component:
 
@@ -295,7 +297,7 @@ Showing an HTTP request with an error
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the Settings panel for details.
 
 ## Does Query Monitor itself impact the page generation time or memory usage? ##
 
@@ -318,8 +320,6 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 ## Is Query Monitor available on WordPress.com VIP Go? ##
 
 Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-config/vip-config.php` file.
-
-(It's not available on standard WordPress.com VIP though.)
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
