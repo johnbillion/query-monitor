@@ -55,11 +55,13 @@ class QM_Backtrace {
 	protected $calling_file    = '';
 
 	public function __construct( array $args = array() ) {
+		$this->trace = debug_backtrace( false );
+
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
 			'ignore_frames'         => 0,
 		), $args );
-		$this->trace = debug_backtrace( false );
+
 		$this->ignore( 1 ); # Self-awareness
 
 		/**
