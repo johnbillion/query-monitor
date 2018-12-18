@@ -44,7 +44,50 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
 
-		echo '<h1>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
+		?>
+		<style>
+			#query-monitor {
+				position: absolute;
+				margin: 4em 0 1em;
+				border: 1px solid #aaa;
+				background: #fff;
+				width: 700px;
+				box-shadow: 0 1px 3px rgba(0,0,0,0.13);
+			}
+
+			#query-monitor h2 {
+				font-size: 12px;
+				font-weight: normal;
+				padding: 5px;
+				background: #f3f3f3;
+				margin: 0;
+				border-bottom: 1px solid #aaa;
+			}
+
+			#query-monitor ol,
+			#query-monitor p {
+				font-size: 12px;
+				padding: 0;
+				margin: 1em;
+			}
+
+			#query-monitor ol {
+				padding: 0 0 1em 2em;
+			}
+
+			#query-monitor li {
+				margin: 0 0 0.5em;
+			}
+
+			#query-monitor .qm-info {
+				color: #777;
+			}
+		</style>
+		<?php
+
+		echo '<div id="query-monitor">';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 
 		if ( $component ) {
 			echo '<p>';
@@ -61,6 +104,8 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<ol>';
 		echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 		echo '</ol>';
+
+		echo '</div>';
 
 		if ( $switched_locale ) {
 			restore_previous_locale();
