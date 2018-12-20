@@ -104,7 +104,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			'core/video'       => 'id',
 		);
 
-		if ( isset( $media_blocks[ $block['blockName'] ] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
+		if ( isset( $media_blocks[ $block['blockName'] ] ) && is_array( $block['attrs'] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
 			$referenced_post = get_post( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] );
 
 			if ( ! $referenced_post ) {
@@ -158,7 +158,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '</span></td>';
 
 		echo '<td class="qm-row-block-attrs">';
-		if ( $block['attrs'] ) {
+		if ( $block['attrs'] && is_array( $block['attrs'] ) ) {
 			$json = json_encode( $block['attrs'], JSON_PRETTY_PRINT );
 			echo '<pre class="qm-pre-wrap"><code>' . esc_html( $json ) . '</code></pre>';
 		}
