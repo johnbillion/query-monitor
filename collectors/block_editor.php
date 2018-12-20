@@ -21,8 +21,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return;
 		}
 
-		$this->data['post_has_blocks']    = self::wp_has_blocks( get_post()->post_content );
-		$this->data['post_blocks']        = self::wp_parse_blocks( get_post()->post_content );
+		$post = get_post( get_queried_object_id() );
+
+		$this->data['post_has_blocks']    = self::wp_has_blocks( $post->post_content );
+		$this->data['post_blocks']        = self::wp_parse_blocks( $post->post_content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 		$this->data['total_blocks']       = 0;
 
