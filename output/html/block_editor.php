@@ -159,7 +159,19 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<td class="qm-row-block-attrs">';
 		if ( $block['attrs'] && is_array( $block['attrs'] ) ) {
-			$json = json_encode( $block['attrs'], JSON_PRETTY_PRINT );
+			$json_options = JSON_PRETTY_PRINT;
+
+			if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+				// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
+				$json_options |= JSON_UNESCAPED_SLASHES;
+			}
+
+			$json = json_encode( $block['attrs'], $json_options );
+
+			if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+				$json = wp_unslash( $json );
+			}
+
 			echo '<pre class="qm-pre-wrap"><code>' . esc_html( $json ) . '</code></pre>';
 		}
 		echo '</td>';
