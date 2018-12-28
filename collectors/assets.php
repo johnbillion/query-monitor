@@ -49,6 +49,7 @@ class QM_Collector_Assets extends QM_Collector {
 		}
 
 		$this->data['is_ssl'] = is_ssl();
+		$this->data['host']   = wp_unslash( $_SERVER['HTTP_HOST'] );
 
 		foreach ( array( 'scripts', 'styles' ) as $type ) {
 			foreach ( array( 'header', 'footer' ) as $position ) {

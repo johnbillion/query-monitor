@@ -94,7 +94,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$args = array(
 				'prepend' => array(
 					// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
-					'local' => wp_unslash( $_SERVER['HTTP_HOST'] ),
+					'local' => $data['host'],
 				),
 			);
 			echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
@@ -197,7 +197,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
 		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
 		// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
-		$http_host = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$http_host = $data['host'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
