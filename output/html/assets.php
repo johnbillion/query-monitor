@@ -42,15 +42,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		);
 
 		foreach ( $type_labels as $type => $type_label ) {
-
-			$types            = array();
 			$all_dependencies = array();
 			$all_dependents   = array();
 
 			foreach ( $position_labels as $position => $label ) {
 				if ( ! empty( $data[ $position ][ $type ] ) ) {
-					$types[ $position ] = $label;
-
 					$handles = $data[ $position ][ $type ];
 
 					foreach ( $handles as $handle ) {
