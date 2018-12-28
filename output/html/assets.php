@@ -93,7 +93,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			$args = array(
 				'prepend' => array(
-					// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
 					'local' => $data['host'],
 				),
 			);
@@ -196,7 +195,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
 		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
-		// phpcs:ignore WordPress.VIP.ValidatedSanitizedInput
 		$http_host = $data['host'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
