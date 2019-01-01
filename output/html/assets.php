@@ -269,6 +269,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			'styles'  => __( 'Styles', 'query-monitor' ),
 		);
 
+		if ( empty( $data['raw'] ) ) {
+			return $menu;
+		}
+
 		foreach ( $labels as $type => $label ) {
 			$args = array(
 				'title' => esc_html( $label ),
