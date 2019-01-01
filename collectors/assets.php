@@ -105,7 +105,7 @@ class QM_Collector_Assets extends QM_Collector {
 					$handles = $this->data[ $position ][ $type ];
 
 					foreach ( $handles as $handle ) {
-						$dependency = $this->data['raw'][ $type ]->query( $handle );
+						$dependency = $raw->query( $handle );
 
 						if ( ! $dependency ) {
 							continue;
@@ -113,7 +113,7 @@ class QM_Collector_Assets extends QM_Collector {
 
 						$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
 
-						$dependents     = $this->get_dependents( $dependency, $this->data['raw'][ $type ] );
+						$dependents     = $this->get_dependents( $dependency, $raw );
 						$all_dependents = array_merge( $all_dependents, $dependents );
 					}
 				}
