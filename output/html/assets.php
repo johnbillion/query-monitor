@@ -168,10 +168,19 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';
 		if ( is_wp_error( $source ) ) {
-			printf(
-				 '<span class="qm-warn">%s</span>',
-				esc_html( $src )
-			);
+			$error_data = $source->get_error_data();
+			if ( $error_data && isset( $error_data['src'] ) ) {
+				printf(
+					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
+					esc_html( $src ),
+					esc_html( $error_data['src'] )
+				);
+			} else {
+				printf(
+					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					esc_html( $src )
+				);
+			}
 		} elseif ( ! empty( $src ) ) {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',

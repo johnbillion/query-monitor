@@ -203,7 +203,6 @@ class QM_Collector_Assets extends QM_Collector {
 			$src        = $source->get_error_message();
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
-				$src .= ' (' . $error_data['src'] . ')';
 				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
 			}
 		} elseif ( empty( $source ) ) {
