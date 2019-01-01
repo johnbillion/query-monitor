@@ -22,6 +22,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		$position_labels = array(
+			// @TODO translator comments or context:
 			'missing' => __( 'Missing', 'query-monitor' ),
 			'broken'  => __( 'Missing Dependencies', 'query-monitor' ),
 			'header'  => __( 'Header', 'query-monitor' ),

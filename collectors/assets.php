@@ -68,6 +68,7 @@ class QM_Collector_Assets extends QM_Collector {
 			$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
 			$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 
+			// A broken asset is one which has been deregistered without also being dequeued
 			if ( ! empty( $broken ) ) {
 				foreach ( $broken as $key => $handle ) {
 					$item = $raw->query( $handle );
@@ -84,6 +85,7 @@ class QM_Collector_Assets extends QM_Collector {
 				}
 			}
 
+			// A missing asset is one which has been enqueued with dependencies that don't exist
 			if ( ! empty( $missing ) ) {
 				$this->data['missing'][ $type ] = array_unique( $missing );
 				foreach ( $this->data['missing'][ $type ] as $handle ) {
