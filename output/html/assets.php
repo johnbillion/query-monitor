@@ -114,7 +114,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 			$dependency = $dependencies->query( $handle );
 
-			list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
+			list( $src, $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
 
 			$dependencies_list = $dependency->deps;
 			// $dependencies_list[] = $handle;
@@ -140,63 +140,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 	}
 
-	protected function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
-		$data = $this->collector->get_data();
-
-		$loader = rtrim( $type, 's' );
-		$src    = $dependency->src;
-
-		if ( ! empty( $src ) && ! empty( $dependency->ver ) ) {
-			$src = add_query_arg( 'ver', $dependency->ver, $src );
-		}
-
-		/**
-		 * Filter the asset loader source.
-		 *
-		 * The variable {$loader} can be either 'script' or 'style'.
-		 *
-		 * @since 2.9.0
-		 *
-		 * @param string $src    Script or style loader source path.
-		 * @param string $handle Script or style handle.
-		 */
-		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
-
-		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
-		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
-		$http_host = $data['host'];
-
-		if ( empty( $host ) && ! empty( $http_host ) ) {
-			$host = $http_host;
-		}
-
-		$insecure = ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) );
-
-		if ( $insecure ) {
-			$source = new WP_Error( 'insecure_content', __( 'Insecure content', 'query-monitor' ), array(
-				'src' => $source,
-			) );
-		}
-
-		if ( is_wp_error( $source ) ) {
-			$src        = $source->get_error_message();
-			$error_data = $source->get_error_data();
-			if ( $error_data && isset( $error_data['src'] ) ) {
-				$src .= ' (' . $error_data['src'] . ')';
-				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
-			}
-		} elseif ( empty( $source ) ) {
-			$src  = '';
-			$host = '';
-		} else {
-			$src = $source;
-		}
-
-		$local = ( $http_host === $host );
-
-		return array( $src, $host, $source, $local );
-	}
-
 	protected function dependency_row( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
 
 		if ( empty( $dependency->ver ) ) {
@@ -205,7 +148,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$ver = $dependency->ver;
 		}
 
-		list( $src, $host, $source, $local ) = $this->get_dependency_data( $dependency, $dependencies, $type );
+		list( $src, $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
 
 		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
 		$deps       = $dependency->deps;
