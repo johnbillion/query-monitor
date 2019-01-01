@@ -143,7 +143,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
 		$dependencies_list = implode( ' ', $dependency->deps );
-		$dependents_list   = implode( ' ', $this->collector->get_dependents( $dependency, $dependencies ) );
+		$dependents_list   = implode( ' ', $dependents );
 
 		$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
 
