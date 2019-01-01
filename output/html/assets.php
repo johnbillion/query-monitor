@@ -124,7 +124,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$ver = $dependency->ver;
 		}
 
-		list( $src, $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
+		list( $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
 
 		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
 		$deps       = $dependency->deps;
@@ -173,20 +173,20 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
 					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
-					esc_html( $src ),
+					esc_html( $source->get_error_message() ),
 					esc_html( $error_data['src'] )
 				);
 			} else {
 				printf(
 					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
-					esc_html( $src )
+					esc_html( $source->get_error_message() )
 				);
 			}
-		} elseif ( ! empty( $src ) ) {
+		} elseif ( ! empty( $source ) ) {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',
-				esc_attr( $src ),
-				esc_html( ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $src ) ), '/' ) )
+				esc_attr( $source ),
+				esc_html( ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $source ) ), '/' ) )
 			);
 		}
 		echo '</td>';

@@ -202,21 +202,18 @@ class QM_Collector_Assets extends QM_Collector {
 		}
 
 		if ( is_wp_error( $source ) ) {
-			$src        = $source->get_error_message();
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
 			}
 		} elseif ( empty( $source ) ) {
-			$src  = '';
-			$host = '';
-		} else {
-			$src = $source;
+			$source = '';
+			$host   = '';
 		}
 
 		$local = ( $http_host === $host );
 
-		return array( $src, $host, $source, $local );
+		return array( $host, $source, $local );
 	}
 
 	public function name() {
