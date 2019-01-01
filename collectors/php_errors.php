@@ -180,8 +180,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	}
 
-	public function tear_down() {
-		parent::tear_down();
+	public function post_process() {
 		ini_set( 'display_errors', $this->display_errors );
 		restore_error_handler();
 	}
