@@ -44,7 +44,7 @@ class QM_Collector_Assets extends QM_Collector {
 	}
 
 	public function process() {
-		if ( ! isset( $this->data['raw'] ) ) {
+		if ( empty( $this->data['raw'] ) ) {
 			return;
 		}
 
@@ -115,9 +115,48 @@ class QM_Collector_Assets extends QM_Collector {
 
 						$dependents     = $this->get_dependents( $dependency, $raw );
 						$all_dependents = array_merge( $all_dependents, $dependents );
+
+						list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw, $type );
+
+						if ( empty( $dependency->ver ) ) {
+							$ver = '';
+						} else {
+							$ver = $dependency->ver;
+						}
+
+						$warning = ! in_array( $handle, $raw->done, true );
+
+						if ( is_wp_error( $source ) ) {
+							$display = $source->get_error_message();
+						} else {
+							$display = ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $source ) ), '/' );
+						}
+
+						$dependencies = $dependency->deps;
+
+						foreach ( $dependencies as & $dep ) {
+							if ( ! $raw->query( $dep ) ) {
+								/* translators: %s: Script or style dependency name */
+								$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
+							}
+						}
+
+						$this->data['assets'][ $position ][ $type ][] = array(
+							'position'     => $position,
+							'handle'       => $handle,
+							'host'         => $host,
+							'source'       => $source,
+							'local'        => $local,
+							'ver'          => $ver,
+							'warning'      => $warning,
+							'display'      => $display,
+							'dependents'   => $dependents,
+							'dependencies' => $dependencies,
+						);
 					}
 				}
 			}
+
 			$all_dependencies = array_unique( $all_dependencies );
 			sort( $all_dependencies );
 			$this->data['dependencies'][ $type ] = $all_dependencies;

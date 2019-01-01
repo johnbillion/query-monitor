@@ -43,6 +43,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		);
 
 		foreach ( $type_labels as $type => $type_label ) {
+			$this->type = $type;
+
 			$hosts = array(
 				__( 'Other', 'query-monitor' ),
 			);
@@ -83,8 +85,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$total = 0;
 
 			foreach ( $position_labels as $position => $label ) {
-				if ( ! empty( $data[ $position ][ $type ] ) ) {
-					$this->dependency_rows( $data[ $position ][ $type ], $data['raw'][ $type ], $label, $type );
+				if ( ! empty( $data['assets'][ $position ][ $type ] ) ) {
+					foreach ( $data['assets'][ $position ][ $type ] as $asset ) {
+						$this->dependency_row( $asset, $label );
+					}
 					$total += count( $data[ $position ][ $type ] );
 				}
 			}
@@ -109,90 +113,61 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	}
 
-	protected function dependency_rows( array $handles, WP_Dependencies $dependencies, $label, $type ) {
-		foreach ( $handles as $handle ) {
-			$this->dependency_row( $handle, $dependencies->query( $handle ), $dependencies, $label, $type );
-		}
-	}
-
-	protected function dependency_row( $handle, _WP_Dependency $dependency, WP_Dependencies $dependencies, $label, $type ) {
+	protected function dependency_row( array $asset, $label ) {
 		$data = $this->collector->get_data();
 
-		if ( empty( $dependency->ver ) ) {
-			$ver = '';
-		} else {
-			$ver = $dependency->ver;
-		}
+		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
+		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $asset['dependents'] );
 
-		list( $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
+		$dependencies_list = implode( ' ', $asset['dependencies'] );
+		$dependents_list   = implode( ' ', $asset['dependents'] );
 
-		$dependents = $this->collector->get_dependents( $dependency, $dependencies );
-		$deps       = $dependency->deps;
-		sort( $deps );
+		$qm_host = ( $asset['local'] ) ? 'local' : __( 'Other', 'query-monitor' );
 
-		foreach ( $deps as & $dep ) {
-			if ( ! $dependencies->query( $dep ) ) {
-				/* translators: %s: Script or style dependency name */
-				$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
-			}
-		}
-
-		$this->type = $type;
-
-		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
-		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
-
-		$dependencies_list = implode( ' ', $dependency->deps );
-		$dependents_list   = implode( ' ', $dependents );
-
-		$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
-
-		$warn  = false;
 		$class = '';
 
-		if ( ! in_array( $handle, $data['done'][ $type ], true ) ) {
-			$warn  = true;
+		if ( $asset['warning'] ) {
 			$class = 'qm-warn';
 		}
 
-		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
+		echo '<tr data-qm-subject="' . esc_attr( $this->type . '-' . $asset['handle'] ) . '" data-qm-' . esc_attr( $this->type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $this->type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $this->type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
-		if ( $warn ) {
+		if ( $asset['warning'] ) {
 			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 		}
 
 		echo esc_html( $label );
 		echo '</td>';
 
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $dependency->handle ) . '</td>';
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $asset['handle'] ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $asset['host'] ) . '</td>';
 		echo '<td class="qm-ltr">';
-		if ( is_wp_error( $source ) ) {
-			$error_data = $source->get_error_data();
+		if ( is_wp_error( $asset['source'] ) ) {
+			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
 					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
-					esc_html( $source->get_error_message() ),
+					esc_html( $asset['source']->get_error_message() ),
 					esc_html( $error_data['src'] )
 				);
 			} else {
 				printf(
 					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
-					esc_html( $source->get_error_message() )
+					esc_html( $asset['source']->get_error_message() )
 				);
 			}
-		} elseif ( ! empty( $source ) ) {
+		} elseif ( ! empty( $asset['source'] ) ) {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',
-				esc_attr( $source ),
-				esc_html( ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $source ) ), '/' ) )
+				esc_attr( $asset['source'] ),
+				esc_html( $asset['display'] )
 			);
 		}
 		echo '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ', ', array_map( 'esc_html', $deps ) ) . '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $dependents ) ) . '</td>';
-		echo '<td class="qm-ltr">' . esc_html( $ver ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependencies'] ) ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependents'] ) ) . '</td>';
+		echo '<td class="qm-ltr">' . esc_html( $asset['ver'] ) . '</td>';
 
 		echo '</tr>';
 	}
