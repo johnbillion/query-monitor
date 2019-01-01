@@ -111,36 +111,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	protected function dependency_rows( array $handles, WP_Dependencies $dependencies, $label, $type ) {
 		foreach ( $handles as $handle ) {
-
-			$dependency = $dependencies->query( $handle );
-
-			list( $src, $host, $source, $local ) = $this->collector->get_dependency_data( $dependency, $dependencies, $type );
-
-			$dependencies_list = $dependency->deps;
-			// $dependencies_list[] = $handle;
-			$dependencies_list = implode( ' ', $dependencies_list );
-
-			$dependents_list = $this->collector->get_dependents( $dependency, $dependencies );
-			// $dependents_list[] = $handle;
-			$dependents_list = implode( ' ', $dependents_list );
-
-			$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
-
-			if ( in_array( $handle, $dependencies->done, true ) ) {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '">';
-				echo '<td class="qm-nowrap">' . esc_html( $label ) . '</td>';
-			} else {
-				echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="qm-warn">';
-				echo '<td class="qm-nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $label ) . '</td>';
-			}
-
-			$this->dependency_row( $dependency, $dependencies, $type );
-
-			echo '</tr>';
+			$this->dependency_row( $handle, $dependencies->query( $handle ), $dependencies, $label, $type );
 		}
 	}
 
-	protected function dependency_row( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
+	protected function dependency_row( $handle, _WP_Dependency $dependency, WP_Dependencies $dependencies, $label, $type ) {
 
 		if ( empty( $dependency->ver ) ) {
 			$ver = '';
@@ -166,6 +141,29 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $deps );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $dependents );
 
+		$dependencies_list = implode( ' ', $dependency->deps );
+		$dependents_list   = implode( ' ', $this->collector->get_dependents( $dependency, $dependencies ) );
+
+		$qm_host = ( $local ) ? 'local' : __( 'Other', 'query-monitor' );
+
+		$warn  = false;
+		$class = '';
+
+		if ( ! in_array( $handle, $dependencies->done, true ) ) {
+			$warn  = true;
+			$class = 'qm-warn';
+		}
+
+		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
+		echo '<td class="qm-nowrap">';
+
+		if ( $warn ) {
+			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+		}
+
+		echo esc_html( $label );
+		echo '</td>';
+
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $dependency->handle ) . '</td>';
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';
@@ -186,6 +184,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $dependents ) ) . '</td>';
 		echo '<td class="qm-ltr">' . esc_html( $ver ) . '</td>';
 
+		echo '</tr>';
 	}
 
 	public function _prefix_type( $val ) {
