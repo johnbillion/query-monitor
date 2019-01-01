@@ -42,34 +42,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		);
 
 		foreach ( $type_labels as $type => $type_label ) {
-			$all_dependencies = array();
-			$all_dependents   = array();
-
-			foreach ( $position_labels as $position => $label ) {
-				if ( ! empty( $data[ $position ][ $type ] ) ) {
-					$handles = $data[ $position ][ $type ];
-
-					foreach ( $handles as $handle ) {
-						$dependency = $data['raw'][ $type ]->query( $handle );
-
-						if ( ! $dependency ) {
-							continue;
-						}
-
-						$dependencies     = $dependency->deps;
-						$all_dependencies = array_merge( $all_dependencies, $dependencies );
-
-						$dependents     = $this->collector->get_dependents( $dependency, $data['raw'][ $type ] );
-						$all_dependents = array_merge( $all_dependents, $dependents );
-					}
-				}
-			}
-			$all_dependencies = array_unique( $all_dependencies );
-			sort( $all_dependencies );
-
-			$all_dependents = array_unique( $all_dependents );
-			sort( $all_dependents );
-
 			$hosts = array(
 				__( 'Other', 'query-monitor' ),
 			);
@@ -96,10 +68,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( $type . '-dependencies', $all_dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( $type . '-dependencies', $data['dependencies'][ $type ], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( $type . '-dependents', $all_dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( $type . '-dependents', $data['dependents'][ $type ], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';

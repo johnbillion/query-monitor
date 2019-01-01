@@ -51,6 +51,13 @@ class QM_Collector_Assets extends QM_Collector {
 		$this->data['is_ssl'] = is_ssl();
 		$this->data['host']   = wp_unslash( $_SERVER['HTTP_HOST'] );
 
+		$positions = array(
+			'missing',
+			'broken',
+			'header',
+			'footer',
+		);
+
 		foreach ( array( 'scripts', 'styles' ) as $type ) {
 			foreach ( array( 'header', 'footer' ) as $position ) {
 				if ( empty( $this->data[ $position ][ $type ] ) ) {
@@ -87,6 +94,35 @@ class QM_Collector_Assets extends QM_Collector {
 					}
 				}
 			}
+
+			$all_dependencies = array();
+			$all_dependents   = array();
+
+			foreach ( $positions as $position ) {
+				if ( ! empty( $this->data[ $position ][ $type ] ) ) {
+					$handles = $this->data[ $position ][ $type ];
+
+					foreach ( $handles as $handle ) {
+						$dependency = $this->data['raw'][ $type ]->query( $handle );
+
+						if ( ! $dependency ) {
+							continue;
+						}
+
+						$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
+
+						$dependents     = $this->get_dependents( $dependency, $this->data['raw'][ $type ] );
+						$all_dependents = array_merge( $all_dependents, $dependents );
+					}
+				}
+			}
+			$all_dependencies = array_unique( $all_dependencies );
+			sort( $all_dependencies );
+			$this->data['dependencies'][ $type ] = $all_dependencies;
+
+			$all_dependents = array_unique( $all_dependents );
+			sort( $all_dependents );
+			$this->data['dependents'][ $type ] = $all_dependents;
 		}
 	}
 
