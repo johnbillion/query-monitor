@@ -116,6 +116,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	protected function dependency_row( $handle, _WP_Dependency $dependency, WP_Dependencies $dependencies, $label, $type ) {
+		$data = $this->collector->get_data();
 
 		if ( empty( $dependency->ver ) ) {
 			$ver = '';
@@ -149,7 +150,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		$warn  = false;
 		$class = '';
 
-		if ( ! in_array( $handle, $dependencies->done, true ) ) {
+		if ( ! in_array( $handle, $data['done'][ $type ], true ) ) {
 			$warn  = true;
 			$class = 'qm-warn';
 		}
