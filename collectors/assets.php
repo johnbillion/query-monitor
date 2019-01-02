@@ -108,9 +108,8 @@ class QM_Collector_Assets extends QM_Collector {
 						}
 
 						$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
-
-						$dependents     = $this->get_dependents( $dependency, $raw );
-						$all_dependents = array_merge( $all_dependents, $dependents );
+						$dependents       = $this->get_dependents( $dependency, $raw );
+						$all_dependents   = array_merge( $all_dependents, $dependents );
 
 						list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw, $type );
 
@@ -199,8 +198,7 @@ class QM_Collector_Assets extends QM_Collector {
 	}
 
 	public function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies, $type ) {
-		$data = $this->get_data();
-
+		$data   = $this->get_data();
 		$loader = rtrim( $type, 's' );
 		$src    = $dependency->src;
 
@@ -208,30 +206,19 @@ class QM_Collector_Assets extends QM_Collector {
 			$src = add_query_arg( 'ver', $dependency->ver, $src );
 		}
 
-		/**
-		 * Filter the asset loader source.
-		 *
-		 * The variable {$loader} can be either 'script' or 'style'.
-		 *
-		 * @since 2.9.0
-		 *
-		 * @param string $src    Script or style loader source path.
-		 * @param string $handle Script or style handle.
-		 */
+		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host   = (string) wp_parse_url( $source, PHP_URL_HOST );
-		$scheme = (string) wp_parse_url( $source, PHP_URL_SCHEME );
+		$host      = (string) wp_parse_url( $source, PHP_URL_HOST );
+		$scheme    = (string) wp_parse_url( $source, PHP_URL_SCHEME );
 		$http_host = $data['host'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
 		}
 
-		$insecure = ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) );
-
-		if ( $insecure ) {
-			$source = new WP_Error( 'insecure_content', __( 'Insecure content', 'query-monitor' ), array(
+		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) ) {
+			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
 				'src' => $source,
 			) );
 		}
