@@ -159,8 +159,6 @@ class QM_Collector_Assets extends QM_Collector {
 			$all_dependents = array_unique( $all_dependents );
 			sort( $all_dependents );
 			$this->data['dependents'][ $type ] = $all_dependents;
-
-			$this->data['done'][ $type ] = $raw->done;
 		}
 	}
 
