@@ -47,6 +47,7 @@ class QM_Collector_Assets extends QM_Collector {
 		$this->data['is_ssl'] = is_ssl();
 		$this->data['host']   = wp_unslash( $_SERVER['HTTP_HOST'] );
 
+		$home_url  = home_url();
 		$positions = array(
 			'missing',
 			'broken',
@@ -125,7 +126,7 @@ class QM_Collector_Assets extends QM_Collector {
 					if ( is_wp_error( $source ) ) {
 						$display = $source->get_error_message();
 					} else {
-						$display = ltrim( str_replace( home_url(), '', remove_query_arg( 'ver', $source ) ), '/' );
+						$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
 					}
 
 					$dependencies = $dependency->deps;
