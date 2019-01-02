@@ -34,17 +34,13 @@ class QM_Collector_Assets extends QM_Collector {
 			return;
 		}
 
-		// @TODO remove the need for these raw scripts & styles to be collected
-		$this->data['raw']['scripts'] = $wp_scripts;
-		$this->data['raw']['styles']  = $wp_styles;
-
 		$this->data['footer']['scripts'] = array_diff( $wp_scripts->done, $this->data['header']['scripts'] );
 		$this->data['footer']['styles']  = array_diff( $wp_styles->done, $this->data['header']['styles'] );
 
 	}
 
 	public function process() {
-		if ( empty( $this->data['raw'] ) ) {
+		if ( empty( $this->data['header'] ) && empty( $this->data['footer'] ) ) {
 			return;
 		}
 
@@ -64,7 +60,7 @@ class QM_Collector_Assets extends QM_Collector {
 					$this->data[ $position ][ $type ] = array();
 				}
 			}
-			$raw     = $this->data['raw'][ $type ];
+			$raw     = $GLOBALS[ "wp_{$type}" ];
 			$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
 			$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 

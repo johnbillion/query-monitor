@@ -17,7 +17,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['raw'] ) ) {
+		if ( empty( $data['assets'] ) ) {
 			return;
 		}
 
@@ -196,7 +196,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			'styles'  => __( 'Styles', 'query-monitor' ),
 		);
 
-		if ( empty( $data['raw'] ) ) {
+		if ( empty( $data['assets'] ) ) {
 			return $menu;
 		}
 
