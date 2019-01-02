@@ -138,9 +138,7 @@ class QM_Collector_Assets extends QM_Collector {
 						}
 					}
 
-					$this->data['assets'][ $position ][ $type ][] = array(
-						'position'     => $position,
-						'handle'       => $handle,
+					$this->data['assets'][ $type ][ $position ][ $handle ] = array(
 						'host'         => $host,
 						'source'       => $source,
 						'local'        => $local,
@@ -152,6 +150,8 @@ class QM_Collector_Assets extends QM_Collector {
 					);
 				}
 			}
+
+			unset( $this->data[ $position ][ $type ] );
 
 			$all_dependencies = array_unique( $all_dependencies );
 			sort( $all_dependencies );

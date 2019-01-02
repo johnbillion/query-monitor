@@ -85,11 +85,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$total = 0;
 
 			foreach ( $position_labels as $position => $label ) {
-				if ( ! empty( $data['assets'][ $position ][ $type ] ) ) {
-					foreach ( $data['assets'][ $position ][ $type ] as $asset ) {
-						$this->dependency_row( $asset, $label );
+				if ( ! empty( $data['assets'][ $type ][ $position ] ) ) {
+					foreach ( $data['assets'][ $type ][ $position ] as $handle => $asset ) {
+						$this->dependency_row( $handle, $asset, $label );
 					}
-					$total += count( $data[ $position ][ $type ] );
+					$total += count( $data['assets'][ $type ][ $position ] );
 				}
 			}
 
@@ -113,7 +113,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 
 	}
 
-	protected function dependency_row( array $asset, $label ) {
+	protected function dependency_row( $handle, array $asset, $label ) {
 		$data = $this->collector->get_data();
 
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
@@ -130,7 +130,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$class = 'qm-warn';
 		}
 
-		echo '<tr data-qm-subject="' . esc_attr( $this->type . '-' . $asset['handle'] ) . '" data-qm-' . esc_attr( $this->type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $this->type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $this->type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
+		echo '<tr data-qm-subject="' . esc_attr( $this->type . '-' . $handle ) . '" data-qm-' . esc_attr( $this->type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $this->type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $this->type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
 		if ( $asset['warning'] ) {
@@ -140,7 +140,7 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 		echo esc_html( $label );
 		echo '</td>';
 
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $asset['handle'] ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>';
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $asset['host'] ) . '</td>';
 		echo '<td class="qm-ltr">';
 		if ( is_wp_error( $asset['source'] ) ) {
