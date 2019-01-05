@@ -156,7 +156,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
 
 						if ( isset( $action['callback']['error'] ) ) {
-							echo '<br>';
+							echo '<br><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 							echo esc_html( sprintf(
 								/* translators: %s: Error message text */
 								__( 'Error: %s', 'query-monitor' ),
