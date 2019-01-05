@@ -105,7 +105,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
-			'domain' => $domain . ' / ' . $handle,
+			'domain' => $domain,
 			'file'   => $file,
 			'found'  => ( $file && file_exists( $file ) ) ? filesize( $file ) : false,
 			'handle' => $handle,
