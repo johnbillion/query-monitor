@@ -100,7 +100,7 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return string|false Path to the translation file to load. False if there isn't one.
 	 */
 	public function log_script_file_load( $file, $handle, $domain ) {
-		$trace    = new QM_Backtrace;
+		$trace    = new QM_Backtrace();
 		$filtered = $trace->get_filtered_trace();
 		$caller   = $filtered[0];
 

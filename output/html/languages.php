@@ -34,8 +34,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '</tr>';
 		echo '</thead>';
 
-		$not_found_class = ( substr( $data['locale'], 0, 3 ) === 'en_' ) ? '' : 'qm-warn';
-
 		echo '<tbody>';
 
 		foreach ( $data['languages'] as $textdomain => $mofiles ) {
@@ -72,7 +70,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					echo esc_html( size_format( $mofile['found'] ) );
 					echo '</td>';
 				} else {
-					echo '<td class="' . esc_attr( $not_found_class ) . '">';
+					echo '<td>';
 					echo esc_html__( 'Not Found', 'query-monitor' );
 					echo '</td>';
 				}
