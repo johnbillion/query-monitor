@@ -18,7 +18,7 @@ class QM_Collector_Languages extends QM_Collector {
 		parent::__construct();
 
 		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 99, 3 );
-		add_filter( 'load_script_textdomain_file', array( $this, 'log_script_file_load' ), 99, 3 );
+		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 99, 3 );
 
 	}
 
@@ -105,34 +105,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		$trace    = new QM_Backtrace;
 		$filtered = $trace->get_filtered_trace();
-		$caller   = array();
-
-		foreach ( $filtered as $i => $item ) {
-
-			if ( in_array( $item['function'], array(
-				'load_script_translation',
-			), true ) ) {
-				$caller = $item;
-				$display = $i + 1;
-				if ( isset( $filtered[ $display ] ) ) {
-					$caller['display'] = $filtered[ $display ]['display'];
-				}
-				break;
-			}
-		}
-
-		if ( empty( $caller ) ) {
-			if ( isset( $filtered[1] ) ) {
-				$caller = $filtered[1];
-			} else {
-				$caller = $filtered[0];
-			}
-		}
-
-		if ( ! isset( $caller['file'] ) && isset( $filtered[0]['file'] ) && isset( $filtered[0]['line'] ) ) {
-			$caller['file'] = $filtered[0]['file'];
-			$caller['line'] = $filtered[0]['line'];
-		}
+		$caller   = $filtered[0];
 
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
