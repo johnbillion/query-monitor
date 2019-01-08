@@ -19,6 +19,25 @@ class QM_Collector_Assets extends QM_Collector {
 		add_action( 'embed_head',                 array( $this, 'action_head' ), 999 );
 	}
 
+	public function get_concerned_actions() {
+		return array(
+			'admin_print_footer_scripts',
+			'wp_print_footer_scripts',
+		);
+	}
+
+	public function get_concerned_filters() {
+		return array(
+			'print_scripts_array',
+			'script_loader_src',
+			'script_loader_tag',
+
+			'print_styles_array',
+			'style_loader_src',
+			'style_loader_tag',
+		);
+	}
+
 	public function action_head() {
 		global $wp_scripts, $wp_styles;
 
