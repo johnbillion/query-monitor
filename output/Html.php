@@ -50,6 +50,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function after_tabular_output() {
 		echo '</table>';
+
+		$this->output_concerns();
+
 		echo '</div>';
 	}
 
@@ -77,7 +80,46 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function after_non_tabular_output() {
 		echo '</div>';
+
+		$this->output_concerns();
+
 		echo '</div>';
+	}
+
+	protected function output_concerns() {
+		$concerns = array(
+			'concerned_actions' => array(
+				__( 'Related Hooks with Actions Attached', 'query-monitor' ),
+				__( 'Action', 'query-monitor' ),
+			),
+			'concerned_filters' => array(
+				__( 'Related Hooks with Filters Attached', 'query-monitor' ),
+				__( 'Filter', 'query-monitor' ),
+			),
+		);
+		foreach ( $concerns as $key => $labels ) {
+			if ( empty( $this->collector->$key ) ) {
+				continue;
+			}
+
+			echo '<h2>' . esc_html( $labels[0] ) . '</h2>';
+			echo '<table>';
+
+			echo '<thead>';
+			echo '<tr>';
+			echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html( $labels[1] ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+			echo '</tr>';
+			echo '</thead>';
+
+			echo '<tbody>';
+			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key );
+			echo '</tbody>';
+
+			echo '</table>';
+		}
 	}
 
 	protected function before_debug_bar_output( $id = null, $name = null ) {
