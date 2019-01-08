@@ -22,6 +22,40 @@ class QM_Collector_Languages extends QM_Collector {
 
 	}
 
+	public function get_concerned_actions() {
+		return array(
+			'load_textdomain',
+			'unload_textdomain',
+		);
+	}
+
+	public function get_concerned_filters() {
+		return array(
+			'determine_locale',
+			'gettext',
+			'gettext_with_context',
+			'load_script_textdomain_relative_path',
+			'load_script_translation_file',
+			'load_script_translations',
+			'load_textdomain_mofile',
+			'locale',
+			'ngettext',
+			'ngettext_with_context',
+			'override_load_textdomain',
+			'override_unload_textdomain',
+			'plugin_locale',
+			'pre_determine_locale',
+			'pre_load_script_translations',
+			'theme_locale',
+		);
+	}
+
+	public function get_concerned_options() {
+		return array(
+			'WPLANG',
+		);
+	}
+
 	public function process() {
 		$this->data['locale']      = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
