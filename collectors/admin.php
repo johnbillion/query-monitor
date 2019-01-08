@@ -13,6 +13,19 @@ class QM_Collector_Admin extends QM_Collector {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
+	public function get_concerned_actions() {
+		// @TODO list screen column actions
+		return array(
+			'current_screen',
+		);
+	}
+
+	public function get_concerned_filters() {
+		// @TODO list screen column filters
+		return array(
+		);
+	}
+
 	public function process() {
 
 		global $pagenow, $wp_list_table;
