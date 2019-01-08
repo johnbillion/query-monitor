@@ -63,7 +63,17 @@ class QM_Collector_Request extends QM_Collector {
 
 	public function get_concerned_options() {
 		return array(
+			'home',
+			'permalink_structure',
 			'rewrite_rules',
+			'siteurl',
+		);
+	}
+
+	public function get_concerned_constants() {
+		return array(
+			'WP_HOME',
+			'WP_SITEURL',
 		);
 	}
 
