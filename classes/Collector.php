@@ -15,6 +15,9 @@ abstract class QM_Collector {
 	);
 	protected static $hide_qm = null;
 
+	public $concerned_actions = array();
+	public $concerned_filters = array();
+
 	public function __construct() {}
 
 	final public function id() {
@@ -90,6 +93,51 @@ abstract class QM_Collector {
 		$this->id = $id;
 	}
 
+	final public function process_concerns() {
+		global $wp_filter;
+
+		foreach ( $this->get_concerned_actions() as $action ) {
+			if ( has_action( $action ) ) {
+				$this->concerned_actions[ $action ] = QM_Collector_Hooks::process_action( $action, $wp_filter, true, true );
+			}
+		}
+
+		foreach ( $this->get_concerned_filters() as $filter ) {
+			if ( has_filter( $filter ) ) {
+				$this->concerned_filters[ $filter ] = QM_Collector_Hooks::process_action( $filter, $wp_filter, true, true );
+			}
+		}
+
+		$option_filters = array(
+			// Should this include the pre_delete_ and pre_update_ filters too?
+			'pre_option_%s',
+			'default_option_%s',
+			'option_%s',
+			'pre_site_option_%s',
+			'default_site_option_%s',
+			'site_option_%s',
+		);
+
+		foreach ( $this->get_concerned_options() as $option ) {
+			foreach ( $option_filters as $option_filter ) {
+				$filter = sprintf(
+					$option_filter,
+					$option
+				);
+				if ( has_filter( $filter ) ) {
+					$this->concerned_filters[ $filter ] = QM_Collector_Hooks::process_action( $filter, $wp_filter, true, true );
+				}
+			}
+		}
+
+		$this->concerned_actions = array_filter( $this->concerned_actions, array( $this, 'filter_concerns' ) );
+		$this->concerned_filters = array_filter( $this->concerned_filters, array( $this, 'filter_concerns' ) );
+	}
+
+	public function filter_concerns( $concerns ) {
+		return ! empty( $concerns['actions'] );
+	}
+
 	public static function format_user( WP_User $user_object ) {
 		$user = get_object_vars( $user_object->data );
 		unset(
@@ -128,5 +176,16 @@ abstract class QM_Collector {
 		$this->timer = $timer;
 	}
 
+	public function get_concerned_actions() {
+		return array();
+	}
+
+	public function get_concerned_filters() {
+		return array();
+	}
+
+	public function get_concerned_options() {
+		return array();
+	}
 }
 }
