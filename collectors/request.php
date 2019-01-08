@@ -13,6 +13,60 @@ class QM_Collector_Request extends QM_Collector {
 		return __( 'Request', 'query-monitor' );
 	}
 
+	public function get_concerned_actions() {
+		return array(
+			# Rewrites
+			'generate_rewrite_rules',
+
+			# Everything else
+			'parse_query',
+			'parse_request',
+			'parse_tax_query',
+			'pre_get_posts',
+			'template_redirect',
+			'the_post',
+			'wp',
+		);
+	}
+
+	public function get_concerned_filters() {
+		return array(
+			# Rewrite rules
+			'author_rewrite_rules',
+			'category_rewrite_rules',
+			'comments_rewrite_rules',
+			'date_rewrite_rules',
+			'page_rewrite_rules',
+			'post_format_rewrite_rules',
+			'post_rewrite_rules',
+			'root_rewrite_rules',
+			'search_rewrite_rules',
+			'tag_rewrite_rules',
+			// @TODO rewrites for CPTs and taxos?
+			// @TODO foreach ( $this->extra_permastructs as $permastructname => $struct ) { "{$permastructname}_rewrite_rules"
+
+			# More rewrite stuff
+			'iis7_url_rewrite_rules',
+			'mod_rewrite_rules',
+			'rewrite_rules',
+			'rewrite_rules_array',
+
+			# Everything else
+			'do_parse_request',
+			'pre_handle_404',
+			'query_string',
+			'query_vars',
+			'request',
+			'template_include',
+		);
+	}
+
+	public function get_concerned_options() {
+		return array(
+			'rewrite_rules',
+		);
+	}
+
 	public function process() {
 
 		global $wp, $wp_query, $current_blog, $current_site, $wp_rewrite;
