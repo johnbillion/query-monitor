@@ -339,7 +339,7 @@ Query Monitor does not persistently store any of the data that it collects. It d
 
 Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
 
- * [XHProf](https://github.com/facebook/xhprof) for low level profiling of PHP.
+ * [Tideways](https://tideways.com/profiler/xhprof-for-php7) or [XHProf](https://github.com/phacility/xhprof) for low level profiling of PHP.
  * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
  * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
  * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
