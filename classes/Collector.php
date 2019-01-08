@@ -15,8 +15,9 @@ abstract class QM_Collector {
 	);
 	protected static $hide_qm = null;
 
-	public $concerned_actions = array();
-	public $concerned_filters = array();
+	public $concerned_actions   = array();
+	public $concerned_filters   = array();
+	public $concerned_constants = array();
 
 	public function __construct() {}
 
@@ -132,6 +133,12 @@ abstract class QM_Collector {
 
 		$this->concerned_actions = array_filter( $this->concerned_actions, array( $this, 'filter_concerns' ) );
 		$this->concerned_filters = array_filter( $this->concerned_filters, array( $this, 'filter_concerns' ) );
+
+		foreach ( $this->get_concerned_constants() as $constant ) {
+			if ( defined( $constant ) ) {
+				$this->concerned_constants[ $constant ] = constant( $constant );
+			}
+		}
 	}
 
 	public function filter_concerns( $concerns ) {
@@ -185,6 +192,10 @@ abstract class QM_Collector {
 	}
 
 	public function get_concerned_options() {
+		return array();
+	}
+
+	public function get_concerned_constants() {
 		return array();
 	}
 }
