@@ -151,12 +151,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				}
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
-				echo '<th scope="row" class="qm-ltr"><span class="qm-sticky">';
+				echo '<th scope="row" class="qm-ltr">';
 				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
-				echo '</span></th>';
-				echo '<td>&nbsp;</td>';
-				echo '<td>&nbsp;</td>';
-				echo '<td>&nbsp;</td>';
+				echo '</th>';
+				echo '<td></td>';
+				echo '<td></td>';
+				echo '<td></td>';
 				echo '</tr>';
 			}
 		}

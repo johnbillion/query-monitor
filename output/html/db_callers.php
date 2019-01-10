@@ -54,7 +54,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 					if ( isset( $row['types'][ $type_name ] ) ) {
 						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
 					} else {
-						echo "<td class='qm-num'>&nbsp;</td>";
+						echo "<td class='qm-num'></td>";
 					}
 				}
 
@@ -69,7 +69,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			$total_stime = number_format_i18n( $total_time, 4 );
 
 			echo '<tr>';
-			echo '<td>&nbsp;</td>';
+			echo '<td></td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
 				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
