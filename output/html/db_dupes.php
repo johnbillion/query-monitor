@@ -61,7 +61,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
 				printf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></a><br><span class="qm-info qm-supplemental">%s</span><br>',
+					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_attr( $caller ),
 					esc_html( $caller ),
 					esc_html( sprintf(

@@ -804,6 +804,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 }
 
+#query-monitor .qm button.qm-filter-trigger,
+#query-monitor .qm button.qm-filter-trigger code,
 #query-monitor .qm tbody .qm-warn a code,
 #qm-title a,
 #query-monitor .qm a code,
@@ -823,7 +825,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm a.qm-external-link:after,
 #query-monitor .qm a.qm-link:after,
 #query-monitor .qm a.qm-edit-link:after,
-#query-monitor .qm a.qm-filter-trigger:after {
+#query-monitor .qm button.qm-filter-trigger:after {
 	font-family: dashicons !important;
 	text-decoration: none !important;
 	visibility: hidden !important;
@@ -842,13 +844,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor.qm-touch .qm a.qm-edit-link:after,
 #query-monitor .qm a.qm-edit-link:hover:after,
 #query-monitor .qm a.qm-edit-link:focus:after,
-#query-monitor.qm-touch .qm a.qm-filter-trigger:after,
-#query-monitor .qm a.qm-filter-trigger:hover:after,
-#query-monitor .qm a.qm-filter-trigger:focus:after {
+#query-monitor.qm-touch .qm button.qm-filter-trigger:after,
+#query-monitor .qm button.qm-filter-trigger:hover:after,
+#query-monitor .qm button.qm-filter-trigger:focus:after {
 	visibility: visible !important;
 }
 
-#query-monitor .qm a.qm-filter-trigger:after {
+#query-monitor .qm button.qm-filter-trigger:after {
 	content: '\f536' !important;
 }
 

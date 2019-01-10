@@ -139,7 +139,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
 				foreach ( $db_query_num as $type_name => $type_count ) {
 					printf(
-						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</a><br>',
+						'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</button><br>',
 						esc_attr( $type_name ),
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )

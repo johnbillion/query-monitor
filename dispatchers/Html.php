@@ -287,8 +287,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</select>';
 
 		echo '</div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-settings"><span class="screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-close"><span class="screen-reader-text">' . esc_html__( 'Close Panel', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';

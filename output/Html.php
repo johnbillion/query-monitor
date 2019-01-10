@@ -268,7 +268,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		$out .= '</span>';
-		$out .= '<button class="qm-sort-controls">';
+		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
 		$out .= '<span class="qm-sort-arrow" aria-hidden="true"></span>';
 		$out .= '</button>';
 		$out .= '</label>';
@@ -281,7 +281,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string Markup for the column sorter controls.
 	 */
 	protected static function build_toggler() {
-		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false"><span aria-hidden="true">+</span><span class="screen-reader-text">' . esc_html__( ' Toggle button', 'query-monitor' ) . '</span></button>';
+		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr__( 'Toggle more information', 'query-monitor' ) . '"><span aria-hidden="true">+</span></button>';
 		return $out;
 	}
 
