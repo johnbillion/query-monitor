@@ -486,7 +486,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm td.qm-row-component {
   min-width: 15em !important;
 }
-#query-monitor .qm td.qm-has-toggle p,
 #query-monitor .qm td .qm-toggler {
   padding: 0 22px 0 0 !important;
   position: relative !important;
