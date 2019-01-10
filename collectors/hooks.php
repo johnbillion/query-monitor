@@ -50,6 +50,8 @@ class QM_Collector_Hooks extends QM_Collector {
 		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
 		$this->data['components'] = array_unique( array_filter( $components ) );
 
+		usort( $this->data['parts'], 'strcasecmp' );
+		usort( $this->data['components'], 'strcasecmp' );
 	}
 
 	public function post_process() {
