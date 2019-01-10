@@ -211,7 +211,8 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 				$args['meta']['classname'] = 'qm-error';
 			}
 
-			$menu[] = $this->menu( $args );
+			$id          = $this->collector->id() . '-' . $type;
+			$menu[ $id ] = $this->menu( $args );
 		}
 
 		return $menu;

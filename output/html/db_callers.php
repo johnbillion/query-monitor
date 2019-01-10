@@ -98,7 +98,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['times'] ) ) {
-				$menu[] = $this->menu( array(
+				$menu[ $this->collector->id() ] = $this->menu( array(
 					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );
 			}

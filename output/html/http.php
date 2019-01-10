@@ -350,7 +350,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$args['meta']['classname'] = 'qm-warning';
 		}
 
-		$menu[] = $this->menu( $args );
+		$menu[ $this->collector->id() ] = $this->menu( $args );
 
 		return $menu;
 

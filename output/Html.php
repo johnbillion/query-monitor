@@ -11,7 +11,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 	public function admin_menu( array $menu ) {
 
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( $this->collector->name() ),
 		) );
 		return $menu;

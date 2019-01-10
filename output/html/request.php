@@ -176,7 +176,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			/* translators: %s: Number of additional query variables */
 			: __( 'Request (+%s)', 'query-monitor' );
 
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(
 				$title,
 				number_format_i18n( $count )

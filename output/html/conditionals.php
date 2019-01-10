@@ -43,7 +43,8 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		foreach ( $data['conds']['true'] as $cond ) {
-			$menu[ "conditionals-{$cond}" ] = $this->menu( array(
+			$id          = $this->collector->id() . '-' . $cond;
+			$menu[ $id ] = $this->menu( array(
 				'title' => esc_html( $cond . '()' ),
 				'id'    => 'query-monitor-conditionals-' . esc_attr( $cond ),
 				'meta'  => array(
@@ -61,10 +62,11 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		foreach ( $data['conds']['true'] as $cond ) {
-			unset( $menu[ "conditionals-{$cond}" ] );
+			$id = $this->collector->id() . '-' . $cond;
+			unset( $menu[ $id ] );
 		}
 
-		$menu['conditionals'] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html__( 'Conditionals', 'query-monitor' ),
 			'id'    => 'query-monitor-conditionals',
 		) );

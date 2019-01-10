@@ -208,7 +208,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function admin_menu( array $menu ) {
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => $this->collector->name(),
 		) );
 		return $menu;
