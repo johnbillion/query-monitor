@@ -54,16 +54,6 @@ class QM_Collector_Hooks extends QM_Collector {
 		usort( $this->data['components'], 'strcasecmp' );
 	}
 
-	public function post_process() {
-		$admin = QM_Collectors::get( 'response' );
-
-		if ( is_admin() && $admin ) {
-			$this->data['screen'] = $admin->data['base'];
-		} else {
-			$this->data['screen'] = '';
-		}
-	}
-
 	public static function process_action( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
 		$actions    = array();

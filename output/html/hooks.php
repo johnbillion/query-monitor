@@ -22,12 +22,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			return;
 		}
 
-		if ( is_multisite() && is_network_admin() ) {
-			$screen = preg_replace( '|-network$|', '', $data['screen'] );
-		} else {
-			$screen = $data['screen'];
-		}
-
 		$this->before_tabular_output();
 
 		echo '<thead>';
@@ -44,26 +38,14 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody>';
-		self::output_hook_table( $data['hooks'], $screen );
+		self::output_hook_table( $data['hooks'] );
 		echo '</tbody>';
 
 		$this->after_tabular_output();
 	}
 
-	public static function output_hook_table( array $hooks, $screen = '' ) {
+	public static function output_hook_table( array $hooks ) {
 		foreach ( $hooks as $hook ) {
-
-			if ( ! empty( $screen ) ) {
-
-				if ( false !== strpos( $hook['name'], $screen . '.php' ) ) {
-					$hook_name = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', esc_html( $hook['name'] ) );
-				} else {
-					$hook_name = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', esc_html( $hook['name'] ) );
-				}
-			} else {
-				$hook_name = esc_html( $hook['name'] );
-			}
-
 			$row_attr                      = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
@@ -110,7 +92,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					if ( $first ) {
 
 						echo '<th scope="row" rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
-						echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
+						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn">';
 							printf(
@@ -170,7 +152,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
 				echo '<th scope="row" class="qm-ltr"><span class="qm-sticky">';
-				echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
+				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 				echo '</span></th>';
 				echo '<td>&nbsp;</td>';
 				echo '<td>&nbsp;</td>';
