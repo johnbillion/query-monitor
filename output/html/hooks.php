@@ -45,12 +45,14 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	}
 
 	public static function output_hook_table( array $hooks ) {
+		$core = __( 'Core', 'query-monitor' );
+
 		foreach ( $hooks as $hook ) {
 			$row_attr                      = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
-			if ( ! empty( $row_attr['data-qm-component'] ) && 'Core' !== $row_attr['data-qm-component'] ) {
+			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 
@@ -79,7 +81,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$subject   = $component;
 					}
 
-					if ( __( 'Core', 'query-monitor' ) !== $component ) {
+					if ( $core !== $component ) {
 						$subject .= ' non-core';
 					}
 
