@@ -203,7 +203,7 @@ class QM_Backtrace {
 	}
 
 	public function ignore( $num ) {
-		for ( $i = 0; $i < absint( $num ); $i++ ) {
+		for ( $i = 0; $i < $num; $i++ ) {
 			unset( $this->trace[ $i ] );
 		}
 		$this->trace = array_values( $this->trace );

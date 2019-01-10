@@ -160,7 +160,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			 */
 			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
-				echo '<th colspan="' . absint( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<th colspan="' . intval( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 					/* translators: 1: Symlink file name, 2: URL to wiki page */
 					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
@@ -258,7 +258,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$total_stime = number_format_i18n( $db->total_time, 4 );
 
 			echo '<tr>';
-			echo '<td colspan="' . absint( $span - 1 ) . '">';
+			echo '<td colspan="' . intval( $span - 1 ) . '">';
 			printf(
 				/* translators: %s: Number of database queries */
 				esc_html_x( 'Total: %s', 'Database queries', 'query-monitor' ),
@@ -361,7 +361,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		echo "<tr{$attr}>"; // WPCS: XSS ok.
 
 		if ( isset( $cols['row'] ) ) {
-			echo '<th scope="row" class="qm-row-num qm-num">' . absint( ++$this->query_row ) . '</th>';
+			echo '<th scope="row" class="qm-row-num qm-num">' . intval( ++$this->query_row ) . '</th>';
 		}
 
 		if ( isset( $cols['sql'] ) ) {
