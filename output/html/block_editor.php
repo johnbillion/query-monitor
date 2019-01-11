@@ -148,11 +148,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		if ( $error_message ) {
 			echo '<br>';
-
-			if ( $block_error ) {
-				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-			}
-
+			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 			echo $error_message; // WPCS: XSS ok;
 		}
 
