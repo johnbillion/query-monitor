@@ -70,6 +70,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['post_blocks']        = self::wp_parse_blocks( $post->post_content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 		$this->data['total_blocks']       = 0;
+		$this->data['has_block_timing']   = false;
 
 		if ( $this->data['post_has_blocks'] ) {
 			self::$block_type_registry = WP_Block_Type_Registry::get_instance();
@@ -106,6 +107,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		if ( $timing ) {
 			$block['timing'] = $timing->get_time();
+			$this->data['has_block_timing'] = true;
 		}
 
 		if ( ! empty( $block['innerBlocks'] ) ) {

@@ -39,7 +39,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>';
 
-		if ( isset( $data['post_blocks'][0]['timing'] ) ) {
+		if ( isset( $data['has_block_timing'] ) ) {
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Render Time', 'query-monitor' ) . '</th>';
 		}
 
@@ -214,15 +214,17 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '</td>';
 			}
 
-			if ( isset( $block['timing'] ) ) {
+			if ( $data['has_block_timing'] ) {
 				echo '<td class="qm-num">';
-				echo esc_html( number_format_i18n( $block['timing'], 4 ) );
+				if ( isset( $block['timing'] ) ) {
+					echo esc_html( number_format_i18n( $block['timing'], 4 ) );
+				}
 				echo '</td>';
 			}
 		} else {
 			echo '<td></td>';
 
-			if ( isset( $block['timing'] ) ) {
+			if ( $data['has_block_timing'] ) {
 				echo '<td></td>';
 			}
 		}
