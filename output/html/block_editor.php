@@ -140,10 +140,6 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<td class="qm-row-block-name"><span class="qm-sticky">';
 
-		if ( $block_error ) {
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-		}
-
 		if ( $block['blockName'] ) {
 			echo esc_html( $block['blockName'] );
 		} else {
@@ -152,6 +148,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		if ( $error_message ) {
 			echo '<br>';
+
+			if ( $block_error ) {
+				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			}
+
 			echo $error_message; // WPCS: XSS ok;
 		}
 
