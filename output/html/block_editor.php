@@ -252,7 +252,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			foreach ( $block['innerBlocks'] as $j => $inner_block ) {
 				$x = ++$j;
-				self::render_block( "{$i}-{$x}", $inner_block, $data );
+				self::render_block( "{$i}.{$x}", $inner_block, $data );
 			}
 		}
 	}
