@@ -888,13 +888,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   position: absolute !important;
   width: 1px !important;
 }
-
 @media screen and (max-width: 782px) {
   #query-monitor #qm-panel-menu,
   #query-monitor #qm-title h1.qm-title-heading {
     display: none;
   }
-
   #query-monitor #qm-title div.qm-title-heading {
     display: block;
   }
@@ -903,13 +901,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor [data-qm-state="on"] [data-qm-state-visibility="off"] {
   display: none;
 }
-
-.qm-no-js .qm-sort-controls,
-.qm-no-js .qm-toggle,
-.qm-no-js select.qm-filter {
+#query-monitor.qm-no-js .qm-sort-controls, #query-monitor.qm-no-js .qm-toggle, #query-monitor.qm-no-js select.qm-filter {
   display: none !important;
 }
-
 #query-monitor .qm.qm-debug-bar textarea,
 #query-monitor .qm.qm-debug-bar pre {
   border: 1px solid #ddd !important;
@@ -970,25 +964,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor #debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
   margin: 0 !important;
 }
-
 #query-monitor.qm-broken #qm-title {
   cursor: default !important;
 }
-
-#query-monitor #qm-broken,
-#query-monitor.qm-broken .qm-title-button {
+#query-monitor #qm-broken, #query-monitor.qm-broken .qm-title-button {
   display: none !important;
 }
-
-#query-monitor.qm-broken #qm-broken,
-#query-monitor.qm-broken .qm {
+#query-monitor.qm-broken #qm-broken, #query-monitor.qm-broken .qm {
   display: block !important;
 }
-
 #query-monitor.qm-broken .qm {
   margin-bottom: 50px !important;
 }
-
 #query-monitor.qm-broken #qm-broken h2 {
   padding: 20px !important;
 }
