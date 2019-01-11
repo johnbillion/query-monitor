@@ -902,27 +902,25 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm select.qm-filter:hover {
 		background: $qm-container-bg !important;
 	}
-}
 
-.qm-hide,
-.qm-hide-scripts-dependencies,
-.qm-hide-styles-dependencies,
-.qm-hide-scripts-dependents,
-.qm-hide-styles-dependents,
-.qm-hide-scripts-host,
-.qm-hide-styles-host,
-.qm-hide-user,
-.qm-hide-result,
-.qm-hide-name,
-.qm-hide-type,
-.qm-hide-caller,
-.qm-hide-component {
-	display: none !important;
-}
+	.qm-hide,
+	.qm-hide-scripts-dependencies,
+	.qm-hide-styles-dependencies,
+	.qm-hide-scripts-dependents,
+	.qm-hide-styles-dependents,
+	.qm-hide-scripts-host,
+	.qm-hide-styles-host,
+	.qm-hide-user,
+	.qm-hide-result,
+	.qm-hide-name,
+	.qm-hide-type,
+	.qm-hide-caller,
+	.qm-hide-component {
+		display: none !important;
+	}
 
-// Sorters
+	// Sorters
 
-#query-monitor {
 	.qm thead th.qm-sortable-column {
 		cursor: pointer !important;
 	}

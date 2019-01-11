@@ -824,23 +824,21 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm select.qm-filter:hover {
   background: #32373c !important;
 }
-
-.qm-hide,
-.qm-hide-scripts-dependencies,
-.qm-hide-styles-dependencies,
-.qm-hide-scripts-dependents,
-.qm-hide-styles-dependents,
-.qm-hide-scripts-host,
-.qm-hide-styles-host,
-.qm-hide-user,
-.qm-hide-result,
-.qm-hide-name,
-.qm-hide-type,
-.qm-hide-caller,
-.qm-hide-component {
+#query-monitor .qm-hide,
+#query-monitor .qm-hide-scripts-dependencies,
+#query-monitor .qm-hide-styles-dependencies,
+#query-monitor .qm-hide-scripts-dependents,
+#query-monitor .qm-hide-styles-dependents,
+#query-monitor .qm-hide-scripts-host,
+#query-monitor .qm-hide-styles-host,
+#query-monitor .qm-hide-user,
+#query-monitor .qm-hide-result,
+#query-monitor .qm-hide-name,
+#query-monitor .qm-hide-type,
+#query-monitor .qm-hide-caller,
+#query-monitor .qm-hide-component {
   display: none !important;
 }
-
 #query-monitor .qm thead th.qm-sortable-column {
   cursor: pointer !important;
 }
