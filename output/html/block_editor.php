@@ -232,11 +232,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		$inner_html = trim( $block['innerHTML'] );
 
-		if ( $block['size'] > 600 ) {
+		if ( $block['size'] > 300 ) {
 			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html"><div class="qm-toggler">';
 			echo self::build_toggler(); // WPCS: XSS ok;
 			echo '<div class="qm-inverse-toggled"><pre class="qm-pre-wrap"><code>';
-			echo esc_html( substr( $inner_html, 0, 500 ) ) . '<br><b>&hellip;</b>';
+			echo esc_html( substr( $inner_html, 0, 200 ) ) . '&nbsp;&hellip;';
 			echo '</code></pre></div>';
 			echo '<div class="qm-toggled"><pre class="qm-pre-wrap"><code>';
 			echo esc_html( $inner_html );
