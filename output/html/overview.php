@@ -190,13 +190,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				if ( ! empty( $potentials ) ) {
 					echo '<ul>';
 					foreach ( $potentials as $name => $value ) {
-						echo '<li class="qm-warn">';
+						echo '<li><span class="qm-warn">';
 						echo esc_html( sprintf(
 							/* translators: %s: PHP extension name */
 							__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
 							$name
 						) );
-						echo '</li>';
+						echo '</span></li>';
 					}
 					echo '</ul>';
 				}
