@@ -52,7 +52,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				border: 1px solid #aaa;
 				background: #fff;
 				width: 700px;
-				box-shadow: 0 1px 3px rgba(0,0,0,0.13);
 			}
 
 			#query-monitor h2 {
