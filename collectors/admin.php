@@ -22,8 +22,7 @@ class QM_Collector_Admin extends QM_Collector {
 
 	public function get_concerned_filters() {
 		// @TODO list screen column filters
-		return array(
-		);
+		return array();
 	}
 
 	public function process() {
