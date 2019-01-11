@@ -78,8 +78,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
   color: #aaa !important;
   display: none !important;
-  font: 18px/44px 'Open Sans', sans-serif !important;
-  /* @todo remove open sans */
+  font: 18px/44px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
   padding: 0 10px !important;
   width: auto !important;
 }
