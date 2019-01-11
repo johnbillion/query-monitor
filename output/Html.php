@@ -160,17 +160,17 @@ abstract class QM_Output_Html extends QM_Output {
 
 	public static function output_inner( $vars ) {
 
-		echo '<table class="qm-inner">';
+		echo '<table>';
 
 		foreach ( $vars as $key => $value ) {
 			echo '<tr>';
 			echo '<td>' . esc_html( $key ) . '</td>';
 			if ( is_array( $value ) ) {
-				echo '<td class="qm-has-inner">';
+				echo '<td>';
 				self::output_inner( $value );
 				echo '</td>';
 			} elseif ( is_object( $value ) ) {
-				echo '<td class="qm-has-inner">';
+				echo '<td>';
 				self::output_inner( get_object_vars( $value ) );
 				echo '</td>';
 			} elseif ( is_bool( $value ) ) {
