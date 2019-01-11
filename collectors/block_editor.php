@@ -26,6 +26,14 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
+	public function get_concerned_filters() {
+		return array(
+			'pre_render_block',
+			'render_block_data',
+			'render_block',
+		);
+	}
+
 	public function filter_pre_render_block( $pre_render, array $block ) {
 		if ( null !== $pre_render ) {
 			$this->block_timing[] = false;
