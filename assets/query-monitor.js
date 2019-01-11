@@ -50,7 +50,7 @@ if ( window.jQuery ) {
 	jQuery( function($) {
 		var minheight             = 100;
 		var maxheight             = ( $(window).height() - 50 );
-		var container             = $('#query-monitor');
+		var container             = $('#query-monitor-main');
 		var container_storage_key = 'qm-container-height';
 		var container_pinned_key  = 'qm-container-pinned';
 
