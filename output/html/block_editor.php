@@ -72,7 +72,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	}
 
 	protected static function render_block( $i, array $block, array $data ) {
-		$block_error     = ( empty( $block['blockName'] ) && trim( $block['innerHTML'] ) );
+		$block_error     = false;
 		$row_class       = '';
 		$referenced_post = null;
 		$referenced_type = null;
@@ -147,7 +147,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( $block['blockName'] ) {
 			echo esc_html( $block['blockName'] );
 		} else {
-			echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
+			echo '<em>' . esc_html__( 'None (Classic block)', 'query-monitor' ) . '</em>';
 		}
 
 		if ( $error_message ) {
