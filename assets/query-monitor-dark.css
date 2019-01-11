@@ -201,7 +201,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor p::after {
   display: none !important;
 }
-
 #query-monitor {
   background: #23282d !important;
   margin: 0 !important;

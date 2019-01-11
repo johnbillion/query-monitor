@@ -111,78 +111,79 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 // === Main QM Panel ===
 
-#query-monitor,
-#query-monitor dl,
-#query-monitor dt,
-#query-monitor dd,
-#query-monitor button,
-#query-monitor label,
-#query-monitor select,
-#query-monitor table,
-#query-monitor td,
-#query-monitor th,
-#query-monitor ul,
-#query-monitor ol,
-#query-monitor li,
-#query-monitor code,
-#query-monitor a,
-#query-monitor h1,
-#query-monitor h2,
-#query-monitor h3,
-#query-monitor h4,
-#query-monitor h5,
-#query-monitor h6,
-#query-monitor section,
-#query-monitor nav,
-#query-monitor p {
-	// reset
-	background: transparent !important;
-	color: $qm-container-fg !important;
-	box-sizing: border-box !important;
-	text-align: left !important;
-	font-style: normal !important;
-	font-weight: normal !important;
-	font-size: $qm-font-default-size !important;
-	line-height: $qm-font-default-line-height !important;
-	font-family: $qm-font-default-face !important;
-	border: none !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	vertical-align: baseline !important;
-	text-shadow: none !important;
-	text-transform: none !important;
-	text-decoration: none !important;
-	-webkit-font-smoothing: auto !important;
-	letter-spacing: normal !important;
-	border-radius: 0 !important;
-	transition: none !important;
-	word-wrap: normal !important;
-	word-break: normal !important;
-	outline: none !important;
-	box-shadow: none !important;
-	text-indent: 0 !important;
-	float: none !important;
-	clear: both !important;
-
-	&::before,
-	&::after {
-		display: none !important;
-	}
-}
-
 #query-monitor {
-	background: $qm-panel-bg !important;
-	margin: 0 !important;
-	border-top: 1px solid $qm-panel-border !important;
-	text-align: left !important;
-	display: none;
-	position: fixed;
-	z-index: 99998 !important;
-	bottom: 0 !important;
-	left: 0 !important;
-	right: 0 !important;
-	width: 100% !important;
-	direction: ltr !important;
+	&,
+	dl,
+	dt,
+	dd,
+	button,
+	label,
+	select,
+	table,
+	td,
+	th,
+	ul,
+	ol,
+	li,
+	code,
+	a,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	section,
+	nav,
+	p {
+		background: transparent !important;
+		color: $qm-container-fg !important;
+		box-sizing: border-box !important;
+		text-align: left !important;
+		font-style: normal !important;
+		font-weight: normal !important;
+		font-size: $qm-font-default-size !important;
+		line-height: $qm-font-default-line-height !important;
+		font-family: $qm-font-default-face !important;
+		border: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		vertical-align: baseline !important;
+		text-shadow: none !important;
+		text-transform: none !important;
+		text-decoration: none !important;
+		-webkit-font-smoothing: auto !important;
+		letter-spacing: normal !important;
+		border-radius: 0 !important;
+		transition: none !important;
+		word-wrap: normal !important;
+		word-break: normal !important;
+		outline: none !important;
+		box-shadow: none !important;
+		text-indent: 0 !important;
+		float: none !important;
+		clear: both !important;
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+	}
+
+	& {
+		background: $qm-panel-bg !important;
+		margin: 0 !important;
+		border-top: 1px solid $qm-panel-border !important;
+		text-align: left !important;
+		display: none;
+		position: fixed;
+		z-index: 99998 !important;
+		bottom: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: 100% !important;
+		direction: ltr !important;
+	}
 
 	::selection {
 		background-color: #B9D6FB !important;
