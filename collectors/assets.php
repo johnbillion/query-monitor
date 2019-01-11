@@ -227,8 +227,8 @@ class QM_Collector_Assets extends QM_Collector {
 		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host      = (string) wp_parse_url( $source, PHP_URL_HOST );
-		$scheme    = (string) wp_parse_url( $source, PHP_URL_SCHEME );
+		$host      = (string) parse_url( $source, PHP_URL_HOST );
+		$scheme    = (string) parse_url( $source, PHP_URL_SCHEME );
 		$http_host = $data['host'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
@@ -244,7 +244,7 @@ class QM_Collector_Assets extends QM_Collector {
 		if ( is_wp_error( $source ) ) {
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
-				$host = (string) wp_parse_url( $error_data['src'], PHP_URL_HOST );
+				$host = (string) parse_url( $error_data['src'], PHP_URL_HOST );
 			}
 		} elseif ( empty( $source ) ) {
 			$source = '';
