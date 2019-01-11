@@ -38,6 +38,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Block Name', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>';
+
+		if ( isset( $data['post_blocks'][0]['timing'] ) ) {
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Render Time', 'query-monitor' ) . '</th>';
+		}
+
 		echo '<th scope="col">' . esc_html__( 'Inner HTML', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -53,7 +58,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<tfoot>';
 		echo '<tr>';
 		printf(
-			'<td colspan="5">%1$s</td>',
+			'<td colspan="6">%1$s</td>',
 			sprintf(
 				/* translators: %s: Total number of content blocks used */
 				esc_html_x( 'Total: %s', 'Content blocks used', 'query-monitor' ),
@@ -211,8 +216,18 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 				echo '</td>';
 			}
+
+			if ( isset( $block['timing'] ) ) {
+				echo '<td class="qm-num">';
+				echo esc_html( number_format_i18n( $block['timing'], 4 ) );
+				echo '</td>';
+			}
 		} else {
 			echo '<td></td>';
+
+			if ( isset( $block['timing'] ) ) {
+				echo '<td></td>';
+			}
 		}
 
 		$inner_html = trim( $block['innerHTML'] );
