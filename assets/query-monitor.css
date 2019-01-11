@@ -76,12 +76,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
-  font: 18px/44px 'Open Sans', sans-serif !important;
-  /* @todo remove open sans */
-  width: auto !important;
-  padding: 0 10px !important;
   color: #aaa !important;
   display: none !important;
+  font: 18px/44px 'Open Sans', sans-serif !important;
+  /* @todo remove open sans */
+  padding: 0 10px !important;
+  width: auto !important;
 }
 
 @media screen and (max-width: 782px) {
@@ -118,32 +118,32 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor nav,
 #query-monitor p {
   background: transparent !important;
-  color: #222 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   box-sizing: border-box !important;
-  text-align: left !important;
+  clear: both !important;
+  color: #222 !important;
+  float: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  font-size: 12px !important;
+  -webkit-font-smoothing: auto !important;
   font-style: normal !important;
   font-weight: normal !important;
-  font-size: 12px !important;
+  letter-spacing: normal !important;
   line-height: 18px !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
-  border: none !important;
-  padding: 0 !important;
   margin: 0 !important;
-  vertical-align: baseline !important;
+  outline: none !important;
+  padding: 0 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  text-indent: 0 !important;
   text-shadow: none !important;
   text-transform: none !important;
-  text-decoration: none !important;
-  -webkit-font-smoothing: auto !important;
-  letter-spacing: normal !important;
-  border-radius: 0 !important;
   transition: none !important;
-  word-wrap: normal !important;
+  vertical-align: baseline !important;
   word-break: normal !important;
-  outline: none !important;
-  box-shadow: none !important;
-  text-indent: 0 !important;
-  float: none !important;
-  clear: both !important;
+  word-wrap: normal !important;
 }
 #query-monitor::before, #query-monitor::after,
 #query-monitor dl::before,
@@ -196,17 +196,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor {
   background: #fff !important;
-  margin: 0 !important;
   border-top: 1px solid #aaa !important;
-  text-align: left !important;
-  display: none;
-  position: fixed;
-  z-index: 99998 !important;
   bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
   direction: ltr !important;
+  display: none;
+  left: 0 !important;
+  margin: 0 !important;
+  position: fixed;
+  right: 0 !important;
+  text-align: left !important;
+  width: 100% !important;
+  z-index: 99998 !important;
 }
 #query-monitor ::selection {
   background-color: #B9D6FB !important;
@@ -221,9 +221,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   font-style: italic !important;
 }
 #query-monitor.qm-show, #query-monitor.qm-peek {
-  height: 27px;
   display: flex;
   flex-direction: column !important;
+  height: 27px;
 }
 #query-monitor.qm-show {
   height: 40%;
@@ -235,22 +235,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   min-height: 0;
 }
 #query-monitor #qm-title {
+  align-items: center !important;
   background: #f3f3f3 !important;
   border-bottom: 1px solid #aaa !important;
   cursor: ns-resize !important;
-  align-items: center !important;
   display: flex !important;
-  padding: 0 0 0 5px !important;
-  height: 27px !important;
   flex-shrink: 0 !important;
+  height: 27px !important;
+  padding: 0 0 0 5px !important;
   -moz-user-select: none !important;
   -ms-user-select: none !important;
   -webkit-user-select: none !important;
   user-select: none !important;
 }
 #query-monitor #qm-title .qm-title-heading {
-  flex-grow: 1 !important;
   border-right: 1px solid #bbb !important;
+  flex-grow: 1 !important;
   margin-right: 6px !important;
 }
 #query-monitor #qm-title div.qm-title-heading {
@@ -270,18 +270,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 2px 0 3px !important;
 }
 #query-monitor #qm-title button {
-  color: #666 !important;
   background: transparent !important;
+  color: #666 !important;
   cursor: pointer !important;
-  margin: 0 0 0 0px !important;
   display: inline-block !important;
-  padding: 0px 4px !important;
+  margin: 0 0 0 0px !important;
   min-width: auto !important;
+  padding: 0px 4px !important;
 }
 #query-monitor #qm-title button:focus,
 #query-monitor #qm-title button:hover {
-  color: #000 !important;
   background: #e6e6e6 !important;
+  color: #000 !important;
 }
 #query-monitor #qm-title button:active {
   background: #ccc !important;
@@ -293,31 +293,31 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   display: none !important;
 }
 #query-monitor #qm-panel-menu {
-  overflow-y: scroll !important;
-  flex-shrink: 0 !important;
   background: #ececec !important;
+  flex-shrink: 0 !important;
+  overflow-y: scroll !important;
   overscroll-behavior: contain !important;
 }
 #query-monitor #qm-panel-menu ul {
-  padding: 0 !important;
-  margin: 0 !important;
   list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 #query-monitor #qm-panel-menu li {
-  padding: 0 !important;
   margin: 0 !important;
+  padding: 0 !important;
 }
 #query-monitor #qm-panel-menu li button {
+  background: #f3f3f3 !important;
+  border-bottom: 1px solid #ddd !important;
+  border-right: 1px solid #aaa !important;
+  color: #333 !important;
+  cursor: pointer !important;
   display: block !important;
   padding: 8px 28px 8px 6px !important;
-  color: #333 !important;
-  text-decoration: none !important;
-  border-bottom: 1px solid #ddd !important;
   position: relative !important;
-  border-right: 1px solid #aaa !important;
-  background: #f3f3f3 !important;
+  text-decoration: none !important;
   width: 100% !important;
-  cursor: pointer !important;
 }
 #query-monitor #qm-panel-menu li button:focus,
 #query-monitor #qm-panel-menu li button:hover {
@@ -337,17 +337,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #fff !important;
 }
 #query-monitor #qm-panel-menu li button.qm-selected-menu:after {
-  right: -1px;
   border: solid 8px transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
   border-right-color: #fff;
-  top: 50%;
-  margin-top: -8px;
+  content: " ";
   display: inline-block !important;
+  height: 0;
+  margin-top: -8px;
+  pointer-events: none;
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 0;
 }
 #query-monitor #qm-panels {
   flex-grow: 1 !important;
@@ -379,22 +379,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 2em !important;
 }
 #query-monitor .qm .qm-none p {
-  text-align: center !important;
   font-style: italic !important;
+  text-align: center !important;
 }
 #query-monitor .qm table {
-  color: #222 !important;
-  border-collapse: collapse !important;
-  box-shadow: none !important;
-  width: 100% !important;
-  table-layout: auto !important;
-  margin: 0 !important;
   border: none !important;
   border-bottom: 1px solid #e0e0e0 !important;
+  border-collapse: collapse !important;
+  box-shadow: none !important;
+  color: #222 !important;
+  margin: 0 !important;
+  table-layout: auto !important;
+  width: 100% !important;
 }
 #query-monitor .qm table + table {
-  margin-top: 5px !important;
   border-top: 1px solid #e0e0e0 !important;
+  margin-top: 5px !important;
 }
 #query-monitor #qm-conditionals table,
 #query-monitor #qm-overview table {
@@ -412,18 +412,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm tbody th,
 #query-monitor .qm tbody td {
-  border-top: none !important;
   border-bottom: none !important;
+  border-top: none !important;
 }
 #query-monitor .qm thead th {
-  box-shadow: 0px 1px 0px #e0e0e0 !important;
+  background: #fff !important;
   border: 1px solid #e0e0e0 !important;
   border-top: none !important;
+  box-shadow: 0px 1px 0px #e0e0e0 !important;
   padding: 5px !important;
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
-  background: #fff !important;
   z-index: 1 !important;
 }
 #query-monitor .qm thead .qm-th {
@@ -431,13 +431,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm tfoot tr td,
 #query-monitor .qm tfoot tr th {
-  box-shadow: inset 0px 1px 0px #e0e0e0 !important;
+  background: #f3f3f3 !important;
   border: 1px solid #e0e0e0 !important;
   border-bottom: none !important;
-  background: #f3f3f3 !important;
+  bottom: 0 !important;
+  box-shadow: inset 0px 1px 0px #e0e0e0 !important;
   position: -webkit-sticky !important;
   position: sticky !important;
-  bottom: 0 !important;
 }
 #query-monitor .qm th:first-child,
 #query-monitor .qm td:first-child {
@@ -480,20 +480,20 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   padding: 4px 6px !important;
 }
 #query-monitor .qm-has-inner .qm-toggled > table {
-  border-top: 1px solid #e0e0e0 !important;
   border-bottom: none !important;
+  border-top: 1px solid #e0e0e0 !important;
 }
 #query-monitor .qm td.qm-has-inner .qm-toggler,
 #query-monitor .qm td.qm-has-inner {
   padding: 0 !important;
 }
 #query-monitor .qm-non-tabular h3 {
-  margin: 0 0 15px 0 !important;
   font-size: 14px !important;
+  margin: 0 0 15px 0 !important;
 }
 #query-monitor .qm-non-tabular h4 {
-  margin: 20px 0 10px !important;
   font-size: 12px !important;
+  margin: 20px 0 10px !important;
 }
 #query-monitor .qm-non-tabular p {
   margin-bottom: 10px !important;
@@ -514,14 +514,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm-non-tabular .qm-boxed section,
 #query-monitor .qm-non-tabular .qm-boxed .qm-section {
-  margin: 0 20px 10px 0 !important;
   border-right: 1px solid #ddd !important;
+  margin: 0 20px 10px 0 !important;
   padding: 10px 20px 10px 0 !important;
 }
 #query-monitor .qm-non-tabular .qm-boxed section:last-child,
 #query-monitor .qm-non-tabular .qm-boxed .qm-section:last-child {
-  margin-right: 0 !important;
   border-right: none !important;
+  margin-right: 0 !important;
   padding-right: 20px !important;
 }
 #query-monitor .qm-non-tabular table {
@@ -547,16 +547,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm code,
 #query-monitor .qm pre {
+  font-family: Menlo, Monaco, Consolas, monospace !important;
   font-size: 11px !important;
   line-height: 18px !important;
-  font-family: Menlo, Monaco, Consolas, monospace !important;
 }
 #query-monitor .qm pre {
   background: transparent !important;
-  margin: 0 !important;
-  width: auto !important;
   height: auto !important;
+  margin: 0 !important;
   padding: 0 !important;
+  width: auto !important;
 }
 #query-monitor .qm .qm-true code,
 #query-monitor .qm p.qm-true,
@@ -576,14 +576,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm .qm-wrap code,
 #query-monitor .qm .qm-wrap {
-  word-wrap: break-word !important;
-  word-break: break-all !important;
   white-space: normal !important;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
 }
 #query-monitor .qm .qm-pre-wrap code {
-  word-wrap: break-word !important;
-  word-break: break-all !important;
   white-space: pre-wrap !important;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
 }
 #query-monitor .qm .qm-sticky {
   position: sticky !important;
@@ -599,8 +599,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #777 !important;
 }
 #query-monitor .qm .qm-supplemental {
-  margin-right: 0.75em !important;
   margin-left: 0.75em !important;
+  margin-right: 0.75em !important;
 }
 #query-monitor .qm td.qm-toggled-on .qm-inverse-toggled,
 #query-monitor .qm td .qm-toggled {
@@ -608,25 +608,25 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm button.qm-button,
 #query-monitor .qm .qm-toggle {
-  color: #fff !important;
-  font-weight: normal !important;
   background: #0085ba !important;
-  cursor: pointer !important;
   border: 1px solid #0073a1 !important;
   border-radius: 2px !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  font-weight: normal !important;
   text-shadow: 0 -1px 1px #0073a1, 1px 0 1px #0073a1, 0 1px 1px #0073a1, -1px 0 1px #0073a1 !important;
 }
 #query-monitor .qm .qm-toggle {
-  padding: 0 !important;
-  font-family: Menlo, Monaco, Consolas, monospace !important;
-  position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  left: auto !important;
   bottom: auto !important;
-  text-align: center !important;
-  line-height: 16px !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
   height: 18px !important;
+  left: auto !important;
+  line-height: 16px !important;
+  padding: 0 !important;
+  position: absolute !important;
+  right: 0 !important;
+  text-align: center !important;
+  top: 0 !important;
   width: 18px !important;
 }
 #query-monitor .qm button {
@@ -636,16 +636,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   padding: 4px 10px !important;
 }
 #query-monitor .qm .qm-has-inner .qm-toggle {
-  top: 5px !important;
   right: 5px !important;
+  top: 5px !important;
 }
 #query-monitor .qm button.qm-button:hover,
 #query-monitor .qm button.qm-button:focus,
 #query-monitor .qm .qm-toggle:focus,
 #query-monitor .qm .qm-toggle:hover {
-  text-decoration: none !important;
-  color: #fff !important;
   background: #0094ce !important;
+  color: #fff !important;
+  text-decoration: none !important;
 }
 #query-monitor .qm tbody tr.qm-odd td,
 #query-monitor .qm tbody tr.qm-odd th {
@@ -662,34 +662,34 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm tbody tr.qm-warn td,
 #query-monitor .qm tbody tr.qm-warn th {
   background-color: #fff0f0 !important;
-  box-shadow: inset 0 -1px #ffd6d6 !important;
   border-color: #ffd6d6 !important;
+  box-shadow: inset 0 -1px #ffd6d6 !important;
   color: #a00 !important;
 }
 #query-monitor .qm-non-tabular .qm-warn code,
 #query-monitor .qm tbody .qm-warn li,
 #query-monitor .qm tbody .qm-warn .qm-info,
 #query-monitor .qm tbody .qm-warn code {
-  color: #a00 !important;
   background-color: transparent !important;
+  color: #a00 !important;
 }
 #query-monitor .qm .qm-notice {
   background: #def !important;
   border: 1px solid #aad5ff !important;
-  padding: 10px 20px 0 !important;
   margin: 0 0 10px 0 !important;
+  padding: 10px 20px 0 !important;
 }
 #query-monitor .qm .dashicons {
   font-size: 16px !important;
-  width: 16px !important;
   height: 16px !important;
   margin-right: 0.3em !important;
   transition: none !important;
+  width: 16px !important;
 }
 #query-monitor .qm .qm-dashicons-yes {
-  color: #fff !important;
   background-color: #0a0 !important;
   border-radius: 50% !important;
+  color: #fff !important;
 }
 #query-monitor .qm tbody tr.qm-hovered th,
 #query-monitor .qm tbody tr.qm-hovered td,
@@ -704,8 +704,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm tbody tr td.qm-highlight,
 #query-monitor .qm tbody tr.qm-highlight td {
   background-color: #ffd !important;
-  box-shadow: inset 0 -1px #eec !important;
   border-color: #eec !important;
+  box-shadow: inset 0 -1px #eec !important;
   color: #222 !important;
 }
 #query-monitor .qm button.qm-filter-trigger,
@@ -714,8 +714,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm a code,
 #query-monitor .qm a {
   color: #0073aa !important;
-  text-decoration: none !important;
   cursor: pointer !important;
+  text-decoration: none !important;
 }
 #query-monitor .qm button.qm-filter-trigger:after, #query-monitor .qm button.qm-filter-trigger:focus, #query-monitor .qm button.qm-filter-trigger:hover,
 #query-monitor .qm button.qm-filter-trigger code:after,
@@ -730,22 +730,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor .qm a:after,
 #query-monitor .qm a:focus,
 #query-monitor .qm a:hover {
-  text-decoration: underline !important;
   color: #0096dd !important;
+  text-decoration: underline !important;
 }
 #query-monitor .qm a.qm-external-link:after,
 #query-monitor .qm a.qm-link:after,
 #query-monitor .qm a.qm-edit-link:after,
 #query-monitor .qm button.qm-filter-trigger:after {
-  font-family: dashicons !important;
-  text-decoration: none !important;
-  visibility: hidden !important;
   display: inline-block !important;
+  font-family: dashicons !important;
   font-size: 13px !important;
+  left: 2px !important;
   line-height: 15px !important;
   position: relative !important;
+  text-decoration: none !important;
   top: 2px !important;
-  left: 2px !important;
+  visibility: hidden !important;
 }
 #query-monitor .qm a.qm-external-link:after,
 #query-monitor .qm a.qm-link:hover:after,
@@ -771,17 +771,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor button,
 #query-monitor select {
-  margin: 0 !important;
-  height: auto !important;
-  width: auto !important;
   background: none !important;
+  height: auto !important;
+  margin: 0 !important;
+  width: auto !important;
 }
 #query-monitor .qm label {
-  cursor: pointer !important;
   color: #222 !important;
-  font-weight: normal !important;
+  cursor: pointer !important;
   font-size: 12px !important;
   font-style: normal !important;
+  font-weight: normal !important;
   margin: 0 !important;
 }
 #query-monitor .qm thead label {
@@ -798,22 +798,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   display: none !important;
 }
 #query-monitor .qm select.qm-filter {
-  display: block !important;
-  margin: 0 0 0 5px !important;
-  outline: 1px solid #aaa !important;
-  border: none !important;
-  padding: 0 !important;
-  background: #fff !important;
-  color: #222 !important;
-  height: auto !important;
-  width: auto !important;
-  float: none !important;
-  cursor: pointer !important;
   -webkit-appearance: menulist !important;
   -moz-appearance: menulist !important;
   appearance: menulist !important;
+  background: #fff !important;
+  border: none !important;
+  color: #222 !important;
+  cursor: pointer !important;
+  display: block !important;
+  float: none !important;
+  height: auto !important;
   letter-spacing: normal !important;
+  margin: 0 0 0 5px !important;
   max-width: 10em !important;
+  outline: 1px solid #aaa !important;
+  padding: 0 !important;
+  width: auto !important;
 }
 #query-monitor .qm select.qm-filter:hover {
   background: #f3f3f3 !important;
@@ -845,17 +845,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   flex-grow: 1 !important;
 }
 #query-monitor .qm .qm-sort-controls {
-  text-align: right !important;
   flex-shrink: 0 !important;
+  text-align: right !important;
 }
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow {
+  color: #ccc !important;
+  display: block !important;
   font-family: dashicons !important;
   font-size: 23px !important;
-  color: #ccc !important;
+  height: 10px !important;
   margin: 0 !important;
   width: 16px !important;
-  height: 10px !important;
-  display: block !important;
 }
 #query-monitor .qm .qm-sorted-desc .qm-sort-arrow,
 #query-monitor .qm .qm-sorted-asc .qm-sort-arrow {
@@ -866,9 +866,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm .qm-sortable-column .qm-sort-arrow::before {
   content: "\f140" !important;
-  top: 4px !important;
-  right: 0 !important;
   position: absolute !important;
+  right: 0 !important;
+  top: 4px !important;
 }
 #query-monitor .qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow::before {
   content: "\f142" !important;
@@ -880,14 +880,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor .qm-screen-reader-text,
 #query-monitor .screen-reader-text {
-  position: absolute !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  height: 1px !important;
-  width: 1px !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
   border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
 }
 
 @media screen and (max-width: 782px) {
@@ -913,9 +913,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor .qm.qm-debug-bar textarea,
 #query-monitor .qm.qm-debug-bar pre {
-  padding: 10px !important;
   border: 1px solid #ddd !important;
   margin: 4px 0 !important;
+  padding: 10px !important;
 }
 #query-monitor .qm.qm-debug-bar textarea {
   resize: vertical !important;
@@ -931,33 +931,33 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 4px 6px 15px !important;
 }
 #query-monitor .qm.qm-debug-bar h3 {
+  clear: none !important;
   float: left !important;
   /* why */
-  min-width: 150px !important;
-  padding: 5px 10px 15px !important;
-  clear: none !important;
-  text-align: center !important;
   font-size: 14px !important;
   margin: 3px 8px 15px 0 !important;
+  min-width: 150px !important;
+  padding: 5px 10px 15px !important;
+  text-align: center !important;
 }
 #query-monitor .qm.qm-debug-bar h3 small {
   font-size: 14px !important;
 }
 #query-monitor .qm.qm-debug-bar h3 span {
-  white-space: nowrap !important;
   display: block !important;
   margin-bottom: 8px !important;
+  white-space: nowrap !important;
 }
 #query-monitor .qm.qm-debug-bar h4 {
-  margin: 15px 6px 5px !important;
   font-size: 13px !important;
+  margin: 15px 6px 5px !important;
 }
 #query-monitor .qm.qm-debug-bar .qm-debug-bar-output {
   position: relative !important;
 }
 #query-monitor .qm.qm-debug-bar .qm-debug-bar-output table {
-  margin-top: 4px !important;
   margin-bottom: 4px !important;
+  margin-top: 4px !important;
 }
 #query-monitor #debug-menu-target-Debug_Bar_Console {
   min-height: 400px !important;
