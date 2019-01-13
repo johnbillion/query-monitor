@@ -22,6 +22,38 @@ class QM_Collector_Theme extends QM_Collector {
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 	}
 
+	public function get_concerned_actions() {
+		return array(
+			'template_redirect',
+		);
+	}
+
+	public function get_concerned_filters() {
+		$filters = array(
+			'stylesheet',
+			'stylesheet_directory',
+			'template',
+			'template_directory',
+			'template_include',
+		);
+
+		foreach ( self::get_query_template_names() as $template => $conditional ) {
+			// @TODO this isn't correct for post type archives
+			$filter    = str_replace( '_', '', $template );
+			$filters[] = "{$filter}_template_hierarchy";
+			$filters[] = "{$filter}_template";
+		}
+
+		return $filters;
+	}
+
+	public function get_concerned_options() {
+		return array(
+			'stylesheet',
+			'template',
+		);
+	}
+
 	public static function get_query_template_names() {
 		return array(
 			'embed'             => 'is_embed',
