@@ -159,9 +159,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
 
 		if ( isset( $cache_hit_percentage ) ) {
+			echo '<p>';
 			echo esc_html( sprintf(
 				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
 				__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
@@ -169,6 +169,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
 				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 			) );
+
 			if ( $cache_data['display_hit_rate_warning'] ) {
 				printf(
 					'<br><a href="%s" class="qm-external-link">%s</a>',
@@ -176,20 +177,35 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
 			}
-			if ( $cache_data['ext_object_cache'] ) {
-				echo '<br><span class="qm-info">';
+
+			echo '</p>';
+
+			if ( $cache_data['has_opcode_cache'] ) {
+				foreach ( $cache_data['opcode_cache_extensions'] as $opcache_name => $opcache_state ) {
+					echo '<p>';
+					echo esc_html( sprintf(
+						/* translators: %s: Name of cache driver */
+						__( 'Opcode cache in use: %s', 'query-monitor' ),
+						$opcache_name
+					) );
+					echo '</p>';
+				}
+			}
+
+			if ( $cache_data['has_object_cache'] ) {
+				echo '<p><span class="qm-info">';
 				printf(
 					'<a href="%s" class="qm-link">%s</a>',
 					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
 					esc_html__( 'External object cache in use', 'query-monitor' )
 				);
-				echo '</span>';
+				echo '</span></p>';
 			} else {
-				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				echo esc_html__( 'External object cache not in use', 'query-monitor' );
-				echo '</span>';
+				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data['extensions'] );
+				$potentials = array_filter( $cache_data['object_cache_extensions'] );
 
 				if ( ! empty( $potentials ) ) {
 					echo '<ul>';
@@ -211,7 +227,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</span>';
 		}
 
-		echo '</p>';
 		echo '</section>';
 
 		$this->after_non_tabular_output();
