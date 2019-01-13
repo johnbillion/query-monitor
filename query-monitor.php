@@ -12,7 +12,7 @@
  * Description:  The Developer Tools Panel for WordPress.
  * Version:      3.2.2
  * Plugin URI:   https://querymonitor.com/
- * Author:       John Blackbourn & contributors
+ * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
