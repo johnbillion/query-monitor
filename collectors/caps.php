@@ -37,8 +37,10 @@ class QM_Collector_Caps extends QM_Collector {
 	}
 
 	public function get_concerned_options() {
+		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
+
 		return array(
-			'wp_user_roles',
+			"{$blog_prefix}user_roles",
 		);
 	}
 

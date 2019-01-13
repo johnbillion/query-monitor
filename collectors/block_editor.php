@@ -28,6 +28,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	public function get_concerned_filters() {
 		return array(
+			'allowed_block_types',
 			'pre_render_block',
 			'render_block_data',
 			'render_block',

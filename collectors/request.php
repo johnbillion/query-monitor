@@ -55,6 +55,7 @@ class QM_Collector_Request extends QM_Collector {
 			'pre_handle_404',
 			'query_string',
 			'query_vars',
+			'redirect_canonical',
 			'request',
 		);
 	}
