@@ -429,7 +429,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
-		echo '</div>'; // #qm
+		echo '</div>'; // #query-monitor-main
 
 		echo '<script type="text/javascript">' . "\n\n";
 		?>
