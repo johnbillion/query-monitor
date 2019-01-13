@@ -411,11 +411,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin-top: 5px !important;
 	}
 
-	#qm-conditionals table,
-	#qm-overview table {
-		table-layout: fixed !important;
-	}
-
 	.qm tr {
 		border: none !important;
 	}
@@ -543,7 +538,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		float: right !important;
 	}
 
-	.qm-non-tabular .qm-item {
+	#qm-conditionals li {
 		display: inline-block !important;
 		margin: 0 20px 5px 0 !important;
 	}

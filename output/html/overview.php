@@ -54,7 +54,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
+		echo '<p>';
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 
 		if ( $data['time_limit'] > 0 ) {
@@ -85,7 +85,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
+		echo '<p>';
 
 		if ( empty( $data['memory'] ) ) {
 			esc_html_e( 'Unknown', 'query-monitor' );
@@ -127,14 +127,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( isset( $db_query_num ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
-			echo '<p class="qm-item">';
+			echo '<p>';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
 			echo '</p>';
 			echo '</section>';
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
-			echo '<p class="qm-item">';
+			echo '<p>';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
 				foreach ( $db_query_num as $type_name => $type_count ) {
