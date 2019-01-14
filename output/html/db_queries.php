@@ -292,7 +292,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		$stime = number_format_i18n( $row['ltime'], 4 );
-		$td = $this->collector->is_expensive( $row ) ? ' qm-warn' : '';
 
 		$sql = self::format_sql( $row['sql'] );
 
@@ -421,7 +420,17 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['time'] ) ) {
-			echo '<td class="qm-num qm-row-time' . esc_attr( $td ) . '" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">' . esc_html( $stime ) . "</td>\n";
+			$expensive = $this->collector->is_expensive( $row );
+			$td_class  = ( $expensive ) ? ' qm-warn' : '';
+
+			echo '<td class="qm-num qm-row-time' . esc_attr( $td_class ) . '" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">';
+
+			if ( $expensive ) {
+				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			}
+
+			echo esc_html( $stime );
+			echo "</td>\n";
 		}
 
 		echo '</tr>';

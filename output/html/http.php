@@ -156,7 +156,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( ! empty( $row['redirected_to'] ) ) {
 					$url .= sprintf(
-						'<br><span class="qm-warn">%1$s</span><br>%2$s',
+						'<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s</span><br>%2$s',
 						/* translators: An HTTP API request redirected to another URL */
 						__( 'Redirected to:', 'query-monitor' ),
 						self::format_url( $row['redirected_to'] )

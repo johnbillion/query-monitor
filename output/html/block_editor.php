@@ -203,7 +203,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
 
 				if ( isset( $block['callback']['error'] ) ) {
-					echo '<br>';
+					echo '<br><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */
 						__( 'Error: %s', 'query-monitor' ),

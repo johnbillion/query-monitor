@@ -59,7 +59,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
-				echo '<br><span class="qm-warn">';
+				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 			} else {
 				echo '<br><span class="qm-info">';
 			}
@@ -98,7 +98,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $data['memory_limit'] > 0 ) {
 				if ( $data['display_memory_usage_warning'] ) {
-					echo '<br><span class="qm-warn">';
+					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				} else {
 					echo '<br><span class="qm-info">';
 				}

@@ -125,7 +125,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				}
 
 				printf(
-					'<td colspan="2">%s</td>',
+					'<td colspan="2"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</td>',
 					esc_html( $row['message'] )
 				);
 
