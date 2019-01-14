@@ -16,9 +16,9 @@ class QM_Collector_Theme extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 999 );
-		add_filter( 'template_include', array( $this, 'filter_template_include' ), 999 );
-		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 999, 3 );
+		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 9999 );
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), 9999 );
+		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 	}
 
