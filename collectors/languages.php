@@ -17,8 +17,8 @@ class QM_Collector_Languages extends QM_Collector {
 
 		parent::__construct();
 
-		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 99, 3 );
-		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 99, 3 );
+		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999, 3 );
+		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
 
 	}
 

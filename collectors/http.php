@@ -19,14 +19,14 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		parent::__construct();
 
-		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
-		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
-		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
+		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999, 2 );
+		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 9999, 3 );
+		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 9999, 5 );
 
-		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 99 );
-		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 99, 2 );
-		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 99 );
-		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 99, 2 );
+		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 9999 );
+		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 9999, 2 );
+		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
+		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 9999, 2 );
 
 	}
 
