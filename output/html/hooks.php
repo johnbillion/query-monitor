@@ -114,7 +114,20 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$class = '';
 					}
 
-					echo '<td class="qm-num' . esc_attr( $class ) . '">' . intval( $action['priority'] ) . '</td>';
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+
+					echo esc_html( $action['priority'] );
+
+					if ( PHP_INT_MAX === $action['priority'] ) {
+						echo ' <span class="qm-info">(PHP_INT_MAX)</span>';
+					// phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
+					} elseif ( defined( 'PHP_INT_MIN' ) && PHP_INT_MIN === $action['priority'] ) {
+						echo ' <span class="qm-info">(PHP_INT_MIN)</span>';
+					} elseif ( -PHP_INT_MAX === $action['priority'] ) {
+						echo ' <span class="qm-info">(-PHP_INT_MAX)</span>';
+					}
+
+					echo '</td>';
 
 					if ( isset( $action['callback']['file'] ) ) {
 						if ( self::has_clickable_links() ) {
