@@ -104,7 +104,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['timber_files'] ) ) {
 			echo '<section>';
-			echo '<h3>' . esc_html__( 'Timber Files', 'query-monitor' ) . '</h3>';
+			echo '<h3>' . esc_html__( 'Twig Template Files', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
 			foreach ( $data['timber_files'] as $filename ) {
