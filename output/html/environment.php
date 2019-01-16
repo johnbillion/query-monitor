@@ -194,9 +194,9 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 				foreach ( $db['variables'] as $setting ) {
 
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$key = $setting->Variable_name;
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$val = $setting->Value;
 
 					$append = '';
