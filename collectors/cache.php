@@ -79,7 +79,6 @@ class QM_Collector_Cache extends QM_Collector {
 				'Memcache'     => 'Memcache',
 				'Memcached'    => 'Memcached',
 				'Redis'        => 'Redis',
-				'Zend OPcache' => 'Zend OPcache',
 			) );
 		} else {
 			$this->data['extensions'] = array();
