@@ -22,16 +22,16 @@
 			  "name": "danieltj27/dark-mode",
 			  "version": "3.2",
 			  "source": {
-				"type" : "git",
-				"url" : "git://github.com/danieltj27/Dark-Mode.git",
-				"reference" : "3.2"
-			  },
-			  "dist": {
-				"url": "https://github.com/danieltj27/Dark-Mode/archive/31e1407ef72af69bcd5d94cc3c502163547d4898.zip",
-				"type": "zip"
-			  }
+					"type" : "git",
+					"url" : "git://github.com/danieltj27/Dark-Mode.git",
+					"reference" : "3.2"
+				},
+				"dist": {
+					"url": "https://github.com/danieltj27/Dark-Mode/archive/31e1407ef72af69bcd5d94cc3c502163547d4898.zip",
+					"type": "zip"
+				}
 			}
-		  }
+		}
 	],
 	"require": {
 		"php": ">=5.3",
