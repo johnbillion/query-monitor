@@ -516,6 +516,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		padding: 0 !important;
 	}
 
+	.qm caption h2 {
+		font-size: 14px !important;
+		margin: 20px !important;
+	}
+
+	.qm-concerns table {
+		margin-bottom: 20px !important;
+		border-top: 1px solid $qm-cell-border !important;
+	}
+
 	.qm-non-tabular h3 {
 		font-size: 14px !important;
 		margin: 0 0 15px 0 !important;

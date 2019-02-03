@@ -104,20 +104,22 @@ abstract class QM_Output_Html extends QM_Output {
 				__( 'Filter', 'query-monitor' ),
 			),
 		);
+
+		printf(
+			'<div class="qm qm-concerns" id="%1$s" role="group" aria-label="%2$s" tabindex="-1">',
+			esc_attr( $this->current_id . '-concerned_hooks' ),
+			esc_html__( 'Related Hooks with Actions or Filters Attached', 'query-monitor' )
+		);
+
 		foreach ( $concerns as $key => $labels ) {
 			if ( empty( $this->collector->$key ) ) {
 				continue;
 			}
 
-			printf(
-				'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
-				esc_attr( $this->current_id . '-' . $key )
-			);
-
 			echo '<table>';
 
 			printf(
-				'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>',
+				'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 				esc_attr( $this->current_id . '-' . $key ),
 				esc_html( $labels[0] )
 			);
@@ -137,8 +139,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 			echo '</table>';
 
-			echo '</div>';
 		}
+
+		echo '</div>';
 	}
 
 	protected function before_debug_bar_output( $id = null, $name = null ) {

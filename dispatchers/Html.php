@@ -242,17 +242,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		foreach ( $this->outputters as $output_id => $output ) {
 			$collector = $output->get_collector();
 
-			if ( ! empty( $collector->concerned_filters ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
-				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_filters' ] = array(
-					'href'  => esc_attr( '#' . $collector->id() . '-concerned_filters' ),
-					'title' => '└ ' . __( 'Filters in Use', 'query-monitor' ),
-				);
-			}
-
-			if ( ! empty( $collector->concerned_actions ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
-				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_actions' ] = array(
-					'href'  => esc_attr( '#' . $collector->id() . '-concerned_actions' ),
-					'title' => '└ ' . __( 'Actions in Use', 'query-monitor' ),
+			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
+				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
+					'href'  => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
+					'title' => '└ ' . __( 'Hooks in Use', 'query-monitor' ),
 				);
 			}
 		}
