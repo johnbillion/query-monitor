@@ -5,13 +5,15 @@
  * @package query-monitor
  */
 
-class QM_Output_Html_Assets extends QM_Output_Html {
+abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus',      array( $this, 'admin_menu' ), 70 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
+
+	abstract public function get_type_labels();
 
 	public function output() {
 
@@ -29,33 +31,16 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			'footer'  => __( 'Footer', 'query-monitor' ),
 		);
 
-		$type_labels = array(
-			'scripts' => array(
-				/* translators: %s: Total number of enqueued scripts */
-				'total'  => _x( 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
-				'plural' => __( 'Scripts', 'query-monitor' ),
-			),
-			'styles'  => array(
-				/* translators: %s: Total number of enqueued styles */
-				'total'  => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
-				'plural' => __( 'Styles', 'query-monitor' ),
-			),
-		);
+		$type_label = $this->get_type_labels();
+		$type       = $this->collector->get_dependency_type();
 
-		foreach ( $type_labels as $type => $type_label ) {
 			$this->type = $type;
 
 			$hosts = array(
 				__( 'Other', 'query-monitor' ),
 			);
 
-			$panel_id = sprintf(
-				'%s-%s',
-				$this->collector->id(),
-				$type
-			);
-
-			$this->before_tabular_output( $panel_id, $type_label['plural'] );
+			$this->before_tabular_output();
 
 			echo '<thead>';
 			echo '<tr>';
@@ -71,10 +56,10 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( $type . '-dependencies', $data['dependencies'][ $type ], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( $type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( $type . '-dependents', $data['dependents'][ $type ], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( $type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -85,11 +70,11 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			$total = 0;
 
 			foreach ( $position_labels as $position => $label ) {
-				if ( ! empty( $data['assets'][ $type ][ $position ] ) ) {
-					foreach ( $data['assets'][ $type ][ $position ] as $handle => $asset ) {
+				if ( ! empty( $data['assets'][ $position ] ) ) {
+					foreach ( $data['assets'][ $position ] as $handle => $asset ) {
 						$this->dependency_row( $handle, $asset, $label );
 					}
-					$total += count( $data['assets'][ $type ][ $position ] );
+					$total += count( $data['assets'][ $position ] );
 				}
 			}
 
@@ -109,8 +94,6 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 			echo '</tfoot>';
 
 			$this->after_tabular_output();
-		}
-
 	}
 
 	protected function dependency_row( $handle, array $asset, $label ) {
@@ -191,42 +174,29 @@ class QM_Output_Html_Assets extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 
 		$data   = $this->collector->get_data();
-		$labels = array(
-			'scripts' => __( 'Scripts', 'query-monitor' ),
-			'styles'  => __( 'Styles', 'query-monitor' ),
-		);
 
 		if ( empty( $data['assets'] ) ) {
 			return $menu;
 		}
 
-		foreach ( $labels as $type => $label ) {
+		$type  = $this->collector->get_dependency_type();
+		$label = $this->collector->name();
+
 			$args = array(
 				'title' => esc_html( $label ),
 				'id'    => esc_attr( "query-monitor-{$this->collector->id}-{$type}" ),
-				'href'  => esc_attr( '#' . $this->collector->id() . '-' . $type ),
+				'href'  => esc_attr( '#' . $this->collector->id() ),
 			);
 
-			if ( ! empty( $data['broken'][ $type ] ) || ! empty( $data['missing'][ $type ] ) ) {
+			if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
 				$args['meta']['classname'] = 'qm-error';
 			}
 
-			$id          = $this->collector->id() . '-' . $type;
+			$id          = $this->collector->id();
 			$menu[ $id ] = $this->menu( $args );
-		}
 
 		return $menu;
 
 	}
 
 }
-
-function register_qm_output_html_assets( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'assets' );
-	if ( $collector ) {
-		$output['assets'] = new QM_Output_Html_Assets( $collector );
-	}
-	return $output;
-}
-
-add_filter( 'qm/outputter/html', 'register_qm_output_html_assets', 80, 2 );

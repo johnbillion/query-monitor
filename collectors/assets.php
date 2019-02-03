@@ -5,9 +5,7 @@
  * @package query-monitor
  */
 
-class QM_Collector_Assets extends QM_Collector {
-
-	public $id = 'assets';
+abstract class QM_Collector_Assets extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
@@ -19,42 +17,22 @@ class QM_Collector_Assets extends QM_Collector {
 		add_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
 	}
 
-	public function get_concerned_actions() {
-		return array(
-			'admin_print_footer_scripts',
-			'wp_print_footer_scripts',
-		);
-	}
-
-	public function get_concerned_filters() {
-		return array(
-			'print_scripts_array',
-			'script_loader_src',
-			'script_loader_tag',
-
-			'print_styles_array',
-			'style_loader_src',
-			'style_loader_tag',
-		);
-	}
+	abstract public function get_dependency_type();
 
 	public function action_head() {
-		global $wp_scripts, $wp_styles;
+		$type = $this->get_dependency_type();
 
-		$this->data['header']['styles']  = $wp_styles->done;
-		$this->data['header']['scripts'] = $wp_scripts->done;
-
+		$this->data['header'] = $GLOBALS[ "wp_{$type}" ]->done;
 	}
 
 	public function action_print_footer_scripts() {
-		global $wp_scripts, $wp_styles;
-
 		if ( empty( $this->data['header'] ) ) {
 			return;
 		}
 
-		$this->data['footer']['scripts'] = array_diff( $wp_scripts->done, $this->data['header']['scripts'] );
-		$this->data['footer']['styles']  = array_diff( $wp_styles->done, $this->data['header']['styles'] );
+		$type = $this->get_dependency_type();
+
+		$this->data['footer'] = array_diff( $GLOBALS[ "wp_{$type}" ]->done, $this->data['header'] );
 
 	}
 
@@ -74,10 +52,11 @@ class QM_Collector_Assets extends QM_Collector {
 			'footer',
 		);
 
-		foreach ( array( 'scripts', 'styles' ) as $type ) {
+		$type = $this->get_dependency_type();
+
 			foreach ( array( 'header', 'footer' ) as $position ) {
-				if ( empty( $this->data[ $position ][ $type ] ) ) {
-					$this->data[ $position ][ $type ] = array();
+				if ( empty( $this->data[ $position ] ) ) {
+					$this->data[ $position ] = array();
 				}
 			}
 			$raw     = $GLOBALS[ "wp_{$type}" ];
@@ -97,14 +76,14 @@ class QM_Collector_Assets extends QM_Collector {
 				}
 
 				if ( ! empty( $broken ) ) {
-					$this->data['broken'][ $type ] = array_unique( $broken );
+					$this->data['broken'] = array_unique( $broken );
 				}
 			}
 
 			// A missing asset is one which has been enqueued with dependencies that don't exist
 			if ( ! empty( $missing ) ) {
-				$this->data['missing'][ $type ] = array_unique( $missing );
-				foreach ( $this->data['missing'][ $type ] as $handle ) {
+				$this->data['missing'] = array_unique( $missing );
+				foreach ( $this->data['missing'] as $handle ) {
 					$raw->add( $handle, false );
 					$key = array_search( $handle, $raw->done, true );
 					if ( false !== $key ) {
@@ -117,11 +96,11 @@ class QM_Collector_Assets extends QM_Collector {
 			$all_dependents   = array();
 
 			foreach ( $positions as $position ) {
-				if ( empty( $this->data[ $position ][ $type ] ) ) {
+				if ( empty( $this->data[ $position ] ) ) {
 					continue;
 				}
 
-				foreach ( $this->data[ $position ][ $type ] as $handle ) {
+				foreach ( $this->data[ $position ] as $handle ) {
 					$dependency = $raw->query( $handle );
 
 					if ( ! $dependency ) {
@@ -157,7 +136,7 @@ class QM_Collector_Assets extends QM_Collector {
 						}
 					}
 
-					$this->data['assets'][ $type ][ $position ][ $handle ] = array(
+					$this->data['assets'][ $position ][ $handle ] = array(
 						'host'         => $host,
 						'source'       => $source,
 						'local'        => $local,
@@ -170,16 +149,15 @@ class QM_Collector_Assets extends QM_Collector {
 				}
 			}
 
-			unset( $this->data[ $position ][ $type ] );
+			unset( $this->data[ $position ] );
 
 			$all_dependencies = array_unique( $all_dependencies );
 			sort( $all_dependencies );
-			$this->data['dependencies'][ $type ] = $all_dependencies;
+			$this->data['dependencies'] = $all_dependencies;
 
 			$all_dependents = array_unique( $all_dependents );
 			sort( $all_dependents );
-			$this->data['dependents'][ $type ] = $all_dependents;
-		}
+			$this->data['dependents'] = $all_dependents;
 	}
 
 	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
@@ -256,15 +234,4 @@ class QM_Collector_Assets extends QM_Collector {
 		return array( $host, $source, $local );
 	}
 
-	public function name() {
-		return __( 'Scripts & Styles', 'query-monitor' );
-	}
-
 }
-
-function register_qm_collector_assets( array $collectors, QueryMonitor $qm ) {
-	$collectors['assets'] = new QM_Collector_Assets();
-	return $collectors;
-}
-
-add_filter( 'qm/collectors', 'register_qm_collector_assets', 10, 2 );
