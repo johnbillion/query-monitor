@@ -9,6 +9,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected static $file_link_format = null;
 
+	protected $current_id   = null;
+	protected $current_name = null;
+
 	public function admin_menu( array $menu ) {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
@@ -34,6 +37,9 @@ abstract class QM_Output_Html extends QM_Output {
 			$name = $this->collector->name();
 		}
 
+		$this->current_id   = $id;
+		$this->current_name = $name;
+
 		printf(
 			'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
@@ -50,10 +56,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function after_tabular_output() {
 		echo '</table>';
+		echo '</div>';
 
 		$this->output_concerns();
-
-		echo '</div>';
 	}
 
 	protected function before_non_tabular_output( $id = null, $name = null ) {
@@ -63,6 +68,9 @@ abstract class QM_Output_Html extends QM_Output {
 		if ( null === $name ) {
 			$name = $this->collector->name();
 		}
+
+		$this->current_id   = $id;
+		$this->current_name = $name;
 
 		printf(
 			'<div class="qm qm-non-tabular" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
@@ -80,10 +88,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function after_non_tabular_output() {
 		echo '</div>';
+		echo '</div>';
 
 		$this->output_concerns();
-
-		echo '</div>';
 	}
 
 	protected function output_concerns() {
@@ -102,8 +109,18 @@ abstract class QM_Output_Html extends QM_Output {
 				continue;
 			}
 
-			echo '<h2>' . esc_html( $labels[0] ) . '</h2>';
+			printf(
+				'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+				esc_attr( $this->current_id . '-' . $key )
+			);
+
 			echo '<table>';
+
+			printf(
+				'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>',
+				esc_attr( $this->current_id . '-' . $key ),
+				esc_html( $labels[0] )
+			);
 
 			echo '<thead>';
 			echo '<tr>';
@@ -119,6 +136,8 @@ abstract class QM_Output_Html extends QM_Output {
 			echo '</tbody>';
 
 			echo '</table>';
+
+			echo '</div>';
 		}
 	}
 

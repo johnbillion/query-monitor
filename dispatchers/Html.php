@@ -239,6 +239,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
+		foreach ( $this->outputters as $output_id => $output ) {
+			$collector = $output->get_collector();
+
+			if ( ! empty( $collector->concerned_filters ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
+				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_filters' ] = array(
+					'href'  => esc_attr( '#' . $collector->id() . '-concerned_filters' ),
+					'title' => '└ ' . __( 'Filters in Use', 'query-monitor' ),
+				);
+			}
+
+			if ( ! empty( $collector->concerned_actions ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
+				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_actions' ] = array(
+					'href'  => esc_attr( '#' . $collector->id() . '-concerned_actions' ),
+					'title' => '└ ' . __( 'Actions in Use', 'query-monitor' ),
+				);
+			}
+		}
+
 		$class = array(
 			'qm-no-js',
 		);
@@ -279,6 +297,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				esc_attr( $menu['href'] ),
 				esc_html( $menu['title'] )
 			);
+			if ( ! empty( $menu['children'] ) ) {
+				foreach ( $menu['children'] as $child ) {
+					printf(
+						'<option value="%1$s">%2$s</option>',
+						esc_attr( $child['href'] ),
+						esc_html( $child['title'] )
+					);
+				}
+			}
 		}
 		echo '</select>';
 
@@ -298,12 +325,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			esc_html__( 'Overview', 'query-monitor' )
 		);
 
-		foreach ( $this->panel_menu as $menu ) {
-			printf(
-				'<li><button data-qm-href="%1$s">%2$s</button></li>',
-				esc_attr( $menu['href'] ),
-				esc_html( $menu['title'] )
-			);
+		foreach ( $this->panel_menu as $id => $menu ) {
+			$this->do_panel_menu_item( $id, $menu );
 		}
 
 		echo '</ul>';
@@ -311,6 +334,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div id="qm-panels">';
 
+	}
+
+	protected function do_panel_menu_item( $id, array $menu ) {
+		printf(
+			'<li><button data-qm-href="%1$s">%2$s</button>',
+			esc_attr( $menu['href'] ),
+			esc_html( $menu['title'] )
+		);
+
+		if ( ! empty( $menu['children'] ) ) {
+			echo '<ul>';
+			foreach ( $menu['children'] as $child_id => $child ) {
+				$this->do_panel_menu_item( $child_id, $child );
+			}
+			echo '</ul>';
+		}
+
+		echo '</li>';
 	}
 
 	protected function after_output() {
