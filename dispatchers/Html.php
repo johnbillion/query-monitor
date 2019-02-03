@@ -16,7 +16,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function __construct( QM_Plugin $qm ) {
 
-		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 9999 );
+		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
 		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
 		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
