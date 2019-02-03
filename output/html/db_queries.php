@@ -12,6 +12,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 20 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 20 );
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 20 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
@@ -482,6 +483,28 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$errors    = $this->collector->get_errors();
 		$expensive = $this->collector->get_expensive();
 
+		if ( isset( $data['dbs'] ) && count( $data['dbs'] ) > 1 ) {
+			foreach ( $data['dbs'] as $name => $db ) {
+				$name_attr   = sanitize_title_with_dashes( $name );
+				$id          = $this->collector->id() . '-' . $name_attr;
+				$menu[ $id ] = $this->menu( array(
+					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
+					'title' => esc_html( sprintf(
+						/* translators: %s: Name of database controller */
+						__( 'Queries: %s', 'query-monitor' ),
+						$name
+					) ),
+					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
+				) );
+			}
+		} else {
+			$id          = $this->collector->id() . '-$wpdb';
+			$menu[ $id ] = $this->menu( array(
+				'title' => esc_html__( 'Queries', 'query-monitor' ),
+				'href'  => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
+			) );
+		}
+
 		if ( $errors ) {
 			$id          = $this->collector->id() . '-errors';
 			$menu[ $id ] = $this->menu( array(
@@ -507,30 +530,22 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			) );
 		}
 
-		if ( isset( $data['dbs'] ) && count( $data['dbs'] ) > 1 ) {
-			foreach ( $data['dbs'] as $name => $db ) {
-				$name_attr   = sanitize_title_with_dashes( $name );
-				$id          = $this->collector->id() . '-' . $name_attr;
-				$menu[ $id ] = $this->menu( array(
-					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
-					'title' => esc_html( sprintf(
-						/* translators: %s: Name of database controller */
-						__( 'Queries: %s', 'query-monitor' ),
-						$name
-					) ),
-					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
-				) );
+		return $menu;
+
+	}
+
+	public function panel_menu( array $menu ) {
+		foreach ( array( 'errors', 'expensive' ) as $sub ) {
+			$id = $this->collector->id() . '-' . $sub;
+			if ( isset( $menu[ $id ] ) ) {
+				$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+
+				$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+				unset( $menu[ $id ] );
 			}
-		} else {
-			$id          = $this->collector->id() . '-$wpdb';
-			$menu[ $id ] = $this->menu( array(
-				'title' => esc_html__( 'Queries', 'query-monitor' ),
-				'href'  => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
-			) );
 		}
 
 		return $menu;
-
 	}
 
 }

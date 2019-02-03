@@ -9,7 +9,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 30 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 30 );
 	}
 
 	public function output() {
@@ -92,14 +92,14 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		}
 	}
 
-	public function admin_menu( array $menu ) {
+	public function panel_menu( array $menu ) {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['times'] ) ) {
-				$menu[ $this->collector->id() ] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
+				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+					'title' => '└ ' . esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );
 			}
 		}

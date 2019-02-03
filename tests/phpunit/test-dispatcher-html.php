@@ -75,7 +75,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'cache'         => false,
 			'caps'          => true,
 			'conditionals'  => false,
-			'db_callers'    => true,
+			'db_callers'    => false,
 			'db_dupes'      => true,
 			'db_queries'    => true,
 			'debug_bar'     => false,

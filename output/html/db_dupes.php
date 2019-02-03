@@ -10,6 +10,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 25 );
 	}
 
 	public function output() {
@@ -121,6 +122,18 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		}
 		return $menu;
 
+	}
+
+	public function panel_menu( array $menu ) {
+		$id = $this->collector->id();
+		if ( isset( $menu[ $id ] ) ) {
+			$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+
+			$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+			unset( $menu[ $id ] );
+		}
+
+		return $menu;
 	}
 
 }
