@@ -105,8 +105,30 @@ abstract class QM_Output_Html extends QM_Output {
 			),
 		);
 
+		if ( empty( $this->collector->concerned_actions ) && empty( $this->collector->concerned_filters ) ) {
+			return;
+		}
+
 		printf(
-			'<div class="qm qm-concerns" id="%1$s" role="group" aria-label="%2$s" tabindex="-1">',
+			'<div class="qm qm-concerns" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
+			esc_attr( $this->current_id . '-concerned_hooks' )
+		);
+
+		echo '<table>';
+
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+
+		echo '<tbody>';
+
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 			esc_attr( $this->current_id . '-concerned_hooks' ),
 			esc_html__( 'Related Hooks with Actions or Filters Attached', 'query-monitor' )
 		);
@@ -116,30 +138,11 @@ abstract class QM_Output_Html extends QM_Output {
 				continue;
 			}
 
-			echo '<table>';
-
-			printf(
-				'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
-				esc_attr( $this->current_id . '-' . $key ),
-				esc_html( $labels[0] )
-			);
-
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html( $labels[1] ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
-
-			echo '<tbody>';
 			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key );
-			echo '</tbody>';
-
-			echo '</table>';
-
 		}
+
+		echo '</tbody>';
+		echo '</table>';
 
 		echo '</div>';
 	}
