@@ -54,110 +54,110 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		$type = $this->get_dependency_type();
 
-			foreach ( array( 'header', 'footer' ) as $position ) {
-				if ( empty( $this->data[ $position ] ) ) {
-					$this->data[ $position ] = array();
+		foreach ( array( 'header', 'footer' ) as $position ) {
+			if ( empty( $this->data[ $position ] ) ) {
+				$this->data[ $position ] = array();
+			}
+		}
+		$raw     = $GLOBALS[ "wp_{$type}" ];
+		$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
+		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
+
+		// A broken asset is one which has been deregistered without also being dequeued
+		if ( ! empty( $broken ) ) {
+			foreach ( $broken as $key => $handle ) {
+				$item = $raw->query( $handle );
+				if ( $item ) {
+					$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
+				} else {
+					unset( $broken[ $key ] );
+					$missing[] = $handle;
 				}
 			}
-			$raw     = $GLOBALS[ "wp_{$type}" ];
-			$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
-			$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 
-			// A broken asset is one which has been deregistered without also being dequeued
 			if ( ! empty( $broken ) ) {
-				foreach ( $broken as $key => $handle ) {
-					$item = $raw->query( $handle );
-					if ( $item ) {
-						$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
-					} else {
-						unset( $broken[ $key ] );
-						$missing[] = $handle;
-					}
-				}
+				$this->data['broken'] = array_unique( $broken );
+			}
+		}
 
-				if ( ! empty( $broken ) ) {
-					$this->data['broken'] = array_unique( $broken );
+		// A missing asset is one which has been enqueued with dependencies that don't exist
+		if ( ! empty( $missing ) ) {
+			$this->data['missing'] = array_unique( $missing );
+			foreach ( $this->data['missing'] as $handle ) {
+				$raw->add( $handle, false );
+				$key = array_search( $handle, $raw->done, true );
+				if ( false !== $key ) {
+					unset( $raw->done[ $key ] );
 				}
 			}
+		}
 
-			// A missing asset is one which has been enqueued with dependencies that don't exist
-			if ( ! empty( $missing ) ) {
-				$this->data['missing'] = array_unique( $missing );
-				foreach ( $this->data['missing'] as $handle ) {
-					$raw->add( $handle, false );
-					$key = array_search( $handle, $raw->done, true );
-					if ( false !== $key ) {
-						unset( $raw->done[ $key ] );
-					}
-				}
+		$all_dependencies = array();
+		$all_dependents   = array();
+
+		foreach ( $positions as $position ) {
+			if ( empty( $this->data[ $position ] ) ) {
+				continue;
 			}
 
-			$all_dependencies = array();
-			$all_dependents   = array();
+			foreach ( $this->data[ $position ] as $handle ) {
+				$dependency = $raw->query( $handle );
 
-			foreach ( $positions as $position ) {
-				if ( empty( $this->data[ $position ] ) ) {
+				if ( ! $dependency ) {
 					continue;
 				}
 
-				foreach ( $this->data[ $position ] as $handle ) {
-					$dependency = $raw->query( $handle );
+				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
+				$dependents       = $this->get_dependents( $dependency, $raw );
+				$all_dependents   = array_merge( $all_dependents, $dependents );
 
-					if ( ! $dependency ) {
-						continue;
-					}
+				list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw, $type );
 
-					$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
-					$dependents       = $this->get_dependents( $dependency, $raw );
-					$all_dependents   = array_merge( $all_dependents, $dependents );
-
-					list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw, $type );
-
-					if ( empty( $dependency->ver ) ) {
-						$ver = '';
-					} else {
-						$ver = $dependency->ver;
-					}
-
-					$warning = ! in_array( $handle, $raw->done, true );
-
-					if ( is_wp_error( $source ) ) {
-						$display = $source->get_error_message();
-					} else {
-						$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
-					}
-
-					$dependencies = $dependency->deps;
-
-					foreach ( $dependencies as & $dep ) {
-						if ( ! $raw->query( $dep ) ) {
-							/* translators: %s: Script or style dependency name */
-							$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
-						}
-					}
-
-					$this->data['assets'][ $position ][ $handle ] = array(
-						'host'         => $host,
-						'source'       => $source,
-						'local'        => $local,
-						'ver'          => $ver,
-						'warning'      => $warning,
-						'display'      => $display,
-						'dependents'   => $dependents,
-						'dependencies' => $dependencies,
-					);
+				if ( empty( $dependency->ver ) ) {
+					$ver = '';
+				} else {
+					$ver = $dependency->ver;
 				}
+
+				$warning = ! in_array( $handle, $raw->done, true );
+
+				if ( is_wp_error( $source ) ) {
+					$display = $source->get_error_message();
+				} else {
+					$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
+				}
+
+				$dependencies = $dependency->deps;
+
+				foreach ( $dependencies as & $dep ) {
+					if ( ! $raw->query( $dep ) ) {
+						/* translators: %s: Script or style dependency name */
+						$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
+					}
+				}
+
+				$this->data['assets'][ $position ][ $handle ] = array(
+					'host'         => $host,
+					'source'       => $source,
+					'local'        => $local,
+					'ver'          => $ver,
+					'warning'      => $warning,
+					'display'      => $display,
+					'dependents'   => $dependents,
+					'dependencies' => $dependencies,
+				);
 			}
+		}
 
-			unset( $this->data[ $position ] );
+		unset( $this->data[ $position ] );
 
-			$all_dependencies = array_unique( $all_dependencies );
-			sort( $all_dependencies );
-			$this->data['dependencies'] = $all_dependencies;
+		$all_dependencies = array_unique( $all_dependencies );
+		sort( $all_dependencies );
+		$this->data['dependencies'] = $all_dependencies;
 
-			$all_dependents = array_unique( $all_dependents );
-			sort( $all_dependents );
-			$this->data['dependents'] = $all_dependents;
+		$all_dependents = array_unique( $all_dependents );
+		sort( $all_dependents );
+		$this->data['dependents'] = $all_dependents;
 	}
 
 	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
