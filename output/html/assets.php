@@ -184,7 +184,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$args = array(
 			'title' => esc_html( $label ),
-			'id'    => esc_attr( "query-monitor-{$this->collector->id}-{$type}" ),
+			'id'    => esc_attr( "query-monitor-{$this->collector->id}" ),
 			'href'  => esc_attr( '#' . $this->collector->id() ),
 		);
 
