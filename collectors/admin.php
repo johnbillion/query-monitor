@@ -14,15 +14,26 @@ class QM_Collector_Admin extends QM_Collector {
 	}
 
 	public function get_concerned_actions() {
-		// @TODO list screen column actions
-		return array(
+		$actions = array(
 			'current_screen',
 		);
+
+		if ( ! empty( $this->data['list_table'] ) ) {
+			$actions[] = $this->data['list_table']['column_action'];
+		}
+
+		return $actions;
 	}
 
 	public function get_concerned_filters() {
-		// @TODO list screen column filters
-		return array();
+		$filters = array();
+
+		if ( ! empty( $this->data['list_table'] ) ) {
+			$filters[] = $this->data['list_table']['columns_filter'];
+			$filters[] = $this->data['list_table']['sortables_filter'];
+		}
+
+		return $filters;
 	}
 
 	public function process() {
