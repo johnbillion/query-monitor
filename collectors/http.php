@@ -12,7 +12,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	private $info      = null;
 
 	public function name() {
-		return __( 'HTTP API Requests', 'query-monitor' );
+		return __( 'HTTP API Calls', 'query-monitor' );
 	}
 
 	public function __construct() {
