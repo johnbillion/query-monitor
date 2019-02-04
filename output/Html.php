@@ -116,6 +116,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 		echo '<table>';
 
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
+			esc_attr( $this->current_id . '-concerned_hooks' ),
+			esc_html__( 'Related Hooks with Actions or Filters Attached', 'query-monitor' )
+		);
+
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
@@ -126,12 +132,6 @@ abstract class QM_Output_Html extends QM_Output {
 		echo '</thead>';
 
 		echo '<tbody>';
-
-		printf(
-			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
-			esc_attr( $this->current_id . '-concerned_hooks' ),
-			esc_html__( 'Related Hooks with Actions or Filters Attached', 'query-monitor' )
-		);
 
 		foreach ( $concerns as $key => $labels ) {
 			if ( empty( $this->collector->$key ) ) {
