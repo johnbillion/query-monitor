@@ -333,6 +333,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main #qm-panel-menu li button:focus {
   text-decoration: underline !important;
 }
+#query-monitor-main #qm-panel-menu li.qm-current-menu button {
+  background: #def !important;
+  color: #222 !important;
+}
 #query-monitor-main #qm-panel-menu li button.qm-selected-menu {
   background: #0073aa !important;
   color: #fff !important;

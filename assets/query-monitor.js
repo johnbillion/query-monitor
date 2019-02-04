@@ -85,12 +85,14 @@ if ( window.jQuery ) {
 			}
 
 			$('#qm-panel-menu').find('button').removeClass('qm-selected-menu');
+			$('#qm-panel-menu').find('li').removeClass('qm-current-menu');
 			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').addClass('qm-selected-menu');
 
 			if ( selected_menu.length ) {
 				var selected_menu_pos = selected_menu.position();
 				var menu_height       = $('#qm-panel-menu').height();
 				var menu_scroll       = $('#qm-panel-menu').scrollTop();
+				selected_menu.closest('#qm-panel-menu > ul > li').addClass('qm-current-menu');
 
 				if ( ( selected_menu_pos.top > ( menu_height + menu_scroll ) ) || ( selected_menu_pos.top < menu_scroll ) ) {
 					$('#qm-panel-menu').scrollTop( selected_menu_pos.top - ( menu_height / 2 ) );
