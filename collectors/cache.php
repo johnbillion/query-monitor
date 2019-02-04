@@ -79,16 +79,21 @@ class QM_Collector_Cache extends QM_Collector {
 				'Memcached'    => 'Memcached',
 				'Redis'        => 'Redis',
 			) );
-			$this->data['opcode_cache_extensions'] = array_filter( array_map( 'extension_loaded', array(
+			$this->data['opcode_cache_extensions'] = array_map( 'extension_loaded', array(
 				'APC'          => 'APC',
 				'Zend OPcache' => 'Zend OPcache',
-			) ) );
+			) );
 		} else {
 			$this->data['object_cache_extensions'] = array();
 			$this->data['opcode_cache_extensions'] = array();
 		}
 
-		$this->data['has_opcode_cache'] = ! empty( $this->data['opcode_cache_extensions'] );
+		$this->data['has_opcode_cache'] = false;
+
+		if ( array_filter( $this->data['opcode_cache_extensions'] ) && function_exists( 'opcache_get_status' ) ) {
+			$status = opcache_get_status();
+			$this->data['has_opcode_cache'] = $status && ! empty( $status['opcache_enabled'] );
+		}
 	}
 
 }

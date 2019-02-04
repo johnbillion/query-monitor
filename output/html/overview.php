@@ -180,8 +180,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			echo '</p>';
 
+			$installed_opcode_caches = array_filter( $cache_data['opcode_cache_extensions'] );
+
 			if ( $cache_data['has_opcode_cache'] ) {
-				foreach ( $cache_data['opcode_cache_extensions'] as $opcache_name => $opcache_state ) {
+				foreach ( $installed_opcode_caches as $opcache_name => $opcache_state ) {
 					echo '<p>';
 					echo esc_html( sprintf(
 						/* translators: %s: Name of cache driver */
@@ -190,6 +192,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					) );
 					echo '</p>';
 				}
+			} elseif ( ! empty( $installed_opcode_caches ) ) {
+				echo '<ul>';
+				foreach ( $installed_opcode_caches as $name => $value ) {
+					echo '<li><span class="qm-warn">';
+					echo esc_html( sprintf(
+						/* translators: %s: PHP opcode cache extension name */
+						__( 'The %s opcode cache is installed but not enabled', 'query-monitor' ),
+						$name
+					) );
+					echo '</span></li>';
+				}
+				echo '</ul>';
 			}
 
 			if ( $cache_data['has_object_cache'] ) {
