@@ -29,7 +29,9 @@ class QM_Collector_Request extends QM_Collector {
 	}
 
 	public function get_concerned_filters() {
-		return array(
+		global $wp_rewrite;
+
+		$filters = array(
 			# Rewrite rules
 			'author_rewrite_rules',
 			'category_rewrite_rules',
@@ -41,8 +43,6 @@ class QM_Collector_Request extends QM_Collector {
 			'root_rewrite_rules',
 			'search_rewrite_rules',
 			'tag_rewrite_rules',
-			// @TODO rewrites for CPTs and taxos?
-			// @TODO foreach ( $this->extra_permastructs as $permastructname => $struct ) { "{$permastructname}_rewrite_rules"
 
 			# More rewrite stuff
 			'iis7_url_rewrite_rules',
@@ -58,6 +58,15 @@ class QM_Collector_Request extends QM_Collector {
 			'redirect_canonical',
 			'request',
 		);
+
+		foreach ( $wp_rewrite->extra_permastructs as $permastructname => $struct ) {
+			$filters[] = sprintf(
+				'%s_rewrite_rules',
+				$permastructname
+			);
+		}
+
+		return $filters;
 	}
 
 	public function get_concerned_options() {
