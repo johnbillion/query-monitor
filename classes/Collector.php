@@ -18,6 +18,7 @@ abstract class QM_Collector {
 	public $concerned_actions   = array();
 	public $concerned_filters   = array();
 	public $concerned_constants = array();
+	public $tracked_hooks       = array();
 
 	public function __construct() {}
 
@@ -97,16 +98,20 @@ abstract class QM_Collector {
 	final public function process_concerns() {
 		global $wp_filter;
 
+		$tracked = array();
+
 		foreach ( $this->get_concerned_actions() as $action ) {
 			if ( has_action( $action ) ) {
 				$this->concerned_actions[ $action ] = QM_Collector_Hooks::process_action( $action, $wp_filter, true, true );
 			}
+			$tracked[] = $action;
 		}
 
 		foreach ( $this->get_concerned_filters() as $filter ) {
 			if ( has_filter( $filter ) ) {
 				$this->concerned_filters[ $filter ] = QM_Collector_Hooks::process_action( $filter, $wp_filter, true, true );
 			}
+			$tracked[] = $filter;
 		}
 
 		$option_filters = array(
@@ -128,6 +133,7 @@ abstract class QM_Collector {
 				if ( has_filter( $filter ) ) {
 					$this->concerned_filters[ $filter ] = QM_Collector_Hooks::process_action( $filter, $wp_filter, true, true );
 				}
+				$tracked[] = $filter;
 			}
 		}
 
@@ -139,6 +145,10 @@ abstract class QM_Collector {
 				$this->concerned_constants[ $constant ] = constant( $constant );
 			}
 		}
+
+		sort( $tracked );
+
+		$this->tracked_hooks = $tracked;
 	}
 
 	public function filter_concerns( $concerns ) {
