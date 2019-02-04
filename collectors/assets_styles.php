@@ -16,8 +16,8 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 	public function get_concerned_filters() {
 		return array(
 			'print_styles_array',
-			'script_loader_src',
-			'script_loader_tag',
+			'style_loader_src',
+			'style_loader_tag',
 		);
 	}
 
