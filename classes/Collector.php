@@ -99,15 +99,64 @@ abstract class QM_Collector {
 		global $wp_filter;
 
 		$tracked = array();
+		$id      = $this->id;
 
-		foreach ( $this->get_concerned_actions() as $action ) {
+		/**
+		 * Filters the concerned actions for the given panel.
+		 *
+		 * The dynamic portion of the hook name, `$id`, refers to the collector ID, which is typically the `$id`
+		 * property of the collector class.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param string[] $actions Array of action names that this panel concerns itself with.
+		 */
+		$concerned_actions = apply_filters( "qm/collect/concerned_actions/{$id}", $this->get_concerned_actions() );
+
+		/**
+		 * Filters the concerned filters for the given panel.
+		 *
+		 * The dynamic portion of the hook name, `$id`, refers to the collector ID, which is typically the `$id`
+		 * property of the collector class.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param string[] $filters Array of filter names that this panel concerns itself with.
+		 */
+		$concerned_filters = apply_filters( "qm/collect/concerned_filters/{$id}", $this->get_concerned_filters() );
+
+		/**
+		 * Filters the concerned options for the given panel.
+		 *
+		 * The dynamic portion of the hook name, `$id`, refers to the collector ID, which is typically the `$id`
+		 * property of the collector class.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param string[] $options Array of option names that this panel concerns itself with.
+		 */
+		$concerned_options = apply_filters( "qm/collect/concerned_options/{$id}", $this->get_concerned_options() );
+
+		/**
+		 * Filters the concerned constants for the given panel.
+		 *
+		 * The dynamic portion of the hook name, `$id`, refers to the collector ID, which is typically the `$id`
+		 * property of the collector class.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param string[] $constants Array of constant names that this panel concerns itself with.
+		 */
+		$concerned_constants = apply_filters( "qm/collect/concerned_constants/{$id}", $this->get_concerned_constants() );
+
+		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
 				$this->concerned_actions[ $action ] = QM_Collector_Hooks::process_action( $action, $wp_filter, true, true );
 			}
 			$tracked[] = $action;
 		}
 
-		foreach ( $this->get_concerned_filters() as $filter ) {
+		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
 				$this->concerned_filters[ $filter ] = QM_Collector_Hooks::process_action( $filter, $wp_filter, true, true );
 			}
@@ -124,7 +173,7 @@ abstract class QM_Collector {
 			'site_option_%s',
 		);
 
-		foreach ( $this->get_concerned_options() as $option ) {
+		foreach ( $concerned_options as $option ) {
 			foreach ( $option_filters as $option_filter ) {
 				$filter = sprintf(
 					$option_filter,
@@ -140,7 +189,7 @@ abstract class QM_Collector {
 		$this->concerned_actions = array_filter( $this->concerned_actions, array( $this, 'filter_concerns' ) );
 		$this->concerned_filters = array_filter( $this->concerned_filters, array( $this, 'filter_concerns' ) );
 
-		foreach ( $this->get_concerned_constants() as $constant ) {
+		foreach ( $concerned_constants as $constant ) {
 			if ( defined( $constant ) ) {
 				$this->concerned_constants[ $constant ] = constant( $constant );
 			}
