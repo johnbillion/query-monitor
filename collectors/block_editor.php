@@ -9,8 +9,6 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
 
-	protected static $block_type_registry = null;
-
 	protected $block_timing = array();
 	protected $block_timer  = null;
 
@@ -74,8 +72,6 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['has_block_timing']   = false;
 
 		if ( $this->data['post_has_blocks'] ) {
-			self::$block_type_registry = WP_Block_Type_Registry::get_instance();
-
 			$this->data['post_blocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data['post_blocks'] ) ) );
 		}
 	}
@@ -89,7 +85,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		$this->data['total_blocks']++;
 
-		$block_type = self::$block_type_registry->get_registered( $block['blockName'] );
+		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
 		$dynamic    = false;
 		$callback   = null;
 
