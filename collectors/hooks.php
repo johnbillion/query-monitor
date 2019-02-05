@@ -26,7 +26,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		$components = array();
 
 		if ( has_filter( 'all' ) ) {
-			$hooks['all'] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
+			$hooks[] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
 		if ( defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS ) {
@@ -39,10 +39,11 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		foreach ( $hook_names as $name ) {
 
-			$hooks[ $name ] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hook    = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hooks[] = $hook;
 
-			$all_parts  = array_merge( $all_parts, $hooks[ $name ]['parts'] );
-			$components = array_merge( $components, $hooks[ $name ]['components'] );
+			$all_parts  = array_merge( $all_parts, $hook['parts'] );
+			$components = array_merge( $components, $hook['components'] );
 
 		}
 
