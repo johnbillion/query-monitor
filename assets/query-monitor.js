@@ -471,9 +471,15 @@ if ( window.jQuery ) {
 			container.toggleClass('qm-show-side');
 
 			if ( container.hasClass('qm-show-side') ) {
-				container.width( minwidth );
+				var w = localStorage.getItem( container_width_key );
+
+				if ( w !== null ) {
+					container.width( w );
+				} else {
+					container.width( minwidth );
+				}
+
 				localStorage.setItem( container_position_key, 'side' );
-				localStorage.setItem( container_width_key, container.width() );
 			} else {
 				localStorage.removeItem( container_position_key );
 			}
