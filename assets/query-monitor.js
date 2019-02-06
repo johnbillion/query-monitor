@@ -53,7 +53,7 @@ if ( window.jQuery ) {
 		var container              = $('#query-monitor');
 		var container_storage_key  = 'qm-container-height';
 		var container_pinned_key   = 'qm-container-pinned';
-		var container_position_key = 'qm-container-position';
+		var container_position_key = 'qm-container-width';
 
 		if ( $('#query-monitor').hasClass('qm-peek') ) {
 			minheight = 27;
@@ -390,9 +390,9 @@ if ( window.jQuery ) {
 			$(document).off('mouseup', qm_stop_resizer_drag);
 
 			if ( ! $('#query-monitor').hasClass('qm-show-side') ) {
-				localStorage.setItem( container_position_key, container.width() );
-			} else {
 				localStorage.setItem( container_storage_key, container.height() );
+			} else {
+				localStorage.setItem( container_position_key, container.width() );
 			}
 		}
 
