@@ -440,6 +440,7 @@ if ( window.jQuery ) {
 		$(window).on('resize', function(){
 			var maxheight = ( $(window).height() - toolbarHeight );
 			var h         = container.height();
+			var w         = container.width();
 
 			if ( h < minheight ) {
 				container.height( minheight );
@@ -449,6 +450,10 @@ if ( window.jQuery ) {
 			}
 			localStorage.setItem( container_storage_key, container.height() );
 
+			if ( w > $(window).width() ) {
+				container.width( minwidth );
+				localStorage.setItem( container_width_key, container.width() );
+			}
 			if ( $(window).width() < 960 ) {
 				container.removeClass('qm-show-side');
 				localStorage.removeItem( container_position_key );
