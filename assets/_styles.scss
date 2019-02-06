@@ -181,8 +181,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		position: fixed;
 		right: 0 !important;
 		text-align: left !important;
-		width: 100% !important;
 		z-index: 99998 !important;
+	}
+
+	&:not(.qm-show-side) {
+		width: 100% !important;
 	}
 
 	::selection {
@@ -209,6 +212,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	&.qm-show {
 		height: 40%;
+	}
+
+	&.qm-show-side {
+		height: calc( 100vh - 32px ) !important;
+		top: 32px !important;
+		left: unset !important;
+		border-top: 0 !important;
+		border-left: 1px solid #aaa !important;
+
+		#qm-title {
+			cursor: ew-resize !important;
+		}
 	}
 
 	#qm-wrapper {
@@ -254,6 +269,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	#qm-title .qm-button-container-settings .dashicons {
 		font-size: 17px !important;
 		margin: 3px 0 2px !important;
+	}
+
+	#qm-title .qm-button-container-position .dashicons {
+		margin: 2px 0 3px !important;
 	}
 
 	#qm-title .qm-button-container-close .dashicons {
