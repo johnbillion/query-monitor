@@ -366,13 +366,16 @@ if ( window.jQuery ) {
 
 		$.qm.tableSort({target: $('.qm-sortable')});
 
-		var startY, resizerHeight, toolbarHeight;
+		var startY, startX, resizerHeight, resizerWidth, toolbarHeight, adminmenuWidth;
 
-		toolbarHeight = $('#wpadminbar').outerHeight();
+		toolbarHeight  = $('#wpadminbar').outerHeight();
+		adminmenuWidth = $('#adminmenuwrap').outerWidth();
 
 		$(document).on('mousedown', '#qm-title', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
+			resizerWidth  = $(this).outerWidth() - 1;
 			startY        = container.outerHeight() + event.clientY;
+			startX        = container.outerWidth() + event.clientX;
 
 			$(document).on('mousemove', qm_do_resizer_drag);
 			$(document).on('mouseup', qm_stop_resizer_drag);
@@ -385,6 +388,10 @@ if ( window.jQuery ) {
 					container.height( h );
 				}
 			} else {
+				var w = ( startX - event.clientX );
+				if ( w >= minwidth && w <= maxwidth ) {
+					container.width( w );
+				}
 			}
 		}
 
