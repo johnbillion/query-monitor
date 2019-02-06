@@ -387,7 +387,7 @@ if ( window.jQuery ) {
 		});
 
 		function qm_do_resizer_drag(event) {
-			if ( ! $('#query-monitor').hasClass('qm-show-side') ) {
+			if ( ! container.hasClass('qm-show-side') ) {
 				var h = ( startY - event.clientY );
 				if ( h >= resizerHeight && h < ( $(window).height() - toolbarHeight ) ) {
 					container.height( h );
@@ -416,7 +416,7 @@ if ( window.jQuery ) {
 		var p = localStorage.getItem( container_position_key );
 		var h = localStorage.getItem( container_storage_key );
 		var w = localStorage.getItem( container_width_key );
-		if ( ! $('#query-monitor').hasClass('qm-peek') ) {
+		if ( ! container.hasClass('qm-peek') ) {
 			if ( p === 'side' && w !== null ) {
 				if ( w < minwidth ) {
 					w = minwidth;
