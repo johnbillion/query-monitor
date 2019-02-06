@@ -48,11 +48,12 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var minheight             = 100;
-		var maxheight             = ( $(window).height() - 50 );
-		var container             = $('#query-monitor');
-		var container_storage_key = 'qm-container-height';
-		var container_pinned_key  = 'qm-container-pinned';
+		var minheight              = 100;
+		var maxheight              = ( $(window).height() - 50 );
+		var container              = $('#query-monitor');
+		var container_storage_key  = 'qm-container-height';
+		var container_pinned_key   = 'qm-container-pinned';
+		var container_position_key = 'qm-container-position';
 
 		if ( $('#query-monitor').hasClass('qm-peek') ) {
 			minheight = 27;
@@ -424,6 +425,12 @@ if ( window.jQuery ) {
 
 		$('.qm-button-container-position').click(function(){
 			$('#query-monitor').toggleClass('qm-show-side');
+
+			if ( $('#query-monitor').hasClass('qm-show-side') ) {
+				localStorage.addItem( container_position_key );
+			} else {
+				localStorage.removeItem( container_position_key );
+			}
 		});
 
 		var pinned = localStorage.getItem( container_pinned_key );
