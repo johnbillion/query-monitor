@@ -442,6 +442,8 @@ if ( window.jQuery ) {
 			var h         = container.height();
 			var w         = container.width();
 
+			maxwidth  = ( $(window).width() - 200 );
+
 			if ( h < minheight ) {
 				container.height( minheight );
 			}
