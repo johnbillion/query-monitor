@@ -38,6 +38,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Block Name', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>';
+
+		if ( isset( $data['has_block_timing'] ) ) {
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Render Time', 'query-monitor' ) . '</th>';
+		}
+
 		echo '<th scope="col">' . esc_html__( 'Inner HTML', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -53,7 +58,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<tfoot>';
 		echo '<tr>';
 		printf(
-			'<td colspan="5">%1$s</td>',
+			'<td colspan="6">%1$s</td>',
 			sprintf(
 				/* translators: %s: Total number of content blocks used */
 				esc_html_x( 'Total: %s', 'Content blocks used', 'query-monitor' ),
@@ -67,7 +72,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	}
 
 	protected static function render_block( $i, array $block, array $data ) {
-		$block_error     = ( empty( $block['blockName'] ) && trim( $block['innerHTML'] ) );
+		$block_error     = false;
 		$row_class       = '';
 		$referenced_post = null;
 		$referenced_type = null;
@@ -104,7 +109,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			'core/video'       => 'id',
 		);
 
-		if ( isset( $media_blocks[ $block['blockName'] ] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
+		if ( isset( $media_blocks[ $block['blockName'] ] ) && is_array( $block['attrs'] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
 			$referenced_post = get_post( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] );
 
 			if ( ! $referenced_post ) {
@@ -135,18 +140,15 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<td class="qm-row-block-name"><span class="qm-sticky">';
 
-		if ( $block_error ) {
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-		}
-
 		if ( $block['blockName'] ) {
 			echo esc_html( $block['blockName'] );
 		} else {
-			echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
+			echo '<em>' . esc_html__( 'None (Classic block)', 'query-monitor' ) . '</em>';
 		}
 
 		if ( $error_message ) {
 			echo '<br>';
+			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 			echo $error_message; // WPCS: XSS ok;
 		}
 
@@ -158,8 +160,20 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '</span></td>';
 
 		echo '<td class="qm-row-block-attrs">';
-		if ( $block['attrs'] ) {
-			$json = json_encode( $block['attrs'], JSON_PRETTY_PRINT );
+		if ( $block['attrs'] && is_array( $block['attrs'] ) ) {
+			$json_options = JSON_PRETTY_PRINT;
+
+			if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+				// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
+				$json_options |= JSON_UNESCAPED_SLASHES;
+			}
+
+			$json = json_encode( $block['attrs'], $json_options );
+
+			if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+				$json = wp_unslash( $json );
+			}
+
 			echo '<pre class="qm-pre-wrap"><code>' . esc_html( $json ) . '</code></pre>';
 		}
 		echo '</td>';
@@ -189,7 +203,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
 
 				if ( isset( $block['callback']['error'] ) ) {
-					echo '<br>';
+					echo '<br><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */
 						__( 'Error: %s', 'query-monitor' ),
@@ -199,17 +213,29 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 				echo '</td>';
 			}
+
+			if ( $data['has_block_timing'] ) {
+				echo '<td class="qm-num">';
+				if ( isset( $block['timing'] ) ) {
+					echo esc_html( number_format_i18n( $block['timing'], 4 ) );
+				}
+				echo '</td>';
+			}
 		} else {
 			echo '<td></td>';
+
+			if ( $data['has_block_timing'] ) {
+				echo '<td></td>';
+			}
 		}
 
 		$inner_html = trim( $block['innerHTML'] );
 
-		if ( $block['size'] > 600 ) {
+		if ( $block['size'] > 300 ) {
 			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html"><div class="qm-toggler">';
 			echo self::build_toggler(); // WPCS: XSS ok;
 			echo '<div class="qm-inverse-toggled"><pre class="qm-pre-wrap"><code>';
-			echo esc_html( substr( $inner_html, 0, 500 ) ) . '<br><b>&hellip;</b>';
+			echo esc_html( substr( $inner_html, 0, 200 ) ) . '&nbsp;&hellip;';
 			echo '</code></pre></div>';
 			echo '<div class="qm-toggled"><pre class="qm-pre-wrap"><code>';
 			echo esc_html( $inner_html );
@@ -226,7 +252,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			foreach ( $block['innerBlocks'] as $j => $inner_block ) {
 				$x = ++$j;
-				self::render_block( "{$i}-{$x}", $inner_block, $data );
+				self::render_block( "{$i}.{$x}", $inner_block, $data );
 			}
 		}
 	}
@@ -238,7 +264,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			return $menu;
 		}
 
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html__( 'Blocks', 'query-monitor' ),
 		) );
 

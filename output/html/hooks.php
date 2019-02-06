@@ -22,59 +22,37 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			return;
 		}
 
-		if ( is_multisite() && is_network_admin() ) {
-			$screen = preg_replace( '|-network$|', '', $data['screen'] );
-		} else {
-			$screen = $data['screen'];
-		}
-
-		$parts      = $data['parts'];
-		$components = $data['components'];
-
-		usort( $parts, 'strcasecmp' );
-		usort( $components, 'strcasecmp' );
-
 		$this->before_tabular_output();
 
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'name', $parts, __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Action', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
+		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ), 'subject' ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
-		self::output_hook_table( $data['hooks'], $screen );
+		self::output_hook_table( $data['hooks'] );
 		echo '</tbody>';
 
 		$this->after_tabular_output();
 	}
 
-	public static function output_hook_table( array $hooks, $screen = '' ) {
+	public static function output_hook_table( array $hooks ) {
+		$core = __( 'Core', 'query-monitor' );
+
 		foreach ( $hooks as $hook ) {
-
-			if ( ! empty( $screen ) ) {
-
-				if ( false !== strpos( $hook['name'], $screen . '.php' ) ) {
-					$hook_name = str_replace( '-' . $screen . '.php', '-<span class="qm-current">' . $screen . '.php</span>', esc_html( $hook['name'] ) );
-				} else {
-					$hook_name = str_replace( '-' . $screen, '-<span class="qm-current">' . $screen . '</span>', esc_html( $hook['name'] ) );
-				}
-			} else {
-				$hook_name = esc_html( $hook['name'] );
-			}
-
 			$row_attr                      = array();
 			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
-			if ( ! empty( $row_attr['data-qm-component'] ) && 'Core' !== $row_attr['data-qm-component'] ) {
+			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 
@@ -103,7 +81,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$subject   = $component;
 					}
 
-					if ( __( 'Core', 'query-monitor' ) !== $component ) {
+					if ( $core !== $component ) {
 						$subject .= ' non-core';
 					}
 
@@ -115,10 +93,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( $first ) {
 
-						echo '<th scope="row" rowspan="' . absint( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
-						echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
+						echo '<th scope="row" rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
+						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
-							echo '<br><span class="qm-warn">';
+							echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 							printf(
 								/* translators: %s: Action name */
 								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
@@ -136,7 +114,20 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$class = '';
 					}
 
-					echo '<td class="qm-num' . esc_attr( $class ) . '">' . intval( $action['priority'] ) . '</td>';
+					echo '<td class="qm-num' . esc_attr( $class ) . '">';
+
+					echo esc_html( $action['priority'] );
+
+					if ( PHP_INT_MAX === $action['priority'] ) {
+						echo ' <span class="qm-info">(PHP_INT_MAX)</span>';
+					// phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
+					} elseif ( defined( 'PHP_INT_MIN' ) && PHP_INT_MIN === $action['priority'] ) {
+						echo ' <span class="qm-info">(PHP_INT_MIN)</span>';
+					} elseif ( -PHP_INT_MAX === $action['priority'] ) {
+						echo ' <span class="qm-info">(-PHP_INT_MAX)</span>';
+					}
+
+					echo '</td>';
 
 					if ( isset( $action['callback']['file'] ) ) {
 						if ( self::has_clickable_links() ) {
@@ -156,7 +147,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
 
 						if ( isset( $action['callback']['error'] ) ) {
-							echo '<br>';
+							echo '<br><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 							echo esc_html( sprintf(
 								/* translators: %s: Error message text */
 								__( 'Error: %s', 'query-monitor' ),
@@ -175,12 +166,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				}
 			} else {
 				echo "<tr{$attr}>"; // WPCS: XSS ok.
-				echo '<th scope="row" class="qm-ltr"><span class="qm-sticky">';
-				echo '<code>' . $hook_name . '</code>'; // WPCS: XSS ok.
-				echo '</span></th>';
-				echo '<td>&nbsp;</td>';
-				echo '<td>&nbsp;</td>';
-				echo '<td>&nbsp;</td>';
+				echo '<th scope="row" class="qm-ltr">';
+				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
+				echo '</th>';
+				echo '<td></td>';
+				echo '<td></td>';
+				echo '<td></td>';
 				echo '</tr>';
 			}
 		}

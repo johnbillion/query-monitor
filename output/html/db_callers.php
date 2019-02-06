@@ -9,7 +9,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 30 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 30 );
 	}
 
 	public function output() {
@@ -48,13 +48,13 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 				$stime       = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
-				echo '<td class="qm-ltr"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '"><code>' . esc_html( $row['caller'] ) . '</code></a></td>';
+				echo '<td class="qm-ltr"><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '"><code>' . esc_html( $row['caller'] ) . '</code></button></td>';
 
 				foreach ( $data['types'] as $type_name => $type_count ) {
 					if ( isset( $row['types'][ $type_name ] ) ) {
 						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
 					} else {
-						echo "<td class='qm-num'>&nbsp;</td>";
+						echo "<td class='qm-num'></td>";
 					}
 				}
 
@@ -69,7 +69,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			$total_stime = number_format_i18n( $total_time, 4 );
 
 			echo '<tr>';
-			echo '<td>&nbsp;</td>';
+			echo '<td></td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
 				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
@@ -92,14 +92,14 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		}
 	}
 
-	public function admin_menu( array $menu ) {
+	public function panel_menu( array $menu ) {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['times'] ) ) {
-				$menu[] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
+				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+					'title' => '└ ' . esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );
 			}
 		}

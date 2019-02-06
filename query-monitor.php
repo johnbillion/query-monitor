@@ -5,14 +5,14 @@
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
  * @author    John Blackbourn <john@johnblackbourn.com>
- * @copyright 2009-2018 John Blackbourn
+ * @copyright 2009-2019 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
  * Description:  The Developer Tools Panel for WordPress.
  * Version:      3.2.2
  * Plugin URI:   https://querymonitor.com/
- * Author:       John Blackbourn & contributors
+ * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/

@@ -27,13 +27,12 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'MO File', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Translation File', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
-
-		$not_found_class = ( substr( $data['locale'], 0, 3 ) === 'en_' ) ? '' : 'qm-warn';
 
 		echo '<tbody>';
 
@@ -42,6 +41,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '<tr>';
 
 				echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+
+				echo '<td>' . esc_html( $mofile['type'] ) . '</td>';
 
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-nowrap qm-ltr">';
@@ -57,7 +58,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				}
 
 				echo '<td class="qm-ltr">';
-				echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
+				if ( $mofile['file'] ) {
+					echo esc_html( QM_Util::standard_dir( $mofile['file'], '' ) );
+				} else {
+					echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
+				}
 				echo '</td>';
 
 				if ( $mofile['found'] ) {
@@ -65,7 +70,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					echo esc_html( size_format( $mofile['found'] ) );
 					echo '</td>';
 				} else {
-					echo '<td class="' . esc_attr( $not_found_class ) . '">';
+					echo '<td>';
 					echo esc_html__( 'Not Found', 'query-monitor' );
 					echo '</td>';
 				}
@@ -87,7 +92,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			'title' => esc_html( $this->collector->name() ),
 		);
 
-		$menu[] = $this->menu( $args );
+		$menu[ $this->collector->id() ] = $this->menu( $args );
 
 		return $menu;
 

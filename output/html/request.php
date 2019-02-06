@@ -79,7 +79,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
 				printf(
-					'<p><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</a></p>',
+					'<p><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</button></p>',
 					esc_html__( 'View Main Query', 'query-monitor' )
 				);
 			}
@@ -176,7 +176,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			/* translators: %s: Number of additional query variables */
 			: __( 'Request (+%s)', 'query-monitor' );
 
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(
 				$title,
 				number_format_i18n( $count )

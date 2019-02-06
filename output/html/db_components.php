@@ -9,7 +9,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 40 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 40 );
 	}
 
 	public function output() {
@@ -49,7 +49,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			$total_time += $row['ltime'];
 
 			echo '<tr>';
-			echo '<td class="qm-row-component"><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</a></td>';
+			echo '<td class="qm-row-component"><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</button></td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
 				if ( isset( $row['types'][ $type_name ] ) ) {
@@ -83,7 +83,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
-	public function admin_menu( array $menu ) {
+	public function panel_menu( array $menu ) {
 		$data = $this->collector->get_data();
 
 		if ( empty( $data['types'] ) || empty( $data['times'] ) ) {
@@ -95,8 +95,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
-				$menu[] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Component', 'query-monitor' ),
+				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+					'title' => '└ ' . esc_html__( 'Queries by Component', 'query-monitor' ),
 				) );
 			}
 		}

@@ -19,14 +19,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$total_time = 0;
 
-		$vars = array();
-
-		if ( ! empty( $data['vars'] ) ) {
-			foreach ( $data['vars'] as $key => $value ) {
-				$vars[] = $key . ': ' . $value;
-			}
-		}
-
 		if ( ! empty( $data['http'] ) ) {
 			$statuses   = array_keys( $data['types'] );
 			$components = wp_list_pluck( $data['component_times'], 'component' );
@@ -164,7 +156,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( ! empty( $row['redirected_to'] ) ) {
 					$url .= sprintf(
-						'<br><span class="qm-warn">%1$s</span><br>%2$s',
+						'<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s</span><br>%2$s',
 						/* translators: An HTTP API request redirected to another URL */
 						__( 'Redirected to:', 'query-monitor' ),
 						self::format_url( $row['redirected_to'] )
@@ -296,13 +288,12 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="6">%1$s<br>%2$s</td>',
+				'<td colspan="6">%s</td>',
 				sprintf(
 					/* translators: %s: Number of HTTP API requests */
 					esc_html_x( 'Total: %s', 'HTTP API calls', 'query-monitor' ),
 					'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data['http'] ) ) ) . '</span>'
-				),
-				implode( '<br>', array_map( 'esc_html', $vars ) )
+				)
 			);
 			echo '<td class="qm-num qm-items-time">' . esc_html( $total_stime ) . '</td>';
 			echo '</tr>';
@@ -359,7 +350,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$args['meta']['classname'] = 'qm-warning';
 		}
 
-		$menu[] = $this->menu( $args );
+		$menu[ $this->collector->id() ] = $this->menu( $args );
 
 		return $menu;
 

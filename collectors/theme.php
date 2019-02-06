@@ -16,10 +16,41 @@ class QM_Collector_Theme extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 999 );
-		add_filter( 'template_include', array( $this, 'filter_template_include' ), 999 );
-		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 999, 3 );
+		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 9999 );
+		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
+	}
+
+	public function get_concerned_actions() {
+		return array(
+			'template_redirect',
+		);
+	}
+
+	public function get_concerned_filters() {
+		$filters = array(
+			'stylesheet',
+			'stylesheet_directory',
+			'template',
+			'template_directory',
+			'template_include',
+		);
+
+		foreach ( self::get_query_template_names() as $template => $conditional ) {
+			// @TODO this isn't correct for post type archives
+			$filter    = str_replace( '_', '', $template );
+			$filters[] = "{$filter}_template_hierarchy";
+			$filters[] = "{$filter}_template";
+		}
+
+		return $filters;
+	}
+
+	public function get_concerned_options() {
+		return array(
+			'stylesheet',
+			'template',
+		);
 	}
 
 	public static function get_query_template_names() {
@@ -46,6 +77,7 @@ class QM_Collector_Theme extends QM_Collector {
 
 	// https://core.trac.wordpress.org/ticket/14310
 	public function action_template_redirect() {
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
 
 		foreach ( self::get_query_template_names() as $template => $conditional ) {
 
@@ -58,9 +90,9 @@ class QM_Collector_Theme extends QM_Collector {
 
 			if ( function_exists( $conditional ) && function_exists( $get_template ) && call_user_func( $conditional ) ) {
 				$filter = str_replace( '_', '', $template );
-				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), 999 );
+				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
 				call_user_func( $get_template );
-				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), 999 );
+				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
 			}
 		}
 

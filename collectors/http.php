@@ -12,22 +12,80 @@ class QM_Collector_HTTP extends QM_Collector {
 	private $info      = null;
 
 	public function name() {
-		return __( 'HTTP API Requests', 'query-monitor' );
+		return __( 'HTTP API Calls', 'query-monitor' );
 	}
 
 	public function __construct() {
 
 		parent::__construct();
 
-		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 99, 2 );
-		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 99, 3 );
-		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 99, 5 );
+		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999, 2 );
+		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 9999, 3 );
+		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 9999, 5 );
 
-		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 99 );
-		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 99, 2 );
-		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 99 );
-		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 99, 2 );
+		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 9999 );
+		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 9999, 2 );
+		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
+		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 9999, 2 );
 
+	}
+
+	public function get_concerned_actions() {
+		$actions    = array(
+			'http_api_curl',
+			'requests-multiple.request.complete',
+			'requests-request.progress',
+			'requests-transport.internal.parse_error',
+			'requests-transport.internal.parse_response',
+		);
+		$transports = array(
+			'requests',
+			'curl',
+			'fsockopen',
+		);
+
+		foreach ( $transports as $transport ) {
+			$actions[] = "requests-{$transport}.after_headers";
+			$actions[] = "requests-{$transport}.after_multi_exec";
+			$actions[] = "requests-{$transport}.after_request";
+			$actions[] = "requests-{$transport}.after_send";
+			$actions[] = "requests-{$transport}.before_multi_add";
+			$actions[] = "requests-{$transport}.before_multi_exec";
+			$actions[] = "requests-{$transport}.before_parse";
+			$actions[] = "requests-{$transport}.before_redirect";
+			$actions[] = "requests-{$transport}.before_redirect_check";
+			$actions[] = "requests-{$transport}.before_request";
+			$actions[] = "requests-{$transport}.before_send";
+			$actions[] = "requests-{$transport}.remote_host_path";
+			$actions[] = "requests-{$transport}.remote_socket";
+		}
+
+		return $actions;
+	}
+
+	public function get_concerned_filters() {
+		return array(
+			'block_local_requests',
+			'http_request_args',
+			'http_response',
+			'https_local_ssl_verify',
+			'https_ssl_verify',
+			'pre_http_request',
+			'use_curl_transport',
+			'use_streams_transport',
+		);
+	}
+
+	public function get_concerned_constants() {
+		return array(
+			'WP_PROXY_HOST',
+			'WP_PROXY_PORT',
+			'WP_PROXY_USERNAME',
+			'WP_PROXY_PASSWORD',
+			'WP_PROXY_BYPASS_HOSTS',
+			'WP_HTTP_BLOCK_EXTERNAL',
+			'WP_ACCESSIBLE_HOSTS',
+		);
 	}
 
 	/**
@@ -160,26 +218,6 @@ class QM_Collector_HTTP extends QM_Collector {
 	}
 
 	public function process() {
-
-		foreach ( array(
-			'WP_PROXY_HOST',
-			'WP_PROXY_PORT',
-			'WP_PROXY_USERNAME',
-			'WP_PROXY_PASSWORD',
-			'WP_PROXY_BYPASS_HOSTS',
-			'WP_HTTP_BLOCK_EXTERNAL',
-			'WP_ACCESSIBLE_HOSTS',
-		) as $var ) {
-			if ( defined( $var ) && constant( $var ) ) {
-				$val = constant( $var );
-				if ( true === $val ) {
-					# @TODO this transformation should happen in the output, not the collector
-					$val = 'true';
-				}
-				$this->data['vars'][ $var ] = $val;
-			}
-		}
-
 		$this->data['ltime'] = 0;
 
 		if ( ! isset( $this->data['http'] ) ) {

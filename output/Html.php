@@ -9,9 +9,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected static $file_link_format = null;
 
+	protected $current_id   = null;
+	protected $current_name = null;
+
 	public function admin_menu( array $menu ) {
 
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( $this->collector->name() ),
 		) );
 		return $menu;
@@ -34,6 +37,9 @@ abstract class QM_Output_Html extends QM_Output {
 			$name = $this->collector->name();
 		}
 
+		$this->current_id   = $id;
+		$this->current_name = $name;
+
 		printf(
 			'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
@@ -51,6 +57,8 @@ abstract class QM_Output_Html extends QM_Output {
 	protected function after_tabular_output() {
 		echo '</table>';
 		echo '</div>';
+
+		$this->output_concerns();
 	}
 
 	protected function before_non_tabular_output( $id = null, $name = null ) {
@@ -60,6 +68,9 @@ abstract class QM_Output_Html extends QM_Output {
 		if ( null === $name ) {
 			$name = $this->collector->name();
 		}
+
+		$this->current_id   = $id;
+		$this->current_name = $name;
 
 		printf(
 			'<div class="qm qm-non-tabular" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
@@ -77,6 +88,62 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected function after_non_tabular_output() {
 		echo '</div>';
+		echo '</div>';
+
+		$this->output_concerns();
+	}
+
+	protected function output_concerns() {
+		$concerns = array(
+			'concerned_actions' => array(
+				__( 'Related Hooks with Actions Attached', 'query-monitor' ),
+				__( 'Action', 'query-monitor' ),
+			),
+			'concerned_filters' => array(
+				__( 'Related Hooks with Filters Attached', 'query-monitor' ),
+				__( 'Filter', 'query-monitor' ),
+			),
+		);
+
+		if ( empty( $this->collector->concerned_actions ) && empty( $this->collector->concerned_filters ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="qm qm-concerns" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
+			esc_attr( $this->current_id . '-concerned_hooks' )
+		);
+
+		echo '<table>';
+
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
+			esc_attr( $this->current_id . '-concerned_hooks' ),
+			esc_html__( 'Related Hooks with Filters or Actions Attached', 'query-monitor' )
+		);
+
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+
+		echo '<tbody>';
+
+		foreach ( $concerns as $key => $labels ) {
+			if ( empty( $this->collector->$key ) ) {
+				continue;
+			}
+
+			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key );
+		}
+
+		echo '</tbody>';
+		echo '</table>';
+
 		echo '</div>';
 	}
 
@@ -118,17 +185,17 @@ abstract class QM_Output_Html extends QM_Output {
 
 	public static function output_inner( $vars ) {
 
-		echo '<table class="qm-inner">';
+		echo '<table>';
 
 		foreach ( $vars as $key => $value ) {
 			echo '<tr>';
 			echo '<td>' . esc_html( $key ) . '</td>';
 			if ( is_array( $value ) ) {
-				echo '<td class="qm-has-inner">';
+				echo '<td>';
 				self::output_inner( $value );
 				echo '</td>';
 			} elseif ( is_object( $value ) ) {
-				echo '<td class="qm-has-inner">';
+				echo '<td>';
 				self::output_inner( get_object_vars( $value ) );
 				echo '</td>';
 			} elseif ( is_bool( $value ) ) {
@@ -226,7 +293,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		$out .= '</span>';
-		$out .= '<button class="qm-sort-controls">';
+		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
 		$out .= '<span class="qm-sort-arrow" aria-hidden="true"></span>';
 		$out .= '</button>';
 		$out .= '</label>';
@@ -239,7 +306,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string Markup for the column sorter controls.
 	 */
 	protected static function build_toggler() {
-		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false"><span aria-hidden="true">+</span><span class="screen-reader-text">' . esc_html__( ' Toggle button', 'query-monitor' ) . '</span></button>';
+		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr__( 'Toggle more information', 'query-monitor' ) . '"><span aria-hidden="true">+</span></button>';
 		return $out;
 	}
 

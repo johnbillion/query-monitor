@@ -22,6 +22,36 @@ class QM_Collector_Caps extends QM_Collector {
 		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
 	}
 
+	public function get_concerned_actions() {
+		return array(
+			'wp_roles_init',
+		);
+	}
+
+	public function get_concerned_filters() {
+		return array(
+			'map_meta_cap',
+			'role_has_cap',
+			'user_has_cap',
+		);
+	}
+
+	public function get_concerned_options() {
+		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
+
+		return array(
+			"{$blog_prefix}user_roles",
+		);
+	}
+
+	public function get_concerned_constants() {
+		return array(
+			'ALLOW_UNFILTERED_UPLOADS',
+			'DISALLOW_FILE_EDIT',
+			'DISALLOW_UNFILTERED_HTML',
+		);
+	}
+
 	public function tear_down() {
 		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
 		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );

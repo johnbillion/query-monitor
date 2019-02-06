@@ -26,7 +26,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		$components = array();
 
 		if ( has_filter( 'all' ) ) {
-			$hooks['all'] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
+			$hooks[] = self::process_action( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
 		if ( defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS ) {
@@ -39,10 +39,11 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		foreach ( $hook_names as $name ) {
 
-			$hooks[ $name ] = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hook    = self::process_action( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hooks[] = $hook;
 
-			$all_parts  = array_merge( $all_parts, $hooks[ $name ]['parts'] );
-			$components = array_merge( $components, $hooks[ $name ]['components'] );
+			$all_parts  = array_merge( $all_parts, $hook['parts'] );
+			$components = array_merge( $components, $hook['components'] );
 
 		}
 
@@ -50,16 +51,8 @@ class QM_Collector_Hooks extends QM_Collector {
 		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
 		$this->data['components'] = array_unique( array_filter( $components ) );
 
-	}
-
-	public function post_process() {
-		$admin = QM_Collectors::get( 'response' );
-
-		if ( is_admin() && $admin ) {
-			$this->data['screen'] = $admin->data['base'];
-		} else {
-			$this->data['screen'] = '';
-		}
+		usort( $this->data['parts'], 'strcasecmp' );
+		usort( $this->data['components'], 'strcasecmp' );
 	}
 
 	public static function process_action( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {

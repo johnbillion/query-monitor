@@ -183,7 +183,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					echo '<th scope="row">' . esc_html( $label ) . '</th>';
 
 					if ( ! isset( $db['info'][ $field ] ) ) {
-						echo '<td><span class="qm-warn">' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
+						echo '<td><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
 						echo '<td>' . esc_html( $db['info'][ $field ] ) . '</td>';
 					}
@@ -192,34 +192,14 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 				}
 
-				echo '<tr>';
-
-				$first  = true;
-				$search = 'https://www.google.com/search?q=mysql+performance+%s';
-
 				foreach ( $db['variables'] as $setting ) {
 
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$key = $setting->Variable_name;
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$val = $setting->Value;
 
-					$append       = '';
-					$show_warning = false;
-
-					if ( ( true === $db['vars'][ $key ] ) && empty( $val ) ) {
-						$show_warning = true;
-					} elseif ( is_string( $db['vars'][ $key ] ) && ( $val !== $db['vars'][ $key ] ) ) {
-						$show_warning = true;
-					}
-
-					if ( $show_warning ) {
-						$append .= sprintf(
-							'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
-							esc_url( sprintf( $search, rawurlencode( $key ) ) ),
-							esc_html__( 'Help', 'query-monitor' )
-						);
-					}
+					$append = '';
 
 					if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
@@ -228,11 +208,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 						);
 					}
 
-					$class = ( $show_warning ) ? 'qm-warn' : '';
-
-					if ( ! $first ) {
-						echo '<tr class="' . esc_attr( $class ) . '">';
-					}
+					echo '<tr>';
 
 					echo '<th scope="row">' . esc_html( $key ) . '</th>';
 					echo '<td>';
@@ -241,9 +217,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					echo '</td>';
 
 					echo '</tr>';
-
-					$first = false;
-
 				}
 
 				echo '</tbody>';

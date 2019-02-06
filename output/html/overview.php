@@ -54,12 +54,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
+		echo '<p>';
 		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
-				echo '<br><span class="qm-warn">';
+				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 			} else {
 				echo '<br><span class="qm-info">';
 			}
@@ -85,7 +85,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
+		echo '<p>';
 
 		if ( empty( $data['memory'] ) ) {
 			esc_html_e( 'Unknown', 'query-monitor' );
@@ -98,7 +98,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $data['memory_limit'] > 0 ) {
 				if ( $data['display_memory_usage_warning'] ) {
-					echo '<br><span class="qm-warn">';
+					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				} else {
 					echo '<br><span class="qm-info">';
 				}
@@ -127,19 +127,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( isset( $db_query_num ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
-			echo '<p class="qm-item">';
+			echo '<p>';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
 			echo '</p>';
 			echo '</section>';
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
-			echo '<p class="qm-item">';
+			echo '<p>';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
 				foreach ( $db_query_num as $type_name => $type_count ) {
 					printf(
-						'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</a><br>',
+						'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</button><br>',
 						esc_attr( $type_name ),
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )
@@ -147,7 +147,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				}
 			}
 
-			echo esc_html__( 'Total', 'query-monitor' ) . ': ' . esc_html( number_format_i18n( $db_queries_data['total_qs'] ) );
+			echo esc_html( sprintf(
+				/* translators: %s: Total number of database queries */
+				_x( 'Total: %s', 'database queries', 'query-monitor' ),
+				number_format_i18n( $db_queries_data['total_qs'] )
+			) );
 
 			echo '</p>';
 			echo '</section>';
@@ -155,9 +159,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
-		echo '<p class="qm-item">';
 
 		if ( isset( $cache_hit_percentage ) ) {
+			echo '<p>';
 			echo esc_html( sprintf(
 				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
 				__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
@@ -165,6 +169,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
 				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 			) );
+
 			if ( $cache_data['display_hit_rate_warning'] ) {
 				printf(
 					'<br><a href="%s" class="qm-external-link">%s</a>',
@@ -172,31 +177,60 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					esc_html__( 'Why is this value 100%?', 'query-monitor' )
 				);
 			}
-			if ( $cache_data['ext_object_cache'] ) {
-				echo '<br><span class="qm-info">';
+
+			echo '</p>';
+
+			$installed_opcode_caches = array_filter( $cache_data['opcode_cache_extensions'] );
+
+			if ( $cache_data['has_opcode_cache'] ) {
+				foreach ( $installed_opcode_caches as $opcache_name => $opcache_state ) {
+					echo '<p>';
+					echo esc_html( sprintf(
+						/* translators: %s: Name of cache driver */
+						__( 'Opcode cache in use: %s', 'query-monitor' ),
+						$opcache_name
+					) );
+					echo '</p>';
+				}
+			} elseif ( ! empty( $installed_opcode_caches ) ) {
+				echo '<ul>';
+				foreach ( $installed_opcode_caches as $name => $value ) {
+					echo '<li><span class="qm-warn">';
+					echo esc_html( sprintf(
+						/* translators: %s: PHP opcode cache extension name */
+						__( 'The %s opcode cache is installed but not enabled', 'query-monitor' ),
+						$name
+					) );
+					echo '</span></li>';
+				}
+				echo '</ul>';
+			}
+
+			if ( $cache_data['has_object_cache'] ) {
+				echo '<p><span class="qm-info">';
 				printf(
 					'<a href="%s" class="qm-link">%s</a>',
 					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
 					esc_html__( 'External object cache in use', 'query-monitor' )
 				);
-				echo '</span>';
+				echo '</span></p>';
 			} else {
-				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				echo esc_html__( 'External object cache not in use', 'query-monitor' );
-				echo '</span>';
+				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data['extensions'] );
+				$potentials = array_filter( $cache_data['object_cache_extensions'] );
 
 				if ( ! empty( $potentials ) ) {
 					echo '<ul>';
 					foreach ( $potentials as $name => $value ) {
-						echo '<li class="qm-warn">';
+						echo '<li><span class="qm-warn">';
 						echo esc_html( sprintf(
 							/* translators: %s: PHP extension name */
 							__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
 							$name
 						) );
-						echo '</li>';
+						echo '</span></li>';
 					}
 					echo '</ul>';
 				}
@@ -207,7 +241,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</span>';
 		}
 
-		echo '</p>';
 		echo '</section>';
 
 		$this->after_non_tabular_output();

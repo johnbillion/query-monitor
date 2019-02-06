@@ -104,7 +104,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['timber_files'] ) ) {
 			echo '<section>';
-			echo '<h3>' . esc_html__( 'Timber Files', 'query-monitor' ) . '</h3>';
+			echo '<h3>' . esc_html__( 'Twig Template Files', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
 			foreach ( $data['timber_files'] as $filename ) {
@@ -142,7 +142,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			$name = __( 'Unknown', 'query-monitor' );
 		}
 
-		$menu['theme'] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(
 				/* translators: %s: Template file name */
 				__( 'Template: %s', 'query-monitor' ),
@@ -155,8 +155,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 	}
 
 	public function panel_menu( array $menu ) {
-		if ( isset( $menu['theme'] ) ) {
-			$menu['theme']['title'] = __( 'Template', 'query-monitor' );
+		if ( isset( $menu[ $this->collector->id() ] ) ) {
+			$menu[ $this->collector->id() ]['title'] = __( 'Template', 'query-monitor' );
 		}
 
 		return $menu;

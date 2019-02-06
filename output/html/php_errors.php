@@ -231,7 +231,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			$title = __( 'PHP Errors', 'query-monitor' );
 		}
 
-		$menu['php_errors'] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'id'    => "query-monitor-{$key}s",
 			'title' => $title,
 		) );
@@ -240,8 +240,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	}
 
 	public function panel_menu( array $menu ) {
-		if ( isset( $menu['php_errors'] ) ) {
-			$menu['php_errors']['title'] = __( 'PHP Errors', 'query-monitor' );
+		if ( isset( $menu[ $this->collector->id() ] ) ) {
+			$menu[ $this->collector->id() ]['title'] = __( 'PHP Errors', 'query-monitor' );
 		}
 
 		return $menu;

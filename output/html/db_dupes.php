@@ -10,6 +10,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 25 );
 	}
 
 	public function output() {
@@ -61,7 +62,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
 				printf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></a><br><span class="qm-info qm-supplemental">%s</span><br>',
+					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_attr( $caller ),
 					esc_html( $caller ),
 					esc_html( sprintf(
@@ -110,7 +111,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['dupes'] ) && count( $dbq_data['dupes'] ) ) {
-				$menu[] = $this->menu( array(
+				$menu[ $this->collector->id() ] = $this->menu( array(
 					'title' => esc_html( sprintf(
 						/* translators: %s: Number of duplicate database queries */
 						__( 'Duplicate Queries (%s)', 'query-monitor' ),
@@ -121,6 +122,18 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		}
 		return $menu;
 
+	}
+
+	public function panel_menu( array $menu ) {
+		$id = $this->collector->id();
+		if ( isset( $menu[ $id ] ) ) {
+			$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+
+			$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+			unset( $menu[ $id ] );
+		}
+
+		return $menu;
 	}
 
 }

@@ -186,7 +186,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$colspan = ( $show_user ) ? 5 : 4;
 
 			echo '<tr>';
-			echo '<td colspan="' . absint( $colspan ) . '">';
+			echo '<td colspan="' . intval( $colspan ) . '">';
 			printf(
 				/* translators: %s: Number of user capability checks */
 				esc_html_x( 'Total: %s', 'User capability checks', 'query-monitor' ),
@@ -208,7 +208,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function admin_menu( array $menu ) {
-		$menu[] = $this->menu( array(
+		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => $this->collector->name(),
 		) );
 		return $menu;

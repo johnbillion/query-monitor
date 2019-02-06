@@ -13,6 +13,29 @@ class QM_Collector_Admin extends QM_Collector {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
+	public function get_concerned_actions() {
+		$actions = array(
+			'current_screen',
+		);
+
+		if ( ! empty( $this->data['list_table'] ) ) {
+			$actions[] = $this->data['list_table']['column_action'];
+		}
+
+		return $actions;
+	}
+
+	public function get_concerned_filters() {
+		$filters = array();
+
+		if ( ! empty( $this->data['list_table'] ) ) {
+			$filters[] = $this->data['list_table']['columns_filter'];
+			$filters[] = $this->data['list_table']['sortables_filter'];
+		}
+
+		return $filters;
+	}
+
 	public function process() {
 
 		global $pagenow, $wp_list_table;

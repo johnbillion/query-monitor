@@ -52,6 +52,7 @@ class QM_Collectors implements IteratorAggregate {
 			$timer->start();
 
 			$collector->process();
+			$collector->process_concerns();
 
 			$collector->set_timer( $timer->stop() );
 		}

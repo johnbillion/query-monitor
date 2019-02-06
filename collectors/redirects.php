@@ -15,7 +15,7 @@ class QM_Collector_Redirects extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 999, 2 );
+		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );
 	}
 
 	public function filter_wp_redirect( $location, $status ) {
