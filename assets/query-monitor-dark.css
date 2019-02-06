@@ -285,10 +285,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 3px 0 2px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-position .dashicons {
+  font-size: 17px !important;
   margin: 2px 0 3px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-close .dashicons {
   margin: 2px 0 3px !important;
+}
+@media screen and (max-width: 960px) {
+  #query-monitor-main #qm-title .qm-button-container-position {
+    display: none !important;
+  }
 }
 #query-monitor-main #qm-title button {
   background: transparent !important;
