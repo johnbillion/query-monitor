@@ -448,6 +448,8 @@ if ( window.jQuery ) {
 		$('.qm-button-container-close').click(function(){
 			$('#query-monitor').removeClass('qm-show').height('').width('');
 			localStorage.removeItem( container_pinned_key );
+			localStorage.removeItem( container_position_key );
+			localStorage.removeItem( container_width_key );
 		});
 
 		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
