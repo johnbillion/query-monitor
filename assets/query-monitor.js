@@ -422,6 +422,10 @@ if ( window.jQuery ) {
 			$('#qm-settings').focus();
 		});
 
+		$('.qm-button-container-position').click(function(){
+			$('#query-monitor').toggleClass('qm-show-side');
+		});
+
 		var pinned = localStorage.getItem( container_pinned_key );
 		if ( pinned && $( pinned ).length ) {
 			show_panel( pinned );

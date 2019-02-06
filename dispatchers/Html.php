@@ -288,6 +288,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</div>';
 		echo '<div class="qm-title-button"><button class="qm-button-container-settings"><span class="screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</span><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
+		echo '<div class="qm-title-button"><button class="qm-button-container-position"><span class="screen-reader-text">' . esc_html__( 'Change panel position', 'query-monitor' ) . '</span><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button></div>';
 		echo '<div class="qm-title-button"><button class="qm-button-container-close"><span class="screen-reader-text">' . esc_html__( 'Close Panel', 'query-monitor' ) . '</span><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
 		echo '</div>'; // #qm-title
 
