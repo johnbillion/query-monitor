@@ -244,6 +244,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	top: 32px !important;
 	left: unset !important;
 	width: 40vw !important;
+	border-top: 0 !important;
+	border-left: 1px solid #aaa !important;
 }
 
 #query-monitor #qm-wrapper {
