@@ -211,8 +211,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  width: 100% !important;
   direction: ltr !important;
+}
+#query-monitor:not(.qm-show-side) {
+  width: 100% !important;
 }
 #query-monitor ::selection {
   background-color: #B9D6FB !important;
@@ -242,7 +244,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   height: calc( 100vh - 32px ) !important;
   top: 32px !important;
   left: unset !important;
-  width: 50vw !important;
   border-top: 0 !important;
   border-left: 1px solid #aaa !important;
 }
