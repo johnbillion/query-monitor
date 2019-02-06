@@ -480,7 +480,7 @@ if ( window.jQuery ) {
 			if ( container.hasClass('qm-show-side') ) {
 				var w = localStorage.getItem( container_width_key );
 
-				if ( w !== null ) {
+				if ( w !== null && w < $(window).width() ) {
 					container.width( w );
 				} else {
 					container.width( minwidth );
