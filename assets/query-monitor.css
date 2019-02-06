@@ -238,6 +238,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   height: 40%;
 }
 
+#query-monitor.qm-show,
+#query-monitor.qm-show.qm-show-side {
+	height: calc( 100vh - 32px ) !important;
+	top: 32px !important;
+	left: unset !important;
+	width: 40vw !important;
+}
+
 #query-monitor #qm-wrapper {
   display: flex;
   flex-grow: 1 !important;
