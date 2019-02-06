@@ -443,6 +443,11 @@ if ( window.jQuery ) {
 				container.height( maxheight );
 			}
 			localStorage.setItem( container_storage_key, container.height() );
+
+			if ( $(window).width() < 960 ) {
+				container.removeClass('qm-show-side');
+				localStorage.removeItem( container_position_key );
+			}
 		});
 
 		$('.qm-button-container-close').click(function(){
