@@ -500,8 +500,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 20px !important;
 }
 #query-monitor-main .qm-concerns table {
-  margin-bottom: 20px !important;
   border-top: 1px solid #23282d !important;
+  margin-bottom: 20px !important;
 }
 #query-monitor-main .qm-non-tabular h3 {
   font-size: 14px !important;
