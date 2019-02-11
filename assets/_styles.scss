@@ -237,7 +237,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		@include qm-narrow();
 
 		#qm-title {
+			cursor: default !important;
+		}
+
+		#qm-side-resizer {
+			background: transparent !important;
 			cursor: ew-resize !important;
+			display: block !important;
+			height: 100% !important;
+			position: absolute !important;
+			left: -2px !important;
+			top: 0 !important;
+			width: 4px !important;
+			z-index: 2 !important;
 		}
 	}
 

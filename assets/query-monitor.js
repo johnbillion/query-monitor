@@ -374,7 +374,7 @@ if ( window.jQuery ) {
 
 		var startY, startX, resizerHeight;
 
-		$(document).on('mousedown', '#qm-title', function(event) {
+		$(document).on('mousedown', '.qm-resizer', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
 			startY        = container.outerHeight() + event.clientY;
 			startX        = container.outerWidth() + event.clientX;

@@ -252,7 +252,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   display: block;
 }
 #query-monitor-main.qm-show-right #qm-title {
+  cursor: default !important;
+}
+#query-monitor-main.qm-show-right #qm-side-resizer {
+  background: transparent !important;
   cursor: ew-resize !important;
+  display: block !important;
+  height: 100% !important;
+  position: absolute !important;
+  left: -2px !important;
+  top: 0 !important;
+  width: 4px !important;
+  z-index: 2 !important;
 }
 #query-monitor-main #qm-wrapper {
   display: flex;
