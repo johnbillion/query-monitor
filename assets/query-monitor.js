@@ -387,7 +387,7 @@ if ( window.jQuery ) {
 		});
 
 		function qm_do_resizer_drag(event) {
-			if ( ! container.hasClass('qm-show-side') ) {
+			if ( ! container.hasClass('qm-show-right') ) {
 				var h = ( startY - event.clientY );
 				if ( h >= resizerHeight && h < ( $(window).height() - toolbarHeight ) ) {
 					container.height( h );
@@ -404,11 +404,11 @@ if ( window.jQuery ) {
 			$(document).off('mousemove', qm_do_resizer_drag);
 			$(document).off('mouseup', qm_stop_resizer_drag);
 
-			if ( ! container.hasClass('qm-show-side') ) {
+			if ( ! container.hasClass('qm-show-right') ) {
 				localStorage.removeItem( container_position_key );
 				localStorage.setItem( container_storage_key, container.height() );
 			} else {
-				localStorage.setItem( container_position_key, 'side' );
+				localStorage.setItem( container_position_key, 'right' );
 				localStorage.setItem( container_width_key, container.width() );
 			}
 		}
@@ -417,7 +417,7 @@ if ( window.jQuery ) {
 		var h = localStorage.getItem( container_storage_key );
 		var w = localStorage.getItem( container_width_key );
 		if ( ! container.hasClass('qm-peek') ) {
-			if ( p === 'side' && w !== null ) {
+			if ( p === 'right' && w !== null ) {
 				if ( w < minwidth ) {
 					w = minwidth;
 				}
@@ -425,7 +425,7 @@ if ( window.jQuery ) {
 					w = maxwidth;
 				}
 				container.width( w );
-				container.addClass('qm-show-side');
+				container.addClass('qm-show-right');
 			} else if ( h !== null ) {
 				if ( h < minheight ) {
 					h = minheight;
@@ -457,7 +457,7 @@ if ( window.jQuery ) {
 				localStorage.setItem( container_width_key, container.width() );
 			}
 			if ( $(window).width() < 960 ) {
-				container.removeClass('qm-show-side');
+				container.removeClass('qm-show-right');
 				localStorage.removeItem( container_position_key );
 			}
 		});
@@ -475,9 +475,9 @@ if ( window.jQuery ) {
 		});
 
 		$('.qm-button-container-position').click(function(){
-			container.toggleClass('qm-show-side');
+			container.toggleClass('qm-show-right');
 
-			if ( container.hasClass('qm-show-side') ) {
+			if ( container.hasClass('qm-show-right') ) {
 				var w = localStorage.getItem( container_width_key );
 
 				if ( w !== null && w < $(window).width() ) {

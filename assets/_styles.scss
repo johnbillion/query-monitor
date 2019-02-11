@@ -195,7 +195,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		z-index: 99998 !important;
 	}
 
-	&:not(.qm-show-side) {
+	&:not(.qm-show-right) {
 		width: 100% !important;
 	}
 
@@ -225,7 +225,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		height: 40%;
 	}
 
-	&.qm-show-side {
+	&.qm-show-right {
 		height: calc( 100vh - 32px ) !important;
 		top: 32px !important;
 		left: unset !important;
