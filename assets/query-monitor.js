@@ -371,14 +371,12 @@ if ( window.jQuery ) {
 
 		$.qm.tableSort({target: $('.qm-sortable')});
 
-		var startY, startX, resizerHeight, resizerWidth, toolbarHeight, adminmenuWidth;
+		var startY, startX, resizerHeight, toolbarHeight;
 
-		toolbarHeight  = $('#wpadminbar').outerHeight();
-		adminmenuWidth = $('#adminmenuwrap').outerWidth();
+		toolbarHeight = $('#wpadminbar').outerHeight();
 
 		$(document).on('mousedown', '#qm-title', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
-			resizerWidth  = $(this).outerWidth() - 1;
 			startY        = container.outerHeight() + event.clientY;
 			startX        = container.outerWidth() + event.clientX;
 
