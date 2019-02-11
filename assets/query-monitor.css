@@ -286,8 +286,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 3px 0 2px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-position .dashicons {
-  font-size: 17px !important;
-  margin: 2px 0 3px !important;
+  font-size: 15px !important;
+  margin: 4px 0 1px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-close .dashicons {
   margin: 2px 0 3px !important;
