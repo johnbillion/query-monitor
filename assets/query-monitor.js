@@ -48,8 +48,9 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
+		var toolbarHeight          = $('#wpadminbar').outerHeight();
 		var minheight              = 100;
-		var maxheight              = ( $(window).height() - 50 );
+		var maxheight              = ( $(window).height() - toolbarHeight );
 		var minwidth               = 300;
 		var maxwidth               = $(window).width();
 		var container              = $('#query-monitor-main');
@@ -371,9 +372,7 @@ if ( window.jQuery ) {
 
 		$.qm.tableSort({target: $('.qm-sortable')});
 
-		var startY, startX, resizerHeight, toolbarHeight;
-
-		toolbarHeight = $('#wpadminbar').outerHeight();
+		var startY, startX, resizerHeight;
 
 		$(document).on('mousedown', '#qm-title', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
@@ -387,7 +386,7 @@ if ( window.jQuery ) {
 		function qm_do_resizer_drag(event) {
 			if ( ! container.hasClass('qm-show-right') ) {
 				var h = ( startY - event.clientY );
-				if ( h >= resizerHeight && h < ( $(window).height() - toolbarHeight ) ) {
+				if ( h >= resizerHeight && h <= maxheight ) {
 					container.height( h );
 				}
 			} else {
@@ -436,10 +435,10 @@ if ( window.jQuery ) {
 		}
 
 		$(window).on('resize', function(){
-			var maxheight = ( $(window).height() - toolbarHeight );
 			var h         = container.height();
 			var w         = container.width();
 
+			maxheight = ( $(window).height() - toolbarHeight );
 			maxwidth  = $(window).width();
 
 			if ( h < minheight ) {
