@@ -486,7 +486,7 @@ if ( window.jQuery ) {
 					container.width( minwidth );
 				}
 
-				localStorage.setItem( container_position_key, 'side' );
+				localStorage.setItem( container_position_key, 'right' );
 			} else {
 				localStorage.removeItem( container_position_key );
 			}
