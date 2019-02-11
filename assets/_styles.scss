@@ -195,10 +195,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		z-index: 99998 !important;
 	}
 
-	&:not(.qm-show-right) {
-		width: 100% !important;
-	}
-
 	::selection {
 		background-color: #B9D6FB !important;
 		color: $qm-container-fg !important;
@@ -223,6 +219,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	&.qm-show {
 		height: 40%;
+		width: 40%;
+	}
+
+	&:not(.qm-show-right) {
+		width: 100% !important;
 	}
 
 	&.qm-show-right {

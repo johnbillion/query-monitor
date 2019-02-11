@@ -477,8 +477,6 @@ if ( window.jQuery ) {
 
 				if ( w !== null && w < $(window).width() ) {
 					container.width( w );
-				} else {
-					container.width( minwidth );
 				}
 
 				localStorage.setItem( container_position_key, 'right' );
