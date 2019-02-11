@@ -5,6 +5,7 @@ $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
 $qm-font-code-line-height: 18px;
+$qm-admin-toolbar-height: 32px;
 
 // === Admin Toolbar ===
 
@@ -227,8 +228,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	&.qm-show-right {
-		height: calc( 100vh - 32px ) !important;
-		top: 32px !important;
+		height: calc( 100vh - #{$qm-admin-toolbar-height} ) !important;
+		top: $qm-admin-toolbar-height !important;
 		left: unset !important;
 		border-top: 0 !important;
 		border-left: 1px solid $qm-panel-border !important;
