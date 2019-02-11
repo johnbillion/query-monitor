@@ -53,7 +53,7 @@ if ( window.jQuery ) {
 		var minwidth               = 400;
 		var maxwidth               = ( $(window).width() - 200 );
 		var container              = $('#query-monitor-main');
-		var container_storage_key  = 'qm-container-height';
+		var container_height_key   = 'qm-container-height';
 		var container_pinned_key   = 'qm-container-pinned';
 		var container_position_key = 'qm-container-position';
 		var container_width_key    = 'qm-container-width';
@@ -406,7 +406,7 @@ if ( window.jQuery ) {
 
 			if ( ! container.hasClass('qm-show-right') ) {
 				localStorage.removeItem( container_position_key );
-				localStorage.setItem( container_storage_key, container.height() );
+				localStorage.setItem( container_height_key, container.height() );
 			} else {
 				localStorage.setItem( container_position_key, 'right' );
 				localStorage.setItem( container_width_key, container.width() );
@@ -414,7 +414,7 @@ if ( window.jQuery ) {
 		}
 
 		var p = localStorage.getItem( container_position_key );
-		var h = localStorage.getItem( container_storage_key );
+		var h = localStorage.getItem( container_height_key );
 		var w = localStorage.getItem( container_width_key );
 		if ( ! container.hasClass('qm-peek') ) {
 			if ( p === 'right' && w !== null ) {
@@ -450,7 +450,7 @@ if ( window.jQuery ) {
 			if ( h > maxheight ) {
 				container.height( maxheight );
 			}
-			localStorage.setItem( container_storage_key, container.height() );
+			localStorage.setItem( container_height_key, container.height() );
 
 			if ( w > $(window).width() ) {
 				container.width( minwidth );
