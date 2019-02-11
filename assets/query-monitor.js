@@ -423,7 +423,7 @@ if ( window.jQuery ) {
 				}
 				container.width( w );
 				container.addClass('qm-show-right');
-			} else if ( h !== null ) {
+			} else if ( p !== 'right' && h !== null ) {
 				if ( h < minheight ) {
 					h = minheight;
 				}
