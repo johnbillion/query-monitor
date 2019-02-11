@@ -243,6 +243,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   border-top: 0 !important;
   border-left: 1px solid #bbc8d4 !important;
 }
+#query-monitor-main.qm-show-side #qm-panel-menu,
+#query-monitor-main.qm-show-side #qm-title h1.qm-title-heading {
+  display: none;
+}
+#query-monitor-main.qm-show-side #qm-title div.qm-title-heading {
+  display: block;
+}
 #query-monitor-main.qm-show-side #qm-title {
   cursor: ew-resize !important;
 }

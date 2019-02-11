@@ -111,6 +111,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 // === Main QM Panel ===
 
+@mixin qm-narrow() {
+	#qm-panel-menu,
+	#qm-title h1.qm-title-heading {
+		display: none;
+	}
+
+	#qm-title div.qm-title-heading {
+		display: block;
+	}
+}
+
 #query-monitor-main {
 	&,
 	dl,
@@ -220,6 +231,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		left: unset !important;
 		border-top: 0 !important;
 		border-left: 1px solid $qm-panel-border !important;
+
+		@include qm-narrow();
 
 		#qm-title {
 			cursor: ew-resize !important;
@@ -1025,15 +1038,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	@media screen and (max-width: 782px) {
-
-		#qm-panel-menu,
-		#qm-title h1.qm-title-heading {
-			display: none;
-		}
-
-		#qm-title div.qm-title-heading {
-			display: block;
-		}
+		@include qm-narrow();
 	}
 
 	// State Toggle
