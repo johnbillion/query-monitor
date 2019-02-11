@@ -51,7 +51,7 @@ if ( window.jQuery ) {
 		var minheight              = 100;
 		var maxheight              = ( $(window).height() - 50 );
 		var minwidth               = 400;
-		var maxwidth               = ( $(window).width() - 200 );
+		var maxwidth               = $(window).width();
 		var container              = $('#query-monitor-main');
 		var container_height_key   = 'qm-container-height';
 		var container_pinned_key   = 'qm-container-pinned';
@@ -442,7 +442,7 @@ if ( window.jQuery ) {
 			var h         = container.height();
 			var w         = container.width();
 
-			maxwidth  = ( $(window).width() - 200 );
+			maxwidth  = $(window).width();
 
 			if ( h < minheight ) {
 				container.height( minheight );
