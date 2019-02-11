@@ -12,7 +12,7 @@ abstract class QM_Dispatcher {
 		$this->qm = $qm;
 
 		if ( ! defined( 'QM_COOKIE' ) ) {
-			define( 'QM_COOKIE', 'query_monitor_' . COOKIEHASH );
+			define( 'QM_COOKIE', 'wp-query_monitor_' . COOKIEHASH );
 		}
 
 		add_action( 'init', array( $this, 'init' ) );
