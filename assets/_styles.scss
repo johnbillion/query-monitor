@@ -303,6 +303,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin: 4px 0 1px !important;
 	}
 
+	#qm-title .qm-button-container-close {
+		margin-right: 5px !important;
+	}
+
 	#qm-title .qm-button-container-close .dashicons {
 		margin: 2px 0 3px !important;
 	}
