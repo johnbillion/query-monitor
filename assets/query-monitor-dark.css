@@ -831,6 +831,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main button,
 #query-monitor-main select {
   background: none !important;
+  cursor: pointer !important;
   height: auto !important;
   margin: 0 !important;
   width: auto !important;
