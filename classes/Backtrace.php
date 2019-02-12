@@ -123,37 +123,16 @@ class QM_Backtrace {
 		$components = array();
 
 		foreach ( $this->trace as $frame ) {
-			try {
+			$component = self::get_frame_component( $frame );
 
-				if ( isset( $frame['class'] ) ) {
-					if ( ! class_exists( $frame['class'], false ) ) {
-						continue;
-					}
-					if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
-						continue;
-					}
-					$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
-					$file = $ref->getFileName();
-				} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
-					$ref = new ReflectionFunction( $frame['function'] );
-					$file = $ref->getFileName();
-				} elseif ( isset( $frame['file'] ) ) {
-					$file = $frame['file'];
-				} else {
-					continue;
-				}
-
-				$comp = QM_Util::get_file_component( $file );
-				$components[ $comp->type ] = $comp;
-
-				if ( 'plugin' === $comp->type ) {
+			if ( $component ) {
+				if ( 'plugin' === $component->type ) {
 					// If the component is a plugin then it can't be anything else,
 					// so short-circuit and return early.
-					return $comp;
+					return $component;
 				}
-			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			} catch ( ReflectionException $e ) {
-				# nothing
+
+				$components[ $component->type ] = $component;
 			}
 		}
 
@@ -165,6 +144,34 @@ class QM_Backtrace {
 
 		# This should not happen
 
+	}
+
+	public static function get_frame_component( array $frame ) {
+			try {
+
+				if ( isset( $frame['class'] ) ) {
+					if ( ! class_exists( $frame['class'], false ) ) {
+						return null;
+					}
+					if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
+						return null;
+					}
+					$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
+					$file = $ref->getFileName();
+				} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
+					$ref = new ReflectionFunction( $frame['function'] );
+					$file = $ref->getFileName();
+				} elseif ( isset( $frame['file'] ) ) {
+					$file = $frame['file'];
+				} else {
+					return null;
+				}
+
+				return QM_Util::get_file_component( $file );
+
+			} catch ( ReflectionException $e ) {
+				return null;
+			}
 	}
 
 	public function get_trace() {
