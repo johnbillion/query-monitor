@@ -852,6 +852,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor-main .qm .qm-filter-container label {
   cursor: default !important;
+  white-space: nowrap !important;
 }
 #query-monitor-main .qm .qm-filter-container div {
   /* Some themes use Select2 etc on all selects. This hides that. */

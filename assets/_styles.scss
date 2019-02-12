@@ -943,6 +943,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm .qm-filter-container label {
 		cursor: default !important;
+		white-space: nowrap !important;
 	}
 
 	.qm .qm-filter-container div {
