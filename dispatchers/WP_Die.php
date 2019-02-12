@@ -22,7 +22,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 	public function filter_wp_die_handler( $handler ) {
 		$this->trace = new QM_Backtrace( array(
-			'ignore_frames' => 3,
+			'ignore_frames' => 2,
 		) );
 
 		return $handler;
@@ -43,6 +43,9 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		foreach ( $filtered_trace as $i => $item ) {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
+
+		// Ignore the `apply_filters('wp_die_handler')` stack frame:
+		array_pop( $stack );
 
 		?>
 		<style>
