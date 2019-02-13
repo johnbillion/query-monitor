@@ -44,5 +44,10 @@
 		"danieltj27/dark-mode": "3.2",
 		"wp-coding-standards/wpcs": "^2",
 		"phpunit/phpunit": "^5"
+	},
+	"scripts": {
+		"test": [
+			"bin/test.sh"
+		]
 	}
 }

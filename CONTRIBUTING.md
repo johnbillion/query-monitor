@@ -19,7 +19,7 @@ Query Monitor has no build process, so you can clone this repo and activate it l
 
 To run the whole test suite (which includes PHPUnit, code sniffer, and linting), execute the following:
 
-	./bin/test.sh
+	composer test
 
 ## Running the Unit Tests
 

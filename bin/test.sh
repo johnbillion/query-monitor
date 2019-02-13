@@ -29,11 +29,11 @@ fi
 
 # Run single-site unit tests:
 export WP_MULTISITE=0
-./vendor/bin/phpunit -v --exclude-group=ms-required
+./vendor/bin/phpunit -v --colors=always --exclude-group=ms-required
 
 # Run Multisite unit tests:
 export WP_MULTISITE=1
-./vendor/bin/phpunit -v --exclude-group=ms-excluded
+./vendor/bin/phpunit -v --colors=always --exclude-group=ms-excluded
 
 # Run the code sniffer:
 ./vendor/bin/phpcs -psn --colors .
