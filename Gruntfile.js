@@ -11,21 +11,21 @@ module.exports = function (grunt) {
 	});
     var ignored_gitattributes = gag( '.gitattributes', { negate: true } ).map(function(value) {
 		return value.replace(/^!\//,'!');
-    });
+	});
+	var config = {};
 
-	grunt.initConfig({
-        pkg: pkg,
+	config.pkg = pkg;
 
-		clean: {
+	config.clean = {
 			main: [
 				'<%= wp_deploy.deploy.options.build_dir %>'
 			],
 			css: [
 				'assets/*.css'
 			]
-		},
+	};
 
-		copy: {
+	config.copy = {
 			main: {
 				src: [
 					'**',
@@ -40,9 +40,9 @@ module.exports = function (grunt) {
 				],
 				dest: '<%= wp_deploy.deploy.options.build_dir %>/'
 			}
-		},
+	};
 
-		sass: {
+	config.sass = {
 			dist: {
 				options: {
 					sourcemap: 'none',
@@ -53,9 +53,9 @@ module.exports = function (grunt) {
 					'assets/query-monitor.css': 'assets/query-monitor.scss'
 				}
 			}
-		},
+	};
 
-		watch: {
+	config.watch = {
 			options: {
 				interval: 1000
 			},
@@ -63,9 +63,9 @@ module.exports = function (grunt) {
 				files: '**/*.scss',
 				tasks: ['sass']
 			}
-		},
+	};
 
-		wp_deploy: {
+	config.wp_deploy = {
 			deploy: {
 				options: {
 					svn_user: 'johnbillion',
@@ -74,8 +74,9 @@ module.exports = function (grunt) {
 					assets_dir: 'assets-wp-repo'
 				}
 			}
-        }
-	});
+	};
+
+	grunt.initConfig(config);
 
 	grunt.registerTask('default', [
 		'watch'
