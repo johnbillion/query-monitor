@@ -68,6 +68,7 @@ module.exports = function (grunt) {
 		wp_deploy: {
 			deploy: {
 				options: {
+					svn_user: 'johnbillion',
 					plugin_slug: '<%= pkg.name %>',
 					build_dir: 'build',
 					assets_dir: 'assets-wp-repo'
