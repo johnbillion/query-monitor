@@ -78,6 +78,16 @@ module.exports = function (grunt) {
 
 	grunt.initConfig(config);
 
+	grunt.registerTask('build', [
+		'clean',
+		'copy'
+	]);
+
+	grunt.registerTask('deploy', [
+		'build',
+		'wp_deploy'
+	]);
+
 	grunt.registerTask('default', [
 		'watch'
 	]);
