@@ -19,9 +19,6 @@ module.exports = function (grunt) {
 	config.clean = {
 		main: [
 			'<%= wp_deploy.deploy.options.build_dir %>'
-		],
-		css: [
-			'assets/*.css'
 		]
 	};
 
