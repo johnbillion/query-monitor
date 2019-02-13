@@ -17,6 +17,7 @@
     "grunt-contrib-cssmin": "^2",
     "grunt-contrib-sass": "^1",
     "grunt-contrib-watch": "^1",
+    "grunt-version": "^1",
     "grunt-wp-deploy": "git+ssh://git@github.com:johnbillion/grunt-wp-deploy.git#feature/remote-tag-copy",
     "grunt-wp-readme-to-markdown": "^2",
     "load-grunt-tasks": "^4"
