@@ -416,6 +416,29 @@ class QM_Util {
 		}, $fqn );
 	}
 
+	/**
+	 * Helper function for JSON encoding data and formatting it in a consistent and compatible manner.
+	 *
+	 * @param mixed $data The data to be JSON encoded.
+	 * @return string The JSON encoded data.
+	 */
+	public static function json_format( $data ) {
+		$json_options = JSON_PRETTY_PRINT;
+
+		if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+			// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
+			$json_options |= JSON_UNESCAPED_SLASHES;
+		}
+
+		$json = json_encode( $data, $json_options );
+
+		if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
+			$json = wp_unslash( $json );
+		}
+
+		return $json;
+	}
+
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );
