@@ -102,7 +102,9 @@ class QM_Collector_Logger extends QM_Collector {
 
 		foreach ( $context as $key => $val ) {
 			// check that the value can be casted to string
-			if ( is_scalar( $val ) || ( is_object( $val ) && method_exists( $val, '__toString' ) ) ) {
+			if ( is_bool( $val ) ) {
+				$replace[ "{{$key}}" ] = ( $val ? 'true' : 'false' );
+			} elseif ( is_scalar( $val ) || ( is_object( $val ) && method_exists( $val, '__toString' ) ) ) {
 				$replace[ "{{$key}}" ] = $val;
 			}
 		}
