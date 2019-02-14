@@ -616,7 +616,7 @@ if ( window.jQuery ) {
 window.addEventListener('load', function() {
 	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
 		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
-		document.getElementById( 'query-monitor' ).className += ' qm-broken';
+		document.getElementById( 'query-monitor-main' ).className += ' qm-broken';
 		console.error( document.getElementById( 'qm-broken' ).textContent );
 
 		if ( 'undefined' === typeof jQuery ) {
@@ -630,7 +630,7 @@ window.addEventListener('load', function() {
 		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
 		if ( menu_item ) {
 			menu_item.addEventListener( 'click', function() {
-				document.getElementById( 'query-monitor' ).className += ' qm-show';
+				document.getElementById( 'query-monitor-main' ).className += ' qm-show';
 			} );
 		}
 	}
