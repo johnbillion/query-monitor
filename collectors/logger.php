@@ -89,14 +89,14 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		$this->data['logs'][] = array(
-			'message' => $this->interpolate( $message, $context ),
+			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
 			'trace'   => $trace,
 			'level'   => $level,
 		);
 	}
 
-	protected function interpolate( $message, array $context = array() ) {
+	protected static function interpolate( $message, array $context = array() ) {
 		// build a replacement array with braces around the context keys
 		$replace = array();
 
