@@ -61,7 +61,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 				$class = '';
 			}
 
-			echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+			echo '<tr' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
 
 			echo '<td scope="row" class="qm-nowrap">';
 
