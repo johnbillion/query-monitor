@@ -88,6 +88,10 @@ class QM_Collector_Logger extends QM_Collector {
 			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
+		if ( ! QM_Util::is_stringy( $message ) ) {
+			$message = QM_Util::json_format( $message );
+		}
+
 		$this->data['logs'][] = array(
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
@@ -104,7 +108,7 @@ class QM_Collector_Logger extends QM_Collector {
 			// check that the value can be casted to string
 			if ( is_bool( $val ) ) {
 				$replace[ "{{$key}}" ] = ( $val ? 'true' : 'false' );
-			} elseif ( is_scalar( $val ) || ( is_object( $val ) && method_exists( $val, '__toString' ) ) ) {
+			} elseif ( is_scalar( $val ) || QM_Util::is_stringy( $val ) ) {
 				$replace[ "{{$key}}" ] = $val;
 			}
 		}

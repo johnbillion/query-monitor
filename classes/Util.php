@@ -439,6 +439,10 @@ class QM_Util {
 		return $json;
 	}
 
+	public static function is_stringy( $data ) {
+		return ( is_string( $data ) || ( is_object( $data ) && method_exists( $data, '__toString' ) ) );
+	}
+
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );
