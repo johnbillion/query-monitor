@@ -78,14 +78,14 @@ class QM_Collector_Logger extends QM_Collector {
 
 		if ( is_wp_error( $message ) ) {
 			$message = sprintf(
-				'%s (%s)',
+				'WP_Error: %s (%s)',
 				$message->get_error_message(),
 				$message->get_error_code()
 			);
 		}
 
 		if ( $message instanceof Exception ) {
-			$message = $message->getMessage();
+			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
 		$this->data['logs'][] = array(
