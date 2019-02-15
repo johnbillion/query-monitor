@@ -251,6 +251,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			width: 4px !important;
 			z-index: 2 !important;
 		}
+
+		&.qm-peek {
+			height: 100vh !important;
+			top: 0 !important;
+		}
 	}
 
 	#qm-wrapper {
