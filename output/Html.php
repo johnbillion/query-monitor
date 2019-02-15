@@ -352,33 +352,9 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns a file path, name, and line number. Safe for output.
+	 * Returns a file path, name, and line number, or a clickable link to the file. Safe for output.
 	 *
-	 * If clickable file links are enabled via the `xdebug.file_link_format` setting in the PHP configuration,
-	 * a link such as this is returned:
-	 *
-	 *     <a href="subl://open/?line={line}&url={file}">{text}</a>
-	 *
-	 * Otherwise, the display text and file details such as this is returned:
-	 *
-	 *     {text}<br>{file}:{line}
-	 *
-	 * Further information on clickable stack traces for your editor:
-	 *
-	 * PhpStorm: (support is built in)
-	 * `phpstorm://open?file=%f&line=%l`
-	 *
-	 * Visual Studio Code: (support is built in)
-	 * `vscode://file/%f:%l`
-	 *
-	 * Sublime Text: https://github.com/corysimmons/subl-handler
-	 * `subl://open/?url=file://%f&line=%l`
-	 *
-	 * Atom: https://github.com/WizardOfOgz/atom-handler
-	 * `atm://open/?url=file://%f&line=%l`
-	 *
-	 * Netbeans: http://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/
-	 * `nbopen://%f:%l`
+	 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 	 *
 	 * @param  string $text        The display text, such as a function name or file name.
 	 * @param  string $file        The full file path and name.
@@ -442,11 +418,12 @@ abstract class QM_Output_Html extends QM_Output {
 			$format = ini_get( 'xdebug.file_link_format' );
 
 			/**
-			 * Filters the file link format.
+			 * Filters the clickable file link format.
 			 *
+			 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 			 * @since 3.0.0
 			 *
-			 * @param string $format The format of the file link.
+			 * @param string $format The format of the clickable file link.
 			 */
 			$format = apply_filters( 'qm/output/file_link_format', $format );
 			if ( empty( $format ) ) {
@@ -461,11 +438,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 	public static function get_file_path_map() {
 		/**
-		 * The file path map.
+		 * Filters the file path mapping for clickable file links.
 		 *
+		 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 		 * @since 3.0.0
 		 *
-		 * @param array $file_map Array of file paths.
+		 * @param array $file_map Array of file path mappings.
 		 */
 		return apply_filters( 'qm/output/file_path_map', array() );
 	}
