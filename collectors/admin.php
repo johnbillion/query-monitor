@@ -16,6 +16,10 @@ class QM_Collector_Admin extends QM_Collector {
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
+			'admin_notices',
+			'all_admin_notices',
+			'network_admin_notices',
+			'user_admin_notices',
 		);
 
 		if ( ! empty( $this->data['list_table'] ) ) {
