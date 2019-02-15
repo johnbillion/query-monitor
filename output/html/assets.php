@@ -179,8 +179,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			return $menu;
 		}
 
-		$type  = $this->collector->get_dependency_type();
-		$label = $this->collector->name();
+		$type   = $this->collector->get_dependency_type();
+		$label  = $this->collector->name();
+		$label .= ' (' . ( count( $data['assets']['header'] ) + count( $data['assets']['footer'] ) ) . ')';
 
 		$args = array(
 			'title' => esc_html( $label ),
