@@ -554,8 +554,21 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main .qm-non-tabular p {
   margin-bottom: 10px !important;
 }
+#query-monitor-main .qm-non-tabular dl {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  max-width: 60em !important;
+}
+#query-monitor-main .qm-non-tabular dt {
+  border-top: 1px solid #ddd !important;
+  flex-grow: 0;
+  flex: 1 0 16em;
+  padding: 10px 10px 10px 0 !important;
+}
 #query-monitor-main .qm-non-tabular dd {
-  margin: 0 0 10px 10px !important;
+  border-top: 1px solid #ddd !important;
+  flex: 1 0 calc(100% - 10px - 16em);
+  padding: 10px 0 !important;
 }
 #query-monitor-main .qm-non-tabular h3 a {
   float: right !important;
