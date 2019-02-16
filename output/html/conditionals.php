@@ -28,6 +28,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '</ul>';
 
 		echo '</section>';
+		echo '</div>';
+
+		echo '<div class="qm-boxed">';
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
 

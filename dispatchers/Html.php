@@ -377,7 +377,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 		echo '</section>';
+		echo '</div>';
 
+		echo '<div class="qm-boxed">';
 		$constants = array(
 			'QM_DB_EXPENSIVE'          => array(
 				/* translators: %s: The default value for a PHP constant */
