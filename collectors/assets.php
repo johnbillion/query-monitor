@@ -136,6 +136,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 					}
 				}
 
+				$extra = array();
+
+				if ( !empty( $dependency->extra ) )
+					foreach ( $dependency->extra as $key => $value )
+						$extra[$key] = is_array( $value ) ? count( $value ) : true;
+
 				$this->data['assets'][ $position ][ $handle ] = array(
 					'host'         => $host,
 					'source'       => $source,
@@ -145,6 +151,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 					'display'      => $display,
 					'dependents'   => $dependents,
 					'dependencies' => $dependencies,
+					'extra'        => $extra,
 				);
 			}
 		}
