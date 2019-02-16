@@ -110,7 +110,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$extra = array();
 
-		if ( !empty( $asset['extra'] ) ) {
+		if ( ! empty( $asset['extra'] ) ) {
 			foreach ( $asset['extra'] as $key => $count ) {
 				$extra[] = $key . ( is_numeric( $count ) ? ' (' . $count . ')' : '' );
 			}
