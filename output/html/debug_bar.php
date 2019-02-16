@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * 'Debug Bar' output for HTML pages.
+ *
+ * @package query-monitor
+ */
 
 class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
@@ -22,32 +13,41 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	}
 
 	public function output() {
+		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 
-		$target = get_class( $this->collector->get_panel() );
+		$this->before_debug_bar_output();
 
-		echo '<div class="qm qm-debug-bar" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
-
-		echo '<tr>';
-		echo '<td>';
 		echo '<div id="debug-menu-target-' . esc_attr( $target ) . '" class="debug-menu-target qm-debug-bar-output">';
 
+		ob_start();
 		$this->collector->render();
+		$panel = ob_get_clean();
+
+		$panel = str_replace( array(
+			'<h4',
+			'<h3',
+			'<h2',
+			'<h1',
+			'</h4>',
+			'</h3>',
+			'</h2>',
+			'</h1>',
+		), array(
+			'<h5',
+			'<h4',
+			'<h3',
+			'<h2',
+			'</h5>',
+			'</h4>',
+			'</h3>',
+			'</h2>',
+		), $panel );
+
+		echo $panel; // @codingStandardsIgnoreLine
 
 		echo '</div>';
-		echo '</td>';
-		echo '</tr>';
 
-		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
-
+		$this->after_debug_bar_output();
 	}
 
 }
@@ -60,11 +60,11 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 	}
 
 	foreach ( $debug_bar->panels as $panel ) {
-		$panel_id  = strtolower( get_class( $panel ) );
+		$panel_id  = strtolower( sanitize_html_class( get_class( $panel ) ) );
 		$collector = QM_Collectors::get( "debug_bar_{$panel_id}" );
 
-		if ( $collector and $collector->is_visible() ) {
-			$output["debug_bar_{$panel_id}"] = new QM_Output_Html_Debug_Bar( $collector );
+		if ( $collector && $collector->is_visible() ) {
+			$output[ "debug_bar_{$panel_id}" ] = new QM_Output_Html_Debug_Bar( $collector );
 		}
 	}
 

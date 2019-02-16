@@ -1,31 +1,20 @@
 <?php
-/*
-Plugin Name: Query Monitor Database Class
+/**
+ * Plugin Name: Query Monitor Database Class
+ *
+ * *********************************************************************
+ *
+ * Ensure this file is symlinked to your wp-content directory to provide
+ * additional database query information in Query Monitor's output.
+ *
+ * *********************************************************************
+ *
+ * @package query-monitor
+ */
 
-*********************************************************************
+defined( 'ABSPATH' ) || die();
 
-Ensure this file is symlinked to your wp-content directory to provide
-additional database query information in Query Monitor's output.
-
-*********************************************************************
-
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
-
-defined( 'ABSPATH' ) or die();
-
-if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
+if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;
 }
 
@@ -42,12 +31,24 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
-if ( ! is_readable( $backtrace = "{$qm_dir}/classes/Backtrace.php" ) ) {
+$plugin = "{$qm_dir}/classes/Plugin.php";
+
+if ( ! is_readable( $plugin ) ) {
+	return;
+}
+require_once $plugin;
+
+if ( ! QM_Plugin::php_version_met() ) {
+	return;
+}
+
+$backtrace = "{$qm_dir}/classes/Backtrace.php";
+if ( ! is_readable( $backtrace ) ) {
 	return;
 }
 require_once $backtrace;
 
-if ( !defined( 'SAVEQUERIES' ) ) {
+if ( ! defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );
 }
 
@@ -65,7 +66,7 @@ class QM_DB extends wpdb {
 	/**
 	 * Class constructor
 	 */
-	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
+	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
 
 		foreach ( $this->qm_php_vars as $setting => &$val ) {
 			$val = ini_get( $setting );
@@ -83,7 +84,7 @@ class QM_DB extends wpdb {
 	 * @param string $query Database query
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
-	function query( $query ) {
+	public function query( $query ) {
 		if ( ! $this->ready ) {
 			if ( isset( $this->check_current_query ) ) {
 				// This property was introduced in WP 4.2
@@ -103,14 +104,30 @@ class QM_DB extends wpdb {
 		}
 
 		$i = $this->num_queries - 1;
-		$this->queries[$i]['trace'] = new QM_Backtrace( array(
-			'ignore_items' => 1,
+		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
+			'ignore_frames' => 1,
 		) );
 
+		if ( ! isset( $this->queries[ $i ][3] ) ) {
+			$this->queries[ $i ][3] = $this->time_start;
+		}
+
 		if ( $this->last_error ) {
-			$this->queries[$i]['result'] = new WP_Error( 'qmdb', $this->last_error );
+			$code = 'qmdb';
+			if ( $this->use_mysqli ) {
+				if ( $this->dbh instanceof mysqli ) {
+					$code = mysqli_errno( $this->dbh );
+				}
+			} else {
+				if ( is_resource( $this->dbh ) ) {
+					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
+					// @codingStandardsIgnoreLine
+					$code = mysql_errno( $this->dbh );
+				}
+			}
+			$this->queries[ $i ]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
-			$this->queries[$i]['result'] = $result;
+			$this->queries[ $i ]['result'] = $result;
 		}
 
 		return $result;
@@ -118,4 +135,5 @@ class QM_DB extends wpdb {
 
 }
 
+// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 $wpdb = new QM_DB( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );

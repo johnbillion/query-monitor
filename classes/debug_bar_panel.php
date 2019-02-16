@@ -1,22 +1,13 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Mock 'Debug Bar' panel class.
+ *
+ * @package query-monitor
+ */
 
 abstract class Debug_Bar_Panel {
 
-	public $_title = '';
+	public $_title   = '';
 	public $_visible = true;
 
 	public function __construct( $title = '' ) {
@@ -63,7 +54,7 @@ abstract class Debug_Bar_Panel {
 	}
 
 	public function Debug_Bar_Panel( $title = '' ) {
-		Debug_Bar_Panel::__construct( $title );
+		self::__construct( $title );
 	}
 
 }

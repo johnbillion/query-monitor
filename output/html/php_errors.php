@@ -1,24 +1,16 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * PHP error output for HTML pages.
+ *
+ * @package query-monitor
+ */
 
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 10 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 10 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
@@ -26,55 +18,87 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['errors'] ) ) {
+		if ( empty( $data['errors'] ) && empty( $data['silenced'] ) && empty( $data['suppressed'] ) ) {
 			return;
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		$levels     = array(
+			'Warning',
+			'Notice',
+			'Strict',
+			'Deprecated',
+		);
+		$components = $data['components'];
+
+		usort( $components, 'strcasecmp' );
+
+		$this->before_tabular_output();
+
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="2">' . esc_html__( 'PHP Error', 'query-monitor' ) . '</th>';
-		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Call Stack', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
+
 		echo '<tbody>';
 
-		$types = array(
-			'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-			'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-			'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-			'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
-		);
+		foreach ( $this->collector->types as $error_group => $error_types ) {
+			foreach ( $error_types as $type => $title ) {
 
-		foreach ( $types as $type => $title ) {
+				if ( ! isset( $data[ $error_group ][ $type ] ) ) {
+					continue;
+				}
 
-			if ( isset( $data['errors'][$type] ) ) {
+				foreach ( $data[ $error_group ][ $type ] as $error ) {
 
-				echo '<tr>';
-				echo '<td rowspan="' . count( $data['errors'][$type] ) . '">' . esc_html( $title ) . '</td>';
-				$first = true;
+					$component                     = $error['trace']->get_component();
+					$row_attr                      = array();
+					$row_attr['data-qm-component'] = $component->name;
+					$row_attr['data-qm-type']      = ucfirst( $type );
 
-				foreach ( $data['errors'][$type] as $error ) {
-
-					if ( !$first ) {
-						echo '<tr>';
+					if ( 'core' !== $component->context ) {
+						$row_attr['data-qm-component'] .= ' non-core';
 					}
 
-					$component = $error->trace->get_component();
-					$message   = wp_strip_all_tags( $error->message );
+					$attr = '';
 
-					echo '<td>' . esc_html( $message ) . '</td>';
-					echo '<td>' . esc_html( number_format_i18n( $error->calls ) ) . '</td>';
-					echo '<td>';
-					echo self::output_filename( $error->filename . ':' . $error->line, $error->file, $error->line ); // WPCS: XSS ok.
+					foreach ( $row_attr as $a => $v ) {
+						$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+					}
+
+					$is_warning = ( 'errors' === $error_group && 'warning' === $type );
+
+					if ( $is_warning ) {
+						$class = 'qm-warn';
+					} else {
+						$class = '';
+					}
+
+					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+					echo '<td scope="row" class="qm-nowrap">';
+
+					if ( $is_warning ) {
+						echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+					} else {
+						echo '<span class="dashicons" aria-hidden="true"></span>';
+					}
+
+					echo esc_html( $title );
 					echo '</td>';
 
+					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
+
 					$stack          = array();
-					$filtered_trace = $error->trace->get_filtered_trace();
+					$filtered_trace = $error['trace']->get_display_trace();
 
 					// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 					// we need to handle its somewhat unreliable stack trace items.
@@ -83,16 +107,25 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					foreach ( $filtered_trace as $i => $item ) {
 						if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
 							$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
-						} else if ( 0 === $i ) {
-							$stack[] = self::output_filename( $item['display'], $error->file, $error->line );
+						} elseif ( 0 === $i ) {
+							$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
 						} else {
-							$stack[] = $item['display'] . '<br>&nbsp;<span class="qm-info"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
+							$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr">';
-					echo implode( '<br>', $stack ); // WPCS: XSS ok.
-					echo '</td>';
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
+
+					echo self::build_toggler(); // WPCS: XSS ok;
+					if ( ! empty( $stack ) ) {
+						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					}
+
+					echo '<li>';
+					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
+					echo '</li>';
+
+					echo '</ol></td>';
 
 					if ( $component ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
@@ -101,33 +134,23 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '</tr>';
-
-					$first = false;
-
 				}
-
 			}
-
 		}
 
 		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
 
+		$this->after_tabular_output();
 	}
 
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['warning'] ) ) {
-			$class[] = 'qm-warning';
-		} else if ( isset( $data['errors']['notice'] ) ) {
-			$class[] = 'qm-notice';
-		} else if ( isset( $data['errors']['strict'] ) ) {
-			$class[] = 'qm-strict';
-		} else if ( isset( $data['errors']['deprecated'] ) ) {
-			$class[] = 'qm-deprecated';
+		if ( ! empty( $data['errors'] ) ) {
+			foreach ( $data['errors'] as $type => $errors ) {
+				$class[] = 'qm-' . $type;
+			}
 		}
 
 		return $class;
@@ -136,56 +159,99 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data = $this->collector->get_data();
+		$data       = $this->collector->get_data();
+		$menu_label = array();
 
-		if ( isset( $data['errors']['warning'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-warnings',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of PHP warnings */
-					__( 'PHP Warnings (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['warning'] ) )
-				) )
-			) );
+		$types = array(
+			/* translators: %s: Number of deprecated PHP errors */
+			'deprecated' => _nx_noop( '%s Deprecated', '%s Deprecated', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of strict PHP errors */
+			'strict'     => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of PHP notices */
+			'notice'     => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
+			/* translators: %s: Number of PHP warnings */
+			'warning'    => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
+		);
+
+		$key     = 'quiet';
+		$generic = false;
+
+		foreach ( $types as $type => $label ) {
+
+			$count      = 0;
+			$has_errors = false;
+
+			if ( isset( $data['suppressed'][ $type ] ) ) {
+				$has_errors = true;
+				$generic    = true;
+			}
+			if ( isset( $data['silenced'][ $type ] ) ) {
+				$has_errors = true;
+				$generic    = true;
+			}
+			if ( isset( $data['errors'][ $type ] ) ) {
+				$has_errors = true;
+				$key        = $type;
+				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+			}
+
+			if ( ! $has_errors ) {
+				continue;
+			}
+
+			if ( $count ) {
+				$label        = sprintf(
+					translate_nooped_plural(
+						$label,
+						$count,
+						'query-monitor'
+					),
+					number_format_i18n( $count )
+				);
+				$menu_label[] = $label;
+			}
 		}
-		if ( isset( $data['errors']['notice'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-notices',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of PHP notices */
-					__( 'PHP Notices (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['notice'] ) )
-				) )
-			) );
+
+		if ( empty( $menu_label ) && ! $generic ) {
+			return $menu;
 		}
-		if ( isset( $data['errors']['strict'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-stricts',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of strict PHP errors */
-					__( 'PHP Stricts (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['strict'] ) )
-				) )
-			) );
+
+		/* translators: %s: Number of PHP errors */
+		$title = __( 'PHP Errors (%s)', 'query-monitor' );
+
+		/* translators: used between list items, there is a space after the comma */
+		$sep = __( ', ', 'query-monitor' );
+
+		if ( count( $menu_label ) ) {
+			$title = sprintf(
+				$title,
+				implode( $sep, array_reverse( $menu_label ) )
+			);
+		} else {
+			$title = __( 'PHP Errors', 'query-monitor' );
 		}
-		if ( isset( $data['errors']['deprecated'] ) ) {
-			$menu[] = $this->menu( array(
-				'id'    => 'query-monitor-deprecated',
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of deprecated PHP errors */
-					__( 'PHP Deprecated (%s)', 'query-monitor' ),
-					number_format_i18n( count( $data['errors']['deprecated'] ) )
-				) )
-			) );
-		}
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'id'    => "query-monitor-{$key}s",
+			'title' => $title,
+		) );
 		return $menu;
 
+	}
+
+	public function panel_menu( array $menu ) {
+		if ( isset( $menu[ $this->collector->id() ] ) ) {
+			$menu[ $this->collector->id() ]['title'] = __( 'PHP Errors', 'query-monitor' );
+		}
+
+		return $menu;
 	}
 
 }
 
 function register_qm_output_html_php_errors( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'php_errors' ) ) {
+	$collector = $collectors::get( 'php_errors' );
+	if ( $collector ) {
 		$output['php_errors'] = new QM_Output_Html_PHP_Errors( $collector );
 	}
 	return $output;

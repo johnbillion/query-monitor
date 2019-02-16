@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ruleset name="Query Monitor">
+
+	<config name="testVersion" value="5.3-"/>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>Gruntfile.js</exclude-pattern>
+
+	<rule ref="WordPress-Extra">
+
+		<exclude name="WordPress.Files.FileName" />
+
+		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_trigger_error" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_print_r" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
+		<exclude name="WordPress.DB.RestrictedFunctions" />
+
+		<!-- @TODO remove this exclusion: -->
+		<exclude name="Squiz.Commenting" />
+
+		<!-- Not interested in whitespace issues at the moment -->
+		<exclude name="PEAR.Functions.FunctionCallSignature" />
+		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+
+	</rule>
+
+	<rule ref="WordPress-Docs" />
+
+	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
+		<exclude-pattern>*.css</exclude-pattern>
+	</rule>
+
+	<!-- Custom rule properties -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="query-monitor" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="3.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="-/"/>
+		</properties>
+	</rule>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+</ruleset>

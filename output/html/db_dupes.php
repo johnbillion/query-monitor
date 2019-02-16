@@ -1,24 +1,16 @@
 <?php
-/*
-Copyright 2009-2015 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Duplicate database query output for HTML pages.
+ *
+ * @package query-monitor
+ */
 
 class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 25 );
 	}
 
 	public function output() {
@@ -29,23 +21,18 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			return;
 		}
 
-		$colspan = empty( $data['dupe_components'] ) ? 4 : 5;
+		$this->before_tabular_output();
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
 		echo '<thead>';
-		echo '<tr>';
-		echo '<th colspan="' . absint( $colspan ) . '">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
 
 		echo '<tr>';
-		echo '<th>' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th>' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['dupe_components'] ) ) {
-			echo '<th>' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
 		}
-		echo '<th>' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 
 		echo '</thead>';
@@ -75,7 +62,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
 				printf(
-					'<a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s">%s</a><br><span class="qm-info">&nbsp;%s</span><br>',
+					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_attr( $caller ),
 					esc_html( $caller ),
 					esc_html( sprintf(
@@ -89,7 +76,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				echo '<td class="qm-row-component qm-nowrap">';
 				foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
 					printf(
-						'%s<br><span class="qm-info">&nbsp;%s</span><br>',
+						'%s<br><span class="qm-info qm-supplemental">%s</span><br>',
 						esc_html( $component ),
 						esc_html( sprintf(
 							translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
@@ -102,7 +89,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_sources'][ $sql ] as $source => $calls ) {
 				printf(
-					'%s<br><span class="qm-info">&nbsp;%s</span><br>',
+					'<code>%s</code><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_html( $source ),
 					esc_html( sprintf(
 						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
@@ -115,17 +102,16 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		}
 		echo '</tbody>';
 
-		echo '</table>';
-		echo '</div>';
-
+		$this->after_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {
+		$dbq = QM_Collectors::get( 'db_dupes' );
 
-		if ( $dbq = QM_Collectors::get( 'db_dupes' ) ) {
+		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['dupes'] ) && count( $dbq_data['dupes'] ) ) {
-				$menu[] = $this->menu( array(
+				$menu[ $this->collector->id() ] = $this->menu( array(
 					'title' => esc_html( sprintf(
 						/* translators: %s: Number of duplicate database queries */
 						__( 'Duplicate Queries (%s)', 'query-monitor' ),
@@ -138,10 +124,23 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 	}
 
+	public function panel_menu( array $menu ) {
+		$id = $this->collector->id();
+		if ( isset( $menu[ $id ] ) ) {
+			$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+
+			$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+			unset( $menu[ $id ] );
+		}
+
+		return $menu;
+	}
+
 }
 
 function register_qm_output_html_db_dupes( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'db_dupes' ) ) {
+	$collector = $collectors::get( 'db_dupes' );
+	if ( $collector ) {
 		$output['db_dupes'] = new QM_Output_Html_DB_Dupes( $collector );
 	}
 	return $output;

@@ -1,29 +1,26 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Plugin activation handler.
+ *
+ * @package query-monitor
+ */
 
 class QM_Activation extends QM_Plugin {
 
 	protected function __construct( $file ) {
+
+		# PHP version handling
+		if ( ! self::php_version_met() ) {
+			add_action( 'all_admin_notices', array( $this, 'php_notice' ) );
+			return;
+		}
 
 		# Filters
 		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
 		# Activation and deactivation
-		register_activation_hook(   $file, array( $this, 'activate' ) );
+		register_activation_hook( $file, array( $this, 'activate' ) );
 		register_deactivation_hook( $file, array( $this, 'deactivate' ) );
 
 		# Parent setup:
@@ -32,32 +29,31 @@ class QM_Activation extends QM_Plugin {
 	}
 
 	public function activate( $sitewide = false ) {
+		$db = WP_CONTENT_DIR . '/db.php';
 
-		if ( $admins = QM_Util::get_admins() ) {
-			$admins->add_cap( 'view_query_monitor' );
-		}
-
-		if ( ! file_exists( $db = WP_CONTENT_DIR . '/db.php' ) && function_exists( 'symlink' ) ) {
-			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db );
+		if ( ! file_exists( $db ) && function_exists( 'symlink' ) ) {
+			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db ); // @codingStandardsIgnoreLine
 		}
 
 		if ( $sitewide ) {
-			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins'  ) );
+			update_site_option( 'active_sitewide_plugins', get_site_option( 'active_sitewide_plugins' ) );
 		} else {
-			update_option( 'active_plugins', get_option( 'active_plugins'  ) );
+			update_option( 'active_plugins', get_option( 'active_plugins' ) );
 		}
 
 	}
 
 	public function deactivate() {
+		$admins = QM_Util::get_admins();
 
-		if ( $admins = QM_Util::get_admins() ) {
+		// Remove legacy capability handling:
+		if ( $admins ) {
 			$admins->remove_cap( 'view_query_monitor' );
 		}
 
 		# Only delete db.php if it belongs to Query Monitor
-		if ( class_exists( 'QM_DB' ) ) {
-			unlink( WP_CONTENT_DIR . '/db.php' );
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB' ) ) {
+			unlink( WP_CONTENT_DIR . '/db.php' ); // @codingStandardsIgnoreLine
 		}
 
 	}
@@ -87,9 +83,9 @@ class QM_Activation extends QM_Plugin {
 
 		$f = $this->plugin_base();
 
-		if ( isset( $plugins[$f] ) ) {
+		if ( isset( $plugins[ $f ] ) ) {
 
-			unset( $plugins[$f] );
+			unset( $plugins[ $f ] );
 
 			return array_merge( array(
 				$f => time(),
@@ -99,6 +95,24 @@ class QM_Activation extends QM_Plugin {
 			return $plugins;
 		}
 
+	}
+
+	public function php_notice() {
+		?>
+		<div id="qm_php_notice" class="error">
+			<p>
+				<span class="dashicons dashicons-warning" style="color:#dd3232" aria-hidden="true"></span>
+				<?php
+				echo esc_html( sprintf(
+					/* Translators: 1: Minimum required PHP version, 2: Current PHP version. */
+					__( 'The Query Monitor plugin requires PHP version %1$s or higher. This site is running version %2$s.', 'query-monitor' ),
+					self::$minimum_php_version,
+					PHP_VERSION
+				) );
+				?>
+			</p>
+		</div>
+		<?php
 	}
 
 	public static function init( $file = null ) {

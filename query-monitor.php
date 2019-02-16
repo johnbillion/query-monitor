@@ -1,41 +1,52 @@
 <?php
-/*
-Plugin Name: Query Monitor
-Description: Monitoring of database queries, hooks, conditionals and more.
-Version:     2.11.4
-Plugin URI:  https://github.com/johnbillion/query-monitor
-Author:      John Blackbourn
-Author URI:  https://johnblackbourn.com/
-Text Domain: query-monitor
-Domain Path: /languages/
-License:     GPL v2 or later
+/**
+ * Query Monitor plugin for WordPress
+ *
+ * @package   query-monitor
+ * @link      https://github.com/johnbillion/query-monitor
+ * @author    John Blackbourn <john@johnblackbourn.com>
+ * @copyright 2009-2019 John Blackbourn
+ * @license   GPL v2 or later
+ *
+ * Plugin Name:  Query Monitor
+ * Description:  The Developer Tools Panel for WordPress.
+ * Version:      3.3.0
+ * Plugin URI:   https://querymonitor.com/
+ * Author:       John Blackbourn
+ * Author URI:   https://querymonitor.com/
+ * Text Domain:  query-monitor
+ * Domain Path:  /languages/
+ * Requires PHP: 5.3.6
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
 
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
-
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 $qm_dir = dirname( __FILE__ );
 
+require_once "{$qm_dir}/classes/Plugin.php";
+
+if ( ! QM_Plugin::php_version_met() ) {
+	return;
+}
+
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Plugin', 'Activation', 'Util' ) as $qm_class ) {
+foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
 QM_Activation::init( __FILE__ );
 
-if ( defined( 'QM_DISABLED' ) and QM_DISABLED ) {
+if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;
 }
 
@@ -50,7 +61,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Output' ) as $qm_class ) {
+foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Hook', 'Output', 'Timer' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 

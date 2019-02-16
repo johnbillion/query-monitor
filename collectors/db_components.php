@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Database query calling component collector.
+ *
+ * @package query-monitor
+ */
 
 class QM_Collector_DB_Components extends QM_Collector {
 
@@ -23,11 +14,12 @@ class QM_Collector_DB_Components extends QM_Collector {
 	}
 
 	public function process() {
+		$dbq = QM_Collectors::get( 'db_queries' );
 
-		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
+		if ( $dbq ) {
 			if ( isset( $dbq->data['component_times'] ) ) {
 				$this->data['times'] = $dbq->data['component_times'];
-				usort( $this->data['times'], 'QM_Collector::sort_ltime' );
+				QM_Util::rsort( $this->data['times'], 'ltime' );
 			}
 			if ( isset( $dbq->data['types'] ) ) {
 				$this->data['types'] = $dbq->data['types'];
@@ -39,7 +31,7 @@ class QM_Collector_DB_Components extends QM_Collector {
 }
 
 function register_qm_collector_db_components( array $collectors, QueryMonitor $qm ) {
-	$collectors['db_components'] = new QM_Collector_DB_Components;
+	$collectors['db_components'] = new QM_Collector_DB_Components();
 	return $collectors;
 }
 

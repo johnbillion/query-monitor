@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Language and locale output for HTML pages.
+ *
+ * @package query-monitor
+ */
 
 class QM_Output_Html_Languages extends QM_Output_Html {
 
@@ -31,56 +22,67 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			return;
 		}
 
-		echo '<div class="qm" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0">';
+		$this->before_tabular_output();
+
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th colspan="4">' . esc_html( sprintf(
-			/* translators: %s: Name of current language */
-			__( 'Language Setting: %s', 'query-monitor' ),
-			$data['locale']
-		) ) . '</th>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<td>' . esc_html__( 'Text Domain', 'query-monitor' ) . '</td>';
-		echo '<td>' . esc_html__( 'Caller', 'query-monitor' ) . '</td>';
-		echo '<td colspan="2">' . esc_html__( 'MO File', 'query-monitor' ) . '</td>';
+		echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Translation File', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
+
 		echo '<tbody>';
 
-		$not_found_class = ( 'en_US' === $data['locale'] ) ? '' : 'qm-warn';
+		foreach ( $data['languages'] as $textdomain => $mofiles ) {
+			foreach ( $mofiles as $mofile ) {
+				echo '<tr>';
 
-		foreach ( $data['languages'] as $mofile ) {
+				echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
 
-			echo '<tr>';
+				echo '<td>' . esc_html( $mofile['type'] ) . '</td>';
 
-			echo '<td>' . esc_html( $mofile['domain'] ) . '</td>';
-			echo '<td class="qm-nowrap qm-ltr">';
-			echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
-			echo '</td>';
-			echo '<td class="qm-ltr">';
-			echo esc_html( QM_Util::standard_dir( $mofile['mofile'], '' ) );
-			echo '</td>';
+				if ( self::has_clickable_links() ) {
+					echo '<td class="qm-nowrap qm-ltr">';
+					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
+					echo '</td>';
+				} else {
+					echo '<td class="qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler">';
+					echo self::build_toggler(); // WPCS: XSS ok;
+					echo '<li>';
+					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
+					echo '</li>';
+					echo '</ol></td>';
+				}
 
-			if ( $mofile['found'] ) {
-				echo '<td class="qm-nowrap">';
-				echo esc_html( size_format( $mofile['found'] ) );
+				echo '<td class="qm-ltr">';
+				if ( $mofile['file'] ) {
+					echo esc_html( QM_Util::standard_dir( $mofile['file'], '' ) );
+				} else {
+					echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
+				}
 				echo '</td>';
-			} else {
-				echo '<td class="' . esc_attr( $not_found_class ) . '">';
-				echo esc_html__( 'Not Found', 'query-monitor' );
-				echo '</td>';
+
+				if ( $mofile['found'] ) {
+					echo '<td class="qm-nowrap">';
+					echo esc_html( size_format( $mofile['found'] ) );
+					echo '</td>';
+				} else {
+					echo '<td>';
+					echo esc_html__( 'Not Found', 'query-monitor' );
+					echo '</td>';
+				}
+
+				echo '</tr>';
+				$first = false;
 			}
-
-			echo '</tr>';
-
 		}
 
 		echo '</tbody>';
-		echo '</table>';
-		echo '</div>';
 
+		$this->after_tabular_output();
 	}
 
 	public function admin_menu( array $menu ) {
@@ -90,7 +92,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			'title' => esc_html( $this->collector->name() ),
 		);
 
-		$menu[] = $this->menu( $args );
+		$menu[ $this->collector->id() ] = $this->menu( $args );
 
 		return $menu;
 
@@ -99,7 +101,8 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 }
 
 function register_qm_output_html_languages( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'languages' ) ) {
+	$collector = $collectors::get( 'languages' );
+	if ( $collector ) {
 		$output['languages'] = new QM_Output_Html_Languages( $collector );
 	}
 	return $output;

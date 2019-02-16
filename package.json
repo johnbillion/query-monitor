@@ -1,0 +1,25 @@
+{
+  "name": "query-monitor",
+  "version": "3.3.0",
+  "description": "The Developer Tools panel for WordPress.",
+  "license": "GPL-2.0-or-later",
+  "author": "John Blackbourn",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnbillion/query-monitor.git"
+  },
+  "devDependencies": {
+    "gitattributes-globs": "^1",
+    "gitignore-globs": "^0.1",
+    "grunt": "^1",
+    "grunt-contrib-clean": "^2",
+    "grunt-contrib-copy": "^1",
+    "grunt-contrib-cssmin": "^2",
+    "grunt-contrib-sass": "^1",
+    "grunt-contrib-watch": "^1",
+    "grunt-version": "^1",
+    "grunt-wp-deploy": "git+ssh://git@github.com:johnbillion/grunt-wp-deploy.git#feature/remote-tag-copy",
+    "grunt-wp-readme-to-markdown": "^2",
+    "load-grunt-tasks": "^4"
+  }
+}

@@ -11,7 +11,10 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 		$admin = $this->factory->user->create_and_get( array(
 			'role' => 'administrator',
 		) );
-		$admin->add_cap( 'view_query_monitor' );
+
+		if ( is_multisite() ) {
+			grant_super_admin( $admin->ID );
+		}
 
 		wp_set_current_user( $admin->ID );
 
@@ -52,6 +55,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 	}
 
 	public function test_admin_toolbar_for_home_page() {
+		global $wpdb;
 
 		$this->go_to_with_template( home_url() );
 
@@ -65,12 +69,13 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 		$this->assertNotEmpty( $output );
 
 		$expected = array(
-			'admin'         => false,
-			'assets'        => true,
+			'assets_scripts' => true,
+			'assets_styles'  => true,
+			'block_editor'  => false,
 			'cache'         => false,
+			'caps'          => true,
 			'conditionals'  => false,
-			'db_callers'    => true,
-			'db_components' => true,
+			'db_callers'    => false,
 			'db_dupes'      => true,
 			'db_queries'    => true,
 			'debug_bar'     => false,
@@ -78,14 +83,19 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'hooks'         => true,
 			'http'          => true,
 			'languages'     => true,
+			'logger'        => false,
 			'overview'      => false,
 			'php_errors'    => false,
 			'redirects'     => false,
 			'request'       => true,
+			'response'      => true,
 			'rewrites'      => true,
-			'theme'         => true,
+			'timing'        => false,
 			'transients'    => true,
 		);
+
+		$expected['db_components'] = ( $wpdb instanceof QM_DB );
+
 		$collectors = QM_Collectors::init();
 		$menu = $this->html->js_admin_bar_menu();
 
@@ -102,7 +112,6 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 				$this->assertArrayNotHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
 			}
 		}
-
 	}
 
 }

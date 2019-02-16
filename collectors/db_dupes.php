@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Duplicate database query collector.
+ *
+ * @package query-monitor
+ */
 
 class QM_Collector_DB_Dupes extends QM_Collector {
 
@@ -23,8 +14,9 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 	}
 
 	public function process() {
+		$dbq = QM_Collectors::get( 'db_queries' );
 
-		if ( ! $dbq = QM_Collectors::get( 'db_queries' ) ) {
+		if ( ! $dbq ) {
 			return;
 		}
 		if ( ! isset( $dbq->data['dupes'] ) ) {
@@ -49,7 +41,6 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 			foreach ( $query_ids as $query_id ) {
 
 				if ( isset( $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'] ) ) {
-
 					$trace     = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'];
 					$stack     = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
@@ -60,7 +51,6 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 					} else {
 						$components[ $sql ][ $component->name ] = 1;
 					}
-
 				} else {
 					$stack = array_reverse( explode( ', ', $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'] ) );
 				}
@@ -110,7 +100,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 }
 
 function register_qm_collector_db_dupes( array $collectors, QueryMonitor $qm ) {
-	$collectors['db_dupes'] = new QM_Collector_DB_Dupes;
+	$collectors['db_dupes'] = new QM_Collector_DB_Dupes();
 	return $collectors;
 }
 

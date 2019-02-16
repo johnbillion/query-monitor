@@ -1,127 +1,237 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
+/**
+ * Enqueued scripts and styles collector.
+ *
+ * @package query-monitor
+ */
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
-
-class QM_Collector_Assets extends QM_Collector {
-
-	public $id = 'assets';
+abstract class QM_Collector_Assets extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
 		add_action( 'wp_print_footer_scripts',    array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'admin_head',                 array( $this, 'action_head' ), 999 );
-		add_action( 'wp_head',                    array( $this, 'action_head' ), 999 );
-		add_action( 'login_head',                 array( $this, 'action_head' ), 999 );
-		add_action( 'embed_head',                 array( $this, 'action_head' ), 999 );
+		add_action( 'admin_head',                 array( $this, 'action_head' ), 9999 );
+		add_action( 'wp_head',                    array( $this, 'action_head' ), 9999 );
+		add_action( 'login_head',                 array( $this, 'action_head' ), 9999 );
+		add_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
 	}
 
+	abstract public function get_dependency_type();
+
 	public function action_head() {
-		global $wp_scripts, $wp_styles;
+		$type = $this->get_dependency_type();
 
-		$this->data['header']['styles'] = $wp_styles->done;
-		$this->data['header']['scripts'] = $wp_scripts->done;
-
+		$this->data['header'] = $GLOBALS[ "wp_{$type}" ]->done;
 	}
 
 	public function action_print_footer_scripts() {
-		global $wp_scripts, $wp_styles;
-
 		if ( empty( $this->data['header'] ) ) {
 			return;
 		}
 
-		// @TODO remove the need for these raw scripts & styles to be collected
-		$this->data['raw']['scripts'] = $wp_scripts;
-		$this->data['raw']['styles']  = $wp_styles;
+		$type = $this->get_dependency_type();
 
-		$this->data['footer']['scripts'] = array_diff( $wp_scripts->done, $this->data['header']['scripts'] );
-		$this->data['footer']['styles']  = array_diff( $wp_styles->done, $this->data['header']['styles'] );
+		$this->data['footer'] = array_diff( $GLOBALS[ "wp_{$type}" ]->done, $this->data['header'] );
 
 	}
 
 	public function process() {
-		if ( !isset( $this->data['raw'] ) ) {
+		if ( empty( $this->data['header'] ) && empty( $this->data['footer'] ) ) {
 			return;
 		}
 
-		foreach ( array( 'scripts', 'styles' ) as $type ) {
-			foreach ( array( 'header', 'footer' ) as $position ) {
-				if ( empty( $this->data[ $position ][ $type ] ) ) {
-					$this->data[ $position ][ $type ] = array();
-				}
+		$this->data['is_ssl'] = is_ssl();
+		$this->data['host']   = wp_unslash( $_SERVER['HTTP_HOST'] );
+
+		$home_url  = home_url();
+		$positions = array(
+			'missing',
+			'broken',
+			'header',
+			'footer',
+		);
+
+		$type = $this->get_dependency_type();
+
+		foreach ( array( 'header', 'footer' ) as $position ) {
+			if ( empty( $this->data[ $position ] ) ) {
+				$this->data[ $position ] = array();
 			}
-			$raw = $this->data['raw'][ $type ];
-			$broken = array_values( array_diff( $raw->queue, $raw->done ) );
-			$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
-
-			if ( !empty( $broken ) ) {
-				foreach ( $broken as $key => $handle ) {
-					if ( $item = $raw->query( $handle ) ) {
-						$broken = array_merge( $broken, $this->get_broken_dependencies( $item, $raw ) );
-					} else {
-						unset( $broken[ $key ] );
-						$missing[] = $handle;
-					}
-				}
-
-				if ( !empty( $broken ) ) {
-					$this->data['broken'][ $type ] = array_unique( $broken );
-				}
-			}
-
-			if ( ! empty( $missing ) ) {
-				$this->data['missing'][ $type ] = array_unique( $missing );
-				foreach ( $this->data['missing'][ $type ] as $handle ) {
-					$raw->add( $handle, false );
-					if ( false !== ( $key = array_search( $handle, $raw->done ) ) ) {
-						unset( $raw->done[ $key ] );
-					}
-				}
-			}
-
 		}
+		$raw     = $GLOBALS[ "wp_{$type}" ];
+		$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
+		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
+
+		// A broken asset is one which has been deregistered without also being dequeued
+		if ( ! empty( $broken ) ) {
+			foreach ( $broken as $key => $handle ) {
+				$item = $raw->query( $handle );
+				if ( $item ) {
+					$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
+				} else {
+					unset( $broken[ $key ] );
+					$missing[] = $handle;
+				}
+			}
+
+			if ( ! empty( $broken ) ) {
+				$this->data['broken'] = array_unique( $broken );
+			}
+		}
+
+		// A missing asset is one which has been enqueued with dependencies that don't exist
+		if ( ! empty( $missing ) ) {
+			$this->data['missing'] = array_unique( $missing );
+			foreach ( $this->data['missing'] as $handle ) {
+				$raw->add( $handle, false );
+				$key = array_search( $handle, $raw->done, true );
+				if ( false !== $key ) {
+					unset( $raw->done[ $key ] );
+				}
+			}
+		}
+
+		$all_dependencies = array();
+		$all_dependents   = array();
+
+		foreach ( $positions as $position ) {
+			if ( empty( $this->data[ $position ] ) ) {
+				continue;
+			}
+
+			foreach ( $this->data[ $position ] as $handle ) {
+				$dependency = $raw->query( $handle );
+
+				if ( ! $dependency ) {
+					continue;
+				}
+
+				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
+				$dependents       = $this->get_dependents( $dependency, $raw );
+				$all_dependents   = array_merge( $all_dependents, $dependents );
+
+				list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw );
+
+				if ( empty( $dependency->ver ) ) {
+					$ver = '';
+				} else {
+					$ver = $dependency->ver;
+				}
+
+				$warning = ! in_array( $handle, $raw->done, true );
+
+				if ( is_wp_error( $source ) ) {
+					$display = $source->get_error_message();
+				} else {
+					$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
+				}
+
+				$dependencies = $dependency->deps;
+
+				foreach ( $dependencies as & $dep ) {
+					if ( ! $raw->query( $dep ) ) {
+						/* translators: %s: Script or style dependency name */
+						$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
+					}
+				}
+
+				$this->data['assets'][ $position ][ $handle ] = array(
+					'host'         => $host,
+					'source'       => $source,
+					'local'        => $local,
+					'ver'          => $ver,
+					'warning'      => $warning,
+					'display'      => $display,
+					'dependents'   => $dependents,
+					'dependencies' => $dependencies,
+				);
+			}
+		}
+
+		unset( $this->data[ $position ] );
+
+		$all_dependencies = array_unique( $all_dependencies );
+		sort( $all_dependencies );
+		$this->data['dependencies'] = $all_dependencies;
+
+		$all_dependents = array_unique( $all_dependents );
+		sort( $all_dependents );
+		$this->data['dependents'] = $all_dependents;
 	}
 
-	protected function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
-
+	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
 		$broken = array();
 
 		foreach ( $item->deps as $handle ) {
-
-			if ( $dep = $dependencies->query( $handle ) ) {
-				$broken = array_merge( $broken, $this->get_broken_dependencies( $dep, $dependencies ) );
+			$dep = $dependencies->query( $handle );
+			if ( $dep ) {
+				$broken = array_merge( $broken, self::get_broken_dependencies( $dep, $dependencies ) );
 			} else {
 				$broken[] = $item->handle;
 			}
-
 		}
 
 		return $broken;
-
 	}
 
-	public function name() {
-		return __( 'Scripts & Styles', 'query-monitor' );
+	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+		$dependents = array();
+		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
+
+		foreach ( $handles as $handle ) {
+			$item = $dependencies->query( $handle );
+			if ( $item ) {
+				if ( in_array( $dependency->handle, $item->deps, true ) ) {
+					$dependents[] = $handle;
+				}
+			}
+		}
+
+		sort( $dependents );
+
+		return $dependents;
+	}
+
+	public function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+		$data   = $this->get_data();
+		$loader = rtrim( $this->get_dependency_type(), 's' );
+		$src    = $dependency->src;
+
+		if ( ! empty( $src ) && ! empty( $dependency->ver ) ) {
+			$src = add_query_arg( 'ver', $dependency->ver, $src );
+		}
+
+		/** This filter is documented in wp-includes/class.wp-scripts.php */
+		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
+
+		$host      = (string) parse_url( $source, PHP_URL_HOST );
+		$scheme    = (string) parse_url( $source, PHP_URL_SCHEME );
+		$http_host = $data['host'];
+
+		if ( empty( $host ) && ! empty( $http_host ) ) {
+			$host = $http_host;
+		}
+
+		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) ) {
+			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
+				'src' => $source,
+			) );
+		}
+
+		if ( is_wp_error( $source ) ) {
+			$error_data = $source->get_error_data();
+			if ( $error_data && isset( $error_data['src'] ) ) {
+				$host = (string) parse_url( $error_data['src'], PHP_URL_HOST );
+			}
+		} elseif ( empty( $source ) ) {
+			$source = '';
+			$host   = '';
+		}
+
+		$local = ( $http_host === $host );
+
+		return array( $host, $source, $local );
 	}
 
 }
-
-function register_qm_collector_assets( array $collectors, QueryMonitor $qm ) {
-	$collectors['assets'] = new QM_Collector_Assets;
-	return $collectors;
-}
-
-add_filter( 'qm/collectors', 'register_qm_collector_assets', 10, 2 );

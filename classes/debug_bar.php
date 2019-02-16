@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Mock 'Debug Bar' plugin class.
+ *
+ * @package query-monitor
+ */
 
 class Debug_Bar {
 	public $panels = array();
@@ -25,19 +16,33 @@ class Debug_Bar {
 	}
 
 	public function enqueue() {
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_style( 'debug-bar', false, array(
-			'query-monitor'
+			'query-monitor',
 		) );
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_script( 'debug-bar', false, array(
-			'query-monitor'
+			'query-monitor',
 		) );
 
+		/**
+		 * Fires after scripts have been enqueued. This mimics the same action fired in the Debug Bar plugin.
+		 *
+		 * @since 2.7.0
+		 */
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
 
 	public function init_panels() {
 		require_once 'debug_bar_panel.php';
 
+		/**
+		 * Filters the debug bar panel list. This mimics the same filter called in the Debug Bar plugin.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param Debug_Bar_Panel[] $panels Array of Debug Bar panel instances.
+		 */
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
 	}
 
@@ -50,7 +55,7 @@ class Debug_Bar {
 	}
 
 	public function Debug_Bar() {
-		Debug_Bar::__construct();
+		self::__construct();
 	}
 
 }

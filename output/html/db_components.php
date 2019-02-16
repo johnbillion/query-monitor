@@ -1,123 +1,102 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Database query calling component output for HTML pages.
+ *
+ * @package query-monitor
+ */
 
 class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 40 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 40 );
 	}
 
 	public function output() {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['types'] ) ) {
+		if ( empty( $data['types'] ) || empty( $data['times'] ) ) {
 			return;
 		}
 
-		$total_time  = 0;
-		$total_calls = 0;
-		$span = count( $data['types'] ) + 2;
+		$total_time = 0;
+		$span       = count( $data['types'] ) + 2;
 
-		echo '<div class="qm qm-half" id="' . esc_attr( $this->collector->id() ) . '">';
-		echo '<table cellspacing="0" class="qm-sortable">';
+		$this->before_tabular_output();
+
 		echo '<thead>';
+
 		echo '<tr>';
-		echo '<th colspan="' . esc_attr( $span ) . '">' . esc_html( $this->collector->name() ) . '</th>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<th>' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 
 		foreach ( $data['types'] as $type_name => $type_count ) {
-			echo '<th class="qm-num">';
-			echo esc_html( $type_name );
-			echo $this->build_sorter(); // WPCS: XSS ok;
+			echo '<th scope="col" class="qm-num qm-sortable-column" role="columnheader" aria-sort="none">';
+			echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
 			echo '</th>';
 		}
 
-		echo '<th class="qm-num qm-sorted-desc">';
-		esc_html_e( 'Time', 'query-monitor' );
-		echo $this->build_sorter(); // WPCS: XSS ok;
+		echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column" role="columnheader" aria-sort="descending">';
+		echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
 		echo '</th>';
 		echo '</tr>';
+
 		echo '</thead>';
 
-		if ( !empty( $data['times'] ) ) {
+		echo '<tbody>';
 
-			echo '<tbody>';
-
-			foreach ( $data['times'] as $row ) {
-				$total_time  += $row['ltime'];
-				$total_calls += $row['calls'];
-
-				echo '<tr>';
-				echo '<td><a href="#" class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</a></td>';
-
-				foreach ( $data['types'] as $type_name => $type_count ) {
-					if ( isset( $row['types'][$type_name] ) ) {
-						echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
-					} else {
-						echo '<td class="qm-num">&nbsp;</td>';
-					}
-				}
-
-				echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['ltime'], 4 ) ) . '</td>';
-				echo '</tr>';
-
-			}
-
-			echo '</tbody>';
-			echo '<tfoot>';
-
-			$total_stime = number_format_i18n( $total_time, 4 );
+		foreach ( $data['times'] as $row ) {
+			$total_time += $row['ltime'];
 
 			echo '<tr>';
-			echo '<td>&nbsp;</td>';
+			echo '<td class="qm-row-component"><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="component" data-qm-value="' . esc_attr( $row['component'] ) . '">' . esc_html( $row['component'] ) . '</button></td>';
 
 			foreach ( $data['types'] as $type_name => $type_count ) {
-				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
+				if ( isset( $row['types'][ $type_name ] ) ) {
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
+				} else {
+					echo '<td class="qm-num">&nbsp;</td>';
+				}
 			}
 
-			echo '<td class="qm-num">'  . esc_html( $total_stime ) . '</td>';
+			echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">' . esc_html( number_format_i18n( $row['ltime'], 4 ) ) . '</td>';
 			echo '</tr>';
-			echo '</tfoot>';
-
-		} else {
-
-			echo '<tbody>';
-			echo '<tr>';
-			echo '<td colspan="' . esc_attr( $span ) . '" style="text-align:center !important"><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
-			echo '</tr>';
-			echo '</tbody>';
 
 		}
 
-		echo '</table>';
-		echo '</div>';
+		echo '</tbody>';
+		echo '<tfoot>';
 
+		$total_stime = number_format_i18n( $total_time, 4 );
+
+		echo '<tr>';
+		echo '<td>&nbsp;</td>';
+
+		foreach ( $data['types'] as $type_name => $type_count ) {
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
+		}
+
+		echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
+		echo '</tr>';
+		echo '</tfoot>';
+
+		$this->after_tabular_output();
 	}
 
-	public function admin_menu( array $menu ) {
+	public function panel_menu( array $menu ) {
+		$data = $this->collector->get_data();
 
-		if ( $dbq = QM_Collectors::get( 'db_queries' ) ) {
+		if ( empty( $data['types'] ) || empty( $data['times'] ) ) {
+			return $menu;
+		}
+
+		$dbq = QM_Collectors::get( 'db_queries' );
+
+		if ( $dbq ) {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
-				$menu[] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Component', 'query-monitor' )
+				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+					'title' => '└ ' . esc_html__( 'Queries by Component', 'query-monitor' ),
 				) );
 			}
 		}
@@ -128,7 +107,8 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_components( array $output, QM_Collectors $collectors ) {
-	if ( $collector = QM_Collectors::get( 'db_components' ) ) {
+	$collector = $collectors::get( 'db_components' );
+	if ( $collector ) {
 		$output['db_components'] = new QM_Output_Html_DB_Components( $collector );
 	}
 	return $output;

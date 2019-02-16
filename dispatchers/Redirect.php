@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * HTTP redirect dispatcher.
+ *
+ * @package query-monitor
+ */
 
 class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
@@ -21,11 +12,12 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
 
-		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 999, 2 );
+		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );
 
 	}
 
 	/**
+	 * Filters a redirect location in order to output QM's headers.
 	 *
 	 * @param string $location The path to redirect to.
 	 * @param int    $status   Status code to use.

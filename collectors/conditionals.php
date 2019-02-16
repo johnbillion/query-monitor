@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Template conditionals collector.
+ *
+ * @package query-monitor
+ */
 
 class QM_Collector_Conditionals extends QM_Collector {
 
@@ -24,6 +15,13 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 	public function process() {
 
+		/**
+		 * Allows users to filter the names of conditional functions that are exposed by QM.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string[] $conditionals The list of conditional function names.
+		 */
 		$conds = apply_filters( 'qm/collect/conditionals', array(
 			'is_404',
 			'is_admin',
@@ -63,18 +61,28 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_user_admin',
 			'is_year',
 		) );
+
+		/**
+		 * This filter is deprecated. Please use `qm/collect/conditionals` instead.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string[] $conditionals The list of conditional function names.
+		 */
 		$conds = apply_filters( 'query_monitor_conditionals', $conds );
 
-		$true = $false = $na = array();
+		$true  = array();
+		$false = array();
+		$na    = array();
 
 		foreach ( $conds as $cond ) {
 			if ( function_exists( $cond ) ) {
-
-				if ( ( 'is_sticky' === $cond ) and !get_post( $id = null ) ) {
+				$id = null;
+				if ( ( 'is_sticky' === $cond ) && ! get_post( $id ) ) {
 					# Special case for is_sticky to prevent PHP notices
 					$false[] = $cond;
-				} else if ( ! is_multisite() and in_array( $cond, array( 'is_main_network', 'is_main_site' ) ) ) {
-					# Special case for multisite conditionals to prevent them from being annoying on single site installs
+				} elseif ( ! is_multisite() && in_array( $cond, array( 'is_main_network', 'is_main_site' ), true ) ) {
+					# Special case for multisite conditionals to prevent them from being annoying on single site installations
 					$na[] = $cond;
 				} else {
 					if ( call_user_func( $cond ) ) {
@@ -83,7 +91,6 @@ class QM_Collector_Conditionals extends QM_Collector {
 						$false[] = $cond;
 					}
 				}
-
 			} else {
 				$na[] = $cond;
 			}
@@ -95,7 +102,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 }
 
 function register_qm_collector_conditionals( array $collectors, QueryMonitor $qm ) {
-	$collectors['conditionals'] = new QM_Collector_Conditionals;
+	$collectors['conditionals'] = new QM_Collector_Conditionals();
 	return $collectors;
 }
 

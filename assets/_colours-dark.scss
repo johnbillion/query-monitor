@@ -1,0 +1,61 @@
+
+@import "../vendor/danieltj27/dark-mode/colors";
+
+// Admin Toolbar
+$qm-toolbar-true-fg: #8c8;
+$qm-toolbar-true-fg-hover: darken( $qm-toolbar-true-fg, 15% );
+$qm-toolbar-alert-bg: #f60;
+
+// Main container
+$qm-container-fg: $light-grey !default;
+$qm-container-bg: $dark-grey !default;
+$qm-container-overflow: $base-grey !default;
+$qm-container-selection-fg: $qm-container-fg !default;
+$qm-container-selection-bg: #b9d6fb !default;
+
+// Panels
+$qm-panel-border: $light-grey !default;
+$qm-panel-fg: $qm-container-fg !default;
+$qm-panel-bg: $base-grey !default;
+$qm-panel-separator: $light-grey !default;
+
+// Panel menus
+$qm-panel-menu-border: $dark-grey !default;
+$qm-panel-menu-fg: $light-grey !default;
+$qm-panel-menu-bg: $base-grey !default;
+$qm-panel-menu-fg-hover: #222 !default;
+$qm-panel-menu-bg-hover: #def !default;
+$qm-panel-menu-fg-selected: #fff !default;
+$qm-panel-menu-bg-selected: #0073aa !default;
+$qm-panel-menu-bg-selected-focus: lighten( $qm-panel-menu-bg-selected, 5% ) !default;
+$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
+
+// Tables
+$qm-cell-border: $base-grey !default;
+$qm-cell-bg-hover: lighten( $dark-grey, 5% ) !default;
+$qm-cell-fg-highlight: $qm-container-fg !default;
+$qm-cell-bg-highlight: #57572a !default;
+$qm-cell-border-highlight: #660 !default;
+$qm-cell-bg-stripe: $dark-grey !default;
+$qm-table-header-bg: $dark-grey !default;
+$qm-table-footer-bg: $dark-grey !default;
+
+// Links and Buttons
+$qm-link-fg: $bright-blue !default;
+$qm-link-fg-hover: $light-blue !default;
+$qm-button-fg: #fff !default;
+$qm-button-bg: #0085ba !default;
+$qm-button-border: darken( $qm-button-bg, 5% ) !default;
+$qm-button-fg-hover: $qm-button-fg !default;
+$qm-button-bg-hover: lighten( $qm-button-bg, 4% ) !default;
+$qm-button-shadow: darken( $qm-button-bg, 5% ) !default;
+$qm-title-button-fg: $light-grey !default;
+$qm-title-button-bg: transparent !default;
+$qm-title-button-fg-hover: $dark-grey !default;
+$qm-title-button-bg-hover: $light-grey !default;
+
+// Formatting
+$qm-warn-fg: #fff0f0 !default;
+$qm-warn-bg: #800 !default;
+$qm-warn-border: #ffd6d6 !default;
+$qm-nonselect-fg: #a6a !default;

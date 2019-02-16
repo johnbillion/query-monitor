@@ -1,18 +1,9 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Timer that collects timing and memory usage.
+ *
+ * @package query-monitor
+ */
 
 class QM_Timer {
 
@@ -21,12 +12,8 @@ class QM_Timer {
 	protected $trace = null;
 	protected $laps  = array();
 
-	public function __construct( array $data = null ) {
-		$this->start( $data );
-	}
-
 	public function start( array $data = null ) {
-		$this->trace = new QM_Backtrace;
+		$this->trace = new QM_Backtrace();
 		$this->start = array(
 			'time'   => microtime( true ),
 			'memory' => memory_get_usage(),
@@ -55,13 +42,14 @@ class QM_Timer {
 			'data'   => $data,
 		);
 
-		if ( !isset( $name ) ) {
+		if ( ! isset( $name ) ) {
+			/* translators: %d: Timing lap number */
 			$i = sprintf( __( 'Lap %d', 'query-monitor' ), count( $this->laps ) + 1 );
 		} else {
 			$i = $name;
 		}
 
-		$this->laps[$i] = $lap;
+		$this->laps[ $i ] = $lap;
 
 		return $this;
 
@@ -74,10 +62,11 @@ class QM_Timer {
 
 		foreach ( $this->laps as $lap_id => $lap ) {
 
-			$lap['time_used']   = $lap['time']   - $prev['time'];
+			$lap['time_used']   = $lap['time'] - $prev['time'];
 			$lap['memory_used'] = $lap['memory'] - $prev['memory'];
 
-			$laps[$lap_id] = $prev = $lap;
+			$laps[ $lap_id ] = $lap;
+			$prev            = $lap;
 
 		}
 

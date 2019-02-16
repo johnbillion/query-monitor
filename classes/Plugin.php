@@ -1,23 +1,15 @@
 <?php
-/*
-Copyright 2009-2016 John Blackbourn
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-*/
+/**
+ * Abstract plugin wrapper.
+ *
+ * @package query-monitor
+ */
 
 if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
 	private $plugin = array();
+	public static $minimum_php_version = '5.3.6';
 
 	/**
 	 * Class constructor
@@ -91,6 +83,16 @@ abstract class QM_Plugin {
 			}
 		}
 		return $this->plugin[ $item ] . ltrim( $file, '/' );
+	}
+
+	public static function php_version_met() {
+		static $met = null;
+
+		if ( null === $met ) {
+			$met = version_compare( PHP_VERSION, self::$minimum_php_version, '>=' );
+		}
+
+		return $met;
 	}
 
 }

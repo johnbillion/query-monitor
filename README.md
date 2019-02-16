@@ -1,16 +1,17 @@
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
-[![Documentation](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://docs.querymonitor.com/en/stable/)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/master.svg?style=flat-square)](https://travis-ci.org/johnbillion/query-monitor)
 
 # Query Monitor #
 
-Query Monitor is a debugging plugin for anyone developing with WordPress. It has some advanced features not available in other debugging plugins, including automatic AJAX debugging, REST API debugging, and the ability to narrow down its output by plugin or theme.
+Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-Query Monitor adds a toolbar menu showing an overview of the current page. Complete data is shown in the footer once you select a menu item.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
-Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component, allowing you to see which plugins are spending the most time on database queries.
+Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
+
+Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component:
 
 ![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-2.png)
 
@@ -22,21 +23,22 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
     * [Theme](#theme)
     * [PHP Errors](#php-errors)
     * [Request](#request)
-    * [Rewrite Rules](#rewrite-rules)
     * [Scripts & Styles](#scripts--styles)
     * [Languages](#languages)
-    * [HTTP Requests](#http-requests)
+    * [HTTP API Requests](#http-api-requests)
     * [Redirects](#redirects)
-    * [AJAX](#ajax)
+    * [Ajax](#ajax)
     * [REST API](#rest-api)
     * [Admin Screen](#admin-screen)
     * [Environment Information](#environment-information)
+    * [Logging](#logging)
+    * [Profiling](#profiling)
     * [Everything Else](#everything-else)
  * [Notes](#notes)
-    * [Profiling](#a-note-on-profiling)
     * [Implementation](#a-note-on-query-monitors-implementation)
  * [Screenshots](#screenshots)
  * [FAQ](#frequently-asked-questions)
+ * [Privacy Statement](#privacy-statement)
  * [Related Tools](#related-tools)
  * [Contributing](#contributing)
  * [License](#license-gplv2)
@@ -67,6 +69,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Theme ##
 
  * Shows the template filename for the current request
+ * Shows the complete template hierarchy for the current request (WordPress 4.7+)
  * Shows all template parts used on the current request
  * Shows the available body classes for the current request
  * Shows the active theme name
@@ -76,16 +79,14 @@ Filtering queries by component or calling function makes it easy to see which pl
  * PHP errors (warnings, notices, stricts, and deprecated) are presented nicely along with their component and call stack
  * Shows an easily visible warning in the admin toolbar
 
+## Block Content ##
+
+ * Post content blocks and associated information (when using WordPress 5.0+ or the Gutenberg plugin)
+
 ## Request ##
 
- * Shows matched rewrite rules and associated query strings
  * Shows query vars for the current request, and highlights custom query vars
- * Shows the queried object details
- * Shows details of the current blog (multisite only) and current site (multi-network only)
-
-## Rewrite Rules ##
-
- * Shows all matching rewrite rules for a given request
+ * Shows all matched rewrite rules and associated query strings
 
 ## Scripts & Styles ##
 
@@ -97,19 +98,23 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows you language settings and text domains
  * Shows you the MO files for each text domain and which ones were loaded or not
 
-## HTTP Requests ##
+## HTTP API Requests ##
 
- * Shows all HTTP requests performed on the current request (as long as they use WordPress' HTTP API)
- * Shows the response code, call stack, transport, component, timeout, and time taken
+ * Shows all server-side HTTP requests performed on the current request (as long as they use the WordPress HTTP API)
+ * Shows the response code, call stack, component, timeout, and time taken
  * Highlights erroneous responses, such as failed requests and anything without a `200` response code
+
+## User Capability Checks ##
+
+ * Shows every user capability check that is performed on the page, along with the result and any parameters passed along with the capability check.
 
 ## Redirects ##
 
- * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from
+ * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from.
 
-## AJAX ##
+## Ajax ##
 
-The response from any jQuery AJAX request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. No hooking required.
+The response from any jQuery Ajax request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. No hooking required.
 
 Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
 
@@ -133,6 +138,92 @@ Currently this includes PHP errors and some overview information such as memory 
  * Shows various details about WordPress and the web server
  * Shows version numbers for all the things
 
+## Logging ##
+
+Debugging messages can be sent to the Logs panel in Query Monitor using actions in your code:
+
+```php
+do_action( 'qm/debug', 'This happened!' );
+```
+
+The logger is PSR-3 compatible, so you can use any of the following actions which correspond to PSR-3 log levels:
+
+ * `qm/emergency`
+ * `qm/alert`
+ * `qm/critical`
+ * `qm/error`
+ * `qm/warning`
+ * `qm/notice`
+ * `qm/info`
+ * `qm/debug`
+
+A log level of `warning` or higher will trigger a notification in Query Monitor's admin toolbar.
+
+Contextual interpolation can be used via the curly brace syntax:
+
+```php
+do_action( 'qm/warning', 'Unexpected value of {foo} encountered', [
+    'foo' => $foo,
+] );
+```
+
+A `WP_Error` or `Exception` object can be passed directly into the logger:
+
+```php
+if ( is_wp_error( $response ) ) {
+    do_action( 'qm/error', $response );
+}
+```
+
+```php
+try {
+    // your code
+} catch ( Exception $e ) {
+    do_action( 'qm/error', $e );
+}
+```
+
+Finally, the static logging methods on the `QM` class can be used instead of calling `do_action()`.
+
+```php
+QM::error( 'Everything is broken' );
+```
+
+## Profiling ##
+
+Basic profiling can be performed and displayed in the Timings panel in Query Monitor using actions in your code:
+
+```php
+// Start the 'foo' timer:
+do_action( 'qm/start', 'foo' );
+
+// Run some code
+my_potentially_slow_function();
+
+// Stop the 'foo' timer:
+do_action( 'qm/stop', 'foo' );
+```
+
+The time taken and approximate memory usage used between the `qm/start` and `qm/stop` actions for the given function name will be recorded and shown in the Timings panel. Timers can be nested, although be aware that this reduces the accuracy of the memory usage calculations.
+
+Timers can also make use of laps with the `qm/lap` action:
+
+```php
+// Start the 'bar' timer:
+do_action( 'qm/start', 'bar' );
+
+// Iterate over some data:
+foreach ( range( 1, 10 ) as $i ) {
+    my_potentially_slow_function( $i );
+    do_action( 'qm/lap', 'bar' );
+}
+
+// Stop the 'bar' timer:
+do_action( 'qm/stop', 'bar' );
+```
+
+Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the *Related Tools** section below for more information.
+
 ## Everything Else ##
 
  * Shows any transients that were set, along with their timeout, component, and call stack
@@ -141,17 +232,11 @@ Currently this includes PHP errors and some overview information such as memory 
 
 ## Authentication ##
 
-By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 # Notes #
-
-## A Note on Profiling ##
-
-Query Monitor does not currently contain a profiling mechanism. The main reason for this is that profiling is best done at a lower level using tools such as [XHProf](https://github.com/facebook/xhprof).
-
-However, it is likely that I will add some form of profiling functionality at some point. It'll probably be similar to how Joe Hoyle's [TimeStack](https://github.com/joehoyle/Time-Stack) does it, because that works nicely. Suggestions welcome.
 
 ## A Note on Query Monitor's Implementation ##
 
@@ -159,10 +244,10 @@ In order to do a few clever things, Query Monitor symlinks a custom `db.php` int
 
 In this file is Query Monitor's extension to the `wpdb` class which:
 
- * Allows us to log details about **all** database queries (including ones that happen before plugins are loaded)
- * Logs the full stack trace for each query, which allows us to determine the component that's responsible for the query
- * Logs the query result, which allows us to display the affected rows or error message if applicable
- * Logs various PHP configurations before anything has loaded, which allows us to display a message if these get altered at runtime by a plugin or theme
+ * Allows it to log details about **all** database queries (including ones that happen before plugins are loaded)
+ * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
+ * Logs the query result, which allows it to display the affected rows or error message if applicable
+ * Logs various PHP configurations before anything has loaded, which allows it to display a message if these get altered at runtime by a plugin or theme
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
@@ -178,7 +263,7 @@ Database listing panel showing all queries, and the controls for filtering by qu
 
 ![Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-4.png)
 
-A slow database query (over 0.05s by default) that has been highlighted in a separate panel
+User capability checks with an active filter
 
 ![Slow Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-3.png)
 
@@ -210,9 +295,9 @@ Showing an HTTP request with an error
 
 ## Who can see Query Monitor's output? ##
 
-By default, Query Monitor's output is only shown to Administrators on single-site installs, and Super Admins on Multisite installs.
+By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the bottom of Query Monitor's output for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the Settings panel for details.
 
 ## Does Query Monitor itself impact the page generation time or memory usage? ##
 
@@ -236,8 +321,6 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-config/vip-config.php` file.
 
-(It's not available on standard WordPress.com VIP though.)
-
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
 You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array with your connection name as the key and the `wpdb` instance as the value. Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
@@ -246,11 +329,17 @@ You'll need to hook into the `qm/collect/db_objects` filter and add an item to t
 
 No, I do not accept donations. If you like the plugin, I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about the plugin too!
 
+# Privacy Statement #
+
+Query Monitor does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
+
+[Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+
 # Related Tools #
 
 Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
 
- * [XHProf](https://github.com/facebook/xhprof) for low level profiling of PHP.
+ * [Tideways](https://tideways.com/profiler/xhprof-for-php7) or [XHProf](https://github.com/phacility/xhprof) for low level profiling of PHP.
  * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
  * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
  * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
@@ -265,7 +354,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
 # Contributing #
 
-Code contributions are very welcome, as are bug reports in the form of GitHub issues. Development happens in the `develop` branch, and any pull requests should be made to that branch please.
+Contributions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
 
 # License: GPLv2 #
 
