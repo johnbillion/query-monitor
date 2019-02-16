@@ -84,7 +84,25 @@ class QM_Collector_Timing extends QM_Collector {
 		}
 	}
 
+	function hook( $start_lap_stop ) {
+		if ( ! doing_action() )
+			return;
+
+		global $wp_filter;
+
+		$function = '`' . current_action() . '` action';
+		$priority = $wp_filter[current_action()]->current_priority();
+
+		'start' === $start_lap_stop && $this->action_function_time_start( $function );
+		  'lap' === $start_lap_stop && $this->action_function_time_lap(   $function, 'priority ' . $priority );
+		 'stop' === $start_lap_stop && $this->action_function_time_stop(  $function );
+	}
+
 }
+
+function qm_start() { QM_Collectors::get( 'timing' )->hook( 'start' ); }
+function qm_lap()   { QM_Collectors::get( 'timing' )->hook( 'lap'   ); }
+function qm_stop()  { QM_Collectors::get( 'timing' )->hook( 'stop'  ); }
 
 # Load early in case a plugin is setting the function to be checked when it initialises instead of after the `plugins_loaded` hook
 QM_Collectors::add( new QM_Collector_Timing() );
