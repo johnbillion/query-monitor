@@ -55,7 +55,7 @@ if ( window.jQuery ) {
 		var maxwidth               = $(window).width();
 		var container              = $('#query-monitor-main');
 		var container_height_key   = 'qm-container-height';
-		var container_pinned_key   = 'qm-container-pinned';
+		var container_pinned_key   = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
 		var container_position_key = 'qm-container-position';
 		var container_width_key    = 'qm-container-width';
 
