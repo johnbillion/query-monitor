@@ -301,6 +301,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				}
 			}
 		}
+
+		printf(
+			'<option value="%1$s">%2$s</option>',
+			'#qm-settings',
+			esc_html__( 'Settings', 'query-monitor' )
+		);
+
 		echo '</select>';
 
 		echo '</div>';
