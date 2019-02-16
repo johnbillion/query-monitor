@@ -47,13 +47,13 @@ class Debug_Bar {
 	}
 
 	public function ensure_ajaxurl() {
-		if ( !QM_Dispatchers::get( 'html' )->user_can_view() )
-			return;
-		?>
-		<script type="text/javascript">
-		var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
-		</script>
-		<?php
+		if ( QM_Dispatchers::get( 'html' )->user_can_view() ) {
+			?>
+			<script type="text/javascript">
+			var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+			</script>
+			<?php
+		}
 	}
 
 	public function Debug_Bar() {
