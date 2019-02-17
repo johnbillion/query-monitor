@@ -26,6 +26,23 @@ env:
     # WP nightly:
     - WP_VERSION=nightly
 
+jobs:
+  include:
+    - stage: deploy
+      before_script:
+        - npm install -g grunt-cli
+        - npm install
+        - gem install sass
+        - grunt --version
+        - git status
+      script: skip
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script: grunt deploy:ci
+          on:
+            tags: true
+
 matrix:
   fast_finish: true
 
