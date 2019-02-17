@@ -19,7 +19,7 @@ php:
 env:
   global:
     # WPORG_PASSWORD
-    - secure: "KnZyVUNQfhMtbTAfyBFok9HD55Vz7cg1nGDqYqRv/s/TkB33o8QGNXbv78Ej32URJg53GsBqDAFfbC0dCBs3nSjkGoFQw9oXDF180EguJahdC1zWBVCJ2TVMtI29A861eWIZ97LCiI2+ENykPb4CqyxzUdHHINzRJgvBQmeZ0m0="
+    - secure: "EqtfI7W2K0H1Zpx8Kb0qTQAz6HNnJj6fupjXJkWhlzt4z79VM8TRuSn3fzbSwJtkHWNwp2jfR/wTu4SVCmlNwMUWSV5fpMGDXBxksWm6SqGjWw8rF2L746btfgoqnAVie1Vw2q6Y7A1opNnwTA29cgEZmoZjHV1DvED4BtXyxdE="
   matrix:
     # WP latest stable:
     - WP_VERSION=latest
@@ -44,4 +44,3 @@ before_script:
 
 script:
   - composer test
-  - echo $WPORG_PASSWORD
