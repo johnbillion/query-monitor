@@ -590,7 +590,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin: 20px !important;
 	}
 
-	.qm-concerns table {
+	.qm-concerns table,
+	.qm-discovered table {
 		border-top: 1px solid $qm-cell-border !important;
 		margin-bottom: 20px !important;
 	}
