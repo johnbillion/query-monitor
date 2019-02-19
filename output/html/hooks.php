@@ -201,7 +201,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		$this->output_discovered();
 	}
 
-	function output_discovered() {
+	public function output_discovered() {
 		printf(
 			'<div class="qm qm-discovered" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
 			esc_attr( $this->current_id . '-discovered_hooks' )

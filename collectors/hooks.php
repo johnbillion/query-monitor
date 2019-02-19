@@ -17,11 +17,11 @@ class QM_Collector_Hooks extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'qm/listen/start', array( $this, 'action_function_listen_start' ), 10, 1 );
-		add_action( 'qm/listen/stop',  array( $this, 'action_function_listen_stop'  ), 10, 1 );
+		add_action( 'qm/listen/stop',  array( $this, 'action_function_listen_stop' ), 10, 1 );
 	}
 
 	public function action_function_listen_start( $label ) {
-		if ( !array_key_exists( 'discovered_hooks', $this->data ) ) {
+		if ( ! array_key_exists( 'discovered_hooks', $this->data ) ) {
 			$this->data['discovered_hooks'] = array();
 		}
 
@@ -29,7 +29,7 @@ class QM_Collector_Hooks extends QM_Collector {
 			return;
 		}
 
-		$this->data['discovered_hooks'][$label] = array();
+		$this->data['discovered_hooks'][ $label ] = array();
 
 		add_action( 'all', array( $this, 'action_function_listen_all' ), 0, 1 );
 	}
@@ -42,15 +42,15 @@ class QM_Collector_Hooks extends QM_Collector {
 			return $var;
 		}
 
-		         end( $this->data['discovered_hooks'] );
+		end( $this->data['discovered_hooks'] );
 		$label = key( $this->data['discovered_hooks'] );
-		 $last = end( $this->data['discovered_hooks'][$label] );
+		$last = end( $this->data['discovered_hooks'][ $label ] );
 
 		if ( current_action() === $last['action'] ) {
-			$i = key( $this->data['discovered_hooks'][$label] );
-			$this->data['discovered_hooks'][$label][$i]['count']++;
+			$i = key( $this->data['discovered_hooks'][ $label ] );
+			$this->data['discovered_hooks'][ $label ][ $i ]['count']++;
 		} else {
-			$this->data['discovered_hooks'][$label][] = array(
+			$this->data['discovered_hooks'][ $label ][] = array(
 				'action' => current_action(),
 				'count' => 1,
 			);
