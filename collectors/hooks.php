@@ -21,11 +21,13 @@ class QM_Collector_Hooks extends QM_Collector {
 	}
 
 	public function action_function_listen_start( $label ) {
-		if ( !array_key_exists( 'discovered_hooks', $this->data ) )
+		if ( !array_key_exists( 'discovered_hooks', $this->data ) ) {
 			$this->data['discovered_hooks'] = array();
+		}
 
-		if ( array_key_exists( $label, $this->data['discovered_hooks'] ) )
+		if ( array_key_exists( $label, $this->data['discovered_hooks'] ) ) {
 			return;
+		}
 
 		$this->data['discovered_hooks'][$label] = array();
 
@@ -36,8 +38,9 @@ class QM_Collector_Hooks extends QM_Collector {
 		if ( in_array( current_action(), array(
 			'qm/listen/start',
 			'qm/listen/stop',
-		) ) )
-			return;
+		) ) ) {
+			return $var;
+		}
 
 		         end( $this->data['discovered_hooks'] );
 		$label = key( $this->data['discovered_hooks'] );
