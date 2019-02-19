@@ -18,8 +18,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	public function panel_menus( $panel_menu ) {
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['discovered_hooks'] ) )
-			return;
+		if ( empty( $data['discovered_hooks'] ) ) {
+			return $panel_menu;
+		}
 
 		$panel_menu[ 'qm-' . $this->id ]['children'][ 'qm-' . $this->id . '-discovered_hooks' ] = array(
 			'href'  => esc_attr( '#' . $this->collector->id() . '-discovered_hooks' ),
