@@ -46,12 +46,12 @@ class QM_Collector_Hooks extends QM_Collector {
 		$label = key( $this->data['discovered_hooks'] );
 		$last = end( $this->data['discovered_hooks'][ $label ] );
 
-		if ( current_action() === $last['action'] ) {
+		if ( current_action() === $last['hook'] ) {
 			$i = key( $this->data['discovered_hooks'][ $label ] );
 			$this->data['discovered_hooks'][ $label ][ $i ]['count']++;
 		} else {
 			$this->data['discovered_hooks'][ $label ][] = array(
-				'action' => current_action(),
+				'hook' => current_action(),
 				'count' => 1,
 			);
 		}
