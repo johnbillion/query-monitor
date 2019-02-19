@@ -11,7 +11,22 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menus' ) );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
+	}
+
+	public function panel_menus( $panel_menu ) {
+		$data = $this->collector->get_data();
+
+		if ( empty( $data['discovered_hooks'] ) )
+			return;
+
+		$panel_menu[ 'qm-' . $this->id ]['children'][ 'qm-' . $this->id . '-discovered_hooks' ] = array(
+			'href'  => esc_attr( '#' . $this->collector->id() . '-discovered_hooks' ),
+			'title' => '└ ' . __( 'Discovered Hooks', 'query-monitor' ),
+		);
+
+		return $panel_menu;
 	}
 
 	public function output() {
@@ -176,6 +191,58 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			}
 		}
 
+	}
+
+	protected function after_tabular_output() {
+		echo '</table>';
+		echo '</div>';
+
+		$this->output_discovered();
+	}
+
+	function output_discovered() {
+		printf(
+			'<div class="qm qm-discovered" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
+			esc_attr( $this->current_id . '-discovered_hooks' )
+		);
+
+		echo '<div><table>';
+
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
+			esc_attr( $this->current_id . '-discovered_hooks' ),
+			esc_html__( 'Discovered Hooks', 'query-monitor' )
+		);
+
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Label', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Successive Uses', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+
+		echo '<tbody>';
+
+		$data = $this->collector->get_data();
+
+		foreach ( $data['discovered_hooks'] as $label => $hooks ) {
+			foreach ( $hooks as $i => $hook ) {
+				echo '<tr>';
+
+				if ( 0 === $i )
+					echo '<th scope="row" rowspan="' . esc_attr( count( $hooks ) ) . '" class="qm-nowrap"><span class="qm-sticky">' . esc_html( $label ) . '</span></th>';
+
+				echo '<td><code>' . esc_html( $hook['action'] ) . '</code></td>';
+				echo '<td class="qm-num">' . esc_html( $hook['count'] ) . '</td>';
+				echo '</tr>';
+			}
+		}
+
+		echo '</tbody>';
+		echo '</table></div>';
+
+		echo '</div>';
 	}
 
 }
