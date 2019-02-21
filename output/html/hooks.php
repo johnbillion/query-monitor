@@ -242,7 +242,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<br /><span class="qm-info qm-supplemental">Fired ' . esc_html( $hook['count'] ) . ' times</span>';
 					}
 				echo '</td>';
-				echo '<td>' . ( $hook['is_action'] ? 'Action' : 'Filter' )  . '</td>';
+				echo '<td>' . ( $hook['is_action'] ? 'Action' : 'Filter' ) . '</td>';
 				echo '</tr>';
 			}
 		}
