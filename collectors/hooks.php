@@ -34,7 +34,7 @@ class QM_Collector_Hooks extends QM_Collector {
 		add_action( 'all', array( $this, 'action_function_listen_all' ), 0, 1 );
 	}
 
-	public function action_function_listen_all( $var ) {
+	public function action_function_listen_all( $var = null ) {
 		if ( in_array( current_action(), array(
 			'qm/listen/start',
 			'qm/listen/stop',
