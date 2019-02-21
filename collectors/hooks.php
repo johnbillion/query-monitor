@@ -42,6 +42,8 @@ class QM_Collector_Hooks extends QM_Collector {
 			return $var;
 		}
 
+		global $wp_actions;
+
 		end( $this->data['discovered_hooks'] );
 		$label = key( $this->data['discovered_hooks'] );
 		$last = end( $this->data['discovered_hooks'][ $label ] );
@@ -51,6 +53,7 @@ class QM_Collector_Hooks extends QM_Collector {
 			$this->data['discovered_hooks'][ $label ][ $i ]['count']++;
 		} else {
 			$this->data['discovered_hooks'][ $label ][] = array(
+				'is_action' => array_key_exists( current_action(), $wp_actions ),
 				'hook' => current_action(),
 				'count' => 1,
 			);

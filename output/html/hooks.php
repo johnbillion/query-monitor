@@ -219,7 +219,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Label', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Successive Uses', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -242,7 +242,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<br /><span class="qm-info qm-supplemental">Fired ' . esc_html( $hook['count'] ) . ' times</span>';
 					}
 				echo '</td>';
-				echo '<td class="qm-num">' . esc_html( $hook['count'] ) . '</td>';
+				echo '<td>' . ( $hook['is_action'] ? 'Action' : 'Filter' )  . '</td>';
 				echo '</tr>';
 			}
 		}
