@@ -118,6 +118,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
 								'<code>all</code>'
 							);
+							
+							$data = $this->collector->get_data();
+							if ( !empty( $data['discovered_hooks'] ) ) {
+								echo '<br />';
+								print_f(
+									esc_html__( '%s used for hook discovery.',
+									'<code>all</code>'
+								); // @todo Link to Discovered Hooks panel.
+							}
+							
 							echo '<span>';
 						}
 						echo '</span></th>';
