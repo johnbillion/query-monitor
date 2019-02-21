@@ -218,7 +218,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 }
 
 function register_qm_output_html_caps( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'caps' );
+	$collector = QM_Collectors::get( 'caps' );
 	if ( $collector ) {
 		$output['caps'] = new QM_Output_Html_Caps( $collector );
 	}

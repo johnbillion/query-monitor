@@ -18,7 +18,7 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 }
 
 function register_qm_output_html_assets_scripts( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'assets_scripts' );
+	$collector = QM_Collectors::get( 'assets_scripts' );
 	if ( $collector ) {
 		$output['assets_scripts'] = new QM_Output_Html_Assets_Scripts( $collector );
 	}

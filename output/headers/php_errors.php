@@ -53,7 +53,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 }
 
 function register_qm_output_headers_php_errors( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'php_errors' );
+	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {
 		$output['php_errors'] = new QM_Output_Headers_PHP_Errors( $collector );
 	}

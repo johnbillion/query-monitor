@@ -287,7 +287,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 }
 
 function register_qm_output_html_environment( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'environment' );
+	$collector = QM_Collectors::get( 'environment' );
 	if ( $collector ) {
 		$output['environment'] = new QM_Output_Html_Environment( $collector );
 	}

@@ -189,7 +189,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 }
 
 function register_qm_output_html_request( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'request' );
+	$collector = QM_Collectors::get( 'request' );
 	if ( $collector ) {
 		$output['request'] = new QM_Output_Html_Request( $collector );
 	}

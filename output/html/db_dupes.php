@@ -139,7 +139,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_dupes( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'db_dupes' );
+	$collector = QM_Collectors::get( 'db_dupes' );
 	if ( $collector ) {
 		$output['db_dupes'] = new QM_Output_Html_DB_Dupes( $collector );
 	}

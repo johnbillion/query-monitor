@@ -277,7 +277,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 }
 
 function register_qm_output_html_overview( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'overview' );
+	$collector = QM_Collectors::get( 'overview' );
 	if ( $collector ) {
 		$output['overview'] = new QM_Output_Html_Overview( $collector );
 	}

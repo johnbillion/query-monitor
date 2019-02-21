@@ -551,7 +551,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_queries( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'db_queries' );
+	$collector = QM_Collectors::get( 'db_queries' );
 	if ( $collector ) {
 		$output['db_queries'] = new QM_Output_Html_DB_Queries( $collector );
 	}

@@ -261,7 +261,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 }
 
 function register_qm_output_html_block_editor( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'block_editor' );
+	$collector = QM_Collectors::get( 'block_editor' );
 	if ( $collector ) {
 		$output['block_editor'] = new QM_Output_Html_Block_Editor( $collector );
 	}
