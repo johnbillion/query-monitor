@@ -10,6 +10,7 @@
 			"homepage": "https://johnblackbourn.com/"
 		}
 	],
+	"minimum-stability": "dev",
 	"support": {
 		"issues": "https://github.com/johnbillion/query-monitor/issues",
 		"forum": "https://wordpress.org/support/plugin/query-monitor",
@@ -35,6 +36,7 @@
 	],
 	"require": {
 		"php": ">=5.3",
+        "oomphinc/composer-installers-extender": "^1",
 		"composer/installers": "~1.0"
 	},
 	"require-dev" : {
@@ -43,7 +45,15 @@
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"danieltj27/dark-mode": "3.2",
 		"wp-coding-standards/wpcs": "^2",
+		"wordpress/phpdoc-parser": "dev-master",
 		"phpunit/phpunit": "^5"
+	},
+	"extra": {
+		"installer-paths": {
+			"vendor/wordpress/phpdoc-parser/": [
+				"wordpress/phpdoc-parser"
+			]
+		}
 	},
 	"scripts": {
 		"test": [
