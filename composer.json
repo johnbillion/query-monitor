@@ -19,9 +19,9 @@
 		{
 			"type": "package",
 			"package": {
-			  "name": "danieltj27/dark-mode",
-			  "version": "3.2",
-			  "source": {
+				"name": "danieltj27/dark-mode",
+				"version": "3.2",
+				"source": {
 					"type" : "git",
 					"url" : "git://github.com/danieltj27/Dark-Mode.git",
 					"reference" : "3.2"
