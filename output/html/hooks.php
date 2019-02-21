@@ -235,7 +235,13 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					echo '<th scope="row" rowspan="' . esc_attr( count( $hooks ) ) . '" class="qm-nowrap"><span class="qm-sticky">' . esc_html( $label ) . '</span></th>';
 				}
 
-				echo '<td><code>' . esc_html( $hook['hook'] ) . '</code></td>';
+				echo '<td>';
+					echo '<code>' . esc_html( $hook['hook'] ) . '</code>';
+
+					if ( 1 < $hook['count'] ) {
+						echo '<br /><span class="qm-info qm-supplemental">Fired ' . esc_html( $hook['count'] ) . ' times</span>';
+					}
+				echo '</td>';
 				echo '<td class="qm-num">' . esc_html( $hook['count'] ) . '</td>';
 				echo '</tr>';
 			}
