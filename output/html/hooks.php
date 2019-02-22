@@ -18,12 +18,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	public function panel_menus( $panel_menu ) {
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['discovered_hooks'] ) ) {
+		if ( empty( $data['discoveries'] ) ) {
 			return $panel_menu;
 		}
 
-		$panel_menu[ 'qm-' . $this->id ]['children'][ 'qm-' . $this->id . '-discovered_hooks' ] = array(
-			'href'  => esc_attr( '#' . $this->collector->id() . '-discovered_hooks' ),
+		$panel_menu[ 'qm-' . $this->id ]['children'][ 'qm-' . $this->id . '-discoveries' ] = array(
+			'href'  => esc_attr( '#' . $this->collector->id() . '-discoveries' ),
 			'title' => '└ ' . __( 'Discovered Hooks', 'query-monitor' ),
 		);
 
@@ -121,7 +121,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 							$data = self::$collector->get_data();
 
-							if ( ! empty( $data['discovered_hooks'] ) ) {
+							if ( ! empty( $data['discoveries'] ) ) {
 								echo '<br />';
 								print_f(
 									/* translators: %s: Action name */
@@ -216,14 +216,14 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	public function output_discovered() {
 		printf(
 			'<div class="qm qm-discovered" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
-			esc_attr( $this->current_id . '-discovered_hooks' )
+			esc_attr( $this->current_id . '-discoveries' )
 		);
 
 		echo '<div><table>';
 
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
-			esc_attr( $this->current_id . '-discovered_hooks' ),
+			esc_attr( $this->current_id . '-discoveries' ),
 			esc_html__( 'Discovered Hooks', 'query-monitor' )
 		);
 
@@ -239,12 +239,21 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		foreach ( $data['discovered_hooks'] as $label => $hooks ) {
-			foreach ( $hooks as $i => $hook ) {
+		foreach ( $data['discoveries'] as $label => $listener ) {
+			$trace__start = $listener['bounds']['start']->get_trace();
+			$trace__stop = $listener['bounds']['stop']->get_trace();
+
+			foreach ( $listener['hooks'] as $i => $hook ) {
 				echo '<tr>';
 
 				if ( 0 === $i ) {
-					echo '<th scope="row" rowspan="' . esc_attr( count( $hooks ) ) . '" class="qm-nowrap"><span class="qm-sticky">' . esc_html( $label ) . '</span></th>';
+					echo '<th scope="row" rowspan="' . esc_attr( count( $listener['hooks'] ) ) . '" class="qm-nowrap">';
+					echo '<span class="qm-sticky">';
+					echo esc_html( $label );
+					echo self::output_filename( '', $trace__start[0]['file'], $trace__start[0]['line'] ); // WPCS: XSS ok.
+					echo self::output_filename( '', $trace__stop[0]['file'], $trace__stop[0]['line'] ); // WPCS: XSS ok.
+					echo '</span>';
+					echo '</th>';
 				}
 
 				echo '<td>';

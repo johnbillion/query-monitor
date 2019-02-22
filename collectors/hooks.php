@@ -21,15 +21,21 @@ class QM_Collector_Hooks extends QM_Collector {
 	}
 
 	public function action_function_listen_start( $label ) {
-		if ( ! array_key_exists( 'discovered_hooks', $this->data ) ) {
-			$this->data['discovered_hooks'] = array();
+		if ( ! array_key_exists( 'discoveries', $this->data ) ) {
+			$this->data['discoveries'] = array();
 		}
 
-		if ( array_key_exists( $label, $this->data['discovered_hooks'] ) ) {
+		if ( array_key_exists( $label, $this->data['discoveries'] ) ) {
 			return;
 		}
 
-		$this->data['discovered_hooks'][ $label ] = array();
+		$this->data['discoveries'][ $label ] = array(
+			'bounds' => array(
+				'start' => new QM_Backtrace,
+				'stop' => null,
+			),
+			'hooks' => array(),
+		);
 
 		add_action( 'all', array( $this, 'action_function_listen_all' ), 0, 1 );
 	}
@@ -44,15 +50,15 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		global $wp_actions;
 
-		end( $this->data['discovered_hooks'] );
-		$label = key( $this->data['discovered_hooks'] );
-		$last = end( $this->data['discovered_hooks'][ $label ] );
+		end( $this->data['discoveries'] );
+		$label = key( $this->data['discoveries'] );
+		$last = end( $this->data['discoveries'][ $label ]['hooks'] );
 
 		if ( current_action() === $last['hook'] ) {
-			$i = key( $this->data['discovered_hooks'][ $label ] );
-			$this->data['discovered_hooks'][ $label ][ $i ]['count']++;
+			$i = key( $this->data['discoveries'][ $label ]['hooks'] );
+			$this->data['discoveries'][ $label ]['hooks'][ $i ]['count']++;
 		} else {
-			$this->data['discovered_hooks'][ $label ][] = array(
+			$this->data['discoveries'][ $label ]['hooks'][] = array(
 				'is_action' => array_key_exists( current_action(), $wp_actions ),
 				'hook' => current_action(),
 				'count' => 1,
@@ -64,6 +70,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	public function action_function_listen_stop( $label ) {
 		remove_action( 'all', array( $this, 'action_function_listen_all' ), 0, 1 );
+		$this->data['discoveries'][ $label ]['bounds']['stop'] = new QM_Backtrace;
 	}
 
 	public function process() {
