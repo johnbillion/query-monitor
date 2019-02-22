@@ -31,7 +31,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		$this->data['discoveries'][ $label ] = array(
 			'bounds' => array(
-				'start' => new QM_Backtrace,
+				'start' => new QM_Backtrace(),
 				'stop' => null,
 			),
 			'hooks' => array(),
@@ -70,7 +70,7 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	public function action_function_listen_stop( $label ) {
 		remove_action( 'all', array( $this, 'action_function_listen_all' ), 0, 1 );
-		$this->data['discoveries'][ $label ]['bounds']['stop'] = new QM_Backtrace;
+		$this->data['discoveries'][ $label ]['bounds']['stop'] = new QM_Backtrace();
 	}
 
 	public function process() {
