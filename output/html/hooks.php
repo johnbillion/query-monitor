@@ -113,17 +113,20 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-							printf(
-								/* translators: %s: Action name */
-								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
-								'<code>all</code>'
-							);
 
+							$use = 'Try to avoid using it.';
 							$data = QM_Collectors::get( 'hooks' )->get_data();
 
 							if ( ! empty( $data['discoveries'] ) ) {
-								echo esc_html( ' (Used for discovering hooks.)' ); // @todo Link to Discovered Hooks panel.
+								$use = '<br />Remove the hook discovery bounds when not actively using.'; // @todo Link to Discovered Hooks panel.
 							}
+
+							printf(
+								/* translators: %s: Action name */
+								esc_html__( 'Warning: The %s action is extremely resource intensive. %s', 'query-monitor' ),
+								'<code>all</code>',
+								$use
+							);
 
 							echo '<span>';
 						}
