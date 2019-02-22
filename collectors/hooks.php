@@ -16,8 +16,11 @@ class QM_Collector_Hooks extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
-		add_action( 'qm/listen/start', array( $this, 'action_function_listen_start' ), 10, 1 );
-		add_action( 'qm/listen/stop',  array( $this, 'action_function_listen_stop' ), 10, 1 );
+
+		if ( ! defined( 'QM_DISABLE_HOOK_DISCOVERY' ) || ! QM_DISABLE_HOOK_DISCOVERY ) {
+			add_action( 'qm/listen/start', array( $this, 'action_function_listen_start' ), 10, 1 );
+			add_action( 'qm/listen/stop',  array( $this, 'action_function_listen_stop' ), 10, 1 );
+		}
 	}
 
 	public function action_function_listen_start( $label ) {
