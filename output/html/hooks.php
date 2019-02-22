@@ -119,15 +119,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 								'<code>all</code>'
 							);
 
-							$data = self::$collector->get_data();
+							$data = QM_Collectors::get( 'hooks' )->get_data();
 
 							if ( ! empty( $data['discoveries'] ) ) {
-								echo '<br />';
-								print_f(
-									/* translators: %s: Action name */
-									esc_html__( '%s hook used for hook discovery.', 'query-monitor' ),
-									'<code>all</code>'
-								); // @todo Link to Discovered Hooks panel.
+								echo esc_html( ' (Used for discovering hooks.)' ); // @todo Link to Discovered Hooks panel.
 							}
 
 							echo '<span>';
