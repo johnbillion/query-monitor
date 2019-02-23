@@ -16,7 +16,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$db_query_num   = null;
-		$db_query_types = array();
 		$db_queries     = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
@@ -169,76 +168,53 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
 				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 			) );
-
-			if ( $cache_data['display_hit_rate_warning'] ) {
-				printf(
-					'<br><a href="%s" class="qm-external-link">%s</a>',
-					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
-					esc_html__( 'Why is this value 100%?', 'query-monitor' )
-				);
-			}
-
 			echo '</p>';
+		} else {
+			echo '<p>';
+			echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
+			echo '</p>';
+		}
 
-			$installed_opcode_caches = array_filter( $cache_data['opcode_cache_extensions'] );
+		if ( $cache_data['has_object_cache'] ) {
+			echo '<p><span class="qm-info">';
+			printf(
+				'<a href="%s" class="qm-link">%s</a>',
+				esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
+				esc_html__( 'External object cache in use', 'query-monitor' )
+			);
+			echo '</span></p>';
+		} else {
+			echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			echo esc_html__( 'External object cache not in use', 'query-monitor' );
+			echo '</span></p>';
 
-			if ( $cache_data['has_opcode_cache'] ) {
-				foreach ( $installed_opcode_caches as $opcache_name => $opcache_state ) {
-					echo '<p>';
-					echo esc_html( sprintf(
-						/* translators: %s: Name of cache driver */
-						__( 'Opcode cache in use: %s', 'query-monitor' ),
-						$opcache_name
-					) );
-					echo '</p>';
-				}
-			} elseif ( ! empty( $installed_opcode_caches ) ) {
+			$potentials = array_filter( $cache_data['object_cache_extensions'] );
+
+			if ( ! empty( $potentials ) ) {
 				echo '<ul>';
-				foreach ( $installed_opcode_caches as $name => $value ) {
+				foreach ( $potentials as $name => $value ) {
 					echo '<li><span class="qm-warn">';
 					echo esc_html( sprintf(
-						/* translators: %s: PHP opcode cache extension name */
-						__( 'The %s opcode cache is installed but not enabled', 'query-monitor' ),
+						/* translators: %s: PHP extension name */
+						__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
 						$name
 					) );
 					echo '</span></li>';
 				}
 				echo '</ul>';
 			}
+		}
 
-			if ( $cache_data['has_object_cache'] ) {
-				echo '<p><span class="qm-info">';
-				printf(
-					'<a href="%s" class="qm-link">%s</a>',
-					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
-					esc_html__( 'External object cache in use', 'query-monitor' )
-				);
-				echo '</span></p>';
-			} else {
-				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-				echo esc_html__( 'External object cache not in use', 'query-monitor' );
-				echo '</span></p>';
-
-				$potentials = array_filter( $cache_data['object_cache_extensions'] );
-
-				if ( ! empty( $potentials ) ) {
-					echo '<ul>';
-					foreach ( $potentials as $name => $value ) {
-						echo '<li><span class="qm-warn">';
-						echo esc_html( sprintf(
-							/* translators: %s: PHP extension name */
-							__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
-							$name
-						) );
-						echo '</span></li>';
-					}
-					echo '</ul>';
-				}
+		if ( $cache_data['has_opcode_cache'] ) {
+			foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
+				echo '<p>';
+				echo esc_html( sprintf(
+					/* translators: %s: Name of cache driver */
+					__( 'Opcode cache in use: %s', 'query-monitor' ),
+					$opcache_name
+				) );
+				echo '</p>';
 			}
-		} else {
-			echo '<p>';
-			echo esc_html__( 'Object cache information is not available', 'query-monitor' );
-			echo '</p>';
 		}
 
 		echo '</section>';
