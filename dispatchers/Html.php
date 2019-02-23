@@ -381,39 +381,47 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-boxed">';
 		$constants = array(
-			'QM_DB_EXPENSIVE'          => array(
+			'QM_DB_EXPENSIVE'           => array(
 				/* translators: %s: The default value for a PHP constant */
 				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning. Default value: %s.', 'query-monitor' ),
 				'default' => 0.05,
 			),
-			'QM_DISABLED'              => array(
+			'QM_DISABLED'               => array(
 				'label'   => __( 'Disable Query Monitor entirely.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_DISABLE_ERROR_HANDLER' => array(
+			'QM_DISABLE_ERROR_HANDLER'  => array(
 				'label'   => __( 'Disable the handling of PHP errors.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_ENABLE_CAPS_PANEL'     => array(
+			'QM_ENABLE_CAPS_PANEL'      => array(
 				'label'   => __( 'Enable the Capability Checks panel.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_HIDE_CORE_ACTIONS'     => array(
+			'QM_HIDE_CORE_ACTIONS'      => array(
 				'label'   => __( 'Hide WordPress core on the Hooks & Actions panel.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_HIDE_SELF'             => array(
+			'QM_HIDE_SELF'              => array(
 				'label'   => __( 'Hide Query Monitor itself from various panels.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_NO_JQUERY'             => array(
+			'QM_NO_JQUERY'              => array(
 				'label'   => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_SHOW_ALL_HOOKS'        => array(
+			'QM_SHOW_ALL_HOOKS'         => array(
 				'label'   => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
 				'default' => false,
 			),
+			'QM_DISABLE_HOOK_DISCOVERY' => array(
+				'label'   => __( 'Prevent hook discovery, to safeguard against performance degradation in production.' ),
+				'default' => false,
+			),
+			'QM_MAX_HOOKS_DISCOVERED'   => array(
+				'label'   => __( 'Maximum number of hooks to discover before auto-terminating.' ),
+				'default' => 300,
+			)
 		);
 
 		echo '<section>';

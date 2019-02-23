@@ -96,11 +96,20 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<th scope="row" rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
 						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
+							$_hooks_within_bounds = QM_Collectors::get( 'hooks_within_bounds' );
+							$hooks_within_bounds  = $_hooks_within_bounds->get_data();
+
+							$extra = ' Try to avoid using it.';
+
+							if ( $_hooks_within_bounds && !empty( $hooks_within_bounds['hooks'] ) )
+								$extra = '<br />Remove or disable hook discovery when not actively using.'; // @TODO Link to panel.
+
 							echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 							printf(
 								/* translators: %s: Action name */
-								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
-								'<code>all</code>'
+								esc_html__( 'Warning: The %1$s action is extremely resource intensive.%2$s', 'query-monitor' ),
+								'<code>all</code>',
+								$extra
 							);
 							echo '<span>';
 						}

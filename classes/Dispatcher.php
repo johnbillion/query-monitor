@@ -15,6 +15,10 @@ abstract class QM_Dispatcher {
 			define( 'QM_COOKIE', 'wp-query_monitor_' . COOKIEHASH );
 		}
 
+		if ( ! defined( 'QM_MAX_HOOKS_DISCOVERED' ) ) {
+			define( 'QM_MAX_HOOKS_DISCOVERED', 500 );
+		}
+
 		add_action( 'init', array( $this, 'init' ) );
 
 	}
