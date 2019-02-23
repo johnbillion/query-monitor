@@ -236,9 +236,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				}
 			}
 		} else {
-			echo '<span class="qm-info">';
+			echo '<p>';
 			echo esc_html__( 'Object cache information is not available', 'query-monitor' );
-			echo '</span>';
+			echo '</p>';
 		}
 
 		echo '</section>';
