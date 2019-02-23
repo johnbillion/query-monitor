@@ -11,8 +11,7 @@ class QM_Output_Html_Hooks_Within_Bounds extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus',       array( $this, 'admin_menu' ), 110 );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ),  80 );
+		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 80 );
 	}
 
 	public function panel_menu( array $menu ) {
