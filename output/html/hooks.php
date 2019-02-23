@@ -11,23 +11,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menus' ) );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
-	}
-
-	public function panel_menus( $panel_menu ) {
-		$data = $this->collector->get_data();
-
-		if ( empty( $data['discoveries'] ) ) {
-			return $panel_menu;
-		}
-
-		$panel_menu[ 'qm-' . $this->id ]['children'][ 'qm-' . $this->id . '-discoveries' ] = array(
-			'href'  => esc_attr( '#' . $this->collector->id() . '-discoveries' ),
-			'title' => '└ ' . __( 'Discovered Hooks', 'query-monitor' ),
-		);
-
-		return $panel_menu;
 	}
 
 	public function output() {
@@ -113,21 +97,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
 							echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-
 							printf(
 								/* translators: %s: Action name */
-								esc_html__( 'Warning: The %1$s action is extremely resource intensive.', 'query-monitor' ),
+								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
 								'<code>all</code>'
 							);
-
-							$data = QM_Collectors::get( 'hooks' )->get_data();
-
-							if ( ! empty( $data['discoveries'] ) ) {
-								echo '<br />Remove the hook discovery bounds when not actively using.'; // @todo Link to Discovered Hooks panel.
-							} else {
-								echo ' Try to avoid using it.';
-							}
-
 							echo '<span>';
 						}
 						echo '</span></th>';
@@ -202,74 +176,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			}
 		}
 
-	}
-
-	protected function after_tabular_output() {
-		echo '</table>';
-		echo '</div>';
-
-		$this->output_discovered();
-	}
-
-	public function output_discovered() {
-		printf(
-			'<div class="qm qm-discovered" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
-			esc_attr( $this->current_id . '-discoveries' )
-		);
-
-		echo '<div><table>';
-
-		printf(
-			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
-			esc_attr( $this->current_id . '-discoveries' ),
-			esc_html__( 'Discovered Hooks', 'query-monitor' )
-		);
-
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Label', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-
-		$data = $this->collector->get_data();
-
-		foreach ( $data['discoveries'] as $label => $listener ) {
-			$trace__start = $listener['bounds']['start']->get_trace();
-			$trace__stop = $listener['bounds']['stop']->get_trace();
-
-			foreach ( $listener['hooks'] as $i => $hook ) {
-				echo '<tr>';
-
-				if ( 0 === $i ) {
-					echo '<th scope="row" rowspan="' . esc_attr( count( $listener['hooks'] ) ) . '" class="qm-nowrap">';
-					echo '<span class="qm-sticky">';
-					echo esc_html( $label );
-					echo self::output_filename( '', $trace__start[0]['file'], $trace__start[0]['line'] ); // WPCS: XSS ok.
-					echo self::output_filename( '', $trace__stop[0]['file'], $trace__stop[0]['line'] ); // WPCS: XSS ok.
-					echo '</span>';
-					echo '</th>';
-				}
-
-				echo '<td>';
-					echo '<code>' . esc_html( $hook['hook'] ) . '</code>';
-
-					if ( 1 < $hook['count'] ) {
-						echo '<br /><span class="qm-info qm-supplemental">Fired ' . esc_html( $hook['count'] ) . ' times</span>';
-					}
-				echo '</td>';
-				echo '<td>' . ( $hook['is_action'] ? 'Action' : 'Filter' ) . '</td>';
-				echo '</tr>';
-			}
-		}
-
-		echo '</tbody>';
-		echo '</table></div>';
-
-		echo '</div>';
 	}
 
 }
