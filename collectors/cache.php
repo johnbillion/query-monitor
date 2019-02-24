@@ -88,7 +88,7 @@ class QM_Collector_Cache extends QM_Collector {
 			$this->data['opcode_cache_extensions'] = array();
 		}
 
-		$this->data['has_opcode_cache'] = !! array_filter( $this->data['opcode_cache_extensions'] );
+		$this->data['has_opcode_cache'] = array_filter( $this->data['opcode_cache_extensions'] ) ? true : false;
 	}
 
 }
