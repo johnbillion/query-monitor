@@ -41,8 +41,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			return;
 		}
 
-		$this->data['is_ssl'] = is_ssl();
-		$this->data['host']   = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data['is_ssl']          = is_ssl();
+		$this->data['host']            = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data['default_version'] = get_bloginfo( 'version' );
 
 		$home_url  = home_url();
 		$positions = array(
@@ -198,8 +199,14 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src    = $dependency->src;
 
-		if ( ! empty( $src ) && ! empty( $dependency->ver ) ) {
-			$src = add_query_arg( 'ver', $dependency->ver, $src );
+		if ( null === $dependency->ver ) {
+			$ver = '';
+		} else {
+			$ver = $dependency->ver ? $dependency->ver : $this->data['default_version'];
+		}
+
+		if ( ! empty( $src ) && ! empty( $ver ) ) {
+			$src = add_query_arg( 'ver', $ver, $src );
 		}
 
 		/** This filter is documented in wp-includes/class.wp-scripts.php */

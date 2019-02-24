@@ -132,7 +132,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 				printf(
 					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
 					esc_html( $asset['source']->get_error_message() ),
-					esc_html( $error_data['src'] )
+					esc_url( $error_data['src'] )
 				);
 			} else {
 				printf(
@@ -143,7 +143,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		} elseif ( ! empty( $asset['source'] ) ) {
 			printf(
 				'<a href="%s" class="qm-link">%s</a>',
-				esc_attr( $asset['source'] ),
+				esc_url( $asset['source'] ),
 				esc_html( $asset['display'] )
 			);
 		}
