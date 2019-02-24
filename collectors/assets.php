@@ -112,7 +112,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				$dependents       = $this->get_dependents( $dependency, $raw );
 				$all_dependents   = array_merge( $all_dependents, $dependents );
 
-				list( $host, $source, $local ) = $this->get_dependency_data( $dependency, $raw );
+				list( $host, $source, $local ) = $this->get_dependency_data( $dependency );
 
 				if ( empty( $dependency->ver ) ) {
 					$ver = '';
@@ -194,7 +194,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		return $dependents;
 	}
 
-	public function get_dependency_data( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+	public function get_dependency_data( _WP_Dependency $dependency ) {
 		$data   = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src    = $dependency->src;
