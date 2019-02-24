@@ -15,12 +15,21 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
 ### Setup:
 
-1. Run `composer install` to install the PHP dependencies.
-2. Run `npm install` to install the Node dependencies.
-3. Run `npm install grunt-cli -g` to install Grunt globally if you don't already have it.
-4. Install the test environment by executing:
+1. Install the PHP dependencies:
 
-	   ./bin/install-wp-tests.sh wordpress_tests <db-user> <db-pass>
+	   composer install
+
+2. Install the Node dependencies:
+
+       npm install
+
+3. Install Grunt CLI globally (if you don't already have it):
+
+       npm install -g grunt-cli
+
+4. Install the test environment:
+
+       ./bin/install-wp-tests.sh wordpress_tests <db-user> <db-pass>
 
 ## Building the Sass
 
@@ -31,6 +40,8 @@ To compile the Sass files into CSS:
 To start the file watcher which will watch for changes and automatically compile the Sass:
 
 	grunt watch
+
+Note that the built CSS files are also committed to the Git repo. This allows the plugin to be installed via a Git clone or Composer without the need to perform a build step.
 
 ## Running all the Tests
 
