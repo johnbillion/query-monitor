@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/master.svg?style=flat-square)](https://travis-ci.org/johnbillion/query-monitor)
+[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/develop.svg?style=flat-square&label=develop%20build)](https://travis-ci.org/johnbillion/query-monitor)
 
 # Contributing to Query Monitor
 
