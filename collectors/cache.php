@@ -30,7 +30,7 @@ class QM_Collector_Cache extends QM_Collector {
 
 			if ( method_exists( $wp_object_cache, 'getStats' ) ) {
 				$stats = $wp_object_cache->getStats();
-			} elseif ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
+			} elseif ( array_key_exists( 'stats', get_object_vars( $wp_object_cache ) ) && is_array( $wp_object_cache->stats ) ) {
 				$stats = $wp_object_cache->stats;
 			} elseif ( function_exists( 'wp_cache_get_stats' ) ) {
 				$stats = wp_cache_get_stats();
