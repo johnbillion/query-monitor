@@ -3,11 +3,9 @@
   "version": "3.3.1",
   "description": "The Developer Tools panel for WordPress.",
   "license": "GPL-2.0-or-later",
+  "private": true,
   "author": "John Blackbourn",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/johnbillion/query-monitor.git"
-  },
+  "repository": "johnbillion/query-monitor",
   "devDependencies": {
     "gitattributes-globs": "^1",
     "gitignore-globs": "^0.1",
