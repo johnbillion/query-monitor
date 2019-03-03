@@ -17,7 +17,7 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
 1. Install the PHP dependencies:
 
-	   composer install
+       composer install
 
 2. Install the Node dependencies:
 
