@@ -4,9 +4,14 @@
 
 Code contributions and bug reports are very welcome. These should be submitted through [the GitHub repository](https://github.com/johnbillion/query-monitor). Development happens in the `develop` branch, and any pull requests should be made against that branch please.
 
+* [Reporting Security Issues](#reporting-security-issues)
 * [Setting up Locally](#setting-up-locally)
 * [Building the Assets](#building-the-assets)
 * [Running the Tests](#running-the-tests)
+
+## Reporting Security Issues
+
+If you discover a security issue in Query Monitor, please report it to [the security program on HackerOne](https://hackerone.com/johnblackbourn). Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
 
 ## Setting up Locally
 
