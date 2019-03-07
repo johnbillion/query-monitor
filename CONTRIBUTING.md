@@ -104,7 +104,7 @@ Pushing a tag to GitHub triggers a build on Travis CI which deploys the release 
 
 ### Post Release
 
-Note that the corresponding milestone on GitHub gets automatically closed via a [ProBot semver instance running on Glitch](https://glitch.com/~third-lycra). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
+Note that the corresponding milestone on GitHub gets automatically closed via [ProBot semver](https://github.com/apps/probot-semver). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
 
 1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones) as ProBot semver doesn't handle this.
@@ -112,7 +112,7 @@ Note that the corresponding milestone on GitHub gets automatically closed via a 
 1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
 1. Consume tea and cake as necessary.
 
-## Manually Deploying to WordPress.org
+### Manual Deployments
 
 Query Monitor gets automatically deployed to the WordPress.org Plugin Directory via Travis CI whenever a new tag is pushed to the GitHub repo.
 
