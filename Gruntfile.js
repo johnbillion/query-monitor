@@ -91,7 +91,6 @@ module.exports = function (grunt) {
 			options: {
 				deploy_trunk: true,
 				deploy_tag: true,
-				svn_user: 'johnbillion',
 				plugin_slug: '<%= pkg.name %>',
 				build_dir: 'build',
 				assets_dir: 'assets-wp-repo'
@@ -101,7 +100,6 @@ module.exports = function (grunt) {
 			options: {
 				deploy_trunk: false,
 				deploy_tag: false,
-				svn_user: '<%= wp_deploy.deploy.options.svn_user %>',
 				plugin_slug: '<%= pkg.name %>',
 				build_dir: '<%= wp_deploy.deploy.options.build_dir %>',
 				assets_dir: '<%= wp_deploy.deploy.options.assets_dir %>'
@@ -113,7 +111,7 @@ module.exports = function (grunt) {
 				force_interactive: false,
 				deploy_trunk: true,
 				deploy_tag: true,
-				svn_user: '<%= wp_deploy.deploy.options.svn_user %>',
+				svn_user: 'johnbillion',
 				plugin_slug: '<%= pkg.name %>',
 				build_dir: '<%= wp_deploy.deploy.options.build_dir %>',
 				assets_dir: '<%= wp_deploy.deploy.options.assets_dir %>'
