@@ -8,6 +8,7 @@ Code contributions and bug reports are very welcome. These should be submitted t
 * [Setting up Locally](#setting-up-locally)
 * [Building the Assets](#building-the-assets)
 * [Running the Tests](#running-the-tests)
+* [Releasing a New Version](#releasing-a-new-version)
 
 ## Reporting Security Issues
 
@@ -65,3 +66,60 @@ To run just the PHPUnit tests:
 To run just the code sniffer:
 
 	./vendor/bin/phpcs -psn .
+
+## Releasing a New Version
+
+These are the steps to take to release a new version of Query Monitor (for contributors who have push access to the GitHub repo).
+
+### Prior to Release
+
+1. Check [the milestone on GitHub](https://github.com/johnbillion/query-monitor/milestones) for open issues or PRs. Fix or reassign as necessary.
+1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
+1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
+1. Run `grunt sass`. This should not change the built CSS files. If it does, figure out why.
+1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, FAQs, screenshots, etc.
+   - This is currently a manual process while I decide whether I want to sync parts of these files.
+1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
+   - To do this, run `grunt build` then check the `build` directory for files that shouldn't be part of the package.
+1. Run `composer test` and ensure everything passes.
+1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
+   - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.
+
+### For Release
+
+1. Bump the plugin version number:
+   - `grunt bump:patch` for a patch release (1.2.3 => 1.2.4)
+   - `grunt bump:minor` for a minor release (1.2.3 => 1.3.0)
+   - `grunt bump:major` for a major release (1.2.3 => 2.0.0)
+1. Commit the version number changes
+1. `git push origin develop`
+1. Wait until (and ensure that) [the build on Travis CI](https://travis-ci.org/johnbillion/query-monitor/builds) passes
+1. `git checkout master`
+1. `git merge develop`
+1. `git push origin master`
+1. `git tag <version>` where `<version>` is the new version number
+1. `git push origin --tags`
+
+Pushing a tag to GitHub triggers a build on Travis CI which deploys the release to the WordPress.org Plugin Directory. No need to touch Subversion.
+
+### Post Release
+
+Note that the corresponding milestone on GitHub gets automatically closed via a [ProBot semver instance running on Glitch](https://glitch.com/~third-lycra). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
+
+1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
+1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones) as ProBot semver doesn't handle this.
+1. Check the new version has appeared [on the WordPress.org plugin page](https://wordpress.org/plugins/query-monitor/) (it'll take a few minutes).
+1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
+1. Consume tea and cake as necessary.
+
+## Manually Deploying to WordPress.org
+
+Query Monitor gets automatically deployed to the WordPress.org Plugin Directory via Travis CI whenever a new tag is pushed to the GitHub repo.
+
+Deploying can be performed locally if required:
+
+	grunt deploy
+
+Assets such as screenshots and banners are stored in the `assets-wp-repo` directory. These get deployed as part of the automated release process too, but can be deployed separately if necessary:
+
+	grunt deploy:assets
