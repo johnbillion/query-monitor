@@ -37,9 +37,9 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
        npm install -g grunt-cli
 
-4. Install the test environment:
+4. Create the test database (if it doesn't already exist):
 
-       ./bin/install-wp-tests.sh wordpress_tests <db-user> <db-pass>
+       mysqladmin create wordpress_test -u root
 
 ## Building the Assets
 
@@ -61,11 +61,11 @@ To run the whole test suite which includes PHPUnit, code sniffer, and linting:
 
 To run just the PHPUnit tests:
 
-	./vendor/bin/phpunit
+	composer test:ut
 
 To run just the code sniffer:
 
-	./vendor/bin/phpcs -psn .
+	composer test:cs
 
 ## Releasing a New Version
 

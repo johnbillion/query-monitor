@@ -33,6 +33,9 @@
 			}
 		}
 	],
+	"extra": {
+		"wordpress-install-dir": "vendor/wordpress/wordpress"
+	},
 	"require": {
 		"php": ">=5.3",
 		"composer/installers": "~1.0"
@@ -43,11 +46,22 @@
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"danieltj27/dark-mode": "3.2",
 		"wp-coding-standards/wpcs": "^2",
+		"wp-phpunit/wp-phpunit": "^5.1",
+		"roots/wordpress": "^5.1",
+		"vlucas/phpdotenv": "^3",
 		"phpunit/phpunit": "^5"
 	},
 	"scripts": {
-		"test": [
-			"bin/test.sh"
-		]
+        "test:cs": [
+            "vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
+        ],
+        "test:ut": [
+			"export WP_MULTISITE=0 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-required",
+            "export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
+        ],
+        "test": [
+            "@test:cs",
+            "@test:ut"
+        ]
 	}
 }

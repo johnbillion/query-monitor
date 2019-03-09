@@ -54,10 +54,7 @@ before_install:
 
 install:
   - composer install
-
-before_script:
-  - php --version
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - mysqladmin create wordpress_test -u root
 
 script:
   - composer test

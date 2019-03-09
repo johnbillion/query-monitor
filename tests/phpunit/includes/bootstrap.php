@@ -1,27 +1,28 @@
 <?php
 
-$_tests_dir = getenv('WP_TESTS_DIR');
+$_qm_dir = getcwd();
 
-if ( ! $_tests_dir ) {
-	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+require_once $_qm_dir . '/vendor/autoload.php';
+
+$_env_dir = dirname( dirname( __DIR__ ) );
+
+if ( is_readable( $_env_dir . '/.env' ) ) {
+	$dotenv = new Dotenv\Dotenv( $_env_dir );
+	$dotenv->load();
 }
 
-if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-	echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh ?";
-	exit( 1 );
-}
+$_tests_dir = getenv( 'WP_PHPUNIT__DIR' );
 
 require_once $_tests_dir . '/includes/functions.php';
 
-require dirname( __FILE__ ) . '/dummy-objects.php';
+require_once __DIR__ . '/dummy-objects.php';
 
-function _manually_load_plugin() {
+tests_add_filter( 'muplugins_loaded', function() use ( $_qm_dir ) {
 	define( 'QM_TESTS', true );
-	require dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/query-monitor.php';
-}
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+	require_once $_qm_dir . '/query-monitor.php';
+} );
 
-require $_tests_dir . '/includes/bootstrap.php';
+require_once $_tests_dir . '/includes/bootstrap.php';
 
-require dirname( __FILE__ ) . '/qm-test.php';
-require dirname( __FILE__ ) . '/qm-test-backtrace.php';
+require_once __DIR__ . '/qm-test.php';
+require_once __DIR__ . '/qm-test-backtrace.php';
