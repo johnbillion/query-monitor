@@ -452,7 +452,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				);
 				$title[] = sprintf(
 					/* translators: %s: Number of database queries */
-					esc_html_x( _n( '%s Q', '%s Qs', $db->total_qs ), 'Query count', 'query-monitor' ),
+					esc_html( _nx( '%s Q', '%s Qs', $db->total_qs, 'Query count', 'query-monitor' ) ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
