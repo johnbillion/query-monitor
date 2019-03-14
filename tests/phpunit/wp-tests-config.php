@@ -1,10 +1,13 @@
 <?php
 
-/* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
-define( 'ABSPATH', dirname( dirname( __DIR__ ) ) . '/vendor/wordpress/wordpress/' );
+$root     = dirname( dirname( __DIR__ ) );
+$composer = json_decode( file_get_contents( $root . '/composer.json' ), true );
 
-define( 'WP_CONTENT_DIR', dirname( dirname( __DIR__ ) ) . '/content-dir' );
-define( 'WP_PLUGINS_DIR', dirname( dirname( __DIR__ ) ) . '/plugins-dir' );
+/* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
+define( 'ABSPATH', $root . '/' . $composer['extra']['wordpress-install-dir'] . '/' );
+
+define( 'WP_CONTENT_DIR', $root . '/content-dir' );
+define( 'WP_PLUGINS_DIR', $root . '/plugins-dir' );
 
 /*
  * Path to the theme to test with.
