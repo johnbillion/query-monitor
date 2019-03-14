@@ -6,3 +6,4 @@
 /package-lock.json
 /languages
 /build
+/tests/.env

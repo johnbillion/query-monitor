@@ -7,7 +7,7 @@ require_once $_qm_dir . '/vendor/autoload.php';
 $_env_dir = dirname( dirname( __DIR__ ) );
 
 if ( is_readable( $_env_dir . '/.env' ) ) {
-	$dotenv = new Dotenv\Dotenv( $_env_dir );
+	$dotenv = Dotenv\Dotenv::create( $_env_dir );
 	$dotenv->load();
 }
 
