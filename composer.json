@@ -46,8 +46,8 @@
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"danieltj27/dark-mode": "3.2",
 		"wp-coding-standards/wpcs": "^2",
-		"wp-phpunit/wp-phpunit": "^5.1",
-		"roots/wordpress": "^5.1",
+		"wp-phpunit/wp-phpunit": "*",
+		"roots/wordpress": "*",
 		"vlucas/phpdotenv": "^3",
 		"phpunit/phpunit": "^5"
 	},
