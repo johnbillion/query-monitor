@@ -33,6 +33,9 @@
 			}
 		}
 	],
+    "config": {
+        "preferred-install": "dist"
+    },
 	"extra": {
 		"wordpress-install-dir": "vendor/wordpress/wordpress"
 	},
