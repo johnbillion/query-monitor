@@ -1,12 +1,12 @@
 {
-	"name"       : "johnbillion/query-monitor",
+	"name": "johnbillion/query-monitor",
 	"description": "The Developer Tools panel for WordPress.",
-	"homepage"   : "https://github.com/johnbillion/query-monitor/",
-	"type"       : "wordpress-plugin",
-	"license"    : "GPL-2.0-or-later",
-	"authors"    : [
+	"homepage": "https://github.com/johnbillion/query-monitor/",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
 		{
-			"name"    : "John Blackbourn",
+			"name": "John Blackbourn",
 			"homepage": "https://johnblackbourn.com/"
 		}
 	],
@@ -33,9 +33,9 @@
 			}
 		}
 	],
-    "config": {
-        "preferred-install": "dist"
-    },
+	"config": {
+		"preferred-install": "dist"
+	},
 	"extra": {
 		"wordpress-install-dir": "vendor/wordpress/wordpress"
 	},
@@ -43,7 +43,7 @@
 		"php": ">=5.3",
 		"composer/installers": "~1.0"
 	},
-	"require-dev" : {
+	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"squizlabs/php_codesniffer": "^3.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
@@ -55,16 +55,16 @@
 		"phpunit/phpunit": "^5"
 	},
 	"scripts": {
-        "test:cs": [
-            "vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
-        ],
-        "test:ut": [
+		"test:cs": [
+			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
+		],
+		"test:ut": [
 			"export WP_MULTISITE=0 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-required",
-            "export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
-        ],
-        "test": [
-            "@test:cs",
-            "@test:ut"
-        ]
+			"export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
+		],
+		"test": [
+			"@test:cs",
+			"@test:ut"
+		]
 	}
 }
