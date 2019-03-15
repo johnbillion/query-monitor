@@ -22,6 +22,10 @@ tests_add_filter( 'muplugins_loaded', function() use ( $_qm_dir ) {
 	require_once $_qm_dir . '/query-monitor.php';
 } );
 
+tests_add_filter( 'stylesheet_directory', function( $stylesheet_dir, $stylesheet, $theme_root ) use ( $_tests_dir ) {
+	return $_tests_dir . '/data/themedir1/' . WP_DEFAULT_THEME;
+}, 10, 3 );
+
 require_once $_tests_dir . '/includes/bootstrap.php';
 
 require_once __DIR__ . '/qm-test.php';
