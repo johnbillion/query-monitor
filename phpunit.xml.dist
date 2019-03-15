@@ -9,7 +9,6 @@
 	beStrictAboutOutputDuringTests="true"
 	>
 	<php>
-		<env name="WP_PHPUNIT__DIR" value="vendor/roots/wordpress" />
 		<env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/phpunit/wp-tests-config.php" />
 	</php>
 	<testsuites>
