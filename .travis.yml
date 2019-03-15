@@ -53,7 +53,7 @@ before_install:
     fi
 
 install:
-  - composer install
+  - travis_retry composer install --no-suggest
   - mysqladmin create wordpress_test -u root
 
 script:
