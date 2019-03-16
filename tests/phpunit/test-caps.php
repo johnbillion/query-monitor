@@ -1,11 +1,11 @@
 <?php
 
-class Test_Caps extends QM_UnitTestCase {
+class TestCapabilities extends QM_UnitTestCase {
 
 	/**
-	 * @dataProvider user_roles_access
+	 * @dataProvider dataUserRolesAccess
 	 */
-	public function test_users_can_access_query_monitor( $role, $can_access ) {
+	public function testUsersCanAccessQueryMonitor( $role, $can_access ) {
 		$user = self::factory()->user->create( array(
 			'role' => $role,
 		) );
@@ -14,7 +14,7 @@ class Test_Caps extends QM_UnitTestCase {
 		$this->assertSame( $can_access, $actual );
 	}
 
-	public function user_roles_access() {
+	public function dataUserRolesAccess() {
 		$roles = array(
 			array(
 				'administrator',

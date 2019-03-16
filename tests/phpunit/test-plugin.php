@@ -1,9 +1,9 @@
 <?php
 
-class Test_Plugin extends QM_UnitTestCase {
+class TestPlugin extends QM_UnitTestCase {
 	private $readme_data;
 
-	public function test_stable_tag() {
+	public function testStableTagIsUpToDate() {
 		if ( ! $readme_data = $this->get_readme() ) {
 			$this->markTestSkipped( 'There is no readme file' );
 			return;
@@ -14,7 +14,7 @@ class Test_Plugin extends QM_UnitTestCase {
 	}
 
 	private function get_readme() {
-		if( ! isset( $this->readme_data ) ) {
+		if ( ! isset( $this->readme_data ) ) {
 			$file = dirname( dirname( dirname( __FILE__ ) ) ) . '/readme.txt';
 
 			if ( ! is_file( $file ) ) {

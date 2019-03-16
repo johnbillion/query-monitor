@@ -1,6 +1,6 @@
 <?php
 
-class Test_Dispatcher_HTML extends QM_UnitTestCase {
+class TestDispatcherHTML extends QM_UnitTestCase {
 
 	protected $html = null;
 
@@ -29,7 +29,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 	/**
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
-	public function test_dispatcher_respects_late_change_of_https() {
+	public function testDispatcherRespectsLateChangeOfHttps() {
 		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {
@@ -54,7 +54,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 	}
 
-	public function test_admin_toolbar_for_home_page() {
+	public function testAdminToolbarContainsMenuItems() {
 		global $wpdb;
 
 		$this->go_to_with_template( home_url() );

@@ -1,6 +1,6 @@
 <?php
 
-class Test_Stack_Traces extends QM_UnitTestCase {
+class TestStackTraces extends QM_UnitTestCase {
 
 	protected static function get_callback( $function ) {
 
@@ -13,7 +13,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_procedural_function() {
+	public function testCallbackIsCorrectlyPopulatedWithProceduralFunction() {
 
 		$function = '__return_false';
 		$callback = self::get_callback( $function );
@@ -28,7 +28,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_object_method() {
+	public function testCallbackIsCorrectlyPopulatedWithObjectMethod() {
 
 		$obj      = new QM_Test_Object;
 		$function = array( $obj, 'hello' );
@@ -44,7 +44,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invokable() {
+	public function testCallbackIsCorrectlyPopulatedWithInvokable() {
 
 		$function = new QM_Test_Invokable;
 		$callback = self::get_callback( $function );
@@ -60,7 +60,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_static_method_array() {
+	public function testCallbackIsCorrectlyPopulatedWithStaticMethodArray() {
 
 		$function = array( 'QM_Test_Object', 'hello' );
 		$callback = self::get_callback( $function );
@@ -75,7 +75,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_static_method_string() {
+	public function testCallbackIsCorrectlyPopulatedWithStaticMethodString() {
 
 		$function = 'QM_Test_Object::hello';
 		$callback = self::get_callback( $function );
@@ -90,7 +90,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_closure() {
+	public function testCallbackIsCorrectlyPopulatedWithClosure() {
 
 		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
 
@@ -108,7 +108,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_lambda() {
+	public function testCallbackIsCorrectlyPopulatedWithLambda() {
 
 		if ( version_compare( phpversion(), '7.2', '>=' ) ) {
 			$this->markTestSkipped( 'Lambda functions are deprecated in PHP 7.2' );
@@ -136,7 +136,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_procedural_function() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction() {
 
 		$function = 'invalid_function';
 		$callback = self::get_callback( $function );
@@ -147,7 +147,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_object_method() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod() {
 
 		$obj      = new QM_Test_Object;
 		$function = array( $obj, 'goodbye' );
@@ -159,7 +159,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_invokable() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable() {
 
 		$function = new QM_Test_Object;
 		$callback = self::get_callback( $function );
@@ -170,7 +170,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_static_method_array() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodArray() {
 
 		$function = array( 'QM_Test_Object', 'goodbye' );
 		$callback = self::get_callback( $function );
@@ -181,7 +181,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_static_method_string() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodString() {
 
 		$function = 'QM_Test_Object::goodbye';
 		$callback = self::get_callback( $function );
@@ -192,7 +192,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_static_class_array() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassArray() {
 
 		$function = array( 'Invalid_Class', 'goodbye' );
 		$callback = self::get_callback( $function );
@@ -203,7 +203,7 @@ class Test_Stack_Traces extends QM_UnitTestCase {
 
 	}
 
-	public function test_populate_callback_invalid_static_class_string() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassString() {
 
 		$function = 'Invalid_Class::goodbye';
 		$callback = self::get_callback( $function );
