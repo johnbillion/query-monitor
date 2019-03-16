@@ -28,7 +28,7 @@
 		</whitelist>
 	</filter>
 	<listeners>
-		<listener class="SpeedTrapListener" file="tests/phpunit/includes/SpeedTrapListener.php">
+		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
 			<arguments>
 				<array>
 					<element key="slowThreshold">
