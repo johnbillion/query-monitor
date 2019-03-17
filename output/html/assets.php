@@ -32,9 +32,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		);
 
 		$type_label = $this->get_type_labels();
-		$type       = $this->collector->get_dependency_type();
-
-		$this->type = $type;
+		$this->type = $this->collector->get_dependency_type();
 
 		$hosts = array(
 			__( 'Other', 'query-monitor' ),
@@ -52,14 +50,14 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 				'local' => $data['host'],
 			),
 		);
-		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
+		echo $this->build_filter( $this->type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $this->type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $this->type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 		echo '</tr>';
