@@ -18,12 +18,12 @@ If you discover a security issue in Query Monitor, please report it to [the secu
 
 You can clone this repo and activate it like a normal WordPress plugin. If you want to contribute to Query Monitor, you should install the developer dependencies in order to build the assets and run the tests.
 
-### Prerequisites:
+### Prerequisites
 
 * [Composer](https://getcomposer.org/)
 * [Node](https://nodejs.org/)
 
-### Setup:
+### Setup
 
 1. Install the PHP dependencies:
 
@@ -119,6 +119,8 @@ Query Monitor gets automatically deployed to the WordPress.org Plugin Directory 
 Deploying can be performed locally if required:
 
 	grunt deploy
+
+You'll need to have `svn` installed locally, but you don't need to know how to use it.
 
 Assets such as screenshots and banners are stored in the `assets-wp-repo` directory. These get deployed as part of the automated release process too, but can be deployed separately if necessary:
 

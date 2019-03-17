@@ -321,11 +321,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	/**
-	 * Checks if the file path is within the specified plugin. This is
-	 * used to scope an error's file path to a plugin.
+	 * Checks if the component is of the given type and has the given context. This is
+	 * used to scope an error to a plugin or theme.
 	 *
-	 * @param string $plugin_name The name of the plugin
-	 * @param string $file_path The full path to the file
+	 * @param object $component         The component.
+	 * @param string $component_type    The component type for comparison.
+	 * @param string $component_context The component context for comparison.
 	 * @return bool
 	 */
 	public function is_affected_component( $component, $component_type, $component_context ) {

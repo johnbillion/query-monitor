@@ -268,6 +268,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'ajax_errors' => array(), # @TODO move this into the php_errors collector
 		);
 
+		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
@@ -508,7 +509,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		} );
 		<?php
 		echo '</script>' . "\n\n";
-		echo '<!-- End of Query Monitor output -->' . "\n\n";
+		echo '<!-- End Query Monitor output -->' . "\n\n";
 
 	}
 
