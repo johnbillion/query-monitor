@@ -150,73 +150,73 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		if ( $cache ) {
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
-		$cache_data = $cache->get_data();
-		if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
-			$cache_hit_percentage = $cache_data['cache_hit_percentage'];
-		}
-
-		if ( isset( $cache_hit_percentage ) ) {
-			echo '<p>';
-			echo esc_html( sprintf(
-				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
-				__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
-				number_format_i18n( $cache_hit_percentage, 1 ),
-				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
-				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
-			) );
-			echo '</p>';
-		} else {
-			echo '<p>';
-			echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
-			echo '</p>';
-		}
-
-		if ( $cache_data['has_object_cache'] ) {
-			echo '<p><span class="qm-info">';
-			printf(
-				'<a href="%s" class="qm-link">%s</a>',
-				esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
-				esc_html__( 'External object cache in use', 'query-monitor' )
-			);
-			echo '</span></p>';
-		} else {
-			echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-			echo esc_html__( 'External object cache not in use', 'query-monitor' );
-			echo '</span></p>';
-
-			$potentials = array_filter( $cache_data['object_cache_extensions'] );
-
-			if ( ! empty( $potentials ) ) {
-				echo '<ul>';
-				foreach ( $potentials as $name => $value ) {
-					echo '<li><span class="qm-warn">';
-					echo esc_html( sprintf(
-						/* translators: %s: PHP extension name */
-						__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
-						$name
-					) );
-					echo '</span></li>';
-				}
-				echo '</ul>';
+			$cache_data = $cache->get_data();
+			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
+				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
 			}
-		}
 
-		if ( $cache_data['has_opcode_cache'] ) {
-			foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
+			if ( isset( $cache_hit_percentage ) ) {
 				echo '<p>';
 				echo esc_html( sprintf(
-					/* translators: %s: Name of cache driver */
-					__( 'Opcode cache in use: %s', 'query-monitor' ),
-					$opcache_name
+					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
+					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
+					number_format_i18n( $cache_hit_percentage, 1 ),
+					number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
+					number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 				) );
 				echo '</p>';
+			} else {
+				echo '<p>';
+				echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
+				echo '</p>';
 			}
-		}
 
-		echo '</section>';
+			if ( $cache_data['has_object_cache'] ) {
+				echo '<p><span class="qm-info">';
+				printf(
+					'<a href="%s" class="qm-link">%s</a>',
+					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
+					esc_html__( 'External object cache in use', 'query-monitor' )
+				);
+				echo '</span></p>';
+			} else {
+				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo esc_html__( 'External object cache not in use', 'query-monitor' );
+				echo '</span></p>';
+
+				$potentials = array_filter( $cache_data['object_cache_extensions'] );
+
+				if ( ! empty( $potentials ) ) {
+					echo '<ul>';
+					foreach ( $potentials as $name => $value ) {
+						echo '<li><span class="qm-warn">';
+						echo esc_html( sprintf(
+							/* translators: %s: PHP extension name */
+							__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
+							$name
+						) );
+						echo '</span></li>';
+					}
+					echo '</ul>';
+				}
+			}
+
+			if ( $cache_data['has_opcode_cache'] ) {
+				foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
+					echo '<p>';
+					echo esc_html( sprintf(
+						/* translators: %s: Name of cache driver */
+						__( 'Opcode cache in use: %s', 'query-monitor' ),
+						$opcache_name
+					) );
+					echo '</p>';
+				}
+			}
+
+			echo '</section>';
 		}
 
 		$this->after_non_tabular_output();
