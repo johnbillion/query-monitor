@@ -76,6 +76,7 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 			'caps'          => true,
 			'conditionals'  => false,
 			'db_callers'    => false,
+			'db_components' => ( $wpdb instanceof QM_DB ),
 			'db_dupes'      => true,
 			'db_queries'    => true,
 			'debug_bar'     => false,
@@ -93,8 +94,6 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 			'timing'        => false,
 			'transients'    => true,
 		);
-
-		$expected['db_components'] = ( $wpdb instanceof QM_DB );
 
 		$collectors = QM_Collectors::init();
 		$menu = $this->html->js_admin_bar_menu();
