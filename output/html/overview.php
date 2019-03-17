@@ -28,13 +28,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$cache = QM_Collectors::get( 'cache' );
 
-		if ( $cache ) {
-			$cache_data = $cache->get_data();
-			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
-				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
-			}
-		}
-
 		$qm_broken   = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
 		$ajax_errors = __( 'PHP errors were triggered during an Ajax request. See your browser developer console for details.', 'query-monitor' );
 
@@ -156,8 +149,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</section>';
 		}
 
+		if ( $cache ) {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
+
+		$cache_data = $cache->get_data();
+		if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
+			$cache_hit_percentage = $cache_data['cache_hit_percentage'];
+		}
 
 		if ( isset( $cache_hit_percentage ) ) {
 			echo '<p>';
@@ -218,6 +217,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		echo '</section>';
+		}
 
 		$this->after_non_tabular_output();
 	}
