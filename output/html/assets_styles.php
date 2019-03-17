@@ -12,6 +12,8 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 			/* translators: %s: Total number of enqueued styles */
 			'total'  => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
 			'plural' => __( 'Styles', 'query-monitor' ),
+			/* translators: %s: Total number of enqueued styles */
+			'count'  => _x( 'Styles (%s)', 'Enqueued styles', 'query-monitor' ),
 		);
 	}
 
