@@ -52,13 +52,13 @@ Query Monitor does not persistently store any of the data that it collects. It d
 
 == Screenshots ==
 
-1. The admin toolbar menu showing an overview
-2. Aggregate database queries by component
-3. User capability checks with an active filter
-4. Database queries complete with filter controls
-5. Hooks and actions
-6. HTTP requests (showing an HTTP error)
-7. Aggregate database queries grouped by calling function
+1. Admin Toolbar Menu
+2. Aggregate Database Queries by Component
+3. Capability Checks
+4. Database Queries
+5. Hooks and Actions
+6. HTTP API Requests
+7. Aggregate Database Queries by Calling Function
 
 == Frequently Asked Questions ==
 

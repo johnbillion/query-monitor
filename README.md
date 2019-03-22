@@ -255,41 +255,31 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ### Admin Toolbar Menu ###
 
-![Admin Menu](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-1.png)
+![Admin Toolbar Menu](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-1.png)
 
 ### Database Queries ###
 
-Database listing panel showing all queries, and the controls for filtering by query type, caller, and component
-
 ![Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-4.png)
 
-User capability checks with an active filter
+### Capability Checks ###
 
-![Slow Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-3.png)
+![Capability Checks](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-3.png)
 
 ### Aggregate Database Queries by Component ###
-
-Ordered by most time spent
 
 ![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-2.png)
 
 ### Aggregate Database Queries by Calling Function ###
 
-Ordered by most time spent
-
 ![Aggregate Database Queries by Calling Function](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-7.png)
 
-### Hooks ###
+### Hooks and Actions ###
 
-Hook listing panel showing all hooks, and the controls for filtering by name and component
+![Hooks and Actions](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-5.png)
 
-![Hooks](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-5.png)
+### HTTP API Requests ###
 
-### HTTP Requests ###
-
-Showing an HTTP request with an error
-
-![HTTP](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-6.png)
+![HTTP API Requests](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-6.png)
 
 # Frequently Asked Questions #
 
