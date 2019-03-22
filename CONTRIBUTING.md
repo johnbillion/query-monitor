@@ -37,9 +37,11 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
        npm install -g grunt-cli
 
-4. Create the test database (if it doesn't already exist):
+4. Check the MySQL database credentials in the `tests/.env.example` file. If your database details differ, copy this file to `tests/.env` and amend them as necessary.
 
-       mysqladmin create wordpress_test -u root
+5. Create the test database if it doesn't already exist:
+
+       mysqladmin create wordpress_test -u root -p
 
 ## Building the Assets
 
