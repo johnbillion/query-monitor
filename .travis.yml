@@ -34,8 +34,6 @@ jobs:
         - npm install -g grunt-cli
         - npm install
         - gem install sass
-        - grunt --version
-        - git status
       script: skip
       deploy:
         - provider: script
