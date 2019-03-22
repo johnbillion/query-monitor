@@ -6,9 +6,8 @@ $composer = json_decode( file_get_contents( $root . '/composer.json' ), true );
 // Path to the WordPress codebase to test.
 define( 'ABSPATH', $root . '/' . $composer['extra']['wordpress-install-dir'] . '/' );
 
-// Dummy paths to get the theme tests working.
+// Dummy path to get the theme tests working.
 define( 'WP_CONTENT_DIR', $root . '/content-dir' );
-define( 'WP_PLUGINS_DIR', $root . '/plugins-dir' );
 
 // Path to the theme to test with.
 define( 'WP_DEFAULT_THEME', 'default' );
