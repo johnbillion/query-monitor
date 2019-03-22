@@ -16,17 +16,6 @@
 			<directory prefix="test-" suffix=".php">./tests/phpunit/</directory>
 		</testsuite>
 	</testsuites>
-	<filter>
-		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">./</directory>
-			<exclude>
-				<directory>./bin</directory>
-				<directory>./svn</directory>
-				<directory>./tests</directory>
-				<directory>./vendor</directory>
-			</exclude>
-		</whitelist>
-	</filter>
 	<listeners>
 		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
 			<arguments>
