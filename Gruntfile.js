@@ -42,7 +42,7 @@ module.exports = function (grunt) {
 	config.sass = {
 		dist: {
 			options: {
-				sourcemap: 'none',
+				sourcemap: 'auto',
 				style: 'expanded'
 			},
 			files: {
