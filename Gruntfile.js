@@ -16,10 +16,49 @@ module.exports = function (grunt) {
 
 	config.pkg = pkg;
 
+	config['convert-svg-to-png'] = {
+		normal: {
+			options: {
+				size: {
+					w: '128px',
+					h: '128px'
+				}
+			},
+			files: [
+				{
+					expand: true,
+					src: [
+						'assets-wp-repo/icon.svg'
+					],
+					dest: 'assets-wp-repo/128'
+				}
+			]
+		},
+		retina: {
+			options: {
+				size: {
+					w: '256px',
+					h: '256px'
+				}
+			},
+			files: [
+				{
+					src: [
+						'assets-wp-repo/icon.svg'
+					],
+					dest: 'assets-wp-repo/256'
+				}
+			]
+		}
+	};
+
 	config.clean = {
 		main: [
 			'<%= wp_deploy.deploy.options.build_dir %>'
-		]
+		],
+		icons: Object.keys(config['convert-svg-to-png']).map(function(key){
+			return config['convert-svg-to-png'][ key ].files[0].dest;
+		})
 	};
 
 	config.copy = {
@@ -48,6 +87,18 @@ module.exports = function (grunt) {
 			files: {
 				'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
 				'assets/query-monitor.css': 'assets/query-monitor.scss'
+			}
+		}
+	};
+
+	config.rename = {
+		icons:{
+			expand: true,
+			src: [
+				'assets-wp-repo/*/icon.png'
+			],
+			rename: function (dest,src) {
+				return src.replace(/assets-wp-repo\/(\d+)\/icon.png/,'assets-wp-repo/icon-$1x$1.png');
 			}
 		}
 	};
@@ -130,6 +181,12 @@ module.exports = function (grunt) {
 			'version::' + version
 		]);
 	});
+
+	grunt.registerTask('icons', [
+		'convert-svg-to-png',
+		'rename:icons',
+		'clean:icons'
+	]);
 
 	grunt.registerTask('build', [
 		'clean',
