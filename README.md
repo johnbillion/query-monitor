@@ -1,3 +1,5 @@
+<img src="assets-wp-repo/icon-128x128.png" align="right" width="100" height="100" alt="">
+
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
@@ -41,6 +43,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
  * [Privacy Statement](#privacy-statement)
  * [Related Tools](#related-tools)
  * [Contributing](#contributing)
+ * [Icon](#icon)
  * [License](#license-gplv2)
 
 ---
@@ -349,6 +352,10 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 # Contributing #
 
 Contributions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
+
+# Icon #
+
+Query Monitor's icon was designed by [Tubagus Didin Asrori](https://www.instagram.com/asrorigus/).
 
 # License: GPLv2 #
 
