@@ -20,17 +20,19 @@ class QM_Collector_Cache extends QM_Collector {
 		$this->data['cache_hit_percentage'] = 0;
 
 		if ( is_object( $wp_object_cache ) ) {
-			if ( property_exists( $wp_object_cache, 'cache_hits' ) ) {
+			$object_vars = get_object_vars( $wp_object_cache );
+
+			if ( array_key_exists( 'cache_hits', $object_vars ) ) {
 				$this->data['stats']['cache_hits'] = (int) $wp_object_cache->cache_hits;
 			}
 
-			if ( property_exists( $wp_object_cache, 'cache_misses' ) ) {
+			if ( array_key_exists( 'cache_misses', $object_vars ) ) {
 				$this->data['stats']['cache_misses'] = (int) $wp_object_cache->cache_misses;
 			}
 
 			if ( method_exists( $wp_object_cache, 'getStats' ) ) {
 				$stats = $wp_object_cache->getStats();
-			} elseif ( property_exists( $wp_object_cache, 'stats' ) && is_array( $wp_object_cache->stats ) ) {
+			} elseif ( array_key_exists( 'stats', $object_vars ) && is_array( $wp_object_cache->stats ) ) {
 				$stats = $wp_object_cache->stats;
 			} elseif ( function_exists( 'wp_cache_get_stats' ) ) {
 				$stats = wp_cache_get_stats();
