@@ -355,6 +355,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		flex-shrink: 0 !important;
 		overflow-y:  scroll !important;
 		overscroll-behavior: contain !important;
+		height: auto !important;
 	}
 
 	#qm-panel-menu ul {
@@ -362,12 +363,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		list-style: none !important;
 		margin: 0 !important;
 		padding: 0 !important;
+		width: auto !important;
+		height: auto !important;
 	}
 
 	#qm-panel-menu li {
 		display: list-item !important;
 		margin: 0 !important;
 		padding: 0 !important;
+		height: auto !important;
 	}
 
 	#qm-panel-menu li button {
