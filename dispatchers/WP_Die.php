@@ -46,6 +46,10 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
 
+		if ( empty( $filtered_trace ) ) {
+			return;
+		}
+
 		if ( isset( $filtered_trace[ $i - 1 ] ) ) {
 			$culprit = $filtered_trace[ $i - 1 ];
 		} else {
