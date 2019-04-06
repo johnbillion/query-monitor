@@ -53,9 +53,13 @@
 		"roots/wordpress": "*",
 		"vlucas/phpdotenv": "^3",
 		"johnkary/phpunit-speedtrap": "^1.1",
+		"wp-cli/wp-cli-bundle": "^2.1",
 		"phpunit/phpunit": "^5"
 	},
 	"scripts": {
+		"test:setup": [
+			"vendor/bin/wp db reset --yes --path=tests/wordpress"
+		],
 		"test:cs": [
 			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
 		],
@@ -64,6 +68,7 @@
 			"export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
 		],
 		"test": [
+			"@test:setup",
 			"@test:cs",
 			"@test:ut"
 		]
