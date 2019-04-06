@@ -57,18 +57,15 @@
 		"phpunit/phpunit": "^5"
 	},
 	"scripts": {
-		"test:setup": [
-			"vendor/bin/wp db reset --yes --path=tests/wordpress"
-		],
 		"test:cs": [
 			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
 		],
 		"test:ut": [
+			"vendor/bin/wp db reset --yes --path=tests/wordpress",
 			"export WP_MULTISITE=0 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-required",
 			"export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
 		],
 		"test": [
-			"@test:setup",
 			"@test:cs",
 			"@test:ut"
 		]
