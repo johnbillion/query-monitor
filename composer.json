@@ -37,7 +37,7 @@
 		"preferred-install": "dist"
 	},
 	"extra": {
-		"wordpress-install-dir": "vendor/wordpress/wordpress"
+		"wordpress-install-dir": "tests/wordpress"
 	},
 	"require": {
 		"php": ">=5.3",

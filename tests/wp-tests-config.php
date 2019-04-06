@@ -1,6 +1,6 @@
 <?php
 
-$root     = dirname( dirname( __DIR__ ) );
+$root     = dirname( __DIR__ );
 $composer = json_decode( file_get_contents( $root . '/composer.json' ), true );
 
 // Path to the WordPress codebase to test.

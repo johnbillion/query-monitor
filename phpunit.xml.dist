@@ -9,7 +9,7 @@
 	beStrictAboutOutputDuringTests="true"
 	>
 	<php>
-		<env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/phpunit/wp-tests-config.php" />
+		<env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-tests-config.php" />
 	</php>
 	<testsuites>
 		<testsuite>
