@@ -36,6 +36,7 @@ $qm_dir = dirname( __FILE__ );
 require_once "{$qm_dir}/classes/Plugin.php";
 
 if ( ! QM_Plugin::php_version_met() ) {
+	add_action( 'admin_notices', 'QM_Plugin::php_version_nope' );
 	return;
 }
 
