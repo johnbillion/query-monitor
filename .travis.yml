@@ -55,7 +55,7 @@ before_install:
 
 install:
   - travis_retry composer install --no-suggest
-  - travis_retry composer require --dev --update-with-dependencies --no-suggest roots/wordpress="${WP_VERSION} || *" wp-phpunit/wp-phpunit="${WP_VERSION} || *"
+  - travis_retry composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${WP_VERSION}"
 
 script:
   - composer test
