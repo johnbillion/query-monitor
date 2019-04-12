@@ -54,25 +54,32 @@ class QM_Collector_Theme extends QM_Collector {
 	}
 
 	public static function get_query_template_names() {
-		return array(
-			'embed'             => 'is_embed',
-			'404'               => 'is_404',
-			'search'            => 'is_search',
-			'front_page'        => 'is_front_page',
-			'home'              => 'is_home',
-			'post_type_archive' => 'is_post_type_archive',
-			'taxonomy'          => 'is_tax',
-			'attachment'        => 'is_attachment',
-			'single'            => 'is_single',
-			'page'              => 'is_page',
-			'singular'          => 'is_singular',
-			'category'          => 'is_category',
-			'tag'               => 'is_tag',
-			'author'            => 'is_author',
-			'date'              => 'is_date',
-			'archive'           => 'is_archive',
-			'index'             => '__return_true',
-		);
+		$names = array();
+
+		$names['embed']             = 'is_embed';
+		$names['404']               = 'is_404';
+		$names['search']            = 'is_search';
+		$names['front_page']        = 'is_front_page';
+		$names['home']              = 'is_home';
+
+		if ( function_exists( 'is_privacy_policy' ) ) {
+			$names['privacy_policy'] = 'is_privacy_policy';
+		}
+
+		$names['post_type_archive'] = 'is_post_type_archive';
+		$names['taxonomy']          = 'is_tax';
+		$names['attachment']        = 'is_attachment';
+		$names['single']            = 'is_single';
+		$names['page']              = 'is_page';
+		$names['singular']          = 'is_singular';
+		$names['category']          = 'is_category';
+		$names['tag']               = 'is_tag';
+		$names['author']            = 'is_author';
+		$names['date']              = 'is_date';
+		$names['archive']           = 'is_archive';
+		$names['index']             = '__return_true';
+
+		return $names;
 	}
 
 	// https://core.trac.wordpress.org/ticket/14310
