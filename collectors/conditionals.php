@@ -47,6 +47,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_paged',
 			'is_post_type_archive',
 			'is_preview',
+			'is_privacy_policy',
 			'is_robots',
 			'is_rtl',
 			'is_search',
