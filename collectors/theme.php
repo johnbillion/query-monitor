@@ -197,32 +197,32 @@ class QM_Collector_Theme extends QM_Collector {
 				}
 			}
 		} else {
-		foreach ( get_included_files() as $file ) {
-			$file = QM_Util::standard_dir( $file );
-			$filename = str_replace( array(
-				$stylesheet_directory,
-				$template_directory,
-			), '', $file );
-			if ( $filename !== $file ) {
-				$slug          = trim( str_replace( '.php', '', $filename ), '/' );
-				$display       = trim( $filename, '/' );
-				$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
-				$count         = did_action( "get_template_part_{$slug}" );
-				if ( $count ) {
-					$this->data['template_parts'][ $file ]       = $display;
-					$this->data['theme_template_parts'][ $file ] = $theme_display;
-					$this->data['count_template_parts'][ $file ] = $count;
-				} else {
-					$slug  = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
-					$count = did_action( "get_template_part_{$slug}" );
+			foreach ( get_included_files() as $file ) {
+				$file = QM_Util::standard_dir( $file );
+				$filename = str_replace( array(
+					$stylesheet_directory,
+					$template_directory,
+				), '', $file );
+				if ( $filename !== $file ) {
+					$slug          = trim( str_replace( '.php', '', $filename ), '/' );
+					$display       = trim( $filename, '/' );
+					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
+					$count         = did_action( "get_template_part_{$slug}" );
 					if ( $count ) {
 						$this->data['template_parts'][ $file ]       = $display;
 						$this->data['theme_template_parts'][ $file ] = $theme_display;
 						$this->data['count_template_parts'][ $file ] = $count;
+					} else {
+						$slug  = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
+						$count = did_action( "get_template_part_{$slug}" );
+						if ( $count ) {
+							$this->data['template_parts'][ $file ]       = $display;
+							$this->data['theme_template_parts'][ $file ] = $theme_display;
+							$this->data['count_template_parts'][ $file ] = $count;
+						}
 					}
 				}
 			}
-		}
 		}
 
 		if ( ! empty( $this->data['template_path'] ) ) {
