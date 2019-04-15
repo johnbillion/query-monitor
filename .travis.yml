@@ -35,7 +35,6 @@ jobs:
         - composer test:cs
     - stage: test
     - stage: deploy
-      if: tag IS present
       before_script:
         - npm install -g grunt-cli
         - npm install
