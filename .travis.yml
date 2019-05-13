@@ -59,7 +59,7 @@ install:
 
 script:
   - |
-    if [ "$TRAVIS_PHP_VERSION" == "7.2" && "$WP_VERSION" == "*" ]; then
+    if [ "$TRAVIS_PHP_VERSION" == "7.2" ] && [ "$WP_VERSION" == "*" ]; then
       composer test:cs
     fi
   - composer test:ut
