@@ -58,4 +58,8 @@ install:
   - travis_retry composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${WP_VERSION}"
 
 script:
+  - |
+    if [ "$TRAVIS_PHP_VERSION" == "7.2" && "$WP_VERSION" == "*" ]; then
+      composer test:cs
+    fi
   - composer test:ut
