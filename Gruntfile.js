@@ -81,6 +81,7 @@ module.exports = function (grunt) {
 	config.sass = {
 		dist: {
 			options: {
+				noCache: true,
 				sourcemap: 'auto',
 				style: 'expanded'
 			},
