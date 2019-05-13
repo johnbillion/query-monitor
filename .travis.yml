@@ -28,17 +28,10 @@ env:
     # WP nightly:
     - WP_VERSION=dev-nightly
 
-stages:
-  - sniff
-  - test
-  - deploy
-
 jobs:
   include:
-    - stage: sniff
-      script:
-        - composer test:cs
     - stage: deploy
+      if: tag IS present
       before_script:
         - npm install -g grunt-cli
         - npm install
