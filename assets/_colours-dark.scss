@@ -1,5 +1,33 @@
+// The colours below are loosely based on the WordPress branding colours.
+// https://make.wordpress.org/design/handbook/design-guide/foundations/colors/
+$white:           #ffffff;
+$black:           #000000;
+$blue:            #0073aa;
+$medium-blue:     #00a0d2;
+$clear:           transparent;
 
-@import "../vendor/danieltj27/dark-mode/colors";
+$accent-red:      #dc3232;
+$accent-orange:   #f56e28;
+$accent-yellow:   #ffb900;
+$accent-green:    #46b450;
+$accent-blue:     $blue;
+$accent-purple:   #826eb4;
+
+$base-grey:       #23282d;
+$light-grey:      #bbc8d4;
+$heavy-grey:      #37444c;
+$dark-grey:       #32373c;
+$ultra-grey:      #191f25;
+$dark-silver:     #50626f;
+$base-blue:       #2e74aa;
+$light-blue:      #4092d2;
+$dark-blue:       #2c5f88;
+$ultra-blue:      #1f3f58;
+$bright-blue:     #30ceff;
+
+$editor-lavender: #c678dd;
+$editor-sunglo:   #e06c75;
+$editor-olivine:  #98c379;
 
 // Admin Toolbar
 $qm-toolbar-true-fg: #8c8;
