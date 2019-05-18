@@ -298,17 +298,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor-main #qm-title .qm-button-container-settings .dashicons {
   font-size: 17px !important;
-  margin: 3px 0 2px !important;
+  margin: 4px 0 2px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-position .dashicons {
   font-size: 15px !important;
-  margin: 4px 0 1px !important;
+  margin: 2px -1px 3px 4px !important;
+  transform: scaleX(-1) rotate(90deg) !important;
+}
+#query-monitor-main.qm-show-right #qm-title .qm-button-container-position .dashicons {
+  margin: 4px 1px 0px 1px !important;
+  transform: none !important;
 }
 #query-monitor-main #qm-title .qm-button-container-close {
   margin-right: 10px !important;
 }
 #query-monitor-main #qm-title .qm-button-container-close .dashicons {
-  margin: 2px 0 3px !important;
+  margin: 3px 0 3px !important;
 }
 @media screen and (max-width: 960px) {
   #query-monitor-main #qm-title .qm-button-container-position {
