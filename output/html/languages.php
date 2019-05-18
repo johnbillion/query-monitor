@@ -65,15 +65,15 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				}
 				echo '</td>';
 
+				echo '<td class="qm-nowrap">';
+
 				if ( $mofile['found'] ) {
-					echo '<td class="qm-nowrap">';
 					echo esc_html( size_format( $mofile['found'] ) );
-					echo '</td>';
 				} else {
-					echo '<td>';
 					echo esc_html__( 'Not Found', 'query-monitor' );
-					echo '</td>';
 				}
+
+				echo '</td>';
 
 				echo '</tr>';
 				$first = false;
