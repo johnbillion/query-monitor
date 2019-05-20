@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
+
 class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public $id               = 'php_errors';
@@ -145,14 +147,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return;
 		}
 
-		if ( empty( $e ) || ! ( $e['type'] & ( E_ERROR | E_PARSE | E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return;
 		}
 
 		if ( $e['type'] & E_RECOVERABLE_ERROR ) {
 			$error = 'Catchable fatal error';
-		} elseif ( $e['type'] & E_COMPILE_WARNING ) {
-			$error = 'Warning';
 		} else {
 			$error = 'Fatal error';
 		}
