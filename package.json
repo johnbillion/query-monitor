@@ -23,6 +23,9 @@
     "load-grunt-tasks": "^4"
   },
   "scripts": {
-    "grunt": "grunt"
+    "build": "grunt build",
+    "grunt": "grunt",
+    "sass": "grunt sass",
+    "watch": "grunt watch"
   }
 }

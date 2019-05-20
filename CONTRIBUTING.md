@@ -39,11 +39,11 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
 To compile the Sass files into CSS:
 
-	npm run grunt sass
+	npm run sass
 
 To start the file watcher which will watch for changes and automatically compile the Sass:
 
-	npm run grunt watch
+	npm run watch
 
 Note that the built CSS files are also committed to the Git repo. This allows the plugin to be installed via a Git clone or Composer without the need to perform a build step.
 
@@ -70,11 +70,11 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. Check [the milestone on GitHub](https://github.com/johnbillion/query-monitor/milestones) for open issues or PRs. Fix or reassign as necessary.
 1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
-1. Run `npm run grunt sass`. This should not change the built CSS files. If it does, figure out why.
+1. Run `npm run sass`. This should not change the built CSS files. If it does, figure out why.
 1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, FAQs, screenshots, etc.
    - This is currently a manual process while I decide whether I want to sync parts of these files.
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
-   - To do this, run `npm run grunt build` then check the `build` directory for files that shouldn't be part of the package.
+   - To do this, run `npm run build` then check the `build` directory for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
    - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.
