@@ -26,7 +26,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		parent::__construct();
-		set_error_handler( array( $this, 'error_handler' ) );
+		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 		register_shutdown_function( array( $this, 'shutdown_handler' ) );
 
 		$this->error_reporting = error_reporting();
