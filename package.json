@@ -21,5 +21,8 @@
     "grunt-wp-deploy": "git+https://github.com/johnbillion/grunt-wp-deploy.git#master",
     "grunt-wp-readme-to-markdown": "^2",
     "load-grunt-tasks": "^4"
+  },
+  "scripts": {
+    "grunt": "grunt"
   }
 }
