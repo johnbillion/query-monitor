@@ -157,26 +157,13 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		if ( function_exists( 'xdebug_print_function_stack' ) ) {
-
-			xdebug_print_function_stack( sprintf( '%1$s: %2$s in %3$s on line %4$d. Output triggered ',
-				$error,
-				$e['message'],
-				$e['file'],
-				$e['line']
-			) );
-
-		} else {
-
-			printf( // WPCS: XSS ok.
-				'<br /><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br />',
-				htmlentities( $error ),
-				htmlentities( $e['message'] ),
-				htmlentities( $e['file'] ),
-				intval( $e['line'] )
-			);
-
-		}
+		printf( // WPCS: XSS ok.
+			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
+			htmlentities( $error ),
+			nl2br( htmlentities( $e['message'] ), false ),
+			htmlentities( $e['file'] ),
+			intval( $e['line'] )
+		);
 
 	}
 
