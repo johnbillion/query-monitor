@@ -128,12 +128,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		/**
-		 * Filters the PHP error handler return value. This can be used to control whether or not additional error
-		 * handlers are called after Query Monitor's.
+		 * Filters the PHP error handler return value. This can be used to control whether or not the default error
+		 * handler is called after Query Monitor's.
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param bool $return_value Error handler return value. Default true.
+		 * @param bool $return_value Error handler return value. Default false.
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
