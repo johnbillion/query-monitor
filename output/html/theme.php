@@ -64,6 +64,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
 
+		if ( $data['has_template_part_action'] ) {
+			echo '<h4>' . esc_html__( 'Loaded', 'query-monitor' ) . '</h4>';
+		}
+
 		if ( ! empty( $data['template_parts'] ) ) {
 
 			if ( $data['is_child_theme'] ) {
@@ -98,6 +102,24 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		} else {
 			echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
+		}
+
+		if ( $data['has_template_part_action'] ) {
+			echo '<h4>' . esc_html__( 'Not Loaded', 'query-monitor' ) . '</h4>';
+
+			if ( ! empty( $data['unsuccessful_template_parts'] ) ) {
+				echo '<ul>';
+
+				foreach ( $data['unsuccessful_template_parts'] as $requested ) {
+					echo '<li>';
+					echo esc_html( implode( ', ', array_filter( $requested ) ) );
+					echo '</li>';
+				}
+
+				echo '</ul>';
+			} elseif ( $data['has_template_part_action'] ) {
+				echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
+			}
 		}
 
 		echo '</section>';
