@@ -34,7 +34,7 @@
 		"roots/wordpress": "*",
 		"vlucas/phpdotenv": "^3",
 		"wp-cli/wp-cli-bundle": "^2.1",
-		"phpunit/phpunit": "^5"
+		"phpunit/phpunit": "^5 || ^7"
 	},
 	"scripts": {
 		"test:cs": [
