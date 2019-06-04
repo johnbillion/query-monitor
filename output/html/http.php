@@ -48,7 +48,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$i = 0;
 
 			foreach ( $data['http'] as $key => $row ) {
-				$ltime = $row['ltime'];
+				$ltime = isset($row['ltime']) ? $row['ltime'] : '';
 				$i++;
 				$is_error = false;
 				$row_attr = array();
