@@ -119,7 +119,11 @@ abstract class QM_Output_Html extends QM_Output {
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 			esc_attr( $this->current_id . '-concerned_hooks' ),
-			esc_html__( 'Related Hooks with Filters or Actions Attached', 'query-monitor' )
+			sprintf(
+				/* translators: %s: Panel name */
+				esc_html__( '%s: Hooks in Use', 'query-monitor' ),
+				esc_html( $this->collector->name() )
+			)
 		);
 
 		echo '<thead>';
