@@ -53,7 +53,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
 			'scheme' => is_ssl() ? 'https' : 'http',
 			'host' => wp_unslash( $_SERVER['HTTP_HOST'] ),
-			'path' => wp_unslash( $_SERVER['REQUEST_URI'] ) ?? '/',
+			'path' => wp_unslash( $_SERVER['REQUEST_URI'] ),
 			'query' => wp_unslash( $_SERVER['QUERY_STRING'] ),
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
 		];
