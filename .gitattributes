@@ -15,3 +15,4 @@
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
 /phpunit.xml.dist export-ignore
+/SECURITY.md export-ignore
