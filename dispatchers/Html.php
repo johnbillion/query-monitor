@@ -312,9 +312,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</select>';
 
 		echo '</div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
+		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
