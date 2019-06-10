@@ -7,6 +7,7 @@
 
 if ( ! class_exists( 'QM_Collectors' ) ) {
 class QM_Collectors implements IteratorAggregate {
+	private static $instance = null;
 
 	private $items     = array();
 	private $processed = false;
@@ -30,14 +31,16 @@ class QM_Collectors implements IteratorAggregate {
 	}
 
 	public static function init() {
-		static $instance;
-
-		if ( ! $instance ) {
-			$instance = new QM_Collectors();
+		if ( ! static::$instance ) {
+			static::$instance = new QM_Collectors();
 		}
 
-		return $instance;
+		return static::$instance;
 
+	}
+
+	public static function replace_instance( QM_Collectors $instance ) {
+		static::$instance = $instance;
 	}
 
 	public function process() {
