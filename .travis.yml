@@ -1,6 +1,9 @@
 # run on container environment
 sudo: false
 
+services:
+  - mysql
+
 cache:
   directories:
     - $HOME/.npm
