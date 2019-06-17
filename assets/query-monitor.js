@@ -89,9 +89,9 @@ if ( window.jQuery ) {
 				container.height( minheight );
 			}
 
-			$('#qm-panel-menu').find('button').removeClass('qm-selected-menu');
+			$('#qm-panel-menu').find('button').removeAttr('aria-selected');
 			$('#qm-panel-menu').find('li').removeClass('qm-current-menu');
-			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').addClass('qm-selected-menu');
+			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').attr('aria-selected',true);
 
 			if ( selected_menu.length ) {
 				var selected_menu_top = selected_menu.position().top - 27;

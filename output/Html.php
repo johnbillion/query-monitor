@@ -41,7 +41,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 
@@ -73,7 +73,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm qm-non-tabular" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 
@@ -110,7 +110,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		printf(
-			'<div class="qm qm-concerns" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
+			'<div class="qm qm-concerns" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $this->current_id . '-concerned_hooks' )
 		);
 
@@ -119,7 +119,11 @@ abstract class QM_Output_Html extends QM_Output {
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 			esc_attr( $this->current_id . '-concerned_hooks' ),
-			esc_html__( 'Related Hooks with Filters or Actions Attached', 'query-monitor' )
+			sprintf(
+				/* translators: %s: Panel name */
+				esc_html__( '%s: Hooks in Use', 'query-monitor' ),
+				esc_html( $this->collector->name() )
+			)
 		);
 
 		echo '<thead>';
@@ -156,7 +160,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		printf(
-			'<div class="qm qm-debug-bar" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-debug-bar" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 

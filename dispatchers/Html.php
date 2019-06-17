@@ -312,18 +312,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</select>';
 
 		echo '</div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
+		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
 		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">';
 		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>';
-		echo '<ul>';
+		echo '<ul role="tablist">';
 
 		printf(
-			'<li><button data-qm-href="%1$s">%2$s</button></li>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>',
 			'#qm-overview',
 			esc_html__( 'Overview', 'query-monitor' )
 		);
@@ -341,13 +341,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function do_panel_menu_item( $id, array $menu ) {
 		printf(
-			'<li><button data-qm-href="%1$s">%2$s</button>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
 			esc_attr( $menu['href'] ),
 			esc_html( $menu['title'] )
 		);
 
 		if ( ! empty( $menu['children'] ) ) {
-			echo '<ul>';
+			echo '<ul role="presentation">';
 			foreach ( $menu['children'] as $child_id => $child ) {
 				$this->do_panel_menu_item( $child_id, $child );
 			}
