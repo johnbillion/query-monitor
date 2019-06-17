@@ -58,6 +58,8 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
 		];
 
+		ksort( $request['headers'] );
+
 		$request['url'] = sprintf( '%s://%s%s', $request['scheme'], $request['host'], $request['path'] );
 
 		$this->data['request'] = $request;
@@ -68,6 +70,9 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			list( $key, $value ) = explode( ':', $row, 2 );
 			$headers[ trim( $key ) ] = trim( $value );
 		}
+
+		ksort( $headers );
+
 		$response = [
 			'status' => http_response_code(),
 			'headers' => $headers,
