@@ -316,7 +316,16 @@ Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
-You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array with your connection name as the key and the `wpdb` instance as the value. Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
+
+```php
+add_filter( 'qm/collect/db_objects', function( $objects ) {
+	$objects['my_db'] = $GLOBALS['my_db'];
+	return $objects;
+} );
+```
+
+Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
 
 ## Can I click on stack traces to open the file in my editor? ##
 
