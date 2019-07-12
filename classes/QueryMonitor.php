@@ -96,7 +96,7 @@ class QueryMonitor extends QM_Plugin {
 		 *
 		 * @since 2.11.2
 		 *
-		 * @param QM_Collector[] $collectors Array of collecter instances.
+		 * @param QM_Collector[] $collectors Array of collector instances.
 		 * @param QueryMonitor   $this       QueryMonitor instance.
 		 */
 		foreach ( apply_filters( 'qm/collectors', array(), $this ) as $collector ) {

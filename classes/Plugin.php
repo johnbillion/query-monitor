@@ -13,9 +13,7 @@ abstract class QM_Plugin {
 
 	/**
 	 * Class constructor
-	 *
-	 * @author John Blackbourn
-	 **/
+	 */
 	protected function __construct( $file ) {
 		$this->file = $file;
 	}
@@ -25,8 +23,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string URL
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_url( $file = '' ) {
 		return $this->_plugin( 'url', $file );
 	}
@@ -36,8 +33,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Filesystem path
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_path( $file = '' ) {
 		return $this->_plugin( 'path', $file );
 	}
@@ -47,8 +43,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Version
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_ver( $file ) {
 		return filemtime( $this->plugin_path( $file ) );
 	}
@@ -57,17 +52,14 @@ abstract class QM_Plugin {
 	 * Returns the current plugin's basename, eg. 'my_plugin/my_plugin.php'.
 	 *
 	 * @return string Basename
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_base() {
 		return $this->_plugin( 'base' );
 	}
 
 	/**
 	 * Populates and returns the current plugin info.
-	 *
-	 * @author John Blackbourn
-	 **/
+	 */
 	final private function _plugin( $item, $file = '' ) {
 		if ( ! array_key_exists( $item, $this->plugin ) ) {
 			switch ( $item ) {
