@@ -2,6 +2,8 @@
 
 abstract class QM_UnitTestCase extends WP_UnitTestCase {
 
+	use \FalseyAssertEqualsDetector\Test;
+
 	public function setUp() {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
