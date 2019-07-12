@@ -39,6 +39,9 @@
 		"wp-phpunit/wp-phpunit": "*"
 	},
 	"scripts": {
+		"post-update-cmd": [
+			"@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.example', 'tests/.env' );\""
+		],
 		"test:cs": [
 			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 ."
 		],

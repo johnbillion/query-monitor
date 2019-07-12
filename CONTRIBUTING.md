@@ -33,7 +33,7 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
        npm install
 
-3. Check the MySQL database credentials in the `tests/.env.example` file. If your database details differ, copy this file to `tests/.env` and amend them as necessary.
+3. Check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
 
 ## Building the Assets
 
