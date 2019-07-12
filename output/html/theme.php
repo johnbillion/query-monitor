@@ -112,7 +112,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 				foreach ( $data['unsuccessful_template_parts'] as $requested ) {
 					echo '<li>';
-					echo esc_html( implode( ', ', array_filter( $requested ) ) );
+					$text = implode( ', ', array_filter( array( $requested['slug'], $requested['name'] ) ) );
+					echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 				}
 

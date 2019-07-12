@@ -114,7 +114,13 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @param string[] $templates Array of template files to search for, in order.
 	 */
 	public function action_get_template_part( $slug, $name, $templates ) {
-		$this->data['requested_template_parts'][] = func_get_args();
+		$data = compact( 'slug', 'name', 'templates' );
+
+		$data['trace'] = new QM_Backtrace( array(
+			'ignore_frames' => 4,
+		) );
+
+		$this->data['requested_template_parts'][] = $data;
 	}
 
 	public function filter_template_hierarchy( array $templates ) {
@@ -171,17 +177,18 @@ class QM_Collector_Theme extends QM_Collector {
 				$this->data['theme_template_parts'] = array();
 				$this->data['count_template_parts'] = array();
 
-				foreach ( $this->data['requested_template_parts'] as $party ) {
-					$file = locate_template( $party[2] );
-					$file = QM_Util::standard_dir( $file );
+				foreach ( $this->data['requested_template_parts'] as $part ) {
+					$file = locate_template( $part['templates'] );
+
+					$part['caller'] = $part['trace']->get_caller();
+					unset( $part['trace'] );
 
 					if ( ! $file ) {
-						$this->data['unsuccessful_template_parts'][] = array(
-							$party[0],
-							$party[1],
-						);
+						$this->data['unsuccessful_template_parts'][] = $part;
 						continue;
 					}
+
+					$file = QM_Util::standard_dir( $file );
 
 					if ( isset( $this->data['count_template_parts'][ $file ] ) ) {
 						$this->data['count_template_parts'][ $file ]++;
