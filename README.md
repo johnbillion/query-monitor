@@ -73,7 +73,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
  * Shows the template filename for the current request
  * Shows the complete template hierarchy for the current request (WordPress 4.7+)
- * Shows all template parts used on the current request
+ * Shows all template parts loaded or not loaded on the current request
  * Shows the available body classes for the current request
  * Shows the active theme name
 
