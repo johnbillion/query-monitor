@@ -22,7 +22,7 @@ For complete information, please see [the Query Monitor website](https://querymo
 Here's an overview of what's shown for each page load:
 
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
-* The template filename, the complete template hierarchy, and names of all template parts used.
+* The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded.
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
 * Blocks and associated properties in post content when using WordPress 5.0+ or the Gutenberg plugin.
 * Matched rewrite rules, associated query strings, and query vars.
