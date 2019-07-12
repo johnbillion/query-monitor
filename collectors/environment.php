@@ -134,8 +134,6 @@ class QM_Collector_Environment extends QM_Collector {
 					$info = mysql_get_server_info( $db->dbh );
 				}
 
-				$rdbms = trim( preg_replace( '#[^a-zA-Z ]#', '', $info ) );
-
 				if ( $client ) {
 					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
 					$client_version = sprintf( '%s (%s)', $client, $client_version );
@@ -144,7 +142,6 @@ class QM_Collector_Environment extends QM_Collector {
 				}
 
 				$info = array(
-					'rdbms'          => $rdbms,
 					'server-version' => $server,
 					'extension'      => $extension,
 					'client-version' => $client_version,
