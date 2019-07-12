@@ -82,7 +82,7 @@ module.exports = function (grunt) {
 		dist: {
 			options: {
 				noCache: true,
-				sourcemap: 'auto',
+				sourcemap: 'none',
 				style: 'expanded'
 			},
 			files: {

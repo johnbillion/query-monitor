@@ -42,7 +42,7 @@ jobs:
       deploy:
         - provider: script
           skip_cleanup: true
-          script: npm run grunt deploy:ci
+          script: npm run deploy:ci
           on:
             tags: true
 

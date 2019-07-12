@@ -12,19 +12,8 @@
 		<env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/wp-tests-config.php" />
 	</php>
 	<testsuites>
-		<testsuite>
+		<testsuite name="main">
 			<directory prefix="test-" suffix=".php">./tests/phpunit/</directory>
 		</testsuite>
 	</testsuites>
-	<listeners>
-		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
-			<arguments>
-				<array>
-					<element key="slowThreshold">
-						<integer>100</integer>
-					</element>
-				</array>
-			</arguments>
-		</listener>
-	</listeners>
 </phpunit>

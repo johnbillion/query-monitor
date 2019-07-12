@@ -108,34 +108,6 @@ class TestStackTraces extends QM_UnitTestCase {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithLambda() {
-
-		if ( version_compare( phpversion(), '7.2', '>=' ) ) {
-			$this->markTestSkipped( 'Lambda functions are deprecated in PHP 7.2' );
-		}
-
-		$file_name = dirname( __FILE__ ) . '/includes/dummy-lambdas.php';
-
-		require_once $file_name;
-
-		$callback = self::get_callback( $function );
-
-		$ref    = new ReflectionFunction( $function );
-		$actual = QM_Util::populate_callback( $callback );
-		$file   = trim( QM_Util::standard_dir( $file_name, '' ), '/' );
-
-		preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $ref->getFileName(), $matches );
-
-		$line = $matches['line'];
-		$name = sprintf( 'Anonymous function on line %1$d of %2$s', $line, $file );
-
-		$this->assertEquals( $function,  $actual['function'] );
-		$this->assertEquals( $name,      $actual['name'] );
-		$this->assertEquals( $file_name, $actual['file'] );
-		$this->assertEquals( $line,      $actual['line'] );
-
-	}
-
 	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction() {
 
 		$function = 'invalid_function';

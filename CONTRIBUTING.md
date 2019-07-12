@@ -33,7 +33,7 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
        npm install
 
-3. Check the MySQL database credentials in the `tests/.env.example` file. If your database details differ, copy this file to `tests/.env` and amend them as necessary.
+3. Check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
 
 ## Building the Assets
 
@@ -82,9 +82,9 @@ These are the steps to take to release a new version of Query Monitor (for contr
 ### For Release
 
 1. Bump the plugin version number:
-   - `npm run grunt bump:patch` for a patch release (1.2.3 => 1.2.4)
-   - `npm run grunt bump:minor` for a minor release (1.2.3 => 1.3.0)
-   - `npm run grunt bump:major` for a major release (1.2.3 => 2.0.0)
+   - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
+   - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
+   - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
 1. Commit the version number changes
 1. `git push origin develop`
 1. Wait until (and ensure that) [the build on Travis CI](https://travis-ci.org/johnbillion/query-monitor/builds) passes
@@ -112,10 +112,10 @@ Query Monitor gets automatically deployed to the WordPress.org Plugin Directory 
 
 Deploying can be performed locally if required:
 
-	npm run grunt deploy
+	npm run deploy
 
 You'll need to have `svn` installed locally, but you don't need to know how to use it.
 
 Assets such as screenshots and banners are stored in the `assets-wp-repo` directory. These get deployed as part of the automated release process too, but can be deployed separately if necessary:
 
-	npm run grunt deploy:assets
+	npm run deploy:assets
