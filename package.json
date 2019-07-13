@@ -20,7 +20,8 @@
     "grunt-version": "^1",
     "grunt-wp-deploy": "git+https://github.com/johnbillion/grunt-wp-deploy.git#master",
     "grunt-wp-readme-to-markdown": "^2",
-    "load-grunt-tasks": "^4"
+    "load-grunt-tasks": "^4",
+    "node-jq": "^1"
   },
   "scripts": {
     "build": "grunt build",
@@ -31,6 +32,7 @@
     "deploy:ci": "grunt deploy:ci",
     "deploy": "grunt deploy",
     "grunt": "grunt",
+    "jq": "jq",
     "sass": "grunt sass",
     "watch": "grunt watch"
   }
