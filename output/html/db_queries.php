@@ -456,6 +456,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					number_format_i18n( $db->total_qs )
 				);
 			}
+		} elseif ( isset( $data['total_qs'] ) ) {
+			$title[] = sprintf(
+				/* translators: %s: Number of database queries */
+				esc_html_x( '%s Q', 'Query count', 'query-monitor' ),
+				number_format_i18n( $data['total_qs'] )
+			);
 		}
 
 		foreach ( $title as &$t ) {
