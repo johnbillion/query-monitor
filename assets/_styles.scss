@@ -407,6 +407,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			color: $qm-panel-menu-fg-hover !important;
 		}
 
+		li li button {
+			&::before {
+				content: "\2514" !important;
+				display: inline-block !important;
+				margin-right: 5px !important;
+			}
+		}
+
 		li button[aria-selected="true"] {
 			background: $qm-panel-menu-bg-selected !important;
 			color: $qm-panel-menu-fg-selected !important;

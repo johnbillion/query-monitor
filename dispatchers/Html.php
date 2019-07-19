@@ -245,7 +245,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
 				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
 					'href'  => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
-					'title' => '└ ' . __( 'Hooks in Use', 'query-monitor' ),
+					'title' => __( 'Hooks in Use', 'query-monitor' ),
 				);
 			}
 		}
@@ -295,7 +295,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! empty( $menu['children'] ) ) {
 				foreach ( $menu['children'] as $child ) {
 					printf(
-						'<option value="%1$s">%2$s</option>',
+						'<option value="%1$s">└ %2$s</option>',
 						esc_attr( $child['href'] ),
 						esc_html( $child['title'] )
 					);

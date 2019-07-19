@@ -544,7 +544,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
 			$id = $this->collector->id() . '-' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
-				$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+				$menu[ $id ]['title'] = $menu[ $id ]['title'];
 
 				$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
