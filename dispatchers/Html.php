@@ -389,8 +389,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'default' => false,
 			),
 			'QM_DB_EXPENSIVE'          => array(
-				/* translators: %s: The default value for a PHP constant */
-				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning. Default value: %s.', 'query-monitor' ),
+				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
 				'default' => 0.05,
 			),
 			'QM_DISABLED'              => array(
@@ -442,6 +441,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				esc_html( $constant['label'] ),
 				'<code>' . esc_html( $constant['default'] ) . '</code>'
 			);
+
+			$default_value = $constant['default'];
+			if ( is_bool( $default_value ) ) {
+				$default_value = ( $default_value ? 'true' : 'false' );
+			}
+
+			echo '<br><span class="qm-info">';
+			printf(
+				/* translators: %s: Default value for a PHP constant */
+				esc_html__( 'Default value: %s', 'query-monitor' ),
+				'<code>' . esc_html( $default_value ) . '</code>'
+			);
+			echo '</span>';
 
 			if ( defined( $name ) ) {
 				$current_value = constant( $name );
