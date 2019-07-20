@@ -74,11 +74,20 @@ class QM_Collector_Raw_Request extends QM_Collector {
 		ksort( $headers );
 
 		$response = array(
-			'status'  => http_response_code(),
+			'status'  => self::http_response_code(),
 			'headers' => $headers,
 		);
 
 		$this->data['response'] = $response;
+	}
+
+	public static function http_response_code() {
+		if ( is_callable( 'http_response_code' ) ) {
+			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.http_response_codeFound
+			return http_response_code();
+		}
+
+		return __( 'Unknown HTTP Response Code', 'query-monitor' );
 	}
 }
 
