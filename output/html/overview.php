@@ -46,7 +46,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '<section id="qm-overview-raw-request">';
 			$raw_data = $raw_request->get_data();
 			printf(
-				'<h2><code>%1$s %2$s</code> → %3$s</h2>',
+				'<h2>%1$s %2$s → %3$s</h2>',
 				esc_html( $raw_data['request']['method'] ),
 				esc_html( $raw_data['request']['url'] ),
 				esc_html( $raw_data['response']['status'] )

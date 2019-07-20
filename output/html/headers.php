@@ -91,8 +91,6 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		);
 		foreach ( $ids as $id ) {
 			if ( isset( $menu[ $id ] ) ) {
-				$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
-
 				$menu['qm-request']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
 			}

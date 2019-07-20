@@ -176,7 +176,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				'url'    => __( 'Requested URL', 'query-monitor' ),
 			) as $item => $name ) {
 				echo '<tr>';
-				echo '<th scope="row" class="qm-ltr">' . esc_html( $name ) . '</td>';
+				echo '<th scope="row">' . esc_html( $name ) . '</td>';
 				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data['request'][ $item ] ) . '</td>';
 				echo '</tr>';
 			}
