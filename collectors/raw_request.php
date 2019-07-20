@@ -23,7 +23,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	 * @param array $server Associative array similar to `$_SERVER`.
 	 * @return array Headers extracted from the input.
 	 */
-	protected function get_headers( $server ) {
+	protected function get_headers( array $server ) {
 		$headers = array();
 
 		// CONTENT_* headers are not prefixed with HTTP_.
@@ -49,12 +49,12 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	 */
 	public function process() {
 		$request = array(
-			'ip' => $_SERVER['REMOTE_ADDR'],
-			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
-			'scheme' => is_ssl() ? 'https' : 'http',
-			'host' => wp_unslash( $_SERVER['HTTP_HOST'] ),
-			'path' => isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/',
-			'query' => isset( $_SERVER['QUERY_STRING'] ) ? wp_unslash( $_SERVER['QUERY_STRING'] ) : '',
+			'ip'      => $_SERVER['REMOTE_ADDR'],
+			'method'  => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
+			'scheme'  => is_ssl() ? 'https' : 'http',
+			'host'    => wp_unslash( $_SERVER['HTTP_HOST'] ),
+			'path'    => isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/',
+			'query'   => isset( $_SERVER['QUERY_STRING'] ) ? wp_unslash( $_SERVER['QUERY_STRING'] ) : '',
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
 		);
 
