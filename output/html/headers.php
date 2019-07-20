@@ -39,7 +39,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		$this->output_header_table( $data['request']['headers'] );
+		$this->output_header_table( $data['request']['headers'], __( 'Request Header Name', 'query-monitor' ) );
 
 		$this->after_tabular_output();
 	}
@@ -50,16 +50,16 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 		$this->before_tabular_output( $id );
 
-		$this->output_header_table( $data['response']['headers'] );
+		$this->output_header_table( $data['response']['headers'], __( 'Response Header Name', 'query-monitor' ) );
 
 		$this->after_tabular_output();
 	}
 
-	protected function output_header_table( $headers ) {
+	protected function output_header_table( array $headers, $title ) {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th>';
-		esc_html_e( 'Header Name', 'query-monitor' );
+		echo esc_html( $title );
 		echo '</th><th>';
 		esc_html_e( 'Value', 'query-monitor' );
 		echo '</th></tr>';
