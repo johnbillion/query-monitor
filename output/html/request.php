@@ -17,6 +17,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$db_queries = QM_Collectors::get( 'db_queries' );
+		$raw_request = QM_Collectors::get( 'raw_request' );
 
 		$this->before_non_tabular_output();
 
@@ -159,6 +160,28 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					esc_html( $value['title'] )
 				);
 			}
+
+			echo '</section>';
+		}
+
+		if ( ! empty( $raw_request ) ) {
+			$raw_data = $raw_request->get_data();
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>';
+			echo '<table>';
+
+			foreach ( array(
+				'ip'     => __( 'Remote IP', 'query-monitor' ),
+				'method' => __( 'HTTP method', 'query-monitor' ),
+				'url'    => __( 'Requested URL', 'query-monitor' ),
+			) as $item => $name ) {
+				echo '<tr>';
+				echo '<th scope="row">' . esc_html( $name ) . '</td>';
+				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data['request'][ $item ] ) . '</td>';
+				echo '</tr>';
+			}
+
+			echo '</table>';
 
 			echo '</section>';
 		}

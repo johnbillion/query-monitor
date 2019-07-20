@@ -27,6 +27,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
+		$raw_request = QM_Collectors::get( 'raw_request' );
 		$cache = QM_Collectors::get( 'cache' );
 
 		$qm_broken   = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
@@ -41,6 +42,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section id="qm-ajax-errors">';
 		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $ajax_errors ) . '</p>';
 		echo '</section>';
+
+		if ( $raw_request ) {
+			echo '<section id="qm-overview-raw-request">';
+			$raw_data = $raw_request->get_data();
+			printf(
+				'<h2>%1$s %2$s → %3$s</h2>',
+				esc_html( $raw_data['request']['method'] ),
+				esc_html( $raw_data['request']['url'] ),
+				esc_html( $raw_data['response']['status'] )
+			);
+			echo '</section>';
+		}
 
 		echo '</div>';
 		echo '<div class="qm-boxed">';
