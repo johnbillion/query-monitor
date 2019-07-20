@@ -19,11 +19,12 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		) );
 
 		$response_id = $this->collector->id() . '-response';
-		$menu[ $response_id ] = [
-			'id' => 'query-monitor-' . $response_id,
-			'href' => '#' . $response_id,
+
+		$menu[ $response_id ] = array(
+			'id'    => 'query-monitor-' . $response_id,
+			'href'  => '#' . $response_id,
 			'title' => esc_html__( 'Response Headers', 'query-monitor' ),
-		];
+		);
 
 		return $menu;
 	}
@@ -45,7 +46,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 	public function output_response() {
 		$data = $this->collector->get_data();
-		$id = sprintf( 'qm-%s-response', $this->collector->id );
+		$id   = sprintf( 'qm-%s-response', $this->collector->id );
 
 		$this->before_tabular_output( $id );
 
@@ -66,7 +67,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 		foreach ( $headers as $name => $value ) {
 			echo '<tr>';
-			$formatted = str_replace( ' ', '-', ucwords( strtolower( str_replace( [ '-', '_' ], ' ', $name ) ) ) );
+			$formatted = str_replace( ' ', '-', ucwords( strtolower( str_replace( array( '-', '_' ), ' ', $name ) ) ) );
 			printf( '<th scope="row"><code>%s</code></th>', esc_html( $formatted ) );
 			printf( '<td><pre class="qm-pre-wrap"><code>%s</code></pre></td>', esc_html( $value ) );
 			echo '</tr>';
@@ -84,10 +85,10 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	}
 
 	public function panel_menu( array $menu ) {
-		$ids = [
+		$ids = array(
 			$this->collector->id(),
 			$this->collector->id() . '-response',
-		];
+		);
 		foreach ( $ids as $id ) {
 			if ( isset( $menu[ $id ] ) ) {
 				$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];

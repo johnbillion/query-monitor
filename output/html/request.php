@@ -170,11 +170,11 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>';
 			echo '<table>';
 
-			foreach ( [
-				'ip' => __( 'Remote IP', 'query-monitor' ),
+			foreach ( array(
+				'ip'     => __( 'Remote IP', 'query-monitor' ),
 				'method' => __( 'HTTP method', 'query-monitor' ),
-				'url' => __( 'Requested URL', 'query-monitor' ),
-			] as $item => $name ) {
+				'url'    => __( 'Requested URL', 'query-monitor' ),
+			) as $item => $name ) {
 				echo '<tr>';
 				echo '<th scope="row" class="qm-ltr">' . esc_html( $name ) . '</td>';
 				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data['request'][ $item ] ) . '</td>';

@@ -48,7 +48,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	 * Process request and response data.
 	 */
 	public function process() {
-		$request = [
+		$request = array(
 			'ip' => $_SERVER['REMOTE_ADDR'],
 			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
 			'scheme' => is_ssl() ? 'https' : 'http',
@@ -56,7 +56,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			'path' => isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/',
 			'query' => isset( $_SERVER['QUERY_STRING'] ) ? wp_unslash( $_SERVER['QUERY_STRING'] ) : '',
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
-		];
+		);
 
 		ksort( $request['headers'] );
 
@@ -64,7 +64,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 
 		$this->data['request'] = $request;
 
-		$headers = [];
+		$headers = array();
 		$raw_headers = headers_list();
 		foreach ( $raw_headers as $row ) {
 			list( $key, $value ) = explode( ':', $row, 2 );
@@ -73,10 +73,11 @@ class QM_Collector_Raw_Request extends QM_Collector {
 
 		ksort( $headers );
 
-		$response = [
-			'status' => http_response_code(),
+		$response = array(
+			'status'  => http_response_code(),
 			'headers' => $headers,
-		];
+		);
+
 		$this->data['response'] = $response;
 	}
 }
