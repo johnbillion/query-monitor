@@ -141,6 +141,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( Dark_Mode::is_using_dark_mode() ) {
 				$css .= '-dark';
 			}
+		} elseif ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
+			$css .= '-dark';
 		}
 
 		wp_enqueue_style(
@@ -382,6 +384,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-boxed">';
 		$constants = array(
+			'QM_DARK_MODE'             => array(
+				'label'   => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
+				'default' => false,
+			),
 			'QM_DB_EXPENSIVE'          => array(
 				/* translators: %s: The default value for a PHP constant */
 				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning. Default value: %s.', 'query-monitor' ),
