@@ -121,7 +121,7 @@ abstract class QM_Output_Html extends QM_Output {
 			esc_attr( $this->current_id . '-concerned_hooks' ),
 			sprintf(
 				/* translators: %s: Panel name */
-				esc_html__( '%s: Hooks in Use', 'query-monitor' ),
+				esc_html__( '%s: Related Hooks with Filters or Actions Attached', 'query-monitor' ),
 				esc_html( $this->collector->name() )
 			)
 		);
