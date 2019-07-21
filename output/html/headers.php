@@ -9,24 +9,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 100 );
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 20 );
-	}
-
-	public function admin_menu( array $menu ) {
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html__( 'Request Headers', 'query-monitor' ),
-		) );
-
-		$response_id = $this->collector->id() . '-response';
-
-		$menu[ $response_id ] = array(
-			'id'    => 'query-monitor-' . $response_id,
-			'href'  => '#' . $response_id,
-			'title' => esc_html__( 'Response Headers', 'query-monitor' ),
-		);
-
-		return $menu;
 	}
 
 	public function output() {
@@ -85,15 +68,20 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	}
 
 	public function panel_menu( array $menu ) {
+		if ( ! isset( $menu['qm-request'] ) ) {
+			return $menu;
+		}
+
 		$ids = array(
-			$this->collector->id(),
-			$this->collector->id() . '-response',
+			$this->collector->id()               => __( 'Request Headers', 'query-monitor' ),
+			$this->collector->id() . '-response' => __( 'Response Headers', 'query-monitor' ),
 		);
-		foreach ( $ids as $id ) {
-			if ( isset( $menu[ $id ] ) ) {
-				$menu['qm-request']['children'][] = $menu[ $id ];
-				unset( $menu[ $id ] );
-			}
+		foreach ( $ids as $id => $title ) {
+			$menu['qm-request']['children'][] = array(
+				'id'    => $id,
+				'href'  => '#' . $id,
+				'title' => esc_html( $title ),
+			);
 		}
 
 		return $menu;

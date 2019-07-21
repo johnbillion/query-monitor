@@ -87,6 +87,7 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 			'logger'        => false,
 			'overview'      => false,
 			'php_errors'    => false,
+			'raw_request'   => false,
 			'redirects'     => false,
 			'request'       => true,
 			'response'      => true,
