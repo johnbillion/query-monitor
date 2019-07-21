@@ -156,14 +156,15 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		printf( // WPCS: XSS ok.
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		printf(
 			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
 			htmlentities( $error ),
 			nl2br( htmlentities( $e['message'] ), false ),
 			htmlentities( $e['file'] ),
 			intval( $e['line'] )
 		);
-
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	public function post_process() {
