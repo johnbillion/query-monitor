@@ -9,6 +9,7 @@ cache:
     - $HOME/.npm
     - vendor
     - $HOME/.composer/cache
+    - tests/cache
 
 language: php
 

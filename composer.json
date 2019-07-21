@@ -43,7 +43,7 @@
 			"@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.dist', 'tests/.env' );\""
 		],
 		"test:cs": [
-			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 --cache ."
+			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
 		],
 		"test:ut": [
 			"vendor/bin/wp db reset --yes --path=$(npm run --silent jq '.extra .\"wordpress-install-dir\"' composer.json -- -r) #",
