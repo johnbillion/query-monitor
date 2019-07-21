@@ -23,6 +23,7 @@ class QM_Collector_Request extends QM_Collector {
 			'parse_request',
 			'parse_tax_query',
 			'pre_get_posts',
+			'send_headers',
 			'the_post',
 			'wp',
 		);
@@ -57,6 +58,7 @@ class QM_Collector_Request extends QM_Collector {
 			'query_vars',
 			'redirect_canonical',
 			'request',
+			'wp_headers',
 		);
 
 		foreach ( $wp_rewrite->extra_permastructs as $permastructname => $struct ) {
