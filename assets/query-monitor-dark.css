@@ -376,15 +376,23 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor-main #qm-panel-menu li button:focus,
 #query-monitor-main #qm-panel-menu li button:hover {
-  background: #def !important;
-  color: #222 !important;
+  background: #3e444a !important;
+  color: #bbc8d4 !important;
 }
 #query-monitor-main #qm-panel-menu li button:focus {
   text-decoration: underline !important;
 }
 #query-monitor-main #qm-panel-menu li.qm-current-menu button {
-  background: #def !important;
-  color: #222 !important;
+  background: #32373c !important;
+  color: #bbc8d4 !important;
+}
+#query-monitor-main #qm-panel-menu li.qm-current-menu button:focus {
+  background: #3e444a !important;
+  color: #bbc8d4 !important;
+}
+#query-monitor-main #qm-panel-menu li.qm-current-menu button:hover {
+  background: #3e444a !important;
+  color: #bbc8d4 !important;
 }
 #query-monitor-main #qm-panel-menu li li button::before {
   content: "\2514" !important;
@@ -398,6 +406,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor-main #qm-panel-menu li button[aria-selected="true"]:focus {
   background: #0084c4 !important;
+  color: #fff !important;
+}
+#query-monitor-main #qm-panel-menu li button[aria-selected="true"]:hover {
+  background: #0073aa !important;
   color: #fff !important;
 }
 #query-monitor-main #qm-panel-menu li button[aria-selected="true"]:after {
@@ -752,8 +764,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #fff0f0 !important;
 }
 #query-monitor-main .qm .qm-notice {
-  background: #def !important;
-  border: 1px solid #aad5ff !important;
+  background: #3e444a !important;
+  border: 1px solid #262a2e !important;
   margin: 0 0 10px 0 !important;
   padding: 10px 20px 0 !important;
 }

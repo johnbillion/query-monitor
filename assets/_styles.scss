@@ -403,8 +403,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		li.qm-current-menu button {
-			background: $qm-panel-menu-bg-hover !important;
-			color: $qm-panel-menu-fg-hover !important;
+			background: $qm-panel-menu-bg-current !important;
+			color: $qm-panel-menu-fg-current !important;
+
+			&:focus {
+				background: $qm-panel-menu-bg-current-focus !important;
+				color: $qm-panel-menu-fg-current !important;
+			}
+
+			&:hover {
+				background: $qm-panel-menu-bg-hover !important;
+				color: $qm-panel-menu-fg-hover !important;
+			}
 		}
 
 		li li button {
@@ -422,6 +432,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 			&:focus {
 				background: $qm-panel-menu-bg-selected-focus !important;
+				color: $qm-panel-menu-fg-selected !important;
+			}
+
+			&:hover {
+				background: $qm-panel-menu-bg-selected !important;
 				color: $qm-panel-menu-fg-selected !important;
 			}
 
