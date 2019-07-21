@@ -204,8 +204,8 @@ class QM_Collector_Environment extends QM_Collector {
 			$this->data['wp']['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
-		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) { // WPCS: input var ok
-			$server = explode( ' ', wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ); // WPCS: sanitization ok, input var ok
+		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
+			$server = explode( ' ', wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) );
 			$server = explode( '/', reset( $server ) );
 		} else {
 			$server = array( '' );
@@ -217,8 +217,8 @@ class QM_Collector_Environment extends QM_Collector {
 			$server_version = null;
 		}
 
-		if ( isset( $_SERVER['SERVER_ADDR'] ) ) { // WPCS: input var ok
-			$address = wp_unslash( $_SERVER['SERVER_ADDR'] ); // WPCS: sanitization ok, input var ok
+		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
+			$address = wp_unslash( $_SERVER['SERVER_ADDR'] );
 		} else {
 			$address = null;
 		}
@@ -276,8 +276,8 @@ class QM_Collector_Environment extends QM_Collector {
 			}
 		}
 
-		if ( empty( $php_u ) && isset( $_SERVER['USER'] ) ) { // WPCS: input var ok
-			$php_u = wp_unslash( $_SERVER['USER'] ); // WPCS: sanitization ok, input var ok
+		if ( empty( $php_u ) && isset( $_SERVER['USER'] ) ) {
+			$php_u = wp_unslash( $_SERVER['USER'] );
 		}
 
 		if ( empty( $php_u ) && function_exists( 'exec' ) ) {
