@@ -40,7 +40,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
 
-				echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+				if ( $mofile['handle'] ) {
+					echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . ' (' . esc_html( $mofile['handle'] ) . ')</td>';
+				} else {
+					echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+				}
 
 				echo '<td>' . esc_html( $mofile['type'] ) . '</td>';
 
