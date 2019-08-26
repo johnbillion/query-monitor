@@ -628,13 +628,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main .qm li::before {
   content: '' !important;
 }
-#query-monitor-main .qm .qm-has-toggle ol.qm-numbered li {
-  list-style: none !important;
-}
-#query-monitor-main .qm .qm-toggled-on ol.qm-numbered li,
-#query-monitor-main .qm ol.qm-numbered li {
-  list-style: decimal inside !important;
-}
 #query-monitor-main .qm code,
 #query-monitor-main .qm pre {
   font-family: Menlo, Monaco, Consolas, monospace !important;

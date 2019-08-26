@@ -249,14 +249,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
 
-				$caller = array_pop( $stack );
+				$caller = array_shift( $stack );
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 				echo '</ol></td>';
 
 				printf(

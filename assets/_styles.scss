@@ -699,19 +699,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm li {
 		display: list-item !important;
 		list-style: none !important;
-	}
 
-	.qm li::before {
-		content: '' !important;
-	}
-
-	.qm .qm-has-toggle ol.qm-numbered li {
-		list-style: none !important;
-	}
-
-	.qm .qm-toggled-on ol.qm-numbered li,
-	.qm ol.qm-numbered li {
-		list-style: decimal inside !important;
+		&::before {
+			content: '' !important;
+		}
 	}
 
 	.qm code,
