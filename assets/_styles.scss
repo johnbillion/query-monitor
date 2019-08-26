@@ -672,13 +672,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			border-right: 1px solid $qm-panel-separator !important;
 			margin: 0 20px 10px 0 !important;
 			padding: 10px 20px 10px 0 !important;
-		}
 
-		.qm-boxed section:last-child,
-		.qm-boxed .qm-section:last-child {
-			border-right: none !important;
-			margin-right: 0 !important;
-			padding-right: 20px !important;
+			&:last-child {
+				border-right: none !important;
+				margin-right: 0 !important;
+				padding-right: 20px !important;
+			}
 		}
 
 		table {
