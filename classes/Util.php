@@ -69,23 +69,31 @@ class QM_Util {
 
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
-			self::$file_dirs['plugin']     = self::standard_dir( WP_PLUGIN_DIR );
-			self::$file_dirs['mu-vendor']  = self::standard_dir( WPMU_PLUGIN_DIR . '/vendor' );
-			self::$file_dirs['go-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR . '/shared-plugins' );
-			self::$file_dirs['mu-plugin']  = self::standard_dir( WPMU_PLUGIN_DIR );
-			self::$file_dirs['vip-plugin'] = self::standard_dir( get_theme_root() . '/vip/plugins' );
+
+			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
+
+			self::$file_dirs['plugin']     = WP_PLUGIN_DIR ;
+			self::$file_dirs['mu-vendor']  = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs['go-plugin']  = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs['mu-plugin']  = WPMU_PLUGIN_DIR;
+			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
-				self::$file_dirs['vip-client-mu-plugin'] = self::standard_dir( WPCOM_VIP_CLIENT_MU_PLUGIN_DIR );
+				self::$file_dirs['vip-client-mu-plugin'] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
 			}
 
 			self::$file_dirs['theme']      = null;
-			self::$file_dirs['stylesheet'] = self::standard_dir( get_stylesheet_directory() );
-			self::$file_dirs['template']   = self::standard_dir( get_template_directory() );
-			self::$file_dirs['other']      = self::standard_dir( WP_CONTENT_DIR );
-			self::$file_dirs['core']       = self::standard_dir( ABSPATH );
+			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
+			self::$file_dirs['template']   = get_template_directory();
+			self::$file_dirs['other']      = WP_CONTENT_DIR;
+			self::$file_dirs['core']       = ABSPATH;
 			self::$file_dirs['unknown']    = null;
+
+			foreach ( self::$file_dirs as $type => $dir ) {
+				self::$file_dirs[$type] = self::standard_dir($dir);
+			}
 		}
+
 		return self::$file_dirs;
 	}
 
@@ -176,6 +184,7 @@ class QM_Util {
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
+				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
 				break;
 		}
 
