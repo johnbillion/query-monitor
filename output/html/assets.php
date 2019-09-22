@@ -92,8 +92,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	protected function dependency_row( $handle, array $asset, $label ) {
-		$data = $this->collector->get_data();
-
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $asset['dependents'] );
 
