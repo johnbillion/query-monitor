@@ -118,8 +118,19 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo esc_html( $label );
 		echo '</td>';
 
+		$host  = $asset['host'];
+		$parts = explode( '.', $host );
+
+		foreach ( $parts as $k => $part ) {
+			if ( strlen( $part ) > 16 ) {
+				$parts[ $k ] = substr( $parts[ $k ], 0, 6 ) . '&hellip;' . substr( $parts[ $k ], -6 );
+			}
+		}
+
+		$host = implode( '.', $parts );
+
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>';
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $asset['host'] ) . '</td>';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';
 		if ( is_wp_error( $asset['source'] ) ) {
 			$error_data = $asset['source']->get_error_data();
