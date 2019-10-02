@@ -255,7 +255,38 @@ class QM_Collector_HTTP extends QM_Collector {
 			} else {
 				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
 				if ( $http['type'] >= 400 ) {
-					$this->data['errors']['warning'][] = $key;
+					/**
+					 * List of HTTP error status codes to ignore.
+					 *
+					 * @since vnext
+					 *
+					 * @param array $http_statuses Array of HTTP error statuses to silence.
+					 *              Default: empty array.
+					 * @param array $http {
+					 *     The QM "HTTP" request object.
+					 *
+					 *     @type string $url The URL for the HTTP request.
+					 *     @type array  $args The `$args` for the HTTP request.
+					 *     @type float  $start The start time for the request.
+					 *     @type class  $trace The QM_Backtrace object for the request.
+					 *     @type string $transport The transport for the HTTP request.
+					 *     @type float  $end The end time for the request.
+					 *     @type array  $response The HTTP response.
+					 *     @type array  $info The QM "info" for the HTTP request.
+					 *     @type int    $type The HTTP status code.
+					 * }
+					 */
+					$silent_error_statuses = apply_filters(
+						'qm/collect/silent_http_error_statuses',
+						array(),
+						$http
+					);
+					$silent_error_statuses = array_filter( array_map( 'intval', $silent_error_statuses ) );
+
+					if ( empty( $silent_error_statuses ) ||
+							! in_array( $http['type'], $silent_error_statuses, true ) ) {
+						$this->data['errors']['warning'][] = $key;
+					}
 				}
 			}
 
