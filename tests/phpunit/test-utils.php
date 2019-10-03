@@ -10,7 +10,7 @@ class TestUtils extends QM_UnitTestCase {
 
 		$ver = QM_Util::get_client_version( $client );
 
-		$this->assertEquals( $expected, array_values( $ver ) );
+		self::assertEquals( $expected, array_values( $ver ) );
 
 	}
 

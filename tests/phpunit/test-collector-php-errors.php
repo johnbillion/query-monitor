@@ -21,7 +21,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			E_NOTICE, null
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsErrorInFlagsIsReportable() {
@@ -29,7 +29,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			E_NOTICE, E_ALL & ~E_WARNING
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsErrorOutsideFlagsIsNotReportable() {
@@ -37,7 +37,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			E_NOTICE, E_ALL & ~E_NOTICE
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsSameErrorAndFlagIsReportable() {
@@ -45,7 +45,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			E_NOTICE, E_NOTICE
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsCoreFileIsNotInPlugin() {
@@ -54,7 +54,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsThemeFileIsNotInPlugin() {
@@ -63,7 +63,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsAnotherPluginFileIsNotInPlugin() {
@@ -72,7 +72,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsEmptyFilePathIsNotInPlugin() {
@@ -81,7 +81,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsEmptyPluginNameIsNotInPlugin() {
@@ -90,7 +90,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, '', ''
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItKnowsPluginFileIsInPlugin() {
@@ -99,7 +99,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsThemeFileIsInTheme() {
@@ -108,7 +108,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'theme', 'stylesheet'
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsCoreFileIsInCore() {
@@ -117,7 +117,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'core', 'core'
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsFolderlessPluginFileIsInPlugin() {
@@ -126,7 +126,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo.php'
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsInternalPluginFileIsInPlugin() {
@@ -135,7 +135,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertTrue( $actual );
+		self::assertTrue( $actual );
 	}
 
 	function testItKnowsPluginExtensionFileIsNotInPlugin() {
@@ -144,7 +144,7 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 			$component, 'plugin', 'foo'
 		);
 
-		$this->assertFalse( $actual );
+		self::assertFalse( $actual );
 	}
 
 	function testItWillNotFilterAnyErrorByDefault() {
@@ -174,12 +174,12 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		$this->assertArrayHasKey( 'errors', $actual );
-		$this->assertArrayHasKey( 'notice', $actual['errors'] );
-		$this->assertEquals( 2, count( $actual['errors']['notice'] ) );
+		self::assertArrayHasKey( 'errors', $actual );
+		self::assertArrayHasKey( 'notice', $actual['errors'] );
+		self::assertEquals( 2, count( $actual['errors']['notice'] ) );
 
 		// silenced errors:
-		$this->assertArrayNotHasKey( 'silenced', $actual );
+		self::assertArrayNotHasKey( 'silenced', $actual );
 	}
 
 	function testItWillFilterNoticesFromPlugin() {
@@ -215,15 +215,15 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		$this->assertArrayHasKey( 'errors', $actual );
-		$this->assertArrayHasKey( 'warning', $actual['errors'] );
-		$this->assertArrayNotHasKey( 'notice', $actual['errors'] );
-		$this->assertEquals( 1, count( $actual['errors']['warning'] ) );
+		self::assertArrayHasKey( 'errors', $actual );
+		self::assertArrayHasKey( 'warning', $actual['errors'] );
+		self::assertArrayNotHasKey( 'notice', $actual['errors'] );
+		self::assertEquals( 1, count( $actual['errors']['warning'] ) );
 
 		// silenced errors:
-		$this->assertArrayHasKey( 'silenced', $actual );
-		$this->assertArrayHasKey( 'notice', $actual['silenced'] );
-		$this->assertArrayNotHasKey( 'warning', $actual['silenced'] );
-		$this->assertEquals( 1, count( $actual['silenced']['notice'] ) );
+		self::assertArrayHasKey( 'silenced', $actual );
+		self::assertArrayHasKey( 'notice', $actual['silenced'] );
+		self::assertArrayNotHasKey( 'warning', $actual['silenced'] );
+		self::assertEquals( 1, count( $actual['silenced']['notice'] ) );
 	}
 }

@@ -10,7 +10,7 @@ class TestPlugin extends QM_UnitTestCase {
 		}
 		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );
 
-		$this->assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
+		self::assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
 	}
 
 	private function get_readme() {

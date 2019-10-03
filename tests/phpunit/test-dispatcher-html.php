@@ -20,7 +20,7 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		$this->html = QM_Dispatchers::get( 'html' );
 
-		$this->assertInstanceOf( 'QM_Dispatcher_Html', $this->html );
+		self::assertInstanceOf( 'QM_Dispatcher_Html', $this->html );
 
 		$this->html->init();
 
@@ -42,9 +42,9 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		$registered = $wp_scripts->registered;
 
-		$this->assertArrayHasKey( 'query-monitor', $registered );
-		$this->assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
-		$this->assertSame( 'https', parse_url( $registered['query-monitor']->src, PHP_URL_SCHEME ) );
+		self::assertArrayHasKey( 'query-monitor', $registered );
+		self::assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
+		self::assertSame( 'https', parse_url( $registered['query-monitor']->src, PHP_URL_SCHEME ) );
 
 		if ( isset( $https ) ) {
 			$_SERVER['HTTPS'] = $https;
@@ -59,14 +59,14 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		$this->go_to_with_template( home_url() );
 
-		$this->assertTrue( $this->html->is_active() );
-		$this->assertTrue( $this->html->should_dispatch() );
+		self::assertTrue( $this->html->is_active() );
+		self::assertTrue( $this->html->should_dispatch() );
 
 		ob_start();
 		$this->html->dispatch();
 		$output = ob_get_clean();
 
-		$this->assertNotEmpty( $output );
+		self::assertNotEmpty( $output );
 
 		$expected = array(
 			'assets_scripts' => true,
@@ -99,17 +99,17 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 		$collectors = QM_Collectors::init();
 		$menu = $this->html->js_admin_bar_menu();
 
-		$this->assertInternalType( 'array', $menu );
-		$this->assertArrayHasKey( 'top', $menu );
-		$this->assertArrayHasKey( 'sub', $menu );
-		$this->assertNotEmpty( $menu['sub'] );
+		self::assertInternalType( 'array', $menu );
+		self::assertArrayHasKey( 'top', $menu );
+		self::assertArrayHasKey( 'sub', $menu );
+		self::assertNotEmpty( $menu['sub'] );
 
 		foreach ( $collectors as $collector ) {
-			$this->assertArrayHasKey( $collector->id, $expected, sprintf( '%s is not present in the test menu', $collector->id ) );
+			self::assertArrayHasKey( $collector->id, $expected, sprintf( '%s is not present in the test menu', $collector->id ) );
 			if ( $expected[ $collector->id ] ) {
-				$this->assertArrayHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
+				self::assertArrayHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
 			} else {
-				$this->assertArrayNotHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
+				self::assertArrayNotHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
 			}
 		}
 	}

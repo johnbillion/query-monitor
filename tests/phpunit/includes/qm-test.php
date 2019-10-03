@@ -8,7 +8,7 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
-		$this->assertTrue( WP_USE_THEMES );
+		self::assertTrue( WP_USE_THEMES );
 		parent::setUp();
 	}
 

@@ -11,7 +11,7 @@ class TestCapabilities extends QM_UnitTestCase {
 		) );
 
 		$actual = user_can( $user, 'view_query_monitor' );
-		$this->assertSame( $can_access, $actual );
+		self::assertSame( $can_access, $actual );
 	}
 
 	public function dataUserRolesAccess() {

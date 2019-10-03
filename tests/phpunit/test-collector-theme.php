@@ -6,16 +6,16 @@ class TestCollectorTheme extends QM_UnitTestCase {
 
 		$file = ABSPATH . WPINC . '/template-loader.php';
 
-		$this->assertFileExists( $file );
+		self::assertFileExists( $file );
 
 		$contents = file_get_contents( $file );
 
-		$this->assertNotEmpty( $contents );
+		self::assertNotEmpty( $contents );
 
 		$regex = '#^\s*(?:else)?if\s+\(\s*(is_[a-z0-9_]+)\(\)(?:.*?)get_([a-z0-9_]+)_template\(\)#m';
 		$count = preg_match_all( $regex, $contents, $matches );
 
-		$this->assertGreaterThan( 0, $count );
+		self::assertGreaterThan( 0, $count );
 
 		list( , $conditionals, $templates ) = $matches;
 
@@ -33,8 +33,8 @@ class TestCollectorTheme extends QM_UnitTestCase {
 			);
 		}
 
-		$this->assertEquals( array_values( $names ), array_values( $conditionals ) );
-		$this->assertEquals( array_keys( $names ), array_values( $templates ) );
+		self::assertEquals( array_values( $names ), array_values( $conditionals ) );
+		self::assertEquals( array_keys( $names ), array_values( $templates ) );
 
 	}
 

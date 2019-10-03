@@ -21,10 +21,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$ref    = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( $function,            $actual['function'] );
-		$this->assertEquals( '__return_false()',   $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),  $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(), $actual['line'] );
+		self::assertEquals( $function,            $actual['function'] );
+		self::assertEquals( '__return_false()',   $actual['name'] );
+		self::assertEquals( $ref->getFileName(),  $actual['file'] );
+		self::assertEquals( $ref->getStartLine(), $actual['line'] );
 
 	}
 
@@ -37,10 +37,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$ref    = new ReflectionMethod( $function[0], $function[1] );
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( $function,                 $actual['function'] );
-		$this->assertEquals( 'QM_Test_Object->hello()', $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),       $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(),      $actual['line'] );
+		self::assertEquals( $function,                 $actual['function'] );
+		self::assertEquals( 'QM_Test_Object->hello()', $actual['name'] );
+		self::assertEquals( $ref->getFileName(),       $actual['file'] );
+		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
 	}
 
@@ -53,10 +53,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$actual = QM_Util::populate_callback( $callback );
 		$name   = 'QM_Test_Invokable->__invoke()';
 
-		$this->assertEquals( $function,            $actual['function'] );
-		$this->assertEquals( $name,                $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),  $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(), $actual['line'] );
+		self::assertEquals( $function,            $actual['function'] );
+		self::assertEquals( $name,                $actual['name'] );
+		self::assertEquals( $ref->getFileName(),  $actual['file'] );
+		self::assertEquals( $ref->getStartLine(), $actual['line'] );
 
 	}
 
@@ -68,10 +68,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$ref    = new ReflectionMethod( $function[0], $function[1] );
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( $function,                 $actual['function'] );
-		$this->assertEquals( 'QM_Test_Object::hello()', $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),       $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(),      $actual['line'] );
+		self::assertEquals( $function,                 $actual['function'] );
+		self::assertEquals( 'QM_Test_Object::hello()', $actual['name'] );
+		self::assertEquals( $ref->getFileName(),       $actual['file'] );
+		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
 	}
 
@@ -83,10 +83,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$ref    = new ReflectionMethod( 'QM_Test_Object', 'hello' );
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
-		$this->assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),                $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(),               $actual['line'] );
+		self::assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
+		self::assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
+		self::assertEquals( $ref->getFileName(),                $actual['file'] );
+		self::assertEquals( $ref->getStartLine(),               $actual['line'] );
 
 	}
 
@@ -101,10 +101,10 @@ class TestStackTraces extends QM_UnitTestCase {
 		$file   = QM_Util::standard_dir( $ref->getFileName(), '' );
 		$name   = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/phpunit/includes/dummy-closures.php' );
 
-		$this->assertEquals( $function,            $actual['function'] );
-		$this->assertEquals( $name,                $actual['name'] );
-		$this->assertEquals( $ref->getFileName(),  $actual['file'] );
-		$this->assertEquals( $ref->getStartLine(), $actual['line'] );
+		self::assertEquals( $function,            $actual['function'] );
+		self::assertEquals( $name,                $actual['name'] );
+		self::assertEquals( $ref->getFileName(),  $actual['file'] );
+		self::assertEquals( $ref->getStartLine(), $actual['line'] );
 
 	}
 
@@ -115,7 +115,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -127,7 +127,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -138,7 +138,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -149,7 +149,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -160,7 +160,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -171,7 +171,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
@@ -182,7 +182,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		$this->assertWPError( $actual['error'] );
+		self::assertWPError( $actual['error'] );
 
 	}
 
