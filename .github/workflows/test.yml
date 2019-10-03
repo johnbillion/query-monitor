@@ -7,7 +7,8 @@ jobs:
       max-parallel: 15
       matrix:
         php: ['5.6', '7.3']
-    name: PHP ${{ matrix.php }}
+        wp: ['*', 'dev-nightly']
+    name: WordPress ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
     services:
       mysql:
@@ -36,7 +37,9 @@ jobs:
         svn --version
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-suggest
+      run: |
+        composer install --prefer-dist --no-suggest
+        composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }}"
 
     - name: Run code sniffer
       run: composer test:cs
