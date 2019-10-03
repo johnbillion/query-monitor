@@ -33,6 +33,7 @@ jobs:
         php --version
         php -m
         composer --version
+        svn --version
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-suggest
