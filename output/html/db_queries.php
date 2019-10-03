@@ -7,6 +7,13 @@
 
 class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_DB_Queries Collector.
+	 */
+	protected $collector;
+
 	public $query_row = 0;
 
 	public function __construct( QM_Collector $collector ) {

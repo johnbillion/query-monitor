@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Assets_Scripts Collector.
+	 */
+	protected $collector;
+
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued scripts */

@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Hooks extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Hooks Collector.
+	 */
+	protected $collector;
+
 	public $id = 'hooks';
 
 	public function __construct( QM_Collector $collector ) {

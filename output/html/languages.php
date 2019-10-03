@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Languages extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Languages Collector.
+	 */
+	protected $collector;
+
 	public $id = 'languages';
 
 	public function __construct( QM_Collector $collector ) {

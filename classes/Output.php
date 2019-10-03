@@ -8,6 +8,11 @@
 if ( ! class_exists( 'QM_Output' ) ) {
 abstract class QM_Output {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector Collector.
+	 */
 	protected $collector;
 	protected $timer;
 

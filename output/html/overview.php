@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Overview extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Overview Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 10 );

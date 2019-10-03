@@ -7,6 +7,13 @@
 
 class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_DB_Dupes Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
