@@ -1,0 +1,19 @@
+name: Test
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-suggest
+
+    - name: Run code sniffer
+      run: composer test:cs
+
+    - name: Run unit tests
+      run: composer test:ut
