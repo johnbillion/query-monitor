@@ -37,7 +37,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Headers[] */
+		/** @var QM_Output_Headers[] */
 		foreach ( $this->get_outputters( 'headers' ) as $id => $output ) {
 			$output->output();
 		}

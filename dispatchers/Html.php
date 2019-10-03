@@ -7,10 +7,16 @@
 
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
+	/**
+	 * Outputter instances.
+	 *
+	 * @var QM_Output_html[] Array of outputters.
+	 */
+	protected $outputters = array();
+
 	public $id         = 'html';
 	public $did_footer = false;
 
-	protected $outputters     = array();
 	protected $admin_bar_menu = array();
 	protected $panel_menu     = array();
 
@@ -187,7 +193,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Html[] */
 		foreach ( $this->outputters as $id => $output ) {
 			$timer = new QM_Timer();
 			$timer->start();
@@ -237,7 +242,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $admin_bar_men Array of menus.
+		 * @param array $admin_bar_menu Array of menus.
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
@@ -487,7 +492,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 * @since  3.1.0
 		 *
 		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
-		 * @param QM_Output[]        $this->outputters Array of outputters.
+		 * @param QM_Output_Html[]   $this->outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 

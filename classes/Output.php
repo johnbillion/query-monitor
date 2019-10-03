@@ -14,6 +14,12 @@ abstract class QM_Output {
 	 * @var QM_Collector Collector.
 	 */
 	protected $collector;
+
+	/**
+	 * Timer instance.
+	 *
+	 * @var QM_Timer Timer.
+	 */
 	protected $timer;
 
 	public function __construct( QM_Collector $collector ) {
