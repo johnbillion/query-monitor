@@ -6,9 +6,9 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        php: ['5.6', '7.3']
+        php: ['7.3', '5.6']
         wp: ['*', 'dev-nightly']
-    name: WordPress ${{ matrix.wp }} / PHP ${{ matrix.php }}
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
     services:
       mysql:
