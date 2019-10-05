@@ -61,6 +61,8 @@ class QM_Collector_Timing extends QM_Collector {
 		$function_time   = $this->track_timer[ $function ]->get_time();
 		$function_memory = $this->track_timer[ $function ]->get_memory();
 		$function_laps   = $this->track_timer[ $function ]->get_laps();
+		$start_time      = $this->track_timer[ $function ]->get_start_time();
+		$end_time        = $this->track_timer[ $function ]->get_end_time();
 
 		$this->data['timing'][] = array(
 			'function'        => $function,
@@ -68,6 +70,8 @@ class QM_Collector_Timing extends QM_Collector {
 			'function_memory' => $function_memory,
 			'laps'            => $function_laps,
 			'trace'           => $trace,
+			'start_time'      => ( $start_time - $GLOBALS['timestart'] ),
+			'end_time'        => ( $end_time - $GLOBALS['timestart'] ),
 		);
 	}
 
@@ -81,6 +85,18 @@ class QM_Collector_Timing extends QM_Collector {
 					'trace'    => $trace,
 				);
 			}
+		}
+
+		if ( ! empty( $this->data['timing'] ) ) {
+			usort( $this->data['timing'], array( $this, 'sort_by_start_time' ) );
+		}
+	}
+
+	public function sort_by_start_time( array $a, array $b ) {
+		if ( $a['start_time'] === $b['start_time'] ) {
+			return 0;
+		} else {
+			return ( $a['start_time'] > $b['start_time'] ) ? 1 : -1;
 		}
 	}
 

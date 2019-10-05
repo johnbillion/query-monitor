@@ -82,6 +82,22 @@ class QM_Timer {
 		return $this->end['memory'] - $this->start['memory'];
 	}
 
+	public function get_start_time() {
+		return $this->start['time'];
+	}
+
+	public function get_start_memory() {
+		return $this->start['memory'];
+	}
+
+	public function get_end_time() {
+		return $this->end['time'];
+	}
+
+	public function get_end_memory() {
+		return $this->end['memory'];
+	}
+
 	public function get_trace() {
 		return $this->trace;
 	}

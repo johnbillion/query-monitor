@@ -32,6 +32,8 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Tracked Function', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Started', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Stopped', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Memory', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
@@ -63,6 +65,16 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 				printf(
 					'<td class="qm-num">%s</td>',
+					esc_html( number_format_i18n( $row['start_time'], 4 ) )
+				);
+
+				printf(
+					'<td class="qm-num">%s</td>',
+					esc_html( number_format_i18n( $row['end_time'], 4 ) )
+				);
+
+				printf(
+					'<td class="qm-num">%s</td>',
 					esc_html( number_format_i18n( $row['function_time'], 4 ) )
 				);
 
@@ -89,6 +101,9 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 						echo '<td class="qm-ltr"><code>&mdash;&nbsp;';
 						echo esc_html( $row['function'] . ': ' . $lap_id );
 						echo '</code></td>';
+
+						echo '<td class="qm-num"></td>';
+						echo '<td class="qm-num"></td>';
 
 						printf(
 							'<td class="qm-num">%s</td>',
@@ -132,7 +147,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				}
 
 				printf(
-					'<td colspan="2"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</td>',
+					'<td colspan="4"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</td>',
 					esc_html( $row['message'] )
 				);
 
