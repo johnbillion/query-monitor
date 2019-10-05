@@ -578,6 +578,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			text-align: right !important;
 		}
 
+		td.qm-num {
+			font-family: $qm-font-code-face !important;
+			font-size: $qm-font-code-size !important;
+			line-height: $qm-font-code-line-height !important;
+		}
+
 		td.qm-row-sql {
 			min-width: 25em !important;
 		}

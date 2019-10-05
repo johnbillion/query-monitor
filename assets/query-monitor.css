@@ -527,6 +527,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main .qm td.qm-num {
   text-align: right !important;
 }
+#query-monitor-main .qm td.qm-num {
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+  font-size: 11px !important;
+  line-height: 18px !important;
+}
 #query-monitor-main .qm td.qm-row-sql {
   min-width: 25em !important;
 }
