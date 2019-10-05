@@ -1,0 +1,31 @@
+name: Deploy
+on:
+  release:
+    types: [published]
+
+jobs:
+  wordpress:
+    name: WordPress.org
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - name: Install Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.x'
+
+    - name: Debugging
+      run: |
+        php --version
+        svn --version
+        gem --version
+
+    - name: Install dependencies
+      run: |
+        npm install
+        gem install sass
+
+    - name: Deploy
+      run: npm run deploy:ci
