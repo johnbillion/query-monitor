@@ -12,8 +12,15 @@ class TestCollectorTheme extends QM_UnitTestCase {
 
 		self::assertNotEmpty( $contents );
 
+		// Pre-5.3 regex:
 		$regex = '#^\s*(?:else)?if\s+\(\s*(is_[a-z0-9_]+)\(\)(?:.*?)get_([a-z0-9_]+)_template\(\)#m';
 		$count = preg_match_all( $regex, $contents, $matches );
+
+		if ( ! $count ) {
+			// 5.3+ regex:
+			$regex = '#^\s*\'(is_[a-z0-9_]+)\' +=> \'get_([a-z0-9_]+)_template\'#m';
+			$count = preg_match_all( $regex, $contents, $matches );
+		}
 
 		self::assertGreaterThan( 0, $count );
 
