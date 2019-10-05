@@ -11,7 +11,6 @@ class QM_Collector_Timing extends QM_Collector {
 	private $track_timer = array();
 	private $start       = array();
 	private $stop        = array();
-	private $laps        = array();
 
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
