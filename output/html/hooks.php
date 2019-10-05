@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Hooks extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Hooks Collector.
+	 */
+	protected $collector;
+
 	public $id = 'hooks';
 
 	public function __construct( QM_Collector $collector ) {
@@ -181,7 +188,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 }
 
 function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'hooks' );
+	$collector = QM_Collectors::get( 'hooks' );
 	if ( $collector ) {
 		$output['hooks'] = new QM_Output_Html_Hooks( $collector );
 	}

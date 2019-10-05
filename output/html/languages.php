@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Languages extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Languages Collector.
+	 */
+	protected $collector;
+
 	public $id = 'languages';
 
 	public function __construct( QM_Collector $collector ) {
@@ -40,7 +47,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
 
-				echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+				if ( $mofile['handle'] ) {
+					echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . ' (' . esc_html( $mofile['handle'] ) . ')</td>';
+				} else {
+					echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+				}
 
 				echo '<td>' . esc_html( $mofile['type'] ) . '</td>';
 
@@ -65,15 +76,15 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				}
 				echo '</td>';
 
+				echo '<td class="qm-nowrap">';
+
 				if ( $mofile['found'] ) {
-					echo '<td class="qm-nowrap">';
 					echo esc_html( size_format( $mofile['found'] ) );
-					echo '</td>';
 				} else {
-					echo '<td>';
 					echo esc_html__( 'Not Found', 'query-monitor' );
-					echo '</td>';
 				}
+
+				echo '</td>';
 
 				echo '</tr>';
 				$first = false;
@@ -101,7 +112,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 }
 
 function register_qm_output_html_languages( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'languages' );
+	$collector = QM_Collectors::get( 'languages' );
 	if ( $collector ) {
 		$output['languages'] = new QM_Output_Html_Languages( $collector );
 	}

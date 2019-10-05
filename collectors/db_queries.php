@@ -44,11 +44,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function process() {
-
-		if ( ! SAVEQUERIES ) {
-			return;
-		}
-
 		$this->data['total_qs']   = 0;
 		$this->data['total_time'] = 0;
 		$this->data['errors']     = array();
@@ -98,6 +93,12 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	public function process_db_object( $id, wpdb $db ) {
 		global $EZSQL_ERROR, $wp_the_query;
+
+		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
+		if ( empty( $db->queries ) ) {
+			$this->data['total_qs'] += $db->num_queries;
+			return;
+		}
 
 		$rows       = array();
 		$types      = array();

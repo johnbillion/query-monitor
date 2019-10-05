@@ -13,9 +13,7 @@ abstract class QM_Plugin {
 
 	/**
 	 * Class constructor
-	 *
-	 * @author John Blackbourn
-	 **/
+	 */
 	protected function __construct( $file ) {
 		$this->file = $file;
 	}
@@ -25,8 +23,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string URL
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_url( $file = '' ) {
 		return $this->_plugin( 'url', $file );
 	}
@@ -36,8 +33,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Filesystem path
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_path( $file = '' ) {
 		return $this->_plugin( 'path', $file );
 	}
@@ -47,8 +43,7 @@ abstract class QM_Plugin {
 	 *
 	 * @param $file string The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Version
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_ver( $file ) {
 		return filemtime( $this->plugin_path( $file ) );
 	}
@@ -57,17 +52,14 @@ abstract class QM_Plugin {
 	 * Returns the current plugin's basename, eg. 'my_plugin/my_plugin.php'.
 	 *
 	 * @return string Basename
-	 * @author John Blackbourn
-	 **/
+	 */
 	final public function plugin_base() {
 		return $this->_plugin( 'base' );
 	}
 
 	/**
 	 * Populates and returns the current plugin info.
-	 *
-	 * @author John Blackbourn
-	 **/
+	 */
 	final private function _plugin( $item, $file = '' ) {
 		if ( ! array_key_exists( $item, $this->plugin ) ) {
 			switch ( $item ) {
@@ -93,6 +85,26 @@ abstract class QM_Plugin {
 		}
 
 		return $met;
+	}
+
+	public static function php_version_nope() {
+		printf(
+			'<div id="qm-php-nope" class="notice notice-error is-dismissible"><p>%s</p></div>',
+			wp_kses(
+				sprintf(
+					/* translators: 1: Required PHP version number, 2: Current PHP version number, 3: URL of PHP update help page */
+					__( 'The Query Monitor plugin requires PHP version %1$s or higher. This site is running PHP version %2$s. <a href="%3$s">Learn about updating PHP</a>.', 'query-monitor' ),
+					self::$minimum_php_version,
+					PHP_VERSION,
+					'https://wordpress.org/support/update-php/'
+				),
+				array(
+					'a' => array(
+						'href' => array(),
+					),
+				)
+			)
+		);
 	}
 
 }

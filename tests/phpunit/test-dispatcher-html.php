@@ -1,6 +1,6 @@
 <?php
 
-class Test_Dispatcher_HTML extends QM_UnitTestCase {
+class TestDispatcherHTML extends QM_UnitTestCase {
 
 	protected $html = null;
 
@@ -20,7 +20,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 		$this->html = QM_Dispatchers::get( 'html' );
 
-		$this->assertInstanceOf( 'QM_Dispatcher_Html', $this->html );
+		self::assertInstanceOf( 'QM_Dispatcher_Html', $this->html );
 
 		$this->html->init();
 
@@ -29,7 +29,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 	/**
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
-	public function test_dispatcher_respects_late_change_of_https() {
+	public function testDispatcherRespectsLateChangeOfHttps() {
 		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {
@@ -42,9 +42,9 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 		$registered = $wp_scripts->registered;
 
-		$this->assertArrayHasKey( 'query-monitor', $registered );
-		$this->assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
-		$this->assertSame( 'https', parse_url( $registered['query-monitor']->src, PHP_URL_SCHEME ) );
+		self::assertArrayHasKey( 'query-monitor', $registered );
+		self::assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
+		self::assertSame( 'https', parse_url( $registered['query-monitor']->src, PHP_URL_SCHEME ) );
 
 		if ( isset( $https ) ) {
 			$_SERVER['HTTPS'] = $https;
@@ -54,19 +54,19 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 
 	}
 
-	public function test_admin_toolbar_for_home_page() {
+	public function testAdminToolbarContainsMenuItems() {
 		global $wpdb;
 
 		$this->go_to_with_template( home_url() );
 
-		$this->assertTrue( $this->html->is_active() );
-		$this->assertTrue( $this->html->should_dispatch() );
+		self::assertTrue( $this->html->is_active() );
+		self::assertTrue( $this->html->should_dispatch() );
 
 		ob_start();
 		$this->html->dispatch();
 		$output = ob_get_clean();
 
-		$this->assertNotEmpty( $output );
+		self::assertNotEmpty( $output );
 
 		$expected = array(
 			'assets_scripts' => true,
@@ -76,6 +76,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'caps'          => true,
 			'conditionals'  => false,
 			'db_callers'    => false,
+			'db_components' => ( $wpdb instanceof QM_DB ),
 			'db_dupes'      => true,
 			'db_queries'    => true,
 			'debug_bar'     => false,
@@ -86,6 +87,7 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'logger'        => false,
 			'overview'      => false,
 			'php_errors'    => false,
+			'raw_request'   => false,
 			'redirects'     => false,
 			'request'       => true,
 			'response'      => true,
@@ -94,22 +96,20 @@ class Test_Dispatcher_HTML extends QM_UnitTestCase {
 			'transients'    => true,
 		);
 
-		$expected['db_components'] = ( $wpdb instanceof QM_DB );
-
 		$collectors = QM_Collectors::init();
 		$menu = $this->html->js_admin_bar_menu();
 
-		$this->assertInternalType( 'array', $menu );
-		$this->assertArrayHasKey( 'top', $menu );
-		$this->assertArrayHasKey( 'sub', $menu );
-		$this->assertNotEmpty( $menu['sub'] );
+		self::assertInternalType( 'array', $menu );
+		self::assertArrayHasKey( 'top', $menu );
+		self::assertArrayHasKey( 'sub', $menu );
+		self::assertNotEmpty( $menu['sub'] );
 
 		foreach ( $collectors as $collector ) {
-			$this->assertArrayHasKey( $collector->id, $expected, sprintf( '%s is not present in the test menu', $collector->id ) );
+			self::assertArrayHasKey( $collector->id, $expected, sprintf( '%s is not present in the test menu', $collector->id ) );
 			if ( $expected[ $collector->id ] ) {
-				$this->assertArrayHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
+				self::assertArrayHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
 			} else {
-				$this->assertArrayNotHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
+				self::assertArrayNotHasKey( 'query-monitor-' . $collector->id, $menu['sub'] );
 			}
 		}
 	}

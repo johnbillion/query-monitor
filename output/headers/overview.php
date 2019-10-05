@@ -7,6 +7,13 @@
 
 class QM_Output_Headers_Overview extends QM_Output_Headers {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Overview Collector.
+	 */
+	protected $collector;
+
 	public function get_output() {
 
 		$data    = $this->collector->get_data();
@@ -41,7 +48,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 }
 
 function register_qm_output_headers_overview( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'overview' );
+	$collector = QM_Collectors::get( 'overview' );
 	if ( $collector ) {
 		$output['overview'] = new QM_Output_Headers_Overview( $collector );
 	}

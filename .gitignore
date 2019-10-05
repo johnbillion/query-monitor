@@ -1,8 +1,9 @@
 /composer.lock
-/svn-assets
+/content-dir
 /vendor
 /node_modules
-/.sass-cache
 /package-lock.json
-/languages
 /build
+/tests/.env
+/tests/cache
+/tests/wordpress

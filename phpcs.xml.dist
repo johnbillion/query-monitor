@@ -3,10 +3,11 @@
 
 	<config name="testVersion" value="5.3-"/>
 
+	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>Gruntfile.js</exclude-pattern>
+	<exclude-pattern>Gruntfile\.js</exclude-pattern>
 
 	<rule ref="WordPress-Extra">
 
@@ -37,7 +38,7 @@
 
 	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
-		<exclude-pattern>*.css</exclude-pattern>
+		<exclude-pattern>*\.css</exclude-pattern>
 	</rule>
 
 	<!-- Custom rule properties -->

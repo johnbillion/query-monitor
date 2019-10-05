@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Admin extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Admin Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
@@ -46,8 +53,32 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</section>';
 
 		echo '<section>';
-		echo '<h3>$pagenow</h3>';
-		echo '<p>' . esc_html( $data['pagenow'] ) . '</p>';
+		echo '<h3>' . esc_html__( 'Globals', 'query-monitor' ) . '</h3>';
+		echo '<table>';
+		echo '<thead class="qm-screen-reader-text">';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Global Variable', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		$admin_globals = array(
+			'pagenow',
+			'typenow',
+			'taxnow',
+			'hook_suffix',
+		);
+
+		foreach ( $admin_globals as $key ) {
+			echo '<tr>';
+			echo '<th scope="row">$' . esc_html( $key ) . '</th>';
+			echo '<td>' . esc_html( $data[ $key ] ) . '</td>';
+			echo '</tr>';
+		}
+
+		echo '</tbody>';
+		echo '</table>';
 		echo '</section>';
 
 		if ( ! empty( $data['list_table'] ) ) {
@@ -78,7 +109,7 @@ function register_qm_output_html_admin( array $output, QM_Collectors $collectors
 	if ( ! is_admin() ) {
 		return $output;
 	}
-	$collector = $collectors::get( 'response' );
+	$collector = QM_Collectors::get( 'response' );
 	if ( $collector ) {
 		$output['response'] = new QM_Output_Html_Admin( $collector );
 	}

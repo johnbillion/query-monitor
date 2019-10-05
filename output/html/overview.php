@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Overview extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Overview Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 10 );
@@ -16,7 +23,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$db_query_num   = null;
-		$db_query_types = array();
 		$db_queries     = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
@@ -24,17 +30,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			$db_queries_data = $db_queries->get_data();
 			if ( isset( $db_queries_data['types'] ) && isset( $db_queries_data['total_time'] ) ) {
 				$db_query_num = $db_queries_data['types'];
+				$db_query_time = $db_queries_data['total_time'];
 			}
 		}
 
+		$raw_request = QM_Collectors::get( 'raw_request' );
 		$cache = QM_Collectors::get( 'cache' );
-
-		if ( $cache ) {
-			$cache_data = $cache->get_data();
-			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
-				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
-			}
-		}
 
 		$qm_broken   = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
 		$ajax_errors = __( 'PHP errors were triggered during an Ajax request. See your browser developer console for details.', 'query-monitor' );
@@ -48,6 +49,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section id="qm-ajax-errors">';
 		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $ajax_errors ) . '</p>';
 		echo '</section>';
+
+		if ( $raw_request ) {
+			echo '<section id="qm-overview-raw-request">';
+			$raw_data = $raw_request->get_data();
+			printf(
+				'<h2>%1$s %2$s → %3$s</h2>',
+				esc_html( $raw_data['request']['method'] ),
+				esc_html( $raw_data['request']['url'] ),
+				esc_html( $raw_data['response']['status'] )
+			);
+			echo '</section>';
+		}
 
 		echo '</div>';
 		echo '<div class="qm-boxed">';
@@ -124,14 +137,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</p>';
 		echo '</section>';
 
-		if ( isset( $db_query_num ) ) {
+		if ( isset( $db_query_time ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
 			echo '<p>';
 			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
 			echo '</p>';
 			echo '</section>';
+		}
 
+		if ( isset( $db_query_num ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
 			echo '<p>';
@@ -157,53 +172,29 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</section>';
 		}
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
+		if ( $cache ) {
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
-		if ( isset( $cache_hit_percentage ) ) {
-			echo '<p>';
-			echo esc_html( sprintf(
-				/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
-				__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
-				number_format_i18n( $cache_hit_percentage, 1 ),
-				number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
-				number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
-			) );
-
-			if ( $cache_data['display_hit_rate_warning'] ) {
-				printf(
-					'<br><a href="%s" class="qm-external-link">%s</a>',
-					'https://github.com/johnbillion/query-monitor/wiki/Cache-Hit-Rate',
-					esc_html__( 'Why is this value 100%?', 'query-monitor' )
-				);
+			$cache_data = $cache->get_data();
+			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
+				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
 			}
 
-			echo '</p>';
-
-			$installed_opcode_caches = array_filter( $cache_data['opcode_cache_extensions'] );
-
-			if ( $cache_data['has_opcode_cache'] ) {
-				foreach ( $installed_opcode_caches as $opcache_name => $opcache_state ) {
-					echo '<p>';
-					echo esc_html( sprintf(
-						/* translators: %s: Name of cache driver */
-						__( 'Opcode cache in use: %s', 'query-monitor' ),
-						$opcache_name
-					) );
-					echo '</p>';
-				}
-			} elseif ( ! empty( $installed_opcode_caches ) ) {
-				echo '<ul>';
-				foreach ( $installed_opcode_caches as $name => $value ) {
-					echo '<li><span class="qm-warn">';
-					echo esc_html( sprintf(
-						/* translators: %s: PHP opcode cache extension name */
-						__( 'The %s opcode cache is installed but not enabled', 'query-monitor' ),
-						$name
-					) );
-					echo '</span></li>';
-				}
-				echo '</ul>';
+			if ( isset( $cache_hit_percentage ) ) {
+				echo '<p>';
+				echo esc_html( sprintf(
+					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
+					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
+					number_format_i18n( $cache_hit_percentage, 1 ),
+					number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
+					number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
+				) );
+				echo '</p>';
+			} else {
+				echo '<p>';
+				echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
+				echo '</p>';
 			}
 
 			if ( $cache_data['has_object_cache'] ) {
@@ -235,13 +226,21 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '</ul>';
 				}
 			}
-		} else {
-			echo '<span class="qm-info">';
-			echo esc_html__( 'Object cache information is not available', 'query-monitor' );
-			echo '</span>';
-		}
 
-		echo '</section>';
+			if ( $cache_data['has_opcode_cache'] ) {
+				foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
+					echo '<p>';
+					echo esc_html( sprintf(
+						/* translators: %s: Name of cache driver */
+						__( 'Opcode cache in use: %s', 'query-monitor' ),
+						$opcache_name
+					) );
+					echo '</p>';
+				}
+			}
+
+			echo '</section>';
+		}
 
 		$this->after_non_tabular_output();
 	}
@@ -277,7 +276,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 }
 
 function register_qm_output_html_overview( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'overview' );
+	$collector = QM_Collectors::get( 'overview' );
 	if ( $collector ) {
 		$output['overview'] = new QM_Output_Html_Overview( $collector );
 	}

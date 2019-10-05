@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Conditionals extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Conditionals Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 1000 );
@@ -28,6 +35,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '</ul>';
 
 		echo '</section>';
+		echo '</div>';
+
+		echo '<div class="qm-boxed">';
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
 
@@ -83,7 +93,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 }
 
 function register_qm_output_html_conditionals( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'conditionals' );
+	$collector = QM_Collectors::get( 'conditionals' );
 	if ( $collector ) {
 		$output['conditionals'] = new QM_Output_Html_Conditionals( $collector );
 	}

@@ -6,6 +6,13 @@
  */
 class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_PHP_Errors Collector.
+	 */
+	protected $collector;
+
 	public function get_output() {
 
 		$data    = $this->collector->get_data();
@@ -42,18 +49,17 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 		}
 
 		return array_merge(
-			 array(
-				 'error-count' => $count,
-			 ),
+			array(
+				'error-count' => $count,
+			),
 			$headers
-			);
-
+		);
 	}
 
 }
 
 function register_qm_output_headers_php_errors( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'php_errors' );
+	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {
 		$output['php_errors'] = new QM_Output_Headers_PHP_Errors( $collector );
 	}

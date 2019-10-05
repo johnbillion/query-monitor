@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Caps extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Caps Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 105 );
@@ -138,11 +145,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				$last = end( $filtered_trace );
 				if ( isset( $last['function'] ) && 'map_meta_cap' === $last['function'] ) {
-					array_pop( $filtered_trace ); // remove the map_meta_cap() call
+					array_shift( $filtered_trace ); // remove the map_meta_cap() call
 				}
 
-				array_pop( $filtered_trace ); // remove the WP_User->has_cap() call
-				array_pop( $filtered_trace ); // remove the *_user_can() call
+				array_shift( $filtered_trace ); // remove the WP_User->has_cap() call
+				array_shift( $filtered_trace ); // remove the *_user_can() call
 
 				if ( ! count( $filtered_trace ) ) {
 					$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
@@ -160,14 +167,15 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
 
-				$caller = array_pop( $stack );
+				$caller = array_shift( $stack );
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 				echo '</ol></td>';
 
 				printf(
@@ -218,7 +226,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 }
 
 function register_qm_output_html_caps( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'caps' );
+	$collector = QM_Collectors::get( 'caps' );
 	if ( $collector ) {
 		$output['caps'] = new QM_Output_Html_Caps( $collector );
 	}

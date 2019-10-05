@@ -7,6 +7,13 @@
 
 class QM_Output_Html_HTTP extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_HTTP Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 90 );
@@ -249,14 +256,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
 
-				$caller = array_pop( $stack );
+				$caller = array_shift( $stack );
+
+				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 				echo '</ol></td>';
 
 				printf(
@@ -359,7 +367,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 }
 
 function register_qm_output_html_http( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'http' );
+	$collector = QM_Collectors::get( 'http' );
 	if ( $collector ) {
 		$output['http'] = new QM_Output_Html_HTTP( $collector );
 	}

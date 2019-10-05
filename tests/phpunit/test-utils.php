@@ -1,20 +1,20 @@
 <?php
 
-class Test_Utils extends QM_UnitTestCase {
+class TestUtils extends QM_UnitTestCase {
 
 	/**
-	 * @dataProvider clientVersionData
+	 * @dataProvider dataClientVersion
 	 *
 	 */
-	public function testClientVersion( $client, $expected ) {
+	public function testDatabaseDriverClientVersionIsDetected( $client, $expected ) {
 
 		$ver = QM_Util::get_client_version( $client );
 
-		$this->assertEquals( $expected, array_values( $ver ) );
+		self::assertEquals( $expected, array_values( $ver ) );
 
 	}
 
-	public function clientVersionData() {
+	public function dataClientVersion() {
 		return array(
 			array(
 				12345,

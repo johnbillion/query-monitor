@@ -1,3 +1,5 @@
+<img src="assets-wp-repo/icon-128x128.png" align="right" width="100" height="100" alt="">
+
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
@@ -13,7 +15,7 @@ Query Monitor focuses heavily on presenting its information in a useful manner, 
 
 Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component:
 
-![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
 
 ---
 
@@ -41,6 +43,7 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
  * [Privacy Statement](#privacy-statement)
  * [Related Tools](#related-tools)
  * [Contributing](#contributing)
+ * [Icon](#icon)
  * [License](#license-gplv2)
 
 ---
@@ -70,7 +73,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
  * Shows the template filename for the current request
  * Shows the complete template hierarchy for the current request (WordPress 4.7+)
- * Shows all template parts used on the current request
+ * Shows all template parts loaded or not loaded on the current request
  * Shows the available body classes for the current request
  * Shows the active theme name
 
@@ -255,41 +258,31 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ### Admin Toolbar Menu ###
 
-![Admin Menu](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-1.png)
+![Admin Toolbar Menu](assets-wp-repo/screenshot-1.png)
 
 ### Database Queries ###
 
-Database listing panel showing all queries, and the controls for filtering by query type, caller, and component
+![Database Queries](assets-wp-repo/screenshot-4.png)
 
-![Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-4.png)
+### Capability Checks ###
 
-User capability checks with an active filter
-
-![Slow Database Queries](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-3.png)
+![Capability Checks](assets-wp-repo/screenshot-3.png)
 
 ### Aggregate Database Queries by Component ###
 
-Ordered by most time spent
-
-![Aggregate Database Queries by Component](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
 
 ### Aggregate Database Queries by Calling Function ###
 
-Ordered by most time spent
+![Aggregate Database Queries by Calling Function](assets-wp-repo/screenshot-7.png)
 
-![Aggregate Database Queries by Calling Function](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-7.png)
+### Hooks and Actions ###
 
-### Hooks ###
+![Hooks and Actions](assets-wp-repo/screenshot-5.png)
 
-Hook listing panel showing all hooks, and the controls for filtering by name and component
+### HTTP API Requests ###
 
-![Hooks](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-5.png)
-
-### HTTP Requests ###
-
-Showing an HTTP request with an error
-
-![HTTP](https://raw.github.com/johnbillion/query-monitor/master/assets-wp-repo/screenshot-6.png)
+![HTTP API Requests](assets-wp-repo/screenshot-6.png)
 
 # Frequently Asked Questions #
 
@@ -323,7 +316,20 @@ Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
-You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array with your connection name as the key and the `wpdb` instance as the value. Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
+
+```php
+add_filter( 'qm/collect/db_objects', function( $objects ) {
+	$objects['my_db'] = $GLOBALS['my_db'];
+	return $objects;
+} );
+```
+
+Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+
+## Can I click on stack traces to open the file in my editor? ##
+
+Yes! You just need to [enable clickable stack traces](https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/).
 
 ## Do you accept donations? ##
 
@@ -355,6 +361,10 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 # Contributing #
 
 Contributions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
+
+# Icon #
+
+Query Monitor's icon was designed by [Tubagus Didin Asrori](https://www.instagram.com/asrorigus/).
 
 # License: GPLv2 #
 

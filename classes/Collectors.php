@@ -21,12 +21,18 @@ class QM_Collectors implements IteratorAggregate {
 		$collectors->items[ $collector->id ] = $collector;
 	}
 
+	/**
+	 * Fetches a collector instance.
+	 *
+	 * @param string $id The collector ID.
+	 * @return QM_Collector|null The collector object.
+	 */
 	public static function get( $id ) {
 		$collectors = self::init();
 		if ( isset( $collectors->items[ $id ] ) ) {
 			return $collectors->items[ $id ];
 		}
-		return false;
+		return null;
 	}
 
 	public static function init() {

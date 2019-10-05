@@ -8,6 +8,20 @@
 if ( ! class_exists( 'QM_Dispatcher' ) ) {
 abstract class QM_Dispatcher {
 
+	/**
+	 * Outputter instances.
+	 *
+	 * @var QM_Output[] Array of outputters.
+	 */
+	protected $outputters = array();
+
+	/**
+	 * Query Monitor plugin instance.
+	 *
+	 * @var QM_Plugin Plugin instance.
+	 */
+	protected $qm;
+
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
@@ -26,7 +40,7 @@ abstract class QM_Dispatcher {
 		$e = error_get_last();
 
 		# Don't dispatch if a fatal has occurred:
-		if ( ! empty( $e ) && ( $e['type'] & ( E_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR ) ) ) {
+		if ( ! empty( $e ) && ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return false;
 		}
 
@@ -47,6 +61,12 @@ abstract class QM_Dispatcher {
 
 	}
 
+	/**
+	 * Processes and fetches the outputters for this dispatcher.
+	 *
+	 * @param string $outputter_id The outputter ID.
+	 * @return QM_Output[] Array of outputters.
+	 */
 	public function get_outputters( $outputter_id ) {
 		$collectors = QM_Collectors::init();
 		$collectors->process();

@@ -2,11 +2,13 @@
 
 abstract class QM_UnitTestCase extends WP_UnitTestCase {
 
+	use \FalseyAssertEqualsDetector\Test;
+
 	public function setUp() {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
-		$this->assertTrue( WP_USE_THEMES );
+		self::assertTrue( WP_USE_THEMES );
 		parent::setUp();
 	}
 
@@ -18,14 +20,11 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 
 		remove_action( 'template_redirect', 'redirect_canonical' );
 
-		$go = $this->go_to( $url );
+		$this->go_to( $url );
 
 		ob_start();
 		require ABSPATH . WPINC . '/template-loader.php';
-		ob_end_clean();
-
-		return $go;
-
+		return ob_get_clean();
 	}
 
 }

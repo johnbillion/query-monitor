@@ -8,7 +8,18 @@
 if ( ! class_exists( 'QM_Output' ) ) {
 abstract class QM_Output {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector Collector.
+	 */
 	protected $collector;
+
+	/**
+	 * Timer instance.
+	 *
+	 * @var QM_Timer Timer.
+	 */
 	protected $timer;
 
 	public function __construct( QM_Collector $collector ) {

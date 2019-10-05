@@ -40,7 +40,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		$filtered_trace  = $this->trace->get_display_trace();
 
 		// Ignore the `apply_filters('wp_die_handler')` stack frame:
-		array_pop( $filtered_trace );
+		array_shift( $filtered_trace );
 
 		foreach ( $filtered_trace as $i => $item ) {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
@@ -81,11 +81,12 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			}
 
 			#query-monitor ol {
-				padding: 0 0 1em 2em;
+				padding: 0 0 1em 1em;
 			}
 
 			#query-monitor li {
 				margin: 0 0 0.5em;
+				list-style: none;
 			}
 
 			#query-monitor .qm-info {

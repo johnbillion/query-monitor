@@ -41,7 +41,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 
@@ -73,7 +73,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm qm-non-tabular" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 
@@ -110,7 +110,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		printf(
-			'<div class="qm qm-concerns" id="%1$s" role="group" aria-labelledby="%1$s" tabindex="-1">',
+			'<div class="qm qm-concerns" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $this->current_id . '-concerned_hooks' )
 		);
 
@@ -119,7 +119,11 @@ abstract class QM_Output_Html extends QM_Output {
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 			esc_attr( $this->current_id . '-concerned_hooks' ),
-			esc_html__( 'Related Hooks with Filters or Actions Attached', 'query-monitor' )
+			sprintf(
+				/* translators: %s: Panel name */
+				esc_html__( '%s: Related Hooks with Filters or Actions Attached', 'query-monitor' ),
+				esc_html( $this->collector->name() )
+			)
 		);
 
 		echo '<thead>';
@@ -156,7 +160,7 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		printf(
-			'<div class="qm qm-debug-bar" id="%1$s" role="group" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-debug-bar" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
 			esc_attr( $id )
 		);
 
@@ -225,6 +229,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param  array    $args {
 	 *     @type string $highlight The name for the `data-` attributes that get highlighted by this control.
 	 *     @type array  $prepend   Associative array of options to prepend to the list of values.
+	 *     @type array  $append    Associative array of options to append to the list of values.
 	 * }
 	 * @return string Markup for the table filter controls.
 	 */
@@ -243,12 +248,16 @@ abstract class QM_Output_Html extends QM_Output {
 		$args = array_merge( array(
 			'highlight' => '',
 			'prepend'   => array(),
+			'append'    => array(),
 		), $args );
 
-		$core = __( 'Core', 'query-monitor' );
+		$core_val = __( 'Core', 'query-monitor' );
+		$core_key = array_search( $core_val, $values, true );
 
-		if ( 'component' === $name && count( $values ) > 1 && in_array( $core, $values, true ) ) {
-			$args['prepend']['non-core'] = __( 'Non-Core', 'query-monitor' );
+		if ( 'component' === $name && count( $values ) > 1 && false !== $core_key ) {
+			$args['append'][ $core_val ] = $core_val;
+			$args['append']['non-core']  = __( 'Non-Core', 'query-monitor' );
+			unset( $values[ $core_key ] );
 		}
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
@@ -266,6 +275,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 		foreach ( $values as $value ) {
 			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+		}
+
+		if ( ! empty( $args['append'] ) ) {
+			foreach ( $args['append'] as $value => $label ) {
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
+			}
 		}
 
 		$out .= '</select>';

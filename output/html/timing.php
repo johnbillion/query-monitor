@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Timing extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Timing Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
@@ -169,7 +176,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 }
 
 function register_qm_output_html_timing( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'timing' );
+	$collector = QM_Collectors::get( 'timing' );
 	if ( $collector ) {
 		$output['timing'] = new QM_Output_Html_Timing( $collector );
 	}

@@ -7,10 +7,16 @@
 
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
+	/**
+	 * Outputter instances.
+	 *
+	 * @var QM_Output_html[] Array of outputters.
+	 */
+	protected $outputters = array();
+
 	public $id         = 'html';
 	public $did_footer = false;
 
-	protected $outputters     = array();
 	protected $admin_bar_menu = array();
 	protected $panel_menu     = array();
 
@@ -141,6 +147,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( Dark_Mode::is_using_dark_mode() ) {
 				$css .= '-dark';
 			}
+		} elseif ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
+			$css .= '-dark';
 		}
 
 		wp_enqueue_style(
@@ -185,7 +193,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Html[] */
 		foreach ( $this->outputters as $id => $output ) {
 			$timer = new QM_Timer();
 			$timer->start();
@@ -235,7 +242,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $admin_bar_men Array of menus.
+		 * @param array $admin_bar_menu Array of menus.
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
@@ -245,7 +252,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
 				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
 					'href'  => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
-					'title' => '└ ' . __( 'Hooks in Use', 'query-monitor' ),
+					'title' => __( 'Hooks in Use', 'query-monitor' ),
 				);
 			}
 		}
@@ -268,6 +275,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'ajax_errors' => array(), # @TODO move this into the php_errors collector
 		);
 
+		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
@@ -294,28 +302,35 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! empty( $menu['children'] ) ) {
 				foreach ( $menu['children'] as $child ) {
 					printf(
-						'<option value="%1$s">%2$s</option>',
+						'<option value="%1$s">└ %2$s</option>',
 						esc_attr( $child['href'] ),
 						esc_html( $child['title'] )
 					);
 				}
 			}
 		}
+
+		printf(
+			'<option value="%1$s">%2$s</option>',
+			'#qm-settings',
+			esc_html__( 'Settings', 'query-monitor' )
+		);
+
 		echo '</select>';
 
 		echo '</div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button></div>';
-		echo '<div class="qm-title-button"><button class="qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button></div>';
+		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
+		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
 		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">';
 		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>';
-		echo '<ul>';
+		echo '<ul role="tablist">';
 
 		printf(
-			'<li><button data-qm-href="%1$s">%2$s</button></li>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>',
 			'#qm-overview',
 			esc_html__( 'Overview', 'query-monitor' )
 		);
@@ -333,13 +348,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function do_panel_menu_item( $id, array $menu ) {
 		printf(
-			'<li><button data-qm-href="%1$s">%2$s</button>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
 			esc_attr( $menu['href'] ),
 			esc_html( $menu['title'] )
 		);
 
 		if ( ! empty( $menu['children'] ) ) {
-			echo '<ul>';
+			echo '<ul role="presentation">';
 			foreach ( $menu['children'] as $child_id => $child ) {
 				$this->do_panel_menu_item( $child_id, $child );
 			}
@@ -370,11 +385,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 		echo '</section>';
+		echo '</div>';
 
+		echo '<div class="qm-boxed">';
 		$constants = array(
+			'QM_DARK_MODE'             => array(
+				'label'   => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
+				'default' => false,
+			),
 			'QM_DB_EXPENSIVE'          => array(
-				/* translators: %s: The default value for a PHP constant */
-				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning. Default value: %s.', 'query-monitor' ),
+				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
 				'default' => 0.05,
 			),
 			'QM_DISABLED'              => array(
@@ -427,6 +447,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'<code>' . esc_html( $constant['default'] ) . '</code>'
 			);
 
+			$default_value = $constant['default'];
+			if ( is_bool( $default_value ) ) {
+				$default_value = ( $default_value ? 'true' : 'false' );
+			}
+
+			echo '<br><span class="qm-info">';
+			printf(
+				/* translators: %s: Default value for a PHP constant */
+				esc_html__( 'Default value: %s', 'query-monitor' ),
+				'<code>' . esc_html( $default_value ) . '</code>'
+			);
+			echo '</span>';
+
 			if ( defined( $name ) ) {
 				$current_value = constant( $name );
 				if ( is_bool( $current_value ) ) {
@@ -459,7 +492,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 * @since  3.1.0
 		 *
 		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
-		 * @param QM_Output[]        $this->outputters Array of outputters.
+		 * @param QM_Output_Html[]   $this->outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
@@ -499,7 +532,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		} );
 		<?php
 		echo '</script>' . "\n\n";
-		echo '<!-- End of Query Monitor output -->' . "\n\n";
+		echo '<!-- End Query Monitor output -->' . "\n\n";
 
 	}
 

@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Block_Editor Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 55 );
@@ -261,7 +268,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 }
 
 function register_qm_output_html_block_editor( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'block_editor' );
+	$collector = QM_Collectors::get( 'block_editor' );
 	if ( $collector ) {
 		$output['block_editor'] = new QM_Output_Html_Block_Editor( $collector );
 	}

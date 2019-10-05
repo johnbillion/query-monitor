@@ -7,6 +7,13 @@
 
 class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_DB_Dupes Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
@@ -127,7 +134,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	public function panel_menu( array $menu ) {
 		$id = $this->collector->id();
 		if ( isset( $menu[ $id ] ) ) {
-			$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+			$menu[ $id ]['title'] = $menu[ $id ]['title'];
 
 			$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
 			unset( $menu[ $id ] );
@@ -139,7 +146,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_dupes( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'db_dupes' );
+	$collector = QM_Collectors::get( 'db_dupes' );
 	if ( $collector ) {
 		$output['db_dupes'] = new QM_Output_Html_DB_Dupes( $collector );
 	}

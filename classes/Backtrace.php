@@ -179,7 +179,7 @@ class QM_Backtrace {
 	}
 
 	public function get_display_trace() {
-		return array_reverse( $this->get_filtered_trace() );
+		return $this->get_filtered_trace();
 	}
 
 	public function get_filtered_trace() {

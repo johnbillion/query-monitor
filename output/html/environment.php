@@ -7,6 +7,13 @@
 
 class QM_Output_Html_Environment extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Environment Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 110 );
@@ -31,7 +38,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		if ( $php_warning ) {
 			$append .= sprintf(
 				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
-				'https://wordpress.org/support/upgrade-php/',
+				'https://wordpress.org/support/update-php/',
 				esc_html__( 'Help', 'query-monitor' )
 			);
 			$class   = 'qm-warn';
@@ -168,7 +175,6 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				echo '<tbody>';
 
 				$info = array(
-					'rdbms'          => __( 'RDBMS', 'query-monitor' ),
 					'server-version' => __( 'Server Version', 'query-monitor' ),
 					'extension'      => __( 'Extension', 'query-monitor' ),
 					'client-version' => __( 'Client Version', 'query-monitor' ),
@@ -287,7 +293,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 }
 
 function register_qm_output_html_environment( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'environment' );
+	$collector = QM_Collectors::get( 'environment' );
 	if ( $collector ) {
 		$output['environment'] = new QM_Output_Html_Environment( $collector );
 	}

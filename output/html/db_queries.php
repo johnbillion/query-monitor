@@ -7,6 +7,13 @@
 
 class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_DB_Queries Collector.
+	 */
+	protected $collector;
+
 	public $query_row = 0;
 
 	public function __construct( QM_Collector $collector ) {
@@ -306,7 +313,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$caller_name    = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
 			$stack          = array();
 			$filtered_trace = $row['trace']->get_display_trace();
-			array_pop( $filtered_trace );
+			array_shift( $filtered_trace );
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
@@ -372,14 +379,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo "<td class='qm-row-caller qm-ltr qm-has-toggle qm-nowrap'><ol class='qm-toggler qm-numbered'>";
+			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap"><ol class="qm-toggler qm-numbered">';
+			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+
 			echo self::build_toggler(); // WPCS: XSS ok;
 
 			if ( ! empty( $stack ) ) {
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
-
-			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
 
 			echo '</ol>';
 			if ( $row['is_main_query'] ) {
@@ -456,6 +463,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					number_format_i18n( $db->total_qs )
 				);
 			}
+		} elseif ( isset( $data['total_qs'] ) ) {
+			$title[] = sprintf(
+				/* translators: %s: Number of database queries */
+				esc_html_x( '%s Q', 'Query count', 'query-monitor' ),
+				number_format_i18n( $data['total_qs'] )
+			);
 		}
 
 		foreach ( $title as &$t ) {
@@ -538,7 +551,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
 			$id = $this->collector->id() . '-' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
-				$menu[ $id ]['title'] = '└ ' . $menu[ $id ]['title'];
+				$menu[ $id ]['title'] = $menu[ $id ]['title'];
 
 				$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
@@ -551,7 +564,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_queries( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'db_queries' );
+	$collector = QM_Collectors::get( 'db_queries' );
 	if ( $collector ) {
 		$output['db_queries'] = new QM_Output_Html_DB_Queries( $collector );
 	}

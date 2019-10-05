@@ -7,6 +7,13 @@
 
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_PHP_Errors Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 10 );
@@ -117,13 +124,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
 
 					echo self::build_toggler(); // WPCS: XSS ok;
-					if ( ! empty( $stack ) ) {
-						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
-					}
 
 					echo '<li>';
 					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
+
+					if ( ! empty( $stack ) ) {
+						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					}
 
 					echo '</ol></td>';
 
@@ -250,7 +258,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 }
 
 function register_qm_output_html_php_errors( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'php_errors' );
+	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {
 		$output['php_errors'] = new QM_Output_Html_PHP_Errors( $collector );
 	}

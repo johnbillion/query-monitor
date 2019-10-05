@@ -89,9 +89,9 @@ if ( window.jQuery ) {
 				container.height( minheight );
 			}
 
-			$('#qm-panel-menu').find('button').removeClass('qm-selected-menu');
+			$('#qm-panel-menu').find('button').removeAttr('aria-selected');
 			$('#qm-panel-menu').find('li').removeClass('qm-current-menu');
-			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').addClass('qm-selected-menu');
+			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').attr('aria-selected',true);
 
 			if ( selected_menu.length ) {
 				var selected_menu_top = selected_menu.position().top - 27;
@@ -414,14 +414,16 @@ if ( window.jQuery ) {
 		var h = localStorage.getItem( container_height_key );
 		var w = localStorage.getItem( container_width_key );
 		if ( ! container.hasClass('qm-peek') ) {
-			if ( p === 'right' && w !== null ) {
-				if ( w < minwidth ) {
-					w = minwidth;
+			if ( p === 'right' ) {
+				if ( w !== null ) {
+					if ( w < minwidth ) {
+						w = minwidth;
+					}
+					if ( w > maxwidth ) {
+						w = maxwidth;
+					}
+					container.width( w );
 				}
-				if ( w > maxwidth ) {
-					w = maxwidth;
-				}
-				container.width( w );
 				container.addClass('qm-show-right');
 			} else if ( p !== 'right' && h !== null ) {
 				if ( h < minheight ) {

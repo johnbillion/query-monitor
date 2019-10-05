@@ -53,6 +53,9 @@ class QM_Collector_Admin extends QM_Collector {
 		}
 
 		$this->data['pagenow']        = $pagenow;
+		$this->data['typenow']        = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
+		$this->data['taxnow']         = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
+		$this->data['hook_suffix']    = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
 		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
 
 		$screens = array(

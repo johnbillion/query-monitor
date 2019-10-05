@@ -7,6 +7,13 @@
 
 class QM_Output_Html_DB_Components extends QM_Output_Html {
 
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_DB_Components Collector.
+	 */
+	protected $collector;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 40 );
@@ -96,7 +103,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['component_times'] ) ) {
 				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
-					'title' => '└ ' . esc_html__( 'Queries by Component', 'query-monitor' ),
+					'title' => esc_html__( 'Queries by Component', 'query-monitor' ),
 				) );
 			}
 		}
@@ -107,7 +114,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 }
 
 function register_qm_output_html_db_components( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'db_components' );
+	$collector = QM_Collectors::get( 'db_components' );
 	if ( $collector ) {
 		$output['db_components'] = new QM_Output_Html_DB_Components( $collector );
 	}

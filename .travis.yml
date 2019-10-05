@@ -1,9 +1,15 @@
 # run on container environment
 sudo: false
 
+services:
+  - mysql
+
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.npm
+    - vendor
+    - $HOME/.composer/cache
+    - tests/cache
 
 language: php
 
@@ -13,14 +19,15 @@ notifications:
     on_failure: always
 
 php:
-  - 7.2
+  - 7.3
   - 5.6
 
 env:
-  # WP latest stable:
-  - WP_VERSION=latest
-  # WP nightly:
-  - WP_VERSION=nightly
+  matrix:
+    # WP latest stable:
+    - WP_VERSION=*
+    # WP nightly:
+    - WP_VERSION=dev-nightly
 
 matrix:
   fast_finish: true
@@ -32,11 +39,12 @@ before_install:
     fi
 
 install:
-  - composer install
-
-before_script:
-  - php --version
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - travis_retry composer install --no-suggest
+  - travis_retry composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${WP_VERSION}"
 
 script:
-  - composer test
+  - |
+    if [ "$TRAVIS_PHP_VERSION" == "7.3" ] && [ "$WP_VERSION" == "*" ]; then
+      composer test:cs
+    fi
+  - composer test:ut
