@@ -269,7 +269,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<td colspan="' . intval( $span - 1 ) . '">';
 			printf(
 				/* translators: %s: Number of database queries */
-				esc_html_x( 'Total: %s', 'Database queries', 'query-monitor' ),
+				esc_html( _nx( 'Total: %s', 'Total: %s', $db->total_qs, 'Query count', 'query-monitor' ) ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $db->total_qs ) ) . '</span>'
 			);
 			echo '</td>';
@@ -459,14 +459,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				);
 				$title[] = sprintf(
 					/* translators: %s: Number of database queries */
-					esc_html( _nx( '%s Q', '%s Qs', $db->total_qs, 'Query count', 'query-monitor' ) ),
+					esc_html( _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' ) ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
 			$title[] = sprintf(
 				/* translators: %s: Number of database queries */
-				esc_html_x( '%s Q', 'Query count', 'query-monitor' ),
+				esc_html( _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' ) ),
 				number_format_i18n( $data['total_qs'] )
 			);
 		}
