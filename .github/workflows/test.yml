@@ -4,7 +4,6 @@ on: [push]
 jobs:
   build:
     strategy:
-      max-parallel: 15
       matrix:
         php: ['7.3', '5.6']
         wp: ['*', 'dev-nightly']
