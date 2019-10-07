@@ -530,6 +530,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				) ),
 			) );
 		}
+
 		if ( $expensive ) {
 			$id          = $this->collector->id() . '-expensive';
 			$menu[ $id ] = $this->menu( array(

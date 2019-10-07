@@ -256,7 +256,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		$title[] = sprintf(
-			/* translators: %s: Page load time in seconds */
+			/* translators: %s: Page load time in seconds with a decimal fraction */
 			esc_html_x( '%s S', 'Page load time', 'query-monitor' ),
 			number_format_i18n( $data['time_taken'], 2 )
 		);

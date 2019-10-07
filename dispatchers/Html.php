@@ -578,7 +578,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title'     => sprintf( '<span class="ab-icon">QM</span><span class="ab-label">%s</span>', $title ),
+				'title'     => sprintf(
+					'<span class="ab-icon">QM</span><span class="ab-label">%s</span>',
+					$title
+				),
 				'classname' => $class,
 			),
 			'sub' => array(),

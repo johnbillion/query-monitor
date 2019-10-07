@@ -148,7 +148,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		if ( ! empty( $data['user']['data'] ) ) {
 			printf( // WPCS: XSS ok.
-				'<p>%1$s</p>',
+				'<p>%s</p>',
 				esc_html( $data['user']['title'] )
 			);
 		} else {
@@ -163,7 +163,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 			foreach ( $data['multisite'] as $var => $value ) {
 				printf( // WPCS: XSS ok.
-					'<p>%1$s</p>',
+					'<p>%s</p>',
 					esc_html( $value['title'] )
 				);
 			}

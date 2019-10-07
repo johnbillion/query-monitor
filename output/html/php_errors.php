@@ -224,7 +224,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $menu;
 		}
 
-		/* translators: %s: Number of PHP errors */
+		/* translators: %s: List of PHP error types */
 		$title = __( 'PHP Errors (%s)', 'query-monitor' );
 
 		/* translators: used between list items, there is a space after the comma */

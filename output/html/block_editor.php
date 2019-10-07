@@ -65,7 +65,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<tfoot>';
 		echo '<tr>';
 		printf(
-			'<td colspan="6">%1$s</td>',
+			'<td colspan="6">%s</td>',
 			sprintf(
 				/* translators: %s: Total number of content blocks used */
 				esc_html_x( 'Total: %s', 'Content blocks used', 'query-monitor' ),
