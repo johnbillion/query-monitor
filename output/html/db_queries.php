@@ -453,7 +453,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			foreach ( $data['dbs'] as $key => $db ) {
 				$title[] = sprintf(
 					/* translators: %s: Database query time in seconds */
-					'%s' . esc_html_x( '%s S', 'Query time', 'query-monitor' ),
+					'%s' . esc_html( _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' ) ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
 					number_format_i18n( $db->total_time, 4 )
 				);
@@ -520,26 +520,28 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( $errors ) {
 			$id          = $this->collector->id() . '-errors';
+			$count       = count( $errors );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => 'query-monitor-errors',
 				'href'  => '#qm-query-errors',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of database errors */
-					__( 'Database Errors (%s)', 'query-monitor' ),
-					number_format_i18n( count( $errors ) )
+					_n( 'Database Errors (%s)', 'Database Errors (%s)', $count, 'query-monitor' ),
+					number_format_i18n( $count )
 				) ),
 			) );
 		}
 
 		if ( $expensive ) {
 			$id          = $this->collector->id() . '-expensive';
+			$count       = count( $expensive );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => 'query-monitor-expensive',
 				'href'  => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of slow database queries */
-					__( 'Slow Queries (%s)', 'query-monitor' ),
-					number_format_i18n( count( $expensive ) )
+					_n( 'Slow Queries (%s)', 'Slow Queries (%s)', $count, 'query-monitor' ),
+					number_format_i18n( $count )
 				) ),
 			) );
 		}

@@ -68,7 +68,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			'<td colspan="6">%s</td>',
 			sprintf(
 				/* translators: %s: Total number of content blocks used */
-				esc_html_x( 'Total: %s', 'Content blocks used', 'query-monitor' ),
+				esc_html( _nx( 'Total: %s', 'Total: %s', $data['total_blocks'], 'Content blocks used', 'query-monitor' ) ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data['total_blocks'] ) ) . '</span>'
 			)
 		);

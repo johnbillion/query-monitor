@@ -130,7 +130,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		$title = ( empty( $count ) )
 			? __( 'Transient Updates', 'query-monitor' )
 			/* translators: %s: Number of transient values that were updated */
-			: __( 'Transient Updates (%s)', 'query-monitor' );
+			: _n( 'Transient Updates (%s)', 'Transient Updates (%s)', $count, 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(

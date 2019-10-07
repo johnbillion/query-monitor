@@ -293,14 +293,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $data['ltime'], 4 );
+			$count       = count( $data['http'] );
 
 			echo '<tr>';
 			printf(
 				'<td colspan="6">%s</td>',
 				sprintf(
 					/* translators: %s: Number of HTTP API requests */
-					esc_html_x( 'Total: %s', 'HTTP API calls', 'query-monitor' ),
-					'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data['http'] ) ) ) . '</span>'
+					esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'HTTP API calls', 'query-monitor' ) ),
+					'<span class="qm-items-number">' . esc_html( number_format_i18n( $count ) ) . '</span>'
 				)
 			);
 			echo '<td class="qm-num qm-items-time">' . esc_html( $total_stime ) . '</td>';
@@ -342,7 +343,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$title = ( empty( $count ) )
 			? __( 'HTTP API Calls', 'query-monitor' )
 			/* translators: %s: Number of calls to the HTTP API */
-			: __( 'HTTP API Calls (%s)', 'query-monitor' );
+			: _n( 'HTTP API Calls (%s)', 'HTTP API Calls (%s)', $count, 'query-monitor' );
 
 		$args = array(
 			'title' => esc_html( sprintf(

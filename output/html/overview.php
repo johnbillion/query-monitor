@@ -164,7 +164,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			echo esc_html( sprintf(
 				/* translators: %s: Total number of database queries */
-				_x( 'Total: %s', 'database queries', 'query-monitor' ),
+				_nx( 'Total: %s', 'Total: %s', $db_queries_data['total_qs'], 'database queries', 'query-monitor' ),
 				number_format_i18n( $db_queries_data['total_qs'] )
 			) );
 
