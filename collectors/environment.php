@@ -241,7 +241,7 @@ class QM_Collector_Environment extends QM_Collector {
 	public function get_extension_version( $extension ) {
 		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
 		// crap to their version number, so we need to pluck out the first numeric value in the string.
-		$version = phpversion( $extension );
+		$version = trim( phpversion( $extension ) );
 
 		if ( ! $version ) {
 			return $version;
@@ -250,7 +250,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$parts = explode( ' ', $version );
 
 		foreach ( $parts as $part ) {
-			if ( is_numeric( $part[0] ) ) {
+			if ( $part && is_numeric( $part[0] ) ) {
 				$version = $part;
 				break;
 			}
