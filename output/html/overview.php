@@ -137,7 +137,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</p>';
 		echo '</section>';
 
-		if ( isset( $db_query_time ) ) {
+		if ( isset( $db_queries_data ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
 			echo '<p>';
@@ -146,7 +146,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</section>';
 		}
 
-		if ( isset( $db_query_num ) ) {
+		if ( isset( $db_query_num ) && isset( $db_queries_data ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
 			echo '<p>';
