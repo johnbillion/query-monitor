@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/develop.svg?style=flat-square&label=develop%20build)](https://travis-ci.org/johnbillion/query-monitor)
+[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/develop.svg?style=flat-square&label=develop%20build)](https://github.com/johnbillion/query-monitor/actions)
 
 # Contributing to Query Monitor
 
@@ -87,16 +87,16 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
 1. Commit the version number changes
 1. `git push origin develop`
-1. Wait until (and ensure that) [the build on Travis CI](https://travis-ci.org/johnbillion/query-monitor/builds) passes
+1. Wait until (and ensure that) [the build passes](https://github.com/johnbillion/query-monitor/actions)
 1. `git checkout master`
 1. `git merge develop`
 1. `git push origin master`
 1. `git tag <version>` where `<version>` is the new version number
 1. `git push origin --tags`
 
-Pushing a tag to GitHub triggers a build on Travis CI which deploys the release to the WordPress.org Plugin Directory. No need to touch Subversion.
-
 ### Post Release
+
+Publishing a release on GitHub triggers an action which deploys the release to the WordPress.org Plugin Directory. No need to touch Subversion.
 
 Note that the corresponding milestone on GitHub gets automatically closed via [ProBot semver](https://github.com/apps/probot-semver). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
 
@@ -108,7 +108,7 @@ Note that the corresponding milestone on GitHub gets automatically closed via [P
 
 ### Manual Deployments
 
-Query Monitor gets automatically deployed to the WordPress.org Plugin Directory via Travis CI whenever a new tag is pushed to the GitHub repo.
+Query Monitor gets automatically deployed to the WordPress.org Plugin Directory whenever a new release is published on GitHub.
 
 Deploying can be performed locally if required:
 
