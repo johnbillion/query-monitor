@@ -29,3 +29,5 @@ jobs:
 
     - name: Deploy
       run: npm run deploy:ci
+      env:
+        WPORG_PASSWORD: ${{ secrets.WPORG_PASSWORD }}
