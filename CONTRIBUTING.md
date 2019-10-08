@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/johnbillion/query-monitor/develop.svg?style=flat-square&label=develop%20build)](https://github.com/johnbillion/query-monitor/actions)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
 # Contributing to Query Monitor
 
