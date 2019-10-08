@@ -1,6 +1,6 @@
 <?php
 /**
- * Duplicate database query output for HTML pages.
+ * Request and response headers output for HTML pages.
  *
  * @package query-monitor
  */
