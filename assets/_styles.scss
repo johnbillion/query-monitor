@@ -164,6 +164,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		letter-spacing: normal !important;
 		line-height: $qm-font-default-line-height !important;
 		margin: 0 !important;
+		min-height: auto !important;
 		outline: none !important;
 		padding: 0 !important;
 		text-align: left !important;
