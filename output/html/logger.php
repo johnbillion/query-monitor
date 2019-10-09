@@ -82,7 +82,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo '</td>';
 
 			printf(
-				'<td><pre>%s</pre></td>',
+				'<td>%s</td>',
 				esc_html( $row['message'] )
 			);
 
