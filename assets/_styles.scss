@@ -848,9 +848,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr.qm-warn td,
 	.qm tbody tr.qm-warn th {
 		background-color: $qm-warn-bg !important;
-		border-color: $qm-warn-border !important;
-		box-shadow: inset 0 -1px $qm-warn-border !important;
 		color: $qm-warn-fg !important;
+	}
+
+	.qm tbody tr.qm-odd th.qm-warn,
+	.qm tbody tr.qm-odd td.qm-warn,
+	.qm tbody tr.qm-odd.qm-warn td,
+	.qm tbody tr.qm-odd.qm-warn th {
+		background-color: darken( $qm-warn-bg, 1.5% ) !important;
 	}
 
 	.qm-non-tabular .qm-warn code,
@@ -882,6 +887,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: #fff !important;
 	}
 
+	.qm tbody tr.qm-odd.qm-hovered th,
+	.qm tbody tr.qm-odd.qm-hovered td,
+	.qm tbody tr.qm-odd:hover th,
+	.qm tbody tr.qm-odd:hover td,
 	.qm tbody tr.qm-hovered th,
 	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
