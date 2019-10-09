@@ -497,9 +497,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		table {
 			border: none !important;
-			border-bottom: 1px solid $qm-cell-border !important;
 			border-collapse: collapse !important;
-			box-shadow: none !important;
+			box-shadow: 0px 1px 0px 0px $qm-panel-border !important;
 			color: $qm-panel-fg !important;
 			margin: 0 !important;
 			table-layout: auto !important;
@@ -548,8 +547,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		tfoot tr td,
 		tfoot tr th {
 			background: $qm-table-footer-bg !important;
-			border: 1px solid $qm-cell-border !important;
-			border-bottom: none !important;
+			border: none !important;
 			bottom: 0 !important;
 			box-shadow: inset 0px 1px 0px $qm-cell-border !important;
 			position: -webkit-sticky !important;

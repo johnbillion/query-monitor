@@ -458,9 +458,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 #query-monitor-main .qm table {
   border: none !important;
-  border-bottom: 1px solid #23282d !important;
   border-collapse: collapse !important;
-  box-shadow: none !important;
+  box-shadow: 0px 1px 0px 0px #bbc8d4 !important;
   color: #bbc8d4 !important;
   margin: 0 !important;
   table-layout: auto !important;
@@ -502,8 +501,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main .qm tfoot tr td,
 #query-monitor-main .qm tfoot tr th {
   background: #32373c !important;
-  border: 1px solid #23282d !important;
-  border-bottom: none !important;
+  border: none !important;
   bottom: 0 !important;
   box-shadow: inset 0px 1px 0px #23282d !important;
   position: -webkit-sticky !important;
