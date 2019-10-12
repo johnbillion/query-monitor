@@ -88,7 +88,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		printf(
 			'<td colspan="7">%1$s</td>',
 			sprintf(
-				esc_html( translate_nooped_plural( $type_label['total'], $data['counts']['total'], 'query-monitor' ) ),
+				esc_html( $type_label['total'] ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data['counts']['total'] ) ) . '</span>'
 			)
 		);
@@ -192,7 +192,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$type_label = $this->get_type_labels();
 		$label = sprintf(
-			translate_nooped_plural( $type_label['count'], $data['counts']['total'], 'query-monitor' ),
+			$type_label['count'],
 			number_format_i18n( $data['counts']['total'] )
 		);
 

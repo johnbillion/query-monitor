@@ -17,10 +17,10 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued styles */
-			'total'  => _nx_noop( 'Total: %s', 'Total: %s', 'Enqueued styles', 'query-monitor' ),
+			'total'  => _x( 'Total: %s', 'Enqueued styles', 'query-monitor' ),
 			'plural' => __( 'Styles', 'query-monitor' ),
 			/* translators: %s: Total number of enqueued styles */
-			'count'  => _nx_noop( 'Styles (%s)', 'Styles (%s)', 'Enqueued styles', 'query-monitor' ),
+			'count'  => _x( 'Styles (%s)', 'Enqueued styles', 'query-monitor' ),
 		);
 	}
 

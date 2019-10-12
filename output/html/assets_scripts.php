@@ -17,10 +17,10 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued scripts */
-			'total'  => _nx_noop( 'Total: %s', 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
+			'total'  => _x( 'Total: %s', 'Enqueued scripts', 'query-monitor' ),
 			'plural' => __( 'Scripts', 'query-monitor' ),
 			/* translators: %s: Total number of enqueued scripts */
-			'count'  => _nx_noop( 'Scripts (%s)', 'Scripts (%s)', 'Enqueued scripts', 'query-monitor' ),
+			'count'  => _x( 'Scripts (%s)', 'Enqueued scripts', 'query-monitor' ),
 		);
 	}
 
