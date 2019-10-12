@@ -343,7 +343,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$title = ( empty( $count ) )
 			? __( 'HTTP API Calls', 'query-monitor' )
 			/* translators: %s: Number of calls to the HTTP API */
-			: _n( 'HTTP API Calls (%s)', 'HTTP API Calls (%s)', $count, 'query-monitor' );
+			: __( 'HTTP API Calls (%s)', 'query-monitor' );
 
 		$args = array(
 			'title' => esc_html( sprintf(

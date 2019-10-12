@@ -526,7 +526,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'href'  => '#qm-query-errors',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of database errors */
-					_n( 'Database Errors (%s)', 'Database Errors (%s)', $count, 'query-monitor' ),
+					__( 'Database Errors (%s)', 'query-monitor' ),
 					number_format_i18n( $count )
 				) ),
 			) );
@@ -540,7 +540,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'href'  => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of slow database queries */
-					_n( 'Slow Queries (%s)', 'Slow Queries (%s)', $count, 'query-monitor' ),
+					__( 'Slow Queries (%s)', 'query-monitor' ),
 					number_format_i18n( $count )
 				) ),
 			) );

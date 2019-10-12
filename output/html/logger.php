@@ -156,7 +156,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$count = count( $data['logs'] );
 
 		/* translators: %s: Number of logs that are available */
-		$label = _n( 'Logs (%s)', 'Logs (%s)', $count, 'query-monitor' );
+		$label = __( 'Logs (%s)', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'id'    => "query-monitor-logger-{$key}",

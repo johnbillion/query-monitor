@@ -122,7 +122,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				$menu[ $this->collector->id() ] = $this->menu( array(
 					'title' => esc_html( sprintf(
 						/* translators: %s: Number of duplicate database queries */
-						_n( 'Duplicate Queries (%s)', 'Duplicate Queries (%s)', $count, 'query-monitor' ),
+						__( 'Duplicate Queries (%s)', 'query-monitor' ),
 						number_format_i18n( $count )
 					) ),
 				) );
