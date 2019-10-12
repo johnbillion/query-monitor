@@ -11,11 +11,11 @@ $qm-admin-toolbar-height: 32px;
 
 #wpadminbar {
 	.quicklinks .menupop ul li.qm-true > a {
-		color: $qm-toolbar-true-fg !important;
+		color: #8c8 !important;
 
 		&:focus,
 		&:hover {
-			color: $qm-toolbar-true-fg-hover !important;
+			color: darken( #8c8, 20% ) !important;
 		}
 	}
 
