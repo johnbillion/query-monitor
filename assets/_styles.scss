@@ -32,13 +32,10 @@ $qm-admin-toolbar-height: 32px;
 		background-color: #740;
 	}
 
-	#wp-admin-bar-query-monitor-deprecateds a,
-	.qm-deprecated {
-		background-color: #3c3c3c;
-	}
-
 	#wp-admin-bar-query-monitor-stricts a,
-	.qm-strict {
+	#wp-admin-bar-query-monitor-deprecateds a,
+	.qm-strict,
+	.qm-deprecated {
 		background-color: #3c3c3c;
 	}
 
@@ -53,16 +50,9 @@ $qm-admin-toolbar-height: 32px;
 
 	#wp-admin-bar-query-monitor-logger-warning a,
 	#wp-admin-bar-query-monitor-warnings a,
-	.qm-warning {
-		background-color: #c00;
-
-		&:hover {
-			background-color: darken( #c00, 5% );
-		}
-	}
-
 	#wp-admin-bar-query-monitor-errors a,
-	.qm-error {
+	.qm-error,
+	.qm-warning {
 		background-color: #c00;
 
 		&:hover {
