@@ -248,9 +248,22 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	}
 
 	public function panel_menu( array $menu ) {
-		if ( isset( $menu[ $this->collector->id() ] ) ) {
-			$menu[ $this->collector->id() ]['title'] = __( 'PHP Errors', 'query-monitor' );
+		if ( ! isset( $menu[ $this->collector->id() ] ) ) {
+			return $menu;
 		}
+
+		$data  = $this->collector->get_data();
+		$count = 0;
+
+		foreach ( $data['errors'] as $errors ) {
+			$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+		}
+
+		$menu[ $this->collector->id() ]['title'] = esc_html( sprintf(
+			/* translators: %s: Number of errors */
+			__( 'PHP Errors (%s)', 'query-monitor' ),
+			number_format_i18n( $count )
+		) );
 
 		return $menu;
 	}
