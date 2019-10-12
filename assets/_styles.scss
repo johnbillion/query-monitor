@@ -20,7 +20,11 @@ $qm-admin-toolbar-height: 32px;
 	}
 
 	.qm-alert {
-		background-color: $qm-toolbar-alert-bg;
+		background-color: #f60;
+
+		&:hover {
+			background-color: darken( #f60, 5% );
+		}
 	}
 
 	#wp-admin-bar-query-monitor-notices a,
@@ -41,6 +45,10 @@ $qm-admin-toolbar-height: 32px;
 	#wp-admin-bar-query-monitor-expensive a,
 	.qm-expensive {
 		background-color: #b60;
+
+		&:hover {
+			background-color: darken( #a60, 5% );
+		}
 	}
 
 	#wp-admin-bar-query-monitor-logger-warning a,
@@ -49,14 +57,17 @@ $qm-admin-toolbar-height: 32px;
 		background-color: #c00;
 
 		&:hover {
-			background-color: #b00;
-			color: #ddd !important;
+			background-color: darken( #c00, 5% );
 		}
 	}
 
 	#wp-admin-bar-query-monitor-errors a,
 	.qm-error {
 		background-color: #c00;
+
+		&:hover {
+			background-color: darken( #c00, 5% );
+		}
 	}
 
 	#wp-admin-bar-query-monitor .ab-icon {
@@ -86,6 +97,7 @@ $qm-admin-toolbar-height: 32px;
 }
 
 body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+#wp-admin-bar-query-monitor-default .qm-alert a,
 #wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,

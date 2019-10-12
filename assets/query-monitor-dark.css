@@ -7,10 +7,13 @@
   color: #8c8 !important;
 }
 #wpadminbar .quicklinks .menupop ul li.qm-true > a:focus, #wpadminbar .quicklinks .menupop ul li.qm-true > a:hover {
-  color: #52b552 !important;
+  color: #47a747 !important;
 }
 #wpadminbar .qm-alert {
   background-color: #f60;
+}
+#wpadminbar .qm-alert:hover {
+  background-color: #e65c00;
 }
 #wpadminbar #wp-admin-bar-query-monitor-notices a,
 #wpadminbar .qm-notice {
@@ -28,6 +31,10 @@
 #wpadminbar .qm-expensive {
   background-color: #b60;
 }
+#wpadminbar #wp-admin-bar-query-monitor-expensive a:hover,
+#wpadminbar .qm-expensive:hover {
+  background-color: #915700;
+}
 #wpadminbar #wp-admin-bar-query-monitor-logger-warning a,
 #wpadminbar #wp-admin-bar-query-monitor-warnings a,
 #wpadminbar .qm-warning {
@@ -36,12 +43,15 @@
 #wpadminbar #wp-admin-bar-query-monitor-logger-warning a:hover,
 #wpadminbar #wp-admin-bar-query-monitor-warnings a:hover,
 #wpadminbar .qm-warning:hover {
-  background-color: #b00;
-  color: #ddd !important;
+  background-color: #b30000;
 }
 #wpadminbar #wp-admin-bar-query-monitor-errors a,
 #wpadminbar .qm-error {
   background-color: #c00;
+}
+#wpadminbar #wp-admin-bar-query-monitor-errors a:hover,
+#wpadminbar .qm-error:hover {
+  background-color: #b30000;
 }
 #wpadminbar #wp-admin-bar-query-monitor .ab-icon {
   color: #aaa !important;
@@ -66,6 +76,7 @@
 }
 
 body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+#wp-admin-bar-query-monitor-default .qm-alert a,
 #wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
