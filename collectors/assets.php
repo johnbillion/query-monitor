@@ -231,7 +231,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			$host = $http_host;
 		}
 
-		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) ) {
+		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
 			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
 				'src' => $source,
 			) );
