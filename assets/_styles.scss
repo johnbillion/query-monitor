@@ -733,7 +733,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm p.qm-true,
 	.qm span.qm-true,
 	.qm td.qm-true {
-		color: #4a4 !important;
+		color: #282 !important;
 	}
 
 	.qm .qm-false code,
@@ -870,8 +870,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm .qm-notice {
-		background: $qm-panel-menu-bg-hover !important;
-		border: 1px solid darken( $qm-panel-menu-bg-hover, 10% ) !important;
+		background: $qm-panel-menu-bg-current !important;
+		border: 1px solid darken( $qm-panel-menu-bg-current, 10% ) !important;
 		margin: 0 0 10px 0 !important;
 		padding: 10px 20px 0 !important;
 	}
