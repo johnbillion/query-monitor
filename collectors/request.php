@@ -45,6 +45,34 @@ class QM_Collector_Request extends QM_Collector {
 			'search_rewrite_rules',
 			'tag_rewrite_rules',
 
+			# Home URL
+			'home_url',
+
+			# Post permalinks
+			'_get_page_link',
+			'attachment_link',
+			'page_link',
+			'post_link',
+			'post_type_link',
+			'pre_post_link',
+			'preview_post_link',
+			'the_permalink',
+
+			# Post type archive permalinks
+			'post_type_archive_link',
+
+			# Term permalinks
+			'category_link',
+			'pre_term_link',
+			'tag_link',
+			'term_link',
+
+			# User permalinks
+			'author_link',
+
+			# Comment permalinks
+			'get_comment_link',
+
 			# More rewrite stuff
 			'iis7_url_rewrite_rules',
 			'mod_rewrite_rules',
