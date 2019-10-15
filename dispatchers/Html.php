@@ -384,6 +384,34 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
+
+		echo '</section>';
+		echo '</div>';
+
+		echo '<div class="qm-boxed">';
+		echo '<section>';
+
+		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
+
+		echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
+
+		echo '<p>';
+		echo '<select name="qm-editor-select" class="qm-filter">';
+		$editors = [
+			'Default/XDebug'     => '',
+			'PHPStorm'           => 'phpstorm',
+			'Atom'               => 'atom',
+			'Netbeans'           => 'netbeans',
+			'Visual Studio Code' => 'vscode',
+			'Sublime Text'       => 'sublime'
+		];
+		foreach ( $editors as $name => $value ) {
+			echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $name ) . '</option>';
+		}
+		echo '</select>';
+		echo '</p><p>';
+		echo '<button class="qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
+		echo '</p>';
 		echo '</section>';
 		echo '</div>';
 
