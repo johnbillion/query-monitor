@@ -25,6 +25,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
 		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
 		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
+		add_action( 'wp_ajax_qm_editor_set',      array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
 		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
@@ -79,6 +80,21 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, COOKIE_DOMAIN );
 
 		wp_send_json_success();
+
+	}
+
+	public function ajax_editor_set() {
+
+		if ( ! self::user_verified() || ! check_ajax_referer( 'qm-editor-set', 'nonce', false ) ) {
+			wp_send_json_error();
+		}
+
+		$expiration = time() + ( 2 * YEAR_IN_SECONDS );
+		$secure     = self::secure_cookie();
+
+		setcookie( QM_EDITOR_COOKIE, $_POST['editor'], $expiration, COOKIEPATH, COOKIE_DOMAIN,$secure, false  );
+
+		wp_send_json_success( $_POST['editor'] );
 
 	}
 
@@ -176,8 +192,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'ajax_error' => __( 'PHP Errors in Ajax Response', 'query-monitor' ),
 				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 				'auth_nonce' => array(
-					'on'  => wp_create_nonce( 'qm-auth-on' ),
-					'off' => wp_create_nonce( 'qm-auth-off' ),
+					'on'         => wp_create_nonce( 'qm-auth-on' ),
+					'off'        => wp_create_nonce( 'qm-auth-off' ),
+					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
 				),
 			)
 		);
@@ -367,6 +384,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	protected function after_output() {
 
 		$state = self::user_verified() ? 'on' : 'off';
+		$editor = self::editor_cookie();
 		$text  = array(
 			'on'  => __( 'Clear authentication cookie', 'query-monitor' ),
 			'off' => __( 'Set authentication cookie', 'query-monitor' ),
@@ -389,14 +407,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>';
 
 		echo '<div class="qm-boxed">';
-		echo '<section>';
+		echo '<section class="qm-editor">';
 
 		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
 
 		echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
 
 		echo '<p>';
-		echo '<select name="qm-editor-select" class="qm-filter">';
+		echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
 		$editors = [
 			'Default/XDebug'     => '',
 			'PHPStorm'           => 'phpstorm',
@@ -406,11 +424,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'Sublime Text'       => 'sublime'
 		];
 		foreach ( $editors as $name => $value ) {
-			echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $name ) . '</option>';
+			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor ) . '>' . esc_html( $name ) . '</option>';
 		}
 		echo '</select>';
 		echo '</p><p>';
-		echo '<button class="qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
+		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
 		echo '</p>';
 		echo '</section>';
 		echo '</div>';
