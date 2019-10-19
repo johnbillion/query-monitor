@@ -461,17 +461,17 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('.qm-button-container-close').click(function(){
+		$(container).on('click', '.qm-button-container-close', function(){
 			container.removeClass('qm-show').height('').width('');
 			localStorage.removeItem( container_pinned_key );
 		});
 
-		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
+		$(container).on('click', '.qm-button-container-settings,a[href="#qm-settings"]', function(){
 			show_panel( '#qm-settings' );
 			$('#qm-settings').focus();
 		});
 
-		$('.qm-button-container-position').click(function(){
+		$(container).on('click', '.qm-button-container-position', function(){
 			container.toggleClass('qm-show-right');
 
 			if ( container.hasClass('qm-show-right') ) {
