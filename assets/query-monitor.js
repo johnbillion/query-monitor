@@ -320,7 +320,7 @@ if ( window.jQuery ) {
 
 			for ( var key = 1; key <= errors; key++ ) {
 
-				error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
+				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 				if ( window.console ) {
 					console.error( error );
