@@ -162,11 +162,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				}
 			}
 
-			echo esc_html( sprintf(
-				/* translators: %s: Total number of database queries */
-				_nx( 'Total: %s', 'Total: %s', $db_queries_data['total_qs'], 'database queries', 'query-monitor' ),
-				number_format_i18n( $db_queries_data['total_qs'] )
-			) );
+			printf(
+				'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
+				esc_html( _x( 'Total', 'database queries', 'query-monitor' ) ),
+				esc_html( number_format_i18n( $db_queries_data['total_qs'] ) )
+			);
 
 			echo '</p>';
 			echo '</section>';
