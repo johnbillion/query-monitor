@@ -381,9 +381,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
 
+		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
+
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
-		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 		echo '</section>';
 		echo '</div>';
 
