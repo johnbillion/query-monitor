@@ -25,6 +25,51 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		return __( 'Database Queries', 'query-monitor' );
 	}
 
+	public function get_concerned_filters() {
+		return array(
+			'posts_search',
+			'posts_search_orderby',
+			'posts_where',
+			'posts_join',
+			'comment_feed_join',
+			'comment_feed_where',
+			'comment_feed_groupby',
+			'comment_feed_orderby',
+			'comment_feed_limits',
+			'posts_where_paged',
+			'posts_groupby',
+			'posts_join_paged',
+			'posts_orderby',
+			'posts_distinct',
+			'post_limits',
+			'posts_fields',
+			'posts_clauses',
+			'posts_where_request',
+			'posts_groupby_request',
+			'posts_join_request',
+			'posts_orderby_request',
+			'posts_distinct_request',
+			'posts_fields_request',
+			'post_limits_request',
+			'posts_clauses_request',
+			'posts_request',
+			'split_the_query',
+			'posts_request_ids',
+			'posts_results',
+			'posts_pre_query',
+			'comment_feed_join',
+			'comment_feed_where',
+			'comment_feed_groupby',
+			'comment_feed_orderby',
+			'comment_feed_limits',
+			'the_preview',
+			'the_posts',
+			'found_posts_query',
+			'found_posts',
+			'content_pagination',
+		);
+	}
+
 	public function get_errors() {
 		if ( ! empty( $this->data['errors'] ) ) {
 			return $this->data['errors'];
