@@ -38,6 +38,7 @@ $qm-table-footer-bg: $qm-container-bg !default;
 // Links and Buttons
 $qm-link-fg: #0073aa !default;
 $qm-link-fg-hover: lighten( $qm-link-fg, 10% ) !default;
+$qm-link-fg-active: lighten( $qm-link-fg-hover, 10% ) !default;
 $qm-button-fg: #fff !default;
 $qm-button-bg: #007cba !default;
 $qm-button-fg-hover: $qm-button-fg !default;

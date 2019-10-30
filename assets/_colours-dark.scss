@@ -69,6 +69,7 @@ $qm-table-footer-bg: $dark-grey !default;
 // Links and Buttons
 $qm-link-fg: $bright-blue !default;
 $qm-link-fg-hover: $light-blue !default;
+$qm-link-fg-active: lighten( $light-blue, 10% ) !default;
 $qm-button-fg: #fff !default;
 $qm-button-bg: #0085ba !default;
 $qm-button-fg-hover: $qm-button-fg !default;

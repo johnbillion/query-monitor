@@ -953,6 +953,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			color: $qm-link-fg-hover !important;
 			text-decoration: underline !important;
 		}
+
+		&:active {
+			color: $qm-link-fg-active !important;
+			text-decoration: underline !important;
+		}
 	}
 
 	.qm a.qm-external-link:after,

@@ -861,6 +861,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #4092d2 !important;
   text-decoration: underline !important;
 }
+#query-monitor-main .qm button.qm-filter-trigger:active,
+#query-monitor-main .qm button.qm-filter-trigger code:active,
+#query-monitor-main .qm tbody .qm-warn a code:active,
+#query-monitor-main .qm a code:active,
+#query-monitor-main .qm a:active {
+  color: #69aadc !important;
+  text-decoration: underline !important;
+}
 #query-monitor-main .qm a.qm-external-link:after,
 #query-monitor-main .qm a.qm-link:after,
 #query-monitor-main .qm a.qm-edit-link:after,
