@@ -948,7 +948,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   height: auto !important;
   letter-spacing: normal !important;
   margin: 0 0 0 5px !important;
-  max-width: 10em !important;
+  max-width: 12em !important;
   outline: 1px solid #aaa !important;
   padding: 0 !important;
   width: auto !important;
