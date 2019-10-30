@@ -65,7 +65,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 
 			printf(
-				'<h2>%1$s %2$s → %3$s</h2>',
+				'<h3>%1$s %2$s → %3$s</h3>',
 				esc_html( $raw_data['request']['method'] ),
 				esc_html( $raw_data['request']['url'] ),
 				esc_html( $status )
