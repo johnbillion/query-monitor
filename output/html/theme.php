@@ -38,7 +38,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
 
 		if ( $data['is_child_theme'] ) {
-			echo '<h3>' . esc_html__( 'Parent Theme:', 'query-monitor' ) . '</h3>';
+			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
 			echo '<p>' . esc_html( $data['template'] ) . '</p>';
 		}
 
@@ -74,10 +74,6 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
-
-		if ( $data['has_template_part_action'] ) {
-			echo '<h4>' . esc_html__( 'Loaded', 'query-monitor' ) . '</h4>';
-		}
 
 		if ( ! empty( $data['template_parts'] ) ) {
 
