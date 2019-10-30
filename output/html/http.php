@@ -28,8 +28,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		$total_time = 0;
-
 		if ( ! empty( $data['http'] ) ) {
 			$statuses   = array_keys( $data['types'] );
 			$components = wp_list_pluck( $data['component_times'], 'component' );
