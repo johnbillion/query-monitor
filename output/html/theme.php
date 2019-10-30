@@ -63,14 +63,12 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
-
 		if ( ! empty( $data['template_hierarchy'] ) ) {
-			echo '<section>';
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr qm-numbered"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
-			echo '</section>';
 		}
+
+		echo '</section>';
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
