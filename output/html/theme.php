@@ -122,8 +122,15 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				echo '<ul>';
 
 				foreach ( $data['unsuccessful_template_parts'] as $requested ) {
+					if ( $requested['name'] ) {
+						echo '<li>';
+						$text = $requested['slug'] . '-' . $requested['name'] . '.php';
+						echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
+						echo '</li>';
+					}
+
 					echo '<li>';
-					$text = implode( ', ', array_filter( array( $requested['slug'], $requested['name'] ) ) );
+					$text = $requested['slug'] . '.php';
 					echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 				}
