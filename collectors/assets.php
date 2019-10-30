@@ -104,6 +104,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$all_dependencies = array();
 		$all_dependents   = array();
 
+		$missing_dependencies = array();
+
 		foreach ( $positions as $position ) {
 			if ( empty( $this->data[ $position ] ) ) {
 				continue;
@@ -140,8 +142,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 				foreach ( $dependencies as & $dep ) {
 					if ( ! $raw->query( $dep ) ) {
-						/* translators: %s: Script or style dependency name */
-						$dep = sprintf( __( '%s (missing)', 'query-monitor' ), $dep );
+						// A missing dependency is a dependecy on an asset that doesn't exist
+						$missing_dependencies[ $dep ] = true;
 					}
 				}
 
@@ -170,6 +172,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$all_dependents = array_unique( $all_dependents );
 		sort( $all_dependents );
 		$this->data['dependents'] = $all_dependents;
+
+		$this->data['missing_dependencies'] = $missing_dependencies;
 	}
 
 	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {

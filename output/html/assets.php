@@ -99,11 +99,30 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	protected function dependency_row( $handle, array $asset, $label ) {
+		$data = $this->collector->get_data();
+
 		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $asset['dependents'] );
 
 		$dependencies_list = implode( ' ', $asset['dependencies'] );
 		$dependents_list   = implode( ' ', $asset['dependents'] );
+
+		$dependency_output = array();
+
+		foreach ( $asset['dependencies'] as $dep ) {
+			if ( isset( $data['missing_dependencies'][ $dep ] ) ) {
+				$dependency_output[] = sprintf(
+					'<span style="white-space:nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					sprintf(
+						/* translators: %s: Name of missing script or style dependency */
+						__( '%s (missing)', 'query-monitor' ),
+						esc_html( $dep )
+					)
+				);
+			} else {
+				$dependency_output[] = $dep;
+			}
+		}
 
 		$qm_host = ( $asset['local'] ) ? 'local' : __( 'Other', 'query-monitor' );
 
@@ -159,7 +178,12 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			);
 		}
 		echo '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependencies'] ) ) . '</td>';
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">';
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo implode( ', ', $dependency_output );
+
+		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependents'] ) ) . '</td>';
 		echo '<td class="qm-ltr">' . esc_html( $asset['ver'] ) . '</td>';
 
