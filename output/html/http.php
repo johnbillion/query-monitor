@@ -20,6 +20,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	public function name() {
+		return __( 'HTTP API Calls', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

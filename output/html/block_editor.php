@@ -19,6 +19,10 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 55 );
 	}
 
+	public function name() {
+		return __( 'Blocks', 'query-monitor' );
+	}
+
 	public function output() {
 		$data = $this->collector->get_data();
 

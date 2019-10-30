@@ -19,6 +19,10 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 30 );
 	}
 
+	public function name() {
+		return __( 'Queries by Caller', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

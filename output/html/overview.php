@@ -19,6 +19,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 10 );
 	}
 
+	public function name() {
+		return __( 'Overview', 'query-monitor' );
+	}
+
 	public function output() {
 		$data = $this->collector->get_data();
 

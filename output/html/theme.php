@@ -20,6 +20,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 60 );
 	}
 
+	public function name() {
+		return __( 'Theme', 'query-monitor' );
+	}
+
 	public function output() {
 		$data = $this->collector->get_data();
 

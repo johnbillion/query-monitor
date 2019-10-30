@@ -9,10 +9,6 @@ class QM_Collector_Caps extends QM_Collector {
 
 	public $id = 'caps';
 
-	public function name() {
-		return __( 'Capability Checks', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) || ! QM_ENABLE_CAPS_PANEL ) {

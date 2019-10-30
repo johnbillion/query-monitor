@@ -10,10 +10,6 @@ class QM_Collector_Theme extends QM_Collector {
 	public $id                  = 'response';
 	protected $got_theme_compat = false;
 
-	public function name() {
-		return __( 'Theme', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 9999 );

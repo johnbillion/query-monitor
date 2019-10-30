@@ -12,10 +12,6 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	protected $block_timing = array();
 	protected $block_timer  = null;
 
-	public function name() {
-		return __( 'Blocks', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 

@@ -19,6 +19,16 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 200 );
 	}
 
+	public function name() {
+		$title = $this->collector->get_panel()->title();
+
+		return sprintf(
+			/* translators: Debug Bar add-on name */
+			__( 'Debug Bar: %s', 'query-monitor' ),
+			$title
+		);
+	}
+
 	public function output() {
 		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 

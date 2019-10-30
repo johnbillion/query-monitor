@@ -21,10 +21,6 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	public $id         = 'db_queries';
 	public $db_objects = array();
 
-	public function name() {
-		return __( 'Database Queries', 'query-monitor' );
-	}
-
 	public function get_errors() {
 		if ( ! empty( $this->data['errors'] ) ) {
 			return $this->data['errors'];

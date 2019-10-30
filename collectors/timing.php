@@ -12,10 +12,6 @@ class QM_Collector_Timing extends QM_Collector {
 	private $start       = array();
 	private $stop        = array();
 
-	public function name() {
-		return __( 'Timing', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		add_action( 'qm/start', array( $this, 'action_function_time_start' ), 10, 1 );

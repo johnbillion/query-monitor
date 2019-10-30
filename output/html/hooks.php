@@ -21,6 +21,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
 	}
 
+	public function name() {
+		return __( 'Hooks & Actions', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

@@ -21,6 +21,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
 	}
 
+	public function name() {
+		return __( 'Languages', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -100,7 +104,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$args = array(
-			'title' => esc_html( $this->collector->name() ),
+			'title' => esc_html( $this->name() ),
 		);
 
 		$menu[ $this->collector->id() ] = $this->menu( $args );

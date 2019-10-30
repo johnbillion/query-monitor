@@ -26,8 +26,6 @@ abstract class QM_Collector {
 		return "qm-{$this->id}";
 	}
 
-	abstract public function name();
-
 	protected function log_type( $type ) {
 
 		if ( isset( $this->data['types'][ $type ] ) ) {

@@ -21,6 +21,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	public function name() {
+		return __( 'PHP Errors', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

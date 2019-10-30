@@ -9,10 +9,6 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 	public $id = 'conditionals';
 
-	public function name() {
-		return __( 'Conditionals', 'query-monitor' );
-	}
-
 	public function process() {
 
 		/**

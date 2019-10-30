@@ -9,10 +9,6 @@ class QM_Collector_Transients extends QM_Collector {
 
 	public $id = 'transients';
 
-	public function name() {
-		return __( 'Transients', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		add_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10, 3 );

@@ -19,6 +19,17 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 20 );
 	}
 
+	/**
+	 * Collector name.
+	 *
+	 * This is unused.
+	 *
+	 * @return string
+	 */
+	public function name() {
+		return __( 'Request Data', 'query-monitor' );
+	}
+
 	public function output() {
 		$this->output_request();
 		$this->output_response();

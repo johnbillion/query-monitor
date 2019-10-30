@@ -19,6 +19,10 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
 	}
 
+	public function name() {
+		return __( 'Admin Screen', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

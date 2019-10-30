@@ -14,6 +14,10 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	public function name() {
+		return __( 'Styles', 'query-monitor' );
+	}
+
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued styles */

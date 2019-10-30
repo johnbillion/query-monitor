@@ -5,17 +5,6 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	public $id = 'raw_request';
 
 	/**
-	 * Collector name.
-	 *
-	 * This is unused.
-	 *
-	 * @return string
-	 */
-	public function name() {
-		return __( 'Request Data', 'query-monitor' );
-	}
-
-	/**
 	 * Extracts headers from a PHP-style $_SERVER array.
 	 *
 	 * From WP_REST_Server::get_headers()

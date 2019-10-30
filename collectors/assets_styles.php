@@ -20,11 +20,6 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 			'style_loader_tag',
 		);
 	}
-
-	public function name() {
-		return __( 'Styles', 'query-monitor' );
-	}
-
 }
 
 function register_qm_collector_assets_styles( array $collectors, QueryMonitor $qm ) {

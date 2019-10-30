@@ -16,10 +16,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	private $exception_handler = null;
 	private static $unexpected_error;
 
-	public function name() {
-		return __( 'PHP Errors', 'query-monitor' );
-	}
-
 	public function __construct() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;

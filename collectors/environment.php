@@ -17,10 +17,6 @@ class QM_Collector_Environment extends QM_Collector {
 		'log_errors',
 	);
 
-	public function name() {
-		return __( 'Environment', 'query-monitor' );
-	}
-
 	public function __construct() {
 
 		global $wpdb;

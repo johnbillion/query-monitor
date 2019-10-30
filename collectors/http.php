@@ -11,10 +11,6 @@ class QM_Collector_HTTP extends QM_Collector {
 	private $transport = null;
 	private $info      = null;
 
-	public function name() {
-		return __( 'HTTP API Calls', 'query-monitor' );
-	}
-
 	public function __construct() {
 
 		parent::__construct();

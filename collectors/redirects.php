@@ -9,10 +9,6 @@ class QM_Collector_Redirects extends QM_Collector {
 
 	public $id = 'redirects';
 
-	public function name() {
-		return __( 'Redirects', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );

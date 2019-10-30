@@ -19,6 +19,10 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 40 );
 	}
 
+	public function name() {
+		return __( 'Queries by Component', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

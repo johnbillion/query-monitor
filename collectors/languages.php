@@ -9,10 +9,6 @@ class QM_Collector_Languages extends QM_Collector {
 
 	public $id = 'languages';
 
-	public function name() {
-		return __( 'Languages', 'query-monitor' );
-	}
-
 	public function __construct() {
 
 		parent::__construct();

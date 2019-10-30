@@ -12,10 +12,20 @@ abstract class QM_Output_Html extends QM_Output {
 	protected $current_id   = null;
 	protected $current_name = null;
 
+	public function name() {
+		_deprecated_function(
+			esc_html( get_class( $this->collector ) . '::name()' ),
+			'3.5',
+			esc_html( get_class( $this ) . '::name()' )
+		);
+
+		return $this->collector->name();
+	}
+
 	public function admin_menu( array $menu ) {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( $this->collector->name() ),
+			'title' => esc_html( $this->name() ),
 		) );
 		return $menu;
 
@@ -34,7 +44,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$id = $this->collector->id();
 		}
 		if ( null === $name ) {
-			$name = $this->collector->name();
+			$name = $this->name();
 		}
 
 		$this->current_id   = $id;
@@ -66,7 +76,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$id = $this->collector->id();
 		}
 		if ( null === $name ) {
-			$name = $this->collector->name();
+			$name = $this->name();
 		}
 
 		$this->current_id   = $id;
@@ -122,7 +132,7 @@ abstract class QM_Output_Html extends QM_Output {
 			sprintf(
 				/* translators: %s: Panel name */
 				esc_html__( '%s: Related Hooks with Filters or Actions Attached', 'query-monitor' ),
-				esc_html( $this->collector->name() )
+				esc_html( $this->name() )
 			)
 		);
 
@@ -156,7 +166,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$id = $this->collector->id();
 		}
 		if ( null === $name ) {
-			$name = $this->collector->name();
+			$name = $this->name();
 		}
 
 		printf(
