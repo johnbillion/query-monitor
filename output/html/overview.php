@@ -57,11 +57,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( $raw_request ) {
 			echo '<section id="qm-overview-raw-request">';
 			$raw_data = $raw_request->get_data();
+
+			if ( ! empty( $raw_data['response']['status'] ) ) {
+				$status = $raw_data['response']['status'];
+			} else {
+				$status = __( 'Unknown HTTP Response Code', 'query-monitor' );
+			}
+
 			printf(
 				'<h2>%1$s %2$s → %3$s</h2>',
 				esc_html( $raw_data['request']['method'] ),
 				esc_html( $raw_data['request']['url'] ),
-				esc_html( $raw_data['response']['status'] )
+				esc_html( $status )
 			);
 			echo '</section>';
 		}

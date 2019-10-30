@@ -201,8 +201,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			// Fallback for displaying database errors when wp-content/db.php isn't in place
 			foreach ( $EZSQL_ERROR as $error ) {
 				$row = array(
-					'caller'      => __( 'Unknown', 'query-monitor' ),
-					'caller_name' => __( 'Unknown', 'query-monitor' ),
+					'caller'      => null,
+					'caller_name' => null,
 					'stack'       => '',
 					'sql'         => $error['query'],
 					'ltime'       => 0,

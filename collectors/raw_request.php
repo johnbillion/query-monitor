@@ -76,7 +76,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			return http_response_code();
 		}
 
-		return __( 'Unknown HTTP Response Code', 'query-monitor' );
+		return null;
 	}
 }
 

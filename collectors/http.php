@@ -244,10 +244,9 @@ class QM_Collector_HTTP extends QM_Collector {
 				if ( ! in_array( $http['response']->get_error_code(), $silent, true ) ) {
 					$this->data['errors']['alert'][] = $key;
 				}
-				$http['type'] = __( 'Error', 'query-monitor' );
+				$http['type'] = -1;
 			} elseif ( ! $http['args']['blocking'] ) {
-				/* translators: A non-blocking HTTP API request */
-				$http['type'] = __( 'Non-blocking', 'query-monitor' );
+				$http['type'] = -2;
 			} else {
 				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
 				if ( $http['type'] >= 400 ) {

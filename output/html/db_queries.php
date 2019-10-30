@@ -324,7 +324,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		} else {
 
-			$caller_name = '<code>' . esc_html( $row['caller'] ) . '</code>';
+			if ( ! empty( $row['caller'] ) ) {
+				$caller_name = '<code>' . esc_html( $row['caller'] ) . '</code>';
+			} else {
+				$caller_name = '<code>' . esc_html__( 'Unknown', 'query-monitor' ) . '</code>';
+			}
+
 			$stack       = explode( ', ', $row['stack'] );
 			$stack       = array_reverse( $stack );
 			array_shift( $stack );
@@ -352,7 +357,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 		}
-		if ( isset( $cols['caller'] ) ) {
+		if ( isset( $cols['caller'] ) && ! empty( $row['caller_name'] ) ) {
 			$row_attr['data-qm-caller'] = $row['caller_name'];
 
 			if ( $row['is_main_query'] ) {

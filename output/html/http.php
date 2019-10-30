@@ -37,6 +37,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			usort( $statuses, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
 
+			$status_output = array();
+
+			foreach ( $statuses as $key => $status ) {
+				if ( -1 === $status ) {
+					$status_output[-1] = __( 'Error', 'query-monitor' );
+				} elseif ( -2 === $status ) {
+					/* translators: A non-blocking HTTP API request */
+					$status_output[-2] = __( 'Non-blocking', 'query-monitor' );
+				} else {
+					$status_output[] = $status;
+				}
+			}
+
 			$this->before_tabular_output();
 
 			echo '<thead>';
@@ -44,7 +57,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col">' . esc_html__( 'Method', 'query-monitor' ) . '</th>';
 			echo '<th scope="col">' . esc_html__( 'URL', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'type', $statuses, __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( 'type', $status_output, __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';

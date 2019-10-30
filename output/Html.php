@@ -283,8 +283,12 @@ abstract class QM_Output_Html extends QM_Output {
 			}
 		}
 
-		foreach ( $values as $value ) {
-			$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+		foreach ( $values as $key => $value ) {
+			if ( is_int( $key ) && $key >= 0 ) {
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+			} else {
+				$out .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value ) . '</option>';
+			}
 		}
 
 		if ( ! empty( $args['append'] ) ) {
