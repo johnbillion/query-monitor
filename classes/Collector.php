@@ -78,6 +78,8 @@ abstract class QM_Collector {
 		if ( ! defined( $constant ) ) {
 			/* translators: Undefined PHP constant */
 			return __( 'undefined', 'query-monitor' );
+		} elseif ( is_string( constant( $constant ) ) && ! is_numeric( constant( $constant ) ) ) {
+			return constant( $constant );
 		} elseif ( ! constant( $constant ) ) {
 			return 'false';
 		} else {
