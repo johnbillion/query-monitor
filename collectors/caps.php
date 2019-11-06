@@ -137,10 +137,10 @@ class QM_Collector_Caps extends QM_Collector {
 		$all_users  = array();
 		$components = array();
 
-		$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) );
+		$this->data['caps'] = array_values( array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) ) );
 
 		if ( self::hide_qm() ) {
-			$this->data['caps'] = array_filter( $this->data['caps'], array( $this, 'filter_remove_qm' ) );
+			$this->data['caps'] = array_values( array_filter( $this->data['caps'], array( $this, 'filter_remove_qm' ) ) );
 		}
 
 		foreach ( $this->data['caps'] as $i => $cap ) {
@@ -150,7 +150,7 @@ class QM_Collector_Caps extends QM_Collector {
 				$name = '';
 			}
 
-			$parts                             = array_filter( preg_split( '#[_/-]#', $name ) );
+			$parts                             = array_values( array_filter( preg_split( '#[_/-]#', $name ) ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
 			$this->data['caps'][ $i ]['name']  = $name;
 			$this->data['caps'][ $i ]['user']  = $cap['args'][1];
