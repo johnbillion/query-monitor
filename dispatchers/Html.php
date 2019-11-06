@@ -198,12 +198,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer->start();
 
 			printf(
-				"\n" . '<!-- Begin %s output -->' . "\n",
+				"\n" . '<!-- Begin %1$s output -->' . "\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
 				esc_html( $id )
 			);
 			$output->output();
 			printf(
-				"\n" . '<!-- End %s output -->' . "\n",
+				"\n" . '</div>' . "\n" . '<!-- End %s output -->' . "\n",
 				esc_html( $id )
 			);
 
