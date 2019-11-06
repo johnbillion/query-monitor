@@ -167,8 +167,8 @@ class QM_Collector_Caps extends QM_Collector {
 			$components[ $component->name ]    = $component->name;
 		}
 
-		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
-		$this->data['users']      = array_unique( array_filter( $all_users ) );
+		$this->data['parts']      = array_values( array_unique( array_filter( $all_parts ) ) );
+		$this->data['users']      = array_values( array_unique( array_filter( $all_users ) ) );
 		$this->data['components'] = $components;
 	}
 
