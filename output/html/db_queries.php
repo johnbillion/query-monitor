@@ -388,10 +388,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap"><ol class="qm-toggler qm-numbered">';
-			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap">';
 
-			echo self::build_toggler(); // WPCS: XSS ok;
+			if ( ! empty( $stack ) ) {
+				echo self::build_toggler(); // WPCS: XSS ok;
+			}
+
+			echo '<ol>';
+			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
@@ -408,7 +412,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol class="qm-numbered">';
+			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol>';
 			if ( ! empty( $stack ) ) {
 				echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 			}

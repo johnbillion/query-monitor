@@ -148,8 +148,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</td>';
 						} else {
-							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '"><ol class="qm-toggler">';
+							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 							echo self::build_toggler(); // WPCS: XSS ok;
+							echo '<ol>';
 							echo '<li>';
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</li>';

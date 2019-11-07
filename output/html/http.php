@@ -193,7 +193,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$show_toggle = ( ! empty( $row['transport'] ) && ! empty( $row['info'] ) );
 
-				echo '<td class="qm-has-toggle qm-col-status"><div class="qm-toggler">';
+				echo '<td class="qm-has-toggle qm-col-status">';
 				if ( $is_error ) {
 					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				}
@@ -269,14 +269,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '</td>';
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
-
 				$caller = array_shift( $stack );
+
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
+
+				if ( ! empty( $stack ) ) {
+					echo self::build_toggler(); // WPCS: XSS ok;
+				}
+
+				echo '<ol>';
 
 				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
