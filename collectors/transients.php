@@ -33,14 +33,28 @@ class QM_Collector_Transients extends QM_Collector {
 		$trace = new QM_Backtrace( array(
 			'ignore_frames' => 1, # Ignore the action_setted_(site|blog)_transient method
 		) );
+
+		$name = str_replace( array(
+			'_site_transient_',
+			'_transient_',
+		), '', $transient );
+
+		$size = strlen( maybe_serialize( $value ) );
+
 		$this->data['trans'][] = array(
-			'transient'  => $transient,
+			'name'       => $name,
 			'trace'      => $trace,
 			'type'       => $type,
 			'value'      => $value,
 			'expiration' => $expiration,
-			'size'       => strlen( maybe_serialize( $value ) ),
+			'exp_diff'   => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
+			'size'       => $size,
+			'size_formatted' => size_format( $size ),
 		);
+	}
+
+	public function process() {
+		$this->data['has_type'] = is_multisite();
 	}
 
 }

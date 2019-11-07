@@ -34,7 +34,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>';
-			if ( is_multisite() ) {
+			if ( $data['has_type'] ) {
 				echo '<th scope="col">' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
@@ -47,19 +47,14 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $data['trans'] as $row ) {
-				$transient = str_replace( array(
-					'_site_transient_',
-					'_transient_',
-				), '', $row['transient'] );
-
 				$component = $row['trace']->get_component();
 
 				echo '<tr>';
 				printf(
 					'<td class="qm-ltr"><code>%s</code></td>',
-					esc_html( $transient )
+					esc_html( $row['name'] )
 				);
-				if ( is_multisite() ) {
+				if ( $data['has_type'] ) {
 					printf(
 						'<td class="qm-ltr qm-nowrap">%s</td>',
 						esc_html( $row['type'] )
@@ -75,13 +70,13 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					printf(
 						'<td class="qm-nowrap">%s <span class="qm-info">(~%s)</span></td>',
 						esc_html( $row['expiration'] ),
-						esc_html( human_time_diff( 0, $row['expiration'] ) )
+						esc_html( $row['exp_diff'] )
 					);
 				}
 
 				printf(
 					'<td class="qm-nowrap">~%s</td>',
-					esc_html( size_format( $row['size'] ) )
+					esc_html( $row['size_formatted'] )
 				);
 
 				$stack          = array();
