@@ -4,6 +4,7 @@ import Caller from '../caller.jsx';
 import Notice from '../notice.jsx';
 import QMComponent from '../component.jsx';
 import Tabular from '../tabular.jsx';
+import PanelFooter from '../panel-footer.jsx';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 
@@ -69,6 +70,7 @@ class Caps extends Component {
 						</tr>
 					)}
 				</tbody>
+				<PanelFooter cols="5" label={__( 'Total:', 'User capability checks', 'query-monitor' )} count={data.caps.length} />
 			</Tabular>
 		)
 	}
