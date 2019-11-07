@@ -79,7 +79,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					esc_html( $row['size_formatted'] )
 				);
 
-				$stack          = array();
+				$stack = array();
 
 				foreach ( $row['filtered_trace'] as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
