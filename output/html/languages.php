@@ -14,8 +14,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	public $id = 'languages';
-
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
@@ -92,7 +90,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '</td>';
 
 				echo '</tr>';
-				$first = false;
 			}
 		}
 
