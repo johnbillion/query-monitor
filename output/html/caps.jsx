@@ -25,7 +25,7 @@ class Caps extends Component {
 
 		const data = this.props.data;
 
-		if ( ! data.caps.length ) {
+		if ( ! data.caps || ! data.caps.length ) {
 			return (
 				<Notice id={this.props.id}>
 					<p>
