@@ -329,12 +329,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			padding: 0px 4px !important;
 		}
 
+		button:focus *,
+		button:hover *,
 		button:focus,
 		button:hover {
 			background: $qm-title-button-bg-hover !important;
 			color: $qm-title-button-fg-hover !important;
 		}
 
+		button:active *,
 		button:active {
 			background: #ccc !important;
 		}
@@ -534,6 +537,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		tfoot td {
 			border: 1px solid $qm-cell-border !important;
 			padding: 5px 5px 4px 5px !important;
+			vertical-align: top !important;
 		}
 
 		tbody th,
@@ -552,6 +556,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			position: sticky !important;
 			top: 0 !important;
 			z-index: 1 !important;
+		}
+
+		thead th,
+		thead td {
+			vertical-align: top !important;
 		}
 
 		thead .qm-th {
