@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import Tabular from '../tabular.jsx';
+
 import Caller from '../caller.jsx';
 import Notice from '../notice.jsx';
+import QMComponent from '../component.jsx';
+import Tabular from '../tabular.jsx';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 
@@ -63,7 +65,7 @@ class Caps extends Component {
 							<td class="qm-num">{cap.user}</td>
 							<td class="qm-nowrap">{cap.result ? <span class="qm-true">true&nbsp;&#x2713;</span> : 'false'}</td>
 							<Caller trace={cap.filtered_trace} />
-							<td class="qm-nowrap">{cap.component.name}</td>
+							<QMComponent component={cap.component} />
 						</tr>
 					)}
 				</tbody>

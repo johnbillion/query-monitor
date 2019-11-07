@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import Tabular from '../tabular.jsx';
+
 import Caller from '../caller.jsx';
 import Notice from '../notice.jsx';
+import QMComponent from '../component.jsx';
+import Tabular from '../tabular.jsx';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 
@@ -62,7 +64,7 @@ class Transients extends Component {
 
 							<td class="qm-nowrap">~{transient.size_formatted}</td>
 							<Caller trace={transient.filtered_trace} />
-							<td class="qm-nowrap">{transient.component.name}</td>
+							<QMComponent component={transient.component} />
 						</tr>
 					)}
 				</tbody>
