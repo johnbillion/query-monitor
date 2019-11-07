@@ -269,7 +269,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '</td>';
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler">';
 
 				$caller = array_shift( $stack );
 

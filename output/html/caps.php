@@ -149,7 +149,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler">';
 
 				$caller = array_shift( $stack );
 

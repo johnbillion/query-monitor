@@ -125,7 +125,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler">';
 
 					echo self::build_toggler(); // WPCS: XSS ok;
 
