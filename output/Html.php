@@ -7,6 +7,8 @@
 
 abstract class QM_Output_Html extends QM_Output {
 
+	public static $client_side_rendered = false;
+
 	protected static $file_link_format = null;
 
 	protected $current_id   = null;

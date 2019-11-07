@@ -201,7 +201,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				"\n" . '<!-- Begin %1$s output -->' . "\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
 				esc_html( $id )
 			);
-			$output->output();
+
+			if ( $output::$client_side_rendered ) {
+				echo "\t" . '<!-- Client-side rendered -->';
+			} else {
+				$output->output();
+			}
+
 			printf(
 				"\n" . '</div>' . "\n" . '<!-- End %s output -->' . "\n",
 				esc_html( $id )
@@ -246,8 +252,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
+		$json_data = array();
+
 		foreach ( $this->outputters as $output_id => $output ) {
 			$collector = $output->get_collector();
+
+			if ( $output::$client_side_rendered ) {
+				$json_data[ $collector->id ] = array(
+					'enabled' => $collector::enabled(),
+					'data'    => $collector->get_data(),
+				);
+			}
 
 			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
 				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
@@ -278,6 +293,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+		echo 'var qm_data = ' . json_encode( $json_data, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
