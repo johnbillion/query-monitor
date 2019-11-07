@@ -93,14 +93,19 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler">';
-
 				$caller = array_shift( $stack );
+
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
+
+				if ( ! empty( $stack ) ) {
+					echo self::build_toggler(); // WPCS: XSS ok;
+				}
+
+				echo '<ol>';
 
 				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
