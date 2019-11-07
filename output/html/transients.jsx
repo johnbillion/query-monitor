@@ -27,11 +27,16 @@ class Transients extends Component {
 						<th scope="col">
 							{__( 'Updated Transient', 'query-monitor' )}
 						</th>
+						{data.has_type &&
+							<th scope="col">
+								{_x( 'Type', 'transient type', 'query-monitor' )}
+							</th>
+						}
 						<th scope="col">
 							{__( 'Expiration', 'query-monitor' )}
 						</th>
 						<th scope="col">
-							{__( 'Size', 'query-monitor' )}
+							{_x( 'Size', 'size of transient value', 'query-monitor' )}
 						</th>
 						<th scope="col">
 							{__( 'Caller', 'query-monitor' )}
@@ -45,6 +50,9 @@ class Transients extends Component {
 					{data.trans.map(transient =>
 						<tr>
 							<td class="qm-ltr qm-nowrap"><code>{transient.name}</code></td>
+							{data.has_type &&
+								<td class="qm-ltr qm-nowrap">{transient.type}</td>
+							}
 
 							{ transient.expiration ? (
 								<td class="qm-nowrap">{transient.expiration} <span class="qm-info">(~{transient.exp_diff})</span></td>
