@@ -67,15 +67,13 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo $this->build_filter( 'name', $parts, __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 
-			if ( $show_user ) {
-				$users = $data['users'];
+			$users = $data['users'];
 
-				usort( $users, 'strcasecmp' );
+			usort( $users, 'strcasecmp' );
 
-				echo '<th scope="col" class="qm-filterable-column qm-num">';
-				echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
-				echo '</th>';
-			}
+			echo '<th scope="col" class="qm-filterable-column qm-num">';
+			echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
+			echo '</th>';
 
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'result', $results, __( 'Result', 'query-monitor' ) ); // WPCS: XSS ok;
@@ -130,12 +128,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					$name
 				);
 
-				if ( $show_user ) {
-					printf(
-						'<td class="qm-num">%s</td>',
-						esc_html( $row['user'] )
-					);
-				}
+				printf(
+					'<td class="qm-num">%s</td>',
+					esc_html( $row['user'] )
+				);
 
 				$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : 'false';
 				printf( // WPCS: XSS ok.
@@ -180,11 +176,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<tfoot>';
 
-			$colspan = ( $show_user ) ? 5 : 4;
-			$count   = count( $data['caps'] );
+			$count = count( $data['caps'] );
 
 			echo '<tr>';
-			echo '<td colspan="' . intval( $colspan ) . '">';
+			echo '<td colspan="5">';
 			printf(
 				/* translators: %s: Number of user capability checks */
 				esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'User capability checks', 'query-monitor' ) ),
