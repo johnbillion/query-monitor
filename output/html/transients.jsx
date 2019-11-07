@@ -52,6 +52,7 @@ class Transients extends Component {
 								<td class="qm-nowrap"><em>{__( 'none', 'query-monitor' )}</em></td>
 							) }
 
+							<td class="qm-nowrap">~{transient.size_formatted}</td>
 							<Caller trace={transient.filtered_trace} />
 							<td class="qm-nowrap">{transient.component.name}</td>
 						</tr>
