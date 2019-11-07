@@ -35,6 +35,8 @@ class Caps extends Component {
 			);
 		}
 
+		const show_users = ( data.users.length > 1 );
+
 		return (
 			<Tabular id={this.props.id}>
 				<thead>
@@ -42,6 +44,11 @@ class Caps extends Component {
 						<th scope="col">
 							{__( 'Capability Check', 'query-monitor' )}
 						</th>
+						{show_users &&
+							<th scope="col">
+								{__( 'User', 'query-monitor' )}
+							</th>
+						}
 						<th scope="col">
 							{__( 'Result', 'query-monitor' )}
 						</th>
@@ -57,6 +64,9 @@ class Caps extends Component {
 					{data.caps.map(cap =>
 						<tr>
 							<td class="qm-ltr qm-nowrap"><code>{cap.name}</code></td>
+							{show_users &&
+								<td class="qm-num">{cap.user}</td>
+							}
 							<td class="qm-nowrap">{cap.result ? <span class="qm-true">true&nbsp;&#x2713;</span> : 'false'}</td>
 							<Caller trace={cap.filtered_trace} />
 							<td class="qm-nowrap">{cap.component.name}</td>
