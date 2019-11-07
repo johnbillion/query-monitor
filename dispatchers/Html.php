@@ -181,6 +181,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				),
 			)
 		);
+
+		wp_enqueue_script(
+			'query-monitor-ui',
+			$this->qm->plugin_url( 'dist/public/bundle.js' ),
+			array(
+				'wp-element',
+				'wp-i18n',
+			),
+			$this->qm->plugin_ver( 'dist/public/bundle.js' ),
+			true
+		);
+
+		wp_set_script_translations( 'query-monitor-ui', 'query-monitor' );
 	}
 
 	public function dispatch() {
