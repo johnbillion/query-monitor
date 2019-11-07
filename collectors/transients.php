@@ -55,6 +55,24 @@ class QM_Collector_Transients extends QM_Collector {
 
 	public function process() {
 		$this->data['has_type'] = is_multisite();
+
+		if ( empty( $this->data['trans'] ) ) {
+			return;
+		}
+
+		foreach ( $this->data['trans'] as $i => $transient ) {
+			$filtered_trace = $transient['trace']->get_display_trace();
+
+			array_shift( $filtered_trace ); // remove do_action('setted_(site_)?transient')
+			array_shift( $filtered_trace ); // remove set_(site_)?transient()
+
+			$component = $transient['trace']->get_component();
+
+			$this->data['trans'][ $i ]['filtered_trace'] = $filtered_trace;
+			$this->data['trans'][ $i ]['component']      = $component;
+
+			unset( $this->data['trans'][ $i ]['trace'] );
+		}
 	}
 
 }
