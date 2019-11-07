@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import NonTabular from './non-tabular.jsx';
 
 class Notice extends Component {
