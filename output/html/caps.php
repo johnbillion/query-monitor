@@ -145,7 +145,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					$result
 				);
 
-				$stack          = array();
+				$stack = array();
 
 				foreach ( $row['filtered_trace'] as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
