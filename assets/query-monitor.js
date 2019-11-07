@@ -243,7 +243,7 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
-		container.find('.qm-toggle').on('click',function(e){
+		container.on('click','.qm-toggle',function(e){
 			var el           = $(this);
 			var currentState = el.attr('aria-expanded');
 			var newState     = 'true';
