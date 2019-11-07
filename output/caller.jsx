@@ -11,9 +11,11 @@ class Caller extends Component {
 
 		return (
 			<td class="qm-has-toggle qm-nowrap qm-ltr">
-				<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label={__( 'Toggle more information', 'query-monitor' )}>
-					<span aria-hidden="true">+</span>
-				</button>
+				{trace.length > 0 &&
+					<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label={__( 'Toggle more information', 'query-monitor' )}>
+						<span aria-hidden="true">+</span>
+					</button>
+				}
 				<ol>
 					<li><Frame frame={caller} /></li>
 					{trace.length > 0 &&
