@@ -6,6 +6,7 @@ import Caps from './output/html/caps.jsx';
 import Transients from './output/html/transients.jsx';
 import Languages from './output/html/languages.jsx';
 import DBQueries from './output/html/db_queries.jsx';
+import DBDupes from './output/html/db_dupes.jsx';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -19,4 +20,6 @@ jQuery(function($) {
 		let data = qm_data.db_queries.data.dbs[key];
 		ReactDOM.render(<DBQueries data={data} enabled={qm_data.db_queries.enabled} id="db_queries-wpdb" /> , document.getElementById('qm-db_queries-container'));
 	});
+
+	ReactDOM.render(<DBDupes data={qm_data.db_dupes.data} enabled={qm_data.db_dupes.enabled} id="db_dupes" /> , document.getElementById('qm-db_dupes-container'));
 } );
