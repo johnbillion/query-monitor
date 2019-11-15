@@ -63,7 +63,9 @@ class DBQueries extends Component {
 						)
 					})}
 				</tbody>
-				<PanelFooter cols="6" label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length} />
+				<PanelFooter cols="5" label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
+				<td class='qm-num'>{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>
+				</PanelFooter>
 			</Tabular>
 		)
 	}
