@@ -14,6 +14,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public $query_row = 0;
 
 	public function __construct( QM_Collector $collector ) {
