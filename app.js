@@ -7,6 +7,7 @@ import Transients from './output/html/transients.jsx';
 import Languages from './output/html/languages.jsx';
 import DBQueries from './output/html/db_queries.jsx';
 import DBDupes from './output/html/db_dupes.jsx';
+import DBCallers from './output/html/db_callers.jsx';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -22,4 +23,5 @@ jQuery(function($) {
 	});
 
 	ReactDOM.render(<DBDupes data={qm_data.db_dupes.data} enabled={qm_data.db_dupes.enabled} id="db_dupes" /> , document.getElementById('qm-db_dupes-container'));
+	ReactDOM.render(<DBCallers data={qm_data.db_callers.data} enabled={qm_data.db_callers.enabled} id="db_callers" /> , document.getElementById('qm-db_callers-container'));
 } );

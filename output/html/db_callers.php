@@ -14,6 +14,8 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 30 );
