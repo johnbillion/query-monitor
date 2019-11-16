@@ -228,7 +228,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			}
 		}
 
-		$inner_html = trim( $block['innerHTML'] );
+		$inner_html = $block['innerHTML'];
 
 		if ( $block['size'] > 300 ) {
 			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html">';
