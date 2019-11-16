@@ -113,11 +113,14 @@ class QM_Collector_Languages extends QM_Collector {
 			$caller['line'] = $filtered[0]['line'];
 		}
 
+		$found = file_exists( $mofile ) ? filesize( $mofile ) : false;
+
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
 			'domain' => $domain,
 			'file'   => $mofile,
-			'found'  => file_exists( $mofile ) ? filesize( $mofile ) : false,
+			'found'  => $found,
+			'found_formatted' => $found ? size_format( $found ) : '',
 			'handle' => null,
 			'type'   => 'gettext',
 		);

@@ -14,8 +14,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	public $id = 'languages';
-
 	public static $client_side_rendered = true;
 
 	public function __construct( QM_Collector $collector ) {
@@ -86,7 +84,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '<td class="qm-nowrap">';
 
 				if ( $mofile['found'] ) {
-					echo esc_html( size_format( $mofile['found'] ) );
+					echo esc_html( $mofile['found_formatted'] );
 				} else {
 					echo esc_html__( 'Not Found', 'query-monitor' );
 				}
@@ -94,7 +92,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '</td>';
 
 				echo '</tr>';
-				$first = false;
 			}
 		}
 
