@@ -85,7 +85,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function ajax_editor_set() {
 
-		if ( ! self::user_verified() || ! check_ajax_referer( 'qm-editor-set', 'nonce', false ) ) {
+		if ( ! current_user_can( 'view_query_monitor' ) || ! check_ajax_referer( 'qm-editor-set', 'nonce', false ) ) {
 			wp_send_json_error();
 		}
 
