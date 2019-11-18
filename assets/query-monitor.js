@@ -369,7 +369,11 @@ if ( window.jQuery ) {
 
 			e.preventDefault();
 		});
-		$('.qm-editor').on('click',function(e){
+
+		var editorSuccessIndicator = $('#qm-editor-save-status');
+		editorSuccessIndicator.hide();
+
+		$('.qm-editor-button').on('click',function(e){
 			var state  = $('#qm-settings').data('qm-state');
 			var editor = $('#qm-editor-select').val();
 
@@ -382,7 +386,9 @@ if ( window.jQuery ) {
 					editor : editor
 				},
 				success : function(response){
-					console.log( 'editor cookie set' );
+					if (response.success) {
+						editorSuccessIndicator.show();
+					}
 				},
 				dataType : 'json',
 				xhrFields: {
