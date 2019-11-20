@@ -425,7 +425,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'Sublime Text'       => 'sublime'
 		];
 		foreach ( $editors as $name => $value ) {
-			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor ) . '>' . esc_html( $name ) . '</option>';
+			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
 		}
 		echo '</select>';
 		echo '</p><p>';
