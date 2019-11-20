@@ -91,10 +91,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$expiration = time() + ( 2 * YEAR_IN_SECONDS );
 		$secure     = self::secure_cookie();
+		$editor     = wp_unslash( $_POST['editor'] );
 
-		setcookie( QM_EDITOR_COOKIE, $_POST['editor'], $expiration, COOKIEPATH, COOKIE_DOMAIN,$secure, false  );
+		setcookie( QM_EDITOR_COOKIE, $editor, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
 
-		wp_send_json_success( $_POST['editor'] );
+		wp_send_json_success( $editor );
 
 	}
 
