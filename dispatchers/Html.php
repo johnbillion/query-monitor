@@ -404,7 +404,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
-
 		echo '</section>';
 		echo '</div>';
 
@@ -417,14 +416,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p>';
 		echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
-		$editors = [
+		$editors = array(
 			'Default/XDebug'     => '',
 			'PHPStorm'           => 'phpstorm',
 			'Atom'               => 'atom',
 			'Netbeans'           => 'netbeans',
 			'Visual Studio Code' => 'vscode',
-			'Sublime Text'       => 'sublime'
-		];
+			'Sublime Text'       => 'sublime',
+		);
 		foreach ( $editors as $name => $value ) {
 			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
 		}
