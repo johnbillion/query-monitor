@@ -416,17 +416,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p>';
 		echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
+
 		$editors = array(
-			'Default/XDebug'     => '',
-			'PHPStorm'           => 'phpstorm',
+			'Default/Xdebug'     => '',
 			'Atom'               => 'atom',
 			'Netbeans'           => 'netbeans',
-			'Visual Studio Code' => 'vscode',
+			'PhpStorm'           => 'phpstorm',
 			'Sublime Text'       => 'sublime',
+			'Visual Studio Code' => 'vscode',
 		);
+
 		foreach ( $editors as $name => $value ) {
 			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
 		}
+
 		echo '</select>';
 		echo '</p><p>';
 		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
