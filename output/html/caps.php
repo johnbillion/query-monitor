@@ -24,7 +24,9 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	}
 
 	public function output() {
-		if ( ! $this->collector::enabled() ) {
+		$collector = $this->collector;
+
+		if ( ! $collector::enabled() ) {
 			$this->before_non_tabular_output();
 
 			echo '<section>';
