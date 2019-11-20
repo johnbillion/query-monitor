@@ -449,7 +449,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 *
 	 * @return string a protocol URL format
 	 */
-	public static function get_editor_file_link_format( $editor, $default_format ) : string {
+	public static function get_editor_file_link_format( $editor, $default_format ) {
 		switch ( $editor ) {
 			case 'phpstorm':
 				return 'phpstorm://open?file=%f&line=%l';
