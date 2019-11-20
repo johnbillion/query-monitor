@@ -14,11 +14,13 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	public $id = 'hooks';
-
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
+	}
+
+	public function name() {
+		return __( 'Hooks & Actions', 'query-monitor' );
 	}
 
 	public function output() {
@@ -144,8 +146,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</td>';
 						} else {
-							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '"><ol class="qm-toggler">';
+							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 							echo self::build_toggler(); // WPCS: XSS ok;
+							echo '<ol>';
 							echo '<li>';
 							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</li>';

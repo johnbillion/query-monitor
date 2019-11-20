@@ -9,10 +9,6 @@ class QM_Collector_DB_Components extends QM_Collector {
 
 	public $id = 'db_components';
 
-	public function name() {
-		return __( 'Queries by Component', 'query-monitor' );
-	}
-
 	public function process() {
 		$dbq = QM_Collectors::get( 'db_queries' );
 

@@ -19,6 +19,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 10 );
 	}
 
+	public function name() {
+		return __( 'Overview', 'query-monitor' );
+	}
+
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -53,11 +57,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( $raw_request ) {
 			echo '<section id="qm-overview-raw-request">';
 			$raw_data = $raw_request->get_data();
+
+			if ( ! empty( $raw_data['response']['status'] ) ) {
+				$status = $raw_data['response']['status'];
+			} else {
+				$status = __( 'Unknown HTTP Response Code', 'query-monitor' );
+			}
+
 			printf(
-				'<h2>%1$s %2$s → %3$s</h2>',
+				'<h3>%1$s %2$s → %3$s</h3>',
 				esc_html( $raw_data['request']['method'] ),
 				esc_html( $raw_data['request']['url'] ),
-				esc_html( $raw_data['response']['status'] )
+				esc_html( $status )
 			);
 			echo '</section>';
 		}
@@ -162,11 +173,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				}
 			}
 
-			echo esc_html( sprintf(
-				/* translators: %s: Total number of database queries */
-				_nx( 'Total: %s', 'Total: %s', $db_queries_data['total_qs'], 'database queries', 'query-monitor' ),
-				number_format_i18n( $db_queries_data['total_qs'] )
-			) );
+			printf(
+				'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
+				esc_html( _x( 'Total', 'database queries', 'query-monitor' ) ),
+				esc_html( number_format_i18n( $db_queries_data['total_qs'] ) )
+			);
 
 			echo '</p>';
 			echo '</section>';

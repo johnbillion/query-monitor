@@ -14,11 +14,13 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	public $id = 'languages';
-
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
+	}
+
+	public function name() {
+		return __( 'Languages', 'query-monitor' );
 	}
 
 	public function output() {
@@ -60,8 +62,9 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 					echo '</td>';
 				} else {
-					echo '<td class="qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler">';
+					echo '<td class="qm-nowrap qm-ltr qm-has-toggle">';
 					echo self::build_toggler(); // WPCS: XSS ok;
+					echo '<ol>';
 					echo '<li>';
 					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 					echo '</li>';
@@ -79,7 +82,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '<td class="qm-nowrap">';
 
 				if ( $mofile['found'] ) {
-					echo esc_html( size_format( $mofile['found'] ) );
+					echo esc_html( $mofile['found_formatted'] );
 				} else {
 					echo esc_html__( 'Not Found', 'query-monitor' );
 				}
@@ -87,7 +90,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				echo '</td>';
 
 				echo '</tr>';
-				$first = false;
 			}
 		}
 
@@ -100,7 +102,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$args = array(
-			'title' => esc_html( $this->collector->name() ),
+			'title' => esc_html( $this->name() ),
 		);
 
 		$menu[ $this->collector->id() ] = $this->menu( $args );

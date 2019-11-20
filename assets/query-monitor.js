@@ -403,18 +403,18 @@ if ( window.jQuery ) {
 
 		var startY, startX, resizerHeight;
 
-		$(document).on('mousedown', '.qm-resizer', function(event) {
+		$(document).on('mousedown touchstart', '.qm-resizer', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
-			startY        = container.outerHeight() + event.clientY;
-			startX        = container.outerWidth() + event.clientX;
+			startY        = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
+			startX        = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
 
-			$(document).on('mousemove', qm_do_resizer_drag);
-			$(document).on('mouseup', qm_stop_resizer_drag);
+			$(document).on('mousemove touchmove', qm_do_resizer_drag);
+			$(document).on('mouseup touchend', qm_stop_resizer_drag);
 		});
 
 		function qm_do_resizer_drag(event) {
 			if ( ! container.hasClass('qm-show-right') ) {
-				var h = ( startY - event.clientY );
+				var h = ( startY - ( event.clientY || event.originalEvent.targetTouches[0].pageY ) );
 				if ( h >= resizerHeight && h <= maxheight ) {
 					container.height( h );
 				}
@@ -427,8 +427,8 @@ if ( window.jQuery ) {
 		}
 
 		function qm_stop_resizer_drag(event) {
-			$(document).off('mousemove', qm_do_resizer_drag);
-			$(document).off('mouseup', qm_stop_resizer_drag);
+			$(document).off('mousemove touchmove', qm_do_resizer_drag);
+			$(document).off('mouseup touchend', qm_stop_resizer_drag);
 
 			if ( ! container.hasClass('qm-show-right') ) {
 				localStorage.removeItem( container_position_key );

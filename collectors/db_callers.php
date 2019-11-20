@@ -9,10 +9,6 @@ class QM_Collector_DB_Callers extends QM_Collector {
 
 	public $id = 'db_callers';
 
-	public function name() {
-		return __( 'Queries by Caller', 'query-monitor' );
-	}
-
 	public function process() {
 		$dbq = QM_Collectors::get( 'db_queries' );
 

@@ -9,10 +9,6 @@ class QM_Collector_Request extends QM_Collector {
 
 	public $id = 'request';
 
-	public function name() {
-		return __( 'Request', 'query-monitor' );
-	}
-
 	public function get_concerned_actions() {
 		return array(
 			# Rewrites

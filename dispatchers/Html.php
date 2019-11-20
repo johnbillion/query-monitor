@@ -106,13 +106,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$title = __( 'Query Monitor', 'query-monitor' );
 
-		$wp_admin_bar->add_menu( array(
+		$wp_admin_bar->add_node( array(
 			'id'    => 'query-monitor',
 			'title' => esc_html( $title ),
 			'href'  => '#qm-overview',
 		) );
 
-		$wp_admin_bar->add_menu( array(
+		$wp_admin_bar->add_node( array(
 			'parent' => 'query-monitor',
 			'id'     => 'query-monitor-placeholder',
 			'title'  => esc_html( $title ),
@@ -215,12 +215,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer->start();
 
 			printf(
-				"\n" . '<!-- Begin %s output -->' . "\n",
+				"\n" . '<!-- Begin %1$s output -->' . "\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
 				esc_html( $id )
 			);
 			$output->output();
 			printf(
-				"\n" . '<!-- End %s output -->' . "\n",
+				"\n" . '</div>' . "\n" . '<!-- End %s output -->' . "\n",
 				esc_html( $id )
 			);
 
@@ -399,9 +399,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
 
+		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
+
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
-		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 
 		echo '</section>';
 		echo '</div>';

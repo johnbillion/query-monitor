@@ -18,10 +18,6 @@ class QM_Collector_Logger extends QM_Collector {
 	const INFO      = 'info';
 	const DEBUG     = 'debug';
 
-	public function name() {
-		return __( 'Logger', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 		foreach ( $this->get_levels() as $level ) {
