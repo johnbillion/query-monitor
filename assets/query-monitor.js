@@ -370,6 +370,35 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
+		var editorSuccessIndicator = $('#qm-editor-save-status');
+		editorSuccessIndicator.hide();
+
+		$('.qm-editor-button').on('click',function(e){
+			var state  = $('#qm-settings').data('qm-state');
+			var editor = $('#qm-editor-select').val();
+
+			$.ajax(qm_l10n.ajaxurl,{
+				type : 'POST',
+				context : this,
+				data : {
+					action : 'qm_editor_set',
+					nonce  : qm_l10n.auth_nonce['editor-set'],
+					editor : editor
+				},
+				success : function(response){
+					if (response.success) {
+						editorSuccessIndicator.show();
+					}
+				},
+				dataType : 'json',
+				xhrFields: {
+					withCredentials: true
+				}
+			});
+
+			e.preventDefault();
+		});
+
 		$.qm.tableSort({target: $('.qm-sortable')});
 
 		var startY, startX, resizerHeight;
