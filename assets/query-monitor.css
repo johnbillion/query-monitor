@@ -19,16 +19,13 @@
   background-color: #e65c00;
 }
 
-#wpadminbar #wp-admin-bar-query-monitor-notices a,
-#wpadminbar .qm-notice {
-  background-color: #740;
-}
-
 #wpadminbar #wp-admin-bar-query-monitor-stricts a,
 #wpadminbar #wp-admin-bar-query-monitor-deprecateds a,
+#wpadminbar #wp-admin-bar-query-monitor-notices a,
 #wpadminbar .qm-strict,
-#wpadminbar .qm-deprecated {
-  background-color: #3c3c3c;
+#wpadminbar .qm-deprecated,
+#wpadminbar .qm-notice {
+  background-color: #740;
 }
 
 #wpadminbar #wp-admin-bar-query-monitor-expensive a,

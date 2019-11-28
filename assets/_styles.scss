@@ -27,16 +27,13 @@ $qm-admin-toolbar-height: 32px;
 		}
 	}
 
-	#wp-admin-bar-query-monitor-notices a,
-	.qm-notice {
-		background-color: #740;
-	}
-
 	#wp-admin-bar-query-monitor-stricts a,
 	#wp-admin-bar-query-monitor-deprecateds a,
+	#wp-admin-bar-query-monitor-notices a,
 	.qm-strict,
-	.qm-deprecated {
-		background-color: #3c3c3c;
+	.qm-deprecated,
+	.qm-notice {
+		background-color: #740;
 	}
 
 	#wp-admin-bar-query-monitor-expensive a,
