@@ -312,7 +312,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 ## Is Query Monitor available on WordPress.com VIP Go? ##
 
-Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-config/vip-config.php` file.
+Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? ##
 
