@@ -37,6 +37,10 @@ You can clone this repo and activate it like a normal WordPress plugin. If you w
 
 ## Building the Assets
 
+The Sass compiler requires Sass. Install it with:
+
+       gem install sass
+
 To compile the Sass files into CSS:
 
 	npm run sass
