@@ -46,7 +46,7 @@ In addition to this, you can set an authentication cookie which allows you to vi
 
 = Privacy Statement =
 
-Query Monitor does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
+Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
 
@@ -105,7 +105,7 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 
 = Can I click on stack traces to open the file in my editor? =
 
-Yes! You just need to [enable clickable stack traces](https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/).
+Yes! You can enable this on the Settings panel.
 
 = Do you accept donations? =
 

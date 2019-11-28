@@ -329,7 +329,7 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 
 ## Can I click on stack traces to open the file in my editor? ##
 
-Yes! You just need to [enable clickable stack traces](https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/).
+Yes! You can enable this on the Settings panel.
 
 ## Do you accept donations? ##
 
@@ -337,7 +337,7 @@ No, I do not accept donations. If you like the plugin, I'd love for you to [leav
 
 # Privacy Statement #
 
-Query Monitor does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
+Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
 
@@ -360,7 +360,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
 # Contributing #
 
-Contributions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
+Code contributions, feedback, and feature suggestions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
 
 # Icon #
 
