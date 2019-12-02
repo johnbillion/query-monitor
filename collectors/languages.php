@@ -143,11 +143,14 @@ class QM_Collector_Languages extends QM_Collector {
 		$filtered = $trace->get_filtered_trace();
 		$caller   = $filtered[0];
 
+		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
+
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
 			'domain' => $domain,
 			'file'   => $file,
-			'found'  => ( $file && file_exists( $file ) ) ? filesize( $file ) : false,
+			'found'  => $found,
+			'found_formatted' => $found ? size_format( $found ) : '',
 			'handle' => $handle,
 			'type'   => 'jed',
 		);
