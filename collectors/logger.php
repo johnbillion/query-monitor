@@ -80,7 +80,7 @@ class QM_Collector_Logger extends QM_Collector {
 			);
 		}
 
-		if ( $message instanceof Exception ) {
+		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
 			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
