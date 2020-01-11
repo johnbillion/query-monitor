@@ -105,7 +105,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   display: none;
 }
 
-#query-monitor-main,
 #query-monitor-main dl,
 #query-monitor-main dt,
 #query-monitor-main dd,
@@ -157,14 +156,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   text-transform: none !important;
   transition: none !important;
   vertical-align: baseline !important;
-  width: auto !important;
   word-break: normal !important;
   word-wrap: normal !important;
+  width: auto !important;
 }
 
-#query-monitor-main::before, #query-monitor-main::after,
-#query-monitor-main dl::before,
-#query-monitor-main dl::after,
+#query-monitor-main dl::before, #query-monitor-main dl::after,
 #query-monitor-main dt::before,
 #query-monitor-main dt::after,
 #query-monitor-main dd::before,
@@ -217,6 +214,34 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor-main {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  clear: both !important;
+  color: #bbc8d4 !important;
+  float: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  font-size: 12px !important;
+  -webkit-font-smoothing: auto !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  line-height: 18px !important;
+  margin: 0 !important;
+  min-height: auto !important;
+  outline: none !important;
+  padding: 0 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  text-indent: 0 !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+  transition: none !important;
+  vertical-align: baseline !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
   background: #23282d !important;
   border-top: 1px solid #50626f !important;
   bottom: 0 !important;
@@ -228,6 +253,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   right: 0 !important;
   text-align: left !important;
   z-index: 99998 !important;
+}
+
+#query-monitor-main::before, #query-monitor-main::after {
+  display: none !important;
 }
 
 #query-monitor-main ::selection {

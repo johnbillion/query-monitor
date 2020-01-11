@@ -124,8 +124,43 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 }
 
+@mixin global-reset {
+	background: transparent !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	box-sizing: border-box !important;
+	clear: both !important;
+	color: $qm-container-fg !important;
+	float: none !important;
+	font-family: $qm-font-default-face !important;
+	font-size: $qm-font-default-size !important;
+	-webkit-font-smoothing: auto !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	letter-spacing: normal !important;
+	line-height: $qm-font-default-line-height !important;
+	margin: 0 !important;
+	min-height: auto !important;
+	outline: none !important;
+	padding: 0 !important;
+	text-align: left !important;
+	text-decoration: none !important;
+	text-indent: 0 !important;
+	text-shadow: none !important;
+	text-transform: none !important;
+	transition: none !important;
+	vertical-align: baseline !important;
+	word-break: normal !important;
+	word-wrap: normal !important;
+
+	&::before,
+	&::after {
+		display: none !important;
+	}
+}
+
 #query-monitor-main {
-	&,
 	dl,
 	dt,
 	dd,
@@ -151,43 +186,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	section,
 	nav,
 	p {
-		background: transparent !important;
-		border: none !important;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-		box-sizing: border-box !important;
-		clear: both !important;
-		color: $qm-container-fg !important;
-		float: none !important;
-		font-family: $qm-font-default-face !important;
-		font-size: $qm-font-default-size !important;
-		-webkit-font-smoothing: auto !important;
-		font-style: normal !important;
-		font-weight: normal !important;
-		letter-spacing: normal !important;
-		line-height: $qm-font-default-line-height !important;
-		margin: 0 !important;
-		min-height: auto !important;
-		outline: none !important;
-		padding: 0 !important;
-		text-align: left !important;
-		text-decoration: none !important;
-		text-indent: 0 !important;
-		text-shadow: none !important;
-		text-transform: none !important;
-		transition: none !important;
-		vertical-align: baseline !important;
-		width: auto !important;
-		word-break: normal !important;
-		word-wrap: normal !important;
+		@include global-reset;
 
-		&::before,
-		&::after {
-			display: none !important;
-		}
+		width: auto !important;
 	}
 
 	& {
+		@include global-reset;
+
 		background: $qm-panel-bg !important;
 		border-top: 1px solid $qm-panel-border !important;
 		bottom: 0 !important;
