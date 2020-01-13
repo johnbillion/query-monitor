@@ -983,6 +983,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   color: #fff !important;
 }
 
+#query-monitor-main .qm tbody tr td.qm-highlight,
+#query-monitor-main .qm tbody tr.qm-highlight td {
+  background-color: #ffd !important;
+  color: #222 !important;
+}
+
+#query-monitor-main .qm tbody tr.qm-odd td.qm-highlight,
+#query-monitor-main .qm tbody tr.qm-odd.qm-highlight td {
+  background-color: #ffffc9 !important;
+  color: #222 !important;
+}
+
 #query-monitor-main .qm tbody tr.qm-odd.qm-hovered th,
 #query-monitor-main .qm tbody tr.qm-odd.qm-hovered td,
 #query-monitor-main .qm tbody tr.qm-odd:hover th,
@@ -996,14 +1008,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #query-monitor-main .qm thead th.qm-filtered select.qm-filter {
   background-color: #ffd !important;
-  color: #222 !important;
-}
-
-#query-monitor-main .qm tbody tr td.qm-highlight,
-#query-monitor-main .qm tbody tr.qm-highlight td {
-  background-color: #ffd !important;
-  border-color: #eec !important;
-  box-shadow: inset 0 -1px #eec !important;
   color: #222 !important;
 }
 
