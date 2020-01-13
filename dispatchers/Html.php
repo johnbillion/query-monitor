@@ -199,6 +199,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				),
 			)
 		);
+
+		/**
+		 * Fires when assets for QM's HTML have been enqueued.
+		 *
+		 * @since 3.6.0
+		 *
+		 * @param \QM_Dispatcher_Html $this The HTML dispatcher.
+		 */
+		do_action( 'qm/output/enqueued-assets', $this );
 	}
 
 	public function dispatch() {
