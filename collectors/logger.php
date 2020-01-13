@@ -68,11 +68,13 @@ class QM_Collector_Logger extends QM_Collector {
 	}
 
 	protected function store( $level, $message, array $context = array() ) {
+		$type  = 'string';
 		$trace = new QM_Backtrace( array(
 			'ignore_frames' => 2,
 		) );
 
 		if ( is_wp_error( $message ) ) {
+			$type    = 'wp_error';
 			$message = sprintf(
 				'WP_Error: %s (%s)',
 				$message->get_error_message(),
@@ -81,11 +83,13 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
+			$type    = 'throwable';
 			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
 		if ( ! QM_Util::is_stringy( $message ) ) {
-			$message = QM_Util::json_format( $message );
+			$type    = 'dump';
+			$message = print_r( $message, true );
 		}
 
 		$this->data['logs'][] = array(
@@ -93,6 +97,7 @@ class QM_Collector_Logger extends QM_Collector {
 			'context' => $context,
 			'trace'   => $trace,
 			'level'   => $level,
+			'type'    => $type,
 		);
 	}
 
