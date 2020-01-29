@@ -45,8 +45,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param Throwable|Exception $e The error or exception.
 	 */
 	public function exception_handler( $e ) {
-		require_once __DIR__ . '/../output/Html.php';
-
 		if ( is_a( $e, 'Exception' ) ) {
 			$error = 'Uncaught Exception';
 		} else {
@@ -57,18 +55,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			'message' => $e->getMessage(),
 			'file'    => $e->getFile(),
 			'line'    => $e->getLine(),
+			'trace'   => $e->getTrace(),
 		) );
-
-		echo '<ul>';
-		foreach ( $e->getTrace() as $frame ) {
-			$callback = QM_Util::populate_callback( $frame );
-
-			printf(
-				'<li>%s</li>',
-				QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
-			); // WPCS: XSS ok.
-		}
-		echo '</ul>';
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
@@ -210,6 +198,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	protected static function output_fatal( $error, array $e ) {
+		require_once __DIR__ . '/../output/Html.php';
+
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		printf(
 			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
@@ -219,6 +209,19 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			intval( $e['line'] )
 		);
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		if ( ! empty( $e['trace'] ) ) {
+			echo '<ul>';
+			foreach ( $e['trace'] as $frame ) {
+				$callback = QM_Util::populate_callback( $frame );
+
+				printf(
+					'<li>%s</li>',
+					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
+				); // WPCS: XSS ok.
+			}
+			echo '</ul>';
+		}
 	}
 
 	public function post_process() {
