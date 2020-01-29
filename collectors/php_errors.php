@@ -53,15 +53,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Uncaught Error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e->getMessage(), ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e->getFile(), ENT_COMPAT, 'UTF-8' ),
-			intval( $e->getLine() )
-		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		self::output_fatal( $error, array(
+			'message' => $e->getMessage(),
+			'file'    => $e->getFile(),
+			'line'    => $e->getLine(),
+		) );
 
 		echo '<ul>';
 		foreach ( $e->getTrace() as $frame ) {
@@ -210,6 +206,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
+		self::output_fatal( $error, $e );
+	}
+
+	protected static function output_fatal( $error, array $e ) {
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		printf(
 			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
