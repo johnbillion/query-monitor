@@ -190,6 +190,13 @@ class QM_Util {
 			$callback['function'] = explode( '::', $callback['function'] );
 		}
 
+		if ( isset( $callback['class'] ) ) {
+			$callback['function'] = array(
+				$callback['class'],
+				$callback['function'],
+			);
+		}
+
 		try {
 
 			if ( is_array( $callback['function'] ) ) {
