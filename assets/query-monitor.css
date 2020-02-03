@@ -1351,3 +1351,44 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #query-monitor-main.qm-broken #qm-broken h2 {
   padding: 20px !important;
 }
+
+#qm-fatal {
+  margin: 1em !important;
+  border: 1px solid #c00 !important;
+  background: #fff !important;
+  width: 700px !important;
+  clear: both !important;
+}
+
+#qm-fatal h2 {
+  font-size: 12px !important;
+  font-weight: normal !important;
+  padding: 5px !important;
+  background: #f3f3f3 !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #c00 !important;
+}
+
+#qm-fatal .dashicons {
+  color: #c00 !important;
+}
+
+#qm-fatal ol,
+#qm-fatal p {
+  font-size: 12px !important;
+  padding: 0 !important;
+  margin: 1em !important;
+}
+
+#qm-fatal ol {
+  padding: 0 0 1em 1em !important;
+}
+
+#qm-fatal li {
+  margin: 0 0 0.7em !important;
+  list-style: none !important;
+}
+
+#qm-fatal .qm-info {
+  color: #666 !important;
+}
