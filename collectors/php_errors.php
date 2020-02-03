@@ -63,7 +63,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		if ( $this->exception_handler ) {
 			call_user_func( $this->exception_handler, $e );
 		} else {
-			throw new Exception( $e->getMessage(), $e->getCode(), $e );
+			throw $e;
 		}
 
 		exit( 1 );
