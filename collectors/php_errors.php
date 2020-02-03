@@ -54,8 +54,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Uncaught Error';
 		}
 
-		self::output_fatal( $error, array(
-			'message' => $e->getMessage(),
+		self::output_fatal( 'Fatal error', array(
+			'message' => sprintf(
+				'%s: %s',
+				$error,
+				$e->getMessage()
+			),
 			'file'    => $e->getFile(),
 			'line'    => $e->getLine(),
 			'trace'   => $e->getTrace(),
@@ -201,17 +205,22 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	protected static function output_fatal( $error, array $e ) {
-		require_once __DIR__ . '/../output/Html.php';
+		if ( ! function_exists( '__' ) ) {
+			wp_load_translations_early();
+		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		require_once dirname( __DIR__ ) . '/output/Html.php';
+
+		echo '<div id="qm-fatal">';
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+		echo '<div class="qm-fatal-wrap">';
 		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e['message'], ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e['file'], ENT_COMPAT, 'UTF-8' ),
+			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			esc_html( $error ),
+			nl2br( esc_html( $e['message'] ), false ),
+			QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true ),
 			intval( $e['line'] )
-		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		); // WPCS: XSS ok.
 
 		if ( ! empty( $e['trace'] ) ) {
 			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
@@ -226,6 +235,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			}
 			echo '</ol>';
 		}
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function post_process() {
