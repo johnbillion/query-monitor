@@ -22,18 +22,21 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		parent::__construct();
+
+		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
 		if ( ! interface_exists( 'Throwable' ) ) {
-			// PHP < 7 fatal error handler.
+			// Fatal error handler for PHP < 7:
 			register_shutdown_function( array( $this, 'shutdown_handler' ) );
 		}
+
+		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
-
-		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 	}
 
 	/**
