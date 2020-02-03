@@ -214,16 +214,17 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( ! empty( $e['trace'] ) ) {
-			echo '<ul>';
+			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
+			echo '<ol>';
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
 
 				printf(
 					'<li>%s</li>',
-					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
+					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
 				); // WPCS: XSS ok.
 			}
-			echo '</ul>';
+			echo '</ol>';
 		}
 	}
 
