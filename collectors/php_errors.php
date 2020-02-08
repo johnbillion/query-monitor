@@ -211,7 +211,13 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		require_once dirname( __DIR__ ) . '/output/Html.php';
 
-		echo '<div id="qm-fatal">';
+		printf(
+			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
+			esc_attr( $e['message'] ),
+			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
+			esc_attr( $e['line'] )
+		);
+
 		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 		echo '<div class="qm-fatal-wrap">';
 		printf(

@@ -197,6 +197,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'off'        => wp_create_nonce( 'qm-auth-off' ),
 					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
 				),
+				'fatal_error' => __( 'PHP Fatal Error', 'query-monitor' ),
 			)
 		);
 

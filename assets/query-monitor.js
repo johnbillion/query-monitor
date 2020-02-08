@@ -65,6 +65,43 @@ if ( window.jQuery ) {
 
 		container.removeClass('qm-no-js').addClass('qm-js');
 
+		if ( $('#qm-fatal').length ) {
+			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
+
+			if ( $('#wp-admin-bar-query-monitor').length ) {
+				$('#wp-admin-bar-query-monitor')
+					.addClass('qm-error')
+					.find('a').eq(0)
+					.text(qm_l10n.fatal_error);
+
+				var fatal_container = document.createDocumentFragment();
+
+				var fatal_message_menu = $('#wp-admin-bar-query-monitor-placeholder')
+					.clone()
+					.attr('id','wp-admin-bar-qm-fatal-message');
+
+				fatal_message_menu
+					.find('a').eq(0)
+					.text($('#qm-fatal').attr('data-qm-message'))
+					.attr('href','#qm-fatal');
+
+				fatal_container.appendChild( fatal_message_menu.get(0) );
+
+				var fatal_file_menu = $('#wp-admin-bar-query-monitor-placeholder')
+					.clone()
+					.attr('id','wp-admin-bar-qm-fatal-file');
+
+				fatal_file_menu
+					.find('a').eq(0)
+					.text($('#qm-fatal').attr('data-qm-file') + ':' + $('#qm-fatal').attr('data-qm-line'))
+					.attr('href','#qm-fatal');
+
+				fatal_container.appendChild( fatal_file_menu.get(0) );
+
+				$('#wp-admin-bar-query-monitor ul').append(fatal_container);
+			}
+		}
+
 		var link_click = function(e){
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
 			show_panel( href );
