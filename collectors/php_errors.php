@@ -114,7 +114,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 			default:
 				return false;
-				break;
 
 		}
 
