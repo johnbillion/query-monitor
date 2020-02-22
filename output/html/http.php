@@ -70,6 +70,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$i = 0;
 
 			foreach ( $data['http'] as $key => $row ) {
+			        if ( ! isset( $row['ltime'], $row['component'] ) ){
+					continue;
+				}
 				$ltime = $row['ltime'];
 				$i++;
 				$is_error = false;
