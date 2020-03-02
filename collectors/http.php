@@ -211,6 +211,33 @@ class QM_Collector_HTTP extends QM_Collector {
 		$this->data['http'][ $args['_qm_key'] ]['transport'] = $this->transport;
 		$this->info      = null;
 		$this->transport = null;
+
+		/**
+		 * Filters the HTTP response statuses that should be silenced.
+		 *
+		 * @since 3.5.3
+		 *
+		 * @param int[] $silenced HTTP response statuses to be silenced.  Default: empty array.
+		 * @param array $http {
+		 *     The QM "HTTP" request object.
+		 *
+		 *     @type string $url The URL for the HTTP request.
+		 *     @type array  $args The `$args` for the HTTP request.
+		 *     @type float  $start The start time for the request.
+		 *     @type class  $trace The QM_Backtrace object for the request.
+		 *     @type string $transport The transport for the HTTP request.
+		 *     @type float  $end The end time for the request.
+		 *     @type array  $response The HTTP response.
+		 *     @type array  $info The QM "info" for the HTTP request.
+		 *     @type int    $type The HTTP status code.
+		 * }
+		 */
+		$silenced_http_statuses = apply_filters(
+			'qm/collect/silent_http_error_statuses',
+			array(),
+			$this->data['http'][ $args['_qm_key'] ]
+		);
+		$this->data['http'][ $args['_qm_key'] ]['silenced_http_statuses'] = $silenced_http_statuses;
 	}
 
 	public function process() {
@@ -249,7 +276,7 @@ class QM_Collector_HTTP extends QM_Collector {
 				$http['type'] = -2;
 			} else {
 				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
-				if ( $http['type'] >= 400 ) {
+				if ( $http['type'] >= 400 && ! in_array( $http['type'], $http['silenced_http_statuses'] ) ) {
 					$this->data['errors']['warning'][] = $key;
 				}
 			}
