@@ -47,6 +47,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	public function exception_handler( $e ) {
 		require_once __DIR__ . '/../output/Html.php';
 
+		if ( empty( $this->display_errors ) ) {
+			return;
+		}
+
 		if ( is_a( $e, 'Exception' ) ) {
 			$error = 'Uncaught Exception';
 		} else {
