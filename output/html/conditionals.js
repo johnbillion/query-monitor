@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-
 import NonTabular from '../non-tabular.js';
-
-const { __, _x, _n, sprintf } = wp.i18n;
+import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Conditionals extends Component {
 

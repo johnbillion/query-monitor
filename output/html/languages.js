@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-
 import Caller from '../caller.js';
 import Notice from '../notice.js';
 import Tabular from '../tabular.js';
 import PanelFooter from '../panel-footer.js';
-
-const { __, _x, _n, sprintf } = wp.i18n;
+import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Languages extends Component {
 
