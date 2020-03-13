@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import Tabular from '../tabular.jsx';
-import PanelFooter from '../panel-footer.jsx';
+import Tabular from '../tabular.js';
+import PanelFooter from '../panel-footer.js';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 

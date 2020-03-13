@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import NonTabular from '../non-tabular.jsx';
+import NonTabular from '../non-tabular.js';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Conditionals from './output/html/conditionals.jsx';
-import Caps from './output/html/caps.jsx';
-import Transients from './output/html/transients.jsx';
-import Languages from './output/html/languages.jsx';
-import DBQueries from './output/html/db_queries.jsx';
-import DBDupes from './output/html/db_dupes.jsx';
-import DBCallers from './output/html/db_callers.jsx';
-import DBComponents from './output/html/db_components.jsx';
-import BlockEditor from './output/html/block_editor.jsx';
+import Conditionals from '../output/html/conditionals.js';
+import Caps from '../output/html/caps.js';
+import Transients from '../output/html/transients.js';
+import Languages from '../output/html/languages.js';
+import DBQueries from '../output/html/db_queries.js';
+import DBDupes from '../output/html/db_dupes.js';
+import DBCallers from '../output/html/db_callers.js';
+import DBComponents from '../output/html/db_components.js';
+import BlockEditor from '../output/html/block_editor.js';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));

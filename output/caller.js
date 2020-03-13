@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Frame from './frame.jsx';
+import Frame from './frame.js';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 

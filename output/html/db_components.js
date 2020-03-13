@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Tabular from '../tabular.jsx';
+import Tabular from '../tabular.js';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 

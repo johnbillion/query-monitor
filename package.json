@@ -6,7 +6,7 @@
   "private": true,
   "author": "John Blackbourn",
   "repository": "johnbillion/query-monitor",
-  "main": "app.js",
+  "main": "index.js",
   "devDependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

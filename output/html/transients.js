@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Caller from '../caller.jsx';
-import Notice from '../notice.jsx';
-import QMComponent from '../component.jsx';
-import Tabular from '../tabular.jsx';
+import Caller from '../caller.js';
+import Notice from '../notice.js';
+import QMComponent from '../component.js';
+import Tabular from '../tabular.js';
 
 const { __, _x, _n, sprintf } = wp.i18n;
 
