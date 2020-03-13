@@ -10,12 +10,8 @@
   "devDependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.6",
-    "bable-loader": "^0.0.1-security",
+    "concurrently": "^5.1",
+    "@wordpress/scripts": "^7",
     "gitattributes-globs": "^1",
     "gitignore-globs": "^0.1",
     "grunt": "^1",
@@ -33,7 +29,8 @@
     "node-jq": "^1"
   },
   "scripts": {
-    "build": "grunt build",
+    "start": "wp-scripts start",
+    "build": "concurrently \"wp-scripts build\"",
     "bump:major": "grunt bump:major",
     "bump:minor": "grunt bump:minor",
     "bump:patch": "grunt bump:patch",

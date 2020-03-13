@@ -182,14 +182,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
+		$asset_file = require_once $this->qm->plugin_path( 'build/index.asset.php' );
+
 		wp_enqueue_script(
 			'query-monitor-ui',
-			$this->qm->plugin_url( 'dist/public/bundle.js' ),
-			array(
-				'wp-element',
-				'wp-i18n',
+			$this->qm->plugin_url( 'build/index.js' ),
+			array_merge(
+				array(
+					'wp-element',
+					'wp-i18n',
+				),
+				$asset_file['dependencies']
 			),
-			$this->qm->plugin_ver( 'dist/public/bundle.js' ),
+			$asset_file['version'],
 			true
 		);
 
