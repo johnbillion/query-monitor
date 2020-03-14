@@ -6,7 +6,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 class BlockEditor extends Component {
 
 	render() {
-		const data = this.props.data;
+		const { data } = this.props;
 
 		if ( ! data.post_blocks || ! data.post_blocks.length ) {
 			return null;

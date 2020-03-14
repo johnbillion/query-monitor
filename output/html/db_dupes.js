@@ -7,7 +7,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 class DBDupes extends Component {
 
 	render() {
-		const data = this.props.data;
+		const { data } = this.props;
 
 		if ( ! data.dupes || ! Object.keys(data.dupes).length ) {
 			return null;

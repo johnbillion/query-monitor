@@ -8,7 +8,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 class Languages extends Component {
 
 	render() {
-		const data = this.props.data;
+		const { data } = this.props;
 
 		return (
 			<Tabular id={this.props.id}>

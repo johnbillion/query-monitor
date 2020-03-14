@@ -24,7 +24,7 @@ class Caps extends Component {
 			);
 		}
 
-		const data = this.props.data;
+		const { data } = this.props;
 
 		if ( ! data.caps || ! data.caps.length ) {
 			return (

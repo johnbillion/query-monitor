@@ -8,7 +8,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 class Transients extends Component {
 
 	render() {
-		const data = this.props.data;
+		const { data } = this.props;
 
 		if ( ! data.trans || ! data.trans.length ) {
 			return (

@@ -7,7 +7,7 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 class DBCallers extends Component {
 
 	render() {
-		const data = this.props.data;
+		const { data } = this.props;
 
 		if ( ! data.times || ! Object.keys(data.times).length ) {
 			return null;
