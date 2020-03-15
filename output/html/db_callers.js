@@ -21,7 +21,7 @@ class DBCallers extends Component {
 							{__( 'Caller', 'query-monitor' )}
 						</th>
 						{Object.keys(data.types).map(key =>
-							<th scope="col" className='qm-num'>
+							<th key={key} scope="col" className="qm-num">
 								{key}
 							</th>
 						)}
@@ -32,10 +32,10 @@ class DBCallers extends Component {
 				</thead>
 				<tbody>
 					{data.times.map(caller=>
-						<tr>
+						<tr key={caller.caller}>
 							<td>{caller.caller}</td>
 							{Object.keys(data.types).map(key=>
-								<td scope="col" className='qm-num'>
+								<td key={key} scope="col" className="qm-num">
 									{caller.types[key] || ''}
 								</td>
 							)}
@@ -47,7 +47,7 @@ class DBCallers extends Component {
 					<tr>
 						<td></td>
 						{Object.keys(data.types).map(key=>
-							<td scope="col" className='qm-num'>
+							<td key={key} scope="col" className="qm-num">
 								{data.types[key]}
 							</td>
 						)}

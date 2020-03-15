@@ -47,7 +47,7 @@ class DBQueries extends Component {
 				</thead>
 				<tbody>
 					{data.rows.map((row,i)=>
-						<tr>
+						<tr key={i}>
 							<th scope="row" className="qm-row-num qm-num">{1+i}</th>
 							<td className="qm-row-sql qm-ltr qm-wrap">{row.sql}</td>
 							{/* <Caller trace={row.filtered_trace} /> */}

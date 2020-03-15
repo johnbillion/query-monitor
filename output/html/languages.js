@@ -33,9 +33,9 @@ class Languages extends Component {
 				</thead>
 				<tbody>
 					{Object.keys(data.languages).map(key =>
-						<>
+						<React.Fragment key={key}>
 							{data.languages[key].map(lang =>
-								<tr>
+								<tr key={lang.domain + lang.file}>
 									{ lang.handle ? (
 										<td className="qm-ltr">{lang.domain} ({lang.handle})</td>
 									) : (
@@ -55,7 +55,7 @@ class Languages extends Component {
 									)}
 								</tr>
 							)}
-						</>
+						</React.Fragment>
 					)}
 				</tbody>
 			</Tabular>

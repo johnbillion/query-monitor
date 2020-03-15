@@ -16,15 +16,17 @@ class Caller extends Component {
 					</button>
 				}
 				<ol>
-					<li><Frame frame={caller} /></li>
+					<li>
+						<Frame frame={caller} />
+					</li>
 					{trace.length > 0 &&
-						<>
-							<div className="qm-toggled">
-								{trace.map(frame =>
-									<li><Frame frame={frame} /></li>
-								)}
-							</div>
-						</>
+						<div className="qm-toggled">
+							{trace.map(frame =>
+								<li key={frame.display}>
+									<Frame frame={frame} />
+								</li>
+							)}
+						</div>
 					}
 				</ol>
 			</td>

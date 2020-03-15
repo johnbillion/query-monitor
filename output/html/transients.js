@@ -48,7 +48,7 @@ class Transients extends Component {
 				</thead>
 				<tbody>
 					{data.trans.map(transient =>
-						<tr>
+						<tr key={transient.name}>
 							<td className="qm-ltr qm-nowrap"><code>{transient.name}</code></td>
 							{data.has_type &&
 								<td className="qm-ltr qm-nowrap">{transient.type}</td>

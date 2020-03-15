@@ -19,7 +19,7 @@ class DBComponents extends Component {
 							{__( 'Component', 'query-monitor' )}
 						</th>
 						{Object.keys(data.types).map(key=>
-							<th scope="col" className='qm-num'>
+							<th key={key} scope="col" className="qm-num">
 								{key}
 							</th>
 						)}
@@ -30,10 +30,10 @@ class DBComponents extends Component {
 				</thead>
 				<tbody>
 					{data.times.map(comp=>
-						<tr>
+						<tr key={comp.component}>
 							<td>{comp.component}</td>
 							{Object.keys(data.types).map(key=>
-								<td scope="col" className='qm-num'>
+								<td key={key} scope="col" className="qm-num">
 									{comp.types[key] || ''}
 								</td>
 							)}
@@ -45,7 +45,7 @@ class DBComponents extends Component {
 					<tr>
 						<td></td>
 						{Object.keys(data.types).map(key=>
-							<td scope="col" className='qm-num'>
+							<td key={key} scope="col" className="qm-num">
 								{data.types[key]}
 							</td>
 						)}

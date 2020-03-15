@@ -15,7 +15,7 @@ class Conditionals extends Component {
 						<h3>{__('True Conditionals','query-monitor')}</h3>
 						<ul>
 							{trueConds.map(cond =>
-								<li className="qm-ltr qm-true"><code>{cond}()</code></li>
+								<li key={cond} className="qm-ltr qm-true"><code>{cond}()</code></li>
 							)}
 						</ul>
 					</section>
@@ -25,7 +25,7 @@ class Conditionals extends Component {
 						<h3>{__('False Conditionals','query-monitor')}</h3>
 						<ul>
 							{falseConds.map(cond =>
-								<li className="qm-ltr qm-false"><code>{cond}()</code></li>
+								<li key={cond} className="qm-ltr qm-false"><code>{cond}()</code></li>
 							)}
 						</ul>
 					</section>
