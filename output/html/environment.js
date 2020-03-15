@@ -17,7 +17,9 @@ class Environment extends Component {
 		return (
 			<NonTabular id={this.props.id}>
 				<section>
-					<h3>{__('PHP','query-monitor')}</h3>
+					<h3>
+						PHP
+					</h3>
 					<table>
 						<tbody>
 							<tr className={ classes }>
