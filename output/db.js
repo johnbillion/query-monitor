@@ -5,7 +5,6 @@ import Warning from './warning';
 class DB extends Component {
 
 	render() {
-		console.log('banana');
 		const {
 			name,
 			db,
