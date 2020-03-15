@@ -10,6 +10,7 @@
   "devDependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "classnames": "^2.2",
     "concurrently": "^5.1",
     "@wordpress/scripts": "^7",
     "gitattributes-globs": "^1",

@@ -10,6 +10,7 @@ import DBDupes from '../output/html/db_dupes.js';
 import DBCallers from '../output/html/db_callers.js';
 import DBComponents from '../output/html/db_components.js';
 import BlockEditor from '../output/html/block_editor.js';
+import Environment from '../output/html/environment.js';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -27,6 +28,6 @@ jQuery(function($) {
 	ReactDOM.render(<DBDupes data={qm_data.db_dupes.data} enabled={qm_data.db_dupes.enabled} id="db_dupes" /> , document.getElementById('qm-db_dupes-container'));
 	ReactDOM.render(<DBCallers data={qm_data.db_callers.data} enabled={qm_data.db_callers.enabled} id="db_callers" /> , document.getElementById('qm-db_callers-container'));
 	ReactDOM.render(<DBComponents data={qm_data.db_components.data} enabled={qm_data.db_components.enabled} id="db_components" /> , document.getElementById('qm-db_components-container'));
-
 	ReactDOM.render(<BlockEditor data={qm_data.block_editor.data} enabled={qm_data.block_editor.enabled} id="block_editor" /> , document.getElementById('qm-block_editor-container'));
+	ReactDOM.render(<Environment data={qm_data.environment.data} enabled={qm_data.environment.enabled} id="environment" /> , document.getElementById('qm-environment-container'));
 } );
