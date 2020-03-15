@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NonTabular from '../non-tabular.js';
 import Warning from '../warning.js';
 import Toggler from '../toggler.js';
+import DB from '../db.js';
 import classnames from 'classnames';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -117,6 +118,13 @@ class Environment extends Component {
 						</tbody>
 					</table>
 				</section>
+				{ data.db && (
+					<>
+						{Object.keys(data.db).map(key =>
+							<DB key={key} name={key} db={data.db[key]}/>
+						)}
+					</>
+				)}
 			</NonTabular>
 		);
 	}
