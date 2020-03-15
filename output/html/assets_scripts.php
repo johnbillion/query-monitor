@@ -14,6 +14,8 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public function name() {
 		return __( 'Scripts', 'query-monitor' );
 	}

@@ -14,6 +14,8 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public function name() {
 		return __( 'Styles', 'query-monitor' );
 	}

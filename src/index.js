@@ -11,6 +11,8 @@ import DBCallers from '../output/html/db_callers.js';
 import DBComponents from '../output/html/db_components.js';
 import BlockEditor from '../output/html/block_editor.js';
 import Environment from '../output/html/environment.js';
+import Scripts from '../output/html/assets_scripts.js';
+import Styles from '../output/html/assets_styles.js';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -30,4 +32,6 @@ jQuery(function($) {
 	ReactDOM.render(<DBComponents data={qm_data.db_components.data} enabled={qm_data.db_components.enabled} id="db_components" /> , document.getElementById('qm-db_components-container'));
 	ReactDOM.render(<BlockEditor data={qm_data.block_editor.data} enabled={qm_data.block_editor.enabled} id="block_editor" /> , document.getElementById('qm-block_editor-container'));
 	ReactDOM.render(<Environment data={qm_data.environment.data} enabled={qm_data.environment.enabled} id="environment" /> , document.getElementById('qm-environment-container'));
+	ReactDOM.render(<Scripts data={qm_data.assets_scripts.data} enabled={qm_data.assets_scripts.enabled} id="assets_scripts" /> , document.getElementById('qm-assets_scripts-container'));
+	ReactDOM.render(<Styles data={qm_data.assets_styles.data} enabled={qm_data.assets_styles.enabled} id="assets_styles" /> , document.getElementById('qm-assets_styles-container'));
 } );
