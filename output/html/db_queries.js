@@ -46,20 +46,18 @@ class DBQueries extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{data.rows.map(function(row,i){
-						return (
-							<tr>
-								<th scope="row" className="qm-row-num qm-num">{1+i}</th>
-								<td className="qm-row-sql qm-ltr qm-wrap">{row.sql}</td>
-								{/* <Caller trace={row.filtered_trace} /> */}
-								{/* <QMComponent component={row.component} /> */}
-								<td>Caller</td>
-								<td>Component</td>
-								<td className='qm-row-result qm-num'>{row.result}</td>
-								<td className='qm-row-result qm-num'>{row.ltime}</td>
-							</tr>
-						)
-					})}
+					{data.rows.map((row,i)=>
+						<tr>
+							<th scope="row" className="qm-row-num qm-num">{1+i}</th>
+							<td className="qm-row-sql qm-ltr qm-wrap">{row.sql}</td>
+							{/* <Caller trace={row.filtered_trace} /> */}
+							{/* <QMComponent component={row.component} /> */}
+							<td>Caller</td>
+							<td>Component</td>
+							<td className='qm-row-result qm-num'>{row.result}</td>
+							<td className='qm-row-result qm-num'>{row.ltime}</td>
+						</tr>
+					)}
 				</tbody>
 				<PanelFooter cols="5" label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
 				<td className='qm-num'>{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>

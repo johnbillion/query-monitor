@@ -18,45 +18,37 @@ class DBComponents extends Component {
 						<th scope="col">
 							{__( 'Component', 'query-monitor' )}
 						</th>
-						{Object.keys(data.types).map(function(key){
-							return (
-								<th scope="col" className='qm-num'>
-									{key}
-								</th>
-							)
-						})}
+						{Object.keys(data.types).map(key=>
+							<th scope="col" className='qm-num'>
+								{key}
+							</th>
+						)}
 						<th scope="col" className="qm-num">
 							{__( 'Time', 'query-monitor' )}
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{data.times.map(function(comp){
-						return (
-							<tr>
-								<td>{comp.component}</td>
-								{Object.keys(data.types).map(function(key){
-									return (
-										<td scope="col" className='qm-num'>
-											{comp.types[key] || ''}
-										</td>
-									)
-								})}
-								<td className='qm-num'>{comp.ltime}</td>
-							</tr>
-						)
-					})}
+					{data.times.map(comp=>
+						<tr>
+							<td>{comp.component}</td>
+							{Object.keys(data.types).map(key=>
+								<td scope="col" className='qm-num'>
+									{comp.types[key] || ''}
+								</td>
+							)}
+							<td className='qm-num'>{comp.ltime}</td>
+						</tr>
+					)}
 				</tbody>
 				<tfoot>
 					<tr>
 						<td></td>
-						{Object.keys(data.types).map(function(key){
-							return (
-								<td scope="col" className='qm-num'>
-									{data.types[key]}
-								</td>
-							)
-						})}
+						{Object.keys(data.types).map(key=>
+							<td scope="col" className='qm-num'>
+								{data.types[key]}
+							</td>
+						)}
 						<td className='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
 					</tr>
 				</tfoot>
