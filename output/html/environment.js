@@ -92,6 +92,26 @@ class Environment extends Component {
 									</Toggler>
 								</td>
 							</tr>
+							{ data.php.extensions && (
+								<tr>
+									<th scope="row">
+										{__( 'Extensions', 'query-monitor' )}
+									</th>
+									<td className="qm-has-toggle qm-ltr">
+										{QM_i18n.number_format( Object.keys(data.php.extensions).length )}
+
+										<Toggler>
+											<ul className="qm-supplemental">
+												{Object.keys(data.php.extensions).map(key =>
+													<li key={key}>
+														{key} ({ data.php.extensions[ key ] || __( 'Unknown', 'query-monitor') })
+													</li>
+												)}
+											</ul>
+										</Toggler>
+									</td>
+								</tr>
+							)}
 						</tbody>
 					</table>
 				</section>
