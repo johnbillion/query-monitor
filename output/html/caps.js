@@ -43,7 +43,7 @@ class Caps extends Component {
 						<th scope="col">
 							{__( 'Capability Check', 'query-monitor' )}
 						</th>
-						<th scope="col" class="qm-num">
+						<th scope="col" className="qm-num">
 							{__( 'User', 'query-monitor' )}
 						</th>
 						<th scope="col">
@@ -60,9 +60,9 @@ class Caps extends Component {
 				<tbody>
 					{data.caps.map(cap =>
 						<tr>
-							<td class="qm-ltr qm-nowrap"><code>{cap.name}</code></td>
-							<td class="qm-num">{cap.user}</td>
-							<td class="qm-nowrap">{cap.result ? <span class="qm-true">true&nbsp;&#x2713;</span> : 'false'}</td>
+							<td className="qm-ltr qm-nowrap"><code>{cap.name}</code></td>
+							<td className="qm-num">{cap.user}</td>
+							<td className="qm-nowrap">{cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false'}</td>
 							<Caller trace={cap.filtered_trace} />
 							<QMComponent component={cap.component} />
 						</tr>

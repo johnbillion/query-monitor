@@ -8,7 +8,7 @@ class Notice extends Component {
 		return (
 			<NonTabular id={this.props.id}>
 				<section>
-					<div class="qm-notice">
+					<div className="qm-notice">
 						{this.props.children}
 					</div>
 				</section>

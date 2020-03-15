@@ -10,22 +10,22 @@ class Conditionals extends Component {
 
 		return (
 			<NonTabular id={this.props.id}>
-				<div class="qm-boxed">
+				<div className="qm-boxed">
 					<section>
 						<h3>{__('True Conditionals','query-monitor')}</h3>
 						<ul>
 							{trueConds.map(cond =>
-								<li class="qm-ltr qm-true"><code>{cond}()</code></li>
+								<li className="qm-ltr qm-true"><code>{cond}()</code></li>
 							)}
 						</ul>
 					</section>
 				</div>
-				<div class="qm-boxed">
+				<div className="qm-boxed">
 					<section>
 						<h3>{__('False Conditionals','query-monitor')}</h3>
 						<ul>
 							{falseConds.map(cond =>
-								<li class="qm-ltr qm-false"><code>{cond}()</code></li>
+								<li className="qm-ltr qm-false"><code>{cond}()</code></li>
 							)}
 						</ul>
 					</section>

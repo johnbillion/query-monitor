@@ -9,9 +9,9 @@ class Caller extends Component {
 		const caller = trace.shift();
 
 		return (
-			<td class="qm-has-toggle qm-nowrap qm-ltr">
+			<td className="qm-has-toggle qm-nowrap qm-ltr">
 				{trace.length > 0 &&
-					<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label={__( 'Toggle more information', 'query-monitor' )}>
+					<button className="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label={__( 'Toggle more information', 'query-monitor' )}>
 						<span aria-hidden="true">+</span>
 					</button>
 				}
@@ -19,7 +19,7 @@ class Caller extends Component {
 					<li><Frame frame={caller} /></li>
 					{trace.length > 0 &&
 						<>
-							<div class="qm-toggled">
+							<div className="qm-toggled">
 								{trace.map(frame =>
 									<li><Frame frame={frame} /></li>
 								)}

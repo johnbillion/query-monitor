@@ -20,7 +20,7 @@ class DBDupes extends Component {
 						<th scope="col">
 							{__( 'Query', 'query-monitor' )}
 						</th>
-						<th scope="col" class="qm-num">
+						<th scope="col" className="qm-num">
 							{__( 'Count', 'query-monitor' )}
 						</th>
 						<th scope="col">
@@ -42,8 +42,8 @@ class DBDupes extends Component {
 						const sources = data.dupe_sources[key];
 						return (
 							<tr>
-								<td class="qm-row-sql qm-ltr qm-wrap">{key}</td>
-								<td class='qm-num'>{row.length}</td>
+								<td className="qm-row-sql qm-ltr qm-wrap">{key}</td>
+								<td className='qm-num'>{row.length}</td>
 								<td>
 									{Object.keys(callers).map(function(caller){
 										const count = sprintf(
@@ -53,7 +53,7 @@ class DBDupes extends Component {
 										return (
 											<>
 												<code>{caller}</code><br/>
-												<span class="qm-info qm-supplemental">{count}</span><br/>
+												<span className="qm-info qm-supplemental">{count}</span><br/>
 											</>
 										)
 									})}
@@ -67,7 +67,7 @@ class DBDupes extends Component {
 										return (
 											<>
 												{component}<br/>
-												<span class="qm-info qm-supplemental">{count}</span><br/>
+												<span className="qm-info qm-supplemental">{count}</span><br/>
 											</>
 										)
 									})}
@@ -81,7 +81,7 @@ class DBDupes extends Component {
 										return (
 											<>
 												<code>{source}</code><br/>
-												<span class="qm-info qm-supplemental">{count}</span><br/>
+												<span className="qm-info qm-supplemental">{count}</span><br/>
 											</>
 										)
 									})}

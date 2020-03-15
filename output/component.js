@@ -4,7 +4,7 @@ class QMComponent extends Component {
 
 	render() {
 		return (
-			<td class="qm-nowrap">{this.props.component.name}</td>
+			<td className="qm-nowrap">{this.props.component.name}</td>
 		);
 	}
 

@@ -41,12 +41,12 @@ class BlockEditor extends Component {
 						const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
 						return (
 							<tr>
-								<th scope="row" class="qm-row-num qm-num">{1+i}</th>
-								<td class="qm-ltr qm-wrap">{block.blockName}</td>
-								<td><pre class="qm-pre-wrap"><code>{show_attrs && JSON.stringify(block.attrs,null,2)}</code></pre></td>
+								<th scope="row" className="qm-row-num qm-num">{1+i}</th>
+								<td className="qm-ltr qm-wrap">{block.blockName}</td>
+								<td><pre className="qm-pre-wrap"><code>{show_attrs && JSON.stringify(block.attrs,null,2)}</code></pre></td>
 								<td>{block.dynamic && block.callback.name}</td>
 								<td>{block.dynamic && block.timing}</td>
-								<td><pre class="qm-pre-wrap"><code>{block.innerHTML}</code></pre></td>
+								<td><pre className="qm-pre-wrap"><code>{block.innerHTML}</code></pre></td>
 							</tr>
 						)
 					})}

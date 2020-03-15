@@ -20,12 +20,12 @@ class DBComponents extends Component {
 						</th>
 						{Object.keys(data.types).map(function(key){
 							return (
-								<th scope="col" class='qm-num'>
+								<th scope="col" className='qm-num'>
 									{key}
 								</th>
 							)
 						})}
-						<th scope="col" class="qm-num">
+						<th scope="col" className="qm-num">
 							{__( 'Time', 'query-monitor' )}
 						</th>
 					</tr>
@@ -37,12 +37,12 @@ class DBComponents extends Component {
 								<td>{comp.component}</td>
 								{Object.keys(data.types).map(function(key){
 									return (
-										<td scope="col" class='qm-num'>
+										<td scope="col" className='qm-num'>
 											{comp.types[key] || ''}
 										</td>
 									)
 								})}
-								<td class='qm-num'>{comp.ltime}</td>
+								<td className='qm-num'>{comp.ltime}</td>
 							</tr>
 						)
 					})}
@@ -52,12 +52,12 @@ class DBComponents extends Component {
 						<td></td>
 						{Object.keys(data.types).map(function(key){
 							return (
-								<td scope="col" class='qm-num'>
+								<td scope="col" className='qm-num'>
 									{data.types[key]}
 								</td>
 							)
 						})}
-						<td class='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
+						<td className='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
 					</tr>
 				</tfoot>
 			</Tabular>

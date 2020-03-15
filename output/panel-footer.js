@@ -9,7 +9,7 @@ class PanelFooter extends Component {
 					<td colSpan={this.props.cols}>
 						{this.props.label}
 						&nbsp;
-						<span class="qm-items-number">{QM_i18n.number_format( this.props.count )}</span>
+						<span className="qm-items-number">{QM_i18n.number_format( this.props.count )}</span>
 					</td>
 					{this.props.children}
 				</tr>

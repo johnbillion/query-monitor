@@ -22,12 +22,12 @@ class DBCallers extends Component {
 						</th>
 						{Object.keys(data.types).map(function(key){
 							return (
-								<th scope="col" class='qm-num'>
+								<th scope="col" className='qm-num'>
 									{key}
 								</th>
 							)
 						})}
-						<th scope="col" class="qm-num">
+						<th scope="col" className="qm-num">
 							{__( 'Time', 'query-monitor' )}
 						</th>
 					</tr>
@@ -39,12 +39,12 @@ class DBCallers extends Component {
 								<td>{caller.caller}</td>
 								{Object.keys(data.types).map(function(key){
 									return (
-										<td scope="col" class='qm-num'>
+										<td scope="col" className='qm-num'>
 											{caller.types[key] || ''}
 										</td>
 									)
 								})}
-								<td class='qm-num'>{caller.ltime}</td>
+								<td className='qm-num'>{caller.ltime}</td>
 							</tr>
 						)
 					})}
@@ -54,12 +54,12 @@ class DBCallers extends Component {
 						<td></td>
 						{Object.keys(data.types).map(function(key){
 							return (
-								<td scope="col" class='qm-num'>
+								<td scope="col" className='qm-num'>
 									{data.types[key]}
 								</td>
 							)
 						})}
-						<td class='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
+						<td className='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
 					</tr>
 				</tfoot>
 			</Tabular>

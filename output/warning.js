@@ -4,7 +4,7 @@ class Warning extends Component {
 
 	render() {
 		return (
-			<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+			<span className="dashicons dashicons-warning" aria-hidden="true"></span>
 		);
 	}
 

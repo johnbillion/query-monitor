@@ -49,18 +49,18 @@ class Transients extends Component {
 				<tbody>
 					{data.trans.map(transient =>
 						<tr>
-							<td class="qm-ltr qm-nowrap"><code>{transient.name}</code></td>
+							<td className="qm-ltr qm-nowrap"><code>{transient.name}</code></td>
 							{data.has_type &&
-								<td class="qm-ltr qm-nowrap">{transient.type}</td>
+								<td className="qm-ltr qm-nowrap">{transient.type}</td>
 							}
 
 							{ transient.expiration ? (
-								<td class="qm-nowrap">{transient.expiration} <span class="qm-info">(~{transient.exp_diff})</span></td>
+								<td className="qm-nowrap">{transient.expiration} <span className="qm-info">(~{transient.exp_diff})</span></td>
 							) : (
-								<td class="qm-nowrap"><em>{__( 'none', 'query-monitor' )}</em></td>
+								<td className="qm-nowrap"><em>{__( 'none', 'query-monitor' )}</em></td>
 							) }
 
-							<td class="qm-nowrap">~{transient.size_formatted}</td>
+							<td className="qm-nowrap">~{transient.size_formatted}</td>
 							<Caller trace={transient.filtered_trace} />
 							<QMComponent component={transient.component} />
 						</tr>

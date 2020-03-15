@@ -37,21 +37,21 @@ class Languages extends Component {
 							{data.languages[key].map(lang =>
 								<tr>
 									{ lang.handle ? (
-										<td class="qm-ltr">{lang.domain} ({lang.handle})</td>
+										<td className="qm-ltr">{lang.domain} ({lang.handle})</td>
 									) : (
-										<td class="qm-ltr">{lang.domain}</td>
+										<td className="qm-ltr">{lang.domain}</td>
 									)}
 									<td>{lang.type}</td>
 									<Caller trace={[lang.caller]} />
 									{ lang.file ? (
-										<td class="qm-ltr">{lang.file}</td>
+										<td className="qm-ltr">{lang.file}</td>
 									) : (
-										<td class="qm-nowrap"><em>{__( 'None', 'query-monitor' )}</em></td>
+										<td className="qm-nowrap"><em>{__( 'None', 'query-monitor' )}</em></td>
 									)}
 									{ lang.found ? (
-										<td class="qm-nowrap">{lang.found}</td>
+										<td className="qm-nowrap">{lang.found}</td>
 									) : (
-										<td class="qm-nowrap">{__( 'Not Found', 'query-monitor' )}</td>
+										<td className="qm-nowrap">{__( 'Not Found', 'query-monitor' )}</td>
 									)}
 								</tr>
 							)}
