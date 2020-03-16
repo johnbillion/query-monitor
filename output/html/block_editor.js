@@ -40,7 +40,7 @@ class BlockEditor extends Component {
 					{data.post_blocks.map(function(block,i){
 						const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
 						return (
-							<tr>
+							<tr key={i}>
 								<th scope="row" className="qm-row-num qm-num">{1+i}</th>
 								<td className="qm-ltr qm-wrap">{block.blockName}</td>
 								<td><pre className="qm-pre-wrap"><code>{show_attrs && JSON.stringify(block.attrs,null,2)}</code></pre></td>
@@ -51,7 +51,7 @@ class BlockEditor extends Component {
 						)
 					})}
 				</tbody>
-				<PanelFooter cols="6" label={__( 'Total:', 'Content blocks used', 'query-monitor' )} count={data.post_blocks.length}>
+				<PanelFooter cols="6" label={_x( 'Total:', 'Content blocks used', 'query-monitor' )} count={data.post_blocks.length}>
 				</PanelFooter>
 			</Tabular>
 		)
