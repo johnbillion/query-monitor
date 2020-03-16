@@ -14,6 +14,8 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
@@ -113,9 +115,9 @@ function register_qm_output_html_admin( array $output, QM_Collectors $collectors
 	if ( ! is_admin() ) {
 		return $output;
 	}
-	$collector = QM_Collectors::get( 'response' );
+	$collector = QM_Collectors::get( 'admin' );
 	if ( $collector ) {
-		$output['response'] = new QM_Output_Html_Admin( $collector );
+		$output['admin'] = new QM_Output_Html_Admin( $collector );
 	}
 	return $output;
 }

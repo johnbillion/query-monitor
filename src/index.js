@@ -13,6 +13,7 @@ import BlockEditor from '../output/html/block_editor.js';
 import Environment from '../output/html/environment.js';
 import Scripts from '../output/html/assets_scripts.js';
 import Styles from '../output/html/assets_styles.js';
+import Admin from '../output/html/admin.js';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -34,4 +35,7 @@ jQuery(function($) {
 	ReactDOM.render(<Environment data={qm_data.environment.data} enabled={qm_data.environment.enabled} id="environment" /> , document.getElementById('qm-environment-container'));
 	ReactDOM.render(<Scripts data={qm_data.assets_scripts.data} enabled={qm_data.assets_scripts.enabled} id="assets_scripts" /> , document.getElementById('qm-assets_scripts-container'));
 	ReactDOM.render(<Styles data={qm_data.assets_styles.data} enabled={qm_data.assets_styles.enabled} id="assets_styles" /> , document.getElementById('qm-assets_styles-container'));
+
+	qm_data.admin && ReactDOM.render(<Admin data={qm_data.admin.data} enabled={qm_data.admin.enabled} id="admin" /> , document.getElementById('qm-admin-container'));
+
 } );

@@ -7,7 +7,7 @@
 
 class QM_Collector_Admin extends QM_Collector {
 
-	public $id = 'response';
+	public $id = 'admin';
 
 	public function get_concerned_actions() {
 		$actions = array(
@@ -114,7 +114,7 @@ class QM_Collector_Admin extends QM_Collector {
 }
 
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
-	$collectors['response'] = new QM_Collector_Admin();
+	$collectors['admin'] = new QM_Collector_Admin();
 	return $collectors;
 }
 
