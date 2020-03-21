@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Frame extends Component {
+export class Frame extends Component {
 
 	render() {
 		return (
@@ -9,5 +9,3 @@ class Frame extends Component {
 	}
 
 }
-
-export default Frame;

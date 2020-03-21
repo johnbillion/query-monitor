@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class NotEnabled extends Component {
+export class NotEnabled extends Component {
 
 	render() {
 		return (
@@ -11,5 +11,3 @@ class NotEnabled extends Component {
 	}
 
 }
-
-export default NotEnabled;

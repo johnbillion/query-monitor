@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
-import PanelFooter from './panel-footer.js';
+import { PanelFooter } from './utils';
 
 class Assets extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Warning extends Component {
+export class Warning extends Component {
 
 	render() {
 		return (
@@ -9,5 +9,3 @@ class Warning extends Component {
 	}
 
 }
-
-export default Warning;

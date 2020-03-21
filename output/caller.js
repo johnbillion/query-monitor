@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Frame from './frame.js';
+import { Frame } from './utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Caller extends Component {
+export class Caller extends Component {
 
 	render() {
 		const trace = this.props.trace;
@@ -34,5 +34,3 @@ class Caller extends Component {
 	}
 
 }
-
-export default Caller;

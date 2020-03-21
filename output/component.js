@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class QMComponent extends Component {
+export class QMComponent extends Component {
 
 	render() {
 		return (
@@ -9,5 +9,3 @@ class QMComponent extends Component {
 	}
 
 }
-
-export default QMComponent;

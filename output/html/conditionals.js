@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NonTabular from '../non-tabular.js';
+import { NonTabular } from '../utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Conditionals extends Component {

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Caller from '../caller.js';
-import QMComponent from '../component.js';
-import Tabular from '../tabular.js';
+import { Tabular } from '../utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class DBDupes extends Component {

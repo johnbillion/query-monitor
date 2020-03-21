@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import { NonTabular } from './utils';
 
-import NonTabular from './non-tabular.js';
-
-class Notice extends Component {
+export class Notice extends Component {
 
 	render() {
 		return (
@@ -17,5 +16,3 @@ class Notice extends Component {
 	}
 
 }
-
-export default Notice;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NonTabular from '../non-tabular.js';
+import { NonTabular } from '../utils';
 import PHP from '../php.js';
 import DB from '../db.js';
 import WordPress from '../wordpress.js';

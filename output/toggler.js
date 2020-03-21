@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Toggler extends Component {
+export class Toggler extends Component {
 
 	render() {
 		return (
@@ -23,5 +23,3 @@ class Toggler extends Component {
 	}
 
 }
-
-export default Toggler;

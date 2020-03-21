@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class NonTabular extends Component {
+export class NonTabular extends Component {
 
 	render() {
 		const caption = `qm-${this.props.id}-caption`;
@@ -17,5 +17,3 @@ class NonTabular extends Component {
 	}
 
 }
-
-export default NonTabular;

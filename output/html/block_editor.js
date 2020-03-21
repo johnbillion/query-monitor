@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Tabular from '../tabular.js';
-import PanelFooter from '../panel-footer.js';
+import { Tabular, PanelFooter } from '../utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class BlockEditor extends Component {

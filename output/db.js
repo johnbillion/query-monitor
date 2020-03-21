@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
-import Warning from './warning';
+import { Warning } from './utils';
 
 class DB extends Component {
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
-import Warning from './warning.js';
-import Toggler from './toggler.js';
+import { Toggler, Warning } from './utils';
 import classnames from 'classnames';
 
 class PHP extends Component {

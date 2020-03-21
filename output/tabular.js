@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Tabular extends Component {
+export class Tabular extends Component {
 
 	render() {
 		const caption = `qm-${this.props.id}-caption`;
@@ -19,5 +19,3 @@ class Tabular extends Component {
 	}
 
 }
-
-export default Tabular;

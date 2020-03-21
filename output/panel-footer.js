@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PanelFooter extends Component {
+export class PanelFooter extends Component {
 
 	render() {
 		return (
@@ -18,5 +18,3 @@ class PanelFooter extends Component {
 	}
 
 }
-
-export default PanelFooter;
