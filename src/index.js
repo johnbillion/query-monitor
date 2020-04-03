@@ -22,8 +22,6 @@ jQuery(function($) {
 	ReactDOM.render(<Transients data={qm_data.transients.data} enabled={qm_data.transients.enabled} id="transients" /> , document.getElementById('qm-transients-container'));
 	ReactDOM.render(<Languages data={qm_data.languages.data} enabled={qm_data.languages.enabled} id="languages" /> , document.getElementById('qm-languages-container'));
 
-	console.log(Object.keys(qm_data.db_queries.data.dbs));
-
 	Object.keys(qm_data.db_queries.data.dbs).map(function(key){
 		let data = qm_data.db_queries.data.dbs[key];
 		ReactDOM.render(<DBQueries data={data} enabled={qm_data.db_queries.enabled} id="db_queries-wpdb" /> , document.getElementById('qm-db_queries-container'));
