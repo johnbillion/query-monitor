@@ -42,6 +42,7 @@ abstract class QM_Collector {
 		$sql = str_replace( array( "\t", '`' ), '', $sql );
 		$sql = preg_replace( '/ +/', ' ', $sql );
 		$sql = trim( $sql );
+		$sql = rtrim( $sql, ';' );
 
 		$this->data['dupes'][ $sql ][] = $i;
 

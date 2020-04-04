@@ -62,6 +62,12 @@ class QM_Collector_Languages extends QM_Collector {
 		$this->data['locale']      = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		ksort( $this->data['languages'] );
+
+		foreach ( $this->data['languages'] as & $mofiles ) {
+			foreach ( $mofiles as & $mofile ) {
+				$mofile['found_formatted'] = $mofile['found'] ? size_format( $mofile['found'] ) : '';
+			}
+		}
 	}
 
 	/**
@@ -120,7 +126,6 @@ class QM_Collector_Languages extends QM_Collector {
 			'domain' => $domain,
 			'file'   => $mofile,
 			'found'  => $found,
-			'found_formatted' => $found ? size_format( $found ) : '',
 			'handle' => null,
 			'type'   => 'gettext',
 		);
@@ -143,11 +148,13 @@ class QM_Collector_Languages extends QM_Collector {
 		$filtered = $trace->get_filtered_trace();
 		$caller   = $filtered[0];
 
+		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
+
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $caller,
 			'domain' => $domain,
 			'file'   => $file,
-			'found'  => ( $file && file_exists( $file ) ) ? filesize( $file ) : false,
+			'found'  => $found,
 			'handle' => $handle,
 			'type'   => 'jed',
 		);

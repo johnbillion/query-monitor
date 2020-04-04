@@ -31,6 +31,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 			'is_date',
 			'is_day',
 			'is_embed',
+			'is_favicon',
 			'is_feed',
 			'is_front_page',
 			'is_home',

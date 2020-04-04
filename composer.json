@@ -34,7 +34,7 @@
 		"roots/wordpress": "*",
 		"squizlabs/php_codesniffer": "^3.2",
 		"vlucas/phpdotenv": "^3",
-		"wp-cli/wp-cli-bundle": "^2.1",
+		"wp-cli/db-command": "^2",
 		"wp-coding-standards/wpcs": "~2.0.0",
 		"wp-phpunit/wp-phpunit": "*"
 	},

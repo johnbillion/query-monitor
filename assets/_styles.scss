@@ -27,16 +27,13 @@ $qm-admin-toolbar-height: 32px;
 		}
 	}
 
-	#wp-admin-bar-query-monitor-notices a,
-	.qm-notice {
-		background-color: #740;
-	}
-
 	#wp-admin-bar-query-monitor-stricts a,
 	#wp-admin-bar-query-monitor-deprecateds a,
+	#wp-admin-bar-query-monitor-notices a,
 	.qm-strict,
-	.qm-deprecated {
-		background-color: #3c3c3c;
+	.qm-deprecated,
+	.qm-notice {
+		background-color: #740;
 	}
 
 	#wp-admin-bar-query-monitor-expensive a,
@@ -127,8 +124,43 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 }
 
+@mixin global-reset {
+	background: transparent !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	box-sizing: border-box !important;
+	clear: both !important;
+	color: $qm-container-fg !important;
+	float: none !important;
+	font-family: $qm-font-default-face !important;
+	font-size: $qm-font-default-size !important;
+	-webkit-font-smoothing: auto !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	letter-spacing: normal !important;
+	line-height: $qm-font-default-line-height !important;
+	margin: 0 !important;
+	min-height: auto !important;
+	outline: none !important;
+	padding: 0 !important;
+	text-align: left !important;
+	text-decoration: none !important;
+	text-indent: 0 !important;
+	text-shadow: none !important;
+	text-transform: none !important;
+	transition: none !important;
+	vertical-align: baseline !important;
+	word-break: normal !important;
+	word-wrap: normal !important;
+
+	&::before,
+	&::after {
+		display: none !important;
+	}
+}
+
 #query-monitor-main {
-	&,
 	dl,
 	dt,
 	dd,
@@ -154,43 +186,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	section,
 	nav,
 	p {
-		background: transparent !important;
-		border: none !important;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-		box-sizing: border-box !important;
-		clear: both !important;
-		color: $qm-container-fg !important;
-		float: none !important;
-		font-family: $qm-font-default-face !important;
-		font-size: $qm-font-default-size !important;
-		-webkit-font-smoothing: auto !important;
-		font-style: normal !important;
-		font-weight: normal !important;
-		letter-spacing: normal !important;
-		line-height: $qm-font-default-line-height !important;
-		margin: 0 !important;
-		min-height: auto !important;
-		outline: none !important;
-		padding: 0 !important;
-		text-align: left !important;
-		text-decoration: none !important;
-		text-indent: 0 !important;
-		text-shadow: none !important;
-		text-transform: none !important;
-		transition: none !important;
-		vertical-align: baseline !important;
-		width: auto !important;
-		word-break: normal !important;
-		word-wrap: normal !important;
+		@include global-reset;
 
-		&::before,
-		&::after {
-			display: none !important;
-		}
+		width: auto !important;
 	}
 
 	& {
+		@include global-reset;
+
 		background: $qm-panel-bg !important;
 		border-top: 1px solid $qm-panel-border !important;
 		bottom: 0 !important;
@@ -924,6 +927,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: #fff !important;
 	}
 
+	.qm tbody tr td.qm-highlight,
+	.qm tbody tr.qm-highlight td {
+		background-color: $qm-cell-bg-highlight !important;
+		color: $qm-cell-fg-highlight !important;
+	}
+
+	.qm tbody tr.qm-odd td.qm-highlight,
+	.qm tbody tr.qm-odd.qm-highlight td {
+		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
+		color: $qm-cell-fg-highlight !important;
+	}
+
 	.qm tbody tr.qm-odd.qm-hovered th,
 	.qm tbody tr.qm-odd.qm-hovered td,
 	.qm tbody tr.qm-odd:hover th,
@@ -937,14 +952,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm thead th.qm-filtered select.qm-filter {
 		background-color: $qm-cell-bg-highlight !important;
-		color: $qm-cell-fg-highlight !important;
-	}
-
-	.qm tbody tr td.qm-highlight,
-	.qm tbody tr.qm-highlight td {
-		background-color: $qm-cell-bg-highlight !important;
-		border-color: $qm-cell-border-highlight !important;
-		box-shadow: inset 0 -1px $qm-cell-border-highlight !important;
 		color: $qm-cell-fg-highlight !important;
 	}
 
@@ -1280,5 +1287,46 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	&.qm-broken #qm-broken h2 {
 		padding: 20px !important;
+	}
+}
+
+#qm-fatal {
+	margin: 1em !important;
+	border: 1px solid #c00 !important;
+	background: #fff !important;
+	width: 700px !important;
+	clear: both !important;
+
+	h2 {
+		font-size: 12px !important;
+		font-weight: normal !important;
+		padding: 5px !important;
+		background: #f3f3f3 !important;
+		margin: 0 !important;
+		border-bottom: 1px solid #c00 !important;
+	}
+
+	.dashicons {
+		color: #c00 !important;
+	}
+
+	ol,
+	p {
+		font-size: 12px !important;
+		padding: 0 !important;
+		margin: 1em !important;
+	}
+
+	ol {
+		padding: 0 0 1em 1em !important;
+	}
+
+	li {
+		margin: 0 0 0.7em !important;
+		list-style: none !important;
+	}
+
+	.qm-info {
+		color: #666 !important;
 	}
 }

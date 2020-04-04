@@ -28,35 +28,35 @@ class QM_Collector_Logger extends QM_Collector {
 	}
 
 	public function emergency( $message, array $context = array() ) {
-		$this->store( 'emergency', $message, $context );
+		$this->store( self::EMERGENCY, $message, $context );
 	}
 
 	public function alert( $message, array $context = array() ) {
-		$this->store( 'alert', $message, $context );
+		$this->store( self::ALERT, $message, $context );
 	}
 
 	public function critical( $message, array $context = array() ) {
-		$this->store( 'critical', $message, $context );
+		$this->store( self::CRITICAL, $message, $context );
 	}
 
 	public function error( $message, array $context = array() ) {
-		$this->store( 'error', $message, $context );
+		$this->store( self::ERROR, $message, $context );
 	}
 
 	public function warning( $message, array $context = array() ) {
-		$this->store( 'warning', $message, $context );
+		$this->store( self::WARNING, $message, $context );
 	}
 
 	public function notice( $message, array $context = array() ) {
-		$this->store( 'notice', $message, $context );
+		$this->store( self::NOTICE, $message, $context );
 	}
 
 	public function info( $message, array $context = array() ) {
-		$this->store( 'info', $message, $context );
+		$this->store( self::INFO, $message, $context );
 	}
 
 	public function debug( $message, array $context = array() ) {
-		$this->store( 'debug', $message, $context );
+		$this->store( self::DEBUG, $message, $context );
 	}
 
 	public function log( $level, $message, array $context = array() ) {
@@ -68,11 +68,13 @@ class QM_Collector_Logger extends QM_Collector {
 	}
 
 	protected function store( $level, $message, array $context = array() ) {
+		$type  = 'string';
 		$trace = new QM_Backtrace( array(
 			'ignore_frames' => 2,
 		) );
 
 		if ( is_wp_error( $message ) ) {
+			$type    = 'wp_error';
 			$message = sprintf(
 				'WP_Error: %s (%s)',
 				$message->get_error_message(),
@@ -80,12 +82,14 @@ class QM_Collector_Logger extends QM_Collector {
 			);
 		}
 
-		if ( $message instanceof Exception ) {
+		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
+			$type    = 'throwable';
 			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
 		if ( ! QM_Util::is_stringy( $message ) ) {
-			$message = QM_Util::json_format( $message );
+			$type    = 'dump';
+			$message = print_r( $message, true );
 		}
 
 		$this->data['logs'][] = array(
@@ -93,6 +97,7 @@ class QM_Collector_Logger extends QM_Collector {
 			'context' => $context,
 			'trace'   => $trace,
 			'level'   => $level,
+			'type'    => $type,
 		);
 	}
 

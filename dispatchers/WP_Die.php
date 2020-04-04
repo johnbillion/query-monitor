@@ -85,12 +85,12 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			}
 
 			#query-monitor li {
-				margin: 0 0 0.5em;
+				margin: 0 0 0.7em;
 				list-style: none;
 			}
 
 			#query-monitor .qm-info {
-				color: #777;
+				color: #666;
 			}
 		</style>
 		<?php

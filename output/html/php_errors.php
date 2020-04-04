@@ -261,9 +261,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data  = $this->collector->get_data();
 		$count = 0;
+		$types = array(
+			'suppressed',
+			'silenced',
+			'errors',
+		);
 
-		foreach ( $data['errors'] as $errors ) {
-			$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+		foreach ( $types as $type ) {
+			if ( ! empty( $data[ $type ] ) ) {
+				foreach ( $data[ $type ] as $errors ) {
+					$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+				}
+			}
 		}
 
 		$menu[ $this->collector->id() ]['title'] = esc_html( sprintf(

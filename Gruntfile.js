@@ -79,12 +79,12 @@ module.exports = function (grunt) {
 	};
 
 	config.sass = {
+		options: {
+			implementation: require('node-sass'),
+			sourceMap: false,
+			outputStyle: 'expanded'
+		},
 		dist: {
-			options: {
-				noCache: true,
-				sourcemap: 'none',
-				style: 'expanded'
-			},
 			files: {
 				'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
 				'assets/query-monitor.css': 'assets/query-monitor.scss'

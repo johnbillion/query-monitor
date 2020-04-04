@@ -394,7 +394,6 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string The fully formatted file link or file name, safe for output.
 	 */
 	public static function output_filename( $text, $file, $line = 0, $is_filename = false ) {
-
 		if ( empty( $file ) ) {
 			if ( $is_filename ) {
 				return esc_html( $text );
@@ -444,9 +443,41 @@ abstract class QM_Output_Html extends QM_Output {
 		);
 	}
 
+	/**
+	 * Provides a protocol URL for edit links in QM stack traces for various editors.
+	 *
+	 * @param string $editor the chosen code editor
+	 * @param string $default_format a format to use if no editor is found
+	 *
+	 * @return string a protocol URL format
+	 */
+	public static function get_editor_file_link_format( $editor, $default_format ) {
+		switch ( $editor ) {
+			case 'phpstorm':
+				return 'phpstorm://open?file=%f&line=%l';
+			case 'vscode':
+				return 'vscode://file/%f:%l';
+			case 'atom':
+				return 'atom://open/?url=file://%f&line=%l';
+			case 'sublime':
+				return 'subl://open/?url=file://%f&line=%l';
+			case 'netbeans':
+				return 'nbopen://%f:%l';
+			default:
+				return $default_format;
+		}
+	}
+
 	public static function get_file_link_format() {
 		if ( ! isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
+
+			if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[ QM_EDITOR_COOKIE ] ) ) {
+				$format = self::get_editor_file_link_format(
+					$_COOKIE[ QM_EDITOR_COOKIE ],
+					$format
+				);
+			}
 
 			/**
 			 * Filters the clickable file link format.

@@ -65,6 +65,43 @@ if ( window.jQuery ) {
 
 		container.removeClass('qm-no-js').addClass('qm-js');
 
+		if ( $('#qm-fatal').length ) {
+			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
+
+			if ( $('#wp-admin-bar-query-monitor').length ) {
+				$('#wp-admin-bar-query-monitor')
+					.addClass('qm-error')
+					.find('a').eq(0)
+					.text(qm_l10n.fatal_error);
+
+				var fatal_container = document.createDocumentFragment();
+
+				var fatal_message_menu = $('#wp-admin-bar-query-monitor-placeholder')
+					.clone()
+					.attr('id','wp-admin-bar-qm-fatal-message');
+
+				fatal_message_menu
+					.find('a').eq(0)
+					.text($('#qm-fatal').attr('data-qm-message'))
+					.attr('href','#qm-fatal');
+
+				fatal_container.appendChild( fatal_message_menu.get(0) );
+
+				var fatal_file_menu = $('#wp-admin-bar-query-monitor-placeholder')
+					.clone()
+					.attr('id','wp-admin-bar-qm-fatal-file');
+
+				fatal_file_menu
+					.find('a').eq(0)
+					.text($('#qm-fatal').attr('data-qm-file') + ':' + $('#qm-fatal').attr('data-qm-line'))
+					.attr('href','#qm-fatal');
+
+				fatal_container.appendChild( fatal_file_menu.get(0) );
+
+				$('#wp-admin-bar-query-monitor ul').append(fatal_container);
+			}
+		}
+
 		var link_click = function(e){
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
 			show_panel( href );
@@ -360,6 +397,35 @@ if ( window.jQuery ) {
 				success : function(response){
 					$(this).text( $(this).data('qm-text-' + action) );
 					$('#qm-settings').attr('data-qm-state',action).data('qm-state',action);
+				},
+				dataType : 'json',
+				xhrFields: {
+					withCredentials: true
+				}
+			});
+
+			e.preventDefault();
+		});
+
+		var editorSuccessIndicator = $('#qm-editor-save-status');
+		editorSuccessIndicator.hide();
+
+		$('.qm-editor-button').on('click',function(e){
+			var state  = $('#qm-settings').data('qm-state');
+			var editor = $('#qm-editor-select').val();
+
+			$.ajax(qm_l10n.ajaxurl,{
+				type : 'POST',
+				context : this,
+				data : {
+					action : 'qm_editor_set',
+					nonce  : qm_l10n.auth_nonce['editor-set'],
+					editor : editor
+				},
+				success : function(response){
+					if (response.success) {
+						editorSuccessIndicator.show();
+					}
 				},
 				dataType : 'json',
 				xhrFields: {

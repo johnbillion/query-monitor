@@ -22,18 +22,21 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		parent::__construct();
+
+		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
 		if ( ! interface_exists( 'Throwable' ) ) {
-			// PHP < 7 fatal error handler.
+			// Fatal error handler for PHP < 7:
 			register_shutdown_function( array( $this, 'shutdown_handler' ) );
 		}
+
+		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
-
-		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 	}
 
 	/**
@@ -45,41 +48,29 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param Throwable|Exception $e The error or exception.
 	 */
 	public function exception_handler( $e ) {
-		require_once __DIR__ . '/../output/Html.php';
-
 		if ( is_a( $e, 'Exception' ) ) {
 			$error = 'Uncaught Exception';
 		} else {
 			$error = 'Uncaught Error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e->getMessage(), ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e->getFile(), ENT_COMPAT, 'UTF-8' ),
-			intval( $e->getLine() )
-		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		echo '<ul>';
-		foreach ( $e->getTrace() as $frame ) {
-			$callback = QM_Util::populate_callback( $frame );
-
-			printf(
-				'<li>%s</li>',
-				QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
-			); // WPCS: XSS ok.
-		}
-		echo '</ul>';
+		self::output_fatal( 'Fatal error', array(
+			'message' => sprintf(
+				'%s: %s',
+				$error,
+				$e->getMessage()
+			),
+			'file'    => $e->getFile(),
+			'line'    => $e->getLine(),
+			'trace'   => $e->getTrace(),
+		) );
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
 		if ( $this->exception_handler ) {
 			call_user_func( $this->exception_handler, $e );
 		} else {
-			throw new Exception( $e->getMessage(), $e->getCode(), $e );
+			throw $e;
 		}
 
 		exit( 1 );
@@ -210,15 +201,49 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		self::output_fatal( $error, $e );
+	}
+
+	protected static function output_fatal( $error, array $e ) {
+		if ( ! function_exists( '__' ) ) {
+			wp_load_translations_early();
+		}
+
+		require_once dirname( __DIR__ ) . '/output/Html.php';
+
 		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e['message'], ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e['file'], ENT_COMPAT, 'UTF-8' ),
-			intval( $e['line'] )
+			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
+			esc_attr( $e['message'] ),
+			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
+			esc_attr( $e['line'] )
 		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+		echo '<div class="qm-fatal-wrap">';
+		printf(
+			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			esc_html( $error ),
+			nl2br( esc_html( $e['message'] ), false ),
+			QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true ),
+			intval( $e['line'] )
+		); // WPCS: XSS ok.
+
+		if ( ! empty( $e['trace'] ) ) {
+			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
+			echo '<ol>';
+			foreach ( $e['trace'] as $frame ) {
+				$callback = QM_Util::populate_callback( $frame );
+
+				printf(
+					'<li>%s</li>',
+					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
+				); // WPCS: XSS ok.
+			}
+			echo '</ol>';
+		}
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function post_process() {
