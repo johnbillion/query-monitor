@@ -70,6 +70,18 @@ class QM_Util {
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 
+			/**
+			 * Filters the absolute directory paths that correlate to components.
+			 *
+			 * Note that this filter is applied before QM adds its built-in list of components. This is
+			 * so custom registered components take precedence during component detection.
+			 *
+			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 *
+			 * @since 3.6.0
+			 *
+			 * @param string[] $dirs Array of absolute directory paths keyed by component identifier.
+			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
 			self::$file_dirs['plugin']     = WP_PLUGIN_DIR ;
@@ -184,6 +196,19 @@ class QM_Util {
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
+
+				/**
+				 * Filters the name of a custom or unknown component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 *
+				 * @since 3.6.0
+				 *
+				 * @param string $name The component name.
+				 * @param string $file The full file path for the file within the component.
+				 */
 				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
 				break;
 		}
