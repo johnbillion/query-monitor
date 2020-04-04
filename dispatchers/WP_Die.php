@@ -118,7 +118,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
-				esc_html__( 'The message above was triggered by %s.', 'query-monitor' ),
+				esc_html__( 'This message was triggered by %s.', 'query-monitor' ),
 				'<b>' . esc_html( $name ) . '</b>'
 			);
 		}
