@@ -113,7 +113,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
 								'<code>all</code>'
 							);
-							echo '<span>';
+							echo '</span>';
 						}
 						echo '</span></th>';
 
