@@ -1292,10 +1292,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-fatal {
 	margin: 1em !important;
-	border: 1px solid #c00 !important;
+	border: 2px solid #c00 !important;
+	box-shadow: 0 0 0 2px #fff;
 	background: #fff !important;
 	width: 700px !important;
 	clear: both !important;
+	position: absolute !important;
+	z-index: 99999 !important;
 
 	h2 {
 		font-size: 12px !important;
@@ -1303,7 +1306,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		padding: 5px !important;
 		background: #f3f3f3 !important;
 		margin: 0 !important;
-		border-bottom: 1px solid #c00 !important;
 	}
 
 	.dashicons {
@@ -1328,5 +1330,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm-info {
 		color: #666 !important;
+	}
+}
+
+body#error-page {
+	#qm-fatal {
+		margin: 0 !important;
+		border: none !important;
 	}
 }

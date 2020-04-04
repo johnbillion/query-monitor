@@ -211,6 +211,19 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		require_once dirname( __DIR__ ) . '/output/Html.php';
 
+		// This hides the subsequent message from the fatal error handler in core. It cannot be
+		// disabled by a plugin so we'll just hide its output.
+		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
+
+		printf(
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( includes_url( 'css/dashicons.css' ) )
+		);
+		printf(
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
+		);
+
 		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
 		// attribute if a fatal has occured within one.
 		echo '<div data-qm="qm">';
@@ -222,7 +235,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			esc_attr( $e['line'] )
 		);
 
-		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 		echo '<div class="qm-fatal-wrap">';
 		printf(
 			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
@@ -247,6 +259,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		echo '</div>';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+
 		echo '</div>';
 		echo '</div>';
 	}
