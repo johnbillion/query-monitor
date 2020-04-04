@@ -1357,7 +1357,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   border: 2px solid #c00 !important;
   box-shadow: 0 0 0 2px #fff;
   background: #fff !important;
-  width: 700px !important;
+  max-width: 700px !important;
   clear: both !important;
   position: absolute !important;
   z-index: 99999 !important;
