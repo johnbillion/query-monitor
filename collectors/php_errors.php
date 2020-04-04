@@ -236,11 +236,18 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		);
 
 		echo '<div class="qm-fatal-wrap">';
+
+		if ( QM_Output_Html::has_clickable_links() ) {
+			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
+		} else {
+			$file = esc_html( $e['file'] );
+		}
+
 		printf(
 			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
-			QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true ),
+			$file,
 			intval( $e['line'] )
 		); // WPCS: XSS ok.
 
