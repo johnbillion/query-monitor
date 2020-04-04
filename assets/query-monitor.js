@@ -104,6 +104,11 @@ if ( window.jQuery ) {
 
 		var link_click = function(e){
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
+
+			if ( '#qm-fatal' === href ) {
+				return;
+			}
+
 			show_panel( href );
 			$(href).focus();
 			$('#wp-admin-bar-query-monitor').removeClass('hover');
