@@ -216,10 +216,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
 
 		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%s" media="all" />',
 			esc_url( includes_url( 'css/dashicons.css' ) )
 		);
 		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%s" media="all" />',
 			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
 		);
