@@ -211,6 +211,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		require_once dirname( __DIR__ ) . '/output/Html.php';
 
+		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occured within one.
+		echo '<div data-qm="qm">';
+
 		printf(
 			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
 			esc_attr( $e['message'] ),
@@ -242,6 +246,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			echo '</ol>';
 		}
 
+		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 	}
