@@ -33,13 +33,13 @@ class QM_CLI extends QM_Plugin {
 		}
 
 		if ( ! function_exists( 'symlink' ) ) {
-			WP_CLI::error( 'The symlink function is not available.' );
+			WP_CLI::error( 'The symlink function is not available' );
 		}
 
 		if ( symlink( $this->plugin_path( 'wp-content/db.php' ), $drop_in ) ) {
-			WP_CLI::success( 'Enabled QM Extended query information by creating wp-content/db.php symlink.' );
+			WP_CLI::success( 'wp-content/db.php symlink created' );
 		} else {
-			WP_CLI::error( 'Failed create wp-content/db.php symlink and enable QM Extended query information.' );
+			WP_CLI::error( 'Failed to create wp-content/db.php symlink' );
 		}
 	}
 
