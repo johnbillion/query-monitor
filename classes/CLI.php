@@ -21,14 +21,15 @@ class QM_CLI extends QM_Plugin {
 	 * Enable QM by creating the symlink for db.php
 	 */
 	public function enable() {
-		global $wpdb;
-		if ( is_a( $wpdb, 'QM_DB' ) ) {
-			WP_CLI::success( 'QM Extended query information is already enabled.' );
-			return;
-		}
 		$drop_in = WP_CONTENT_DIR . '/db.php';
+
 		if ( file_exists( $drop_in ) ) {
-			WP_CLI::error( 'Unknown wp-content/db.php already exists.' );
+			if ( false !== strpos( file_get_contents( $drop_in ), 'class QM_DB' ) ) {
+				WP_CLI::success( "Query Monitor's wp-content/db.php is already in place" );
+				exit( 0 );
+			} else {
+				WP_CLI::error( 'Unknown wp-content/db.php already is already in place' );
+			}
 		}
 
 		if ( ! function_exists( 'symlink' ) ) {
