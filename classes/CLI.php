@@ -31,6 +31,10 @@ class QM_CLI extends QM_Plugin {
 			WP_CLI::error( 'Unknown wp-content/db.php already exists.' );
 		}
 
+		if ( ! function_exists( 'symlink' ) ) {
+			WP_CLI::error( 'The symlink function is not available.' );
+		}
+
 		if ( symlink( $this->plugin_path( 'wp-content/db.php' ), $drop_in ) ) {
 			WP_CLI::success( 'Enabled QM Extended query information by creating wp-content/db.php symlink.' );
 		} else {
