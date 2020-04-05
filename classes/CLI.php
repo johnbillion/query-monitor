@@ -38,6 +38,7 @@ class QM_CLI extends QM_Plugin {
 
 		if ( symlink( $this->plugin_path( 'wp-content/db.php' ), $drop_in ) ) {
 			WP_CLI::success( 'wp-content/db.php symlink created' );
+			exit( 0 );
 		} else {
 			WP_CLI::error( 'Failed to create wp-content/db.php symlink' );
 		}
