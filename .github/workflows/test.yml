@@ -23,6 +23,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v1
 
+    - name: Composer cache
+      uses: actions/cache@v1
+      env:
+        cache-name: composer
+      with:
+        path: ~/.composer/cache
+        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('composer.lock') }}
+
+    - name: PHPCS cache
+      uses: actions/cache@v1
+      env:
+        cache-name: phpcs
+      with:
+        path: tests/cache
+        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('tests/cache/phpcs') }}
+
     - name: Install PHP
       uses: shivammathur/setup-php@1.3.7
       with:
