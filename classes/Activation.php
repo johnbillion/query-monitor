@@ -32,7 +32,7 @@ class QM_Activation extends QM_Plugin {
 		$db = WP_CONTENT_DIR . '/db.php';
 
 		if ( ! file_exists( $db ) && function_exists( 'symlink' ) ) {
-			@symlink( plugin_dir_path( $this->file ) . 'wp-content/db.php', $db ); // @codingStandardsIgnoreLine
+			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db ); // @codingStandardsIgnoreLine
 		}
 
 		if ( $sitewide ) {
