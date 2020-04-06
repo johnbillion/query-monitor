@@ -59,6 +59,7 @@ jobs:
         composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }}"
 
     - name: Run code sniffer
+      if: matrix.php == '7.3' && matrix.wp == '*'
       run: composer test:cs
 
     - name: Run unit tests
