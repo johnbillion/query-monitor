@@ -29,7 +29,7 @@ jobs:
         cache-name: composer
       with:
         path: ~/.composer/cache
-        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('composer.lock') }}
+        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('composer.json') }}
 
     - name: PHPCS cache
       uses: actions/cache@v1
@@ -37,7 +37,10 @@ jobs:
         cache-name: phpcs
       with:
         path: tests/cache
-        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('tests/cache/phpcs') }}
+        # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
+        # always pulling in a cache file and simultaneously always updating it, unlike Travis.
+        # This way we always pull in a cache file and refresh it with each new version of QM.
+        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('query-monitor.php') }}
 
     - name: Install PHP
       uses: shivammathur/setup-php@2.1.3
