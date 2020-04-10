@@ -64,8 +64,8 @@ class QM_Collector_Caps extends QM_Collector {
 	 *
 	 * This does not get called for Super Admins. See filter_map_meta_cap() below.
 	 *
-	 * @param bool[]   $user_caps     Concerned user's capabilities.
-	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
+	 * @param bool[]   $user_caps Concerned user's capabilities.
+	 * @param string[] $caps      Required primitive capabilities for the requested capability.
 	 * @param array    $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
