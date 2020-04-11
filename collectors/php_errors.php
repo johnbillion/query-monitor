@@ -205,6 +205,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	protected static function output_fatal( $error, array $e ) {
+		if ( empty( $this->display_errors ) ) {
+			return;
+		}
+
 		if ( ! function_exists( '__' ) ) {
 			wp_load_translations_early();
 		}
