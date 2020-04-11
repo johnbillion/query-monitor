@@ -10,7 +10,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * Outputter instances.
 	 *
-	 * @var QM_Output_html[] Array of outputters.
+	 * @var QM_Output_Html[] Array of outputters.
 	 */
 	protected $outputters = array();
 
