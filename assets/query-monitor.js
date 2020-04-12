@@ -156,7 +156,7 @@ if ( window.jQuery ) {
 			var filters = $( panel ).find('.qm-filter');
 
 			if ( filters.length ) {
-				$(container).on('change', filters);
+				filters.trigger('change');
 			} else {
 				stripes( $(panel).find('table') );
 			}
@@ -270,7 +270,7 @@ if ( window.jQuery ) {
 				if ( ! $(this).find('option[value="' + val + '"]').length ) {
 					$('<option>').attr('value',value).text(value).appendTo(this);
 				}
-				$(container).on('change', $(this).val(value));
+				$(this).val(value).trigger('change');
 			}
 		});
 
@@ -279,9 +279,8 @@ if ( window.jQuery ) {
 				value = $(this).data('qm-value'),
 				target = $(this).data('qm-target');
 
-			$(container).on('change', $('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight'));
-			$(container).on('change', $('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight'));
-
+			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').trigger('change');
+			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').trigger('change');
 			show_panel('#qm-' + target);
 			$('#qm-' + target).focus();
 			e.preventDefault();
@@ -564,8 +563,7 @@ if ( window.jQuery ) {
 		if ( pinned && $( pinned ).length ) {
 			show_panel( pinned );
 		}
-		
-		$(container).on('change', '.qm-title-heading select', function(){
+		$('.qm-title-heading select').trigger('change', function(){
 			show_panel( $(this).val() );
 			$($(this).val()).focus();
 		});
