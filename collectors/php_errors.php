@@ -201,7 +201,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	protected function output_fatal( $error, array $e ) {
-		if ( empty( $this->display_errors ) && ! QM_Dispatchers::get( 'html' )::user_can_view() ) {
+		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( empty( $this->display_errors ) && ! $dispatcher::user_can_view() ) {
 			return;
 		}
 
