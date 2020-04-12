@@ -12,10 +12,6 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	protected $block_timing = array();
 	protected $block_timer  = null;
 
-	public function name() {
-		return __( 'Blocks', 'query-monitor' );
-	}
-
 	public function __construct() {
 		parent::__construct();
 
@@ -57,16 +53,23 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	}
 
 	public function process() {
+		global $_wp_current_template_content;
+
 		$this->data['block_editor_enabled'] = self::wp_block_editor_enabled();
 
-		if ( ! is_singular() ) {
+		if ( ! empty( $_wp_current_template_content ) ) {
+			// Full site editor:
+			$content = $_wp_current_template_content;
+		} elseif ( is_singular() ) {
+			// Post editor:
+			$content = get_post( get_queried_object_id() )->post_content;
+		} else {
+			// Nada:
 			return;
 		}
 
-		$post = get_post( get_queried_object_id() );
-
-		$this->data['post_has_blocks']    = self::wp_has_blocks( $post->post_content );
-		$this->data['post_blocks']        = self::wp_parse_blocks( $post->post_content );
+		$this->data['post_has_blocks']    = self::wp_has_blocks( $content );
+		$this->data['post_blocks']        = self::wp_parse_blocks( $content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 		$this->data['total_blocks']       = 0;
 		$this->data['has_block_timing']   = false;
@@ -98,9 +101,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		$timing = array_shift( $this->block_timing );
 
-		$block['dynamic']  = $dynamic;
-		$block['callback'] = $callback;
-		$block['size']     = strlen( $block['innerHTML'] );
+		$block['dynamic']   = $dynamic;
+		$block['callback']  = $callback;
+		$block['innerHTML'] = trim( $block['innerHTML'] );
+		$block['size']      = strlen( $block['innerHTML'] );
 
 		if ( $timing ) {
 			$block['timing'] = $timing->get_time();

@@ -20,6 +20,10 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 25 );
 	}
 
+	public function name() {
+		return __( 'Duplicate Queries', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();

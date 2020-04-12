@@ -1,6 +1,6 @@
 {
   "name": "query-monitor",
-  "version": "3.4.0",
+  "version": "3.5.2",
   "description": "The Developer Tools panel for WordPress.",
   "license": "GPL-2.0-or-later",
   "private": true,
@@ -13,15 +13,16 @@
     "grunt-contrib-clean": "^2",
     "grunt-contrib-copy": "^1",
     "grunt-contrib-cssmin": "^2",
-    "grunt-contrib-sass": "^1",
-    "grunt-convert-svg-to-png": "^1",
     "grunt-contrib-watch": "^1",
+    "grunt-convert-svg-to-png": "^1",
     "grunt-rename-util": "^1",
+    "grunt-sass": "^3",
     "grunt-version": "^1",
     "grunt-wp-deploy": "git+https://github.com/johnbillion/grunt-wp-deploy.git#master",
     "grunt-wp-readme-to-markdown": "^2",
     "load-grunt-tasks": "^4",
-    "node-jq": "^1"
+    "node-jq": "^1",
+    "node-sass": "^4"
   },
   "scripts": {
     "build": "grunt build",

@@ -14,6 +14,10 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	public function name() {
+		return __( 'Scripts', 'query-monitor' );
+	}
+
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued scripts */

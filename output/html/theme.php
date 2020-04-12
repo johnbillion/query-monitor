@@ -20,6 +20,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 60 );
 	}
 
+	public function name() {
+		return __( 'Theme', 'query-monitor' );
+	}
+
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -34,7 +38,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
 
 		if ( $data['is_child_theme'] ) {
-			echo '<h3>' . esc_html__( 'Parent Theme:', 'query-monitor' ) . '</h3>';
+			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
 			echo '<p>' . esc_html( $data['template'] ) . '</p>';
 		}
 
@@ -59,21 +63,15 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
-
 		if ( ! empty( $data['template_hierarchy'] ) ) {
-			echo '<section>';
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
-			echo '<ol class="qm-ltr qm-numbered"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
-			echo '</section>';
+			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
 		}
+
+		echo '</section>';
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
-
-		if ( $data['has_template_part_action'] ) {
-			echo '<h4>' . esc_html__( 'Loaded', 'query-monitor' ) . '</h4>';
-		}
 
 		if ( ! empty( $data['template_parts'] ) ) {
 
@@ -118,8 +116,15 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				echo '<ul>';
 
 				foreach ( $data['unsuccessful_template_parts'] as $requested ) {
+					if ( $requested['name'] ) {
+						echo '<li>';
+						$text = $requested['slug'] . '-' . $requested['name'] . '.php';
+						echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
+						echo '</li>';
+					}
+
 					echo '<li>';
-					$text = implode( ', ', array_filter( array( $requested['slug'], $requested['name'] ) ) );
+					$text = $requested['slug'] . '.php';
 					echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 				}

@@ -21,6 +21,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	public function name() {
+		return __( 'PHP Errors', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -121,10 +125,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						}
 					}
 
-					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle"><ol class="qm-toggler qm-numbered">';
+					echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr qm-has-toggle">';
 
-					echo self::build_toggler(); // WPCS: XSS ok;
+					if ( ! empty( $stack ) ) {
+						echo self::build_toggler(); // WPCS: XSS ok;
+					}
 
+					echo '<ol>';
 					echo '<li>';
 					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
@@ -254,9 +261,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$data  = $this->collector->get_data();
 		$count = 0;
+		$types = array(
+			'suppressed',
+			'silenced',
+			'errors',
+		);
 
-		foreach ( $data['errors'] as $errors ) {
-			$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+		foreach ( $types as $type ) {
+			if ( ! empty( $data[ $type ] ) ) {
+				foreach ( $data[ $type ] as $errors ) {
+					$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+				}
+			}
 		}
 
 		$menu[ $this->collector->id() ]['title'] = esc_html( sprintf(

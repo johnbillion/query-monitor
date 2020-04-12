@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.3
-Stable tag: 3.4.0
+Tested up to: 5.4
+Stable tag: 3.5.2
 License: GPLv2 or later
 Requires PHP: 5.3
 
@@ -46,7 +46,7 @@ In addition to this, you can set an authentication cookie which allows you to vi
 
 = Privacy Statement =
 
-Query Monitor does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
+Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
 
@@ -88,7 +88,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 = Is Query Monitor available on WordPress.com VIP Go? =
 
-Yep! You just need to add `define( 'WPCOM_VIP_QM_ENABLE', true );` to your `vip-config/vip-config.php` file.
+Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
 
 = I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? =
 
@@ -105,7 +105,7 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 
 = Can I click on stack traces to open the file in my editor? =
 
-Yes! You just need to [enable clickable stack traces](https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/).
+Yes! You can enable this on the Settings panel.
 
 = Do you accept donations? =
 

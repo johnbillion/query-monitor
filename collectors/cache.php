@@ -9,10 +9,6 @@ class QM_Collector_Cache extends QM_Collector {
 
 	public $id = 'cache';
 
-	public function name() {
-		return __( 'Cache', 'query-monitor' );
-	}
-
 	public function process() {
 		global $wp_object_cache;
 

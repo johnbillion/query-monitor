@@ -20,6 +20,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	public function name() {
+		return __( 'Logger', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -81,10 +85,17 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo esc_html( ucfirst( $row['level'] ) );
 			echo '</td>';
 
-			printf(
-				'<td>%s</td>',
-				esc_html( $row['message'] )
-			);
+			if ( 'dump' === $row['type'] ) {
+				printf(
+					'<td><pre>%s</pre></td>',
+					esc_html( $row['message'] )
+				);
+			} else {
+				printf(
+					'<td>%s</td>',
+					esc_html( $row['message'] )
+				);
+			}
 
 			$stack          = array();
 			$filtered_trace = $row['trace']->get_display_trace();
@@ -93,14 +104,19 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 			}
 
-			echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
-
 			$caller = array_shift( $stack );
+
+			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
+
+			if ( ! empty( $stack ) ) {
+				echo self::build_toggler(); // WPCS: XSS ok;
+			}
+
+			echo '<ol>';
 
 			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
-				echo self::build_toggler(); // WPCS: XSS ok;
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 			}
 

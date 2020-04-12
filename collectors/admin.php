@@ -9,10 +9,6 @@ class QM_Collector_Admin extends QM_Collector {
 
 	public $id = 'response';
 
-	public function name() {
-		return __( 'Admin Screen', 'query-monitor' );
-	}
-
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',

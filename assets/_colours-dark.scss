@@ -37,10 +37,10 @@ $qm-container-selection-fg: $qm-container-fg !default;
 $qm-container-selection-bg: #b9d6fb !default;
 
 // Panels
-$qm-panel-border: $light-grey !default;
+$qm-panel-border: $dark-silver !default;
 $qm-panel-fg: $qm-container-fg !default;
 $qm-panel-bg: $base-grey !default;
-$qm-panel-separator: $light-grey !default;
+$qm-panel-separator: $dark-silver !default;
 
 // Panel menus
 $qm-panel-menu-border: $dark-grey !default;
@@ -58,10 +58,9 @@ $qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
 
 // Tables
 $qm-cell-border: $base-grey !default;
-$qm-cell-bg-hover: lighten( $dark-grey, 5% ) !default;
+$qm-cell-bg-hover: lighten( $dark-grey, 2% ) !default;
 $qm-cell-fg-highlight: $qm-container-fg !default;
 $qm-cell-bg-highlight: #57572a !default;
-$qm-cell-border-highlight: #660 !default;
 $qm-cell-bg-stripe: $dark-grey !default;
 $qm-table-header-bg: $dark-grey !default;
 $qm-table-footer-bg: $dark-grey !default;
@@ -69,12 +68,13 @@ $qm-table-footer-bg: $dark-grey !default;
 // Links and Buttons
 $qm-link-fg: $bright-blue !default;
 $qm-link-fg-hover: $light-blue !default;
+$qm-link-fg-active: lighten( $light-blue, 10% ) !default;
 $qm-button-fg: #fff !default;
 $qm-button-bg: #0085ba !default;
-$qm-button-border: darken( $qm-button-bg, 5% ) !default;
 $qm-button-fg-hover: $qm-button-fg !default;
-$qm-button-bg-hover: lighten( $qm-button-bg, 4% ) !default;
-$qm-button-shadow: darken( $qm-button-bg, 5% ) !default;
+$qm-button-bg-hover: darken( $qm-button-bg, 3% ) !default;
+$qm-button-fg-active: $qm-button-fg !default;
+$qm-button-bg-active: darken( $qm-button-bg, 6% ) !default;
 $qm-title-button-fg: $light-grey !default;
 $qm-title-button-bg: transparent !default;
 $qm-title-button-fg-hover: $dark-grey !default;
@@ -82,6 +82,6 @@ $qm-title-button-bg-hover: $light-grey !default;
 
 // Formatting
 $qm-warn-fg: #fff0f0 !default;
-$qm-warn-bg: #800 !default;
+$qm-warn-bg: #522 !default;
 $qm-warn-border: #ffd6d6 !default;
 $qm-nonselect-fg: #a6a !default;

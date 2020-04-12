@@ -34,7 +34,7 @@
 		"roots/wordpress": "*",
 		"squizlabs/php_codesniffer": "^3.2",
 		"vlucas/phpdotenv": "^3",
-		"wp-cli/wp-cli-bundle": "^2.1",
+		"wp-cli/db-command": "^2",
 		"wp-coding-standards/wpcs": "~2.0.0",
 		"wp-phpunit/wp-phpunit": "*"
 	},
@@ -43,12 +43,12 @@
 			"@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.dist', 'tests/.env' );\""
 		],
 		"test:cs": [
-			"vendor/bin/phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
 		],
 		"test:ut": [
-			"vendor/bin/wp db reset --yes --path=$(npm run --silent jq '.extra .\"wordpress-install-dir\"' composer.json -- -r) #",
-			"export WP_MULTISITE=0 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-required",
-			"export WP_MULTISITE=1 && vendor/bin/phpunit --verbose --colors=always --exclude-group=ms-excluded"
+			"wp db reset --yes --path=$(npm run --silent jq '.extra .\"wordpress-install-dir\"' composer.json -- -r) #",
+			"export WP_MULTISITE=0 && phpunit --verbose --colors=always --exclude-group=ms-required",
+			"export WP_MULTISITE=1 && phpunit --verbose --colors=always --exclude-group=ms-excluded"
 		],
 		"test": [
 			"@test:cs",

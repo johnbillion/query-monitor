@@ -54,14 +54,22 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		$component = QM_Backtrace::get_frame_component( $culprit );
 
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( includes_url( 'css/dashicons.css' ) )
+		);
+
 		?>
 		<style>
 			#query-monitor {
 				position: absolute;
-				margin: 4em 0 1em;
-				border: 1px solid #aaa;
+				margin: 0.9em 0 1em;
+				box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.13 );
 				background: #fff;
-				width: 700px;
+				padding-top: 1em;
+				max-width: 700px;
+				z-index: -1;
 			}
 
 			#query-monitor h2 {
@@ -70,14 +78,14 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				padding: 5px;
 				background: #f3f3f3;
 				margin: 0;
-				border-bottom: 1px solid #aaa;
+				border-top: 1px solid #ddd;
 			}
 
 			#query-monitor ol,
 			#query-monitor p {
 				font-size: 12px;
 				padding: 0;
-				margin: 1em;
+				margin: 1em 2em;
 			}
 
 			#query-monitor ol {
@@ -85,35 +93,45 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			}
 
 			#query-monitor li {
-				margin: 0 0 0.5em;
+				margin: 0 0 0.7em;
 				list-style: none;
 			}
 
 			#query-monitor .qm-info {
-				color: #777;
+				color: #666;
 			}
+
+			#query-monitor .dashicons-info {
+				color: #0071a1;
+				vertical-align: bottom;
+				margin-right: 5px;
+			}
+
 		</style>
 		<?php
 
 		echo '<div id="query-monitor">';
 
-		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+		echo '<p>';
+		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
 
 		if ( $component ) {
-			echo '<p>';
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
-				esc_html__( 'The message above was triggered by %s.', 'query-monitor' ),
+				esc_html__( 'This message was triggered by %s.', 'query-monitor' ),
 				'<b>' . esc_html( $name ) . '</b>'
 			);
-			echo '</p>';
 		}
+
+		echo '</p>';
 
 		echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
 		echo '<ol>';
 		echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 		echo '</ol>';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 
 		echo '</div>';
 
@@ -127,7 +145,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 

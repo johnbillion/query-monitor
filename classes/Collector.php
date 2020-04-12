@@ -26,8 +26,6 @@ abstract class QM_Collector {
 		return "qm-{$this->id}";
 	}
 
-	abstract public function name();
-
 	protected function log_type( $type ) {
 
 		if ( isset( $this->data['types'][ $type ] ) ) {
@@ -44,6 +42,7 @@ abstract class QM_Collector {
 		$sql = str_replace( array( "\t", '`' ), '', $sql );
 		$sql = preg_replace( '/ +/', ' ', $sql );
 		$sql = trim( $sql );
+		$sql = rtrim( $sql, ';' );
 
 		$this->data['dupes'][ $sql ][] = $i;
 
@@ -80,6 +79,8 @@ abstract class QM_Collector {
 		if ( ! defined( $constant ) ) {
 			/* translators: Undefined PHP constant */
 			return __( 'undefined', 'query-monitor' );
+		} elseif ( is_string( constant( $constant ) ) && ! is_numeric( constant( $constant ) ) ) {
+			return constant( $constant );
 		} elseif ( ! constant( $constant ) ) {
 			return 'false';
 		} else {
@@ -213,6 +214,10 @@ abstract class QM_Collector {
 		$user['roles'] = $user_object->roles;
 
 		return $user;
+	}
+
+	public static function enabled() {
+		return true;
 	}
 
 	public static function hide_qm() {

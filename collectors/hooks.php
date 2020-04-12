@@ -10,10 +10,6 @@ class QM_Collector_Hooks extends QM_Collector {
 	public $id = 'hooks';
 	protected static $hide_core;
 
-	public function name() {
-		return __( 'Hooks & Actions', 'query-monitor' );
-	}
-
 	public function process() {
 
 		global $wp_actions, $wp_filter;

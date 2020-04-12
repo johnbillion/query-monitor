@@ -18,7 +18,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -69,7 +69,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 

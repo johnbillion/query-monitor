@@ -27,11 +27,6 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 			'script_loader_tag',
 		);
 	}
-
-	public function name() {
-		return __( 'Scripts', 'query-monitor' );
-	}
-
 }
 
 function register_qm_collector_assets_scripts( array $collectors, QueryMonitor $qm ) {

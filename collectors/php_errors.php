@@ -16,28 +16,27 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	private $exception_handler = null;
 	private static $unexpected_error;
 
-	public function name() {
-		return __( 'PHP Errors', 'query-monitor' );
-	}
-
 	public function __construct() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
 		}
 
 		parent::__construct();
+
+		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
 		if ( ! interface_exists( 'Throwable' ) ) {
-			// PHP < 7 fatal error handler.
+			// Fatal error handler for PHP < 7:
 			register_shutdown_function( array( $this, 'shutdown_handler' ) );
 		}
+
+		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
-
-		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 	}
 
 	/**
@@ -49,41 +48,29 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param Throwable|Exception $e The error or exception.
 	 */
 	public function exception_handler( $e ) {
-		require_once __DIR__ . '/../output/Html.php';
-
 		if ( is_a( $e, 'Exception' ) ) {
 			$error = 'Uncaught Exception';
 		} else {
 			$error = 'Uncaught Error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e->getMessage(), ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e->getFile(), ENT_COMPAT, 'UTF-8' ),
-			intval( $e->getLine() )
-		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		echo '<ul>';
-		foreach ( $e->getTrace() as $frame ) {
-			$callback = QM_Util::populate_callback( $frame );
-
-			printf(
-				'<li>%s</li>',
-				QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'], true )
-			); // WPCS: XSS ok.
-		}
-		echo '</ul>';
+		$this->output_fatal( 'Fatal error', array(
+			'message' => sprintf(
+				'%s: %s',
+				$error,
+				$e->getMessage()
+			),
+			'file'    => $e->getFile(),
+			'line'    => $e->getLine(),
+			'trace'   => $e->getTrace(),
+		) );
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
 		if ( $this->exception_handler ) {
 			call_user_func( $this->exception_handler, $e );
 		} else {
-			throw new Exception( $e->getMessage(), $e->getCode(), $e );
+			throw $e;
 		}
 
 		exit( 1 );
@@ -200,10 +187,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$e = error_get_last();
 
-		if ( empty( $this->display_errors ) ) {
-			return;
-		}
-
 		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return;
 		}
@@ -214,15 +197,82 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		$this->output_fatal( $error, $e );
+	}
+
+	protected function output_fatal( $error, array $e ) {
+		if ( empty( $this->display_errors ) && ! QM_Dispatchers::get( 'html' )::user_can_view() ) {
+			return;
+		}
+
+		if ( ! function_exists( '__' ) ) {
+			wp_load_translations_early();
+		}
+
+		require_once dirname( __DIR__ ) . '/output/Html.php';
+
+		// This hides the subsequent message from the fatal error handler in core. It cannot be
+		// disabled by a plugin so we'll just hide its output.
+		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
+
 		printf(
-			'<br><b>%1$s</b>: %2$s in <b>%3$s</b> on line <b>%4$d</b><br>',
-			htmlentities( $error, ENT_COMPAT, 'UTF-8' ),
-			nl2br( htmlentities( $e['message'], ENT_COMPAT, 'UTF-8' ), false ),
-			htmlentities( $e['file'], ENT_COMPAT, 'UTF-8' ),
-			intval( $e['line'] )
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( includes_url( 'css/dashicons.css' ) )
 		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
+		);
+
+		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occured within one.
+		echo '<div data-qm="qm">';
+
+		printf(
+			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
+			esc_attr( $e['message'] ),
+			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
+			esc_attr( $e['line'] )
+		);
+
+		echo '<div class="qm-fatal-wrap">';
+
+		if ( QM_Output_Html::has_clickable_links() ) {
+			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
+		} else {
+			$file = esc_html( $e['file'] );
+		}
+
+		printf(
+			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			esc_html( $error ),
+			nl2br( esc_html( $e['message'] ), false ),
+			$file,
+			intval( $e['line'] )
+		); // WPCS: XSS ok.
+
+		if ( ! empty( $e['trace'] ) ) {
+			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
+			echo '<ol>';
+			foreach ( $e['trace'] as $frame ) {
+				$callback = QM_Util::populate_callback( $frame );
+
+				printf(
+					'<li>%s</li>',
+					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
+				); // WPCS: XSS ok.
+			}
+			echo '</ol>';
+		}
+
+		echo '</div>';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	public function post_process() {

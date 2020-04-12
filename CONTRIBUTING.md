@@ -2,7 +2,7 @@
 
 # Contributing to Query Monitor
 
-Code contributions and bug reports are very welcome. These should be submitted through [the GitHub repository](https://github.com/johnbillion/query-monitor). Development happens in the `develop` branch, and any pull requests should be made against that branch please.
+Code contributions, bug reports, and feedback are very welcome. These should be submitted through [the GitHub repository](https://github.com/johnbillion/query-monitor). Development happens in the `develop` branch, and any pull requests should be made against that branch please.
 
 * [Reporting Security Issues](#reporting-security-issues)
 * [Setting up Locally](#setting-up-locally)
@@ -71,7 +71,7 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
 1. Run `npm run sass`. This should not change the built CSS files. If it does, figure out why.
-1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, FAQs, screenshots, etc.
+1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, "Tested up to" versions, FAQs, screenshots, etc.
    - This is currently a manual process while I decide whether I want to sync parts of these files.
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
    - To do this, run `npm run build` then check the `build` directory for files that shouldn't be part of the package.

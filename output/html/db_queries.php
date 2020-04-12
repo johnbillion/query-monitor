@@ -24,6 +24,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	public function name() {
+		return __( 'Database Queries', 'query-monitor' );
+	}
+
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -320,7 +324,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		} else {
 
-			$caller_name = '<code>' . esc_html( $row['caller'] ) . '</code>';
+			if ( ! empty( $row['caller'] ) ) {
+				$caller_name = '<code>' . esc_html( $row['caller'] ) . '</code>';
+			} else {
+				$caller_name = '<code>' . esc_html__( 'Unknown', 'query-monitor' ) . '</code>';
+			}
+
 			$stack       = explode( ', ', $row['stack'] );
 			$stack       = array_reverse( $stack );
 			array_shift( $stack );
@@ -348,7 +357,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 		}
-		if ( isset( $cols['caller'] ) ) {
+		if ( isset( $cols['caller'] ) && ! empty( $row['caller_name'] ) ) {
 			$row_attr['data-qm-caller'] = $row['caller_name'];
 
 			if ( $row['is_main_query'] ) {
@@ -379,10 +388,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['caller'] ) ) {
-			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap"><ol class="qm-toggler qm-numbered">';
-			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
+			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap">';
 
-			echo self::build_toggler(); // WPCS: XSS ok;
+			if ( ! empty( $stack ) ) {
+				echo self::build_toggler(); // WPCS: XSS ok;
+			}
+
+			echo '<ol>';
+			echo "<li>{$caller_name}</li>"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
 				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
@@ -399,7 +412,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['stack'] ) ) {
-			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol class="qm-numbered">';
+			echo '<td class="qm-row-caller qm-row-stack qm-nowrap qm-ltr"><ol>';
 			if ( ! empty( $stack ) ) {
 				echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
 			}

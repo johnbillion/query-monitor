@@ -19,8 +19,14 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 105 );
 	}
 
+	public function name() {
+		return __( 'Capability Checks', 'query-monitor' );
+	}
+
 	public function output() {
-		if ( ! defined( 'QM_ENABLE_CAPS_PANEL' ) || ! QM_ENABLE_CAPS_PANEL ) {
+		$collector = $this->collector;
+
+		if ( ! $collector::enabled() ) {
 			$this->before_non_tabular_output();
 
 			echo '<section>';
@@ -63,15 +69,13 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo $this->build_filter( 'name', $parts, __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 
-			if ( $show_user ) {
-				$users = $data['users'];
+			$users = $data['users'];
 
-				usort( $users, 'strcasecmp' );
+			usort( $users, 'strcasecmp' );
 
-				echo '<th scope="col" class="qm-filterable-column qm-num">';
-				echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
-				echo '</th>';
-			}
+			echo '<th scope="col" class="qm-filterable-column qm-num">';
+			echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
+			echo '</th>';
 
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'result', $results, __( 'Result', 'query-monitor' ) ); // WPCS: XSS ok;
@@ -86,7 +90,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $data['caps'] as $row ) {
-				$component = $row['trace']->get_component();
+				$component = $row['component'];
 
 				$row_attr                      = array();
 				$row_attr['data-qm-name']      = implode( ' ', $row['parts'] );
@@ -126,53 +130,36 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					$name
 				);
 
-				if ( $show_user ) {
-					printf(
-						'<td class="qm-num">%s</td>',
-						esc_html( $row['user'] )
-					);
-				}
+				printf(
+					'<td class="qm-num">%s</td>',
+					esc_html( $row['user'] )
+				);
 
 				$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : 'false';
 				printf( // WPCS: XSS ok.
-					'<td class="qm-ltr qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>',
 					$result
 				);
 
-				$stack          = array();
-				$trace          = $row['trace']->get_trace();
-				$filtered_trace = $row['trace']->get_display_trace();
+				$stack = array();
 
-				$last = end( $filtered_trace );
-				if ( isset( $last['function'] ) && 'map_meta_cap' === $last['function'] ) {
-					array_shift( $filtered_trace ); // remove the map_meta_cap() call
-				}
-
-				array_shift( $filtered_trace ); // remove the WP_User->has_cap() call
-				array_shift( $filtered_trace ); // remove the *_user_can() call
-
-				if ( ! count( $filtered_trace ) ) {
-					$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
-
-					$responsible_item                 = $trace[1];
-					$responsible_item['display']      = $responsible_name;
-					$responsible_item['calling_file'] = $trace[1]['file'];
-					$responsible_item['calling_line'] = $trace[1]['line'];
-					array_unshift( $filtered_trace, $responsible_item );
-				}
-
-				foreach ( $filtered_trace as $item ) {
+				foreach ( $row['filtered_trace'] as $item ) {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr"><ol class="qm-toggler qm-numbered">';
-
 				$caller = array_shift( $stack );
+
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
+
+				if ( ! empty( $stack ) ) {
+					echo self::build_toggler(); // WPCS: XSS ok;
+				}
+
+				echo '<ol>';
 
 				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
 				}
 
@@ -191,11 +178,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<tfoot>';
 
-			$colspan = ( $show_user ) ? 5 : 4;
-			$count   = count( $data['caps'] );
+			$count = count( $data['caps'] );
 
 			echo '<tr>';
-			echo '<td colspan="' . intval( $colspan ) . '">';
+			echo '<td colspan="5">';
 			printf(
 				/* translators: %s: Number of user capability checks */
 				esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'User capability checks', 'query-monitor' ) ),
@@ -218,7 +204,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => $this->collector->name(),
+			'title' => $this->name(),
 		) );
 		return $menu;
 
