@@ -90,7 +90,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public function init() {
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -109,7 +109,7 @@ abstract class QM_Dispatcher {
 		// nothing
 	}
 
-	public function user_can_view() {
+	public static function user_can_view() {
 
 		if ( ! did_action( 'plugins_loaded' ) ) {
 			return false;

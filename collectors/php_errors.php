@@ -54,7 +54,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Uncaught Error';
 		}
 
-		self::output_fatal( 'Fatal error', array(
+		$this->output_fatal( 'Fatal error', array(
 			'message' => sprintf(
 				'%s: %s',
 				$error,
@@ -187,10 +187,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$e = error_get_last();
 
-		if ( empty( $this->display_errors ) ) {
-			return;
-		}
-
 		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return;
 		}
@@ -201,11 +197,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		self::output_fatal( $error, $e );
+		$this->output_fatal( $error, $e );
 	}
 
-	protected static function output_fatal( $error, array $e ) {
-		if ( empty( $this->display_errors ) ) {
+	protected function output_fatal( $error, array $e ) {
+		if ( empty( $this->display_errors ) && ! QM_Dispatchers::get( 'html' )::user_can_view() ) {
 			return;
 		}
 

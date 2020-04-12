@@ -101,7 +101,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -124,7 +124,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -658,7 +658,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function is_active() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 
