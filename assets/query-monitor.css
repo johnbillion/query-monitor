@@ -1342,6 +1342,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   border-right: none !important;
 }
 
+#query-monitor-main.qm-broken .qm td .qm-toggled,
 #query-monitor-main.qm-broken #qm-broken,
 #query-monitor-main.qm-broken .qm {
   display: block !important;
