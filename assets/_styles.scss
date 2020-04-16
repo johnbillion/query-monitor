@@ -1292,6 +1292,21 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	&.qm-broken .qm {
 		margin-bottom: 50px !important;
+
+		button.qm-filter-trigger {
+			color: $qm-container-fg !important;
+			cursor: text !important;
+
+			&:after {
+				display: none !important;
+			}
+
+			&:focus,
+			&:hover,
+			&:active {
+				text-decoration: none !important;
+			}
+		}
 	}
 
 	&.qm-broken #qm-broken h2 {

@@ -1357,6 +1357,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin-bottom: 50px !important;
 }
 
+#query-monitor-main.qm-broken .qm button.qm-filter-trigger {
+  color: #222 !important;
+  cursor: text !important;
+}
+
+#query-monitor-main.qm-broken .qm button.qm-filter-trigger:after {
+  display: none !important;
+}
+
+#query-monitor-main.qm-broken .qm button.qm-filter-trigger:focus, #query-monitor-main.qm-broken .qm button.qm-filter-trigger:hover, #query-monitor-main.qm-broken .qm button.qm-filter-trigger:active {
+  text-decoration: none !important;
+}
+
 #query-monitor-main.qm-broken #qm-broken h2 {
   padding: 20px !important;
 }
