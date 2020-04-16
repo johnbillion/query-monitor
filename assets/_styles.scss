@@ -1267,18 +1267,27 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	// Broken output handling
 
-	&.qm-broken #qm-title {
-		cursor: default !important;
+	#qm-broken {
+		display: none !important;
 	}
 
-	#qm-broken,
-	&.qm-broken .qm-title-button {
-		display: none !important;
+	&.qm-broken #qm-title {
+		cursor: default !important;
+
+		.qm-title-heading {
+			border-right: none !important;
+		}
 	}
 
 	&.qm-broken #qm-broken,
 	&.qm-broken .qm {
 		display: block !important;
+	}
+
+	&.qm-broken #qm-panel-menu,
+	&.qm-broken #qm-settings,
+	&.qm-broken #qm-title .qm-title-button {
+		display: none !important;
 	}
 
 	&.qm-broken .qm {

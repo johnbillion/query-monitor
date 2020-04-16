@@ -1330,18 +1330,27 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
   margin: 0 !important;
 }
 
+#query-monitor-main #qm-broken {
+  display: none !important;
+}
+
 #query-monitor-main.qm-broken #qm-title {
   cursor: default !important;
 }
 
-#query-monitor-main #qm-broken,
-#query-monitor-main.qm-broken .qm-title-button {
-  display: none !important;
+#query-monitor-main.qm-broken #qm-title .qm-title-heading {
+  border-right: none !important;
 }
 
 #query-monitor-main.qm-broken #qm-broken,
 #query-monitor-main.qm-broken .qm {
   display: block !important;
+}
+
+#query-monitor-main.qm-broken #qm-panel-menu,
+#query-monitor-main.qm-broken #qm-settings,
+#query-monitor-main.qm-broken #qm-title .qm-title-button {
+  display: none !important;
 }
 
 #query-monitor-main.qm-broken .qm {
