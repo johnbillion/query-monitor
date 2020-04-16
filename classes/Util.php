@@ -365,16 +365,16 @@ class QM_Util {
 	}
 
 	public static function get_query_type( $sql ) {
-		$sql  = trim( $sql );
-		$type = $sql;
+		// Trim leading whitespace and brackets
+		$sql = ltrim( $sql, ' \t\n\r\0\x0B(' );
 
 		if ( 0 === strpos( $sql, '/*' ) ) {
 			// Strip out leading comments such as `/*NO_SELECT_FOUND_ROWS*/` before calculating the query type
-			$type = preg_replace( '|^/\*[^\*/]+\*/|', '', $sql );
+			$sql = preg_replace( '|^/\*[^\*/]+\*/|', '', $sql );
 		}
 
-		$type = preg_split( '/\b/', trim( $type ), 2, PREG_SPLIT_NO_EMPTY );
-		$type = strtoupper( $type[0] );
+		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
+		$type = strtoupper( $words[0] );
 
 		return $type;
 	}
