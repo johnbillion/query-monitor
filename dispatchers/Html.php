@@ -475,8 +475,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'default' => false,
 			),
 			'QM_HIDE_SELF'             => array(
-				'label'   => __( 'Hide Query Monitor itself from various panels.', 'query-monitor' ),
-				'default' => false,
+				'label'   => __( 'Hide Query Monitor itself from various panels. Set to false if you want to see how Query Monitor hooks into WordPress.', 'query-monitor' ),
+				'default' => true,
 			),
 			'QM_NO_JQUERY'             => array(
 				'label'   => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),

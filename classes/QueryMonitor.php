@@ -90,6 +90,10 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 	public function action_plugins_loaded() {
+		// Hide QM itself from output by default:
+		if ( ! defined( 'QM_HIDE_SELF' ) ) {
+			define( 'QM_HIDE_SELF', true );
+		}
 
 		/**
 		 * Filters the collectors that are being added.
