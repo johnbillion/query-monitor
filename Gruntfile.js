@@ -3,13 +3,13 @@ module.exports = function (grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-    var pkg = grunt.file.readJSON('package.json');
+	var pkg = grunt.file.readJSON('package.json');
 	var gig = require('gitignore-globs');
 	var gag = require('gitattributes-globs');
 	var ignored_gitignore = gig('.gitignore', { negate: true } ).map(function(value) {
 		return value.replace(/^!\//,'!');
 	});
-    var ignored_gitattributes = gag( '.gitattributes', { negate: true } ).map(function(value) {
+	var ignored_gitattributes = gag( '.gitattributes', { negate: true } ).map(function(value) {
 		return value.replace(/^!\//,'!');
 	});
 	var config = {};
