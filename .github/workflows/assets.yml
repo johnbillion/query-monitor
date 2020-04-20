@@ -14,5 +14,6 @@ jobs:
       - name: Deploy
         uses: 10up/action-wordpress-plugin-asset-update@1.4.1
         env:
+          ASSETS_DIR: assets-wp-repo
           SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
