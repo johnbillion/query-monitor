@@ -59,7 +59,7 @@ jobs:
     - name: Install dependencies
       run: |
         composer install --prefer-dist --no-suggest
-        composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }}"
+        composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
 
     - name: Run code sniffer
       if: matrix.php == '7.3' && matrix.wp == '*'
