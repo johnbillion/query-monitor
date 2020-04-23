@@ -1,0 +1,30 @@
+name: Deploy Tag
+on:
+  release:
+    types: [published]
+
+jobs:
+  wordpress:
+    name: WordPress.org
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+      # @TODO need to cache the npm dependencies
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Assets
+      run: npm run build
+
+    - name: Populate Changelog
+      run: node .github/workflows/changelog.js readme.md
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: WordPress Plugin Deploy
+      uses: 10up/action-wordpress-plugin-deploy@1.4.1
+      env:
+        SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

@@ -1,0 +1,25 @@
+# Directories
+.git
+.github
+.wordpress-org
+bin
+node_modules
+tests
+vendor
+
+# Files
+.distignore
+.editorconfig
+.gitignore
+assets/*.map
+assets/*.scss
+composer.json
+composer.lock
+CONTRIBUTING.md
+Gruntfile.js
+package-lock.json
+package.json
+phpcs.xml.dist
+phpunit.xml.dist
+README.md
+SECURITY.md
