@@ -28,9 +28,9 @@ module.exports = function (grunt) {
 				{
 					expand: true,
 					src: [
-						'assets-wp-repo/icon.svg'
+						'.wordpress-org/icon.svg'
 					],
-					dest: 'assets-wp-repo/128'
+					dest: '.wordpress-org/128'
 				}
 			]
 		},
@@ -44,9 +44,9 @@ module.exports = function (grunt) {
 			files: [
 				{
 					src: [
-						'assets-wp-repo/icon.svg'
+						'.wordpress-org/icon.svg'
 					],
-					dest: 'assets-wp-repo/256'
+					dest: '.wordpress-org/256'
 				}
 			]
 		}
@@ -96,10 +96,10 @@ module.exports = function (grunt) {
 		icons:{
 			expand: true,
 			src: [
-				'assets-wp-repo/*/icon.png'
+				'.wordpress-org/*/icon.png'
 			],
 			rename: function (dest,src) {
-				return src.replace(/assets-wp-repo\/(\d+)\/icon.png/,'assets-wp-repo/icon-$1x$1.png');
+				return src.replace(/.wordpress-org\/(\d+)\/icon.png/,'.wordpress-org/icon-$1x$1.png');
 			}
 		}
 	};

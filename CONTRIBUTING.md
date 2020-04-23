@@ -106,16 +106,6 @@ Note that the corresponding milestone on GitHub gets automatically closed via [P
 1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
 1. Consume tea and cake as necessary.
 
-### Manual Deployments
+### Asset Updates
 
-Query Monitor gets automatically deployed to the WordPress.org Plugin Directory whenever a new release is published on GitHub.
-
-Deploying can be performed locally if required:
-
-	npm run deploy
-
-You'll need to have `svn` installed locally, but you don't need to know how to use it.
-
-Assets such as screenshots and banners are stored in the `assets-wp-repo` directory. These get deployed as part of the automated release process too, but can be deployed separately if necessary:
-
-	npm run deploy:assets
+Assets such as screenshots and banners are stored in the `.wordpress-org` directory. These get deployed as part of the automated release process too, but will be deployed separately if they're the only changes in the master branch since the last release. This allows for the "Tested up to" value to be bumped and assets to be updated in between releases.

@@ -1,4 +1,4 @@
-<img src="assets-wp-repo/icon-128x128.png" align="right" width="100" height="100" alt="">
+<img src=".wordpress-org/icon-128x128.png" align="right" width="100" height="100" alt="">
 
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
@@ -15,7 +15,7 @@ Query Monitor focuses heavily on presenting its information in a useful manner, 
 
 Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component:
 
-![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
 ---
 
@@ -258,31 +258,31 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ### Admin Toolbar Menu ###
 
-![Admin Toolbar Menu](assets-wp-repo/screenshot-1.png)
+![Admin Toolbar Menu](.wordpress-org/screenshot-1.png)
 
 ### Database Queries ###
 
-![Database Queries](assets-wp-repo/screenshot-4.png)
+![Database Queries](.wordpress-org/screenshot-4.png)
 
 ### Capability Checks ###
 
-![Capability Checks](assets-wp-repo/screenshot-3.png)
+![Capability Checks](.wordpress-org/screenshot-3.png)
 
 ### Aggregate Database Queries by Component ###
 
-![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
 ### Aggregate Database Queries by Calling Function ###
 
-![Aggregate Database Queries by Calling Function](assets-wp-repo/screenshot-7.png)
+![Aggregate Database Queries by Calling Function](.wordpress-org/screenshot-7.png)
 
 ### Hooks and Actions ###
 
-![Hooks and Actions](assets-wp-repo/screenshot-5.png)
+![Hooks and Actions](.wordpress-org/screenshot-5.png)
 
 ### HTTP API Requests ###
 
-![HTTP API Requests](assets-wp-repo/screenshot-6.png)
+![HTTP API Requests](.wordpress-org/screenshot-6.png)
 
 # Frequently Asked Questions #
 
