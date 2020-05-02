@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   build:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       matrix:
         php: ['7.3', '5.6']
