@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Populate Changelog
-        run: node .github/workflows/changelog.js readme.md
+        run: node .github/workflows/changelog.js readme.txt
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -26,4 +26,4 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
-          README_NAME: readme.md
+          README_NAME: readme.txt

@@ -19,7 +19,7 @@ jobs:
       run: npm run build
 
     - name: Populate Changelog
-      run: node .github/workflows/changelog.js readme.md
+      run: node .github/workflows/changelog.js readme.txt
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

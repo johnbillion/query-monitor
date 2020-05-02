@@ -111,6 +111,4 @@ Yes! You can enable this on the Settings panel.
 
 No, I do not accept donations. If you like the plugin, I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about the plugin too!
 
-== Changelog ==
-
-For Query Monitor's changelog, please see [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
+<!-- changelog -->
