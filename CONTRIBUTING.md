@@ -16,7 +16,7 @@ If you discover a security issue in Query Monitor, please report it to [the secu
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin. If you want to contribute to Query Monitor, you should install the developer dependencies in order to build the assets and run the tests.
+You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and to run the tests.
 
 ### Prerequisites
 
@@ -45,11 +45,9 @@ To start the file watcher which will watch for changes and automatically compile
 
 	npm run watch
 
-Note that the built CSS files are also committed to the Git repo. This allows the plugin to be installed via a Git clone or Composer without the need to perform a build step.
-
 ## Running the Tests
 
-To run the whole test suite which includes PHPUnit, code sniffer, and linting:
+To run the whole test suite which includes unit tests and linting:
 
 	composer test
 
@@ -92,14 +90,14 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. `git push origin master`
 1. `git tag <version>` where `<version>` is the new version number
 1. `git push origin --tags`
+1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 
 ### Post Release
 
 Publishing a release on GitHub triggers an action which deploys the release to the WordPress.org Plugin Directory. No need to touch Subversion.
 
-Note that the corresponding milestone on GitHub gets automatically closed via [ProBot semver](https://github.com/apps/probot-semver). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
+The corresponding milestone on GitHub gets automatically closed via [ProBot semver](https://github.com/apps/probot-semver). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
 
-1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones) as ProBot semver doesn't handle this.
 1. Check the new version has appeared [on the WordPress.org plugin page](https://wordpress.org/plugins/query-monitor/) (it'll take a few minutes).
 1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
