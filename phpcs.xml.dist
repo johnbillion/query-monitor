@@ -3,6 +3,7 @@
 
 	<config name="testVersion" value="5.3-"/>
 
+	<exclude-pattern>*/.github/*</exclude-pattern>
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>
