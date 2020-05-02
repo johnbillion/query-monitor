@@ -8,12 +8,8 @@
   "repository": "johnbillion/query-monitor",
   "devDependencies": {
     "@actions/github": "^2",
-    "gitattributes-globs": "^1",
-    "gitignore-globs": "^0.1",
     "grunt": "^1",
     "grunt-contrib-clean": "^2",
-    "grunt-contrib-copy": "^1",
-    "grunt-contrib-cssmin": "^2",
     "grunt-contrib-watch": "^1",
     "grunt-convert-svg-to-png": "^1",
     "grunt-rename-util": "^1",
