@@ -685,12 +685,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		// If this is an async request and not a customizer preview:
+		// Don't dispatch if this is an async request and not a customizer preview:
 		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
 			return false;
 		}
 
-		# Don't process if the minimum required actions haven't fired:
+		// Don't dispatch if the minimum required actions haven't fired:
 		if ( is_admin() ) {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
@@ -699,6 +699,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
 				return false;
 			}
+		}
+
+		// Don't dispatch during an iframed request, eg the plugin info modal or an upgrader action:
+		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
