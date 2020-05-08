@@ -363,7 +363,14 @@ if ( window.jQuery ) {
 				error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 				if ( window.console ) {
-					console.error( error );
+					switch ( error.type ) {
+						case 'warning':
+							console.error( error );
+							break;
+						default:
+							console.warn( error );
+							break;
+					}
 				}
 
 				if ( $('#qm-php_errors').find('[data-qm-key="' + error.key + '"]').length ) {
