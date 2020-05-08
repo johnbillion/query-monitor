@@ -66,7 +66,7 @@ Query Monitor is private by default and always will be. It does not persistently
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-Administrator). See the Settings panel for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 = Does Query Monitor itself impact the page generation time or memory usage? =
 
@@ -88,7 +88,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 = Is Query Monitor available on WordPress.com VIP Go? =
 
-Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
+Yes, it's included as part of the VIP Go platform. However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
 
 = I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? =
 
@@ -105,7 +105,7 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 
 = Can I click on stack traces to open the file in my editor? =
 
-Yes! You can enable this on the Settings panel.
+Yes. You can enable this on the Settings panel.
 
 = Do you accept donations? =
 

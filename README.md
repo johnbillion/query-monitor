@@ -170,7 +170,7 @@ do_action( 'qm/warning', 'Unexpected value of {foo} encountered', [
 ] );
 ```
 
-A `WP_Error` or `Exception` object can be passed directly into the logger:
+A `WP_Error`, `Exception`, or `Throwable` object can be passed directly into the logger:
 
 ```php
 if ( is_wp_error( $response ) ) {
@@ -225,7 +225,7 @@ foreach ( range( 1, 10 ) as $i ) {
 do_action( 'qm/stop', 'bar' );
 ```
 
-Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the *Related Tools** section below for more information.
+Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the [Related Tools](#related-tools) section for more information.
 
 ## Everything Else ##
 
@@ -290,7 +290,7 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the Settings panel for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 ## Does Query Monitor itself impact the page generation time or memory usage? ##
 
