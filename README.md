@@ -186,6 +186,12 @@ try {
 }
 ```
 
+A non-scalar value can be passed to the logger and its value will be formatted and output in the same panel. Can be used as a replacement for `var_dump()`:
+
+```php
+do_action( 'qm/debug', get_queried_object() );
+```
+
 Finally, the static logging methods on the `QM` class can be used instead of calling `do_action()`.
 
 ```php
