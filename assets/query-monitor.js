@@ -366,6 +366,10 @@ if ( window.jQuery ) {
 					console.error( error );
 				}
 
+				if ( $('#qm-php_errors').find('[data-qm-key="' + error.key + '"]').length ) {
+					continue;
+				}
+
 				if ( $('#wp-admin-bar-query-monitor').length ) {
 					if ( ! qm.ajax_errors[error.type] ) {
 						$('#wp-admin-bar-query-monitor')
