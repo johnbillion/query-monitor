@@ -131,7 +131,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public static function editor_cookie() {
-		if ( isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // @codingStandardsIgnoreLine
+		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // @codingStandardsIgnoreLine
 			return $_COOKIE[QM_EDITOR_COOKIE]; // @codingStandardsIgnoreLine
 		}
 		return '';
