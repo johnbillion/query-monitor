@@ -1,0 +1,19 @@
+name: Update Assets
+on:
+  push:
+    branches:
+      - master
+jobs:
+  wordpress:
+    name: WordPress.org
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Deploy
+        uses: 10up/action-wordpress-plugin-asset-update@1.4.1
+        env:
+          ASSETS_DIR: assets-wp-repo
+          SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
