@@ -15,6 +15,7 @@ import Scripts from '../output/html/assets_scripts.js';
 import Styles from '../output/html/assets_styles.js';
 import Hooks from '../output/html/hooks.js';
 import Admin from '../output/html/admin.js';
+import HTTP from '../output/html/http.js';
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));
@@ -36,5 +37,6 @@ jQuery(function($) {
 	ReactDOM.render(<Styles data={qm_data.assets_styles.data} enabled={qm_data.assets_styles.enabled} id="assets_styles" /> , document.getElementById('qm-assets_styles-container'));
 	qm_data.hooks && ReactDOM.render(<Hooks data={qm_data.hooks.data} enabled={qm_data.hooks.enabled} id="hooks" /> , document.getElementById('qm-hooks-container'));
 	qm_data.admin && ReactDOM.render(<Admin data={qm_data.admin.data} enabled={qm_data.admin.enabled} id="admin" /> , document.getElementById('qm-admin-container'));
+	qm_data.http && ReactDOM.render(<HTTP data={qm_data.http.data} enabled={qm_data.http.enabled} id="http" /> , document.getElementById('qm-http-container'));
 
 } );

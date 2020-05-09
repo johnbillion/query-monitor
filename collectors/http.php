@@ -252,6 +252,9 @@ class QM_Collector_HTTP extends QM_Collector {
 				if ( $http['type'] >= 400 ) {
 					$this->data['errors']['warning'][] = $key;
 				}
+
+				// The response body can be huge, so kill it:
+				unset( $http['response']['body'] );
 			}
 
 			$http['ltime'] = ( $http['end'] - $http['start'] );
