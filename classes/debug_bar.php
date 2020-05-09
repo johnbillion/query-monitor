@@ -47,7 +47,9 @@ class Debug_Bar {
 	}
 
 	public function ensure_ajaxurl() {
-		if ( $this->panels && QM_Dispatchers::get( 'html' )->user_can_view() ) {
+		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( $this->panels && $dispatcher::user_can_view() ) {
 			?>
 			<script type="text/javascript">
 			var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';

@@ -26,7 +26,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 		foreach ( $data['errors'] as $type => $errors ) {
 
-			foreach ( $errors as $key => $error ) {
+			foreach ( $errors as $error_key => $error ) {
 
 				$count++;
 
@@ -34,6 +34,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 				# separately in each output.
 				$component    = $error['trace']->get_component();
 				$output_error = array(
+					'key'       => $error_key,
 					'type'      => $error['type'],
 					'message'   => $error['message'],
 					'file'      => QM_Util::standard_dir( $error['file'], '' ),

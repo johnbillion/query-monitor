@@ -90,7 +90,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public function init() {
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -109,7 +109,7 @@ abstract class QM_Dispatcher {
 		// nothing
 	}
 
-	public function user_can_view() {
+	public static function user_can_view() {
 
 		if ( ! did_action( 'plugins_loaded' ) ) {
 			return false;
@@ -131,7 +131,7 @@ abstract class QM_Dispatcher {
 	}
 
 	public static function editor_cookie() {
-		if ( isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // @codingStandardsIgnoreLine
+		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // @codingStandardsIgnoreLine
 			return $_COOKIE[QM_EDITOR_COOKIE]; // @codingStandardsIgnoreLine
 		}
 		return '';

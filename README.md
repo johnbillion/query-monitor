@@ -1,9 +1,9 @@
-<img src="assets-wp-repo/icon-128x128.png" align="right" width="100" height="100" alt="">
+<img src=".wordpress-org/icon-128x128.png" align="right" width="100" height="100" alt="">
 
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/johnbillion/query-monitor/Test/develop?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
 # Query Monitor #
 
@@ -15,7 +15,7 @@ Query Monitor focuses heavily on presenting its information in a useful manner, 
 
 Here's an example of Query Monitor's output. This is the panel showing aggregate database queries grouped by component:
 
-![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
 ---
 
@@ -170,7 +170,7 @@ do_action( 'qm/warning', 'Unexpected value of {foo} encountered', [
 ] );
 ```
 
-A `WP_Error` or `Exception` object can be passed directly into the logger:
+A `WP_Error`, `Exception`, or `Throwable` object can be passed directly into the logger:
 
 ```php
 if ( is_wp_error( $response ) ) {
@@ -184,6 +184,12 @@ try {
 } catch ( Exception $e ) {
     do_action( 'qm/error', $e );
 }
+```
+
+A non-scalar value can be passed to the logger and its value will be formatted and output in the same panel. Can be used as a replacement for `var_dump()`:
+
+```php
+do_action( 'qm/debug', get_queried_object() );
 ```
 
 Finally, the static logging methods on the `QM` class can be used instead of calling `do_action()`.
@@ -225,7 +231,7 @@ foreach ( range( 1, 10 ) as $i ) {
 do_action( 'qm/stop', 'bar' );
 ```
 
-Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the *Related Tools** section below for more information.
+Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the [Related Tools](#related-tools) section for more information.
 
 ## Everything Else ##
 
@@ -258,31 +264,31 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ### Admin Toolbar Menu ###
 
-![Admin Toolbar Menu](assets-wp-repo/screenshot-1.png)
+![Admin Toolbar Menu](.wordpress-org/screenshot-1.png)
 
 ### Database Queries ###
 
-![Database Queries](assets-wp-repo/screenshot-4.png)
+![Database Queries](.wordpress-org/screenshot-4.png)
 
 ### Capability Checks ###
 
-![Capability Checks](assets-wp-repo/screenshot-3.png)
+![Capability Checks](.wordpress-org/screenshot-3.png)
 
 ### Aggregate Database Queries by Component ###
 
-![Aggregate Database Queries by Component](assets-wp-repo/screenshot-2.png)
+![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
 ### Aggregate Database Queries by Calling Function ###
 
-![Aggregate Database Queries by Calling Function](assets-wp-repo/screenshot-7.png)
+![Aggregate Database Queries by Calling Function](.wordpress-org/screenshot-7.png)
 
 ### Hooks and Actions ###
 
-![Hooks and Actions](assets-wp-repo/screenshot-5.png)
+![Hooks and Actions](.wordpress-org/screenshot-5.png)
 
 ### HTTP API Requests ###
 
-![HTTP API Requests](assets-wp-repo/screenshot-6.png)
+![HTTP API Requests](.wordpress-org/screenshot-6.png)
 
 # Frequently Asked Questions #
 
@@ -290,7 +296,7 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-administrator). See the Settings panel for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 ## Does Query Monitor itself impact the page generation time or memory usage? ##
 

@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.3
-Stable tag: 3.5.2
+Tested up to: 5.4
+Stable tag: 3.6.0
 License: GPLv2 or later
 Requires PHP: 5.3
 
@@ -66,7 +66,7 @@ Query Monitor is private by default and always will be. It does not persistently
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-Administrator). See the Settings panel for details.
+In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
 = Does Query Monitor itself impact the page generation time or memory usage? =
 
@@ -88,7 +88,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 = Is Query Monitor available on WordPress.com VIP Go? =
 
-Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
+Yes, it's included as part of the VIP Go platform. However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
 
 = I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor? =
 
@@ -105,12 +105,10 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 
 = Can I click on stack traces to open the file in my editor? =
 
-Yes! You can enable this on the Settings panel.
+Yes. You can enable this on the Settings panel.
 
 = Do you accept donations? =
 
 No, I do not accept donations. If you like the plugin, I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about the plugin too!
 
-== Changelog ==
-
-For Query Monitor's changelog, please see [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
+<!-- changelog -->

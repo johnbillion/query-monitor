@@ -3,15 +3,7 @@ module.exports = function (grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-    var pkg = grunt.file.readJSON('package.json');
-	var gig = require('gitignore-globs');
-	var gag = require('gitattributes-globs');
-	var ignored_gitignore = gig('.gitignore', { negate: true } ).map(function(value) {
-		return value.replace(/^!\//,'!');
-	});
-    var ignored_gitattributes = gag( '.gitattributes', { negate: true } ).map(function(value) {
-		return value.replace(/^!\//,'!');
-	});
+	var pkg = grunt.file.readJSON('package.json');
 	var config = {};
 
 	config.pkg = pkg;
@@ -28,9 +20,9 @@ module.exports = function (grunt) {
 				{
 					expand: true,
 					src: [
-						'assets-wp-repo/icon.svg'
+						'.wordpress-org/icon.svg'
 					],
-					dest: 'assets-wp-repo/128'
+					dest: '.wordpress-org/128'
 				}
 			]
 		},
@@ -44,38 +36,18 @@ module.exports = function (grunt) {
 			files: [
 				{
 					src: [
-						'assets-wp-repo/icon.svg'
+						'.wordpress-org/icon.svg'
 					],
-					dest: 'assets-wp-repo/256'
+					dest: '.wordpress-org/256'
 				}
 			]
 		}
 	};
 
 	config.clean = {
-		main: [
-			'<%= wp_deploy.deploy.options.build_dir %>'
-		],
 		icons: Object.keys(config['convert-svg-to-png']).map(function(key){
 			return config['convert-svg-to-png'][ key ].files[0].dest;
 		})
-	};
-
-	config.copy = {
-		main: {
-			src: [
-				'**',
-				'!.*',
-				'!.git/**',
-				'!<%= wp_deploy.deploy.options.assets_dir %>/**',
-				'!<%= wp_deploy.deploy.options.build_dir %>/**',
-				'!README.md',
-				'!wiki/**',
-				ignored_gitignore,
-				ignored_gitattributes
-			],
-			dest: '<%= wp_deploy.deploy.options.build_dir %>/'
-		}
 	};
 
 	config.sass = {
@@ -96,10 +68,10 @@ module.exports = function (grunt) {
 		icons:{
 			expand: true,
 			src: [
-				'assets-wp-repo/*/icon.png'
+				'.wordpress-org/*/icon.png'
 			],
 			rename: function (dest,src) {
-				return src.replace(/assets-wp-repo\/(\d+)\/icon.png/,'assets-wp-repo/icon-$1x$1.png');
+				return src.replace(/.wordpress-org\/(\d+)\/icon.png/,'.wordpress-org/icon-$1x$1.png');
 			}
 		}
 	};
@@ -138,39 +110,6 @@ module.exports = function (grunt) {
 		}
 	};
 
-	config.wp_deploy = {
-		deploy: {
-			options: {
-				deploy_trunk: true,
-				deploy_tag: true,
-				plugin_slug: '<%= pkg.name %>',
-				build_dir: 'build',
-				assets_dir: 'assets-wp-repo'
-			}
-		},
-		assets: {
-			options: {
-				deploy_trunk: false,
-				deploy_tag: false,
-				plugin_slug: '<%= pkg.name %>',
-				build_dir: '<%= wp_deploy.deploy.options.build_dir %>',
-				assets_dir: '<%= wp_deploy.deploy.options.assets_dir %>'
-			}
-		},
-		ci: {
-			options: {
-				skip_confirmation: true,
-				force_interactive: false,
-				deploy_trunk: true,
-				deploy_tag: true,
-				svn_user: 'johnbillion',
-				plugin_slug: '<%= pkg.name %>',
-				build_dir: '<%= wp_deploy.deploy.options.build_dir %>',
-				assets_dir: '<%= wp_deploy.deploy.options.assets_dir %>'
-			}
-		}
-	};
-
 	grunt.initConfig(config);
 
 	grunt.registerTask('bump', function(version) {
@@ -187,27 +126,6 @@ module.exports = function (grunt) {
 		'convert-svg-to-png',
 		'rename:icons',
 		'clean:icons'
-	]);
-
-	grunt.registerTask('build', [
-		'clean',
-		'sass',
-		'copy'
-	]);
-
-	grunt.registerTask('deploy', [
-		'build',
-		'wp_deploy:deploy'
-	]);
-
-	grunt.registerTask('deploy:assets', [
-		'build',
-		'wp_deploy:assets'
-	]);
-
-	grunt.registerTask('deploy:ci', [
-		'build',
-		'wp_deploy:ci'
 	]);
 
 	grunt.registerTask('default', [

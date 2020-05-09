@@ -54,7 +54,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Uncaught Error';
 		}
 
-		self::output_fatal( 'Fatal error', array(
+		$this->output_fatal( 'Fatal error', array(
 			'message' => sprintf(
 				'%s: %s',
 				$error,
@@ -187,10 +187,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$e = error_get_last();
 
-		if ( empty( $this->display_errors ) ) {
-			return;
-		}
-
 		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
 			return;
 		}
@@ -201,15 +197,40 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$error = 'Fatal error';
 		}
 
-		self::output_fatal( $error, $e );
+		$this->output_fatal( $error, $e );
 	}
 
-	protected static function output_fatal( $error, array $e ) {
+	protected function output_fatal( $error, array $e ) {
+		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( empty( $this->display_errors ) && ! $dispatcher::user_can_view() ) {
+			return;
+		}
+
 		if ( ! function_exists( '__' ) ) {
 			wp_load_translations_early();
 		}
 
 		require_once dirname( __DIR__ ) . '/output/Html.php';
+
+		// This hides the subsequent message from the fatal error handler in core. It cannot be
+		// disabled by a plugin so we'll just hide its output.
+		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
+
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( includes_url( 'css/dashicons.css' ) )
+		);
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
+		);
+
+		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occured within one.
+		echo '<div data-qm="qm">';
 
 		printf(
 			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
@@ -218,13 +239,19 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			esc_attr( $e['line'] )
 		);
 
-		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 		echo '<div class="qm-fatal-wrap">';
+
+		if ( QM_Output_Html::has_clickable_links() ) {
+			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
+		} else {
+			$file = esc_html( $e['file'] );
+		}
+
 		printf(
 			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
-			QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true ),
+			$file,
 			intval( $e['line'] )
 		); // WPCS: XSS ok.
 
@@ -241,6 +268,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			}
 			echo '</ol>';
 		}
+
+		echo '</div>';
+
+		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
 
 		echo '</div>';
 		echo '</div>';

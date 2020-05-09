@@ -68,12 +68,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					continue;
 				}
 
-				foreach ( $data[ $error_group ][ $type ] as $error ) {
+				foreach ( $data[ $error_group ][ $type ] as $error_key => $error ) {
 
 					$component                     = $error['trace']->get_component();
 					$row_attr                      = array();
 					$row_attr['data-qm-component'] = $component->name;
 					$row_attr['data-qm-type']      = ucfirst( $type );
+					$row_attr['data-qm-key']       = $error_key;
 
 					if ( 'core' !== $component->context ) {
 						$row_attr['data-qm-component'] .= ' non-core';

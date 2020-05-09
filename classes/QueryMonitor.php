@@ -90,6 +90,10 @@ class QueryMonitor extends QM_Plugin {
 	}
 
 	public function action_plugins_loaded() {
+		// Hide QM itself from output by default:
+		if ( ! defined( 'QM_HIDE_SELF' ) ) {
+			define( 'QM_HIDE_SELF', true );
+		}
 
 		/**
 		 * Filters the collectors that are being added.
@@ -97,7 +101,7 @@ class QueryMonitor extends QM_Plugin {
 		 * @since 2.11.2
 		 *
 		 * @param QM_Collector[] $collectors Array of collector instances.
-		 * @param QueryMonitor   $this       QueryMonitor instance.
+		 * @param QueryMonitor   $instance   QueryMonitor instance.
 		 */
 		foreach ( apply_filters( 'qm/collectors', array(), $this ) as $collector ) {
 			QM_Collectors::add( $collector );
@@ -114,7 +118,7 @@ class QueryMonitor extends QM_Plugin {
 		 * @since 2.11.2
 		 *
 		 * @param QM_Dispatcher[] $dispatchers Array of dispatcher instances.
-		 * @param QueryMonitor    $this        QueryMonitor instance.
+		 * @param QueryMonitor    $instance    QueryMonitor instance.
 		 */
 		foreach ( apply_filters( 'qm/dispatchers', array(), $this ) as $dispatcher ) {
 			QM_Dispatchers::add( $dispatcher );

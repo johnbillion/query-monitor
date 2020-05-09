@@ -980,6 +980,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-external-link:after,
 	.qm a.qm-link:after,
 	.qm a.qm-edit-link:after,
+	.qm button.qm-filter-info:before,
 	.qm button.qm-filter-trigger:after {
 		display: inline-block !important;
 		font-family: dashicons !important;
@@ -990,6 +991,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		text-decoration: none !important;
 		top: 2px !important;
 		visibility: hidden !important;
+	}
+
+	.qm button.qm-filter-info:before {
+		left: unset !important;
+		right: 2px !important;
+		content: '\f534' !important;
+		visibility: visible !important;
 	}
 
 	.qm a.qm-external-link:after,
@@ -1267,22 +1275,47 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	// Broken output handling
 
-	&.qm-broken #qm-title {
-		cursor: default !important;
-	}
-
-	#qm-broken,
-	&.qm-broken .qm-title-button {
+	#qm-broken {
 		display: none !important;
 	}
 
+	&.qm-broken #qm-title {
+		cursor: default !important;
+
+		.qm-title-heading {
+			border-right: none !important;
+		}
+	}
+
+	&.qm-broken .qm td .qm-toggled,
 	&.qm-broken #qm-broken,
 	&.qm-broken .qm {
 		display: block !important;
 	}
 
+	&.qm-broken #qm-panel-menu,
+	&.qm-broken #qm-settings,
+	&.qm-broken #qm-title .qm-title-button {
+		display: none !important;
+	}
+
 	&.qm-broken .qm {
 		margin-bottom: 50px !important;
+
+		button.qm-filter-trigger {
+			color: $qm-container-fg !important;
+			cursor: text !important;
+
+			&:after {
+				display: none !important;
+			}
+
+			&:focus,
+			&:hover,
+			&:active {
+				text-decoration: none !important;
+			}
+		}
 	}
 
 	&.qm-broken #qm-broken h2 {
@@ -1292,10 +1325,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-fatal {
 	margin: 1em !important;
-	border: 1px solid #c00 !important;
+	border: 2px solid #c00 !important;
+	box-shadow: 0 0 0 2px #fff;
 	background: #fff !important;
-	width: 700px !important;
+	max-width: 700px !important;
 	clear: both !important;
+	position: absolute !important;
+	z-index: 99999 !important;
 
 	h2 {
 		font-size: 12px !important;
@@ -1303,7 +1339,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		padding: 5px !important;
 		background: #f3f3f3 !important;
 		margin: 0 !important;
-		border-bottom: 1px solid #c00 !important;
 	}
 
 	.dashicons {
@@ -1328,5 +1363,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm-info {
 		color: #666 !important;
+	}
+}
+
+body#error-page {
+	#qm-fatal {
+		margin: 0 !important;
+		border: none !important;
 	}
 }

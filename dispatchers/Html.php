@@ -10,7 +10,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * Outputter instances.
 	 *
-	 * @var QM_Output_html[] Array of outputters.
+	 * @var QM_Output_Html[] Array of outputters.
 	 */
 	protected $outputters = array();
 
@@ -101,7 +101,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
 		}
 
@@ -124,8 +124,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function init() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return;
+		}
+
+		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
+			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
 
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -9999 );
@@ -145,6 +149,21 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_print_styles( array(
 			'query-monitor',
 		) );
+	}
+
+	public function build_warning() {
+		printf(
+			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
+			sprintf(
+				/* translators: 1: CLI command to run, 2: plugin directory name */
+				esc_html__( 'Asset files for Query Monitor need to be built. Run %1$s from the %2$s directory.', 'query-monitor' ),
+				'<code>npm i && npm run build</code>',
+				sprintf(
+					'<code>%s</code>',
+					esc_html( QM_Util::standard_dir( untrailingslashit( $this->qm->plugin_path() ), '' ) )
+				)
+			)
+		);
 	}
 
 	public function enqueue_assets() {
@@ -510,8 +529,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'default' => false,
 			),
 			'QM_HIDE_SELF'             => array(
-				'label'   => __( 'Hide Query Monitor itself from various panels.', 'query-monitor' ),
-				'default' => false,
+				'label'   => __( 'Hide Query Monitor itself from various panels. Set to false if you want to see how Query Monitor hooks into WordPress.', 'query-monitor' ),
+				'default' => true,
 			),
 			'QM_NO_JQUERY'             => array(
 				'label'   => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
@@ -693,7 +712,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function is_active() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 
@@ -701,12 +720,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		// If this is an async request and not a customizer preview:
+		// Don't dispatch if this is an async request and not a customizer preview:
 		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
 			return false;
 		}
 
-		# Don't process if the minimum required actions haven't fired:
+		// Don't dispatch if the minimum required actions haven't fired:
 		if ( is_admin() ) {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
@@ -715,6 +734,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
 				return false;
 			}
+		}
+
+		// Don't dispatch during an iframed request, eg the plugin info modal or an upgrader action:
+		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */

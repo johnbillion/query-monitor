@@ -63,7 +63,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 
