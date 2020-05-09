@@ -980,6 +980,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-external-link:after,
 	.qm a.qm-link:after,
 	.qm a.qm-edit-link:after,
+	.qm button.qm-filter-info:before,
 	.qm button.qm-filter-trigger:after {
 		display: inline-block !important;
 		font-family: dashicons !important;
@@ -990,6 +991,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		text-decoration: none !important;
 		top: 2px !important;
 		visibility: hidden !important;
+	}
+
+	.qm button.qm-filter-info:before {
+		left: unset !important;
+		right: 2px !important;
+		content: '\f534' !important;
+		visibility: visible !important;
 	}
 
 	.qm a.qm-external-link:after,
