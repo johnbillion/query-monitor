@@ -54,6 +54,8 @@ if ( window.jQuery ) {
 		var minwidth               = 300;
 		var maxwidth               = $(window).width();
 		var container              = $('#query-monitor-main');
+		var body                   = $('body');
+		var body_margin            = body.css('margin-bottom');
 		var container_height_key   = 'qm-container-height';
 		var container_pinned_key   = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
 		var container_position_key = 'qm-container-position';
@@ -129,6 +131,12 @@ if ( window.jQuery ) {
 
 			if ( container.height() < minheight ) {
 				container.height( minheight );
+			}
+
+			if ( container.hasClass('qm-show-right') ) {
+				body.css( 'margin-bottom', '' );
+			} else {
+				body.css( 'margin-bottom', 'calc( ' + body_margin + ' + ' + container.height() + 'px )' );
 			}
 
 			$('#qm-panel-menu').find('button').removeAttr('aria-selected');
@@ -470,12 +478,14 @@ if ( window.jQuery ) {
 				var h = ( startY - ( event.clientY || event.originalEvent.targetTouches[0].pageY ) );
 				if ( h >= resizerHeight && h <= maxheight ) {
 					container.height( h );
+					body.css( 'margin-bottom', 'calc( ' + body_margin + ' + ' + h + 'px )' );
 				}
 			} else {
 				var w = ( startX - event.clientX );
 				if ( w >= minwidth && w <= maxwidth ) {
 					container.width( w );
 				}
+				body.css( 'margin-bottom', '' );
 			}
 		}
 
@@ -545,6 +555,7 @@ if ( window.jQuery ) {
 
 		$('.qm-button-container-close').click(function(){
 			container.removeClass('qm-show').height('').width('');
+			body.css( 'margin-bottom', '' );
 			localStorage.removeItem( container_pinned_key );
 		});
 
@@ -563,8 +574,12 @@ if ( window.jQuery ) {
 					container.width( w );
 				}
 
+				body.css( 'margin-bottom', '' );
+
 				localStorage.setItem( container_position_key, 'right' );
 			} else {
+				body.css( 'margin-bottom', 'calc( ' + body_margin + ' + ' + container.height() + 'px )' );
+
 				localStorage.removeItem( container_position_key );
 			}
 		});
