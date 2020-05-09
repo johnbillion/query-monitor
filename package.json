@@ -31,13 +31,12 @@
   },
   "scripts": {
     "start": "wp-scripts start",
-    "build": "concurrently \"wp-scripts build\"",
     "bump:major": "grunt bump:major",
     "bump:minor": "grunt bump:minor",
     "bump:patch": "grunt bump:patch",
     "grunt": "grunt",
     "jq": "jq",
-    "build": "grunt sass",
+    "build": "concurrently \"grunt sass\" \"wp-scripts build\"",
     "watch": "grunt watch"
   }
 }
