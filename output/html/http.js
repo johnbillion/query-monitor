@@ -7,13 +7,11 @@ class HTTP extends Component {
 	render() {
 		const { data } = this.props;
 
-		console.log(data);
-
 		if ( ! data.http ) {
 			return (
 				<Notice id={this.props.id}>
 					<p>
-					{__( 'No HTTP ffffff API calls.', 'query-monitor' )}
+					{__( 'No HTTP API calls.', 'query-monitor' )}
 					</p>
 				</Notice>
 			);
@@ -47,7 +45,7 @@ class HTTP extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{Object.keys(data.http).map(function(key){
+					{Object.keys(data.http).map(key=>{
 						const row = data.http[key];
 
 						return (
