@@ -7,8 +7,6 @@ class Logger extends Component {
 	render() {
 		const { data } = this.props;
 
-		console.log(data);
-
 		if ( ! data.logs || ! data.logs.length ) {
 			return null;
 		}
@@ -32,16 +30,14 @@ class Logger extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{data.logs.map(row=>{
-						return (
-							<tr>
-								<td>{row.level}</td>
-								<td>{row.message}</td>
-								<td>Caller</td>
-								<td>Component</td>
-							</tr>
-						)
-					})}
+					{data.logs.map(row=>
+						<tr>
+							<td>{row.level}</td>
+							<td>{row.message}</td>
+							<td>Caller</td>
+							<td>Component</td>
+						</tr>
+					)}
 				</tbody>
 			</Tabular>
 		)
