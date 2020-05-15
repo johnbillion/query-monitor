@@ -1,0 +1,11 @@
+{
+  "name": "qmi",
+  "version": "0.0.1",
+  "description": "User interface for developer tool panels, just like your browser dev tools",
+  "main": "index.js",
+  "keywords": [
+    "dev-tools"
+  ],
+  "author": "John Blackbourn",
+  "license": "MIT"
+}
