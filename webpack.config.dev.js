@@ -3,7 +3,16 @@ const path = require( 'path' );
 module.exports = {
   mode: 'development',
   watch: true,
-  entry: './src/index.js',
+  resolve: {
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+      '.jsx',
+      '.json',
+    ]
+  },
+  entry: './src/index.tsx',
   output: {
     filename: 'index.js',
     libraryTarget: 'umd',
@@ -12,9 +21,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: 'ts-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
     ],
   },

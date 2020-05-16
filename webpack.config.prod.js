@@ -2,7 +2,16 @@ const path = require( 'path' );
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  resolve: {
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+      '.jsx',
+      '.json',
+    ]
+  },
+  entry: './src/index.tsx',
   output: {
     filename: 'index.js',
     libraryTarget: 'commonjs2',
@@ -11,9 +20,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: 'ts-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
     ],
   },

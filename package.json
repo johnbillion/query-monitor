@@ -12,16 +12,15 @@
     "start": "webpack --config=webpack.config.dev.js",
     "build": "webpack --config=webpack.config.prod.js"
   },
-  "peerDependencies": {
+  "dependencies": {
     "react": "^16.12.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-react": "^7.7.4",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.3.0",
-    "style-loader": "^1.0.1",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^7.0.4",
+    "typescript": "^3.9.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   }
