@@ -8,6 +8,9 @@
   ],
   "author": "John Blackbourn",
   "license": "MIT",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "prepare": "npm run build",
     "start": "webpack --config=webpack.config.dev.js",
