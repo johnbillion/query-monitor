@@ -8,6 +8,11 @@
   ],
   "author": "John Blackbourn",
   "license": "MIT",
+  "homepage": "https://github.com/johnbillion/qmi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnbillion/qmi"
+  },
   "files": [
     "build"
   ],
