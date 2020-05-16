@@ -7,10 +7,13 @@
   "author": "John Blackbourn",
   "repository": "johnbillion/query-monitor",
   "main": "index.js",
+  "dependencies": {
+    "qmi": "^0.0.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
   "devDependencies": {
     "@actions/github": "^2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
     "classnames": "^2.2",
     "concurrently": "^5.1",
     "@wordpress/scripts": "^7",
