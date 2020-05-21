@@ -14,7 +14,7 @@
 
 defined( 'ABSPATH' ) || die();
 
-if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
+if ( ( defined( 'QM_DISABLED' ) && QM_DISABLED ) || ( ! defined( 'DB_USER' ) ) ) {
 	return;
 }
 
