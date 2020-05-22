@@ -9,6 +9,7 @@
   "main": "index.js",
   "dependencies": {
     "qmi": "^0.0.1",
+    "bell-on-bundler-error-plugin": "^2.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
