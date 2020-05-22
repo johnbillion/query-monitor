@@ -1,4 +1,5 @@
 const path = require( 'path' );
+const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
 
 module.exports = {
   mode: 'production',
@@ -11,6 +12,9 @@ module.exports = {
       '.json',
     ]
   },
+  plugins: [
+    new BellOnBundlerErrorPlugin(),
+  ],
   entry: './src/index.tsx',
   output: {
     filename: 'index.js',

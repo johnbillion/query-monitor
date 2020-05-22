@@ -22,6 +22,7 @@
     "build": "webpack --config=webpack.config.prod.js"
   },
   "dependencies": {
+    "bell-on-bundler-error-plugin": "^2.0.0",
     "react": "^16.12.0"
   },
   "devDependencies": {
