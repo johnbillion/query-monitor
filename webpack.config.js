@@ -20,13 +20,7 @@ module.exports = {
       /vendor/,
     ],
     rules: [
-      {
-        test: /\.js(x?)$/,
-        exclude: [
-          /node_modules/,
-        ],
-        loader: 'babel-loader',
-      },
+      ...defaultConfig.module.rules,
       {
         test: /\.ts(x?)$/,
         exclude: [
@@ -45,6 +39,7 @@ module.exports = {
     ],
   },
   plugins: [
+    ...defaultConfig.plugins,
     new BellOnBundlerErrorPlugin(),
     new webpack.ProvidePlugin({
       react: 'react',
