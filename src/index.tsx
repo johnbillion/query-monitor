@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import Conditionals from '../output/html/conditionals.js';
 import Caps from '../output/html/caps.js';
@@ -17,6 +17,25 @@ import Hooks from '../output/html/hooks.js';
 import Admin from '../output/html/admin.js';
 import HTTP from '../output/html/http.js';
 import Logger from '../output/html/logger.js';
+
+declare var qm_data: {
+	conditionals: any;
+	caps: any;
+	transients: any;
+	languages: any;
+	db_queries: any;
+	db_dupes: any;
+	db_callers: any;
+	db_components: any;
+	block_editor: any;
+	environment: any;
+	assets_scripts: any;
+	assets_styles: any;
+	hooks: any;
+	admin?: any;
+	http: any;
+	logger?: any;
+};
 
 jQuery(function($) {
 	ReactDOM.render(<Conditionals data={qm_data.conditionals.data} enabled={qm_data.conditionals.enabled} id="conditionals" /> , document.getElementById('qm-conditionals-container'));

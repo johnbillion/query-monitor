@@ -4,6 +4,46 @@ const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
 
 module.exports = {
   ...defaultConfig,
+  entry: './src/index.tsx',
+  resolve: {
+    extensions: [
+      '.ts',
+      '.tsx',
+      '.js',
+      '.jsx',
+      '.json',
+    ]
+  },
+  module: {
+    noParse: [
+      /tests/,
+      /vendor/,
+    ],
+    rules: [
+      {
+        test: /\.js(x?)$/,
+        exclude: [
+          /node_modules/,
+        ],
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.ts(x?)$/,
+        exclude: [
+          /node_modules/,
+        ],
+        loader: 'ts-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: [
+          /node_modules/,
+        ],
+        loader: 'source-map-loader',
+      },
+    ],
+  },
   plugins: [
     new BellOnBundlerErrorPlugin(),
     new webpack.ProvidePlugin({
