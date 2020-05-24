@@ -6,7 +6,7 @@
   "private": true,
   "author": "John Blackbourn",
   "repository": "johnbillion/query-monitor",
-  "main": "index.tsx",
+  "main": "src/index.tsx",
   "dependencies": {
     "@types/jquery": "^3.3.38",
     "@types/react": "^16.9.35",
