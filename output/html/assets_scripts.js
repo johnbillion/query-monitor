@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Assets from '../assets.js';
+import Assets from '../assets';
 import { Tabular } from '../utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 

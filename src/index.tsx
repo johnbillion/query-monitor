@@ -1,22 +1,22 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import Conditionals from '../output/html/conditionals.js';
-import Caps from '../output/html/caps.js';
-import Transients from '../output/html/transients.js';
-import Languages from '../output/html/languages.js';
-import DBQueries from '../output/html/db_queries.js';
-import DBDupes from '../output/html/db_dupes.js';
-import DBCallers from '../output/html/db_callers.js';
-import DBComponents from '../output/html/db_components.js';
-import BlockEditor from '../output/html/block_editor.js';
-import Environment from '../output/html/environment.js';
-import Scripts from '../output/html/assets_scripts.js';
-import Styles from '../output/html/assets_styles.js';
-import Hooks from '../output/html/hooks.js';
-import Admin from '../output/html/admin.js';
-import HTTP from '../output/html/http.js';
-import Logger from '../output/html/logger.js';
+import Conditionals from '../output/html/conditionals';
+import Caps from '../output/html/caps';
+import Transients from '../output/html/transients';
+import Languages from '../output/html/languages';
+import DBQueries from '../output/html/db_queries';
+import DBDupes from '../output/html/db_dupes';
+import DBCallers from '../output/html/db_callers';
+import DBComponents from '../output/html/db_components';
+import BlockEditor from '../output/html/block_editor';
+import Environment from '../output/html/environment';
+import Scripts from '../output/html/assets_scripts';
+import Styles from '../output/html/assets_styles';
+import Hooks from '../output/html/hooks';
+import Admin from '../output/html/admin';
+import HTTP from '../output/html/http';
+import Logger from '../output/html/logger';
 
 declare var qm_data: {
 	conditionals: any;
