@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
-import { Warning } from './utils';
+import { Warning } from 'qmi';
 
 class DB extends Component {
 

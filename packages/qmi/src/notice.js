@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NonTabular } from './utils';
+import { NonTabular } from 'qmi';
 
 export class Notice extends Component {
 
