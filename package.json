@@ -21,13 +21,17 @@
     "start": "webpack --config=webpack.config.dev.js",
     "build": "webpack --config=webpack.config.prod.js"
   },
-  "dependencies": {
-    "bell-on-bundler-error-plugin": "^2.0.0",
+  "peerDependencies": {
     "react": "^16.12.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "wp-types": "^1.1.1"
+  },
+  "devDependencies": {
+    "bell-on-bundler-error-plugin": "^2.0.0",
+    "react": "^16.12.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
