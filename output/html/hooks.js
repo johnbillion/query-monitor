@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import { Notice, QMComponent, Tabular, Warning } from '../utils';
+import { Notice, QMComponent, Tabular, Warning } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Hooks extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabular } from '../utils';
+import { Tabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class DBDupes extends Component {

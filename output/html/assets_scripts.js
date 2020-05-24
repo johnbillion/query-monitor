@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Assets from '../assets';
-import { Tabular } from '../utils';
+import { Tabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Scripts extends Component {

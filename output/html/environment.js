@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NonTabular } from '../utils';
+import { NonTabular } from 'qmi';
 import PHP from '../php';
 import DB from '../db';
 import WordPress from '../wordpress';

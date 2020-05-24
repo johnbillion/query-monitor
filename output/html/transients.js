@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Caller, Notice,QMComponent, Tabular } from '../utils';
+import { Caller, Notice,QMComponent, Tabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Transients extends Component {

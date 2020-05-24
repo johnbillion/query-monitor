@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabular, Caller } from '../utils';
+import { Tabular, Caller } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class Languages extends Component {
