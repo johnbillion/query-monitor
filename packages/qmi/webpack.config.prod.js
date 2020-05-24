@@ -15,7 +15,7 @@ module.exports = {
   plugins: [
     new BellOnBundlerErrorPlugin(),
   ],
-  entry: './src/index.ts',
+  entry: './index.ts',
   output: {
     filename: 'index.js',
     libraryTarget: 'commonjs2',
