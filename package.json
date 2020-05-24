@@ -21,9 +21,9 @@
   },
   "devDependencies": {
     "@actions/github": "^2",
+    "@wordpress/scripts": "^7",
     "classnames": "^2.2",
     "concurrently": "^5.1",
-    "@wordpress/scripts": "^7",
     "gitattributes-globs": "^1",
     "gitignore-globs": "^0.1",
     "grunt": "^1",
