@@ -18,7 +18,7 @@
     "build"
   ],
   "scripts": {
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "start": "webpack --config=webpack.config.dev.js",
     "build": "webpack --config=webpack.config.prod.js"
   },
