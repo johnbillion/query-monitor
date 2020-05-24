@@ -1,6 +1,11 @@
 # QMI
 
-QMI is a collection of React components which provide UI for developer tools panels, along with specific panels for Query Monitor for WordPress.
+QMI is a composite package made up of React components which provide:
+
+* Features for a developer tools UI
+* Specific panels for Query Monitor
+
+QMI is used for the main UI in the Query Monitor plugin for WordPress. While this package is still a work in progress, the aim is that the components are not coupled to WordPress. This means you can implement a UI for Query Monitor's collected data in an application separate from WordPress, for example a web browser extension or a centralised logging tool.
 
 ## Status
 
