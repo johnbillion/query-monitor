@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "outDir": "./build/",
     "sourceMap": true,
     "noImplicitAny": true,

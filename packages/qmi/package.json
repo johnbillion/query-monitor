@@ -9,10 +9,10 @@
   ],
   "author": "John Blackbourn",
   "license": "MIT",
-  "homepage": "https://github.com/johnbillion/qmi",
+  "homepage": "https://github.com/johnbillion/query-monitor/packages/qmi",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnbillion/qmi"
+    "url": "git+https://github.com/johnbillion/query-monitor/packages/qmi"
   },
   "files": [
     "build"
@@ -29,14 +29,5 @@
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "wp-types": "^1.1.1"
-  },
-  "devDependencies": {
-    "bell-on-bundler-error-plugin": "^2.0.0",
-    "react": "^16.12.0",
-    "source-map-loader": "^0.2.4",
-    "ts-loader": "^7.0.4",
-    "typescript": "^3.9.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
   }
 }

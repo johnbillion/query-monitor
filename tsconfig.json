@@ -1,9 +1,16 @@
 {
+  "references": [
+    {
+      "path": "packages/qmi"
+    }
+  ],
   "compilerOptions": {
     "outDir": "./build/",
     "sourceMap": true,
     "allowJs": true,
     "noImplicitAny": true,
+    "declaration": true,
+    "declarationMap": true,
     "module": "commonjs",
     "target": "es2017",
     "jsx": "react"
