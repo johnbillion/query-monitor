@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabular } from '../utils.js';
+import { Tabular } from '../utils';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class DBComponents extends Component {
