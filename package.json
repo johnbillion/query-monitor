@@ -8,6 +8,7 @@
   "repository": "johnbillion/query-monitor",
   "main": "src/index.tsx",
   "dependencies": {
+    "@types/classnames": "^2.2.10",
     "@types/jquery": "^3.3.38",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
