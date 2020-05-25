@@ -1,7 +1,10 @@
 const webpack = require('webpack');
+
+/** @type {webpack.Configuration} */
 const defaultConfig = require("@wordpress/scripts/config/webpack.config");
 const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
 
+/** @type {webpack.Configuration} */
 module.exports = {
   ...defaultConfig,
   entry: './src/index.tsx',
