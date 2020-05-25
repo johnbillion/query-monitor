@@ -14,3 +14,10 @@ export interface iPanelProps {
 	id: string;
 	enabled: boolean;
 }
+
+export interface iQM_i18n {
+	number_format: (
+		number: number,
+		decimals?: number,
+	) => string;
+}

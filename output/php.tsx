@@ -1,11 +1,13 @@
 import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
-import { Toggler, Warning } from 'qmi';
+import { Toggler, Warning, iQM_i18n } from 'qmi';
 import classnames from 'classnames';
 
 interface iPHPProps {
 	php: any;
 }
+
+declare var QM_i18n: iQM_i18n;
 
 class PHP extends React.Component<iPHPProps, {}> {
 
