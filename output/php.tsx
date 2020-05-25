@@ -3,7 +3,11 @@ import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Toggler, Warning } from 'qmi';
 import classnames from 'classnames';
 
-class PHP extends React.Component {
+interface iPHPProps {
+	php: any;
+}
+
+class PHP extends React.Component<iPHPProps, {}> {
 
 	render() {
 		const { php } = this.props;

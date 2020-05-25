@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Caller, Notice, QMComponent, PanelFooter, Tabular } from 'qmi';
+import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Caps extends React.Component {
+class Caps extends React.Component<iPanelProps, {}> {
 
 	render() {
 		if ( ! this.props.enabled ) {
@@ -59,12 +59,12 @@ class Caps extends React.Component {
 							<td className="qm-ltr qm-nowrap"><code>{cap.name}</code></td>
 							<td className="qm-num">{cap.user}</td>
 							<td className="qm-nowrap">{cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false'}</td>
-							<Caller trace={cap.filtered_trace} />
+							<Caller trace={cap.filtered_trace} toggleLabel={ __( 'View call stack', 'query-monitor' ) } />
 							<QMComponent component={cap.component} />
 						</tr>
 					)}
 				</tbody>
-				<PanelFooter cols="5" label={__( 'Total:', 'User capability checks', 'query-monitor' )} count={data.caps.length} />
+				<PanelFooter cols={5} label={__( 'Total:', 'User capability checks', 'query-monitor' )} count={data.caps.length} />
 			</Tabular>
 		)
 	}

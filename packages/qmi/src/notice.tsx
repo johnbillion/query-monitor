@@ -1,7 +1,11 @@
 import * as React from "react";
 import { NonTabular } from 'qmi';
 
-export class Notice extends React.Component {
+interface iNoticeProps {
+	id: string;
+}
+
+export class Notice extends React.Component<iNoticeProps, {}> {
 
 	render() {
 		return (

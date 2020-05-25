@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Caller, Notice, QMComponent, Tabular } from 'qmi';
+import { Caller, Notice, QMComponent, Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Transients extends React.Component {
+class Transients extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;
@@ -58,7 +58,7 @@ class Transients extends React.Component {
 							) }
 
 							<td className="qm-nowrap">~{transient.size_formatted}</td>
-							<Caller trace={transient.filtered_trace} />
+							<Caller trace={transient.filtered_trace} toggleLabel={ __( 'View call stack', 'query-monitor' ) } />
 							<QMComponent component={transient.component} />
 						</tr>
 					)}

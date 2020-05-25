@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Tabular, Caller } from 'qmi';
+import { Tabular, Caller, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Languages extends React.Component {
+class Languages extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;
@@ -39,7 +39,7 @@ class Languages extends React.Component {
 										<td className="qm-ltr">{lang.domain}</td>
 									)}
 									<td>{lang.type}</td>
-									<Caller trace={[lang.caller]} />
+									<Caller trace={[lang.caller]} toggleLabel={ __( 'View call stack', 'query-monitor' ) } />
 									{ lang.file ? (
 										<td className="qm-ltr">{lang.file}</td>
 									) : (

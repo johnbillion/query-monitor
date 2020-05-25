@@ -2,7 +2,12 @@ import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Warning } from 'qmi';
 
-class DB extends React.Component {
+interface iDBProps {
+	name: string;
+	db: any;
+}
+
+class DB extends React.Component<iDBProps, {}> {
 
 	render() {
 		const {

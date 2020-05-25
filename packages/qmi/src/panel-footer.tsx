@@ -1,6 +1,12 @@
 import * as React from "react";
 
-export class PanelFooter extends React.Component {
+interface iPanelFooterProps {
+	cols: number;
+	label: string;
+	count: number;
+}
+
+export class PanelFooter extends React.Component<iPanelFooterProps, {}> {
 
 	render() {
 		return (

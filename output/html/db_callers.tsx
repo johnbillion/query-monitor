@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Tabular } from 'qmi';
+import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBCallers extends React.Component {
+class DBCallers extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Tabular, PanelFooter } from 'qmi';
+import { Tabular, PanelFooter, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class BlockEditor extends React.Component {
+class BlockEditor extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;
@@ -50,7 +50,7 @@ class BlockEditor extends React.Component {
 						)
 					})}
 				</tbody>
-				<PanelFooter cols="6" label={_x( 'Total:', 'Content blocks used', 'query-monitor' )} count={data.post_blocks.length}>
+				<PanelFooter cols={6} label={_x( 'Total:', 'Content blocks used', 'query-monitor' )} count={data.post_blocks.length}>
 				</PanelFooter>
 			</Tabular>
 		)

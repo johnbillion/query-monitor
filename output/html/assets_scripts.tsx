@@ -1,9 +1,9 @@
 import * as React from "react";
 import Assets from '../assets';
-import { Tabular } from 'qmi';
+import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Scripts extends React.Component {
+class Scripts extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;

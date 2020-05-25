@@ -4,8 +4,10 @@ import { Notice } from 'qmi';
 export class NotEnabled extends React.Component {
 
 	render() {
+		const { id } = this.props as any;
+
 		return (
-			<Notice id={this.props.id}>
+			<Notice id={id}>
 				{this.props.children}
 			</Notice>
 		);

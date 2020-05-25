@@ -1,6 +1,10 @@
 import * as React from "react";
 
-export class QMComponent extends React.Component {
+interface iComponentProps {
+	component: any;
+}
+
+export class QMComponent extends React.Component<iComponentProps, {}> {
 
 	render() {
 		return (

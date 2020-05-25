@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Notice, PanelFooter, Tabular } from 'qmi';
+import { Notice, PanelFooter, Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBQueries extends React.Component {
+class DBQueries extends React.Component<iPanelProps, {}> {
 
 	render() {
 		const { data } = this.props;
@@ -55,7 +55,7 @@ class DBQueries extends React.Component {
 						</tr>
 					)}
 				</tbody>
-				<PanelFooter cols="5" label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
+				<PanelFooter cols={5} label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
 				<td className='qm-num'>{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>
 				</PanelFooter>
 			</Tabular>
