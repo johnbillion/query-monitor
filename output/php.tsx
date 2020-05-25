@@ -34,7 +34,7 @@ class PHP extends React.Component<iPHPProps, {}> {
 									<>
 										<Warning/>
 										{ php.version }
-										&nbsp;(<a href="https://wordpress.org/support/update-php/" class="qm-external-link">
+										&nbsp;(<a href="https://wordpress.org/support/update-php/" className="qm-external-link">
 											{__( 'Help', 'query-monitor' )}
 										</a>)
 									</>
