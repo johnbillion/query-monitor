@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { NonTabular } from 'qmi';
 import PHP from '../php';
 import DB from '../db';
@@ -6,7 +6,7 @@ import WordPress from '../wordpress';
 import Server from '../server';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Environment extends Component {
+class Environment extends React.Component {
 
 	render() {
 		const { data } = this.props;

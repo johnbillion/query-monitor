@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import * as React from "react";
 
-export class Warning extends Component {
+export class Warning extends React.Component {
 
 	render() {
 		return (

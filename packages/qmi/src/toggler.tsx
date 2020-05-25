@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-export class Toggler extends Component {
+export class Toggler extends React.Component {
 
 	render() {
 		return (

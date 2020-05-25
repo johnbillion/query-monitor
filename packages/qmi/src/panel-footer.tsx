@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import * as React from "react";
 
-export class PanelFooter extends Component {
+export class PanelFooter extends React.Component {
 
 	render() {
 		return (

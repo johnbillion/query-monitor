@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { PanelFooter } from 'qmi';
 
-class Assets extends Component {
+class Assets extends React.Component {
 
 	render() {
 		const { data } = this.props;

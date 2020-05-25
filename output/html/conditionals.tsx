@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { NonTabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Conditionals extends Component {
+class Conditionals extends React.Component {
 
 	render() {
 		const trueConds = this.props.data.conds['true'];

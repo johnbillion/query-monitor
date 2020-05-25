@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Toggler, Warning } from 'qmi';
 import classnames from 'classnames';
 
-class PHP extends Component {
+class PHP extends React.Component {
 
 	render() {
 		const { php } = this.props;

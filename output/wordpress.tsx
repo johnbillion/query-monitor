@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class WordPress extends Component {
+class WordPress extends React.Component {
 
 	render() {
 		const { wordpress } = this.props;

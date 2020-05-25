@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import * as React from "react";
 
-export class QMComponent extends Component {
+export class QMComponent extends React.Component {
 
 	render() {
 		return (

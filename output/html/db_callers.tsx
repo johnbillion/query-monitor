@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import { Tabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBComponents extends Component {
+class DBCallers extends React.Component {
 
 	render() {
 		const { data } = this.props;
@@ -16,9 +16,9 @@ class DBComponents extends Component {
 				<thead>
 					<tr>
 						<th scope="col">
-							{__( 'Component', 'query-monitor' )}
+							{__( 'Caller', 'query-monitor' )}
 						</th>
-						{Object.keys(data.types).map(key=>
+						{Object.keys(data.types).map(key =>
 							<th key={key} scope="col" className="qm-num">
 								{key}
 							</th>
@@ -29,15 +29,15 @@ class DBComponents extends Component {
 					</tr>
 				</thead>
 				<tbody>
-					{data.times.map(comp=>
-						<tr key={comp.component}>
-							<td>{comp.component}</td>
+					{data.times.map(caller=>
+						<tr key={caller.caller}>
+							<td>{caller.caller}</td>
 							{Object.keys(data.types).map(key=>
 								<td key={key} scope="col" className="qm-num">
-									{comp.types[key] || ''}
+									{caller.types[key] || ''}
 								</td>
 							)}
-							<td className='qm-num'>{comp.ltime}</td>
+							<td className='qm-num'>{caller.ltime}</td>
 						</tr>
 					)}
 				</tbody>
@@ -58,4 +58,4 @@ class DBComponents extends Component {
 
 }
 
-export default DBComponents;
+export default DBCallers;

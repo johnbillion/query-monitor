@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import * as React from "react";
 import Assets from '../assets';
 import { Tabular } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Styles extends Component {
+class Styles extends React.Component {
 
 	render() {
 		const { data } = this.props;
