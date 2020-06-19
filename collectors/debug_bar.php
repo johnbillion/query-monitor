@@ -74,7 +74,7 @@ function register_qm_collectors_debug_bar() {
 }
 
 function qm_debug_bar_being_activated() {
-	// @codingStandardsIgnoreStart
+	// phpcs:disable
 
 	if ( ! is_admin() ) {
 		return false;
@@ -107,7 +107,7 @@ function qm_debug_bar_being_activated() {
 	}
 
 	return false;
-	// @codingStandardsIgnoreEnd
+	// phpcs:enable
 }
 
 add_action( 'init', 'register_qm_collectors_debug_bar' );

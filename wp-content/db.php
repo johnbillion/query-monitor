@@ -121,7 +121,7 @@ class QM_DB extends wpdb {
 			} else {
 				if ( is_resource( $this->dbh ) ) {
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// @codingStandardsIgnoreLine
+					// phpcs:ignore
 					$code = mysql_errno( $this->dbh );
 				}
 			}

@@ -32,7 +32,7 @@ class QM_Activation extends QM_Plugin {
 		$db = WP_CONTENT_DIR . '/db.php';
 
 		if ( ! file_exists( $db ) && function_exists( 'symlink' ) ) {
-			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db ); // @codingStandardsIgnoreLine
+			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db ); // phpcs:ignore
 		}
 
 		if ( $sitewide ) {
@@ -53,7 +53,7 @@ class QM_Activation extends QM_Plugin {
 
 		# Only delete db.php if it belongs to Query Monitor
 		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB' ) ) {
-			unlink( WP_CONTENT_DIR . '/db.php' ); // @codingStandardsIgnoreLine
+			unlink( WP_CONTENT_DIR . '/db.php' ); // phpcs:ignore
 		}
 
 	}
