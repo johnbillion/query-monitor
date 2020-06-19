@@ -459,7 +459,7 @@ abstract class QM_Output_Html extends QM_Output {
 				return 'atom://open/?url=file://%f&line=%l';
 			case 'sublime':
 				return 'subl://open/?url=file://%f&line=%l';
-			case 'textnate':
+			case 'textmate':
 				return 'txmt://open/?url=file://%f&line=%l';
 			case 'netbeans':
 				return 'nbopen://%f:%l';
