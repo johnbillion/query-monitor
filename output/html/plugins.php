@@ -179,8 +179,9 @@ class QM_Output_Html_Plugins_Hooks extends QM_Output_Html {
 						&& $action['callback']['component']->context == $name
 						&& isset( $action['time'] ) ) {
 						$plugins[ $name ]['actions'][ $action['callback']['name'] ]['hook'] = $hook['name'];
-						if ( ! isset( $plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] ) )
+						if ( ! isset( $plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] ) ) {
 							$plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] = 0;
+						}
 						$plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] += $action['time'];
 					}
 				}
