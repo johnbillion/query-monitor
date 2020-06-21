@@ -191,7 +191,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				echo '<td></td>';
 				echo '<td></td>';
 				echo '<td></td>';
-			echo '</tr>';
+				echo '</tr>';
 			}
 		}
 
