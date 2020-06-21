@@ -21,7 +21,13 @@ class QM_Hook {
 
 				foreach ( $callbacks as $callback ) {
 
+					$timer = new QM_Timer();
+					$timer->start();
+
 					$callback = QM_Util::populate_callback( $callback );
+
+					$timer->stop();
+					$time = $timer->get_time();
 
 					if ( isset( $callback['component'] ) ) {
 						if (
@@ -40,6 +46,7 @@ class QM_Hook {
 					$actions[] = array(
 						'priority' => $priority,
 						'callback' => $callback,
+						'time'     => $time,
 					);
 
 				}

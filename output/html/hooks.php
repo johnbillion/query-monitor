@@ -45,6 +45,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 			'highlight' => 'subject',
 		) ); // WPCS: XSS ok.
 		echo '</th>';
+		echo '<th scope="col">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -95,6 +96,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					if ( $core !== $component ) {
 						$subject .= ' non-core';
 					}
+
+					$time = number_format_i18n( $action['time'], 4 );
 
 					printf( // WPCS: XSS ok.
 						'<tr data-qm-subject="%s" %s>',
@@ -173,6 +176,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					echo '<td class="qm-nowrap' . esc_attr( $class ) . '">';
 					echo esc_html( $component );
 					echo '</td>';
+					echo '<td class="qm-nowrap' . esc_attr( $class ) . '">';
+					echo esc_html( $time );
+					echo '</td>';
 					echo '</tr>';
 					$first = false;
 				}
@@ -184,7 +190,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				echo '<td></td>';
 				echo '<td></td>';
 				echo '<td></td>';
-				echo '</tr>';
+				echo '<td></td>';
+			echo '</tr>';
 			}
 		}
 
