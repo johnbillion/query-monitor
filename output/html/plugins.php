@@ -28,40 +28,45 @@ class QM_Output_Html_Plugins extends QM_Output_Html {
 		$hooks_data = QM_Collectors::get( 'hooks' )->get_data();
 		$plugins_data = QM_Collectors::get( 'plugins' )->get_data();
 
-		$plugins = [];
-		foreach( $plugins_data['plugins'] as $name => $plugin ) {
-			$plugins[$name] = [];
-			$plugins[$name]['actions'] = [];
+		$plugins = array();
+		foreach ( $plugins_data['plugins'] as $name => $plugin ) {
+			$plugins[ $name ] = array();
+			$plugins[ $name ]['actions'] = array();
 
 			if ( isset( $plugin['load_time'] ) ) {
-				if ( $file_data = get_file_data( $plugin['file'],
-					[
+				$file_data = get_file_data( $plugin['file'],
+					array(
 						'PluginName' => 'Plugin Name',
 						'PluginURI' => 'Plugin URI',
 						'Version' => 'Version',
-						'TextDomain' => 'Text Domain'
-					],
-					'plugin' ) ) {
-					$plugins[$name]['plugin_name'] = $file_data['PluginName'];
-					$plugins[$name]['plugin_uri'] = $file_data['PluginURI'];
-					$plugins[$name]['version'] = $file_data['Version'];
-					$plugins[$name]['text_domain'] = $file_data['TextDomain'];
+						'TextDomain' => 'Text Domain',
+					),
+					'plugin'
+				);
+				if ( $file_data ) {
+					$plugins[ $name ]['plugin_name'] = $file_data['PluginName'];
+					$plugins[ $name ]['plugin_uri'] = $file_data['PluginURI'];
+					$plugins[ $name ]['version'] = $file_data['Version'];
+					$plugins[ $name ]['text_domain'] = $file_data['TextDomain'];
 				}
-				$plugins[$name]['time'] = $plugin['load_time'];
+				$plugins[ $name ]['time'] = $plugin['load_time'];
 			}
 		}
 
 		foreach ( $plugins as $name => $plugin ) {
-			foreach ( $hooks_data['hooks'] as $hook )
-				foreach ( $hook['actions'] as $action )
+			foreach ( $hooks_data['hooks'] as $hook ) {
+				foreach ( $hook['actions'] as $action ) {
 					if ( isset( $action['callback'] )
-						and isset( $action['callback']['component'] )
-						and $action['callback']['component']->context == $name
-						and isset( $action['time'] ) ) {
-						if ( ! isset( $plugins[$name]['time'] ) )
-							$plugins[$name]['time'] = 0;
-						$plugins[$name]['time'] += $action['time'];
+						&& isset( $action['callback']['component'] )
+						&& $action['callback']['component']->context == $name
+						&& isset( $action['time'] ) ) {
+						if ( ! isset( $plugins[ $name ]['time'] ) ) {
+							$plugins[ $name ]['time'] = 0;
+						}
+						$plugins[ $name ]['time'] += $action['time'];
 					}
+				}
+			}
 		}
 
 		$this->before_tabular_output();
@@ -78,19 +83,20 @@ class QM_Output_Html_Plugins extends QM_Output_Html {
 
 		echo '<tbody>';
 
-		foreach( $plugins as $name => $plugin ) {
+		foreach ( $plugins as $name => $plugin ) {
 			printf( // WPCS: XSS ok.
 				'<tr data-qm-subject="%s">',
 				esc_attr( $name )
 			);
 			echo '<th scope="row">' . esc_html( $name ) . '</th>';
-			if ( $plugin['plugin_uri'] )
+			if ( $plugin['plugin_uri'] ) {
 				echo '<th scope="row"><a href="' . esc_html( $plugin['plugin_uri'] ) . '" target="_blank">' . esc_html( $plugin['plugin_name'] ) . '</a></th>';
-			else
+			} else {
 				echo '<th scope="row">' . esc_html( $plugin['plugin_name'] ) . '</th>';
+			}
 			echo '<th scope="row">' . esc_html( $plugin['version'] ) . '</th>';
 			echo '<th scope="row">' . esc_html( $plugin['text_domain'] ) . '</th>';
-			echo '<td>' . number_format_i18n( $plugin['time'], 4 ) . '</td>';
+			echo '<td>' . esc_html( number_format_i18n( $plugin['time'], 4 ) ) . '</td>';
 		}
 
 		echo '</tbody>';
@@ -102,7 +108,7 @@ class QM_Output_Html_Plugins extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-  	$name = __( 'Unknown', 'query-monitor' );
+		$name = __( 'Unknown', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(
@@ -117,10 +123,10 @@ class QM_Output_Html_Plugins extends QM_Output_Html {
 
 	public function panel_menu( array $menu ) {
 		$id = $this->collector->id();
-		if ( isset( $menu[$id] ) ) {
-			$menu[$id]['title'] = __( 'Plugins', 'query-monitor' );
+		if ( isset( $menu[ $id ] ) ) {
+			$menu[ $id ]['title'] = __( 'Plugins', 'query-monitor' );
 
-			$menu[$id]['children'][] = array(
+			$menu[ $id ]['children'][] = array(
 				'id'    => $id . '-hooks',
 				'href'  => '#' . $id . '-hooks',
 				'title' => esc_html__( 'Hooks in Use', 'query-monitor' ),
@@ -150,32 +156,35 @@ class QM_Output_Html_Plugins_Hooks extends QM_Output_Html {
 		$data = $this->collector->get_data();
 		$hooks_data = QM_Collectors::get( 'hooks' )->get_data();
 
-		$plugins = [];
-		foreach( $hooks_data['components'] as $component )
+		$plugins = array();
+		foreach ( $hooks_data['components'] as $component ) {
 			if ( preg_match( '/^' . __( 'Plugin', 'query-monitor' ) . ': (.*)/', $component, $matches ) ) {
 				$name = $matches[1];
-				$plugins[$name] = [];
-				$plugins[$name]['actions'] = [];
+				$plugins[ $name ] = array();
+				$plugins[ $name ]['actions'] = array();
 
-				if ( isset( $data['plugins'][$name] )
-					and isset( $data['plugins'][$name]['load_time'] ) ) {
-					$plugins[$name]['actions']['']['hook'] = 'Load';
-					$plugins[$name]['actions']['']['time'] = $data['plugins'][$name]['load_time'];
+				if ( isset( $data['plugins'][ $name ] )
+					&& isset( $data['plugins'][ $name ]['load_time'] ) ) {
+					$plugins[ $name ]['actions']['']['hook'] = 'Load';
+					$plugins[ $name ]['actions']['']['time'] = $data['plugins'][ $name ]['load_time'];
 				}
 			}
+		}
 
 		foreach ( $plugins as $name => $component_name ) {
-			foreach ( $hooks_data['hooks'] as $hook )
-				foreach ( $hook['actions'] as $action )
+			foreach ( $hooks_data['hooks'] as $hook ) {
+				foreach ( $hook['actions'] as $action ) {
 					if ( isset( $action['callback'] )
-						and isset( $action['callback']['component'] )
-						and $action['callback']['component']->context == $name
-						and isset( $action['time'] ) ) {
-						$plugins[$name]['actions'][$action['callback']['name']]['hook'] = $hook['name'];
-						if ( ! isset( $plugins[$name]['actions'][$action['callback']['name']]['time'] ) )
-							$plugins[$name]['actions'][$action['callback']['name']]['time'] = 0;
-						$plugins[$name]['actions'][$action['callback']['name']]['time'] += $action['time'];
+						&& isset( $action['callback']['component'] )
+						&& $action['callback']['component']->context == $name
+						&& isset( $action['time'] ) ) {
+						$plugins[ $name ]['actions'][ $action['callback']['name'] ]['hook'] = $hook['name'];
+						if ( ! isset( $plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] ) )
+							$plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] = 0;
+						$plugins[ $name ]['actions'][ $action['callback']['name'] ]['time'] += $action['time'];
 					}
+				}
+			}
 		}
 
 		$this->before_tabular_output();
@@ -191,16 +200,16 @@ class QM_Output_Html_Plugins_Hooks extends QM_Output_Html {
 
 		echo '<tbody>';
 
-		foreach( $plugins as $name => $plugin ) {
-			if ( ! empty( $plugins[$name]['actions'] ) ) {
-				$rowspan = count( $plugins[$name]['actions'] );
+		foreach ( $plugins as $name => $plugin ) {
+			if ( ! empty( $plugins[ $name ]['actions'] ) ) {
+				$rowspan = count( $plugins[ $name ]['actions'] );
 			} else {
 				$rowspan = 1;
 			}
 
 			$first = true;
 
-			foreach ( $plugins[$name]['actions'] as $action_name => $action ) {
+			foreach ( $plugins[ $name ]['actions'] as $action_name => $action ) {
 				if ( $first ) {
 					printf( // WPCS: XSS ok.
 						'<tr data-qm-subject="%s">',
@@ -215,7 +224,7 @@ class QM_Output_Html_Plugins_Hooks extends QM_Output_Html {
 
 				echo '<td>' . esc_html( $action['hook'] ) . '</td>';
 				echo '<td>' . esc_html( $action_name ) . '</td>';
-				echo '<td>' . number_format_i18n( $action['time'], 4 ) . '</td>';
+				echo '<td>' . esc_html( number_format_i18n( $action['time'], 4 ) ) . '</td>';
 				echo '</tr>';
 			}
 		}
@@ -228,12 +237,14 @@ class QM_Output_Html_Plugins_Hooks extends QM_Output_Html {
 
 function register_qm_output_html_plugins( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'plugins' );
-	if ( $collector )
+	if ( $collector ) {
 		$output['plugins'] = new QM_Output_Html_Plugins( $collector );
+	}
 
 	$collector = QM_Collectors::get( 'plugins-hooks' );
-	if ( $collector )
+	if ( $collector ) {
 		$output['plugins-hooks'] = new QM_Output_Html_Plugins_Hooks( $collector );
+	}
 
 	return $output;
 }
