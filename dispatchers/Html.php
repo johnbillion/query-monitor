@@ -452,6 +452,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'Netbeans'           => 'netbeans',
 			'PhpStorm'           => 'phpstorm',
 			'Sublime Text'       => 'sublime',
+			'TextMate'           => 'textmate',
 			'Visual Studio Code' => 'vscode',
 		);
 
