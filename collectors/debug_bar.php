@@ -10,10 +10,6 @@ final class QM_Collector_Debug_Bar extends QM_Collector {
 	public $id     = 'debug_bar';
 	private $panel = null;
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function set_panel( Debug_Bar_Panel $panel ) {
 		$this->panel = $panel;
 	}

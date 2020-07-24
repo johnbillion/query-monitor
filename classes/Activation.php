@@ -66,7 +66,7 @@ class QM_Activation extends QM_Plugin {
 			return $plugins;
 		}
 
-		$f = preg_quote( basename( $this->plugin_base() ) );
+		$f = preg_quote( basename( $this->plugin_base() ), '/' );
 
 		return array_merge(
 			preg_grep( '/' . $f . '$/', $plugins ),
