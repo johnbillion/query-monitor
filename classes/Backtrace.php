@@ -55,7 +55,7 @@ class QM_Backtrace {
 	protected $calling_file    = '';
 
 	public function __construct( array $args = array(), array $trace = null ) {
-		$this->trace = is_null( $trace ) ? debug_backtrace( false ) : $trace;
+		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
