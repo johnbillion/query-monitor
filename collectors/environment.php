@@ -262,7 +262,9 @@ class QM_Collector_Environment extends QM_Collector {
 		if ( function_exists( 'posix_getpwuid' ) ) {
 			$u     = posix_getpwuid( posix_getuid() );
 			$g     = posix_getgrgid( $u['gid'] );
-			$php_u = $u['name'] . ':' . $g['name'];
+			if ( ! empty( $u ) && ! empty( $g ) ) {
+				$php_u = $u['name'] . ':' . $g['name'];
+			}
 		}
 
 		if ( empty( $php_u ) && isset( $_ENV['APACHE_RUN_USER'] ) ) {
