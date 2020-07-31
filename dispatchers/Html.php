@@ -220,11 +220,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		$asset_file = require_once $this->qm->plugin_path( 'build/index.asset.php' );
+		$asset_file = require_once $this->qm->plugin_path( 'build/main.asset.php' );
 
 		wp_enqueue_script(
 			'query-monitor-ui',
-			$this->qm->plugin_url( 'build/index.js' ),
+			$this->qm->plugin_url( 'build/main.js' ),
 			array_merge(
 				array(
 					'wp-element',
