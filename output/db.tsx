@@ -2,9 +2,24 @@ import * as React from "react";
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Warning } from 'qmi';
 
+interface dbItem {
+	'server-version' : string; // @TODO check
+	'extension'      : string; // @TODO check
+	'client-version' : string; // @TODO check
+	'user'           : string;
+	'host'           : string;
+	'database'       : string;
+}
+
 interface iDBProps {
 	name: string;
-	db: any;
+	db: {
+		info: dbItem;
+		variables: {
+			Variable_name: string;
+			Value: string;
+		}[];
+	}
 }
 
 class DB extends React.Component<iDBProps, {}> {
@@ -14,7 +29,7 @@ class DB extends React.Component<iDBProps, {}> {
 			name,
 			db,
 		} = this.props;
-		const info = {
+		const info: dbItem = {
 			'server-version' : __( 'Server Version', 'query-monitor' ),
 			'extension'      : __( 'Extension', 'query-monitor' ),
 			'client-version' : __( 'Client Version', 'query-monitor' ),
@@ -30,7 +45,7 @@ class DB extends React.Component<iDBProps, {}> {
 				</h3>
 				<table>
 					<tbody>
-						{Object.keys(info).map(key =>
+						{Object.keys(info).map( ( key: keyof typeof info ) =>
 							<tr key={key}>
 								<th scope="row">
 									{info[key]}

@@ -2,15 +2,23 @@ import * as React from "react";
 import { Warning } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
+interface ServerItem {
+	name: string;
+	version: string;
+	address: string;
+	host: string;
+	OS: string;
+}
+
 interface iServerProps {
-	server: any;
+	server: ServerItem;
 }
 
 class WordPress extends React.Component<iServerProps, {}> {
 
 	render() {
 		const { server } = this.props;
-		const info = {
+		const info: ServerItem = {
 			'name'    : __( 'Software', 'query-monitor' ),
 			'version' : __( 'Version', 'query-monitor' ),
 			'address' : __( 'Address', 'query-monitor' ),
@@ -25,7 +33,7 @@ class WordPress extends React.Component<iServerProps, {}> {
 				</h3>
 				<table>
 					<tbody>
-						{Object.keys(info).map(key =>
+						{Object.keys(info).map( ( key: keyof typeof info ) =>
 							<tr key={key}>
 								<th scope="row">
 									{info[key]}

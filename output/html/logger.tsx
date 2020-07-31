@@ -2,7 +2,16 @@ import * as React from "react";
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Logger extends React.Component<iPanelProps, {}> {
+export interface LogItem {
+	level: string;
+	message: string;
+}
+
+export interface iLoggerProps extends iPanelProps {
+	logs: LogItem[];
+}
+
+class Logger extends React.Component<iLoggerProps, {}> {
 
 	render() {
 		const { data } = this.props;
