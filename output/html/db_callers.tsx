@@ -2,7 +2,22 @@ import * as React from "react";
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBCallers extends React.Component<iPanelProps, {}> {
+interface iDBCallerTypeTimes {
+	[key: string]: number;
+};
+
+interface iDBCallersProps extends iPanelProps {
+	data: {
+		times?: {
+			caller: string;
+			ltime: number;
+			types: iDBCallerTypeTimes;
+		}[];
+		types: iDBCallerTypeTimes;
+	};
+}
+
+class DBCallers extends React.Component<iDBCallersProps, {}> {
 
 	render() {
 		const { data } = this.props;

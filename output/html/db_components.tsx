@@ -2,7 +2,22 @@ import * as React from "react";
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBComponents extends React.Component<iPanelProps, {}> {
+interface iDBComponentTypeTimes {
+	[key: string]: number;
+};
+
+interface iDBComponentsProps extends iPanelProps {
+	data: {
+		times: {
+			component: string;
+			ltime: number;
+			types: iDBComponentTypeTimes;
+		}[];
+		types: iDBComponentTypeTimes;
+	};
+}
+
+class DBComponents extends React.Component<iDBComponentsProps, {}> {
 
 	render() {
 		const { data } = this.props;

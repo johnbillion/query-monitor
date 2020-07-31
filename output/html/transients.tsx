@@ -1,8 +1,23 @@
 import * as React from "react";
-import { Caller, Notice, QMComponent, Tabular, iPanelProps } from 'qmi';
+import { Caller, Notice, QMComponent, Tabular, iPanelProps, FrameItem } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Transients extends React.Component<iPanelProps, {}> {
+interface iTransientsProps extends iPanelProps {
+	data: {
+		trans: {
+			name: string;
+			type?: string;
+			expiration: number;
+			exp_diff: string;
+			size_formatted: string;
+			filtered_trace: FrameItem[];
+			component: any;
+		}[];
+		has_type: boolean;
+	}
+}
+
+class Transients extends React.Component<iTransientsProps, {}> {
 
 	render() {
 		const { data } = this.props;

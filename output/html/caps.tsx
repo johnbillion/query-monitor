@@ -1,8 +1,20 @@
 import * as React from "react";
-import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps } from 'qmi';
+import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps, FrameItem } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Caps extends React.Component<iPanelProps, {}> {
+interface iCapsProps extends iPanelProps {
+	data: {
+		caps: {
+			name: string;
+			user: number;
+			result: boolean;
+			filtered_trace: FrameItem[];
+			component: any;
+		}[];
+	};
+}
+
+class Caps extends React.Component<iCapsProps, {}> {
 
 	render() {
 		if ( ! this.props.enabled ) {

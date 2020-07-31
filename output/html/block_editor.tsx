@@ -2,7 +2,22 @@ import * as React from "react";
 import { Tabular, PanelFooter, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class BlockEditor extends React.Component<iPanelProps, {}> {
+interface iBlocksProps extends iPanelProps {
+	data: {
+		post_blocks: {
+			attrs?: any[];
+			blockName: string;
+			innerHTML: string;
+			dynamic: boolean;
+			callback?: {
+				name: string;
+			};
+			size: number;
+			timing: number;
+		}[];
+	};
+}
+class BlockEditor extends React.Component<iBlocksProps, {}> {
 
 	render() {
 		const { data } = this.props;

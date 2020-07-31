@@ -2,7 +2,17 @@ import * as React from "react";
 import { Notice, PanelFooter, Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBQueries extends React.Component<iPanelProps, {}> {
+interface iDBQueriesProps extends iPanelProps {
+	data: {
+		rows: {
+			sql: string;
+			result: string;
+			ltime: number;
+		}[];
+	};
+}
+
+class DBQueries extends React.Component<iDBQueriesProps, {}> {
 
 	render() {
 		const { data } = this.props;

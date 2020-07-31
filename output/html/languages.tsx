@@ -1,8 +1,23 @@
 import * as React from "react";
-import { Tabular, Caller, iPanelProps } from 'qmi';
+import { Tabular, Caller, iPanelProps, FrameItem } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Languages extends React.Component<iPanelProps, {}> {
+interface iLanguagesProps extends iPanelProps {
+	data: {
+		languages: {
+			[key: string]: {
+				domain: string;
+				file: string;
+				handle: string;
+				type: string;
+				found: string;
+				caller: FrameItem;
+			}[];
+		};
+	};
+}
+
+class Languages extends React.Component<iLanguagesProps, {}> {
 
 	render() {
 		const { data } = this.props;

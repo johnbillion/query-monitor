@@ -2,7 +2,16 @@ import * as React from "react";
 import { NonTabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Conditionals extends React.Component<iPanelProps, {}> {
+interface iConditionalsProps extends iPanelProps {
+	data: {
+		conds: {
+			'true': string[];
+			'false': string[];
+		};
+	};
+}
+
+class Conditionals extends React.Component<iConditionalsProps, {}> {
 
 	render() {
 		const trueConds = this.props.data.conds['true'];

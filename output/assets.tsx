@@ -52,7 +52,7 @@ class Assets extends React.Component<iAssetsProps, {}> {
 					</tr>
 				</thead>
 				<tbody>
-					{Object.keys(position_labels).map(key =>
+					{Object.keys(position_labels).map(( key: keyof typeof position_labels ) =>
 						<React.Fragment key={key}>
 							{data.assets[ key ] && Object.keys(data.assets[ key ]).map(handle => {
 								const asset = data.assets[ key ][ handle ];
