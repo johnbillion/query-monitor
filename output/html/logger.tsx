@@ -8,7 +8,9 @@ export interface LogItem {
 }
 
 export interface iLoggerProps extends iPanelProps {
-	logs: LogItem[];
+	data: {
+		logs: LogItem[];
+	};
 }
 
 class Logger extends React.Component<iLoggerProps, {}> {

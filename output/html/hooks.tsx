@@ -72,7 +72,7 @@ class Hooks extends React.Component<iPanelProps, {}> {
 												)}
 											</th>
 										) }
-										<td className="qm-num">{action.priority}</td>
+										<td className="qm-num">{action.callback.priority}</td>
 										<td className="qm-nowrap">{action.callback.name}</td>
 										<QMComponent component={action.callback.component} />
 									</tr>

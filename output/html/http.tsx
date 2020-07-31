@@ -61,7 +61,7 @@ class HTTP extends React.Component<iPanelProps, {}> {
 						)
 					})}
 				</tbody>
-				<PanelFooter cols="6" label={__( 'Total:', 'HTTP API calls', 'query-monitor' )} count={Object.keys(data.http).length}>
+				<PanelFooter cols={6} label={__( 'Total:', 'HTTP API calls', 'query-monitor' )} count={Object.keys(data.http).length}>
 					<td className="qm-num">
 						{Object.keys(data.http).reduce((a,b)=>a+data.http[b].ltime,0)}
 					</td>

@@ -43,7 +43,7 @@ class BlockEditor extends React.Component<iPanelProps, {}> {
 								<th scope="row" className="qm-row-num qm-num">{1+i}</th>
 								<td className="qm-ltr qm-wrap">{block.blockName}</td>
 								<td><pre className="qm-pre-wrap"><code>{show_attrs && JSON.stringify(block.attrs,null,2)}</code></pre></td>
-								<td>{block.dynamic && block.callback.name}</td>
+								<td>{block.dynamic && block.callback && block.callback.name}</td>
 								<td>{block.dynamic && block.timing}</td>
 								<td><pre className="qm-pre-wrap"><code>{block.innerHTML}</code></pre></td>
 							</tr>

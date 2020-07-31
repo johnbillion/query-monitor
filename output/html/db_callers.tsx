@@ -7,7 +7,7 @@ class DBCallers extends React.Component<iPanelProps, {}> {
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.times || ! Object.keys(data.times).length ) {
+		if ( ! data.times || ! data.times.length ) {
 			return null;
 		}
 
