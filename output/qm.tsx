@@ -82,13 +82,13 @@ export class QM extends React.Component<iQMProps, {}> {
 					enabled={this.props.db_dupes.enabled}
 					id="db_dupes"
 				/>
-				{Object.keys(this.props.db_queries.data.dbs).map(key=>{
+				{Object.keys(this.props.db_queries.data.dbs).map(key=>
 					<DBQueries
 						data={this.props.db_queries.data.dbs[key]}
 						enabled={this.props.db_queries.enabled}
-						id={`db_queries-{key}`}
+						id="db_queries-wpdb"
 					/>
-				})}
+				)}
 				<Environment
 					data={this.props.environment.data}
 					enabled={this.props.environment.enabled}
