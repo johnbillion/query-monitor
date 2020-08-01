@@ -18,23 +18,28 @@ import Admin from '../output/html/admin';
 import HTTP from '../output/html/http';
 import Logger from '../output/html/logger';
 
+interface QMPanelData {
+	data: any;
+	enabled: boolean;
+}
+
 declare var qm_data: {
-	conditionals: any;
-	caps: any;
-	transients: any;
-	languages: any;
-	db_queries: any;
-	db_dupes: any;
-	db_callers: any;
-	db_components: any;
-	block_editor: any;
-	environment: any;
-	assets_scripts: any;
-	assets_styles: any;
-	hooks: any;
-	admin?: any;
-	http: any;
-	logger?: any;
+	conditionals: QMPanelData;
+	caps: QMPanelData;
+	transients: QMPanelData;
+	languages: QMPanelData;
+	db_queries: QMPanelData;
+	db_dupes: QMPanelData;
+	db_callers: QMPanelData;
+	db_components: QMPanelData;
+	block_editor: QMPanelData;
+	environment: QMPanelData;
+	assets_scripts: QMPanelData;
+	assets_styles: QMPanelData;
+	hooks: QMPanelData;
+	admin?: QMPanelData;
+	http: QMPanelData;
+	logger?: QMPanelData;
 };
 
 jQuery(function($) {
