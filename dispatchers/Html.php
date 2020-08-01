@@ -264,18 +264,23 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$timer->start();
 
 			printf(
-				"\n" . '<!-- Begin %1$s output -->' . "\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
+				"\n" . '<!-- Begin %1$s output -->' . "\n",
 				esc_html( $id )
 			);
 
 			if ( $output::$client_side_rendered ) {
 				echo "\t" . '<!-- Client-side rendered -->';
 			} else {
+				printf(
+					"\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
+					esc_html( $id )
+				);
 				$output->output();
+				echo "\n" . '</div>' . "\n";
 			}
 
 			printf(
-				"\n" . '</div>' . "\n" . '<!-- End %s output -->' . "\n",
+				"\n" . '<!-- End %s output -->' . "\n",
 				esc_html( $id )
 			);
 
@@ -425,6 +430,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</nav>'; // #qm-panel-menu
 
 		echo '<div id="qm-panels">';
+		echo '<div id="qm-csr">';
+		echo '</div>';
 
 	}
 
