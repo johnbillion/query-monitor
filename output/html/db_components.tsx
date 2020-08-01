@@ -52,7 +52,7 @@ class DBComponents extends React.Component<iDBComponentsProps, {}> {
 									{comp.types[key] || ''}
 								</td>
 							)}
-							<td className='qm-num'>{comp.ltime}</td>
+							<td className="qm-num">{comp.ltime}</td>
 						</tr>
 					)}
 				</tbody>
@@ -64,7 +64,7 @@ class DBComponents extends React.Component<iDBComponentsProps, {}> {
 								{data.types[key]}
 							</td>
 						)}
-						<td className='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
+						<td className="qm-num">{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
 					</tr>
 				</tfoot>
 			</Tabular>

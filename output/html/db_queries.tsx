@@ -60,13 +60,13 @@ class DBQueries extends React.Component<iDBQueriesProps, {}> {
 							{/* <QMComponent component={row.component} /> */}
 							<td>Caller</td>
 							<td>Component</td>
-							<td className='qm-row-result qm-num'>{row.result}</td>
-							<td className='qm-row-result qm-num'>{row.ltime}</td>
+							<td className="qm-row-result qm-num">{row.result}</td>
+							<td className="qm-row-result qm-num">{row.ltime}</td>
 						</tr>
 					)}
 				</tbody>
 				<PanelFooter cols={5} label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
-				<td className='qm-num'>{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>
+				<td className="qm-num">{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>
 				</PanelFooter>
 			</Tabular>
 		)

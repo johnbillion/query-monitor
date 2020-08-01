@@ -17,7 +17,7 @@ class Assets extends React.Component<iAssetsProps, {}> {
 
 	render() {
 		const { data } = this.props;
-		const position_labels = {
+		const position_labels: iPositionLabels = {
 			'missing' : __( 'Missing', 'query-monitor' ),
 			'broken'  : __( 'Missing Dependencies', 'query-monitor' ),
 			'header'  : __( 'Header', 'query-monitor' ),

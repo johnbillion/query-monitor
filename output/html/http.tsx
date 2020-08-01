@@ -11,7 +11,7 @@ class HTTP extends React.Component<iPanelProps, {}> {
 			return (
 				<Notice id={this.props.id}>
 					<p>
-					{__( 'No HTTP API calls.', 'query-monitor' )}
+						{__( 'No HTTP API calls.', 'query-monitor' )}
 					</p>
 				</Notice>
 			);
@@ -55,8 +55,8 @@ class HTTP extends React.Component<iPanelProps, {}> {
 								<td>{row.response.response && row.response.response.code || __('Error','query-monitor')}</td>
 								<td>Caller</td>
 								<QMComponent component={row.component} />
-								<td className='qm-num'>{row.args.timeout}</td>
-								<td className='qm-num'>{row.ltime}</td>
+								<td className="qm-num">{row.args.timeout}</td>
+								<td className="qm-num">{row.ltime}</td>
 							</tr>
 						)
 					})}

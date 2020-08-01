@@ -52,7 +52,7 @@ class DBCallers extends React.Component<iDBCallersProps, {}> {
 									{caller.types[key] || ''}
 								</td>
 							)}
-							<td className='qm-num'>{caller.ltime}</td>
+							<td className="qm-num">{caller.ltime}</td>
 						</tr>
 					)}
 				</tbody>
@@ -64,7 +64,7 @@ class DBCallers extends React.Component<iDBCallersProps, {}> {
 								{data.types[key]}
 							</td>
 						)}
-						<td className='qm-num'>{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
+						<td className="qm-num">{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
 					</tr>
 				</tfoot>
 			</Tabular>
