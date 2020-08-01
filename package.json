@@ -43,8 +43,9 @@
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack": "^4.41.2"
+    "wp-types": "^1.1.1"
   },
   "scripts": {
     "start": "wp-scripts start",
