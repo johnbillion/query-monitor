@@ -16,6 +16,7 @@ import Hooks from '../output/html/hooks';
 import Admin from '../output/html/admin';
 import HTTP from '../output/html/http';
 import Logger from '../output/html/logger';
+import PHPErrors from "./html/php_errors";
 
 interface QMPanelData {
 	data: any;
@@ -38,6 +39,7 @@ export interface iQMProps {
 	http: QMPanelData;
 	languages: QMPanelData;
 	logger?: QMPanelData;
+	php_errors?: QMPanelData;
 	transients: QMPanelData;
 }
 
@@ -116,6 +118,13 @@ export class QM extends React.Component<iQMProps, {}> {
 					enabled={this.props.languages.enabled}
 					id="languages"
 				/>
+				{this.props.php_errors && (
+					<PHPErrors
+						data={this.props.php_errors.data}
+						enabled={this.props.php_errors.enabled}
+						id="php_errors"
+					/>
+				)}
 				<Scripts
 					data={this.props.assets_scripts.data}
 					enabled={this.props.assets_scripts.enabled}

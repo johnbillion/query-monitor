@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded',function() {
 			http={qm_data.http}
 			languages={qm_data.languages}
 			logger={qm_data.logger || null}
+			php_errors={qm_data.php_errors || null}
 			transients={qm_data.transients}
 		/>,
 		document.getElementById('qm-csr')
