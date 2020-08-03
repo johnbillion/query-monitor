@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import classnames from 'classnames';
 
 class PHPErrors extends React.Component<iPanelProps, {}> {
 
@@ -38,14 +39,17 @@ class PHPErrors extends React.Component<iPanelProps, {}> {
 
 						return Object.keys(errors).map(id=>{
 							const error = errors[id];
+							const classes = classnames( {
+								'qm-warn': ( 'warning' === type ),
+							} );
 
 							return (
-								<tr>
-									<td>{type}</td>
-									<td>{error.message}</td>
-									<td>Count</td>
-									<td>Location</td>
-									<td>Component</td>
+								<tr className={classes}>
+									<td scope="row" className="qm-nowrap">{type}</td>
+									<td className="qm-ltr">{error.message}</td>
+									<td className="qm-num">{error.calls}</td>
+									<td className="qm-row-caller qm-row-stack qm-nowrap qm-ltr">{error.filename}:{error.line}</td>
+									<td className="qm-nowrap">Component</td>
 								</tr>
 							)
 						})
