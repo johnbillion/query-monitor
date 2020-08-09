@@ -18,6 +18,7 @@ import HTTP from '../output/html/http';
 import Logger from '../output/html/logger';
 import PHPErrors from "./html/php_errors";
 import Request from "./html/request";
+import Theme from "./html/theme";
 
 interface QMPanelData {
 	data: any;
@@ -42,6 +43,7 @@ export interface iQMProps {
 	logger?: QMPanelData;
 	php_errors?: QMPanelData;
 	request?: QMPanelData;
+	response?: QMPanelData;
 	transients: QMPanelData;
 }
 
@@ -142,6 +144,13 @@ export class QM extends React.Component<iQMProps, {}> {
 					enabled={this.props.assets_styles.enabled}
 					id="assets_styles"
 				/>
+				{this.props.response && (
+					<Theme
+						data={this.props.response.data}
+						enabled={this.props.response.enabled}
+						id="response"
+					/>
+				)}
 				<Transients
 					data={this.props.transients.data}
 					enabled={this.props.transients.enabled}
