@@ -263,7 +263,7 @@ class QM_Collector_Theme extends QM_Collector {
 		$this->data['is_child_theme'] = ( $this->data['stylesheet'] !== $this->data['template'] );
 
 		if ( isset( $this->data['body_class'] ) ) {
-			asort( $this->data['body_class'] );
+			sort( $this->data['body_class'] );
 		}
 
 	}
