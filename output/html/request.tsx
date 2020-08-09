@@ -74,6 +74,15 @@ class Request extends React.Component<iPanelProps, {}> {
 						</table>
 					)}
 				</section>
+
+				<section>
+					<h3>{ __( 'Queried Object', 'query-monitor' ) }</h3>
+					{ data.queried_object && (
+						<p>
+							{ data.queried_object.title } ({ data.queried_object.type })
+						</p>
+					)}
+				</section>
 			</NonTabular>
 		)
 	}

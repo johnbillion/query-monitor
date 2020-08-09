@@ -262,6 +262,7 @@ class QM_Collector_Request extends QM_Collector {
 
 		if ( $qo ) {
 			$this->data['queried_object']['data'] = $qo;
+			$this->data['queried_object']['type'] = get_class( $qo );
 		}
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {

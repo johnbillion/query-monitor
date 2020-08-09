@@ -141,7 +141,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			printf( // WPCS: XSS ok.
 				'<p>%1$s (%2$s)</p>',
 				esc_html( $data['queried_object']['title'] ),
-				esc_html( get_class( $data['queried_object']['data'] ) )
+				esc_html( $data['queried_object']['class'] )
 			);
 		} else {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
