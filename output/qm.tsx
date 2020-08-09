@@ -1,24 +1,24 @@
 import * as React from "react";
 
-import Conditionals from './html/conditionals';
+import Admin from './html/admin';
+import BlockEditor from './html/block_editor';
 import Caps from './html/caps';
-import Transients from './html/transients';
-import Languages from './html/languages';
-import DBQueries from './html/db_queries';
-import DBDupes from './html/db_dupes';
+import Conditionals from './html/conditionals';
 import DBCallers from './html/db_callers';
 import DBComponents from './html/db_components';
-import BlockEditor from './html/block_editor';
+import DBDupes from './html/db_dupes';
+import DBQueries from './html/db_queries';
 import Environment from './html/environment';
-import Scripts from './html/assets_scripts';
-import Styles from './html/assets_styles';
 import Hooks from './html/hooks';
-import Admin from './html/admin';
 import HTTP from './html/http';
+import Languages from './html/languages';
 import Logger from './html/logger';
 import PHPErrors from "./html/php_errors";
 import Request from "./html/request";
+import Scripts from './html/assets_scripts';
+import Styles from './html/assets_styles';
 import Theme from "./html/theme";
+import Transients from './html/transients';
 
 interface QMPanelData {
 	data: any;
