@@ -83,6 +83,26 @@ class Request extends React.Component<iPanelProps, {}> {
 						</p>
 					)}
 				</section>
+
+				<section>
+					<h3>{ __( 'Current User', 'query-monitor' ) }</h3>
+					{ data.user && data.user.data && (
+						<p>
+							{ data.user.title }
+						</p>
+					)}
+				</section>
+
+				{ data.multisite && (
+					<section>
+						<h3>{ __( 'Multisite', 'query-monitor' ) }</h3>
+						{Object.keys(data.multisite).map((key: keyof typeof data.multisite)=>
+							<p>
+								{ data.multisite[ key ].title }
+							</p>
+						)}
+					</section>
+				)}
 			</NonTabular>
 		)
 	}
