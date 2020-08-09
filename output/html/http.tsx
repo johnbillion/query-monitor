@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Notice, QMComponent, PanelFooter, Tabular, iPanelProps } from 'qmi';
+import { Notice, QMComponent, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 class HTTP extends React.Component<iPanelProps, {}> {
@@ -56,15 +56,13 @@ class HTTP extends React.Component<iPanelProps, {}> {
 								<td>Caller</td>
 								<QMComponent component={row.component} />
 								<td className="qm-num">{row.args.timeout}</td>
-								<td className="qm-num">{row.ltime}</td>
+								<Time value={row.ltime}/>
 							</tr>
 						)
 					})}
 				</tbody>
 				<PanelFooter cols={6} label={__( 'Total:', 'HTTP API calls', 'query-monitor' )} count={Object.keys(data.http).length}>
-					<td className="qm-num">
-						{Object.keys(data.http).reduce((a,b)=>a+data.http[b].ltime,0)}
-					</td>
+					<TotalTime rows={Object.values(data.http)}/>
 				</PanelFooter>
 			</Tabular>
 		)

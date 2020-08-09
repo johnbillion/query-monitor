@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tabular, iPanelProps } from 'qmi';
+import { Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 interface iDBComponentTypeTimes {
@@ -52,7 +52,7 @@ class DBComponents extends React.Component<iDBComponentsProps, {}> {
 									{comp.types[key] || ''}
 								</td>
 							)}
-							<td className="qm-num">{comp.ltime}</td>
+							<Time value={comp.ltime}/>
 						</tr>
 					)}
 				</tbody>
@@ -64,7 +64,7 @@ class DBComponents extends React.Component<iDBComponentsProps, {}> {
 								{data.types[key]}
 							</td>
 						)}
-						<td className="qm-num">{data.times.reduce((a,b)=>a+b.ltime,0)}</td>
+						<TotalTime rows={data.times}/>
 					</tr>
 				</tfoot>
 			</Tabular>

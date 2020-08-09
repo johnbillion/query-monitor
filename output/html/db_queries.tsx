@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Notice, PanelFooter, Tabular, iPanelProps } from 'qmi';
+import { Notice, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 interface iDBQueriesProps extends iPanelProps {
@@ -61,12 +61,12 @@ class DBQueries extends React.Component<iDBQueriesProps, {}> {
 							<td>Caller</td>
 							<td>Component</td>
 							<td className="qm-row-result qm-num">{row.result}</td>
-							<td className="qm-row-result qm-num">{row.ltime}</td>
+							<Time value={row.ltime}/>
 						</tr>
 					)}
 				</tbody>
 				<PanelFooter cols={5} label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
-				<td className="qm-num">{data.rows.reduce((a,b)=>a+b.ltime,0)}</td>
+				<TotalTime rows={data.rows}/>
 				</PanelFooter>
 			</Tabular>
 		)
