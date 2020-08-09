@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded',function() {
 			languages={qm_data.languages}
 			logger={qm_data.logger || null}
 			php_errors={qm_data.php_errors || null}
+			request={qm_data.request || null}
 			transients={qm_data.transients}
 		/>,
 		document.getElementById('qm-csr')
