@@ -16,6 +16,7 @@
     "jsx": "react"
   },
   "exclude": [
+    "build",
     "node_modules",
     "tests",
     "vendor"
