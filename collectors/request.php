@@ -9,6 +9,12 @@ class QM_Collector_Request extends QM_Collector {
 
 	public $id = 'request';
 
+	public function __construct() {
+		parent::__construct();
+
+		add_action( 'set_404', array( $this, 'action_set_404' ) );
+	}
+
 	public function get_concerned_actions() {
 		return array(
 			# Rewrites
@@ -109,6 +115,12 @@ class QM_Collector_Request extends QM_Collector {
 			'WP_HOME',
 			'WP_SITEURL',
 		);
+	}
+
+	public function action_set_404( WP_Query $wp_query ) {
+		$this->data['set_404'] = new QM_Backtrace( array(
+			'ignore_frames' => 4,
+		) );
 	}
 
 	public function process() {
@@ -283,6 +295,7 @@ class QM_Collector_Request extends QM_Collector {
 		}
 
 		$this->data['matching_rewrites'] = $matching;
+		$this->data['is_404']            = is_404();
 	}
 
 }

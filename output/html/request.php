@@ -32,6 +32,38 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
+		if ( $data['is_404'] ) {
+			echo '<section>';
+			echo '<h3>' . esc_html__( '404 Helper', 'query-monitor' ) . '</h3>';
+
+
+			if ( ! empty( $data['set_404'] ) ) {
+				$filtered_trace = $data['set_404']->get_display_trace();
+
+				foreach ( $filtered_trace as $item ) {
+					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				}
+
+				echo '<table>';
+				echo '<tr>';
+				echo '<th>';
+				esc_html_e( '404 Triggered by', 'query-monitor' );
+				echo '</th>';
+				echo '<td>';
+
+				echo '<ol>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo '<li>' . implode( '</li><li>', $stack ) . '</li>';
+				echo '</ol>';
+
+				echo '</td>';
+				echo '</tr>';
+				echo '</table>';
+			}
+
+			echo '</section>';
+		}
+
 		foreach ( array(
 			'request'       => __( 'Request', 'query-monitor' ),
 			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
