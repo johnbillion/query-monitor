@@ -192,7 +192,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'CONCATENATE_SCRIPTS' => self::format_bool_constant( 'CONCATENATE_SCRIPTS' ),
 			'COMPRESS_SCRIPTS'    => self::format_bool_constant( 'COMPRESS_SCRIPTS' ),
 			'COMPRESS_CSS'        => self::format_bool_constant( 'COMPRESS_CSS' ),
-			'WP_LOCAL_DEV'        => self::format_bool_constant( 'WP_LOCAL_DEV' ),
+			'WP_ENVIRONMENT_TYPE' => self::format_bool_constant( 'WP_ENVIRONMENT_TYPE' ),
 		);
 		$this->data['wp']['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
