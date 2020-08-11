@@ -133,7 +133,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '</section>';
 
 		echo '<section>';
-		echo '<h3>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h3>';
+		echo '<h3>' . esc_html__( 'Response', 'query-monitor' ) . '</h3>';
+		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>';
 
 		if ( ! empty( $data['queried_object'] ) ) {
 			printf( // WPCS: XSS ok.
@@ -145,10 +146,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
-
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Current User', 'query-monitor' ) . '</h3>';
+		echo '<h4>' . esc_html__( 'Current User', 'query-monitor' ) . '</h4>';
 
 		if ( ! empty( $data['user']['data'] ) ) {
 			printf( // WPCS: XSS ok.
@@ -159,11 +157,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
-
 		if ( ! empty( $data['multisite'] ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h3>';
+			echo '<h4>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h4>';
 
 			foreach ( $data['multisite'] as $var => $value ) {
 				printf( // WPCS: XSS ok.
@@ -171,9 +166,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					esc_html( $value['title'] )
 				);
 			}
-
-			echo '</section>';
 		}
+
+		echo '</section>';
 
 		if ( ! empty( $raw_request ) ) {
 			$raw_data = $raw_request->get_data();
