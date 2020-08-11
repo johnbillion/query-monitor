@@ -194,6 +194,11 @@ class QM_Collector_Environment extends QM_Collector {
 			'COMPRESS_CSS'        => self::format_bool_constant( 'COMPRESS_CSS' ),
 			'WP_ENVIRONMENT_TYPE' => self::format_bool_constant( 'WP_ENVIRONMENT_TYPE' ),
 		);
+
+		if ( function_exists( 'wp_get_environment_type' ) ) {
+			$this->data['wp']['environment_type'] = wp_get_environment_type();
+		}
+
 		$this->data['wp']['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
 		if ( is_multisite() ) {

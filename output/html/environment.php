@@ -248,6 +248,20 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<td>' . esc_html( $data['wp']['version'] ) . '</td>';
 		echo '</tr>';
 
+		if ( isset( $data['wp']['environment_type'] ) ) {
+			echo '<tr>';
+			echo '<th scope="row">';
+			esc_html_e( 'Environment Type', 'query-monitor' );
+			printf(
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
+				'https://make.wordpress.org/core/2020/07/24/new-wp_get_environment_type-function-in-wordpress-5-5/',
+				esc_html__( 'Help', 'query-monitor' )
+			);
+			echo '</th>';
+			echo '<td>' . esc_html( $data['wp']['environment_type'] ) . '</td>';
+			echo '</tr>';
+		}
+
 		foreach ( $data['wp']['constants'] as $key => $val ) {
 
 			echo '<tr>';
