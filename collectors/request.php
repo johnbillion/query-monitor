@@ -296,8 +296,23 @@ class QM_Collector_Request extends QM_Collector {
 
 		$this->data['matching_rewrites'] = $matching;
 		$this->data['is_404']            = is_404();
+
+		if ( $this->data['is_404'] ) {
+			$this->data['missing_rewrite_rules'] = self::get_missing_rewrite_rules();
+		}
 	}
 
+	protected static function get_missing_rewrite_rules() {
+		global $wp_rewrite;
+
+		$rewrite_rules = get_option( 'rewrite_rules', array() );
+
+		if ( ! $rewrite_rules ) {
+			return 0;
+		}
+
+		return count( array_diff_key( $wp_rewrite->rewrite_rules(), $rewrite_rules ) );
+	}
 }
 
 function register_qm_collector_request( array $collectors, QueryMonitor $qm ) {

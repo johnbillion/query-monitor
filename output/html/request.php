@@ -35,7 +35,29 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		if ( $data['is_404'] ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( '404 Helper', 'query-monitor' ) . '</h3>';
+			echo '<table>';
 
+			if ( $data['missing_rewrite_rules'] ) {
+				$message = _x( 'Need flushing', 'Rewrite rules need flushing', 'query-monitor' );
+				$class   = 'qm-warn';
+			} else {
+				$message = __( 'OK', 'query-monitor' );
+				$class   = '';
+			}
+
+			echo '<tr class="' . esc_attr( $class ) . '">';
+			echo '<th>';
+
+			if ( $data['missing_rewrite_rules'] ) {
+				echo '<span class="dashicons dashicons-warning" style="color:#dd3232" aria-hidden="true"></span>';
+			}
+
+			esc_html_e( 'Rewrite Rules', 'query-monitor' );
+			echo '</th>';
+			echo '<td>';
+			echo esc_html( $message );
+			echo '</td>';
+			echo '</tr>';
 
 			if ( ! empty( $data['set_404'] ) ) {
 				$filtered_trace = $data['set_404']->get_display_trace();
@@ -44,7 +66,6 @@ class QM_Output_Html_Request extends QM_Output_Html {
 					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
 				}
 
-				echo '<table>';
 				echo '<tr>';
 				echo '<th>';
 				esc_html_e( '404 Triggered by', 'query-monitor' );
@@ -58,9 +79,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 				echo '</td>';
 				echo '</tr>';
-				echo '</table>';
 			}
 
+			echo '</table>';
 			echo '</section>';
 		}
 
