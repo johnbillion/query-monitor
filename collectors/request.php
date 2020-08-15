@@ -295,6 +295,7 @@ class QM_Collector_Request extends QM_Collector {
 		}
 
 		$this->data['matching_rewrites'] = $matching;
+		$this->data['is_final_rewrite']  = ( 1 === count( $matching ) && isset( $matching[ $match ] ) );
 		$this->data['is_404']            = is_404();
 
 		if ( $this->data['is_404'] ) {
