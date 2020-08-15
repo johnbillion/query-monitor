@@ -140,7 +140,6 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		foreach ( array(
 			'request'       => __( 'Request', 'query-monitor' ),
-			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
 			'matched_query' => __( 'Matched Query', 'query-monitor' ),
 			'query_string'  => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
