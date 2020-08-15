@@ -48,7 +48,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<tr class="' . esc_attr( $class ) . '">';
 			echo '<th>';
 
-			if ( $data['missing_rewrite_rules'] ) {
+			if ( ! empty( $data['missing_rewrite_rules'] ) ) {
 				echo '<span class="dashicons dashicons-warning" style="color:#dd3232" aria-hidden="true"></span>';
 			}
 

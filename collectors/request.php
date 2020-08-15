@@ -282,6 +282,8 @@ class QM_Collector_Request extends QM_Collector {
 			$this->data['request_method'] = '';
 		}
 
+		$this->data['is_404'] = is_404();
+
 		if ( is_admin() || QM_Util::is_async() || empty( $wp_rewrite->rules ) ) {
 			return;
 		}
@@ -296,16 +298,13 @@ class QM_Collector_Request extends QM_Collector {
 
 		$this->data['matching_rewrites'] = $matching;
 		$this->data['is_final_rewrite']  = ( 1 === count( $matching ) && isset( $matching[ $match ] ) );
-		$this->data['is_404']            = is_404();
 
 		if ( $this->data['is_404'] ) {
-			$this->data['missing_rewrite_rules'] = self::get_missing_rewrite_rules();
+			$this->data['missing_rewrite_rules'] = self::get_missing_rewrite_rules( $wp_rewrite );
 		}
 	}
 
-	protected static function get_missing_rewrite_rules() {
-		global $wp_rewrite;
-
+	protected static function get_missing_rewrite_rules( WP_Rewrite $wp_rewrite ) {
 		$rewrite_rules = get_option( 'rewrite_rules', array() );
 
 		if ( ! $rewrite_rules ) {
