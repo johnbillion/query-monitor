@@ -306,6 +306,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		.dashicons {
 			transition: none !important;
+			height: 20px !important;
+			width: 20px !important;
 		}
 
 		.qm-button-container-close {
@@ -313,6 +315,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		.qm-button-container-close .dashicons {
+			font-size: 17px !important;
 			margin: 3px 0 3px !important;
 		}
 
