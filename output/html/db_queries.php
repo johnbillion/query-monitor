@@ -464,22 +464,48 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
+				/* translators: %s: Database query time in seconds */
+				$text = _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' );
+
+				// Avoid a potentially blank translation for the plural form.
+				// @see https://meta.trac.wordpress.org/ticket/5377
+				if ( '' === $text ) {
+					$text = '%s S';
+				}
+
 				$title[] = sprintf(
-					/* translators: %s: Database query time in seconds */
-					'%s' . esc_html( _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' ) ),
+					esc_html( '%s' . $text ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
 					number_format_i18n( $db->total_time, 4 )
 				);
+
+				/* translators: %s: Number of database queries */
+				$text = _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' );
+
+				// Avoid a potentially blank translation for the plural form.
+				// @see https://meta.trac.wordpress.org/ticket/5377
+				if ( '' === $text ) {
+					$text = '%s Q';
+				}
+
 				$title[] = sprintf(
-					/* translators: %s: Number of database queries */
-					esc_html( _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' ) ),
+					esc_html( $text ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
+			/* translators: %s: Number of database queries */
+			$text = _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' );
+
+			// Avoid a potentially blank translation for the plural form.
+			// @see https://meta.trac.wordpress.org/ticket/5377
+			if ( '' === $text ) {
+				$text = '%s Q';
+			}
+
 			$title[] = sprintf(
 				/* translators: %s: Number of database queries */
-				esc_html( _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' ) ),
+				esc_html( $text ),
 				number_format_i18n( $data['total_qs'] )
 			);
 		}
