@@ -11,7 +11,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	public $id               = 'php_errors';
 	public $types            = array();
-	private $prior_error     = null;
 	private $error_reporting = null;
 	private $display_errors  = null;
 	private $exception_handler = null;
@@ -25,7 +24,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		parent::__construct();
 
 		// Capture the last error that occurred before QM loaded:
-		$this->prior_error = error_get_last();
+		$prior_error = error_get_last();
 
 		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
@@ -42,12 +41,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
 
-		if ( $this->prior_error ) {
+		if ( $prior_error ) {
 			$this->error_handler(
-				$this->prior_error['type'],
-				$this->prior_error['message'],
-				$this->prior_error['file'],
-				$this->prior_error['line'],
+				$prior_error['type'],
+				$prior_error['message'],
+				$prior_error['file'],
+				$prior_error['line'],
 				null,
 				false
 			);
