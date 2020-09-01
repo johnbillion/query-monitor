@@ -278,7 +278,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	private function filter_amp_dev_mode_element_xpaths() {
 		add_filter(
 			'amp_dev_mode_element_xpaths',
-			static function ( $expressions ) {
+			function ( $expressions ) {
 				$expressions[] = '//script[ contains( text(), "var qm_number_format =" ) ]';
 				$expressions[] = '//script[ contains( text(), "var qm =" ) ]';
 				$expressions[] = '//script[ contains( text(), "query-monitor" ) ]';
