@@ -67,6 +67,11 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
+if ( isset( $_GET['amp_validate'] ) ) {
+	# Prevent loading QM during AMP validation requests since it conflicts with the AMP plugin's own reflection routines.
+	return;
+}
+
 foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Hook', 'Output', 'Timer' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
