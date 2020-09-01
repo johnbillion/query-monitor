@@ -132,6 +132,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
 
+		$this->filter_amp_dev_mode_element_xpaths();
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
@@ -220,6 +221,32 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
+		if ( $this->is_amp_request() ) {
+			add_filter(
+				'style_loader_tag',
+				function ( $tag, $handle ) {
+					if ( in_array( $handle, [ 'query-monitor', 'dashicons' ], true ) ) {
+						$tag = preg_replace( '/(?<=<link\s)/', ' data-ampdevmode ', $tag );
+					}
+					return $tag;
+				},
+				10,
+				2
+			);
+
+			add_filter(
+				'script_loader_tag',
+				function ( $tag, $handle ) {
+					if ( in_array( $handle, [ 'query-monitor', 'jquery-core' ], true ) ) {
+						$tag = preg_replace( '/(?<=<script\s)/', ' data-ampdevmode ', $tag );
+					}
+					return $tag;
+				},
+				10,
+				2
+			);
+		}
+
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
 		 *
@@ -228,6 +255,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 * @param \QM_Dispatcher_Html $this The HTML dispatcher.
 		 */
 		do_action( 'qm/output/enqueued-assets', $this );
+	}
+
+	/**
+	 * Determine whether the request is for an AMP page.
+	 *
+	 * @return bool
+	 */
+	private function is_amp_request() {
+		return function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
+	}
+
+	/**
+	 * Add AMP Dev Mode attributes to scripts and styles to omit them from AMP processing.
+	 */
+	private function filter_amp_dev_mode_element_xpaths() {
+		add_filter(
+			'amp_dev_mode_element_xpaths',
+			static function ( $expressions ) {
+				$expressions[] = '//script[ contains( text(), "var qm_number_format =" ) ]';
+				$expressions[] = '//script[ contains( text(), "var qm =" ) ]';
+				$expressions[] = '//script[ contains( text(), "query-monitor" ) ]';
+				return $expressions;
+			}
+		);
 	}
 
 	public function dispatch() {
