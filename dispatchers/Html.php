@@ -31,6 +31,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
 
 		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
+		add_action( 'amp_post_template_footer',   array( $this, 'action_footer' ) );
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
 		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
@@ -139,11 +140,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -9999 );
 
 		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
+		add_action( 'amp_post_template_head', array( $this, 'manually_print_assets' ));
 
 		parent::init();
 	}
 
 	public function manually_print_assets() {
+		if ( ! wp_script_is( 'query-monitor', 'registered' ) || ! wp_style_is( 'query-monitor', 'registered' ) ) {
+			// Ensure the script and style are registered.
+			$this->enqueue_assets();
+		}
 		wp_print_scripts( array(
 			'query-monitor',
 		) );
