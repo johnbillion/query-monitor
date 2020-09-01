@@ -225,7 +225,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			add_filter(
 				'style_loader_tag',
 				function ( $tag, $handle ) {
-					if ( in_array( $handle, [ 'query-monitor', 'dashicons' ], true ) ) {
+					if ( in_array( $handle, array( 'query-monitor', 'dashicons' ), true ) ) {
 						$tag = preg_replace( '/(?<=<link\s)/', ' data-ampdevmode ', $tag );
 					}
 					return $tag;
@@ -237,7 +237,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			add_filter(
 				'script_loader_tag',
 				function ( $tag, $handle ) {
-					if ( in_array( $handle, [ 'query-monitor', 'jquery-core' ], true ) ) {
+					if ( in_array( $handle, array( 'query-monitor', 'jquery-core' ), true ) ) {
 						$tag = preg_replace( '/(?<=<script\s)/', ' data-ampdevmode ', $tag );
 					}
 					return $tag;
