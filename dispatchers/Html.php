@@ -279,9 +279,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_filter(
 			'amp_dev_mode_element_xpaths',
 			function ( $expressions ) {
-				$expressions[] = '//script[ contains( text(), "var qm_number_format =" ) ]';
-				$expressions[] = '//script[ contains( text(), "var qm =" ) ]';
-				$expressions[] = '//script[ contains( text(), "query-monitor" ) ]';
+				$expressions[] = '//script[ @id = "query-monitor-js-extra" ]';
+				$expressions[] = '//script[ @id = "query-monitor-data" ]';
+				$expressions[] = '//script[ @id = "query-monitor-init" ]';
 				return $expressions;
 			}
 		);
@@ -380,7 +380,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
-		echo '<script type="text/javascript">' . "\n\n";
+		echo '<script id="query-monitor-data" type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
@@ -638,7 +638,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
 
-		echo '<script type="text/javascript">' . "\n\n";
+		echo '<script id="query-monitor-init" type="text/javascript">' . "\n\n";
 		?>
 		window.addEventListener('load', function() {
 			if ( ( 'undefined' === typeof QM_i18n ) || ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
