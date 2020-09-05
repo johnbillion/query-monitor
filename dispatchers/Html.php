@@ -279,7 +279,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_filter(
 			'amp_dev_mode_element_xpaths',
 			function ( $expressions ) {
-				$expressions[] = '//script[ @id = "query-monitor-js-extra" ]';
+				if ( version_compare( get_bloginfo( 'version' ), '5.5', '>=' ) ) {
+					$expressions[] = '//script[ @id = "query-monitor-js-extra" ]';
+				} else {
+					$expressions[] = '//script[ contains( text(), "var qm_number_format =" ) ]';
+				}
 				$expressions[] = '//script[ @id = "query-monitor-data" ]';
 				$expressions[] = '//script[ @id = "query-monitor-init" ]';
 				return $expressions;
