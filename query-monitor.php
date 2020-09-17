@@ -71,4 +71,5 @@ foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispat
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
+unset($qm_dir);
 QueryMonitor::init( __FILE__ );
