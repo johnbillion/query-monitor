@@ -99,9 +99,8 @@ class QM_Activation extends QM_Plugin {
 
 	public function php_notice() {
 		?>
-		<div id="qm_php_notice" class="error">
+		<div id="qm_php_notice" class="notice notice-error">
 			<p>
-				<span class="dashicons dashicons-warning" style="color:#dd3232" aria-hidden="true"></span>
 				<?php
 				echo esc_html( sprintf(
 					/* Translators: 1: Minimum required PHP version, 2: Current PHP version. */
