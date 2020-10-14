@@ -21,7 +21,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
 
-		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+		add_action( 'shutdown', array( $this, 'dispatch' ), PHP_INT_MAX );
 
 	}
 
