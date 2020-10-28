@@ -47,8 +47,11 @@ jobs:
       uses: shivammathur/setup-php@2.1.3
       with:
         php-version: ${{ matrix.php }}
+        tools: composer:v1
         extensions: mysqli, xmlwriter
         coverage: none
+      env:
+        fail-fast: true
 
     - name: Debugging
       run: |
