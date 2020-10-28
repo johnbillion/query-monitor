@@ -8,6 +8,15 @@ jobs:
     name: WordPress.org
     runs-on: ubuntu-18.04
     steps:
+    - uses: chrnorm/deployment-action@releases/v1
+      name: Create GitHub deployment
+      id: deployment
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        target_url: https://wordpress.org/plugins/query-monitor
+        environment: WordPress.org
+        description: "Deploy version ${{ github.event.release.tag_name }} to the plugin directory"
+
     - name: Checkout repository
       uses: actions/checkout@v1
 
@@ -28,3 +37,19 @@ jobs:
       env:
         SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+
+    - name: Deployment Succeeded
+      if: success()
+      uses: chrnorm/deployment-status@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        state: success
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+    - name: Deployment Failed
+      if: failure()
+      uses: chrnorm/deployment-status@releases/v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        state: failure
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
