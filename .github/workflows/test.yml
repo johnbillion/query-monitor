@@ -44,7 +44,7 @@ jobs:
         key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('query-monitor.php') }}
 
     - name: Install PHP
-      uses: shivammathur/setup-php@2.1.3
+      uses: shivammathur/setup-php@2.7.0
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v1
