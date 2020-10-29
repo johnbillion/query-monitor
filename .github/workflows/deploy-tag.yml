@@ -93,6 +93,7 @@ jobs:
         title: ${{ steps.semvers.outputs.patch }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
 
     - name: Create next minor milestone
       uses: octokit/request-action@v2.x
@@ -102,6 +103,7 @@ jobs:
         title: ${{ steps.semvers.outputs.minor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
 
     - name: Create next major milestone
       uses: octokit/request-action@v2.x
@@ -111,3 +113,4 @@ jobs:
         title: ${{ steps.semvers.outputs.major }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
