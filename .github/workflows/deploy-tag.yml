@@ -86,22 +86,28 @@ jobs:
         version: ${{ github.event.release.tag_name }}
 
     - name: Create next patch milestone
-      uses: WyriHaximus/github-action-create-milestone@0.1.0
+      uses: octokit/request-action@v2.x
       with:
+        route: POST /repos/:repository/milestones
+        repository: ${{ github.repository }}
         title: ${{ steps.semvers.outputs.patch }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create next minor milestone
-      uses: WyriHaximus/github-action-create-milestone@0.1.0
+      uses: octokit/request-action@v2.x
       with:
+        route: POST /repos/:repository/milestones
+        repository: ${{ github.repository }}
         title: ${{ steps.semvers.outputs.minor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create next major milestone
-      uses: WyriHaximus/github-action-create-milestone@0.1.0
+      uses: octokit/request-action@v2.x
       with:
+        route: POST /repos/:repository/milestones
+        repository: ${{ github.repository }}
         title: ${{ steps.semvers.outputs.major }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
