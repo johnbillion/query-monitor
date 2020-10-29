@@ -8,14 +8,29 @@ jobs:
     name: WordPress.org
     runs-on: ubuntu-18.04
     steps:
-    - uses: chrnorm/deployment-action@releases/v1
+    - uses: octokit/request-action@v2.x
       name: Create GitHub deployment
       id: deployment
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        target_url: https://wordpress.org/plugins/query-monitor
+        route: POST /repos/:repository/deployments
+        repository: ${{ github.repository }}
+        ref: ${{ github.ref }}
+        required_contexts: "[]"
         environment: WordPress.org
         description: "Deploy version ${{ github.event.release.tag_name }} to the plugin directory"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: octokit/request-action@v2.x
+      name: Set GitHub deployment status
+      with:
+        route: POST /repos/:repository/deployments/:deployment_id/statuses
+        repository: ${{ github.repository }}
+        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
+        state: pending
+        environment_url: https://wordpress.org/plugins/query-monitor
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
       uses: actions/checkout@v1
@@ -40,19 +55,25 @@ jobs:
 
     - name: Deployment Succeeded
       if: success()
-      uses: chrnorm/deployment-status@releases/v1
+      uses: octokit/request-action@v2.x
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        route: POST /repos/:repository/deployments/:deployment_id/statuses
+        repository: ${{ github.repository }}
         state: success
-        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deployment Failed
       if: failure()
-      uses: chrnorm/deployment-status@releases/v1
+      uses: octokit/request-action@v2.x
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        route: POST /repos/:repository/deployments/:deployment_id/statuses
+        repository: ${{ github.repository }}
         state: failure
-        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   github:
     name: GitHub Milestones
