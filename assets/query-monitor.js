@@ -469,28 +469,34 @@ if ( window.jQuery ) {
 			startY        = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
 			startX        = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
 
-			$(document).on('mousemove touchmove', qm_do_resizer_drag);
+			if ( ! container.hasClass('qm-show-right') ) {
+				$(document).on('mousemove touchmove', qm_do_resizer_drag_vertical);
+			} else {
+				$(document).on('mousemove touchmove', qm_do_resizer_drag_horizontal);
+			}
+
 			$(document).on('mouseup touchend', qm_stop_resizer_drag);
 		});
 
-		function qm_do_resizer_drag(event) {
-			if ( ! container.hasClass('qm-show-right') ) {
+		function qm_do_resizer_drag_vertical(event) {
 				var h = ( startY - ( event.clientY || event.originalEvent.targetTouches[0].pageY ) );
 				if ( h >= resizerHeight && h <= maxheight ) {
 					container.height( h );
 					body.css( 'margin-bottom', 'calc( ' + body_margin + ' + ' + h + 'px )' );
 				}
-			} else {
+		}
+
+		function qm_do_resizer_drag_horizontal(event) {
 				var w = ( startX - event.clientX );
 				if ( w >= minwidth && w <= maxwidth ) {
 					container.width( w );
 				}
 				body.css( 'margin-bottom', '' );
-			}
 		}
 
 		function qm_stop_resizer_drag(event) {
-			$(document).off('mousemove touchmove', qm_do_resizer_drag);
+			$(document).off('mousemove touchmove', qm_do_resizer_drag_vertical);
+			$(document).off('mousemove touchmove', qm_do_resizer_drag_horizontal);
 			$(document).off('mouseup touchend', qm_stop_resizer_drag);
 
 			if ( ! container.hasClass('qm-show-right') ) {
