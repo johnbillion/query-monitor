@@ -465,6 +465,8 @@ if ( window.jQuery ) {
 		var startY, startX, resizerHeight;
 
 		$(document).on('mousedown touchstart', '.qm-resizer', function(event) {
+			event.stopPropagation();
+
 			resizerHeight = $(this).outerHeight() - 1;
 			startY        = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
 			startX        = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
