@@ -49,6 +49,7 @@ class QM_Backtrace {
 		'author_can'                 => 4,
 	);
 	protected static $filtered = false;
+	protected $args            = array();
 	protected $trace           = null;
 	protected $filtered_trace  = null;
 	protected $calling_line    = 0;
@@ -57,9 +58,13 @@ class QM_Backtrace {
 	public function __construct( array $args = array(), array $trace = null ) {
 		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
-		$args = array_merge( array(
+		$this->args = array_merge( array(
 			'ignore_current_filter' => true,
 			'ignore_frames'         => 0,
+			'ignore_class'          => array(),
+			'ignore_method'         => array(),
+			'ignore_func'           => array(),
+			'show_args'             => array(),
 		), $args );
 
 		$this->ignore( 1 ); # Self-awareness
@@ -72,10 +77,10 @@ class QM_Backtrace {
 			$this->ignore( 1 );
 		}
 
-		if ( $args['ignore_frames'] ) {
-			$this->ignore( $args['ignore_frames'] );
+		if ( $this->args['ignore_frames'] ) {
+			$this->ignore( $this->args['ignore_frames'] );
 		}
-		if ( $args['ignore_current_filter'] ) {
+		if ( $this->args['ignore_current_filter'] ) {
 			$this->ignore_current_filter();
 		}
 
