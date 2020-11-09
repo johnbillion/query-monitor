@@ -283,11 +283,16 @@ class QM_Backtrace {
 		}
 
 		$return = $frame;
+		
+		$ignore_class = array_merge( self::$ignore_class, $this->args[ 'ignore_class' ] );
+		$ignore_method = array_merge( self::$ignore_method, $this->args[ 'ignore_method' ] );
+		$ignore_func = array_merge( self::$ignore_func, $this->args[ 'ignore_func' ] );
+		$show_args = array_merge( self::$show_args, $this->args[ 'show_args' ] );
 
 		if ( isset( $frame['class'] ) ) {
-			if ( isset( self::$ignore_class[ $frame['class'] ] ) ) {
+			if ( isset( $ignore_class[ $frame['class'] ] ) ) {
 				$return = null;
-			} elseif ( isset( self::$ignore_method[ $frame['class'] ][ $frame['function'] ] ) ) {
+			} elseif ( isset( $ignore_method[ $frame['class'] ][ $frame['function'] ] ) ) {
 				$return = null;
 			} elseif ( 0 === strpos( $frame['class'], 'QM' ) ) {
 				$return = null;
@@ -296,10 +301,10 @@ class QM_Backtrace {
 				$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
 			}
 		} else {
-			if ( isset( self::$ignore_func[ $frame['function'] ] ) ) {
+			if ( isset( $ignore_func[ $frame['function'] ] ) ) {
 				$return = null;
-			} elseif ( isset( self::$show_args[ $frame['function'] ] ) ) {
-				$show = self::$show_args[ $frame['function'] ];
+			} elseif ( isset( $show_args[ $frame['function'] ] ) ) {
+				$show = $show_args[ $frame['function'] ];
 
 				if ( 'dir' === $show ) {
 					if ( isset( $frame['args'][0] ) ) {
