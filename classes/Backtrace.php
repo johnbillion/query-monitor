@@ -283,7 +283,6 @@ class QM_Backtrace {
 		}
 
 		$return = $frame;
-		
 		$ignore_class = array_merge( self::$ignore_class, $this->args['ignore_class'] );
 		$ignore_method = array_merge( self::$ignore_method, $this->args['ignore_method'] );
 		$ignore_func = array_merge( self::$ignore_func, $this->args['ignore_func'] );
