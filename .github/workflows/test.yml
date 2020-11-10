@@ -58,7 +58,6 @@ jobs:
         php --version
         php -m
         composer --version
-        svn --version
 
     - name: Composer validate
       run: composer validate --strict
