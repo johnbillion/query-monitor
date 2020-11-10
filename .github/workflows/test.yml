@@ -69,7 +69,9 @@ jobs:
 
     - name: Run code sniffer
       if: matrix.php == '7.3' && matrix.wp == '*'
-      run: composer test:cs2pr
+      run: |
+        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
+        composer test:cs2pr
 
     - name: Run unit tests
       run: composer test:ut
