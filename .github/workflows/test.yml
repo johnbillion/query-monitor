@@ -69,7 +69,7 @@ jobs:
 
     - name: Run code sniffer
       if: matrix.php == '7.3' && matrix.wp == '*'
-      run: composer test:cs
+      run: composer test:cs2pr
 
     - name: Run unit tests
       run: composer test:ut
