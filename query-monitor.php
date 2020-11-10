@@ -31,7 +31,7 @@
 
 defined( 'ABSPATH' ) || die();
 
-$qm_dir = dirname( __FILE__ )
+$qm_dir = dirname( __FILE__ );
 
 require_once "{$qm_dir}/classes/Plugin.php";
 
