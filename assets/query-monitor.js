@@ -164,7 +164,7 @@ if ( window.jQuery ) {
 			var filters = $( panel ).find('.qm-filter');
 
 			if ( filters.length ) {
-				filters.change();
+				filters.trigger('change');
 			} else {
 				stripes( $(panel).find('table') );
 			}
@@ -278,7 +278,7 @@ if ( window.jQuery ) {
 				if ( ! $(this).find('option[value="' + val + '"]').length ) {
 					$('<option>').attr('value',value).text(value).appendTo(this);
 				}
-				$(this).val(value).change();
+				$(this).val(value).trigger('change');
 			}
 		});
 
@@ -286,8 +286,8 @@ if ( window.jQuery ) {
 			var filter = $(this).data('qm-filter'),
 				value  = $(this).data('qm-value'),
 				target = $(this).data('qm-target');
-			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
-			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
+			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').trigger('change');
+			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').trigger('change');
 			show_panel( '#qm-' + target );
 			$('#qm-' + target).focus();
 			e.preventDefault();
@@ -368,7 +368,7 @@ if ( window.jQuery ) {
 
 			for ( var key = 1; key <= errors; key++ ) {
 
-				error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
+				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 				if ( window.console ) {
 					switch ( error.type ) {
@@ -561,18 +561,18 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('.qm-button-container-close').click(function(){
+		$('.qm-button-container-close').on('click',function(){
 			container.removeClass('qm-show').height('').width('');
 			body.css( 'margin-bottom', '' );
 			localStorage.removeItem( container_pinned_key );
 		});
 
-		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
+		$('.qm-button-container-settings,a[href="#qm-settings"]').on('click',function(){
 			show_panel( '#qm-settings' );
 			$('#qm-settings').focus();
 		});
 
-		$('.qm-button-container-position').click(function(){
+		$('.qm-button-container-position').on('click',function(){
 			container.toggleClass('qm-show-right');
 
 			if ( container.hasClass('qm-show-right') ) {
@@ -597,7 +597,7 @@ if ( window.jQuery ) {
 			show_panel( pinned );
 		}
 
-		$('.qm-title-heading select').change(function(){
+		$('.qm-title-heading select').on('change',function(){
 			show_panel( $(this).val() );
 			$($(this).val()).focus();
 		});
