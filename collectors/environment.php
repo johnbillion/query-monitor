@@ -74,12 +74,13 @@ class QM_Collector_Environment extends QM_Collector {
 		global $wp_version;
 
 		$mysql_vars = array(
-			'key_buffer_size'    => true,  # Key cache size limit
-			'max_allowed_packet' => false, # Individual query size limit
-			'max_connections'    => false, # Max number of client connections
-			'query_cache_limit'  => true,  # Individual query cache size limit
-			'query_cache_size'   => true,  # Total cache size limit
-			'query_cache_type'   => 'ON',  # Query cache on or off
+			'key_buffer_size'         => true,  # Key cache size limit
+			'max_allowed_packet'      => false, # Individual query size limit
+			'max_connections'         => false, # Max number of client connections
+			'query_cache_limit'       => true,  # Individual query cache size limit
+			'query_cache_size'        => true,  # Total cache size limit
+			'query_cache_type'        => 'ON',  # Query cache on or off
+			'innodb_buffer_pool_size' => false, # The amount of memory allocated to the InnoDB buffer pool
 		);
 
 		$dbq = QM_Collectors::get( 'db_queries' );
