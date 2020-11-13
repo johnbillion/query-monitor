@@ -68,7 +68,26 @@ class QM_Output_Html_WP_Errors extends QM_Output_Html {
 
 			$caller = $trace->get_caller();
 
-			echo '<tr>';
+			$component = $trace->get_component();
+
+			$row_attr                      = array();
+			$row_attr['data-qm-component'] = $component->name;
+
+			if ( 'core' !== $component->context ) {
+				$row_attr['data-qm-component'] .= ' non-core';
+			}
+
+			$attr = '';
+
+			foreach ( $row_attr as $a => $v ) {
+				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+			}
+
+			printf( // WPCS: XSS ok.
+				'<tr %s>',
+				$attr
+			);
+
 			echo '<td>' . esc_html( $wp_error->get_error_code() ) . '</td>';
 			echo '<td>' . esc_html( $wp_error->get_error_message() ) . '</td>';
 			echo '<td>';
