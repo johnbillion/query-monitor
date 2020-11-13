@@ -47,6 +47,10 @@ foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
 
 QM_Activation::init( __FILE__ );
 
+if ( ! QM_Plugin::php_version_met() ) {
+	return;
+}
+
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once "{$qm_dir}/classes/CLI.php";
 	QM_CLI::init( __FILE__ );
