@@ -316,6 +316,10 @@ In addition, Query Monitor transparently supports add-ons for the Debug Bar plug
 
 Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
 
+## Is Query Monitor available on Altis? ##
+
+Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
+
 ## Is Query Monitor available on WordPress.com VIP Go? ##
 
 Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
