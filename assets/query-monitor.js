@@ -721,24 +721,36 @@ if ( window.jQuery ) {
 }
 
 window.addEventListener('load', function() {
+	var main = document.getElementById( 'query-monitor-main' );
+	var broken = document.getElementById( 'qm-broken' );
+	var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
+
 	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
-		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
-		document.getElementById( 'query-monitor-main' ).className += ' qm-broken';
-		console.error( document.getElementById( 'qm-broken' ).textContent );
+		/* Fallback for running without jQuery (`QM_NO_JQUERY`) or when jQuery is broken */
+
+		if ( main ) {
+			main.className += ' qm-broken';
+		}
+
+		if ( broken ) {
+			console.error( broken.textContent );
+		}
 
 		if ( 'undefined' === typeof jQuery ) {
 			console.error( 'QM error from JS: undefined jQuery' );
-		}
-
-		if ( ! window.jQuery ) {
+		} else if ( ! window.jQuery ) {
 			console.error( 'QM error from JS: no jQuery' );
 		}
 
-		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-		if ( menu_item ) {
+		if ( menu_item && main ) {
 			menu_item.addEventListener( 'click', function() {
-				document.getElementById( 'query-monitor-main' ).className += ' qm-show';
+				main.className += ' qm-show';
 			} );
 		}
+	}
+
+	if ( ! main ) {
+		// QM's output has disappeared
+		console.error( 'QM error from JS: QM output does not exist' );
 	}
 } );
