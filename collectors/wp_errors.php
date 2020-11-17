@@ -13,7 +13,7 @@ class QM_Collector_WP_Errors extends QM_Collector {
 		parent::__construct();
 
 		add_action( 'wp_error_added', array( $this, 'action_wp_error_added' ), 10, 4 );
-		add_action( 'wp_error_checked', array( $this, 'action_wp_error_checked' ) );
+		add_action( 'is_wp_error_instance', array( $this, 'action_is_wp_error_instance' ) );
 	}
 
 	public function action_wp_error_added( $code, $message, $data, WP_Error $wp_error ) {
@@ -28,7 +28,7 @@ class QM_Collector_WP_Errors extends QM_Collector {
 		);
 	}
 
-	public function action_wp_error_checked( WP_Error $wp_error ) {
+	public function action_is_wp_error_instance( WP_Error $wp_error ) {
 		$id = spl_object_hash( $wp_error );
 
 		if ( ! isset( $this->data['checked'][ $id ] ) ) {
