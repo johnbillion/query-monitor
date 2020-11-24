@@ -2,7 +2,7 @@ name: Deploy Assets
 on:
   push:
     branches:
-      - master
+      - deploy
 
 jobs:
   wordpress:
