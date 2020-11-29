@@ -22,6 +22,7 @@
 		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
+		<exclude name="WordPress.PHP.IniSet.display_errors_Blacklisted" />
 		<exclude name="WordPress.DB.RestrictedFunctions" />
 
 		<!-- @TODO remove this exclusion: -->
