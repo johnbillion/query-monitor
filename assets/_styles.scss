@@ -284,7 +284,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: flex !important;
 		flex-shrink: 0 !important;
 		height: 27px !important;
-		padding: 0 0 0 5px !important;
+		padding: 0 0 0 10px !important;
 		-moz-user-select: none !important;
 		-ms-user-select: none !important;
 		-webkit-user-select: none !important;
@@ -403,7 +403,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			color: $qm-panel-menu-fg !important;
 			cursor: pointer !important;
 			display: block !important;
-			padding: 8px 28px 8px 6px !important;
+			padding: 6px 32px 6px 10px !important;
 			position: relative !important;
 			text-decoration: none !important;
 			width: 100% !important;
