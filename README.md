@@ -262,31 +262,31 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 # Screenshots
 
-### Admin Toolbar Menu
+## Admin Toolbar Menu
 
 ![Admin Toolbar Menu](.wordpress-org/screenshot-1.png)
 
-### Database Queries
+## Database Queries
 
 ![Database Queries](.wordpress-org/screenshot-4.png)
 
-### Capability Checks
+## Capability Checks
 
 ![Capability Checks](.wordpress-org/screenshot-3.png)
 
-### Aggregate Database Queries by Component
+## Aggregate Database Queries by Component
 
 ![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
-### Aggregate Database Queries by Calling Function
+## Aggregate Database Queries by Calling Function
 
 ![Aggregate Database Queries by Calling Function](.wordpress-org/screenshot-7.png)
 
-### Hooks and Actions
+## Hooks and Actions
 
 ![Hooks and Actions](.wordpress-org/screenshot-5.png)
 
-### HTTP API Requests
+## HTTP API Requests
 
 ![HTTP API Requests](.wordpress-org/screenshot-6.png)
 
