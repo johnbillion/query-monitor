@@ -7,8 +7,8 @@ env:
   ENVIRONMENT_URL: https://wordpress.org/plugins/query-monitor
 
 jobs:
-  wordpress:
-    name: WordPress.org
+  begin_deployment:
+    name: Begin Deployment
     runs-on: ubuntu-18.04
     steps:
     - uses: octokit/request-action@v2.x
@@ -35,6 +35,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  wordpress:
+    name: WordPress.org
+    needs: begin_deployment
+    runs-on: ubuntu-18.04
+    steps:
     - name: Checkout repository
       uses: actions/checkout@v1
 
@@ -82,6 +87,7 @@ jobs:
 
   github:
     name: GitHub Milestones
+    needs: begin_deployment
     runs-on: ubuntu-18.04
     steps:
     - name: Get next versions
