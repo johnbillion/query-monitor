@@ -3,6 +3,9 @@ on:
   release:
     types: [published]
 
+env:
+  ENVIRONMENT_URL: https://wordpress.org/plugins/query-monitor
+
 jobs:
   wordpress:
     name: WordPress.org
@@ -28,7 +31,7 @@ jobs:
         repository: ${{ github.repository }}
         deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
         state: pending
-        environment_url: https://wordpress.org/plugins/query-monitor
+        environment_url: ${{ env.ENVIRONMENT_URL }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,6 +64,7 @@ jobs:
         repository: ${{ github.repository }}
         state: success
         deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
+        environment_url: ${{ env.ENVIRONMENT_URL }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -72,6 +76,7 @@ jobs:
         repository: ${{ github.repository }}
         state: failure
         deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
+        environment_url: ${{ env.ENVIRONMENT_URL }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
