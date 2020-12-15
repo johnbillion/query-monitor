@@ -104,7 +104,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
 
 				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
-					if ( empty( $row['args']['sslverify'] ) && empty( $row['args']['local'] ) ) {
+					if ( empty( $row['args']['sslverify'] ) && ! $row['local'] ) {
 						$info .= '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
 							__( 'Certificate verification disabled (%s)', 'query-monitor' ),

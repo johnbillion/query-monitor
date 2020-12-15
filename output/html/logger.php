@@ -96,17 +96,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo esc_html( ucfirst( $row['level'] ) );
 			echo '</td>';
 
-			if ( 'dump' === $row['type'] ) {
-				printf(
-					'<td><pre>%s</pre></td>',
-					esc_html( $row['message'] )
-				);
-			} else {
-				printf(
-					'<td>%s</td>',
-					esc_html( $row['message'] )
-				);
-			}
+			printf(
+				'<td><pre>%s</pre></td>',
+				esc_html( $row['message'] )
+			);
 
 			$stack          = array();
 			$filtered_trace = $row['trace']->get_display_trace();

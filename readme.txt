@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.5
-Stable tag: 3.6.4
+Tested up to: 5.6
+Stable tag: 3.6.5
 License: GPLv2 or later
 Requires PHP: 5.3
 Donate link: https://johnblackbourn.com/donations/
@@ -86,6 +86,10 @@ In addition, Query Monitor transparently supports add-ons for the Debug Bar plug
 = Where can I suggest a new feature or report a bug? =
 
 Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
+
+= Is Query Monitor available on Altis? =
+
+Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
 = Is Query Monitor available on WordPress.com VIP Go? =
 

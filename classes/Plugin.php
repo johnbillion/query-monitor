@@ -60,7 +60,7 @@ abstract class QM_Plugin {
 	/**
 	 * Populates and returns the current plugin info.
 	 */
-	final private function _plugin( $item, $file = '' ) {
+	private function _plugin( $item, $file = '' ) {
 		if ( ! array_key_exists( $item, $this->plugin ) ) {
 			switch ( $item ) {
 				case 'url':

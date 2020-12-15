@@ -52,6 +52,14 @@ abstract class QM_Dispatcher {
 		 *
 		 * The dynamic portion of the hook name, `$this->id`, refers to the dispatcher ID.
 		 *
+		 * Possible filter names include:
+		 *
+		 *  - `qm/dispatch/html`
+		 *  - `qm/dispatch/ajax`
+		 *  - `qm/dispatch/redirect`
+		 *  - `qm/dispatch/rest`
+		 *  - `qm/dispatch/wp_die`
+		 *
 		 * @since 2.8.0
 		 *
 		 * @param bool $true Whether or not the dispatcher is enabled.
