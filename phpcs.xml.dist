@@ -28,6 +28,9 @@
 		<!-- @TODO remove this exclusion: -->
 		<exclude name="Squiz.Commenting" />
 
+		<!-- Exclude short description sniff so short `@var` notation can be used -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+
 		<!-- Not interested in whitespace issues at the moment -->
 		<exclude name="PEAR.Functions.FunctionCallSignature" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />

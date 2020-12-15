@@ -56,14 +56,10 @@ class QM_Output_Html_WP_Errors extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $data['errors'] as $id => $error ) {
-			/**
-			 * @var WP_Error $wp_error
-			 */
+			/** @var WP_Error */
 			$wp_error = $error['error'];
 
-			/**
-			 * @var QM_Backtrace $trace
-			 */
+			/** @var QM_Backtrace */
 			$trace = $error['trace'];
 
 			$caller = $trace->get_caller();
