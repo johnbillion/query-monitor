@@ -94,6 +94,7 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 			'rewrites'      => true,
 			'timing'        => false,
 			'transients'    => true,
+			'wp_errors'     => true,
 		);
 
 		$collectors = QM_Collectors::init();
