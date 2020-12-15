@@ -57,5 +57,11 @@
 		"issues": "https://github.com/johnbillion/query-monitor/issues",
 		"forum": "https://wordpress.org/support/plugin/query-monitor",
 		"source": "https://github.com/johnbillion/query-monitor"
-	}
+	},
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/johnbillion"
+		}
+	]
 }
