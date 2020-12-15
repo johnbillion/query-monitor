@@ -45,6 +45,13 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-Administrator). See the Settings panel for details.
 
+= Other Plugins =
+
+I maintain several other plugins for developers. Check them out:
+
+* [User Switching](https://wordpress.org/plugins/user-switching/) provides instant switching between user accounts in WordPress.
+* [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) lets you view and control what's happening in the WP-Cron system
+
 = Privacy Statement =
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
