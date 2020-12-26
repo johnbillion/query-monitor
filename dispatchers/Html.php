@@ -179,11 +179,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$css = 'query-monitor';
 
-		if ( method_exists( 'Dark_Mode', 'is_using_dark_mode' ) && is_user_logged_in() ) {
-			if ( Dark_Mode::is_using_dark_mode() ) {
-				$css .= '-dark';
-			}
-		} elseif ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
+		if ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
 			$css .= '-dark';
 		}
 
