@@ -70,7 +70,11 @@ Query Monitor is private by default and always will be. It does not persistently
 
 == Frequently Asked Questions ==
 
-= Who can see Query Monitor's output? =
+= Does this plugin work with PHP 8? =
+
+Yes.
+
+= Who can access Query Monitor's output? =
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 

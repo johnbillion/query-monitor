@@ -292,6 +292,10 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 # Frequently Asked Questions
 
+## Does this plugin work with PHP 8?
+
+Yes.
+
 ## Who can see Query Monitor's output?
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
