@@ -1,5 +1,13 @@
 name: Test
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'trunk'
+      - 'master'
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
