@@ -99,12 +99,12 @@ class QM_DB extends wpdb {
 		}
 
 		$result = parent::query( $query );
+		$i      = $this->num_queries - 1;
 
-		if ( ! SAVEQUERIES ) {
+		if ( ! isset( $this->queries[ $i ] ) ) {
 			return $result;
 		}
 
-		$i = $this->num_queries - 1;
 		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
 			'ignore_frames' => 1,
 		) );
