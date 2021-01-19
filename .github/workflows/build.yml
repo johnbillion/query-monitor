@@ -1,0 +1,34 @@
+name: Build Release
+on:
+  push:
+    branches:
+      - 'feature/release-builds'
+
+jobs:
+  wordpress:
+    name: WordPress.org
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+      # @TODO need to cache the npm dependencies
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Assets
+      run: npm run build
+
+    - name: Tag
+      run: |
+        "echo \"Releasing version $VERSION ...\""
+        "git config user.name github-actions"
+        "git config user.email github-actions@github.com"
+        "git checkout -b \"release/$VERSION\""
+        "git add assets/*"
+        "git commit -m \"Release $VERSION\""
+        "git tag \"release-$VERSION\""
+        "git push --tags"
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: "grep -Po '\"version\": \"[0-9\\.]+\"' package.json | grep -Po \"[0-9\\.]+\""
