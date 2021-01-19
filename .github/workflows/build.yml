@@ -6,7 +6,7 @@ on:
 
 jobs:
   wordpress:
-    name: WordPress.org
+    name: Release
     runs-on: ubuntu-18.04
     steps:
     - name: Checkout repository
@@ -18,6 +18,9 @@ jobs:
 
     - name: Build Assets
       run: npm run build
+
+    - name: Setup
+      run: 'echo "VERSION=$(grep -Po ''\"version\": \"[0-9\\.]+\"'' package.json | grep -Po \"[0-9\\.]+\")" >> $GITHUB_ENV'
 
     - name: Tag
       run: |
@@ -31,4 +34,3 @@ jobs:
         "git push --tags"
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION: "grep -Po '\"version\": \"[0-9\\.]+\"' package.json | grep -Po \"[0-9\\.]+\""
