@@ -2,7 +2,7 @@ name: Build Release
 on:
   push:
     branches:
-      - 'feature/release-builds'
+      - 'release'
 
 jobs:
   wordpress:
@@ -30,7 +30,7 @@ jobs:
         git checkout -b "release/$VERSION"
         git add assets/*
         git commit -m "Release $VERSION"
-        git tag "release-$VERSION"
+        git tag "$VERSION"
         git push --tags
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
