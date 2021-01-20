@@ -24,13 +24,13 @@ jobs:
 
     - name: Tag
       run: |
-        "echo ""Releasing version $VERSION ..."""
-        "git config user.name github-actions"
-        "git config user.email github-actions@github.com"
-        "git checkout -b ""release/$VERSION"""
-        "git add assets/*"
-        "git commit -m ""Release $VERSION"""
-        "git tag ""release-$VERSION"""
-        "git push --tags"
+        'echo "Releasing version $VERSION ..."'
+        'git config user.name github-actions'
+        'git config user.email github-actions@github.com'
+        'git checkout -b "release/$VERSION"'
+        'git add assets/*'
+        'git commit -m "Release $VERSION"'
+        'git tag "release-$VERSION"'
+        'git push --tags'
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
