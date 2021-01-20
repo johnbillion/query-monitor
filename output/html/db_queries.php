@@ -174,26 +174,25 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '<tr>';
 				echo '<th colspan="' . intval( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
-					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
-				} else if ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
-					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was prevented from symlinking its %1$s file into place by <code>QM_DB_SYMLINK</code> constant. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
+					/* translators: %s: File name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %s file is present.', 'query-monitor' );
+				} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+					/* translators: 1: File name, 2: Configuration constant name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was prevented from symlinking its %1$s file into place by the %2$s constant.', 'query-monitor' );
 				} else {
-					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
+					/* translators: %s: File name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %s file into place.', 'query-monitor' );
 				}
-				echo wp_kses( sprintf(
-					$message,
+				printf(
+					esc_html( $message ),
 					'<code>db.php</code>',
+					'<code>QM_DB_SYMLINK</code>'
+				);
+
+				printf(
+					' <a href="%s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>',
 					'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
-				), array(
-					'a' => array(
-						'href'   => array(),
-						'target' => array(),
-						'class'  => array(),
-					),
-				) );
+				);
 				echo '</th>';
 				echo '</tr>';
 			}
