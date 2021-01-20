@@ -85,7 +85,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			echo '<tr' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
 
-			echo '<td scope="row" class="qm-nowrap">';
+			echo '<td class="qm-nowrap">';
 
 			if ( $is_warning ) {
 				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
