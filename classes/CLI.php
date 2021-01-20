@@ -32,6 +32,11 @@ class QM_CLI extends QM_Plugin {
 			}
 		}
 
+		if ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+			WP_CLI::warning( 'Creation of symlink prevented by QM_DB_SYMLINK constant.' );
+			exit( 0 );
+		}
+
 		if ( ! function_exists( 'symlink' ) ) {
 			WP_CLI::error( 'The symlink function is not available' );
 		}
