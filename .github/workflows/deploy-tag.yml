@@ -38,6 +38,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v1
 
+    # @TODO need to cache the npm dependencies
+    - name: Install Dependencies
+      run: npm install
+
     - name: Populate Changelog
       run: node .github/workflows/changelog.js readme.txt
       env:
