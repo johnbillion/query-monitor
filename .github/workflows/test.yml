@@ -41,6 +41,7 @@ jobs:
         key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('composer.json') }}
 
     - name: PHPCS cache
+      if: matrix.php == '7.3' && matrix.wp == '*'
       uses: actions/cache@v1
       env:
         cache-name: phpcs
@@ -67,6 +68,7 @@ jobs:
         composer --version
 
     - name: Composer validate
+      if: matrix.php == '7.3' && matrix.wp == '*'
       run: composer validate --strict
 
     - name: Install dependencies
