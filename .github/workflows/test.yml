@@ -28,16 +28,6 @@ jobs:
         path: ~/.composer/cache
         key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-    - name: PHPCS cache
-      if: matrix.php == '7.3' && matrix.wp == '*'
-      uses: actions/cache@v1
-      with:
-        path: tests/cache
-        # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
-        # always pulling in a cache file and simultaneously always updating it, unlike Travis.
-        # This way we always pull in a cache file and refresh it with each new version of QM.
-        key: ${{ matrix.php }}-phpcs-${{ hashFiles('query-monitor.php') }}
-
     - name: Install PHP
       uses: shivammathur/setup-php@2.7.0
       with:
@@ -54,21 +44,11 @@ jobs:
         composer --version
         mysql --version
 
-    - name: Composer validate
-      if: matrix.php == '7.3' && matrix.wp == '*'
-      run: composer validate --strict
-
     - name: Install dependencies
       run: |
         sudo systemctl start mysql.service
         composer install --prefer-dist --no-suggest
         composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
-
-    - name: Run code sniffer
-      if: matrix.php == '7.3' && matrix.wp == '*'
-      run: |
-        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
-        composer test:cs2pr
 
     - name: Run unit tests
       run: composer test:ut

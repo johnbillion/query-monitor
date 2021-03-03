@@ -1,0 +1,58 @@
+name: Coding Standards
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'trunk'
+      - 'master'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    name: PHP Coding Standards
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - name: Composer cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.composer/cache
+        key: phpcs-composer-${{ hashFiles('composer.json') }}
+
+    - name: PHPCS cache
+      uses: actions/cache@v1
+      with:
+        path: tests/cache
+        # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
+        # always pulling in a cache file and simultaneously always updating it, unlike Travis.
+        # This way we always pull in a cache file and refresh it with each new version of QM.
+        key: phpcs-${{ hashFiles('query-monitor.php') }}
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@2.7.0
+      with:
+        php-version: '7.3'
+        coverage: none
+      env:
+        fail-fast: true
+
+    - name: Debugging
+      run: |
+        php --version
+        composer --version
+
+    - name: Composer validate
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: |
+        composer install --prefer-dist --no-suggest
+
+    - name: Run code sniffer
+      run: |
+        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
+        composer test:cs2pr
