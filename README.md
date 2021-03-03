@@ -332,12 +332,10 @@ Yep! However, a user needs to be granted the `view_query_monitor` capability to 
 
 You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
 
-```php
-add_filter( 'qm/collect/db_objects', function( $objects ) {
-	$objects['my_db'] = $GLOBALS['my_db'];
-	return $objects;
-} );
-```
+    add_filter( 'qm/collect/db_objects', function( $objects ) {
+        $objects['my_db'] = $GLOBALS['my_db'];
+        return $objects;
+    } );
 
 Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
 
