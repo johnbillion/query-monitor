@@ -47,8 +47,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo systemctl start mysql.service
-        composer install --prefer-dist --no-suggest
-        composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
+        composer install --prefer-dist
+        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
 
     - name: Run unit tests
       run: composer test:ut
