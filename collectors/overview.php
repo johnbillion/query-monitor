@@ -49,6 +49,16 @@ class QM_Collector_Overview extends QM_Collector {
 			$this->data['memory_usage'] = 0;
 		}
 
+		$this->data['wp_memory_limit'] = trim(WP_MEMORY_LIMIT); // Pull the config value
+		$this->data['wp_memory_limit'] = preg_replace('/[^0-9]/', '', $this->data['wp_memory_limit']); // Remove the trailing MB
+		$this->data['wp_memory_limit'] = $this->data['wp_memory_limit'] * 1024 * 1024; // Convert from MB to Bytes
+
+		if ( $this->data['wp_memory_limit'] > 0 ) {
+			$this->data['wp_memory_usage'] = ( 100 / $this->data['wp_memory_limit'] ) * $this->data['memory'];
+		} else {
+			$this->data['wp_memory_usage'] = 0;
+		}
+
 		$this->data['display_time_usage_warning']   = ( $this->data['time_usage'] >= 75 );
 		$this->data['display_memory_usage_warning'] = ( $this->data['memory_usage'] >= 75 );
 
