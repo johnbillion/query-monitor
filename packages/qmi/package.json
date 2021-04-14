@@ -1,33 +1,33 @@
 {
-  "name": "qmi",
-  "version": "0.0.3",
-  "description": "User interface for developer tool panels, just like your browser dev tools",
-  "main": "build/index.js",
-  "types": "build/qmi/src/index.d.ts",
-  "keywords": [
-    "dev-tools"
-  ],
-  "author": "John Blackbourn",
-  "license": "MIT",
-  "homepage": "https://github.com/johnbillion/query-monitor/packages/qmi",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/johnbillion/query-monitor/packages/qmi"
-  },
-  "files": [
-    "build"
-  ],
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "start": "webpack --config=webpack.config.dev.js",
-    "build": "webpack --config=webpack.config.prod.js"
-  },
-  "peerDependencies": {
-    "react": "^16.12.0"
-  },
-  "dependencies": {
-    "@types/react": "^16.9.35",
-    "@types/react-dom": "^16.9.8",
-    "wp-types": "^1.1.1"
-  }
+	"name": "qmi",
+	"version": "0.0.3",
+	"description": "User interface for developer tool panels, just like your browser dev tools",
+	"main": "build/index.js",
+	"types": "build/qmi/src/index.d.ts",
+	"keywords": [
+		"dev-tools"
+	],
+	"author": "John Blackbourn",
+	"license": "MIT",
+	"homepage": "https://github.com/johnbillion/query-monitor/packages/qmi",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/johnbillion/query-monitor/packages/qmi"
+	},
+	"files": [
+		"build"
+	],
+	"scripts": {
+		"prepublishOnly": "npm run build",
+		"start": "webpack --config=webpack.config.dev.js",
+		"build": "webpack --config=webpack.config.prod.js"
+	},
+	"peerDependencies": {
+		"react": "^16.12.0"
+	},
+	"dependencies": {
+		"@types/react": "^16.9.35",
+		"@types/react-dom": "^16.9.8",
+		"wp-types": "^1.1.1"
+	}
 }
