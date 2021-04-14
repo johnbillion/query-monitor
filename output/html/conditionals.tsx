@@ -22,21 +22,33 @@ class Conditionals extends React.Component<iConditionalsProps, Record<string, un
 			<NonTabular id={ this.props.id }>
 				<div className="qm-boxed">
 					<section>
-						<h3>{ __( 'True Conditionals', 'query-monitor' ) }</h3>
+						<h3>
+							{ __( 'True Conditionals', 'query-monitor' ) }
+						</h3>
 						<ul>
-							{ trueConds.map( cond =>
-								<li key={ cond } className="qm-ltr qm-true"><code>{ cond }()</code></li>
-							) }
+							{ trueConds.map( cond => (
+								<li key={ cond } className="qm-ltr qm-true">
+									<code>
+										{ cond }()
+									</code>
+								</li>
+							) ) }
 						</ul>
 					</section>
 				</div>
 				<div className="qm-boxed">
 					<section>
-						<h3>{ __( 'False Conditionals', 'query-monitor' ) }</h3>
+						<h3>
+							{ __( 'False Conditionals', 'query-monitor' ) }
+						</h3>
 						<ul>
-							{ falseConds.map( cond =>
-								<li key={ cond } className="qm-ltr qm-false"><code>{ cond }()</code></li>
-							) }
+							{ falseConds.map( cond => (
+								<li key={ cond } className="qm-ltr qm-false">
+									<code>
+										{ cond }()
+									</code>
+								</li>
+							) ) }
 						</ul>
 					</section>
 				</div>

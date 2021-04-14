@@ -41,8 +41,12 @@ class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 						const sources = data.dupe_sources[key];
 						return (
 							<tr>
-								<td className="qm-row-sql qm-ltr qm-wrap">{ key }</td>
-								<td className="qm-num">{ row.length }</td>
+								<td className="qm-row-sql qm-ltr qm-wrap">
+									{ key }
+								</td>
+								<td className="qm-num">
+									{ row.length }
+								</td>
 								<td>
 									{ Object.keys( callers ).map( function ( caller ) {
 										const count = sprintf(
@@ -51,8 +55,12 @@ class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 										);
 										return (
 											<>
-												<code>{ caller }</code><br/>
-												<span className="qm-info qm-supplemental">{ count }</span><br/>
+												<code>{ caller }</code>
+												<br/>
+												<span className="qm-info qm-supplemental">
+													{ count }
+												</span>
+												<br/>
 											</>
 										);
 									} ) }
@@ -66,7 +74,10 @@ class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 										return (
 											<>
 												{ component }<br/>
-												<span className="qm-info qm-supplemental">{ count }</span><br/>
+												<span className="qm-info qm-supplemental">
+													{ count }
+												</span>
+												<br/>
 											</>
 										);
 									} ) }
@@ -79,8 +90,12 @@ class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 										);
 										return (
 											<>
-												<code>{ source }</code><br/>
-												<span className="qm-info qm-supplemental">{ count }</span><br/>
+												<code>{ source }</code>
+												<br/>
+												<span className="qm-info qm-supplemental">
+													{ count }
+												</span>
+												<br/>
 											</>
 										);
 									} ) }

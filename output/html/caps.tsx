@@ -28,7 +28,11 @@ class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 							'<code>wp-config.php</code>'
 						) }
 					</p>
-					<p><code>define( 'QM_ENABLE_CAPS_PANEL', true );</code></p>
+					<p>
+						<code>
+							define( 'QM_ENABLE_CAPS_PANEL', true );
+						</code>
+					</p>
 				</Notice>
 			);
 		}
@@ -69,15 +73,27 @@ class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 				<tbody>
 					{ data.caps.map( cap => (
 						<tr>
-							<td className="qm-ltr qm-nowrap"><code>{ cap.name }</code></td>
-							<td className="qm-num">{ cap.user }</td>
-							<td className="qm-nowrap">{ cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' }</td>
+							<td className="qm-ltr qm-nowrap">
+								<code>
+									{ cap.name }
+								</code>
+							</td>
+							<td className="qm-num">
+								{ cap.user }
+							</td>
+							<td className="qm-nowrap">
+								{ cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' }
+							</td>
 							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ cap.filtered_trace } />
 							<QMComponent component={ cap.component } />
 						</tr>
 					) ) }
 				</tbody>
-				<PanelFooter cols={ 5 } count={ data.caps.length } label={ _x( 'Total:', 'User capability checks', 'query-monitor' ) } />
+				<PanelFooter
+					cols={ 5 }
+					count={ data.caps.length }
+					label={ _x( 'Total:', 'User capability checks', 'query-monitor' ) }
+				/>
 			</Tabular>
 		);
 	}

@@ -46,11 +46,21 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 
 							return (
 								<tr className={ classes }>
-									<td className="qm-nowrap">{ type }</td>
-									<td className="qm-ltr">{ error.message }</td>
-									<td className="qm-num">{ error.calls }</td>
-									<td className="qm-row-caller qm-row-stack qm-nowrap qm-ltr">{ error.filename }:{ error.line }</td>
-									<td className="qm-nowrap">Component</td>
+									<td className="qm-nowrap">
+										{ type }
+									</td>
+									<td className="qm-ltr">
+										{ error.message }
+									</td>
+									<td className="qm-num">
+										{ error.calls }
+									</td>
+									<td className="qm-row-caller qm-row-stack qm-nowrap qm-ltr">
+										{ error.filename }:{ error.line }
+									</td>
+									<td className="qm-nowrap">
+										Component
+									</td>
 								</tr>
 							);
 						} );

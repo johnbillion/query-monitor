@@ -69,18 +69,35 @@ class Transients extends React.Component<iTransientsProps, Record<string, unknow
 				<tbody>
 					{ data.trans.map( transient => (
 						<tr key={ transient.name }>
-							<td className="qm-ltr qm-nowrap"><code>{ transient.name }</code></td>
+							<td className="qm-ltr qm-nowrap">
+								<code>
+									{ transient.name }
+								</code>
+							</td>
 							{ data.has_type && (
-								<td className="qm-ltr qm-nowrap">{ transient.type }</td>
+								<td className="qm-ltr qm-nowrap">
+									{ transient.type }
+								</td>
 							) }
 
 							{ transient.expiration ? (
-								<td className="qm-nowrap">{ transient.expiration } <span className="qm-info">(~{ transient.exp_diff })</span></td>
+								<td className="qm-nowrap">
+									{ transient.expiration }
+									<span className="qm-info">
+										(~{ transient.exp_diff })
+									</span>
+								</td>
 							) : (
-								<td className="qm-nowrap"><em>{ __( 'none', 'query-monitor' ) }</em></td>
+								<td className="qm-nowrap">
+									<em>
+										{ __( 'none', 'query-monitor' ) }
+									</em>
+								</td>
 							) }
 
-							<td className="qm-nowrap">~{ transient.size_formatted }</td>
+							<td className="qm-nowrap">
+								~{ transient.size_formatted }
+							</td>
 							<Caller
 								toggleLabel={ __( 'View call stack', 'query-monitor' ) }
 								trace={ transient.filtered_trace }

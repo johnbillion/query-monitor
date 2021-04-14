@@ -17,12 +17,18 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 		return (
 			<NonTabular id={ this.props.id }>
 				<section>
-					<h3>get_current_screen()</h3>
+					<h3>
+						get_current_screen()
+					</h3>
 					<table>
 						<thead className="qm-screen-reader-text">
 							<tr>
-								<th scope="col">{ __( 'Property', 'query-monitor' ) }</th>
-								<th scope="col">{ __( 'Value', 'query-monitor' ) }</th>
+								<th scope="col">
+									{ __( 'Property', 'query-monitor' ) }
+								</th>
+								<th scope="col">
+									{ __( 'Value', 'query-monitor' ) }
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -40,12 +46,18 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 					</table>
 				</section>
 				<section>
-					<h3>{ __( 'Globals', 'query-monitor' ) }</h3>
+					<h3>
+						{ __( 'Globals', 'query-monitor' ) }
+					</h3>
 					<table>
 						<thead className="qm-screen-reader-text">
 							<tr>
-								<th scope="col">{ __( 'Global Variable', 'query-monitor' ) }</th>
-								<th scope="col">{ __( 'Value', 'query-monitor' ) }</th>
+								<th scope="col">
+									{ __( 'Global Variable', 'query-monitor' ) }
+								</th>
+								<th scope="col">
+									{ __( 'Value', 'query-monitor' ) }
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -64,18 +76,42 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 				</section>
 				{ data.list_table && (
 					<section>
-						<h3>{ __( 'List Table', 'query-monitor' ) }</h3>
+						<h3>
+							{ __( 'List Table', 'query-monitor' ) }
+						</h3>
 						{ data.list_table.class_name && (
 							<>
-								<h4>{ __( 'Class:', 'query-monitor' ) }</h4>
-								<p><code>{ data.list_table.class_name }</code></p>
+								<h4>
+									{ __( 'Class:', 'query-monitor' ) }
+								</h4>
+								<p>
+									<code>
+										{ data.list_table.class_name }
+									</code>
+								</p>
 							</>
 						) }
-						<h4>{ __( 'Column Filters:', 'query-monitor' ) }</h4>
-						<p><code>{ data.list_table.columns_filter }</code></p>
-						<p><code>{ data.list_table.sortables_filter }</code></p>
-						<h4>{ __( 'Column Action:', 'query-monitor' ) }</h4>
-						<p><code>{ data.list_table.column_action }</code></p>
+						<h4>
+							{ __( 'Column Filters:', 'query-monitor' ) }
+						</h4>
+						<p>
+							<code>
+								{ data.list_table.columns_filter }
+							</code>
+						</p>
+						<p>
+							<code>
+								{ data.list_table.sortables_filter }
+							</code>
+						</p>
+						<h4>
+							{ __( 'Column Action:', 'query-monitor' ) }
+						</h4>
+						<p>
+							<code>
+								{ data.list_table.column_action }
+							</code>
+						</p>
 					</section>
 				) }
 			</NonTabular>

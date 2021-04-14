@@ -56,18 +56,41 @@ class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>>
 						const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
 						return (
 							<tr key={ i }>
-								<th className="qm-row-num qm-num" scope="row">{ 1+i }</th>
-								<td className="qm-ltr qm-wrap">{ block.blockName }</td>
-								<td><pre className="qm-pre-wrap"><code>{ show_attrs && JSON.stringify( block.attrs, null, 2 ) }</code></pre></td>
-								<td>{ block.dynamic && block.callback && block.callback.name }</td>
-								<td>{ block.dynamic && block.timing }</td>
-								<td><pre className="qm-pre-wrap"><code>{ block.innerHTML }</code></pre></td>
+								<th className="qm-row-num qm-num" scope="row">
+									{ 1 + i }
+								</th>
+								<td className="qm-ltr qm-wrap">
+									{ block.blockName }
+								</td>
+								<td>
+									<pre className="qm-pre-wrap">
+										<code>
+											{ show_attrs && JSON.stringify( block.attrs, null, 2 ) }
+										</code>
+									</pre>
+								</td>
+								<td>
+									{ block.dynamic && block.callback && block.callback.name }
+								</td>
+								<td>
+									{ block.dynamic && block.timing }
+								</td>
+								<td>
+									<pre className="qm-pre-wrap">
+										<code>
+											{ block.innerHTML }
+										</code>
+									</pre>
+								</td>
 							</tr>
 						);
 					} ) }
 				</tbody>
-				<PanelFooter cols={ 6 } count={ data.post_blocks.length } label={ _x( 'Total:', 'Content blocks used', 'query-monitor' ) }>
-				</PanelFooter>
+				<PanelFooter
+					cols={ 6 }
+					count={ data.post_blocks.length }
+					label={ _x( 'Total:', 'Content blocks used', 'query-monitor' ) }
+				/>
 			</Tabular>
 		);
 	}

@@ -32,7 +32,11 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 						<>
 							<section>
 								<h3>{ name }</h3>
-								<p className="qm-ltr"><code>{ value }</code></p>
+								<p className="qm-ltr">
+									<code>
+										{ value }
+									</code>
+								</p>
 							</section>
 						</>
 					);
@@ -40,7 +44,9 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 
 				{ data.matching_rewrites && (
 					<section>
-						<h3>{ __( 'All Matching Rewrite Rules', 'query-monitor' ) }</h3>
+						<h3>
+							{ __( 'All Matching Rewrite Rules', 'query-monitor' ) }
+						</h3>
 						<table>
 
 							{ Object.keys( data.matching_rewrites ).map( ( rule: keyof typeof data.matching_rewrites ) => {
@@ -48,8 +54,16 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 
 								return (
 									<tr>
-										<td className="qm-ltr"><code>{ rule }</code></td>
-										<td className="qm-ltr"><code>{ query }</code></td>
+										<td className="qm-ltr">
+											<code>
+												{ rule }
+											</code>
+										</td>
+										<td className="qm-ltr">
+											<code>
+												{ query }
+											</code>
+										</td>
 									</tr>
 								);
 							} ) }

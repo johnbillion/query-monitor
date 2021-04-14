@@ -44,10 +44,18 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 				<tbody>
 					{ data.logs.map( row => (
 						<tr>
-							<td>{ row.level }</td>
-							<td>{ row.message }</td>
-							<td>Caller</td>
-							<td>Component</td>
+							<td>
+								{ row.level }
+							</td>
+							<td>
+								{ row.message }
+							</td>
+							<td>
+								Caller
+							</td>
+							<td>
+								Component
+							</td>
 						</tr>
 					) ) }
 				</tbody>

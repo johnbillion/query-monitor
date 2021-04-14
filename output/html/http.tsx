@@ -51,18 +51,32 @@ class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 
 						return (
 							<tr key={ key }>
-								<td>{ row.args.method }</td>
-								<td>{ row.url }</td>
-								<td>{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }</td>
-								<td>Caller</td>
+								<td>
+									{ row.args.method }
+								</td>
+								<td>
+									{ row.url }
+								</td>
+								<td>
+									{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }
+								</td>
+								<td>
+									Caller
+								</td>
 								<QMComponent component={ row.component } />
-								<td className="qm-num">{ row.args.timeout }</td>
+								<td className="qm-num">
+									{ row.args.timeout }
+								</td>
 								<Time value={ row.ltime }/>
 							</tr>
 						);
 					} ) }
 				</tbody>
-				<PanelFooter cols={ 6 } count={ Object.keys( data.http ).length } label={ _x( 'Total:', 'HTTP API calls', 'query-monitor' ) }>
+				<PanelFooter
+					cols={ 6 }
+					count={ Object.keys( data.http ).length }
+					label={ _x( 'Total:', 'HTTP API calls', 'query-monitor' ) }
+				>
 					<TotalTime rows={ Object.values( data.http ) }/>
 				</PanelFooter>
 			</Tabular>

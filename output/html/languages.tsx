@@ -50,21 +50,37 @@ class Languages extends React.Component<iLanguagesProps, Record<string, unknown>
 							{ data.languages[key].map( lang =>
 								( <tr key={ lang.domain + lang.file }>
 									{ lang.handle ? (
-										<td className="qm-ltr">{ lang.domain } ({ lang.handle })</td>
+										<td className="qm-ltr">
+											{ lang.domain } ({ lang.handle })
+										</td>
 									) : (
-										<td className="qm-ltr">{ lang.domain }</td>
+										<td className="qm-ltr">
+											{ lang.domain }
+										</td>
 									) }
-									<td>{ lang.type }</td>
+									<td>
+										{ lang.type }
+									</td>
 									<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ [ lang.caller ] } />
 									{ lang.file ? (
-										<td className="qm-ltr">{ lang.file }</td>
+										<td className="qm-ltr">
+											{ lang.file }
+										</td>
 									) : (
-										<td className="qm-nowrap"><em>{ __( 'None', 'query-monitor' ) }</em></td>
+										<td className="qm-nowrap">
+											<em>
+												{ __( 'None', 'query-monitor' ) }
+											</em>
+										</td>
 									) }
 									{ lang.found ? (
-										<td className="qm-nowrap">{ lang.found }</td>
+										<td className="qm-nowrap">
+											{ lang.found }
+										</td>
 									) : (
-										<td className="qm-nowrap">{ __( 'Not Found', 'query-monitor' ) }</td>
+										<td className="qm-nowrap">
+											{ __( 'Not Found', 'query-monitor' ) }
+										</td>
 									) }
 								</tr> )
 							) }

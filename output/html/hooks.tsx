@@ -73,7 +73,9 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 										{ i === 0 && (
 											<th className="qm-ltr qm-nowrap" rowSpan={ hook.actions.length }>
 												<span className="qm-sticky">
-													<code>{ hook.name }</code>
+													<code>
+														{ hook.name }
+													</code>
 												</span>
 												{ hook.name === 'all' && (
 													<span className="qm-warn">
@@ -88,8 +90,12 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 												) }
 											</th>
 										) }
-										<td className="qm-num">{ action.callback.priority }</td>
-										<td className="qm-nowrap">{ action.callback.name }</td>
+										<td className="qm-num">
+											{ action.callback.priority }
+										</td>
+										<td className="qm-nowrap">
+											{ action.callback.name }
+										</td>
 										<QMComponent component={ action.callback.component } />
 									</tr>
 								) ) }

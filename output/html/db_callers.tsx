@@ -47,7 +47,9 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 				<tbody>
 					{ data.times.map( caller => (
 						<tr key={ caller.caller }>
-							<td>{ caller.caller }</td>
+							<td>
+								{ caller.caller }
+							</td>
 							{ Object.keys( data.types ).map( key => (
 								<td key={ key } className="qm-num">
 									{ caller.types[key] || '' }

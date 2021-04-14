@@ -55,18 +55,32 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 				<tbody>
 					{ data.rows.map( ( row, i ) => (
 						<tr key={ i }>
-							<th className="qm-row-num qm-num" scope="row">{ 1+i }</th>
-							<td className="qm-row-sql qm-ltr qm-wrap">{ row.sql }</td>
+							<th className="qm-row-num qm-num" scope="row">
+								{ 1 + i }
+							</th>
+							<td className="qm-row-sql qm-ltr qm-wrap">
+								{ row.sql }
+							</td>
 							{ /* <Caller trace={row.filtered_trace} /> */ }
 							{ /* <QMComponent component={row.component} /> */ }
-							<td>Caller</td>
-							<td>Component</td>
-							<td className="qm-row-result qm-num">{ row.result }</td>
+							<td>
+								Caller
+							</td>
+							<td>
+								Component
+							</td>
+							<td className="qm-row-result qm-num">
+								{ row.result }
+							</td>
 							<Time value={ row.ltime }/>
 						</tr>
 					) ) }
 				</tbody>
-				<PanelFooter cols={ 5 } count={ data.rows.length } label={ _x( 'Total:', 'Database query count', 'query-monitor' ) }>
+				<PanelFooter
+					cols={ 5 }
+					count={ data.rows.length }
+					label={ _x( 'Total:', 'Database query count', 'query-monitor' ) }
+				>
 					<TotalTime rows={ data.rows }/>
 				</PanelFooter>
 			</Tabular>
