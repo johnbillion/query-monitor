@@ -364,50 +364,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</script>' . "\n\n";
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
-		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
-		echo '<div id="qm-title" class="qm-resizer">';
-		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
-		echo '<div class="qm-title-heading">';
-		echo '<select>';
-
-		printf(
-			'<option value="%1$s">%2$s</option>',
-			'#qm-overview',
-			esc_html__( 'Overview', 'query-monitor' )
-		);
-
-		foreach ( $this->panel_menu as $menu ) {
-			printf(
-				'<option value="%1$s">%2$s</option>',
-				esc_attr( $menu['href'] ),
-				esc_html( $menu['title'] )
-			);
-			if ( ! empty( $menu['children'] ) ) {
-				foreach ( $menu['children'] as $child ) {
-					printf(
-						'<option value="%1$s">└ %2$s</option>',
-						esc_attr( $child['href'] ),
-						esc_html( $child['title'] )
-					);
-				}
-			}
-		}
-
-		printf(
-			'<option value="%1$s">%2$s</option>',
-			'#qm-settings',
-			esc_html__( 'Settings', 'query-monitor' )
-		);
-
-		echo '</select>';
-
-		echo '</div>';
-		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
-		echo '</div>'; // #qm-title
-
-		echo '<div id="qm-wrapper">';
 	}
 
 	protected function do_panel_menu_item( $id, array $menu ) {
@@ -593,7 +549,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
-		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
 
 		echo '<script type="text/javascript">' . "\n\n";

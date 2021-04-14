@@ -54,3 +54,36 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 		);
 	}
 }
+
+export class NavSelect extends React.Component<iNavProps, Record<string, unknown>> {
+	render() {
+		const menu = this.props.menu;
+
+		return (
+			<select>
+				<option value="#qm-overview">
+					{ __( 'Overview', 'query-monitor' ) }
+				</option>
+				{ Object.keys( menu ).map( key => (
+					<>
+						<option value={ menu[ key ].href }>
+							{ menu[ key ].title }
+						</option>
+						{ menu[ key ].children && (
+							<>
+								{ Object.keys( menu[ key ].children ).map( k => (
+									<option value={ `└ ${ menu[ key ].children[ k ].href }` }>
+										{ menu[ key ].children[ k ].title }
+									</option>
+								) ) }
+							</>
+						) }
+					</>
+				) ) }
+				<option value="#qm-settings">
+					{ __( 'Settings', 'query-monitor' ) }
+				</option>
+			</select>
+		);
+	}
+}
