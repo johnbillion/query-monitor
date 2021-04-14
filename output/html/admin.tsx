@@ -26,7 +26,7 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 						</thead>
 						<tbody>
 							{Object.keys(data.current_screen).map(key =>
-								<tr key={key}>
+								<tr key={ key }>
 									<th scope="row">
 										{ key }
 									</th>

@@ -49,7 +49,7 @@ class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 						const row = data.http[key];
 
 						return (
-							<tr key={key}>
+							<tr key={ key }>
 								<td>{row.args.method}</td>
 								<td>{row.url}</td>
 								<td>{row.response.response && row.response.response.code || __('Error','query-monitor')}</td>

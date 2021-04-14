@@ -34,8 +34,8 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 							{__( 'Caller', 'query-monitor' )}
 						</th>
 						{Object.keys(data.types).map(key =>
-							<th key={key} scope="col" className="qm-num">
-								{key}
+							<th key={ key } scope="col" className="qm-num">
+								{ key }
 							</th>
 						)}
 						<th scope="col" className="qm-num">
@@ -48,7 +48,7 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 						<tr key={caller.caller}>
 							<td>{caller.caller}</td>
 							{Object.keys(data.types).map(key=>
-								<td key={key} scope="col" className="qm-num">
+								<td key={ key } scope="col" className="qm-num">
 									{caller.types[key] || ''}
 								</td>
 							)}
@@ -60,7 +60,7 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 					<tr>
 						<td></td>
 						{Object.keys(data.types).map(key=>
-							<td key={key} scope="col" className="qm-num">
+							<td key={ key } scope="col" className="qm-num">
 								{data.types[key]}
 							</td>
 						)}

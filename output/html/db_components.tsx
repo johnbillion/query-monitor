@@ -34,8 +34,8 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 							{__( 'Component', 'query-monitor' )}
 						</th>
 						{Object.keys(data.types).map(key=>
-							<th key={key} scope="col" className="qm-num">
-								{key}
+							<th key={ key } scope="col" className="qm-num">
+								{ key }
 							</th>
 						)}
 						<th scope="col" className="qm-num">
@@ -48,7 +48,7 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 						<tr key={comp.component}>
 							<td>{comp.component}</td>
 							{Object.keys(data.types).map(key=>
-								<td key={key} scope="col" className="qm-num">
+								<td key={ key } scope="col" className="qm-num">
 									{comp.types[key] || ''}
 								</td>
 							)}
@@ -60,7 +60,7 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 					<tr>
 						<td></td>
 						{Object.keys(data.types).map(key=>
-							<td key={key} scope="col" className="qm-num">
+							<td key={ key } scope="col" className="qm-num">
 								{data.types[key]}
 							</td>
 						)}

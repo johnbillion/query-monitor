@@ -1,8 +1,10 @@
-const webpack = require('webpack');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
+/* eslint-disable @typescript-eslint/no-var-requires */
+const webpack = require( 'webpack' );
 
 /** @type {webpack.Configuration} */
-const defaultConfig = require("@wordpress/scripts/config/webpack.config");
-const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
+const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 
 /** @type {webpack.Configuration} */
 module.exports = {
@@ -15,7 +17,7 @@ module.exports = {
 			'.js',
 			'.jsx',
 			'.json',
-		]
+		],
 	},
 	module: {
 		noParse: [
@@ -44,8 +46,8 @@ module.exports = {
 	plugins: [
 		...defaultConfig.plugins,
 		new BellOnBundlerErrorPlugin(),
-		new webpack.ProvidePlugin({
+		new webpack.ProvidePlugin( {
 			react: 'react',
-		}),
+		} ),
 	],
 };

@@ -40,7 +40,7 @@ class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 						const sources = data.dupe_sources[key];
 						return (
 							<tr>
-								<td className="qm-row-sql qm-ltr qm-wrap">{key}</td>
+								<td className="qm-row-sql qm-ltr qm-wrap">{ key }</td>
 								<td className="qm-num">{row.length}</td>
 								<td>
 									{Object.keys(callers).map(function(caller){

@@ -14,6 +14,12 @@
 		// @TODO re-enable this:
 		"@typescript-eslint/explicit-module-boundary-types": "off",
 
+		// @TODO re-enable this:
+		"@typescript-eslint/no-explicit-any": "off",
+
+		// No thanks.
+		"arrow-parens": "off",
+
 		// Superseded by TypeScript.
 		"jsdoc/require-param": "off",
 		"jsdoc/require-param-type": "off",

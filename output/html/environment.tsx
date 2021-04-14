@@ -17,7 +17,7 @@ class Environment extends React.Component<iPanelProps, Record<string, unknown>> 
 				{ data.db && (
 					<>
 						{Object.keys(data.db).map(key =>
-							<DB key={key} name={key} db={data.db[key]}/>
+							<DB key={ key } name={ key } db={data.db[key]}/>
 						)}
 					</>
 				)}

@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Warning } from 'qmi';
+import * as React from 'react';
+
+import { __, sprintf } from '@wordpress/i18n';
 
 interface dbItem {
-	'server-version' : string; // @TODO check
-	'extension'      : string; // @TODO check
-	'client-version' : string; // @TODO check
-	'user'           : string;
-	'host'           : string;
-	'database'       : string;
+	'server-version': string; // @TODO check
+	'extension': string; // @TODO check
+	'client-version': string; // @TODO check
+	'user': string;
+	'host': string;
+	'database': string;
 }
 
 interface iDBProps {
@@ -30,12 +31,12 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 			db,
 		} = this.props;
 		const info: dbItem = {
-			'server-version' : __( 'Server Version', 'query-monitor' ),
-			'extension'      : __( 'Extension', 'query-monitor' ),
-			'client-version' : __( 'Client Version', 'query-monitor' ),
-			'user'           : __( 'User', 'query-monitor' ),
-			'host'           : __( 'Host', 'query-monitor' ),
-			'database'       : __( 'Database', 'query-monitor' ),
+			'server-version': __( 'Server Version', 'query-monitor' ),
+			'extension': __( 'Extension', 'query-monitor' ),
+			'client-version': __( 'Client Version', 'query-monitor' ),
+			'user': __( 'User', 'query-monitor' ),
+			'host': __( 'Host', 'query-monitor' ),
+			'database': __( 'Database', 'query-monitor' ),
 		};
 
 		return (
@@ -45,35 +46,35 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 				</h3>
 				<table>
 					<tbody>
-						{Object.keys(info).map( ( key: keyof typeof info ) =>
-							<tr key={key}>
+						{ Object.keys( info ).map( ( key: keyof typeof info ) => (
+							<tr key={ key }>
 								<th scope="row">
-									{info[key]}
+									{ info[key] }
 								</th>
 								<td>
-									{db.info[key] || (
+									{ db.info[key] || (
 										<span className="qm-warn">
 											<Warning/>
-											{__( 'Unknown', 'query-monitor' )}
+											{ __( 'Unknown', 'query-monitor' ) }
 										</span>
-									)}
+									) }
 								</td>
 							</tr>
-						)}
-						{db.variables.map( variable =>
-							<tr key={variable.Variable_name}>
+						) ) }
+						{ db.variables.map( variable => (
+							<tr key={ variable.Variable_name }>
 								<th scope="row">
-									{variable.Variable_name}
+									{ variable.Variable_name }
 								</th>
 								<td>
-									{variable.Value}
+									{ variable.Value }
 								</td>
 							</tr>
-						)}
+						) ) }
 					</tbody>
 				</table>
 			</section>
-		)
+		);
 	}
 
 }

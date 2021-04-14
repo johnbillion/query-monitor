@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { NonTabular, iPanelProps } from 'qmi';
-import { __, _x, _n, _nx, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __, _nx, sprintf } from '@wordpress/i18n';
 
 interface iParts {
 	[key: string]: string;
@@ -26,7 +27,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 		}
 
 		return (
-			<NonTabular id={this.props.id}>
+			<NonTabular id={ this.props.id }>
 				<section>
 					<h3>{ __( 'Theme', 'query-monitor' ) }</h3>
 					<p>
@@ -39,7 +40,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 								{ data.template }
 							</p>
 						</>
-					)}
+					) }
 				</section>
 
 				<section>
@@ -58,33 +59,33 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 						<>
 							<h3>{ __( 'Template Hierarchy', 'query-monitor' ) }</h3>
 							<ol className="qm-ltr">
-								{ data.template_hierarchy.map((template: string)=>
+								{ data.template_hierarchy.map( ( template: string ) =>
 									<li>{ template }</li>
 								) }
 							</ol>
 						</>
-					)}
+					) }
 				</section>
 
 				<section>
 					<h3>{ __( 'Template Parts', 'query-monitor' ) }</h3>
 					{ data.template_parts ? (
 						<ul className="qm-ltr">
-							{ Object.keys( parts ).map((filename)=>
+							{ Object.keys( parts ).map( ( filename ) => (
 								<li>
 									{ parts[ filename ] }
 									{ data.count_template_parts[ filename ] > 1 && (
 										<span className="qm-info qm-supplemental">
 											<br/>
-											{sprintf(
+											{ sprintf(
 												/* translators: %s: The number of times that a template part file was included in the page */
 												_nx( 'Included %s time', 'Included %s times', data.count_template_parts[ filename ], 'template parts', 'query-monitor' ),
 												data.count_template_parts[ filename ]
-											)}
+											) }
 										</span>
-									)}
+									) }
 								</li>
-							)}
+							) ) }
 						</ul>
 					) : (
 						<p>
@@ -92,56 +93,56 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 						</p>
 					) }
 
-					{data.has_template_part_action && (
+					{ data.has_template_part_action && (
 						<>
-							<h4>{__( 'Not Loaded', 'query-monitor' )}</h4>
+							<h4>{ __( 'Not Loaded', 'query-monitor' ) }</h4>
 
-							{data.unsuccessful_template_parts ? (
+							{ data.unsuccessful_template_parts ? (
 								<ul>
-									{data.unsuccessful_template_parts.map((requested: iRequested)=>
+									{ data.unsuccessful_template_parts.map( ( requested: iRequested ) => (
 										<>
-											{requested.name && (
+											{ requested.name && (
 												<li>
-													{`{requested.slug}-{requested.name}.php`}
+													{ `${ requested.slug }-${ requested.name }.php` }
 												</li>
-											)}
+											) }
 											<li>
-												{`{requested.slug}.php`}
+												{ `${ requested.slug }.php` }
 											</li>
 										</>
-									)}
+									) ) }
 								</ul>
 							) : (
-								<p><em>{__( 'None', 'query-monitor' ) }</em></p>
-							)}
+								<p><em>{ __( 'None', 'query-monitor' ) }</em></p>
+							) }
 						</>
-					)}
+					) }
 				</section>
 
-				{data.timber_files && (
+				{ data.timber_files && (
 					<section>
-						<h3>{__( 'Twig Template Files', 'query-monitor' )}</h3>
+						<h3>{ __( 'Twig Template Files', 'query-monitor' ) }</h3>
 						<ul className="qm-ltr">
-							{data.timber_files.map((filename: string)=>
+							{ data.timber_files.map( ( filename: string ) =>
 								<li>{ filename }</li>
-							)}
+							) }
 						</ul>
 					</section>
-				)}
+				) }
 
-				{data.body_class && (
+				{ data.body_class && (
 					<section>
-						<h3>{__( 'Body Classes', 'query-monitor' )}</h3>
+						<h3>{ __( 'Body Classes', 'query-monitor' ) }</h3>
 						<ul className="qm-ltr">
-							{data.body_class.map((bodyclass: string)=>
+							{ data.body_class.map( ( bodyclass: string ) =>
 								<li>{ bodyclass }</li>
-							)}
+							) }
 						</ul>
 					</section>
-				)}
+				) }
 
 			</NonTabular>
-		)
+		);
 	}
 
 }

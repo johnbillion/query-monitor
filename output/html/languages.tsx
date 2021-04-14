@@ -45,7 +45,7 @@ class Languages extends React.Component<iLanguagesProps, Record<string, unknown>
 				</thead>
 				<tbody>
 					{Object.keys(data.languages).map(key =>
-						<React.Fragment key={key}>
+						<React.Fragment key={ key }>
 							{data.languages[key].map(lang =>
 								<tr key={lang.domain + lang.file}>
 									{ lang.handle ? (

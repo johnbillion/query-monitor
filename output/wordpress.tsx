@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+
+import { __ } from '@wordpress/i18n';
 
 interface iWordPressProps {
 	wordpress: any;
@@ -25,8 +26,8 @@ class WordPress extends React.Component<iWordPressProps, Record<string, unknown>
 								{ wordpress.version }
 							</td>
 						</tr>
-						{Object.keys(wordpress.constants).map(key =>
-							<tr key={key}>
+						{ Object.keys( wordpress.constants ).map( key => (
+							<tr key={ key }>
 								<th scope="row">
 									{ key }
 								</th>
@@ -34,11 +35,11 @@ class WordPress extends React.Component<iWordPressProps, Record<string, unknown>
 									{ wordpress.constants[ key ] }
 								</td>
 							</tr>
-						)}
+						) ) }
 					</tbody>
 				</table>
 			</section>
-		)
+		);
 	}
 
 }
