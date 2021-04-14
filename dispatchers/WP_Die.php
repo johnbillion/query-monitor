@@ -113,7 +113,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<div id="query-monitor">';
 
 		echo '<p>';
-		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
+		echo QueryMonitor::init()->icon( 'info' );
 
 		if ( $component ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;

@@ -159,7 +159,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		if ( $error_message ) {
 			echo '<br>';
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			echo QueryMonitor::init()->icon( 'warning' );
 			echo $error_message; // WPCS: XSS ok;
 		}
 
@@ -202,7 +202,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
 
 				if ( isset( $block['callback']['error'] ) ) {
-					echo '<br><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+					echo '<br>' . QueryMonitor::init()->icon( 'warning' );
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */
 						__( 'Error: %s', 'query-monitor' ),

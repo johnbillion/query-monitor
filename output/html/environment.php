@@ -53,7 +53,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<td>';
 
 		if ( $php_warning ) {
-			echo '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			echo QueryMonitor::init()->icon( 'warning' );
 		}
 
 		echo esc_html( $data['php']['version'] );
@@ -91,7 +91,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '<td>';
 
 			if ( 'qm-warn' === $class ) {
-				echo '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo QueryMonitor::init()->icon( 'warning' );
 			}
 
 			echo esc_html( $val['after'] );
@@ -193,7 +193,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					echo '<th scope="row">' . esc_html( $label ) . '</th>';
 
 					if ( ! isset( $db['info'][ $field ] ) ) {
-						echo '<td><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
+						echo '<td><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
 						echo '<td>' . esc_html( $db['info'][ $field ] ) . '</td>';
 					}

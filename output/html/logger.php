@@ -88,7 +88,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo '<td class="qm-nowrap">';
 
 			if ( $is_warning ) {
-				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo QueryMonitor::init()->icon( 'warning' );
 			} else {
 				echo '<span class="dashicons" aria-hidden="true"></span>';
 			}

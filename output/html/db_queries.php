@@ -172,7 +172,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			 */
 			if ( apply_filters( 'qm/show_extended_query_prompt', true ) && ! $db->has_trace && ( '$wpdb' === $name ) ) {
 				echo '<tr>';
-				echo '<th colspan="' . intval( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<th colspan="' . intval( $span ) . '" class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 					/* translators: %s: File name */
 					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %s file is present.', 'query-monitor' );
@@ -432,7 +432,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['result'] ) ) {
 			if ( is_wp_error( $row['result'] ) ) {
-				echo "<td class='qm-row-result qm-row-error'><span class='dashicons dashicons-warning' aria-hidden='true'></span>" . esc_html( $row['result']->get_error_message() ) . "</td>\n";
+				echo "<td class='qm-row-result qm-row-error'>" . QueryMonitor::init()->icon( 'warning' ) . esc_html( $row['result']->get_error_message() ) . "</td>\n";
 			} else {
 				echo "<td class='qm-row-result qm-num'>" . esc_html( $row['result'] ) . "</td>\n";
 			}
@@ -449,7 +449,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<td class="qm-num qm-row-time' . esc_attr( $td_class ) . '" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">';
 
 			if ( $expensive ) {
-				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo QueryMonitor::init()->icon( 'warning' );
 			}
 
 			echo esc_html( $stime );

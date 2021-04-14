@@ -111,8 +111,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $asset['dependencies'] as $dep ) {
 			if ( isset( $data['missing_dependencies'][ $dep ] ) ) {
+				$warning = QueryMonitor::init()->icon( 'warning' );
+
 				$dependency_output[] = sprintf(
-					'<span style="white-space:nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span style="white-space:nowrap">%1$s%2$s</span>',
+					$warning,
 					sprintf(
 						/* translators: %s: Name of missing script or style dependency */
 						__( '%s (missing)', 'query-monitor' ),
@@ -135,8 +138,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tr data-qm-subject="' . esc_attr( $this->type . '-' . $handle ) . '" data-qm-' . esc_attr( $this->type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $this->type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $this->type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
+		$warning = QueryMonitor::init()->icon( 'warning' );
+
 		if ( $asset['warning'] ) {
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			echo $warning;
 		}
 
 		echo esc_html( $label );
@@ -160,13 +165,15 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
+					'<span class="qm-warn">%1$s%2$s:</span><br><a href="%3$s" class="qm-link">%3$s</a>',
+					$warning,
 					esc_html( $asset['source']->get_error_message() ),
 					esc_url( $error_data['src'] )
 				);
 			} else {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span class="qm-warn">%1$s$2%s</span>',
+					$warning,
 					esc_html( $asset['source']->get_error_message() )
 				);
 			}

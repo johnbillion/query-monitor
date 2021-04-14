@@ -47,11 +47,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$this->before_non_tabular_output();
 
 		echo '<section id="qm-broken">';
-		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $qm_broken ) . '</p>';
+		echo '<p class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( $qm_broken ) . '</p>';
 		echo '</section>';
 
 		echo '<section id="qm-ajax-errors">';
-		echo '<p class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( $ajax_errors ) . '</p>';
+		echo '<p class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( $ajax_errors ) . '</p>';
 		echo '</section>';
 
 		if ( $raw_request ) {
@@ -83,7 +83,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
-				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 			} else {
 				echo '<br><span class="qm-info">';
 			}
@@ -95,7 +95,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			) );
 			echo '</span>';
 		} else {
-			echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 			printf(
 				/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
 				esc_html__( 'No execution time limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
@@ -122,7 +122,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $data['memory_limit'] > 0 ) {
 				if ( $data['display_memory_usage_warning'] ) {
-					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+					echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 				} else {
 					echo '<br><span class="qm-info">';
 				}
@@ -134,7 +134,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				) );
 				echo '</span>';
 			} else {
-				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 				printf(
 					/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
 					esc_html__( 'No memory limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),

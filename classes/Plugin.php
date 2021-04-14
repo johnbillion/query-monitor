@@ -107,5 +107,19 @@ abstract class QM_Plugin {
 		);
 	}
 
+	public function icon( $name ) {
+		$file = $this->plugin_path( "assets/icons/{$name}.svg" );
+
+		if ( ! file_exists( $file ) ) {
+			return '';
+		}
+
+		return sprintf(
+			'<span class="qm-icon qm-icon-%1$s" aria-hidden="true">%2$s</span>',
+			esc_attr( $name ),
+			file_get_contents( $file )
+		);
+	}
+
 }
 }
