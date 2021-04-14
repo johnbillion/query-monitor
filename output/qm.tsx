@@ -20,6 +20,7 @@ import Languages from './html/languages';
 import Logger from './html/logger';
 import PHPErrors from './html/php_errors';
 import Request from './html/request';
+import { Settings, iQMConfig } from './html/settings';
 import Theme from './html/theme';
 import Transients from './html/transients';
 import { Nav, iNavMenu, NavSelect } from './nav';
@@ -52,6 +53,7 @@ export interface iQMProps {
 }
 
 declare const qm_menu: iNavMenu;
+declare const qm: iQMConfig;
 
 export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 	render() {
@@ -192,6 +194,7 @@ export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 							enabled={ this.props.transients.enabled }
 							id="transients"
 						/>
+						<Settings { ...qm.settings } />
 					</div>
 				</div>
 			</>
