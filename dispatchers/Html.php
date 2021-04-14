@@ -360,6 +360,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo 'var qm_data = ' . json_encode( $json_data, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
+		echo 'var qm_menu = ' . json_encode( $this->panel_menu, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
@@ -407,23 +408,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
-		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">';
-		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>';
-		echo '<ul role="tablist">';
-
-		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>',
-			'#qm-overview',
-			esc_html__( 'Overview', 'query-monitor' )
-		);
-
-		foreach ( $this->panel_menu as $id => $menu ) {
-			$this->do_panel_menu_item( $id, $menu );
-		}
-
-		echo '</ul>';
-		echo '</nav>'; // #qm-panel-menu
-
 		echo '<div id="qm-panels">';
 	}
 

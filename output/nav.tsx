@@ -1,0 +1,42 @@
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
+
+export interface iNavProps {
+	menu: iNavMenu;
+}
+
+export interface iNavMenu {
+	[k: string]: {
+		href: string;
+		title: string;
+	}
+}
+
+export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
+	render() {
+		const menu = this.props.menu;
+
+		return (
+			<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
+				<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
+					{ __( 'Query Monitor Menu', 'query-monitor' ) }
+				</h2>
+				<ul role="tablist">
+					<li role="presentation">
+						<button data-qm-href="#qm-overview" role="tab">
+							{ __( 'Overview', 'query-monitor' ) }
+						</button>
+					</li>
+					{ Object.keys( menu ).map( key => (
+						<li role="presentation">
+							<button data-qm-href={ menu[ key ].href } role="tab">
+								{ menu[ key ].title }
+							</button>
+						</li>
+					) ) }
+				</ul>
+			</nav>
+		);
+	}
+}
