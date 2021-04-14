@@ -260,9 +260,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$this->before_output();
 
 		foreach ( $this->outputters as $id => $output ) {
-			$timer = new QM_Timer();
-			$timer->start();
-
 			printf(
 				"\n" . '<!-- Begin %1$s output -->' . "\n",
 				esc_html( $id )
@@ -283,8 +280,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				"\n" . '<!-- End %s output -->' . "\n",
 				esc_html( $id )
 			);
-
-			$output->set_timer( $timer->stop() );
 		}
 
 		$this->after_output();
