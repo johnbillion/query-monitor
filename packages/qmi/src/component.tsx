@@ -1,14 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 
 interface iComponentProps {
 	component: any;
 }
 
-export class QMComponent extends React.Component<iComponentProps, {}> {
+export class QMComponent extends React.Component<iComponentProps, Record<string, unknown>> {
 
 	render() {
 		return (
-			<td className="qm-nowrap">{this.props.component.name}</td>
+			<td className="qm-nowrap">{ this.props.component.name }</td>
 		);
 	}
 

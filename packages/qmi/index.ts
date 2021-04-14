@@ -1,5 +1,8 @@
 export { Caller } from './src/caller';
-export { Frame, FrameItem } from './src/frame';
+export {
+	Frame,
+	FrameItem,
+} from './src/frame';
 export { NonTabular } from './src/non-tabular';
 export { NotEnabled } from './src/not-enabled';
 export { Notice } from './src/notice';

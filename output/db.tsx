@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { Warning } from 'qmi';
 
@@ -22,7 +22,7 @@ interface iDBProps {
 	}
 }
 
-class DB extends React.Component<iDBProps, {}> {
+class DB extends React.Component<iDBProps, Record<string, unknown>> {
 
 	render() {
 		const {

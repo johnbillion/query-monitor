@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 import { NonTabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class Admin extends React.Component<iPanelProps, {}> {
+class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

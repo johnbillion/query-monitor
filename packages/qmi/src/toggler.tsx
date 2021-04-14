@@ -1,5 +1,6 @@
-import * as React from "react";
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 export class Toggler extends React.Component {
 
@@ -7,16 +8,16 @@ export class Toggler extends React.Component {
 		return (
 			<>
 				<button
-					className="qm-toggle"
-					data-on="+"
-					data-off="-"
 					aria-expanded="false"
-					aria-label={__( 'Toggle more information', 'query-monitor' )}
+					aria-label={ __( 'Toggle more information', 'query-monitor' ) }
+					className="qm-toggle"
+					data-off="-"
+					data-on="+"
 				>
 					<span aria-hidden="true">+</span>
 				</button>
 				<div className="qm-toggled">
-					{this.props.children}
+					{ this.props.children }
 				</div>
 			</>
 		);

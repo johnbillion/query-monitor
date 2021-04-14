@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Notice, QMComponent, Tabular, Warning, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -17,7 +17,7 @@ interface iHooksProps extends iPanelProps {
 	}
 }
 
-class Hooks extends React.Component<iHooksProps, {}> {
+class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
 interface iWordPressProps {
 	wordpress: any;
 }
 
-class WordPress extends React.Component<iWordPressProps, {}> {
+class WordPress extends React.Component<iWordPressProps, Record<string, unknown>> {
 
 	render() {
 		const { wordpress } = this.props;

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require( 'path' );
+
 const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
 
 module.exports = {
@@ -11,7 +13,7 @@ module.exports = {
 			'.js',
 			'.jsx',
 			'.json',
-		]
+		],
 	},
 	plugins: [
 		new BellOnBundlerErrorPlugin(),

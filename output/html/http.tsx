@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 import { Notice, QMComponent, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class HTTP extends React.Component<iPanelProps, {}> {
+class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

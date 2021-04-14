@@ -1,5 +1,5 @@
-import * as React from "react";
 import { Notice } from 'qmi';
+import * as React from 'react';
 
 export class NotEnabled extends React.Component {
 
@@ -7,8 +7,8 @@ export class NotEnabled extends React.Component {
 		const { id } = this.props as any;
 
 		return (
-			<Notice id={id}>
-				{this.props.children}
+			<Notice id={ id }>
+				{ this.props.children }
 			</Notice>
 		);
 	}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Caller, Notice, QMComponent, Tabular, iPanelProps, FrameItem } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -17,7 +17,7 @@ interface iTransientsProps extends iPanelProps {
 	}
 }
 
-class Transients extends React.Component<iTransientsProps, {}> {
+class Transients extends React.Component<iTransientsProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

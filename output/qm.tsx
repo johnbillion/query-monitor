@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import Admin from './html/admin';
 import BlockEditor from './html/block_editor';
@@ -47,7 +47,7 @@ export interface iQMProps {
 	transients: QMPanelData;
 }
 
-export class QM extends React.Component<iQMProps, {}> {
+export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 	render() {
 		return (
 			<>

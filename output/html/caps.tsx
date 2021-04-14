@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps, FrameItem } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -14,7 +14,7 @@ interface iCapsProps extends iPanelProps {
 	};
 }
 
-class Caps extends React.Component<iCapsProps, {}> {
+class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 
 	render() {
 		if ( ! this.props.enabled ) {

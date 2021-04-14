@@ -8,6 +8,12 @@
 		"@typescript-eslint"
 	],
 	"rules": {
+		// @TODO re-enable this:
+		"jsdoc/require-jsdoc": "off",
+
+		// @TODO re-enable this:
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+
 		// Superseded by TypeScript.
 		"jsdoc/require-param": "off",
 		"jsdoc/require-param-type": "off",

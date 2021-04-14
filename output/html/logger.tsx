@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -13,7 +13,7 @@ export interface iLoggerProps extends iPanelProps {
 	};
 }
 
-class Logger extends React.Component<iLoggerProps, {}> {
+class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

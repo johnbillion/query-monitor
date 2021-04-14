@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Warning } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -14,7 +14,7 @@ interface iServerProps {
 	server: ServerItem;
 }
 
-class WordPress extends React.Component<iServerProps, {}> {
+class WordPress extends React.Component<iServerProps, Record<string, unknown>> {
 
 	render() {
 		const { server } = this.props;

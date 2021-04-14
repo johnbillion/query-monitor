@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Tabular, PanelFooter, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -17,7 +17,7 @@ interface iBlocksProps extends iPanelProps {
 		}[];
 	};
 }
-class BlockEditor extends React.Component<iBlocksProps, {}> {
+class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

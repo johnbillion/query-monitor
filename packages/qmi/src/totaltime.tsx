@@ -1,5 +1,6 @@
-import * as React from "react";
-import { Time } from "./time";
+import * as React from 'react';
+
+import { Time } from './time';
 
 export interface TotalTimeProps {
 	rows: {
@@ -7,12 +8,13 @@ export interface TotalTimeProps {
 	}[];
 }
 
-export class TotalTime extends React.Component<TotalTimeProps, {}> {
+export class TotalTime extends React.Component<TotalTimeProps, Record<string, unknown>> {
 
 	render() {
-		const time = this.props.rows.reduce((a,b)=>a+b.ltime,0)
+		const time = this.props.rows.reduce( ( a, b ) => a + b.ltime, 0 );
+
 		return (
-			<Time value={time}/>
+			<Time value={ time }/>
 		);
 	}
 

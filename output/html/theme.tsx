@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { NonTabular, iPanelProps } from 'qmi';
 import { __, _x, _n, _nx, sprintf } from '@wordpress/i18n';
 
@@ -11,7 +11,7 @@ interface iRequested {
 	slug: string;
 }
 
-class Theme extends React.Component<iPanelProps, {}> {
+class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

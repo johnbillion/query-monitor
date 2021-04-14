@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 import { PanelFooter } from 'qmi';
 
@@ -13,7 +13,7 @@ interface iPositionLabels {
 	footer : string;
 }
 
-class Assets extends React.Component<iAssetsProps, {}> {
+class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

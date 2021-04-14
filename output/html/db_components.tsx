@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
@@ -17,7 +17,7 @@ interface iDBComponentsProps extends iPanelProps {
 	};
 }
 
-class DBComponents extends React.Component<iDBComponentsProps, {}> {
+class DBComponents extends React.Component<iDBComponentsProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

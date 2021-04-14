@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 import { Tabular, iPanelProps } from 'qmi';
 import { __, _x, _n, sprintf } from '@wordpress/i18n';
 
-class DBDupes extends React.Component<iPanelProps, {}> {
+class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

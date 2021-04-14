@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
 export class Warning extends React.Component {
 
 	render() {
 		return (
-			<span className="dashicons dashicons-warning" aria-hidden="true"></span>
+			<span aria-hidden="true" className="dashicons dashicons-warning"></span>
 		);
 	}
 
