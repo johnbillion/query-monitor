@@ -21,6 +21,7 @@ class QueryMonitor extends QM_Plugin {
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_action_links_query-monitor/query-monitor.php',               array( $this, 'filter_plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -50,6 +51,27 @@ class QueryMonitor extends QM_Plugin {
 			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
 			'add-ons'  => '<a href="https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
 		), $actions );
+	}
+
+	/**
+	 * Filters the array of row meta for each plugin in the Plugins list table.
+	 *
+	 * @param string[] $plugin_meta An array of the plugin's metadata.
+	 * @param string   $plugin_file Path to the plugin file relative to the plugins directory.
+	 * @return string[] An array of the plugin's metadata.
+	 */
+	public function filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
+		if ( 'query-monitor/query-monitor.php' !== $plugin_file ) {
+			return $plugin_meta;
+		}
+
+		$plugin_meta[] = sprintf(
+			'<a href="%1$s"><span class="dashicons dashicons-star-filled" aria-hidden="true" style="font-size:14px;line-height:1.3"></span>%2$s</a>',
+			'https://github.com/sponsors/johnbillion',
+			esc_html_x( 'Sponsor', 'verb', 'query-monitor' )
+		);
+
+		return $plugin_meta;
 	}
 
 	/**
