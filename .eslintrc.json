@@ -1,0 +1,24 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"@humanmade",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"rules": {
+		// Superseded by TypeScript.
+		"jsdoc/require-param": "off",
+		"jsdoc/require-param-type": "off",
+		"jsdoc/require-returns": "off",
+		"no-unused-vars": "off",
+		"no-use-before-define": "off"
+	},
+	"ignorePatterns": [
+		"build/**",
+		"node_modules/**",
+		"tests/wordpress/**",
+		"vendor/**"
+	]
+}
