@@ -186,7 +186,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( "assets/{$css}.css" ),
-			array( 'dashicons' ),
+			array(),
 			$this->qm->plugin_ver( "assets/{$css}.css" )
 		);
 		wp_enqueue_script(

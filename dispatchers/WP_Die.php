@@ -54,12 +54,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		$component = QM_Backtrace::get_frame_component( $culprit );
 
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
-
 		?>
 		<style>
 			#query-monitor {
