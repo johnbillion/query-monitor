@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { Tabular, iPanelProps } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 export interface LogItem {
 	level: string;
@@ -23,35 +24,35 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 		}
 
 		return (
-			<Tabular id={this.props.id}>
+			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
 						<th scope="col">
-							{__( 'Level', 'query-monitor' )}
+							{ __( 'Level', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Message', 'query-monitor' )}
+							{ __( 'Message', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Caller', 'query-monitor' )}
+							{ __( 'Caller', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Component', 'query-monitor' )}
+							{ __( 'Component', 'query-monitor' ) }
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{data.logs.map(row=>
+					{ data.logs.map( row => (
 						<tr>
-							<td>{row.level}</td>
-							<td>{row.message}</td>
+							<td>{ row.level }</td>
+							<td>{ row.message }</td>
 							<td>Caller</td>
 							<td>Component</td>
 						</tr>
-					)}
+					) ) }
 				</tbody>
 			</Tabular>
-		)
+		);
 	}
 
 }

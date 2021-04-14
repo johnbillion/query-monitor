@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { NonTabular, iPanelProps } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 interface iConditionalsProps extends iPanelProps {
 	data: {
@@ -18,24 +19,24 @@ class Conditionals extends React.Component<iConditionalsProps, Record<string, un
 		const falseConds = this.props.data.conds['false'];
 
 		return (
-			<NonTabular id={this.props.id}>
+			<NonTabular id={ this.props.id }>
 				<div className="qm-boxed">
 					<section>
-						<h3>{__('True Conditionals','query-monitor')}</h3>
+						<h3>{ __( 'True Conditionals', 'query-monitor' ) }</h3>
 						<ul>
-							{trueConds.map(cond =>
-								<li key={cond} className="qm-ltr qm-true"><code>{cond}()</code></li>
-							)}
+							{ trueConds.map( cond =>
+								<li key={ cond } className="qm-ltr qm-true"><code>{ cond }()</code></li>
+							) }
 						</ul>
 					</section>
 				</div>
 				<div className="qm-boxed">
 					<section>
-						<h3>{__('False Conditionals','query-monitor')}</h3>
+						<h3>{ __( 'False Conditionals', 'query-monitor' ) }</h3>
 						<ul>
-							{falseConds.map(cond =>
-								<li key={cond} className="qm-ltr qm-false"><code>{cond}()</code></li>
-							)}
+							{ falseConds.map( cond =>
+								<li key={ cond } className="qm-ltr qm-false"><code>{ cond }()</code></li>
+							) }
 						</ul>
 					</section>
 				</div>

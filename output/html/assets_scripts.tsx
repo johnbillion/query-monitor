@@ -1,7 +1,7 @@
-import * as React from 'react';
-import Assets from '../assets';
 import { Tabular, iPanelProps } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import Assets from '../assets';
 
 class Scripts extends React.Component<iPanelProps, Record<string, unknown>> {
 
@@ -9,8 +9,8 @@ class Scripts extends React.Component<iPanelProps, Record<string, unknown>> {
 		const { data } = this.props;
 
 		return (
-			<Tabular id={this.props.id}>
-				<Assets data={data}/>
+			<Tabular id={ this.props.id }>
+				<Assets data={ data }/>
 			</Tabular>
 		);
 	}

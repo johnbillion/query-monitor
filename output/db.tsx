@@ -42,7 +42,7 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 		return (
 			<section>
 				<h3>
-					{sprintf( __( 'Database: %s', 'query-monitor' ), name )}
+					{ sprintf( __( 'Database: %s', 'query-monitor' ), name ) }
 				</h3>
 				<table>
 					<tbody>

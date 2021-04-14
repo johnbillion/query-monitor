@@ -1,10 +1,11 @@
-import * as React from 'react';
 import { Tabular, iPanelProps, Time, TotalTime } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 interface iDBComponentTypeTimes {
 	[key: string]: number;
-};
+}
 
 interface iDBComponentsProps extends iPanelProps {
 	data: {
@@ -27,48 +28,48 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 		}
 
 		return (
-			<Tabular id={this.props.id}>
+			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
 						<th scope="col">
-							{__( 'Component', 'query-monitor' )}
+							{ __( 'Component', 'query-monitor' ) }
 						</th>
-						{Object.keys(data.types).map(key=>
-							<th key={ key } scope="col" className="qm-num">
+						{ Object.keys( data.types ).map( key => (
+							<th key={ key } className="qm-num" scope="col">
 								{ key }
 							</th>
-						)}
-						<th scope="col" className="qm-num">
-							{__( 'Time', 'query-monitor' )}
+						) ) }
+						<th className="qm-num" scope="col">
+							{ __( 'Time', 'query-monitor' ) }
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{data.times.map(comp=>
-						<tr key={comp.component}>
-							<td>{comp.component}</td>
-							{Object.keys(data.types).map(key=>
-								<td key={ key } scope="col" className="qm-num">
-									{comp.types[key] || ''}
-								</td>
-							)}
-							<Time value={comp.ltime}/>
+					{ data.times.map( comp => (
+						<tr key={ comp.component }>
+							<td>{ comp.component }</td>
+							{ Object.keys( data.types ).map( key =>
+								( <td key={ key } className="qm-num">
+									{ comp.types[key] || '' }
+								</td> )
+							) }
+							<Time value={ comp.ltime }/>
 						</tr>
-					)}
+					) ) }
 				</tbody>
 				<tfoot>
 					<tr>
 						<td></td>
-						{Object.keys(data.types).map(key=>
-							<td key={ key } scope="col" className="qm-num">
-								{data.types[key]}
+						{ Object.keys( data.types ).map( key => (
+							<td key={ key } className="qm-num">
+								{ data.types[key] }
 							</td>
-						)}
-						<TotalTime rows={data.times}/>
+						) ) }
+						<TotalTime rows={ data.times }/>
 					</tr>
 				</tfoot>
 			</Tabular>
-		)
+		);
 	}
 
 }

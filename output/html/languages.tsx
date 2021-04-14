@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { Tabular, Caller, iPanelProps, FrameItem } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 interface iLanguagesProps extends iPanelProps {
 	data: {
@@ -23,55 +24,55 @@ class Languages extends React.Component<iLanguagesProps, Record<string, unknown>
 		const { data } = this.props;
 
 		return (
-			<Tabular id={this.props.id}>
+			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
 						<th scope="col">
-							{__( 'Text Domain', 'query-monitor' )}
+							{ __( 'Text Domain', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Type', 'query-monitor' )}
+							{ __( 'Type', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Caller', 'query-monitor' )}
+							{ __( 'Caller', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Translation File', 'query-monitor' )}
+							{ __( 'Translation File', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Size', 'query-monitor' )}
+							{ __( 'Size', 'query-monitor' ) }
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{Object.keys(data.languages).map(key =>
+					{ Object.keys( data.languages ).map( key => (
 						<React.Fragment key={ key }>
-							{data.languages[key].map(lang =>
-								<tr key={lang.domain + lang.file}>
+							{ data.languages[key].map( lang =>
+								( <tr key={ lang.domain + lang.file }>
 									{ lang.handle ? (
-										<td className="qm-ltr">{lang.domain} ({lang.handle})</td>
+										<td className="qm-ltr">{ lang.domain } ({ lang.handle })</td>
 									) : (
-										<td className="qm-ltr">{lang.domain}</td>
-									)}
-									<td>{lang.type}</td>
-									<Caller trace={[lang.caller]} toggleLabel={ __( 'View call stack', 'query-monitor' ) } />
+										<td className="qm-ltr">{ lang.domain }</td>
+									) }
+									<td>{ lang.type }</td>
+									<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ [ lang.caller ] } />
 									{ lang.file ? (
-										<td className="qm-ltr">{lang.file}</td>
+										<td className="qm-ltr">{ lang.file }</td>
 									) : (
-										<td className="qm-nowrap"><em>{__( 'None', 'query-monitor' )}</em></td>
-									)}
+										<td className="qm-nowrap"><em>{ __( 'None', 'query-monitor' ) }</em></td>
+									) }
 									{ lang.found ? (
-										<td className="qm-nowrap">{lang.found}</td>
+										<td className="qm-nowrap">{ lang.found }</td>
 									) : (
-										<td className="qm-nowrap">{__( 'Not Found', 'query-monitor' )}</td>
-									)}
-								</tr>
-							)}
+										<td className="qm-nowrap">{ __( 'Not Found', 'query-monitor' ) }</td>
+									) }
+								</tr> )
+							) }
 						</React.Fragment>
-					)}
+					) ) }
 				</tbody>
 			</Tabular>
-		)
+		);
 	}
 
 }

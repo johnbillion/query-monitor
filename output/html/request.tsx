@@ -1,13 +1,14 @@
-import * as React from 'react';
 import { NonTabular, iPanelProps } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __ } from '@wordpress/i18n';
 
 interface iItems {
 	request: string;
 	matched_rule: string;
 	matched_query: string;
 	query_string: string;
-};
+}
 
 class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 
@@ -22,57 +23,57 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 		};
 
 		return (
-			<NonTabular id={this.props.id}>
-				{Object.keys(items).map((key: keyof typeof items)=>{
+			<NonTabular id={ this.props.id }>
+				{ Object.keys( items ).map( ( key: keyof typeof items ) => {
 					const name = items[key];
 					const value = data.request[key];
 
 					return (
 						<>
 							<section>
-								<h3>{name}</h3>
-								<p className="qm-ltr"><code>{value}</code></p>
+								<h3>{ name }</h3>
+								<p className="qm-ltr"><code>{ value }</code></p>
 							</section>
 						</>
-					)
-				})}
+					);
+				} ) }
 
-				{data.matching_rewrites && (
+				{ data.matching_rewrites && (
 					<section>
-						<h3>{__( 'All Matching Rewrite Rules', 'query-monitor' )}</h3>
+						<h3>{ __( 'All Matching Rewrite Rules', 'query-monitor' ) }</h3>
 						<table>
 
-						{Object.keys(data.matching_rewrites).map((rule: keyof typeof data.matching_rewrites)=>{
-							const query = data.matching_rewrites[ rule ];
+							{ Object.keys( data.matching_rewrites ).map( ( rule: keyof typeof data.matching_rewrites ) => {
+								const query = data.matching_rewrites[ rule ];
 
-							return (
-								<tr>
-									<td className="qm-ltr"><code>{ rule }</code></td>
-									<td className="qm-ltr"><code>{ query }</code></td>
-								</tr>
-							)
-						})}
+								return (
+									<tr>
+										<td className="qm-ltr"><code>{ rule }</code></td>
+										<td className="qm-ltr"><code>{ query }</code></td>
+									</tr>
+								);
+							} ) }
 
 						</table>
 					</section>
-				)}
+				) }
 
 				<section>
 					<h3>{ __( 'Query Vars', 'query-monitor' ) }</h3>
 					{ data.qvars && (
 						<table>
-							{Object.keys(data.qvars).map((key: keyof typeof data.qvars)=>
+							{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
 								<tr>
-									<th scope="row" className="qm-ltr">
+									<th className="qm-ltr" scope="row">
 										{ key }
 									</th>
 									<td className="qm-ltr qm-wrap">
 										{ data.qvars[ key ] }
 									</td>
 								</tr>
-							)}
+							) ) }
 						</table>
-					)}
+					) }
 				</section>
 
 				<section>
@@ -81,7 +82,7 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 						<p>
 							{ data.queried_object.title } ({ data.queried_object.type })
 						</p>
-					)}
+					) }
 				</section>
 
 				<section>
@@ -90,21 +91,21 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 						<p>
 							{ data.user.title }
 						</p>
-					)}
+					) }
 				</section>
 
 				{ data.multisite && (
 					<section>
 						<h3>{ __( 'Multisite', 'query-monitor' ) }</h3>
-						{Object.keys(data.multisite).map((key: keyof typeof data.multisite)=>
+						{ Object.keys( data.multisite ).map( ( key: keyof typeof data.multisite ) => (
 							<p>
 								{ data.multisite[ key ].title }
 							</p>
-						)}
+						) ) }
 					</section>
-				)}
+				) }
 			</NonTabular>
-		)
+		);
 	}
 
 }

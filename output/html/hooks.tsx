@@ -1,6 +1,7 @@
-import * as React from 'react';
 import { Notice, QMComponent, Tabular, Warning, iPanelProps } from 'qmi';
-import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import * as React from 'react';
+
+import { __, sprintf } from '@wordpress/i18n';
 
 interface iHooksProps extends iPanelProps {
 	data: {
@@ -24,80 +25,80 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 
 		if ( ! data.hooks || ! data.hooks.length ) {
 			return (
-				<Notice id={this.props.id}>
+				<Notice id={ this.props.id }>
 					<p>
-					{__( 'No hooks were recorded.', 'query-monitor' )}
+						{ __( 'No hooks were recorded.', 'query-monitor' ) }
 					</p>
 				</Notice>
 			);
 		}
 
 		return (
-			<Tabular id={this.props.id}>
+			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
 						<th scope="col">
-							{__( 'Hook', 'query-monitor' )}
+							{ __( 'Hook', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Priority', 'query-monitor' )}
+							{ __( 'Priority', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Action', 'query-monitor' )}
+							{ __( 'Action', 'query-monitor' ) }
 						</th>
 						<th scope="col">
-							{__( 'Component', 'query-monitor' )}
+							{ __( 'Component', 'query-monitor' ) }
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{data.hooks.map(hook => {
+					{ data.hooks.map( hook => {
 						if ( ! hook.actions.length ) {
 							return (
-								<tr key={hook.name}>
-									<th scope="row" className="qm-ltr">
+								<tr key={ hook.name }>
+									<th className="qm-ltr" scope="row">
 										<code>{ hook.name }</code>
 									</th>
 									<td></td>
 									<td></td>
 									<td></td>
 								</tr>
-							)
+							);
 						}
 
 						return (
-							<React.Fragment key={hook.name}>
-								{hook.actions.map((action,i) =>
+							<React.Fragment key={ hook.name }>
+								{ hook.actions.map( ( action, i ) => (
 									<tr key={ `${hook.name} ${action.callback.name} ${action.callback.priority}` }>
-										{ 0 === i && (
+										{ i === 0 && (
 											<th className="qm-ltr qm-nowrap" rowSpan={ hook.actions.length }>
 												<span className="qm-sticky">
-													<code>{hook.name}</code>
+													<code>{ hook.name }</code>
 												</span>
-												{ 'all' === hook.name && (
+												{ hook.name === 'all' && (
 													<span className="qm-warn">
 														<br/>
 														<Warning/>
-														{sprintf(
+														{ sprintf(
 															/* translators: %s: Action name */
 															__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
 															'all'
-														)}
+														) }
 													</span>
-												)}
+												) }
 											</th>
 										) }
-										<td className="qm-num">{action.callback.priority}</td>
-										<td className="qm-nowrap">{action.callback.name}</td>
-										<QMComponent component={action.callback.component} />
+										<td className="qm-num">{ action.callback.priority }</td>
+										<td className="qm-nowrap">{ action.callback.name }</td>
+										<QMComponent component={ action.callback.component } />
 									</tr>
-								)}
+								) ) }
 							</React.Fragment>
-						)
-					})}
+						);
+					} ) }
 				</tbody>
 			</Tabular>
-		)
+		);
 	}
 
 }
