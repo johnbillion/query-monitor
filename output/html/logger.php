@@ -90,7 +90,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			if ( $is_warning ) {
 				echo QueryMonitor::init()->icon( 'warning' );
 			} else {
-				echo '<span class="dashicons" aria-hidden="true"></span>';
+				echo '<span class="dashicons" aria-hidden="true"></span>'; /* @TODO */
 			}
 
 			echo esc_html( ucfirst( $row['level'] ) );

@@ -95,7 +95,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				color: #666;
 			}
 
-			#query-monitor .dashicons-info {
+			#query-monitor .dashicons-info { /* @TODO */
 				color: #0071a1;
 				vertical-align: bottom;
 				margin-right: 5px;
