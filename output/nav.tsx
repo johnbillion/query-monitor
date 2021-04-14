@@ -7,10 +7,13 @@ export interface iNavProps {
 }
 
 export interface iNavMenu {
-	[k: string]: {
-		href: string;
-		title: string;
-	}
+	[k: string]: iNavMenuItem;
+}
+
+export interface iNavMenuItem {
+	href: string;
+	title: string;
+	children?: iNavMenu;
 }
 
 export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
@@ -33,6 +36,17 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 							<button data-qm-href={ menu[ key ].href } role="tab">
 								{ menu[ key ].title }
 							</button>
+							{ menu[ key ].children && (
+								<ul role="presentation">
+									{ Object.keys( menu[ key ].children ).map( k => (
+										<li role="presentation">
+											<button data-qm-href={ menu[ key ].children[ k ].href } role="tab">
+												{ menu[ key ].children[ k ].title }
+											</button>
+										</li>
+									) ) }
+								</ul>
+							) }
 						</li>
 					) ) }
 				</ul>
