@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = function (grunt) {
 	'use strict';
 
