@@ -408,7 +408,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
-		echo '<div id="qm-panels">';
 	}
 
 	protected function do_panel_menu_item( $id, array $menu ) {
@@ -594,7 +593,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
-		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
 
