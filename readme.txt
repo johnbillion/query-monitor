@@ -5,7 +5,7 @@ Requires at least: 3.7
 Tested up to: 5.4
 Stable tag: 3.6.0
 License: GPLv2 or later
-Requires PHP: 5.3
+Requires PHP: 5.4
 
 Query Monitor is the developer tools panel for WordPress.
 

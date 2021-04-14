@@ -23,7 +23,7 @@
 		"wordpress-install-dir": "tests/wordpress"
 	},
 	"require": {
-		"php": ">=5.3.6",
+		"php": ">=5.4.0",
 		"composer/installers": "~1.0"
 	},
 	"require-dev": {
