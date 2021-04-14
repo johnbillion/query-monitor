@@ -425,9 +425,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</nav>'; // #qm-panel-menu
 
 		echo '<div id="qm-panels">';
-		echo '<div id="qm-csr">';
-		echo '</div>';
-
 	}
 
 	protected function do_panel_menu_item( $id, array $menu ) {

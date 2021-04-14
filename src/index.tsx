@@ -28,6 +28,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			response={ qm_data.response || null }
 			transients={ qm_data.transients }
 		/>,
-		document.getElementById( 'qm-csr' )
+		document.getElementById( 'qm-panels' )
 	);
 } );
