@@ -3,6 +3,7 @@ export {
 	Frame,
 	FrameItem,
 } from './src/frame';
+export { Icon } from './src/icon';
 export { NonTabular } from './src/non-tabular';
 export { NotEnabled } from './src/not-enabled';
 export { Notice } from './src/notice';

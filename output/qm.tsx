@@ -1,3 +1,4 @@
+import { Icon } from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
@@ -68,28 +69,19 @@ export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 						aria-label={ __( 'Settings', 'query-monitor' ) }
 						className="qm-title-button qm-button-container-settings"
 					>
-						<span
-							aria-hidden="true"
-							className="dashicons dashicons-admin-generic"
-						/>
+						<Icon name="admin-generic"/>
 					</button>
 					<button
 						aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
 						className="qm-title-button qm-button-container-position"
 					>
-						<span
-							aria-hidden="true"
-							className="dashicons dashicons-image-rotate-left"
-						/>
+						<Icon name="image-rotate-left"/>
 					</button>
 					<button
 						aria-label={ __( 'Close Panel', 'query-monitor' ) }
 						className="qm-title-button qm-button-container-close"
 					>
-						<span
-							aria-hidden="true"
-							className="dashicons dashicons-no-alt"
-						/>
+						<Icon name="no-alt"/>
 					</button>
 				</div>
 				<div id="qm-wrapper">
