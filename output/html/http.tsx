@@ -61,7 +61,7 @@ class HTTP extends React.Component<iPanelProps, {}> {
 						)
 					})}
 				</tbody>
-				<PanelFooter cols={6} label={__( 'Total:', 'HTTP API calls', 'query-monitor' )} count={Object.keys(data.http).length}>
+				<PanelFooter cols={6} label={_x( 'Total:', 'HTTP API calls', 'query-monitor' )} count={Object.keys(data.http).length}>
 					<TotalTime rows={Object.values(data.http)}/>
 				</PanelFooter>
 			</Tabular>

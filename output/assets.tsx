@@ -85,7 +85,7 @@ class Assets extends React.Component<iAssetsProps, {}> {
 						</React.Fragment>
 					)}
 				</tbody>
-				<PanelFooter cols={7} label={__( 'Total:', 'Total assets', 'query-monitor' )} count={data.counts.total}>
+				<PanelFooter cols={7} label={_x( 'Total:', 'Total assets', 'query-monitor' )} count={data.counts.total}>
 				</PanelFooter>
 			</>
 		);

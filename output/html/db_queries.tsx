@@ -65,7 +65,7 @@ class DBQueries extends React.Component<iDBQueriesProps, {}> {
 						</tr>
 					)}
 				</tbody>
-				<PanelFooter cols={5} label={__( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
+				<PanelFooter cols={5} label={_x( 'Total:', 'Database query count', 'query-monitor' )} count={data.rows.length}>
 				<TotalTime rows={data.rows}/>
 				</PanelFooter>
 			</Tabular>

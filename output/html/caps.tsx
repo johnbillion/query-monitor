@@ -76,7 +76,7 @@ class Caps extends React.Component<iCapsProps, {}> {
 						</tr>
 					)}
 				</tbody>
-				<PanelFooter cols={5} label={__( 'Total:', 'User capability checks', 'query-monitor' )} count={data.caps.length} />
+				<PanelFooter cols={5} label={_x( 'Total:', 'User capability checks', 'query-monitor' )} count={data.caps.length} />
 			</Tabular>
 		)
 	}
