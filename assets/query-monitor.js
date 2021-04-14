@@ -4,6 +4,27 @@
  * @package query-monitor
  */
 
+
+customElements.define(
+	'query-monitor',
+	// Ensures that we have all the default properties and methods of a built in HTML element
+	class extends HTMLElement {
+		// Called anytime a new custom element is created
+		constructor() {
+			// Calls the parent constructor, i.e. the constructor for `HTMLElement`, so that everything is set up exactly as we would for creating a built in HTML element
+			super();
+
+			// Grabs the <template> and stores it in `template`
+			let template = document.getElementById( 'qm-template' );
+
+			// Stores the contents of the template in `mytemplate`
+			let mytemplate = template.content;
+
+			const shadowRoot = this.attachShadow({mode: "open"}).appendChild(mytemplate.cloneNode(true));
+		}
+	}
+);
+
 var QM_i18n = {
 
 	// http://core.trac.wordpress.org/ticket/20491
@@ -105,6 +126,7 @@ if ( window.jQuery ) {
 		}
 
 		var link_click = function(e){
+			console.log('clicked');
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
 
 			if ( '#qm-fatal' === href ) {

@@ -183,12 +183,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$css .= '-dark';
 		}
 
-		wp_enqueue_style(
-			'query-monitor',
-			$this->qm->plugin_url( "assets/{$css}.css" ),
-			array( 'dashicons' ),
-			$this->qm->plugin_ver( "assets/{$css}.css" )
-		);
+		// wp_enqueue_style(
+		// 	'query-monitor',
+		// 	$this->qm->plugin_url( "assets/{$css}.css" ),
+		// 	array( 'dashicons' ),
+		// 	$this->qm->plugin_ver( "assets/{$css}.css" )
+		// );
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
@@ -301,7 +301,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$class = array(
-			'qm-no-js',
+			// 'qm-no-js',
 		);
 
 		if ( did_action( 'wp_head' ) ) {
@@ -322,6 +322,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
+
+		echo '<template id="qm-template">';
+
+		printf(
+			'<style>%s</style>',
+			file_get_contents( $this->qm->plugin_path( "assets/query-monitor.css" ) )
+		);
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
@@ -576,6 +583,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
+		echo '</template>'; // #qm-template
+
+		echo '<query-monitor id="query-monitor-main"></query-monitor>';
 
 		echo '<script type="text/javascript">' . "\n\n";
 		?>
