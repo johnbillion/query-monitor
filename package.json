@@ -61,7 +61,7 @@
     "wp-types": "^1.1.1"
   },
   "scripts": {
-    "lint:js": "eslint --ext .js,.jsx,.ts,.tsx packages/",
+    "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
     "start": "wp-scripts start",
     "bump:major": "grunt bump:major",
     "bump:minor": "grunt bump:minor",
