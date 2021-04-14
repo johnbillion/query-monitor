@@ -41,8 +41,8 @@
     "replace-in-file": "^5",
     "semver": "^7",
     "source-map-loader": "^0.2.4",
-    "ts-loader": "^7.0.4",
-    "typescript": "^3.9.2",
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "wp-types": "^1.1.1"
