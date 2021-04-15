@@ -208,10 +208,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			: __( 'Request (+%s)', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( sprintf(
+			'title' => sprintf(
 				$title,
 				number_format_i18n( $count )
-			) ),
+			),
 		) );
 		return $menu;
 

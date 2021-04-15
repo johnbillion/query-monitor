@@ -136,10 +136,10 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 			: __( 'Transient Updates (%s)', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( sprintf(
+			'title' => sprintf(
 				$title,
 				number_format_i18n( $count )
-			) ),
+			),
 		) );
 		return $menu;
 

@@ -266,7 +266,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html__( 'Blocks', 'query-monitor' ),
+			'title' => __( 'Blocks', 'query-monitor' ),
 		) );
 
 		return $menu;

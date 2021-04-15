@@ -27,7 +27,7 @@ abstract class QM_Output_Html extends QM_Output {
 	public function admin_menu( array $menu ) {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( $this->name() ),
+			'title' => $this->name(),
 		) );
 		return $menu;
 
@@ -344,8 +344,8 @@ abstract class QM_Output_Html extends QM_Output {
 	protected function menu( array $args ) {
 
 		return array_merge( array(
-			'id'   => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href' => esc_attr( '#' . $this->collector->id() ),
+			'id'   => "query-monitor-{$this->collector->id}",
+			'href' => '#' . $this->collector->id(),
 		), $args );
 
 	}

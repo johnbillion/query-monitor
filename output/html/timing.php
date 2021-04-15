@@ -184,10 +184,10 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 			$label = __( 'Timings (%s)', 'query-monitor' );
 
 			$menu[ $this->collector->id() ] = $this->menu( array(
-				'title' => esc_html( sprintf(
+				'title' => sprintf(
 					$label,
 					number_format_i18n( $count )
-				) ),
+				),
 			) );
 		}
 

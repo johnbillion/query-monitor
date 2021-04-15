@@ -546,20 +546,31 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$name_attr   = sanitize_title_with_dashes( $name );
 				$id          = $this->collector->id() . '-' . $name_attr;
 				$menu[ $id ] = $this->menu( array(
-					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
-					'title' => esc_html( sprintf(
+					'id'    => sprintf(
+						'query-monitor-%s-db-%s',
+						$this->collector->id(),
+						$name_attr
+					),
+					'title' => sprintf(
 						/* translators: %s: Name of database controller */
 						__( 'Queries: %s', 'query-monitor' ),
 						$name
-					) ),
-					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
+					),
+					'href'  => sprintf(
+						'#%s-%s',
+						$this->collector->id(),
+						$name_attr
+					),
 				) );
 			}
 		} else {
 			$id          = $this->collector->id() . '-$wpdb';
 			$menu[ $id ] = $this->menu( array(
-				'title' => esc_html__( 'Queries', 'query-monitor' ),
-				'href'  => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
+				'title' => __( 'Queries', 'query-monitor' ),
+				'href'  => sprintf(
+					'#%s-wpdb',
+					$this->collector->id()
+				),
 			) );
 		}
 

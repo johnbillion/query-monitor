@@ -126,11 +126,11 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			if ( isset( $dbq_data['dupes'] ) && count( $dbq_data['dupes'] ) ) {
 				$count = count( $dbq_data['dupes'] );
 				$menu[ $this->collector->id() ] = $this->menu( array(
-					'title' => esc_html( sprintf(
+					'title' => sprintf(
 						/* translators: %s: Number of duplicate database queries */
 						__( 'Duplicate Queries (%s)', 'query-monitor' ),
 						number_format_i18n( $count )
-					) ),
+					),
 				) );
 			}
 		}

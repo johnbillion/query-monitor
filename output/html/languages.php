@@ -104,7 +104,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 		$args = array(
-			'title' => esc_html( $this->name() ),
+			'title' => $this->name(),
 		);
 
 		$menu[ $this->collector->id() ] = $this->menu( $args );

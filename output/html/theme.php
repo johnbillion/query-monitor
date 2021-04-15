@@ -187,11 +187,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( sprintf(
+			'title' => sprintf(
 				/* translators: %s: Template file name */
 				__( 'Template: %s', 'query-monitor' ),
 				$name
-			) ),
+			),
 		) );
 
 		return $menu;

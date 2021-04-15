@@ -33,8 +33,8 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		foreach ( $data['conds']['true'] as $cond ) {
 			$id          = $this->collector->id() . '-' . $cond;
 			$menu[ $id ] = $this->menu( array(
-				'title' => esc_html( $cond . '()' ),
-				'id'    => 'query-monitor-conditionals-' . esc_attr( $cond ),
+				'title' => $cond . '()',
+				'id'    => 'query-monitor-conditionals-' . $cond,
 				'meta'  => array(
 					'classname' => 'qm-true qm-ltr',
 				),

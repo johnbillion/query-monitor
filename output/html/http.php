@@ -368,10 +368,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			: __( 'HTTP API Calls (%s)', 'query-monitor' );
 
 		$args = array(
-			'title' => esc_html( sprintf(
+			'title' => sprintf(
 				$title,
 				number_format_i18n( $count )
-			) ),
+			),
 		);
 
 		if ( isset( $data['errors']['alert'] ) ) {
