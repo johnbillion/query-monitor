@@ -13,8 +13,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/emergency', $message, $context );
 	}
@@ -25,8 +25,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/alert', $message, $context );
 	}
@@ -37,8 +37,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/critical', $message, $context );
 	}
@@ -49,8 +49,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/error', $message, $context );
 	}
@@ -61,8 +61,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/warning', $message, $context );
 	}
@@ -73,8 +73,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/notice', $message, $context );
 	}
@@ -85,8 +85,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/info', $message, $context );
 	}
@@ -97,8 +97,8 @@ class QM {
 		 *
 		 * @since 3.1.0
 		 *
-		 * @param string $message The message.
-		 * @param array $context  The context passed.
+		 * @param mixed $message The message or data to log.
+		 * @param array $context The context passed.
 		 */
 		do_action( 'qm/debug', $message, $context );
 	}

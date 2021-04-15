@@ -18,7 +18,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 12 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 46 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
@@ -31,6 +31,17 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( empty( $data['logs'] ) ) {
+			$this->before_non_tabular_output();
+
+			$notice = sprintf(
+				/* translators: %s: Link to help article */
+				__( 'No data logged. <a href="%s">Read about logging variables in Query Monitor</a>.', 'query-monitor' ),
+				'https://querymonitor.com/docs/logging-variables/'
+			);
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
+
+			$this->after_non_tabular_output();
+
 			return;
 		}
 
@@ -76,7 +87,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			echo '<tr' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
 
-			echo '<td scope="row" class="qm-nowrap">';
+			echo '<td class="qm-nowrap">';
 
 			if ( $is_warning ) {
 				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
@@ -87,17 +98,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo esc_html( ucfirst( $row['level'] ) );
 			echo '</td>';
 
-			if ( 'dump' === $row['type'] ) {
-				printf(
-					'<td><pre>%s</pre></td>',
-					esc_html( $row['message'] )
-				);
-			} else {
-				printf(
-					'<td>%s</td>',
-					esc_html( $row['message'] )
-				);
-			}
+			printf(
+				'<td><pre>%s</pre></td>',
+				esc_html( $row['message'] )
+			);
 
 			$stack          = array();
 			$filtered_trace = $row['trace']->get_display_trace();
@@ -156,25 +160,25 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	}
 
 	public function admin_menu( array $menu ) {
-		$data = $this->collector->get_data();
+		$data  = $this->collector->get_data();
+		$key   = 'log';
+		$count = 0;
 
-		if ( empty( $data['logs'] ) ) {
-			return $menu;
-		}
-
-		$key = 'log';
-
-		foreach ( $data['logs'] as $log ) {
-			if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
-				$key = 'warning';
-				break;
+		if ( ! empty( $data['logs'] ) ) {
+			foreach ( $data['logs'] as $log ) {
+				if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
+					$key = 'warning';
+					break;
+				}
 			}
+
+			$count = count( $data['logs'] );
+
+			/* translators: %s: Number of logs that are available */
+			$label = __( 'Logs (%s)', 'query-monitor' );
+		} else {
+			$label = __( 'Logs', 'query-monitor' );
 		}
-
-		$count = count( $data['logs'] );
-
-		/* translators: %s: Number of logs that are available */
-		$label = __( 'Logs (%s)', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'id'    => "query-monitor-logger-{$key}",

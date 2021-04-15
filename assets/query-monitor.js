@@ -166,7 +166,7 @@ if ( window.jQuery ) {
 			var filters = $( panel ).find('.qm-filter');
 
 			if ( filters.length ) {
-				filters.change();
+				filters.trigger('change');
 			} else {
 				stripes( $(panel).find('table') );
 			}
@@ -283,7 +283,7 @@ if ( window.jQuery ) {
 				if ( ! $(this).find('option[value="' + val + '"]').length ) {
 					$('<option>').attr('value',value).text(value).appendTo(this);
 				}
-				$(this).val(value).change();
+				$(this).val(value).trigger('change');
 			}
 		});
 
@@ -291,8 +291,8 @@ if ( window.jQuery ) {
 			var filter = $(this).data('qm-filter'),
 				value  = $(this).data('qm-value'),
 				target = $(this).data('qm-target');
-			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').change();
-			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').change();
+			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').trigger('change');
+			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').trigger('change');
 			show_panel( '#qm-' + target );
 			$('#qm-' + target).focus();
 			e.preventDefault();
@@ -373,7 +373,7 @@ if ( window.jQuery ) {
 
 			for ( var key = 1; key <= errors; key++ ) {
 
-				error = $.parseJSON( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
+				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
 
 				if ( window.console ) {
 					switch ( error.type ) {
@@ -417,32 +417,40 @@ if ( window.jQuery ) {
 		var startY, startX, resizerHeight;
 
 		$(document).on('mousedown touchstart', '.qm-resizer', function(event) {
+			event.stopPropagation();
+
 			resizerHeight = $(this).outerHeight() - 1;
 			startY        = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
 			startX        = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
 
-			$(document).on('mousemove touchmove', qm_do_resizer_drag);
+			if ( ! container.hasClass('qm-show-right') ) {
+				$(document).on('mousemove touchmove', qm_do_resizer_drag_vertical);
+			} else {
+				$(document).on('mousemove touchmove', qm_do_resizer_drag_horizontal);
+			}
+
 			$(document).on('mouseup touchend', qm_stop_resizer_drag);
 		});
 
-		function qm_do_resizer_drag(event) {
-			if ( ! container.hasClass('qm-show-right') ) {
+		function qm_do_resizer_drag_vertical(event) {
 				var h = ( startY - ( event.clientY || event.originalEvent.targetTouches[0].pageY ) );
 				if ( h >= resizerHeight && h <= maxheight ) {
 					container.height( h );
 					body.css( 'margin-bottom', 'calc( ' + body_margin + ' + ' + h + 'px )' );
 				}
-			} else {
+		}
+
+		function qm_do_resizer_drag_horizontal(event) {
 				var w = ( startX - event.clientX );
 				if ( w >= minwidth && w <= maxwidth ) {
 					container.width( w );
 				}
 				body.css( 'margin-bottom', '' );
-			}
 		}
 
 		function qm_stop_resizer_drag(event) {
-			$(document).off('mousemove touchmove', qm_do_resizer_drag);
+			$(document).off('mousemove touchmove', qm_do_resizer_drag_vertical);
+			$(document).off('mousemove touchmove', qm_do_resizer_drag_horizontal);
 			$(document).off('mouseup touchend', qm_stop_resizer_drag);
 
 			if ( ! container.hasClass('qm-show-right') ) {
@@ -505,18 +513,18 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('.qm-button-container-close').click(function(){
+		$('.qm-button-container-close').on('click',function(){
 			container.removeClass('qm-show').height('').width('');
 			body.css( 'margin-bottom', '' );
 			localStorage.removeItem( container_pinned_key );
 		});
 
-		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
+		$('.qm-button-container-settings,a[href="#qm-settings"]').on('click',function(){
 			show_panel( '#qm-settings' );
 			$('#qm-settings').focus();
 		});
 
-		$('.qm-button-container-position').click(function(){
+		$('.qm-button-container-position').on('click',function(){
 			container.toggleClass('qm-show-right');
 
 			if ( container.hasClass('qm-show-right') ) {
@@ -541,7 +549,7 @@ if ( window.jQuery ) {
 			show_panel( pinned );
 		}
 
-		$('.qm-title-heading select').change(function(){
+		$('.qm-title-heading select').on('change',function(){
 			show_panel( $(this).val() );
 			$($(this).val()).focus();
 		});
@@ -665,24 +673,36 @@ if ( window.jQuery ) {
 }
 
 window.addEventListener('load', function() {
+	var main = document.getElementById( 'query-monitor-main' );
+	var broken = document.getElementById( 'qm-broken' );
+	var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
+
 	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
-		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
-		document.getElementById( 'query-monitor-main' ).className += ' qm-broken';
-		console.error( document.getElementById( 'qm-broken' ).textContent );
+		/* Fallback for running without jQuery (`QM_NO_JQUERY`) or when jQuery is broken */
+
+		if ( main ) {
+			main.className += ' qm-broken';
+		}
+
+		if ( broken ) {
+			console.error( broken.textContent );
+		}
 
 		if ( 'undefined' === typeof jQuery ) {
 			console.error( 'QM error from JS: undefined jQuery' );
-		}
-
-		if ( ! window.jQuery ) {
+		} else if ( ! window.jQuery ) {
 			console.error( 'QM error from JS: no jQuery' );
 		}
 
-		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-		if ( menu_item ) {
+		if ( menu_item && main ) {
 			menu_item.addEventListener( 'click', function() {
-				document.getElementById( 'query-monitor-main' ).className += ' qm-show';
+				main.className += ' qm-show';
 			} );
 		}
+	}
+
+	if ( ! main ) {
+		// QM's output has disappeared
+		console.error( 'QM error from JS: QM output does not exist' );
 	}
 } );

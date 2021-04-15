@@ -33,7 +33,7 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 
        npm install
 
-3. Check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
+3. If you want to run the tests locally, check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
 
 ## Building the Assets
 
@@ -88,21 +88,24 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. `git checkout master`
 1. `git merge develop`
 1. `git push origin master`
-1. `git tag <version>` where `<version>` is the new version number
-1. `git push origin --tags`
+1. `git push origin master:release`
+1. Wait for [the Build Release action](https://github.com/johnbillion/query-monitor/actions?query=workflow%3A%22Build+Release%22) to complete
 1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 
 ### Post Release
 
 Publishing a release on GitHub triggers an action which deploys the release to the WordPress.org Plugin Directory. No need to touch Subversion.
 
-The corresponding milestone on GitHub gets automatically closed via [ProBot semver](https://github.com/apps/probot-semver). New milestones are automatically created for the next major, minor, and patch releases where appropriate.
+New milestones are automatically created for the next major, minor, and patch releases where appropriate.
 
-1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones) as ProBot semver doesn't handle this.
+1. Close the milestone.
+1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones).
 1. Check the new version has appeared [on the WordPress.org plugin page](https://wordpress.org/plugins/query-monitor/) (it'll take a few minutes).
 1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
 1. Consume tea and cake as necessary.
 
 ### Asset Updates
 
-Assets such as screenshots and banners are stored in the `.wordpress-org` directory. These get deployed as part of the automated release process too, but will be deployed separately if they're the only changes in the master branch since the last release. This allows for the "Tested up to" value to be bumped and assets to be updated in between releases.
+Assets such as screenshots and banners are stored in the `.wordpress-org` directory. These get deployed as part of the automated release process too.
+
+In order to deploy only changes to assets, push the change to the `deploy` branch and they will be deployed if they're the only changes in the branch since the last release. This allows for the "Tested up to" value to be bumped as well as assets to be updated in between releases.

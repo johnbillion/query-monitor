@@ -72,14 +72,17 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data[ $error_group ][ $type ] as $error_key => $error ) {
 
-					$component                     = $error['trace']->get_component();
 					$row_attr                      = array();
-					$row_attr['data-qm-component'] = $component->name;
 					$row_attr['data-qm-type']      = ucfirst( $type );
 					$row_attr['data-qm-key']       = $error_key;
 
-					if ( 'core' !== $component->context ) {
-						$row_attr['data-qm-component'] .= ' non-core';
+					if ( $error['trace'] ) {
+						$component                     = $error['trace']->get_component();
+						$row_attr['data-qm-component'] = $component->name;
+
+						if ( 'core' !== $component->context ) {
+							$row_attr['data-qm-component'] .= ' non-core';
+						}
 					}
 
 					$attr = '';
@@ -97,7 +100,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
-					echo '<td scope="row" class="qm-nowrap">';
+					echo '<td class="qm-nowrap">';
 
 					if ( $is_warning ) {
 						echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
@@ -112,19 +115,22 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
 					$stack          = array();
-					$filtered_trace = $error['trace']->get_display_trace();
 
-					// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
-					// we need to handle its somewhat unreliable stack trace items.
-					// https://bugs.php.net/bug.php?id=39070
-					// https://bugs.php.net/bug.php?id=64987
-					foreach ( $filtered_trace as $i => $item ) {
-						if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
-							$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
-						} elseif ( 0 === $i ) {
-							$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
-						} else {
-							$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
+					if ( $error['trace'] ) {
+						$filtered_trace = $error['trace']->get_display_trace();
+
+						// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
+						// we need to handle its somewhat unreliable stack trace items.
+						// https://bugs.php.net/bug.php?id=39070
+						// https://bugs.php.net/bug.php?id=64987
+						foreach ( $filtered_trace as $i => $item ) {
+							if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
+								$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
+							} elseif ( 0 === $i ) {
+								$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
+							} else {
+								$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
+							}
 						}
 					}
 
@@ -145,7 +151,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '</ol></td>';
 
-					if ( $component ) {
+					if ( ! empty( $component ) ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
 					} else {
 						echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';

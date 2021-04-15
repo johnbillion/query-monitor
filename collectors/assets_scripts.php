@@ -14,10 +14,19 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 	}
 
 	public function get_concerned_actions() {
-		return array(
-			'admin_print_footer_scripts',
-			'wp_print_footer_scripts',
-		);
+		if ( is_admin() ) {
+			return array(
+				'admin_enqueue_scripts',
+				'admin_print_footer_scripts',
+				'admin_print_scripts',
+			);
+		} else {
+			return array(
+				'wp_enqueue_scripts',
+				'wp_print_footer_scripts',
+				'wp_print_scripts',
+			);
+		}
 	}
 
 	public function get_concerned_filters() {

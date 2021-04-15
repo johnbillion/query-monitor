@@ -2,8 +2,6 @@
 $qm-container-fg: #222 !default;
 $qm-container-bg: #f3f3f3 !default;
 $qm-container-overflow: #ececec !default;
-$qm-container-selection-fg: $qm-container-fg !default;
-$qm-container-selection-bg: #b9d6fb !default;
 
 // Panels
 $qm-panel-border: #aaa !default;
@@ -48,6 +46,7 @@ $qm-title-button-fg: #666 !default;
 $qm-title-button-bg: transparent !default;
 $qm-title-button-fg-hover: #000 !default;
 $qm-title-button-bg-hover: #e6e6e6 !default;
+$qm-info-fg: #666 !default;
 
 // Formatting
 $qm-warn-fg: #900 !default;

@@ -1,9 +1,16 @@
 name: Test
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'trunk'
+      - 'master'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   build:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       matrix:
         php: ['7.3', '5.6']
@@ -11,62 +18,40 @@ jobs:
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: wordpress
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - name: Checkout repository
       uses: actions/checkout@v1
 
     - name: Composer cache
       uses: actions/cache@v1
-      env:
-        cache-name: composer
       with:
         path: ~/.composer/cache
-        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('composer.json') }}
-
-    - name: PHPCS cache
-      uses: actions/cache@v1
-      env:
-        cache-name: phpcs
-      with:
-        path: tests/cache
-        # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
-        # always pulling in a cache file and simultaneously always updating it, unlike Travis.
-        # This way we always pull in a cache file and refresh it with each new version of QM.
-        key: ${{ matrix.php }}-${{ env.cache-name }}-${{ hashFiles('query-monitor.php') }}
+        key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
     - name: Install PHP
-      uses: shivammathur/setup-php@2.1.3
+      uses: shivammathur/setup-php@2.7.0
       with:
         php-version: ${{ matrix.php }}
         extensions: mysqli, xmlwriter
         coverage: none
+      env:
+        fail-fast: true
 
     - name: Debugging
       run: |
         php --version
         php -m
         composer --version
-        svn --version
+        mysql --version
 
     - name: Install dependencies
       run: |
-        composer install --prefer-dist --no-suggest
-        composer require --dev --update-with-dependencies --no-suggest --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
-
-    - name: Run code sniffer
-      if: matrix.php == '7.3' && matrix.wp == '*'
-      run: composer test:cs
+        sudo systemctl start mysql.service
+        composer install --prefer-dist
+        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *" wp-phpunit/wp-phpunit="${{ matrix.wp }} || *"
 
     - name: Run unit tests
       run: composer test:ut
       env:
-        WP_TESTS_DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
+        MYSQL_DATABASE: wordpress
+        WP_TESTS_DB_PASS: root

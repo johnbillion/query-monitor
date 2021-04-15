@@ -10,10 +10,6 @@ final class QM_Collector_Debug_Bar extends QM_Collector {
 	public $id     = 'debug_bar';
 	private $panel = null;
 
-	public function __construct() {
-		parent::__construct();
-	}
-
 	public function set_panel( Debug_Bar_Panel $panel ) {
 		$this->panel = $panel;
 	}
@@ -74,7 +70,7 @@ function register_qm_collectors_debug_bar() {
 }
 
 function qm_debug_bar_being_activated() {
-	// @codingStandardsIgnoreStart
+	// phpcs:disable
 
 	if ( ! is_admin() ) {
 		return false;
@@ -107,7 +103,7 @@ function qm_debug_bar_being_activated() {
 	}
 
 	return false;
-	// @codingStandardsIgnoreEnd
+	// phpcs:enable
 }
 
 add_action( 'init', 'register_qm_collectors_debug_bar' );

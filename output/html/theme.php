@@ -67,7 +67,8 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		if ( ! empty( $data['template_altered'] ) ) {
 			printf(
-				'<p><button class="qm-filter-trigger qm-filter-info" data-qm-target="response-concerned_hooks">Template Hooks in Use</button></p>'
+				'<p><button class="qm-filter-trigger qm-filter-info" data-qm-target="response-concerned_hooks">%s</button></p>',
+				esc_html__( 'Template Hooks in Use', 'query-monitor' )
 			);
 		}
 

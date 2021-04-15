@@ -2,7 +2,7 @@ name: Deploy Assets
 on:
   push:
     branches:
-      - master
+      - deploy
 
 jobs:
   wordpress:
@@ -15,6 +15,9 @@ jobs:
       # @TODO need to cache the npm dependencies
       - name: Install Dependencies
         run: npm install
+
+      - name: Build Assets
+        run: npm run build
 
       - name: Populate Changelog
         run: node .github/workflows/changelog.js readme.txt

@@ -232,6 +232,8 @@ class QM_Collector_HTTP extends QM_Collector {
 			'airplane_mode_enabled',
 		) );
 
+		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
+
 		foreach ( $this->data['http'] as $key => & $http ) {
 
 			if ( ! isset( $http['response'] ) ) {
@@ -274,6 +276,10 @@ class QM_Collector_HTTP extends QM_Collector {
 			$this->data['ltime'] += $http['ltime'];
 
 			$http['component'] = $http['trace']->get_component();
+
+			$host = (string) parse_url( $http['url'], PHP_URL_HOST );
+
+			$http['local'] = ( $host === $home_host );
 
 			$this->log_type( $http['type'] );
 			$this->log_component( $http['component'], $http['ltime'], $http['type'] );

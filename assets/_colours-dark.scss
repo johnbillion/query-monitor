@@ -30,11 +30,9 @@ $editor-sunglo:   #e06c75;
 $editor-olivine:  #98c379;
 
 // Main container
-$qm-container-fg: $light-grey !default;
+$qm-container-fg: lighten( $light-grey, 15% ) !default;
 $qm-container-bg: $dark-grey !default;
 $qm-container-overflow: $base-grey !default;
-$qm-container-selection-fg: $qm-container-fg !default;
-$qm-container-selection-bg: #b9d6fb !default;
 
 // Panels
 $qm-panel-border: $dark-silver !default;
@@ -44,11 +42,11 @@ $qm-panel-separator: $dark-silver !default;
 
 // Panel menus
 $qm-panel-menu-border: $dark-grey !default;
-$qm-panel-menu-fg: $light-grey !default;
+$qm-panel-menu-fg: lighten( $light-grey, 15% ) !default;
 $qm-panel-menu-bg: $base-grey !default;
 $qm-panel-menu-fg-hover: $light-grey !default;
 $qm-panel-menu-bg-hover: lighten( $dark-grey, 5% ) !default;
-$qm-panel-menu-fg-current: $light-grey !default;
+$qm-panel-menu-fg-current: lighten( $light-grey, 15% ) !default;
 $qm-panel-menu-bg-current: $dark-grey !default;
 $qm-panel-menu-bg-current-focus: lighten( $qm-panel-menu-bg-current, 5% ) !default;
 $qm-panel-menu-fg-selected: #fff !default;
@@ -79,6 +77,7 @@ $qm-title-button-fg: $light-grey !default;
 $qm-title-button-bg: transparent !default;
 $qm-title-button-fg-hover: $dark-grey !default;
 $qm-title-button-bg-hover: $light-grey !default;
+$qm-info-fg: #aaa !default;
 
 // Formatting
 $qm-warn-fg: #fff0f0 !default;

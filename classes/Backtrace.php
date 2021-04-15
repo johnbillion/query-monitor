@@ -54,8 +54,8 @@ class QM_Backtrace {
 	protected $calling_line    = 0;
 	protected $calling_file    = '';
 
-	public function __construct( array $args = array() ) {
-		$this->trace = debug_backtrace( false );
+	public function __construct( array $args = array(), array $trace = null ) {
+		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
 		$args = array_merge( array(
 			'ignore_current_filter' => true,
@@ -227,7 +227,7 @@ class QM_Backtrace {
 
 	}
 
-	public function filter_trace( array $trace ) {
+	public function filter_trace( array $frame ) {
 
 		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
 
@@ -277,48 +277,48 @@ class QM_Backtrace {
 
 		}
 
-		$return = $trace;
+		$return = $frame;
 
-		if ( isset( $trace['class'] ) ) {
-			if ( isset( self::$ignore_class[ $trace['class'] ] ) ) {
+		if ( isset( $frame['class'] ) ) {
+			if ( isset( self::$ignore_class[ $frame['class'] ] ) ) {
 				$return = null;
-			} elseif ( isset( self::$ignore_method[ $trace['class'] ][ $trace['function'] ] ) ) {
+			} elseif ( isset( self::$ignore_method[ $frame['class'] ][ $frame['function'] ] ) ) {
 				$return = null;
-			} elseif ( 0 === strpos( $trace['class'], 'QM' ) ) {
+			} elseif ( 0 === strpos( $frame['class'], 'QM' ) ) {
 				$return = null;
 			} else {
-				$return['id']      = $trace['class'] . $trace['type'] . $trace['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $trace['class'] . $trace['type'] . $trace['function'] ) . '()';
+				$return['id']      = $frame['class'] . $frame['type'] . $frame['function'] . '()';
+				$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
 			}
 		} else {
-			if ( isset( self::$ignore_func[ $trace['function'] ] ) ) {
+			if ( isset( self::$ignore_func[ $frame['function'] ] ) ) {
 				$return = null;
-			} elseif ( isset( self::$show_args[ $trace['function'] ] ) ) {
-				$show = self::$show_args[ $trace['function'] ];
+			} elseif ( isset( self::$show_args[ $frame['function'] ] ) ) {
+				$show = self::$show_args[ $frame['function'] ];
 
 				if ( 'dir' === $show ) {
-					if ( isset( $trace['args'][0] ) ) {
-						$arg = QM_Util::standard_dir( $trace['args'][0], '' );
-						$return['id']      = $trace['function'] . '()';
-						$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . "('{$arg}')";
+					if ( isset( $frame['args'][0] ) ) {
+						$arg = QM_Util::standard_dir( $frame['args'][0], '' );
+						$return['id']      = $frame['function'] . '()';
+						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
 					$args = array();
 					for ( $i = 0; $i < $show; $i++ ) {
-						if ( isset( $trace['args'][ $i ] ) ) {
-							if ( is_string( $trace['args'][ $i ] ) ) {
-								$args[] = '\'' . $trace['args'][ $i ] . '\'';
+						if ( isset( $frame['args'][ $i ] ) ) {
+							if ( is_string( $frame['args'][ $i ] ) ) {
+								$args[] = '\'' . $frame['args'][ $i ] . '\'';
 							} else {
-								$args[] = QM_Util::display_variable( $trace['args'][ $i ] );
+								$args[] = QM_Util::display_variable( $frame['args'][ $i ] );
 							}
 						}
 					}
-					$return['id']      = $trace['function'] . '()';
-					$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . '(' . implode( ',', $args ) . ')';
+					$return['id']      = $frame['function'] . '()';
+					$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
 				}
 			} else {
-				$return['id']      = $trace['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $trace['function'] ) . '()';
+				$return['id']      = $frame['function'] . '()';
+				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
 			}
 		}
 
@@ -329,11 +329,11 @@ class QM_Backtrace {
 
 		}
 
-		if ( isset( $trace['line'] ) ) {
-			$this->calling_line = $trace['line'];
+		if ( isset( $frame['line'] ) ) {
+			$this->calling_line = $frame['line'];
 		}
-		if ( isset( $trace['file'] ) ) {
-			$this->calling_file = $trace['file'];
+		if ( isset( $frame['file'] ) ) {
+			$this->calling_file = $frame['file'];
 		}
 
 		return $return;

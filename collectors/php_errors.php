@@ -23,6 +23,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		parent::__construct();
 
+		// Capture the last error that occurred before QM loaded:
+		$prior_error = error_get_last();
+
 		// Non-fatal error handler for all PHP versions:
 		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
@@ -37,6 +40,17 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$this->error_reporting = error_reporting();
 		$this->display_errors  = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
+
+		if ( $prior_error ) {
+			$this->error_handler(
+				$prior_error['type'],
+				$prior_error['message'],
+				$prior_error['file'],
+				$prior_error['line'],
+				null,
+				false
+			);
+		}
 	}
 
 	/**
@@ -76,7 +90,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		exit( 1 );
 	}
 
-	public function error_handler( $errno, $message, $file = null, $line = null, $context = null ) {
+	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
 
 		/**
 		 * Fires before logging the PHP error in Query Monitor.
@@ -163,7 +177,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'file'     => $file,
 				'filename' => QM_Util::standard_dir( $file, '' ),
 				'line'     => $line,
-				'trace'    => $trace,
+				'trace'    => ( $do_trace ? $trace : null ),
 				'calls'    => 1,
 			);
 		}
@@ -202,6 +216,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	protected function output_fatal( $error, array $e ) {
 		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( empty( $dispatcher ) ) {
+			return;
+		}
 
 		if ( empty( $this->display_errors ) && ! $dispatcher::user_can_view() ) {
 			return;
@@ -373,8 +391,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							$component                      = $error['trace']->get_component();
-							$components[ $component->name ] = $component->name;
+							if ( $error['trace'] ) {
+								$component                      = $error['trace']->get_component();
+								$components[ $component->name ] = $component->name;
+							}
 						}
 					}
 				}
@@ -400,6 +420,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 					if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
 						continue;
 					}
+
+					if ( ! $error['trace'] ) {
+						continue;
+					}
+
 					if ( ! $this->is_affected_component( $error['trace']->get_component(), $component_type, $component_context ) ) {
 						continue;
 					}

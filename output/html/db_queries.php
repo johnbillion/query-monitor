@@ -176,23 +176,25 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '<tr>';
 				echo '<th colspan="' . intval( $span ) . '" class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
-					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %1$s file is present. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
+					/* translators: %s: File name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. A conflicting %s file is present.', 'query-monitor' );
+				} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+					/* translators: 1: File name, 2: Configuration constant name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was prevented from symlinking its %1$s file into place by the %2$s constant.', 'query-monitor' );
 				} else {
-					/* translators: 1: Symlink file name, 2: URL to wiki page */
-					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %1$s file into place. <a href="%2$s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>', 'query-monitor' );
+					/* translators: %s: File name */
+					$message = __( 'Extended query information such as the component and affected rows is not available. Query Monitor was unable to symlink its %s file into place.', 'query-monitor' );
 				}
-				echo wp_kses( sprintf(
-					$message,
+				printf(
+					esc_html( $message ),
 					'<code>db.php</code>',
+					'<code>QM_DB_SYMLINK</code>'
+				);
+
+				printf(
+					' <a href="%s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>',
 					'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
-				), array(
-					'a' => array(
-						'href'   => array(),
-						'target' => array(),
-						'class'  => array(),
-					),
-				) );
+				);
 				echo '</th>';
 				echo '</tr>';
 			}
@@ -460,28 +462,54 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
-	public function admin_title( array $title ) {
+	public function admin_title( array $existing ) {
 
 		$data = $this->collector->get_data();
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
+				/* translators: %s: Database query time in seconds */
+				$text = _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' );
+
+				// Avoid a potentially blank translation for the plural form.
+				// @see https://meta.trac.wordpress.org/ticket/5377
+				if ( '' === $text ) {
+					$text = '%s S';
+				}
+
 				$title[] = sprintf(
-					/* translators: %s: Database query time in seconds */
-					'%s' . esc_html( _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' ) ),
+					esc_html( '%s' . $text ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
 					number_format_i18n( $db->total_time, 4 )
 				);
+
+				/* translators: %s: Number of database queries */
+				$text = _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' );
+
+				// Avoid a potentially blank translation for the plural form.
+				// @see https://meta.trac.wordpress.org/ticket/5377
+				if ( '' === $text ) {
+					$text = '%s Q';
+				}
+
 				$title[] = sprintf(
-					/* translators: %s: Number of database queries */
-					esc_html( _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' ) ),
+					esc_html( $text ),
 					number_format_i18n( $db->total_qs )
 				);
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
+			/* translators: %s: Number of database queries */
+			$text = _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' );
+
+			// Avoid a potentially blank translation for the plural form.
+			// @see https://meta.trac.wordpress.org/ticket/5377
+			if ( '' === $text ) {
+				$text = '%s Q';
+			}
+
 			$title[] = sprintf(
 				/* translators: %s: Number of database queries */
-				esc_html( _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' ) ),
+				esc_html( $text ),
 				number_format_i18n( $data['total_qs'] )
 			);
 		}
@@ -489,6 +517,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		foreach ( $title as &$t ) {
 			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
 		}
+
+		$title = array_merge( $existing, $title );
 
 		return $title;
 	}

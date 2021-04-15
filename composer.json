@@ -1,8 +1,8 @@
 {
 	"name": "johnbillion/query-monitor",
+	"type": "wordpress-plugin",
 	"description": "The Developer Tools panel for WordPress.",
 	"homepage": "https://github.com/johnbillion/query-monitor/",
-	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
@@ -10,49 +10,58 @@
 			"homepage": "https://johnblackbourn.com/"
 		}
 	],
-	"support": {
-		"issues": "https://github.com/johnbillion/query-monitor/issues",
-		"forum": "https://wordpress.org/support/plugin/query-monitor",
-		"source": "https://github.com/johnbillion/query-monitor"
-	},
-	"config": {
-		"sort-packages": true,
-		"preferred-install": "dist"
-	},
-	"extra": {
-		"wordpress-install-dir": "tests/wordpress"
-	},
 	"require": {
 		"php": ">=5.4.0",
 		"composer/installers": "~1.0"
 	},
 	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
 		"johnbillion/falsey-assertequals-detector": "^1 || ^3",
-		"phpcompatibility/phpcompatibility-wp": "^2.0",
+		"phpcompatibility/phpcompatibility-wp": "2.1.0",
 		"phpunit/phpunit": "^5 || ^7",
 		"roots/wordpress": "*",
-		"squizlabs/php_codesniffer": "^3.2",
+		"squizlabs/php_codesniffer": "3.5.8",
 		"vlucas/phpdotenv": "^3",
 		"wp-cli/db-command": "^2",
-		"wp-coding-standards/wpcs": "~2.0.0",
+		"wp-coding-standards/wpcs": "2.3.0",
 		"wp-phpunit/wp-phpunit": "*"
+	},
+	"config": {
+		"preferred-install": "dist",
+		"sort-packages": true
+	},
+	"extra": {
+		"wordpress-install-dir": "tests/wordpress"
 	},
 	"scripts": {
 		"post-update-cmd": [
 			"@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.dist', 'tests/.env' );\""
 		],
-		"test:cs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
-		],
-		"test:ut": [
-			"wp db reset --yes --path=$(npm run --silent jq '.extra .\"wordpress-install-dir\"' composer.json -- -r) #",
-			"export WP_MULTISITE=0 && phpunit --verbose --colors=always --exclude-group=ms-required",
-			"export WP_MULTISITE=1 && phpunit --verbose --colors=always --exclude-group=ms-excluded"
-		],
 		"test": [
 			"@test:cs",
 			"@test:ut"
+		],
+		"test:cs": [
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs ."
+		],
+		"test:cs2pr": [
+			"phpcs -nsq --report=checkstyle --cache=tests/cache/phpcs . | cs2pr"
+		],
+		"test:ut": [
+			"wp db reset --yes --path=tests/wordpress #",
+			"export WP_MULTISITE=0 && phpunit --verbose --colors=always --exclude-group=ms-required",
+			"export WP_MULTISITE=1 && phpunit --verbose --colors=always --exclude-group=ms-excluded"
 		]
-	}
+	},
+	"support": {
+		"issues": "https://github.com/johnbillion/query-monitor/issues",
+		"forum": "https://wordpress.org/support/plugin/query-monitor",
+		"source": "https://github.com/johnbillion/query-monitor"
+	},
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/johnbillion"
+		}
+	]
 }

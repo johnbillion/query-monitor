@@ -254,7 +254,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
-	public function admin_title( array $title ) {
+	public function admin_title( array $existing ) {
 
 		$data = $this->collector->get_data();
 
@@ -278,6 +278,8 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		foreach ( $title as &$t ) {
 			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
 		}
+
+		$title = array_merge( $existing, $title );
 
 		return $title;
 	}

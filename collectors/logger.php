@@ -88,8 +88,18 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		if ( ! QM_Util::is_stringy( $message ) ) {
+			if ( null === $message ) {
+				$message = 'null';
+			} elseif ( false === $message ) {
+				$message = 'false';
+			} elseif ( true === $message ) {
+				$message = 'true';
+			}
+
 			$type    = 'dump';
 			$message = print_r( $message, true );
+		} elseif ( '' === trim( $message ) ) {
+			$message = '(Empty string)';
 		}
 
 		$this->data['logs'][] = array(

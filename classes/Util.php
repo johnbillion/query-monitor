@@ -94,6 +94,10 @@ class QM_Util {
 				self::$file_dirs['vip-client-mu-plugin'] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
 			}
 
+			if ( defined( '\Altis\ROOT_DIR' ) ) {
+				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
+			}
+
 			self::$file_dirs['theme']      = null;
 			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
 			self::$file_dirs['template']   = get_template_directory();
@@ -129,6 +133,13 @@ class QM_Util {
 		$context = $type;
 
 		switch ( $type ) {
+			case 'altis-vendor':
+				$plug = str_replace( \Altis\ROOT_DIR . '/vendor/', '', $file );
+				$plug = explode( '/', $plug, 3 );
+				$plug = $plug[0] . '/' . $plug[1];
+				/* translators: %s: Dependency name */
+				$name = sprintf( __( 'Dependency: %s', 'query-monitor' ), $plug );
+				break;
 			case 'plugin':
 			case 'mu-plugin':
 			case 'mu-vendor':
@@ -315,7 +326,7 @@ class QM_Util {
 		if ( self::is_ajax() ) {
 			return true;
 		}
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // @codingStandardsIgnoreLine
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // phpcs:ignore
 			return true;
 		}
 		return false;
@@ -340,12 +351,12 @@ class QM_Util {
 			return false;
 		}
 
-		// @codingStandardsIgnoreStart
+		// phpcs:disable
 		$num_sites = $wpdb->get_var( "
 			SELECT COUNT(*)
 			FROM {$wpdb->site}
 		" );
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable
 
 		return ( $num_sites > 1 );
 	}
