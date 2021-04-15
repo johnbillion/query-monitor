@@ -56,6 +56,17 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 	}
 
 	render() {
+		const editors = {
+			'Default/Xdebug': '',
+			'Atom': 'atom',
+			'Netbeans': 'netbeans',
+			'PhpStorm': 'phpstorm',
+			'Sublime Text': 'sublime',
+			'Visual Studio Code': 'vscode',
+		};
+
+		const editor = localStorage.getItem( 'qm-editor' );
+
 		return (
 			<NonTabular id="settings">
 				<h2 className="qm-screen-reader-text">
@@ -88,6 +99,37 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 								{ __( 'Authentication cookie is set', 'query-monitor' ) }
 							</p>
 						) }
+					</section>
+				</div>
+				<div className="qm-boxed">
+					<section className="qm-editor">
+						<h3>
+							{ __( 'Editor', 'query-monitor' ) }
+						</h3>
+						<p>
+							{ __( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) }
+						</p>
+						<p>
+							<select
+								className="qm-filter"
+								id="qm-editor-select"
+								name="qm-editor-select"
+								onChange={ ( e ) => {
+									localStorage.setItem( 'qm-editor', e.target.value );
+								} }
+							>
+								{ Object.keys( editors ).map( ( key: keyof typeof editors ) => (
+									<>
+										<option
+											selected={ editors[ key ] === editor }
+											value={ editors[ key ] }
+										>
+											{ key }
+										</option>
+									</>
+								) ) }
+							</select>
+						</p>
 					</section>
 				</div>
 			</NonTabular>

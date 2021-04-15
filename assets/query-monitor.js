@@ -217,6 +217,9 @@ if ( window.jQuery ) {
 		$('#qm-panel-menu').find('button').on('click',link_click);
 
 		container.find('.qm-filter').on('change',function(e){
+			if ( 'qm-editor-select' === $( this ).attr('name') ) {
+				return;
+			}
 
 			var filter = $(this).attr('data-filter'),
 				table  = $(this).closest('table'),
@@ -408,35 +411,6 @@ if ( window.jQuery ) {
 			return event;
 
 		} );
-
-		var editorSuccessIndicator = $('#qm-editor-save-status');
-		editorSuccessIndicator.hide();
-
-		$('.qm-editor-button').on('click',function(e){
-			var state  = $('#qm-settings').data('qm-state');
-			var editor = $('#qm-editor-select').val();
-
-			$.ajax(qm_l10n.ajaxurl,{
-				type : 'POST',
-				context : this,
-				data : {
-					action : 'qm_editor_set',
-					nonce  : qm_l10n.auth_nonce['editor-set'],
-					editor : editor
-				},
-				success : function(response){
-					if (response.success) {
-						editorSuccessIndicator.show();
-					}
-				},
-				dataType : 'json',
-				xhrFields: {
-					withCredentials: true
-				}
-			});
-
-			e.preventDefault();
-		});
 
 		$.qm.tableSort({target: $('.qm-sortable')});
 
