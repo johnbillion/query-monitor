@@ -3,6 +3,7 @@
 /vendor
 /node_modules
 /package-lock.json
+/build
 /tests/.env
 /tests/cache
 /tests/wordpress
