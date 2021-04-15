@@ -17,6 +17,16 @@ export interface iQMConfig {
 	settings: iSettingsProps
 }
 
+interface il10nConfig {
+	ajaxurl: string;
+	auth_nonce: {
+		on: string;
+		off: string;
+	}
+}
+
+declare const qm_l10n: il10nConfig;
+
 export class Settings extends React.Component<iSettingsProps, Record<string, unknown>> {
 	constructor( props: iSettingsProps ) {
 		super( props );
@@ -24,6 +34,27 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 		this.state = {
 			verified: props.verified,
 		};
+	}
+
+	setVerify() {
+		const action = ( this.state.verified ? 'off' : 'on' );
+
+		jQuery.ajax( qm_l10n.ajaxurl, {
+			type: 'POST',
+			data: {
+				action: `qm_auth_${ action }`,
+				nonce: qm_l10n.auth_nonce[ action ],
+			},
+			success: () => {
+				this.setState( {
+					verified: ( ! this.state.verified ),
+				} );
+			},
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true,
+			},
+		} );
 	}
 
 	render() {
@@ -41,8 +72,8 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 							{ __( 'You can set an authentication cookie which allows you to view Query Monitor output when you are not logged in, or when you are logged in as a different user.', 'query-monitor' ) }
 						</p>
 						<p>
-							<button className="qm-button">
-								{ this.props.verified ? (
+							<button className="qm-button" onClick={ () => this.setVerify() }>
+								{ this.state.verified ? (
 									<>
 										{ __( 'Clear authentication cookie', 'query-monitor' ) }
 									</>
@@ -53,7 +84,7 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 								) }
 							</button>
 						</p>
-						{ this.props.verified && (
+						{ this.state.verified && (
 							<p>
 								<Icon name="yes"/>
 								{ __( 'Authentication cookie is set', 'query-monitor' ) }
