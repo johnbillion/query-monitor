@@ -353,16 +353,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	}
 
 	protected function after_output() {
-		/**
-		 * Fires after settings but before the panel closing tag.
-		 *
-		 * @since  3.1.0
-		 *
-		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
-		 * @param QM_Output_Html[]   $this->outputters Array of outputters.
-		 */
-		do_action( 'qm/output/after', $this, $this->outputters );
-
 		echo '</div>'; // #query-monitor-main
 
 		echo '<script type="text/javascript">' . "\n\n";
