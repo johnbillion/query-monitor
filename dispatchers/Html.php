@@ -370,48 +370,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 	}
 
-	protected function do_panel_menu_item( $id, array $menu ) {
-		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
-			esc_attr( $menu['href'] ),
-			esc_html( $menu['title'] )
-		);
-
-		if ( ! empty( $menu['children'] ) ) {
-			echo '<ul role="presentation">';
-			foreach ( $menu['children'] as $child_id => $child ) {
-				$this->do_panel_menu_item( $child_id, $child );
-			}
-			echo '</ul>';
-		}
-
-		echo '</li>';
-	}
-
 	protected function after_output() {
 
-		$state = self::user_verified() ? 'on' : 'off';
-		$editor = self::editor_cookie();
-		$text  = array(
-			'on'  => __( 'Clear authentication cookie', 'query-monitor' ),
-			'off' => __( 'Set authentication cookie', 'query-monitor' ),
-		);
-
-		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
+		echo '<div class="qm qm-non-tabular" id="qm-settings">';
 		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
-
-		echo '<div class="qm-boxed">';
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
-
-		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
-
-		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
-
-		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
-
-		echo '</section>';
-		echo '</div>';
 
 		echo '<div class="qm-boxed">';
 		echo '<section class="qm-editor">';
