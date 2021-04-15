@@ -1,10 +1,11 @@
+import 'whatwg-fetch';
 import {
 	Icon,
 	NonTabular,
 } from 'qmi';
 import * as React from 'react';
 
-import { __, _x } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 export interface iSettingsProps {
 	verified: boolean;
@@ -38,22 +39,19 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 
 	setVerify() {
 		const action = ( this.state.verified ? 'off' : 'on' );
+		const formData = new FormData();
 
-		jQuery.ajax( qm_l10n.ajaxurl, {
-			type: 'POST',
-			data: {
-				action: `qm_auth_${ action }`,
-				nonce: qm_l10n.auth_nonce[ action ],
-			},
-			success: () => {
-				this.setState( {
-					verified: ( ! this.state.verified ),
-				} );
-			},
-			dataType: 'json',
-			xhrFields: {
-				withCredentials: true,
-			},
+		formData.append( 'action', `qm_auth_${ action }` );
+		formData.append( 'nonce', qm_l10n.auth_nonce[ action ] );
+
+		window.fetch( qm_l10n.ajaxurl, {
+			method: 'POST',
+			body: formData,
+			credentials: 'same-origin',
+		} ).then( () => {
+			this.setState( {
+				verified: ( ! this.state.verified ),
+			} );
 		} );
 	}
 

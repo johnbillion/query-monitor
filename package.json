@@ -18,7 +18,8 @@
     "react-dom": "^16.9.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.4",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
     "@actions/github": "^2",
