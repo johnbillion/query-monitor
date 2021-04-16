@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { iQMConfig } from '../output/html/settings';
 import { iPanelsProps } from '../output/panels';
 import { QM } from '../output/qm';
 
 declare const qm_data: iPanelsProps;
+declare const qm: iQMConfig;
 
 document.addEventListener( 'DOMContentLoaded', function () {
 	const panels = {
@@ -30,7 +32,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	};
 
 	ReactDOM.render(
-		<QM panels={ panels }/>,
+		<QM panels={ panels } panel_menu={ qm.panel_menu } />,
 		document.getElementById( 'query-monitor-main' )
 	);
 } );

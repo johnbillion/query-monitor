@@ -7,15 +7,17 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
+import { iNavMenu } from '../nav';
+
 export interface iSettingsProps {
 	verified: boolean;
-	editor: string;
 }
 
 export interface iQMConfig {
 	menu: any;
 	ajax_errors: any;
-	settings: iSettingsProps
+	settings: iSettingsProps;
+	panel_menu: iNavMenu;
 }
 
 interface il10nConfig {

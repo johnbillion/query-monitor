@@ -336,13 +336,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'settings'    => array(
 				'verified' => self::user_verified(),
 			),
+			'panel_menu'  => $this->panel_menu,
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo 'var qm_data = ' . json_encode( $json_data, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
-		echo 'var qm_menu = ' . json_encode( $this->panel_menu, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';

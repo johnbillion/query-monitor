@@ -8,9 +8,8 @@ import { Panels, iPanelsProps } from './panels';
 
 export interface iQMProps {
 	panels: iPanelsProps;
+	panel_menu: iNavMenu;
 }
-
-declare const qm_menu: iNavMenu;
 
 export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 	render() {
@@ -22,7 +21,7 @@ export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 						{ __( 'Query Monitor', 'query-monitor' ) }
 					</h1>
 					<div className="qm-title-heading">
-						<NavSelect menu={ qm_menu }/>
+						<NavSelect menu={ this.props.panel_menu }/>
 					</div>
 					<button
 						aria-label={ __( 'Settings', 'query-monitor' ) }
@@ -44,7 +43,7 @@ export class QM extends React.Component<iQMProps, Record<string, unknown>> {
 					</button>
 				</div>
 				<div id="qm-wrapper">
-					<Nav menu={ qm_menu }/>
+					<Nav menu={ this.props.panel_menu }/>
 					<Panels { ...this.props.panels }/>
 				</div>
 			</>
