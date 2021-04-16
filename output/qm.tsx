@@ -80,7 +80,7 @@ export class QM extends React.Component<iQMProps, iState> {
 		}
 
 		return (
-			<>
+			<div dir="ltr" id="query-monitor-main">
 				<div className="qm-resizer" id="qm-side-resizer"></div>
 				<div className="qm-resizer" id="qm-title">
 					<h1 className="qm-title-heading">
@@ -113,7 +113,7 @@ export class QM extends React.Component<iQMProps, iState> {
 					<Panels { ...this.props.panels } active={ this.state.active }/>
 				</div>
 				{ adminMenu }
-			</>
+			</div>
 		);
 	}
 }

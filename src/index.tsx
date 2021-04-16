@@ -32,6 +32,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 
 	ReactDOM.render(
 		<QM menu={ qm.menu } panel_menu={ qm.panel_menu } panels={ panels } />,
-		document.getElementById( 'query-monitor-main' )
+		document.getElementById( 'query-monitor-holder' )
 	);
 } );

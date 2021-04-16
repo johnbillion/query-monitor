@@ -308,19 +308,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
-		$class = array(
-			'qm-no-js',
-		);
-
-		if ( did_action( 'wp_head' ) ) {
-			$class[] = sprintf( 'qm-theme-%s', get_template() );
-			$class[] = sprintf( 'qm-theme-%s', get_stylesheet() );
-		}
-
-		if ( ! is_admin_bar_showing() ) {
-			$class[] = 'qm-peek';
-		}
-
 		$json = array(
 			'menu'        => $this->js_admin_bar_menu(),
 			'ajax_errors' => array(), # @TODO move this into the php_errors collector
@@ -336,11 +323,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
+		echo '<div id="query-monitor-holder">';
 	}
 
 	protected function after_output() {
-		echo '</div>'; // #query-monitor-main
+		echo '</div>'; // #query-monitor-holder
 
 		echo '<script type="text/javascript">' . "\n\n";
 		?>
