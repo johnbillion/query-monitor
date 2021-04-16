@@ -297,13 +297,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
-		$json_data = array();
+		$data = array();
 
 		foreach ( $this->outputters as $output_id => $output ) {
 			$collector = $output->get_collector();
 
 			if ( $output::$client_side_rendered ) {
-				$json_data[ $collector->id ] = array(
+				$data[ $collector->id ] = array(
 					'enabled' => $collector::enabled(),
 					'data'    => $collector->get_data(),
 				);
@@ -337,12 +337,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'verified' => self::user_verified(),
 			),
 			'panel_menu'  => $this->panel_menu,
+			'data'        => $data,
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
-		echo 'var qm_data = ' . json_encode( $json_data, JSON_UNESCAPED_SLASHES ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';

@@ -8,6 +8,7 @@ import * as React from 'react';
 import { __ } from '@wordpress/i18n';
 
 import { iNavMenu } from '../nav';
+import { iPanelsProps } from '../panels';
 
 export interface iSettingsProps {
 	verified: boolean;
@@ -18,6 +19,7 @@ export interface iQMConfig {
 	ajax_errors: any;
 	settings: iSettingsProps;
 	panel_menu: iNavMenu;
+	data: iPanelsProps;
 }
 
 interface il10nConfig {
