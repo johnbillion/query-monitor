@@ -453,17 +453,6 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('.qm-button-container-close').on('click',function(){
-			container.removeClass('qm-show').height('').width('');
-			body.css( 'margin-bottom', '' );
-			// localStorage.removeItem( container_pinned_key ); // @TODO
-		});
-
-		$('.qm-button-container-settings,a[href="#qm-settings"]').on('click',function(){
-			show_panel( '#qm-settings' );
-			$('#qm-settings').focus();
-		});
-
 		$('.qm-button-container-position').on('click',function(){
 			container.toggleClass('qm-show-right');
 
