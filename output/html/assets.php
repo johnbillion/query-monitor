@@ -222,8 +222,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$args = array(
 			'title' => $label,
-			'id'    => "query-monitor-{$this->collector->id}",
-			'href'  => '#' . $this->collector->id(),
 		);
 
 		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {

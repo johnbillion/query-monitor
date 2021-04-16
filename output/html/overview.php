@@ -266,18 +266,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		$title[] = sprintf(
 			/* translators: %s: Page load time in seconds with a decimal fraction */
-			esc_html_x( '%s S', 'Page load time', 'query-monitor' ),
+			esc_html_x( '%s S', 'Page load time', 'query-monitor' ), // @TODO
 			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
 			/* translators: %s: Memory usage in kilobytes */
-			esc_html_x( '%s kB', 'Memory usage', 'query-monitor' ),
+			esc_html_x( '%s kB', 'Memory usage', 'query-monitor' ), // @TODO
 			$memory
 		);
-
-		foreach ( $title as &$t ) {
-			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
-		}
 
 		$title = array_merge( $existing, $title );
 

@@ -1,12 +1,28 @@
 import { Icon } from 'qmi';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { __ } from '@wordpress/i18n';
 
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
+import classNames from 'classnames';
 
 export interface iQMProps {
+	menu: {
+		top: {
+			title: string[];
+		};
+		sub: {
+			[k: string]: {
+				id: string;
+				title: string;
+				meta?: {
+					classname: string;
+				}
+			}
+		}
+	};
 	panels: iPanelsProps;
 	panel_menu: iNavMenu;
 }
@@ -30,6 +46,38 @@ export class QM extends React.Component<iQMProps, iState> {
 				active,
 			} );
 		};
+
+		const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
+
+		const adminMenu = adminMenuElement && (
+			<AdminMenu element={ adminMenuElement }>
+				<a className="ab-item" href="#qm-overview">
+					{ this.props.menu.top.title.join( ' ' ) }
+				</a>
+				<div className="ab-sub-wrapper">
+					<ul className="ab-submenu">
+						{ Object.values( this.props.menu.sub ).map( ( menu ) => (
+							<li className={ classNames( menu.meta && menu.meta.classname ) }>
+								<a
+									className="ab-item"
+									href={ `#qm-${ menu.id }` }
+									onClick={ ( e ) => {
+										setActivePanel( menu.id );
+										e.preventDefault();
+									} }
+								>
+									{ menu.title }
+								</a>
+							</li>
+						) ) }
+					</ul>
+				</div>
+			</AdminMenu>
+		);
+
+		if ( ! this.state.active ) {
+			return adminMenu;
+		}
 
 		return (
 			<>
@@ -64,7 +112,35 @@ export class QM extends React.Component<iQMProps, iState> {
 					<Nav menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
 					<Panels { ...this.props.panels } active={ this.state.active }/>
 				</div>
+				{ adminMenu }
 			</>
 		);
+	}
+}
+
+interface iAdminMenuProps {
+	element: HTMLElement;
+}
+
+export class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {
+	el: HTMLElement = document.createElement( 'li' );
+
+	constructor( props: iAdminMenuProps ) {
+		super( props );
+
+		this.el.id = props.element.id;
+		this.el.className = props.element.className;
+	}
+
+	componentDidMount() {
+		this.props.element.replaceWith( this.el );
+	}
+
+	componentWillUnmount() {
+		this.props.element.innerHTML = '';
+	}
+
+	render() {
+		return ReactDOM.createPortal( this.props.children, this.el );
 	}
 }

@@ -27,11 +27,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		request: qm.data.request || null,
 		response: qm.data.response || null,
 		transients: qm.data.transients,
-		active: 'conditionals',
+		active: '', // @TODO put the localStorage selected panel value here
 	};
 
 	ReactDOM.render(
-		<QM panel_menu={ qm.panel_menu } panels={ panels } />,
+		<QM menu={ qm.menu } panel_menu={ qm.panel_menu } panels={ panels } />,
 		document.getElementById( 'query-monitor-main' )
 	);
 } );

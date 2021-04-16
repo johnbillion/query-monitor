@@ -181,7 +181,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id'    => "query-monitor-logger-{$key}",
+			'id'    => "query-monitor-logger-{$key}", // @TODO
 			'title' => sprintf(
 				$label,
 				number_format_i18n( $count )

@@ -420,18 +420,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @param array $output_title List of titles.
 		 */
-		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
-
-		if ( empty( $title ) ) {
-			$title = esc_html__( 'Query Monitor', 'query-monitor' );
-		}
+		$title = apply_filters( 'qm/output/title', array() );
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title'     => sprintf(
-					'<span class="ab-icon">QM</span><span class="ab-label">%s</span>',
-					$title
-				),
+				'title'     => $title,
 				'classname' => $class,
 			),
 			'sub' => array(),
