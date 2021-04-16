@@ -48,26 +48,26 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 							{ __( 'All Matching Rewrite Rules', 'query-monitor' ) }
 						</h3>
 						<table>
+							<tbody>
+								{ Object.keys( data.matching_rewrites ).map( ( rule: keyof typeof data.matching_rewrites ) => {
+									const query = data.matching_rewrites[ rule ];
 
-							{ Object.keys( data.matching_rewrites ).map( ( rule: keyof typeof data.matching_rewrites ) => {
-								const query = data.matching_rewrites[ rule ];
-
-								return (
-									<tr>
-										<td className="qm-ltr">
-											<code>
-												{ rule }
-											</code>
-										</td>
-										<td className="qm-ltr">
-											<code>
-												{ query }
-											</code>
-										</td>
-									</tr>
-								);
-							} ) }
-
+									return (
+										<tr>
+											<td className="qm-ltr">
+												<code>
+													{ rule }
+												</code>
+											</td>
+											<td className="qm-ltr">
+												<code>
+													{ query }
+												</code>
+											</td>
+										</tr>
+									);
+								} ) }
+							</tbody>
 						</table>
 					</section>
 				) }
