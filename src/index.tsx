@@ -33,7 +33,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	};
 
 	ReactDOM.render(
-		<QM menu={ qm.menu } panel_menu={ qm.panel_menu } panels={ panels } panel_key={ panelKey } />,
+		<QM menu={ qm.menu } panel_key={ panelKey } panel_menu={ qm.panel_menu } panels={ panels } />,
 		document.getElementById( 'query-monitor-holder' )
 	);
 } );

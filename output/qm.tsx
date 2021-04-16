@@ -60,7 +60,7 @@ export class QM extends React.Component<iQMProps, iState> {
 				<div className="ab-sub-wrapper">
 					<ul className="ab-submenu">
 						{ Object.values( this.props.menu.sub ).map( ( menu ) => (
-							<li className={ classNames( menu.meta && menu.meta.classname ) }>
+							<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
 								<a
 									className="ab-item"
 									href={ `#qm-${ menu.id }` }
@@ -79,6 +79,7 @@ export class QM extends React.Component<iQMProps, iState> {
 			</AdminMenu>
 		);
 
+		// @TODO lift this up, use compose()
 		localStorage.setItem( this.props.panel_key, this.state.active );
 
 		if ( ! this.state.active ) {

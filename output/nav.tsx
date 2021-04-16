@@ -30,13 +30,13 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 					{ __( 'Query Monitor Menu', 'query-monitor' ) }
 				</h2>
 				<ul role="tablist">
-					<li role="presentation">
+					<li key="overview" role="presentation">
 						<button data-qm-href="#qm-overview" role="tab">
 							{ __( 'Overview', 'query-monitor' ) }
 						</button>
 					</li>
 					{ Object.keys( menu ).map( key => (
-						<li role="presentation">
+						<li key={ key } role="presentation">
 							<button data-qm-href={ menu[ key ].href } role="tab" onClick={ () => {
 								onSwitch( key );
 							} }>
@@ -45,7 +45,7 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 							{ menu[ key ].children && (
 								<ul role="presentation">
 									{ Object.keys( menu[ key ].children ).map( k => (
-										<li role="presentation">
+										<li key={ `${ key }-${ k }` } role="presentation">
 											<button data-qm-href={ menu[ key ].children[ k ].href } role="tab" onClick={ () => {
 												onSwitch( k );
 											} }>
@@ -69,26 +69,26 @@ export class NavSelect extends React.Component<iNavProps, Record<string, unknown
 
 		return (
 			<select>
-				<option value="#qm-overview">
+				<option key="overview" value="#qm-overview">
 					{ __( 'Overview', 'query-monitor' ) }
 				</option>
 				{ Object.keys( menu ).map( key => (
-					<>
+					<React.Fragment key={ key }>
 						<option value={ menu[ key ].href }>
 							{ menu[ key ].title }
 						</option>
 						{ menu[ key ].children && (
 							<>
 								{ Object.keys( menu[ key ].children ).map( k => (
-									<option value={ `└ ${ menu[ key ].children[ k ].href }` }>
+									<option key={ `${ key }-${ k }` } value={ `└ ${ menu[ key ].children[ k ].href }` }>
 										{ menu[ key ].children[ k ].title }
 									</option>
 								) ) }
 							</>
 						) }
-					</>
+					</React.Fragment>
 				) ) }
-				<option value="#qm-settings">
+				<option key="settings" value="#qm-settings">
 					{ __( 'Settings', 'query-monitor' ) }
 				</option>
 			</select>

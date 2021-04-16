@@ -122,6 +122,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 					<>
 						{ Object.keys( this.props.db_queries.data.dbs ).map( key => (
 							<DBQueries
+								key={ key }
 								data={ this.props.db_queries.data.dbs[key] }
 								enabled={ this.props.db_queries.enabled }
 								id="db_queries-wpdb"
