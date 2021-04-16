@@ -199,20 +199,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		$asset_file = require_once $this->qm->plugin_path( 'build/main.asset.php' );
-
 		wp_enqueue_script(
 			'query-monitor-ui',
 			$this->qm->plugin_url( 'build/main.js' ),
-			array_merge(
-				array(
-					'wp-element',
-					'wp-i18n',
-				),
-				$asset_file['dependencies']
-			),
-			$asset_file['version'],
-			true
+			array(),
+			$this->qm->plugin_ver( 'build/main.js' )
 		);
 
 		wp_set_script_translations( 'query-monitor-ui', 'query-monitor' );

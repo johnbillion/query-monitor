@@ -44,7 +44,8 @@ module.exports = {
 		],
 	},
 	plugins: [
-		...defaultConfig.plugins,
+		// The plugins property is being explictly overridden here so the default DependencyExtractionWebpackPlugin
+		// plugin from wp-scripts is not loaded, meaning our dependencies such as React and ReactDOM all get bundled.
 		new BellOnBundlerErrorPlugin(),
 		new webpack.ProvidePlugin( {
 			react: 'react',
