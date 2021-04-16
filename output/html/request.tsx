@@ -76,16 +76,18 @@ class Request extends React.Component<iPanelProps, Record<string, unknown>> {
 					<h3>{ __( 'Query Vars', 'query-monitor' ) }</h3>
 					{ data.qvars && (
 						<table>
-							{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
-								<tr>
-									<th className="qm-ltr" scope="row">
-										{ key }
-									</th>
-									<td className="qm-ltr qm-wrap">
-										{ data.qvars[ key ] }
-									</td>
-								</tr>
-							) ) }
+							<tbody>
+								{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
+									<tr>
+										<th className="qm-ltr" scope="row">
+											{ key }
+										</th>
+										<td className="qm-ltr qm-wrap">
+											{ data.qvars[ key ] }
+										</td>
+									</tr>
+								) ) }
+							</tbody>
 						</table>
 					) }
 				</section>
