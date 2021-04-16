@@ -328,49 +328,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	protected function after_output() {
 		echo '</div>'; // #query-monitor-holder
-
-		echo '<script type="text/javascript">' . "\n\n";
-		?>
-		window.addEventListener('load', function() {
-			var main = document.getElementById( 'query-monitor-main' );
-			var broken = document.getElementById( 'qm-broken' );
-			var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-			var admin_bar = document.getElementById( 'wpadminbar' );
-
-			if ( ( 'undefined' === typeof QM_i18n ) && ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) ) {
-				/* Fallback for worst case scenario */
-
-				if ( 'undefined' === typeof QM_i18n ) {
-					console.error( 'QM error from page: undefined QM_i18n' );
-				}
-
-				if ( main ) {
-					main.className += ' qm-broken';
-				}
-
-				if ( broken ) {
-					console.error( broken.textContent );
-				}
-
-				if ( 'undefined' === typeof jQuery ) {
-					console.error( 'QM error from page: undefined jQuery' );
-				} else if ( ! window.jQuery ) {
-					console.error( 'QM error from page: no jQuery' );
-				}
-
-				if ( menu_item && main ) {
-					menu_item.addEventListener( 'click', function() {
-						main.className += ' qm-show';
-					} );
-				}
-			} else if ( main && ! admin_bar ) {
-				main.className += ' qm-peek';
-			}
-		} );
-		<?php
-		echo '</script>' . "\n\n";
 		echo '<!-- End Query Monitor output -->' . "\n\n";
-
 	}
 
 	public static function size( $var ) {
