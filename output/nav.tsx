@@ -4,6 +4,9 @@ import { __ } from '@wordpress/i18n';
 
 export interface iNavProps {
 	menu: iNavMenu;
+	onSwitch: {
+		( active: string ): void;
+	}
 }
 
 export interface iNavMenu {
@@ -19,6 +22,7 @@ export interface iNavMenuItem {
 export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 	render() {
 		const menu = this.props.menu;
+		const onSwitch = this.props.onSwitch;
 
 		return (
 			<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
@@ -33,14 +37,18 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 					</li>
 					{ Object.keys( menu ).map( key => (
 						<li role="presentation">
-							<button data-qm-href={ menu[ key ].href } role="tab">
+							<button data-qm-href={ menu[ key ].href } role="tab" onClick={ () => {
+								onSwitch( key );
+							} }>
 								{ menu[ key ].title }
 							</button>
 							{ menu[ key ].children && (
 								<ul role="presentation">
 									{ Object.keys( menu[ key ].children ).map( k => (
 										<li role="presentation">
-											<button data-qm-href={ menu[ key ].children[ k ].href } role="tab">
+											<button data-qm-href={ menu[ key ].children[ k ].href } role="tab" onClick={ () => {
+												onSwitch( k );
+											} }>
 												{ menu[ key ].children[ k ].title }
 											</button>
 										</li>

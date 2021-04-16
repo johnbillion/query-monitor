@@ -369,10 +369,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		transform: none !important;
 	}
 
-	.qm {
-		display: none !important;
-	}
-
 	#qm-panel-menu {
 		background: $qm-container-overflow !important;
 		flex-shrink: 0 !important;
@@ -494,10 +490,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		flex-grow: 1 !important;
 		overflow-y: scroll !important;
 		overscroll-behavior: contain !important;
-	}
-
-	.qm.qm-panel-show {
-		display: block !important;
 	}
 
 	.qm:focus {

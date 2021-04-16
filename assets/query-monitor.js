@@ -127,9 +127,7 @@ if ( window.jQuery ) {
 
 		var show_panel = function( panel ) {
 			container.addClass('qm-show').removeClass('qm-hide');
-			$( '.qm' ).removeClass('qm-panel-show');
 			$('#qm-panels').scrollTop(0);
-			$( panel ).addClass('qm-panel-show');
 
 			if ( container.height() < minheight ) {
 				container.height( minheight );
@@ -211,7 +209,6 @@ if ( window.jQuery ) {
 
 		} else {
 			container.addClass('qm-peek').removeClass('qm-hide');
-			$('#qm-overview').addClass('qm-panel-show');
 		}
 
 		$('#qm-panel-menu').find('button').on('click',link_click);

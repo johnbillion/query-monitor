@@ -23,7 +23,7 @@ abstract class QM_Collector {
 	public function __construct() {}
 
 	final public function id() {
-		return "qm-{$this->id}";
+		return $this->id;
 	}
 
 	protected function log_type( $type ) {

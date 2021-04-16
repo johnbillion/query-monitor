@@ -27,6 +27,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		request: qm.data.request || null,
 		response: qm.data.response || null,
 		transients: qm.data.transients,
+		active: 'conditionals',
 	};
 
 	ReactDOM.render(

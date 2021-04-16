@@ -46,120 +46,169 @@ export interface iPanelsProps {
 	request?: QMPanelData;
 	response?: QMPanelData;
 	transients: QMPanelData;
+	active: string;
+}
+
+interface iState {
+	active: string;
 }
 
 declare const qm: iQMConfig;
 
-export class Panels extends React.Component<iPanelsProps, Record<string, unknown>> {
+export class Panels extends React.Component<iPanelsProps, iState> {
+	constructor( props: iPanelsProps ) {
+		super( props );
+
+		this.state = {
+			active: props.active,
+		};
+	}
+
 	render() {
+		const active = this.props.active;
+
 		return (
 			<div id="qm-panels">
-				{ this.props.admin && (
+				{ active === 'admin' && (
 					<Admin
 						data={ this.props.admin.data }
 						enabled={ this.props.admin.enabled }
 						id="admin"
 					/>
 				) }
-				<BlockEditor
-					data={ this.props.block_editor.data }
-					enabled={ this.props.block_editor.enabled }
-					id="block_editor"
-				/>
-				<Caps
-					data={ this.props.caps.data }
-					enabled={ this.props.caps.enabled }
-					id="caps"
-				/>
-				<Conditionals
-					data={ this.props.conditionals.data }
-					enabled={ this.props.conditionals.enabled }
-					id="conditionals"
-				/>
-				<DBCallers
-					data={ this.props.db_callers.data }
-					enabled={ this.props.db_callers.enabled }
-					id="db_callers"
-				/>
-				<DBComponents
-					data={ this.props.db_components.data }
-					enabled={ this.props.db_components.enabled }
-					id="db_components"
-				/>
-				<DBDupes
-					data={ this.props.db_dupes.data }
-					enabled={ this.props.db_dupes.enabled }
-					id="db_dupes"
-				/>
-				{ Object.keys( this.props.db_queries.data.dbs ).map( key => (
-					<DBQueries
-						data={ this.props.db_queries.data.dbs[key] }
-						enabled={ this.props.db_queries.enabled }
-						id="db_queries-wpdb"
+				{ active === 'block_editor' && (
+					<BlockEditor
+						data={ this.props.block_editor.data }
+						enabled={ this.props.block_editor.enabled }
+						id="block_editor"
 					/>
-				) ) }
-				<Environment
-					data={ this.props.environment.data }
-					enabled={ this.props.environment.enabled }
-					id="environment"
-				/>
-				<Hooks
-					data={ this.props.hooks.data }
-					enabled={ this.props.hooks.enabled }
-					id="hooks"
-				/>
-				<HTTP
-					data={ this.props.http.data }
-					enabled={ this.props.http.enabled }
-					id="http"
-				/>
-				{ this.props.logger && (
+				) }
+				{ active === 'caps' && (
+					<Caps
+						data={ this.props.caps.data }
+						enabled={ this.props.caps.enabled }
+						id="caps"
+					/>
+				) }
+				{ active === 'conditionals' && (
+					<Conditionals
+						data={ this.props.conditionals.data }
+						enabled={ this.props.conditionals.enabled }
+						id="conditionals"
+					/>
+				) }
+				{ active === 'db_callers' && (
+					<DBCallers
+						data={ this.props.db_callers.data }
+						enabled={ this.props.db_callers.enabled }
+						id="db_callers"
+					/>
+				) }
+				{ active === 'db_components' && (
+					<DBComponents
+						data={ this.props.db_components.data }
+						enabled={ this.props.db_components.enabled }
+						id="db_components"
+					/>
+				) }
+				{ active === 'db_dupes' && (
+					<DBDupes
+						data={ this.props.db_dupes.data }
+						enabled={ this.props.db_dupes.enabled }
+						id="db_dupes"
+					/>
+				) }
+				{ active === 'db_queries' && (
+					<>
+						{ Object.keys( this.props.db_queries.data.dbs ).map( key => (
+							<DBQueries
+								data={ this.props.db_queries.data.dbs[key] }
+								enabled={ this.props.db_queries.enabled }
+								id="db_queries-wpdb"
+							/>
+						) ) }
+					</>
+				) }
+				{ active === 'environment' && (
+					<Environment
+						data={ this.props.environment.data }
+						enabled={ this.props.environment.enabled }
+						id="environment"
+					/>
+				) }
+				{ active === 'hooks' && (
+					<Hooks
+						data={ this.props.hooks.data }
+						enabled={ this.props.hooks.enabled }
+						id="hooks"
+					/>
+				) }
+				{ active === 'http' && (
+					<HTTP
+						data={ this.props.http.data }
+						enabled={ this.props.http.enabled }
+						id="http"
+					/>
+				) }
+				{ active === 'logger' && (
 					<Logger
 						data={ this.props.logger.data }
 						enabled={ this.props.logger.enabled }
 						id="logger"
 					/>
 				) }
-				<Languages
-					data={ this.props.languages.data }
-					enabled={ this.props.languages.enabled }
-					id="languages"
-				/>
-				{ this.props.php_errors && (
+				{ active === 'languages' && (
+					<Languages
+						data={ this.props.languages.data }
+						enabled={ this.props.languages.enabled }
+						id="languages"
+					/>
+				) }
+				{ active === 'php_errors' && (
 					<PHPErrors
 						data={ this.props.php_errors.data }
 						enabled={ this.props.php_errors.enabled }
 						id="php_errors"
 					/>
 				) }
-				<Request
-					data={ this.props.request.data }
-					enabled={ this.props.request.enabled }
-					id="request"
-				/>
-				<Scripts
-					data={ this.props.assets_scripts.data }
-					enabled={ this.props.assets_scripts.enabled }
-					id="assets_scripts"
-				/>
-				<Styles
-					data={ this.props.assets_styles.data }
-					enabled={ this.props.assets_styles.enabled }
-					id="assets_styles"
-				/>
-				{ this.props.response && (
+				{ active === 'request' && (
+					<Request
+						data={ this.props.request.data }
+						enabled={ this.props.request.enabled }
+						id="request"
+					/>
+				) }
+				{ active === 'assets_scripts' && (
+					<Scripts
+						data={ this.props.assets_scripts.data }
+						enabled={ this.props.assets_scripts.enabled }
+						id="assets_scripts"
+					/>
+				) }
+				{ active === 'assets_styles' && (
+					<Styles
+						data={ this.props.assets_styles.data }
+						enabled={ this.props.assets_styles.enabled }
+						id="assets_styles"
+					/>
+				) }
+				{ active === 'response' && (
 					<Theme
 						data={ this.props.response.data }
 						enabled={ this.props.response.enabled }
 						id="response"
 					/>
 				) }
-				<Transients
-					data={ this.props.transients.data }
-					enabled={ this.props.transients.enabled }
-					id="transients"
-				/>
-				<Settings { ...qm.settings } />
+				{ active === 'transients' && (
+					<Transients
+						data={ this.props.transients.data }
+						enabled={ this.props.transients.enabled }
+						id="transients"
+					/>
+				) }
+				{ active === 'settings' && (
+					<Settings { ...qm.settings } />
+				) }
 			</div>
 		);
 	}
