@@ -13,7 +13,7 @@ export class NonTabular extends React.Component<NonTabularProps, Record<string, 
 			<div className="qm-panel-container" id={ `qm-${ this.props.id }-container` }>
 				<div
 					aria-labelledby={ caption }
-					className="qm qm-non-tabular"
+					className="qm qm-panel-show qm-non-tabular"
 					id={ `qm-${ this.props.id }` }
 					role="tabpanel"
 					tabIndex={ -1 }

@@ -10,7 +10,13 @@ export class Tabular extends React.Component<TabularProps, Record<string, unknow
 		const caption = `qm-${this.props.id}-caption`;
 		return (
 			<div className="qm-panel-container" id={ `qm-${this.props.id}-container` }>
-				<div aria-labelledby={ caption } className="qm" id={ `qm-${this.props.id}` } role="tabpanel" tabIndex={ -1 }>
+				<div
+					aria-labelledby={ caption }
+					className="qm qm-panel-show"
+					id={ `qm-${this.props.id}` }
+					role="tabpanel"
+					tabIndex={ -1 }
+				>
 					<table className="qm-sortable">
 						<caption className="qm-screen-reader-text">
 							<h2 id={ caption }>

@@ -1189,14 +1189,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: none;
 	}
 
-	// No-JS tweaks
-
-	&.qm-no-js .qm-sort-controls,
-	&.qm-no-js .qm-toggle,
-	&.qm-no-js select.qm-filter {
-		display: none !important;
-	}
-
 	// Debug bar add-ons
 
 	.qm.qm-debug-bar {

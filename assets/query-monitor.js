@@ -59,7 +59,6 @@ if ( window.jQuery ) {
 		var body                   = $('body');
 		var body_margin            = body.css('margin-bottom');
 		var container_height_key   = 'qm-container-height';
-		var container_pinned_key   = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
 		var container_position_key = 'qm-container-position';
 		var container_width_key    = 'qm-container-width';
 
