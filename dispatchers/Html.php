@@ -230,26 +230,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$this->before_output();
 
 		foreach ( $this->outputters as $id => $output ) {
-			printf(
-				"\n" . '<!-- Begin %1$s output -->' . "\n",
-				esc_html( $id )
-			);
+			if ( ! $output::$client_side_rendered ) {
+				printf(
+					"\n" . '<!-- Begin %1$s output -->' . "\n",
+					esc_html( $id )
+				);
 
-			if ( $output::$client_side_rendered ) {
-				echo "\t" . '<!-- Client-side rendered -->';
-			} else {
 				printf(
 					"\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
 					esc_html( $id )
 				);
 				$output->output();
 				echo "\n" . '</div>' . "\n";
-			}
 
-			printf(
-				"\n" . '<!-- End %s output -->' . "\n",
-				esc_html( $id )
-			);
+				printf(
+					"\n" . '<!-- End %s output -->' . "\n",
+					esc_html( $id )
+				);
+			}
 		}
 
 		$this->after_output();
