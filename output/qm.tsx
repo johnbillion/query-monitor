@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Icon } from 'qmi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -6,7 +7,6 @@ import { __ } from '@wordpress/i18n';
 
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
-import classNames from 'classnames';
 
 export interface iQMProps {
 	menu: {
@@ -25,6 +25,7 @@ export interface iQMProps {
 	};
 	panels: iPanelsProps;
 	panel_menu: iNavMenu;
+	panel_key: string;
 }
 
 interface iState {
@@ -45,6 +46,7 @@ export class QM extends React.Component<iQMProps, iState> {
 			this.setState( {
 				active,
 			} );
+			// @TODO focus the panel for a11y
 		};
 
 		const adminMenuId = 'wp-admin-bar-query-monitor';
@@ -76,6 +78,8 @@ export class QM extends React.Component<iQMProps, iState> {
 				</div>
 			</AdminMenu>
 		);
+
+		localStorage.setItem( this.props.panel_key, this.state.active );
 
 		if ( ! this.state.active ) {
 			return adminMenu;

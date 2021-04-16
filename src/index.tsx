@@ -7,6 +7,8 @@ import { QM } from '../output/qm';
 declare const qm: iQMConfig;
 
 document.addEventListener( 'DOMContentLoaded', function () {
+	const panelKey = `qm-${ document.body.classList.contains( 'wp-admin' ) ? 'admin' : 'front' }-panel`;
+
 	const panels = {
 		admin: qm.data.admin || null,
 		assets_scripts: qm.data.assets_scripts,
@@ -27,11 +29,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		request: qm.data.request || null,
 		response: qm.data.response || null,
 		transients: qm.data.transients,
-		active: '', // @TODO put the localStorage selected panel value here
+		active: localStorage.getItem( panelKey ),
 	};
 
 	ReactDOM.render(
-		<QM menu={ qm.menu } panel_menu={ qm.panel_menu } panels={ panels } />,
+		<QM menu={ qm.menu } panel_menu={ qm.panel_menu } panels={ panels } panel_key={ panelKey } />,
 		document.getElementById( 'query-monitor-holder' )
 	);
 } );
