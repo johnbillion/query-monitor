@@ -37,11 +37,11 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 
 ## Building the Assets
 
-To compile the Sass files into CSS:
+To compile the CSS and JavaScript:
 
 	npm run build
 
-To start the file watcher which will watch for changes and automatically compile the Sass:
+To start the file watcher which will watch for changes and automatically compile the CSS and JavaScript:
 
 	npm run watch
 

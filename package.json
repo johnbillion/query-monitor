@@ -62,12 +62,11 @@
   },
   "scripts": {
     "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "start": "wp-scripts start",
     "bump:major": "grunt bump:major",
     "bump:minor": "grunt bump:minor",
     "bump:patch": "grunt bump:patch",
     "grunt": "grunt",
     "build": "concurrently \"grunt sass\" \"wp-scripts build\"",
-    "watch": "grunt watch"
+    "watch": "concurrently \"grunt watch\" \"wp-scripts start\""
   }
 }
