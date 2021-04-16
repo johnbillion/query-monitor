@@ -134,7 +134,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$trace       = $query['trace'];
 				$component   = $query['trace']->get_component();
 				$caller      = $query['trace']->get_caller();
-				if ( !is_array( $caller ) ) {
+				if ( ! is_array( $caller ) ) {
 					$caller_name = 'unknown';
 					$caller      = 'unknown';
 				} else {
