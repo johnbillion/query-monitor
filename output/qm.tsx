@@ -47,7 +47,8 @@ export class QM extends React.Component<iQMProps, iState> {
 			} );
 		};
 
-		const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
+		const adminMenuId = 'wp-admin-bar-query-monitor';
+		const adminMenuElement = document.getElementById( adminMenuId );
 
 		const adminMenu = adminMenuElement && (
 			<AdminMenu element={ adminMenuElement }>
@@ -63,6 +64,7 @@ export class QM extends React.Component<iQMProps, iState> {
 									href={ `#qm-${ menu.id }` }
 									onClick={ ( e ) => {
 										setActivePanel( menu.id );
+										document.getElementById( adminMenuId ).classList.remove( 'hover' );
 										e.preventDefault();
 									} }
 								>

@@ -63,12 +63,6 @@ if ( window.jQuery ) {
 		var container_position_key = 'qm-container-position';
 		var container_width_key    = 'qm-container-width';
 
-		if ( container.hasClass('qm-peek') ) {
-			minheight = 27;
-		}
-
-		container.removeClass('qm-no-js').addClass('qm-js');
-
 		if ( $('#qm-fatal').length ) {
 			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
 
@@ -107,19 +101,6 @@ if ( window.jQuery ) {
 				$('#wp-admin-bar-query-monitor ul').append(fatal_container);
 			}
 		}
-
-		var link_click = function(e){
-			var href = $( this ).attr('href') || $( this ).data('qm-href');
-
-			if ( '#qm-fatal' === href ) {
-				return;
-			}
-
-			show_panel( href );
-			$(href).focus();
-			$('#wp-admin-bar-query-monitor').removeClass('hover');
-			e.preventDefault();
-		};
 
 		var stripes = function( table ) {
 			table.each(function() {
@@ -176,8 +157,6 @@ if ( window.jQuery ) {
 		if ( ! $('#wp-admin-bar-query-monitor').length ) {
 			container.addClass('qm-peek').removeClass('qm-hide');
 		}
-
-		$('#qm-panel-menu').find('button').on('click',link_click);
 
 		container.find('.qm-filter').on('change',function(e){
 			if ( 'qm-editor-select' === $( this ).attr('name') ) {
@@ -634,38 +613,3 @@ if ( window.jQuery ) {
 	})(jQuery);
 
 }
-
-window.addEventListener('load', function() {
-	var main = document.getElementById( 'query-monitor-main' );
-	var broken = document.getElementById( 'qm-broken' );
-	var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-
-	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
-		/* Fallback for running without jQuery (`QM_NO_JQUERY`) or when jQuery is broken */
-
-		if ( main ) {
-			main.className += ' qm-broken';
-		}
-
-		if ( broken ) {
-			console.error( broken.textContent );
-		}
-
-		if ( 'undefined' === typeof jQuery ) {
-			console.error( 'QM error from JS: undefined jQuery' );
-		} else if ( ! window.jQuery ) {
-			console.error( 'QM error from JS: no jQuery' );
-		}
-
-		if ( menu_item && main ) {
-			menu_item.addEventListener( 'click', function() {
-				main.className += ' qm-show';
-			} );
-		}
-	}
-
-	if ( ! main ) {
-		// QM's output has disappeared
-		console.error( 'QM error from JS: QM output does not exist' );
-	}
-} );
