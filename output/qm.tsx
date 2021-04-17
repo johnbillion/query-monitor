@@ -9,6 +9,7 @@ import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
 
 export interface iQMProps {
+	adminMenuElement?: HTMLElement;
 	menu: {
 		top: {
 			title: string[];
@@ -49,8 +50,7 @@ export class QM extends React.Component<iQMProps, iState> {
 			// @TODO focus the panel for a11y
 		};
 
-		const adminMenuId = 'wp-admin-bar-query-monitor';
-		const adminMenuElement = document.getElementById( adminMenuId );
+		const adminMenuElement = this.props.adminMenuElement;
 
 		const adminMenu = adminMenuElement && (
 			<AdminMenu element={ adminMenuElement }>

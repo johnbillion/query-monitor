@@ -33,7 +33,13 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	};
 
 	ReactDOM.render(
-		<QM menu={ qm.menu } panel_key={ panelKey } panel_menu={ qm.panel_menu } panels={ panels } />,
+		<QM
+			adminMenuElement={ document.getElementById( 'wp-admin-bar-query-monitor' ) }
+			menu={ qm.menu }
+			panel_key={ panelKey }
+			panel_menu={ qm.panel_menu }
+			panels={ panels }
+		/>,
 		document.getElementById( 'query-monitor-container' )
 	);
 } );
