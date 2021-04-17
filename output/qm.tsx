@@ -9,6 +9,7 @@ import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
 
 export interface iQMProps {
+	active: string;
 	adminMenuElement?: HTMLElement;
 	menu: {
 		top: {
@@ -38,7 +39,7 @@ export class QM extends React.Component<iQMProps, iState> {
 		super( props );
 
 		this.state = {
-			active: props.panels.active,
+			active: props.active,
 		};
 	}
 

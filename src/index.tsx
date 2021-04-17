@@ -29,11 +29,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		request: qm.data.request || null,
 		response: qm.data.response || null,
 		transients: qm.data.transients,
-		active: localStorage.getItem( panelKey ),
 	};
 
 	ReactDOM.render(
 		<QM
+			active={ localStorage.getItem( panelKey ) }
 			adminMenuElement={ document.getElementById( 'wp-admin-bar-query-monitor' ) }
 			menu={ qm.menu }
 			panel_key={ panelKey }

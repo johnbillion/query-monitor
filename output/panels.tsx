@@ -46,7 +46,7 @@ export interface iPanelsProps {
 	request?: QMPanelData;
 	response?: QMPanelData;
 	transients: QMPanelData;
-	active: string;
+	active?: string;
 }
 
 interface iState {
@@ -56,14 +56,6 @@ interface iState {
 declare const qm: iQMConfig;
 
 export class Panels extends React.Component<iPanelsProps, iState> {
-	constructor( props: iPanelsProps ) {
-		super( props );
-
-		this.state = {
-			active: props.active,
-		};
-	}
-
 	render() {
 		const active = this.props.active;
 
