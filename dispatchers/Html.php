@@ -321,11 +321,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="query-monitor-holder">';
+		echo '<div id="query-monitor-container">';
 	}
 
 	protected function after_output() {
-		echo '</div>'; // #query-monitor-holder
+		echo '</div>'; // #query-monitor-container
 		echo '<!-- End Query Monitor output -->' . "\n\n";
 	}
 
