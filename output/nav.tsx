@@ -15,7 +15,7 @@ export interface iNavMenu {
 }
 
 export interface iNavMenuItem {
-	href: string;
+	panel: string;
 	title: string;
 	children?: iNavMenu;
 }
@@ -41,10 +41,10 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 					{ Object.keys( menu ).map( key => (
 						<li key={ key } role="presentation">
 							<button
-								aria-selected={ this.props.active === key }
+								aria-selected={ this.props.active === menu[ key ].panel }
 								role="tab"
 								onClick={ () => {
-									onSwitch( key );
+									onSwitch( menu[ key ].panel );
 								} }
 							>
 								{ menu[ key ].title }
@@ -54,13 +54,13 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 									{ Object.keys( menu[ key ].children ).map( k => (
 										<li key={ `${ key }-${ k }` } role="presentation">
 											<button
-												aria-selected={ this.props.active === k }
+												aria-selected={ this.props.active === menu[ key ].children[ k ].panel }
 												role="tab"
 												onClick={ () => {
-													onSwitch( k );
+													onSwitch( menu[ key ].children[ k ].panel );
 												} }
 											>
-												{ menu[ key ].children[ k ].title }
+												{ `└ ${ menu[ key ].children[ k ].title }` }
 											</button>
 										</li>
 									) ) }
@@ -85,14 +85,14 @@ export class NavSelect extends React.Component<iNavProps, Record<string, unknown
 				</option>
 				{ Object.keys( menu ).map( key => (
 					<React.Fragment key={ key }>
-						<option value={ menu[ key ].href }>
+						<option value={ menu[ key ].panel }>
 							{ menu[ key ].title }
 						</option>
 						{ menu[ key ].children && (
 							<>
 								{ Object.keys( menu[ key ].children ).map( k => (
-									<option key={ `${ key }-${ k }` } value={ `└ ${ menu[ key ].children[ k ].href }` }>
-										{ menu[ key ].children[ k ].title }
+									<option key={ `${ key }-${ k }` } value={ menu[ key ].children[ k ].panel }>
+										{ `└ ${ menu[ key ].children[ k ].title }` }
 									</option>
 								) ) }
 							</>

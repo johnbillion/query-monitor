@@ -161,17 +161,9 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 		$data  = $this->collector->get_data();
-		$key   = 'log';
 		$count = 0;
 
 		if ( ! empty( $data['logs'] ) ) {
-			foreach ( $data['logs'] as $log ) {
-				if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
-					$key = 'warning';
-					break;
-				}
-			}
-
 			$count = count( $data['logs'] );
 
 			/* translators: %s: Number of logs that are available */
@@ -181,7 +173,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id'    => "query-monitor-logger-{$key}", // @TODO
 			'title' => sprintf(
 				$label,
 				number_format_i18n( $count )

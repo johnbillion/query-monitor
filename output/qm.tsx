@@ -18,6 +18,7 @@ export interface iQMProps {
 		sub: {
 			[k: string]: {
 				id: string;
+				panel: string;
 				title: string;
 				meta?: {
 					classname: string;
@@ -55,7 +56,15 @@ export class QM extends React.Component<iQMProps, iState> {
 
 		const adminMenu = adminMenuElement && (
 			<AdminMenu element={ adminMenuElement }>
-				<a className="ab-item" href="#qm-overview">
+				<a
+					className="ab-item"
+					href="#qm-overview"
+					onClick={ ( e ) => {
+						setActivePanel( 'overview' );
+						adminMenuElement.classList.remove( 'hover' );
+						e.preventDefault();
+					} }
+				>
 					{ this.props.menu.top.title.join( ' ' ) }
 				</a>
 				<div className="ab-sub-wrapper">
@@ -64,9 +73,9 @@ export class QM extends React.Component<iQMProps, iState> {
 							<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
 								<a
 									className="ab-item"
-									href={ `#qm-${ menu.id }` }
+									href={ `#qm-${ menu.panel }` }
 									onClick={ ( e ) => {
-										setActivePanel( menu.id );
+										setActivePanel( menu.panel );
 										adminMenuElement.classList.remove( 'hover' );
 										e.preventDefault();
 									} }

@@ -342,11 +342,10 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	protected function menu( array $args ) {
-
 		return array_merge( array(
-			'id' => $this->collector->id,
+			'id'    => $this->collector->id,
+			'panel' => $this->collector->id,
 		), $args );
-
 	}
 
 	/**
