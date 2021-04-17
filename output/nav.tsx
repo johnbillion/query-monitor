@@ -3,6 +3,7 @@ import * as React from 'react';
 import { __ } from '@wordpress/i18n';
 
 export interface iNavProps {
+	active: string;
 	menu: iNavMenu;
 	onSwitch: {
 		( active: string ): void;
@@ -31,24 +32,34 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 				</h2>
 				<ul role="tablist">
 					<li key="overview" role="presentation">
-						<button role="tab">
+						<button aria-selected={ this.props.active === 'overview' } role="tab" onClick={ () => {
+							onSwitch( 'overview' );
+						} }>
 							{ __( 'Overview', 'query-monitor' ) }
 						</button>
 					</li>
 					{ Object.keys( menu ).map( key => (
 						<li key={ key } role="presentation">
-							<button role="tab" onClick={ () => {
-								onSwitch( key );
-							} }>
+							<button
+								aria-selected={ this.props.active === key }
+								role="tab"
+								onClick={ () => {
+									onSwitch( key );
+								} }
+							>
 								{ menu[ key ].title }
 							</button>
 							{ menu[ key ].children && (
 								<ul role="presentation">
 									{ Object.keys( menu[ key ].children ).map( k => (
 										<li key={ `${ key }-${ k }` } role="presentation">
-											<button role="tab" onClick={ () => {
-												onSwitch( k );
-											} }>
+											<button
+												aria-selected={ this.props.active === k }
+												role="tab"
+												onClick={ () => {
+													onSwitch( k );
+												} }
+											>
 												{ menu[ key ].children[ k ].title }
 											</button>
 										</li>

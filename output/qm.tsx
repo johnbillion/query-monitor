@@ -95,7 +95,7 @@ export class QM extends React.Component<iQMProps, iState> {
 							{ __( 'Query Monitor', 'query-monitor' ) }
 						</h1>
 						<div className="qm-title-heading">
-							<NavSelect menu={ this.props.panel_menu } onSwitch={ setActivePanel }/>
+							<NavSelect active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel }/>
 						</div>
 						<button
 							aria-label={ __( 'Settings', 'query-monitor' ) }
@@ -123,7 +123,7 @@ export class QM extends React.Component<iQMProps, iState> {
 						</button>
 					</div>
 					<div id="qm-wrapper">
-						<Nav menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
+						<Nav active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
 						<Panels { ...this.props.panels } active={ this.state.active }/>
 					</div>
 				</div>
