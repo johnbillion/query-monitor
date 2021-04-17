@@ -31,13 +31,13 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 				</h2>
 				<ul role="tablist">
 					<li key="overview" role="presentation">
-						<button data-qm-href="#qm-overview" role="tab">
+						<button role="tab">
 							{ __( 'Overview', 'query-monitor' ) }
 						</button>
 					</li>
 					{ Object.keys( menu ).map( key => (
 						<li key={ key } role="presentation">
-							<button data-qm-href={ menu[ key ].href } role="tab" onClick={ () => {
+							<button role="tab" onClick={ () => {
 								onSwitch( key );
 							} }>
 								{ menu[ key ].title }
@@ -46,7 +46,7 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 								<ul role="presentation">
 									{ Object.keys( menu[ key ].children ).map( k => (
 										<li key={ `${ key }-${ k }` } role="presentation">
-											<button data-qm-href={ menu[ key ].children[ k ].href } role="tab" onClick={ () => {
+											<button role="tab" onClick={ () => {
 												onSwitch( k );
 											} }>
 												{ menu[ key ].children[ k ].title }

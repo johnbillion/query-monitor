@@ -543,7 +543,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$id          = $this->collector->id() . '-' . $name_attr;
 				$menu[ $id ] = $this->menu( array(
 					'id'    => sprintf( // @TODO
-						'query-monitor-%s-db-%s',
+						'%s-db-%s',
 						$this->collector->id(),
 						$name_attr
 					),
@@ -558,10 +558,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$id          = $this->collector->id() . '-$wpdb';
 			$menu[ $id ] = $this->menu( array(
 				'title' => __( 'Queries', 'query-monitor' ),
-				'href'  => sprintf(
-					'#%s-wpdb',
-					$this->collector->id()
-				),
 			) );
 		}
 
@@ -570,7 +566,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$count       = count( $errors );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => 'query-monitor-errors',
-				'href'  => '#qm-query-errors',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of database errors */
 					__( 'Database Errors (%s)', 'query-monitor' ),
@@ -584,7 +579,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$count       = count( $expensive );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => 'query-monitor-expensive',
-				'href'  => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of slow database queries */
 					__( 'Slow Queries (%s)', 'query-monitor' ),
@@ -603,7 +597,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			if ( isset( $menu[ $id ] ) ) {
 				$menu[ $id ]['title'] = $menu[ $id ]['title'];
 
-				$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+				$menu['db_queries-$wpdb']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
 			}
 		}
