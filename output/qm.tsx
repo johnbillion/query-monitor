@@ -66,7 +66,7 @@ export class QM extends React.Component<iQMProps, iState> {
 									href={ `#qm-${ menu.id }` }
 									onClick={ ( e ) => {
 										setActivePanel( menu.id );
-										document.getElementById( adminMenuId ).classList.remove( 'hover' );
+										adminMenuElement.classList.remove( 'hover' );
 										e.preventDefault();
 									} }
 								>
@@ -82,51 +82,49 @@ export class QM extends React.Component<iQMProps, iState> {
 		// @TODO lift this up, use compose()
 		localStorage.setItem( this.props.panel_key, this.state.active );
 
-		if ( ! this.state.active ) {
-			return adminMenu;
-		}
-
 		return (
 			<>
-				<div dir="ltr" id="query-monitor-main">
-					<div className="qm-resizer" id="qm-side-resizer"></div>
-					<div className="qm-resizer" id="qm-title">
-						<h1 className="qm-title-heading">
-							{ __( 'Query Monitor', 'query-monitor' ) }
-						</h1>
-						<div className="qm-title-heading">
-							<NavSelect active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel }/>
+				{ this.state.active && (
+					<div dir="ltr" id="query-monitor-main">
+						<div className="qm-resizer" id="qm-side-resizer"></div>
+						<div className="qm-resizer" id="qm-title">
+							<h1 className="qm-title-heading">
+								{ __( 'Query Monitor', 'query-monitor' ) }
+							</h1>
+							<div className="qm-title-heading">
+								<NavSelect active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel }/>
+							</div>
+							<button
+								aria-label={ __( 'Settings', 'query-monitor' ) }
+								className="qm-title-button qm-button-container-settings"
+								onClick={ () => {
+									setActivePanel( 'settings' );
+								} }
+							>
+								<Icon name="admin-generic"/>
+							</button>
+							<button
+								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
+								className="qm-title-button qm-button-container-position"
+							>
+								<Icon name="image-rotate-left"/>
+							</button>
+							<button
+								aria-label={ __( 'Close Panel', 'query-monitor' ) }
+								className="qm-title-button qm-button-container-close"
+								onClick={ () => {
+									setActivePanel( '' );
+								} }
+							>
+								<Icon name="no-alt"/>
+							</button>
 						</div>
-						<button
-							aria-label={ __( 'Settings', 'query-monitor' ) }
-							className="qm-title-button qm-button-container-settings"
-							onClick={ () => {
-								setActivePanel( 'settings' );
-							} }
-						>
-							<Icon name="admin-generic"/>
-						</button>
-						<button
-							aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
-							className="qm-title-button qm-button-container-position"
-						>
-							<Icon name="image-rotate-left"/>
-						</button>
-						<button
-							aria-label={ __( 'Close Panel', 'query-monitor' ) }
-							className="qm-title-button qm-button-container-close"
-							onClick={ () => {
-								setActivePanel( '' );
-							} }
-						>
-							<Icon name="no-alt"/>
-						</button>
+						<div id="qm-wrapper">
+							<Nav active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
+							<Panels { ...this.props.panels } active={ this.state.active }/>
+						</div>
 					</div>
-					<div id="qm-wrapper">
-						<Nav active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
-						<Panels { ...this.props.panels } active={ this.state.active }/>
-					</div>
-				</div>
+				) }
 				{ adminMenu }
 			</>
 		);
@@ -138,24 +136,13 @@ interface iAdminMenuProps {
 }
 
 export class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {
-	el: HTMLElement = document.createElement( 'li' );
-
 	constructor( props: iAdminMenuProps ) {
 		super( props );
 
-		this.el.id = props.element.id;
-		this.el.className = props.element.className;
-	}
-
-	componentDidMount() {
-		this.props.element.replaceWith( this.el );
-	}
-
-	componentWillUnmount() {
 		this.props.element.innerHTML = '';
 	}
 
 	render() {
-		return ReactDOM.createPortal( this.props.children, this.el );
+		return ReactDOM.createPortal( this.props.children, this.props.element );
 	}
 }
