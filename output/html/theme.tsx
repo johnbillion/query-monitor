@@ -70,7 +70,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 							</h3>
 							<ol className="qm-ltr">
 								{ data.template_hierarchy.map( ( template: string ) => (
-									<li>
+									<li key={ template }>
 										{ template }
 									</li>
 								) ) }
@@ -86,7 +86,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 					{ data.template_parts ? (
 						<ul className="qm-ltr">
 							{ Object.keys( parts ).map( ( filename ) => (
-								<li>
+								<li key={ filename }>
 									{ parts[ filename ] }
 									{ data.count_template_parts[ filename ] > 1 && (
 										<span className="qm-info qm-supplemental">
@@ -148,7 +148,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 						</h3>
 						<ul className="qm-ltr">
 							{ data.timber_files.map( ( filename: string ) => (
-								<li>
+								<li key={ filename }>
 									{ filename }
 								</li>
 							) ) }
@@ -163,7 +163,7 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 						</h3>
 						<ul className="qm-ltr">
 							{ data.body_class.map( ( bodyclass: string ) => (
-								<li>
+								<li key={ bodyclass }>
 									{ bodyclass }
 								</li>
 							) ) }
