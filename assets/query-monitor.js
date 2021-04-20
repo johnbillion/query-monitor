@@ -48,7 +48,7 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var toolbarHeight          = $('#wpadminbar').outerHeight();
+		var toolbarHeight          = $('#wpadminbar').length ? $('#wpadminbar').outerHeight() : 0;
 		var minheight              = 100;
 		var maxheight              = ( $(window).height() - toolbarHeight );
 		var minwidth               = 300;
