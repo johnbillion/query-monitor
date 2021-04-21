@@ -872,8 +872,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		box-shadow: none !important;
 	}
 
-	.qm tbody tr.qm-odd td,
-	.qm tbody tr.qm-odd th {
+	.qm tbody tr:nth-child(odd) td,
+	.qm tbody tr:nth-child(odd) th {
 		background: $qm-cell-bg-stripe !important;
 	}
 
@@ -892,10 +892,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: $qm-warn-fg !important;
 	}
 
-	.qm tbody tr.qm-odd th.qm-warn,
-	.qm tbody tr.qm-odd td.qm-warn,
-	.qm tbody tr.qm-odd.qm-warn td,
-	.qm tbody tr.qm-odd.qm-warn th {
+	.qm tbody tr:nth-child(odd) th.qm-warn,
+	.qm tbody tr:nth-child(odd) td.qm-warn,
+	.qm tbody tr:nth-child(odd).qm-warn td,
+	.qm tbody tr:nth-child(odd).qm-warn th {
 		background-color: darken( $qm-warn-bg, 1.5% ) !important;
 	}
 
@@ -934,16 +934,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: $qm-cell-fg-highlight !important;
 	}
 
-	.qm tbody tr.qm-odd td.qm-highlight,
-	.qm tbody tr.qm-odd.qm-highlight td {
+	.qm tbody tr:nth-child(odd) td.qm-highlight,
+	.qm tbody tr:nth-child(odd).qm-highlight td {
 		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
 		color: $qm-cell-fg-highlight !important;
 	}
 
-	.qm tbody tr.qm-odd.qm-hovered th,
-	.qm tbody tr.qm-odd.qm-hovered td,
-	.qm tbody tr.qm-odd:hover th,
-	.qm tbody tr.qm-odd:hover td,
+	.qm tbody tr:nth-child(odd).qm-hovered th,
+	.qm tbody tr:nth-child(odd).qm-hovered td,
+	.qm tbody tr:nth-child(odd):hover th,
+	.qm tbody tr:nth-child(odd):hover td,
 	.qm tbody tr.qm-hovered th,
 	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
