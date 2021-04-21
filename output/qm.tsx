@@ -54,41 +54,6 @@ export class QM extends React.Component<iQMProps, iState> {
 
 		const adminMenuElement = this.props.adminMenuElement;
 
-		const adminMenu = adminMenuElement && (
-			<AdminMenu element={ adminMenuElement }>
-				<a
-					className="ab-item"
-					href="#qm-overview"
-					onClick={ ( e ) => {
-						setActivePanel( 'overview' );
-						adminMenuElement.classList.remove( 'hover' );
-						e.preventDefault();
-					} }
-				>
-					{ this.props.menu.top.title.join( ' ' ) }
-				</a>
-				<div className="ab-sub-wrapper">
-					<ul className="ab-submenu">
-						{ Object.values( this.props.menu.sub ).map( ( menu ) => (
-							<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
-								<a
-									className="ab-item"
-									href={ `#qm-${ menu.panel }` }
-									onClick={ ( e ) => {
-										setActivePanel( menu.panel );
-										adminMenuElement.classList.remove( 'hover' );
-										e.preventDefault();
-									} }
-								>
-									{ menu.title }
-								</a>
-							</li>
-						) ) }
-					</ul>
-				</div>
-			</AdminMenu>
-		);
-
 		// @TODO lift this up, use compose()
 		localStorage.setItem( this.props.panel_key, this.state.active );
 
@@ -135,7 +100,40 @@ export class QM extends React.Component<iQMProps, iState> {
 						</div>
 					</div>
 				) }
-				{ adminMenu }
+				{ adminMenuElement && (
+					<AdminMenu element={ adminMenuElement }>
+						<a
+							className="ab-item"
+							href="#qm-overview"
+							onClick={ ( e ) => {
+								setActivePanel( 'overview' );
+								adminMenuElement.classList.remove( 'hover' );
+								e.preventDefault();
+							} }
+						>
+							{ this.props.menu.top.title.join( ' ' ) }
+						</a>
+						<div className="ab-sub-wrapper">
+							<ul className="ab-submenu">
+								{ Object.values( this.props.menu.sub ).map( ( menu ) => (
+									<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
+										<a
+											className="ab-item"
+											href={ `#qm-${ menu.panel }` }
+											onClick={ ( e ) => {
+												setActivePanel( menu.panel );
+												adminMenuElement.classList.remove( 'hover' );
+												e.preventDefault();
+											} }
+										>
+											{ menu.title }
+										</a>
+									</li>
+								) ) }
+							</ul>
+						</div>
+					</AdminMenu>
+				) }
 			</>
 		);
 	}
@@ -145,7 +143,7 @@ interface iAdminMenuProps {
 	element: HTMLElement;
 }
 
-export class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {
+class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {
 	constructor( props: iAdminMenuProps ) {
 		super( props );
 
