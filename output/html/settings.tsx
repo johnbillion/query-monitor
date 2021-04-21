@@ -123,14 +123,13 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 								} }
 							>
 								{ Object.keys( editors ).map( ( key: keyof typeof editors ) => (
-									<>
-										<option
-											selected={ editors[ key ] === editor }
-											value={ editors[ key ] }
-										>
-											{ key }
-										</option>
-									</>
+									<option
+										key={ key }
+										selected={ editors[ key ] === editor }
+										value={ editors[ key ] }
+									>
+										{ key }
+									</option>
 								) ) }
 							</select>
 						</p>
