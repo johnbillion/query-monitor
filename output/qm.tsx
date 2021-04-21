@@ -60,7 +60,7 @@ export class QM extends React.Component<iQMProps, iState> {
 		return (
 			<>
 				{ this.state.active && (
-					<div dir="ltr" id="query-monitor-main">
+					<div className="qm-show" dir="ltr" id="query-monitor-main">
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 						<div className="qm-resizer" id="qm-title">
 							<h1 className="qm-title-heading">
