@@ -13,6 +13,8 @@
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
