@@ -451,12 +451,6 @@ if ( window.jQuery ) {
 				localStorage.removeItem( container_position_key );
 			}
 		});
-
-		$('.qm-title-heading select').on('change',function(){
-			show_panel( $(this).val() );
-			$($(this).val()).focus();
-		});
-
 	} );
 
 	/**
