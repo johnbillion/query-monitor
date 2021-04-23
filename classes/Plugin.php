@@ -9,7 +9,7 @@ if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
 	private $plugin = array();
-	public static $minimum_php_version = '5.4.0';
+	public static $minimum_php_version = '7.0.0';
 
 	/**
 	 * Class constructor
