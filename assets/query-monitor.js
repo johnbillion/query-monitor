@@ -143,10 +143,6 @@ if ( window.jQuery ) {
 
 		};
 
-		if ( ! $('#wp-admin-bar-query-monitor').length ) {
-			container.addClass('qm-peek').removeClass('qm-hide');
-		}
-
 		container.find('.qm-filter').on('change',function(e){
 			if ( 'qm-editor-select' === $( this ).attr('name') ) {
 				return;
@@ -390,27 +386,25 @@ if ( window.jQuery ) {
 		var p = localStorage.getItem( container_position_key );
 		var h = localStorage.getItem( container_height_key );
 		var w = localStorage.getItem( container_width_key );
-		if ( ! container.hasClass('qm-peek') ) {
-			if ( p === 'right' ) {
-				if ( w !== null ) {
-					if ( w < minwidth ) {
-						w = minwidth;
-					}
-					if ( w > maxwidth ) {
-						w = maxwidth;
-					}
-					container.width( w );
+		if ( p === 'right' ) {
+			if ( w !== null ) {
+				if ( w < minwidth ) {
+					w = minwidth;
 				}
-				container.addClass('qm-show-right');
-			} else if ( p !== 'right' && h !== null ) {
-				if ( h < minheight ) {
-					h = minheight;
+				if ( w > maxwidth ) {
+					w = maxwidth;
 				}
-				if ( h > maxheight ) {
-					h = maxheight;
-				}
-				container.height( h );
+				container.width( w );
 			}
+			container.addClass('qm-show-right');
+		} else if ( p !== 'right' && h !== null ) {
+			if ( h < minheight ) {
+				h = minheight;
+			}
+			if ( h > maxheight ) {
+				h = maxheight;
+			}
+			container.height( h );
 		}
 
 		$(window).on('resize', function(){

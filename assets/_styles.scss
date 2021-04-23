@@ -217,14 +217,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		font-style: italic !important;
 	}
 
-	&.qm-show,
-	&.qm-peek {
+	&.qm-show {
 		display: flex;
 		flex-direction: column !important;
-		height: 27px;
-	}
-
-	&.qm-show {
 		height: 40%;
 		width: 40%;
 	}
@@ -256,11 +251,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			top: 0 !important;
 			width: 4px !important;
 			z-index: 2 !important;
-		}
-
-		&.qm-peek {
-			height: 100vh !important;
-			top: 0 !important;
 		}
 	}
 
