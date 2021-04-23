@@ -80,21 +80,24 @@ export class NavSelect extends React.Component<iNavProps, Record<string, unknown
 		const onSwitch = this.props.onSwitch;
 
 		return (
-			<select onChange={ ( e ) => {
-				onSwitch( e.target.value );
-			} }>
+			<select
+				value={ this.props.active }
+				onChange={ ( e ) => {
+					onSwitch( e.target.value );
+				} }
+			>
 				<option key="overview" value="#qm-overview">
 					{ __( 'Overview', 'query-monitor' ) }
 				</option>
 				{ Object.keys( menu ).map( key => (
 					<React.Fragment key={ key }>
-						<option selected={ this.props.active === menu[ key ].panel } value={ menu[ key ].panel }>
+						<option value={ menu[ key ].panel }>
 							{ menu[ key ].title }
 						</option>
 						{ menu[ key ].children && (
 							<>
 								{ Object.keys( menu[ key ].children ).map( k => (
-									<option key={ `${ key }-${ k }` } selected={ this.props.active === menu[ key ].children[ k ].panel } value={ menu[ key ].children[ k ].panel }>
+									<option key={ `${ key }-${ k }` } value={ menu[ key ].children[ k ].panel }>
 										{ `└ ${ menu[ key ].children[ k ].title }` }
 									</option>
 								) ) }
