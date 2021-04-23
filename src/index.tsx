@@ -8,6 +8,7 @@ declare const qm: iQMConfig;
 
 document.addEventListener( 'DOMContentLoaded', function () {
 	const panelKey = `qm-${ document.body.classList.contains( 'wp-admin' ) ? 'admin' : 'front' }-panel`;
+	const positionKey = 'qm-container-position';
 
 	const panels = {
 		admin: qm.data.admin || null,
@@ -39,6 +40,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			panel_key={ panelKey }
 			panel_menu={ qm.panel_menu }
 			panels={ panels }
+			position_key={ positionKey }
+			side={ localStorage.getItem( positionKey ) === 'right' }
 		/>,
 		document.getElementById( 'query-monitor-container' )
 	);

@@ -29,10 +29,13 @@ export interface iQMProps {
 	panels: iPanelsProps;
 	panel_menu: iNavMenu;
 	panel_key: string;
+	position_key: string;
+	side: boolean;
 }
 
 interface iState {
 	active: string;
+	side: boolean;
 }
 
 export class QM extends React.Component<iQMProps, iState> {
@@ -41,6 +44,7 @@ export class QM extends React.Component<iQMProps, iState> {
 
 		this.state = {
 			active: props.active,
+			side: props.side,
 		};
 	}
 
@@ -56,11 +60,16 @@ export class QM extends React.Component<iQMProps, iState> {
 
 		// @TODO lift this up, use compose()
 		localStorage.setItem( this.props.panel_key, this.state.active );
+		localStorage.setItem( this.props.position_key, this.state.side ? 'right' : '' );
+
+		const mainClass = classNames( 'qm-show', {
+			'qm-show-right': this.state.side,
+		} );
 
 		return (
 			<>
 				{ this.state.active && (
-					<div className="qm-show" dir="ltr" id="query-monitor-main">
+					<div className={ mainClass } dir="ltr" id="query-monitor-main">
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 						<div className="qm-resizer" id="qm-title">
 							<h1 className="qm-title-heading">
@@ -81,6 +90,11 @@ export class QM extends React.Component<iQMProps, iState> {
 							<button
 								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
 								className="qm-title-button qm-button-container-position"
+								onClick={ () => {
+									this.setState( {
+										side: ! this.state.side,
+									} );
+								} }
 							>
 								<Icon name="image-rotate-left"/>
 							</button>
