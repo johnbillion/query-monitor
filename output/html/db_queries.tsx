@@ -15,6 +15,32 @@ interface iDBQueriesProps extends iPanelProps {
 
 class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>> {
 
+	formatSQL( sql: string ) {
+		const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
+		const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
+		const lines = formatted.split( new RegExp( lineRegex ) );
+		const collection: JSX.Element[] = [];
+		let index = 0;
+
+		formatted.replace( new RegExp( lineRegex, 'g' ), ( match, keyword ) => {
+			index += 2;
+
+			collection.push(
+				<>
+					{ index > 2 && (
+						<br />
+					) }
+					<b>{ keyword }</b>
+					{ ` ${ lines[ index ] }` }
+				</>
+			);
+
+			return '';
+		} );
+
+		return collection;
+	}
+
 	render() {
 		const { data } = this.props;
 
@@ -59,7 +85,9 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 								{ 1 + i }
 							</th>
 							<td className="qm-row-sql qm-ltr qm-wrap">
-								{ row.sql }
+								<code>
+									{ this.formatSQL( row.sql ) }
+								</code>
 							</td>
 							{ /* <Caller trace={row.filtered_trace} /> */ }
 							{ /* <QMComponent component={row.component} /> */ }
