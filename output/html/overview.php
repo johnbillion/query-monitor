@@ -157,15 +157,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $data['wp_memory_limit'] / 1024 )
 				) );
 				echo '</span>';
-			} else {
-				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
-				printf(
-				/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
-					esc_html__( 'No WordPress memory limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
-					'<code>memory_limit</code>',
-					'0'
-				);
-				echo '</span>';
 			}
 		}
 
