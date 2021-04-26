@@ -942,12 +942,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm tbody tr td.qm-highlight,
+	.qm tbody tr.qm-highlight th,
 	.qm tbody tr.qm-highlight td {
 		background-color: $qm-cell-bg-highlight !important;
 		color: $qm-cell-fg-highlight !important;
 	}
 
 	.qm tbody tr.qm-odd td.qm-highlight,
+	.qm tbody tr.qm-odd.qm-highlight th,
 	.qm tbody tr.qm-odd.qm-highlight td {
 		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
 		color: $qm-cell-fg-highlight !important;
