@@ -7,6 +7,7 @@
 
 class QM_Dispatchers implements IteratorAggregate {
 
+	/** @var QM_Dispatcher[] */
 	private $items = array();
 
 	public function getIterator() {
