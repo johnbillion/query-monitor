@@ -14,6 +14,7 @@ class QueryMonitor extends QM_Plugin {
 		add_action( 'init',           array( $this, 'action_init' ) );
 		add_action( 'members_register_caps',       array( $this, 'action_register_members_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
+		add_action( 'qm/cease', array( $this, 'action_cease' ) );
 
 		# Filters
 		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 4 );
@@ -222,6 +223,19 @@ class QueryMonitor extends QM_Plugin {
 		);
 
 		return $caps;
+	}
+
+	public function action_cease() {
+		// iterate collectors, call tear_down
+		// discard all collected data
+		QM_Collectors::cease();
+
+		// remove dispatchers or prevent them from doing anything
+		QM_Dispatchers::cease();
+
+		// the javascript probably needs handling so it doesn't just blame JS errors on the page
+		// if headers haven't been sent, add a header stating that QM was ceased and by what, need to check caps though
+		// remove this action from itself?
 	}
 
 	public static function init( $file = null ) {
