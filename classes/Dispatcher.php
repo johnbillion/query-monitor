@@ -72,6 +72,10 @@ abstract class QM_Dispatcher {
 
 	}
 
+	public function cease() {
+		add_filter( "qm/dispatch/{$this->id}", '__return_false' );
+	}
+
 	/**
 	 * Processes and fetches the outputters for this dispatcher.
 	 *
