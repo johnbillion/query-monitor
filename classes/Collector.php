@@ -92,6 +92,10 @@ abstract class QM_Collector {
 		return $this->data;
 	}
 
+	final public function discard_data() {
+		$this->data = array();
+	}
+
 	final public function set_id( $id ) {
 		$this->id = $id;
 	}
