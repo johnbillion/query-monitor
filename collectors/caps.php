@@ -20,6 +20,11 @@ class QM_Collector_Caps extends QM_Collector {
 		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
 	}
 
+	public function tear_down() {
+		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
+		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
+	}
+
 	public static function enabled() {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
@@ -52,11 +57,6 @@ class QM_Collector_Caps extends QM_Collector {
 			'DISALLOW_FILE_EDIT',
 			'DISALLOW_UNFILTERED_HTML',
 		);
-	}
-
-	public function tear_down() {
-		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
-		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
 	}
 
 	/**
