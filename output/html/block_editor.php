@@ -113,6 +113,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		$media_blocks = array(
 			'core/audio'       => 'id',
+			'core/cover'       => 'id',
 			'core/cover-image' => 'id',
 			'core/file'        => 'id',
 			'core/image'       => 'id',
