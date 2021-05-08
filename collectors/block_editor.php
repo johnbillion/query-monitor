@@ -9,6 +9,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
 
+	protected $block_context = array();
 	protected $block_timing = array();
 	protected $block_timer  = null;
 
@@ -16,6 +17,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		parent::__construct();
 
 		add_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999, 2 );
+		add_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999, 2 );
 		add_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
 		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
 	}
@@ -37,6 +39,12 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		}
 
 		return $pre_render;
+	}
+
+	public function filter_render_block_context( array $context, array $block ) {
+		$this->block_context[] = $context;
+
+		return $context;
 	}
 
 	public function filter_render_block_data( array $block ) {
@@ -74,6 +82,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['post_blocks']        = self::wp_parse_blocks( $content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
 		$this->data['total_blocks']       = 0;
+		$this->data['has_block_context']  = false;
 		$this->data['has_block_timing']   = false;
 
 		if ( $this->data['post_has_blocks'] ) {
@@ -82,9 +91,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	}
 
 	protected function process_block( array $block ) {
+		$context = array_shift( $this->block_context );
+		$timing  = array_shift( $this->block_timing );
+
 		// Remove empty blocks caused by two consecutive line breaks in content
 		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
-			array_shift( $this->block_timing );
 			return null;
 		}
 
@@ -107,6 +118,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$block['callback']  = $callback;
 		$block['innerHTML'] = trim( $block['innerHTML'] );
 		$block['size']      = strlen( $block['innerHTML'] );
+
+		if ( $context ) {
+			$block['context'] = $context;
+			$this->data['has_block_context'] = true;
+		}
 
 		if ( $timing ) {
 			$block['timing'] = $timing->get_time();
