@@ -3,6 +3,7 @@ import {
 	iPanelProps,
 	Notice,
 	PanelFooter,
+	QMComponent,
 	Tabular,
 	Time,
 	TotalTime,
@@ -21,6 +22,7 @@ interface iDBQueriesProps extends iPanelProps {
 			result: string;
 			ltime: number;
 			filtered_trace: any[];
+			component: any;
 		}[];
 	};
 }
@@ -102,10 +104,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 								</code>
 							</td>
 							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-							{ /* <QMComponent component={row.component} /> */ }
-							<td>
-								Component
-							</td>
+							<QMComponent component={ row.component } />
 							<td className="qm-row-result qm-num">
 								{ row.result }
 							</td>

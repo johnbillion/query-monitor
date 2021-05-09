@@ -179,6 +179,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'line'     => $line,
 				'trace'    => ( $do_trace ? $trace : null ),
 				'calls'    => 1,
+				'component' => ( $do_trace ? $trace->get_component() : null ),
 			);
 		}
 

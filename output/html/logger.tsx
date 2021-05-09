@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import {
 	Caller,
 	iPanelProps,
+	QMComponent,
 	Tabular,
 	Warning,
 } from 'qmi';
@@ -13,6 +14,7 @@ export interface LogItem {
 	level: string;
 	message: string;
 	filtered_trace: any[];
+	component: any;
 }
 
 export interface iLoggerProps extends iPanelProps {
@@ -67,9 +69,7 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 									{ row.message }
 								</td>
 								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-								<td>
-									Component
-								</td>
+								<QMComponent component={ row.component } />
 							</tr>
 						);
 					} ) }

@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import {
 	iPanelProps,
+	QMComponent,
 	Tabular,
 } from 'qmi';
 import * as React from 'react';
@@ -61,9 +62,13 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 									<td className="qm-row-caller qm-row-stack qm-nowrap qm-ltr">
 										{ error.filename }:{ error.line }
 									</td>
-									<td className="qm-nowrap">
-										Component
-									</td>
+									{ error.component ? (
+										<QMComponent component={ error.component } />
+									) : (
+										<td>
+											{ __( 'Unknown', 'query-monitor' ) }
+										</td>
+									) }
 								</tr>
 							);
 						} );
