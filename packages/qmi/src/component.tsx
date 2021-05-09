@@ -1,7 +1,11 @@
 import * as React from 'react';
 
 interface iComponentProps {
-	component: any;
+	component: {
+		context: string;
+		name: string;
+		type: string;
+	};
 }
 
 export class QMComponent extends React.Component<iComponentProps, Record<string, unknown>> {
