@@ -119,6 +119,7 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 								className="qm-filter"
 								id="qm-editor-select"
 								name="qm-editor-select"
+								value={ editor ?? '' }
 								onChange={ ( e ) => {
 									localStorage.setItem( 'qm-editor', e.target.value );
 								} }
@@ -126,7 +127,6 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 								{ Object.keys( editors ).map( ( key: keyof typeof editors ) => (
 									<option
 										key={ key }
-										selected={ editors[ key ] === editor }
 										value={ editors[ key ] }
 									>
 										{ key }
