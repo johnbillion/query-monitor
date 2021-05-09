@@ -60,7 +60,7 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 						return (
 							<tr key={ `${ row.level }${ row.message }` } className={ classNames( classes ) }>
 								<td>
-									{ warn && ( <Icon name="warning"/> ) }
+									{ warn && ( <Warning /> ) }
 									{ row.level }
 								</td>
 								<td>
