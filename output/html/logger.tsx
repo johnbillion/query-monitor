@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Caller, Tabular, iPanelProps } from 'qmi';
+import { Caller, Icon, Tabular, iPanelProps } from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
@@ -47,13 +47,15 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 				</thead>
 				<tbody>
 					{ data.logs.map( ( row ) => {
+						const warn = data.warning_levels.includes( row.level );
 						const classes = {
-							'qm-warn': data.warning_levels.includes( row.level ),
+							'qm-warn': warn,
 						};
 
 						return (
 							<tr key={ `${ row.level }${ row.message }` } className={ classNames( classes ) }>
 								<td>
+									{ warn && ( <Icon name="warning"/> ) }
 									{ row.level }
 								</td>
 								<td>
