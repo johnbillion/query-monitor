@@ -1,7 +1,10 @@
 import { Warning } from 'qmi';
 import * as React from 'react';
 
-import { __, sprintf } from '@wordpress/i18n';
+import {
+	__,
+	sprintf,
+} from '@wordpress/i18n';
 
 interface dbItem {
 	'server-version': string; // @TODO check

@@ -1,7 +1,14 @@
-import { NonTabular, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	NonTabular,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _nx, sprintf } from '@wordpress/i18n';
+import {
+	__,
+	_nx,
+	sprintf,
+} from '@wordpress/i18n';
 
 interface iParts {
 	[key: string]: string;

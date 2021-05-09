@@ -8,7 +8,10 @@ import {
 } from 'qmi';
 import * as React from 'react';
 
-import { __, _x } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+} from '@wordpress/i18n';
 
 interface iTransientsProps extends iPanelProps {
 	data: {

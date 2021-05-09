@@ -1,5 +1,10 @@
 import classNames from 'classnames';
-import { Caller, Icon, Tabular, iPanelProps } from 'qmi';
+import {
+	Caller,
+	iPanelProps,
+	Tabular,
+	Warning,
+} from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

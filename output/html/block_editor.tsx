@@ -1,7 +1,14 @@
-import { Tabular, PanelFooter, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	PanelFooter,
+	Tabular,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _x } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+} from '@wordpress/i18n';
 
 interface iBlocksProps extends iPanelProps {
 	data: {

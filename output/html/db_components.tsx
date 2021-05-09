@@ -1,4 +1,9 @@
-import { Tabular, iPanelProps, Time, TotalTime } from 'qmi';
+import {
+	iPanelProps,
+	Tabular,
+	Time,
+	TotalTime,
+} from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

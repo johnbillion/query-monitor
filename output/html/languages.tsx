@@ -1,4 +1,9 @@
-import { Tabular, Caller, iPanelProps, FrameItem } from 'qmi';
+import {
+	Caller,
+	FrameItem,
+	iPanelProps,
+	Tabular,
+} from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

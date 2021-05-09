@@ -1,7 +1,16 @@
-import { Notice, QMComponent, Tabular, Warning, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	Notice,
+	QMComponent,
+	Tabular,
+	Warning,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, sprintf } from '@wordpress/i18n';
+import {
+	__,
+	sprintf,
+} from '@wordpress/i18n';
 
 interface iHooksProps extends iPanelProps {
 	data: {

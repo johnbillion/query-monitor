@@ -1,4 +1,7 @@
-import { NonTabular, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	NonTabular,
+} from 'qmi';
 import * as React from 'react';
 
 import DB from '../db';

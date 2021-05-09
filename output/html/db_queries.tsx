@@ -1,7 +1,18 @@
-import { Caller, Notice, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
+import {
+	Caller,
+	iPanelProps,
+	Notice,
+	PanelFooter,
+	Tabular,
+	Time,
+	TotalTime,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _x } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+} from '@wordpress/i18n';
 
 interface iDBQueriesProps extends iPanelProps {
 	data: {

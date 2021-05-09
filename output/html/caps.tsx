@@ -1,7 +1,19 @@
-import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps, FrameItem } from 'qmi';
+import {
+	Caller,
+	FrameItem,
+	iPanelProps,
+	Notice,
+	PanelFooter,
+	QMComponent,
+	Tabular,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _x, sprintf } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+	sprintf,
+} from '@wordpress/i18n';
 
 interface iCapsProps extends iPanelProps {
 	data: {

@@ -1,7 +1,19 @@
-import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
+import {
+	Caller,
+	iPanelProps,
+	Notice,
+	PanelFooter,
+	QMComponent,
+	Tabular,
+	Time,
+	TotalTime,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _x } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+} from '@wordpress/i18n';
 
 class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 

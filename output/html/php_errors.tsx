@@ -1,5 +1,8 @@
 import classnames from 'classnames';
-import { Tabular, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	Tabular,
+} from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

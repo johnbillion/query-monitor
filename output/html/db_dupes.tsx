@@ -1,7 +1,14 @@
-import { Tabular, iPanelProps } from 'qmi';
+import {
+	iPanelProps,
+	Tabular,
+} from 'qmi';
 import * as React from 'react';
 
-import { __, _n, sprintf } from '@wordpress/i18n';
+import {
+	__,
+	_n,
+	sprintf,
+} from '@wordpress/i18n';
 
 class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
 
