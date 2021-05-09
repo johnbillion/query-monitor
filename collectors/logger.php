@@ -143,6 +143,8 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		$this->data['components'] = $components;
+		$this->data['levels'] = $this->get_levels();
+		$this->data['warning_levels'] = $this->get_warning_levels();
 	}
 
 	public function get_levels() {

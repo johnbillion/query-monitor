@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Caller, Tabular, iPanelProps } from 'qmi';
 import * as React from 'react';
 
@@ -12,6 +13,8 @@ export interface LogItem {
 export interface iLoggerProps extends iPanelProps {
 	data: {
 		logs: LogItem[];
+		levels: string[];
+		warning_levels: string[];
 	};
 }
 
@@ -43,20 +46,26 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 					</tr>
 				</thead>
 				<tbody>
-					{ data.logs.map( row => (
-						<tr>
-							<td>
-								{ row.level }
-							</td>
-							<td>
-								{ row.message }
-							</td>
-							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-							<td>
-								Component
-							</td>
-						</tr>
-					) ) }
+					{ data.logs.map( ( row ) => {
+						const classes = {
+							'qm-warn': data.warning_levels.includes( row.level ),
+						};
+
+						return (
+							<tr key={ `${ row.level }${ row.message }` } className={ classNames( classes ) }>
+								<td>
+									{ row.level }
+								</td>
+								<td>
+									{ row.message }
+								</td>
+								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
+								<td>
+									Component
+								</td>
+							</tr>
+						);
+					} ) }
 				</tbody>
 			</Tabular>
 		);
