@@ -66,6 +66,6 @@
     "bump:patch": "grunt bump:patch",
     "grunt": "grunt",
     "build": "concurrently \"grunt sass\" \"wp-scripts build\"",
-    "watch": "concurrently \"grunt watch\" \"wp-scripts start\""
+    "watch": "concurrently \"grunt watch\" \"wp-scripts build\" \"wp-scripts start\""
   }
 }
