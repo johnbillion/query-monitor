@@ -45,7 +45,7 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 							} );
 
 							return (
-								<tr className={ classes }>
+								<tr key={ `${ error.message }${ error.filename }${ error.line }` } className={ classes }>
 									<td className="qm-nowrap">
 										{ type }
 									</td>
