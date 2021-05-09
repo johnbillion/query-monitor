@@ -128,7 +128,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				}
 				echo esc_html( sprintf(
 					/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
-					__( '%1$s%% of %2$s kB limit', 'query-monitor' ),
+					__( '%1$s%% of %2$s kB server limit', 'query-monitor' ),
 					number_format_i18n( $data['memory_usage'], 1 ),
 					number_format_i18n( $data['memory_limit'] / 1024 )
 				) );
@@ -141,6 +141,21 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					'<code>memory_limit</code>',
 					'0'
 				);
+				echo '</span>';
+			}
+
+			if ( $data['wp_memory_limit'] > 0 ) {
+				if ( $data['display_memory_usage_warning'] ) {
+					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				} else {
+					echo '<br><span class="qm-info">';
+				}
+				echo esc_html( sprintf(
+				/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
+					__( '%1$s%% of %2$s kB WordPress limit', 'query-monitor' ),
+					number_format_i18n( $data['wp_memory_usage'], 1 ),
+					number_format_i18n( $data['wp_memory_limit'] / 1024 )
+				) );
 				echo '</span>';
 			}
 		}

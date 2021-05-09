@@ -3,7 +3,7 @@ Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 3.6.7
+Stable tag: 3.6.8
 License: GPLv2 or later
 Requires PHP: 7.0
 Donate link: https://johnblackbourn.com/donations/
