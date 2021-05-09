@@ -253,7 +253,7 @@ class QM_Util {
 					$access = '::';
 				}
 
-				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
+				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
@@ -267,11 +267,11 @@ class QM_Util {
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
-					$callback['name'] = self::shorten_fqn( $class ) . '->__invoke()';
+					$callback['name'] = $class . '->__invoke()';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
-				$callback['name'] = self::shorten_fqn( $callback['function'] ) . '()';
+				$callback['name'] = $callback['function'] . '()';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
 
@@ -458,6 +458,7 @@ class QM_Util {
 	 *
 	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
 	 *
+	 * @deprecated This should happen client-side now.
 	 * @param string $fqn A fully qualified name.
 	 * @return string A shortened version of the name.
 	 */

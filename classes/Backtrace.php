@@ -288,7 +288,7 @@ class QM_Backtrace {
 				$return = null;
 			} else {
 				$return['id']      = $frame['class'] . $frame['type'] . $frame['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
+				$return['display'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
 			}
 		} else {
 			if ( isset( self::$ignore_func[ $frame['function'] ] ) ) {
@@ -300,7 +300,7 @@ class QM_Backtrace {
 					if ( isset( $frame['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $frame['args'][0], '' );
 						$return['id']      = $frame['function'] . '()';
-						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
+						$return['display'] = $frame['function'] . "('{$arg}')";
 					}
 				} else {
 					$args = array();
@@ -314,11 +314,11 @@ class QM_Backtrace {
 						}
 					}
 					$return['id']      = $frame['function'] . '()';
-					$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
+					$return['display'] = $frame['function'] . '(' . implode( ',', $args ) . ')';
 				}
 			} else {
 				$return['id']      = $frame['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
+				$return['display'] = $frame['function'] . '()';
 			}
 		}
 
