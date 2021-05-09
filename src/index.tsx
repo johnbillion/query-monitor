@@ -29,6 +29,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		php_errors: qm.data.php_errors || null,
 		request: qm.data.request || null,
 		response: qm.data.response || null,
+		timing: qm.data.timing || null,
 		transients: qm.data.transients,
 	};
 

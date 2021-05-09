@@ -65,6 +65,7 @@ class QM_Collector_Timing extends QM_Collector {
 			'function_memory' => $function_memory,
 			'laps'            => $function_laps,
 			'trace'           => $trace,
+			'component'       => $trace->get_component(),
 			'start_time'      => ( $start_time - $GLOBALS['timestart'] ),
 			'end_time'        => ( $end_time - $GLOBALS['timestart'] ),
 		);

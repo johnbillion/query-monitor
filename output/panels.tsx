@@ -19,6 +19,7 @@ import PHPErrors from './html/php_errors';
 import Request from './html/request';
 import { Settings, iQMConfig } from './html/settings';
 import Theme from './html/theme';
+import Timing from './html/timing';
 import Transients from './html/transients';
 
 interface QMPanelData {
@@ -45,6 +46,7 @@ export interface iPanelsProps {
 	php_errors?: QMPanelData;
 	request?: QMPanelData;
 	response?: QMPanelData;
+	timing: QMPanelData;
 	transients: QMPanelData;
 	active?: string;
 }
@@ -197,6 +199,13 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 						data={ this.props.transients.data }
 						enabled={ this.props.transients.enabled }
 						id="transients"
+					/>
+				) }
+				{ active === 'timing' && (
+					<Timing
+						data={ this.props.timing.data }
+						enabled={ this.props.timing.enabled }
+						id="timing"
 					/>
 				) }
 				{ active === 'settings' && (
