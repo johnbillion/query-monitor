@@ -43,7 +43,12 @@ jobs:
       run: npm install
 
     - name: Populate Changelog
-      run: node .github/workflows/changelog.js readme.txt
+      run: |
+        node .github/workflows/changelog.js readme.txt
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add readme.txt
+        git commit -m "Readme"
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
