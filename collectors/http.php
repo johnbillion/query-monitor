@@ -276,6 +276,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			$this->data['ltime'] += $http['ltime'];
 
 			$http['component'] = $http['trace']->get_component();
+			$http['filtered_trace'] = $http['trace']->get_display_trace();
 
 			$host = (string) parse_url( $http['url'], PHP_URL_HOST );
 

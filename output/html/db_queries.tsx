@@ -1,4 +1,4 @@
-import { Notice, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
+import { Caller, Notice, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import * as React from 'react';
 
 import { __, _x } from '@wordpress/i18n';
@@ -9,6 +9,7 @@ interface iDBQueriesProps extends iPanelProps {
 			sql: string;
 			result: string;
 			ltime: number;
+			filtered_trace: any[];
 		}[];
 	};
 }
@@ -89,11 +90,8 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 									{ this.formatSQL( row.sql ) }
 								</code>
 							</td>
-							{ /* <Caller trace={row.filtered_trace} /> */ }
+							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 							{ /* <QMComponent component={row.component} /> */ }
-							<td>
-								Caller
-							</td>
 							<td>
 								Component
 							</td>

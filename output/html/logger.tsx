@@ -1,4 +1,4 @@
-import { Tabular, iPanelProps } from 'qmi';
+import { Caller, Tabular, iPanelProps } from 'qmi';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 export interface LogItem {
 	level: string;
 	message: string;
+	filtered_trace: any[];
 }
 
 export interface iLoggerProps extends iPanelProps {
@@ -50,9 +51,7 @@ class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
 							<td>
 								{ row.message }
 							</td>
-							<td>
-								Caller
-							</td>
+							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 							<td>
 								Component
 							</td>

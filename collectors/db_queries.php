@@ -137,6 +137,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$caller      = $query['trace']->get_caller();
 				$caller_name = $caller['display'];
 				$caller      = $caller['display'];
+				$filtered_trace = $trace->get_display_trace();
 
 			} else {
 
@@ -144,6 +145,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$component = null;
 				$callers   = explode( ',', $stack );
 				$caller    = trim( end( $callers ) );
+				$filtered_trace = null;
 
 				if ( false !== strpos( $caller, '(' ) ) {
 					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
@@ -178,7 +180,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
 
-			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
+			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query', 'filtered_trace' );
 
 			if ( ! isset( $trace ) ) {
 				$row['stack'] = $stack;

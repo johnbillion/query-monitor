@@ -1,4 +1,4 @@
-import { Notice, QMComponent, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
+import { Caller, Notice, QMComponent, PanelFooter, Tabular, iPanelProps, Time, TotalTime } from 'qmi';
 import * as React from 'react';
 
 import { __, _x } from '@wordpress/i18n';
@@ -61,7 +61,7 @@ class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 									{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }
 								</td>
 								<td>
-									Caller
+									<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 								</td>
 								<QMComponent component={ row.component } />
 								<td className="qm-num">

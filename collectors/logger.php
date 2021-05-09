@@ -72,6 +72,7 @@ class QM_Collector_Logger extends QM_Collector {
 		$trace = new QM_Backtrace( array(
 			'ignore_frames' => 2,
 		) );
+		$filtered_trace = $trace->get_display_trace();
 
 		if ( is_wp_error( $message ) ) {
 			$type    = 'wp_error';
@@ -106,6 +107,7 @@ class QM_Collector_Logger extends QM_Collector {
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
 			'trace'   => $trace,
+			'filtered_trace' => $filtered_trace,
 			'level'   => $level,
 			'type'    => $type,
 		);
