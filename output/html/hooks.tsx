@@ -18,10 +18,17 @@ interface iHooksProps extends iPanelProps {
 			name: string;
 			actions: {
 				callback: {
+					accepted_args: number;
+					file: string;
+					line: number;
 					name: string;
-					priority: number;
-					component: any;
+					component: {
+						context: string;
+						name: string;
+						type: string;
+					};
 				};
+				priority: number;
 			}[];
 		}[];
 	}
@@ -78,7 +85,7 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 						return (
 							<React.Fragment key={ hook.name }>
 								{ hook.actions.map( ( action, i ) => (
-									<tr key={ `${hook.name} ${action.callback.name} ${action.callback.priority}` }>
+									<tr key={ `${hook.name} ${action.callback.name} ${action.priority}` }>
 										{ i === 0 && (
 											<th className="qm-ltr qm-nowrap" rowSpan={ hook.actions.length }>
 												<span className="qm-sticky">
@@ -100,7 +107,7 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 											</th>
 										) }
 										<td className="qm-num">
-											{ action.callback.priority }
+											{ action.priority }
 										</td>
 										<td className="qm-nowrap">
 											{ action.callback.name }
