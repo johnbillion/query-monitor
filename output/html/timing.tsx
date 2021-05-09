@@ -66,29 +66,56 @@ class Timing extends React.Component<iTimingProps, Record<string, unknown>> {
 				</thead>
 				<tbody>
 					{ data.timing.map( timer => (
-						<tr key={ timer.function }>
-							<td className="qm-ltr qm-nowrap">
-								<code>
-									{ timer.function }
-								</code>
-							</td>
-							<td className="qm-num">
-								{ QM_i18n.number_format( timer.start_time, 4 ) }
-							</td>
-							<td className="qm-num">
-								{ QM_i18n.number_format( timer.end_time, 4 ) }
-							</td>
-							<td className="qm-num">
-								{ QM_i18n.number_format( timer.function_time, 4 ) }
-							</td>
-							<td className="qm-num">
-								{ sprintf(
-									'~%s kB',
-									QM_i18n.number_format( timer.function_memory / 1024 )
-								) }
-							</td>
-							<QMComponent component={ timer.component } />
-						</tr>
+						<React.Fragment key={ timer.function }>
+							<tr>
+								<td className="qm-ltr qm-nowrap">
+									<code>
+										{ timer.function }
+									</code>
+								</td>
+								<td className="qm-num">
+									{ QM_i18n.number_format( timer.start_time, 4 ) }
+								</td>
+								<td className="qm-num">
+									{ QM_i18n.number_format( timer.end_time, 4 ) }
+								</td>
+								<td className="qm-num">
+									{ QM_i18n.number_format( timer.function_time, 4 ) }
+								</td>
+								<td className="qm-num">
+									{ sprintf(
+										'~%s kB',
+										QM_i18n.number_format( timer.function_memory / 1024 )
+									) }
+								</td>
+								<QMComponent component={ timer.component } />
+							</tr>
+							{ timer.laps && (
+								<>
+									{ Object.keys( timer.laps ).map( ( key: keyof typeof timer.laps ) => (
+										<tr key={ `${ timer.function }${ key }` }>
+											<td className="qm-ltr qm-nowrap">
+												<code>
+													{ `- ${ key }` }
+												</code>
+											</td>
+											<td></td>
+											<td></td>
+											<td className="qm-num">
+												{ QM_i18n.number_format( timer.laps[ key ].time_used , 4 ) }
+											</td>
+											<td className="qm-num">
+												{ sprintf(
+													'~%s kB',
+													QM_i18n.number_format( timer.laps[ key ].memory_used / 1024 )
+												) }
+											</td>
+											<td></td>
+										</tr>
+									) ) }
+								</>
+							) }
+						</React.Fragment>
 					) ) }
 				</tbody>
 			</Tabular>
