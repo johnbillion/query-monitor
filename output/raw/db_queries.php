@@ -48,7 +48,11 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 			$output[] = $this->output_query_row( $row );
 		}
 
-		return $output;
+		return array(
+			'total'   => $db->total_qs,
+			'time'    => number_format_i18n( $db->total_time, 4 ),
+			'queries' => $output,
+		);
 	}
 
 	protected function output_query_row( array $row ) {
