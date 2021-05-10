@@ -28,10 +28,13 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 			return $output;
 		}
 
+		$dbs = array();
+
 		foreach ( $data['dbs'] as $name => $db ) {
-			$output[ $name ] = $this->output_queries( $name, $db, $data );
+			$dbs[ $name ] = $this->output_queries( $name, $db, $data );
 		}
 
+		$output['dbs'] = $dbs;
 		return $output;
 	}
 
