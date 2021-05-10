@@ -102,7 +102,7 @@ class Timing extends React.Component<iTimingProps, Record<string, unknown>> {
 											<td></td>
 											<td></td>
 											<td className="qm-num">
-												{ QM_i18n.number_format( timer.laps[ key ].time_used , 4 ) }
+												{ QM_i18n.number_format( timer.laps[ key ].time_used, 4 ) }
 											</td>
 											<td className="qm-num">
 												{ sprintf(
