@@ -52,7 +52,7 @@ module.exports = function (grunt) {
 
 	config.sass = {
 		options: {
-			implementation: require('node-sass'),
+			implementation: require('sass'),
 			sourceMap: false,
 			outputStyle: 'expanded'
 		},

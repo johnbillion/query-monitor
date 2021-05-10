@@ -48,6 +48,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		echo '<th scope="col">#</th>';
 		echo '<th scope="col">' . esc_html__( 'Block Name', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>';
+
+		if ( isset( $data['has_block_context'] ) ) {
+			echo '<th scope="col">' . esc_html__( 'Context', 'query-monitor' ) . '</th>';
+		}
+
 		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>';
 
 		if ( isset( $data['has_block_timing'] ) ) {
@@ -68,8 +73,20 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		echo '<tfoot>';
 		echo '<tr>';
+
+		$colspan = 5;
+
+		if ( isset( $data['has_block_context'] ) ) {
+			$colspan++;
+		}
+
+		if ( isset( $data['has_block_timing'] ) ) {
+			$colspan++;
+		}
+
 		printf(
-			'<td colspan="6">%s</td>',
+			'<td colspan="%1$d">%2$s</td>',
+			intval( $colspan ),
 			sprintf(
 				/* translators: %s: Total number of content blocks used */
 				esc_html( _nx( 'Total: %s', 'Total: %s', $data['total_blocks'], 'Content blocks used', 'query-monitor' ) ),
@@ -113,6 +130,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		$media_blocks = array(
 			'core/audio'       => 'id',
+			'core/cover'       => 'id',
 			'core/cover-image' => 'id',
 			'core/file'        => 'id',
 			'core/image'       => 'id',
@@ -175,6 +193,14 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['attrs'] ) ) . '</code></pre>';
 		}
 		echo '</td>';
+
+		if ( $data['has_block_context'] ) {
+			echo '<td class="qm-row-block-context">';
+			if ( isset( $block['context'] ) ) {
+				echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['context'] ) ) . '</code></pre>';
+			}
+			echo '</td>';
+		}
 
 		if ( isset( $block['callback']['error'] ) ) {
 			$class = ' qm-warn';

@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.6.7",
+	"version": "3.6.8",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -16,8 +16,8 @@
 		"grunt-sass": "^3",
 		"grunt-version": "^1",
 		"load-grunt-tasks": "^4",
-		"node-sass": "^4",
 		"replace-in-file": "^5",
+		"sass": "^1",
 		"semver": "^7"
 	},
 	"scripts": {
