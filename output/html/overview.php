@@ -36,7 +36,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			$db_queries_data = $db_queries->get_data();
 			if ( isset( $db_queries_data['types'] ) && isset( $db_queries_data['total_time'] ) ) {
 				$db_query_num = $db_queries_data['types'];
-				$db_query_time = $db_queries_data['total_time'];
 			}
 		}
 
