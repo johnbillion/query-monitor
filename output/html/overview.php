@@ -165,18 +165,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</p>';
 		echo '</section>';
 
-		if ( isset( $db_queries_data ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
-			echo '<p>';
-			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
-			echo '</p>';
-			echo '</section>';
-		}
-
 		if ( isset( $db_query_num ) && isset( $db_queries_data ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
+
+			if ( isset( $db_queries_data ) ) {
+				echo '<p>';
+				echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
+				echo '</p>';
+			}
+
 			echo '<p>';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
