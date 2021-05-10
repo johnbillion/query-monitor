@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	public $id = 'rest';

@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	/**

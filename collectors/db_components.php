@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_DB_Components extends QM_Collector {
 
 	public $id = 'db_components';

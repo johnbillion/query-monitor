@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	public $id = 'ajax';

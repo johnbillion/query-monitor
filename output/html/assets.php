@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 	/**

@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 	/**

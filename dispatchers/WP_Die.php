@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 	public $id    = 'wp_die';

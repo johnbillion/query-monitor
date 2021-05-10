@@ -4,6 +4,9 @@
  *
  * @package query-monitor
  */
+
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 	/**

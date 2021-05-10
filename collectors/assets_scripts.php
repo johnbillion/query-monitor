@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 
 	public $id = 'assets_scripts';

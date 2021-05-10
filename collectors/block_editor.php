@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
