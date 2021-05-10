@@ -125,7 +125,11 @@ Currently this includes PHP errors and some overview information such as memory 
 
 The response from an authenticated WordPress REST API (v2 or later) request will contain various debugging information in its headers, as long as the authenticated user has permission to view Query Monitor's output.
 
-Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
+Currently this includes PHP errors and overview information.
+
+To see more detailed information about a REST API request you need to perform [an enveloped request](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/#_envelope) which means appending `?_envelope` to the requested URL. In this case, Query Monitor will include debugging data in a `qm` property in the response. Currently this includes database queries (including information about duplicates and errors), HTTP API requests, and transient updates. More information may be added in a future version.
+
+By using the combination of the HTTP headers and the `qm` property in the response to an enveloped request you'll get good insight into the aspects of a request which have the greatest impact on performance.
 
 ## Admin Screen
 
