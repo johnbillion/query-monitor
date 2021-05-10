@@ -50,7 +50,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 		return array(
 			'total'   => $db->total_qs,
-			'time'    => number_format_i18n( $db->total_time, 4 ),
+			'time'    => (float) number_format_i18n( $db->total_time, 4 ),
 			'queries' => $output,
 		);
 	}
@@ -60,7 +60,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 		$output['i']    = ++$this->query_row;
 		$output['sql']  = $row['sql'];
-		$output['time'] = number_format_i18n( $row['ltime'], 4 );
+		$output['time'] = (float) number_format_i18n( $row['ltime'], 4 );
 
 		if ( isset( $row['trace'] ) ) {
 			$stack          = array();
