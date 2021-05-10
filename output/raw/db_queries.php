@@ -44,9 +44,17 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		}
 
 		if ( ! empty( $data['dupes'] ) ) {
+			$dupes = $data['dupes'];
+
+			// Filter out SQL queries that do not have dupes
+			$dupes = array_filter( $dupes, array( $this->collector, 'filter_dupe_items' ) );
+
+			// Ignore dupes from `WP_Query->set_found_posts()`
+			unset( $dupes['SELECT FOUND_ROWS()'] );
+
 			$output['dupes'] = array(
-				'total' => count( $data['dupes'] ),
-				'queries' => $data['dupes'],
+				'total' => count( $dupes ),
+				'queries' => $dupes,
 			);
 		}
 
