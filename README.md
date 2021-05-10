@@ -80,7 +80,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## PHP Errors
 
  * PHP errors (warnings, notices, stricts, and deprecated) are presented nicely along with their component and call stack
- * Shows an easily visible warning in the admin toolbar
+ * Shows a visible warning in the admin toolbar
 
 ## Block Content
 
@@ -113,7 +113,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ## Redirects
 
- * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to easily trace where a redirect has come from.
+ * Whenever a redirect occurs, Query Monitor adds an `X-QM-Redirect` HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to trace where a redirect has come from.
 
 ## Ajax
 
@@ -314,7 +314,7 @@ On pages that have an especially high number of database queries (in the hundred
 
 [A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
 
-In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, just deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
+In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 
 ## Where can I suggest a new feature or report a bug?
 
