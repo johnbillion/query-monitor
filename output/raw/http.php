@@ -49,6 +49,8 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 			);
 		}
 
+		$output['total'] = count( $requests );
+		$output['time'] = (float) number_format_i18n( $data['ltime'], 4 );
 		$output['requests'] = $requests;
 
 		return $output;
