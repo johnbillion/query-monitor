@@ -35,6 +35,14 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		}
 
 		$output['dbs'] = $dbs;
+
+		if ( ! empty( $data['dupes'] ) ) {
+			$output['dupes'] = array(
+				'total' => count( $data['dupes'] ),
+				'queries' => $data['dupes'],
+			);
+		}
+
 		return $output;
 	}
 
