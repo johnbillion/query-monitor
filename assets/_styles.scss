@@ -138,7 +138,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	-webkit-font-smoothing: auto !important;
 	font-style: normal !important;
 	font-weight: normal !important;
-	letter-spacing: normal !important;
+	letter-spacing: -0.1px !important;
 	line-height: $qm-font-default-line-height !important;
 	margin: 0 !important;
 	min-height: auto !important;
@@ -1096,7 +1096,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: block !important;
 		float: none !important;
 		height: auto !important;
-		letter-spacing: normal !important;
+		letter-spacing: -0.1px !important;
 		margin: 0 0 0 5px !important;
 		max-width: 12em !important;
 		outline: 1px solid $qm-panel-border !important;
@@ -1105,7 +1105,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm select.qm-filter:hover {
-		background: $qm-container-bg !important;
+		background: $qm-cell-bg-hover !important;
 	}
 
 	.qm-hide,
