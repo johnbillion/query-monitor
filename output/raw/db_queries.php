@@ -89,17 +89,15 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		$output['time'] = (float) number_format_i18n( $row['ltime'], 4 );
 
 		if ( isset( $row['trace'] ) ) {
-			$stack          = array();
+			$stack = array();
 			$filtered_trace = $row['trace']->get_display_trace();
-			array_shift( $filtered_trace );
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = $item['display'];
 			}
 		} else {
-			$stack       = explode( ', ', $row['stack'] );
-			$stack       = array_reverse( $stack );
-			array_shift( $stack );
+			$stack = explode( ', ', $row['stack'] );
+			$stack = array_reverse( $stack );
 		}
 
 		$output['stack'] = $stack;
