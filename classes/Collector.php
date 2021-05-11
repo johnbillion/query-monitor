@@ -233,6 +233,10 @@ abstract class QM_Collector {
 		return ( 'query-monitor' !== $component->context );
 	}
 
+	public function filter_dupe_items( $items ) {
+		return ( count( $items ) > 1 );
+	}
+
 	public function process() {}
 
 	public function post_process() {}
