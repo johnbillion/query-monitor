@@ -11,17 +11,21 @@ class QM_Collector_Overview extends QM_Collector {
 
 	public $id = 'overview';
 
-	public function process() {
+	public function __construct() {
+		add_action( 'shutdown', array( $this, 'process_timing' ), 0 );
+	}
 
+	public function tear_down() {
+		remove_action( 'shutdown', array( $this, 'process_timing' ), 0 );
+		parent::tear_down();
+	}
+
+	/**
+	 * Processes the timing and memory related stats as early as possible, so the
+	 * data isn't skewed by collectors that are processed before this one.
+	 */
+	public function process_timing() {
 		$this->data['time_taken'] = self::timer_stop_float();
-		$this->data['time_limit'] = ini_get( 'max_execution_time' );
-		$this->data['time_start'] = $GLOBALS['timestart'];
-
-		if ( ! empty( $this->data['time_limit'] ) ) {
-			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time_taken'];
-		} else {
-			$this->data['time_usage'] = 0;
-		}
 
 		if ( function_exists( 'memory_get_peak_usage' ) ) {
 			$this->data['memory'] = memory_get_peak_usage();
@@ -29,6 +33,17 @@ class QM_Collector_Overview extends QM_Collector {
 			$this->data['memory'] = memory_get_usage();
 		} else {
 			$this->data['memory'] = 0;
+		}
+	}
+
+	public function process() {
+		$this->data['time_limit'] = ini_get( 'max_execution_time' );
+		$this->data['time_start'] = $GLOBALS['timestart'];
+
+		if ( ! empty( $this->data['time_limit'] ) ) {
+			$this->data['time_usage'] = ( 100 / $this->data['time_limit'] ) * $this->data['time_taken'];
+		} else {
+			$this->data['time_usage'] = 0;
 		}
 
 		if ( is_user_logged_in() ) {
