@@ -332,6 +332,8 @@ Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-d
 
 Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
 
+Please note that information about database queries and the environment is somewhat restricted on VIP. This is a platform restriction and not a Query Monitor issue.
+
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
 You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
