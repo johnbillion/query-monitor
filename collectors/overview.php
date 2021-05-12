@@ -49,13 +49,13 @@ class QM_Collector_Overview extends QM_Collector {
 		if ( is_user_logged_in() ) {
 			$this->data['current_user'] = self::format_user( wp_get_current_user() );
 		} else {
-			$this->data['current_user'] = false;
+			$this->data['current_user'] = null;
 		}
 
 		if ( function_exists( 'current_user_switched' ) && current_user_switched() ) {
 			$this->data['switched_user'] = self::format_user( current_user_switched() );
 		} else {
-			$this->data['switched_user'] = false;
+			$this->data['switched_user'] = null;
 		}
 
 		$this->data['memory_limit'] = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) );
