@@ -4,7 +4,7 @@ $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
-$qm-font-code-line-height: 18px;
+$qm-font-code-line-height: 19px;
 $qm-admin-toolbar-height: 32px;
 
 // === Admin Toolbar ===
@@ -1006,7 +1006,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		font-family: dashicons !important;
 		font-size: 14px !important;
 		left: 2px !important;
-		line-height: 15px !important;
+		line-height: 13px !important;
 		position: relative !important;
 		text-decoration: none !important;
 		top: 2px !important;
