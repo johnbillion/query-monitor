@@ -1085,6 +1085,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: none !important;
 	}
 
+	.qm-title-heading select,
 	.qm select.qm-filter {
 		-webkit-appearance: menulist !important;
 		-moz-appearance: menulist !important;
@@ -1102,6 +1103,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		outline: 1px solid $qm-panel-border !important;
 		padding: 0 !important;
 		width: auto !important;
+	}
+
+	.qm-title-heading select {
+		max-width: unset !important;
 	}
 
 	.qm select.qm-filter:hover {
