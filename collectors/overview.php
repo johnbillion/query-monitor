@@ -37,6 +37,10 @@ class QM_Collector_Overview extends QM_Collector {
 	}
 
 	public function process() {
+		if ( ! isset( $data['time_taken'] ) ) {
+			$this->process_timing();
+		}
+
 		$this->data['time_limit'] = ini_get( 'max_execution_time' );
 		$this->data['time_start'] = $GLOBALS['timestart'];
 
