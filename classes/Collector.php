@@ -221,6 +221,10 @@ abstract class QM_Collector {
 	}
 
 	public static function hide_qm() {
+		if ( ! defined( 'QM_HIDE_SELF' ) ) {
+			return false;
+		}
+
 		if ( null === self::$hide_qm ) {
 			self::$hide_qm = QM_HIDE_SELF;
 		}
