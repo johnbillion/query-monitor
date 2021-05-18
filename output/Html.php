@@ -259,6 +259,7 @@ abstract class QM_Output_Html extends QM_Output {
 			'highlight' => '',
 			'prepend'   => array(),
 			'append'    => array(),
+			'all'       => _x( 'All', '"All" option for filters', 'query-monitor' ),
 		), $args );
 
 		$core_val = __( 'Core', 'query-monitor' );
@@ -275,7 +276,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$out = '<div class="qm-filter-container">';
 		$out .= '<label for="' . esc_attr( $filter_id ) . '">' . esc_html( $label ) . '</label>';
 		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">';
-		$out .= '<option value="">' . esc_html_x( 'All', '"All" option for filters', 'query-monitor' ) . '</option>';
+		$out .= '<option value="">' . esc_html( $args['all'] ) . '</option>';
 
 		if ( ! empty( $args['prepend'] ) ) {
 			foreach ( $args['prepend'] as $value => $label ) {
