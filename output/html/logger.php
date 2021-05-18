@@ -45,7 +45,19 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			return;
 		}
 
-		$levels = array_map( 'ucfirst', $this->collector->get_levels() );
+		$levels = array();
+
+		foreach ( $this->collector->get_levels() as $level ) {
+			if ( $data['counts'][ $level ] ) {
+				$levels[ $level ] = sprintf(
+					'%s (%d)',
+					ucfirst( $level ),
+					$data['counts'][ $level ]
+				);
+			} else {
+				$levels[ $level ] = ucfirst( $level );
+			}
+		}
 
 		$this->before_tabular_output();
 
@@ -69,7 +81,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			$row_attr                      = array();
 			$row_attr['data-qm-component'] = $component->name;
-			$row_attr['data-qm-type']      = ucfirst( $row['level'] );
+			$row_attr['data-qm-type']      = $row['level'];
 
 			$attr = '';
 
