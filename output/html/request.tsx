@@ -3,6 +3,7 @@ import {
 	NonTabular,
 } from 'qmi';
 import * as React from 'react';
+import { WP_User } from 'wp-types';
 
 import { __ } from '@wordpress/i18n';
 
@@ -13,7 +14,18 @@ interface iItems {
 	query_string: string;
 }
 
-class Request extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iRequestPanelProps extends iPanelProps {
+	data: {
+		request: iItems;
+		request_method: string;
+		user: {
+			title: string;
+			data: WP_User;
+		};
+	}
+}
+
+class Request extends React.Component<iRequestPanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
