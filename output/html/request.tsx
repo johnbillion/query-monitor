@@ -3,7 +3,14 @@ import {
 	NonTabular,
 } from 'qmi';
 import * as React from 'react';
-import { WP_User } from 'wp-types';
+import {
+	WP_Network,
+	WP_Post_Type,
+	WP_Post,
+	WP_Site,
+	WP_Term,
+	WP_User,
+} from 'wp-types';
 
 import { __ } from '@wordpress/i18n';
 
@@ -21,6 +28,27 @@ interface iRequestPanelProps extends iPanelProps {
 		user: {
 			title: string;
 			data: WP_User;
+		};
+		matching_rewrites?: {
+			[k: string]: string;
+		};
+		qvars?: {
+			[k: string]: string;
+		};
+		queried_object?: {
+			title: string;
+			type?: 'WP_Term' | 'WP_Post_Type' | 'WP_Post' | 'WP_User';
+			data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
+		};
+		multisite?: {
+			current_site: {
+				title: string;
+				data: WP_Site;
+			};
+			current_network?: {
+				title: string;
+				data: WP_Network;
+			};
 		};
 	}
 }
