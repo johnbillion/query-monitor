@@ -1,4 +1,5 @@
 /assets/*.css
+/assets/*.map
 /composer.lock
 /vendor
 /node_modules

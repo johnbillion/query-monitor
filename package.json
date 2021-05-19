@@ -25,7 +25,7 @@
 		"bump:minor": "grunt bump:minor",
 		"bump:patch": "grunt bump:patch",
 		"grunt": "grunt",
-		"build": "grunt sass",
+		"build": "grunt sass:prod",
 		"watch": "grunt watch"
 	}
 }
