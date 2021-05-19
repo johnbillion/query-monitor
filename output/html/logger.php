@@ -63,6 +63,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 		$level_args = array(
 			'all' => sprintf(
+				/* translators: %s: Total number of items in a list */
 				__( 'All (%d)', 'query-monitor' ),
 				count( $data['logs'] )
 			),
