@@ -27,7 +27,7 @@ interface iRequestPanelProps extends iPanelProps {
 		request_method: string;
 		user: {
 			title: string;
-			data: WP_User;
+			data: WP_User | false;
 		};
 		matching_rewrites?: {
 			[k: string]: string;
