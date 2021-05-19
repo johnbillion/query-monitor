@@ -72,7 +72,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 					const value = data.request[key];
 
 					return (
-						<>
+						<React.Fragment key={ key }>
 							<section>
 								<h3>{ name }</h3>
 								<p className="qm-ltr">
@@ -81,7 +81,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 									</code>
 								</p>
 							</section>
-						</>
+						</React.Fragment>
 					);
 				} ) }
 
@@ -96,7 +96,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 									const query = data.matching_rewrites[ rule ];
 
 									return (
-										<tr>
+										<tr key={ rule }>
 											<td className="qm-ltr">
 												<code>
 													{ rule }
@@ -121,7 +121,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 						<table>
 							<tbody>
 								{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
-									<tr>
+									<tr key={ key }>
 										<th className="qm-ltr" scope="row">
 											{ key }
 										</th>
@@ -157,7 +157,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 					<section>
 						<h3>{ __( 'Multisite', 'query-monitor' ) }</h3>
 						{ Object.keys( data.multisite ).map( ( key: keyof typeof data.multisite ) => (
-							<p>
+							<p key={ key }>
 								{ data.multisite[ key ].title }
 							</p>
 						) ) }
