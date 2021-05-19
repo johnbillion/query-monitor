@@ -12,7 +12,7 @@ import {
 	WP_User,
 } from 'wp-types';
 
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 
 interface iItems {
 	request: string;
@@ -25,10 +25,7 @@ interface iRequestPanelProps extends iPanelProps {
 	data: {
 		request: iItems;
 		request_method: string;
-		user: {
-			title: string;
-			data: WP_User | false;
-		};
+		user?: WP_User;
 		matching_rewrites?: {
 			[k: string]: string;
 		};
@@ -146,9 +143,17 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 
 				<section>
 					<h3>{ __( 'Current User', 'query-monitor' ) }</h3>
-					{ data.user && data.user.data && (
+					{ data.user ? (
 						<p>
-							{ data.user.title }
+							{ sprintf(
+								/* translators: %d: User ID */
+								__( 'Current User: #%d', 'query-monitor' ),
+								data.user.ID
+							) }
+						</p>
+					) : (
+						<p>
+							{ __( 'None', 'query-monitor' ) }
 						</p>
 					) }
 				</section>
