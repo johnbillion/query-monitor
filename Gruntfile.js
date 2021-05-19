@@ -52,18 +52,28 @@ module.exports = function (grunt) {
 		})
 	};
 
+	const sassFiles = {
+		'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
+		'assets/query-monitor.css': 'assets/query-monitor.scss'
+	};
+	const sassOptions = {
+		implementation: require('sass'),
+		sourceMap: false,
+		outputStyle: 'expanded'
+	};
+
 	config.sass = {
-		options: {
-			implementation: require('sass'),
-			sourceMap: false,
-			outputStyle: 'expanded'
-		},
-		dist: {
-			files: {
-				'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
-				'assets/query-monitor.css': 'assets/query-monitor.scss'
+		dev: {
+			files: sassFiles,
+			options: {
+				...sassOptions,
+				sourceMap: true,
 			}
-		}
+		},
+		prod: {
+			files: sassFiles,
+			options: sassOptions,
+		},
 	};
 
 	config.rename = {
@@ -108,7 +118,7 @@ module.exports = function (grunt) {
 		},
 		css: {
 			files: '**/*.scss',
-			tasks: ['sass']
+			tasks: ['sass:dev']
 		}
 	};
 
@@ -131,7 +141,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('default', [
-		'sass',
+		'sass:dev',
 		'watch'
 	]);
 };

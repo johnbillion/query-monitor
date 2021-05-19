@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Hooks extends QM_Collector {
 
 	public $id = 'hooks';
@@ -25,7 +27,9 @@ class QM_Collector_Hooks extends QM_Collector {
 			$hooks[] = QM_Hook::process( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
-		if ( defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS ) {
+		$this->data['all_hooks'] = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;
+
+		if ( $this->data['all_hooks'] ) {
 			// Show all hooks
 			$hook_names = array_keys( $wp_filter );
 		} else {

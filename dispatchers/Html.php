@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	/**
@@ -33,7 +35,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
 		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
 		add_action( 'login_footer',               array( $this, 'action_footer' ) );
-		add_action( 'embed_footer',               array( $this, 'action_footer' ) );
 		add_action( 'gp_footer',                  array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );

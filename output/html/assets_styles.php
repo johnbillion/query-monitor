@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 
 	/**

@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_DB_Dupes extends QM_Collector {
 
 	public $id = 'db_dupes';
@@ -20,7 +22,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		}
 
 		// Filter out SQL queries that do not have dupes
-		$this->data['dupes'] = array_filter( $dbq->data['dupes'], array( $this, '_filter_dupe_queries' ) );
+		$this->data['dupes'] = array_filter( $dbq->data['dupes'], array( $this, 'filter_dupe_items' ) );
 
 		// Ignore dupes from `WP_Query->set_found_posts()`
 		unset( $this->data['dupes']['SELECT FOUND_ROWS()'] );
@@ -88,11 +90,6 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		}
 
 	}
-
-	public function _filter_dupe_queries( $queries ) {
-		return ( count( $queries ) > 1 );
-	}
-
 }
 
 function register_qm_collector_db_dupes( array $collectors, QueryMonitor $qm ) {

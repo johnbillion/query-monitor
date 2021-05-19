@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_Hooks extends QM_Output_Html {
 
 	/**
@@ -35,13 +37,15 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
+		$callback_label = $data['all_hooks'] ? __( 'Callback', 'query-monitor' ) : __( 'Action', 'query-monitor' );
+
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'name', $data['parts'], __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Action', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ), array(
 			'highlight' => 'subject',

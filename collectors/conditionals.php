@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Conditionals extends QM_Collector {
 
 	public $id = 'conditionals';

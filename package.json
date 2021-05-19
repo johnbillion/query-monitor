@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.6.8",
+	"version": "3.7.1",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -65,7 +65,7 @@
 		"bump:minor": "grunt bump:minor",
 		"bump:patch": "grunt bump:patch",
 		"grunt": "grunt",
-		"build": "concurrently \"grunt sass\" \"wp-scripts build\"",
+		"build": "concurrently \"grunt sass:prod\" \"wp-scripts build\"",
 		"watch": "concurrently \"grunt watch\" \"wp-scripts build\" \"wp-scripts start\""
 	}
 }

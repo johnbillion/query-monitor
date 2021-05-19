@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_HTTP extends QM_Collector {
 
 	public $id         = 'http';
@@ -262,10 +264,6 @@ class QM_Collector_HTTP extends QM_Collector {
 			$http['ltime'] = ( $http['end'] - $http['start'] );
 
 			if ( isset( $http['info'] ) ) {
-				if ( isset( $http['info']['total_time'] ) ) {
-					$http['ltime'] = $http['info']['total_time'];
-				}
-
 				if ( ! empty( $http['info']['url'] ) ) {
 					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
 						$http['redirected_to'] = $http['info']['url'];

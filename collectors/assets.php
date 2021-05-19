@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 abstract class QM_Collector_Assets extends QM_Collector {
 
 	public function __construct() {

@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	public $id = 'ajax';
@@ -12,8 +14,10 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
 
+		// This dispatcher needs to run on a priority lower than 1 so it can output
+		// its headers before wp_ob_end_flush_all() flushes all the output buffers:
+		// https://github.com/WordPress/wordpress-develop/blob/0a3a3c5119897c6d551a42ae9b5dbfa4f576f2c9/src/wp-includes/default-filters.php#L382
 		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
-
 	}
 
 	public function init() {
@@ -23,6 +27,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 		}
 
 		if ( QM_Util::is_ajax() ) {
+			// Start an output buffer for Ajax requests so headers can be output at the end:
 			ob_start();
 		}
 

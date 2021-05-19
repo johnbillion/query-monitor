@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_Logger extends QM_Output_Html {
 
 	/**
@@ -45,14 +47,34 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			return;
 		}
 
-		$levels = array_map( 'ucfirst', $this->collector->get_levels() );
+		$levels = array();
+
+		foreach ( $this->collector->get_levels() as $level ) {
+			if ( $data['counts'][ $level ] ) {
+				$levels[ $level ] = sprintf(
+					'%s (%d)',
+					ucfirst( $level ),
+					$data['counts'][ $level ]
+				);
+			} else {
+				$levels[ $level ] = ucfirst( $level );
+			}
+		}
 
 		$this->before_tabular_output();
+
+		$level_args = array(
+			'all' => sprintf(
+				/* translators: %s: Total number of items in a list */
+				__( 'All (%d)', 'query-monitor' ),
+				count( $data['logs'] )
+			),
+		);
 
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ), $level_args ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
@@ -69,7 +91,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			$row_attr                      = array();
 			$row_attr['data-qm-component'] = $component->name;
-			$row_attr['data-qm-type']      = ucfirst( $row['level'] );
+			$row_attr['data-qm-type']      = $row['level'];
 
 			$attr = '';
 

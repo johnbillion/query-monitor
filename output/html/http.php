@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Output_Html_HTTP extends QM_Output_Html {
 
 	/**
@@ -144,6 +146,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 							'wp_remote_fopen',
 							'download_url',
 							'vip_safe_wp_remote_get',
+							'vip_safe_wp_remote_request',
 							'wpcom_vip_file_get_contents',
 						), true );
 					}

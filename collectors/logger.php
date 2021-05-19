@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Logger extends QM_Collector {
 
 	public $id = 'logger';
@@ -20,6 +22,9 @@ class QM_Collector_Logger extends QM_Collector {
 
 	public function __construct() {
 		parent::__construct();
+
+		$this->data['counts'] = array_fill_keys( $this->get_levels(), 0 );
+
 		foreach ( $this->get_levels() as $level ) {
 			add_action( "qm/{$level}", array( $this, $level ), 10, 2 );
 		}
@@ -103,6 +108,7 @@ class QM_Collector_Logger extends QM_Collector {
 			$message = '(Empty string)';
 		}
 
+		$this->data['counts'][ $level ]++;
 		$this->data['logs'][] = array(
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,

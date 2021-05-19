@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Raw_Request extends QM_Collector {
 
 	public $id = 'raw_request';

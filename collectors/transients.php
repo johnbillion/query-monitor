@@ -5,6 +5,8 @@
  * @package query-monitor
  */
 
+defined( 'ABSPATH' ) || exit;
+
 class QM_Collector_Transients extends QM_Collector {
 
 	public $id = 'transients';
@@ -16,9 +18,9 @@ class QM_Collector_Transients extends QM_Collector {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
 		remove_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10 );
 		remove_action( 'setted_transient',      array( $this, 'action_setted_blog_transient' ), 10 );
+		parent::tear_down();
 	}
 
 	public function action_setted_site_transient( $transient, $value, $expiration ) {

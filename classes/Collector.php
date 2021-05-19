@@ -221,6 +221,10 @@ abstract class QM_Collector {
 	}
 
 	public static function hide_qm() {
+		if ( ! defined( 'QM_HIDE_SELF' ) ) {
+			return false;
+		}
+
 		if ( null === self::$hide_qm ) {
 			self::$hide_qm = QM_HIDE_SELF;
 		}
@@ -231,6 +235,10 @@ abstract class QM_Collector {
 	public function filter_remove_qm( array $item ) {
 		$component = $item['trace']->get_component();
 		return ( 'query-monitor' !== $component->context );
+	}
+
+	public function filter_dupe_items( $items ) {
+		return ( count( $items ) > 1 );
 	}
 
 	public function process() {}
