@@ -38,13 +38,9 @@ interface iRequestPanelProps extends iPanelProps {
 			data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
 		};
 		multisite?: {
-			current_site: {
-				title: string;
-				data: WP_Site;
-			};
-			current_network?: {
-				title: string;
-				data: WP_Network;
+			current_site: WP_Site;
+			current_network?: WP_Network & {
+				id: number;
 			};
 		};
 	}
@@ -161,11 +157,22 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 				{ data.multisite && (
 					<section>
 						<h3>{ __( 'Multisite', 'query-monitor' ) }</h3>
-						{ Object.keys( data.multisite ).map( ( key: keyof typeof data.multisite ) => (
-							<p key={ key }>
-								{ data.multisite[ key ].title }
+						<p>
+							{ sprintf(
+								/* translators: %d: Multisite site ID */
+								__( 'Current Site: #%d', 'query-monitor' ),
+								data.multisite.current_site.blog_id
+							) }
+						</p>
+						{ data.multisite.current_network && (
+							<p>
+								{ sprintf(
+									/* translators: %d: Multisite network ID */
+									__( 'Current Network: #%d', 'query-monitor' ),
+									data.multisite.current_network.id
+								) }
 							</p>
-						) ) }
+						) }
 					</section>
 				) }
 			</NonTabular>
