@@ -16,9 +16,9 @@ import { sprintf, __ } from '@wordpress/i18n';
 
 interface iItems {
 	request: string;
-	matched_rule: string;
-	matched_query: string;
-	query_string: string;
+	matched_rule?: string;
+	matched_query?: string;
+	query_string?: string;
 }
 
 interface iRequestPanelProps extends iPanelProps {
@@ -68,17 +68,23 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 						<React.Fragment key={ key }>
 							<section>
 								<h3>{ name }</h3>
-								<p className="qm-ltr">
-									<code>
-										{ value }
-									</code>
-								</p>
+								{ value ? (
+									<p className="qm-ltr">
+										<code>
+											{ value }
+										</code>
+									</p>
+								) : (
+									<p>
+										{ __( 'None', 'query-monitor' ) }
+									</p>
+								) }
 							</section>
 						</React.Fragment>
 					);
 				} ) }
 
-				{ data.matching_rewrites && (
+				{ data.matching_rewrites && Object.keys( data.matching_rewrites ).length > 0 && (
 					<section>
 						<h3>
 							{ __( 'All Matching Rewrite Rules', 'query-monitor' ) }
@@ -110,7 +116,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 
 				<section>
 					<h3>{ __( 'Query Vars', 'query-monitor' ) }</h3>
-					{ data.qvars && (
+					{ data.qvars ? (
 						<table>
 							<tbody>
 								{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
@@ -125,14 +131,22 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 								) ) }
 							</tbody>
 						</table>
+					) : (
+						<p>
+							{ __( 'None', 'query-monitor' ) }
+						</p>
 					) }
 				</section>
 
 				<section>
 					<h3>{ __( 'Queried Object', 'query-monitor' ) }</h3>
-					{ data.queried_object && (
+					{ data.queried_object ? (
 						<p>
 							{ data.queried_object.title } ({ data.queried_object.type })
+						</p>
+					) : (
+						<p>
+							{ __( 'None', 'query-monitor' ) }
 						</p>
 					) }
 				</section>

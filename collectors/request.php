@@ -144,8 +144,8 @@ class QM_Collector_Request extends QM_Collector {
 			} else {
 				$this->data['request']['request'] = '';
 			}
-			foreach ( array( 'query_string' ) as $item ) {
-				$this->data['request'][ $item ] = $wp->$item;
+			if ( $wp->query_string ) {
+				$this->data['request']['query_string'] = $wp->query_string;
 			}
 		} else {
 			foreach ( array( 'request', 'matched_rule', 'matched_query', 'query_string' ) as $item ) {
