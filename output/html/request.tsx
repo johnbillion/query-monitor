@@ -1,6 +1,7 @@
 import {
 	iPanelProps,
 	NonTabular,
+	Utils,
 } from 'qmi';
 import * as React from 'react';
 import {
@@ -51,18 +52,25 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 	render() {
 		const { data } = this.props;
 
-		const items: iItems = {
+		const items = {
 			request: __( 'Request', 'query-monitor' ),
 			matched_rule: __( 'Matched Rule', 'query-monitor' ),
 			matched_query: __( 'Matched Query', 'query-monitor' ),
 			query_string: __( 'Query String', 'query-monitor' ),
+		};
+		const urls = {
+			request: false,
+			matched_rule: false,
+			matched_query: true,
+			query_string: true,
 		};
 
 		return (
 			<NonTabular id={ this.props.id }>
 				{ Object.keys( items ).map( ( key: keyof typeof items ) => {
 					const name = items[key];
-					const value = data.request[key];
+					const value = data.request[ key ];
+					const url = urls[ key ];
 
 					return (
 						<React.Fragment key={ key }>
@@ -71,7 +79,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 								{ value ? (
 									<p className="qm-ltr">
 										<code>
-											{ value }
+											{ url ? Utils.formatURL( value ) : value }
 										</code>
 									</p>
 								) : (
@@ -92,7 +100,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 						<table>
 							<tbody>
 								{ Object.keys( data.matching_rewrites ).map( ( rule: keyof typeof data.matching_rewrites ) => {
-									const query = data.matching_rewrites[ rule ];
+									const query = data.matching_rewrites[ rule ].replace( 'index.php?', '' );
 
 									return (
 										<tr key={ rule }>
@@ -103,7 +111,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 											</td>
 											<td className="qm-ltr">
 												<code>
-													{ query }
+													{ Utils.formatURL( query ) }
 												</code>
 											</td>
 										</tr>
