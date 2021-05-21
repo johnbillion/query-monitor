@@ -110,7 +110,9 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 											{ action.priority }
 										</td>
 										<td className="qm-nowrap">
-											{ action.callback.name }
+											<code>
+												{ action.callback.name }
+											</code>
 										</td>
 										<QMComponent component={ action.callback.component } />
 									</tr>
