@@ -72,9 +72,7 @@ class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 								<td>
 									{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }
 								</td>
-								<td>
-									<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-								</td>
+								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 								<QMComponent component={ row.component } />
 								<td className="qm-num">
 									{ row.args.timeout }
