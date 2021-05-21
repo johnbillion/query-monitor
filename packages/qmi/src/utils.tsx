@@ -25,3 +25,29 @@ export function formatSQL( sql: string ) {
 
 	return collection;
 }
+
+export function formatURL( url: string ) {
+	const paramRegex = '(\\?|&)';
+	const parts = url.split( new RegExp( paramRegex ) );
+	const collection: JSX.Element[] = [
+		<>
+			{ parts[0] }
+		</>,
+	];
+	let index = 0;
+
+	url.replace( new RegExp( paramRegex, 'g' ), ( match, keyword ) => {
+		index += 2;
+
+		collection.push(
+			<>
+				<br />
+				{ `${ keyword }${ parts[ index ] }` }
+			</>
+		);
+
+		return '';
+	} );
+
+	return collection;
+}

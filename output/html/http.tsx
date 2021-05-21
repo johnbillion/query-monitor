@@ -7,6 +7,7 @@ import {
 	Tabular,
 	Time,
 	TotalTime,
+	Utils,
 } from 'qmi';
 import * as React from 'react';
 
@@ -67,7 +68,7 @@ class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
 									{ row.args.method }
 								</td>
 								<td>
-									{ row.url }
+									{ Utils.formatURL( row.url ) }
 								</td>
 								<td>
 									{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }
