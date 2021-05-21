@@ -3,6 +3,7 @@ import {
 	iPanelProps,
 	QMComponent,
 	Tabular,
+	Warning,
 } from 'qmi';
 import * as React from 'react';
 
@@ -44,13 +45,15 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 
 						return Object.keys( errors ).map( id => {
 							const error = errors[id];
+							const warn = ( type === 'warning' );
 							const classes = classnames( {
-								'qm-warn': ( type === 'warning' ),
+								'qm-warn': warn,
 							} );
 
 							return (
 								<tr key={ `${ error.message }${ error.filename }${ error.line }` } className={ classes }>
 									<td className="qm-nowrap">
+										{ warn && ( <Warning /> ) }
 										{ type }
 									</td>
 									<td className="qm-ltr">
