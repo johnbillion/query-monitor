@@ -14,6 +14,7 @@ export { Time } from './src/time';
 export { TotalTime } from './src/totaltime';
 export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';
+export * as Utils from './src/utils';
 
 export interface iPanelProps {
 	data: any;
