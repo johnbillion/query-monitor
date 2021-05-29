@@ -1,6 +1,6 @@
 <?php
 
-class TestStackTraces extends QM_UnitTestCase {
+class TestCallbacks extends QM_UnitTestCase {
 
 	protected static function get_callback( $function ) {
 
