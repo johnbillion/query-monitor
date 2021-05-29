@@ -57,6 +57,8 @@ class QM_Backtrace {
 	protected $calling_line    = 0;
 	protected $calling_file    = '';
 
+	protected $component = null;
+
 	public function __construct( array $args = array(), array $trace = null ) {
 		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
@@ -126,6 +128,9 @@ class QM_Backtrace {
 	}
 
 	public function get_component() {
+		if ( isset( $this->component ) ) {
+			return $this->component;
+		}
 
 		$components = array();
 
@@ -136,7 +141,8 @@ class QM_Backtrace {
 				if ( 'plugin' === $component->type ) {
 					// If the component is a plugin then it can't be anything else,
 					// so short-circuit and return early.
-					return $component;
+					$this->component = $component;
+					return $this->component;
 				}
 
 				$components[ $component->type ] = $component;
@@ -145,7 +151,8 @@ class QM_Backtrace {
 
 		foreach ( QM_Util::get_file_dirs() as $type => $dir ) {
 			if ( isset( $components[ $type ] ) ) {
-				return $components[ $type ];
+				$this->component = $components[ $type ];
+				return $this->component;
 			}
 		}
 
