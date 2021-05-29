@@ -129,7 +129,7 @@ class QM_Backtrace {
 
 		$components = array();
 
-		foreach ( $this->trace as $frame ) {
+		foreach ( $this->get_filtered_trace() as $frame ) {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
