@@ -85,7 +85,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $data['logs'] as $row ) {
-			$component = $row['trace']->get_component();
+			$component = $row['component'];
 
 			$row_attr                      = array();
 			$row_attr['data-qm-component'] = $component->name;
@@ -124,7 +124,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			);
 
 			$stack          = array();
-			$filtered_trace = $row['trace']->get_display_trace();
+			$filtered_trace = $row['filtered_trace'];
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );

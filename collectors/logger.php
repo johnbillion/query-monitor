@@ -111,7 +111,8 @@ class QM_Collector_Logger extends QM_Collector {
 		$this->data['logs'][] = array(
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
-			'trace'   => $trace,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
 			'level'   => $level,
 			'type'    => $type,
 		);
@@ -142,7 +143,7 @@ class QM_Collector_Logger extends QM_Collector {
 		$components = array();
 
 		foreach ( $this->data['logs'] as $row ) {
-			$component                      = $row['trace']->get_component();
+			$component                      = $row['component'];
 			$components[ $component->name ] = $component->name;
 		}
 
