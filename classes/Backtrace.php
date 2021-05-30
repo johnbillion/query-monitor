@@ -161,31 +161,31 @@ class QM_Backtrace {
 	}
 
 	public static function get_frame_component( array $frame ) {
-			try {
+		try {
 
-				if ( isset( $frame['class'] ) ) {
-					if ( ! class_exists( $frame['class'], false ) ) {
-						return null;
-					}
-					if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
-						return null;
-					}
-					$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
-					$file = $ref->getFileName();
-				} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
-					$ref = new ReflectionFunction( $frame['function'] );
-					$file = $ref->getFileName();
-				} elseif ( isset( $frame['file'] ) ) {
-					$file = $frame['file'];
-				} else {
+			if ( isset( $frame['class'] ) ) {
+				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
-
-				return QM_Util::get_file_component( $file );
-
-			} catch ( ReflectionException $e ) {
+				if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
+					return null;
+				}
+				$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
+				$file = $ref->getFileName();
+			} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
+				$ref = new ReflectionFunction( $frame['function'] );
+				$file = $ref->getFileName();
+			} elseif ( isset( $frame['file'] ) ) {
+				$file = $frame['file'];
+			} else {
 				return null;
 			}
+
+			return QM_Util::get_file_component( $file );
+
+		} catch ( ReflectionException $e ) {
+			return null;
+		}
 	}
 
 	public function get_trace() {
