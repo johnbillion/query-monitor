@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 final class QM_Collector_Debug_Bar extends QM_Collector {
 

@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Dispatcher_Redirect extends QM_Dispatcher {
 

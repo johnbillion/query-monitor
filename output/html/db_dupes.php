@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 

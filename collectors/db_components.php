@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_DB_Components extends QM_Collector {
 

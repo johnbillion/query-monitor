@@ -12,7 +12,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;

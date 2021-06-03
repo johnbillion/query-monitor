@@ -1,6 +1,8 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Raw_Request extends QM_Collector {
 
