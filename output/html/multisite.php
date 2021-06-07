@@ -45,9 +45,9 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Context', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'From', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'To', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">#</th>';
+		echo '<th scope="col">' . esc_html__( 'Function', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Site Switch', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -57,6 +57,8 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody>';
+
+		$i = 0;
 
 		foreach ( $data['switches'] as $row ) {
 			$component = $row['trace']->get_component();
@@ -73,16 +75,37 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<tr' . $attr . '>';
 
+			echo '<td class="qm-num">';
+			if ( $row['to'] ) {
+				echo ++$i;
+			}
+			echo '</td>';
+
+			echo '<td class="qm-nowrap"><code>';
+			if ( $row['to'] ) {
+				printf(
+					'switch_to_blog(%d)',
+					intval($row['new'] )
+				);
+			} else {
+				echo 'restore_current_blog()';
+			}
+			echo '</code></td>';
+
 			echo '<td class="qm-nowrap">';
-			echo esc_html( $row['to'] ? 'Switch' : 'Restore' );
-			echo '</td>';
-
-			echo '<td class="qm-num">';
-			echo esc_html( $row['prev'] );
-			echo '</td>';
-
-			echo '<td class="qm-num">';
-			echo esc_html( $row['new'] );
+			if ( $row['to'] ) {
+				echo esc_html( sprintf(
+					'%1$s &rarr; %2$s',
+					$row['prev'],
+					$row['new']
+				) );
+			} else {
+				echo esc_html( sprintf(
+					'%1$s &larr; %2$s',
+					$row['new'],
+					$row['prev']
+				) );
+			}
 			echo '</td>';
 
 			$stack          = array();
