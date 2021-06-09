@@ -14,6 +14,9 @@
 
 		<exclude name="WordPress.Files.FileName" />
 
+		<!-- Exclude short description sniff so short `@var` notation can be used -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
 		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_trigger_error" />
