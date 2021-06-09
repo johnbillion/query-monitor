@@ -52,6 +52,7 @@ class QM_Backtrace {
 		'current_user_can_for_blog'  => 4,
 		'author_can'                 => 4,
 	);
+	protected static $ignore_hook = array();
 	protected static $filtered = false;
 	protected $args            = array();
 	protected $trace           = null;
@@ -68,6 +69,7 @@ class QM_Backtrace {
 			'ignore_class'          => array(),
 			'ignore_method'         => array(),
 			'ignore_func'           => array(),
+			'ignore_hook'           => array(),
 			'show_args'             => array(),
 		), $args );
 
@@ -259,6 +261,16 @@ class QM_Backtrace {
 			self::$ignore_func   = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
 
 			/**
+			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
+			 *
+			 * @since x.x.x
+			 *
+			 * @param bool[] $ignore_hook Array of hook names to ignore. The array keys are hook names to ignore,
+			 *                            the array values are whether to ignore the hook or not (usually true).
+			 */
+			self::$ignore_hook = apply_filters( 'qm/trace/ignore_hook', self::$ignore_hook );
+
+			/**
 			 * Filters the number of argument values to show for the given function name when constructing user-facing
 			 * call stacks.
 			 *
@@ -278,7 +290,17 @@ class QM_Backtrace {
 		$ignore_class = array_merge( self::$ignore_class, $this->args['ignore_class'] );
 		$ignore_method = array_merge( self::$ignore_method, $this->args['ignore_method'] );
 		$ignore_func = array_merge( self::$ignore_func, $this->args['ignore_func'] );
+		$ignore_hook = array_merge( self::$ignore_hook, $this->args['ignore_hook'] );
 		$show_args = array_merge( self::$show_args, $this->args['show_args'] );
+
+		$hook_functions = array(
+			'apply_filters' => true,
+			'do_action' => true,
+			'apply_filters_ref_array' => true,
+			'do_action_ref_array' => true,
+			'apply_filters_deprecated' => true,
+			'do_action_deprecated' => true,
+		);
 
 		if ( isset( $frame['class'] ) ) {
 			if ( isset( $ignore_class[ $frame['class'] ] ) ) {
@@ -304,18 +326,22 @@ class QM_Backtrace {
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
-					$args = array();
-					for ( $i = 0; $i < $show; $i++ ) {
-						if ( isset( $frame['args'][ $i ] ) ) {
-							if ( is_string( $frame['args'][ $i ] ) ) {
-								$args[] = '\'' . $frame['args'][ $i ] . '\'';
-							} else {
-								$args[] = QM_Util::display_variable( $frame['args'][ $i ] );
+					if ( isset( $hook_functions[ $frame['function'] ] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
+						$return = null;
+					} else {
+						$args = array();
+						for ( $i = 0; $i < $show; $i++ ) {
+							if ( isset( $frame['args'][ $i ] ) ) {
+								if ( is_string( $frame['args'][ $i ] ) ) {
+									$args[] = '\'' . $frame['args'][ $i ] . '\'';
+								} else {
+									$args[] = QM_Util::display_variable( $frame['args'][ $i ] );
+								}
 							}
 						}
+						$return['id']      = $frame['function'] . '()';
+						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
 					}
-					$return['id']      = $frame['function'] . '()';
-					$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
 				}
 			} else {
 				$return['id']      = $frame['function'] . '()';
