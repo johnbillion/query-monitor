@@ -216,16 +216,6 @@ class QM_Backtrace {
 		return $this;
 	}
 
-	public function ignore_current_filter() {
-
-		if ( isset( $this->trace[2] ) && isset( $this->trace[2]['function'] ) ) {
-			if ( in_array( $this->trace[2]['function'], array( 'apply_filters', 'do_action' ), true ) ) {
-				$this->ignore( 3 ); # Ignore filter and action callbacks
-			}
-		}
-
-	}
-
 	public function filter_trace( array $frame ) {
 
 		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
