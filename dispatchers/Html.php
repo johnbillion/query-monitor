@@ -522,10 +522,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		foreach ( $constants as $name => $constant ) {
 			echo '<dt><code>' . esc_html( $name ) . '</code></dt>';
 			echo '<dd>';
-			printf(
-				esc_html( $constant['label'] ),
-				'<code>' . esc_html( $constant['default'] ) . '</code>'
-			);
+			echo esc_html( $constant['label'] );
 
 			$default_value = $constant['default'];
 			if ( is_bool( $default_value ) ) {
@@ -540,14 +537,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			);
 			echo '</span>';
 
-			if ( defined( $name ) ) {
+			if ( defined( $name ) && ( constant( $name ) !== $constant['default'] ) ) {
 				$current_value = constant( $name );
 				if ( is_bool( $current_value ) ) {
 					$current_value = QM_Collector::format_bool_constant( $name );
 				}
-			}
 
-			if ( defined( $name ) && ( constant( $name ) !== $constant['default'] ) ) {
 				echo '<br><span class="qm-info">';
 				printf(
 					/* translators: %s: Current value for a PHP constant */
