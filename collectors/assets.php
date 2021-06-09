@@ -185,7 +185,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		foreach ( $item->deps as $handle ) {
 			$dep = $dependencies->query( $handle );
-			if ( $dep ) {
+			if ( $dep instanceof _WP_Dependency ) {
 				$broken = array_merge( $broken, self::get_broken_dependencies( $dep, $dependencies ) );
 			} else {
 				$broken[] = $item->handle;
@@ -201,7 +201,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		foreach ( $handles as $handle ) {
 			$item = $dependencies->query( $handle );
-			if ( $item ) {
+			if ( $item instanceof _WP_Dependency ) {
 				if ( in_array( $dependency->handle, $item->deps, true ) ) {
 					$dependents[] = $handle;
 				}

@@ -536,7 +536,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			printf(
 				/* translators: %s: Default value for a PHP constant */
 				esc_html__( 'Default value: %s', 'query-monitor' ),
-				'<code>' . esc_html( $default_value ) . '</code>'
+				'<code>' . esc_html( (string) $default_value ) . '</code>'
 			);
 			echo '</span>';
 
