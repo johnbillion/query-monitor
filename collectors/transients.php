@@ -34,9 +34,7 @@ class QM_Collector_Transients extends QM_Collector {
 	}
 
 	public function setted_transient( $transient, $type, $value, $expiration ) {
-		$trace = new QM_Backtrace( array(
-			'ignore_frames' => 1, # Ignore the action_setted_(site|blog)_transient method
-		) );
+		$trace = new QM_Backtrace();
 
 		$name = str_replace( array(
 			'_site_transient_',
@@ -66,9 +64,6 @@ class QM_Collector_Transients extends QM_Collector {
 
 		foreach ( $this->data['trans'] as $i => $transient ) {
 			$filtered_trace = $transient['trace']->get_display_trace();
-
-			array_shift( $filtered_trace ); // remove do_action('setted_(site_)?transient')
-			array_shift( $filtered_trace ); // remove set_(site_)?transient()
 
 			$component = $transient['trace']->get_component();
 

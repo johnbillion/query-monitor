@@ -165,9 +165,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return false;
 		}
 
-		$trace  = new QM_Backtrace( array(
-			'ignore_current_filter' => false,
-		) );
+		$trace  = new QM_Backtrace();
 		$caller = $trace->get_caller();
 		$key    = md5( $message . $file . $line . $caller['id'] );
 

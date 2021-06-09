@@ -65,30 +65,11 @@ class QM_Backtrace {
 		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
 		$this->args = array_merge( array(
-			'ignore_current_filter' => true,
-			'ignore_frames'         => 0,
 			'ignore_class'          => array(),
 			'ignore_method'         => array(),
 			'ignore_func'           => array(),
 			'show_args'             => array(),
 		), $args );
-
-		$this->ignore( 1 ); # Self-awareness
-
-		/**
-		 * If error_handler() is in the trace, QM fails later when it tries
-		 * to get $lowest['file'] in get_filtered_trace()
-		 */
-		if ( 'error_handler' === $this->trace[0]['function'] ) {
-			$this->ignore( 1 );
-		}
-
-		if ( $this->args['ignore_frames'] ) {
-			$this->ignore( $this->args['ignore_frames'] );
-		}
-		if ( $this->args['ignore_current_filter'] ) {
-			$this->ignore_current_filter();
-		}
 
 		foreach ( $this->trace as $k => $frame ) {
 			if ( ! isset( $frame['args'] ) ) {

@@ -107,9 +107,7 @@ class QM_DB extends wpdb {
 			return $result;
 		}
 
-		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
-			'ignore_frames' => 1,
-		) );
+		$this->queries[ $i ]['trace'] = new QM_Backtrace();
 
 		if ( ! isset( $this->queries[ $i ][3] ) ) {
 			$this->queries[ $i ][3] = $this->time_start;

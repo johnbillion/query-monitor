@@ -123,9 +123,7 @@ class QM_Collector_Theme extends QM_Collector {
 	public function action_get_template_part( $slug, $name, $templates ) {
 		$data = compact( 'slug', 'name', 'templates' );
 
-		$data['trace'] = new QM_Backtrace( array(
-			'ignore_frames' => 4,
-		) );
+		$data['trace'] = new QM_Backtrace();
 
 		$this->data['requested_template_parts'][] = $data;
 	}
