@@ -77,7 +77,9 @@ class QM_Collector_Logger extends QM_Collector {
 	protected function store( $level, $message, array $context = array() ) {
 		$type  = 'string';
 		$trace = new QM_Backtrace( array(
-			'ignore_frames' => 2,
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
 		) );
 
 		if ( is_wp_error( $message ) ) {

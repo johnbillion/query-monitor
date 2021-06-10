@@ -81,7 +81,11 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @return bool[] Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
-		$trace  = new QM_Backtrace();
+		$trace  = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+		) );
 		$result = true;
 
 		foreach ( $caps as $cap ) {
@@ -124,7 +128,11 @@ class QM_Collector_Caps extends QM_Collector {
 			return $required_caps;
 		}
 
-		$trace  = new QM_Backtrace();
+		$trace  = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+		) );
 		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
 
 		array_unshift( $args, $user_id );

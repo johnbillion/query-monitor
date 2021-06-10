@@ -34,7 +34,15 @@ class QM_Collector_Transients extends QM_Collector {
 	}
 
 	public function setted_transient( $transient, $type, $value, $expiration ) {
-		$trace = new QM_Backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+			'ignore_func' => array(
+				'set_transient' => true,
+				'set_site_transient' => true,
+			),
+		) );
 
 		$name = str_replace( array(
 			'_site_transient_',

@@ -98,7 +98,11 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @return array        HTTP request arguments.
 	 */
 	public function filter_http_request_args( array $args, $url ) {
-		$trace = new QM_Backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+		) );
 		if ( isset( $args['_qm_key'] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
