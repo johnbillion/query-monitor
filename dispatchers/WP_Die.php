@@ -39,7 +39,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		$switched_locale = function_exists( 'switch_to_locale' ) && switch_to_locale( get_user_locale() );
+		$switched_locale = self::switch_to_locale( get_user_locale() );
 		$stack           = array();
 		$filtered_trace  = $this->trace->get_display_trace();
 
@@ -140,7 +140,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '</div>';
 
 		if ( $switched_locale ) {
-			restore_previous_locale();
+			self::restore_previous_locale();
 		}
 	}
 
