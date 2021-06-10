@@ -113,6 +113,12 @@ class QM_Util {
 		return self::$file_dirs;
 	}
 
+	/**
+	 * Attempts to determine the component responsible for a given file name.
+	 *
+	 * @param string $file An absolute file path.
+	 * @return stdClass A stdClass object (ouch) representing the component.
+	 */
 	public static function get_file_component( $file ) {
 
 		# @TODO turn this into a class (eg QM_File_Component)

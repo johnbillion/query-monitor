@@ -162,6 +162,13 @@ class QM_Backtrace {
 
 	}
 
+	/**
+	 * Attempts to determine the component responsible for a given frame.
+	 *
+	 * @param array $frame A single frame from a trace.
+	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
+	 *                       the component cannot be determined.
+	 */
 	public static function get_frame_component( array $frame ) {
 		try {
 
