@@ -277,10 +277,10 @@ class QM_Backtrace {
 		}
 
 		$return = $frame;
-		$ignore_class = array_merge( self::$ignore_class, $this->args['ignore_class'] );
-		$ignore_method = array_merge( self::$ignore_method, $this->args['ignore_method'] );
-		$ignore_func = array_merge( self::$ignore_func, $this->args['ignore_func'] );
-		$ignore_hook = array_merge( self::$ignore_hook, $this->args['ignore_hook'] );
+		$ignore_class = array_filter( array_merge( self::$ignore_class, $this->args['ignore_class'] ) );
+		$ignore_method = array_filter( array_merge( self::$ignore_method, $this->args['ignore_method'] ) );
+		$ignore_func = array_filter( array_merge( self::$ignore_func, $this->args['ignore_func'] ) );
+		$ignore_hook = array_filter( array_merge( self::$ignore_hook, $this->args['ignore_hook'] ) );
 		$show_args = array_merge( self::$show_args, $this->args['show_args'] );
 
 		$hook_functions = array(
