@@ -463,7 +463,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	}
 
 	public function admin_title( array $existing ) {
-
+		$title = array();
 		$data = $this->collector->get_data();
 
 		if ( isset( $data['dbs'] ) ) {
