@@ -123,9 +123,13 @@ class QM_Collector_Theme extends QM_Collector {
 	public function action_get_template_part( $slug, $name, $templates ) {
 		$data = compact( 'slug', 'name', 'templates' );
 
-		$data['trace'] = new QM_Backtrace( array(
-			'ignore_frames' => 4,
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
 		) );
+
+		$data['caller'] = $trace->get_caller();
 
 		$this->data['requested_template_parts'][] = $data;
 	}
@@ -188,9 +192,6 @@ class QM_Collector_Theme extends QM_Collector {
 
 				foreach ( $this->data['requested_template_parts'] as $part ) {
 					$file = locate_template( $part['templates'] );
-
-					$part['caller'] = $part['trace']->get_caller();
-					unset( $part['trace'] );
 
 					if ( ! $file ) {
 						$this->data['unsuccessful_template_parts'][] = $part;

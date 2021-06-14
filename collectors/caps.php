@@ -81,7 +81,11 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @return bool[] Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
-		$trace  = new QM_Backtrace();
+		$trace  = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+		) );
 		$result = true;
 
 		foreach ( $caps as $cap ) {
@@ -124,7 +128,11 @@ class QM_Collector_Caps extends QM_Collector {
 			return $required_caps;
 		}
 
-		$trace  = new QM_Backtrace();
+		$trace  = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+		) );
 		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
 
 		array_unshift( $args, $user_id );
@@ -161,27 +169,7 @@ class QM_Collector_Caps extends QM_Collector {
 				$name = '';
 			}
 
-			$trace          = $cap['trace']->get_trace();
 			$filtered_trace = $cap['trace']->get_display_trace();
-
-			$last = end( $filtered_trace );
-			if ( isset( $last['function'] ) && 'map_meta_cap' === $last['function'] ) {
-				array_shift( $filtered_trace ); // remove the map_meta_cap() call
-			}
-
-			array_shift( $filtered_trace ); // remove the WP_User->has_cap() call
-			array_shift( $filtered_trace ); // remove the *_user_can() call
-
-			if ( ! count( $filtered_trace ) ) {
-				$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
-
-				$responsible_item                 = $trace[1];
-				$responsible_item['display']      = $responsible_name;
-				$responsible_item['calling_file'] = $trace[1]['file'];
-				$responsible_item['calling_line'] = $trace[1]['line'];
-				array_unshift( $filtered_trace, $responsible_item );
-			}
-
 			$component = $cap['trace']->get_component();
 
 			$this->data['caps'][ $i ]['filtered_trace'] = $filtered_trace;
