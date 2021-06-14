@@ -233,8 +233,7 @@ abstract class QM_Collector {
 	}
 
 	public function filter_remove_qm( array $item ) {
-		$component = $item['trace']->get_component();
-		return ( 'query-monitor' !== $component->context );
+		return ( 'query-monitor' !== $item['component']->context );
 	}
 
 	public function filter_dupe_items( $items ) {

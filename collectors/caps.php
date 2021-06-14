@@ -97,7 +97,8 @@ class QM_Collector_Caps extends QM_Collector {
 
 		$this->data['caps'][] = array(
 			'args'   => $args,
-			'trace'  => $trace,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component'      => $trace->get_component(),
 			'result' => $result,
 		);
 
@@ -140,7 +141,8 @@ class QM_Collector_Caps extends QM_Collector {
 
 		$this->data['caps'][] = array(
 			'args'   => $args,
-			'trace'  => $trace,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component'      => $trace->get_component(),
 			'result' => $result,
 		);
 
@@ -169,11 +171,7 @@ class QM_Collector_Caps extends QM_Collector {
 				$name = '';
 			}
 
-			$filtered_trace = $cap['trace']->get_display_trace();
-			$component = $cap['trace']->get_component();
-
-			$this->data['caps'][ $i ]['filtered_trace'] = $filtered_trace;
-			$this->data['caps'][ $i ]['component']      = $component;
+			$component = $cap['component'];
 
 			$parts                             = array_values( array_filter( preg_split( '#[_/-]#', $name ) ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
@@ -183,8 +181,6 @@ class QM_Collector_Caps extends QM_Collector {
 			$all_parts                         = array_merge( $all_parts, $parts );
 			$all_users[]                       = $cap['args'][1];
 			$components[ $component->name ]    = $component->name;
-
-			unset( $this->data['caps'][ $i ]['trace'] );
 		}
 
 		$this->data['parts']      = array_values( array_unique( array_filter( $all_parts ) ) );
@@ -193,7 +189,7 @@ class QM_Collector_Caps extends QM_Collector {
 	}
 
 	public function filter_remove_noise( array $cap ) {
-		$trace = $cap['trace']->get_trace();
+		$trace = $cap['filtered_trace'];
 
 		$exclude_files     = array(
 			ABSPATH . 'wp-admin/menu.php',
