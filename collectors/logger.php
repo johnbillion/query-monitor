@@ -110,7 +110,6 @@ class QM_Collector_Logger extends QM_Collector {
 		$this->data['counts'][ $level ]++;
 		$this->data['logs'][] = array(
 			'message' => self::interpolate( $message, $context ),
-			'context' => $context,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
 			'level'   => $level,
