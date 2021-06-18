@@ -85,6 +85,16 @@ class QM_Collector_Caps extends QM_Collector {
 			'ignore_hook' => array(
 				current_filter() => true,
 			),
+			'ignore_func' => array(
+				'current_user_can' => true,
+				'map_meta_cap' => true,
+				'user_can' => true,
+			),
+			'ignore_method' => array(
+				'WP_User' => array(
+					'has_cap' => true,
+				),
+			),
 		) );
 		$result = true;
 
@@ -132,6 +142,16 @@ class QM_Collector_Caps extends QM_Collector {
 		$trace  = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_filter() => true,
+			),
+			'ignore_func' => array(
+				'current_user_can' => true,
+				'map_meta_cap' => true,
+				'user_can' => true,
+			),
+			'ignore_method' => array(
+				'WP_User' => array(
+					'has_cap' => true,
+				),
 			),
 		) );
 		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
