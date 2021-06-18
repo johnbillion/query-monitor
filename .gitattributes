@@ -15,7 +15,6 @@
 /.gitignore export-ignore
 /assets/*.map export-ignore
 /assets/*.scss export-ignore
-/composer.json export-ignore
 /composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
 /Gruntfile.js export-ignore
