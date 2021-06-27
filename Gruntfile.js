@@ -86,30 +86,6 @@ module.exports = function (grunt) {
 		}
 	};
 
-	config.version = {
-		main: {
-			options: {
-				prefix: 'Version:[\\s]+'
-			},
-			src: [
-				'<%= pkg.name %>.php'
-			]
-		},
-		readme: {
-			options: {
-				prefix: 'Stable tag:[\\s]+'
-			},
-			src: [
-				'readme.txt'
-			]
-		},
-		pkg: {
-			src: [
-				'package.json'
-			]
-		}
-	};
-
 	config.watch = {
 		options: {
 			interval: 1000
@@ -121,16 +97,6 @@ module.exports = function (grunt) {
 	};
 
 	grunt.initConfig(config);
-
-	grunt.registerTask('bump', function(version) {
-		if ( ! version ) {
-			grunt.fail.fatal( 'No version specified. Usage: bump:major, bump:minor, bump:patch, bump:x.y.z' );
-		}
-
-		grunt.task.run([
-			'version::' + version
-		]);
-	});
 
 	grunt.registerTask('icons', [
 		'convert-svg-to-png',

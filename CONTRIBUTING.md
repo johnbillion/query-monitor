@@ -82,7 +82,6 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
    - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
-1. Commit the version number changes
 1. `git push origin develop`
 1. Wait until (and ensure that) [the build passes](https://github.com/johnbillion/query-monitor/actions)
 1. `git checkout master`
