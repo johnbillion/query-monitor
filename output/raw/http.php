@@ -42,7 +42,7 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 			$requests[] = array(
 				'url' => $http['url'],
 				'method' => $http['args']['method'],
-				'response' => $http['response']['response'],
+				'response' => is_wp_error( $http['response'] ) ? $http['response']->get_error_message() : $http['response']['response'],
 				'time' => (float) number_format_i18n( $http['end'] - $http['start'], 4 ),
 				'stack' => $stack,
 			);
