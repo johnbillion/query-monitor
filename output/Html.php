@@ -486,7 +486,7 @@ abstract class QM_Output_Html extends QM_Output {
 			 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 			 * @since 3.0.0
 			 *
-			 * @param string $format The format of the clickable file link.
+			 * @param string|false $format The format of the clickable file link, or false if there is none.
 			 */
 			$format = apply_filters( 'qm/output/file_link_format', $format );
 			if ( empty( $format ) ) {
