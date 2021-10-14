@@ -509,6 +509,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'label'   => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
 				'default' => false,
 			),
+			'QM_DB_SYMLINK'            => array(
+				'label'   => __( 'Allow the wp-content/db.php file symlink to be put into place during activation. Set to false to prevent the symlink creation.', 'query-monitor' ),
+				'default' => true,
+			),
 		);
 
 		echo '<section>';
