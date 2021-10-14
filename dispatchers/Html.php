@@ -174,7 +174,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	}
 
 	public function enqueue_assets() {
-		global $wp_locale, $wp_version;
+		global $wp_locale;
 
 		$deps = array(
 			'jquery',
