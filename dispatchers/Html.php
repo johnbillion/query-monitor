@@ -131,6 +131,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		if ( ! self::request_supported() ) {
+			return;
+		}
+
 		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
@@ -678,6 +682,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	public static function request_supported() {
+		// Don't dispatch if this is an async request and not a customizer preview:
+		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
+			return false;
+		}
+
+		// Don't dispatch during an iframed request, eg the plugin info modal, an upgrader action, or the Customizer:
+		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {
@@ -688,8 +706,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		// Don't dispatch if this is an async request and not a customizer preview:
-		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
+		if ( ! self::request_supported() ) {
 			return false;
 		}
 
@@ -702,11 +719,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
 				return false;
 			}
-		}
-
-		// Don't dispatch during an iframed request, eg the plugin info modal or an upgrader action:
-		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
-			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
