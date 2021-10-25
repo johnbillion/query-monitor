@@ -29,11 +29,17 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
+			'allowed_block_types_all',
+			'block_editor_settings_all',
+			'block_type_metadata',
+			'block_type_metadata_settings',
 			'block_parser_class',
 			'pre_render_block',
+			'register_block_type_args',
 			'render_block_context',
 			'render_block_data',
 			'render_block',
+			'use_widgets_block_editor',
 		);
 	}
 
