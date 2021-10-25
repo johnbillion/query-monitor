@@ -41,6 +41,7 @@ class QM_Backtrace {
 		'apply_filters_ref_array'    => 1,
 		'get_template_part'          => 2,
 		'get_extended_template_part' => 2,
+		'ai_get_template_part'       => 2,
 		'load_template'              => 'dir',
 		'dynamic_sidebar'            => 1,
 		'get_header'                 => 1,
