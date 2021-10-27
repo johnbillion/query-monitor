@@ -99,8 +99,6 @@ class QM_Collector_Environment extends QM_Collector {
 					if ( version_compare( $server, '5.7.20', '>=' ) ) {
 						unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
 					}
-				} else {
-					$server = null;
 				}
 
 				$variables = $db->get_results( "
@@ -142,8 +140,10 @@ class QM_Collector_Environment extends QM_Collector {
 					$client_version = null;
 				}
 
+				$server_version = self::get_server_version( $db );
+
 				$info = array(
-					'server-version' => $server,
+					'server-version' => $server_version,
 					'extension'      => $extension,
 					'client-version' => $client_version,
 					'user'           => $db->dbuser,
@@ -262,6 +262,24 @@ class QM_Collector_Environment extends QM_Collector {
 				$version = $part;
 				break;
 			}
+		}
+
+		return $version;
+	}
+
+	protected static function get_server_version( wpdb $db ) {
+		$version = null;
+
+		if ( method_exists( $db, 'db_server_info' ) ) {
+			$version = $db->db_server_info();
+		}
+
+		if ( ! $version ) {
+			$version = $db->get_var( 'SELECT VERSION()' );
+		}
+
+		if ( ! $version ) {
+			$version = __( 'Unknown', 'query-monitor' );
 		}
 
 		return $version;
