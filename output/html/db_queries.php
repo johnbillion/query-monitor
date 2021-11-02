@@ -479,8 +479,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 				$title[] = sprintf(
 					esc_html( '%s' . $text ),
-					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp;&nbsp;' : '' ),
-					number_format_i18n( $db->total_time, 4 )
+					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp' : '' ),
+					number_format_i18n( $db->total_time, 2 )
 				);
 
 				/* translators: %s: Number of database queries */

@@ -661,7 +661,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @param array $output_title List of titles.
 		 */
-		$title = implode( '&nbsp;&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
+		$title = implode( '&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
 
 		if ( empty( $title ) ) {
 			$title = esc_html__( 'Query Monitor', 'query-monitor' );

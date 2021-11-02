@@ -304,7 +304,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( empty( $data['memory'] ) ) {
 			$memory = '??';
 		} else {
-			$memory = number_format_i18n( ( $data['memory'] / 1024 ), 0 );
+			$memory = number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 );
 		}
 
 		$title[] = sprintf(
@@ -314,7 +314,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		);
 		$title[] = sprintf(
 			/* translators: %s: Memory usage in kilobytes */
-			esc_html_x( '%s kB', 'Memory usage', 'query-monitor' ),
+			esc_html_x( '%s MB', 'Memory usage', 'query-monitor' ),
 			$memory
 		);
 
