@@ -119,9 +119,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			esc_html_e( 'Unknown', 'query-monitor' );
 		} else {
 			echo esc_html( sprintf(
-				/* translators: %s: Memory used in kilobytes */
-				__( '%s kB', 'query-monitor' ),
-				number_format_i18n( $data['memory'] / 1024 )
+				/* translators: %s: Memory used in megabytes */
+				__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
+				number_format_i18n( $data['memory'] ),
+				number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 )
 			) );
 
 			if ( $data['memory_limit'] > 0 ) {
@@ -131,10 +132,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '<br><span class="qm-info">';
 				}
 				echo esc_html( sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
-					__( '%1$s%% of %2$s kB server limit', 'query-monitor' ),
+					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
+					__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
 					number_format_i18n( $data['memory_usage'], 1 ),
-					number_format_i18n( $data['memory_limit'] / 1024 )
+					number_format_i18n( $data['memory_limit'] / 1024 / 1024 )
 				) );
 				echo '</span>';
 			} else {
@@ -155,10 +156,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '<br><span class="qm-info">';
 				}
 				echo esc_html( sprintf(
-				/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
-					__( '%1$s%% of %2$s kB WordPress limit', 'query-monitor' ),
+				/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
+					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
 					number_format_i18n( $data['wp_memory_usage'], 1 ),
-					number_format_i18n( $data['wp_memory_limit'] / 1024 )
+					number_format_i18n( $data['wp_memory_limit'] / 1024 / 1024 )
 				) );
 				echo '</span>';
 			}
@@ -313,7 +314,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
-			/* translators: %s: Memory usage in kilobytes */
+			/* translators: %s: Memory usage in megabytes with a decimal fraction */
 			esc_html_x( '%s MB', 'Memory usage', 'query-monitor' ),
 			$memory
 		);
