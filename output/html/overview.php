@@ -83,7 +83,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
 		echo '<p>';
-		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
+		echo esc_html(
+			sprintf(
+				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+				_x( '%ss', 'Time in seconds', 'query-monitor' ),
+				number_format_i18n( $data['time_taken'], 4 )
+			)
+		);
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
@@ -156,7 +162,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '<br><span class="qm-info">';
 				}
 				echo esc_html( sprintf(
-				/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
+					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
 					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
 					number_format_i18n( $data['wp_memory_usage'], 1 ),
 					number_format_i18n( $data['wp_memory_limit'] / 1024 / 1024 )
@@ -174,7 +180,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( isset( $db_queries_data ) ) {
 				echo '<p>';
-				echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
+				echo esc_html(
+					sprintf(
+						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+						_x( '%ss', 'Time in seconds', 'query-monitor' ),
+						number_format_i18n( $db_queries_data['total_time'], 4 )
+					)
+				);
 				echo '</p>';
 			}
 
@@ -208,10 +220,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			$http_data = $http->get_data();
 
 			if ( ! empty( $http_data['http'] ) ) {
-				printf(
-					'<p>%s</p>',
-					esc_html( number_format_i18n( $http_data['ltime'], 4 ) )
+				echo '<p>';
+				echo esc_html(
+					sprintf(
+						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+						_x( '%ss', 'Time in seconds', 'query-monitor' ),
+						number_format_i18n( $http_data['ltime'], 4 )
+					)
 				);
+				echo '</p>';
+
 				printf(
 					'<button class="qm-filter-trigger" data-qm-target="http" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
 					esc_html( _x( 'Total', 'HTTP API calls', 'query-monitor' ) ),
@@ -309,12 +327,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		$title[] = sprintf(
-			/* translators: %s: Page load time in seconds with a decimal fraction */
-			esc_html_x( '%s S', 'Page load time', 'query-monitor' ),
+			/* translators: %s: Page generation time in seconds with a decimal fraction. Note the space between value and unit. */
+			esc_html_x( '%s S', 'Page generation time', 'query-monitor' ),
 			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
-			/* translators: %s: Memory usage in megabytes with a decimal fraction */
+			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit. */
 			esc_html_x( '%s MB', 'Memory usage', 'query-monitor' ),
 			$memory
 		);

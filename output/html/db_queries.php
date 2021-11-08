@@ -468,7 +468,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
-				/* translators: %s: Database query time in seconds */
+				/* translators: %s: Database query time in seconds. Note the space between value and unit. */
 				$text = _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
@@ -483,7 +483,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					number_format_i18n( $db->total_time, 2 )
 				);
 
-				/* translators: %s: Number of database queries */
+				/* translators: %s: Number of database queries. Note the space between value and unit. */
 				$text = _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
@@ -498,7 +498,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				);
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
-			/* translators: %s: Number of database queries */
+			/* translators: %s: Number of database queries. Note the space between value and unit. */
 			$text = _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' );
 
 			// Avoid a potentially blank translation for the plural form.
