@@ -56,3 +56,5 @@ jobs:
       env:
         MYSQL_DATABASE: wordpress
         WP_TESTS_DB_PASS: root
+
+    - run: git diff --exit-code
