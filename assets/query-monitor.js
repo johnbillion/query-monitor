@@ -48,18 +48,20 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var toolbarHeight          = $('#wpadminbar').length ? $('#wpadminbar').outerHeight() : 0;
-		var minheight              = 100;
-		var maxheight              = ( $(window).height() - toolbarHeight );
-		var minwidth               = 300;
-		var maxwidth               = $(window).width();
-		var container              = $('#query-monitor-main');
-		var body                   = $('body');
-		var body_margin            = body.css('margin-bottom');
-		var container_height_key   = 'qm-container-height';
-		var container_pinned_key   = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
-		var container_position_key = 'qm-container-position';
-		var container_width_key    = 'qm-container-width';
+		var toolbarHeight            = $('#wpadminbar').length ? $('#wpadminbar').outerHeight() : 0;
+		var minheight                = 100;
+		var maxheight                = ( $(window).height() - toolbarHeight );
+		var minwidth                 = 300;
+		var maxwidth                 = $(window).width();
+		var container                = $('#query-monitor-main');
+		var body                     = $('body');
+		var body_margin              = body.css('margin-bottom');
+		var container_height_key     = 'qm-container-height';
+		var admin_or_front           = $('body').hasClass('wp-admin') ? 'admin' : 'front';
+		var container_pinned_key     = 'qm-' + admin_or_front + '-container-pinned';
+		var container_auto_shown_key = 'qm-' + admin_or_front + '-container-auto-shown';
+		var container_position_key   = 'qm-container-position';
+		var container_width_key      = 'qm-container-width';
 
 		if ( container.hasClass('qm-peek') ) {
 			minheight = 27;
@@ -592,9 +594,40 @@ if ( window.jQuery ) {
 			}
 		});
 
+		var auto_show_enabled = 'on' === qm_l10n.auto_show;
+		var has_php_errors = $( '#qm-php_errors' ).length > 0;
+		var has_timings = $( '#qm-timing' ).length > 0;
+		var has_auto_showable_content = has_php_errors || has_timings;
 		var pinned = localStorage.getItem( container_pinned_key );
+		var pinned_is_auto_showable = [ '#qm-php_errors', '#qm-timing' ].indexOf( pinned ) >= 0;
+		var was_previously_auto_shown = '1' === localStorage.getItem( container_auto_shown_key );
+
+		localStorage.removeItem( container_auto_shown_key );
+
+		var do_auto_show = function() {
+			if ( has_php_errors ) {
+				localStorage.setItem( container_auto_shown_key, '1' );
+				show_panel( '#qm-php_errors' );
+			} else if ( has_timings ) {
+				localStorage.setItem( container_auto_shown_key, '1' );
+				show_panel( '#qm-timing' );
+			}
+		};
+
 		if ( pinned && $( pinned ).length ) {
+			if ( was_previously_auto_shown && pinned_is_auto_showable ) {
+				localStorage.setItem( container_auto_shown_key, '1' );
+			}
+
 			show_panel( pinned );
+		} else if ( pinned && auto_show_enabled && has_auto_showable_content && pinned_is_auto_showable ) {
+			do_auto_show();
+		} else if ( pinned && ! was_previously_auto_shown ) {
+			show_panel( '#qm-overview' );
+		} else if ( ! pinned && auto_show_enabled && has_auto_showable_content ) {
+			do_auto_show();
+		} else {
+			localStorage.removeItem( container_pinned_key );
 		}
 
 		$('.qm-title-heading select').on('change',function(){
