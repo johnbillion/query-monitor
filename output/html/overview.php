@@ -125,7 +125,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			esc_html_e( 'Unknown', 'query-monitor' );
 		} else {
 			echo esc_html( sprintf(
-				/* translators: %s: Memory used in megabytes */
+				/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
 				__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
 				number_format_i18n( $data['memory'] ),
 				number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 )
@@ -327,13 +327,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		$title[] = sprintf(
-			/* translators: %s: Page generation time in seconds with a decimal fraction. Note the space between value and unit. */
-			esc_html_x( '%s S', 'Page generation time', 'query-monitor' ),
+			/* translators: %s: Time in seconds with a decimal fraction. Note the space between value and unit. */
+			esc_html__( '%s S', 'query-monitor' ),
 			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
 			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit. */
-			esc_html_x( '%s MB', 'Memory usage', 'query-monitor' ),
+			esc_html__( '%s MB', 'query-monitor' ),
 			$memory
 		);
 

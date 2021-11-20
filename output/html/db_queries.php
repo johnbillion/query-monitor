@@ -468,8 +468,8 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
-				/* translators: %s: Database query time in seconds. Note the space between value and unit. */
-				$text = _nx( '%s S', '%s S', $db->total_time, 'Query time', 'query-monitor' );
+				/* translators: %s: Time in seconds. Note the space between value and unit. */
+				$text = _n( '%s S', '%s S', $db->total_time, 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
 				// @see https://meta.trac.wordpress.org/ticket/5377
@@ -484,7 +484,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				);
 
 				/* translators: %s: Number of database queries. Note the space between value and unit. */
-				$text = _nx( '%s Q', '%s Q', $db->total_qs, 'Query count', 'query-monitor' );
+				$text = _n( '%s Q', '%s Q', $db->total_qs, 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
 				// @see https://meta.trac.wordpress.org/ticket/5377
@@ -499,7 +499,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
 			/* translators: %s: Number of database queries. Note the space between value and unit. */
-			$text = _nx( '%s Q', '%s Q', $data['total_qs'], 'Query count', 'query-monitor' );
+			$text = _n( '%s Q', '%s Q', $data['total_qs'], 'query-monitor' );
 
 			// Avoid a potentially blank translation for the plural form.
 			// @see https://meta.trac.wordpress.org/ticket/5377
@@ -508,7 +508,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 
 			$title[] = sprintf(
-				/* translators: %s: Number of database queries */
 				esc_html( $text ),
 				number_format_i18n( $data['total_qs'] )
 			);

@@ -43,8 +43,11 @@ class QM_Timer {
 		);
 
 		if ( ! isset( $name ) ) {
-			/* translators: %d: Timing lap number */
-			$i = sprintf( __( 'Lap %d', 'query-monitor' ), count( $this->laps ) + 1 );
+			$i = sprintf(
+				/* translators: %s: Timing lap number */
+				__( 'Lap %s', 'query-monitor' ),
+				number_format_i18n( count( $this->laps ) + 1 )
+			);
 		} else {
 			$i = $name;
 		}
