@@ -219,6 +219,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'off'        => wp_create_nonce( 'qm-auth-off' ),
 					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
 				),
+				'auto_show'   => defined( 'QM_AUTO_SHOW' ) && QM_AUTO_SHOW ? 'on' : 'off',
 				'fatal_error' => __( 'PHP Fatal Error', 'query-monitor' ),
 			)
 		);
@@ -473,6 +474,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-boxed">';
 		$constants = array(
+			'QM_AUTO_SHOW'             => array(
+				'label'   => __( 'Automatically show Query Monitor\'s interface for new errors and timings.', 'query-monitor' ),
+				'default' => false,
+			),
 			'QM_DARK_MODE'             => array(
 				'label'   => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
 				'default' => false,
