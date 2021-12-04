@@ -262,12 +262,12 @@ abstract class QM_Output_Html extends QM_Output {
 			'all'       => _x( 'All', '"All" option for filters', 'query-monitor' ),
 		), $args );
 
-		$core_val = __( 'Core', 'query-monitor' );
+		$core_val = __( 'WordPress Core', 'query-monitor' );
 		$core_key = array_search( $core_val, $values, true );
 
 		if ( 'component' === $name && count( $values ) > 1 && false !== $core_key ) {
 			$args['append'][ $core_val ] = $core_val;
-			$args['append']['non-core']  = __( 'Non-Core', 'query-monitor' );
+			$args['append']['non-core']  = __( 'Non-WordPress Core', 'query-monitor' );
 			unset( $values[ $core_key ] );
 		}
 

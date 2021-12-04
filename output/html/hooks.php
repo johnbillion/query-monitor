@@ -62,7 +62,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	}
 
 	public static function output_hook_table( array $hooks ) {
-		$core = __( 'Core', 'query-monitor' );
+		$core = __( 'WordPress Core', 'query-monitor' );
 
 		foreach ( $hooks as $hook ) {
 			$row_attr                      = array();

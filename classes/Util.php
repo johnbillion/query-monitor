@@ -209,7 +209,7 @@ class QM_Util {
 				$context = $file;
 				break;
 			case 'core':
-				$name = __( 'Core', 'query-monitor' );
+				$name = __( 'WordPress Core', 'query-monitor' );
 				break;
 			case 'unknown':
 			default:
