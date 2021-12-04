@@ -24,7 +24,8 @@
 		"vlucas/phpdotenv": "^3",
 		"wp-cli/db-command": "^2",
 		"wp-coding-standards/wpcs": "2.3.0",
-		"wp-phpunit/wp-phpunit": "*"
+		"wp-phpunit/wp-phpunit": "*",
+		"yoast/phpunit-polyfills": "^1.0"
 	},
 	"config": {
 		"preferred-install": "dist",
