@@ -161,6 +161,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$host = implode( '.', $parts );
 
+		if ( ! empty( $asset['port'] ) ) {
+			$host = "{$host}:{$asset['port']}";
+		}
+
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>';
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';

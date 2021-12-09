@@ -48,6 +48,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$this->data['is_ssl']          = is_ssl();
 		$this->data['host']            = wp_unslash( $_SERVER['HTTP_HOST'] );
 		$this->data['default_version'] = get_bloginfo( 'version' );
+		$this->data['port']            = (string) parse_url( $this->data['host'], PHP_URL_PORT );
 
 		$home_url  = home_url();
 		$positions = array(
@@ -126,7 +127,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				$dependents       = $this->get_dependents( $dependency, $raw );
 				$all_dependents   = array_merge( $all_dependents, $dependents );
 
-				list( $host, $source, $local ) = $this->get_dependency_data( $dependency );
+				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
 				if ( empty( $dependency->ver ) ) {
 					$ver = '';
@@ -139,7 +140,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "{$home_url}/", '/', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -153,6 +154,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 				$this->data['assets'][ $position ][ $handle ] = array(
 					'host'         => $host,
+					'port'         => $port,
 					'source'       => $source,
 					'local'        => $local,
 					'ver'          => $ver,
@@ -233,10 +235,13 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		$host      = (string) parse_url( $source, PHP_URL_HOST );
 		$scheme    = (string) parse_url( $source, PHP_URL_SCHEME );
+		$port      = (string) parse_url( $source, PHP_URL_PORT );
 		$http_host = $data['host'];
+		$http_port = $data['port'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
+			$port = $http_port;
 		}
 
 		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
@@ -257,7 +262,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		$local = ( $http_host === $host );
 
-		return array( $host, $source, $local );
+		return array( $host, $source, $local, $port );
 	}
 
 }
