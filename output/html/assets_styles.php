@@ -29,6 +29,7 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 			'plural' => __( 'Styles', 'query-monitor' ),
 			/* translators: %s: Total number of enqueued styles */
 			'count'  => _x( 'Styles (%s)', 'Enqueued styles', 'query-monitor' ),
+			'none'   => __( 'No CSS files were enqueued.', 'query-monitor' ),
 		);
 	}
 

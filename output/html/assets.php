@@ -29,8 +29,13 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	public function output() {
 
 		$data = $this->collector->get_data();
+		$type_label = $this->get_type_labels();
 
 		if ( empty( $data['assets'] ) ) {
+			$this->before_non_tabular_output();
+			$notice = esc_html( $type_label['none'] );
+			echo $this->build_notice( $notice ); // WPCS: XSS ok.
+			$this->after_non_tabular_output();
 			return;
 		}
 
@@ -42,7 +47,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'footer'  => __( 'Footer', 'query-monitor' ),
 		);
 
-		$type_label = $this->get_type_labels();
 		$this->type = $this->collector->get_dependency_type();
 
 		$hosts = array(
