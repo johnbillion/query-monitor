@@ -243,9 +243,9 @@ abstract class QM_Output_Html extends QM_Output {
 	 * }
 	 * @return string Markup for the table filter controls.
 	 */
-	protected function build_filter( $name, array $values, $label, $args = array() ) {
+	protected function build_filter( $name, $values, $label, $args = array() ) {
 
-		if ( empty( $values ) ) {
+		if ( empty( $values ) || ! is_array( $values ) ) {
 			return esc_html( $label ); // Return label text, without being marked up as a label element.
 		}
 
