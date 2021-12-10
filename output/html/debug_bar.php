@@ -82,6 +82,7 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 
 	foreach ( $debug_bar->panels as $panel ) {
 		$panel_id  = strtolower( sanitize_html_class( get_class( $panel ) ) );
+		/** @var QM_Collector_Debug_Bar|null */
 		$collector = QM_Collectors::get( "debug_bar_{$panel_id}" );
 
 		if ( $collector && $collector->is_visible() ) {

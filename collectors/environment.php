@@ -87,6 +87,7 @@ class QM_Collector_Environment extends QM_Collector {
 			'innodb_buffer_pool_size' => false, # The amount of memory allocated to the InnoDB buffer pool
 		);
 
+		/** @var QM_Collector_DB_Queries|null */
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
