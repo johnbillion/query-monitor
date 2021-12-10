@@ -433,7 +433,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
+					if ( $error['component'] && ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
 						continue;
 					}
 
@@ -461,9 +461,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @return bool
 	 */
 	public function is_affected_component( $component, $component_type, $component_context ) {
-		if ( empty( $component ) ) {
-			return false;
-		}
 		return ( $component->type === $component_type && $component->context === $component_context );
 	}
 
