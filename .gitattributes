@@ -21,6 +21,7 @@
 /package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
+/phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore

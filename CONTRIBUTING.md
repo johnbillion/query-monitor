@@ -47,7 +47,7 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-To run the whole test suite which includes unit tests and linting:
+To run the whole test suite which includes unit tests, linting, and static analysis:
 
 	composer test
 
@@ -58,6 +58,10 @@ To run just the PHPUnit tests:
 To run just the code sniffer:
 
 	composer test:cs
+
+To run just the statis analysis:
+
+	composer test:phpstan
 
 ## Releasing a New Version
 

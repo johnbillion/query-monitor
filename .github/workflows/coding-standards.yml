@@ -57,3 +57,7 @@ jobs:
       run: |
         composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
         composer test:cs2pr
+
+    - name: Run static analysis
+      run: |
+        composer test:phpstan

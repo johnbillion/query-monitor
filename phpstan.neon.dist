@@ -1,0 +1,17 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: 1
+    paths:
+        - query-monitor.php
+        - classes
+        - collectors
+        - dispatchers
+        - output
+        # - tests/phpunit
+        - wp-content
+    bootstrapFiles:
+        - tests/stubs.php
+    ignoreErrors:
+        # Uses func_get_args()
+        - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
