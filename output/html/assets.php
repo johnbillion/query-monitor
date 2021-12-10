@@ -47,7 +47,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'footer'  => __( 'Footer', 'query-monitor' ),
 		);
 
-		$this->type = $this->collector->get_dependency_type();
+		$type = $this->collector->get_dependency_type();
 
 		$hosts = array(
 			__( 'Other', 'query-monitor' ),
@@ -65,14 +65,14 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 				'local' => $data['host'],
 			),
 		);
-		echo $this->build_filter( $this->type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $this->type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $this->type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -140,7 +140,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$class = 'qm-warn';
 		}
 
-		echo '<tr data-qm-subject="' . esc_attr( $this->type . '-' . $handle ) . '" data-qm-' . esc_attr( $this->type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $this->type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $this->type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
+		$type = $this->collector->get_dependency_type();
+
+		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
 		if ( $asset['warning'] ) {
@@ -203,7 +205,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	}
 
 	public function _prefix_type( $val ) {
-		return $this->type . '-' . $val;
+		return $this->collector->get_dependency_type() . '-' . $val;
 	}
 
 	public function admin_class( array $class ) {
