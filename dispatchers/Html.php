@@ -303,8 +303,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
 				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
 					'href'  => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
-					/* translators: %s: Number of hooks */
 					'title' => sprintf(
+						/* translators: %s: Number of hooks */
 						__( 'Hooks in Use (%s)', 'query-monitor' ),
 						number_format_i18n( $count )
 					),
