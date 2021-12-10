@@ -179,7 +179,7 @@ class QM_Collector_Environment extends QM_Collector {
 			$sort_flags = SORT_STRING;
 		}
 
-		if ( is_callable( 'get_loaded_extensions' ) ) {
+		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, $sort_flags );
 			$this->data['php']['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );

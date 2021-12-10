@@ -75,7 +75,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	}
 
 	public static function http_response_code() {
-		if ( is_callable( 'http_response_code' ) ) {
+		if ( function_exists( 'http_response_code' ) ) {
 			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.http_response_codeFound
 			return http_response_code();
 		}
