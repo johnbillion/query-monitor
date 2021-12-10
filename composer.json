@@ -49,10 +49,7 @@
 			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs ."
 		],
 		"test:phpstan": [
-			"vendor/bin/phpstan analyze"
-		],
-		"test:cs2pr": [
-			"phpcs -nsq --report=checkstyle --cache=tests/cache/phpcs . | cs2pr"
+			"phpstan analyze"
 		],
 		"test:ut": [
 			"wp db reset --yes --path=tests/wordpress #",

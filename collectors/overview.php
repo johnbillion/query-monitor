@@ -39,7 +39,7 @@ class QM_Collector_Overview extends QM_Collector {
 	}
 
 	public function process() {
-		if ( ! isset( $data['time_taken'] ) ) {
+		if ( ! isset( $this->data['time_taken'] ) ) {
 			$this->process_timing();
 		}
 

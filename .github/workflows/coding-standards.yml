@@ -55,8 +55,7 @@ jobs:
 
     - name: Run code sniffer
       run: |
-        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
-        composer test:cs2pr
+        composer test:cs
 
     - name: Run static analysis
       run: |
