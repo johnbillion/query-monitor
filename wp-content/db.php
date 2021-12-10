@@ -56,6 +56,11 @@ if ( ! defined( 'SAVEQUERIES' ) ) {
 
 class QM_DB extends wpdb {
 
+	/**
+	 * @var float
+	 */
+	public $time_start;
+
 	public $qm_php_vars = array(
 		'max_execution_time'  => null,
 		'memory_limit'        => null,
