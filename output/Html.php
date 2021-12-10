@@ -13,13 +13,7 @@ abstract class QM_Output_Html extends QM_Output {
 	protected $current_name = null;
 
 	public function name() {
-		_deprecated_function(
-			esc_html( get_class( $this->collector ) . '::name()' ),
-			'3.5',
-			esc_html( get_class( $this ) . '::name()' )
-		);
-
-		return $this->collector->name();
+		return $this->collector->id;
 	}
 
 	public function admin_menu( array $menu ) {
