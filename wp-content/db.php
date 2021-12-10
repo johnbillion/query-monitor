@@ -115,17 +115,17 @@ class QM_DB extends wpdb {
 
 		if ( $this->last_error ) {
 			$code = 'qmdb';
-			if ( $this->use_mysqli ) {
-				if ( $this->dbh instanceof mysqli ) {
-					$code = mysqli_errno( $this->dbh );
-				}
-			} else {
-				if ( is_resource( $this->dbh ) ) {
-					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore
-					$code = mysql_errno( $this->dbh );
-				}
+
+			if ( $this->dbh instanceof mysqli ) {
+				$code = mysqli_errno( $this->dbh );
 			}
+
+			if ( is_resource( $this->dbh ) ) {
+				// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
+				// phpcs:ignore
+				$code = mysql_errno( $this->dbh );
+			}
+
 			$this->queries[ $i ]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
 			$this->queries[ $i ]['result'] = $result;
