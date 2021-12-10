@@ -2,13 +2,12 @@
 <ruleset name="Query Monitor">
 
 	<config name="testVersion" value="5.3-"/>
+	<arg name="extensions" value="php"/>
 
-	<exclude-pattern>*/.github/*</exclude-pattern>
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>Gruntfile\.js</exclude-pattern>
 
 	<rule ref="WordPress-Extra">
 
@@ -43,11 +42,6 @@
 	</rule>
 
 	<rule ref="WordPress-Docs" />
-
-	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
-		<exclude-pattern>*\.css</exclude-pattern>
-	</rule>
 
 	<!-- Custom rule properties -->
 	<rule ref="WordPress.WP.I18n">
