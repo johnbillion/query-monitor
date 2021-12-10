@@ -20,6 +20,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	private $exception_handler = null;
 	private static $unexpected_error;
 
+	/**
+	 * @var bool
+	 */
+	protected $hide_silenced_php_errors = false;
+
 	public function __construct() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;

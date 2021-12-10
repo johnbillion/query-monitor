@@ -20,6 +20,11 @@ abstract class QM_Collector {
 	public $concerned_constants = array();
 	public $tracked_hooks       = array();
 
+	/**
+	 * @var string
+	 */
+	public $id = '';
+
 	public function __construct() {}
 
 	final public function id() {

@@ -22,6 +22,11 @@ abstract class QM_Dispatcher {
 	 */
 	protected $qm;
 
+	/**
+	 * @var string
+	 */
+	public $id = '';
+
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
