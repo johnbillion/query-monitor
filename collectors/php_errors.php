@@ -468,21 +468,21 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * Checks if the error number specified is viewable based on the
 	 * flags specified.
 	 *
-	 * @param int $error_no The errno from PHP
-	 * @param int $flags The config flags specified by users
-	 * @return int Truthy int value if reportable else 0.
-	 *
 	 * Eg:- If a plugin had the config flags,
 	 *
-	 * E_ALL & ~E_NOTICE
+	 *     E_ALL & ~E_NOTICE
 	 *
 	 * then,
 	 *
-	 * is_reportable_error( E_NOTICE, E_ALL & ~E_NOTICE ) is false
-	 * is_reportable_error( E_WARNING, E_ALL & ~E_NOTICE ) is true
+	 *     is_reportable_error( E_NOTICE, E_ALL & ~E_NOTICE ) is false
+	 *     is_reportable_error( E_WARNING, E_ALL & ~E_NOTICE ) is true
 	 *
-	 * If the $flag is null, all errors are assumed to be
+	 * If the `$flag` is null, all errors are assumed to be
 	 * reportable by default.
+	 *
+	 * @param int $error_no The errno from PHP
+	 * @param int $flags The config flags specified by users
+	 * @return bool Whether the error is reportable.
 	 */
 	public function is_reportable_error( $error_no, $flags ) {
 		if ( ! is_null( $flags ) ) {

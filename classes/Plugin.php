@@ -50,7 +50,7 @@ abstract class QM_Plugin {
 	 * @return string Version
 	 */
 	final public function plugin_ver( $file ) {
-		return filemtime( $this->plugin_path( $file ) );
+		return (string) filemtime( $this->plugin_path( $file ) );
 	}
 
 	/**

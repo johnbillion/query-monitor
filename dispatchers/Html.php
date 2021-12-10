@@ -276,7 +276,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			require_once $file;
 		}
 
-		$this->outputters = $this->get_outputters( 'html' );
+		/** @var QM_Output_Html[] */
+		$outputters = $this->get_outputters( 'html' );
+
+		$this->outputters = $outputters;
 
 		/**
 		 * Filters the menu items shown in Query Monitor's admin toolbar menu.
