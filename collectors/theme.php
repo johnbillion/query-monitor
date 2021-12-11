@@ -21,6 +21,9 @@ class QM_Collector_Theme extends QM_Collector {
 		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		add_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10, 3 );
+		add_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10, 3 );
+		add_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10, 3 );
+		add_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10, 3 );
 	}
 
 	public function get_concerned_actions() {
@@ -134,6 +137,55 @@ class QM_Collector_Theme extends QM_Collector {
 		$this->data['requested_template_parts'][] = $data;
 	}
 
+	/**
+	 * Fires when a post is loaded for a template part block.
+	 *
+	 * @param string $template_part_id
+	 * @param array  $attributes
+	 * @param string $content
+	 */
+	public function action_render_block_core_template_part_post( $template_part_id, $attributes, WP_Post $post ) {
+		$data = array(
+			'id'         => $template_part_id,
+			'attributes' => $attributes,
+			'post'       => $post->ID,
+		);
+		$this->data['requested_template_part_posts'][] = $data;
+	}
+
+	/**
+	 * Fires when a file is loaded for a template part block.
+	 *
+	 * @param string $template_part_id
+	 * @param array  $attributes
+	 * @param string $content
+	 * @param string $template_part_file_path
+	 */
+	public function action_render_block_core_template_part_file( $template_part_id, $attributes, $template_part_file_path ) {
+		$data = array(
+			'id'         => $template_part_id,
+			'attributes' => $attributes,
+			'path'       => $template_part_file_path,
+		);
+		$this->data['requested_template_part_files'][] = $data;
+	}
+
+	/**
+	 * Fires when neither a post nor file is found for a template part block.
+	 *
+	 * @param string $template_part_id
+	 * @param array  $attributes
+	 * @param string $template_part_file_path
+	 */
+	public function action_render_block_core_template_part_none( $template_part_id, $attributes, $template_part_file_path ) {
+		$data = array(
+			'id'         => $template_part_id,
+			'attributes' => $attributes,
+			'path'       => $template_part_file_path,
+		);
+		$this->data['requested_template_part_nopes'][] = $data;
+	}
+
 	public function filter_template_hierarchy( array $templates ) {
 		$this->query_templates = $templates;
 
@@ -212,7 +264,6 @@ class QM_Collector_Theme extends QM_Collector {
 						$template_directory,
 					), '', $file );
 
-					$slug          = trim( str_replace( '.php', '', $filename ), '/' );
 					$display       = trim( $filename, '/' );
 					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
 
@@ -248,6 +299,57 @@ class QM_Collector_Theme extends QM_Collector {
 						}
 					}
 				}
+			}
+		}
+
+		if (
+			! empty( $this->data['requested_template_part_posts'] ) ||
+			! empty( $this->data['requested_template_part_files'] ) ||
+			! empty( $this->data['requested_template_part_nopes'] )
+		) {
+			$this->data['template_parts']       = array();
+			$this->data['theme_template_parts'] = array();
+			$this->data['count_template_parts'] = array();
+
+			$parts = ! empty( $this->data['requested_template_part_posts'] ) ? $this->data['requested_template_part_posts'] : array();
+			$files = ! empty( $this->data['requested_template_part_files'] ) ? $this->data['requested_template_part_files'] : array();
+			$nopes = ! empty( $this->data['requested_template_part_nopes'] ) ? $this->data['requested_template_part_nopes'] : array();
+
+			$this->data['has_template_part_action'] = true;
+
+			$all = array_merge( $parts, $files, $nopes );
+
+			foreach ( $all as $part ) {
+				$file = isset( $part['path'] ) ? $part['path'] : $part['post'];
+
+				if ( isset( $this->data['count_template_parts'][ $file ] ) ) {
+					$this->data['count_template_parts'][ $file ]++;
+					continue;
+				}
+
+				$this->data['count_template_parts'][ $file ] = 1;
+
+				if ( isset( $part['post'] ) ) {
+					$display = sprintf(
+						'%1$s (post ID %2$d)',
+						$part['id'],
+						$part['post']
+					);
+					$theme_display = $display;
+				} else {
+					$file = QM_Util::standard_dir( $file );
+
+					$filename = str_replace( array(
+						$stylesheet_directory,
+						$template_directory,
+					), '', $file );
+
+					$display       = trim( $filename, '/' );
+					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
+				}
+
+				$this->data['template_parts'][ $file ]       = $display;
+				$this->data['theme_template_parts'][ $file ] = $theme_display;
 			}
 		}
 
