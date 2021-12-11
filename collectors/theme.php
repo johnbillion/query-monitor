@@ -141,9 +141,9 @@ class QM_Collector_Theme extends QM_Collector {
 	/**
 	 * Fires when a post is loaded for a template part block.
 	 *
-	 * @param string $template_part_id
-	 * @param array  $attributes
-	 * @param string $content
+	 * @param string  $template_part_id
+	 * @param array   $attributes
+	 * @param WP_Post $post
 	 */
 	public function action_render_block_core_template_part_post( $template_part_id, $attributes, WP_Post $post ) {
 		$data = array(
@@ -159,7 +159,6 @@ class QM_Collector_Theme extends QM_Collector {
 	 *
 	 * @param string $template_part_id
 	 * @param array  $attributes
-	 * @param string $content
 	 * @param string $template_part_file_path
 	 */
 	public function action_render_block_core_template_part_file( $template_part_id, $attributes, $template_part_file_path ) {
