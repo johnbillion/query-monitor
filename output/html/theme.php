@@ -93,7 +93,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				if ( is_numeric( $filename ) ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
-						get_edit_post_link( $filename ),
+						esc_url( get_edit_post_link( $filename ) ),
 						esc_html( $display )
 					);
 				} elseif ( self::has_clickable_links() ) {
