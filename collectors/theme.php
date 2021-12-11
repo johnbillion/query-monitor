@@ -311,13 +311,13 @@ class QM_Collector_Theme extends QM_Collector {
 			$this->data['theme_template_parts'] = array();
 			$this->data['count_template_parts'] = array();
 
-			$parts = ! empty( $this->data['requested_template_part_posts'] ) ? $this->data['requested_template_part_posts'] : array();
+			$posts = ! empty( $this->data['requested_template_part_posts'] ) ? $this->data['requested_template_part_posts'] : array();
 			$files = ! empty( $this->data['requested_template_part_files'] ) ? $this->data['requested_template_part_files'] : array();
 			$nopes = ! empty( $this->data['requested_template_part_nopes'] ) ? $this->data['requested_template_part_nopes'] : array();
 
 			$this->data['has_template_part_action'] = true;
 
-			$all = array_merge( $parts, $files, $nopes );
+			$all = array_merge( $posts, $files, $nopes );
 
 			foreach ( $all as $part ) {
 				$file = isset( $part['path'] ) ? $part['path'] : $part['post'];
