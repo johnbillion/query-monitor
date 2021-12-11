@@ -97,7 +97,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			foreach ( $parts as $filename => $display ) {
 				echo '<li>';
 
-				if ( self::has_clickable_links() ) {
+				if ( is_numeric( $filename ) ) {
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						get_edit_post_link( $filename ),
+						esc_html( $display )
+					);
+				} elseif ( self::has_clickable_links() ) {
 					echo self::output_filename( $display, $filename, 0, true ); // WPCS: XSS ok.
 				} else {
 					echo esc_html( $display );
