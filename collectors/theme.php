@@ -41,11 +41,9 @@ class QM_Collector_Theme extends QM_Collector {
 			'template_include',
 		);
 
-		foreach ( self::get_query_template_names() as $template => $conditional ) {
-			// @TODO this isn't correct for post type archives
-			$filter    = str_replace( '_', '', $template );
-			$filters[] = "{$filter}_template_hierarchy";
-			$filters[] = "{$filter}_template";
+		foreach ( self::get_query_filter_names() as $filter ) {
+			$filters[] = $filter;
+			$filters[] = "{$filter}_hierarchy";
 		}
 
 		return $filters;
@@ -87,33 +85,36 @@ class QM_Collector_Theme extends QM_Collector {
 		return $names;
 	}
 
-	// https://core.trac.wordpress.org/ticket/14310
-	public function action_template_redirect() {
-		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
+	public static function get_query_filter_names() {
+		$names = array();
 
-		foreach ( self::get_query_template_names() as $template => $conditional ) {
+		$names['embed']      = 'embed_template';
+		$names['404']        = '404_template';
+		$names['search']     = 'search_template';
+		$names['front_page'] = 'frontpage_template';
+		$names['home']       = 'home_template';
 
-			// If a matching theme-compat file is found, further conditional checks won't occur in template-loader.php
-			if ( $this->got_theme_compat ) {
-				break;
-			}
-
-			$get_template = "get_{$template}_template";
-
-			if ( function_exists( $conditional ) && function_exists( $get_template ) && call_user_func( $conditional ) ) {
-				$filter = str_replace( '_', '', $template );
-				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
-				$loaded_template  = call_user_func( $get_template );
-				$default_template = locate_template( $this->query_templates );
-
-				if ( $default_template !== $loaded_template ) {
-					$this->data['template_altered'] = true;
-				}
-
-				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
-			}
+		if ( function_exists( 'is_privacy_policy' ) ) {
+			$names['privacy_policy'] = 'privacypolicy_template';
 		}
 
+		$names['taxonomy']   = 'taxonomy_template';
+		$names['attachment'] = 'attachment_template';
+		$names['single']     = 'single_template';
+		$names['page']       = 'page_template';
+		$names['singular']   = 'singular_template';
+		$names['category']   = 'category_template';
+		$names['tag']        = 'tag_template';
+		$names['author']     = 'author_template';
+		$names['date']       = 'date_template';
+		$names['archive']    = 'archive_template';
+		$names['index']      = 'index_template';
+
+		return $names;
+	}
+
+	public function action_template_redirect() {
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
 	}
 
 	/**

@@ -67,13 +67,6 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( ! empty( $data['template_altered'] ) ) {
-			printf(
-				'<p><button class="qm-filter-trigger qm-filter-info" data-qm-target="response-concerned_hooks">%s</button></p>',
-				esc_html__( 'Template Hooks in Use', 'query-monitor' )
-			);
-		}
-
 		if ( ! empty( $data['template_hierarchy'] ) ) {
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
