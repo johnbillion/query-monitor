@@ -184,7 +184,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				'file'     => $file,
 				'filename' => QM_Util::standard_dir( $file, '' ),
 				'line'     => $line,
-				'trace'    => ( $do_trace ? $trace : null ),
+				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
 				'component' => $trace->get_component(),
 				'calls'    => 1,
 			);
@@ -399,7 +399,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							if ( $error['trace'] ) {
+							if ( $error['component'] ) {
 								$component                      = $error['component'];
 								$components[ $component->name ] = $component->name;
 							}
@@ -429,11 +429,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					if ( ! $error['trace'] ) {
+					if ( ! $error['component'] ) {
 						continue;
 					}
 
-					if ( $error['component'] && ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
+					if ( $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
 						continue;
 					}
 

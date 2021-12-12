@@ -78,7 +78,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$row_attr['data-qm-type']      = ucfirst( $type );
 					$row_attr['data-qm-key']       = $error_key;
 
-					if ( $error['trace'] ) {
+					if ( $error['component'] ) {
 						$component                     = $error['component'];
 						$row_attr['data-qm-component'] = $component->name;
 
@@ -118,8 +118,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					$stack          = array();
 
-					if ( $error['trace'] ) {
-						$filtered_trace = $error['trace']->get_filtered_trace();
+					if ( $error['filtered_trace'] ) {
+						$filtered_trace = $error['filtered_trace'];
 
 						// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 						// we need to handle its somewhat unreliable stack trace items.
