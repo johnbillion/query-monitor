@@ -433,7 +433,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					if ( $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
+					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
 						continue;
 					}
 
