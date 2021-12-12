@@ -76,7 +76,7 @@ class QM_Backtrace {
 			'show_args'             => array(),
 		), $args );
 
-		foreach ( $this->trace as $k => $frame ) {
+		foreach ( $this->trace as & $frame ) {
 			if ( ! isset( $frame['args'] ) ) {
 				continue;
 			}
@@ -93,8 +93,6 @@ class QM_Backtrace {
 			} else {
 				unset( $frame['args'] );
 			}
-
-			$this->trace[ $k ] = $frame;
 		}
 	}
 
