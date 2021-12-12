@@ -28,7 +28,7 @@ class QM_CLI extends QM_Plugin {
 				WP_CLI::success( "Query Monitor's wp-content/db.php is already in place" );
 				exit( 0 );
 			} else {
-				WP_CLI::error( 'Unknown wp-content/db.php already is already in place' );
+				WP_CLI::error( 'Unknown wp-content/db.php is already in place' );
 			}
 		}
 
