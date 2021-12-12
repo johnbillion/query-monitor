@@ -52,14 +52,14 @@ class QM_Collector_Transients extends QM_Collector {
 		$size = strlen( maybe_serialize( $value ) );
 
 		$this->data['trans'][] = array(
-			'name'       => $name,
+			'name' => $name,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
-			'type'       => $type,
-			'value'      => $value,
+			'type' => $type,
+			'value' => $value,
 			'expiration' => $expiration,
-			'exp_diff'   => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
-			'size'       => $size,
+			'exp_diff' => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
+			'size' => $size,
 			'size_formatted' => size_format( $size ),
 		);
 	}

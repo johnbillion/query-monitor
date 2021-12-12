@@ -201,9 +201,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				echo '</tr>';
 			}
 
-			$types      = array_keys( $db->types );
-			$prepend    = array();
-			$callers    = wp_list_pluck( $data['times'], 'caller' );
+			$types = array_keys( $db->types );
+			$prepend = array();
+			$callers = wp_list_pluck( $data['times'], 'caller' );
 
 			sort( $types );
 			usort( $callers, 'strcasecmp' );
@@ -319,9 +319,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $row['trace'] ) ) {
 
-			$caller         = $row['trace']->get_caller();
-			$caller_name    = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
-			$stack          = array();
+			$caller = $row['trace']->get_caller();
+			$caller_name = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
+			$stack = array();
 			$filtered_trace = $row['trace']->get_filtered_trace();
 
 			foreach ( $filtered_trace as $frame ) {
@@ -335,9 +335,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$caller_name = '<code>' . esc_html__( 'Unknown', 'query-monitor' ) . '</code>';
 			}
 
-			$stack       = explode( ', ', $row['stack'] );
-			$stack       = array_reverse( $stack );
-			$stack       = array_map( function( $frame ) {
+			$stack = explode( ', ', $row['stack'] );
+			$stack = array_reverse( $stack );
+			$stack = array_map( function( $frame ) {
 				return '<code>' . esc_html( $frame ) . '</code>';
 			}, $stack );
 
@@ -446,7 +446,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['time'] ) ) {
 			$expensive = $this->collector->is_expensive( $row );
-			$td_class  = ( $expensive ) ? ' qm-warn' : '';
+			$td_class = ( $expensive ) ? ' qm-warn' : '';
 
 			echo '<td class="qm-num qm-row-time' . esc_attr( $td_class ) . '" data-qm-sort-weight="' . esc_attr( $row['ltime'] ) . '">';
 
@@ -536,38 +536,38 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data      = $this->collector->get_data();
-		$errors    = $this->collector->get_errors();
+		$data = $this->collector->get_data();
+		$errors = $this->collector->get_errors();
 		$expensive = $this->collector->get_expensive();
 
 		if ( isset( $data['dbs'] ) && count( $data['dbs'] ) > 1 ) {
 			foreach ( $data['dbs'] as $name => $db ) {
-				$name_attr   = sanitize_title_with_dashes( $name );
-				$id          = $this->collector->id() . '-' . $name_attr;
+				$name_attr = sanitize_title_with_dashes( $name );
+				$id = $this->collector->id() . '-' . $name_attr;
 				$menu[ $id ] = $this->menu( array(
-					'id'    => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
+					'id' => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
 					'title' => esc_html( sprintf(
 						/* translators: %s: Name of database controller */
 						__( 'Queries: %s', 'query-monitor' ),
 						$name
 					) ),
-					'href'  => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
+					'href' => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
 				) );
 			}
 		} else {
-			$id          = $this->collector->id() . '-$wpdb';
+			$id = $this->collector->id() . '-$wpdb';
 			$menu[ $id ] = $this->menu( array(
 				'title' => esc_html__( 'Queries', 'query-monitor' ),
-				'href'  => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
+				'href' => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
 			) );
 		}
 
 		if ( $errors ) {
-			$id          = $this->collector->id() . '-errors';
-			$count       = count( $errors );
+			$id = $this->collector->id() . '-errors';
+			$count = count( $errors );
 			$menu[ $id ] = $this->menu( array(
-				'id'    => 'query-monitor-errors',
-				'href'  => '#qm-query-errors',
+				'id' => 'query-monitor-errors',
+				'href' => '#qm-query-errors',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of database errors */
 					__( 'Database Errors (%s)', 'query-monitor' ),
@@ -577,11 +577,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( $expensive ) {
-			$id          = $this->collector->id() . '-expensive';
-			$count       = count( $expensive );
+			$id = $this->collector->id() . '-expensive';
+			$count = count( $expensive );
 			$menu[ $id ] = $this->menu( array(
-				'id'    => 'query-monitor-expensive',
-				'href'  => '#qm-query-expensive',
+				'id' => 'query-monitor-expensive',
+				'href' => '#qm-query-expensive',
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of slow database queries */
 					__( 'Slow Queries (%s)', 'query-monitor' ),

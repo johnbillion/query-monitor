@@ -20,7 +20,7 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 
 	public function get_output() {
 		$output = array();
-		$data   = $this->collector->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['trans'] ) ) {
 			return $output;

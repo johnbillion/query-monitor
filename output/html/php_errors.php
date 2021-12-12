@@ -37,7 +37,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return;
 		}
 
-		$levels     = array(
+		$levels = array(
 			'Warning',
 			'Notice',
 			'Strict',
@@ -74,12 +74,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data[ $error_group ][ $type ] as $error_key => $error ) {
 
-					$row_attr                      = array();
-					$row_attr['data-qm-type']      = ucfirst( $type );
-					$row_attr['data-qm-key']       = $error_key;
+					$row_attr = array();
+					$row_attr['data-qm-type'] = ucfirst( $type );
+					$row_attr['data-qm-key'] = $error_key;
 
 					if ( $error['component'] ) {
-						$component                     = $error['component'];
+						$component = $error['component'];
 						$row_attr['data-qm-component'] = $component->name;
 
 						if ( 'core' !== $component->context ) {
@@ -116,7 +116,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
-					$stack          = array();
+					$stack = array();
 
 					if ( $error['filtered_trace'] ) {
 						$filtered_trace = $error['filtered_trace'];
@@ -185,39 +185,39 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data       = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$menu_label = array();
 
 		$types = array(
 			/* translators: %s: Number of deprecated PHP errors */
 			'deprecated' => _nx_noop( '%s Deprecated', '%s Deprecated', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of strict PHP errors */
-			'strict'     => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
+			'strict' => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of PHP notices */
-			'notice'     => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
+			'notice' => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of PHP warnings */
-			'warning'    => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
+			'warning' => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
 
-		$key     = 'quiet';
+		$key = 'quiet';
 		$generic = false;
 
 		foreach ( $types as $type => $label ) {
 
-			$count      = 0;
+			$count = 0;
 			$has_errors = false;
 
 			if ( isset( $data['suppressed'][ $type ] ) ) {
 				$has_errors = true;
-				$generic    = true;
+				$generic = true;
 			}
 			if ( isset( $data['silenced'][ $type ] ) ) {
 				$has_errors = true;
-				$generic    = true;
+				$generic = true;
 			}
 			if ( isset( $data['errors'][ $type ] ) ) {
 				$has_errors = true;
-				$key        = $type;
+				$key = $type;
 				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
 			}
 
@@ -226,7 +226,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			}
 
 			if ( $count ) {
-				$label        = sprintf(
+				$label = sprintf(
 					translate_nooped_plural(
 						$label,
 						$count,
@@ -258,7 +258,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id'    => "query-monitor-{$key}s",
+			'id' => "query-monitor-{$key}s",
 			'title' => $title,
 		) );
 		return $menu;
@@ -270,7 +270,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $menu;
 		}
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = 0;
 		$types = array(
 			'suppressed',

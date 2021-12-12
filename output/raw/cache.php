@@ -21,8 +21,8 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 	public function get_output() {
 		$output = array(
 			'hit_percentage' => null,
-			'hits'           => null,
-			'misses'         => null,
+			'hits' => null,
+			'misses' => null,
 		);
 		$data = $this->collector->get_data();
 

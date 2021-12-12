@@ -33,9 +33,9 @@ class QM_Collector_Redirects extends QM_Collector {
 			),
 		) );
 
-		$this->data['trace']    = $trace;
+		$this->data['trace'] = $trace;
 		$this->data['location'] = $location;
-		$this->data['status']   = $status;
+		$this->data['status'] = $status;
 
 		return $location;
 

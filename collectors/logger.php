@@ -14,13 +14,13 @@ class QM_Collector_Logger extends QM_Collector {
 	public $id = 'logger';
 
 	const EMERGENCY = 'emergency';
-	const ALERT     = 'alert';
-	const CRITICAL  = 'critical';
-	const ERROR     = 'error';
-	const WARNING   = 'warning';
-	const NOTICE    = 'notice';
-	const INFO      = 'info';
-	const DEBUG     = 'debug';
+	const ALERT = 'alert';
+	const CRITICAL = 'critical';
+	const ERROR = 'error';
+	const WARNING = 'warning';
+	const NOTICE = 'notice';
+	const INFO = 'info';
+	const DEBUG = 'debug';
 
 	public function __construct() {
 		parent::__construct();
@@ -112,7 +112,7 @@ class QM_Collector_Logger extends QM_Collector {
 			'message' => self::interpolate( $message, $context ),
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
-			'level'   => $level,
+			'level' => $level,
 		);
 	}
 
@@ -141,7 +141,7 @@ class QM_Collector_Logger extends QM_Collector {
 		$components = array();
 
 		foreach ( $this->data['logs'] as $row ) {
-			$component                      = $row['component'];
+			$component = $row['component'];
 			$components[ $component->name ] = $component->name;
 		}
 

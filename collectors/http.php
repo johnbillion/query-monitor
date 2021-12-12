@@ -11,9 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_HTTP extends QM_Collector {
 
-	public $id         = 'http';
+	public $id = 'http';
 	private $transport = null;
-	private $info      = null;
+	private $info = null;
 
 	public function __construct() {
 
@@ -31,7 +31,7 @@ class QM_Collector_HTTP extends QM_Collector {
 	}
 
 	public function get_concerned_actions() {
-		$actions    = array(
+		$actions = array(
 			'http_api_curl',
 			'requests-multiple.request.complete',
 			'requests-request.progress',
@@ -126,19 +126,19 @@ class QM_Collector_HTTP extends QM_Collector {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$start                    = $this->data['http'][ $args['_qm_key'] ]['start'];
+			$start = $this->data['http'][ $args['_qm_key'] ]['start'];
 		} else {
 			$start = microtime( true );
 		}
-		$key                        = microtime( true ) . $url;
+		$key = microtime( true ) . $url;
 		$this->data['http'][ $key ] = array(
-			'url'   => $url,
-			'args'  => $args,
+			'url' => $url,
+			'args' => $args,
 			'start' => $start,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
 		);
-		$args['_qm_key']            = $key;
+		$args['_qm_key'] = $key;
 		return $args;
 	}
 
@@ -223,11 +223,11 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @param string         $url      The request URL.
 	 */
 	public function log_http_response( $response, array $args, $url ) {
-		$this->data['http'][ $args['_qm_key'] ]['end']      = microtime( true );
+		$this->data['http'][ $args['_qm_key'] ]['end'] = microtime( true );
 		$this->data['http'][ $args['_qm_key'] ]['response'] = $response;
-		$this->data['http'][ $args['_qm_key'] ]['args']     = $args;
+		$this->data['http'][ $args['_qm_key'] ]['args'] = $args;
 		if ( isset( $args['_qm_original_key'] ) ) {
-			$this->data['http'][ $args['_qm_original_key'] ]['end']      = $this->data['http'][ $args['_qm_original_key'] ]['start'];
+			$this->data['http'][ $args['_qm_original_key'] ]['end'] = $this->data['http'][ $args['_qm_original_key'] ]['start'];
 			$this->data['http'][ $args['_qm_original_key'] ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
 				/* translators: %s: Hook name */
 				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
@@ -235,9 +235,9 @@ class QM_Collector_HTTP extends QM_Collector {
 			) );
 		}
 
-		$this->data['http'][ $args['_qm_key'] ]['info']      = $this->info;
+		$this->data['http'][ $args['_qm_key'] ]['info'] = $this->info;
 		$this->data['http'][ $args['_qm_key'] ]['transport'] = $this->transport;
-		$this->info      = null;
+		$this->info = null;
 		$this->transport = null;
 	}
 
@@ -267,7 +267,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			if ( ! isset( $http['response'] ) ) {
 				// Timed out
 				$http['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
-				$http['end']      = floatval( $http['start'] + $http['args']['timeout'] );
+				$http['end'] = floatval( $http['start'] + $http['args']['timeout'] );
 			}
 
 			if ( is_wp_error( $http['response'] ) ) {

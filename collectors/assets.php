@@ -45,12 +45,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			return;
 		}
 
-		$this->data['is_ssl']          = is_ssl();
-		$this->data['host']            = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data['is_ssl'] = is_ssl();
+		$this->data['host'] = wp_unslash( $_SERVER['HTTP_HOST'] );
 		$this->data['default_version'] = get_bloginfo( 'version' );
-		$this->data['port']            = (string) parse_url( $this->data['host'], PHP_URL_PORT );
+		$this->data['port'] = (string) parse_url( $this->data['host'], PHP_URL_PORT );
 
-		$home_url  = home_url();
+		$home_url = home_url();
 		$positions = array(
 			'missing',
 			'broken',
@@ -60,10 +60,10 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		$this->data['counts'] = array(
 			'missing' => 0,
-			'broken'  => 0,
-			'header'  => 0,
-			'footer'  => 0,
-			'total'   => 0,
+			'broken' => 0,
+			'header' => 0,
+			'footer' => 0,
+			'total' => 0,
 		);
 
 		$type = $this->get_dependency_type();
@@ -73,8 +73,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				$this->data[ $position ] = array();
 			}
 		}
-		$raw     = $GLOBALS[ "wp_{$type}" ];
-		$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
+		$raw = $GLOBALS[ "wp_{$type}" ];
+		$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 
 		// A broken asset is one which has been deregistered without also being dequeued
@@ -107,7 +107,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		}
 
 		$all_dependencies = array();
-		$all_dependents   = array();
+		$all_dependents = array();
 
 		$missing_dependencies = array();
 
@@ -124,8 +124,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				}
 
 				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
-				$dependents       = $this->get_dependents( $dependency, $raw );
-				$all_dependents   = array_merge( $all_dependents, $dependents );
+				$dependents = $this->get_dependents( $dependency, $raw );
+				$all_dependents = array_merge( $all_dependents, $dependents );
 
 				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
@@ -153,14 +153,14 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				}
 
 				$this->data['assets'][ $position ][ $handle ] = array(
-					'host'         => $host,
-					'port'         => $port,
-					'source'       => $source,
-					'local'        => $local,
-					'ver'          => $ver,
-					'warning'      => $warning,
-					'display'      => $display,
-					'dependents'   => $dependents,
+					'host' => $host,
+					'port' => $port,
+					'source' => $source,
+					'local' => $local,
+					'ver' => $ver,
+					'warning' => $warning,
+					'display' => $display,
+					'dependents' => $dependents,
 					'dependencies' => $dependencies,
 				);
 
@@ -199,7 +199,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
 		$dependents = array();
-		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
+		$handles = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
 		foreach ( $handles as $handle ) {
 			$item = $dependencies->query( $handle );
@@ -216,9 +216,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 	}
 
 	public function get_dependency_data( _WP_Dependency $dependency ) {
-		$data   = $this->get_data();
+		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
-		$src    = $dependency->src;
+		$src = $dependency->src;
 
 		if ( null === $dependency->ver ) {
 			$ver = '';
@@ -233,9 +233,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host      = (string) parse_url( $source, PHP_URL_HOST );
-		$scheme    = (string) parse_url( $source, PHP_URL_SCHEME );
-		$port      = (string) parse_url( $source, PHP_URL_PORT );
+		$host = (string) parse_url( $source, PHP_URL_HOST );
+		$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
+		$port = (string) parse_url( $source, PHP_URL_PORT );
 		$http_host = $data['host'];
 		$http_port = $data['port'];
 
@@ -257,7 +257,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			}
 		} elseif ( empty( $source ) ) {
 			$source = '';
-			$host   = '';
+			$host = '';
 		}
 
 		$local = ( $http_host === $host );

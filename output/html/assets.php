@@ -42,9 +42,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$position_labels = array(
 			// @TODO translator comments or context:
 			'missing' => __( 'Missing', 'query-monitor' ),
-			'broken'  => __( 'Missing Dependencies', 'query-monitor' ),
-			'header'  => __( 'Header', 'query-monitor' ),
-			'footer'  => __( 'Footer', 'query-monitor' ),
+			'broken' => __( 'Missing Dependencies', 'query-monitor' ),
+			'header' => __( 'Header', 'query-monitor' ),
+			'footer' => __( 'Footer', 'query-monitor' ),
 		);
 
 		$type = $this->collector->get_dependency_type();
@@ -109,11 +109,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	protected function dependency_row( $handle, array $asset, $label ) {
 		$data = $this->collector->get_data();
 
-		$highlight_deps       = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
+		$highlight_deps = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
 		$highlight_dependents = array_map( array( $this, '_prefix_type' ), $asset['dependents'] );
 
 		$dependencies_list = implode( ' ', $asset['dependencies'] );
-		$dependents_list   = implode( ' ', $asset['dependents'] );
+		$dependents_list = implode( ' ', $asset['dependents'] );
 
 		$dependency_output = array();
 
@@ -152,7 +152,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo esc_html( $label );
 		echo '</td>';
 
-		$host  = $asset['host'];
+		$host = $asset['host'];
 		$parts = explode( '.', $host );
 
 		foreach ( $parts as $k => $part ) {
@@ -236,15 +236,15 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$args = array(
 			'title' => esc_html( $label ),
-			'id'    => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href'  => esc_attr( '#' . $this->collector->id() ),
+			'id' => esc_attr( "query-monitor-{$this->collector->id}" ),
+			'href' => esc_attr( '#' . $this->collector->id() ),
 		);
 
 		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
 			$args['meta']['classname'] = 'qm-error';
 		}
 
-		$id          = $this->collector->id();
+		$id = $this->collector->id();
 		$menu[ $id ] = $this->menu( $args );
 
 		return $menu;

@@ -33,7 +33,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data['http'] ) ) {
-			$statuses   = array_keys( $data['types'] );
+			$statuses = array_keys( $data['types'] );
 			$components = wp_list_pluck( $data['component_times'], 'component' );
 
 			usort( $statuses, 'strcasecmp' );
@@ -78,7 +78,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$i++;
 				$is_error = false;
 				$row_attr = array();
-				$css      = '';
+				$css = '';
 
 				if ( is_wp_error( $row['response'] ) ) {
 					$response = $row['response']->get_error_message();
@@ -88,7 +88,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$response = __( 'Non-blocking', 'query-monitor' );
 				} else {
 					$code = wp_remote_retrieve_response_code( $row['response'] );
-					$msg  = wp_remote_retrieve_response_message( $row['response'] );
+					$msg = wp_remote_retrieve_response_message( $row['response'] );
 
 					if ( intval( $code ) >= 400 ) {
 						$is_error = true;
@@ -102,7 +102,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css = 'qm-warn';
 				}
 
-				$url  = self::format_url( $row['url'] );
+				$url = self::format_url( $row['url'] );
 				$info = '';
 
 				$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
@@ -122,7 +122,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$component = $row['component'];
 
-				$stack          = array();
+				$stack = array();
 				$filtered_trace = $row['filtered_trace'];
 
 				foreach ( $filtered_trace as $frame ) {
@@ -130,8 +130,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				}
 
 				$row_attr['data-qm-component'] = $component->name;
-				$row_attr['data-qm-type']      = $row['type'];
-				$row_attr['data-qm-time']      = $row['ltime'];
+				$row_attr['data-qm-type'] = $row['type'];
+				$row_attr['data-qm-time'] = $row['ltime'];
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';
@@ -194,8 +194,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( ! empty( $row['info'] ) ) {
 					$time_fields = array(
-						'namelookup_time'    => __( 'DNS Resolution Time', 'query-monitor' ),
-						'connect_time'       => __( 'Connection Time', 'query-monitor' ),
+						'namelookup_time' => __( 'DNS Resolution Time', 'query-monitor' ),
+						'connect_time' => __( 'Connection Time', 'query-monitor' ),
 						'starttransfer_time' => __( 'Transfer Start Time (TTFB)', 'query-monitor' ),
 					);
 					foreach ( $time_fields as $key => $value ) {
@@ -225,7 +225,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 					$other_fields = array(
 						'content_type' => __( 'Response Content Type', 'query-monitor' ),
-						'primary_ip'   => __( 'IP Address', 'query-monitor' ),
+						'primary_ip' => __( 'IP Address', 'query-monitor' ),
 					);
 					foreach ( $other_fields as $key => $value ) {
 						if ( ! isset( $row['info'][ $key ] ) ) {
@@ -289,7 +289,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $data['ltime'], 4 );
-			$count       = count( $data['http'] );
+			$count = count( $data['http'] );
 
 			echo '<tr>';
 			printf(

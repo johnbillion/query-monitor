@@ -29,7 +29,7 @@ class QueryMonitor extends QM_Plugin {
 		# Load and register built-in collectors:
 		$collectors = array();
 		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
-			$key                = basename( $file, '.php' );
+			$key = basename( $file, '.php' );
 			$collectors[ $key ] = $file;
 		}
 
@@ -49,7 +49,7 @@ class QueryMonitor extends QM_Plugin {
 	public function filter_plugin_action_links( array $actions ) {
 		return array_merge( array(
 			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
-			'add-ons'  => '<a href="https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
+			'add-ons' => '<a href="https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
 		), $actions );
 	}
 
@@ -168,11 +168,11 @@ class QueryMonitor extends QM_Plugin {
 	 */
 	public function action_register_members_groups() {
 		members_register_cap_group( 'query_monitor', array(
-			'label'    => __( 'Query Monitor', 'query-monitor' ),
-			'caps'     => array(
+			'label' => __( 'Query Monitor', 'query-monitor' ),
+			'caps' => array(
 				'view_query_monitor',
 			),
-			'icon'     => 'dashicons-admin-tools',
+			'icon' => 'dashicons-admin-tools',
 			'priority' => 30,
 		) );
 	}
@@ -200,8 +200,8 @@ class QueryMonitor extends QM_Plugin {
 	public function filter_ure_groups( array $groups ) {
 		$groups['query_monitor'] = array(
 			'caption' => esc_html__( 'Query Monitor', 'query-monitor' ),
-			'parent'  => 'custom',
-			'level'   => 2,
+			'parent' => 'custom',
+			'level' => 2,
 		);
 
 		return $groups;

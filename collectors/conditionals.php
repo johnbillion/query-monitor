@@ -73,9 +73,9 @@ class QM_Collector_Conditionals extends QM_Collector {
 		 */
 		$conds = apply_filters( 'query_monitor_conditionals', $conds );
 
-		$true  = array();
+		$true = array();
 		$false = array();
-		$na    = array();
+		$na = array();
 
 		foreach ( $conds as $cond ) {
 			if ( function_exists( $cond ) ) {

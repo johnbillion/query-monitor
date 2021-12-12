@@ -10,15 +10,15 @@ abstract class QM_Collector {
 
 	protected $timer;
 	protected $data = array(
-		'types'           => array(),
+		'types' => array(),
 		'component_times' => array(),
 	);
 	protected static $hide_qm = null;
 
-	public $concerned_actions   = array();
-	public $concerned_filters   = array();
+	public $concerned_actions = array();
+	public $concerned_filters = array();
 	public $concerned_constants = array();
-	public $tracked_hooks       = array();
+	public $tracked_hooks = array();
 
 	/**
 	 * @var string
@@ -58,8 +58,8 @@ abstract class QM_Collector {
 		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
 			$this->data['component_times'][ $component->name ] = array(
 				'component' => $component->name,
-				'ltime'     => 0,
-				'types'     => array(),
+				'ltime' => 0,
+				'types' => array(),
 			);
 		}
 
@@ -105,7 +105,7 @@ abstract class QM_Collector {
 		global $wp_filter;
 
 		$tracked = array();
-		$id      = $this->id;
+		$id = $this->id;
 
 		/**
 		 * Filters the concerned actions for the given panel.

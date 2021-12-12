@@ -60,7 +60,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 			foreach ( $data['times'] as $row ) {
 				$total_time += $row['ltime'];
-				$stime       = number_format_i18n( $row['ltime'], 4 );
+				$stime = number_format_i18n( $row['ltime'], 4 );
 
 				echo '<tr>';
 				echo '<td class="qm-ltr"><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="' . esc_attr( $row['caller'] ) . '"><code>' . esc_html( $row['caller'] ) . '</code></button></td>';

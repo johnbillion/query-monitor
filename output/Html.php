@@ -9,7 +9,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 	protected static $file_link_format = null;
 
-	protected $current_id   = null;
+	protected $current_id = null;
 	protected $current_name = null;
 
 	public function name() {
@@ -41,7 +41,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$name = $this->name();
 		}
 
-		$this->current_id   = $id;
+		$this->current_id = $id;
 		$this->current_name = $name;
 
 		printf(
@@ -73,7 +73,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$name = $this->name();
 		}
 
-		$this->current_id   = $id;
+		$this->current_id = $id;
 		$this->current_name = $name;
 
 		printf(
@@ -251,9 +251,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$args = array_merge( array(
 			'highlight' => '',
-			'prepend'   => array(),
-			'append'    => array(),
-			'all'       => _x( 'All', '"All" option for filters', 'query-monitor' ),
+			'prepend' => array(),
+			'append' => array(),
+			'all' => _x( 'All', '"All" option for filters', 'query-monitor' ),
 		), $args );
 
 		$core_val = __( 'WordPress Core', 'query-monitor' );
@@ -261,7 +261,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		if ( 'component' === $name && count( $values ) > 1 && false !== $core_key ) {
 			$args['append'][ $core_val ] = $core_val;
-			$args['append']['non-core']  = __( 'Non-WordPress Core', 'query-monitor' );
+			$args['append']['non-core'] = __( 'Non-WordPress Core', 'query-monitor' );
 			unset( $values[ $core_key ] );
 		}
 
@@ -337,7 +337,7 @@ abstract class QM_Output_Html extends QM_Output {
 	protected function menu( array $args ) {
 
 		return array_merge( array(
-			'id'   => esc_attr( "query-monitor-{$this->collector->id}" ),
+			'id' => esc_attr( "query-monitor-{$this->collector->id}" ),
 			'href' => esc_attr( '#' . $this->collector->id() ),
 		), $args );
 
@@ -356,10 +356,10 @@ abstract class QM_Output_Html extends QM_Output {
 		$sql = trim( $sql );
 
 		$regex = 'ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR';
-		$sql   = preg_replace( '# (' . $regex . ') #', '<br> $1 ', $sql );
+		$sql = preg_replace( '# (' . $regex . ') #', '<br> $1 ', $sql );
 
 		$keywords = '\b(?:ACTION|ADD|AFTER|ALTER|AND|ASC|AS|AUTO_INCREMENT|BEGIN|BETWEEN|BIGINT|BINARY|BIT|BLOB|BOOLEAN|BOOL|BREAK|BY|CASE|COLLATE|COLUMNS?|COMMIT|CONTINUE|CREATE|DATA(?:BASES?)?|DATE(?:TIME)?|DECIMAL|DECLARE|DEC|DEFAULT|DELAYED|DELETE|DESCRIBE|DESC|DISTINCT|DOUBLE|DO|DROP|DUPLICATE|ELSE|END|ENUM|EXCEPT|EXISTS|EXPLAIN|FIELDS|FLOAT|FOREIGN|FORCE|FOR|FROM|FULL|FUNCTION|GROUP|HAVING|IF|IGNORE|INDEX|INNER|INSERT|INTEGER|INTERSECT|INTERVAL|INTO|INT|IN|IS|JOIN|KEYS?|LEFT|LIKE|LIMIT|LONG(?:BLOB|TEXT)|MEDIUM(?:BLOB|INT|TEXT)|MERGE|MIDDLEINT|NOT|NO|NULLIF|ON|ORDER|OR|OUTER|PRIMARY|PROC(?:EDURE)?|REGEXP|RENAME|REPLACE|RIGHT|RLIKE|ROLLBACK|SCHEMA|SELECT|SET|SHOW|SMALLINT|START|TABLES?|TEXT(?:SIZE)?|THEN|TIME(?:STAMP)?|TINY(?:BLOB|INT|TEXT)|TRUNCATE|UNION|UNIQUE|UNSIGNED|UPDATE|USE|USING|VALUES?|VAR(?:BINARY|CHAR)|WHEN|WHERE|WHILE|XOR)\b';
-		$sql      = preg_replace( '#' . $keywords . '#', '<b>$0</b>', $sql );
+		$sql = preg_replace( '#' . $keywords . '#', '<b>$0</b>', $sql );
 
 		return '<code>' . $sql . '</code>';
 

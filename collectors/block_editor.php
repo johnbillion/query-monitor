@@ -15,7 +15,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	protected $block_context = array();
 	protected $block_timing = array();
-	protected $block_timer  = null;
+	protected $block_timer = null;
 
 	public function __construct() {
 		parent::__construct();
@@ -88,12 +88,12 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return;
 		}
 
-		$this->data['post_has_blocks']    = self::wp_has_blocks( $content );
-		$this->data['post_blocks']        = self::wp_parse_blocks( $content );
+		$this->data['post_has_blocks'] = self::wp_has_blocks( $content );
+		$this->data['post_blocks'] = self::wp_parse_blocks( $content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
-		$this->data['total_blocks']       = 0;
-		$this->data['has_block_context']  = false;
-		$this->data['has_block_timing']   = false;
+		$this->data['total_blocks'] = 0;
+		$this->data['has_block_context'] = false;
+		$this->data['has_block_timing'] = false;
 
 		if ( $this->data['post_has_blocks'] ) {
 			$this->data['post_blocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data['post_blocks'] ) ) );
@@ -102,7 +102,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	protected function process_block( array $block ) {
 		$context = array_shift( $this->block_context );
-		$timing  = array_shift( $this->block_timing );
+		$timing = array_shift( $this->block_timing );
 
 		// Remove empty blocks caused by two consecutive line breaks in content
 		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
@@ -112,11 +112,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['total_blocks']++;
 
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
-		$dynamic    = false;
-		$callback   = null;
+		$dynamic = false;
+		$callback = null;
 
 		if ( $block_type && $block_type->is_dynamic() ) {
-			$dynamic  = true;
+			$dynamic = true;
 			$callback = QM_Util::populate_callback( array(
 				'function' => $block_type->render_callback,
 			) );
@@ -124,10 +124,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		$timing = array_shift( $this->block_timing );
 
-		$block['dynamic']   = $dynamic;
-		$block['callback']  = $callback;
+		$block['dynamic'] = $dynamic;
+		$block['callback'] = $callback;
 		$block['innerHTML'] = trim( $block['innerHTML'] );
-		$block['size']      = strlen( $block['innerHTML'] );
+		$block['size'] = strlen( $block['innerHTML'] );
 
 		if ( $context ) {
 			$block['context'] = $context;
