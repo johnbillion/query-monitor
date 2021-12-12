@@ -102,7 +102,26 @@ class QM_Collector_HTTP extends QM_Collector {
 			'ignore_hook' => array(
 				current_filter() => true,
 			),
+			'ignore_class' => array(
+				'WP_Http' => true,
+			),
+			'ignore_func' => array(
+				'wp_safe_remote_request' => true,
+				'wp_safe_remote_get' => true,
+				'wp_safe_remote_post' => true,
+				'wp_safe_remote_head' => true,
+				'wp_remote_request' => true,
+				'wp_remote_get' => true,
+				'wp_remote_post' => true,
+				'wp_remote_head' => true,
+				'wp_remote_fopen' => true,
+				'download_url' => true,
+				'vip_safe_wp_remote_get' => true,
+				'vip_safe_wp_remote_request' => true,
+				'wpcom_vip_file_get_contents' => true,
+			),
 		) );
+
 		if ( isset( $args['_qm_key'] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
@@ -116,7 +135,8 @@ class QM_Collector_HTTP extends QM_Collector {
 			'url'   => $url,
 			'args'  => $args,
 			'start' => $start,
-			'trace' => $trace,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
 		);
 		$args['_qm_key']            = $key;
 		return $args;
@@ -275,8 +295,6 @@ class QM_Collector_HTTP extends QM_Collector {
 			}
 
 			$this->data['ltime'] += $http['ltime'];
-
-			$http['component'] = $http['trace']->get_component();
 
 			$host = (string) parse_url( $http['url'], PHP_URL_HOST );
 
