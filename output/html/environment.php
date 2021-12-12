@@ -289,6 +289,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			'address' => __( 'Address', 'query-monitor' ),
 			'host' => __( 'Host', 'query-monitor' ),
 			'OS' => __( 'OS', 'query-monitor' ),
+			'arch' => __( 'Arch', 'query-monitor' ),
 		);
 
 		echo '<table>';

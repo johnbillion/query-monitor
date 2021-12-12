@@ -243,6 +243,7 @@ class QM_Collector_Environment extends QM_Collector {
 		if ( function_exists( 'php_uname' ) ) {
 			$this->data['server']['host'] = php_uname( 'n' );
 			$this->data['server']['OS'] = php_uname( 's' ) . ' ' . php_uname( 'r' );
+			$this->data['server']['arch'] = php_uname( 'm' );
 		}
 
 	}
