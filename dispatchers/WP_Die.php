@@ -43,7 +43,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		$switched_locale = self::switch_to_locale( get_user_locale() );
 		$stack           = array();
-		$filtered_trace  = $this->trace->get_display_trace();
+		$filtered_trace  = $this->trace->get_filtered_trace();
 		$component       = $this->trace->get_component();
 
 		foreach ( $filtered_trace as $i => $item ) {

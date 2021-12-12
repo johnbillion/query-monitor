@@ -71,7 +71,7 @@ class QM_Collector_Transients extends QM_Collector {
 		}
 
 		foreach ( $this->data['trans'] as $i => $transient ) {
-			$filtered_trace = $transient['trace']->get_display_trace();
+			$filtered_trace = $transient['trace']->get_filtered_trace();
 
 			$component = $transient['trace']->get_component();
 

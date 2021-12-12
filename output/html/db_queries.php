@@ -322,7 +322,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$caller         = $row['trace']->get_caller();
 			$caller_name    = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
 			$stack          = array();
-			$filtered_trace = $row['trace']->get_display_trace();
+			$filtered_trace = $row['trace']->get_filtered_trace();
 
 			foreach ( $filtered_trace as $frame ) {
 				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );

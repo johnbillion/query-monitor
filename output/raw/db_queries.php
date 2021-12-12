@@ -90,7 +90,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 		if ( isset( $row['trace'] ) ) {
 			$stack = array();
-			$filtered_trace = $row['trace']->get_display_trace();
+			$filtered_trace = $row['trace']->get_filtered_trace();
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = $item['display'];

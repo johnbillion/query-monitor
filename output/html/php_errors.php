@@ -119,7 +119,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$stack          = array();
 
 					if ( $error['trace'] ) {
-						$filtered_trace = $error['trace']->get_display_trace();
+						$filtered_trace = $error['trace']->get_filtered_trace();
 
 						// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 						// we need to handle its somewhat unreliable stack trace items.

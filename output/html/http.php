@@ -123,7 +123,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$component = $row['component'];
 
 				$stack          = array();
-				$filtered_trace = $row['trace']->get_display_trace();
+				$filtered_trace = $row['trace']->get_filtered_trace();
 
 				$filtered_trace = array_filter( $filtered_trace, function( $item ) {
 					// @TODO This should happen during collection.
