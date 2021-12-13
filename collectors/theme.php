@@ -26,6 +26,18 @@ class QM_Collector_Theme extends QM_Collector {
 		add_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10, 3 );
 	}
 
+	public function tear_down() {
+		remove_filter( 'body_class',       array( $this, 'filter_body_class' ), 9999 );
+		remove_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 9999 );
+		remove_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
+		remove_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10 );
+		remove_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10 );
+		remove_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10 );
+		remove_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10 );
+
+		parent::tear_down();
+	}
+
 	public function get_concerned_actions() {
 		return array(
 			'template_redirect',

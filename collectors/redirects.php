@@ -18,6 +18,12 @@ class QM_Collector_Redirects extends QM_Collector {
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );
 	}
 
+	public function tear_down() {
+		remove_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999 );
+
+		parent::tear_down();
+	}
+
 	public function filter_wp_redirect( $location, $status ) {
 
 		if ( ! $location ) {
