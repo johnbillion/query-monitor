@@ -28,6 +28,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		remove_action( 'wp_head',                    array( $this, 'action_head' ), 9999 );
 		remove_action( 'login_head',                 array( $this, 'action_head' ), 9999 );
 		remove_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
+
+		parent::tear_down();
 	}
 
 	abstract public function get_dependency_type();

@@ -19,6 +19,7 @@ class QM_Collector_Overview extends QM_Collector {
 
 	public function tear_down() {
 		remove_action( 'shutdown', array( $this, 'process_timing' ), 0 );
+
 		parent::tear_down();
 	}
 
