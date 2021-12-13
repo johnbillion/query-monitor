@@ -26,6 +26,15 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
+	public function tear_down() {
+		remove_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999 );
+		remove_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999 );
+		remove_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
+		remove_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999 );
+
+		parent::tear_down();
+	}
+
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
