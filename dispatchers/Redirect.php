@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 	public $id = 'redirect';

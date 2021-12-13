@@ -5,21 +5,28 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Collector_Logger extends QM_Collector {
 
 	public $id = 'logger';
 
 	const EMERGENCY = 'emergency';
-	const ALERT     = 'alert';
-	const CRITICAL  = 'critical';
-	const ERROR     = 'error';
-	const WARNING   = 'warning';
-	const NOTICE    = 'notice';
-	const INFO      = 'info';
-	const DEBUG     = 'debug';
+	const ALERT = 'alert';
+	const CRITICAL = 'critical';
+	const ERROR = 'error';
+	const WARNING = 'warning';
+	const NOTICE = 'notice';
+	const INFO = 'info';
+	const DEBUG = 'debug';
 
 	public function __construct() {
 		parent::__construct();
+
+		$this->data['counts'] = array_fill_keys( $this->get_levels(), 0 );
+
 		foreach ( $this->get_levels() as $level ) {
 			add_action( "qm/{$level}", array( $this, $level ), 10, 2 );
 		}
@@ -68,13 +75,13 @@ class QM_Collector_Logger extends QM_Collector {
 	}
 
 	protected function store( $level, $message, array $context = array() ) {
-		$type  = 'string';
 		$trace = new QM_Backtrace( array(
-			'ignore_frames' => 2,
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
 		) );
 
 		if ( is_wp_error( $message ) ) {
-			$type    = 'wp_error';
 			$message = sprintf(
 				'WP_Error: %s (%s)',
 				$message->get_error_message(),
@@ -83,7 +90,6 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
-			$type    = 'throwable';
 			$message = get_class( $message ) . ': ' . $message->getMessage();
 		}
 
@@ -96,18 +102,17 @@ class QM_Collector_Logger extends QM_Collector {
 				$message = 'true';
 			}
 
-			$type    = 'dump';
 			$message = print_r( $message, true );
 		} elseif ( '' === trim( $message ) ) {
 			$message = '(Empty string)';
 		}
 
+		$this->data['counts'][ $level ]++;
 		$this->data['logs'][] = array(
 			'message' => self::interpolate( $message, $context ),
-			'context' => $context,
-			'trace'   => $trace,
-			'level'   => $level,
-			'type'    => $type,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
+			'level' => $level,
 		);
 	}
 
@@ -136,7 +141,7 @@ class QM_Collector_Logger extends QM_Collector {
 		$components = array();
 
 		foreach ( $this->data['logs'] as $row ) {
-			$component                      = $row['trace']->get_component();
+			$component = $row['component'];
 			$components[ $component->name ] = $component->name;
 		}
 

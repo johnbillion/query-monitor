@@ -32,6 +32,9 @@ abstract class QM_Output {
 		// nothing
 	}
 
+	/**
+	 * @return QM_Collector
+	 */
 	public function get_collector() {
 		return $this->collector;
 	}

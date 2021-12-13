@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Languages extends QM_Output_Html {
 
 	/**
@@ -73,7 +77,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 				echo '<td class="qm-ltr">';
 				if ( $mofile['file'] ) {
-					echo esc_html( QM_Util::standard_dir( $mofile['file'], '' ) );
+					if ( 'jed' === $mofile['type'] && self::has_clickable_links() ) {
+						echo self::output_filename( QM_Util::standard_dir( $mofile['file'], '' ), $mofile['file'], 1, true ); // WPCS: XSS ok.
+					} else {
+						echo esc_html( QM_Util::standard_dir( $mofile['file'], '' ) );
+					}
 				} else {
 					echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
 				}

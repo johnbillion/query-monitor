@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Collector_DB_Callers extends QM_Collector {
 
 	public $id = 'db_callers';

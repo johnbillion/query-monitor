@@ -4,7 +4,7 @@ $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
-$qm-font-code-line-height: 18px;
+$qm-font-code-line-height: 19px;
 $qm-admin-toolbar-height: 32px;
 
 // === Admin Toolbar ===
@@ -138,7 +138,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	-webkit-font-smoothing: auto !important;
 	font-style: normal !important;
 	font-weight: normal !important;
-	letter-spacing: normal !important;
+	letter-spacing: -0.1px !important;
 	line-height: $qm-font-default-line-height !important;
 	margin: 0 !important;
 	min-height: auto !important;
@@ -197,6 +197,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		background: $qm-panel-bg !important;
 		border-top: 1px solid $qm-panel-border !important;
 		bottom: 0 !important;
+		contain: layout paint;
 		direction: ltr !important;
 		display: none;
 		left: 0 !important;
@@ -626,10 +627,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		td.qm-row-block-attrs,
+		td.qm-row-block-context,
 		td.qm-row-block-html {
 			max-width: 40em !important;
 		}
 
+		td.qm-row-block-attrs,
+		td.qm-row-block-context,
+		td.qm-row-block-html,
 		tr.qm-warn td.qm-col-status,
 		td.qm-url,
 		th.qm-col-message,
@@ -942,12 +947,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm tbody tr td.qm-highlight,
+	.qm tbody tr.qm-highlight th,
 	.qm tbody tr.qm-highlight td {
 		background-color: $qm-cell-bg-highlight !important;
 		color: $qm-cell-fg-highlight !important;
 	}
 
 	.qm tbody tr.qm-odd td.qm-highlight,
+	.qm tbody tr.qm-odd.qm-highlight th,
 	.qm tbody tr.qm-odd.qm-highlight td {
 		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
 		color: $qm-cell-fg-highlight !important;
@@ -1000,7 +1007,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		font-family: dashicons !important;
 		font-size: 14px !important;
 		left: 2px !important;
-		line-height: 15px !important;
+		line-height: 13px !important;
 		position: relative !important;
 		text-decoration: none !important;
 		top: 2px !important;
@@ -1079,6 +1086,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: none !important;
 	}
 
+	.qm-title-heading select,
 	.qm select.qm-filter {
 		-webkit-appearance: menulist !important;
 		-moz-appearance: menulist !important;
@@ -1090,7 +1098,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: block !important;
 		float: none !important;
 		height: auto !important;
-		letter-spacing: normal !important;
+		letter-spacing: -0.1px !important;
 		margin: 0 0 0 5px !important;
 		max-width: 12em !important;
 		outline: 1px solid $qm-panel-border !important;
@@ -1098,8 +1106,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		width: auto !important;
 	}
 
+	.qm-title-heading select {
+		max-width: unset !important;
+	}
+
 	.qm select.qm-filter:hover {
-		background: $qm-container-bg !important;
+		background: $qm-cell-bg-hover !important;
 	}
 
 	.qm-hide,

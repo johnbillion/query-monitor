@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Headers extends QM_Output_Html {
 
 	/**
@@ -47,7 +51,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 
 	public function output_response() {
 		$data = $this->collector->get_data();
-		$id   = sprintf( 'qm-%s-response', $this->collector->id );
+		$id = sprintf( 'qm-%s-response', $this->collector->id );
 
 		$this->before_tabular_output( $id );
 
@@ -91,13 +95,13 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		}
 
 		$ids = array(
-			$this->collector->id()               => __( 'Request Headers', 'query-monitor' ),
+			$this->collector->id() => __( 'Request Headers', 'query-monitor' ),
 			$this->collector->id() . '-response' => __( 'Response Headers', 'query-monitor' ),
 		);
 		foreach ( $ids as $id => $title ) {
 			$menu['qm-request']['children'][] = array(
-				'id'    => $id,
-				'href'  => '#' . $id,
+				'id' => $id,
+				'href' => '#' . $id,
 				'title' => esc_html( $title ),
 			);
 		}

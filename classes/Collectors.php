@@ -9,7 +9,7 @@ if ( ! class_exists( 'QM_Collectors' ) ) {
 class QM_Collectors implements IteratorAggregate {
 
 	/** @var QM_Collector[] */
-	private $items     = array();
+	private $items = array();
 	private $processed = false;
 
 	public function getIterator() {

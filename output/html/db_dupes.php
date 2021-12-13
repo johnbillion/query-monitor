@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 	/**
@@ -56,7 +60,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		foreach ( $data['dupes'] as $sql => $queries ) {
 
 			// This should probably happen in the collector's processor
-			$type    = QM_Util::get_query_type( $sql );
+			$type = QM_Util::get_query_type( $sql );
 			$sql_out = self::format_sql( $sql );
 
 			if ( 'SELECT' !== $type ) {

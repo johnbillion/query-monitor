@@ -22,6 +22,11 @@ abstract class QM_Dispatcher {
 	 */
 	protected $qm;
 
+	/**
+	 * @var string
+	 */
+	public $id = '';
+
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
@@ -157,5 +162,41 @@ abstract class QM_Dispatcher {
 		return false;
 	}
 
+	/**
+	 * Attempts to switch to the given locale.
+	 *
+	 * This is a wrapper around `switch_to_locale()` which is safe to call at any point, even
+	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 *
+	 * @param string $locale The locale.
+	 * @return bool True on success, false on failure.
+	 */
+	public static function switch_to_locale( $locale ) {
+		global $wp_locale_switcher;
+
+		if ( function_exists( 'switch_to_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+			return switch_to_locale( $locale );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Attempts to restore the previous locale.
+	 *
+	 * This is a wrapper around `restore_previous_locale()` which is safe to call at any point, even
+	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 *
+	 * @return string|false Locale on success, false on error.
+	 */
+	public static function restore_previous_locale() {
+		global $wp_locale_switcher;
+
+		if ( function_exists( 'restore_previous_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+			return restore_previous_locale();
+		}
+
+		return false;
+	}
 }
 }

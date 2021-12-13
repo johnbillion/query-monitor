@@ -5,12 +5,16 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Collector_Timing extends QM_Collector {
 
-	public $id           = 'timing';
+	public $id = 'timing';
 	private $track_timer = array();
-	private $start       = array();
-	private $stop        = array();
+	private $start = array();
+	private $stop = array();
 
 	public function __construct() {
 		parent::__construct();
@@ -21,16 +25,17 @@ class QM_Collector_Timing extends QM_Collector {
 
 	public function action_function_time_start( $function ) {
 		$this->track_timer[ $function ] = new QM_Timer();
-		$this->start[ $function ]       = $this->track_timer[ $function ]->start();
+		$this->start[ $function ] = $this->track_timer[ $function ]->start();
 	}
 
 	public function action_function_time_stop( $function ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
-			$trace                   = new QM_Backtrace();
+			$trace = new QM_Backtrace();
 			$this->data['warning'][] = array(
 				'function' => $function,
-				'message'  => __( 'Timer not started', 'query-monitor' ),
-				'trace'    => $trace,
+				'message' => __( 'Timer not started', 'query-monitor' ),
+				'filtered_trace' => $trace->get_filtered_trace(),
+				'component' => $trace->get_component(),
 			);
 			return;
 		}
@@ -40,11 +45,12 @@ class QM_Collector_Timing extends QM_Collector {
 
 	public function action_function_time_lap( $function, $name = null ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
-			$trace                   = new QM_Backtrace();
+			$trace = new QM_Backtrace();
 			$this->data['warning'][] = array(
 				'function' => $function,
-				'message'  => __( 'Timer not started', 'query-monitor' ),
-				'trace'    => $trace,
+				'message' => __( 'Timer not started', 'query-monitor' ),
+				'filtered_trace' => $trace->get_filtered_trace(),
+				'component' => $trace->get_component(),
 			);
 			return;
 		}
@@ -52,32 +58,34 @@ class QM_Collector_Timing extends QM_Collector {
 	}
 
 	public function calculate_time( $function ) {
-		$trace           = $this->track_timer[ $function ]->get_trace();
-		$function_time   = $this->track_timer[ $function ]->get_time();
+		$trace = $this->track_timer[ $function ]->get_trace();
+		$function_time = $this->track_timer[ $function ]->get_time();
 		$function_memory = $this->track_timer[ $function ]->get_memory();
-		$function_laps   = $this->track_timer[ $function ]->get_laps();
-		$start_time      = $this->track_timer[ $function ]->get_start_time();
-		$end_time        = $this->track_timer[ $function ]->get_end_time();
+		$function_laps = $this->track_timer[ $function ]->get_laps();
+		$start_time = $this->track_timer[ $function ]->get_start_time();
+		$end_time = $this->track_timer[ $function ]->get_end_time();
 
 		$this->data['timing'][] = array(
-			'function'        => $function,
-			'function_time'   => $function_time,
+			'function' => $function,
+			'function_time' => $function_time,
 			'function_memory' => $function_memory,
-			'laps'            => $function_laps,
-			'trace'           => $trace,
-			'start_time'      => ( $start_time - $GLOBALS['timestart'] ),
-			'end_time'        => ( $end_time - $GLOBALS['timestart'] ),
+			'laps' => $function_laps,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
+			'start_time' => ( $start_time - $GLOBALS['timestart'] ),
+			'end_time' => ( $end_time - $GLOBALS['timestart'] ),
 		);
 	}
 
 	public function process() {
 		foreach ( $this->start as $function => $value ) {
 			if ( ! isset( $this->stop[ $function ] ) ) {
-				$trace                   = $this->track_timer[ $function ]->get_trace();
+				$trace = $this->track_timer[ $function ]->get_trace();
 				$this->data['warning'][] = array(
 					'function' => $function,
-					'message'  => __( 'Timer not stopped', 'query-monitor' ),
-					'trace'    => $trace,
+					'message' => __( 'Timer not stopped', 'query-monitor' ),
+					'filtered_trace' => $trace->get_filtered_trace(),
+					'component' => $trace->get_component(),
 				);
 			}
 		}

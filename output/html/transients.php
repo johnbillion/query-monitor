@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Transients extends QM_Output_Html {
 
 	/**
@@ -81,8 +85,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				$stack = array();
 
-				foreach ( $row['filtered_trace'] as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				foreach ( $row['filtered_trace'] as $frame ) {
+					$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 				}
 
 				$caller = array_shift( $stack );
@@ -125,7 +129,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )

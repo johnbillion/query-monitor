@@ -28,7 +28,7 @@ class TestPlugin extends QM_UnitTestCase {
 
 			$this->readme_data = array(
 				'tested_up_to' => trim( trim( $_tested_up_to[1], '*' ) ),
-				'stable_tag'   => trim( trim( $_stable_tag[1], '*' ) )
+				'stable_tag' => trim( trim( $_stable_tag[1], '*' ) )
 			);
 		}
 

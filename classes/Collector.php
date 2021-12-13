@@ -10,15 +10,20 @@ abstract class QM_Collector {
 
 	protected $timer;
 	protected $data = array(
-		'types'           => array(),
+		'types' => array(),
 		'component_times' => array(),
 	);
 	protected static $hide_qm = null;
 
-	public $concerned_actions   = array();
-	public $concerned_filters   = array();
+	public $concerned_actions = array();
+	public $concerned_filters = array();
 	public $concerned_constants = array();
-	public $tracked_hooks       = array();
+	public $tracked_hooks = array();
+
+	/**
+	 * @var string
+	 */
+	public $id = '';
 
 	public function __construct() {}
 
@@ -53,8 +58,8 @@ abstract class QM_Collector {
 		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
 			$this->data['component_times'][ $component->name ] = array(
 				'component' => $component->name,
-				'ltime'     => 0,
-				'types'     => array(),
+				'ltime' => 0,
+				'types' => array(),
 			);
 		}
 
@@ -104,7 +109,7 @@ abstract class QM_Collector {
 		global $wp_filter;
 
 		$tracked = array();
-		$id      = $this->id;
+		$id = $this->id;
 
 		/**
 		 * Filters the concerned actions for the given panel.
@@ -156,14 +161,14 @@ abstract class QM_Collector {
 
 		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
-				$this->concerned_actions[ $action ] = QM_Hook::process( $action, $wp_filter, true, true );
+				$this->concerned_actions[ $action ] = QM_Hook::process( $action, $wp_filter, true, false );
 			}
 			$tracked[] = $action;
 		}
 
 		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
-				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, true );
+				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
 			}
 			$tracked[] = $filter;
 		}
@@ -185,7 +190,7 @@ abstract class QM_Collector {
 					$option
 				);
 				if ( has_filter( $filter ) ) {
-					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, true );
+					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
 				}
 				$tracked[] = $filter;
 			}
@@ -225,6 +230,10 @@ abstract class QM_Collector {
 	}
 
 	public static function hide_qm() {
+		if ( ! defined( 'QM_HIDE_SELF' ) ) {
+			return false;
+		}
+
 		if ( null === self::$hide_qm ) {
 			self::$hide_qm = QM_HIDE_SELF;
 		}
@@ -233,8 +242,11 @@ abstract class QM_Collector {
 	}
 
 	public function filter_remove_qm( array $item ) {
-		$component = $item['trace']->get_component();
-		return ( 'query-monitor' !== $component->context );
+		return ( 'query-monitor' !== $item['component']->context );
+	}
+
+	public function filter_dupe_items( $items ) {
+		return ( count( $items ) > 1 );
 	}
 
 	public function process() {}

@@ -50,18 +50,28 @@ module.exports = function (grunt) {
 		})
 	};
 
+	const sassFiles = {
+		'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
+		'assets/query-monitor.css': 'assets/query-monitor.scss'
+	};
+	const sassOptions = {
+		implementation: require('sass'),
+		sourceMap: false,
+		outputStyle: 'expanded'
+	};
+
 	config.sass = {
-		options: {
-			implementation: require('node-sass'),
-			sourceMap: false,
-			outputStyle: 'expanded'
-		},
-		dist: {
-			files: {
-				'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
-				'assets/query-monitor.css': 'assets/query-monitor.scss'
+		dev: {
+			files: sassFiles,
+			options: {
+				...sassOptions,
+				sourceMap: true,
 			}
-		}
+		},
+		prod: {
+			files: sassFiles,
+			options: sassOptions,
+		},
 	};
 
 	config.rename = {
@@ -76,51 +86,17 @@ module.exports = function (grunt) {
 		}
 	};
 
-	config.version = {
-		main: {
-			options: {
-				prefix: 'Version:[\\s]+'
-			},
-			src: [
-				'<%= pkg.name %>.php'
-			]
-		},
-		readme: {
-			options: {
-				prefix: 'Stable tag:[\\s]+'
-			},
-			src: [
-				'readme.txt'
-			]
-		},
-		pkg: {
-			src: [
-				'package.json'
-			]
-		}
-	};
-
 	config.watch = {
 		options: {
 			interval: 1000
 		},
 		css: {
 			files: '**/*.scss',
-			tasks: ['sass']
+			tasks: ['sass:dev']
 		}
 	};
 
 	grunt.initConfig(config);
-
-	grunt.registerTask('bump', function(version) {
-		if ( ! version ) {
-			grunt.fail.fatal( 'No version specified. Usage: bump:major, bump:minor, bump:patch, bump:x.y.z' );
-		}
-
-		grunt.task.run([
-			'version::' + version
-		]);
-	});
 
 	grunt.registerTask('icons', [
 		'convert-svg-to-png',
@@ -129,7 +105,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('default', [
-		'sass',
+		'sass:dev',
 		'watch'
 	]);
 };

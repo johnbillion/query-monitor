@@ -5,9 +5,13 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 final class QM_Collector_Debug_Bar extends QM_Collector {
 
-	public $id     = 'debug_bar';
+	public $id = 'debug_bar';
 	private $panel = null;
 
 	public function set_panel( Debug_Bar_Panel $panel ) {
@@ -41,7 +45,7 @@ function register_qm_collectors_debug_bar() {
 	}
 
 	$collectors = QM_Collectors::init();
-	$qm         = QueryMonitor::init();
+	$qm = QueryMonitor::init();
 
 	require_once $qm->plugin_path( 'classes/debug_bar.php' );
 

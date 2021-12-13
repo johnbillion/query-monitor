@@ -12,6 +12,11 @@ abstract class QM_Plugin {
 	public static $minimum_php_version = '5.3.6';
 
 	/**
+	 * @var string
+	 */
+	public $file = '';
+
+	/**
 	 * Class constructor
 	 */
 	protected function __construct( $file ) {
@@ -45,7 +50,7 @@ abstract class QM_Plugin {
 	 * @return string Version
 	 */
 	final public function plugin_ver( $file ) {
-		return filemtime( $this->plugin_path( $file ) );
+		return (string) filemtime( $this->plugin_path( $file ) );
 	}
 
 	/**

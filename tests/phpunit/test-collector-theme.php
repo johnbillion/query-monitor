@@ -27,7 +27,7 @@ class TestCollectorTheme extends QM_UnitTestCase {
 		list( , $conditionals, $templates ) = $matches;
 
 		$conditionals[] = '__return_true';
-		$templates[]    = 'index';
+		$templates[] = 'index';
 
 		$names = QM_Collector_Theme::get_query_template_names();
 

@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Overview extends QM_Output_Html {
 
 	/**
@@ -26,22 +30,22 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	public function output() {
 		$data = $this->collector->get_data();
 
-		$db_query_num   = null;
-		$db_queries     = QM_Collectors::get( 'db_queries' );
+		$db_query_num = null;
+		$db_queries = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
 			# @TODO: make this less derpy:
 			$db_queries_data = $db_queries->get_data();
 			if ( isset( $db_queries_data['types'] ) && isset( $db_queries_data['total_time'] ) ) {
 				$db_query_num = $db_queries_data['types'];
-				$db_query_time = $db_queries_data['total_time'];
 			}
 		}
 
 		$raw_request = QM_Collectors::get( 'raw_request' );
 		$cache = QM_Collectors::get( 'cache' );
+		$http = QM_Collectors::get( 'http' );
 
-		$qm_broken   = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
+		$qm_broken = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
 		$ajax_errors = __( 'PHP errors were triggered during an Ajax request. See your browser developer console for details.', 'query-monitor' );
 
 		$this->before_non_tabular_output();
@@ -79,7 +83,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
 		echo '<p>';
-		echo esc_html( number_format_i18n( $data['time_taken'], 4 ) );
+		echo esc_html(
+			sprintf(
+				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+				_x( '%ss', 'Time in seconds', 'query-monitor' ),
+				number_format_i18n( $data['time_taken'], 4 )
+			)
+		);
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
@@ -115,9 +125,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			esc_html_e( 'Unknown', 'query-monitor' );
 		} else {
 			echo esc_html( sprintf(
-				/* translators: %s: Memory used in kilobytes */
-				__( '%s kB', 'query-monitor' ),
-				number_format_i18n( $data['memory'] / 1024 )
+				/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
+				__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
+				number_format_i18n( $data['memory'] ),
+				number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 )
 			) );
 
 			if ( $data['memory_limit'] > 0 ) {
@@ -127,10 +138,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '<br><span class="qm-info">';
 				}
 				echo esc_html( sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in kilobytes */
-					__( '%1$s%% of %2$s kB limit', 'query-monitor' ),
+					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
+					__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
 					number_format_i18n( $data['memory_usage'], 1 ),
-					number_format_i18n( $data['memory_limit'] / 1024 )
+					number_format_i18n( $data['memory_limit'] / 1024 / 1024 )
 				) );
 				echo '</span>';
 			} else {
@@ -143,23 +154,40 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				);
 				echo '</span>';
 			}
+
+			if ( $data['wp_memory_limit'] > 0 ) {
+				if ( $data['display_memory_usage_warning'] ) {
+					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				} else {
+					echo '<br><span class="qm-info">';
+				}
+				echo esc_html( sprintf(
+					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
+					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
+					number_format_i18n( $data['wp_memory_usage'], 1 ),
+					number_format_i18n( $data['wp_memory_limit'] / 1024 / 1024 )
+				) );
+				echo '</span>';
+			}
 		}
 
 		echo '</p>';
 		echo '</section>';
 
-		if ( isset( $db_queries_data ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Database Query Time', 'query-monitor' ) . '</h3>';
-			echo '<p>';
-			echo esc_html( number_format_i18n( $db_queries_data['total_time'], 4 ) );
-			echo '</p>';
-			echo '</section>';
-		}
-
 		if ( isset( $db_query_num ) && isset( $db_queries_data ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
+
+			echo '<p>';
+			echo esc_html(
+				sprintf(
+					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+					_x( '%ss', 'Time in seconds', 'query-monitor' ),
+					number_format_i18n( $db_queries_data['total_time'], 4 )
+				)
+			);
+			echo '</p>';
+
 			echo '<p>';
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
@@ -180,6 +208,38 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			);
 
 			echo '</p>';
+			echo '</section>';
+		}
+
+		if ( $http ) {
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</h3>';
+
+			$http_data = $http->get_data();
+
+			if ( ! empty( $http_data['http'] ) ) {
+				echo '<p>';
+				echo esc_html(
+					sprintf(
+						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+						_x( '%ss', 'Time in seconds', 'query-monitor' ),
+						number_format_i18n( $http_data['ltime'], 4 )
+					)
+				);
+				echo '</p>';
+
+				printf(
+					'<button class="qm-filter-trigger" data-qm-target="http" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
+					esc_html( _x( 'Total', 'HTTP API calls', 'query-monitor' ) ),
+					esc_html( number_format_i18n( count( $http_data['http'] ) ) )
+				);
+			} else {
+				printf(
+					'<p><em>%s</em></p>',
+					esc_html__( 'None', 'query-monitor' )
+				);
+			}
+
 			echo '</section>';
 		}
 
@@ -261,17 +321,17 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		if ( empty( $data['memory'] ) ) {
 			$memory = '??';
 		} else {
-			$memory = number_format_i18n( ( $data['memory'] / 1024 ), 0 );
+			$memory = number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 );
 		}
 
 		$title[] = sprintf(
-			/* translators: %s: Page load time in seconds with a decimal fraction */
-			esc_html_x( '%s S', 'Page load time', 'query-monitor' ),
+			/* translators: %s: Time in seconds with a decimal fraction. Note the space between value and unit. */
+			esc_html__( '%s S', 'query-monitor' ),
 			number_format_i18n( $data['time_taken'], 2 )
 		);
 		$title[] = sprintf(
-			/* translators: %s: Memory usage in kilobytes */
-			esc_html_x( '%s kB', 'Memory usage', 'query-monitor' ),
+			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit. */
+			esc_html__( '%s MB', 'query-monitor' ),
 			$memory
 		);
 

@@ -13,6 +13,7 @@ jobs:
   build:
     name: PHP Coding Standards
     runs-on: ubuntu-18.04
+    timeout-minutes: 10
     steps:
     - name: Checkout repository
       uses: actions/checkout@v1
@@ -54,5 +55,8 @@ jobs:
 
     - name: Run code sniffer
       run: |
-        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
-        composer test:cs2pr
+        composer test:cs
+
+    - name: Run static analysis
+      run: |
+        composer test:phpstan

@@ -160,10 +160,12 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 				'abc' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
+					'component' => $trace->get_component(),
 				),
 				'def' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
+					'component' => $trace->get_component(),
 				),
 			),
 		);
@@ -200,12 +202,14 @@ class TestCollectorPHPErrors extends QM_UnitTestCase {
 				'abc' => array(
 					'errno' => E_WARNING,
 					'trace' => $trace,
+					'component' => $trace->get_component(),
 				),
 			),
 			'notice' => array(
 				'abc' => array(
 					'errno' => E_NOTICE,
 					'trace' => $trace,
+					'component' => $trace->get_component(),
 				),
 			),
 		);

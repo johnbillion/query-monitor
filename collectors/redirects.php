@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Collector_Redirects extends QM_Collector {
 
 	public $id = 'redirects';
@@ -20,11 +24,18 @@ class QM_Collector_Redirects extends QM_Collector {
 			return $location;
 		}
 
-		$trace = new QM_Backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+			'ignore_func' => array(
+				'wp_redirect' => true,
+			),
+		) );
 
-		$this->data['trace']    = $trace;
+		$this->data['trace'] = $trace;
 		$this->data['location'] = $location;
-		$this->data['status']   = $status;
+		$this->data['status'] = $status;
 
 		return $location;
 

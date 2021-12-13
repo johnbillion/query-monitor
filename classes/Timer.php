@@ -8,16 +8,16 @@
 class QM_Timer {
 
 	protected $start = null;
-	protected $end   = null;
+	protected $end = null;
 	protected $trace = null;
-	protected $laps  = array();
+	protected $laps = array();
 
 	public function start( array $data = null ) {
 		$this->trace = new QM_Backtrace();
 		$this->start = array(
-			'time'   => microtime( true ),
+			'time' => microtime( true ),
 			'memory' => memory_get_usage(),
-			'data'   => $data,
+			'data' => $data,
 		);
 		return $this;
 	}
@@ -25,9 +25,9 @@ class QM_Timer {
 	public function stop( array $data = null ) {
 
 		$this->end = array(
-			'time'   => microtime( true ),
+			'time' => microtime( true ),
 			'memory' => memory_get_usage(),
-			'data'   => $data,
+			'data' => $data,
 		);
 
 		return $this;
@@ -37,14 +37,17 @@ class QM_Timer {
 	public function lap( array $data = null, $name = null ) {
 
 		$lap = array(
-			'time'   => microtime( true ),
+			'time' => microtime( true ),
 			'memory' => memory_get_usage(),
-			'data'   => $data,
+			'data' => $data,
 		);
 
 		if ( ! isset( $name ) ) {
-			/* translators: %d: Timing lap number */
-			$i = sprintf( __( 'Lap %d', 'query-monitor' ), count( $this->laps ) + 1 );
+			$i = sprintf(
+				/* translators: %s: Timing lap number */
+				__( 'Lap %s', 'query-monitor' ),
+				number_format_i18n( count( $this->laps ) + 1 )
+			);
 		} else {
 			$i = $name;
 		}
@@ -62,11 +65,11 @@ class QM_Timer {
 
 		foreach ( $this->laps as $lap_id => $lap ) {
 
-			$lap['time_used']   = $lap['time'] - $prev['time'];
+			$lap['time_used'] = $lap['time'] - $prev['time'];
 			$lap['memory_used'] = $lap['memory'] - $prev['memory'];
 
 			$laps[ $lap_id ] = $lap;
-			$prev            = $lap;
+			$prev = $lap;
 
 		}
 
