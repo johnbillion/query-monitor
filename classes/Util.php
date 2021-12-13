@@ -76,7 +76,10 @@ class QM_Util {
 			 * Note that this filter is applied before QM adds its built-in list of components. This is
 			 * so custom registered components take precedence during component detection.
 			 *
-			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 * See also the corresponding filters:
+			 *
+			 *  - `qm/component_context/{$type}`
+			 *  - `qm/component_name/{$type}`
 			 *
 			 * @since 3.6.0
 			 *
@@ -220,7 +223,10 @@ class QM_Util {
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
-				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
 				 *
@@ -228,6 +234,25 @@ class QM_Util {
 				 * @param string $file The full file path for the file within the component.
 				 */
 				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+
+				/**
+				 * Filters the context for a custom or unknown component. The context is usually a
+				 * representation of its type more specific to the individual component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *
+				 * @since 3.8.0
+				 *
+				 * @param string $context The context for the component.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 */
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
 				break;
 		}
 
