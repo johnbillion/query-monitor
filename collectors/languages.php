@@ -22,6 +22,13 @@ class QM_Collector_Languages extends QM_Collector {
 
 	}
 
+	public function tear_down() {
+		remove_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999 );
+		remove_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999 );
+
+		parent::tear_down();
+	}
+
 	public function get_concerned_actions() {
 		return array(
 			'load_textdomain',
