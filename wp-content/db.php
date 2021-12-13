@@ -108,6 +108,12 @@ class QM_DB extends wpdb {
 		$result = parent::query( $query );
 		$i = $this->num_queries - 1;
 
+		if ( did_action( 'qm/cease' ) ) {
+			// It's not possible to prevent the parent class from logging queries because it reads
+			// the `SAVEQUERIES` constant and I don't want to override more methods than necessary.
+			$this->queries = array();
+		}
+
 		if ( ! isset( $this->queries[ $i ] ) ) {
 			return $result;
 		}
