@@ -12,6 +12,9 @@ abstract class QM_Output_Html extends QM_Output {
 	protected $current_id = null;
 	protected $current_name = null;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return $this->collector->id;
 	}

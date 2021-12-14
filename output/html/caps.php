@@ -23,6 +23,9 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 105 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Capability Checks', 'query-monitor' );
 	}
@@ -216,6 +219,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_caps( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'caps' );
 	if ( $collector ) {

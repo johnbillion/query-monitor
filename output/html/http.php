@@ -24,6 +24,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'HTTP API Calls', 'query-monitor' );
 	}
@@ -363,6 +366,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_http( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'http' );
 	if ( $collector ) {

@@ -18,6 +18,9 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Scripts', 'query-monitor' );
 	}
@@ -35,6 +38,11 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_assets_scripts( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'assets_scripts' );
 	if ( $collector ) {

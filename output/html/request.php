@@ -23,6 +23,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 50 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Request', 'query-monitor' );
 	}
@@ -221,6 +224,11 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_request( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'request' );
 	if ( $collector ) {

@@ -23,6 +23,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		add_filter( 'qm/output/title', array( $this, 'admin_title' ), 10 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Overview', 'query-monitor' );
 	}
@@ -346,6 +349,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_overview( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'overview' );
 	if ( $collector ) {

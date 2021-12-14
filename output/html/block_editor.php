@@ -23,6 +23,9 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 55 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Blocks', 'query-monitor' );
 	}
@@ -302,6 +305,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_block_editor( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'block_editor' );
 	if ( $collector ) {

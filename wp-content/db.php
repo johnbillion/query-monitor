@@ -61,6 +61,9 @@ class QM_DB extends wpdb {
 	 */
 	public $time_start;
 
+	/**
+	 * @var array<string, string|null>
+	 */
 	public $qm_php_vars = array(
 		'max_execution_time' => null,
 		'memory_limit' => null,

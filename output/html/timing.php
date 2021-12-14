@@ -23,6 +23,9 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
 	}
@@ -200,6 +203,11 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_timing( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'timing' );
 	if ( $collector ) {

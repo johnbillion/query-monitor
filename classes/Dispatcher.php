@@ -11,7 +11,7 @@ abstract class QM_Dispatcher {
 	/**
 	 * Outputter instances.
 	 *
-	 * @var QM_Output[] Array of outputters.
+	 * @var array<string, QM_Output> Array of outputters.
 	 */
 	protected $outputters = array();
 
@@ -94,8 +94,8 @@ abstract class QM_Dispatcher {
 		 *
 		 * @since 2.8.0
 		 *
-		 * @param QM_Output[]   $outputters Array of outputters.
-		 * @param QM_Collectors $collectors List of collectors.
+		 * @param array<string, QM_Output> $outputters Array of outputters.
+		 * @param QM_Collectors            $collectors List of collectors.
 		 */
 		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 

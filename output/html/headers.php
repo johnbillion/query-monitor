@@ -110,6 +110,11 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_headers( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'raw_request' );
 	if ( $collector ) {

@@ -25,6 +25,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
 	}
@@ -297,6 +300,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_php_errors( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {
