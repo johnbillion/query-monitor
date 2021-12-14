@@ -26,18 +26,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	public function __construct( QM_Plugin $qm ) {
 
-		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
-		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
-		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
-		add_action( 'wp_ajax_qm_editor_set',      array( $this, 'ajax_editor_set' ) );
+		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
+		add_action( 'wp_ajax_qm_auth_on', array( $this, 'ajax_on' ) );
+		add_action( 'wp_ajax_qm_auth_off', array( $this, 'ajax_off' ) );
+		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
-		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
+		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
 
-		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
-		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
-		add_action( 'login_footer',               array( $this, 'action_footer' ) );
-		add_action( 'gp_footer',                  array( $this, 'action_footer' ) );
+		add_action( 'wp_footer', array( $this, 'action_footer' ) );
+		add_action( 'admin_footer', array( $this, 'action_footer' ) );
+		add_action( 'login_footer', array( $this, 'action_footer' ) );
+		add_action( 'gp_footer', array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
@@ -139,12 +139,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
 
-		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -9999 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -9999 );
 
-		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
+		add_action( 'gp_head', array( $this, 'manually_print_assets' ), 11 );
 
 		parent::init();
 	}

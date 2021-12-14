@@ -20,7 +20,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus',      array( $this, 'admin_menu' ), 70 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 70 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 

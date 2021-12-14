@@ -20,10 +20,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 
-		add_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999, 2 );
+		add_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999, 2 );
 		add_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999, 2 );
 		add_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
-		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
+		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
 	public function get_concerned_filters() {

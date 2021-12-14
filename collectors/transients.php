@@ -16,12 +16,12 @@ class QM_Collector_Transients extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10, 3 );
-		add_action( 'setted_transient',      array( $this, 'action_setted_blog_transient' ), 10, 3 );
+		add_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10, 3 );
 	}
 
 	public function tear_down() {
 		remove_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10 );
-		remove_action( 'setted_transient',      array( $this, 'action_setted_blog_transient' ), 10 );
+		remove_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10 );
 		parent::tear_down();
 	}
 

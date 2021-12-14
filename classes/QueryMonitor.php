@@ -11,16 +11,16 @@ class QueryMonitor extends QM_Plugin {
 
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
-		add_action( 'init',           array( $this, 'action_init' ) );
-		add_action( 'members_register_caps',       array( $this, 'action_register_members_caps' ) );
+		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'members_register_caps', array( $this, 'action_register_members_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
 
 		# Filters
-		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 4 );
-		add_filter( 'ure_built_in_wp_caps',         array( $this, 'filter_ure_caps' ) );
+		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 4 );
+		add_filter( 'ure_built_in_wp_caps', array( $this, 'filter_ure_caps' ) );
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
-		add_filter( 'plugin_action_links_query-monitor/query-monitor.php',               array( $this, 'filter_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
 
 		# Parent setup:

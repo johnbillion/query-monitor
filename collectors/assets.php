@@ -14,11 +14,11 @@ abstract class QM_Collector_Assets extends QM_Collector {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'wp_print_footer_scripts',    array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'admin_head',                 array( $this, 'action_head' ), 9999 );
-		add_action( 'wp_head',                    array( $this, 'action_head' ), 9999 );
-		add_action( 'login_head',                 array( $this, 'action_head' ), 9999 );
-		add_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		add_action( 'admin_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'wp_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'login_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'embed_head', array( $this, 'action_head' ), 9999 );
 	}
 
 	abstract public function get_dependency_type();

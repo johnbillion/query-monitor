@@ -16,7 +16,7 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		# Filters
-		add_filter( 'pre_update_option_active_plugins',               array( $this, 'filter_active_plugins' ) );
+		add_filter( 'pre_update_option_active_plugins', array( $this, 'filter_active_plugins' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
 
 		# Activation and deactivation
