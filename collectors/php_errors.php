@@ -310,7 +310,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
 			esc_attr( $e['message'] ),
 			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
-			esc_attr( $e['line'] )
+			intval( $e['line'] )
 		);
 
 		echo '<div class="qm-fatal-wrap">';
