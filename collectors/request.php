@@ -127,6 +127,9 @@ class QM_Collector_Request extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $wp, $wp_query, $current_blog, $current_site, $wp_rewrite;

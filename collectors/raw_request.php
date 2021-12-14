@@ -13,8 +13,8 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	 *
 	 * From WP_REST_Server::get_headers()
 	 *
-	 * @param array $server Associative array similar to `$_SERVER`.
-	 * @return array Headers extracted from the input.
+	 * @param array<string, string> $server Associative array similar to `$_SERVER`.
+	 * @return array<string, string> Headers extracted from the input.
 	 */
 	protected function get_headers( array $server ) {
 		$headers = array();
@@ -39,6 +39,8 @@ class QM_Collector_Raw_Request extends QM_Collector {
 
 	/**
 	 * Process request and response data.
+	 *
+	 * @return void
 	 */
 	public function process() {
 		$request = array(
@@ -74,6 +76,9 @@ class QM_Collector_Raw_Request extends QM_Collector {
 		$this->data['response'] = $response;
 	}
 
+	/**
+	 * @return int|bool|null
+	 */
 	public static function http_response_code() {
 		if ( function_exists( 'http_response_code' ) ) {
 			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.http_response_codeFound

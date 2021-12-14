@@ -22,9 +22,19 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 
 class QM_Collector_DB_Queries extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'db_queries';
+
+	/**
+	 * @var array<string, wpdb>
+	 */
 	public $db_objects = array();
 
+	/**
+	 * @return mixed[]|false
+	 */
 	public function get_errors() {
 		if ( ! empty( $this->data['errors'] ) ) {
 			return $this->data['errors'];
@@ -32,6 +42,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		return false;
 	}
 
+	/**
+	 * @return mixed[]|false
+	 */
 	public function get_expensive() {
 		if ( ! empty( $this->data['expensive'] ) ) {
 			return $this->data['expensive'];
@@ -39,10 +52,17 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		return false;
 	}
 
+	/**
+	 * @param array<string, mixed> $row
+	 * @return bool
+	 */
 	public static function is_expensive( array $row ) {
 		return $row['ltime'] > QM_DB_EXPENSIVE;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$this->data['total_qs'] = 0;
 		$this->data['total_time'] = 0;
@@ -71,6 +91,12 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
+	/**
+	 * @param string $caller
+	 * @param float $ltime
+	 * @param string $type
+	 * @return void
+	 */
 	protected function log_caller( $caller, $ltime, $type ) {
 
 		if ( ! isset( $this->data['times'][ $caller ] ) ) {
@@ -91,6 +117,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 	}
 
+	/**
+	 * @param string $id
+	 * @param wpdb $db
+	 * @return void
+	 */
 	public function process_db_object( $id, wpdb $db ) {
 		global $EZSQL_ERROR, $wp_the_query;
 

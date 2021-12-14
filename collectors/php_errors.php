@@ -13,11 +13,34 @@ define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | 
 
 class QM_Collector_PHP_Errors extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'php_errors';
+
+	/**
+	 * @var array<string, array<string, string>>
+	 */
 	public $types = array();
+
+	/**
+	 * @var int|null
+	 */
 	private $error_reporting = null;
+
+	/**
+	 * @var string|false|null
+	 */
 	private $display_errors = null;
+
+	/**
+	 * @var callable|null
+	 */
 	private $exception_handler = null;
+
+	/**
+	 * @var string|null
+	 */
 	private static $unexpected_error;
 
 	/**
@@ -69,6 +92,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * In PHP < 7 it will receive an Exception object.
 	 *
 	 * @param Throwable|Exception $e The error or exception.
+	 * @return void
 	 */
 	public function exception_handler( $e ) {
 		if ( is_a( $e, 'Exception' ) ) {
@@ -99,6 +123,15 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		exit( 1 );
 	}
 
+	/**
+	 * @param int     $errno    The error number.
+	 * @param string  $message  The error message.
+	 * @param string  $file     The file location.
+	 * @param int     $line     The line number.
+	 * @param mixed[] $context  The context being passed.
+	 * @param bool    $do_trace Whether a stack trace should be included in the logged error data.
+	 * @return bool
+	 */
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
 		$type = null;
 
@@ -107,11 +140,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param int    $errno   The error number.
-		 * @param string $message The error message.
-		 * @param string $file    The file location.
-		 * @param string $line    The line number.
-		 * @param string $context The context being passed.
+		 * @param int          $errno   The error number.
+		 * @param string       $message The error message.
+		 * @param string|null  $file    The file location.
+		 * @param int|null     $line    The line number.
+		 * @param mixed[]|null $context The context being passed.
 		 */
 		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
 
@@ -205,6 +238,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	/**
 	 * Displays fatal error output for sites running PHP < 7.
+	 *
+	 * @return void
 	 */
 	public function shutdown_handler() {
 
@@ -223,6 +258,18 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$this->output_fatal( $error, $e );
 	}
 
+	/**
+	 * @param string $error
+	 * @param mixed[] $e
+	 * @phpstan-param array{
+	 *   type: int,
+	 *   message: string,
+	 *   file: string,
+	 *   line: int,
+	 *   trace?: mixed|null,
+	 * } $e
+	 * @return void
+	 */
 	protected function output_fatal( $error, array $e ) {
 		$dispatcher = QM_Dispatchers::get( 'html' );
 
@@ -304,6 +351,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		echo '</div>';
 	}
 
+	/**
+	 * @return void
+	 */
 	public function post_process() {
 		ini_set( 'display_errors', $this->display_errors );
 		restore_error_handler();
@@ -316,6 +366,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 *
 	 * Any unreportable errors are placed in the data->filtered_errors
 	 * property.
+	 *
+	 * @return void
 	 */
 	public function process() {
 		$this->types = array(
@@ -419,6 +471,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 *
 	 * @param int[]  $components     The error levels keyed by component name.
 	 * @param string $component_type The component type, for example 'plugin' or 'theme'.
+	 * @return void
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {
 		$all_errors = $this->data['errors'];
@@ -499,7 +552,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * For testing purposes only. Sets the errors property manually.
 	 * Needed to test the filter since the data property is protected.
 	 *
-	 * @param array $errors The list of errors
+	 * @param array<string, mixed> $errors The list of errors
+	 * @return void
 	 */
 	public function set_php_errors( $errors ) {
 		$this->data['errors'] = $errors;

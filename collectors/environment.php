@@ -11,7 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_Environment extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'environment';
+
+	/**
+	 * @var array<int, string>
+	 */
 	protected $php_vars = array(
 		'max_execution_time',
 		'memory_limit',
@@ -41,6 +48,10 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
+	/**
+	 * @param int $error_reporting
+	 * @return array<string, bool>
+	 */
 	protected static function get_error_levels( $error_reporting ) {
 		$levels = array(
 			'E_ERROR' => false,
@@ -73,6 +84,9 @@ class QM_Collector_Environment extends QM_Collector {
 		return $levels;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $wp_version;
@@ -248,6 +262,10 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
+	/**
+	 * @param string $extension
+	 * @return string
+	 */
 	public function get_extension_version( $extension ) {
 		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
 		// crap to their version number, so we need to pluck out the first numeric value in the string.
@@ -269,6 +287,10 @@ class QM_Collector_Environment extends QM_Collector {
 		return $version;
 	}
 
+	/**
+	 * @param wpdb $db
+	 * @return string
+	 */
 	protected static function get_server_version( wpdb $db ) {
 		$version = null;
 
@@ -287,6 +309,9 @@ class QM_Collector_Environment extends QM_Collector {
 		return $version;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected static function get_current_user() {
 
 		$php_u = null;

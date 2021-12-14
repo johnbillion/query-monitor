@@ -13,6 +13,9 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 	public $id = 'conditionals';
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		/**

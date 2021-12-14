@@ -17,6 +17,9 @@ class QM_Collector_Overview extends QM_Collector {
 		add_action( 'shutdown', array( $this, 'process_timing' ), 0 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_action( 'shutdown', array( $this, 'process_timing' ), 0 );
 		parent::tear_down();
@@ -25,6 +28,8 @@ class QM_Collector_Overview extends QM_Collector {
 	/**
 	 * Processes the timing and memory related stats as early as possible, so the
 	 * data isn't skewed by collectors that are processed before this one.
+	 *
+	 * @return void
 	 */
 	public function process_timing() {
 		$this->data['time_taken'] = self::timer_stop_float();
@@ -38,6 +43,9 @@ class QM_Collector_Overview extends QM_Collector {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( ! isset( $this->data['time_taken'] ) ) {
 			$this->process_timing();

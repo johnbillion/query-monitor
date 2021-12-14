@@ -11,9 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_Hooks extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'hooks';
+
+	/**
+	 * @var bool
+	 */
 	protected static $hide_core;
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $wp_actions, $wp_filter;

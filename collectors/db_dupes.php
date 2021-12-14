@@ -13,6 +13,9 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 
 	public $id = 'db_dupes';
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$dbq = QM_Collectors::get( 'db_queries' );
 

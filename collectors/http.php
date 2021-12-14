@@ -11,8 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_HTTP extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'http';
+
+	/**
+	 * @var string|null
+	 */
 	private $transport = null;
+
+	/**
+	 * @var mixed|null
+	 */
 	private $info = null;
 
 	public function __construct() {
@@ -102,9 +113,9 @@ class QM_Collector_HTTP extends QM_Collector {
 	 *
 	 * Used to log the request, and to add the logging key to the arguments array.
 	 *
-	 * @param  array  $args HTTP request arguments.
-	 * @param  string $url  The request URL.
-	 * @return array        HTTP request arguments.
+	 * @param  array<string, mixed> $args HTTP request arguments.
+	 * @param  string               $url  The request URL.
+	 * @return array<string, mixed> HTTP request arguments.
 	 */
 	public function filter_http_request_args( array $args, $url ) {
 		$trace = new QM_Backtrace( array(
@@ -158,10 +169,10 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
-	 * @param bool|array|WP_Error $response The preemptive HTTP response. Default false.
-	 * @param array               $args     HTTP request arguments.
-	 * @param string              $url      The request URL.
-	 * @return bool|array|WP_Error          The preemptive HTTP response.
+	 * @param bool|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
+	 * @param array<string, mixed>  $args     HTTP request arguments.
+	 * @param string                $url      The request URL.
+	 * @return bool|mixed[]|WP_Error The preemptive HTTP response.
 	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
 
@@ -179,11 +190,12 @@ class QM_Collector_HTTP extends QM_Collector {
 	/**
 	 * Debugging action for the HTTP API.
 	 *
-	 * @param mixed  $response A parameter which varies depending on $action.
-	 * @param string $action   The debug action. Currently one of 'response' or 'transports_list'.
-	 * @param string $class    The HTTP transport class name.
-	 * @param array  $args     HTTP request arguments.
-	 * @param string $url      The request URL.
+	 * @param mixed                $response A parameter which varies depending on $action.
+	 * @param string               $action   The debug action. Currently one of 'response' or 'transports_list'.
+	 * @param string               $class    The HTTP transport class name.
+	 * @param array<string, mixed> $args     HTTP request arguments.
+	 * @param string               $url      The request URL.
+	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
 
@@ -208,18 +220,34 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_curl_before_request() {
 		$this->transport = 'curl';
 	}
 
+	/**
+	 * @param mixed $headers
+	 * @param mixed[] $info
+	 * @return void
+	 */
 	public function action_curl_after_request( $headers, array $info = null ) {
 		$this->info = $info;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_fsockopen_before_request() {
 		$this->transport = 'fsockopen';
 	}
 
+	/**
+	 * @param mixed $headers
+	 * @param mixed[] $info
+	 * @return void
+	 */
 	public function action_fsockopen_after_request( $headers, array $info = null ) {
 		$this->info = $info;
 	}
@@ -227,9 +255,10 @@ class QM_Collector_HTTP extends QM_Collector {
 	/**
 	 * Log an HTTP response.
 	 *
-	 * @param array|WP_Error $response The HTTP response.
-	 * @param array          $args     HTTP request arguments.
-	 * @param string         $url      The request URL.
+	 * @param mixed[]|WP_Error     $response The HTTP response.
+	 * @param array<string, mixed> $args     HTTP request arguments.
+	 * @param string               $url      The request URL.
+	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url ) {
 		$this->data['http'][ $args['_qm_key'] ]['end'] = microtime( true );
@@ -250,6 +279,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		$this->transport = null;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$this->data['ltime'] = 0;
 
