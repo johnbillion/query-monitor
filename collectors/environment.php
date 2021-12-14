@@ -166,7 +166,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$this->data['php']['old'] = version_compare( $this->data['php']['version'], 7.3, '<' );
+		$this->data['php']['old'] = version_compare( $this->data['php']['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
 			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
