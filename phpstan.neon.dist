@@ -12,6 +12,8 @@ parameters:
         - wp-content
     bootstrapFiles:
         - tests/stubs.php
+    dynamicConstantNames:
+        - SAVEQUERIES
     ignoreErrors:
         # Uses func_get_args()
         - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
