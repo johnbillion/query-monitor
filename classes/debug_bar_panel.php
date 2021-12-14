@@ -28,14 +28,13 @@ abstract class Debug_Bar_Panel {
 			return;
 		}
 
-		# @TODO convert to QM classes
 		add_filter( 'debug_bar_classes', array( $this, 'debug_bar_classes' ) );
 	}
 
 	/**
 	 * Initializes the panel.
 	 *
-	 * @return void
+	 * @return false|void
 	 */
 	public function init() {}
 
@@ -78,8 +77,8 @@ abstract class Debug_Bar_Panel {
 	}
 
 	/**
-	 * @param mixed[] $classes
-	 * @return mixed[]
+	 * @param array<int, string> $classes
+	 * @return array<int, string>
 	 */
 	public function debug_bar_classes( $classes ) {
 		return $classes;

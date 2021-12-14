@@ -54,7 +54,7 @@ final class QM_Collector_Debug_Bar extends QM_Collector {
 	 * @return void
 	 */
 	public function render() {
-		return $this->get_panel()->render();
+		$this->get_panel()->render();
 	}
 
 }
