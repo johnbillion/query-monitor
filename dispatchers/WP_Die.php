@@ -123,7 +123,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<p>';
 		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
 
-		if ( $component ) {
+		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
