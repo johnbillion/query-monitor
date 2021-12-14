@@ -33,7 +33,7 @@ class QM_Dispatcher_REST_Envelope extends QM_Dispatcher {
 
 		/* @var QM_Output_Raw[] */
 		foreach ( $this->get_outputters( 'raw' ) as $id => $output ) {
-			$data[ $id ] = $output->output();
+			$data[ $id ] = $output->get_output();
 		}
 
 		$this->after_output();

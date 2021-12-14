@@ -27,7 +27,7 @@ abstract class QM_Output {
 	}
 
 	/**
-	 * @return string
+	 * @return mixed
 	 */
 	abstract public function get_output();
 
