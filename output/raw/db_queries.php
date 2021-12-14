@@ -70,6 +70,17 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		return $output;
 	}
 
+	/**
+	 * @param string $name
+	 * @param stdClass $db
+	 * @param mixed[] $data
+	 * @return array
+	 * @phpstan-return array{
+	 *   total: int,
+	 *   time: float,
+	 *   queries: mixed[],
+	 * }|array{}
+	 */
 	protected function output_queries( $name, stdClass $db, array $data ) {
 		$this->query_row = 0;
 
@@ -90,6 +101,10 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		);
 	}
 
+	/**
+	 * @param array<string, mixed> $row
+	 * @return array<string, mixed>
+	 */
 	protected function output_query_row( array $row ) {
 		$output = array();
 

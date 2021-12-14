@@ -26,6 +26,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 	abstract public function get_type_labels();
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -220,6 +223,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();

@@ -30,6 +30,9 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();

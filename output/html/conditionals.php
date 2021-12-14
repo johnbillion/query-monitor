@@ -31,6 +31,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -63,6 +66,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();

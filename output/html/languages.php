@@ -30,6 +30,9 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		return __( 'Languages', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -109,6 +112,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();

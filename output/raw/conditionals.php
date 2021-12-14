@@ -21,6 +21,9 @@ class QM_Output_Raw_Conditionals extends QM_Output_Raw {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function get_output() {
 		$data = $this->collector->get_data();
 

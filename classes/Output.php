@@ -28,6 +28,9 @@ abstract class QM_Output {
 
 	abstract public function get_output();
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		// nothing
 	}

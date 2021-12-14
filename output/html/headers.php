@@ -34,6 +34,9 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		return __( 'Request Data', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$this->output_request();
 		$this->output_response();

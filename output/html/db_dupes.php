@@ -31,6 +31,9 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		return __( 'Duplicate Queries', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -123,6 +126,10 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$dbq = QM_Collectors::get( 'db_dupes' );
 

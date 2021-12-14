@@ -32,6 +32,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		return __( 'PHP Errors', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -186,6 +189,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();

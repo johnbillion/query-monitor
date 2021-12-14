@@ -30,6 +30,9 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		return __( 'Capability Checks', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$collector = $this->collector;
 
@@ -209,6 +212,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => $this->name(),

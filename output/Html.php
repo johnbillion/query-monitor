@@ -19,6 +19,10 @@ abstract class QM_Output_Html extends QM_Output {
 		return $this->collector->id;
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(

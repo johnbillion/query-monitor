@@ -36,6 +36,9 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 

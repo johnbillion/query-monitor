@@ -30,6 +30,9 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		return __( 'Queries by Component', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();

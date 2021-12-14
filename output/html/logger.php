@@ -31,6 +31,9 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		return __( 'Logger', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -184,6 +187,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		return $class;
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$data = $this->collector->get_data();
 		$key = 'log';
