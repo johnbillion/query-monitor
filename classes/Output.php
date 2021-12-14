@@ -18,7 +18,7 @@ abstract class QM_Output {
 	/**
 	 * Timer instance.
 	 *
-	 * @var QM_Timer Timer.
+	 * @var QM_Timer|null Timer.
 	 */
 	protected $timer;
 
@@ -26,6 +26,9 @@ abstract class QM_Output {
 		$this->collector = $collector;
 	}
 
+	/**
+	 * @return string
+	 */
 	abstract public function get_output();
 
 	/**
@@ -42,10 +45,17 @@ abstract class QM_Output {
 		return $this->collector;
 	}
 
+	/**
+	 * @return QM_Timer|null
+	 */
 	final public function get_timer() {
 		return $this->timer;
 	}
 
+	/**
+	 * @param QM_Timer $timer
+	 * @return void
+	 */
 	final public function set_timer( QM_Timer $timer ) {
 		$this->timer = $timer;
 	}

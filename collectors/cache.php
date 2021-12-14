@@ -13,6 +13,9 @@ class QM_Collector_Cache extends QM_Collector {
 
 	public $id = 'cache';
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		global $wp_object_cache;
 

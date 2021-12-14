@@ -11,13 +11,27 @@ if ( ! class_exists( 'QM_Collectors' ) ) {
  */
 class QM_Collectors implements IteratorAggregate {
 
+	/**
+	 * @var array<string, QM_Collector>
+	 */
 	private $items = array();
+
+	/**
+	 * @var boolean
+	 */
 	private $processed = false;
 
+	/**
+	 * @return ArrayIterator<string, QM_Collector>
+	 */
 	public function getIterator() {
 		return new ArrayIterator( $this->items );
 	}
 
+	/**
+	 * @param QM_Collector $collector
+	 * @return void
+	 */
 	public static function add( QM_Collector $collector ) {
 		$collectors = self::init();
 
@@ -38,6 +52,9 @@ class QM_Collectors implements IteratorAggregate {
 		return null;
 	}
 
+	/**
+	 * @return self
+	 */
 	public static function init() {
 		static $instance;
 
@@ -49,6 +66,9 @@ class QM_Collectors implements IteratorAggregate {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( $this->processed ) {
 			return;

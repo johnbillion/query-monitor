@@ -24,6 +24,9 @@ class QM_Collector_Caps extends QM_Collector {
 		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function enabled() {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
@@ -70,6 +73,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
 		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
@@ -83,7 +89,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 *
 	 * @param bool[]   $user_caps Concerned user's capabilities.
 	 * @param string[] $caps      Required primitive capabilities for the requested capability.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type string    $0 Requested capability.
@@ -135,7 +141,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
 	 * @param string   $cap           Capability or meta capability being checked.
 	 * @param int      $user_id       Concerned user ID.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type mixed ...$0 Optional second and further parameters.
@@ -181,6 +187,9 @@ class QM_Collector_Caps extends QM_Collector {
 		return $required_caps;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( empty( $this->data['caps'] ) ) {
 			return;
@@ -220,6 +229,10 @@ class QM_Collector_Caps extends QM_Collector {
 		$this->data['components'] = $components;
 	}
 
+	/**
+	 * @param array<string, mixed> $cap
+	 * @return bool
+	 */
 	public function filter_remove_noise( array $cap ) {
 		$trace = $cap['filtered_trace'];
 

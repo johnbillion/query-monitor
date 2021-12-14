@@ -41,8 +41,14 @@ abstract class QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	abstract public function is_active();
 
+	/**
+	 * @return bool
+	 */
 	final public function should_dispatch() {
 
 		$e = error_get_last();
@@ -102,6 +108,9 @@ abstract class QM_Dispatcher {
 		return $this->outputters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 		if ( ! self::user_can_view() ) {
 			return;
@@ -114,14 +123,21 @@ abstract class QM_Dispatcher {
 		add_action( 'send_headers', 'nocache_headers' );
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
-		// nothing
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_output() {
-		// nothing
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function user_can_view() {
 
 		if ( ! did_action( 'plugins_loaded' ) ) {
@@ -136,6 +152,9 @@ abstract class QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) ) { // phpcs:ignore
 			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) ); // phpcs:ignore
@@ -143,6 +162,9 @@ abstract class QM_Dispatcher {
 		return false;
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function editor_cookie() {
 		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // phpcs:ignore
 			return $_COOKIE[QM_EDITOR_COOKIE]; // phpcs:ignore
@@ -150,6 +172,10 @@ abstract class QM_Dispatcher {
 		return '';
 	}
 
+	/**
+	 * @param string $value
+	 * @return bool
+	 */
 	public static function verify_cookie( $value ) {
 		$old_user_id = wp_validate_auth_cookie( $value, 'logged_in' );
 		if ( $old_user_id ) {

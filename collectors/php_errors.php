@@ -262,10 +262,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @param string $error
 	 * @param mixed[] $e
 	 * @phpstan-param array{
-	 *   type: int,
 	 *   message: string,
 	 *   file: string,
 	 *   line: int,
+	 *   type?: int,
 	 *   trace?: mixed|null,
 	 * } $e
 	 * @return void

@@ -7,6 +7,13 @@
 
 class QM_Hook {
 
+	/**
+	 * @param string $name
+	 * @param array<string, mixed> $wp_filter
+	 * @param bool $hide_qm
+	 * @param bool $hide_core
+	 * @return mixed[]
+	 */
 	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
 		$actions = array();

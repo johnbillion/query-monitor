@@ -46,6 +46,9 @@ class QM_Collector_Admin extends QM_Collector {
 		return $filters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $pagenow, $wp_list_table;
