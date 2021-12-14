@@ -48,7 +48,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors = ini_get( 'display_errors' );
-		ini_set( 'display_errors', 0 );
+		ini_set( 'display_errors', '0' );
 
 		if ( $prior_error ) {
 			$this->error_handler(
