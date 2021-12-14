@@ -5,6 +5,9 @@
  * @package query-monitor
  */
 
+/**
+ * @implements \IteratorAggregate<string, QM_Dispatcher>
+ */
 class QM_Dispatchers implements IteratorAggregate {
 
 	private $items = array();

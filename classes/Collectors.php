@@ -6,6 +6,9 @@
  */
 
 if ( ! class_exists( 'QM_Collectors' ) ) {
+/**
+ * @implements \IteratorAggregate<string, QM_Collector>
+ */
 class QM_Collectors implements IteratorAggregate {
 
 	private $items = array();
