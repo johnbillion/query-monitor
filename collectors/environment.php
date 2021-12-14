@@ -328,6 +328,11 @@ class QM_Collector_Environment extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_environment( array $collectors, QueryMonitor $qm ) {
 	$collectors['environment'] = new QM_Collector_Environment();
 	return $collectors;

@@ -22,6 +22,9 @@ class QM_Collector_Languages extends QM_Collector {
 
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'load_textdomain',
@@ -29,6 +32,9 @@ class QM_Collector_Languages extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'determine_locale',
@@ -50,12 +56,18 @@ class QM_Collector_Languages extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		return array(
 			'WPLANG',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'WPLANG',

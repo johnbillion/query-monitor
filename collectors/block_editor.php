@@ -26,6 +26,9 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
@@ -180,6 +183,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_block_editor( array $collectors, QueryMonitor $qm ) {
 	$collectors['block_editor'] = new QM_Collector_Block_Editor();
 	return $collectors;

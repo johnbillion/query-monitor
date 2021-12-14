@@ -103,6 +103,11 @@ class QM_Collector_Conditionals extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_conditionals( array $collectors, QueryMonitor $qm ) {
 	$collectors['conditionals'] = new QM_Collector_Conditionals();
 	return $collectors;

@@ -30,6 +30,9 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		$actions = array(
 			'http_api_curl',
@@ -63,6 +66,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $actions;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
@@ -76,6 +82,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'WP_PROXY_HOST',

@@ -11,9 +11,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_Timing extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'timing';
+
+	/**
+	 * @var array<string, QM_Timer>
+	 */
 	private $track_timer = array();
+
+	/**
+	 * @var array<string, QM_Timer>
+	 */
 	private $start = array();
+
+	/**
+	 * @var array<string, QM_Timer>
+	 */
 	private $stop = array();
 
 	public function __construct() {
@@ -23,11 +38,19 @@ class QM_Collector_Timing extends QM_Collector {
 		add_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10, 2 );
 	}
 
+	/**
+	 * @param string $function
+	 * @return void
+	 */
 	public function action_function_time_start( $function ) {
 		$this->track_timer[ $function ] = new QM_Timer();
 		$this->start[ $function ] = $this->track_timer[ $function ]->start();
 	}
 
+	/**
+	 * @param string $function
+	 * @return void
+	 */
 	public function action_function_time_stop( $function ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
 			$trace = new QM_Backtrace();
@@ -43,6 +66,11 @@ class QM_Collector_Timing extends QM_Collector {
 		$this->calculate_time( $function );
 	}
 
+	/**
+	 * @param string $function
+	 * @param string $name
+	 * @return void
+	 */
 	public function action_function_time_lap( $function, $name = null ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
 			$trace = new QM_Backtrace();
@@ -57,6 +85,10 @@ class QM_Collector_Timing extends QM_Collector {
 		$this->track_timer[ $function ]->lap( array(), $name );
 	}
 
+	/**
+	 * @param string $function
+	 * @return void
+	 */
 	public function calculate_time( $function ) {
 		$trace = $this->track_timer[ $function ]->get_trace();
 		$function_time = $this->track_timer[ $function ]->get_time();
@@ -77,6 +109,9 @@ class QM_Collector_Timing extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		foreach ( $this->start as $function => $value ) {
 			if ( ! isset( $this->stop[ $function ] ) ) {
@@ -95,6 +130,12 @@ class QM_Collector_Timing extends QM_Collector {
 		}
 	}
 
+	/**
+	 * @param mixed[] $a
+	 * @param mixed[] $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	public function sort_by_start_time( array $a, array $b ) {
 		if ( $a['start_time'] === $b['start_time'] ) {
 			return 0;

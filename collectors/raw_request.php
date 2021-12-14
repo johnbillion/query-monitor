@@ -84,6 +84,11 @@ class QM_Collector_Raw_Request extends QM_Collector {
 	}
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_raw_request( array $collectors, QueryMonitor $qm ) {
 	$collectors['raw_request'] = new QM_Collector_Raw_Request();
 	return $collectors;

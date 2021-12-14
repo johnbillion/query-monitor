@@ -28,12 +28,18 @@ class QM_Collector_Caps extends QM_Collector {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'wp_roles_init',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'map_meta_cap',
@@ -42,6 +48,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
@@ -50,6 +59,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
@@ -234,6 +246,11 @@ class QM_Collector_Caps extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_caps( array $collectors, QueryMonitor $qm ) {
 	$collectors['caps'] = new QM_Collector_Caps();
 	return $collectors;

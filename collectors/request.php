@@ -13,6 +13,9 @@ class QM_Collector_Request extends QM_Collector {
 
 	public $id = 'request';
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			# Rewrites
@@ -29,6 +32,9 @@ class QM_Collector_Request extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		global $wp_rewrite;
 
@@ -99,6 +105,9 @@ class QM_Collector_Request extends QM_Collector {
 		return $filters;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		return array(
 			'home',
@@ -108,6 +117,9 @@ class QM_Collector_Request extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'WP_HOME',
@@ -291,6 +303,11 @@ class QM_Collector_Request extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_request( array $collectors, QueryMonitor $qm ) {
 	$collectors['request'] = new QM_Collector_Request();
 	return $collectors;
