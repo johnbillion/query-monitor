@@ -436,44 +436,42 @@ class QM_Util {
 
 				case ( $value instanceof WP_Post ):
 				case ( $value instanceof WP_User ):
-					return sprintf( '%s (ID: %s)', $class, $value->ID );
+					$class = sprintf( '%s (ID: %s)', $class, $value->ID );
 					break;
 
 				case ( $value instanceof WP_Term ):
-					return sprintf( '%s (term_id: %s)', $class, $value->term_id );
+					$class = sprintf( '%s (term_id: %s)', $class, $value->term_id );
 					break;
 
 				case ( $value instanceof WP_Comment ):
-					return sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
+					$class = sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
 					break;
 
 				case ( $value instanceof WP_Error ):
-					return sprintf( '%s (%s)', $class, $value->get_error_code() );
+					$class = sprintf( '%s (%s)', $class, $value->get_error_code() );
 					break;
 
 				case ( $value instanceof WP_Role ):
 				case ( $value instanceof WP_Post_Type ):
 				case ( $value instanceof WP_Taxonomy ):
-					return sprintf( '%s (%s)', $class, $value->name );
+					$class = sprintf( '%s (%s)', $class, $value->name );
 					break;
 
 				case ( $value instanceof WP_Network ):
-					return sprintf( '%s (id: %s)', $class, $value->id );
+					$class = sprintf( '%s (id: %s)', $class, $value->id );
 					break;
 
 				case ( $value instanceof WP_Site ):
-					return sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
+					$class = sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
 					break;
 
 				case ( $value instanceof WP_Theme ):
-					return sprintf( '%s (%s)', $class, $value->get_stylesheet() );
-					break;
-
-				default:
-					return $class;
+					$class = sprintf( '%s (%s)', $class, $value->get_stylesheet() );
 					break;
 
 			}
+
+			return $class;
 		} else {
 			return gettype( $value );
 		}

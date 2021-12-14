@@ -14,7 +14,7 @@ define( 'DB_NAME', '' );
 define( 'DB_PASSWORD', '' );
 define( 'DB_USER', '' );
 
-define( 'SAVEQUERIES', '' );
+define( 'SAVEQUERIES', false );
 define( 'WP_CONTENT_DIR', '' );
 define( 'WP_MEMORY_LIMIT', '' );
 define( 'WP_PLUGIN_DIR', '' );
