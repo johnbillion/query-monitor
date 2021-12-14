@@ -80,7 +80,7 @@ class QM_Collector_Theme extends QM_Collector {
 	}
 
 	/**
-	 * @return array<string, string>
+	 * @return string[]
 	 */
 	public static function get_query_template_names() {
 		$names = array();
@@ -112,7 +112,7 @@ class QM_Collector_Theme extends QM_Collector {
 	}
 
 	/**
-	 * @return array<string, string>
+	 * @return string[]
 	 */
 	public static function get_query_filter_names() {
 		$names = array();
