@@ -377,7 +377,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param int[] $levels The error levels used for each component.
+			 * @param array<string,array<string,int>> $levels The error levels used for each component.
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
