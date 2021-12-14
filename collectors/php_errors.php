@@ -100,6 +100,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
+		$type = null;
 
 		/**
 		 * Fires before logging the PHP error in Query Monitor.
@@ -135,10 +136,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				$type = 'deprecated';
 				break;
 
-			default:
-				return false;
-				break;
+		}
 
+		if ( null === $type ) {
+			return false;
 		}
 
 		if ( ! class_exists( 'QM_Backtrace' ) ) {
@@ -480,18 +481,18 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * If the `$flag` is null, all errors are assumed to be
 	 * reportable by default.
 	 *
-	 * @param int $error_no The errno from PHP
-	 * @param int $flags The config flags specified by users
+	 * @param int      $error_no The errno from PHP
+	 * @param int|null $flags The config flags specified by users
 	 * @return bool Whether the error is reportable.
 	 */
 	public function is_reportable_error( $error_no, $flags ) {
-		if ( ! is_null( $flags ) ) {
-			$result = $error_no & $flags;
-		} else {
-			$result = 1;
+		$result = true;
+
+		if ( null !== $flags ) {
+			$result = (bool) ( $error_no & $flags );
 		}
 
-		return (bool) $result;
+		return $result;
 	}
 
 	/**

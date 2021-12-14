@@ -140,7 +140,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				}
 
 				echo '</ul>';
-			} elseif ( $data['has_template_part_action'] ) {
+			} else {
 				echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 			}
 		}
