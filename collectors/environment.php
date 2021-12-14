@@ -121,12 +121,15 @@ class QM_Collector_Environment extends QM_Collector {
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 				" );
 
-				if ( is_resource( $db->dbh ) ) {
+				/** @var mysqli|resource|false|null $dbh */
+				$dbh = $db->dbh;
+
+				if ( is_resource( $dbh ) ) {
 					# Old mysql extension
 					$extension = 'mysql';
-				} elseif ( is_object( $db->dbh ) ) {
+				} elseif ( is_object( $dbh ) ) {
 					# mysqli or PDO
-					$extension = get_class( $db->dbh );
+					$extension = get_class( $dbh );
 				} else {
 					# Who knows?
 					$extension = null;
@@ -134,7 +137,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
 					$client = mysqli_get_client_version();
-					$info = mysqli_get_server_info( $db->dbh );
+					$info = mysqli_get_server_info( $dbh );
 				} else {
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
 					// phpcs:ignore
@@ -145,7 +148,7 @@ class QM_Collector_Environment extends QM_Collector {
 					}
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
 					// phpcs:ignore
-					$info = mysql_get_server_info( $db->dbh );
+					$info = mysql_get_server_info( $dbh );
 				}
 
 				if ( $client ) {
