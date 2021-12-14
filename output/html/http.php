@@ -321,6 +321,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();

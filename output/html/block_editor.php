@@ -109,6 +109,12 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param int|string $i
+	 * @param array<string, mixed> $block
+	 * @param array<string, mixed> $data
+	 * @return void
+	 */
 	protected static function render_block( $i, array $block, array $data ) {
 		$block_error = false;
 		$row_class = '';

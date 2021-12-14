@@ -21,14 +21,23 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		add_action( 'embed_head', array( $this, 'action_head' ), 9999 );
 	}
 
+	/**
+	 * @return string
+	 */
 	abstract public function get_dependency_type();
 
+	/**
+	 * @return void
+	 */
 	public function action_head() {
 		$type = $this->get_dependency_type();
 
 		$this->data['header'] = $GLOBALS[ "wp_{$type}" ]->done;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_print_footer_scripts() {
 		if ( empty( $this->data['header'] ) ) {
 			return;
@@ -40,6 +49,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( empty( $this->data['header'] ) && empty( $this->data['footer'] ) ) {
 			return;
@@ -182,6 +194,11 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$this->data['missing_dependencies'] = $missing_dependencies;
 	}
 
+	/**
+	 * @param _WP_Dependency $item
+	 * @param WP_Dependencies $dependencies
+	 * @return array<int, string>
+	 */
 	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
 		$broken = array();
 
@@ -197,6 +214,11 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		return $broken;
 	}
 
+	/**
+	 * @param _WP_Dependency $dependency
+	 * @param WP_Dependencies $dependencies
+	 * @return array<int, string>
+	 */
 	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
 		$dependents = array();
 		$handles = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
@@ -215,6 +237,15 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		return $dependents;
 	}
 
+	/**
+	 * @param _WP_Dependency $dependency
+	 * @return array{
+	 *   0: string,
+	 *   1: string|WP_Error,
+	 *   2: bool,
+	 *   3: string,
+	 * }
+	 */
 	public function get_dependency_data( _WP_Dependency $dependency ) {
 		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );

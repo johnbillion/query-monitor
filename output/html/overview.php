@@ -320,6 +320,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<int, string> $existing
+	 * @return array<int, string>
+	 */
 	public function admin_title( array $existing ) {
 
 		$data = $this->collector->get_data();

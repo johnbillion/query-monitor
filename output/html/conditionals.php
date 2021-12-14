@@ -89,6 +89,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 
 		$data = $this->collector->get_data();

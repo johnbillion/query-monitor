@@ -113,6 +113,10 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		$dbq = QM_Collectors::get( 'db_queries' );
 

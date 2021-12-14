@@ -104,6 +104,10 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		$data = $this->collector->get_data();
 

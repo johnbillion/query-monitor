@@ -209,6 +209,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		if ( isset( $menu[ $this->collector->id() ] ) ) {
 			$menu[ $this->collector->id() ]['title'] = __( 'Template', 'query-monitor' );

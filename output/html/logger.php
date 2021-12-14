@@ -170,6 +170,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 		$data = $this->collector->get_data();
 

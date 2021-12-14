@@ -7,9 +7,19 @@
 
 abstract class QM_Output_Html extends QM_Output {
 
+	/**
+	 * @var string|false|null
+	 */
 	protected static $file_link_format = null;
 
+	/**
+	 * @var string|null
+	 */
 	protected $current_id = null;
+
+	/**
+	 * @var string|null
+	 */
 	protected $current_name = null;
 
 	/**
@@ -32,6 +42,9 @@ abstract class QM_Output_Html extends QM_Output {
 
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_output() {
 		ob_start();
 		// compat until I convert all the existing outputters to use `get_output()`
@@ -40,6 +53,11 @@ abstract class QM_Output_Html extends QM_Output {
 		return $out;
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $name
+	 * @return void
+	 */
 	protected function before_tabular_output( $id = null, $name = null ) {
 		if ( null === $id ) {
 			$id = $this->collector->id();
@@ -65,6 +83,9 @@ abstract class QM_Output_Html extends QM_Output {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_tabular_output() {
 		echo '</table>';
 		echo '</div>';
@@ -72,6 +93,11 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->output_concerns();
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $name
+	 * @return void
+	 */
 	protected function before_non_tabular_output( $id = null, $name = null ) {
 		if ( null === $id ) {
 			$id = $this->collector->id();
@@ -97,6 +123,9 @@ abstract class QM_Output_Html extends QM_Output {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_non_tabular_output() {
 		echo '</div>';
 		echo '</div>';
@@ -104,6 +133,9 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->output_concerns();
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function output_concerns() {
 		$concerns = array(
 			'concerned_actions' => array(
@@ -162,6 +194,11 @@ abstract class QM_Output_Html extends QM_Output {
 		echo '</div>';
 	}
 
+	/**
+	 * @param string $id
+	 * @param string $name
+	 * @return void
+	 */
 	protected function before_debug_bar_output( $id = null, $name = null ) {
 		if ( null === $id ) {
 			$id = $this->collector->id();
@@ -182,10 +219,17 @@ abstract class QM_Output_Html extends QM_Output {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_debug_bar_output() {
 		echo '</div>';
 	}
 
+	/**
+	 * @param string $notice
+	 * @return string
+	 */
 	protected function build_notice( $notice ) {
 		$return = '<section>';
 		$return .= '<div class="qm-notice">';
@@ -198,6 +242,10 @@ abstract class QM_Output_Html extends QM_Output {
 		return $return;
 	}
 
+	/**
+	 * @param array<string, mixed> $vars
+	 * @return void
+	 */
 	public static function output_inner( $vars ) {
 
 		echo '<table>';
@@ -238,10 +286,15 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param  string[] $values Option values for this control.
 	 * @param  string   $label  Label text for the filter control.
 	 * @param  array    $args {
-	 *     @type string $highlight The name for the `data-` attributes that get highlighted by this control.
-	 *     @type array  $prepend   Associative array of options to prepend to the list of values.
-	 *     @type array  $append    Associative array of options to append to the list of values.
+	 *     @type string   $highlight The name for the `data-` attributes that get highlighted by this control.
+	 *     @type string[] $prepend   Associative array of options to prepend to the list of values.
+	 *     @type string[] $append    Associative array of options to append to the list of values.
 	 * }
+	 * @phpstan-param array{
+	 *   highlight?: string,
+	 *   prepend?: array<string, string>,
+	 *   append?: array<string, string>,
+	 * } $args
 	 * @return string Markup for the table filter controls.
 	 */
 	protected function build_filter( $name, $values, $label, $args = array() ) {
@@ -341,6 +394,10 @@ abstract class QM_Output_Html extends QM_Output {
 		return $out;
 	}
 
+	/**
+	 * @param array<string, mixed> $args
+	 * @return array<string, mixed>
+	 */
 	protected function menu( array $args ) {
 
 		return array_merge( array(
@@ -470,6 +527,9 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 	}
 
+	/**
+	 * @return string|false
+	 */
 	public static function get_file_link_format() {
 		if ( ! isset( self::$file_link_format ) ) {
 			$format = ini_get( 'xdebug.file_link_format' );
@@ -500,6 +560,9 @@ abstract class QM_Output_Html extends QM_Output {
 		return self::$file_link_format;
 	}
 
+	/**
+	 * @return array<string, string>
+	 */
 	public static function get_file_path_map() {
 		/**
 		 * Filters the file path mapping for clickable file links.
@@ -512,6 +575,9 @@ abstract class QM_Output_Html extends QM_Output {
 		return apply_filters( 'qm/output/file_path_map', array() );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function has_clickable_links() {
 		return ( false !== self::get_file_link_format() );
 	}

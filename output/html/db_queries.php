@@ -18,6 +18,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	/**
+	 * @var int
+	 */
 	public $query_row = 0;
 
 	public function __construct( QM_Collector $collector ) {
@@ -61,6 +64,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function output_empty_queries() {
 		$id = sprintf(
 			'%s-wpdb',
@@ -83,6 +89,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<int, mixed> $errors
+	 * @return void
+	 */
 	protected function output_error_queries( array $errors ) {
 		$this->before_tabular_output( 'qm-query-errors', __( 'Database Errors', 'query-monitor' ) );
 
@@ -106,6 +116,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, mixed> $expensive
+	 * @return void
+	 */
 	protected function output_expensive_queries( array $expensive ) {
 		$dp = strlen( substr( strrchr( (string) QM_DB_EXPENSIVE, '.' ), 1 ) );
 
@@ -143,6 +157,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param string $name
+	 * @param stdClass $db
+	 * @param array<string, mixed> $data
+	 * @return void
+	 */
 	protected function output_queries( $name, stdClass $db, array $data ) {
 		$this->query_row = 0;
 		$span = 4;
@@ -304,6 +324,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $row
+	 * @param array<int, string> $cols
+	 * @return void
+	 */
 	protected function output_query_row( array $row, array $cols ) {
 
 		$cols = array_flip( $cols );
@@ -468,6 +493,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<int, string> $existing
+	 * @return array<int, string>
+	 */
 	public function admin_title( array $existing ) {
 		$title = array();
 		$data = $this->collector->get_data();
@@ -528,6 +557,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		return $title;
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		if ( $this->collector->get_errors() ) {
@@ -604,6 +637,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
 			$id = $this->collector->id() . '-' . $sub;

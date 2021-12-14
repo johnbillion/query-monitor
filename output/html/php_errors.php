@@ -175,6 +175,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();
@@ -275,6 +279,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		if ( ! isset( $menu[ $this->collector->id() ] ) ) {
 			return $menu;

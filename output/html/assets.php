@@ -24,6 +24,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return array<string, string>
+	 */
 	abstract public function get_type_labels();
 
 	/**
@@ -109,6 +112,12 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param string $handle
+	 * @param array<string, mixed> $asset
+	 * @param string $label
+	 * @return void
+	 */
 	protected function dependency_row( $handle, array $asset, $label ) {
 		$data = $this->collector->get_data();
 
@@ -207,10 +216,18 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '</tr>';
 	}
 
+	/**
+	 * @param string $val
+	 * @return string
+	 */
 	public function _prefix_type( $val ) {
 		return $this->collector->get_dependency_type() . '-' . $val;
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();
