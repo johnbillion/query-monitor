@@ -202,8 +202,11 @@ class QM_Backtrace {
 			}
 		}
 
-		# This should not happen
-
+		return (object) array(
+			'type' => 'unknown',
+			'name' => __( 'Unknown', 'query-monitor' ),
+			'context' => 'unknown',
+		);
 	}
 
 	/**
