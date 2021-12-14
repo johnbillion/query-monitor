@@ -2,6 +2,7 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
     level: 4
+    tmpDir: tests/cache
     paths:
         - query-monitor.php
         - classes
@@ -10,6 +11,9 @@ parameters:
         - output
         # - tests/phpunit
         - wp-content
+    excludePaths:
+        analyse:
+         - tests/cache
     bootstrapFiles:
         - tests/stubs.php
     dynamicConstantNames:
