@@ -7,11 +7,45 @@
 
 class QM_Timer {
 
+	/**
+	 * @var array<string, mixed>|null
+	 * @phpstan-var array{
+	 *   time: float,
+	 *   memory: int,
+	 *   data: mixed[],
+	 * }|null
+	 */
 	protected $start = null;
+
+	/**
+	 * @var array<string, mixed>|null
+	 * @phpstan-var array{
+	 *   time: float,
+	 *   memory: int,
+	 *   data: mixed[],
+	 * }|null
+	 */
 	protected $end = null;
+
+	/**
+	 * @var QM_Backtrace|null
+	 */
 	protected $trace = null;
+
+	/**
+	 * @var array<string, array<string, mixed>>
+	 * @phpstan-var array<string, array{
+	 *   time: float,
+	 *   memory: int,
+	 *   data: mixed[],
+	 * }>
+	 */
 	protected $laps = array();
 
+	/**
+	 * @param mixed[] $data
+	 * @return self
+	 */
 	public function start( array $data = null ) {
 		$this->trace = new QM_Backtrace();
 		$this->start = array(
@@ -22,6 +56,10 @@ class QM_Timer {
 		return $this;
 	}
 
+	/**
+	 * @param mixed[] $data
+	 * @return self
+	 */
 	public function stop( array $data = null ) {
 
 		$this->end = array(
@@ -34,6 +72,11 @@ class QM_Timer {
 
 	}
 
+	/**
+	 * @param mixed[] $data
+	 * @param string $name
+	 * @return self
+	 */
 	public function lap( array $data = null, $name = null ) {
 
 		$lap = array(
@@ -58,6 +101,9 @@ class QM_Timer {
 
 	}
 
+	/**
+	 * @return mixed[]
+	 */
 	public function get_laps() {
 
 		$laps = array();
@@ -77,34 +123,59 @@ class QM_Timer {
 
 	}
 
+	/**
+	 * @return float
+	 */
 	public function get_time() {
 		return $this->end['time'] - $this->start['time'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_memory() {
 		return $this->end['memory'] - $this->start['memory'];
 	}
 
+	/**
+	 * @return float
+	 */
 	public function get_start_time() {
 		return $this->start['time'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_start_memory() {
 		return $this->start['memory'];
 	}
 
+	/**
+	 * @return float
+	 */
 	public function get_end_time() {
 		return $this->end['time'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function get_end_memory() {
 		return $this->end['memory'];
 	}
 
+	/**
+	 * @return QM_Backtrace
+	 */
 	public function get_trace() {
 		return $this->trace;
 	}
 
+	/**
+	 * @param mixed[] $data
+	 * @return self
+	 */
 	public function end( array $data = null ) {
 		return $this->stop( $data );
 	}

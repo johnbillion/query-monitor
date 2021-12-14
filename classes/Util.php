@@ -8,14 +8,37 @@
 if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
+	/**
+	 * @var array<string, stdClass>
+	 */
 	protected static $file_components = array();
+
+	/**
+	 * @var array<string, string|null>
+	 */
 	protected static $file_dirs = array();
+
+	/**
+	 * @var string|null
+	 */
 	protected static $abspath = null;
+
+	/**
+	 * @var string|null
+	 */
 	protected static $contentpath = null;
+
+	/**
+	 * @var string|null
+	 */
 	protected static $sort_field = null;
 
 	private function __construct() {}
 
+	/**
+	 * @param string $size
+	 * @return float
+	 */
 	public static function convert_hr_to_bytes( $size ) {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
@@ -37,6 +60,11 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $dir
+	 * @param string $path_replace
+	 * @return string
+	 */
 	public static function standard_dir( $dir, $path_replace = null ) {
 
 		$dir = self::normalize_path( $dir );
@@ -56,6 +84,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
 	public static function normalize_path( $path ) {
 		if ( function_exists( 'wp_normalize_path' ) ) {
 			$path = wp_normalize_path( $path );
@@ -67,6 +99,9 @@ class QM_Util {
 		return $path;
 	}
 
+	/**
+	 * @return array<string, string|null>
+	 */
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 
@@ -261,6 +296,10 @@ class QM_Util {
 		return self::$file_components[ $file ];
 	}
 
+	/**
+	 * @param array<string, mixed> $callback
+	 * @return array<string, mixed>
+	 */
 	public static function populate_callback( array $callback ) {
 
 		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
@@ -347,6 +386,9 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_ajax() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return true;
@@ -354,6 +396,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_async() {
 		if ( self::is_ajax() ) {
 			return true;
@@ -364,6 +409,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return WP_Role|false
+	 */
 	public static function get_admins() {
 		if ( is_multisite() ) {
 			return false;
@@ -372,6 +420,9 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_multi_network() {
 		global $wpdb;
 
@@ -393,6 +444,15 @@ class QM_Util {
 		return ( $num_sites > 1 );
 	}
 
+	/**
+	 * @param int|string $client
+	 * @return array<string, int>
+	 * @phpstan-return array{
+	 *   major: int,
+	 *   minor: int,
+	 *   patch: int,
+	 * }
+	 */
 	public static function get_client_version( $client ) {
 
 		$client = intval( $client );
@@ -407,6 +467,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $sql
+	 * @return string
+	 */
 	public static function get_query_type( $sql ) {
 		// Trim leading whitespace and brackets
 		$sql = ltrim( $sql, ' \t\n\r\0\x0B(' );
@@ -422,6 +486,10 @@ class QM_Util {
 		return $type;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return string|float|int
+	 */
 	public static function display_variable( $value ) {
 		if ( is_string( $value ) ) {
 			return $value;
@@ -521,20 +589,40 @@ class QM_Util {
 		return $json;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public static function is_stringy( $data ) {
 		return ( is_string( $data ) || ( is_object( $data ) && method_exists( $data, '__toString' ) ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function rsort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_rsort' ) );
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _rsort( $a, $b ) {
 		$field = self::$sort_field;
 
@@ -545,6 +633,12 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _sort( $a, $b ) {
 		$field = self::$sort_field;
 
