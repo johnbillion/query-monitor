@@ -65,8 +65,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		$core = __( 'WordPress Core', 'query-monitor' );
 
 		foreach ( $hooks as $hook ) {
-			$row_attr                      = array();
-			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
+			$row_attr = array();
+			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
 			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
@@ -91,11 +91,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 				foreach ( $hook['actions'] as $action ) {
 					$component = '';
-					$subject   = '';
+					$subject = '';
 
 					if ( isset( $action['callback']['component'] ) ) {
 						$component = $action['callback']['component']->name;
-						$subject   = $component;
+						$subject = $component;
 					}
 
 					if ( $core !== $component ) {

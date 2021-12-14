@@ -22,7 +22,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 	public function get_output() {
 		$output = array();
-		$data   = $this->collector->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['dbs'] ) ) {
 			return $output;
@@ -75,8 +75,8 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		}
 
 		return array(
-			'total'   => $db->total_qs,
-			'time'    => (float) number_format_i18n( $db->total_time, 4 ),
+			'total' => $db->total_qs,
+			'time' => (float) number_format_i18n( $db->total_time, 4 ),
 			'queries' => $output,
 		);
 	}
@@ -84,13 +84,13 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	protected function output_query_row( array $row ) {
 		$output = array();
 
-		$output['i']    = ++$this->query_row;
-		$output['sql']  = $row['sql'];
+		$output['i'] = ++$this->query_row;
+		$output['sql'] = $row['sql'];
 		$output['time'] = (float) number_format_i18n( $row['ltime'], 4 );
 
 		if ( isset( $row['trace'] ) ) {
 			$stack = array();
-			$filtered_trace = $row['trace']->get_display_trace();
+			$filtered_trace = $row['trace']->get_filtered_trace();
 
 			foreach ( $filtered_trace as $item ) {
 				$stack[] = $item['display'];
@@ -101,7 +101,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		}
 
 		$output['stack'] = $stack;
-		$output['result']  = $row['result'];
+		$output['result'] = $row['result'];
 
 		return $output;
 	}

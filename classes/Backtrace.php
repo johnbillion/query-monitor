@@ -13,55 +13,55 @@ if ( ! class_exists( 'QM_Backtrace' ) ) {
 class QM_Backtrace {
 
 	protected static $ignore_class = array(
-		'wpdb'           => true,
-		'QueryMonitor'   => true,
-		'W3_Db'          => true,
-		'Debug_Bar_PHP'  => true,
-		'WP_Hook'        => true,
+		'wpdb' => true,
+		'QueryMonitor' => true,
+		'W3_Db' => true,
+		'Debug_Bar_PHP' => true,
+		'WP_Hook' => true,
 	);
 	protected static $ignore_method = array();
 	protected static $ignore_func = array(
-		'include_once'         => true,
-		'require_once'         => true,
-		'include'              => true,
-		'require'              => true,
+		'include_once' => true,
+		'require_once' => true,
+		'include' => true,
+		'require' => true,
 		'call_user_func_array' => true,
-		'call_user_func'       => true,
-		'trigger_error'        => true,
-		'_doing_it_wrong'      => true,
+		'call_user_func' => true,
+		'trigger_error' => true,
+		'_doing_it_wrong' => true,
 		'_deprecated_argument' => true,
-		'_deprecated_file'     => true,
+		'_deprecated_file' => true,
 		'_deprecated_function' => true,
-		'dbDelta'              => true,
+		'dbDelta' => true,
 	);
 	protected static $show_args = array(
-		'do_action'                  => 1,
-		'apply_filters'              => 1,
-		'do_action_ref_array'        => 1,
-		'apply_filters_ref_array'    => 1,
-		'get_query_template'         => 1,
-		'resolve_block_template'     => 1,
-		'get_template_part'          => 2,
+		'do_action' => 1,
+		'apply_filters' => 1,
+		'do_action_ref_array' => 1,
+		'apply_filters_ref_array' => 1,
+		'get_query_template' => 1,
+		'resolve_block_template' => 1,
+		'get_template_part' => 2,
 		'get_extended_template_part' => 2,
-		'ai_get_template_part'       => 2,
-		'load_template'              => 'dir',
-		'dynamic_sidebar'            => 1,
-		'get_header'                 => 1,
-		'get_sidebar'                => 1,
-		'get_footer'                 => 1,
-		'class_exists'               => 2,
-		'current_user_can'           => 3,
-		'user_can'                   => 4,
-		'current_user_can_for_blog'  => 4,
-		'author_can'                 => 4,
+		'ai_get_template_part' => 2,
+		'load_template' => 'dir',
+		'dynamic_sidebar' => 1,
+		'get_header' => 1,
+		'get_sidebar' => 1,
+		'get_footer' => 1,
+		'class_exists' => 2,
+		'current_user_can' => 3,
+		'user_can' => 4,
+		'current_user_can_for_blog' => 4,
+		'author_can' => 4,
 	);
 	protected static $ignore_hook = array();
 	protected static $filtered = false;
-	protected $args            = array();
-	protected $trace           = null;
-	protected $filtered_trace  = null;
-	protected $calling_line    = 0;
-	protected $calling_file    = '';
+	protected $args = array();
+	protected $trace = null;
+	protected $filtered_trace = null;
+	protected $calling_line = 0;
+	protected $calling_file = '';
 
 	protected $component = null;
 
@@ -69,14 +69,14 @@ class QM_Backtrace {
 		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
 		$this->args = array_merge( array(
-			'ignore_class'          => array(),
-			'ignore_method'         => array(),
-			'ignore_func'           => array(),
-			'ignore_hook'           => array(),
-			'show_args'             => array(),
+			'ignore_class' => array(),
+			'ignore_method' => array(),
+			'ignore_func' => array(),
+			'ignore_hook' => array(),
+			'show_args' => array(),
 		), $args );
 
-		foreach ( $this->trace as $k => $frame ) {
+		foreach ( $this->trace as & $frame ) {
 			if ( ! isset( $frame['args'] ) ) {
 				continue;
 			}
@@ -93,8 +93,6 @@ class QM_Backtrace {
 			} else {
 				unset( $frame['args'] );
 			}
-
-			$this->trace[ $k ] = $frame;
 		}
 	}
 
@@ -199,13 +197,13 @@ class QM_Backtrace {
 			$trace = array_values( array_filter( $trace ) );
 
 			if ( empty( $trace ) && ! empty( $this->trace ) ) {
-				$lowest                 = $this->trace[0];
-				$file                   = QM_Util::standard_dir( $lowest['file'], '' );
+				$lowest = $this->trace[0];
+				$file = QM_Util::standard_dir( $lowest['file'], '' );
 				$lowest['calling_file'] = $lowest['file'];
 				$lowest['calling_line'] = $lowest['line'];
-				$lowest['function']     = $file;
-				$lowest['display']      = $file;
-				$lowest['id']           = $file;
+				$lowest['function'] = $file;
+				$lowest['display'] = $file;
+				$lowest['id'] = $file;
 				unset( $lowest['class'], $lowest['args'], $lowest['type'] );
 				$trace[0] = $lowest;
 			}
@@ -238,7 +236,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_class Array of class names to ignore. The array keys are class names to ignore,
 			 *                             the array values are whether to ignore the class or not (usually true).
 			 */
-			self::$ignore_class  = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
+			self::$ignore_class = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
 
 			/**
 			 * Filters which class methods to ignore when constructing user-facing call stacks.
@@ -258,7 +256,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_func Array of function names to ignore. The array keys are function names to ignore,
 			 *                            the array values are whether to ignore the function or not (usually true).
 			 */
-			self::$ignore_func   = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
+			self::$ignore_func = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
 
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
@@ -280,7 +278,7 @@ class QM_Backtrace {
 			 *                                  array keys are function names, the array values are either integers or
 			 *                                  "dir" to specifically treat the function argument as a directory path.
 			 */
-			self::$show_args     = apply_filters( 'qm/trace/show_args',     self::$show_args );
+			self::$show_args = apply_filters( 'qm/trace/show_args',     self::$show_args );
 
 			self::$filtered = true;
 
@@ -310,7 +308,7 @@ class QM_Backtrace {
 			} elseif ( 0 === strpos( $frame['class'], 'QM' ) ) {
 				$return = null;
 			} else {
-				$return['id']      = $frame['class'] . $frame['type'] . $frame['function'] . '()';
+				$return['id'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
 				$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
 			}
 		} else {
@@ -322,7 +320,7 @@ class QM_Backtrace {
 				if ( 'dir' === $show ) {
 					if ( isset( $frame['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $frame['args'][0], '' );
-						$return['id']      = $frame['function'] . '()';
+						$return['id'] = $frame['function'] . '()';
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
@@ -339,12 +337,12 @@ class QM_Backtrace {
 								}
 							}
 						}
-						$return['id']      = $frame['function'] . '()';
+						$return['id'] = $frame['function'] . '()';
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
 					}
 				}
 			} else {
-				$return['id']      = $frame['function'] . '()';
+				$return['id'] = $frame['function'] . '()';
 				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
 			}
 		}

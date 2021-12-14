@@ -63,7 +63,7 @@ class QM_Collector_Languages extends QM_Collector {
 	}
 
 	public function process() {
-		$this->data['locale']      = get_locale();
+		$this->data['locale'] = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		ksort( $this->data['languages'] );
 
@@ -106,10 +106,10 @@ class QM_Collector_Languages extends QM_Collector {
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file'   => $mofile,
-			'found'  => $found,
+			'file' => $mofile,
+			'found' => $found,
 			'handle' => null,
-			'type'   => 'gettext',
+			'type' => 'gettext',
 		);
 
 		return $override;
@@ -126,7 +126,7 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return string|false Path to the translation file to load. False if there isn't one.
 	 */
 	public function log_script_file_load( $file, $handle, $domain ) {
-		$trace    = new QM_Backtrace( array(
+		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_filter() => true,
 			),
@@ -137,10 +137,10 @@ class QM_Collector_Languages extends QM_Collector {
 		$this->data['languages'][ $domain ][] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file'   => $file,
-			'found'  => $found,
+			'file' => $file,
+			'found' => $found,
 			'handle' => $handle,
-			'type'   => 'jed',
+			'type' => 'jed',
 		);
 
 		return $file;

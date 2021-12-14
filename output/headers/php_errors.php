@@ -20,7 +20,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 	public function get_output() {
 
-		$data    = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$headers = array();
 
 		if ( empty( $data['errors'] ) ) {
@@ -39,23 +39,23 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 				# separately in each output.
 				if ( $error['trace'] ) {
 					$component = $error['trace']->get_component()->name;
-					$stack     = $error['trace']->get_stack();
+					$stack = $error['trace']->get_stack();
 				} else {
 					$component = __( 'Unknown', 'query-monitor' );
-					$stack     = array();
+					$stack = array();
 				}
 
 				$output_error = array(
-					'key'       => $error_key,
-					'type'      => $error['type'],
-					'message'   => $error['message'],
-					'file'      => QM_Util::standard_dir( $error['file'], '' ),
-					'line'      => $error['line'],
-					'stack'     => $stack,
+					'key' => $error_key,
+					'type' => $error['type'],
+					'message' => $error['message'],
+					'file' => QM_Util::standard_dir( $error['file'], '' ),
+					'line' => $error['line'],
+					'stack' => $stack,
 					'component' => $component,
 				);
 
-				$key             = sprintf( 'error-%d', $count );
+				$key = sprintf( 'error-%d', $count );
 				$headers[ $key ] = json_encode( $output_error );
 
 			}

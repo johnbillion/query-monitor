@@ -13,10 +13,10 @@ define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | 
 
 class QM_Collector_PHP_Errors extends QM_Collector {
 
-	public $id               = 'php_errors';
-	public $types            = array();
+	public $id = 'php_errors';
+	public $types = array();
 	private $error_reporting = null;
-	private $display_errors  = null;
+	private $display_errors = null;
 	private $exception_handler = null;
 	private static $unexpected_error;
 
@@ -47,7 +47,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
-		$this->display_errors  = ini_get( 'display_errors' );
+		$this->display_errors = ini_get( 'display_errors' );
 		ini_set( 'display_errors', 0 );
 
 		if ( $prior_error ) {
@@ -83,9 +83,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				$error,
 				$e->getMessage()
 			),
-			'file'    => $e->getFile(),
-			'line'    => $e->getLine(),
-			'trace'   => $e->getTrace(),
+			'file' => $e->getFile(),
+			'line' => $e->getLine(),
+			'trace' => $e->getTrace(),
 		) );
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
@@ -170,23 +170,23 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			return false;
 		}
 
-		$trace  = new QM_Backtrace();
+		$trace = new QM_Backtrace();
 		$caller = $trace->get_caller();
-		$key    = md5( $message . $file . $line . $caller['id'] );
+		$key = md5( $message . $file . $line . $caller['id'] );
 
 		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
 			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
 		} else {
 			$this->data[ $error_group ][ $type ][ $key ] = array(
-				'errno'    => $errno,
-				'type'     => $type,
-				'message'  => wp_strip_all_tags( $message ),
-				'file'     => $file,
+				'errno' => $errno,
+				'type' => $type,
+				'message' => wp_strip_all_tags( $message ),
+				'file' => $file,
 				'filename' => QM_Util::standard_dir( $file, '' ),
-				'line'     => $line,
-				'trace'    => ( $do_trace ? $trace : null ),
+				'line' => $line,
+				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
 				'component' => $trace->get_component(),
-				'calls'    => 1,
+				'calls' => 1,
 			);
 		}
 
@@ -318,26 +318,26 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 */
 	public function process() {
 		$this->types = array(
-			'errors'     => array(
-				'warning'    => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict', 'PHP error level', 'query-monitor' ),
+			'errors' => array(
+				'warning' => _x( 'Warning', 'PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice', 'PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict', 'PHP error level', 'query-monitor' ),
 				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
 			),
 			'suppressed' => array(
-				'warning'    => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'warning' => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
 			),
-			'silenced'   => array(
-				'warning'    => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'notice'     => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'strict'     => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			'silenced' => array(
+				'warning' => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
 			),
 		);
-		$components  = array();
+		$components = array();
 
 		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
 			/**
@@ -399,8 +399,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
 						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							if ( $error['trace'] ) {
-								$component                      = $error['component'];
+							if ( $error['component'] ) {
+								$component = $error['component'];
 								$components[ $component->name ] = $component->name;
 							}
 						}
@@ -429,11 +429,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					if ( ! $error['trace'] ) {
+					if ( ! $error['component'] ) {
 						continue;
 					}
 
-					if ( $error['component'] && ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
+					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
 						continue;
 					}
 

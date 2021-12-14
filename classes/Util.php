@@ -9,10 +9,10 @@ if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
 	protected static $file_components = array();
-	protected static $file_dirs       = array();
-	protected static $abspath         = null;
-	protected static $contentpath     = null;
-	protected static $sort_field      = null;
+	protected static $file_dirs = array();
+	protected static $abspath = null;
+	protected static $contentpath = null;
+	protected static $sort_field = null;
 
 	private function __construct() {}
 
@@ -43,7 +43,7 @@ class QM_Util {
 
 		if ( is_string( $path_replace ) ) {
 			if ( ! self::$abspath ) {
-				self::$abspath     = self::normalize_path( ABSPATH );
+				self::$abspath = self::normalize_path( ABSPATH );
 				self::$contentpath = self::normalize_path( dirname( WP_CONTENT_DIR ) . '/' );
 			}
 			$dir = str_replace( array(
@@ -76,7 +76,10 @@ class QM_Util {
 			 * Note that this filter is applied before QM adds its built-in list of components. This is
 			 * so custom registered components take precedence during component detection.
 			 *
-			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 * See also the corresponding filters:
+			 *
+			 *  - `qm/component_context/{$type}`
+			 *  - `qm/component_name/{$type}`
 			 *
 			 * @since 3.6.0
 			 *
@@ -84,10 +87,10 @@ class QM_Util {
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
-			self::$file_dirs['plugin']     = WP_PLUGIN_DIR;
-			self::$file_dirs['mu-vendor']  = WPMU_PLUGIN_DIR . '/vendor';
-			self::$file_dirs['go-plugin']  = WPMU_PLUGIN_DIR . '/shared-plugins';
-			self::$file_dirs['mu-plugin']  = WPMU_PLUGIN_DIR;
+			self::$file_dirs['plugin'] = WP_PLUGIN_DIR;
+			self::$file_dirs['mu-vendor'] = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs['go-plugin'] = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs['mu-plugin'] = WPMU_PLUGIN_DIR;
 			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
@@ -98,12 +101,12 @@ class QM_Util {
 				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
 			}
 
-			self::$file_dirs['theme']      = null;
+			self::$file_dirs['theme'] = null;
 			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
-			self::$file_dirs['template']   = get_template_directory();
-			self::$file_dirs['other']      = WP_CONTENT_DIR;
-			self::$file_dirs['core']       = ABSPATH;
-			self::$file_dirs['unknown']    = null;
+			self::$file_dirs['template'] = get_template_directory();
+			self::$file_dirs['other'] = WP_CONTENT_DIR;
+			self::$file_dirs['core'] = ABSPATH;
+			self::$file_dirs['unknown'] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
 				self::$file_dirs[ $type ] = self::standard_dir( $dir );
@@ -202,10 +205,10 @@ class QM_Util {
 			case 'other':
 				// Anything else that's within the content directory should appear as
 				// `wp-content/{dir}` or `wp-content/{file}`
-				$name    = self::standard_dir( $file );
-				$name    = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
-				$parts   = explode( '/', trim( $name, '/' ) );
-				$name    = $parts[0] . '/' . $parts[1];
+				$name = self::standard_dir( $file );
+				$name = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$parts = explode( '/', trim( $name, '/' ) );
+				$name = $parts[0] . '/' . $parts[1];
 				$context = $file;
 				break;
 			case 'core':
@@ -220,7 +223,10 @@ class QM_Util {
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
-				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
 				 *
@@ -228,6 +234,25 @@ class QM_Util {
 				 * @param string $file The full file path for the file within the component.
 				 */
 				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+
+				/**
+				 * Filters the context for a custom or unknown component. The context is usually a
+				 * representation of its type more specific to the individual component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *
+				 * @since 3.8.0
+				 *
+				 * @param string $context The context for the component.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 */
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
 				break;
 		}
 
@@ -253,10 +278,10 @@ class QM_Util {
 
 			if ( is_array( $callback['function'] ) ) {
 				if ( is_object( $callback['function'][0] ) ) {
-					$class  = get_class( $callback['function'][0] );
+					$class = get_class( $callback['function'][0] );
 					$access = '->';
 				} else {
-					$class  = $callback['function'][0];
+					$class = $callback['function'][0];
 					$access = '::';
 				}
 
@@ -264,7 +289,7 @@ class QM_Util {
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
-					$ref  = new ReflectionFunction( $callback['function'] );
+					$ref = new ReflectionFunction( $callback['function'] );
 					$file = self::standard_dir( $ref->getFileName(), '' );
 					if ( 0 === strpos( $file, '/' ) ) {
 						$file = basename( $ref->getFileName() );
@@ -307,8 +332,8 @@ class QM_Util {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
 				$callback['component'] = (object) array(
-					'type'    => 'php',
-					'name'    => 'PHP',
+					'type' => 'php',
+					'name' => 'PHP',
 					'context' => '',
 				);
 			}

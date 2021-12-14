@@ -18,11 +18,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	protected $outputters = array();
 
-	public $id         = 'html';
+	public $id = 'html';
 	public $did_footer = false;
 
 	protected $admin_bar_menu = array();
-	protected $panel_menu     = array();
+	protected $panel_menu = array();
 
 	public function __construct( QM_Plugin $qm ) {
 
@@ -63,8 +63,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$expiration = time() + ( 2 * DAY_IN_SECONDS );
-		$secure     = self::secure_cookie();
-		$cookie     = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
+		$secure = self::secure_cookie();
+		$cookie = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
 
 		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
 
@@ -93,8 +93,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$expiration = time() + ( 2 * YEAR_IN_SECONDS );
-		$secure     = self::secure_cookie();
-		$editor     = wp_unslash( $_POST['editor'] );
+		$secure = self::secure_cookie();
+		$editor = wp_unslash( $_POST['editor'] );
 
 		setcookie( QM_EDITOR_COOKIE, $editor, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
 
@@ -111,16 +111,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$title = __( 'Query Monitor', 'query-monitor' );
 
 		$wp_admin_bar->add_node( array(
-			'id'    => 'query-monitor',
+			'id' => 'query-monitor',
 			'title' => esc_html( $title ),
-			'href'  => '#qm-overview',
+			'href' => '#qm-overview',
 		) );
 
 		$wp_admin_bar->add_node( array(
 			'parent' => 'query-monitor',
-			'id'     => 'query-monitor-placeholder',
-			'title'  => esc_html( $title ),
-			'href'   => '#qm-overview',
+			'id' => 'query-monitor-placeholder',
+			'title' => esc_html( $title ),
+			'href' => '#qm-overview',
 		) );
 
 	}
@@ -213,10 +213,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'qm_l10n',
 			array(
 				'ajax_error' => __( 'PHP Errors in Ajax Response', 'query-monitor' ),
-				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'auth_nonce' => array(
-					'on'         => wp_create_nonce( 'qm-auth-on' ),
-					'off'        => wp_create_nonce( 'qm-auth-off' ),
+					'on' => wp_create_nonce( 'qm-auth-on' ),
+					'off' => wp_create_nonce( 'qm-auth-off' ),
 					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
 				),
 				'fatal_error' => __( 'PHP Fatal Error', 'query-monitor' ),
@@ -305,7 +305,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
 				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
-					'href'  => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
+					'href' => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
 					'title' => sprintf(
 						/* translators: %s: Number of hooks */
 						__( 'Hooks in Use (%s)', 'query-monitor' ),
@@ -329,7 +329,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$json = array(
-			'menu'        => $this->js_admin_bar_menu(),
+			'menu' => $this->js_admin_bar_menu(),
 			'ajax_errors' => array(), # @TODO move this into the php_errors collector
 		);
 
@@ -426,8 +426,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$state = self::user_verified() ? 'on' : 'off';
 		$editor = self::editor_cookie();
-		$text  = array(
-			'on'  => __( 'Clear authentication cookie', 'query-monitor' ),
+		$text = array(
+			'on' => __( 'Clear authentication cookie', 'query-monitor' ),
 			'off' => __( 'Set authentication cookie', 'query-monitor' ),
 		);
 
@@ -458,12 +458,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
 
 		$editors = array(
-			'Default/Xdebug'     => '',
-			'Atom'               => 'atom',
-			'Netbeans'           => 'netbeans',
-			'PhpStorm'           => 'phpstorm',
-			'Sublime Text'       => 'sublime',
-			'TextMate'           => 'textmate',
+			'Default/Xdebug' => '',
+			'Atom' => 'atom',
+			'Netbeans' => 'netbeans',
+			'PhpStorm' => 'phpstorm',
+			'Sublime Text' => 'sublime',
+			'TextMate' => 'textmate',
 			'Visual Studio Code' => 'vscode',
 		);
 
@@ -481,44 +481,44 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-boxed">';
 		$constants = array(
-			'QM_DARK_MODE'             => array(
-				'label'   => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
+			'QM_DARK_MODE' => array(
+				'label' => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_DB_EXPENSIVE'          => array(
-				'label'   => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
+			'QM_DB_EXPENSIVE' => array(
+				'label' => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
 				'default' => 0.05,
 			),
-			'QM_DISABLED'              => array(
-				'label'   => __( 'Disable Query Monitor entirely.', 'query-monitor' ),
+			'QM_DISABLED' => array(
+				'label' => __( 'Disable Query Monitor entirely.', 'query-monitor' ),
 				'default' => false,
 			),
 			'QM_DISABLE_ERROR_HANDLER' => array(
-				'label'   => __( 'Disable the handling of PHP errors.', 'query-monitor' ),
+				'label' => __( 'Disable the handling of PHP errors.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_ENABLE_CAPS_PANEL'     => array(
-				'label'   => __( 'Enable the Capability Checks panel.', 'query-monitor' ),
+			'QM_ENABLE_CAPS_PANEL' => array(
+				'label' => __( 'Enable the Capability Checks panel.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_HIDE_CORE_ACTIONS'     => array(
-				'label'   => __( 'Hide WordPress core on the Hooks & Actions panel.', 'query-monitor' ),
+			'QM_HIDE_CORE_ACTIONS' => array(
+				'label' => __( 'Hide WordPress core on the Hooks & Actions panel.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_HIDE_SELF'             => array(
-				'label'   => __( 'Hide Query Monitor itself from various panels. Set to false if you want to see how Query Monitor hooks into WordPress.', 'query-monitor' ),
+			'QM_HIDE_SELF' => array(
+				'label' => __( 'Hide Query Monitor itself from various panels. Set to false if you want to see how Query Monitor hooks into WordPress.', 'query-monitor' ),
 				'default' => true,
 			),
-			'QM_NO_JQUERY'             => array(
-				'label'   => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
+			'QM_NO_JQUERY' => array(
+				'label' => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_SHOW_ALL_HOOKS'        => array(
-				'label'   => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
+			'QM_SHOW_ALL_HOOKS' => array(
+				'label' => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_DB_SYMLINK'            => array(
-				'label'   => __( 'Allow the wp-content/db.php file symlink to be put into place during activation. Set to false to prevent the symlink creation.', 'query-monitor' ),
+			'QM_DB_SYMLINK' => array(
+				'label' => __( 'Allow the wp-content/db.php file symlink to be put into place during activation. Set to false to prevent the symlink creation.', 'query-monitor' ),
 				'default' => true,
 			),
 		);
@@ -677,7 +677,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title'     => sprintf(
+				'title' => sprintf(
 					'<span class="ab-icon">QM</span><span class="ab-label">%s</span>',
 					$title
 				),

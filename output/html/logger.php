@@ -89,9 +89,9 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		foreach ( $data['logs'] as $row ) {
 			$component = $row['component'];
 
-			$row_attr                      = array();
+			$row_attr = array();
 			$row_attr['data-qm-component'] = $component->name;
-			$row_attr['data-qm-type']      = $row['level'];
+			$row_attr['data-qm-type'] = $row['level'];
 
 			$attr = '';
 
@@ -125,7 +125,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 				esc_html( $row['message'] )
 			);
 
-			$stack          = array();
+			$stack = array();
 			$filtered_trace = $row['filtered_trace'];
 
 			foreach ( $filtered_trace as $frame ) {
@@ -182,8 +182,8 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	}
 
 	public function admin_menu( array $menu ) {
-		$data  = $this->collector->get_data();
-		$key   = 'log';
+		$data = $this->collector->get_data();
+		$key = 'log';
 		$count = 0;
 
 		if ( ! empty( $data['logs'] ) ) {
@@ -203,7 +203,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id'    => "query-monitor-logger-{$key}",
+			'id' => "query-monitor-logger-{$key}",
 			'title' => esc_html( sprintf(
 				$label,
 				number_format_i18n( $count )

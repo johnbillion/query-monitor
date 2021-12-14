@@ -20,7 +20,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 
 	public function get_output() {
 		$output = array();
-		$data   = $this->collector->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['logs'] ) ) {
 			return $output;
@@ -30,7 +30,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 			$stack = array();
 
 			if ( isset( $log['trace'] ) ) {
-				$filtered_trace = $log['trace']->get_display_trace();
+				$filtered_trace = $log['trace']->get_filtered_trace();
 
 				foreach ( $filtered_trace as $item ) {
 					$stack[] = $item['display'];

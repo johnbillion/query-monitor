@@ -129,7 +129,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )

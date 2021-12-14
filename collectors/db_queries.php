@@ -22,7 +22,7 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 
 class QM_Collector_DB_Queries extends QM_Collector {
 
-	public $id         = 'db_queries';
+	public $id = 'db_queries';
 	public $db_objects = array();
 
 	public function get_errors() {
@@ -44,9 +44,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	}
 
 	public function process() {
-		$this->data['total_qs']   = 0;
+		$this->data['total_qs'] = 0;
 		$this->data['total_time'] = 0;
-		$this->data['errors']     = array();
+		$this->data['errors'] = array();
 
 		/**
 		 * Filters the `wpdb` instances that are exposed to QM.
@@ -76,8 +76,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		if ( ! isset( $this->data['times'][ $caller ] ) ) {
 			$this->data['times'][ $caller ] = array(
 				'caller' => $caller,
-				'ltime'  => 0,
-				'types'  => array(),
+				'ltime' => 0,
+				'types' => array(),
 			);
 		}
 
@@ -100,13 +100,13 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			return;
 		}
 
-		$rows       = array();
-		$types      = array();
+		$rows = array();
+		$types = array();
 		$total_time = 0;
 		$has_result = false;
-		$has_trace  = false;
-		$i          = 0;
-		$request    = trim( $wp_the_query->request );
+		$has_trace = false;
+		$i = 0;
+		$request = trim( $wp_the_query->request );
 
 		if ( method_exists( $db, 'remove_placeholder_escape' ) ) {
 			$request = $db->remove_placeholder_escape( $request );
@@ -119,11 +119,11 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				continue;
 			}
 
-			$sql        = $query[0];
-			$ltime      = $query[1];
-			$stack      = $query[2];
-			$has_start  = isset( $query[3] );
-			$has_trace  = isset( $query['trace'] );
+			$sql = $query[0];
+			$ltime = $query[1];
+			$stack = $query[2];
+			$has_start = isset( $query[3] );
+			$has_trace = isset( $query['trace'] );
 			$has_result = isset( $query['result'] );
 
 			if ( $has_result ) {
@@ -136,18 +136,18 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 			if ( $has_trace ) {
 
-				$trace       = $query['trace'];
-				$component   = $query['trace']->get_component();
-				$caller      = $query['trace']->get_caller();
+				$trace = $query['trace'];
+				$component = $query['trace']->get_component();
+				$caller = $query['trace']->get_caller();
 				$caller_name = $caller['display'];
-				$caller      = $caller['display'];
+				$caller = $caller['display'];
 
 			} else {
 
-				$trace     = null;
+				$trace = null;
 				$component = null;
-				$callers   = explode( ',', $stack );
-				$caller    = trim( end( $callers ) );
+				$callers = explode( ',', $stack );
+				$caller = trim( end( $callers ) );
 
 				if ( false !== strpos( $caller, '(' ) ) {
 					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
@@ -156,7 +156,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				}
 			}
 
-			$sql  = trim( $sql );
+			$sql = trim( $sql );
 			$type = QM_Util::get_query_type( $sql );
 
 			$this->log_type( $type );
@@ -205,15 +205,15 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			// Fallback for displaying database errors when wp-content/db.php isn't in place
 			foreach ( $EZSQL_ERROR as $error ) {
 				$row = array(
-					'caller'      => null,
+					'caller' => null,
 					'caller_name' => null,
-					'stack'       => '',
-					'sql'         => $error['query'],
-					'ltime'       => 0,
-					'result'      => new WP_Error( 'qmdb', $error['error_str'] ),
-					'type'        => '',
-					'component'   => false,
-					'trace'       => null,
+					'stack' => '',
+					'sql' => $error['query'],
+					'ltime' => 0,
+					'result' => new WP_Error( 'qmdb', $error['error_str'] ),
+					'type' => '',
+					'component' => false,
+					'trace' => null,
 					'is_main_query' => false,
 				);
 				$this->data['errors'][] = $row;

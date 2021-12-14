@@ -52,24 +52,24 @@ class QM_Collector_Admin extends QM_Collector {
 			$this->data['base'] = $pagenow;
 		}
 
-		$this->data['pagenow']        = $pagenow;
-		$this->data['typenow']        = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
-		$this->data['taxnow']         = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
-		$this->data['hook_suffix']    = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
+		$this->data['pagenow'] = $pagenow;
+		$this->data['typenow'] = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
+		$this->data['taxnow'] = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
+		$this->data['hook_suffix'] = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
 		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
 
 		$screens = array(
-			'edit'            => true,
-			'edit-comments'   => true,
-			'edit-tags'       => true,
-			'link-manager'    => true,
-			'plugins'         => true,
+			'edit' => true,
+			'edit-comments' => true,
+			'edit-tags' => true,
+			'link-manager' => true,
+			'plugins' => true,
 			'plugins-network' => true,
-			'sites-network'   => true,
-			'themes-network'  => true,
-			'upload'          => true,
-			'users'           => true,
-			'users-network'   => true,
+			'sites-network' => true,
+			'themes-network' => true,
+			'upload' => true,
+			'users' => true,
+			'users-network' => true,
 		);
 
 		if ( ! empty( $this->data['current_screen'] ) && isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
@@ -103,9 +103,9 @@ class QM_Collector_Admin extends QM_Collector {
 			$list_table['sortables'] = $this->data['current_screen']['id'];
 
 			$this->data['list_table'] = array(
-				'columns_filter'   => "manage_{$list_table['columns']}_columns",
+				'columns_filter' => "manage_{$list_table['columns']}_columns",
 				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
-				'column_action'    => "manage_{$list_table['column']}_custom_column",
+				'column_action' => "manage_{$list_table['column']}_custom_column",
 			);
 
 			if ( ! empty( $wp_list_table ) ) {

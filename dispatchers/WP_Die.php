@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
-	public $id    = 'wp_die';
+	public $id = 'wp_die';
 	public $trace = null;
 
 	protected $outputters = array();
@@ -42,9 +42,9 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
 		$switched_locale = self::switch_to_locale( get_user_locale() );
-		$stack           = array();
-		$filtered_trace  = $this->trace->get_display_trace();
-		$component       = $this->trace->get_component();
+		$stack = array();
+		$filtered_trace = $this->trace->get_filtered_trace();
+		$component = $this->trace->get_component();
 
 		foreach ( $filtered_trace as $i => $item ) {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );

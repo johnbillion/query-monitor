@@ -32,7 +32,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 }
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-$qm_dir    = dirname( dirname( __FILE__ ) );
+$qm_dir = dirname( dirname( __FILE__ ) );
 $qm_plugin = "{$qm_dir}/classes/Plugin.php";
 
 if ( ! is_readable( $qm_plugin ) ) {
@@ -62,12 +62,12 @@ class QM_DB extends wpdb {
 	public $time_start;
 
 	public $qm_php_vars = array(
-		'max_execution_time'  => null,
-		'memory_limit'        => null,
+		'max_execution_time' => null,
+		'memory_limit' => null,
 		'upload_max_filesize' => null,
-		'post_max_size'       => null,
-		'display_errors'      => null,
-		'log_errors'          => null,
+		'post_max_size' => null,
+		'display_errors' => null,
+		'log_errors' => null,
 	);
 
 	/**
@@ -106,7 +106,7 @@ class QM_DB extends wpdb {
 		}
 
 		$result = parent::query( $query );
-		$i      = $this->num_queries - 1;
+		$i = $this->num_queries - 1;
 
 		if ( ! isset( $this->queries[ $i ] ) ) {
 			return $result;
