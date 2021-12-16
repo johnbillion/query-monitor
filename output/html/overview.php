@@ -249,10 +249,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '</section>';
 		}
 
-		if ( $cache ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
+		if ( $cache ) {
 			$cache_data = $cache->get_data();
 			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
 				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
@@ -268,10 +268,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 				) );
 				echo '</p>';
-			} else {
-				echo '<p>';
-				echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
-				echo '</p>';
 			}
 
 			if ( $cache_data['has_object_cache'] ) {
@@ -279,28 +275,59 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				printf(
 					'<a href="%s" class="qm-link">%s</a>',
 					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
-					esc_html__( 'External object cache in use', 'query-monitor' )
+					esc_html__( 'Persistent object cache plugin in use', 'query-monitor' )
 				);
 				echo '</span></p>';
 			} else {
-				echo '<p>';
-				echo esc_html__( 'External object cache not in use', 'query-monitor' );
-				echo '</p>';
+				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
+				echo '</span></p>';
 
 				$potentials = array_filter( $cache_data['object_cache_extensions'] );
 
 				if ( ! empty( $potentials ) ) {
 					foreach ( $potentials as $name => $value ) {
+						$url = sprintf(
+							'https://wordpress.org/plugins/search/%s/',
+							strtolower( $name )
+						);
 						echo '<p>';
-						echo esc_html( sprintf(
-							/* translators: %s: PHP extension name */
-							__( 'The %s extension for PHP is installed but is not in use by WordPress', 'query-monitor' ),
-							$name
-						) );
+						echo wp_kses(
+							sprintf(
+								/* translators: 1: PHP extension name, 2: URL to plugin directory */
+								__( 'The %1$s object cache extension for PHP is installed but is not in use by WordPress. You should <a href="%2$s" target="_blank" class="qm-external-link">install a %1$s plugin</a>.', 'query-monitor' ),
+								esc_html( $name ),
+								esc_url( $url )
+							),
+							array(
+								'a' => array(
+									'href' => array(),
+									'target' => array(),
+									'class' => array(),
+								),
+							)
+						);
 						echo '</p>';
 					}
+				} else {
+					echo '<p>';
+					echo esc_html__( 'Speak to your web host about enabling an object cache extension such as Redis or Memcached.', 'query-monitor' );
+					echo '</p>';
 				}
 			}
+		} else {
+			echo '<p>';
+			echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
+			echo '</p>';
+		}
+
+		echo '</section>';
+
+		if ( $cache ) {
+			$cache_data = $cache->get_data();
+
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
 
 			if ( $cache_data['has_opcode_cache'] ) {
 				foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
@@ -312,7 +339,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					) );
 					echo '</p>';
 				}
-			}
+			} else {
+				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo esc_html__( 'Opcode cache not in use', 'query-monitor' );
+				echo '</span></p>';
+				echo '<p>';
+				echo esc_html__( 'Speak to your web host about enabling an opcode cache such as OPcache.', 'query-monitor' );
+				echo '</p>';
+		}
 
 			echo '</section>';
 		}
