@@ -39,6 +39,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data['http'] ) ) {
+			/** @var int[] */
 			$statuses = array_keys( $data['types'] );
 			$components = wp_list_pluck( $data['component_times'], 'component' );
 
@@ -225,7 +226,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						printf(
 							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
 							esc_html( $value ),
-							esc_html( size_format( $row['info'][ $key ] ) )
+							esc_html( (string) size_format( $row['info'][ $key ] ) )
 						);
 					}
 

@@ -215,16 +215,16 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				foreach ( $db['variables'] as $setting ) {
 
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$key = $setting->Variable_name;
+					$key = (string) $setting->Variable_name;
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$val = $setting->Value;
+					$val = (string) $setting->Value;
 
 					$append = '';
 
 					if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
 							'&nbsp;<span class="qm-info">(~%s)</span>',
-							esc_html( size_format( $val ) )
+							esc_html( (string) size_format( $val ) )
 						);
 					}
 
