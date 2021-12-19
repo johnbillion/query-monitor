@@ -96,7 +96,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			foreach ( $parts as $filename => $display ) {
 				echo '<li>';
 
-				if ( is_numeric( $filename ) ) {
+				if ( is_int( $filename ) ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
 						esc_url( get_edit_post_link( $filename ) ),
