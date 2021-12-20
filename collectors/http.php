@@ -329,7 +329,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			if ( isset( $http['info'] ) ) {
 				if ( ! empty( $http['info']['url'] ) ) {
-					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
+					if ( remove_query_arg( rtrim( $http['url'], '/' ) ) !== remove_query_arg( rtrim( $http['info']['url'], '/' ) ) ) {
 						$http['redirected_to'] = $http['info']['url'];
 					}
 				}
