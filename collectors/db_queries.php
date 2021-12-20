@@ -143,19 +143,31 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$request = $db->remove_placeholder_escape( $request );
 		}
 
-		foreach ( (array) $db->queries as $query ) {
+		foreach ( $db->queries as $query ) {
+			$has_trace = false;
+			$has_result = false;
+
+			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
+				// WordPress.com VIP.
+				$sql = $query['query'];
+				$ltime = $query['elapsed'];
+				$stack = $query['debug'];
+			} else {
+				// Standard WP.
+				$sql = $query[0];
+				$ltime = $query[1];
+				$stack = $query[2];
+
+				// Query Monitor db.php drop-in.
+				$has_trace = isset( $query['trace'] );
+				$has_result = isset( $query['result'] );
+			}
 
 			// @TODO: decide what I want to do with this:
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( false !== strpos( $query[2], 'wp_admin_bar' ) && !isset( $_REQUEST['qm_display_admin_bar'] ) ) {
+			if ( false !== strpos( $stack, 'wp_admin_bar' ) && ! isset( $_REQUEST['qm_display_admin_bar'] ) ) {
 				continue;
 			}
-
-			$sql = $query[0];
-			$ltime = $query[1];
-			$stack = $query[2];
-			$has_trace = isset( $query['trace'] );
-			$has_result = isset( $query['result'] );
 
 			if ( $has_result ) {
 				$result = $query['result'];
