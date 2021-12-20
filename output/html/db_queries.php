@@ -354,6 +354,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$caller_name = self::output_filename( $row['caller'], $caller['calling_file'], $caller['calling_line'] );
 			$stack = array();
 			$filtered_trace = $row['trace']->get_filtered_trace();
+			array_shift( $filtered_trace );
 
 			foreach ( $filtered_trace as $frame ) {
 				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
@@ -368,6 +369,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			$stack = explode( ', ', $row['stack'] );
 			$stack = array_reverse( $stack );
+			array_shift( $stack );
 			$stack = array_map( function( $frame ) {
 				return '<code>' . esc_html( $frame ) . '</code>';
 			}, $stack );
