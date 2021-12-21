@@ -32,9 +32,21 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @var string|false|null
 	 */
 	private $display_errors = null;
+
+	/**
+	 * @var callable|null
+	 */
 	private $previous_error_handler = null;
+
+	/**
+	 * @var callable|null
+	 */
 	private $previous_exception_handler = null;
-	private static $unexpected_error;
+
+	/**
+	 * @var string|null
+	 */
+	private static $unexpected_error = null;
 
 	/**
 	 * @var bool

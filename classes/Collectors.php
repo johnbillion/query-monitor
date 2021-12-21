@@ -93,6 +93,9 @@ class QM_Collectors implements IteratorAggregate {
 		$this->processed = true;
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function cease() {
 		$collectors = self::init();
 

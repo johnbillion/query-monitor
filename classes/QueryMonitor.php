@@ -242,6 +242,9 @@ class QueryMonitor extends QM_Plugin {
 		return $caps;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_cease() {
 		// iterate collectors, call tear_down
 		// discard all collected data

@@ -43,6 +43,9 @@ class QM_Dispatchers implements IteratorAggregate {
 		return false;
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function cease() {
 		$dispatchers = self::init();
 
