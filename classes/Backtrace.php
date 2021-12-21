@@ -252,6 +252,8 @@ class QM_Backtrace {
 	}
 
 	/**
+	 * @deprecated Use the `::get_filtered_trace()` method instead.
+	 *
 	 * @return mixed[]
 	 */
 	public function get_display_trace() {
@@ -289,6 +291,8 @@ class QM_Backtrace {
 	}
 
 	/**
+	 * @deprecated Use the `ignore_class`, `ignore_method`, `ignore_func`, and `ignore_hook` arguments instead.
+	 *
 	 * @param int $num
 	 * @return self
 	 */
