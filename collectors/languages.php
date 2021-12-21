@@ -85,6 +85,10 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
+		if ( empty( $this->data['languages'] ) ) {
+			return;
+		}
+
 		$this->data['locale'] = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		ksort( $this->data['languages'] );

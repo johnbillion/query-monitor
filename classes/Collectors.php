@@ -99,6 +99,8 @@ class QM_Collectors implements IteratorAggregate {
 	public static function cease() {
 		$collectors = self::init();
 
+		$collectors->processed = true;
+
 		/** @var QM_Collector $collector */
 		foreach ( $collectors as $collector ) {
 			$collector->tear_down();
