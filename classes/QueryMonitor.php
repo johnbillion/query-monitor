@@ -11,17 +11,17 @@ class QueryMonitor extends QM_Plugin {
 
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
-		add_action( 'init',           array( $this, 'action_init' ) );
-		add_action( 'members_register_caps',       array( $this, 'action_register_members_caps' ) );
+		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'members_register_caps', array( $this, 'action_register_members_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
 		add_action( 'qm/cease', array( $this, 'action_cease' ) );
 
 		# Filters
-		add_filter( 'user_has_cap',   array( $this, 'filter_user_has_cap' ), 10, 4 );
-		add_filter( 'ure_built_in_wp_caps',         array( $this, 'filter_ure_caps' ) );
+		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 4 );
+		add_filter( 'ure_built_in_wp_caps', array( $this, 'filter_ure_caps' ) );
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
-		add_filter( 'plugin_action_links_query-monitor/query-monitor.php',               array( $this, 'filter_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
 
 		# Parent setup:
@@ -47,6 +47,10 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
+	/**
+	 * @param array<string, string> $actions
+	 * @return array<string, string>
+	 */
 	public function filter_plugin_action_links( array $actions ) {
 		return array_merge( array(
 			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
@@ -86,7 +90,7 @@ class QueryMonitor extends QM_Plugin {
 	 * @param bool[]   $user_caps     Array of key/value pairs where keys represent a capability name and boolean values
 	 *                                represent whether the user has that capability.
 	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type string    $0 Requested capability.
@@ -112,6 +116,9 @@ class QueryMonitor extends QM_Plugin {
 		return $user_caps;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_plugins_loaded() {
 		// Hide QM itself from output by default:
 		if ( ! defined( 'QM_HIDE_SELF' ) ) {
@@ -149,10 +156,16 @@ class QueryMonitor extends QM_Plugin {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_init() {
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function symlink_warning() {
 		$db = WP_CONTENT_DIR . '/db.php';
 		trigger_error( sprintf(
@@ -166,6 +179,8 @@ class QueryMonitor extends QM_Plugin {
 	 * Registers the Query Monitor user capability group for the Members plugin.
 	 *
 	 * @link https://wordpress.org/plugins/members/
+	 *
+	 * @return void
 	 */
 	public function action_register_members_groups() {
 		members_register_cap_group( 'query_monitor', array(
@@ -182,6 +197,8 @@ class QueryMonitor extends QM_Plugin {
 	 * Registers the View Query Monitor user capability for the Members plugin.
 	 *
 	 * @link https://wordpress.org/plugins/members/
+	 *
+	 * @return void
 	 */
 	public function action_register_members_caps() {
 		members_register_cap( 'view_query_monitor', array(
@@ -195,8 +212,8 @@ class QueryMonitor extends QM_Plugin {
 	 *
 	 * @link https://wordpress.org/plugins/user-role-editor/
 	 *
-	 * @param array[] $groups Array of existing groups.
-	 * @return array[] Updated array of groups.
+	 * @param array<string, array<string, mixed>> $groups Array of existing groups.
+	 * @return array<string, array<string, mixed>> Updated array of groups.
 	 */
 	public function filter_ure_groups( array $groups ) {
 		$groups['query_monitor'] = array(
@@ -213,8 +230,8 @@ class QueryMonitor extends QM_Plugin {
 	 *
 	 * @link https://wordpress.org/plugins/user-role-editor/
 	 *
-	 * @param array[] $caps Array of existing capabilities.
-	 * @return array[] Updated array of capabilities.
+	 * @param array<string, array<string, mixed>> $caps Array of existing capabilities.
+	 * @return array<string, array<string, mixed>> Updated array of capabilities.
 	 */
 	public function filter_ure_caps( array $caps ) {
 		$caps['view_query_monitor'] = array(
@@ -238,6 +255,10 @@ class QueryMonitor extends QM_Plugin {
 		// remove this action from itself?
 	}
 
+	/**
+	 * @param string $file
+	 * @return self
+	 */
 	public static function init( $file = null ) {
 
 		static $instance = null;

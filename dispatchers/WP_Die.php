@@ -11,10 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'wp_die';
-	public $trace = null;
 
-	protected $outputters = array();
+	/**
+	 * @var QM_Backtrace|null
+	 */
+	public $trace = null;
 
 	public function __construct( QM_Plugin $qm ) {
 		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
@@ -24,6 +29,10 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		parent::__construct( $qm );
 	}
 
+	/**
+	 * @param callable $handler
+	 * @return callable
+	 */
 	public function filter_wp_die_handler( $handler ) {
 		$this->trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
@@ -34,6 +43,9 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		return $handler;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function dispatch() {
 		if ( ! $this->should_dispatch() ) {
 			return;
@@ -111,7 +123,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<p>';
 		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
 
-		if ( $component ) {
+		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
@@ -136,6 +148,9 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 		if ( ! $this->trace ) {
 			return false;
@@ -150,6 +165,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_wp_die( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['wp_die'] = new QM_Dispatcher_WP_Die( $qm );
 	return $dispatchers;

@@ -22,6 +22,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -36,6 +39,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 		parent::init();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function dispatch() {
 
 		if ( ! $this->should_dispatch() ) {
@@ -52,6 +58,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
@@ -61,6 +70,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_output() {
 
 		# flush once, because we're nice
@@ -70,6 +82,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 
 		if ( ! QM_Util::is_ajax() ) {
@@ -102,6 +117,11 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_ajax( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['ajax'] = new QM_Dispatcher_AJAX( $qm );
 	return $dispatchers;

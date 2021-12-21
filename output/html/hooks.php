@@ -23,10 +23,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Hooks & Actions', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -61,6 +67,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, mixed[]> $hooks
+	 * @return void
+	 */
 	public static function output_hook_table( array $hooks ) {
 		$core = __( 'WordPress Core', 'query-monitor' );
 
@@ -198,6 +208,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'hooks' );
 	if ( $collector ) {

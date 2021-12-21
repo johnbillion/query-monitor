@@ -11,7 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_Environment extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'environment';
+
+	/**
+	 * @var array<int, string>
+	 */
 	protected $php_vars = array(
 		'max_execution_time',
 		'memory_limit',
@@ -41,6 +48,10 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
+	/**
+	 * @param int $error_reporting
+	 * @return array<string, bool>
+	 */
 	protected static function get_error_levels( $error_reporting ) {
 		$levels = array(
 			'E_ERROR' => false,
@@ -73,6 +84,9 @@ class QM_Collector_Environment extends QM_Collector {
 		return $levels;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $wp_version;
@@ -107,12 +121,15 @@ class QM_Collector_Environment extends QM_Collector {
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 				" );
 
-				if ( is_resource( $db->dbh ) ) {
+				/** @var mysqli|resource|false|null $dbh */
+				$dbh = $db->dbh;
+
+				if ( is_resource( $dbh ) ) {
 					# Old mysql extension
 					$extension = 'mysql';
-				} elseif ( is_object( $db->dbh ) ) {
+				} elseif ( is_object( $dbh ) ) {
 					# mysqli or PDO
-					$extension = get_class( $db->dbh );
+					$extension = get_class( $dbh );
 				} else {
 					# Who knows?
 					$extension = null;
@@ -120,7 +137,7 @@ class QM_Collector_Environment extends QM_Collector {
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
 					$client = mysqli_get_client_version();
-					$info = mysqli_get_server_info( $db->dbh );
+					$info = mysqli_get_server_info( $dbh );
 				} else {
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
 					// phpcs:ignore
@@ -131,7 +148,7 @@ class QM_Collector_Environment extends QM_Collector {
 					}
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
 					// phpcs:ignore
-					$info = mysql_get_server_info( $db->dbh );
+					$info = mysql_get_server_info( $dbh );
 				}
 
 				if ( $client ) {
@@ -166,7 +183,7 @@ class QM_Collector_Environment extends QM_Collector {
 		$this->data['php']['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$this->data['php']['old'] = version_compare( $this->data['php']['version'], 7.3, '<' );
+		$this->data['php']['old'] = version_compare( $this->data['php']['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
 			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
@@ -179,7 +196,7 @@ class QM_Collector_Environment extends QM_Collector {
 			$sort_flags = SORT_STRING;
 		}
 
-		if ( is_callable( 'get_loaded_extensions' ) ) {
+		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, $sort_flags );
 			$this->data['php']['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
@@ -248,6 +265,10 @@ class QM_Collector_Environment extends QM_Collector {
 
 	}
 
+	/**
+	 * @param string $extension
+	 * @return string
+	 */
 	public function get_extension_version( $extension ) {
 		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
 		// crap to their version number, so we need to pluck out the first numeric value in the string.
@@ -269,6 +290,10 @@ class QM_Collector_Environment extends QM_Collector {
 		return $version;
 	}
 
+	/**
+	 * @param wpdb $db
+	 * @return string
+	 */
 	protected static function get_server_version( wpdb $db ) {
 		$version = null;
 
@@ -287,6 +312,9 @@ class QM_Collector_Environment extends QM_Collector {
 		return $version;
 	}
 
+	/**
+	 * @return string
+	 */
 	protected static function get_current_user() {
 
 		$php_u = null;
@@ -328,6 +356,11 @@ class QM_Collector_Environment extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_environment( array $collectors, QueryMonitor $qm ) {
 	$collectors['environment'] = new QM_Collector_Environment();
 	return $collectors;

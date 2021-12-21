@@ -13,6 +13,9 @@ class QM_Collector_Cache extends QM_Collector {
 
 	public $id = 'cache';
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		global $wp_object_cache;
 
@@ -100,6 +103,11 @@ class QM_Collector_Cache extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_cache( array $collectors, QueryMonitor $qm ) {
 	$collectors['cache'] = new QM_Collector_Cache();
 	return $collectors;

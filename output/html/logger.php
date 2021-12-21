@@ -24,10 +24,16 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Logger', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -164,6 +170,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 		$data = $this->collector->get_data();
 
@@ -181,6 +191,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		return $class;
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$data = $this->collector->get_data();
 		$key = 'log';
@@ -215,6 +229,11 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_logger( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'logger' );
 	if ( $collector ) {

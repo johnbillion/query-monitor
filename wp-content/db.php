@@ -61,6 +61,9 @@ class QM_DB extends wpdb {
 	 */
 	public $time_start;
 
+	/**
+	 * @var array<string, string|null>
+	 */
 	public $qm_php_vars = array(
 		'max_execution_time' => null,
 		'memory_limit' => null,
@@ -93,14 +96,6 @@ class QM_DB extends wpdb {
 	 *                  affected/selected for all other queries. Boolean false on error.
 	 */
 	public function query( $query ) {
-		if ( ! $this->ready ) {
-			if ( isset( $this->check_current_query ) ) {
-				// This property was introduced in WP 4.2
-				$this->check_current_query = true;
-			}
-			return false;
-		}
-
 		if ( $this->show_errors ) {
 			$this->hide_errors();
 		}

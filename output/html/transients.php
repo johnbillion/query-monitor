@@ -23,10 +23,16 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 100 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Transients', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -127,6 +133,10 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
@@ -149,6 +159,11 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_transients( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'transients' );
 	if ( $collector ) {

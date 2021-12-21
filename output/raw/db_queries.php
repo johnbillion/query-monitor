@@ -14,12 +14,21 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 */
 	protected $collector;
 
+	/**
+	 * @var int
+	 */
 	public $query_row = 0;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Database Queries', 'query-monitor' );
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 		$output = array();
 		$data = $this->collector->get_data();
@@ -61,6 +70,17 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		return $output;
 	}
 
+	/**
+	 * @param string $name
+	 * @param stdClass $db
+	 * @param mixed[] $data
+	 * @return array
+	 * @phpstan-return array{
+	 *   total: int,
+	 *   time: float,
+	 *   queries: mixed[],
+	 * }|array{}
+	 */
 	protected function output_queries( $name, stdClass $db, array $data ) {
 		$this->query_row = 0;
 
@@ -81,6 +101,10 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		);
 	}
 
+	/**
+	 * @param array<string, mixed> $row
+	 * @return array<string, mixed>
+	 */
 	protected function output_query_row( array $row ) {
 		$output = array();
 
@@ -96,8 +120,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 				$stack[] = $item['display'];
 			}
 		} else {
-			$stack = explode( ', ', $row['stack'] );
-			$stack = array_reverse( $stack );
+			$stack = $row['stack'];
 		}
 
 		$output['stack'] = $stack;
@@ -107,6 +130,11 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_raw_db_queries( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'db_queries' );
 	if ( $collector ) {

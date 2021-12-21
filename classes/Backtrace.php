@@ -12,14 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'QM_Backtrace' ) ) {
 class QM_Backtrace {
 
+	/**
+	 * @var array<string, bool>
+	 */
 	protected static $ignore_class = array(
 		'wpdb' => true,
+		'hyperdb' => true,
 		'QueryMonitor' => true,
 		'W3_Db' => true,
 		'Debug_Bar_PHP' => true,
 		'WP_Hook' => true,
 	);
+
+	/**
+	 * @var array<string, bool>
+	 */
 	protected static $ignore_method = array();
+
+	/**
+	 * @var array<string, bool>
+	 */
 	protected static $ignore_func = array(
 		'include_once' => true,
 		'require_once' => true,
@@ -34,6 +46,11 @@ class QM_Backtrace {
 		'_deprecated_function' => true,
 		'dbDelta' => true,
 	);
+
+	/**
+	 * @var array<string, int|string>
+	 * @phpstan-var array<string, positive-int|'dir'>
+	 */
 	protected static $show_args = array(
 		'do_action' => 1,
 		'apply_filters' => 1,
@@ -55,16 +72,51 @@ class QM_Backtrace {
 		'current_user_can_for_blog' => 4,
 		'author_can' => 4,
 	);
+
+	/**
+	 * @var array<string, bool>
+	 */
 	protected static $ignore_hook = array();
+
+	/**
+	 * @var bool
+	 */
 	protected static $filtered = false;
+
+	/**
+	 * @var array<string, mixed[]>
+	 */
 	protected $args = array();
+
+	/**
+	 * @var mixed[]|null
+	 */
 	protected $trace = null;
+
+	/**
+	 * @var mixed[]|null
+	 */
 	protected $filtered_trace = null;
+
+	/**
+	 * @var int
+	 */
 	protected $calling_line = 0;
+
+	/**
+	 * @var string
+	 */
 	protected $calling_file = '';
 
+	/**
+	 * @var stdClass|null
+	 */
 	protected $component = null;
 
+	/**
+	 * @param array<string, mixed[]> $args
+	 * @param mixed[] $trace
+	 */
 	public function __construct( array $args = array(), array $trace = null ) {
 		$this->trace = ( null === $trace ) ? debug_backtrace( false ) : $trace;
 
@@ -96,6 +148,9 @@ class QM_Backtrace {
 		}
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_stack() {
 
 		$trace = $this->get_filtered_trace();
@@ -105,6 +160,9 @@ class QM_Backtrace {
 
 	}
 
+	/**
+	 * @return mixed[]
+	 */
 	public function get_caller() {
 
 		$trace = $this->get_filtered_trace();
@@ -113,6 +171,9 @@ class QM_Backtrace {
 
 	}
 
+	/**
+	 * @return stdClass
+	 */
 	public function get_component() {
 		if ( isset( $this->component ) ) {
 			return $this->component;
@@ -142,14 +203,17 @@ class QM_Backtrace {
 			}
 		}
 
-		# This should not happen
-
+		return (object) array(
+			'type' => 'unknown',
+			'name' => __( 'Unknown', 'query-monitor' ),
+			'context' => 'unknown',
+		);
 	}
 
 	/**
 	 * Attempts to determine the component responsible for a given frame.
 	 *
-	 * @param array $frame A single frame from a trace.
+	 * @param mixed[] $frame A single frame from a trace.
 	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
 	 *                       the component cannot be determined.
 	 */
@@ -181,14 +245,25 @@ class QM_Backtrace {
 		}
 	}
 
+	/**
+	 * @return mixed[]
+	 */
 	public function get_trace() {
 		return $this->trace;
 	}
 
+	/**
+	 * @deprecated Use the `::get_filtered_trace()` method instead.
+	 *
+	 * @return mixed[]
+	 */
 	public function get_display_trace() {
 		return $this->get_filtered_trace();
 	}
 
+	/**
+	 * @return mixed[]
+	 */
 	public function get_filtered_trace() {
 
 		if ( ! isset( $this->filtered_trace ) ) {
@@ -216,6 +291,53 @@ class QM_Backtrace {
 
 	}
 
+	/**
+	 * @param array<int, string> $stack
+	 * @return array<int, string>
+	 */
+	public static function get_filtered_stack( array $stack ) {
+		$trace = new self( array(), array() );
+		$return = array();
+
+		foreach ( $stack as $i => $item ) {
+			$frame = array(
+				'function' => $item,
+			);
+
+			if ( false !== strpos( $item, '->' ) ) {
+				list( $class, $function ) = explode( '->', $item );
+				$frame = array(
+					'class' => $class,
+					'type' => '->',
+					'function' => $function,
+				);
+			}
+
+			if ( false !== strpos( $item, '::' ) ) {
+				list( $class, $function ) = explode( '::', $item );
+				$frame = array(
+					'class' => $class,
+					'type' => '::',
+					'function' => $function,
+				);
+			}
+
+			$frame['args'] = array();
+
+			if ( $trace->filter_trace( $frame ) ) {
+				$return[] = $item;
+			}
+		}
+
+		return $return;
+	}
+
+	/**
+	 * @deprecated Use the `ignore_class`, `ignore_method`, `ignore_func`, and `ignore_hook` arguments instead.
+	 *
+	 * @param int $num
+	 * @return self
+	 */
 	public function ignore( $num ) {
 		for ( $i = 0; $i < $num; $i++ ) {
 			unset( $this->trace[ $i ] );
@@ -224,6 +346,10 @@ class QM_Backtrace {
 		return $this;
 	}
 
+	/**
+	 * @param mixed[] $frame
+	 * @return mixed[]|null
+	 */
 	public function filter_trace( array $frame ) {
 
 		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
@@ -324,7 +450,7 @@ class QM_Backtrace {
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
-					if ( isset( $hook_functions[ $frame['function'] ] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
+					if ( isset( $hook_functions[ $frame['function'] ] ) && isset( $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
 						$return = null;
 					} else {
 						$args = array();

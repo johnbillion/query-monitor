@@ -18,6 +18,9 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 	 */
 	protected $collector;
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 
 		$data = $this->collector->get_data();
@@ -34,6 +37,11 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_headers_redirects( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'redirects' );
 	if ( $collector ) {

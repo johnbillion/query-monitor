@@ -13,9 +13,24 @@ define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | 
 
 class QM_Collector_PHP_Errors extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'php_errors';
+
+	/**
+	 * @var array<string, array<string, string>>
+	 */
 	public $types = array();
+
+	/**
+	 * @var int|null
+	 */
 	private $error_reporting = null;
+
+	/**
+	 * @var string|false|null
+	 */
 	private $display_errors = null;
 	private $previous_error_handler = null;
 	private $previous_exception_handler = null;
@@ -49,7 +64,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors = ini_get( 'display_errors' );
-		ini_set( 'display_errors', 0 );
+		ini_set( 'display_errors', '0' );
 
 		if ( $prior_error ) {
 			$this->error_handler(
@@ -94,6 +109,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * In PHP < 7 it will receive an Exception object.
 	 *
 	 * @param Throwable|Exception $e The error or exception.
+	 * @return void
 	 */
 	public function exception_handler( $e ) {
 		if ( is_a( $e, 'Exception' ) ) {
@@ -124,18 +140,28 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		exit( 1 );
 	}
 
+	/**
+	 * @param int     $errno    The error number.
+	 * @param string  $message  The error message.
+	 * @param string  $file     The file location.
+	 * @param int     $line     The line number.
+	 * @param mixed[] $context  The context being passed.
+	 * @param bool    $do_trace Whether a stack trace should be included in the logged error data.
+	 * @return bool
+	 */
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
+		$type = null;
 
 		/**
 		 * Fires before logging the PHP error in Query Monitor.
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param int         $errno   The error number.
-		 * @param string      $message The error message.
-		 * @param string|null $file    The file location.
-		 * @param string|null $line    The line number.
-		 * @param string|null $context The context being passed.
+		 * @param int          $errno   The error number.
+		 * @param string       $message The error message.
+		 * @param string|null  $file    The file location.
+		 * @param int|null     $line    The line number.
+		 * @param mixed[]|null $context The context being passed.
 		 */
 		do_action( 'qm/collect/new_php_error', $errno, $message, $file, $line, $context );
 
@@ -160,10 +186,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				$type = 'deprecated';
 				break;
 
-			default:
-				return false;
-				break;
+		}
 
+		if ( null === $type ) {
+			return false;
 		}
 
 		if ( ! class_exists( 'QM_Backtrace' ) ) {
@@ -229,6 +255,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	/**
 	 * Displays fatal error output for sites running PHP < 7.
+	 *
+	 * @return void
 	 */
 	public function shutdown_handler() {
 
@@ -247,6 +275,18 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		$this->output_fatal( $error, $e );
 	}
 
+	/**
+	 * @param string $error
+	 * @param mixed[] $e
+	 * @phpstan-param array{
+	 *   message: string,
+	 *   file: string,
+	 *   line: int,
+	 *   type?: int,
+	 *   trace?: mixed|null,
+	 * } $e
+	 * @return void
+	 */
 	protected function output_fatal( $error, array $e ) {
 		$dispatcher = QM_Dispatchers::get( 'html' );
 
@@ -287,7 +327,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
 			esc_attr( $e['message'] ),
 			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
-			esc_attr( $e['line'] )
+			intval( $e['line'] )
 		);
 
 		echo '<div class="qm-fatal-wrap">';
@@ -334,6 +374,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 *
 	 * Any unreportable errors are placed in the data->filtered_errors
 	 * property.
+	 *
+	 * @return void
 	 */
 	public function process() {
 		$this->types = array(
@@ -395,7 +437,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param int[] $levels The error levels used for each component.
+			 * @param array<string,array<string,int>> $levels The error levels used for each component.
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
@@ -437,6 +479,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 *
 	 * @param int[]  $components     The error levels keyed by component name.
 	 * @param string $component_type The component type, for example 'plugin' or 'theme'.
+	 * @return void
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {
 		$all_errors = $this->data['errors'];
@@ -499,25 +542,26 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * If the `$flag` is null, all errors are assumed to be
 	 * reportable by default.
 	 *
-	 * @param int $error_no The errno from PHP
-	 * @param int $flags The config flags specified by users
+	 * @param int      $error_no The errno from PHP
+	 * @param int|null $flags The config flags specified by users
 	 * @return bool Whether the error is reportable.
 	 */
 	public function is_reportable_error( $error_no, $flags ) {
-		if ( ! is_null( $flags ) ) {
-			$result = $error_no & $flags;
-		} else {
-			$result = 1;
+		$result = true;
+
+		if ( null !== $flags ) {
+			$result = (bool) ( $error_no & $flags );
 		}
 
-		return (bool) $result;
+		return $result;
 	}
 
 	/**
 	 * For testing purposes only. Sets the errors property manually.
 	 * Needed to test the filter since the data property is protected.
 	 *
-	 * @param array $errors The list of errors
+	 * @param array<string, mixed> $errors The list of errors
+	 * @return void
 	 */
 	public function set_php_errors( $errors ) {
 		$this->data['errors'] = $errors;

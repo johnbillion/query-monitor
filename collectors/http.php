@@ -11,8 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_HTTP extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'http';
+
+	/**
+	 * @var string|null
+	 */
 	private $transport = null;
+
+	/**
+	 * @var mixed|null
+	 */
 	private $info = null;
 
 	public function __construct() {
@@ -20,13 +31,13 @@ class QM_Collector_HTTP extends QM_Collector {
 		parent::__construct();
 
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999, 2 );
-		add_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 9999, 3 );
-		add_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 9999, 5 );
+		add_filter( 'pre_http_request', array( $this, 'filter_pre_http_request' ), 9999, 3 );
+		add_action( 'http_api_debug', array( $this, 'action_http_api_debug' ), 9999, 5 );
 
-		add_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 9999 );
-		add_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 9999, 2 );
+		add_action( 'requests-curl.before_request', array( $this, 'action_curl_before_request' ), 9999 );
+		add_action( 'requests-curl.after_request', array( $this, 'action_curl_after_request' ), 9999, 2 );
 		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
-		add_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 9999, 2 );
+		add_action( 'requests-fsockopen.after_request', array( $this, 'action_fsockopen_after_request' ), 9999, 2 );
 
 	}
 
@@ -43,6 +54,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		$actions = array(
 			'http_api_curl',
@@ -76,6 +90,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		return $actions;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
@@ -89,6 +106,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'WP_PROXY_HOST',
@@ -106,9 +126,9 @@ class QM_Collector_HTTP extends QM_Collector {
 	 *
 	 * Used to log the request, and to add the logging key to the arguments array.
 	 *
-	 * @param  array  $args HTTP request arguments.
-	 * @param  string $url  The request URL.
-	 * @return array        HTTP request arguments.
+	 * @param  array<string, mixed> $args HTTP request arguments.
+	 * @param  string               $url  The request URL.
+	 * @return array<string, mixed> HTTP request arguments.
 	 */
 	public function filter_http_request_args( array $args, $url ) {
 		$trace = new QM_Backtrace( array(
@@ -162,10 +182,10 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
-	 * @param bool|array|WP_Error $response The preemptive HTTP response. Default false.
-	 * @param array               $args     HTTP request arguments.
-	 * @param string              $url      The request URL.
-	 * @return bool|array|WP_Error          The preemptive HTTP response.
+	 * @param bool|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
+	 * @param array<string, mixed>  $args     HTTP request arguments.
+	 * @param string                $url      The request URL.
+	 * @return bool|mixed[]|WP_Error The preemptive HTTP response.
 	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
 
@@ -183,11 +203,12 @@ class QM_Collector_HTTP extends QM_Collector {
 	/**
 	 * Debugging action for the HTTP API.
 	 *
-	 * @param mixed  $response A parameter which varies depending on $action.
-	 * @param string $action   The debug action. Currently one of 'response' or 'transports_list'.
-	 * @param string $class    The HTTP transport class name.
-	 * @param array  $args     HTTP request arguments.
-	 * @param string $url      The request URL.
+	 * @param mixed                $response A parameter which varies depending on $action.
+	 * @param string               $action   The debug action. Currently one of 'response' or 'transports_list'.
+	 * @param string               $class    The HTTP transport class name.
+	 * @param array<string, mixed> $args     HTTP request arguments.
+	 * @param string               $url      The request URL.
+	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
 
@@ -212,18 +233,34 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_curl_before_request() {
 		$this->transport = 'curl';
 	}
 
+	/**
+	 * @param mixed $headers
+	 * @param mixed[] $info
+	 * @return void
+	 */
 	public function action_curl_after_request( $headers, array $info = null ) {
 		$this->info = $info;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_fsockopen_before_request() {
 		$this->transport = 'fsockopen';
 	}
 
+	/**
+	 * @param mixed $headers
+	 * @param mixed[] $info
+	 * @return void
+	 */
 	public function action_fsockopen_after_request( $headers, array $info = null ) {
 		$this->info = $info;
 	}
@@ -231,9 +268,10 @@ class QM_Collector_HTTP extends QM_Collector {
 	/**
 	 * Log an HTTP response.
 	 *
-	 * @param array|WP_Error $response The HTTP response.
-	 * @param array          $args     HTTP request arguments.
-	 * @param string         $url      The request URL.
+	 * @param mixed[]|WP_Error     $response The HTTP response.
+	 * @param array<string, mixed> $args     HTTP request arguments.
+	 * @param string               $url      The request URL.
+	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url ) {
 		$this->data['http'][ $args['_qm_key'] ]['end'] = microtime( true );
@@ -254,6 +292,9 @@ class QM_Collector_HTTP extends QM_Collector {
 		$this->transport = null;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$this->data['ltime'] = 0;
 
@@ -301,7 +342,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			if ( isset( $http['info'] ) ) {
 				if ( ! empty( $http['info']['url'] ) ) {
-					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
+					if ( remove_query_arg( rtrim( $http['url'], '/' ) ) !== remove_query_arg( rtrim( $http['info']['url'], '/' ) ) ) {
 						$http['redirected_to'] = $http['info']['url'];
 					}
 				}

@@ -23,6 +23,9 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 200 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		$title = $this->collector->get_panel()->title();
 
@@ -33,6 +36,9 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$target = sanitize_html_class( get_class( $this->collector->get_panel() ) );
 
@@ -73,6 +79,11 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_debug_bar( array $output, QM_Collectors $collectors ) {
 	global $debug_bar;
 

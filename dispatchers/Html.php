@@ -14,35 +14,52 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * Outputter instances.
 	 *
-	 * @var QM_Output_Html[] Array of outputters.
+	 * @var array<string, QM_Output_Html> Array of outputters.
 	 */
 	protected $outputters = array();
 
+	/**
+	 * @var string
+	 */
 	public $id = 'html';
+
+	/**
+	 * @var bool
+	 */
 	public $did_footer = false;
 
+	/**
+	 * @var array<string, mixed[]>
+	 */
 	protected $admin_bar_menu = array();
+
+	/**
+	 * @var array<string, mixed[]>
+	 */
 	protected $panel_menu = array();
 
 	public function __construct( QM_Plugin $qm ) {
 
-		add_action( 'admin_bar_menu',             array( $this, 'action_admin_bar_menu' ), 999 );
-		add_action( 'wp_ajax_qm_auth_on',         array( $this, 'ajax_on' ) );
-		add_action( 'wp_ajax_qm_auth_off',        array( $this, 'ajax_off' ) );
-		add_action( 'wp_ajax_qm_editor_set',      array( $this, 'ajax_editor_set' ) );
+		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
+		add_action( 'wp_ajax_qm_auth_on', array( $this, 'ajax_on' ) );
+		add_action( 'wp_ajax_qm_auth_off', array( $this, 'ajax_off' ) );
+		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
-		add_action( 'shutdown',                   array( $this, 'dispatch' ), 0 );
+		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
 
-		add_action( 'wp_footer',                  array( $this, 'action_footer' ) );
-		add_action( 'admin_footer',               array( $this, 'action_footer' ) );
-		add_action( 'login_footer',               array( $this, 'action_footer' ) );
-		add_action( 'gp_footer',                  array( $this, 'action_footer' ) );
+		add_action( 'wp_footer', array( $this, 'action_footer' ) );
+		add_action( 'admin_footer', array( $this, 'action_footer' ) );
+		add_action( 'login_footer', array( $this, 'action_footer' ) );
+		add_action( 'gp_footer', array( $this, 'action_footer' ) );
 
 		parent::__construct( $qm );
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_footer() {
 		$this->did_footer = true;
 	}
@@ -56,6 +73,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		return ( is_ssl() && ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) ) );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ajax_on() {
 
 		if ( ! current_user_can( 'view_query_monitor' ) || ! check_ajax_referer( 'qm-auth-on', 'nonce', false ) ) {
@@ -72,6 +92,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ajax_off() {
 
 		if ( ! self::user_verified() || ! check_ajax_referer( 'qm-auth-off', 'nonce', false ) ) {
@@ -86,6 +109,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ajax_editor_set() {
 
 		if ( ! current_user_can( 'view_query_monitor' ) || ! check_ajax_referer( 'qm-editor-set', 'nonce', false ) ) {
@@ -102,6 +128,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @param WP_Admin_Bar $wp_admin_bar
+	 * @return void
+	 */
 	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
 
 		if ( ! self::user_can_view() ) {
@@ -125,6 +155,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -139,16 +172,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
 
-		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_assets' ), -9999 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -9999 );
 
-		add_action( 'gp_head',                array( $this, 'manually_print_assets' ), 11 );
+		add_action( 'gp_head', array( $this, 'manually_print_assets' ), 11 );
 
 		parent::init();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function manually_print_assets() {
 		wp_print_scripts( array(
 			'query-monitor',
@@ -158,6 +194,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		) );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function build_warning() {
 		printf(
 			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
@@ -173,6 +212,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function enqueue_assets() {
 		global $wp_locale;
 
@@ -233,6 +275,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		do_action( 'qm/output/enqueued-assets', $this );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function dispatch() {
 
 		if ( ! $this->should_dispatch() ) {
@@ -268,6 +313,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
@@ -404,6 +452,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @param string $id
+	 * @param mixed[] $menu
+	 * @return void
+	 */
 	protected function do_panel_menu_item( $id, array $menu ) {
 		printf(
 			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
@@ -422,6 +475,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</li>';
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_output() {
 
 		$state = self::user_verified() ? 'on' : 'off';
@@ -635,6 +691,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @param mixed $var
+	 * @return int|Exception
+	 */
 	public static function size( $var ) {
 		$start_memory = memory_get_usage();
 
@@ -647,6 +707,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		return memory_get_usage() - $start_memory - ( PHP_INT_SIZE * 8 );
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function js_admin_bar_menu() {
 
 		/**
@@ -694,6 +757,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function request_supported() {
 		// Don't dispatch if this is an async request and not a customizer preview:
 		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
@@ -708,6 +774,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		return true;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {
@@ -744,6 +813,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_html( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['html'] = new QM_Dispatcher_Html( $qm );
 	return $dispatchers;

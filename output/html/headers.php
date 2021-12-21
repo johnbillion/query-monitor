@@ -34,11 +34,17 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		return __( 'Request Data', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$this->output_request();
 		$this->output_response();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output_request() {
 		$data = $this->collector->get_data();
 
@@ -49,6 +55,9 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output_response() {
 		$data = $this->collector->get_data();
 		$id = sprintf( 'qm-%s-response', $this->collector->id );
@@ -60,6 +69,11 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, string> $headers
+	 * @param string $title
+	 * @return void
+	 */
 	protected function output_header_table( array $headers, $title ) {
 		echo '<thead>';
 		echo '<tr>';
@@ -89,6 +103,10 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 		echo '</tfoot>';
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		if ( ! isset( $menu['qm-request'] ) ) {
 			return $menu;
@@ -110,6 +128,11 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_headers( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'raw_request' );
 	if ( $collector ) {

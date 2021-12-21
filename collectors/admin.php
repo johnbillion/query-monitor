@@ -13,6 +13,9 @@ class QM_Collector_Admin extends QM_Collector {
 
 	public $id = 'response';
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
@@ -29,6 +32,9 @@ class QM_Collector_Admin extends QM_Collector {
 		return $actions;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		$filters = array();
 
@@ -40,6 +46,9 @@ class QM_Collector_Admin extends QM_Collector {
 		return $filters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $pagenow, $wp_list_table;
@@ -117,6 +126,11 @@ class QM_Collector_Admin extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
 	$collectors['response'] = new QM_Collector_Admin();
 	return $collectors;

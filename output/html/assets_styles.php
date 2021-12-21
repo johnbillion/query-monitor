@@ -18,10 +18,16 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Styles', 'query-monitor' );
 	}
 
+	/**
+	 * @return array<string, string>
+	 */
 	public function get_type_labels() {
 		return array(
 			/* translators: %s: Total number of enqueued styles */
@@ -35,6 +41,11 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_assets_styles( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'assets_styles' );
 	if ( $collector ) {

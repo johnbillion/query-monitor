@@ -8,14 +8,37 @@
 if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
+	/**
+	 * @var array<string, stdClass>
+	 */
 	protected static $file_components = array();
+
+	/**
+	 * @var array<string, string|null>
+	 */
 	protected static $file_dirs = array();
+
+	/**
+	 * @var string|null
+	 */
 	protected static $abspath = null;
+
+	/**
+	 * @var string|null
+	 */
 	protected static $contentpath = null;
+
+	/**
+	 * @var string|null
+	 */
 	protected static $sort_field = null;
 
 	private function __construct() {}
 
+	/**
+	 * @param string $size
+	 * @return float
+	 */
 	public static function convert_hr_to_bytes( $size ) {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
@@ -37,6 +60,11 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $dir
+	 * @param string $path_replace
+	 * @return string
+	 */
 	public static function standard_dir( $dir, $path_replace = null ) {
 
 		$dir = self::normalize_path( $dir );
@@ -56,6 +84,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
 	public static function normalize_path( $path ) {
 		if ( function_exists( 'wp_normalize_path' ) ) {
 			$path = wp_normalize_path( $path );
@@ -67,6 +99,9 @@ class QM_Util {
 		return $path;
 	}
 
+	/**
+	 * @return array<string, string|null>
+	 */
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 
@@ -76,7 +111,10 @@ class QM_Util {
 			 * Note that this filter is applied before QM adds its built-in list of components. This is
 			 * so custom registered components take precedence during component detection.
 			 *
-			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 * See also the corresponding filters:
+			 *
+			 *  - `qm/component_context/{$type}`
+			 *  - `qm/component_name/{$type}`
 			 *
 			 * @since 3.6.0
 			 *
@@ -220,7 +258,10 @@ class QM_Util {
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
-				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
 				 *
@@ -228,6 +269,25 @@ class QM_Util {
 				 * @param string $file The full file path for the file within the component.
 				 */
 				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+
+				/**
+				 * Filters the context for a custom or unknown component. The context is usually a
+				 * representation of its type more specific to the individual component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *
+				 * @since 3.8.0
+				 *
+				 * @param string $context The context for the component.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 */
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
 				break;
 		}
 
@@ -236,6 +296,10 @@ class QM_Util {
 		return self::$file_components[ $file ];
 	}
 
+	/**
+	 * @param array<string, mixed> $callback
+	 * @return array<string, mixed>
+	 */
 	public static function populate_callback( array $callback ) {
 
 		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
@@ -322,6 +386,9 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_ajax() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return true;
@@ -329,6 +396,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_async() {
 		if ( self::is_ajax() ) {
 			return true;
@@ -339,6 +409,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return WP_Role|false
+	 */
 	public static function get_admins() {
 		if ( is_multisite() ) {
 			return false;
@@ -347,6 +420,9 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_multi_network() {
 		global $wpdb;
 
@@ -368,6 +444,15 @@ class QM_Util {
 		return ( $num_sites > 1 );
 	}
 
+	/**
+	 * @param int|string $client
+	 * @return array<string, int>
+	 * @phpstan-return array{
+	 *   major: int,
+	 *   minor: int,
+	 *   patch: int,
+	 * }
+	 */
 	public static function get_client_version( $client ) {
 
 		$client = intval( $client );
@@ -382,6 +467,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $sql
+	 * @return string
+	 */
 	public static function get_query_type( $sql ) {
 		// Trim leading whitespace and brackets
 		$sql = ltrim( $sql, ' \t\n\r\0\x0B(' );
@@ -397,6 +486,10 @@ class QM_Util {
 		return $type;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return string|float|int
+	 */
 	public static function display_variable( $value ) {
 		if ( is_string( $value ) ) {
 			return $value;
@@ -411,44 +504,42 @@ class QM_Util {
 
 				case ( $value instanceof WP_Post ):
 				case ( $value instanceof WP_User ):
-					return sprintf( '%s (ID: %s)', $class, $value->ID );
+					$class = sprintf( '%s (ID: %s)', $class, $value->ID );
 					break;
 
 				case ( $value instanceof WP_Term ):
-					return sprintf( '%s (term_id: %s)', $class, $value->term_id );
+					$class = sprintf( '%s (term_id: %s)', $class, $value->term_id );
 					break;
 
 				case ( $value instanceof WP_Comment ):
-					return sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
+					$class = sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
 					break;
 
 				case ( $value instanceof WP_Error ):
-					return sprintf( '%s (%s)', $class, $value->get_error_code() );
+					$class = sprintf( '%s (%s)', $class, $value->get_error_code() );
 					break;
 
 				case ( $value instanceof WP_Role ):
 				case ( $value instanceof WP_Post_Type ):
 				case ( $value instanceof WP_Taxonomy ):
-					return sprintf( '%s (%s)', $class, $value->name );
+					$class = sprintf( '%s (%s)', $class, $value->name );
 					break;
 
 				case ( $value instanceof WP_Network ):
-					return sprintf( '%s (id: %s)', $class, $value->id );
+					$class = sprintf( '%s (id: %s)', $class, $value->id );
 					break;
 
 				case ( $value instanceof WP_Site ):
-					return sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
+					$class = sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
 					break;
 
 				case ( $value instanceof WP_Theme ):
-					return sprintf( '%s (%s)', $class, $value->get_stylesheet() );
-					break;
-
-				default:
-					return $class;
+					$class = sprintf( '%s (%s)', $class, $value->get_stylesheet() );
 					break;
 
 			}
+
+			return $class;
 		} else {
 			return gettype( $value );
 		}
@@ -498,20 +589,40 @@ class QM_Util {
 		return $json;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public static function is_stringy( $data ) {
 		return ( is_string( $data ) || ( is_object( $data ) && method_exists( $data, '__toString' ) ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function rsort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_rsort' ) );
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _rsort( $a, $b ) {
 		$field = self::$sort_field;
 
@@ -522,6 +633,12 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _sort( $a, $b ) {
 		$field = self::$sort_field;
 

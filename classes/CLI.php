@@ -7,6 +7,9 @@
 
 class QM_CLI extends QM_Plugin {
 
+	/**
+	 * @param string $file
+	 */
 	protected function __construct( $file ) {
 
 		# Register command
@@ -19,6 +22,8 @@ class QM_CLI extends QM_Plugin {
 
 	/**
 	 * Enable QM by creating the symlink for db.php
+	 *
+	 * @return void
 	 */
 	public function enable() {
 		$drop_in = WP_CONTENT_DIR . '/db.php';
@@ -49,6 +54,10 @@ class QM_CLI extends QM_Plugin {
 		}
 	}
 
+	/**
+	 * @param string $file
+	 * @return self
+	 */
 	public static function init( $file = null ) {
 
 		static $instance = null;

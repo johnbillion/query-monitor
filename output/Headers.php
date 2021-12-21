@@ -6,7 +6,14 @@
  */
 
 abstract class QM_Output_Headers extends QM_Output {
+	/**
+	 * @return array<string, mixed>
+	 */
+	abstract public function get_output();
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$id = $this->collector->id;

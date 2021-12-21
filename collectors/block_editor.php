@@ -13,17 +13,28 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
 
+	/**
+	 * @var array<int, mixed[]>
+	 */
 	protected $block_context = array();
+
+	/**
+	 * @var array<int, QM_Timer|false>
+	 */
 	protected $block_timing = array();
+
+	/**
+	 * @var QM_Timer|null
+	 */
 	protected $block_timer = null;
 
 	public function __construct() {
 		parent::__construct();
 
-		add_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999, 2 );
+		add_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999, 2 );
 		add_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999, 2 );
 		add_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
-		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
+		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
 	public function tear_down() {
@@ -35,6 +46,9 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
@@ -52,6 +66,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @param string|null $pre_render
+	 * @param mixed[] $block
+	 * @return string|null
+	 */
 	public function filter_pre_render_block( $pre_render, array $block ) {
 		if ( null !== $pre_render ) {
 			$this->block_timing[] = false;
@@ -60,12 +79,21 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $pre_render;
 	}
 
+	/**
+	 * @param mixed[] $context
+	 * @param mixed[] $block
+	 * @return mixed[]
+	 */
 	public function filter_render_block_context( array $context, array $block ) {
 		$this->block_context[] = $context;
 
 		return $context;
 	}
 
+	/**
+	 * @param mixed[] $block
+	 * @return mixed[]
+	 */
 	public function filter_render_block_data( array $block ) {
 		$this->block_timer = new QM_Timer();
 		$this->block_timer->start();
@@ -73,6 +101,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $block;
 	}
 
+	/**
+	 * @param string $block_content
+	 * @param mixed[] $block
+	 * @return string
+	 */
 	public function filter_render_block( $block_content, array $block ) {
 		if ( isset( $this->block_timer ) ) {
 			$this->block_timing[] = $this->block_timer->stop();
@@ -109,6 +142,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		}
 	}
 
+	/**
+	 * @param mixed[] $block
+	 * @return mixed[]|null
+	 */
 	protected function process_block( array $block ) {
 		$context = array_shift( $this->block_context );
 		$timing = array_shift( $this->block_timing );
@@ -155,10 +192,17 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $block;
 	}
 
+	/**
+	 * @return bool
+	 */
 	protected static function wp_block_editor_enabled() {
 		return ( function_exists( 'parse_blocks' ) || function_exists( 'gutenberg_parse_blocks' ) );
 	}
 
+	/**
+	 * @param string $content
+	 * @return bool
+	 */
 	protected static function wp_has_blocks( $content ) {
 		if ( function_exists( 'has_blocks' ) ) {
 			return has_blocks( $content );
@@ -169,6 +213,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return false;
 	}
 
+	/**
+	 * @param string $content
+	 * @return mixed[]|null
+	 */
 	protected static function wp_parse_blocks( $content ) {
 		if ( function_exists( 'parse_blocks' ) ) {
 			return parse_blocks( $content );
@@ -179,6 +227,9 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return null;
 	}
 
+	/**
+	 * @return string[]|null
+	 */
 	protected static function wp_get_dynamic_block_names() {
 		if ( function_exists( 'get_dynamic_block_names' ) ) {
 			return get_dynamic_block_names();
@@ -189,6 +240,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_block_editor( array $collectors, QueryMonitor $qm ) {
 	$collectors['block_editor'] = new QM_Collector_Block_Editor();
 	return $collectors;

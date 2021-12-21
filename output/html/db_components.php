@@ -23,10 +23,16 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 40 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Queries by Component', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -98,6 +104,10 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		$data = $this->collector->get_data();
 
@@ -121,6 +131,11 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_db_components( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'db_components' );
 	if ( $collector ) {

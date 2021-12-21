@@ -1,7 +1,8 @@
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-    level: 3
+    level: 6
+    tmpDir: tests/cache
     paths:
         - query-monitor.php
         - classes
@@ -10,8 +11,20 @@ parameters:
         - output
         # - tests/phpunit
         - wp-content
+    excludePaths:
+        analyse:
+         - tests/cache
     bootstrapFiles:
         - tests/stubs.php
+    dynamicConstantNames:
+        - SAVEQUERIES
     ignoreErrors:
         # Uses func_get_args()
         - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
+        # These are false positives
+        - '#Instanceof between string and mysqli will always evaluate to false#'
+        - '#Call to function is_resource\(\) with string will always evaluate to false#'
+        # The `wpdb` class exposes its properties via `__get()`
+        - '#Access to private property wpdb::#'
+        - '#Access to protected property wpdb::#'
+        - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'

@@ -24,6 +24,11 @@ class QM_Collector_Redirects extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @param string $location
+	 * @param int $status
+	 * @return string
+	 */
 	public function filter_wp_redirect( $location, $status ) {
 
 		if ( ! $location ) {

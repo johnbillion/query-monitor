@@ -8,16 +8,42 @@
 if ( ! class_exists( 'QM_Collector' ) ) {
 abstract class QM_Collector {
 
+	/**
+	 * @var QM_Timer|null
+	 */
 	protected $timer;
+
+	/**
+	 * @var array<string, mixed>
+	 */
 	protected $data = array(
 		'types' => array(),
 		'component_times' => array(),
 	);
+
+	/**
+	 * @var bool|null
+	 */
 	protected static $hide_qm = null;
 
+	/**
+	 * @var array<string, array<string, mixed>>
+	 */
 	public $concerned_actions = array();
+
+	/**
+	 * @var array<string, array<string, mixed>>
+	 */
 	public $concerned_filters = array();
+
+	/**
+	 * @var array<string, array<string, mixed>>
+	 */
 	public $concerned_constants = array();
+
+	/**
+	 * @var array<int, string>
+	 */
 	public $tracked_hooks = array();
 
 	/**
@@ -27,10 +53,17 @@ abstract class QM_Collector {
 
 	public function __construct() {}
 
+	/**
+	 * @return string
+	 */
 	final public function id() {
 		return "qm-{$this->id}";
 	}
 
+	/**
+	 * @param string $type
+	 * @return void
+	 */
 	protected function log_type( $type ) {
 
 		if ( isset( $this->data['types'][ $type ] ) ) {
@@ -41,6 +74,11 @@ abstract class QM_Collector {
 
 	}
 
+	/**
+	 * @param string $sql
+	 * @param int $i
+	 * @return void
+	 */
 	protected function maybe_log_dupe( $sql, $i ) {
 
 		$sql = str_replace( array( "\r\n", "\r", "\n" ), ' ', $sql );
@@ -53,6 +91,12 @@ abstract class QM_Collector {
 
 	}
 
+	/**
+	 * @param stdClass $component
+	 * @param float $ltime
+	 * @param string $type
+	 * @return void
+	 */
 	protected function log_component( $component, $ltime, $type ) {
 
 		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
@@ -73,11 +117,18 @@ abstract class QM_Collector {
 
 	}
 
+	/**
+	 * @return float
+	 */
 	public static function timer_stop_float() {
 		global $timestart;
 		return microtime( true ) - $timestart;
 	}
 
+	/**
+	 * @param string $constant
+	 * @return string
+	 */
 	public static function format_bool_constant( $constant ) {
 		// @TODO this should be in QM_Util
 
@@ -93,6 +144,9 @@ abstract class QM_Collector {
 		}
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	final public function get_data() {
 		return $this->data;
 	}
@@ -101,10 +155,17 @@ abstract class QM_Collector {
 		$this->data = array();
 	}
 
+	/**
+	 * @param string $id
+	 * @return void
+	 */
 	final public function set_id( $id ) {
 		$this->id = $id;
 	}
 
+	/**
+	 * @return void
+	 */
 	final public function process_concerns() {
 		global $wp_filter;
 
@@ -210,10 +271,18 @@ abstract class QM_Collector {
 		$this->tracked_hooks = $tracked;
 	}
 
+	/**
+	 * @param array<string, mixed> $concerns
+	 * @return bool
+	 */
 	public function filter_concerns( $concerns ) {
 		return ! empty( $concerns['actions'] );
 	}
 
+	/**
+	 * @param WP_User $user_object
+	 * @return array<string, mixed>
+	 */
 	public static function format_user( WP_User $user_object ) {
 		$user = get_object_vars( $user_object->data );
 		unset(
@@ -225,10 +294,16 @@ abstract class QM_Collector {
 		return $user;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function enabled() {
 		return true;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function hide_qm() {
 		if ( ! defined( 'QM_HIDE_SELF' ) ) {
 			return false;
@@ -241,40 +316,76 @@ abstract class QM_Collector {
 		return self::$hide_qm;
 	}
 
+	/**
+	 * @param array<string, mixed> $item
+	 * @return bool
+	 */
 	public function filter_remove_qm( array $item ) {
 		return ( 'query-monitor' !== $item['component']->context );
 	}
 
+	/**
+	 * @param mixed[] $items
+	 * @return bool
+	 */
 	public function filter_dupe_items( $items ) {
 		return ( count( $items ) > 1 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {}
 
+	/**
+	 * @return void
+	 */
 	public function post_process() {}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {}
 
+	/**
+	 * @return QM_Timer|null
+	 */
 	public function get_timer() {
 		return $this->timer;
 	}
 
+	/**
+	 * @param QM_Timer $timer
+	 * @return void
+	 */
 	public function set_timer( QM_Timer $timer ) {
 		$this->timer = $timer;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		return array();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array();
 	}

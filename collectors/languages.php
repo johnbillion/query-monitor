@@ -29,6 +29,9 @@ class QM_Collector_Languages extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'load_textdomain',
@@ -36,6 +39,9 @@ class QM_Collector_Languages extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'determine_locale',
@@ -57,18 +63,27 @@ class QM_Collector_Languages extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		return array(
 			'WPLANG',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'WPLANG',
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$this->data['locale'] = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();

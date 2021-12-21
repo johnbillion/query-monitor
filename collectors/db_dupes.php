@@ -13,6 +13,9 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 
 	public $id = 'db_dupes';
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
@@ -30,7 +33,6 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		unset( $this->data['dupes']['SELECT FOUND_ROWS()'] );
 
 		$stacks = array();
-		$tops = array();
 		$callers = array();
 		$components = array();
 
@@ -52,7 +54,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					$stack = array_reverse( explode( ', ', $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'] ) );
+					$stack = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'];
 				}
 
 				// Populate the caller counts for this query
@@ -94,6 +96,11 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 	}
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_db_dupes( array $collectors, QueryMonitor $qm ) {
 	$collectors['db_dupes'] = new QM_Collector_DB_Dupes();
 	return $collectors;

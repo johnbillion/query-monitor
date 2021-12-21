@@ -31,16 +31,25 @@ class QM_Collector_Caps extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function enabled() {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'wp_roles_init',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'map_meta_cap',
@@ -49,6 +58,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
@@ -57,6 +69,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
@@ -72,7 +87,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 *
 	 * @param bool[]   $user_caps Concerned user's capabilities.
 	 * @param string[] $caps      Required primitive capabilities for the requested capability.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type string    $0 Requested capability.
@@ -124,7 +139,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
 	 * @param string   $cap           Capability or meta capability being checked.
 	 * @param int      $user_id       Concerned user ID.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type mixed ...$0 Optional second and further parameters.
@@ -170,6 +185,9 @@ class QM_Collector_Caps extends QM_Collector {
 		return $required_caps;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( empty( $this->data['caps'] ) ) {
 			return;
@@ -209,6 +227,10 @@ class QM_Collector_Caps extends QM_Collector {
 		$this->data['components'] = $components;
 	}
 
+	/**
+	 * @param array<string, mixed> $cap
+	 * @return bool
+	 */
 	public function filter_remove_noise( array $cap ) {
 		$trace = $cap['filtered_trace'];
 
@@ -235,6 +257,11 @@ class QM_Collector_Caps extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_caps( array $collectors, QueryMonitor $qm ) {
 	$collectors['caps'] = new QM_Collector_Caps();
 	return $collectors;

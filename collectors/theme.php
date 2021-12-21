@@ -11,14 +11,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class QM_Collector_Theme extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'response';
+
+	/**
+	 * @var bool
+	 */
 	protected $got_theme_compat = false;
+
+	/**
+	 * @var array<int, string>
+	 */
 	protected $query_templates = array();
 
 	public function __construct() {
 		parent::__construct();
-		add_filter( 'body_class',       array( $this, 'filter_body_class' ), 9999 );
-		add_filter( 'timber/output',    array( $this, 'filter_timber_output' ), 9999, 3 );
+		add_filter( 'body_class', array( $this, 'filter_body_class' ), 9999 );
+		add_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		add_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10, 3 );
 		add_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10, 3 );
@@ -38,12 +49,18 @@ class QM_Collector_Theme extends QM_Collector {
 		parent::tear_down();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'template_redirect',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		$filters = array(
 			'stylesheet',
@@ -61,6 +78,9 @@ class QM_Collector_Theme extends QM_Collector {
 		return $filters;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		return array(
 			'stylesheet',
@@ -68,6 +88,9 @@ class QM_Collector_Theme extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public static function get_query_template_names() {
 		$names = array();
 
@@ -97,6 +120,9 @@ class QM_Collector_Theme extends QM_Collector {
 		return $names;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public static function get_query_filter_names() {
 		$names = array();
 
@@ -125,6 +151,9 @@ class QM_Collector_Theme extends QM_Collector {
 		return $names;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_template_redirect() {
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
 	}
@@ -135,6 +164,7 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @param string   $slug      The slug name for the generic template.
 	 * @param string   $name      The name of the specialized template.
 	 * @param string[] $templates Array of template files to search for, in order.
+	 * @return void
 	 */
 	public function action_get_template_part( $slug, $name, $templates ) {
 		$data = compact( 'slug', 'name', 'templates' );
@@ -154,8 +184,9 @@ class QM_Collector_Theme extends QM_Collector {
 	 * Fires when a post is loaded for a template part block.
 	 *
 	 * @param string  $template_part_id
-	 * @param array   $attributes
+	 * @param mixed[] $attributes
 	 * @param WP_Post $post
+	 * @return void
 	 */
 	public function action_render_block_core_template_part_post( $template_part_id, $attributes, WP_Post $post ) {
 		$data = array(
@@ -169,9 +200,10 @@ class QM_Collector_Theme extends QM_Collector {
 	/**
 	 * Fires when a file is loaded for a template part block.
 	 *
-	 * @param string $template_part_id
-	 * @param array  $attributes
-	 * @param string $template_part_file_path
+	 * @param string  $template_part_id
+	 * @param mixed[] $attributes
+	 * @param string  $template_part_file_path
+	 * @return void
 	 */
 	public function action_render_block_core_template_part_file( $template_part_id, $attributes, $template_part_file_path ) {
 		$data = array(
@@ -185,9 +217,10 @@ class QM_Collector_Theme extends QM_Collector {
 	/**
 	 * Fires when neither a post nor file is found for a template part block.
 	 *
-	 * @param string $template_part_id
-	 * @param array  $attributes
-	 * @param string $template_part_file_path
+	 * @param string  $template_part_id
+	 * @param mixed[] $attributes
+	 * @param string  $template_part_file_path
+	 * @return void
 	 */
 	public function action_render_block_core_template_part_none( $template_part_id, $attributes, $template_part_file_path ) {
 		$data = array(
@@ -198,6 +231,10 @@ class QM_Collector_Theme extends QM_Collector {
 		$this->data['requested_template_part_nopes'][] = $data;
 	}
 
+	/**
+	 * @param array<int, string> $templates
+	 * @return array<int, string>
+	 */
 	public function filter_template_hierarchy( array $templates ) {
 		$this->query_templates = $templates;
 
@@ -217,16 +254,30 @@ class QM_Collector_Theme extends QM_Collector {
 		return $templates;
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function filter_body_class( array $class ) {
 		$this->data['body_class'] = $class;
 		return $class;
 	}
 
+	/**
+	 * @param array<int, string> $template_path
+	 * @return array<int, string>
+	 */
 	public function filter_template_include( $template_path ) {
 		$this->data['template_path'] = $template_path;
 		return $template_path;
 	}
 
+	/**
+	 * @param mixed[] $output
+	 * @param mixed $data
+	 * @param string $file
+	 * @return mixed[]
+	 */
 	public function filter_timber_output( $output, $data = null, $file = null ) {
 		if ( $file ) {
 			$this->data['timber_files'][] = $file;
@@ -235,6 +286,9 @@ class QM_Collector_Theme extends QM_Collector {
 		return $output;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );
@@ -389,6 +443,11 @@ class QM_Collector_Theme extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_theme( array $collectors, QueryMonitor $qm ) {
 	$collectors['response'] = new QM_Collector_Theme();
 	return $collectors;
