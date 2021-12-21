@@ -17,6 +17,7 @@ class QM_Backtrace {
 	 */
 	protected static $ignore_class = array(
 		'wpdb' => true,
+		'hyperdb' => true,
 		'QueryMonitor' => true,
 		'W3_Db' => true,
 		'Debug_Bar_PHP' => true,
@@ -291,6 +292,47 @@ class QM_Backtrace {
 	}
 
 	/**
+	 * @param array<int, string> $stack
+	 * @return array<int, string>
+	 */
+	public static function get_filtered_stack( array $stack ) {
+		$trace = new self( array(), array() );
+		$return = array();
+
+		foreach ( $stack as $i => $item ) {
+			$frame = array(
+				'function' => $item,
+			);
+
+			if ( false !== strpos( $item, '->' ) ) {
+				list( $class, $function ) = explode( '->', $item );
+				$frame = array(
+					'class' => $class,
+					'type' => '->',
+					'function' => $function,
+				);
+			}
+
+			if ( false !== strpos( $item, '::' ) ) {
+				list( $class, $function ) = explode( '::', $item );
+				$frame = array(
+					'class' => $class,
+					'type' => '::',
+					'function' => $function,
+				);
+			}
+
+			$frame['args'] = array();
+
+			if ( $trace->filter_trace( $frame ) ) {
+				$return[] = $item;
+			}
+		}
+
+		return $return;
+	}
+
+	/**
 	 * @deprecated Use the `ignore_class`, `ignore_method`, `ignore_func`, and `ignore_hook` arguments instead.
 	 *
 	 * @param int $num
@@ -306,7 +348,7 @@ class QM_Backtrace {
 
 	/**
 	 * @param mixed[] $frame
-	 * @return mixed[]
+	 * @return mixed[]|null
 	 */
 	public function filter_trace( array $frame ) {
 
@@ -408,7 +450,7 @@ class QM_Backtrace {
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
-					if ( isset( $hook_functions[ $frame['function'] ] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
+					if ( isset( $hook_functions[ $frame['function'] ] ) && isset( $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
 						$return = null;
 					} else {
 						$args = array();

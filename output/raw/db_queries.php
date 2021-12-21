@@ -120,8 +120,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 				$stack[] = $item['display'];
 			}
 		} else {
-			$stack = explode( ', ', $row['stack'] );
-			$stack = array_reverse( $stack );
+			$stack = $row['stack'];
 		}
 
 		$output['stack'] = $stack;

@@ -54,7 +54,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					$stack = array_reverse( explode( ', ', $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'] ) );
+					$stack = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'];
 				}
 
 				// Populate the caller counts for this query

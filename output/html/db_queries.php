@@ -367,8 +367,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$caller_name = '<code>' . esc_html__( 'Unknown', 'query-monitor' ) . '</code>';
 			}
 
-			$stack = explode( ', ', $row['stack'] );
-			$stack = array_reverse( $stack );
+			$stack = $row['stack'];
 			array_shift( $stack );
 			$stack = array_map( function( $frame ) {
 				return '<code>' . esc_html( $frame ) . '</code>';

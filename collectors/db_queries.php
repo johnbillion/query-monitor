@@ -146,6 +146,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( $db->queries as $query ) {
 			$has_trace = false;
 			$has_result = false;
+			$callers = [];
 
 			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
 				// WordPress.com VIP.
@@ -189,14 +190,12 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 				$trace = null;
 				$component = null;
-				$callers = explode( ',', $stack );
-				$caller = trim( end( $callers ) );
+				$callers = array_reverse( explode( ',', $stack ) );
+				$callers = array_map( 'trim', $callers );
+				$callers = QM_Backtrace::get_filtered_stack( $callers );
+				$caller = reset( $callers );
+				$caller_name = $caller;
 
-				if ( false !== strpos( $caller, '(' ) ) {
-					$caller_name = substr( $caller, 0, strpos( $caller, '(' ) ) . '()';
-				} else {
-					$caller_name = $caller;
-				}
 			}
 
 			$sql = trim( $sql );
@@ -228,7 +227,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {
-				$row['stack'] = $stack;
+				$row['stack'] = $callers;
 			}
 
 			if ( is_wp_error( $result ) ) {
