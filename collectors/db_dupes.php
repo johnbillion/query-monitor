@@ -33,7 +33,6 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		unset( $this->data['dupes']['SELECT FOUND_ROWS()'] );
 
 		$stacks = array();
-		$tops = array();
 		$callers = array();
 		$components = array();
 
