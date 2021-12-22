@@ -146,7 +146,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		foreach ( $db->queries as $query ) {
 			$has_trace = false;
 			$has_result = false;
-			$callers = [];
+			$callers = array();
 
 			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
 				// WordPress.com VIP.
