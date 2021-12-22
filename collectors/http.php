@@ -327,11 +327,12 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			$http['ltime'] = ( $http['end'] - $http['start'] );
 
-			if ( isset( $http['info'] ) ) {
-				if ( ! empty( $http['info']['url'] ) ) {
-					if ( remove_query_arg( rtrim( $http['url'], '/' ) ) !== remove_query_arg( rtrim( $http['info']['url'], '/' ) ) ) {
-						$http['redirected_to'] = $http['info']['url'];
-					}
+			if ( isset( $http['info'] ) && ! empty( $http['info']['url'] ) ) {
+				// Ignore query variables when detecting a redirect.
+				$from = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['url'] ) );
+				$to = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['info']['url'] ) );
+				if ( $from !== $to ) {
+					$http['redirected_to'] = $http['info']['url'];
 				}
 			}
 
