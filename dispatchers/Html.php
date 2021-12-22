@@ -279,8 +279,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	public function dispatch() {
-
 		if ( ! $this->should_dispatch() ) {
+			return;
+		}
+
+		if ( $this->ceased ) {
+			echo '<div id="query-monitor-ceased"></div>';
 			return;
 		}
 
@@ -811,6 +815,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * Cease without deactivating the dispatcher.
+	 *
+	 * @return void
+	 */
+	public function cease() {
+		$this->ceased = true;
+	}
 }
 
 /**

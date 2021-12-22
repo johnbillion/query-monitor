@@ -27,6 +27,11 @@ abstract class QM_Dispatcher {
 	 */
 	public $id = '';
 
+	/**
+	 * @var bool
+	 */
+	protected $ceased = false;
+
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
@@ -87,6 +92,8 @@ abstract class QM_Dispatcher {
 	 * @return void
 	 */
 	public function cease() {
+		$this->ceased = true;
+
 		add_filter( "qm/dispatch/{$this->id}", '__return_false' );
 	}
 
