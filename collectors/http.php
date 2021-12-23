@@ -41,6 +41,19 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	public function tear_down() {
+		remove_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999 );
+		remove_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 9999 );
+		remove_action( 'http_api_debug',    array( $this, 'action_http_api_debug' ), 9999 );
+
+		remove_action( 'requests-curl.before_request',      array( $this, 'action_curl_before_request' ), 9999 );
+		remove_action( 'requests-curl.after_request',       array( $this, 'action_curl_after_request' ), 9999 );
+		remove_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
+		remove_action( 'requests-fsockopen.after_request',  array( $this, 'action_fsockopen_after_request' ), 9999 );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @return array<int, string>
 	 */

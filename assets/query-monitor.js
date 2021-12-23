@@ -722,6 +722,7 @@ if ( window.jQuery ) {
 
 window.addEventListener('load', function() {
 	var main = document.getElementById( 'query-monitor-main' );
+	var ceased = document.getElementById( 'query-monitor-ceased' );
 	var broken = document.getElementById( 'qm-broken' );
 	var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
 
@@ -750,7 +751,12 @@ window.addEventListener('load', function() {
 	}
 
 	if ( ! main ) {
-		// QM's output has disappeared
-		console.error( 'QM error from JS: QM output does not exist' );
+		if ( ceased ) {
+			// QM was ceased
+			console.info( 'QM: collection and output was ceased' );
+		} else {
+			// QM's output has disappeared
+			console.error( 'QM error from JS: QM output does not exist' );
+		}
 	}
 } );

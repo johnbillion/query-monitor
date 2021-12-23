@@ -152,6 +152,13 @@ abstract class QM_Collector {
 	}
 
 	/**
+	 * @return void
+	 */
+	final public function discard_data() {
+		$this->data = array();
+	}
+
+	/**
 	 * @param string $id
 	 * @return void
 	 */
