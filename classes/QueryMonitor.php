@@ -252,10 +252,6 @@ class QueryMonitor extends QM_Plugin {
 
 		// remove dispatchers or prevent them from doing anything
 		QM_Dispatchers::cease();
-
-		// the javascript probably needs handling so it doesn't just blame JS errors on the page
-		// if headers haven't been sent, add a header stating that QM was ceased and by what, need to check caps though
-		// remove this action from itself?
 	}
 
 	/**
