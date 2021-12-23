@@ -31,7 +31,12 @@
 	},
 	"config": {
 		"preferred-install": "dist",
-		"sort-packages": true
+		"sort-packages": true,
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"roots/wordpress-core-installer": true
+		}
 	},
 	"extra": {
 		"wordpress-install-dir": "tests/wordpress"
