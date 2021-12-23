@@ -2,6 +2,7 @@
 
 class TestDispatcherHTML extends QM_UnitTestCase {
 
+	/** @var QM_Dispatcher_Html|null */
 	protected $html = null;
 
 	public function setUp() {
@@ -19,9 +20,6 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 		wp_set_current_user( $admin->ID );
 
 		$this->html = QM_Dispatchers::get( 'html' );
-
-		self::assertInstanceOf( 'QM_Dispatcher_Html', $this->html );
-
 		$this->html->init();
 
 	}
