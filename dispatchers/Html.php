@@ -284,7 +284,29 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		if ( $this->ceased ) {
+			$admin_bar_menu = array(
+				'top' => array(
+					'title' => 'Query Monitor',
+				),
+				'sub' => array(
+					'ceased' => array(
+						'title' => esc_html__( 'Data collection ceased', 'query-monitor' ),
+						'id' => 'query-monitor-ceased',
+						'href' => '#',
+					),
+				),
+			);
+
+			$json = array(
+				'menu' => $admin_bar_menu,
+			);
+
+			echo '<!-- Begin Query Monitor output -->' . "\n\n";
+			echo '<script type="text/javascript">' . "\n\n";
+			echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+			echo '</script>' . "\n\n";
 			echo '<div id="query-monitor-ceased"></div>';
+			echo '<!-- End Query Monitor output -->' . "\n\n";
 			return;
 		}
 
