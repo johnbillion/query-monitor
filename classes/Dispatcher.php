@@ -127,6 +127,7 @@ abstract class QM_Dispatcher {
 	 */
 	public function init() {
 		if ( ! self::user_can_view() ) {
+			do_action( 'qm/cease' );
 			return;
 		}
 
