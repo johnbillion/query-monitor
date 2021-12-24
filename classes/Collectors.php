@@ -35,6 +35,8 @@ class QM_Collectors implements IteratorAggregate {
 	public static function add( QM_Collector $collector ) {
 		$collectors = self::init();
 
+		$collector->set_up();
+
 		$collectors->items[ $collector->id ] = $collector;
 	}
 

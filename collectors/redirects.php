@@ -13,11 +13,17 @@ class QM_Collector_Redirects extends QM_Collector {
 
 	public $id = 'redirects';
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999 );
 

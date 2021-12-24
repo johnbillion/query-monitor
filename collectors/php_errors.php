@@ -53,12 +53,15 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 */
 	protected $hide_silenced_php_errors = false;
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
 		}
 
-		parent::__construct();
+		parent::set_up();
 
 		// Capture the last error that occurred before QM loaded:
 		$prior_error = error_get_last();
@@ -90,6 +93,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;

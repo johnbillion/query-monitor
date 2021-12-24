@@ -54,6 +54,11 @@ abstract class QM_Collector {
 	public function __construct() {}
 
 	/**
+	 * @return void
+	 */
+	public function set_up() {}
+
+	/**
 	 * @return string
 	 */
 	final public function id() {

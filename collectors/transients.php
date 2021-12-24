@@ -13,8 +13,12 @@ class QM_Collector_Transients extends QM_Collector {
 
 	public $id = 'transients';
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
 		add_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10, 3 );
 		add_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10, 3 );
 	}

@@ -26,9 +26,12 @@ class QM_Collector_HTTP extends QM_Collector {
 	 */
 	private $info = null;
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 
-		parent::__construct();
+		parent::set_up();
 
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999, 2 );
 		add_filter( 'pre_http_request', array( $this, 'filter_pre_http_request' ), 9999, 3 );
@@ -41,6 +44,9 @@ class QM_Collector_HTTP extends QM_Collector {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999 );
 		remove_filter( 'pre_http_request',  array( $this, 'filter_pre_http_request' ), 9999 );

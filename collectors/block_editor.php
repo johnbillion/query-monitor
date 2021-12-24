@@ -28,8 +28,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	 */
 	protected $block_timer = null;
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999, 2 );
 		add_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999, 2 );
@@ -37,6 +40,9 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999 );
 		remove_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999 );

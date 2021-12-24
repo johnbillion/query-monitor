@@ -13,7 +13,12 @@ class QM_Collector_Overview extends QM_Collector {
 
 	public $id = 'overview';
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
 		add_action( 'shutdown', array( $this, 'process_timing' ), 0 );
 	}
 

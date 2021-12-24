@@ -22,8 +22,11 @@ class QM_Collector_Logger extends QM_Collector {
 	const INFO = 'info';
 	const DEBUG = 'debug';
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 
 		$this->data['counts'] = array_fill_keys( $this->get_levels(), 0 );
 
@@ -34,6 +37,9 @@ class QM_Collector_Logger extends QM_Collector {
 		add_action( 'qm/log', array( $this, 'log' ), 10, 3 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		foreach ( $this->get_levels() as $level ) {
 			remove_action( "qm/{$level}", array( $this, $level ), 10 );
