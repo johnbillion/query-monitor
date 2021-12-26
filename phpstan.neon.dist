@@ -15,6 +15,7 @@ parameters:
     excludePaths:
         analyse:
             - tests/cache
+            - tests/phpunit/includes/dummy-*
     bootstrapFiles:
         - tests/stubs.php
     scanDirectories:
@@ -32,5 +33,11 @@ parameters:
         - '#Access to protected property wpdb::#'
         - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
         -
-            message: '# has no return type specified#'
             path: tests/phpunit/*
+            message: '#^Method [^:]+::test[a-zA-Z_]+\(\) has no return type specified\.$#'
+        -
+            path: tests/phpunit/*
+            message: '#^Method [^:]+::setUp\(\) has no return type specified\.$#'
+        -
+            path: tests/phpunit/*
+            message: '#^Method [^:]+::tearDown\(\) has no return type specified\.$#'

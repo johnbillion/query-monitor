@@ -16,6 +16,12 @@ class TestUtils extends QM_UnitTestCase {
 
 	}
 
+	/**
+	 * @return array<int, array{
+	 *   0: int,
+	 *   1: array<int, int>
+	 * }>
+	 */
 	public function dataClientVersion() {
 		return array(
 			array(

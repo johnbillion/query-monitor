@@ -19,6 +19,12 @@ class TestPlugin extends QM_UnitTestCase {
 		self::assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
 	}
 
+	/**
+	 * @return array{
+	 *   tested_up_to: string,
+	 *   stable_tag: string,
+	 * }|false
+	 */
 	private function get_readme() {
 		if ( ! isset( $this->readme_data ) ) {
 			$file = dirname( dirname( dirname( __FILE__ ) ) ) . '/readme.txt';

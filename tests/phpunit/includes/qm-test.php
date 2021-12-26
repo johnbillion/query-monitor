@@ -19,6 +19,9 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 		parent::setUp();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function go_to_with_template( string $url ) {
 
 		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) ) {

@@ -4,6 +4,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 	/**
 	 * @param mixed $function
+	 * @return mixed[]
 	 */
 	protected static function get_callback( $function ) {
 

@@ -14,6 +14,12 @@ class TestCapabilities extends QM_UnitTestCase {
 		self::assertSame( $can_access, $actual );
 	}
 
+	/**
+	 * @return array<int, array{
+	 *   0: string,
+	 *   1: bool,
+	 * }>
+	 */
 	public function dataUserRolesAccess() {
 		$roles = array(
 			array(
