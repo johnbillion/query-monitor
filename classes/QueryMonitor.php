@@ -42,7 +42,7 @@ class QueryMonitor extends QM_Plugin {
 		 * @param string[] $collectors Array of file paths to be loaded.
 		 */
 		foreach ( apply_filters( 'qm/built-in-collectors', $collectors ) as $file ) {
-			include $file;
+			include_once $file;
 		}
 
 	}
@@ -139,7 +139,7 @@ class QueryMonitor extends QM_Plugin {
 
 		# Load dispatchers:
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $file ) {
-			include $file;
+			include_once $file;
 		}
 
 		/**
