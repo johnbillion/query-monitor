@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @property \WP_UnitTest_Factory $factory
+ */
 abstract class QM_UnitTestCase extends WP_UnitTestCase {
 
 	use \FalseyAssertEqualsDetector\Test;
@@ -12,7 +15,7 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 		parent::setUp();
 	}
 
-	public function go_to_with_template( $url ) {
+	public function go_to_with_template( string $url ) {
 
 		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) ) {
 			$_SERVER['REQUEST_METHOD'] = 'GET';

@@ -2,6 +2,9 @@
 
 class TestCollectorPHPErrors extends QM_UnitTestCase {
 
+	/**
+	 * @var QM_Collector_PHP_Errors
+	 */
 	public $collector;
 
 	function setUp() {

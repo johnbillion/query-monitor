@@ -19,7 +19,10 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		wp_set_current_user( $admin->ID );
 
-		$this->html = QM_Dispatchers::get( 'html' );
+		/** @var QM_Dispatcher_Html */
+		$html = QM_Dispatchers::get( 'html' );
+
+		$this->html = $html;
 		$this->html->init();
 
 	}

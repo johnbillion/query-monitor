@@ -5,8 +5,10 @@ class TestUtils extends QM_UnitTestCase {
 	/**
 	 * @dataProvider dataClientVersion
 	 *
+	 * @param int $client
+	 * @param array<int, int> $expected
 	 */
-	public function testDatabaseDriverClientVersionIsDetected( $client, $expected ) {
+	public function testDatabaseDriverClientVersionIsDetected( int $client, array $expected ) {
 
 		$ver = QM_Util::get_client_version( $client );
 

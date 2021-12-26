@@ -1,13 +1,19 @@
 <?php
 
 class TestPlugin extends QM_UnitTestCase {
+	/**
+	 * @var ?array{
+	 *   tested_up_to: string,
+	 *   stable_tag: string,
+	 * }
+	 */
 	private $readme_data;
 
 	public function testStableTagIsUpToDate() {
 		if ( ! $readme_data = $this->get_readme() ) {
-			$this->markTestSkipped( 'There is no readme file' );
-			return;
+			$this->fail( 'There is no readme file' );
 		}
+
 		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );
 
 		self::assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );

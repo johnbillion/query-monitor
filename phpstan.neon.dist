@@ -1,4 +1,5 @@
 includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
     level: 6
@@ -9,13 +10,15 @@ parameters:
         - collectors
         - dispatchers
         - output
-        # - tests/phpunit
+        - tests/phpunit
         - wp-content
     excludePaths:
         analyse:
-         - tests/cache
+            - tests/cache
     bootstrapFiles:
         - tests/stubs.php
+    scanDirectories:
+        - vendor/wp-phpunit/wp-phpunit/includes
     dynamicConstantNames:
         - SAVEQUERIES
     ignoreErrors:
@@ -28,3 +31,6 @@ parameters:
         - '#Access to private property wpdb::#'
         - '#Access to protected property wpdb::#'
         - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+        -
+            message: '# has no return type specified#'
+            path: tests/phpunit/*
