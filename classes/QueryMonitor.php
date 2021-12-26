@@ -7,7 +7,10 @@
 
 class QueryMonitor extends QM_Plugin {
 
-	protected function __construct( $file ) {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
@@ -23,9 +26,6 @@ class QueryMonitor extends QM_Plugin {
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
-
-		# Parent setup:
-		parent::__construct( $file );
 
 		# Load and register built-in collectors:
 		$collectors = array();

@@ -78,4 +78,4 @@ unset(
 	$qm_class
 );
 
-QueryMonitor::init( __FILE__ );
+QueryMonitor::init( __FILE__ )->set_up();
