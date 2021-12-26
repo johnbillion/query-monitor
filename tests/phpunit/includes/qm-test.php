@@ -11,7 +11,11 @@ abstract class QM_UnitTestCase extends WP_UnitTestCase {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
-		self::assertTrue( WP_USE_THEMES );
+
+		if ( true !== WP_USE_THEMES ) {
+			$this->fail( 'WP_USE_THEMES should not be false' );
+		}
+
 		parent::setUp();
 	}
 
