@@ -216,7 +216,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			'title' => esc_html( sprintf(
 				$label,
 				number_format_i18n( $count )
-			),
+			) ),
 		) );
 
 		return $menu;
