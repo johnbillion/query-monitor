@@ -35,15 +35,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $qm_dir = dirname( __FILE__ );
 
-require_once "{$qm_dir}/classes/Plugin.php";
+require_once "{$qm_dir}/classes/PHP.php";
 
-if ( ! QM_Plugin::php_version_met() ) {
-	add_action( 'admin_notices', 'QM_Plugin::php_version_nope' );
+if ( ! QM_PHP::version_met() ) {
+	add_action( 'admin_notices', 'QM_PHP::php_version_nope' );
 	return;
 }
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
+foreach ( array( 'Plugin', 'Activation', 'Util', 'QM' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 

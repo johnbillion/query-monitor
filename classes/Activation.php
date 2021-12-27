@@ -13,7 +13,7 @@ class QM_Activation extends QM_Plugin {
 	protected function __construct( $file ) {
 
 		# PHP version handling
-		if ( ! self::php_version_met() ) {
+		if ( ! QM_PHP::version_met() ) {
 			add_action( 'all_admin_notices', array( $this, 'php_notice' ) );
 			return;
 		}
@@ -127,7 +127,7 @@ class QM_Activation extends QM_Plugin {
 				echo esc_html( sprintf(
 					/* Translators: 1: Minimum required PHP version, 2: Current PHP version. */
 					__( 'The Query Monitor plugin requires PHP version %1$s or higher. This site is running version %2$s.', 'query-monitor' ),
-					self::$minimum_php_version,
+					QM_PHP::$minimum_version,
 					PHP_VERSION
 				) );
 				?>
