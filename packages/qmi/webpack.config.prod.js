@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require( 'path' );
 
-const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
-
 module.exports = {
 	mode: 'production',
 	resolve: {
@@ -14,9 +12,6 @@ module.exports = {
 			'.json',
 		],
 	},
-	plugins: [
-		new BellOnBundlerErrorPlugin(),
-	],
 	entry: './index.ts',
 	output: {
 		filename: 'index.js',

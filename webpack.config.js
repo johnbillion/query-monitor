@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const BellOnBundlerErrorPlugin = require( 'bell-on-bundler-error-plugin' );
-/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require( 'webpack' );
 
 /** @type {webpack.Configuration} */
@@ -46,7 +44,6 @@ module.exports = {
 	plugins: [
 		// The plugins property is being explictly overridden here so the default DependencyExtractionWebpackPlugin
 		// plugin from wp-scripts is not loaded, meaning our dependencies such as React and ReactDOM all get bundled.
-		new BellOnBundlerErrorPlugin(),
 		new webpack.ProvidePlugin( {
 			react: 'react',
 		} ),
