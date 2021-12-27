@@ -33,6 +33,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'QM_VERSION', '3.8.0' );
+
 $qm_dir = dirname( __FILE__ );
 
 require_once "{$qm_dir}/classes/Plugin.php";
