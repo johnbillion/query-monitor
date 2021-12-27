@@ -34,21 +34,3 @@ define( 'Altis\ROOT_DIR', '' );
 function members_register_cap_group( string $name, array $args = [] ): void {}
 
 function members_register_cap( string $name, array $args = [] ): void {}
-
-// Compat functions:
-
-/**
- * @return string
- */
-function mysql_get_client_info() {}
-
-/**
- * @return int
- */
-function mysql_errno( $link_identifier = null ) {}
-
-/**
- * @param resource $link_identifier
- * @return string|false
- */
-function mysql_get_server_info( $link_identifier = null ) {}
