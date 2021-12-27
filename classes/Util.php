@@ -252,6 +252,20 @@ class QM_Util {
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
+				
+				/**
+				 * Filters the type of a custom or unknown component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * @since 3.8.1
+				 *
+				 * @param string $type The component type.
+				 * @param string $file The full file path for the file within the component.
+				 * @param string $name The component name.
+				 * @param string $content The context for the component.
+				 */
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $content );
 
 				/**
 				 * Filters the name of a custom or unknown component.
