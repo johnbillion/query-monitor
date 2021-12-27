@@ -29,11 +29,11 @@ abstract class QM_Collector_Assets extends QM_Collector {
 	 */
 	public function tear_down() {
 		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
-		remove_action( 'wp_print_footer_scripts',    array( $this, 'action_print_footer_scripts' ) );
-		remove_action( 'admin_head',                 array( $this, 'action_head' ), 9999 );
-		remove_action( 'wp_head',                    array( $this, 'action_head' ), 9999 );
-		remove_action( 'login_head',                 array( $this, 'action_head' ), 9999 );
-		remove_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
+		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'admin_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'wp_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'login_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'embed_head', array( $this, 'action_head' ), 9999 );
 
 		parent::tear_down();
 	}
