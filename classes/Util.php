@@ -252,7 +252,7 @@ class QM_Util {
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
-				
+
 				/**
 				 * Filters the type of a custom or unknown component.
 				 *
