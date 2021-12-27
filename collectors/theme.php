@@ -22,11 +22,6 @@ class QM_Collector_Theme extends QM_Collector {
 	protected $got_theme_compat = false;
 
 	/**
-	 * @var array<int, string>
-	 */
-	protected $query_templates = array();
-
-	/**
 	 * @return void
 	 */
 	public function set_up() {
@@ -163,6 +158,22 @@ class QM_Collector_Theme extends QM_Collector {
 	 */
 	public function action_template_redirect() {
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
+
+		foreach ( self::get_query_template_names() as $template => $conditional ) {
+			// If a matching theme-compat file is found, further conditional checks won't occur in template-loader.php
+			if ( $this->got_theme_compat ) {
+				break;
+			}
+
+			$get_template = "get_{$template}_template";
+
+			if ( function_exists( $conditional ) && function_exists( $get_template ) && call_user_func( $conditional ) ) {
+				$filter = str_replace( '_', '', $template );
+				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+				call_user_func( $get_template );
+				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+			}
+		}
 	}
 
 	/**
@@ -243,8 +254,6 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return array<int, string>
 	 */
 	public function filter_template_hierarchy( array $templates ) {
-		$this->query_templates = $templates;
-
 		if ( ! isset( $this->data['template_hierarchy'] ) ) {
 			$this->data['template_hierarchy'] = array();
 		}
