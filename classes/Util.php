@@ -263,9 +263,9 @@ class QM_Util {
 				 * @param string $type The component type.
 				 * @param string $file The full file path for the file within the component.
 				 * @param string $name The component name.
-				 * @param string $content The context for the component.
+				 * @param string $context The context for the component.
 				 */
-				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $content );
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
 
 				/**
 				 * Filters the name of a custom or unknown component.
