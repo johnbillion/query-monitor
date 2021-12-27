@@ -11,13 +11,6 @@ class QM_Activation extends QM_Plugin {
 	 * @param string $file
 	 */
 	protected function __construct( $file ) {
-
-		# PHP version handling
-		if ( ! QM_PHP::version_met() ) {
-			add_action( 'all_admin_notices', array( $this, 'php_notice' ) );
-			return;
-		}
-
 		# Filters
 		add_filter( 'pre_update_option_active_plugins', array( $this, 'filter_active_plugins' ) );
 		add_filter( 'pre_update_site_option_active_sitewide_plugins', array( $this, 'filter_active_sitewide_plugins' ) );
@@ -114,26 +107,6 @@ class QM_Activation extends QM_Plugin {
 			return $plugins;
 		}
 
-	}
-
-	/**
-	 * @return void
-	 */
-	public function php_notice() {
-		?>
-		<div id="qm_php_notice" class="notice notice-error">
-			<p>
-				<?php
-				echo esc_html( sprintf(
-					/* Translators: 1: Minimum required PHP version, 2: Current PHP version. */
-					__( 'The Query Monitor plugin requires PHP version %1$s or higher. This site is running version %2$s.', 'query-monitor' ),
-					QM_PHP::$minimum_version,
-					PHP_VERSION
-				) );
-				?>
-			</p>
-		</div>
-		<?php
 	}
 
 	/**
