@@ -5,7 +5,7 @@ Requires at least: 3.7
 Tested up to: 5.8
 Stable tag: 3.8.0
 License: GPLv2 or later
-Requires PHP: 5.3
+Requires PHP: 7.2
 Donate link: https://johnblackbourn.com/donations/
 
 Query Monitor is the developer tools panel for WordPress.

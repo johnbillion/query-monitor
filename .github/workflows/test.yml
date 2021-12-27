@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        php: ['7.4', '7.1']
+        php: ['7.4', '7.2']
         wp: ['*', 'dev-nightly']
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}

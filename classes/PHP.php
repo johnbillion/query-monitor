@@ -10,7 +10,7 @@ abstract class QM_PHP {
 	/**
 	 * @var string
 	 */
-	public static $minimum_version = '5.3.6';
+	public static $minimum_version = '7.2.0';
 
 	/**
 	 * @return bool
