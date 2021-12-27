@@ -1,13 +1,17 @@
 <?php
 
-class TestStackTraces extends QM_UnitTestCase {
+class TestCallbacks extends QM_UnitTestCase {
 
+	/**
+	 * @param mixed $function
+	 * @return mixed[]
+	 */
 	protected static function get_callback( $function ) {
 
 		add_action( 'qm/tests', $function );
 
 		$actions = $GLOBALS['wp_filter']['qm/tests'][10];
-		$keys    = array_keys( $actions );
+		$keys = array_keys( $actions );
 
 		return $actions[ $keys[0] ];
 
@@ -18,7 +22,7 @@ class TestStackTraces extends QM_UnitTestCase {
 		$function = '__return_false';
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionFunction( $function );
+		$ref = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,            $actual['function'] );
@@ -30,11 +34,11 @@ class TestStackTraces extends QM_UnitTestCase {
 
 	public function testCallbackIsCorrectlyPopulatedWithObjectMethod() {
 
-		$obj      = new QM_Test_Object;
+		$obj = new QM_Test_Object;
 		$function = array( $obj, 'hello' );
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionMethod( $function[0], $function[1] );
+		$ref = new ReflectionMethod( $function[0], $function[1] );
 		$actual = QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
@@ -49,9 +53,9 @@ class TestStackTraces extends QM_UnitTestCase {
 		$function = new QM_Test_Invokable;
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionMethod( $function, '__invoke' );
+		$ref = new ReflectionMethod( $function, '__invoke' );
 		$actual = QM_Util::populate_callback( $callback );
-		$name   = 'QM_Test_Invokable->__invoke()';
+		$name = 'QM_Test_Invokable->__invoke()';
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
@@ -65,7 +69,7 @@ class TestStackTraces extends QM_UnitTestCase {
 		$function = array( 'QM_Test_Object', 'hello' );
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionMethod( $function[0], $function[1] );
+		$ref = new ReflectionMethod( $function[0], $function[1] );
 		$actual = QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
@@ -80,7 +84,7 @@ class TestStackTraces extends QM_UnitTestCase {
 		$function = 'QM_Test_Object::hello';
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionMethod( 'QM_Test_Object', 'hello' );
+		$ref = new ReflectionMethod( 'QM_Test_Object', 'hello' );
 		$actual = QM_Util::populate_callback( $callback );
 
 		self::assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
@@ -92,14 +96,13 @@ class TestStackTraces extends QM_UnitTestCase {
 
 	public function testCallbackIsCorrectlyPopulatedWithClosure() {
 
-		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
+		$function = require_once __DIR__ . '/includes/dummy-closures.php';
 
 		$callback = self::get_callback( $function );
 
-		$ref    = new ReflectionFunction( $function );
+		$ref = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
-		$file   = QM_Util::standard_dir( $ref->getFileName(), '' );
-		$name   = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/phpunit/includes/dummy-closures.php' );
+		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/phpunit/includes/dummy-closures.php' );
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
@@ -115,19 +118,19 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod() {
 
-		$obj      = new QM_Test_Object;
+		$obj = new QM_Test_Object;
 		$function = array( $obj, 'goodbye' );
 		$callback = self::get_callback( $function );
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -138,7 +141,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -149,7 +152,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -160,7 +163,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -171,7 +174,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -182,7 +185,7 @@ class TestStackTraces extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 

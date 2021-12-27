@@ -5,14 +5,21 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
-	public $id    = 'wp_die';
-	public $trace = null;
+	/**
+	 * @var string
+	 */
+	public $id = 'wp_die';
 
-	protected $outputters = array();
+	/**
+	 * @var QM_Backtrace|null
+	 */
+	public $trace = null;
 
 	public function __construct( QM_Plugin $qm ) {
 		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
@@ -22,14 +29,23 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		parent::__construct( $qm );
 	}
 
+	/**
+	 * @param callable $handler
+	 * @return callable
+	 */
 	public function filter_wp_die_handler( $handler ) {
 		$this->trace = new QM_Backtrace( array(
-			'ignore_frames' => 1,
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
 		) );
 
 		return $handler;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function dispatch() {
 		if ( ! $this->should_dispatch() ) {
 			return;
@@ -37,24 +53,14 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		require_once $this->qm->plugin_path( 'output/Html.php' );
 
-		$switched_locale = function_exists( 'switch_to_locale' ) && switch_to_locale( get_user_locale() );
-		$stack           = array();
-		$filtered_trace  = $this->trace->get_display_trace();
-
-		// Ignore the `apply_filters('wp_die_handler')` stack frame:
-		array_shift( $filtered_trace );
+		$switched_locale = self::switch_to_locale( get_user_locale() );
+		$stack = array();
+		$filtered_trace = $this->trace->get_filtered_trace();
+		$component = $this->trace->get_component();
 
 		foreach ( $filtered_trace as $i => $item ) {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
-
-		if ( isset( $filtered_trace[ $i - 1 ] ) ) {
-			$culprit = $filtered_trace[ $i - 1 ];
-		} else {
-			$culprit = $filtered_trace[ $i ];
-		}
-
-		$component = QM_Backtrace::get_frame_component( $culprit );
 
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
@@ -117,7 +123,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<p>';
 		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
 
-		if ( $component ) {
+		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
 			printf(
 				/* translators: %s: Plugin or theme name */
@@ -138,10 +144,13 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '</div>';
 
 		if ( $switched_locale ) {
-			restore_previous_locale();
+			self::restore_previous_locale();
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 		if ( ! $this->trace ) {
 			return false;
@@ -156,6 +165,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_wp_die( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['wp_die'] = new QM_Dispatcher_WP_Die( $qm );
 	return $dispatchers;

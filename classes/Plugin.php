@@ -8,11 +8,25 @@
 if ( ! class_exists( 'QM_Plugin' ) ) {
 abstract class QM_Plugin {
 
+	/**
+	 * @var array<string, string>
+	 */
 	private $plugin = array();
+
+	/**
+	 * @var string
+	 */
 	public static $minimum_php_version = '7.0.0';
 
 	/**
+	 * @var string
+	 */
+	public $file = '';
+
+	/**
 	 * Class constructor
+	 *
+	 * @param string $file
 	 */
 	protected function __construct( $file ) {
 		$this->file = $file;
@@ -45,7 +59,7 @@ abstract class QM_Plugin {
 	 * @return string Version
 	 */
 	final public function plugin_ver( $file ) {
-		return filemtime( $this->plugin_path( $file ) );
+		return (string) filemtime( $this->plugin_path( $file ) );
 	}
 
 	/**
@@ -59,6 +73,10 @@ abstract class QM_Plugin {
 
 	/**
 	 * Populates and returns the current plugin info.
+	 *
+	 * @param string $item
+	 * @param string $file
+	 * @return string
 	 */
 	private function _plugin( $item, $file = '' ) {
 		if ( ! array_key_exists( $item, $this->plugin ) ) {
@@ -77,6 +95,9 @@ abstract class QM_Plugin {
 		return $this->plugin[ $item ] . ltrim( $file, '/' );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function php_version_met() {
 		static $met = null;
 
@@ -87,6 +108,9 @@ abstract class QM_Plugin {
 		return $met;
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function php_version_nope() {
 		printf(
 			'<div id="qm-php-nope" class="notice notice-error is-dismissible"><p>%s</p></div>',

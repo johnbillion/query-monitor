@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
@@ -23,10 +25,16 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 55 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Blocks', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -103,25 +111,31 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param int|string $i
+	 * @param array<string, mixed> $block
+	 * @param array<string, mixed> $data
+	 * @return void
+	 */
 	protected static function render_block( $i, array $block, array $data ) {
-		$block_error     = false;
-		$row_class       = '';
+		$block_error = false;
+		$row_class = '';
 		$referenced_post = null;
 		$referenced_type = null;
-		$referenced_pto  = null;
-		$error_message   = null;
+		$referenced_pto = null;
+		$error_message = null;
 
 		if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
 			$referenced_post = get_post( $block['attrs']['ref'] );
 
 			if ( ! $referenced_post ) {
-				$block_error   = true;
+				$block_error = true;
 				$error_message = esc_html__( 'Referenced block does not exist.', 'query-monitor' );
 			} else {
 				$referenced_type = $referenced_post->post_type;
-				$referenced_pto  = get_post_type_object( $referenced_type );
+				$referenced_pto = get_post_type_object( $referenced_type );
 				if ( 'wp_block' !== $referenced_type ) {
-					$block_error   = true;
+					$block_error = true;
 					$error_message = sprintf(
 						/* translators: %1$s: Erroneous post type name, %2$s: WordPress block post type name */
 						esc_html__( 'Referenced post is of type %1$s instead of %2$s.', 'query-monitor' ),
@@ -133,26 +147,26 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		}
 
 		$media_blocks = array(
-			'core/audio'       => 'id',
-			'core/cover'       => 'id',
+			'core/audio' => 'id',
+			'core/cover' => 'id',
 			'core/cover-image' => 'id',
-			'core/file'        => 'id',
-			'core/image'       => 'id',
-			'core/media-text'  => 'mediaId', // (╯°□°）╯︵ ┻━┻
-			'core/video'       => 'id',
+			'core/file' => 'id',
+			'core/image' => 'id',
+			'core/media-text' => 'mediaId', // (╯°□°）╯︵ ┻━┻
+			'core/video' => 'id',
 		);
 
 		if ( isset( $media_blocks[ $block['blockName'] ] ) && is_array( $block['attrs'] ) && ! empty( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] ) ) {
 			$referenced_post = get_post( $block['attrs'][ $media_blocks[ $block['blockName'] ] ] );
 
 			if ( ! $referenced_post ) {
-				$block_error   = true;
+				$block_error = true;
 				$error_message = esc_html__( 'Referenced media does not exist.', 'query-monitor' );
 			} else {
 				$referenced_type = $referenced_post->post_type;
-				$referenced_pto  = get_post_type_object( $referenced_type );
+				$referenced_pto = get_post_type_object( $referenced_type );
 				if ( 'attachment' !== $referenced_type ) {
-					$block_error   = true;
+					$block_error = true;
 					$error_message = sprintf(
 						/* translators: %1$s: Erroneous post type name, %2$s: WordPress attachment post type name */
 						esc_html__( 'Referenced media is of type %1$s instead of %2$s.', 'query-monitor' ),
@@ -286,6 +300,10 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$data = $this->collector->get_data();
 
@@ -302,6 +320,11 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_block_editor( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'block_editor' );
 	if ( $collector ) {

@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Caps extends QM_Output_Html {
 
@@ -23,10 +25,16 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 105 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Capability Checks', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$collector = $this->collector;
 
@@ -56,12 +64,12 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		if ( ! empty( $data['caps'] ) ) {
 			$this->before_tabular_output();
 
-			$results    = array(
+			$results = array(
 				'true',
 				'false',
 			);
-			$show_user  = ( count( $data['users'] ) > 1 );
-			$parts      = $data['parts'];
+			$show_user = ( count( $data['users'] ) > 1 );
+			$parts = $data['parts'];
 			$components = $data['components'];
 
 			usort( $parts, 'strcasecmp' );
@@ -96,11 +104,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			foreach ( $data['caps'] as $row ) {
 				$component = $row['component'];
 
-				$row_attr                      = array();
-				$row_attr['data-qm-name']      = implode( ' ', $row['parts'] );
-				$row_attr['data-qm-user']      = $row['user'];
+				$row_attr = array();
+				$row_attr['data-qm-name'] = implode( ' ', $row['parts'] );
+				$row_attr['data-qm-user'] = $row['user'];
 				$row_attr['data-qm-component'] = $component->name;
-				$row_attr['data-qm-result']    = ( $row['result'] ) ? 'true' : 'false';
+				$row_attr['data-qm-result'] = ( $row['result'] ) ? 'true' : 'false';
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';
@@ -147,8 +155,8 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				$stack = array();
 
-				foreach ( $row['filtered_trace'] as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				foreach ( $row['filtered_trace'] as $frame ) {
+					$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 				}
 
 				$caller = array_shift( $stack );
@@ -206,6 +214,10 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => $this->name(),
@@ -216,6 +228,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_caps( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'caps' );
 	if ( $collector ) {

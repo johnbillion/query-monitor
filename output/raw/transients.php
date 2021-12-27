@@ -14,13 +14,19 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 	 */
 	protected $collector;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Transients', 'query-monitor' );
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 		$output = array();
-		$data   = $this->collector->get_data();
+		$data = $this->collector->get_data();
 
 		if ( empty( $data['trans'] ) ) {
 			return $output;
@@ -55,6 +61,11 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_raw_transients( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'transients' );
 	if ( $collector ) {

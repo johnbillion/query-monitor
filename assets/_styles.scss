@@ -192,6 +192,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		background: $qm-panel-bg !important;
 		border-top: 1px solid $qm-panel-border !important;
 		bottom: 0 !important;
+		contain: layout paint;
 		direction: ltr !important;
 		height: 50%;
 		left: 0 !important;

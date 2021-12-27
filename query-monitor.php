@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The Developer Tools Panel for WordPress.
- * Version:      3.7.1
+ * Version:      3.8.0
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -29,7 +29,9 @@
  * GNU General Public License for more details.
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $qm_dir = dirname( __FILE__ );
 
@@ -46,10 +48,6 @@ foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
 }
 
 QM_Activation::init( __FILE__ );
-
-if ( ! QM_Plugin::php_version_met() ) {
-	return;
-}
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	require_once "{$qm_dir}/classes/CLI.php";
@@ -80,4 +78,4 @@ unset(
 	$qm_class
 );
 
-QueryMonitor::init( __FILE__ );
+QueryMonitor::init( __FILE__ )->set_up();

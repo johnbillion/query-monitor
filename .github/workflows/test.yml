@@ -13,19 +13,26 @@ jobs:
   build:
     strategy:
       matrix:
-        php: ['7.3', '7.0']
+        php: ['7.4', '7.1']
         wp: ['*', 'dev-nightly']
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
+    timeout-minutes: 10
     steps:
     - name: Checkout repository
       uses: actions/checkout@v1
 
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
     - name: Composer cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-composer-dependencies
       with:
-        path: ~/.composer/cache
+        path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
     - name: Install PHP

@@ -5,22 +5,34 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Hooks extends QM_Collector {
 
+	/**
+	 * @var string
+	 */
 	public $id = 'hooks';
+
+	/**
+	 * @var bool
+	 */
 	protected static $hide_core;
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $wp_actions, $wp_filter;
 
-		self::$hide_qm   = self::hide_qm();
+		self::$hide_qm = self::hide_qm();
 		self::$hide_core = ( defined( 'QM_HIDE_CORE_ACTIONS' ) && QM_HIDE_CORE_ACTIONS );
 
-		$hooks      = array();
-		$all_parts  = array();
+		$hooks = array();
+		$all_parts = array();
 		$components = array();
 
 		if ( has_filter( 'all' ) ) {
@@ -39,16 +51,16 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		foreach ( $hook_names as $name ) {
 
-			$hook    = QM_Hook::process( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			$hook = QM_Hook::process( $name, $wp_filter, self::$hide_qm, self::$hide_core );
 			$hooks[] = $hook;
 
-			$all_parts  = array_merge( $all_parts, $hook['parts'] );
+			$all_parts = array_merge( $all_parts, $hook['parts'] );
 			$components = array_merge( $components, $hook['components'] );
 
 		}
 
-		$this->data['hooks']      = $hooks;
-		$this->data['parts']      = array_unique( array_filter( $all_parts ) );
+		$this->data['hooks'] = $hooks;
+		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
 		$this->data['components'] = array_unique( array_filter( $components ) );
 
 		usort( $this->data['parts'], 'strcasecmp' );

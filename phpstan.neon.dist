@@ -1,0 +1,43 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: 6
+    tmpDir: tests/cache
+    paths:
+        - query-monitor.php
+        - classes
+        - collectors
+        - dispatchers
+        - output
+        - tests/phpunit
+        - wp-content
+    excludePaths:
+        analyse:
+            - tests/cache
+            - tests/phpunit/includes/dummy-*
+    bootstrapFiles:
+        - tests/stubs.php
+    scanDirectories:
+        - vendor/wp-phpunit/wp-phpunit/includes
+    dynamicConstantNames:
+        - SAVEQUERIES
+    ignoreErrors:
+        # Uses func_get_args()
+        - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
+        # These are false positives
+        - '#Instanceof between string and mysqli will always evaluate to false#'
+        - '#Call to function is_resource\(\) with string will always evaluate to false#'
+        # The `wpdb` class exposes its properties via `__get()`
+        - '#Access to private property wpdb::#'
+        - '#Access to protected property wpdb::#'
+        - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+        -
+            path: tests/phpunit/*
+            message: '#^Method [^:]+::test[a-zA-Z_]+\(\) has no return type specified\.$#'
+        -
+            path: tests/phpunit/*
+            message: '#^Method [^:]+::setUp\(\) has no return type specified\.$#'
+        -
+            path: tests/phpunit/*
+            message: '#^Method [^:]+::tearDown\(\) has no return type specified\.$#'

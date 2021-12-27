@@ -12,7 +12,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;
@@ -30,7 +32,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 }
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-$qm_dir    = dirname( dirname( __FILE__ ) );
+$qm_dir = dirname( dirname( __FILE__ ) );
 $qm_plugin = "{$qm_dir}/classes/Plugin.php";
 
 if ( ! is_readable( $qm_plugin ) ) {
@@ -54,13 +56,21 @@ if ( ! defined( 'SAVEQUERIES' ) ) {
 
 class QM_DB extends wpdb {
 
+	/**
+	 * @var float
+	 */
+	public $time_start;
+
+	/**
+	 * @var array<string, string|null>
+	 */
 	public $qm_php_vars = array(
-		'max_execution_time'  => null,
-		'memory_limit'        => null,
+		'max_execution_time' => null,
+		'memory_limit' => null,
 		'upload_max_filesize' => null,
-		'post_max_size'       => null,
-		'display_errors'      => null,
-		'log_errors'          => null,
+		'post_max_size' => null,
+		'display_errors' => null,
+		'log_errors' => null,
 	);
 
 	/**
@@ -86,28 +96,24 @@ class QM_DB extends wpdb {
 	 *                  affected/selected for all other queries. Boolean false on error.
 	 */
 	public function query( $query ) {
-		if ( ! $this->ready ) {
-			if ( isset( $this->check_current_query ) ) {
-				// This property was introduced in WP 4.2
-				$this->check_current_query = true;
-			}
-			return false;
-		}
-
 		if ( $this->show_errors ) {
 			$this->hide_errors();
 		}
 
 		$result = parent::query( $query );
-		$i      = $this->num_queries - 1;
+		$i = $this->num_queries - 1;
+
+		if ( did_action( 'qm/cease' ) ) {
+			// It's not possible to prevent the parent class from logging queries because it reads
+			// the `SAVEQUERIES` constant and I don't want to override more methods than necessary.
+			$this->queries = array();
+		}
 
 		if ( ! isset( $this->queries[ $i ] ) ) {
 			return $result;
 		}
 
-		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
-			'ignore_frames' => 1,
-		) );
+		$this->queries[ $i ]['trace'] = new QM_Backtrace();
 
 		if ( ! isset( $this->queries[ $i ][3] ) ) {
 			$this->queries[ $i ][3] = $this->time_start;
@@ -115,17 +121,17 @@ class QM_DB extends wpdb {
 
 		if ( $this->last_error ) {
 			$code = 'qmdb';
-			if ( $this->use_mysqli ) {
-				if ( $this->dbh instanceof mysqli ) {
-					$code = mysqli_errno( $this->dbh );
-				}
-			} else {
-				if ( is_resource( $this->dbh ) ) {
-					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore
-					$code = mysql_errno( $this->dbh );
-				}
+
+			if ( $this->dbh instanceof mysqli ) {
+				$code = mysqli_errno( $this->dbh );
 			}
+
+			if ( is_resource( $this->dbh ) ) {
+				// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
+				// phpcs:ignore
+				$code = mysql_errno( $this->dbh );
+			}
+
 			$this->queries[ $i ]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
 			$this->queries[ $i ]['result'] = $result;

@@ -1,18 +1,30 @@
 <?php
 
 class TestPlugin extends QM_UnitTestCase {
+	/**
+	 * @var ?array{
+	 *   tested_up_to: string,
+	 *   stable_tag: string,
+	 * }
+	 */
 	private $readme_data;
 
 	public function testStableTagIsUpToDate() {
 		if ( ! $readme_data = $this->get_readme() ) {
-			$this->markTestSkipped( 'There is no readme file' );
-			return;
+			$this->fail( 'There is no readme file' );
 		}
+
 		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );
 
 		self::assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
 	}
 
+	/**
+	 * @return array{
+	 *   tested_up_to: string,
+	 *   stable_tag: string,
+	 * }|false
+	 */
 	private function get_readme() {
 		if ( ! isset( $this->readme_data ) ) {
 			$file = dirname( dirname( dirname( __FILE__ ) ) ) . '/readme.txt';
@@ -28,7 +40,7 @@ class TestPlugin extends QM_UnitTestCase {
 
 			$this->readme_data = array(
 				'tested_up_to' => trim( trim( $_tested_up_to[1], '*' ) ),
-				'stable_tag'   => trim( trim( $_stable_tag[1], '*' ) )
+				'stable_tag' => trim( trim( $_stable_tag[1], '*' ) )
 			);
 		}
 

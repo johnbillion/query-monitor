@@ -1,3 +1,3 @@
 <?php
 
-$function = function() {};
+return function() {};

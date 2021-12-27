@@ -5,14 +5,19 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Caps extends QM_Collector {
 
 	public $id = 'caps';
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 
 		if ( ! self::enabled() ) {
 			return;
@@ -22,16 +27,35 @@ class QM_Collector_Caps extends QM_Collector {
 		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
 	}
 
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
+		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * @return bool
+	 */
 	public static function enabled() {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		return array(
 			'wp_roles_init',
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'map_meta_cap',
@@ -40,6 +64,9 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_options() {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
@@ -48,18 +75,15 @@ class QM_Collector_Caps extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_constants() {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
 			'DISALLOW_FILE_EDIT',
 			'DISALLOW_UNFILTERED_HTML',
 		);
-	}
-
-	public function tear_down() {
-		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
-		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
-		parent::tear_down();
 	}
 
 	/**
@@ -69,7 +93,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 *
 	 * @param bool[]   $user_caps Concerned user's capabilities.
 	 * @param string[] $caps      Required primitive capabilities for the requested capability.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type string    $0 Requested capability.
@@ -79,7 +103,21 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @return bool[] Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
-		$trace  = new QM_Backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+			'ignore_func' => array(
+				'current_user_can' => true,
+				'map_meta_cap' => true,
+				'user_can' => true,
+			),
+			'ignore_method' => array(
+				'WP_User' => array(
+					'has_cap' => true,
+				),
+			),
+		) );
 		$result = true;
 
 		foreach ( $caps as $cap ) {
@@ -90,8 +128,9 @@ class QM_Collector_Caps extends QM_Collector {
 		}
 
 		$this->data['caps'][] = array(
-			'args'   => $args,
-			'trace'  => $trace,
+			'args' => $args,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
 			'result' => $result,
 		);
 
@@ -106,7 +145,7 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
 	 * @param string   $cap           Capability or meta capability being checked.
 	 * @param int      $user_id       Concerned user ID.
-	 * @param array    $args {
+	 * @param mixed[]  $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type mixed ...$0 Optional second and further parameters.
@@ -122,28 +161,46 @@ class QM_Collector_Caps extends QM_Collector {
 			return $required_caps;
 		}
 
-		$trace  = new QM_Backtrace();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
+			'ignore_func' => array(
+				'current_user_can' => true,
+				'map_meta_cap' => true,
+				'user_can' => true,
+			),
+			'ignore_method' => array(
+				'WP_User' => array(
+					'has_cap' => true,
+				),
+			),
+		) );
 		$result = ( ! in_array( 'do_not_allow', $required_caps, true ) );
 
 		array_unshift( $args, $user_id );
 		array_unshift( $args, $cap );
 
 		$this->data['caps'][] = array(
-			'args'   => $args,
-			'trace'  => $trace,
+			'args' => $args,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
 			'result' => $result,
 		);
 
 		return $required_caps;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( empty( $this->data['caps'] ) ) {
 			return;
 		}
 
-		$all_parts  = array();
-		$all_users  = array();
+		$all_parts = array();
+		$all_users = array();
 		$components = array();
 
 		$this->data['caps'] = array_values( array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) ) );
@@ -159,53 +216,31 @@ class QM_Collector_Caps extends QM_Collector {
 				$name = '';
 			}
 
-			$trace          = $cap['trace']->get_trace();
-			$filtered_trace = $cap['trace']->get_display_trace();
+			$component = $cap['component'];
 
-			$last = end( $filtered_trace );
-			if ( isset( $last['function'] ) && 'map_meta_cap' === $last['function'] ) {
-				array_shift( $filtered_trace ); // remove the map_meta_cap() call
-			}
-
-			array_shift( $filtered_trace ); // remove the WP_User->has_cap() call
-			array_shift( $filtered_trace ); // remove the *_user_can() call
-
-			if ( ! count( $filtered_trace ) ) {
-				$responsible_name = QM_Util::standard_dir( $trace[1]['file'], '' ) . ':' . $trace[1]['line'];
-
-				$responsible_item                 = $trace[1];
-				$responsible_item['display']      = $responsible_name;
-				$responsible_item['calling_file'] = $trace[1]['file'];
-				$responsible_item['calling_line'] = $trace[1]['line'];
-				array_unshift( $filtered_trace, $responsible_item );
-			}
-
-			$component = $cap['trace']->get_component();
-
-			$this->data['caps'][ $i ]['filtered_trace'] = $filtered_trace;
-			$this->data['caps'][ $i ]['component']      = $component;
-
-			$parts                             = array_values( array_filter( preg_split( '#[_/-]#', $name ) ) );
+			$parts = array_values( array_filter( preg_split( '#[_/-]#', $name ) ) );
 			$this->data['caps'][ $i ]['parts'] = $parts;
-			$this->data['caps'][ $i ]['name']  = $name;
-			$this->data['caps'][ $i ]['user']  = $cap['args'][1];
-			$this->data['caps'][ $i ]['args']  = array_slice( $cap['args'], 2 );
-			$all_parts                         = array_merge( $all_parts, $parts );
-			$all_users[]                       = $cap['args'][1];
-			$components[ $component->name ]    = $component->name;
-
-			unset( $this->data['caps'][ $i ]['trace'] );
+			$this->data['caps'][ $i ]['name'] = $name;
+			$this->data['caps'][ $i ]['user'] = $cap['args'][1];
+			$this->data['caps'][ $i ]['args'] = array_slice( $cap['args'], 2 );
+			$all_parts = array_merge( $all_parts, $parts );
+			$all_users[] = $cap['args'][1];
+			$components[ $component->name ] = $component->name;
 		}
 
-		$this->data['parts']      = array_values( array_unique( array_filter( $all_parts ) ) );
-		$this->data['users']      = array_values( array_unique( array_filter( $all_users ) ) );
+		$this->data['parts'] = array_values( array_unique( array_filter( $all_parts ) ) );
+		$this->data['users'] = array_values( array_unique( array_filter( $all_users ) ) );
 		$this->data['components'] = $components;
 	}
 
+	/**
+	 * @param array<string, mixed> $cap
+	 * @return bool
+	 */
 	public function filter_remove_noise( array $cap ) {
-		$trace = $cap['trace']->get_trace();
+		$trace = $cap['filtered_trace'];
 
-		$exclude_files     = array(
+		$exclude_files = array(
 			ABSPATH . 'wp-admin/menu.php',
 			ABSPATH . 'wp-admin/includes/menu.php',
 		);
@@ -228,6 +263,11 @@ class QM_Collector_Caps extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_caps( array $collectors, QueryMonitor $qm ) {
 	$collectors['caps'] = new QM_Collector_Caps();
 	return $collectors;
