@@ -402,7 +402,7 @@ class QM_Collector_Theme extends QM_Collector {
 			$all = array_merge( $posts, $files, $nopes );
 
 			foreach ( $all as $part ) {
-				$file = isset( $part['path'] ) ? $part['path'] : $part['post'];
+				$file = $part['path'] ?? $part['post'];
 
 				if ( isset( $this->data['count_template_parts'][ $file ] ) ) {
 					$this->data['count_template_parts'][ $file ]++;

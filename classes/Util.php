@@ -604,7 +604,7 @@ class QM_Util {
 	 */
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
-		usort( $array, array( __CLASS__, '_sort' ) );
+		usort( $array, array( self::class, '_sort' ) );
 	}
 
 	/**
@@ -614,7 +614,7 @@ class QM_Util {
 	 */
 	public static function rsort( array &$array, $field ) {
 		self::$sort_field = $field;
-		usort( $array, array( __CLASS__, '_rsort' ) );
+		usort( $array, array( self::class, '_rsort' ) );
 	}
 
 	/**
@@ -626,11 +626,7 @@ class QM_Util {
 	private static function _rsort( $a, $b ) {
 		$field = self::$sort_field;
 
-		if ( $a[ $field ] === $b[ $field ] ) {
-			return 0;
-		} else {
-			return ( $a[ $field ] > $b[ $field ] ) ? -1 : 1;
-		}
+		return $a[ $field ] <=> $b[ $field ];
 	}
 
 	/**
