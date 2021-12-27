@@ -18,6 +18,9 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	/**
+	 * @var bool
+	 */
 	public static $client_side_rendered = true;
 
 	public function __construct( QM_Collector $collector ) {

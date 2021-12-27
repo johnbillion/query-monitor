@@ -7,6 +7,9 @@
 
 abstract class QM_Output_Html extends QM_Output {
 
+	/**
+	 * @var bool
+	 */
 	public static $client_side_rendered = false;
 
 	/**

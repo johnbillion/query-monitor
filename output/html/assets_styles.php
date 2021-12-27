@@ -18,6 +18,9 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	 */
 	protected $collector;
 
+	/**
+	 * @var bool
+	 */
 	public static $client_side_rendered = true;
 
 	/**
