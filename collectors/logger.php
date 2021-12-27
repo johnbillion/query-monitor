@@ -185,7 +185,6 @@ class QM_Collector_Logger extends QM_Collector {
 			'component' => $trace->get_component(),
 			'filtered_trace' => $filtered_trace,
 			'level' => $level,
-			'type' => $type,
 		);
 	}
 

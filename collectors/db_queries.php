@@ -185,6 +185,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$caller = $query['trace']->get_caller();
 				$caller_name = $caller['display'];
 				$caller = $caller['display'];
+				$filtered_trace = $query['trace']->get_filtered_trace();
 
 			} else {
 
@@ -195,6 +196,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$callers = QM_Backtrace::get_filtered_stack( $callers );
 				$caller = reset( $callers );
 				$caller_name = $caller;
+				$filtered_trace = null;
 
 			}
 
