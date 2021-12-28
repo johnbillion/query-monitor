@@ -41,3 +41,7 @@ parameters:
         -
             path: tests/phpunit/*
             message: '#^Method [^:]+::tearDown\(\) has no return type specified\.$#'
+        # Passing ints and floats to these functions is fine
+        - '#Parameter \#1 \$text of function esc_html expects string, int\|string given#'
+        - '#Parameter \#1 \$text of function esc_html expects string, float\|int\|string given#'
+
