@@ -73,9 +73,8 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
 1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, "Tested up to" versions, FAQs, screenshots, etc.
-   - This is currently a manual process while I decide whether I want to sync parts of these files.
-1. Ensure `.distignore` is up to date with all files that shouldn't be part of the build.
-   - To do this, run `wp dist-archive . archive.zip` then check the contents for files that shouldn't be part of the package.
+1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
+   - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
    - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.

@@ -2,6 +2,10 @@
 
 class TestCallbacks extends QM_UnitTestCase {
 
+	/**
+	 * @param mixed $function
+	 * @return mixed[]
+	 */
 	protected static function get_callback( $function ) {
 
 		add_action( 'qm/tests', $function );
@@ -92,13 +96,12 @@ class TestCallbacks extends QM_UnitTestCase {
 
 	public function testCallbackIsCorrectlyPopulatedWithClosure() {
 
-		require_once dirname( __FILE__ ) . '/includes/dummy-closures.php';
+		$function = require_once __DIR__ . '/includes/dummy-closures.php';
 
 		$callback = self::get_callback( $function );
 
 		$ref = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
-		$file = QM_Util::standard_dir( $ref->getFileName(), '' );
 		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/phpunit/includes/dummy-closures.php' );
 
 		self::assertEquals( $function,            $actual['function'] );
@@ -115,7 +118,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -127,7 +130,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -138,7 +141,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -149,7 +152,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -160,7 +163,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -171,7 +174,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 
@@ -182,7 +185,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$actual = QM_Util::populate_callback( $callback );
 
-		self::assertWPError( $actual['error'] );
+		$this->assertWPError( $actual['error'] );
 
 	}
 

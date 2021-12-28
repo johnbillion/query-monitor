@@ -22,12 +22,11 @@ class QM_Collector_Theme extends QM_Collector {
 	protected $got_theme_compat = false;
 
 	/**
-	 * @var array<int, string>
+	 * @return void
 	 */
-	protected $query_templates = array();
+	public function set_up() {
+		parent::set_up();
 
-	public function __construct() {
-		parent::__construct();
 		add_filter( 'body_class', array( $this, 'filter_body_class' ), 9999 );
 		add_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
@@ -38,8 +37,20 @@ class QM_Collector_Theme extends QM_Collector {
 	}
 
 	/**
-	 * @return array<int, string>
+	 * @return void
 	 */
+	public function tear_down() {
+		remove_filter( 'body_class', array( $this, 'filter_body_class' ), 9999 );
+		remove_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999 );
+		remove_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
+		remove_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10 );
+		remove_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10 );
+		remove_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10 );
+		remove_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10 );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @return array<int, string>
 	 */
@@ -147,6 +158,22 @@ class QM_Collector_Theme extends QM_Collector {
 	 */
 	public function action_template_redirect() {
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), PHP_INT_MAX );
+
+		foreach ( self::get_query_template_names() as $template => $conditional ) {
+			// If a matching theme-compat file is found, further conditional checks won't occur in template-loader.php
+			if ( $this->got_theme_compat ) {
+				break;
+			}
+
+			$get_template = "get_{$template}_template";
+
+			if ( function_exists( $conditional ) && function_exists( $get_template ) && call_user_func( $conditional ) ) {
+				$filter = str_replace( '_', '', $template );
+				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+				call_user_func( $get_template );
+				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+			}
+		}
 	}
 
 	/**
@@ -227,8 +254,6 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return array<int, string>
 	 */
 	public function filter_template_hierarchy( array $templates ) {
-		$this->query_templates = $templates;
-
 		if ( ! isset( $this->data['template_hierarchy'] ) ) {
 			$this->data['template_hierarchy'] = array();
 		}

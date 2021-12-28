@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The Developer Tools Panel for WordPress.
- * Version:      3.7.1
+ * Version:      3.8.0
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -33,17 +33,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'QM_VERSION', '3.8.0' );
+
 $qm_dir = dirname( __FILE__ );
 
-require_once "{$qm_dir}/classes/Plugin.php";
+require_once "{$qm_dir}/classes/PHP.php";
 
-if ( ! QM_Plugin::php_version_met() ) {
-	add_action( 'admin_notices', 'QM_Plugin::php_version_nope' );
+if ( ! QM_PHP::version_met() ) {
+	add_action( 'admin_notices', 'QM_PHP::php_version_nope' );
 	return;
 }
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
+foreach ( array( 'Plugin', 'Activation', 'Util', 'QM' ) as $qm_class ) {
 	require_once "{$qm_dir}/classes/{$qm_class}.php";
 }
 
@@ -78,4 +80,4 @@ unset(
 	$qm_class
 );
 
-QueryMonitor::init( __FILE__ );
+QueryMonitor::init( __FILE__ )->set_up();

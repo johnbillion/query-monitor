@@ -7,13 +7,17 @@
 
 class QueryMonitor extends QM_Plugin {
 
-	protected function __construct( $file ) {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_action( 'init', array( $this, 'action_init' ) );
 		add_action( 'members_register_caps', array( $this, 'action_register_members_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
+		add_action( 'qm/cease', array( $this, 'action_cease' ) );
 
 		# Filters
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 4 );
@@ -22,9 +26,6 @@ class QueryMonitor extends QM_Plugin {
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
-
-		# Parent setup:
-		parent::__construct( $file );
 
 		# Load and register built-in collectors:
 		$collectors = array();
@@ -41,7 +42,7 @@ class QueryMonitor extends QM_Plugin {
 		 * @param string[] $collectors Array of file paths to be loaded.
 		 */
 		foreach ( apply_filters( 'qm/built-in-collectors', $collectors ) as $file ) {
-			include $file;
+			include_once $file;
 		}
 
 	}
@@ -138,7 +139,7 @@ class QueryMonitor extends QM_Plugin {
 
 		# Load dispatchers:
 		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $file ) {
-			include $file;
+			include_once $file;
 		}
 
 		/**
@@ -239,6 +240,18 @@ class QueryMonitor extends QM_Plugin {
 		);
 
 		return $caps;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function action_cease() {
+		// iterate collectors, call tear_down
+		// discard all collected data
+		QM_Collectors::cease();
+
+		// remove dispatchers or prevent them from doing anything
+		QM_Dispatchers::cease();
 	}
 
 	/**

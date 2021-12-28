@@ -26,9 +26,12 @@ class QM_Collector_HTTP extends QM_Collector {
 	 */
 	private $info = null;
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 
-		parent::__construct();
+		parent::set_up();
 
 		add_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999, 2 );
 		add_filter( 'pre_http_request', array( $this, 'filter_pre_http_request' ), 9999, 3 );
@@ -39,6 +42,22 @@ class QM_Collector_HTTP extends QM_Collector {
 		add_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
 		add_action( 'requests-fsockopen.after_request', array( $this, 'action_fsockopen_after_request' ), 9999, 2 );
 
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999 );
+		remove_filter( 'pre_http_request', array( $this, 'filter_pre_http_request' ), 9999 );
+		remove_action( 'http_api_debug', array( $this, 'action_http_api_debug' ), 9999 );
+
+		remove_action( 'requests-curl.before_request', array( $this, 'action_curl_before_request' ), 9999 );
+		remove_action( 'requests-curl.after_request', array( $this, 'action_curl_after_request' ), 9999 );
+		remove_action( 'requests-fsockopen.before_request', array( $this, 'action_fsockopen_before_request' ), 9999 );
+		remove_action( 'requests-fsockopen.after_request', array( $this, 'action_fsockopen_after_request' ), 9999 );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -327,11 +346,12 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			$http['ltime'] = ( $http['end'] - $http['start'] );
 
-			if ( isset( $http['info'] ) ) {
-				if ( ! empty( $http['info']['url'] ) ) {
-					if ( rtrim( $http['url'], '/' ) !== rtrim( $http['info']['url'], '/' ) ) {
-						$http['redirected_to'] = $http['info']['url'];
-					}
+			if ( isset( $http['info'] ) && ! empty( $http['info']['url'] ) ) {
+				// Ignore query variables when detecting a redirect.
+				$from = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['url'] ) );
+				$to = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['info']['url'] ) );
+				if ( $from !== $to ) {
+					$http['redirected_to'] = $http['info']['url'];
 				}
 			}
 

@@ -35,6 +35,8 @@ class QM_Collectors implements IteratorAggregate {
 	public static function add( QM_Collector $collector ) {
 		$collectors = self::init();
 
+		$collector->set_up();
+
 		$collectors->items[ $collector->id ] = $collector;
 	}
 
@@ -93,5 +95,19 @@ class QM_Collectors implements IteratorAggregate {
 		$this->processed = true;
 	}
 
+	/**
+	 * @return void
+	 */
+	public static function cease() {
+		$collectors = self::init();
+
+		$collectors->processed = true;
+
+		/** @var QM_Collector $collector */
+		foreach ( $collectors as $collector ) {
+			$collector->tear_down();
+			$collector->discard_data();
+		}
+	}
 }
 }

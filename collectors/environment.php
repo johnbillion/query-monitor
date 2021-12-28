@@ -28,11 +28,13 @@ class QM_Collector_Environment extends QM_Collector {
 		'log_errors',
 	);
 
-	public function __construct() {
-
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 		global $wpdb;
 
-		parent::__construct();
+		parent::set_up();
 
 		# If QM_DB is in place then we'll use the values which were
 		# caught early before any plugins had a chance to alter them

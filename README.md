@@ -314,6 +314,16 @@ Long answer: Query Monitor has a small impact on page generation time because it
 
 On pages that have an especially high number of database queries (in the hundreds), Query Monitor currently uses more memory than I would like it to. This is due to the amount of data that is captured in the stack trace for each query. I have been and will be working to continually reduce this.
 
+## Can I prevent Query Monitor from collecting data during long-running requests?
+
+Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+
+This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
+
+* Backuping up or restoring your site
+* Exporting a large amount of data
+* Running security scans
+
 ## Are there any add-on plugins for Query Monitor?
 
 [A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)

@@ -13,13 +13,26 @@ class QM_Collector_Languages extends QM_Collector {
 
 	public $id = 'languages';
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 
-		parent::__construct();
+		parent::set_up();
 
 		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999, 3 );
 		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
 
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999 );
+		remove_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999 );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -78,6 +91,10 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
+		if ( empty( $this->data['languages'] ) ) {
+			return;
+		}
+
 		$this->data['locale'] = get_locale();
 		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		ksort( $this->data['languages'] );

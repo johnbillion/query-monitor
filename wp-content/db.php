@@ -33,14 +33,14 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 
 # No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
 $qm_dir = dirname( dirname( __FILE__ ) );
-$qm_plugin = "{$qm_dir}/classes/Plugin.php";
+$qm_php = "{$qm_dir}/classes/PHP.php";
 
-if ( ! is_readable( $qm_plugin ) ) {
+if ( ! is_readable( $qm_php ) ) {
 	return;
 }
-require_once $qm_plugin;
+require_once $qm_php;
 
-if ( ! QM_Plugin::php_version_met() ) {
+if ( ! QM_PHP::version_met() ) {
 	return;
 }
 
@@ -108,6 +108,12 @@ class QM_DB extends wpdb {
 
 		$result = parent::query( $query );
 		$i = $this->num_queries - 1;
+
+		if ( did_action( 'qm/cease' ) ) {
+			// It's not possible to prevent the parent class from logging queries because it reads
+			// the `SAVEQUERIES` constant and I don't want to override more methods than necessary.
+			$this->queries = array();
+		}
 
 		if ( ! isset( $this->queries[ $i ] ) ) {
 			return $result;

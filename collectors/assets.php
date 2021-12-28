@@ -11,14 +11,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abstract class QM_Collector_Assets extends QM_Collector {
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
 		add_action( 'admin_head', array( $this, 'action_head' ), 9999 );
 		add_action( 'wp_head', array( $this, 'action_head' ), 9999 );
 		add_action( 'login_head', array( $this, 'action_head' ), 9999 );
 		add_action( 'embed_head', array( $this, 'action_head' ), 9999 );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'admin_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'wp_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'login_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'embed_head', array( $this, 'action_head' ), 9999 );
+
+		parent::tear_down();
 	}
 
 	/**

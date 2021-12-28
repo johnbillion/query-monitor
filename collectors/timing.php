@@ -31,11 +31,26 @@ class QM_Collector_Timing extends QM_Collector {
 	 */
 	private $stop = array();
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
 		add_action( 'qm/start', array( $this, 'action_function_time_start' ), 10, 1 );
 		add_action( 'qm/stop', array( $this, 'action_function_time_stop' ), 10, 1 );
 		add_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10, 2 );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_action( 'qm/start', array( $this, 'action_function_time_start' ), 10 );
+		remove_action( 'qm/stop', array( $this, 'action_function_time_stop' ), 10 );
+		remove_action( 'qm/lap', array( $this, 'action_function_time_lap' ), 10 );
+
+		parent::tear_down();
 	}
 
 	/**

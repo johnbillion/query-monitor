@@ -54,6 +54,11 @@ abstract class QM_Collector {
 	public function __construct() {}
 
 	/**
+	 * @return void
+	 */
+	public function set_up() {}
+
+	/**
 	 * @return string
 	 */
 	final public function id() {
@@ -149,6 +154,13 @@ abstract class QM_Collector {
 	 */
 	final public function get_data() {
 		return $this->data;
+	}
+
+	/**
+	 * @return void
+	 */
+	final public function discard_data() {
+		$this->data = array();
 	}
 
 	/**

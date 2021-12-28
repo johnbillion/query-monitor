@@ -5,7 +5,7 @@ class TestCapabilities extends QM_UnitTestCase {
 	/**
 	 * @dataProvider dataUserRolesAccess
 	 */
-	public function testUsersCanAccessQueryMonitor( $role, $can_access ) {
+	public function testUsersCanAccessQueryMonitor( string $role, bool $can_access ) {
 		$user = self::factory()->user->create( array(
 			'role' => $role,
 		) );
@@ -14,6 +14,12 @@ class TestCapabilities extends QM_UnitTestCase {
 		self::assertSame( $can_access, $actual );
 	}
 
+	/**
+	 * @return array<int, array{
+	 *   0: string,
+	 *   1: bool,
+	 * }>
+	 */
 	public function dataUserRolesAccess() {
 		$roles = array(
 			array(

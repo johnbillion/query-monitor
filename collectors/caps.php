@@ -13,8 +13,11 @@ class QM_Collector_Caps extends QM_Collector {
 
 	public $id = 'caps';
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 
 		if ( ! self::enabled() ) {
 			return;
@@ -22,6 +25,16 @@ class QM_Collector_Caps extends QM_Collector {
 
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999, 3 );
 		add_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999, 4 );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
+		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -71,15 +84,6 @@ class QM_Collector_Caps extends QM_Collector {
 			'DISALLOW_FILE_EDIT',
 			'DISALLOW_UNFILTERED_HTML',
 		);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function tear_down() {
-		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
-		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
-		parent::tear_down();
 	}
 
 	/**

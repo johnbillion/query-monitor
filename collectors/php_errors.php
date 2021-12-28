@@ -36,30 +36,38 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	/**
 	 * @var callable|null
 	 */
-	private $exception_handler = null;
+	private $previous_error_handler = null;
+
+	/**
+	 * @var callable|null
+	 */
+	private $previous_exception_handler = null;
 
 	/**
 	 * @var string|null
 	 */
-	private static $unexpected_error;
+	private static $unexpected_error = null;
 
 	/**
 	 * @var bool
 	 */
 	protected $hide_silenced_php_errors = false;
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
 		}
 
-		parent::__construct();
+		parent::set_up();
 
 		// Capture the last error that occurred before QM loaded:
 		$prior_error = error_get_last();
 
 		// Non-fatal error handler for all PHP versions:
-		set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
+		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
 		if ( ! interface_exists( 'Throwable' ) ) {
 			// Fatal error handler for PHP < 7:
@@ -67,7 +75,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
-		$this->exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
+		$this->previous_exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
 		$this->display_errors = ini_get( 'display_errors' );
@@ -83,6 +91,33 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 				false
 			);
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
+			return;
+		}
+
+		if ( null !== $this->previous_error_handler ) {
+			restore_error_handler();
+		}
+
+		if ( null !== $this->previous_exception_handler ) {
+			restore_exception_handler();
+		}
+
+		if ( null !== $this->error_reporting ) {
+			error_reporting( $this->error_reporting );
+		}
+
+		if ( false !== $this->display_errors ) {
+			ini_set( 'display_errors', $this->display_errors );
+		}
+
+		parent::tear_down();
 	}
 
 	/**
@@ -114,8 +149,8 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
-		if ( $this->exception_handler ) {
-			call_user_func( $this->exception_handler, $e );
+		if ( $this->previous_exception_handler ) {
+			call_user_func( $this->previous_exception_handler, $e );
 		} else {
 			throw $e;
 		}
@@ -349,15 +384,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 		echo '</div>';
 		echo '</div>';
-	}
-
-	/**
-	 * @return void
-	 */
-	public function post_process() {
-		ini_set( 'display_errors', $this->display_errors );
-		restore_error_handler();
-		restore_exception_handler();
 	}
 
 	/**
