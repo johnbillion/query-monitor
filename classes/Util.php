@@ -118,7 +118,7 @@ class QM_Util {
 			 *
 			 * @since 3.6.0
 			 *
-			 * @param string[] $dirs Array of absolute directory paths keyed by component identifier.
+			 * @param array<string, string|null> $dirs Array of absolute directory paths keyed by component identifier.
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 

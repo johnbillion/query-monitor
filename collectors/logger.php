@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-type LogMessage WP_Error|Exception|Throwable|string|bool|null
+ */
 class QM_Collector_Logger extends QM_Collector {
 
 	public $id = 'logger';
@@ -37,6 +40,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function emergency( $message, array $context = array() ) {
@@ -46,6 +50,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function alert( $message, array $context = array() ) {
@@ -55,6 +60,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function critical( $message, array $context = array() ) {
@@ -64,6 +70,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function error( $message, array $context = array() ) {
@@ -73,6 +80,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function warning( $message, array $context = array() ) {
@@ -82,6 +90,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function notice( $message, array $context = array() ) {
@@ -91,6 +100,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function info( $message, array $context = array() ) {
@@ -100,6 +110,7 @@ class QM_Collector_Logger extends QM_Collector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function debug( $message, array $context = array() ) {
@@ -111,6 +122,7 @@ class QM_Collector_Logger extends QM_Collector {
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
 	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function log( $level, $message, array $context = array() ) {
@@ -126,6 +138,7 @@ class QM_Collector_Logger extends QM_Collector {
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
 	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	protected function store( $level, $message, array $context = array() ) {

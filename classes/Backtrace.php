@@ -48,7 +48,6 @@ class QM_Backtrace {
 
 	/**
 	 * @var array<string, int|string>
-	 * @phpstan-var array<string, positive-int|'dir'>
 	 */
 	protected static $show_args = array(
 		'do_action' => 1,
@@ -213,6 +212,11 @@ class QM_Backtrace {
 	 * Attempts to determine the component responsible for a given frame.
 	 *
 	 * @param mixed[] $frame A single frame from a trace.
+	 * @phpstan-param array{
+	 *   class?: class-string,
+	 *   function?: string,
+	 *   file?: string,
+	 * } $frame
 	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
 	 *                       the component cannot be determined.
 	 */
@@ -260,6 +264,11 @@ class QM_Backtrace {
 
 	/**
 	 * @return mixed[]
+	 * @phpstan-return array<int, array{
+	 *   file: string,
+	 *   line: int,
+	 *   display: string,
+	 * }>
 	 */
 	public function get_filtered_trace() {
 

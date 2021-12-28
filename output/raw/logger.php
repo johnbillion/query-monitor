@@ -22,7 +22,11 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 	}
 
 	/**
-	 * @return array<string, mixed>
+	 * @return array<string, array<int, array<string, mixed>>>
+	 * @phpstan-return array<string, array<int, array{
+	 *   message: string,
+	 *   stack: array<int, string>,
+	 * }>>
 	 */
 	public function get_output() {
 		$output = array();
@@ -32,6 +36,15 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 			return $output;
 		}
 
+		/**
+		 * @TODO move this shape to the `QM_Collector_Logger::$data` property
+		 *
+		 * @phpstan-var array{
+		 *   level: string,
+		 *   message: string,
+		 *   trace: QM_Backtrace|null,
+		 * } $log
+		 */
 		foreach ( $data['logs'] as $log ) {
 			$stack = array();
 
