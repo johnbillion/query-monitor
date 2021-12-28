@@ -29,7 +29,7 @@ class QueryMonitor extends QM_Plugin {
 
 		# Load and register built-in collectors:
 		$collectors = array();
-		foreach ( glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->plugin_path( 'collectors/*.php' ) ) as $file ) {
 			$key = basename( $file, '.php' );
 			$collectors[ $key ] = $file;
 		}
@@ -138,7 +138,7 @@ class QueryMonitor extends QM_Plugin {
 		}
 
 		# Load dispatchers:
-		foreach ( glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->plugin_path( 'dispatchers/*.php' ) ) as $file ) {
 			include_once $file;
 		}
 

@@ -139,7 +139,7 @@ class QM_Backtrace {
 			if ( isset( $frame['function'] ) && isset( self::$show_args[ $frame['function'] ] ) ) {
 				$show = self::$show_args[ $frame['function'] ];
 
-				if ( 'dir' === $show ) {
+				if ( ! is_int( $show ) ) {
 					$show = 1;
 				}
 
@@ -228,7 +228,7 @@ class QM_Backtrace {
 	public static function get_frame_component( array $frame ) {
 		try {
 
-			if ( isset( $frame['class'] ) ) {
+			if ( isset( $frame['class'] ) && isset( $frame['function'] ) ) {
 				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
@@ -243,6 +243,10 @@ class QM_Backtrace {
 			} elseif ( isset( $frame['file'] ) ) {
 				$file = $frame['file'];
 			} else {
+				return null;
+			}
+
+			if ( ! $file ) {
 				return null;
 			}
 

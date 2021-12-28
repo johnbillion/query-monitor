@@ -582,6 +582,10 @@ class QM_Util {
 
 		$json = json_encode( $data, $json_options );
 
+		if ( false === $json ) {
+			return '';
+		}
+
 		if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
 			$json = wp_unslash( $json );
 		}

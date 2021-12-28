@@ -232,7 +232,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			if ( isset( $data['errors'][ $type ] ) ) {
 				$has_errors = true;
 				$key = $type;
-				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+				$count += (int) array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
 			}
 
 			if ( ! $has_errors ) {

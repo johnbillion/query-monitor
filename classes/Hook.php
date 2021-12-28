@@ -53,7 +53,7 @@ class QM_Hook {
 			}
 		}
 
-		$parts = array_values( array_filter( preg_split( '#[_/.-]#', $name ) ) );
+		$parts = array_values( array_filter( (array) preg_split( '#[_/.-]#', $name ) ) );
 
 		return array(
 			'name' => $name,

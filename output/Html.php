@@ -49,7 +49,7 @@ abstract class QM_Output_Html extends QM_Output {
 		ob_start();
 		// compat until I convert all the existing outputters to use `get_output()`
 		$this->output();
-		$out = ob_get_clean();
+		$out = (string) ob_get_clean();
 		return $out;
 	}
 
