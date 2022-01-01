@@ -258,11 +258,17 @@ class QM_Util {
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *  - `qm/component_context/{$type}`
+				 *
 				 * @since 3.8.1
 				 *
-				 * @param string $type The component type.
-				 * @param string $file The full file path for the file within the component.
-				 * @param string $name The component name.
+				 * @param string $type    The component type.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
 				 * @param string $context The context for the component.
 				 */
 				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
@@ -275,6 +281,7 @@ class QM_Util {
 				 * See also the corresponding filters:
 				 *
 				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
 				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
@@ -293,6 +300,7 @@ class QM_Util {
 				 * See also the corresponding filters:
 				 *
 				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
 				 *  - `qm/component_name/{$type}`
 				 *
 				 * @since 3.8.0
