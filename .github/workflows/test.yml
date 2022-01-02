@@ -15,11 +15,15 @@ jobs:
       matrix:
         php: ['7.4', '7.1']
         wp: ['*', 'dev-nightly']
+        pr: ${{ !! github.event.pull_request }}
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
     timeout-minutes: 10
     steps:
+    - name: Matrix values
+      run: echo "${{ toJSON(matrix) }}"
+
     - name: Checkout repository
       uses: actions/checkout@v2
 
