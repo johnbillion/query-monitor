@@ -37,7 +37,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     # @TODO need to cache the npm dependencies
     - name: Install Dependencies

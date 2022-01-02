@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Get Composer cache directory
       id: composer-cache
