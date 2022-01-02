@@ -5,7 +5,7 @@
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
  * @author    John Blackbourn <john@johnblackbourn.com>
- * @copyright 2009-2021 John Blackbourn
+ * @copyright 2009-2022 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
