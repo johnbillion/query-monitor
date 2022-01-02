@@ -19,7 +19,7 @@ jobs:
           - ${{ github.ref_name == 'develop' }}
         exclude:
           - wp: 'dev-nightly'
-            dev: true
+            dev: false
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
