@@ -17,6 +17,9 @@ jobs:
         wp: ['*', 'dev-nightly']
         pr:
           - ${{ !! github.event.pull_request }}
+        exclude:
+          - wp: 'dev-nightly'
+            pr: true
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-18.04
