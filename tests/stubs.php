@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname( __DIR__ ) . '/classes/Backtrace.php';
+
 // QM constants:
 
 define( 'QM_COOKIE', '' );
