@@ -38,7 +38,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithObjectMethod() {
 
-		$obj = new \QM_Test_Object;
+		$obj = new Supports\TestObject;
 		$function = array( $obj, 'hello' );
 		$callback = self::get_callback( $function );
 
@@ -46,7 +46,7 @@ class Callbacks extends Test {
 		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
-		self::assertEquals( 'QM_Test_Object->hello()', $actual['name'] );
+		self::assertEquals( '\QM\Tests\Supports\TestObject->hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
@@ -54,7 +54,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvokable() {
 
-		$function = new \QM_Test_Invokable;
+		$function = new Supports\TestInvokable;
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function, '__invoke' );
@@ -70,14 +70,14 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithStaticMethodArray() {
 
-		$function = array( 'QM_Test_Object', 'hello' );
+		$function = array( '\QM\Tests\Supports\TestObject', 'hello' );
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function[0], $function[1] );
 		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
-		self::assertEquals( 'QM_Test_Object::hello()', $actual['name'] );
+		self::assertEquals( '\QM\Tests\Supports\TestObject::hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
@@ -85,14 +85,14 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithStaticMethodString() {
 
-		$function = 'QM_Test_Object::hello';
+		$function = '\QM\Tests\Supports\TestObject::hello';
 		$callback = self::get_callback( $function );
 
-		$ref = new \ReflectionMethod( 'QM_Test_Object', 'hello' );
+		$ref = new \ReflectionMethod( '\QM\Tests\Supports\TestObject', 'hello' );
 		$actual = \QM_Util::populate_callback( $callback );
 
-		self::assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
-		self::assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
+		self::assertEquals( array( '\QM\Tests\Supports\TestObject', 'hello' ), $actual['function'] );
+		self::assertEquals( '\QM\Tests\Supports\TestObject::hello()',          $actual['name'] );
 		self::assertEquals( $ref->getFileName(),                $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),               $actual['line'] );
 
@@ -128,7 +128,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod() {
 
-		$obj = new \QM_Test_Object;
+		$obj = new Supports\TestObject;
 		$function = array( $obj, 'goodbye' );
 		$callback = self::get_callback( $function );
 
@@ -140,7 +140,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable() {
 
-		$function = new \QM_Test_Object;
+		$function = new Supports\TestObject;
 		$callback = self::get_callback( $function );
 
 		$actual = \QM_Util::populate_callback( $callback );
@@ -151,7 +151,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodArray() {
 
-		$function = array( 'QM_Test_Object', 'goodbye' );
+		$function = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
 		$callback = self::get_callback( $function );
 
 		$actual = \QM_Util::populate_callback( $callback );
@@ -162,7 +162,7 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodString() {
 
-		$function = 'QM_Test_Object::goodbye';
+		$function = '\QM\Tests\Supports\TestObject::goodbye';
 		$callback = self::get_callback( $function );
 
 		$actual = \QM_Util::populate_callback( $callback );

@@ -56,7 +56,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsCoreFileIsNotInPlugin() {
-		$component = QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
+		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -65,7 +65,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsThemeFileIsNotInPlugin() {
-		$component = QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
+		$component = \QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -74,7 +74,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsAnotherPluginFileIsNotInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -83,7 +83,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsEmptyFilePathIsNotInPlugin() {
-		$component = QM_Util::get_file_component( ABSPATH );
+		$component = \QM_Util::get_file_component( ABSPATH );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -92,7 +92,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsEmptyPluginNameIsNotInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, '', ''
 		);
@@ -101,7 +101,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsPluginFileIsInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -110,7 +110,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsThemeFileIsInTheme() {
-		$component = QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
+		$component = \QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'theme', 'stylesheet'
 		);
@@ -119,7 +119,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsCoreFileIsInCore() {
-		$component = QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
+		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'core', 'core'
 		);
@@ -128,7 +128,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsFolderlessPluginFileIsInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo.php'
 		);
@@ -137,7 +137,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsInternalPluginFileIsInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -146,7 +146,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItKnowsPluginExtensionFileIsNotInPlugin() {
-		$component = QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
+		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
 		);
@@ -155,7 +155,7 @@ class TestCollectorPHPErrors extends Test {
 	}
 
 	function testItWillNotFilterAnyErrorByDefault() {
-		$trace = new QM_Test_Backtrace;
+		$trace = new Supports\TestBacktrace;
 		$trace->set_trace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
@@ -197,7 +197,7 @@ class TestCollectorPHPErrors extends Test {
 			return $table;
 		} );
 
-		$trace = new QM_Test_Backtrace;
+		$trace = new Supports\TestBacktrace;
 		$trace->set_trace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
