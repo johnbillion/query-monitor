@@ -9,9 +9,10 @@ modules:
   config:
     WPLoader:
       wpRootFolder: 'tests/wordpress'
-      dbName: '%TEST_DB_NAME%'
-      dbHost: '%TEST_DB_HOST%'
-      dbUser: '%TEST_DB_USER%'
-      dbPassword: '%TEST_DB_PASSWORD%'
+      dbName: '%WP_TESTS_DB_NAME%'
+      dbHost: '%WP_TESTS_DB_HOST%'
+      dbUser: '%WP_TESTS_DB_USER%'
+      dbPassword: '%WP_TESTS_DB_PASS%'
+      tablePrefix: wp_
       plugins: ['query-monitor/query-monitor.php']
       activatePlugins: ['query-monitor/query-monitor.php']
