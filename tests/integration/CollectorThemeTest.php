@@ -33,7 +33,7 @@ class TestCollectorTheme extends Test {
 		$conditionals[] = '__return_true';
 		$templates[] = 'index';
 
-		$names = QM_Collector_Theme::get_query_template_names();
+		$names = \QM_Collector_Theme::get_query_template_names();
 
 		if ( false !== $paged = array_search( 'paged', $templates, true ) ) {
 			// The paged template was removed in WP 4.7. On older WP versions,

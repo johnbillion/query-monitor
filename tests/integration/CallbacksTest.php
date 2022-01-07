@@ -26,8 +26,8 @@ class Callbacks extends Test {
 		$function = '__return_false';
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionFunction( $function );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionFunction( $function );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( '__return_false()',   $actual['name'] );
@@ -38,12 +38,12 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithObjectMethod() {
 
-		$obj = new QM_Test_Object;
+		$obj = new \QM_Test_Object;
 		$function = array( $obj, 'hello' );
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionMethod( $function[0], $function[1] );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( $function[0], $function[1] );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
 		self::assertEquals( 'QM_Test_Object->hello()', $actual['name'] );
@@ -54,11 +54,11 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvokable() {
 
-		$function = new QM_Test_Invokable;
+		$function = new \QM_Test_Invokable;
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionMethod( $function, '__invoke' );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( $function, '__invoke' );
+		$actual = \QM_Util::populate_callback( $callback );
 		$name = 'QM_Test_Invokable->__invoke()';
 
 		self::assertEquals( $function,            $actual['function'] );
@@ -73,8 +73,8 @@ class Callbacks extends Test {
 		$function = array( 'QM_Test_Object', 'hello' );
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionMethod( $function[0], $function[1] );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( $function[0], $function[1] );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
 		self::assertEquals( 'QM_Test_Object::hello()', $actual['name'] );
@@ -88,8 +88,8 @@ class Callbacks extends Test {
 		$function = 'QM_Test_Object::hello';
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionMethod( 'QM_Test_Object', 'hello' );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( 'QM_Test_Object', 'hello' );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( array( 'QM_Test_Object', 'hello' ), $actual['function'] );
 		self::assertEquals( 'QM_Test_Object::hello()',          $actual['name'] );
@@ -104,8 +104,8 @@ class Callbacks extends Test {
 
 		$callback = self::get_callback( $function );
 
-		$ref = new ReflectionFunction( $function );
-		$actual = QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionFunction( $function );
+		$actual = \QM_Util::populate_callback( $callback );
 		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/integration/includes/dummy-closures.php' );
 
 		self::assertEquals( $function,            $actual['function'] );
@@ -120,7 +120,7 @@ class Callbacks extends Test {
 		$function = 'invalid_function';
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -128,11 +128,11 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod() {
 
-		$obj = new QM_Test_Object;
+		$obj = new \QM_Test_Object;
 		$function = array( $obj, 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -140,10 +140,10 @@ class Callbacks extends Test {
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable() {
 
-		$function = new QM_Test_Object;
+		$function = new \QM_Test_Object;
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -154,7 +154,7 @@ class Callbacks extends Test {
 		$function = array( 'QM_Test_Object', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -165,7 +165,7 @@ class Callbacks extends Test {
 		$function = 'QM_Test_Object::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -176,7 +176,7 @@ class Callbacks extends Test {
 		$function = array( 'Invalid_Class', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 
@@ -187,7 +187,7 @@ class Callbacks extends Test {
 		$function = 'Invalid_Class::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::populate_callback( $callback );
 
 		$this->assertWPError( $actual['error'] );
 

@@ -7,14 +7,14 @@ namespace QM\Tests;
 class TestCollectorPHPErrors extends Test {
 
 	/**
-	 * @var QM_Collector_PHP_Errors
+	 * @var \QM_Collector_PHP_Errors
 	 */
 	public $collector;
 
 	function setUp() {
 		parent::setUp();
 
-		$this->collector = new QM_Collector_PHP_Errors();
+		$this->collector = new \QM_Collector_PHP_Errors();
 	}
 
 	function tearDown() {
