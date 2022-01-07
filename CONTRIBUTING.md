@@ -47,13 +47,13 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-To run the whole test suite which includes unit tests, linting, and static analysis:
+To run the whole test suite which includes integration tests, linting, and static analysis:
 
 	composer test
 
-To run just the PHPUnit tests:
+To run just the integration tests:
 
-	composer test:ut
+	composer test:integration
 
 To run just the code sniffer:
 

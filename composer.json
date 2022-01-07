@@ -54,7 +54,7 @@
 		"test": [
 			"@test:cs",
 			"@test:phpstan",
-			"@test:ut"
+			"@test:integration"
 		],
 		"test:cs": [
 			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' ."
@@ -62,7 +62,7 @@
 		"test:phpstan": [
 			"phpstan analyze"
 		],
-		"test:ut": [
+		"test:integration": [
 			"wp db reset --yes --path=tests/wordpress #",
 			"export WP_MULTISITE=0 && phpunit --verbose --colors=always --exclude-group=ms-required",
 			"export WP_MULTISITE=1 && phpunit --verbose --colors=always --exclude-group=ms-excluded"

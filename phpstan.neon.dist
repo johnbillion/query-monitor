@@ -10,16 +10,14 @@ parameters:
         - collectors
         - dispatchers
         - output
-        - tests/phpunit
+        - tests/integration
         - wp-content
     excludePaths:
         analyse:
             - tests/cache
-            - tests/phpunit/includes/dummy-*
+            - tests/integration/includes/dummy-*
     bootstrapFiles:
         - tests/stubs.php
-    scanDirectories:
-        - vendor/wp-phpunit/wp-phpunit/includes
     dynamicConstantNames:
         - SAVEQUERIES
     ignoreErrors:
@@ -33,11 +31,11 @@ parameters:
         - '#Access to protected property wpdb::#'
         - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
         -
-            path: tests/phpunit/*
+            path: tests/integration/*
             message: '#^Method [^:]+::test[a-zA-Z_]+\(\) has no return type specified\.$#'
         -
-            path: tests/phpunit/*
+            path: tests/integration/*
             message: '#^Method [^:]+::setUp\(\) has no return type specified\.$#'
         -
-            path: tests/phpunit/*
+            path: tests/integration/*
             message: '#^Method [^:]+::tearDown\(\) has no return type specified\.$#'
