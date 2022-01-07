@@ -46,7 +46,7 @@ class Callbacks extends Test {
 		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
-		self::assertEquals( '\QM\Tests\Supports\TestObject->hello()', $actual['name'] );
+		self::assertEquals( 'QM\T\S\TestObject->hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
@@ -59,7 +59,7 @@ class Callbacks extends Test {
 
 		$ref = new \ReflectionMethod( $function, '__invoke' );
 		$actual = \QM_Util::populate_callback( $callback );
-		$name = 'QM_Test_Invokable->__invoke()';
+		$name = 'QM\T\S\TestInvokable->__invoke()';
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
@@ -77,7 +77,7 @@ class Callbacks extends Test {
 		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( $function,                 $actual['function'] );
-		self::assertEquals( '\QM\Tests\Supports\TestObject::hello()', $actual['name'] );
+		self::assertEquals( '\Q\T\S\TestObject::hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
 
@@ -92,7 +92,7 @@ class Callbacks extends Test {
 		$actual = \QM_Util::populate_callback( $callback );
 
 		self::assertEquals( array( '\QM\Tests\Supports\TestObject', 'hello' ), $actual['function'] );
-		self::assertEquals( '\QM\Tests\Supports\TestObject::hello()',          $actual['name'] );
+		self::assertEquals( '\Q\T\S\TestObject::hello()',          $actual['name'] );
 		self::assertEquals( $ref->getFileName(),                $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),               $actual['line'] );
 
