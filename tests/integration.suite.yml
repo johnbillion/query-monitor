@@ -13,6 +13,7 @@ modules:
       dbHost: '%WP_TESTS_DB_HOST%'
       dbUser: '%WP_TESTS_DB_USER%'
       dbPassword: '%WP_TESTS_DB_PASS%'
+      configFile: tests/integration/includes/bootstrap.php
       tablePrefix: wp_
       plugins: ['query-monitor/query-monitor.php']
       activatePlugins: ['query-monitor/query-monitor.php']
