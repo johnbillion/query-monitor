@@ -21,7 +21,7 @@ class Utils extends Test {
 	}
 
 	/**
-	 * @return array<int, array{
+	 * @return array<string, array{
 	 *   0: int,
 	 *   1: array<int, int>
 	 * }>

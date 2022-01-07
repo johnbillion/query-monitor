@@ -19,7 +19,7 @@ class Capabilities extends Test {
 	}
 
 	/**
-	 * @return array<int, array{
+	 * @return array<string, array{
 	 *   0: string,
 	 *   1: bool,
 	 * }>
