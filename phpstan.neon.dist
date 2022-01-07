@@ -15,7 +15,7 @@ parameters:
     excludePaths:
         analyse:
             - tests/cache
-            - tests/integration/includes/dummy-*
+            - tests/integration/Supports
     bootstrapFiles:
         - tests/stubs.php
     dynamicConstantNames:
