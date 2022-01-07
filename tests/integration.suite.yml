@@ -16,3 +16,14 @@ modules:
       tablePrefix: wp_
       plugins: ['query-monitor/query-monitor.php']
       activatePlugins: ['query-monitor/query-monitor.php']
+env:
+  singlesite:
+    modules:
+      config:
+        WPLoader:
+          multisite: false
+  multisite:
+    modules:
+      config:
+        WPLoader:
+          multisite: true

@@ -63,9 +63,8 @@
 			"phpstan analyze"
 		],
 		"test:integration": [
-			"wp db reset --yes --path=tests/wordpress #",
-			"export WP_MULTISITE=0 && phpunit --verbose --colors=always --exclude-group=ms-required",
-			"export WP_MULTISITE=1 && phpunit --verbose --colors=always --exclude-group=ms-excluded"
+			"codecept run integration --env singlesite --skip-group ms-required",
+			"codecept run integration --env multisite --skip-group ms-excluded"
 		]
 	},
 	"support": {
