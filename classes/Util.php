@@ -503,7 +503,10 @@ class QM_Util {
 		}
 
 		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
-		$type = strtoupper( $words[0] );
+		$type = 'Unknown';
+		if ( isset( $words[0] ) ) {
+			$type = strtoupper( $words[0] );
+		}
 
 		return $type;
 	}
