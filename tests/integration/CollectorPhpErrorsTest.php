@@ -61,6 +61,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'core', $component->context );
 		self::assertFalse( $actual );
 	}
 
@@ -70,6 +71,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		// self::assertSame( 'other', $component->context );
 		self::assertFalse( $actual );
 	}
 
@@ -79,6 +81,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'bar', $component->context );
 		self::assertFalse( $actual );
 	}
 
@@ -88,6 +91,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'core', $component->context );
 		self::assertFalse( $actual );
 	}
 
@@ -97,6 +101,7 @@ class CollectorPHPErrors extends Test {
 			$component, '', ''
 		);
 
+		self::assertSame( '', $component->context );
 		self::assertFalse( $actual );
 	}
 
@@ -106,6 +111,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'foo', $component->context );
 		self::assertTrue( $actual );
 	}
 
@@ -115,6 +121,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'theme', 'stylesheet'
 		);
 
+		self::assertSame( 'stylesheet', $component->context );
 		self::assertTrue( $actual );
 	}
 
@@ -124,6 +131,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'core', 'core'
 		);
 
+		self::assertSame( 'core', $component->context );
 		self::assertTrue( $actual );
 	}
 
@@ -133,6 +141,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo.php'
 		);
 
+		self::assertSame( 'foo.php', $component->context );
 		self::assertTrue( $actual );
 	}
 
@@ -142,6 +151,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'foo', $component->context );
 		self::assertTrue( $actual );
 	}
 
@@ -151,6 +161,7 @@ class CollectorPHPErrors extends Test {
 			$component, 'plugin', 'foo'
 		);
 
+		self::assertSame( 'foo-extension', $component->context );
 		self::assertFalse( $actual );
 	}
 
