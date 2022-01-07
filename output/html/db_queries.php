@@ -341,8 +341,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		$stime = number_format_i18n( $row['ltime'], 4 );
+		$sql = $row['sql'];
 
-		$sql = self::format_sql( $row['sql'] );
+		if ( 'Unknown' === $row['type'] ) {
+			$sql = "<code>{$sql}</code>";
+		} else {
+			$sql = self::format_sql( $row['sql'] );
+		}
 
 		if ( 'SELECT' !== $row['type'] ) {
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
