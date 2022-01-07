@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace QM\Tests;
 
-class TestUtils extends Test {
+class Utils extends Test {
 
 	/**
 	 * @dataProvider dataClientVersion
@@ -28,23 +28,23 @@ class TestUtils extends Test {
 	 */
 	public function dataClientVersion() {
 		return array(
-			array(
+			'client 12345' => array(
 				12345,
 				array( 1, 23, 45 ),
 			),
-			array(
+			'client 10511' => array(
 				10511,
 				array( 1, 5, 11 ),
 			),
-			array(
+			'client 10001' => array(
 				10001,
 				array( 1, 0, 1 ),
 			),
-			array(
+			'client 31010' => array(
 				31010,
 				array( 3, 10, 10 ),
 			),
-			array(
+			'client 20000' => array(
 				20000,
 				array( 2, 0, 0 ),
 			),

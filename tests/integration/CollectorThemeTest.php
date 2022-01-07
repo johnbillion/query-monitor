@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace QM\Tests;
 
-class TestCollectorTheme extends Test {
+class CollectorTheme extends Test {
 
 	public function testTemplateHierarchyAssumptionsAreAccurate() {
 

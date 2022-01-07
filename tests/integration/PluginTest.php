@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace QM\Tests;
 
-class TestPlugin extends Test {
+class Plugin extends Test {
 	/**
 	 * @var ?array{
 	 *   tested_up_to: string,

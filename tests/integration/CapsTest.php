@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace QM\Tests;
 
-class TestCapabilities extends Test {
+class Capabilities extends Test {
 
 	/**
 	 * @dataProvider dataUserRolesAccess
@@ -26,23 +26,23 @@ class TestCapabilities extends Test {
 	 */
 	public function dataUserRolesAccess() {
 		$roles = array(
-			array(
+			'administrator' => array(
 				'administrator',
 				( ! is_multisite() ),
 			),
-			array(
+			'editor' => array(
 				'editor',
 				false,
 			),
-			array(
+			'author' => array(
 				'author',
 				false,
 			),
-			array(
+			'contributor' => array(
 				'contributor',
 				false,
 			),
-			array(
+			'subscriber' => array(
 				'subscriber',
 				false,
 			),
