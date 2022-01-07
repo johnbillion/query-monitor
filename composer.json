@@ -16,7 +16,6 @@
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
-		"johnbillion/falsey-assertequals-detector": "^1 || ^3",
 		"phpcompatibility/phpcompatibility-wp": "2.1.0",
 		"phpstan/phpstan": "^1.0",
 		"phpstan/phpstan-phpunit": "^1.0",
