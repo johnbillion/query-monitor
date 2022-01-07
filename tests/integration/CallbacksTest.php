@@ -106,7 +106,7 @@ class Callbacks extends Test {
 
 		$ref = new \ReflectionFunction( $function );
 		$actual = \QM_Util::populate_callback( $callback );
-		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/integration/includes/dummy-closures.php' );
+		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'dummy-closures.php' );
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
