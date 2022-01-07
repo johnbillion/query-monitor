@@ -17,7 +17,7 @@ parameters:
             - tests/cache
             - tests/integration/Supports
     bootstrapFiles:
-        - tests/stubs.php
+        - tests/phpstan/stubs.php
     dynamicConstantNames:
         - SAVEQUERIES
     ignoreErrors:
