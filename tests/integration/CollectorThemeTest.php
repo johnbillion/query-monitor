@@ -1,6 +1,10 @@
 <?php
 
-class TestCollectorTheme extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class TestCollectorTheme extends Test {
 
 	public function testTemplateHierarchyAssumptionsAreAccurate() {
 

@@ -1,8 +1,12 @@
 <?php
 
-class TestDispatcherHTML extends QM_UnitTestCase {
+declare(strict_types = 1);
 
-	/** @var QM_Dispatcher_Html|null */
+namespace QM\Tests;
+
+class TestDispatcherHTML extends Test {
+
+	/** @var \QM_Dispatcher_Html|null */
 	protected $html = null;
 
 	public function setUp() {
@@ -19,8 +23,8 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		wp_set_current_user( $admin->ID );
 
-		/** @var QM_Dispatcher_Html */
-		$html = QM_Dispatchers::get( 'html' );
+		/** @var \QM_Dispatcher_Html */
+		$html = \QM_Dispatchers::get( 'html' );
 
 		$this->html = $html;
 		$this->html->init();

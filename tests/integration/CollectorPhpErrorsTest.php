@@ -1,6 +1,10 @@
 <?php
 
-class TestCollectorPHPErrors extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class TestCollectorPHPErrors extends Test {
 
 	/**
 	 * @var QM_Collector_PHP_Errors

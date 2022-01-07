@@ -1,6 +1,10 @@
 <?php
 
-class Callbacks extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class Callbacks extends Test {
 
 	/**
 	 * @param mixed $function

@@ -1,6 +1,10 @@
 <?php
 
-class TestPlugin extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class TestPlugin extends Test {
 	/**
 	 * @var ?array{
 	 *   tested_up_to: string,

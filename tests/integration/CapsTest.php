@@ -1,6 +1,10 @@
 <?php
 
-class TestCapabilities extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class TestCapabilities extends Test {
 
 	/**
 	 * @dataProvider dataUserRolesAccess

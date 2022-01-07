@@ -67,6 +67,11 @@
 			"codecept run integration --env multisite --skip-group ms-excluded"
 		]
 	},
+	"autoload": {
+		"psr-4": {
+			"QM\\Tests\\": "tests/integration"
+		}
+	},
 	"support": {
 		"issues": "https://github.com/johnbillion/query-monitor/issues",
 		"forum": "https://wordpress.org/support/plugin/query-monitor",
