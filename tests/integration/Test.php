@@ -3,7 +3,7 @@
 /**
  * @property \WP_UnitTest_Factory $factory
  */
-abstract class QM_UnitTestCase extends WP_UnitTestCase {
+abstract class QM_UnitTestCase extends \Codeception\TestCase\WPTestCase {
 
 	public function setUp() {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {

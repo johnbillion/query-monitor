@@ -1,6 +1,6 @@
 <?php
 
-class TestCallbacks extends QM_UnitTestCase {
+class Callbacks extends QM_UnitTestCase {
 
 	/**
 	 * @param mixed $function
@@ -102,7 +102,7 @@ class TestCallbacks extends QM_UnitTestCase {
 
 		$ref = new ReflectionFunction( $function );
 		$actual = QM_Util::populate_callback( $callback );
-		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/phpunit/includes/dummy-closures.php' );
+		$name = sprintf( 'Closure on line %1$d of %2$s', $ref->getStartLine(), 'tests/integration/includes/dummy-closures.php' );
 
 		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
