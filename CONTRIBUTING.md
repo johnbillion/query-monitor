@@ -77,7 +77,6 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
-   - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.
 
 ### For Release
 
