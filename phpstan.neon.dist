@@ -33,9 +33,3 @@ parameters:
         -
             path: tests/integration/*
             message: '#^Method [^:]+::test[a-zA-Z_]+\(\) has no return type specified\.$#'
-        -
-            path: tests/integration/*
-            message: '#^Method [^:]+::_before\(\) has no return type specified\.$#'
-        -
-            path: tests/integration/*
-            message: '#^Method [^:]+::_after\(\) has no return type specified\.$#'

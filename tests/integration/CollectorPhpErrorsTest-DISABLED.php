@@ -11,13 +11,13 @@ class CollectorPHPErrors extends Test {
 	 */
 	public $collector;
 
-	function _before() {
+	function _before(): void {
 		parent::_before();
 
 		$this->collector = new \QM_Collector_PHP_Errors();
 	}
 
-	function _after() {
+	function _after(): void {
 		$this->collector->tear_down();
 
 		parent::_after();

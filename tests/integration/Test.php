@@ -9,7 +9,7 @@ namespace QM\Tests;
  */
 abstract class Test extends \Codeception\TestCase\WPTestCase {
 
-	public function _before() {
+	public function _before(): void {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
@@ -19,7 +19,7 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 		}
 	}
 
-	public function _after() {}
+	public function _after(): void {}
 
 	/**
 	 * @return string
