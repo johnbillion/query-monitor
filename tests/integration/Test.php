@@ -15,7 +15,7 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 		}
 
 		if ( true !== WP_USE_THEMES ) {
-			$this->fail( 'WP_USE_THEMES should not be false' );
+			self::fail( 'WP_USE_THEMES should not be false' );
 		}
 
 		parent::setUp();
