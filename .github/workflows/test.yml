@@ -56,7 +56,6 @@ jobs:
 
     - name: Debugging
       run: |
-        pwd
         php --version
         php -m
         composer --version
