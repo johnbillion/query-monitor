@@ -49,7 +49,7 @@ jobs:
       uses: shivammathur/setup-php@2.7.0
       with:
         php-version: ${{ matrix.php }}
-        extensions: mysqli, xmlwriter
+        extensions: xmlwriter
         coverage: none
       env:
         fail-fast: true
@@ -59,7 +59,6 @@ jobs:
         php --version
         php -m
         composer --version
-        mysql --version
         docker --version
         docker-compose --version
 
@@ -72,10 +71,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo systemctl start mysql.service
         composer install --prefer-dist
         composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *"
-        mysqladmin -uroot -proot create wordpress_test
 
     - name: Run unit tests
       run: composer test:integration

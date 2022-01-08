@@ -51,9 +51,6 @@
 		"wordpress-install-dir": "tests/wordpress"
 	},
 	"scripts": {
-		"post-update-cmd": [
-			"@php -r \"! file_exists( 'tests/.env' ) && copy( 'tests/.env.dist', 'tests/.env' );\""
-		],
 		"test": [
 			"@test:cs",
 			"@test:phpstan",

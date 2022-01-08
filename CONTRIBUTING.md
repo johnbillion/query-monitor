@@ -16,7 +16,7 @@ If you discover a security issue in Query Monitor, please report it to [the secu
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and to run the tests.
+You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
 
 ### Prerequisites
 
@@ -32,8 +32,6 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 2. Install the Node dependencies:
 
        npm install
-
-3. If you want to run the tests locally, check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
 
 ## Building the Assets
 
