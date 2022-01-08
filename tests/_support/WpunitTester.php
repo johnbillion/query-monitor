@@ -1,4 +1,7 @@
 <?php
+/**
+ * Integration testing actor.
+ */
 
 /**
  * Inherited Methods
