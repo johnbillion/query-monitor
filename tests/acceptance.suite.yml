@@ -7,7 +7,17 @@ actor: AcceptanceTester
 modules:
   enabled:
     - WPWebDriver
+    - WPDb
   config:
+    WPDb:
+      dsn: 'mysql:host=localhost:%TEST_SITE_DATABASE_PORT%;dbname=exampledb'
+      user: exampleuser
+      password: examplepass
+      url: '%TEST_SITE_WP_URL%'
+      tablePrefix: wp_
+      dump: false
+      populate: false
+      cleanup: false
     WPWebDriver:
       url: '%TEST_SITE_WP_URL%'
       adminUsername: admin

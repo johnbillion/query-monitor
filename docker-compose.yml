@@ -27,6 +27,8 @@ services:
     image: mariadb:10.5.8
     container_name: query-monitor-database
     restart: always
+    ports:
+      - 3306
     environment:
       MYSQL_DATABASE: exampledb
       MYSQL_USER: exampleuser
