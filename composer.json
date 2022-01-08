@@ -67,8 +67,7 @@
 			"phpstan analyze"
 		],
 		"test:integration": [
-			"codecept run integration --env singlesite --skip-group ms-required",
-			"codecept run integration --env multisite --skip-group ms-excluded"
+			"bin/integration-tests.sh"
 		],
 		"test:start": [
 			"[[ `uname -m` = \"arm64\" ]] && export CHROME_IMAGE=\"seleniarm/standalone-chromium\"; docker-compose up -d"

@@ -9,10 +9,10 @@ modules:
   config:
     WPLoader:
       wpRootFolder: 'tests/wordpress'
-      dbName: '%WP_TESTS_DB_NAME%'
-      dbHost: '%WP_TESTS_DB_HOST%'
-      dbUser: '%WP_TESTS_DB_USER%'
-      dbPassword: '%WP_TESTS_DB_PASS%'
+      dbName: exampledb
+      dbHost: '127.0.0.1:%TEST_SITE_DATABASE_PORT%'
+      dbUser: exampleuser
+      dbPassword: examplepass
       configFile: tests/integration/includes/bootstrap.php
       tablePrefix: wp_
       plugins: ['query-monitor/query-monitor.php']

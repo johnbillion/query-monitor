@@ -14,4 +14,4 @@ extensions:
       destination:
         default: tests/wordpress/wp-content/plugins
 params:
-  - tests/.env
+  - env
