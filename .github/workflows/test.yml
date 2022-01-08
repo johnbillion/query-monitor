@@ -71,6 +71,3 @@ jobs:
 
     - name: Run unit tests
       run: composer test:integration
-      env:
-        MYSQL_DATABASE: wordpress
-        WP_TESTS_DB_PASS: root
