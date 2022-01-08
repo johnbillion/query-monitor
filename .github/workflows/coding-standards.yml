@@ -30,7 +30,7 @@ jobs:
         cache-name: cache-composer-dependencies
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
-        key: 7.3-composer-${{ hashFiles('composer.json') }}
+        key: 8.0-composer-${{ hashFiles('composer.json') }}
 
     - name: PHPCS and PHPStan cache
       uses: actions/cache@v2
@@ -41,12 +41,12 @@ jobs:
         # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
         # always pulling in a cache file and simultaneously always updating it, unlike Travis.
         # This way we always pull in a cache file and refresh it with each new version of QM.
-        key: 7.3-phpcs-${{ hashFiles('query-monitor.php') }}
+        key: 8.0-phpcs-${{ hashFiles('query-monitor.php') }}
 
     - name: Install PHP
       uses: shivammathur/setup-php@2.7.0
       with:
-        php-version: '7.3'
+        php-version: '8.0'
         coverage: none
       env:
         fail-fast: true
