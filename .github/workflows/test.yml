@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 
-name: Test
+name: Integration Tests
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ on:
       - '**'
 
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         php: ['7.4', '7.1']

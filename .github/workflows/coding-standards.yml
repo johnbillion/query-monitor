@@ -12,7 +12,7 @@ on:
       - '**'
 
 jobs:
-  build:
+  test:
     name: PHP Coding Standards
     runs-on: ubuntu-18.04
     timeout-minutes: 10
