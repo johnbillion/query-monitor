@@ -1,0 +1,66 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress:${LOCAL_WP-5.8}-php${LOCAL_PHP-7.4}
+    container_name: query-monitor-wordpress
+    restart: always
+    ports:
+      - 80
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG_DISPLAY', true );
+    user: "33:33"
+    depends_on:
+      - database
+    volumes:
+      - wp:/var/www/html:rw
+      - ./:/var/www/html/wp-content/plugins/query-monitor
+
+  database:
+    image: mariadb:10.5.8
+    container_name: query-monitor-database
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - database:/var/lib/mysql:rw
+
+  wpcli:
+    image: wordpress:cli-php${LOCAL_PHP-7.4}
+    container_name: query-monitor-wpcli
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    user: "33:33"
+    depends_on:
+      - database
+      - wordpress
+    init: true
+    volumes:
+      - wp:/var/www/html:rw
+      - ./:/var/www/html/wp-content/plugins/query-monitor
+
+  chrome:
+    image: ${CHROME_IMAGE-selenium/standalone-chrome}
+    container_name: query-monitor-chrome
+    restart: always
+    ports:
+      - 4444
+    extra_hosts:
+    - host.docker.internal:host-gateway
+
+volumes:
+  wp:
+  database:

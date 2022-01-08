@@ -47,7 +47,11 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-To run the whole test suite which includes integration tests, linting, and static analysis:
+The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running, then start the containers with:
+
+	composer test:start
+
+To run the whole test suite which includes integration tests, acceptance tests, linting, and static analysis:
 
 	composer test
 
@@ -55,13 +59,21 @@ To run just the integration tests:
 
 	composer test:integration
 
+To run just the acceptance tests:
+
+	composer test:acceptance
+
 To run just the code sniffer:
 
 	composer test:cs
 
-To run just the statis analysis:
+To run just the static analysis:
 
 	composer test:phpstan
+
+To stop the Docker containers:
+
+	composer test:stop
 
 ## Releasing a New Version
 
