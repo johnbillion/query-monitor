@@ -11,16 +11,16 @@ class CollectorPHPErrors extends Test {
 	 */
 	public $collector;
 
-	function setUp() {
-		parent::setUp();
+	function _before() {
+		parent::_before();
 
 		$this->collector = new \QM_Collector_PHP_Errors();
 	}
 
-	function tearDown() {
+	function _after() {
 		$this->collector->tear_down();
 
-		parent::tearDown();
+		parent::_after();
 	}
 
 	function testItKnowsNullFlagIsAlwaysReportable() {

@@ -9,9 +9,9 @@ class DispatcherHTML extends Test {
 	/** @var \QM_Dispatcher_Html|null */
 	protected $html = null;
 
-	public function setUp() {
+	public function _before(): void {
 
-		parent::setUp();
+		parent::_before();
 
 		$admin = $this->factory->user->create_and_get( array(
 			'role' => 'administrator',

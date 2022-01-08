@@ -9,7 +9,7 @@ namespace QM\Tests;
  */
 abstract class Test extends \Codeception\TestCase\WPTestCase {
 
-	public function setUp() {
+	public function _before() {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
@@ -17,9 +17,9 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 		if ( true !== WP_USE_THEMES ) {
 			self::fail( 'WP_USE_THEMES should not be false' );
 		}
-
-		parent::setUp();
 	}
+
+	public function _after() {}
 
 	/**
 	 * @return string
