@@ -64,7 +64,7 @@ jobs:
 
     - name: Start Docker environment
       run: |
-        docker-compose up database -d
+        docker-compose up -d database
 
     - name: Log running Docker containers
       run: docker ps -a
