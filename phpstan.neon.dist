@@ -30,6 +30,3 @@ parameters:
         - '#Access to private property wpdb::#'
         - '#Access to protected property wpdb::#'
         - '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
-        -
-            path: tests/integration/*
-            message: '#^Method [^:]+::test[a-zA-Z_]+\(\) has no return type specified\.$#'

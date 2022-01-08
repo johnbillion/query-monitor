@@ -13,7 +13,7 @@ class Plugin extends Test {
 	 */
 	private $readme_data;
 
-	public function testStableTagIsUpToDate() {
+	public function testStableTagIsUpToDate(): void {
 		if ( ! $readme_data = $this->get_readme() ) {
 			self::fail( 'There is no readme file' );
 		}

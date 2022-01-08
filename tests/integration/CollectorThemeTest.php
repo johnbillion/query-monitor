@@ -6,7 +6,7 @@ namespace QM\Tests;
 
 class CollectorTheme extends Test {
 
-	public function testTemplateHierarchyAssumptionsAreAccurate() {
+	public function testTemplateHierarchyAssumptionsAreAccurate(): void {
 
 		$file = ABSPATH . WPINC . '/template-loader.php';
 

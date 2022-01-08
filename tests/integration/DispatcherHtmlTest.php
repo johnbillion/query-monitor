@@ -34,7 +34,7 @@ class DispatcherHTML extends Test {
 	/**
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
-	public function testDispatcherRespectsLateChangeOfHttps() {
+	public function testDispatcherRespectsLateChangeOfHttps(): void {
 		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {

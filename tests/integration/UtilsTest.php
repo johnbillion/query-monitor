@@ -12,7 +12,7 @@ class Utils extends Test {
 	 * @param int $client
 	 * @param array<int, int> $expected
 	 */
-	public function testDatabaseDriverClientVersionIsDetected( int $client, array $expected ) {
+	public function testDatabaseDriverClientVersionIsDetected( int $client, array $expected ): void {
 
 		$ver = \QM_Util::get_client_version( $client );
 

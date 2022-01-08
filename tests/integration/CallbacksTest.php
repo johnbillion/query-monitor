@@ -21,7 +21,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithProceduralFunction() {
+	public function testCallbackIsCorrectlyPopulatedWithProceduralFunction(): void {
 
 		$function = '__return_false';
 		$callback = self::get_callback( $function );
@@ -36,7 +36,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithObjectMethod() {
+	public function testCallbackIsCorrectlyPopulatedWithObjectMethod(): void {
 
 		$obj = new Supports\TestObject;
 		$function = array( $obj, 'hello' );
@@ -52,7 +52,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvokable() {
+	public function testCallbackIsCorrectlyPopulatedWithInvokable(): void {
 
 		$function = new Supports\TestInvokable;
 		$callback = self::get_callback( $function );
@@ -68,7 +68,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithStaticMethodArray() {
+	public function testCallbackIsCorrectlyPopulatedWithStaticMethodArray(): void {
 
 		$function = array( '\QM\Tests\Supports\TestObject', 'hello' );
 		$callback = self::get_callback( $function );
@@ -83,7 +83,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithStaticMethodString() {
+	public function testCallbackIsCorrectlyPopulatedWithStaticMethodString(): void {
 
 		$function = '\QM\Tests\Supports\TestObject::hello';
 		$callback = self::get_callback( $function );
@@ -98,7 +98,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithClosure() {
+	public function testCallbackIsCorrectlyPopulatedWithClosure(): void {
 
 		$function = require_once __DIR__ . '/includes/dummy-closures.php';
 
@@ -115,7 +115,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction(): void {
 
 		$function = 'invalid_function';
 		$callback = self::get_callback( $function );
@@ -126,7 +126,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod(): void {
 
 		$obj = new Supports\TestObject;
 		$function = array( $obj, 'goodbye' );
@@ -138,7 +138,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable(): void {
 
 		$function = new Supports\TestObject;
 		$callback = self::get_callback( $function );
@@ -149,7 +149,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodArray() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodArray(): void {
 
 		$function = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
 		$callback = self::get_callback( $function );
@@ -160,7 +160,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodString() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodString(): void {
 
 		$function = '\QM\Tests\Supports\TestObject::goodbye';
 		$callback = self::get_callback( $function );
@@ -171,7 +171,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassArray() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassArray(): void {
 
 		$function = array( 'Invalid_Class', 'goodbye' );
 		$callback = self::get_callback( $function );
@@ -182,7 +182,7 @@ class Callbacks extends Test {
 
 	}
 
-	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassString() {
+	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassString(): void {
 
 		$function = 'Invalid_Class::goodbye';
 		$callback = self::get_callback( $function );

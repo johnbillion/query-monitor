@@ -9,7 +9,7 @@ class Capabilities extends Test {
 	/**
 	 * @dataProvider dataUserRolesAccess
 	 */
-	public function testUsersCanAccessQueryMonitor( string $role, bool $can_access ) {
+	public function testUsersCanAccessQueryMonitor( string $role, bool $can_access ): void {
 		$user = self::factory()->user->create( array(
 			'role' => $role,
 		) );

@@ -23,7 +23,7 @@ class CollectorPHPErrors extends Test {
 		parent::_after();
 	}
 
-	function testItKnowsNullFlagIsAlwaysReportable() {
+	function testItKnowsNullFlagIsAlwaysReportable(): void {
 		$actual = $this->collector->is_reportable_error(
 			E_NOTICE, null
 		);
@@ -31,7 +31,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsErrorInFlagsIsReportable() {
+	function testItKnowsErrorInFlagsIsReportable(): void {
 		$actual = $this->collector->is_reportable_error(
 			E_NOTICE, E_ALL & ~E_WARNING
 		);
@@ -39,7 +39,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsErrorOutsideFlagsIsNotReportable() {
+	function testItKnowsErrorOutsideFlagsIsNotReportable(): void {
 		$actual = $this->collector->is_reportable_error(
 			E_NOTICE, E_ALL & ~E_NOTICE
 		);
@@ -47,7 +47,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsSameErrorAndFlagIsReportable() {
+	function testItKnowsSameErrorAndFlagIsReportable(): void {
 		$actual = $this->collector->is_reportable_error(
 			E_NOTICE, E_NOTICE
 		);
@@ -55,7 +55,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsCoreFileIsNotInPlugin() {
+	function testItKnowsCoreFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -65,7 +65,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsThemeFileIsNotInPlugin() {
+	function testItKnowsThemeFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -75,7 +75,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsAnotherPluginFileIsNotInPlugin() {
+	function testItKnowsAnotherPluginFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -85,7 +85,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsEmptyFilePathIsNotInPlugin() {
+	function testItKnowsEmptyFilePathIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -95,7 +95,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsEmptyPluginNameIsNotInPlugin() {
+	function testItKnowsEmptyPluginNameIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, '', ''
@@ -105,7 +105,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItKnowsPluginFileIsInPlugin() {
+	function testItKnowsPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -115,7 +115,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsThemeFileIsInTheme() {
+	function testItKnowsThemeFileIsInTheme(): void {
 		$component = \QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'theme', 'stylesheet'
@@ -125,7 +125,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsCoreFileIsInCore() {
+	function testItKnowsCoreFileIsInCore(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'core', 'core'
@@ -135,7 +135,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsFolderlessPluginFileIsInPlugin() {
+	function testItKnowsFolderlessPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo.php'
@@ -145,7 +145,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsInternalPluginFileIsInPlugin() {
+	function testItKnowsInternalPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -155,7 +155,7 @@ class CollectorPHPErrors extends Test {
 		self::assertTrue( $actual );
 	}
 
-	function testItKnowsPluginExtensionFileIsNotInPlugin() {
+	function testItKnowsPluginExtensionFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
 		$actual = $this->collector->is_affected_component(
 			$component, 'plugin', 'foo'
@@ -165,7 +165,7 @@ class CollectorPHPErrors extends Test {
 		self::assertFalse( $actual );
 	}
 
-	function testItWillNotFilterAnyErrorByDefault() {
+	function testItWillNotFilterAnyErrorByDefault(): void {
 		$trace = new Supports\TestBacktrace;
 		$trace->set_trace( [
 			[
@@ -202,7 +202,7 @@ class CollectorPHPErrors extends Test {
 		self::assertArrayNotHasKey( 'silenced', $actual );
 	}
 
-	function testItWillFilterNoticesFromPlugin() {
+	function testItWillFilterNoticesFromPlugin(): void {
 		add_filter( 'qm/collect/php_error_levels', function( $table ) {
 			$table['plugin']['foo'] = E_ALL & ~E_NOTICE;
 			return $table;
