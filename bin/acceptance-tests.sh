@@ -4,7 +4,7 @@
 # -o pipefail Produce a failure return code if any command errors
 set -eo pipefail
 
-# Shorthand:
+# Prep:
 WP_PORT=`docker port query-monitor-wordpress | grep "[0-9]+$" -ohE | head -1`
 CHROME_PORT=`docker port query-monitor-chrome | grep "[0-9]+$" -ohE | head -1`
 DATABASE_PORT=`docker port query-monitor-database | grep "[0-9]+$" -ohE | head -1`
