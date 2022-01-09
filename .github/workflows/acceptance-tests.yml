@@ -69,12 +69,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer install --prefer-dist
-
-    - name: Update to nightly
-      if: ${{ matrix.php == 'nightly' }}
-      run: |
-        docker-compose run --rm wpcli wp core download --force --version=nightly
+        if [ "${{ matrix.php }}" == "nightly" ]
+        then
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="dev-nightly"
+        else
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="~${{ matrix.php }}.0"
+        fi
 
     - name: Start Docker environment
       run: |
