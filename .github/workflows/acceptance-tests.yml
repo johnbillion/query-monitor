@@ -67,13 +67,6 @@ jobs:
         docker --version
         docker-compose --version
 
-    - name: Start Docker environment
-      run: |
-        composer test:start
-
-    - name: Log running Docker containers
-      run: docker ps -a
-
     - name: Install dependencies
       run: |
         composer install --prefer-dist
@@ -82,6 +75,13 @@ jobs:
       if: ${{ matrix.php == 'nightly' }}
       run: |
         docker-compose run --rm wpcli wp core download --force --version=nightly
+
+    - name: Start Docker environment
+      run: |
+        composer test:start
+
+    - name: Log running Docker containers
+      run: docker ps -a
 
     - name: Debug WordPress version
       continue-on-error: true
