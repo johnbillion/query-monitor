@@ -24,8 +24,6 @@ services:
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
       WORDPRESS_DEBUG: ${LOCAL_WP_DEBUG-1}
-      WORDPRESS_CONFIG_EXTRA: |
-        define( 'WP_DEBUG_DISPLAY', true );
     user: "33:33"
     depends_on:
       - database

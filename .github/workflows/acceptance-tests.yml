@@ -31,7 +31,6 @@ jobs:
     runs-on: ubuntu-18.04
     timeout-minutes: 10
     env:
-      LOCAL_WP: ${{ matrix.wp == 'nightly' && '5.8' || matrix.wp }}
       LOCAL_PHP: ${{ matrix.php }}
       LOCAL_WP_DEBUG: ${{ matrix.php != '8.1' && 1 || 0 }}
     steps:
