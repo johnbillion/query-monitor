@@ -61,6 +61,7 @@
 			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' ."
 		],
 		"test:phpstan": [
+			"codecept build",
 			"phpstan analyze"
 		],
 		"test:integration": [

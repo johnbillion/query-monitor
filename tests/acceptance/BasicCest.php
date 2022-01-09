@@ -5,9 +5,17 @@
 
 use Codeception\Example;
 
+/**
+ * @phpstan-type dataRole array{
+ *   role: string,
+ *   access: bool,
+ * }
+ */
 class BasicCest {
 	/**
 	 * @dataProvider dataRoles
+	 *
+	 * @param Example<string,mixed> $data
 	 */
 	public function BasicAccessShouldWorkAsExpected( AcceptanceTester $I, Example $data ): void {
 		$I->haveUserInDatabase( $data['role'], $data['role'] );
@@ -26,6 +34,9 @@ class BasicCest {
 		}
 	}
 
+	/**
+	 * @return array<string,dataRole>
+	 */
 	private function dataRoles(): array {
 		return [
 			'administrator' => [

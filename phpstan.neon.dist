@@ -10,8 +10,11 @@ parameters:
 		- collectors
 		- dispatchers
 		- output
+		- tests/acceptance
 		- tests/integration
 		- wp-content
+	scanDirectories:
+		- tests/_support
 	excludePaths:
 		analyse:
 			- tests/cache
@@ -30,3 +33,7 @@ parameters:
 		- '#Access to private property wpdb::#'
 		- '#Access to protected property wpdb::#'
 		- '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+		# Data providers for acceptance tests:
+		-
+			path: tests/acceptance/*
+			message: '#^Method [^:]+::data[a-zA-Z]+\(\) is unused\.$#'
