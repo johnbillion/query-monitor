@@ -18,6 +18,8 @@ class BasicCest {
 	 * @param Example<string,mixed> $data
 	 */
 	public function BasicAccessShouldWorkAsExpected( AcceptanceTester $I, Example $data ): void {
+		/** @var dataRole $data */
+
 		$I->haveUserInDatabase( $data['role'], $data['role'] );
 		$I->loginAs( $data['role'], $data['role'] );
 		$I->see(
