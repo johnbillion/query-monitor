@@ -37,6 +37,9 @@ jobs:
       LOCAL_PHP: ${{ matrix.php }}
       LOCAL_WP_DEBUG: ${{ matrix.php != '8.1' && 1 || 0 }}
     steps:
+    - name: Matrix values
+      run: echo "${{ toJSON(matrix) }}"
+
     - name: Checkout repository
       uses: actions/checkout@v2
 
