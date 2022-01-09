@@ -28,6 +28,7 @@ class BasicCest {
 		);
 
 		if ( $data['access'] ) {
+			$I->dontSeeElement( '#query-monitor-main' );
 			$I->click( '#wp-admin-bar-query-monitor' );
 			$I->seeElement( '#query-monitor-main');
 		} else {
