@@ -11,7 +11,7 @@ services:
       - php
     volumes:
       - ./templates:/etc/nginx/templates
-      - ./tests/wordpress:/var/www/html/
+      - ./tests/wordpress:/var/www/html/:rw
       - ./:/var/www/html/wp-content/plugins/query-monitor
 
   php:
@@ -30,7 +30,7 @@ services:
     depends_on:
       - database
     volumes:
-      - wp:/var/www/html:rw
+      - ./tests/wordpress:/var/www/html/:rw
       - ./:/var/www/html/wp-content/plugins/query-monitor
 
   database:
@@ -61,7 +61,7 @@ services:
       - php
     init: true
     volumes:
-      - wp:/var/www/html:rw
+      - ./tests/wordpress:/var/www/html/:rw
       - ./:/var/www/html/wp-content/plugins/query-monitor
 
   chrome:
@@ -74,5 +74,4 @@ services:
     - host.docker.internal:host-gateway
 
 volumes:
-  wp:
   database:
