@@ -5,7 +5,7 @@
 set -eo pipefail
 
 # Prep:
-WP_PORT=`docker port query-monitor-wordpress | grep "[0-9]+$" -ohE | head -1`
+WP_PORT=`docker port query-monitor-server | grep "[0-9]+$" -ohE | head -1`
 CHROME_PORT=`docker port query-monitor-chrome | grep "[0-9]+$" -ohE | head -1`
 DATABASE_PORT=`docker port query-monitor-database | grep "[0-9]+$" -ohE | head -1`
 WP_URL="http://host.docker.internal:${WP_PORT}"

@@ -2,12 +2,22 @@ version: '3.1'
 
 services:
 
-  wordpress:
-    image: wordpress:${LOCAL_WP-5.8}-php${LOCAL_PHP-7.4}
-    container_name: query-monitor-wordpress
-    restart: always
+  server:
+    image: nginx:alpine
+    container_name: query-monitor-server
     ports:
       - 80
+    depends_on:
+      - php
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - ./tests/wordpress:/var/www/html/
+      - ./:/var/www/html/wp-content/plugins/query-monitor
+
+  php:
+    image: wordpressdevelop/php:${LOCAL_PHP-7.4}-fpm
+    container_name: query-monitor-php
+    restart: always
     environment:
       WORDPRESS_DB_HOST: database
       WORDPRESS_DB_USER: exampleuser
@@ -48,7 +58,7 @@ services:
     user: "33:33"
     depends_on:
       - database
-      - wordpress
+      - php
     init: true
     volumes:
       - wp:/var/www/html:rw
