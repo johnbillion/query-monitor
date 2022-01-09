@@ -70,6 +70,7 @@ jobs:
     - name: Start Docker environment
       run: |
         docker-compose up -d database
+        sleep 10
 
     - name: Log running Docker containers
       run: docker ps -a
