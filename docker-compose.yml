@@ -10,7 +10,7 @@ services:
     depends_on:
       - php
     volumes:
-      - ./templates:/etc/nginx/templates
+      - ./tests/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./tests/wordpress:/var/www/html/:rw
       - ./tests/wp-config.php:/var/www/html/wp-config.php
       - ./:/var/www/html/wp-content/plugins/query-monitor
