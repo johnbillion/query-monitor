@@ -28,8 +28,6 @@
 		"roots/wordpress": "*",
 		"squizlabs/php_codesniffer": "3.5.8",
 		"szepeviktor/phpstan-wordpress": "^1.0",
-		"vlucas/phpdotenv": "^3",
-		"wp-cli/db-command": "^2",
 		"wp-coding-standards/wpcs": "2.3.0"
 	},
 	"config": {
