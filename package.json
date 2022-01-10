@@ -21,9 +21,9 @@
 		"version-bump-prompt": "^6.1.0"
 	},
 	"scripts": {
-		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt",
-		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json readme.txt",
-		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json readme.txt",
+		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
+		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
+		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
 		"grunt": "grunt",
 		"build": "grunt sass:prod",
 		"watch": "grunt watch"

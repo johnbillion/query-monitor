@@ -9,7 +9,7 @@
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
- * Description:  The Developer Tools Panel for WordPress.
+ * Description:  The developer tools panel for WordPress.
  * Version:      3.8.2
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
