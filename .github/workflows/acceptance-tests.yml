@@ -90,7 +90,7 @@ jobs:
 
     - name: Debug WordPress version
       continue-on-error: true
-      run: docker-compose run --rm wpcli wp core version
+      run: docker-compose run --rm wpcli core version
 
     - name: Run the tests
       run: composer test:acceptance

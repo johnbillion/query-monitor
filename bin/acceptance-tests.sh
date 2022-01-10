@@ -9,7 +9,7 @@ WP_PORT=`docker port query-monitor-server | grep "[0-9]+$" -ohE | head -1`
 CHROME_PORT=`docker port query-monitor-chrome | grep "[0-9]+$" -ohE | head -1`
 DATABASE_PORT=`docker port query-monitor-database | grep "[0-9]+$" -ohE | head -1`
 WP_URL="http://host.docker.internal:${WP_PORT}"
-WP="docker-compose run --rm wpcli wp --url=${WP_URL}"
+WP="docker-compose run --rm wpcli --url=${WP_URL}"
 
 # Reset or install the test database:
 echo "Installing database..."

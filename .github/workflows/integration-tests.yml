@@ -64,8 +64,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer install --prefer-dist
-        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }} || *"
+        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
 
     - name: Start Docker environment
       run: |
