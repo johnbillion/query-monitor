@@ -5,13 +5,5 @@ paths:
   support: tests/_support
   envs: tests/_envs
 actor_suffix: Tester
-extensions:
-  enabled:
-    - tad\WPBrowser\Extension\Symlinker
-  config:
-    tad\WPBrowser\Extension\Symlinker:
-      mode: plugin
-      destination:
-        default: tests/wordpress/wp-content/plugins
 params:
   - env

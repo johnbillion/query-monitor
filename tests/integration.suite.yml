@@ -8,9 +8,9 @@ modules:
     - WPLoader
   config:
     WPLoader:
-      wpRootFolder: 'tests/wordpress'
+      wpRootFolder: /var/www/html
       dbName: exampledb
-      dbHost: '127.0.0.1:%TEST_SITE_DATABASE_PORT%'
+      dbHost: database
       dbUser: exampleuser
       dbPassword: examplepass
       configFile: tests/integration/includes/bootstrap.php

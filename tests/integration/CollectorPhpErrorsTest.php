@@ -101,7 +101,7 @@ class CollectorPHPErrors extends Test {
 			$component, '', ''
 		);
 
-		self::assertSame( '', $component->context );
+		self::assertSame( 'bar', $component->context );
 		self::assertFalse( $actual );
 	}
 
