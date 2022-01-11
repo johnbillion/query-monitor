@@ -14,7 +14,7 @@ modules:
       user: exampleuser
       password: examplepass
       url: '%TEST_SITE_WP_URL%'
-      tablePrefix: wp_
+      tablePrefix: wp_acceptance_
       dump: false
       populate: false
       cleanup: false

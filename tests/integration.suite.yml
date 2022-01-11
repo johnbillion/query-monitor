@@ -14,7 +14,7 @@ modules:
       dbUser: exampleuser
       dbPassword: examplepass
       configFile: tests/integration/includes/bootstrap.php
-      tablePrefix: wp_
+      tablePrefix: wp_integration_
       plugins: ['query-monitor/query-monitor.php']
       activatePlugins: ['query-monitor/query-monitor.php']
 env:

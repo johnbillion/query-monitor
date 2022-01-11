@@ -21,7 +21,7 @@
 		"codeception/util-universalframework": "^1.0",
 		"cweagans/composer-patches": "^1.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
-		"lucatume/wp-browser": "^3.0",
+		"lucatume/wp-browser": "^3.0.21",
 		"phpcompatibility/phpcompatibility-wp": "2.1.0",
 		"phpstan/phpstan": "^1.0",
 		"phpstan/phpstan-phpunit": "^1.0",
