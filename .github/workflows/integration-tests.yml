@@ -75,4 +75,4 @@ jobs:
       run: docker ps -a
 
     - name: Run unit tests
-      run: composer test:integration
+      run: ./bin/integration-tests.sh
