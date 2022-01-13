@@ -8,9 +8,11 @@ set -eo pipefail
 echo "Running tests..."
 
 docker-compose exec \
+	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
 	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required "$1"
 
 docker-compose exec \
+	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
 	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded "$1"
