@@ -5,7 +5,7 @@
  * @package query-monitor
  */
 
-abstract class QM_PHP {
+class QM_PHP {
 
 	/**
 	 * @var string
