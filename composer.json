@@ -50,8 +50,8 @@
 	},
 	"scripts": {
 		"test": [
-			"@test:cs",
 			"@test:phpstan",
+			"@test:cs",
 			"@test:integration",
 			"@test:acceptance"
 		],
