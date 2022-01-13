@@ -75,4 +75,11 @@ jobs:
       run: docker ps -a
 
     - name: Run unit tests
-      run: ./bin/integration-tests.sh
+      run: |
+        echo "Running tests..."
+        docker-compose exec \
+          --workdir /var/www/html/wp-content/plugins/query-monitor php \
+          ./vendor/bin/codecept run integration --env singlesite --skip-group ms-required
+        docker-compose exec \
+          --workdir /var/www/html/wp-content/plugins/query-monitor php \
+          ./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded
