@@ -68,7 +68,7 @@ jobs:
 
     - name: Start Docker environment
       run: |
-        docker-compose up -d database
+        composer test:start
         sleep 10
 
     - name: Log running Docker containers
