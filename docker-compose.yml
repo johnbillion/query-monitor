@@ -13,7 +13,7 @@ services:
       - ./tests/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./tests/wordpress:/var/www/html/:rw
       - ./tests/wp-config.php:/var/www/html/wp-config.php
-      - ./:/var/www/html/wp-content/plugins/query-monitor
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
 
   php:
     image: wordpressdevelop/php:${LOCAL_PHP-7.4}-fpm
@@ -31,7 +31,7 @@ services:
     volumes:
       - ./tests/wordpress:/var/www/html/:rw
       - ./tests/wp-config.php:/var/www/html/wp-config.php
-      - ./:/var/www/html/wp-content/plugins/query-monitor
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
 
   database:
     image: mariadb:10.5.8
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./tests/wordpress:/var/www/html/:rw
       - ./tests/wp-config.php:/var/www/html/wp-config.php
-      - ./:/var/www/html/wp-content/plugins/query-monitor
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
 
   chrome:
     image: ${CHROME_IMAGE-selenium/standalone-chrome}
