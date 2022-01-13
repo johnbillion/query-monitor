@@ -430,6 +430,10 @@ class QM_Backtrace {
 			'do_action_deprecated' => true,
 		);
 
+		if ( ! isset( $frame['function'] ) ) {
+			$frame['function'] = '(unknown)';
+		}
+
 		if ( isset( $frame['class'] ) ) {
 			if ( isset( $ignore_class[ $frame['class'] ] ) ) {
 				$return = null;
