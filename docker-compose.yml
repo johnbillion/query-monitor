@@ -25,7 +25,6 @@ services:
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
       WORDPRESS_DEBUG: ${LOCAL_WP_DEBUG-1}
-    user: "33:33"
     depends_on:
       - database
     volumes:
@@ -55,7 +54,6 @@ services:
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
-    user: "33:33"
     depends_on:
       - database
       - php
