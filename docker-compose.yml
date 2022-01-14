@@ -1,0 +1,76 @@
+version: '3.1'
+
+services:
+
+  server:
+    image: nginx:alpine
+    container_name: query-monitor-server
+    ports:
+      - 80
+    depends_on:
+      - php
+    volumes:
+      - ./tests/nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+
+  php:
+    image: wordpressdevelop/php:${LOCAL_PHP-7.4}-fpm
+    container_name: query-monitor-php
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DEBUG: ${LOCAL_WP_DEBUG-1}
+    depends_on:
+      - database
+    volumes:
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+
+  database:
+    image: mariadb:10.5.8
+    container_name: query-monitor-database
+    restart: always
+    ports:
+      - 3306
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - database:/var/lib/mysql:rw
+
+  wpcli:
+    image: wordpress:cli-php${LOCAL_PHP-7.4}
+    container_name: query-monitor-wpcli
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    depends_on:
+      - database
+      - php
+    init: true
+    volumes:
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+
+  chrome:
+    image: ${CHROME_IMAGE-selenium/standalone-chrome}
+    container_name: query-monitor-chrome
+    restart: always
+    ports:
+      - 4444
+    extra_hosts:
+    - host.docker.internal:host-gateway
+
+volumes:
+  database:

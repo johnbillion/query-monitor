@@ -1,6 +1,10 @@
 <?php
 
-class TestUtils extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class Utils extends Test {
 
 	/**
 	 * @dataProvider dataClientVersion
@@ -8,39 +12,39 @@ class TestUtils extends QM_UnitTestCase {
 	 * @param int $client
 	 * @param array<int, int> $expected
 	 */
-	public function testDatabaseDriverClientVersionIsDetected( int $client, array $expected ) {
+	public function testDatabaseDriverClientVersionIsDetected( int $client, array $expected ): void {
 
-		$ver = QM_Util::get_client_version( $client );
+		$ver = \QM_Util::get_client_version( $client );
 
 		self::assertEquals( $expected, array_values( $ver ) );
 
 	}
 
 	/**
-	 * @return array<int, array{
+	 * @return array<string, array{
 	 *   0: int,
 	 *   1: array<int, int>
 	 * }>
 	 */
 	public function dataClientVersion() {
 		return array(
-			array(
+			'client 12345' => array(
 				12345,
 				array( 1, 23, 45 ),
 			),
-			array(
+			'client 10511' => array(
 				10511,
 				array( 1, 5, 11 ),
 			),
-			array(
+			'client 10001' => array(
 				10001,
 				array( 1, 0, 1 ),
 			),
-			array(
+			'client 31010' => array(
 				31010,
 				array( 3, 10, 10 ),
 			),
-			array(
+			'client 20000' => array(
 				20000,
 				array( 2, 0, 0 ),
 			),

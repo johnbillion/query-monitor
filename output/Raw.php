@@ -6,8 +6,4 @@
  */
 
 abstract class QM_Output_Raw extends QM_Output {
-	/**
-	 * @return array<string, mixed>
-	 */
-	abstract public function get_output();
 }

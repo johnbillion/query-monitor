@@ -5,6 +5,8 @@
 /node_modules
 /package-lock.json
 /build
+/tests/_output/
+/tests/_support/_generated
 /tests/.env
 /tests/cache
 /tests/wordpress

@@ -1,13 +1,17 @@
 <?php
 
-class TestDispatcherHTML extends QM_UnitTestCase {
+declare(strict_types = 1);
 
-	/** @var QM_Dispatcher_Html|null */
+namespace QM\Tests;
+
+class DispatcherHTML extends Test {
+
+	/** @var \QM_Dispatcher_Html|null */
 	protected $html = null;
 
-	public function setUp() {
+	public function _before(): void {
 
-		parent::setUp();
+		parent::_before();
 
 		$admin = $this->factory->user->create_and_get( array(
 			'role' => 'administrator',
@@ -19,8 +23,8 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 
 		wp_set_current_user( $admin->ID );
 
-		/** @var QM_Dispatcher_Html */
-		$html = QM_Dispatchers::get( 'html' );
+		/** @var \QM_Dispatcher_Html */
+		$html = \QM_Dispatchers::get( 'html' );
 
 		$this->html = $html;
 		$this->html->init();
@@ -30,7 +34,7 @@ class TestDispatcherHTML extends QM_UnitTestCase {
 	/**
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
-	public function testDispatcherRespectsLateChangeOfHttps() {
+	public function testDispatcherRespectsLateChangeOfHttps(): void {
 		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {

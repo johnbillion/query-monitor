@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
 /**
  * @property \WP_UnitTest_Factory $factory
  */
-abstract class QM_UnitTestCase extends WP_UnitTestCase {
+abstract class Test extends \Codeception\TestCase\WPTestCase {
 
-	use \FalseyAssertEqualsDetector\Test;
-
-	public function setUp() {
+	public function _before(): void {
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
 
 		if ( true !== WP_USE_THEMES ) {
-			$this->fail( 'WP_USE_THEMES should not be false' );
+			self::fail( 'WP_USE_THEMES should not be false' );
 		}
-
-		parent::setUp();
 	}
+
+	public function _after(): void {}
 
 	/**
 	 * @return string

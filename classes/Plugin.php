@@ -16,11 +16,6 @@ abstract class QM_Plugin {
 	/**
 	 * @var string
 	 */
-	public static $minimum_php_version = '7.0.0';
-
-	/**
-	 * @var string
-	 */
 	public $file = '';
 
 	/**
@@ -59,7 +54,13 @@ abstract class QM_Plugin {
 	 * @return string Version
 	 */
 	final public function plugin_ver( $file ) {
-		return (string) filemtime( $this->plugin_path( $file ) );
+		$path = $this->plugin_path( $file );
+
+		if ( file_exists( $path ) ) {
+			return (string) filemtime( $path );
+		}
+
+		return QM_VERSION;
 	}
 
 	/**
@@ -94,42 +95,5 @@ abstract class QM_Plugin {
 		}
 		return $this->plugin[ $item ] . ltrim( $file, '/' );
 	}
-
-	/**
-	 * @return bool
-	 */
-	public static function php_version_met() {
-		static $met = null;
-
-		if ( null === $met ) {
-			$met = version_compare( PHP_VERSION, self::$minimum_php_version, '>=' );
-		}
-
-		return $met;
-	}
-
-	/**
-	 * @return void
-	 */
-	public static function php_version_nope() {
-		printf(
-			'<div id="qm-php-nope" class="notice notice-error is-dismissible"><p>%s</p></div>',
-			wp_kses(
-				sprintf(
-					/* translators: 1: Required PHP version number, 2: Current PHP version number, 3: URL of PHP update help page */
-					__( 'The Query Monitor plugin requires PHP version %1$s or higher. This site is running PHP version %2$s. <a href="%3$s">Learn about updating PHP</a>.', 'query-monitor' ),
-					self::$minimum_php_version,
-					PHP_VERSION,
-					'https://wordpress.org/support/update-php/'
-				),
-				array(
-					'a' => array(
-						'href' => array(),
-					),
-				)
-			)
-		);
-	}
-
 }
 }

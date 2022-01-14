@@ -346,8 +346,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		$stime = number_format_i18n( $row['ltime'], 4 );
+		$sql = $row['sql'];
 
-		$sql = self::format_sql( $row['sql'] );
+		if ( 'Unknown' === $row['type'] ) {
+			$sql = "<code>{$sql}</code>";
+		} else {
+			$sql = self::format_sql( $row['sql'] );
+		}
 
 		if ( 'SELECT' !== $row['type'] ) {
 			$sql = "<span class='qm-nonselectsql'>{$sql}</span>";
@@ -644,9 +649,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
 			$id = $this->collector->id() . '-' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
-				$menu[ $id ]['title'] = $menu[ $id ]['title'];
-
-				$menu['db_queries-$wpdb']['children'][] = $menu[ $id ];
+				$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
 			}
 		}

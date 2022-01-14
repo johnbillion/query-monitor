@@ -38,11 +38,9 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 				$count++;
 
-				# @TODO we should calculate the component during process() so we don't need to do it
-				# separately in each output.
-				if ( $error['trace'] ) {
-					$component = $error['trace']->get_component()->name;
-					$stack = $error['trace']->get_stack();
+				if ( $error['component'] ) {
+					$component = $error['component']->name;
+					$stack = wp_list_pluck( $error['filtered_trace'], 'display' );
 				} else {
 					$component = __( 'Unknown', 'query-monitor' );
 					$stack = array();

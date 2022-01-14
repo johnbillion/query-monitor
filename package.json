@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.8.0",
+	"version": "3.8.2",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -60,9 +60,9 @@
 	},
 	"scripts": {
 		"lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
-		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt",
-		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json readme.txt",
-		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json readme.txt",
+		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
+		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
+		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
 		"grunt": "grunt",
 		"build": "concurrently \"grunt sass:prod\" \"wp-scripts build\"",
 		"watch": "concurrently \"grunt watch\" \"wp-scripts build\" \"wp-scripts start\""

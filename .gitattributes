@@ -15,6 +15,7 @@
 /.gitignore export-ignore
 /assets/*.map export-ignore
 /assets/*.scss export-ignore
+/codeception.dist.xml export-ignore
 /composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
 /Gruntfile.js export-ignore
@@ -22,6 +23,5 @@
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
 /phpstan.neon.dist export-ignore
-/phpunit.xml.dist export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore
