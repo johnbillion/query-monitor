@@ -18,7 +18,7 @@ export class Tabular extends React.Component<TabularProps, Record<string, unknow
 					tabIndex={ -1 }
 				>
 					<table className="qm-sortable">
-						<caption className="qm-screen-reader-text">
+						<caption>
 							<h2 id={ caption }>
 								@TODO
 							</h2>

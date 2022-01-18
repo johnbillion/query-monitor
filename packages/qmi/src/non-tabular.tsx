@@ -19,7 +19,7 @@ export class NonTabular extends React.Component<NonTabularProps, Record<string, 
 					tabIndex={ -1 }
 				>
 					<div className="qm-boxed">
-						<h2 className="qm-screen-reader-text" id={ caption }>
+						<h2 id={ caption }>
 							@TODO
 						</h2>
 						{ this.props.children }
