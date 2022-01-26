@@ -469,9 +469,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		li button:active {
 			text-decoration: none !important;
-			background: $qm-panel-menu-bg-selected !important;
-			color: $qm-panel-menu-fg-selected !important;
-			text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
+			background: var( --qm-panel-menu-bg-selected ) !important;
+			color: var( --qm-panel-menu-fg-selected ) !important;
+			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow ) !important;
 		}
 
 		li.qm-current-menu {
@@ -504,9 +504,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		li button[aria-selected="true"] {
-			background: $qm-panel-menu-bg-selected !important;
-			color: $qm-panel-menu-fg-selected !important;
-			text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
+			background: var( --qm-panel-menu-bg-selected ) !important;
+			color: var( --qm-panel-menu-fg-selected ) !important;
+			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow ) !important;
 
 			&:focus {
 				background: var( --qm-panel-menu-bg-selected-focus ) !important;
@@ -1217,11 +1217,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm .qm-sorted-desc .qm-sort-arrow,
 	.qm .qm-sorted-asc .qm-sort-arrow {
-		color: $qm-container-fg !important;
+		color: var( --qm-container-fg ) !important;
 	}
 
 	.qm thead th.qm-sortable-column:hover .qm-sort-arrow {
-		color: $qm-panel-menu-bg-selected !important;
+		color: var( --qm-panel-menu-bg-selected ) !important;
 	}
 
 	.qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow::before {
