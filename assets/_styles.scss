@@ -387,10 +387,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		button:active *,
 		button:active {
+			/* @TODO */
 			background: #ccc !important;
 		}
 
 		button.qm-button-active {
+			/* @TODO */
 			color: #3879d9 !important;
 		}
 
@@ -814,12 +816,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm p.qm-true,
 	.qm span.qm-true,
 	.qm td.qm-true {
+		/* @TODO */
 		color: #282 !important;
 	}
 
 	.qm .qm-false code,
 	.qm span.qm-false,
 	.qm td.qm-false {
+		/* @TODO */
 		color: #999 !important;
 	}
 
@@ -962,6 +966,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn li,
 	.qm tbody .qm-warn .qm-info,
 	.qm tbody .qm-warn code {
+		/* @TODO */
 		background-color: transparent !important;
 		color: var( --qm-warn-fg ) !important;
 	}
@@ -982,8 +987,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm .qm-dashicons-yes {
+		/* @TODO */
 		background-color: #0a0 !important;
 		border-radius: 50% !important;
+		/* @TODO */
 		color: #fff !important;
 	}
 
@@ -1191,6 +1198,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm .qm-sortable-column .qm-sort-arrow {
+		/* @TODO */
 		color: #ccc !important;
 		display: block !important;
 		font-family: dashicons !important;
@@ -1392,8 +1400,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 #qm-fatal {
 	margin: 1em !important;
+	/* @TODO */
 	border: 2px solid #c00 !important;
+	/* @TODO */
 	box-shadow: 0 0 0 2px #fff;
+	/* @TODO */
 	background: #fff !important;
 	max-width: 700px !important;
 	clear: both !important;
@@ -1404,11 +1415,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		font-size: 12px !important;
 		font-weight: normal !important;
 		padding: 5px !important;
+		/* @TODO */
 		background: #f3f3f3 !important;
 		margin: 0 !important;
 	}
 
 	.dashicons {
+		/* @TODO */
 		color: #c00 !important;
 	}
 
@@ -1429,6 +1442,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm-info {
+		/* @TODO */
 		color: #666 !important;
 	}
 }
