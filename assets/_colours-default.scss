@@ -28,6 +28,7 @@ $qm-cell-border: #e0e0e0 !default;
 $qm-cell-bg-hover: #eef3fa !default;
 $qm-cell-fg-highlight: $qm-container-fg !default;
 $qm-cell-bg-highlight: #ffd !default;
+$qm-cell-bg-highlight-dark: darken( $qm-cell-bg-highlight, 10% ) !default;
 $qm-cell-bg-stripe: #f9f9f9 !default;
 $qm-table-header-bg: #fff !default;
 $qm-table-footer-bg: $qm-container-bg !default;
@@ -51,6 +52,7 @@ $qm-info-fg: #666 !default;
 // Formatting
 $qm-warn-fg: #900 !default;
 $qm-warn-bg: #fff0f0 !default;
+$qm-warn-bg-dark: darken( $qm-warn-bg, 1.5% ) !default;
 $qm-warn-border: #ffd6d6 !default;
 $qm-nonselect-fg: #a0a !default;
 $qm-selection-fg: $qm-container-fg !default;
@@ -87,6 +89,7 @@ $colours-default: (
 	'cell-bg-hover': $qm-cell-bg-hover,
 	'cell-fg-highlight': $qm-cell-fg-highlight,
 	'cell-bg-highlight': $qm-cell-bg-highlight,
+	'cell-bg-highlight-dark': $qm-cell-bg-highlight-dark,
 	'cell-bg-stripe': $qm-cell-bg-stripe,
 	'table-header-bg': $qm-table-header-bg,
 	'table-footer-bg': $qm-table-footer-bg,
@@ -110,6 +113,7 @@ $colours-default: (
 	// Formatting
 	'warn-fg': $qm-warn-fg,
 	'warn-bg': $qm-warn-bg,
+	'warn-bg-dark': $qm-warn-bg-dark,
 	'warn-border': $qm-warn-border,
 	'nonselect-fg': $qm-nonselect-fg,
 	'selection-fg': $qm-selection-fg,

@@ -59,6 +59,7 @@ $qm-dark-cell-border: $base-grey !default;
 $qm-dark-cell-bg-hover: lighten( $dark-grey, 2% ) !default;
 $qm-dark-cell-fg-highlight: $qm-dark-container-fg !default;
 $qm-dark-cell-bg-highlight: #57572a !default;
+$qm-dark-cell-bg-highlight-dark: darken( $qm-dark-cell-bg-highlight, 10% ) !default;
 $qm-dark-cell-bg-stripe: $dark-grey !default;
 $qm-dark-table-header-bg: $dark-grey !default;
 $qm-dark-table-footer-bg: $dark-grey !default;
@@ -82,6 +83,7 @@ $qm-dark-info-fg: #aaa !default;
 // Formatting
 $qm-dark-warn-fg: #fff0f0 !default;
 $qm-dark-warn-bg: #622 !default;
+$qm-dark-warn-bg-dark: lighten( $qm-dark-warn-bg, 1.5% ) !default;
 $qm-dark-warn-border: #ffd6d6 !default;
 $qm-dark-nonselect-fg: #a6a !default;
 $qm-dark-selection-fg: $dark-grey !default;
@@ -118,6 +120,7 @@ $colours-dark: (
 	'cell-bg-hover': $qm-dark-cell-bg-hover,
 	'cell-fg-highlight': $qm-dark-cell-fg-highlight,
 	'cell-bg-highlight': $qm-dark-cell-bg-highlight,
+	'cell-bg-highlight-dark': $qm-dark-cell-bg-highlight-dark,
 	'cell-bg-stripe': $qm-dark-cell-bg-stripe,
 	'table-header-bg': $qm-dark-table-header-bg,
 	'table-footer-bg': $qm-dark-table-footer-bg,
@@ -141,6 +144,7 @@ $colours-dark: (
 	// Formatting
 	'warn-fg': $qm-dark-warn-fg,
 	'warn-bg': $qm-dark-warn-bg,
+	'warn-bg-dark': $qm-dark-warn-bg-dark,
 	'warn-border': $qm-dark-warn-border,
 	'nonselect-fg': $qm-dark-nonselect-fg,
 	'selection-fg': $qm-dark-selection-fg,

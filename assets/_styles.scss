@@ -959,21 +959,20 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr.qm-odd td.qm-warn,
 	.qm tbody tr.qm-odd.qm-warn td,
 	.qm tbody tr.qm-odd.qm-warn th {
-		background-color: darken( $qm-warn-bg, 1.5% ) !important;
+		background-color: var( --qm-warn-bg-dark ) !important;
 	}
 
 	.qm-non-tabular .qm-warn code,
 	.qm tbody .qm-warn li,
 	.qm tbody .qm-warn .qm-info,
 	.qm tbody .qm-warn code {
-		/* @TODO */
 		background-color: transparent !important;
 		color: var( --qm-warn-fg ) !important;
 	}
 
 	.qm .qm-notice {
-		background: $qm-panel-menu-bg-current !important;
-		border: 1px solid darken( $qm-panel-menu-bg-current, 10% ) !important;
+		background: var( --qm-panel-menu-bg-current ) !important;
+		border: 1px solid var( --qm-panel-menu-bg-hover ) !important;
 		margin: 0 0 10px 0 !important;
 		padding: 10px 20px 0 !important;
 	}
@@ -1004,8 +1003,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr.qm-odd td.qm-highlight,
 	.qm tbody tr.qm-odd.qm-highlight th,
 	.qm tbody tr.qm-odd.qm-highlight td {
-		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
-		color: $qm-cell-fg-highlight !important;
+		background-color: var( --qm-cell-bg-highlight-dark ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
 	.qm tbody tr.qm-odd.qm-hovered th,
