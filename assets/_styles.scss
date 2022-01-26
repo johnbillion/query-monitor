@@ -1,3 +1,11 @@
+/* Functions */
+@function map-get-strict($map, $key) {
+	@if map-has-key($map, $key) {
+		@return map-get($map, $key);
+	} @else {
+		@error "Index '#{$key}' does not exist";
+	}
+}
 
 /* Fonts */
 $qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -20,6 +28,22 @@ $qm-menu-warning-bg-hover: darken( $qm-menu-warning-bg, 5% ) !default;
 $qm-menu-fg: #eee !default;
 $qm-menu-true-fg: #8c8 !default;
 $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
+
+// === Properties ===
+
+#query-monitor-main {
+	@each $var, $colour in $colours-default {
+		--qm-#{$var}: #{$colour};
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	#query-monitor-main {
+		@each $var, $colour in $colours-default {
+			--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
+		}
+	}
+}
 
 // === Admin Toolbar ===
 
@@ -148,7 +172,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	box-shadow: none !important;
 	box-sizing: border-box !important;
 	clear: both !important;
-	color: $qm-container-fg !important;
+	color: var( --qm-container-fg ) !important;
 	float: none !important;
 	font-family: $qm-font-default-face !important;
 	font-size: $qm-font-default-size !important;
@@ -211,8 +235,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	& {
 		@include global-reset;
 
-		background: $qm-panel-bg !important;
-		border-top: 1px solid $qm-panel-border !important;
+		background: var( --qm-panel-bg ) !important;
+		border-top: 1px solid var( --qm-panel-border ) !important;
 		bottom: 0 !important;
 		contain: layout paint;
 		direction: ltr !important;
@@ -226,8 +250,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	::selection {
-		background-color: $qm-selection-bg !important;
-		color: $qm-selection-fg !important;
+		background-color: var( --qm-selection-bg ) !important;
+		color: var( --qm-selection-fg ) !important;
 	}
 
 	strong,
@@ -261,7 +285,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		top: $qm-admin-toolbar-height !important;
 		left: unset !important;
 		border-top: 0 !important;
-		border-left: 1px solid $qm-panel-border !important;
+		border-left: 1px solid var( --qm-panel-border ) !important;
 
 		@include qm-narrow();
 
@@ -296,8 +320,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	#qm-title {
 		align-items: center !important;
-		background: $qm-container-bg !important;
-		border-bottom: 1px solid $qm-panel-border !important;
+		background: var( --qm-container-bg ) !important;
+		border-bottom: 1px solid var( --qm-panel-border ) !important;
 		cursor: ns-resize !important;
 		display: flex !important;
 		flex-shrink: 0 !important;
@@ -344,8 +368,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		button {
-			background: $qm-title-button-bg !important;
-			color: $qm-title-button-fg !important;
+			background: var( --qm-title-button-bg ) !important;
+			color: var( --qm-title-button-fg ) !important;
 			cursor: pointer !important;
 			display: inline-block !important;
 			margin: 0 0 0 0px !important;
@@ -357,8 +381,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		button:hover *,
 		button:focus,
 		button:hover {
-			background: $qm-title-button-bg-hover !important;
-			color: $qm-title-button-fg-hover !important;
+			background: var( --qm-title-button-bg-hover ) !important;
+			color: var( --qm-title-button-fg-hover ) !important;
 		}
 
 		button:active *,
@@ -392,7 +416,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	#qm-panel-menu {
-		background: $qm-container-overflow !important;
+		background: var( --qm-container-overflow ) !important;
 		flex-shrink: 0 !important;
 		overflow-y: scroll !important;
 		overscroll-behavior: contain !important;
@@ -419,10 +443,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		li button {
-			background: $qm-panel-menu-bg !important;
-			border-bottom: 1px solid $qm-panel-menu-border !important;
-			border-right: 1px solid $qm-panel-border !important;
-			color: $qm-panel-menu-fg !important;
+			background: var( --qm-panel-menu-bg ) !important;
+			border-bottom: 1px solid var( --qm-panel-menu-border ) !important;
+			border-right: 1px solid var( --qm-panel-border ) !important;
+			color: var( --qm-panel-menu-fg ) !important;
 			cursor: pointer !important;
 			display: block !important;
 			padding: 6px 32px 6px 10px !important;
@@ -433,8 +457,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		li button:focus,
 		li button:hover {
-			background: $qm-panel-menu-bg-hover !important;
-			color: $qm-panel-menu-fg-hover !important;
+			background: var( --qm-panel-menu-bg-hover ) !important;
+			color: var( --qm-panel-menu-fg-hover ) !important;
 		}
 
 		li button:focus {
@@ -454,17 +478,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			}
 
 			button {
-				background: $qm-panel-menu-bg-current !important;
-				color: $qm-panel-menu-fg-current !important;
+				background: var( --qm-panel-menu-bg-current ) !important;
+				color: var( --qm-panel-menu-fg-current ) !important;
 
 				&:focus {
-					background: $qm-panel-menu-bg-current-focus !important;
-					color: $qm-panel-menu-fg-current !important;
+					background: var( --qm-panel-menu-bg-current-focus ) !important;
+					color: var( --qm-panel-menu-fg-current ) !important;
 				}
 
 				&:hover {
-					background: $qm-panel-menu-bg-hover !important;
-					color: $qm-panel-menu-fg-hover !important;
+					background: var( --qm-panel-menu-bg-hover ) !important;
+					color: var( --qm-panel-menu-fg-hover ) !important;
 				}
 			}
 		}
@@ -483,18 +507,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
 
 			&:focus {
-				background: $qm-panel-menu-bg-selected-focus !important;
-				color: $qm-panel-menu-fg-selected !important;
+				background: var( --qm-panel-menu-bg-selected-focus ) !important;
+				color: var( --qm-panel-menu-fg-selected ) !important;
 			}
 
 			&:hover {
-				background: $qm-panel-menu-bg-selected !important;
-				color: $qm-panel-menu-fg-selected !important;
+				background: var( --qm-panel-menu-bg-selected ) !important;
+				color: var( --qm-panel-menu-fg-selected ) !important;
 			}
 
 			&:after {
 				border: solid 8px transparent;
-				border-right-color: $qm-panel-bg;
+				border-right-color: var( --qm-panel-bg );
 				content: " ";
 				display: inline-block !important;
 				height: 0;
@@ -527,7 +551,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		flex-wrap: wrap !important;
 
 		&:not(#qm-broken) + .qm-boxed {
-			border-top: 1px solid $qm-panel-separator !important;
+			border-top: 1px solid var( --qm-panel-separator ) !important;
 			padding-top: 10px !important;
 		}
 	}
@@ -549,15 +573,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		table {
 			border: none !important;
 			border-collapse: collapse !important;
-			box-shadow: 0px 1px 0px 0px $qm-panel-border !important;
-			color: $qm-panel-fg !important;
+			box-shadow: 0px 1px 0px 0px var( --qm-panel-border ) !important;
+			color: var( --qm-panel-fg ) !important;
 			margin: 0 !important;
 			table-layout: auto !important;
 			width: 100% !important;
 		}
 
 		table + table {
-			border-top: 1px solid $qm-cell-border !important;
+			border-top: 1px solid var( --qm-cell-border ) !important;
 			margin-top: 5px !important;
 		}
 
@@ -569,7 +593,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		tbody td,
 		tfoot th,
 		tfoot td {
-			border: 1px solid $qm-cell-border !important;
+			border: 1px solid var( --qm-cell-border ) !important;
 			padding: 5px 5px 4px 5px !important;
 			vertical-align: top !important;
 		}
@@ -581,10 +605,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		thead th {
-			background: $qm-table-header-bg !important;
-			border: 1px solid $qm-cell-border !important;
+			background: var( --qm-table-header-bg ) !important;
+			border: 1px solid var( --qm-cell-border ) !important;
 			border-top: none !important;
-			box-shadow: 0px 1px 0px $qm-cell-border !important;
+			box-shadow: 0px 1px 0px var( --qm-cell-border ) !important;
 			padding: 5px !important;
 			position: -webkit-sticky !important;
 			position: sticky !important;
@@ -603,10 +627,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		tfoot tr td,
 		tfoot tr th {
-			background: $qm-table-footer-bg !important;
+			background: var( --qm-table-footer-bg ) !important;
 			border: none !important;
 			bottom: 0 !important;
-			box-shadow: inset 0px 1px 0px $qm-cell-border !important;
+			box-shadow: inset 0px 1px 0px var( --qm-cell-border ) !important;
 			position: -webkit-sticky !important;
 			position: sticky !important;
 		}
@@ -674,7 +698,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		.qm-has-inner .qm-toggled > table {
 			border-bottom: none !important;
-			border-top: 1px solid $qm-cell-border !important;
+			border-top: 1px solid var( --qm-cell-border ) !important;
 		}
 
 		td.qm-has-inner .qm-toggler,
@@ -689,7 +713,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm-concerns table {
-		border-top: 1px solid $qm-cell-border !important;
+		border-top: 1px solid var( --qm-cell-border ) !important;
 		margin-bottom: 20px !important;
 	}
 
@@ -717,14 +741,14 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		dt {
-			border-top: 1px solid $qm-panel-separator !important;
+			border-top: 1px solid var( --qm-panel-separator ) !important;
 			flex-grow: 0;
 			flex: 1 0 16em;
 			padding: 10px 10px 10px 0 !important;
 		}
 
 		dd {
-			border-top: 1px solid $qm-panel-separator !important;
+			border-top: 1px solid var( --qm-panel-separator ) !important;
 			flex: 1 0 calc(100% - 10px - 16em);
 			padding: 10px 0 !important;
 		}
@@ -736,7 +760,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		.qm-boxed section,
 		.qm-boxed .qm-section {
-			border-right: 1px solid $qm-panel-separator !important;
+			border-right: 1px solid var( --qm-panel-separator ) !important;
 			margin: 0 20px 10px 0 !important;
 			padding: 10px 20px 10px 0 !important;
 
@@ -748,7 +772,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		table {
-			border-bottom-color: $qm-cell-border !important;
+			border-bottom-color: var( --qm-cell-border ) !important;
 		}
 	}
 
@@ -827,11 +851,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm td.qm-has-toggle p,
 	.qm .qm-nonselectsql code,
 	.qm .qm-nonselectsql {
-		color: $qm-nonselect-fg !important;
+		color: var( --qm-nonselect-fg ) !important;
 	}
 
 	.qm .qm-info {
-		color: $qm-info-fg !important;
+		color: var( --qm-info-fg ) !important;
 	}
 
 	.qm .qm-supplemental {
@@ -846,10 +870,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm button.qm-button,
 	.qm .qm-toggle {
-		background: $qm-button-bg !important;
-		border: 1px solid $qm-button-bg !important;
+		background: var( --qm-button-bg ) !important;
+		border: 1px solid var( --qm-button-bg ) !important;
 		border-radius: 3px !important;
-		color: $qm-button-fg !important;
+		color: var( --qm-button-fg ) !important;
 		cursor: pointer !important;
 		font-weight: normal !important;
 		text-shadow: none !important;
@@ -885,46 +909,46 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm button.qm-button:hover,
 	.qm .qm-toggle:hover {
-		background: $qm-button-bg-hover !important;
-		border-color: $qm-button-bg-hover !important;
-		color: $qm-button-fg-hover !important;
+		background: var( --qm-button-bg-hover ) !important;
+		border-color: var( --qm-button-bg-hover ) !important;
+		color: var( --qm-button-fg-hover ) !important;
 		text-decoration: none !important;
 	}
 
 	.qm button.qm-button:focus,
 	.qm .qm-toggle:focus {
-		background: $qm-button-bg-hover !important;
-		border-color: $qm-button-bg-hover !important;
-		color: $qm-button-fg-hover !important;
-		box-shadow: 0 0 0 1px #fff, 0 0 0 3px $qm-button-bg-hover !important;
+		background: var( --qm-button-bg-hover ) !important;
+		border-color: var( --qm-button-bg-hover ) !important;
+		color: var( --qm-button-fg-hover ) !important;
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover ) !important;
 	}
 
 	.qm button.qm-button:active,
 	.qm .qm-toggle:active {
-		background: $qm-button-bg-active !important;
-		border-color: $qm-button-bg-active !important;
-		color: $qm-button-fg-active !important;
+		background: var( --qm-button-bg-active ) !important;
+		border-color: var( --qm-button-bg-active ) !important;
+		color: var( --qm-button-fg-active ) !important;
 		box-shadow: none !important;
 	}
 
 	.qm tbody tr.qm-odd td,
 	.qm tbody tr.qm-odd th {
-		background: $qm-cell-bg-stripe !important;
+		background: var( --qm-cell-bg-stripe ) !important;
 	}
 
 	.qm-non-tabular .qm-warn,
 	.qm thead tr .qm-warn,
 	.qm tbody tr .qm-warn {
-		background-color: $qm-warn-bg !important;
-		color: $qm-warn-fg !important;
+		background-color: var( --qm-warn-bg ) !important;
+		color: var( --qm-warn-fg ) !important;
 	}
 
 	.qm tbody tr th.qm-warn,
 	.qm tbody tr td.qm-warn,
 	.qm tbody tr.qm-warn td,
 	.qm tbody tr.qm-warn th {
-		background-color: $qm-warn-bg !important;
-		color: $qm-warn-fg !important;
+		background-color: var( --qm-warn-bg ) !important;
+		color: var( --qm-warn-fg ) !important;
 	}
 
 	.qm tbody tr.qm-odd th.qm-warn,
@@ -939,7 +963,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn .qm-info,
 	.qm tbody .qm-warn code {
 		background-color: transparent !important;
-		color: $qm-warn-fg !important;
+		color: var( --qm-warn-fg ) !important;
 	}
 
 	.qm .qm-notice {
@@ -966,8 +990,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr td.qm-highlight,
 	.qm tbody tr.qm-highlight th,
 	.qm tbody tr.qm-highlight td {
-		background-color: $qm-cell-bg-highlight !important;
-		color: $qm-cell-fg-highlight !important;
+		background-color: var( --qm-cell-bg-highlight ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
 	.qm tbody tr.qm-odd td.qm-highlight,
@@ -985,12 +1009,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
 	.qm tbody tr:hover td {
-		background: $qm-cell-bg-hover !important;
+		background: var( --qm-cell-bg-hover ) !important;
 	}
 
 	.qm thead th.qm-filtered select.qm-filter {
-		background-color: $qm-cell-bg-highlight !important;
-		color: $qm-cell-fg-highlight !important;
+		background-color: var( --qm-cell-bg-highlight ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
 	.qm button.qm-filter-trigger,
@@ -998,19 +1022,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn a code,
 	.qm a code,
 	.qm a {
-		color: $qm-link-fg !important;
+		color: var( --qm-link-fg ) !important;
 		cursor: pointer !important;
 		text-decoration: none !important;
 
 		&:after,
 		&:focus,
 		&:hover {
-			color: $qm-link-fg-hover !important;
+			color: var( --qm-link-fg-hover ) !important;
 			text-decoration: underline !important;
 		}
 
 		&:active {
-			color: $qm-link-fg-active !important;
+			color: var( --qm-link-fg-active ) !important;
 			text-decoration: underline !important;
 		}
 	}
@@ -1077,7 +1101,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm label {
-		color: $qm-panel-fg !important;
+		color: var( --qm-panel-fg ) !important;
 		cursor: pointer !important;
 		font-size: 12px !important;
 		font-style: normal !important;
@@ -1108,9 +1132,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		-webkit-appearance: menulist !important;
 		-moz-appearance: menulist !important;
 		appearance: menulist !important;
-		background: $qm-table-header-bg !important;
+		background: var( --qm-table-header-bg ) !important;
 		border: none !important;
-		color: $qm-panel-fg !important;
+		color: var( --qm-panel-fg ) !important;
 		cursor: pointer !important;
 		display: block !important;
 		float: none !important;
@@ -1118,7 +1142,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		letter-spacing: -0.1px !important;
 		margin: 0 0 0 5px !important;
 		max-width: 12em !important;
-		outline: 1px solid $qm-panel-border !important;
+		outline: 1px solid var( --qm-panel-border ) !important;
 		padding: 0 !important;
 		width: auto !important;
 	}
@@ -1128,7 +1152,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm select.qm-filter:hover {
-		background: $qm-cell-bg-hover !important;
+		background: var( --qm-cell-bg-hover ) !important;
 	}
 
 	.qm-hide,
@@ -1153,7 +1177,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		cursor: pointer !important;
 
 		&:hover {
-			background: $qm-container-bg !important;
+			background: var( --qm-container-bg ) !important;
 		}
 	}
 
@@ -1199,7 +1223,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm button:focus,
 	.qm a:focus,
 	.qm select:focus {
-		box-shadow: 0 0 0 1px #fff, 0 0 0 3px $qm-button-bg-hover !important;
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover ) !important;
 	}
 
 	.qm button:active,
@@ -1244,7 +1268,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm.qm-debug-bar {
 		textarea,
 		pre {
-			border: 1px solid $qm-panel-separator !important;
+			border: 1px solid var( --qm-panel-separator ) !important;
 			margin: 4px 0 !important;
 			padding: 10px !important;
 		}
@@ -1346,7 +1370,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin-bottom: 50px !important;
 
 		button.qm-filter-trigger {
-			color: $qm-container-fg !important;
+			color: var( --qm-container-fg ) !important;
 			cursor: text !important;
 
 			&:after {

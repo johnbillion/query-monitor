@@ -30,59 +30,119 @@ $editor-sunglo:   #e06c75;
 $editor-olivine:  #98c379;
 
 // Main container
-$qm-container-fg: lighten( $light-grey, 15% ) !default;
-$qm-container-bg: $dark-grey !default;
-$qm-container-overflow: $base-grey !default;
+$qm-dark-container-fg: lighten( $light-grey, 15% ) !default;
+$qm-dark-container-bg: $dark-grey !default;
+$qm-dark-container-overflow: $base-grey !default;
 
 // Panels
-$qm-panel-border: $dark-silver !default;
-$qm-panel-fg: $qm-container-fg !default;
-$qm-panel-bg: $base-grey !default;
-$qm-panel-separator: $dark-silver !default;
+$qm-dark-panel-border: $dark-silver !default;
+$qm-dark-panel-fg: $qm-dark-container-fg !default;
+$qm-dark-panel-bg: $base-grey !default;
+$qm-dark-panel-separator: $dark-silver !default;
 
 // Panel menus
-$qm-panel-menu-border: $dark-grey !default;
-$qm-panel-menu-fg: lighten( $light-grey, 15% ) !default;
-$qm-panel-menu-bg: $base-grey !default;
-$qm-panel-menu-fg-hover: $light-grey !default;
-$qm-panel-menu-bg-hover: lighten( $dark-grey, 5% ) !default;
-$qm-panel-menu-fg-current: lighten( $light-grey, 15% ) !default;
-$qm-panel-menu-bg-current: $dark-grey !default;
-$qm-panel-menu-bg-current-focus: lighten( $qm-panel-menu-bg-current, 5% ) !default;
-$qm-panel-menu-fg-selected: #fff !default;
-$qm-panel-menu-bg-selected: #0073aa !default;
-$qm-panel-menu-bg-selected-focus: lighten( $qm-panel-menu-bg-selected, 5% ) !default;
-$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
+$qm-dark-panel-menu-border: $dark-grey !default;
+$qm-dark-panel-menu-fg: lighten( $light-grey, 15% ) !default;
+$qm-dark-panel-menu-bg: $base-grey !default;
+$qm-dark-panel-menu-fg-hover: $light-grey !default;
+$qm-dark-panel-menu-bg-hover: lighten( $dark-grey, 5% ) !default;
+$qm-dark-panel-menu-fg-current: lighten( $light-grey, 15% ) !default;
+$qm-dark-panel-menu-bg-current: $dark-grey !default;
+$qm-dark-panel-menu-bg-current-focus: lighten( $qm-dark-panel-menu-bg-current, 5% ) !default;
+$qm-dark-panel-menu-fg-selected: #fff !default;
+$qm-dark-panel-menu-bg-selected: #0073aa !default;
+$qm-dark-panel-menu-bg-selected-focus: lighten( $qm-dark-panel-menu-bg-selected, 5% ) !default;
+$qm-dark-panel-menu-shadow: darken( $qm-dark-panel-menu-bg-selected, 5% ) !default;
 
 // Tables
-$qm-cell-border: $base-grey !default;
-$qm-cell-bg-hover: lighten( $dark-grey, 2% ) !default;
-$qm-cell-fg-highlight: $qm-container-fg !default;
-$qm-cell-bg-highlight: #57572a !default;
-$qm-cell-bg-stripe: $dark-grey !default;
-$qm-table-header-bg: $dark-grey !default;
-$qm-table-footer-bg: $dark-grey !default;
+$qm-dark-cell-border: $base-grey !default;
+$qm-dark-cell-bg-hover: lighten( $dark-grey, 2% ) !default;
+$qm-dark-cell-fg-highlight: $qm-dark-container-fg !default;
+$qm-dark-cell-bg-highlight: #57572a !default;
+$qm-dark-cell-bg-stripe: $dark-grey !default;
+$qm-dark-table-header-bg: $dark-grey !default;
+$qm-dark-table-footer-bg: $dark-grey !default;
 
 // Links and Buttons
-$qm-link-fg: $bright-blue !default;
-$qm-link-fg-hover: $light-blue !default;
-$qm-link-fg-active: lighten( $light-blue, 10% ) !default;
-$qm-button-fg: #fff !default;
-$qm-button-bg: #0085ba !default;
-$qm-button-fg-hover: $qm-button-fg !default;
-$qm-button-bg-hover: darken( $qm-button-bg, 3% ) !default;
-$qm-button-fg-active: $qm-button-fg !default;
-$qm-button-bg-active: darken( $qm-button-bg, 6% ) !default;
-$qm-title-button-fg: $light-grey !default;
-$qm-title-button-bg: transparent !default;
-$qm-title-button-fg-hover: $dark-grey !default;
-$qm-title-button-bg-hover: $light-grey !default;
-$qm-info-fg: #aaa !default;
+$qm-dark-link-fg: $bright-blue !default;
+$qm-dark-link-fg-hover: $light-blue !default;
+$qm-dark-link-fg-active: lighten( $light-blue, 10% ) !default;
+$qm-dark-button-fg: #fff !default;
+$qm-dark-button-bg: #0085ba !default;
+$qm-dark-button-fg-hover: $qm-dark-button-fg !default;
+$qm-dark-button-bg-hover: darken( $qm-dark-button-bg, 3% ) !default;
+$qm-dark-button-fg-active: $qm-dark-button-fg !default;
+$qm-dark-button-bg-active: darken( $qm-dark-button-bg, 6% ) !default;
+$qm-dark-title-button-fg: $light-grey !default;
+$qm-dark-title-button-bg: transparent !default;
+$qm-dark-title-button-fg-hover: $dark-grey !default;
+$qm-dark-title-button-bg-hover: $light-grey !default;
+$qm-dark-info-fg: #aaa !default;
 
 // Formatting
-$qm-warn-fg: #fff0f0 !default;
-$qm-warn-bg: #622 !default;
-$qm-warn-border: #ffd6d6 !default;
-$qm-nonselect-fg: #a6a !default;
-$qm-selection-fg: $dark-grey !default;
-$qm-selection-bg: #B9D6FB !default;
+$qm-dark-warn-fg: #fff0f0 !default;
+$qm-dark-warn-bg: #622 !default;
+$qm-dark-warn-border: #ffd6d6 !default;
+$qm-dark-nonselect-fg: #a6a !default;
+$qm-dark-selection-fg: $dark-grey !default;
+$qm-dark-selection-bg: #B9D6FB !default;
+
+$colours-dark: (
+	// Main container
+	'container-fg': $qm-dark-container-fg,
+	'container-bg': $qm-dark-container-bg,
+	'container-overflow': $qm-dark-container-overflow,
+
+	// Panels
+	'panel-border': $qm-dark-panel-border,
+	'panel-fg': $qm-dark-panel-fg,
+	'panel-bg': $qm-dark-panel-bg,
+	'panel-separator': $qm-dark-panel-separator,
+
+	// Panel menus
+	'panel-menu-border': $qm-dark-panel-menu-border,
+	'panel-menu-fg': $qm-dark-panel-menu-fg,
+	'panel-menu-bg': $qm-dark-panel-menu-bg,
+	'panel-menu-fg-hover': $qm-dark-panel-menu-fg-hover,
+	'panel-menu-bg-hover': $qm-dark-panel-menu-bg-hover,
+	'panel-menu-fg-current': $qm-dark-panel-menu-fg-current,
+	'panel-menu-bg-current': $qm-dark-panel-menu-bg-current,
+	'panel-menu-bg-current-focus': $qm-dark-panel-menu-bg-current-focus,
+	'panel-menu-fg-selected': $qm-dark-panel-menu-fg-selected,
+	'panel-menu-bg-selected': $qm-dark-panel-menu-bg-selected,
+	'panel-menu-bg-selected-focus': $qm-dark-panel-menu-bg-selected-focus,
+	'panel-menu-shadow': $qm-dark-panel-menu-shadow,
+
+	// Tables
+	'cell-border': $qm-dark-cell-border,
+	'cell-bg-hover': $qm-dark-cell-bg-hover,
+	'cell-fg-highlight': $qm-dark-cell-fg-highlight,
+	'cell-bg-highlight': $qm-dark-cell-bg-highlight,
+	'cell-bg-stripe': $qm-dark-cell-bg-stripe,
+	'table-header-bg': $qm-dark-table-header-bg,
+	'table-footer-bg': $qm-dark-table-footer-bg,
+
+	// Links and Buttons
+	'link-fg': $qm-dark-link-fg,
+	'link-fg-hover': $qm-dark-link-fg-hover,
+	'link-fg-active': $qm-dark-link-fg-active,
+	'button-fg': $qm-dark-button-fg,
+	'button-bg': $qm-dark-button-bg,
+	'button-fg-hover': $qm-dark-button-fg-hover,
+	'button-bg-hover': $qm-dark-button-bg-hover,
+	'button-fg-active': $qm-dark-button-fg-active,
+	'button-bg-active': $qm-dark-button-bg-active,
+	'title-button-fg': $qm-dark-title-button-fg,
+	'title-button-bg': $qm-dark-title-button-bg,
+	'title-button-fg-hover': $qm-dark-title-button-fg-hover,
+	'title-button-bg-hover': $qm-dark-title-button-bg-hover,
+	'info-fg': $qm-dark-info-fg,
+
+	// Formatting
+	'warn-fg': $qm-dark-warn-fg,
+	'warn-bg': $qm-dark-warn-bg,
+	'warn-border': $qm-dark-warn-border,
+	'nonselect-fg': $qm-dark-nonselect-fg,
+	'selection-fg': $qm-dark-selection-fg,
+	'selection-bg': $qm-dark-selection-bg,
+);

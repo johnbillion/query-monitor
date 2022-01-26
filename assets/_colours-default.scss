@@ -55,3 +55,63 @@ $qm-warn-border: #ffd6d6 !default;
 $qm-nonselect-fg: #a0a !default;
 $qm-selection-fg: $qm-container-fg !default;
 $qm-selection-bg: #B9D6FB !default;
+
+$colours-default: (
+	// Main container
+	'container-fg': $qm-container-fg,
+	'container-bg': $qm-container-bg,
+	'container-overflow': $qm-container-overflow,
+
+	// Panels
+	'panel-border': $qm-panel-border,
+	'panel-fg': $qm-panel-fg,
+	'panel-bg': $qm-panel-bg,
+	'panel-separator': $qm-panel-separator,
+
+	// Panel menus
+	'panel-menu-border': $qm-panel-menu-border,
+	'panel-menu-fg': $qm-panel-menu-fg,
+	'panel-menu-bg': $qm-panel-menu-bg,
+	'panel-menu-fg-hover': $qm-panel-menu-fg-hover,
+	'panel-menu-bg-hover': $qm-panel-menu-bg-hover,
+	'panel-menu-fg-current': $qm-panel-menu-fg-current,
+	'panel-menu-bg-current': $qm-panel-menu-bg-current,
+	'panel-menu-bg-current-focus': $qm-panel-menu-bg-current-focus,
+	'panel-menu-fg-selected': $qm-panel-menu-fg-selected,
+	'panel-menu-bg-selected': $qm-panel-menu-bg-selected,
+	'panel-menu-bg-selected-focus': $qm-panel-menu-bg-selected-focus,
+	'panel-menu-shadow': $qm-panel-menu-shadow,
+
+	// Tables
+	'cell-border': $qm-cell-border,
+	'cell-bg-hover': $qm-cell-bg-hover,
+	'cell-fg-highlight': $qm-cell-fg-highlight,
+	'cell-bg-highlight': $qm-cell-bg-highlight,
+	'cell-bg-stripe': $qm-cell-bg-stripe,
+	'table-header-bg': $qm-table-header-bg,
+	'table-footer-bg': $qm-table-footer-bg,
+
+	// Links and Buttons
+	'link-fg': $qm-link-fg,
+	'link-fg-hover': $qm-link-fg-hover,
+	'link-fg-active': $qm-link-fg-active,
+	'button-fg': $qm-button-fg,
+	'button-bg': $qm-button-bg,
+	'button-fg-hover': $qm-button-fg-hover,
+	'button-bg-hover': $qm-button-bg-hover,
+	'button-fg-active': $qm-button-fg-active,
+	'button-bg-active': $qm-button-bg-active,
+	'title-button-fg': $qm-title-button-fg,
+	'title-button-bg': $qm-title-button-bg,
+	'title-button-fg-hover': $qm-title-button-fg-hover,
+	'title-button-bg-hover': $qm-title-button-bg-hover,
+	'info-fg': $qm-info-fg,
+
+	// Formatting
+	'warn-fg': $qm-warn-fg,
+	'warn-bg': $qm-warn-bg,
+	'warn-border': $qm-warn-border,
+	'nonselect-fg': $qm-nonselect-fg,
+	'selection-fg': $qm-selection-fg,
+	'selection-bg': $qm-selection-bg,
+);

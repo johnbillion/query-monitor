@@ -51,7 +51,6 @@ module.exports = function (grunt) {
 	};
 
 	const sassFiles = {
-		'assets/query-monitor-dark.css': 'assets/query-monitor-dark.scss',
 		'assets/query-monitor.css': 'assets/query-monitor.scss'
 	};
 	const sassOptions = {
