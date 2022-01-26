@@ -226,8 +226,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	::selection {
-		background-color: #B9D6FB !important;
-		color: $qm-container-fg !important;
+		background-color: $qm-selection-bg !important;
+		color: $qm-selection-fg !important;
 	}
 
 	strong,
