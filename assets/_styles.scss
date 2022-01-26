@@ -1,30 +1,40 @@
 
+/* Fonts */
 $qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
 $qm-font-code-line-height: 19px;
+
+/* Admin Menu */
 $qm-admin-toolbar-height: 32px;
+$qm-menu-icon: #aaa;
+$qm-menu-alert-bg: #f60 !default;
+$qm-menu-notice-bg: #740 !default;
+$qm-menu-notice-bg-hover: darken( $qm-menu-notice-bg, 5% ) !default;
+$qm-menu-expensive-bg: #b60 !default;
+$qm-menu-expensive-bg-hover: darken( $qm-menu-expensive-bg, 5% ) !default;
+$qm-menu-warning-bg: #c00 !default;
+$qm-menu-warning-bg-hover: darken( $qm-menu-warning-bg, 5% ) !default;
+$qm-menu-fg: #eee !default;
+$qm-menu-true-fg: #8c8 !default;
+$qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 
 // === Admin Toolbar ===
 
 #wpadminbar {
 	.quicklinks .menupop ul li.qm-true > a {
-		color: #8c8 !important;
+		color: $qm-menu-true-fg !important;
 
 		&:focus,
 		&:hover {
-			color: darken( #8c8, 20% ) !important;
+			color: $qm-menu-true-fg-hover !important;
 		}
 	}
 
 	.qm-alert {
-		background-color: #f60;
-
-		&:hover {
-			background-color: darken( #f60, 5% );
-		}
+		background-color: $qm-menu-alert-bg;
 	}
 
 	#wp-admin-bar-query-monitor-stricts a,
@@ -33,15 +43,21 @@ $qm-admin-toolbar-height: 32px;
 	.qm-strict,
 	.qm-deprecated,
 	.qm-notice {
-		background-color: #740;
+		background-color: $qm-menu-notice-bg;
+
+		&:focus,
+		&:hover {
+			background-color: $qm-menu-notice-bg-hover;
+		}
 	}
 
 	#wp-admin-bar-query-monitor-expensive a,
 	.qm-expensive {
-		background-color: #b60;
+		background-color: $qm-menu-expensive-bg;
 
+		&:focus,
 		&:hover {
-			background-color: darken( #a60, 5% );
+			background-color: $qm-menu-expensive-bg-hover;
 		}
 	}
 
@@ -50,15 +66,16 @@ $qm-admin-toolbar-height: 32px;
 	#wp-admin-bar-query-monitor-errors a,
 	.qm-error,
 	.qm-warning {
-		background-color: #c00;
+		background-color: $qm-menu-warning-bg;
 
+		&:focus,
 		&:hover {
-			background-color: darken( #c00, 5% );
+			background-color: $qm-menu-warning-bg-hover;
 		}
 	}
 
 	#wp-admin-bar-query-monitor .ab-icon {
-		color: #aaa !important;
+		color: $qm-menu-icon !important;
 		display: none !important;
 		font: 18px/44px $qm-font-default-face !important;
 		padding: 0 10px !important;
@@ -94,7 +111,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wp-admin-bar-query-monitor-logger-warning a,
 #wp-admin-bar-query-monitor-warnings a,
 #wp-admin-bar-query-monitor-errors a {
-	color: #eee !important;
+	color: $qm-menu-fg !important;
 }
 
 #wp-admin-bar-query-monitor small {
