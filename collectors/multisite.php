@@ -27,6 +27,10 @@ class QM_Collector_Multisite extends QM_Collector {
 	 *                             or 'restore' when called from restore_current_blog().
 	 */
 	public function action_switch_blog( $new_blog_id, $prev_blog_id, $context ) {
+		if ( intval( $new_blog_id ) === intval( $prev_blog_id ) ) {
+			return;
+		}
+
 		$this->data['switches'][] = array(
 			'new' => $new_blog_id,
 			'prev' => $prev_blog_id,
