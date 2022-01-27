@@ -467,7 +467,7 @@ if ( window.jQuery ) {
 		});
 
 		$('.qm-theme-toggle').on('click',function(e){
-			$('#query-monitor-main').attr('data-theme',$(this).val());
+			container.attr('data-theme',$(this).val());
 			localStorage.setItem('qm-theme',$(this).val());
 		});
 
