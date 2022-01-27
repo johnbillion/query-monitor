@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Multisite extends QM_Output_Html {
 
@@ -51,7 +53,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->build_filter( 'component', [], __( 'Component', 'query-monitor' ) );
+		echo $this->build_filter( 'component', array(), __( 'Component', 'query-monitor' ) );
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -77,7 +79,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 
 			echo '<td class="qm-num">';
 			if ( $row['to'] ) {
-				echo ++$i;
+				echo intval( ++$i );
 			}
 			echo '</td>';
 
@@ -148,6 +150,11 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_multisite( array $output, QM_Collectors $collectors ) {
 	$collector = is_multisite() ? QM_Collectors::get( 'multisite' ) : null;
 
