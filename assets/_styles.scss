@@ -38,10 +38,16 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 }
 
 @media (prefers-color-scheme: dark) {
-	#query-monitor-main {
+	#query-monitor-main[data-theme="auto"] {
 		@each $var, $colour in $colours-default {
 			--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
 		}
+	}
+}
+
+#query-monitor-main[data-theme="dark"] {
+	@each $var, $colour in $colours-default {
+		--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
 	}
 }
 

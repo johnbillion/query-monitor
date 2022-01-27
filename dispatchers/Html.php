@@ -406,7 +406,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
+		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
 		echo '<div id="qm-title" class="qm-resizer">';
 		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
@@ -552,6 +552,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
 		echo '</p>';
 		echo '<p id="qm-editor-save-status"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
+		echo '</section>';
+
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Appearance', 'query-monitor' ) . '</h3>';
+
+		echo '<p>' . esc_html__( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) . '</p>';
+
+		echo '<ul>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle" name="qm-theme" value="auto" checked/>' . esc_html_x( 'Auto', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '</ul>';
+
 		echo '</section>';
 		echo '</div>';
 
