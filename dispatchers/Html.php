@@ -510,7 +510,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
 		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
 
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-grid">';
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
 
@@ -521,10 +521,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '</section>';
-		echo '</div>';
 
-		echo '<div class="qm-boxed">';
-		echo '<section class="qm-editor">';
+		echo '<section>';
 
 		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
 

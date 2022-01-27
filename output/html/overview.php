@@ -84,7 +84,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		echo '</div>';
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-grid">';
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
