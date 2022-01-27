@@ -36,7 +36,13 @@ class QM_Collector_Multisite extends QM_Collector {
 			'prev' => $prev_blog_id,
 			'to' => ( 'switch' === $context ),
 			'trace' => new QM_Backtrace( array(
-				'ignore_frames' => 5,
+				'ignore_hook' => array(
+					'switch_blog' => true,
+				),
+				'ignore_func' => array(
+					'switch_to_blog' => true,
+					'restore_current_blog' => true,
+				),
 			) ),
 		);
 	}
