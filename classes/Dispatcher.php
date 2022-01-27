@@ -11,7 +11,7 @@ abstract class QM_Dispatcher {
 	/**
 	 * Outputter instances.
 	 *
-	 * @var QM_Output[] Array of outputters.
+	 * @var array<string, QM_Output> Array of outputters.
 	 */
 	protected $outputters = array();
 
@@ -21,6 +21,16 @@ abstract class QM_Dispatcher {
 	 * @var QM_Plugin Plugin instance.
 	 */
 	protected $qm;
+
+	/**
+	 * @var string
+	 */
+	public $id = '';
+
+	/**
+	 * @var bool
+	 */
+	protected $ceased = false;
 
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
@@ -36,8 +46,14 @@ abstract class QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	abstract public function is_active();
 
+	/**
+	 * @return bool
+	 */
 	final public function should_dispatch() {
 
 		$e = error_get_last();
@@ -73,6 +89,15 @@ abstract class QM_Dispatcher {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function cease() {
+		$this->ceased = true;
+
+		add_filter( "qm/dispatch/{$this->id}", '__return_false' );
+	}
+
+	/**
 	 * Processes and fetches the outputters for this dispatcher.
 	 *
 	 * @param string $outputter_id The outputter ID.
@@ -89,16 +114,20 @@ abstract class QM_Dispatcher {
 		 *
 		 * @since 2.8.0
 		 *
-		 * @param QM_Output[]   $outputters Array of outputters.
-		 * @param QM_Collectors $collectors List of collectors.
+		 * @param array<string, QM_Output> $outputters Array of outputters.
+		 * @param QM_Collectors            $collectors List of collectors.
 		 */
 		$this->outputters = apply_filters( "qm/outputter/{$outputter_id}", array(), $collectors );
 
 		return $this->outputters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 		if ( ! self::user_can_view() ) {
+			do_action( 'qm/cease' );
 			return;
 		}
 
@@ -109,14 +138,21 @@ abstract class QM_Dispatcher {
 		add_action( 'send_headers', 'nocache_headers' );
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
-		// nothing
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function after_output() {
-		// nothing
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function user_can_view() {
 
 		if ( ! did_action( 'plugins_loaded' ) ) {
@@ -131,6 +167,9 @@ abstract class QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function user_verified() {
 		if ( isset( $_COOKIE[QM_COOKIE] ) ) { // phpcs:ignore
 			return self::verify_cookie( wp_unslash( $_COOKIE[QM_COOKIE] ) ); // phpcs:ignore
@@ -138,6 +177,9 @@ abstract class QM_Dispatcher {
 		return false;
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function editor_cookie() {
 		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // phpcs:ignore
 			return $_COOKIE[QM_EDITOR_COOKIE]; // phpcs:ignore
@@ -145,6 +187,10 @@ abstract class QM_Dispatcher {
 		return '';
 	}
 
+	/**
+	 * @param string $value
+	 * @return bool
+	 */
 	public static function verify_cookie( $value ) {
 		$old_user_id = wp_validate_auth_cookie( $value, 'logged_in' );
 		if ( $old_user_id ) {
@@ -153,5 +199,41 @@ abstract class QM_Dispatcher {
 		return false;
 	}
 
+	/**
+	 * Attempts to switch to the given locale.
+	 *
+	 * This is a wrapper around `switch_to_locale()` which is safe to call at any point, even
+	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 *
+	 * @param string $locale The locale.
+	 * @return bool True on success, false on failure.
+	 */
+	public static function switch_to_locale( $locale ) {
+		global $wp_locale_switcher;
+
+		if ( function_exists( 'switch_to_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+			return switch_to_locale( $locale );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Attempts to restore the previous locale.
+	 *
+	 * This is a wrapper around `restore_previous_locale()` which is safe to call at any point, even
+	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 *
+	 * @return string|false Locale on success, false on error.
+	 */
+	public static function restore_previous_locale() {
+		global $wp_locale_switcher;
+
+		if ( function_exists( 'restore_previous_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+			return restore_previous_locale();
+		}
+
+		return false;
+	}
 }
 }

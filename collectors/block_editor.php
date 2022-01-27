@@ -5,36 +5,78 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Block_Editor extends QM_Collector {
 
 	public $id = 'block_editor';
 
+	/**
+	 * @var array<int, mixed[]>
+	 */
 	protected $block_context = array();
+
+	/**
+	 * @var array<int, QM_Timer|false>
+	 */
 	protected $block_timing = array();
-	protected $block_timer  = null;
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @var QM_Timer|null
+	 */
+	protected $block_timer = null;
 
-		add_filter( 'pre_render_block',  array( $this, 'filter_pre_render_block' ), 9999, 2 );
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		add_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999, 2 );
 		add_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999, 2 );
 		add_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
-		add_filter( 'render_block',      array( $this, 'filter_render_block' ), 9999, 2 );
+		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 	}
 
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999 );
+		remove_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999 );
+		remove_filter( 'render_block_data', array( $this, 'filter_render_block_data' ), -9999 );
+		remove_filter( 'render_block', array( $this, 'filter_render_block' ), 9999 );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
+			'allowed_block_types_all',
+			'block_editor_settings_all',
+			'block_type_metadata',
+			'block_type_metadata_settings',
 			'block_parser_class',
 			'pre_render_block',
+			'register_block_type_args',
 			'render_block_context',
 			'render_block_data',
 			'render_block',
+			'use_widgets_block_editor',
 		);
 	}
 
+	/**
+	 * @param string|null $pre_render
+	 * @param mixed[] $block
+	 * @return string|null
+	 */
 	public function filter_pre_render_block( $pre_render, array $block ) {
 		if ( null !== $pre_render ) {
 			$this->block_timing[] = false;
@@ -43,12 +85,21 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $pre_render;
 	}
 
+	/**
+	 * @param mixed[] $context
+	 * @param mixed[] $block
+	 * @return mixed[]
+	 */
 	public function filter_render_block_context( array $context, array $block ) {
 		$this->block_context[] = $context;
 
 		return $context;
 	}
 
+	/**
+	 * @param mixed[] $block
+	 * @return mixed[]
+	 */
 	public function filter_render_block_data( array $block ) {
 		$this->block_timer = new QM_Timer();
 		$this->block_timer->start();
@@ -56,6 +107,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $block;
 	}
 
+	/**
+	 * @param string $block_content
+	 * @param mixed[] $block
+	 * @return string
+	 */
 	public function filter_render_block( $block_content, array $block ) {
 		if ( isset( $this->block_timer ) ) {
 			$this->block_timing[] = $this->block_timer->stop();
@@ -80,21 +136,25 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return;
 		}
 
-		$this->data['post_has_blocks']    = self::wp_has_blocks( $content );
-		$this->data['post_blocks']        = self::wp_parse_blocks( $content );
+		$this->data['post_has_blocks'] = self::wp_has_blocks( $content );
+		$this->data['post_blocks'] = self::wp_parse_blocks( $content );
 		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
-		$this->data['total_blocks']       = 0;
-		$this->data['has_block_context']  = false;
-		$this->data['has_block_timing']   = false;
+		$this->data['total_blocks'] = 0;
+		$this->data['has_block_context'] = false;
+		$this->data['has_block_timing'] = false;
 
 		if ( $this->data['post_has_blocks'] ) {
 			$this->data['post_blocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data['post_blocks'] ) ) );
 		}
 	}
 
+	/**
+	 * @param mixed[] $block
+	 * @return mixed[]|null
+	 */
 	protected function process_block( array $block ) {
 		$context = array_shift( $this->block_context );
-		$timing  = array_shift( $this->block_timing );
+		$timing = array_shift( $this->block_timing );
 
 		// Remove empty blocks caused by two consecutive line breaks in content
 		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
@@ -104,11 +164,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		$this->data['total_blocks']++;
 
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
-		$dynamic    = false;
-		$callback   = null;
+		$dynamic = false;
+		$callback = null;
 
 		if ( $block_type && $block_type->is_dynamic() ) {
-			$dynamic  = true;
+			$dynamic = true;
 			$callback = QM_Util::populate_callback( array(
 				'function' => $block_type->render_callback,
 			) );
@@ -116,10 +176,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		$timing = array_shift( $this->block_timing );
 
-		$block['dynamic']   = $dynamic;
-		$block['callback']  = $callback;
+		$block['dynamic'] = $dynamic;
+		$block['callback'] = $callback;
 		$block['innerHTML'] = trim( $block['innerHTML'] );
-		$block['size']      = strlen( $block['innerHTML'] );
+		$block['size'] = strlen( $block['innerHTML'] );
 
 		if ( $context ) {
 			$block['context'] = $context;
@@ -138,10 +198,17 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return $block;
 	}
 
+	/**
+	 * @return bool
+	 */
 	protected static function wp_block_editor_enabled() {
 		return ( function_exists( 'parse_blocks' ) || function_exists( 'gutenberg_parse_blocks' ) );
 	}
 
+	/**
+	 * @param string $content
+	 * @return bool
+	 */
 	protected static function wp_has_blocks( $content ) {
 		if ( function_exists( 'has_blocks' ) ) {
 			return has_blocks( $content );
@@ -152,6 +219,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return false;
 	}
 
+	/**
+	 * @param string $content
+	 * @return mixed[]|null
+	 */
 	protected static function wp_parse_blocks( $content ) {
 		if ( function_exists( 'parse_blocks' ) ) {
 			return parse_blocks( $content );
@@ -162,6 +233,9 @@ class QM_Collector_Block_Editor extends QM_Collector {
 		return null;
 	}
 
+	/**
+	 * @return string[]|null
+	 */
 	protected static function wp_get_dynamic_block_names() {
 		if ( function_exists( 'get_dynamic_block_names' ) ) {
 			return get_dynamic_block_names();
@@ -172,6 +246,11 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_block_editor( array $collectors, QueryMonitor $qm ) {
 	$collectors['block_editor'] = new QM_Collector_Block_Editor();
 	return $collectors;

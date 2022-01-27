@@ -14,15 +14,21 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 	 */
 	protected $collector;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Object Cache', 'query-monitor' );
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 		$output = array(
 			'hit_percentage' => null,
-			'hits'           => null,
-			'misses'         => null,
+			'hits' => null,
+			'misses' => null,
 		);
 		$data = $this->collector->get_data();
 
@@ -36,6 +42,11 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_raw_cache( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'cache' );
 	if ( $collector ) {

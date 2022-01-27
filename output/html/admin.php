@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Admin extends QM_Output_Html {
 
@@ -21,10 +23,16 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Admin Screen', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -111,6 +119,11 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_admin( array $output, QM_Collectors $collectors ) {
 	if ( ! is_admin() ) {
 		return $output;

@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Transients extends QM_Output_Html {
 
@@ -21,10 +23,16 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 100 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Transients', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -83,8 +91,8 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				$stack = array();
 
-				foreach ( $row['filtered_trace'] as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				foreach ( $row['filtered_trace'] as $frame ) {
+					$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 				}
 
 				$caller = array_shift( $stack );
@@ -125,9 +133,13 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
 
 		$title = ( empty( $count ) )
@@ -147,6 +159,11 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_transients( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'transients' );
 	if ( $collector ) {

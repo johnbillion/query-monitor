@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.7
-Stable tag: 3.7.1
+Tested up to: 5.9
+Stable tag: 3.8.2
 License: GPLv2 or later
 Requires PHP: 5.3
 Donate link: https://johnblackbourn.com/donations/
@@ -87,6 +87,16 @@ Short answer: Yes, but only a little.
 Long answer: Query Monitor has a small impact on page generation time because it hooks into WordPress in the same way that other plugins do. The impact is low; typically between 10ms and 100ms depending on the complexity of your site.
 
 Query Monitor's memory usage typically accounts for around 10% of the total memory used to generate the page.
+
+### Can I prevent Query Monitor from collecting data during long-running requests?
+
+Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+
+This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
+
+* Backuping up or restoring your site
+* Exporting a large amount of data
+* Running security scans
 
 ### Are there any add-on plugins for Query Monitor?
 

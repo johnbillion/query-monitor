@@ -8,14 +8,37 @@
 if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
+	/**
+	 * @var array<string, stdClass>
+	 */
 	protected static $file_components = array();
-	protected static $file_dirs       = array();
-	protected static $abspath         = null;
-	protected static $contentpath     = null;
-	protected static $sort_field      = null;
+
+	/**
+	 * @var array<string, string|null>
+	 */
+	protected static $file_dirs = array();
+
+	/**
+	 * @var string|null
+	 */
+	protected static $abspath = null;
+
+	/**
+	 * @var string|null
+	 */
+	protected static $contentpath = null;
+
+	/**
+	 * @var string|null
+	 */
+	protected static $sort_field = null;
 
 	private function __construct() {}
 
+	/**
+	 * @param string $size
+	 * @return float
+	 */
 	public static function convert_hr_to_bytes( $size ) {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
@@ -37,13 +60,18 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $dir
+	 * @param string $path_replace
+	 * @return string
+	 */
 	public static function standard_dir( $dir, $path_replace = null ) {
 
 		$dir = self::normalize_path( $dir );
 
 		if ( is_string( $path_replace ) ) {
 			if ( ! self::$abspath ) {
-				self::$abspath     = self::normalize_path( ABSPATH );
+				self::$abspath = self::normalize_path( ABSPATH );
 				self::$contentpath = self::normalize_path( dirname( WP_CONTENT_DIR ) . '/' );
 			}
 			$dir = str_replace( array(
@@ -56,6 +84,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
 	public static function normalize_path( $path ) {
 		if ( function_exists( 'wp_normalize_path' ) ) {
 			$path = wp_normalize_path( $path );
@@ -67,6 +99,9 @@ class QM_Util {
 		return $path;
 	}
 
+	/**
+	 * @return array<string, string|null>
+	 */
 	public static function get_file_dirs() {
 		if ( empty( self::$file_dirs ) ) {
 
@@ -76,7 +111,10 @@ class QM_Util {
 			 * Note that this filter is applied before QM adds its built-in list of components. This is
 			 * so custom registered components take precedence during component detection.
 			 *
-			 * See the corresponding `qm/component_name/{$type}` filter for specifying the component name.
+			 * See also the corresponding filters:
+			 *
+			 *  - `qm/component_context/{$type}`
+			 *  - `qm/component_name/{$type}`
 			 *
 			 * @since 3.6.0
 			 *
@@ -84,10 +122,10 @@ class QM_Util {
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
-			self::$file_dirs['plugin']     = WP_PLUGIN_DIR;
-			self::$file_dirs['mu-vendor']  = WPMU_PLUGIN_DIR . '/vendor';
-			self::$file_dirs['go-plugin']  = WPMU_PLUGIN_DIR . '/shared-plugins';
-			self::$file_dirs['mu-plugin']  = WPMU_PLUGIN_DIR;
+			self::$file_dirs['plugin'] = WP_PLUGIN_DIR;
+			self::$file_dirs['mu-vendor'] = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs['go-plugin'] = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs['mu-plugin'] = WPMU_PLUGIN_DIR;
 			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
@@ -98,12 +136,12 @@ class QM_Util {
 				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
 			}
 
-			self::$file_dirs['theme']      = null;
+			self::$file_dirs['theme'] = null;
 			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
-			self::$file_dirs['template']   = get_template_directory();
-			self::$file_dirs['other']      = WP_CONTENT_DIR;
-			self::$file_dirs['core']       = ABSPATH;
-			self::$file_dirs['unknown']    = null;
+			self::$file_dirs['template'] = get_template_directory();
+			self::$file_dirs['other'] = WP_CONTENT_DIR;
+			self::$file_dirs['core'] = ABSPATH;
+			self::$file_dirs['unknown'] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
 				self::$file_dirs[ $type ] = self::standard_dir( $dir );
@@ -113,11 +151,18 @@ class QM_Util {
 		return self::$file_dirs;
 	}
 
+	/**
+	 * Attempts to determine the component responsible for a given file name.
+	 *
+	 * @param string $file An absolute file path.
+	 * @return stdClass A stdClass object (ouch) representing the component.
+	 */
 	public static function get_file_component( $file ) {
 
 		# @TODO turn this into a class (eg QM_File_Component)
 
 		$file = self::standard_dir( $file );
+		$type = '';
 
 		if ( isset( self::$file_components[ $file ] ) ) {
 			return self::$file_components[ $file ];
@@ -195,25 +240,49 @@ class QM_Util {
 			case 'other':
 				// Anything else that's within the content directory should appear as
 				// `wp-content/{dir}` or `wp-content/{file}`
-				$name    = self::standard_dir( $file );
-				$name    = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
-				$parts   = explode( '/', trim( $name, '/' ) );
-				$name    = $parts[0] . '/' . $parts[1];
+				$name = self::standard_dir( $file );
+				$name = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$parts = explode( '/', trim( $name, '/' ) );
+				$name = $parts[0] . '/' . $parts[1];
 				$context = $file;
 				break;
 			case 'core':
-				$name = __( 'Core', 'query-monitor' );
+				$name = __( 'WordPress Core', 'query-monitor' );
 				break;
 			case 'unknown':
 			default:
 				$name = __( 'Unknown', 'query-monitor' );
 
 				/**
+				 * Filters the type of a custom or unknown component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *  - `qm/component_context/{$type}`
+				 *
+				 * @since 3.8.1
+				 *
+				 * @param string $type    The component type.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 * @param string $context The context for the component.
+				 */
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
+
+				/**
 				 * Filters the name of a custom or unknown component.
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
-				 * See the corresponding `qm/component_dirs` filter for specifying the component directories.
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
+				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
 				 *
@@ -221,6 +290,26 @@ class QM_Util {
 				 * @param string $file The full file path for the file within the component.
 				 */
 				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+
+				/**
+				 * Filters the context for a custom or unknown component. The context is usually a
+				 * representation of its type more specific to the individual component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
+				 *  - `qm/component_name/{$type}`
+				 *
+				 * @since 3.8.0
+				 *
+				 * @param string $context The context for the component.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 */
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
 				break;
 		}
 
@@ -229,6 +318,10 @@ class QM_Util {
 		return self::$file_components[ $file ];
 	}
 
+	/**
+	 * @param array<string, mixed> $callback
+	 * @return array<string, mixed>
+	 */
 	public static function populate_callback( array $callback ) {
 
 		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
@@ -246,10 +339,10 @@ class QM_Util {
 
 			if ( is_array( $callback['function'] ) ) {
 				if ( is_object( $callback['function'][0] ) ) {
-					$class  = get_class( $callback['function'][0] );
+					$class = get_class( $callback['function'][0] );
 					$access = '->';
 				} else {
-					$class  = $callback['function'][0];
+					$class = $callback['function'][0];
 					$access = '::';
 				}
 
@@ -257,7 +350,7 @@ class QM_Util {
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( is_a( $callback['function'], 'Closure' ) ) {
-					$ref  = new ReflectionFunction( $callback['function'] );
+					$ref = new ReflectionFunction( $callback['function'] );
 					$file = self::standard_dir( $ref->getFileName(), '' );
 					if ( 0 === strpos( $file, '/' ) ) {
 						$file = basename( $ref->getFileName() );
@@ -300,8 +393,8 @@ class QM_Util {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
 				$callback['component'] = (object) array(
-					'type'    => 'php',
-					'name'    => 'PHP',
+					'type' => 'php',
+					'name' => 'PHP',
 					'context' => '',
 				);
 			}
@@ -315,6 +408,9 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_ajax() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return true;
@@ -322,6 +418,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_async() {
 		if ( self::is_ajax() ) {
 			return true;
@@ -332,6 +431,9 @@ class QM_Util {
 		return false;
 	}
 
+	/**
+	 * @return WP_Role|false
+	 */
 	public static function get_admins() {
 		if ( is_multisite() ) {
 			return false;
@@ -340,6 +442,9 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public static function is_multi_network() {
 		global $wpdb;
 
@@ -361,6 +466,15 @@ class QM_Util {
 		return ( $num_sites > 1 );
 	}
 
+	/**
+	 * @param int|string $client
+	 * @return array<string, int>
+	 * @phpstan-return array{
+	 *   major: int,
+	 *   minor: int,
+	 *   patch: int,
+	 * }
+	 */
 	public static function get_client_version( $client ) {
 
 		$client = intval( $client );
@@ -375,6 +489,10 @@ class QM_Util {
 
 	}
 
+	/**
+	 * @param string $sql
+	 * @return string
+	 */
 	public static function get_query_type( $sql ) {
 		// Trim leading whitespace and brackets
 		$sql = ltrim( $sql, ' \t\n\r\0\x0B(' );
@@ -385,11 +503,18 @@ class QM_Util {
 		}
 
 		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
-		$type = strtoupper( $words[0] );
+		$type = 'Unknown';
+		if ( isset( $words[0] ) ) {
+			$type = strtoupper( $words[0] );
+		}
 
 		return $type;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return string|float|int
+	 */
 	public static function display_variable( $value ) {
 		if ( is_string( $value ) ) {
 			return $value;
@@ -404,44 +529,42 @@ class QM_Util {
 
 				case ( $value instanceof WP_Post ):
 				case ( $value instanceof WP_User ):
-					return sprintf( '%s (ID: %s)', $class, $value->ID );
+					$class = sprintf( '%s (ID: %s)', $class, $value->ID );
 					break;
 
 				case ( $value instanceof WP_Term ):
-					return sprintf( '%s (term_id: %s)', $class, $value->term_id );
+					$class = sprintf( '%s (term_id: %s)', $class, $value->term_id );
 					break;
 
 				case ( $value instanceof WP_Comment ):
-					return sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
+					$class = sprintf( '%s (comment_ID: %s)', $class, $value->comment_ID );
 					break;
 
 				case ( $value instanceof WP_Error ):
-					return sprintf( '%s (%s)', $class, $value->get_error_code() );
+					$class = sprintf( '%s (%s)', $class, $value->get_error_code() );
 					break;
 
 				case ( $value instanceof WP_Role ):
 				case ( $value instanceof WP_Post_Type ):
 				case ( $value instanceof WP_Taxonomy ):
-					return sprintf( '%s (%s)', $class, $value->name );
+					$class = sprintf( '%s (%s)', $class, $value->name );
 					break;
 
 				case ( $value instanceof WP_Network ):
-					return sprintf( '%s (id: %s)', $class, $value->id );
+					$class = sprintf( '%s (id: %s)', $class, $value->id );
 					break;
 
 				case ( $value instanceof WP_Site ):
-					return sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
+					$class = sprintf( '%s (blog_id: %s)', $class, $value->blog_id );
 					break;
 
 				case ( $value instanceof WP_Theme ):
-					return sprintf( '%s (%s)', $class, $value->get_stylesheet() );
-					break;
-
-				default:
-					return $class;
+					$class = sprintf( '%s (%s)', $class, $value->get_stylesheet() );
 					break;
 
 			}
+
+			return $class;
 		} else {
 			return gettype( $value );
 		}
@@ -491,20 +614,40 @@ class QM_Util {
 		return $json;
 	}
 
+	/**
+	 * @param mixed $data
+	 * @return bool
+	 */
 	public static function is_stringy( $data ) {
 		return ( is_string( $data ) || ( is_object( $data ) && method_exists( $data, '__toString' ) ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function sort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_sort' ) );
 	}
 
+	/**
+	 * @param mixed[] $array
+	 * @param string $field
+	 * @return void
+	 */
 	public static function rsort( array &$array, $field ) {
 		self::$sort_field = $field;
 		usort( $array, array( __CLASS__, '_rsort' ) );
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _rsort( $a, $b ) {
 		$field = self::$sort_field;
 
@@ -515,6 +658,12 @@ class QM_Util {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $a
+	 * @param array<string, mixed> $b
+	 * @return int
+	 * @phpstan-return -1|0|1
+	 */
 	private static function _sort( $a, $b ) {
 		$field = self::$sort_field;
 

@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Timing extends QM_Output_Html {
 
@@ -21,10 +23,16 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -50,9 +58,9 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		if ( ! empty( $data['timing'] ) ) {
 			foreach ( $data['timing'] as $row ) {
 
-				$component = $row['trace']->get_component();
-				$trace     = $row['trace']->get_filtered_trace();
-				$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
+				$component = $row['component'];
+				$trace = $row['filtered_trace'];
+				$file = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 				echo '<tr>';
 
@@ -135,9 +143,9 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		}
 		if ( ! empty( $data['warning'] ) ) {
 			foreach ( $data['warning'] as $row ) {
-				$component = $row['trace']->get_component();
-				$trace     = $row['trace']->get_filtered_trace();
-				$file      = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
+				$component = $row['component'];
+				$trace = $row['filtered_trace'];
+				$file = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
 				echo '<tr class="qm-warn">';
 				if ( self::has_clickable_links() ) {
@@ -171,6 +179,10 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 		$data = $this->collector->get_data();
 
@@ -198,6 +210,11 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_timing( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'timing' );
 	if ( $collector ) {

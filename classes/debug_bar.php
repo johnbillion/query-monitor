@@ -6,6 +6,9 @@
  */
 
 class Debug_Bar {
+	/**
+	 * @var Debug_Bar_Panel[]
+	 */
 	public $panels = array();
 
 	public function __construct() {
@@ -15,6 +18,9 @@ class Debug_Bar {
 		$this->init_panels();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function enqueue() {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_style( 'debug-bar', false, array(
@@ -33,6 +39,9 @@ class Debug_Bar {
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init_panels() {
 		require_once 'debug_bar_panel.php';
 
@@ -46,6 +55,9 @@ class Debug_Bar {
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ensure_ajaxurl() {
 		$dispatcher = QM_Dispatchers::get( 'html' );
 
@@ -58,6 +70,9 @@ class Debug_Bar {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function Debug_Bar() {
 		self::__construct();
 	}

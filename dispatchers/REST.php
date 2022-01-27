@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Dispatcher_REST extends QM_Dispatcher {
 
@@ -45,6 +47,9 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
 
 		require_once $this->qm->plugin_path( 'output/Headers.php' );
@@ -54,6 +59,9 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 
 		# If the headers have already been sent then we can't do anything about it
@@ -75,6 +83,11 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_rest( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['rest'] = new QM_Dispatcher_REST( $qm );
 	return $dispatchers;

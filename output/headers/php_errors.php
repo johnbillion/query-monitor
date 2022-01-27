@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
@@ -16,9 +18,12 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 	 */
 	protected $collector;
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 
-		$data    = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$headers = array();
 
 		if ( empty( $data['errors'] ) ) {
@@ -33,27 +38,25 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 				$count++;
 
-				# @TODO we should calculate the component during process() so we don't need to do it
-				# separately in each output.
-				if ( $error['trace'] ) {
-					$component = $error['trace']->get_component()->name;
-					$stack     = $error['trace']->get_stack();
+				if ( $error['component'] ) {
+					$component = $error['component']->name;
+					$stack = wp_list_pluck( $error['filtered_trace'], 'display' );
 				} else {
 					$component = __( 'Unknown', 'query-monitor' );
-					$stack     = array();
+					$stack = array();
 				}
 
 				$output_error = array(
-					'key'       => $error_key,
-					'type'      => $error['type'],
-					'message'   => $error['message'],
-					'file'      => QM_Util::standard_dir( $error['file'], '' ),
-					'line'      => $error['line'],
-					'stack'     => $stack,
+					'key' => $error_key,
+					'type' => $error['type'],
+					'message' => $error['message'],
+					'file' => QM_Util::standard_dir( $error['file'], '' ),
+					'line' => $error['line'],
+					'stack' => $stack,
 					'component' => $component,
 				);
 
-				$key             = sprintf( 'error-%d', $count );
+				$key = sprintf( 'error-%d', $count );
 				$headers[ $key ] = json_encode( $output_error );
 
 			}
@@ -69,6 +72,11 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_headers_php_errors( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {

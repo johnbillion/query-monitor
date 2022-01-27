@@ -1,0 +1,36 @@
+includes:
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+	level: 6
+	tmpDir: tests/cache
+	paths:
+		- query-monitor.php
+		- classes
+		- collectors
+		- dispatchers
+		- output
+		- tests/acceptance
+		- tests/integration
+		- wp-content
+	scanDirectories:
+		- tests/_support
+	excludePaths:
+		analyse:
+			- tests/cache
+			- tests/integration/Supports
+	bootstrapFiles:
+		- tests/phpstan/stubs.php
+	dynamicConstantNames:
+		- SAVEQUERIES
+	ignoreErrors:
+		# Uses func_get_args()
+		- '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
+		# The `wpdb` class exposes its properties via `__get()`
+		- '#Access to private property wpdb::#'
+		- '#Access to protected property wpdb::#'
+		- '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+		# Data providers for acceptance tests:
+		-
+			path: tests/acceptance/*
+			message: '#^Method [^:]+::data[a-zA-Z]+\(\) is unused\.$#'

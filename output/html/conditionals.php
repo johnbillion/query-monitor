@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Conditionals extends QM_Output_Html {
 
@@ -22,10 +24,16 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 1000 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -58,16 +66,20 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
 
 		foreach ( $data['conds']['true'] as $cond ) {
-			$id          = $this->collector->id() . '-' . $cond;
+			$id = $this->collector->id() . '-' . $cond;
 			$menu[ $id ] = $this->menu( array(
 				'title' => esc_html( $cond . '()' ),
-				'id'    => 'query-monitor-conditionals-' . esc_attr( $cond ),
-				'meta'  => array(
+				'id' => 'query-monitor-conditionals-' . esc_attr( $cond ),
+				'meta' => array(
 					'classname' => 'qm-true qm-ltr',
 				),
 			) );
@@ -77,6 +89,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
@@ -88,7 +104,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html__( 'Conditionals', 'query-monitor' ),
-			'id'    => 'query-monitor-conditionals',
+			'id' => 'query-monitor-conditionals',
 		) );
 
 		return $menu;
@@ -98,6 +114,11 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_conditionals( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'conditionals' );
 	if ( $collector ) {

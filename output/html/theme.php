@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Theme extends QM_Output_Html {
 
@@ -22,10 +24,16 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 60 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Theme', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 		$data = $this->collector->get_data();
 
@@ -65,13 +73,6 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( ! empty( $data['template_altered'] ) ) {
-			printf(
-				'<p><button class="qm-filter-trigger qm-filter-info" data-qm-target="response-concerned_hooks">%s</button></p>',
-				esc_html__( 'Template Hooks in Use', 'query-monitor' )
-			);
-		}
-
 		if ( ! empty( $data['template_hierarchy'] ) ) {
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
@@ -95,7 +96,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			foreach ( $parts as $filename => $display ) {
 				echo '<li>';
 
-				if ( self::has_clickable_links() ) {
+				if ( is_numeric( $filename ) ) {
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( get_edit_post_link( $filename ) ),
+						esc_html( $display )
+					);
+				} elseif ( self::has_clickable_links() ) {
 					echo self::output_filename( $display, $filename, 0, true ); // WPCS: XSS ok.
 				} else {
 					echo esc_html( $display );
@@ -139,7 +146,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				}
 
 				echo '</ul>';
-			} elseif ( $data['has_template_part_action'] ) {
+			} else {
 				echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 			}
 		}
@@ -176,6 +183,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
@@ -198,6 +209,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		if ( isset( $menu[ $this->collector->id() ] ) ) {
 			$menu[ $this->collector->id() ]['title'] = __( 'Template', 'query-monitor' );
@@ -208,6 +223,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_theme( array $output, QM_Collectors $collectors ) {
 	if ( is_admin() ) {
 		return $output;

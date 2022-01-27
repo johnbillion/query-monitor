@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Acceptance Tests
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'trunk'
+      - 'master'
+  pull_request:
+    branches:
+      - '**'
+  # Once weekly on Thursdays at 11:00 UTC.
+  schedule:
+    - cron: '0 11 * * 4'
+  workflow_dispatch:
+
+jobs:
+  acceptance:
+    strategy:
+      matrix:
+        wp: ['5.9','5.6','nightly']
+        php: ['8.0','7.4','7.2']
+        include:
+          - wp: '5.9'
+            php: '8.1'
+          - wp: 'nightly'
+            php: '8.1'
+      fail-fast: false
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+    env:
+      LOCAL_PHP: ${{ matrix.php }}
+      LOCAL_WP_DEBUG: ${{ matrix.php != '8.1' && 1 || 0 }}
+    steps:
+    - name: Matrix values
+      run: echo "${{ toJSON(matrix) }}"
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Composer cache
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-composer-dependencies
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: 8.0-composer-${{ hashFiles('composer.json') }}
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@2.7.0
+      with:
+        php-version: 8.0
+        coverage: none
+      env:
+        fail-fast: true
+
+    - name: Debugging
+      run: |
+        php --version
+        composer --version
+        docker --version
+        docker-compose --version
+
+    - name: Install dependencies
+      run: |
+        if [ "${{ matrix.wp }}" == "nightly" ]
+        then
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="dev-nightly"
+        else
+          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="~${{ matrix.wp }}.0"
+        fi
+
+    # @TODO need to cache the npm dependencies
+    - name: Install node dependencies
+      run: npm install
+
+    - name: Start Docker environment
+      run: |
+        composer test:start
+        sleep 10
+
+    - name: Log running Docker containers
+      run: docker ps -a
+
+    - name: Debug WordPress version
+      continue-on-error: true
+      run: docker-compose run --rm wpcli core version
+
+    - name: Run the tests
+      run: composer test:acceptance
+
+    - name: Upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: acceptance-wp-${{ matrix.wp }}-php-${{ matrix.php }}
+        path: tests/_output

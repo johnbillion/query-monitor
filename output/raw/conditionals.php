@@ -14,10 +14,16 @@ class QM_Output_Raw_Conditionals extends QM_Output_Raw {
 	 */
 	protected $collector;
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Conditionals', 'query-monitor' );
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function get_output() {
 		$data = $this->collector->get_data();
 
@@ -25,6 +31,11 @@ class QM_Output_Raw_Conditionals extends QM_Output_Raw {
 	}
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_raw_conditionals( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'conditionals' );
 	if ( $collector ) {

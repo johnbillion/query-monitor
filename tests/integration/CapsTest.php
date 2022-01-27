@@ -1,11 +1,15 @@
 <?php
 
-class TestCapabilities extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class Capabilities extends Test {
 
 	/**
 	 * @dataProvider dataUserRolesAccess
 	 */
-	public function testUsersCanAccessQueryMonitor( $role, $can_access ) {
+	public function testUsersCanAccessQueryMonitor( string $role, bool $can_access ): void {
 		$user = self::factory()->user->create( array(
 			'role' => $role,
 		) );
@@ -14,25 +18,31 @@ class TestCapabilities extends QM_UnitTestCase {
 		self::assertSame( $can_access, $actual );
 	}
 
+	/**
+	 * @return array<string, array{
+	 *   0: string,
+	 *   1: bool,
+	 * }>
+	 */
 	public function dataUserRolesAccess() {
 		$roles = array(
-			array(
+			'administrator' => array(
 				'administrator',
 				( ! is_multisite() ),
 			),
-			array(
+			'editor' => array(
 				'editor',
 				false,
 			),
-			array(
+			'author' => array(
 				'author',
 				false,
 			),
-			array(
+			'contributor' => array(
 				'contributor',
 				false,
 			),
-			array(
+			'subscriber' => array(
 				'subscriber',
 				false,
 			),

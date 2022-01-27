@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_Hooks extends QM_Output_Html {
 
@@ -21,10 +23,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Hooks & Actions', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -59,12 +67,16 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, mixed[]> $hooks
+	 * @return void
+	 */
 	public static function output_hook_table( array $hooks ) {
-		$core = __( 'Core', 'query-monitor' );
+		$core = __( 'WordPress Core', 'query-monitor' );
 
 		foreach ( $hooks as $hook ) {
-			$row_attr                      = array();
-			$row_attr['data-qm-name']      = implode( ' ', $hook['parts'] );
+			$row_attr = array();
+			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 
 			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
@@ -89,11 +101,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 				foreach ( $hook['actions'] as $action ) {
 					$component = '';
-					$subject   = '';
+					$subject = '';
 
 					if ( isset( $action['callback']['component'] ) ) {
 						$component = $action['callback']['component']->name;
-						$subject   = $component;
+						$subject = $component;
 					}
 
 					if ( $core !== $component ) {
@@ -196,6 +208,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_hooks( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'hooks' );
 	if ( $collector ) {

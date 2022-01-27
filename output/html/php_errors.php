@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
@@ -23,10 +25,16 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -35,7 +43,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return;
 		}
 
-		$levels     = array(
+		$levels = array(
 			'Warning',
 			'Notice',
 			'Strict',
@@ -72,12 +80,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 				foreach ( $data[ $error_group ][ $type ] as $error_key => $error ) {
 
-					$row_attr                      = array();
-					$row_attr['data-qm-type']      = ucfirst( $type );
-					$row_attr['data-qm-key']       = $error_key;
+					$row_attr = array();
+					$row_attr['data-qm-type'] = ucfirst( $type );
+					$row_attr['data-qm-key'] = $error_key;
 
-					if ( $error['trace'] ) {
-						$component                     = $error['trace']->get_component();
+					if ( $error['component'] ) {
+						$component = $error['component'];
 						$row_attr['data-qm-component'] = $component->name;
 
 						if ( 'core' !== $component->context ) {
@@ -114,10 +122,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
-					$stack          = array();
+					$stack = array();
 
-					if ( $error['trace'] ) {
-						$filtered_trace = $error['trace']->get_display_trace();
+					if ( $error['filtered_trace'] ) {
+						$filtered_trace = $error['filtered_trace'];
 
 						// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
 						// we need to handle its somewhat unreliable stack trace items.
@@ -167,6 +175,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		$this->after_tabular_output();
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();
@@ -181,41 +193,45 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
-		$data       = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$menu_label = array();
 
 		$types = array(
 			/* translators: %s: Number of deprecated PHP errors */
 			'deprecated' => _nx_noop( '%s Deprecated', '%s Deprecated', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of strict PHP errors */
-			'strict'     => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
+			'strict' => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of PHP notices */
-			'notice'     => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
+			'notice' => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
 			/* translators: %s: Number of PHP warnings */
-			'warning'    => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
+			'warning' => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
 
-		$key     = 'quiet';
+		$key = 'quiet';
 		$generic = false;
 
 		foreach ( $types as $type => $label ) {
 
-			$count      = 0;
+			$count = 0;
 			$has_errors = false;
 
 			if ( isset( $data['suppressed'][ $type ] ) ) {
 				$has_errors = true;
-				$generic    = true;
+				$generic = true;
 			}
 			if ( isset( $data['silenced'][ $type ] ) ) {
 				$has_errors = true;
-				$generic    = true;
+				$generic = true;
 			}
 			if ( isset( $data['errors'][ $type ] ) ) {
 				$has_errors = true;
-				$key        = $type;
+				$key = $type;
 				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
 			}
 
@@ -224,7 +240,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			}
 
 			if ( $count ) {
-				$label        = sprintf(
+				$label = sprintf(
 					translate_nooped_plural(
 						$label,
 						$count,
@@ -256,19 +272,23 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id'    => "query-monitor-{$key}s",
+			'id' => "query-monitor-{$key}s",
 			'title' => $title,
 		) );
 		return $menu;
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function panel_menu( array $menu ) {
 		if ( ! isset( $menu[ $this->collector->id() ] ) ) {
 			return $menu;
 		}
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = 0;
 		$types = array(
 			'suppressed',
@@ -295,6 +315,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_php_errors( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'php_errors' );
 	if ( $collector ) {

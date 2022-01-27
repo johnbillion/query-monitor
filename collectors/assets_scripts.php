@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 
@@ -15,6 +17,9 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 		return 'scripts';
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		if ( is_admin() ) {
 			return array(
@@ -31,6 +36,9 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 		}
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'print_scripts_array',
@@ -40,6 +48,11 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 	}
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_assets_scripts( array $collectors, QueryMonitor $qm ) {
 	$collectors['assets_scripts'] = new QM_Collector_Assets_Scripts();
 	return $collectors;

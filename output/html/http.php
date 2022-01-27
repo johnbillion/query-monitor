@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Html_HTTP extends QM_Output_Html {
 
@@ -22,16 +24,22 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'HTTP API Calls', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data['http'] ) ) {
-			$statuses   = array_keys( $data['types'] );
+			$statuses = array_keys( $data['types'] );
 			$components = wp_list_pluck( $data['component_times'], 'component' );
 
 			usort( $statuses, 'strcasecmp' );
@@ -76,7 +84,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$i++;
 				$is_error = false;
 				$row_attr = array();
-				$css      = '';
+				$css = '';
 
 				if ( is_wp_error( $row['response'] ) ) {
 					$response = $row['response']->get_error_message();
@@ -86,7 +94,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$response = __( 'Non-blocking', 'query-monitor' );
 				} else {
 					$code = wp_remote_retrieve_response_code( $row['response'] );
-					$msg  = wp_remote_retrieve_response_message( $row['response'] );
+					$msg = wp_remote_retrieve_response_message( $row['response'] );
 
 					if ( intval( $code ) >= 400 ) {
 						$is_error = true;
@@ -100,7 +108,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css = 'qm-warn';
 				}
 
-				$url  = self::format_url( $row['url'] );
+				$url = self::format_url( $row['url'] );
 				$info = '';
 
 				$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
@@ -120,45 +128,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$component = $row['component'];
 
-				$stack          = array();
-				$filtered_trace = $row['trace']->get_display_trace();
+				$stack = array();
+				$filtered_trace = $row['filtered_trace'];
 
-				$filtered_trace = array_filter( $filtered_trace, function( $item ) {
-					// @TODO This should happen during collection.
-					if ( isset( $item['class'] ) ) {
-						return ! in_array( $item['class'], array(
-							'WP_Http',
-						), true );
-					}
-
-					if ( isset( $item['function'] ) ) {
-						return ! in_array( $item['function'], array(
-							'wp_safe_remote_request',
-							'wp_safe_remote_get',
-							'wp_safe_remote_post',
-							'wp_safe_remote_head',
-							'wp_remote_request',
-							'wp_remote_get',
-							'wp_remote_post',
-							'wp_remote_head',
-							'wp_remote_fopen',
-							'download_url',
-							'vip_safe_wp_remote_get',
-							'vip_safe_wp_remote_request',
-							'wpcom_vip_file_get_contents',
-						), true );
-					}
-
-					return true;
-				} );
-
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = self::output_filename( $item['display'], $item['calling_file'], $item['calling_line'] );
+				foreach ( $filtered_trace as $frame ) {
+					$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 				}
 
 				$row_attr['data-qm-component'] = $component->name;
-				$row_attr['data-qm-type']      = $row['type'];
-				$row_attr['data-qm-time']      = $row['ltime'];
+				$row_attr['data-qm-type'] = $row['type'];
+				$row_attr['data-qm-time'] = $row['ltime'];
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';
@@ -221,8 +200,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( ! empty( $row['info'] ) ) {
 					$time_fields = array(
-						'namelookup_time'    => __( 'DNS Resolution Time', 'query-monitor' ),
-						'connect_time'       => __( 'Connection Time', 'query-monitor' ),
+						'namelookup_time' => __( 'DNS Resolution Time', 'query-monitor' ),
+						'connect_time' => __( 'Connection Time', 'query-monitor' ),
 						'starttransfer_time' => __( 'Transfer Start Time (TTFB)', 'query-monitor' ),
 					);
 					foreach ( $time_fields as $key => $value ) {
@@ -252,7 +231,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 					$other_fields = array(
 						'content_type' => __( 'Response Content Type', 'query-monitor' ),
-						'primary_ip'   => __( 'IP Address', 'query-monitor' ),
+						'primary_ip' => __( 'IP Address', 'query-monitor' ),
 					);
 					foreach ( $other_fields as $key => $value ) {
 						if ( ! isset( $row['info'][ $key ] ) ) {
@@ -316,7 +295,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tfoot>';
 
 			$total_stime = number_format_i18n( $data['ltime'], 4 );
-			$count       = count( $data['http'] );
+			$count = count( $data['http'] );
 
 			echo '<tr>';
 			printf(
@@ -342,6 +321,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		}
 	}
 
+	/**
+	 * @param array<int, string> $class
+	 * @return array<int, string>
+	 */
 	public function admin_class( array $class ) {
 
 		$data = $this->collector->get_data();
@@ -357,6 +340,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
 		$data = $this->collector->get_data();
@@ -390,6 +377,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_http( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'http' );
 	if ( $collector ) {

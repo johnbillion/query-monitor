@@ -5,7 +5,9 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Output_Headers_Overview extends QM_Output_Headers {
 
@@ -16,9 +18,12 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 	 */
 	protected $collector;
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function get_output() {
 
-		$data    = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$headers = array();
 
 		$headers['time_taken'] = number_format_i18n( $data['time_taken'], 4 );
@@ -49,6 +54,11 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_headers_overview( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'overview' );
 	if ( $collector ) {

@@ -5,12 +5,17 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Admin extends QM_Collector {
 
 	public $id = 'response';
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
@@ -27,6 +32,9 @@ class QM_Collector_Admin extends QM_Collector {
 		return $actions;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		$filters = array();
 
@@ -38,6 +46,9 @@ class QM_Collector_Admin extends QM_Collector {
 		return $filters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 
 		global $pagenow, $wp_list_table;
@@ -50,24 +61,24 @@ class QM_Collector_Admin extends QM_Collector {
 			$this->data['base'] = $pagenow;
 		}
 
-		$this->data['pagenow']        = $pagenow;
-		$this->data['typenow']        = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
-		$this->data['taxnow']         = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
-		$this->data['hook_suffix']    = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
+		$this->data['pagenow'] = $pagenow;
+		$this->data['typenow'] = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
+		$this->data['taxnow'] = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
+		$this->data['hook_suffix'] = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
 		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
 
 		$screens = array(
-			'edit'            => true,
-			'edit-comments'   => true,
-			'edit-tags'       => true,
-			'link-manager'    => true,
-			'plugins'         => true,
+			'edit' => true,
+			'edit-comments' => true,
+			'edit-tags' => true,
+			'link-manager' => true,
+			'plugins' => true,
 			'plugins-network' => true,
-			'sites-network'   => true,
-			'themes-network'  => true,
-			'upload'          => true,
-			'users'           => true,
-			'users-network'   => true,
+			'sites-network' => true,
+			'themes-network' => true,
+			'upload' => true,
+			'users' => true,
+			'users-network' => true,
 		);
 
 		if ( ! empty( $this->data['current_screen'] ) && isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
@@ -101,9 +112,9 @@ class QM_Collector_Admin extends QM_Collector {
 			$list_table['sortables'] = $this->data['current_screen']['id'];
 
 			$this->data['list_table'] = array(
-				'columns_filter'   => "manage_{$list_table['columns']}_columns",
+				'columns_filter' => "manage_{$list_table['columns']}_columns",
 				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
-				'column_action'    => "manage_{$list_table['column']}_custom_column",
+				'column_action' => "manage_{$list_table['column']}_custom_column",
 			);
 
 			if ( ! empty( $wp_list_table ) ) {
@@ -115,6 +126,11 @@ class QM_Collector_Admin extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
 	$collectors['response'] = new QM_Collector_Admin();
 	return $collectors;

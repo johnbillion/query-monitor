@@ -5,24 +5,37 @@
  * @package query-monitor
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Collector_Overview extends QM_Collector {
 
 	public $id = 'overview';
 
-	public function __construct() {
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
 		add_action( 'shutdown', array( $this, 'process_timing' ), 0 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		remove_action( 'shutdown', array( $this, 'process_timing' ), 0 );
+
 		parent::tear_down();
 	}
 
 	/**
 	 * Processes the timing and memory related stats as early as possible, so the
 	 * data isn't skewed by collectors that are processed before this one.
+	 *
+	 * @return void
 	 */
 	public function process_timing() {
 		$this->data['time_taken'] = self::timer_stop_float();
@@ -36,8 +49,11 @@ class QM_Collector_Overview extends QM_Collector {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
-		if ( ! isset( $data['time_taken'] ) ) {
+		if ( ! isset( $this->data['time_taken'] ) ) {
 			$this->process_timing();
 		}
 
@@ -78,7 +94,7 @@ class QM_Collector_Overview extends QM_Collector {
 			$this->data['wp_memory_usage'] = 0;
 		}
 
-		$this->data['display_time_usage_warning']   = ( $this->data['time_usage'] >= 75 );
+		$this->data['display_time_usage_warning'] = ( $this->data['time_usage'] >= 75 );
 		$this->data['display_memory_usage_warning'] = ( $this->data['memory_usage'] >= 75 );
 
 		$this->data['is_admin'] = is_admin();
@@ -86,6 +102,11 @@ class QM_Collector_Overview extends QM_Collector {
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_overview( array $collectors, QueryMonitor $qm ) {
 	$collectors['overview'] = new QM_Collector_Overview();
 	return $collectors;
