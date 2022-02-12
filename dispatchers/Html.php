@@ -207,17 +207,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
-		$css = 'query-monitor';
-
-		if ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
-			$css .= '-dark';
-		}
-
 		wp_enqueue_style(
 			'query-monitor',
-			$this->qm->plugin_url( "assets/{$css}.css" ),
+			$this->qm->plugin_url( 'assets/query-monitor.css' ),
 			array( 'dashicons' ),
-			$this->qm->plugin_ver( "assets/{$css}.css" )
+			$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
 			'query-monitor',
