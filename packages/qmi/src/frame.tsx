@@ -2,6 +2,13 @@ import * as React from 'react';
 
 export interface FrameItem {
 	display: string;
+	args: string[];
+	calling_file: string;
+	calling_line: number;
+	file: string;
+	function: string;
+	id: string;
+	line: number;
 }
 
 export interface FrameProps {
