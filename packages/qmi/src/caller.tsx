@@ -11,7 +11,7 @@ export interface CallerProps {
 export class Caller extends React.Component<CallerProps, Record<string, unknown>> {
 
 	render() {
-		const trace = this.props.trace;
+		const trace = [ ...this.props.trace ];
 		const caller = trace.shift();
 
 		return (
