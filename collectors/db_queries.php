@@ -249,7 +249,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$row = array(
 					'caller' => null,
 					'caller_name' => null,
-					'stack' => '',
+					'stack' => array(),
 					'sql' => $error['query'],
 					'ltime' => 0,
 					'result' => new WP_Error( 'qmdb', $error['error_str'] ),
