@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if (! defined('QM_ERROR_FATALS')) {
+if ( ! defined('QM_ERROR_FATALS') ) {
   define('QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 }
 
