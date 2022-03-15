@@ -6,10 +6,9 @@ if (! defined('ABSPATH')) {
   exit;
 }
 
-define('QM_ERROR_FATALS', apply_filters(
-  'qm/collect/error_fatals',
-  'E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR'
-));
+if (! defined('QM_ERROR_FATALS')) {
+  define('QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
+}
 
 class QM_Collector_PHP_Errors extends QM_Collector
 {
