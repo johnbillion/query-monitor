@@ -23,6 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! defined( 'DB_USER' ) ) {
+	return;
+}
+
 if ( defined( 'QM_DISABLED' ) && QM_DISABLED ) {
 	return;
 }
