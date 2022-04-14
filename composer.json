@@ -19,7 +19,6 @@
 		"codeception/module-webdriver": "^1.0",
 		"codeception/module-db": "^1.0",
 		"codeception/util-universalframework": "^1.0",
-		"cweagans/composer-patches": "^1.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
 		"lucatume/wp-browser": "^3.0.21",
 		"phpcompatibility/phpcompatibility-wp": "2.1.0",
@@ -35,18 +34,11 @@
 		"sort-packages": true,
 		"allow-plugins": {
 			"composer/installers": true,
-			"cweagans/composer-patches": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"roots/wordpress-core-installer": true
 		}
 	},
 	"extra": {
-		"composer-exit-on-patch-failure": true,
-		"patches": {
-			"lucatume/wp-browser": {
-				"https://github.com/lucatume/wp-browser/issues/554": "tests/patches/wp-browser-554.patch"
-			}
-		},
 		"wordpress-install-dir": "tests/wordpress"
 	},
 	"scripts": {
