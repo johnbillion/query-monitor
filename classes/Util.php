@@ -144,6 +144,10 @@ class QM_Util {
 			self::$file_dirs['unknown'] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
+				if ( null === $dir ) {
+					continue;
+				}
+
 				self::$file_dirs[ $type ] = self::standard_dir( $dir );
 			}
 		}
