@@ -70,7 +70,7 @@ services:
     ports:
       - 4444
     extra_hosts:
-    - host.docker.internal:host-gateway
+      - host.docker.internal:host-gateway
 
 volumes:
   database:
