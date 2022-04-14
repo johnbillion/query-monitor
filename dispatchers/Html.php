@@ -264,7 +264,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.6.0
 		 *
-		 * @param \QM_Dispatcher_Html $this The HTML dispatcher.
+		 * @param \QM_Dispatcher_Html $dispatcher The HTML dispatcher.
 		 */
 		do_action( 'qm/output/enqueued-assets', $this );
 	}
@@ -665,8 +665,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since  3.1.0
 		 *
-		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
-		 * @param QM_Output_Html[]   $this->outputters Array of outputters.
+		 * @param QM_Dispatcher_Html $dispatcher The HTML dispatcher instance.
+		 * @param QM_Output_Html[]   $outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
