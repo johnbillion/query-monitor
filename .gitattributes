@@ -15,9 +15,10 @@
 /.gitignore export-ignore
 /assets/*.map export-ignore
 /assets/*.scss export-ignore
-/codeception.dist.xml export-ignore
+/codeception.dist.yml export-ignore
 /composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
+/docker-compose.yml export-ignore
 /Gruntfile.js export-ignore
 /package-lock.json export-ignore
 /package.json export-ignore
