@@ -947,6 +947,21 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		box-shadow: none !important;
 	}
 
+	.qm input[type="radio"].qm-radio,
+	.qm input[type="radio"].qm-radio:checked,
+	.qm input[type="radio"].qm-radio:focus,
+	.qm input[type="radio"].qm-radio:checked:focus,
+	.qm input[type="radio"].qm-radio:hover,
+	.qm input[type="radio"].qm-radio:checked:hover {
+		all: revert !important;
+		accent-color: var( --qm-button-bg ) !important;
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+	}
+
 	.qm tbody tr.qm-odd td,
 	.qm tbody tr.qm-odd th {
 		background: var( --qm-cell-bg-stripe ) !important;
