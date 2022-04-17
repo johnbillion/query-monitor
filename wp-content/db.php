@@ -42,7 +42,7 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-# No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
+// This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 $qm_dir = dirname( dirname( __FILE__ ) );
 $qm_php = "{$qm_dir}/classes/PHP.php";
 
@@ -55,11 +55,11 @@ if ( ! QM_PHP::version_met() ) {
 	return;
 }
 
-$backtrace = "{$qm_dir}/classes/Backtrace.php";
-if ( ! is_readable( $backtrace ) ) {
+require_once "{$qm_dir}/vendor/autoload.php";
+
+if ( ! class_exists( 'QM_Backtrace' ) ) {
 	return;
 }
-require_once $backtrace;
 
 if ( ! defined( 'SAVEQUERIES' ) ) {
 	define( 'SAVEQUERIES', true );

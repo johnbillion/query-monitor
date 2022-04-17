@@ -337,9 +337,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
 		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
 			require_once $file;
 		}

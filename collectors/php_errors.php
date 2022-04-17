@@ -320,8 +320,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			wp_load_translations_early();
 		}
 
-		require_once dirname( __DIR__ ) . '/output/Html.php';
-
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
 		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';

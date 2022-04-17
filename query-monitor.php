@@ -37,6 +37,7 @@ define( 'QM_VERSION', '3.9.0' );
 
 $qm_dir = dirname( __FILE__ );
 
+// This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 require_once "{$qm_dir}/classes/PHP.php";
 
 if ( ! QM_PHP::version_met() ) {
@@ -44,15 +45,11 @@ if ( ! QM_PHP::version_met() ) {
 	return;
 }
 
-# No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Plugin', 'Activation', 'Util', 'QM' ) as $qm_class ) {
-	require_once "{$qm_dir}/classes/{$qm_class}.php";
-}
+require_once "{$qm_dir}/vendor/autoload.php";
 
 QM_Activation::init( __FILE__ );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	require_once "{$qm_dir}/classes/CLI.php";
 	QM_CLI::init( __FILE__ );
 }
 
@@ -71,13 +68,6 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Hook', 'Output', 'Timer' ) as $qm_class ) {
-	require_once "{$qm_dir}/classes/{$qm_class}.php";
-}
-
-unset(
-	$qm_dir,
-	$qm_class
-);
+unset( $qm_dir );
 
 QueryMonitor::init( __FILE__ )->set_up();

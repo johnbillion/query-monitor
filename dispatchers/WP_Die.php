@@ -51,8 +51,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			return;
 		}
 
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
 		$switched_locale = self::switch_to_locale( get_user_locale() );
 		$stack = array();
 		$filtered_trace = $this->trace->get_filtered_trace();

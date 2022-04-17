@@ -70,6 +70,12 @@
 		]
 	},
 	"autoload": {
+		"classmap": [
+			"classes",
+			"output"
+		]
+	},
+	"autoload-dev": {
 		"psr-4": {
 			"QM\\Tests\\": "tests/integration"
 		}
