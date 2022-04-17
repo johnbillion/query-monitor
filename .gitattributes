@@ -7,7 +7,6 @@
 /bin export-ignore
 /node_modules export-ignore
 /tests export-ignore
-/vendor export-ignore
 
 # Files
 /.gitattributes export-ignore
