@@ -34,10 +34,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 */
 	public function output() {
 
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 		$type_label = $this->get_type_labels();
 
-		if ( empty( $data['assets'] ) ) {
+		if ( empty( $data->assets ) ) {
 			$this->before_non_tabular_output();
 			$notice = esc_html( $type_label['none'] );
 			echo $this->build_notice( $notice ); // WPCS: XSS ok.
@@ -68,17 +69,17 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<th scope="col" class="qm-filterable-column">';
 		$args = array(
 			'prepend' => array(
-				'local' => $data['host'],
+				'local' => $data->host,
 			),
 		);
 		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependencies', $data->dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependents', $data->dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -87,8 +88,8 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $position_labels as $position => $label ) {
-			if ( ! empty( $data['assets'][ $position ] ) ) {
-				foreach ( $data['assets'][ $position ] as $handle => $asset ) {
+			if ( ! empty( $data->assets[ $position ] ) ) {
+				foreach ( $data->assets[ $position ] as $handle => $asset ) {
 					$this->dependency_row( $handle, $asset, $label );
 				}
 			}
@@ -103,7 +104,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'<td colspan="7">%1$s</td>',
 			sprintf(
 				esc_html( $type_label['total'] ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data['counts']['total'] ) ) . '</span>'
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
 			)
 		);
 		echo '</tr>';
@@ -130,7 +131,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$dependency_output = array();
 
 		foreach ( $asset['dependencies'] as $dep ) {
-			if ( isset( $data['missing_dependencies'][ $dep ] ) ) {
+			if ( isset( $data->missing_dependencies[ $dep ] ) ) {
 				$dependency_output[] = sprintf(
 					'<span style="white-space:nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
 					sprintf(
@@ -232,7 +233,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
+		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
 			$class[] = 'qm-error';
 		}
 
@@ -248,14 +249,14 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['assets'] ) ) {
+		if ( empty( $data->assets ) ) {
 			return $menu;
 		}
 
 		$type_label = $this->get_type_labels();
 		$label = sprintf(
 			$type_label['count'],
-			number_format_i18n( $data['counts']['total'] )
+			number_format_i18n( $data->counts['total'] )
 		);
 
 		$args = array(
@@ -264,7 +265,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'href' => esc_attr( '#' . $this->collector->id() ),
 		);
 
-		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
+		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
 			$args['meta']['classname'] = 'qm-error';
 		}
 
