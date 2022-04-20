@@ -32,8 +32,8 @@ class QM_Collector_Admin extends QM_DataCollector {
 			'user_admin_notices',
 		);
 
-		if ( ! empty( $this->data['list_table'] ) ) {
-			$actions[] = $this->data['list_table']['column_action'];
+		if ( ! empty( $this->data->list_table ) ) {
+			$actions[] = $this->data->list_table['column_action'];
 		}
 
 		return $actions;
@@ -45,9 +45,9 @@ class QM_Collector_Admin extends QM_DataCollector {
 	public function get_concerned_filters() {
 		$filters = array();
 
-		if ( ! empty( $this->data['list_table'] ) ) {
-			$filters[] = $this->data['list_table']['columns_filter'];
-			$filters[] = $this->data['list_table']['sortables_filter'];
+		if ( ! empty( $this->data->list_table ) ) {
+			$filters[] = $this->data->list_table['columns_filter'];
+			$filters[] = $this->data->list_table['sortables_filter'];
 		}
 
 		return $filters;
@@ -63,16 +63,16 @@ class QM_Collector_Admin extends QM_DataCollector {
 		$current_screen = get_current_screen();
 
 		if ( isset( $_GET['page'] ) && null !== $current_screen ) { // phpcs:ignore
-			$this->data['base'] = $current_screen->base;
+			$this->data->base = $current_screen->base;
 		} else {
-			$this->data['base'] = $pagenow;
+			$this->data->base = $pagenow;
 		}
 
-		$this->data['pagenow'] = $pagenow;
-		$this->data['typenow'] = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
-		$this->data['taxnow'] = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
-		$this->data['hook_suffix'] = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
-		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
+		$this->data->pagenow = $pagenow;
+		$this->data->typenow = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
+		$this->data->taxnow = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';
+		$this->data->hook_suffix = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
+		$this->data->current_screen = ( $current_screen ) ? $current_screen : null;
 
 		$screens = array(
 			'edit' => true,
@@ -88,24 +88,24 @@ class QM_Collector_Admin extends QM_DataCollector {
 			'users-network' => true,
 		);
 
-		if ( ! empty( $this->data['current_screen'] ) && isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
+		if ( ! empty( $this->data->current_screen ) && isset( $screens[ $this->data->current_screen->base ] ) ) {
 
 			$list_table = array();
 
 			# And now, WordPress' legendary inconsistency comes into play:
 
-			if ( ! empty( $this->data['current_screen']['taxonomy'] ) ) {
-				$list_table['column'] = $this->data['current_screen']['taxonomy'];
-			} elseif ( ! empty( $this->data['current_screen']['post_type'] ) ) {
-				$list_table['column'] = $this->data['current_screen']['post_type'] . '_posts';
+			if ( ! empty( $this->data->current_screen->taxonomy ) ) {
+				$list_table['column'] = $this->data->current_screen->taxonomy;
+			} elseif ( ! empty( $this->data->current_screen->post_type ) ) {
+				$list_table['column'] = $this->data->current_screen->post_type . '_posts';
 			} else {
-				$list_table['column'] = $this->data['current_screen']['base'];
+				$list_table['column'] = $this->data->current_screen->base;
 			}
 
-			if ( ! empty( $this->data['current_screen']['post_type'] ) && empty( $this->data['current_screen']['taxonomy'] ) ) {
-				$list_table['columns'] = $this->data['current_screen']['post_type'] . '_posts';
+			if ( ! empty( $this->data->current_screen->post_type ) && empty( $this->data->current_screen->taxonomy ) ) {
+				$list_table['columns'] = $this->data->current_screen->post_type . '_posts';
 			} else {
-				$list_table['columns'] = $this->data['current_screen']['id'];
+				$list_table['columns'] = $this->data->current_screen->id;
 			}
 
 			if ( 'edit-comments' === $list_table['column'] ) {
@@ -116,16 +116,16 @@ class QM_Collector_Admin extends QM_DataCollector {
 				$list_table['column'] = 'link';
 			}
 
-			$list_table['sortables'] = $this->data['current_screen']['id'];
+			$list_table['sortables'] = $this->data->current_screen->id;
 
-			$this->data['list_table'] = array(
+			$this->data->list_table = array(
 				'columns_filter' => "manage_{$list_table['columns']}_columns",
 				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
 				'column_action' => "manage_{$list_table['column']}_custom_column",
 			);
 
 			if ( ! empty( $wp_list_table ) ) {
-				$this->data['list_table']['class_name'] = get_class( $wp_list_table );
+				$this->data->list_table['class_name'] = get_class( $wp_list_table );
 			}
 		}
 
