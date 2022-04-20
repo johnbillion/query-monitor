@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Admin extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Admin>
+ */
+class QM_Collector_Admin extends QM_DataCollector {
 
 	public $id = 'response';
+
+	public function get_storage() {
+		return new QM_Data_Admin();
+	}
 
 	/**
 	 * @return array<int, string>
