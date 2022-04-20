@@ -12,14 +12,24 @@ class QM_Data_Admin extends QM_Data {
 	public $base;
 
 	/**
-	 * @var string
+	 * @var ?WP_Screen
 	 */
-	public $pagenow;
+	public $current_screen;
 
 	/**
 	 * @var string
 	 */
-	public $typenow;
+	public $hook_suffix;
+
+	/**
+	 * @var array<string, string>
+	 */
+	public $list_table;
+
+	/**
+	 * @var string
+	 */
+	public $pagenow;
 
 	/**
 	 * @var string
@@ -29,15 +39,5 @@ class QM_Data_Admin extends QM_Data {
 	/**
 	 * @var string
 	 */
-	public $hook_suffix;
-
-	/**
-	 * @var ?WP_Screen
-	 */
-	public $current_screen;
-
-	/**
-	 * @var array<string, string>
-	 */
-	public $list_table;
+	public $typenow;
 }
