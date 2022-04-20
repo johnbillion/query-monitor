@@ -14,12 +14,9 @@ abstract class QM_Collector {
 	protected $timer;
 
 	/**
-	 * @var array<string, mixed>
+	 * @var array<string, mixed>|QM_Data
 	 */
-	protected $data = array(
-		'types' => array(),
-		'component_times' => array(),
-	);
+	protected $data;
 
 	/**
 	 * @var bool|null
@@ -51,7 +48,9 @@ abstract class QM_Collector {
 	 */
 	public $id = '';
 
-	public function __construct() {}
+	public function __construct() {
+		$this->data = $this->get_storage();
+	}
 
 	/**
 	 * @return void
@@ -150,17 +149,27 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @return array<string, mixed>
+	 * @return array<string, mixed>|QM_Data
 	 */
-	final public function get_data() {
+	public function get_data() {
 		return $this->data;
+	}
+
+	/**
+	 * @return array<string, mixed>|QM_Data
+	 */
+	public function get_storage() {
+		return array(
+			'types' => array(),
+			'component_times' => array(),
+		);
 	}
 
 	/**
 	 * @return void
 	 */
 	final public function discard_data() {
-		$this->data = array();
+		$this->data = $this->get_storage();
 	}
 
 	/**
