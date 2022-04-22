@@ -57,18 +57,18 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			return;
 		}
 
+		/** @var QM_Data_Caps */
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['caps'] ) ) {
+		if ( ! empty( $data->caps ) ) {
 			$this->before_tabular_output();
 
 			$results = array(
 				'true',
 				'false',
 			);
-			$show_user = ( count( $data['users'] ) > 1 );
-			$parts = $data['parts'];
-			$components = $data['components'];
+			$parts = $data->parts;
+			$components = $data->components;
 
 			usort( $parts, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
@@ -79,7 +79,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo $this->build_filter( 'name', $parts, __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
 			echo '</th>';
 
-			$users = $data['users'];
+			$users = $data->users;
 
 			usort( $users, 'strcasecmp' );
 
@@ -99,7 +99,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( $data['caps'] as $row ) {
+			foreach ( $data->caps as $row ) {
 				$component = $row['component'];
 
 				$row_attr = array();
@@ -188,7 +188,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<tfoot>';
 
-			$count = count( $data['caps'] );
+			$count = count( $data->caps );
 
 			echo '<tr>';
 			echo '<td colspan="5">';
