@@ -120,6 +120,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function dependency_row( $handle, array $asset, $label ) {
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
 		$highlight_deps = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
@@ -230,7 +231,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
@@ -246,7 +247,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->assets ) ) {

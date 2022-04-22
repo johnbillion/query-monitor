@@ -304,6 +304,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
+		/** @var QM_Data_Block_Editor */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->block_editor_enabled ) || empty( $data->post_blocks ) ) {
