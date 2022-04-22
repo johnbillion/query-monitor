@@ -49,6 +49,7 @@
 			"@test:acceptance"
 		],
 		"test:cs": [
+			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' --standard=phpcs53.xml",
 			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' ."
 		],
 		"test:phpstan": [
