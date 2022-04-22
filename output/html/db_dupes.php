@@ -131,6 +131,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
+		/** @var QM_Collector_DB_Dupes|null $dbq */
 		$dbq = QM_Collectors::get( 'db_dupes' );
 
 		if ( $dbq ) {

@@ -118,9 +118,11 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function panel_menu( array $menu ) {
+		/** @var QM_Collector_DB_Queries|null $dbq */
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
+			/** @var QM_Data_DB_Queries $data */
 			$dbq_data = $dbq->get_data();
 			if ( isset( $dbq_data['times'] ) ) {
 				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(

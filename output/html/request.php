@@ -37,6 +37,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		$data = $this->collector->get_data();
 
+		/** @var QM_Collector_DB_Queries|null $db_queries */
 		$db_queries = QM_Collectors::get( 'db_queries' );
 		$raw_request = QM_Collectors::get( 'raw_request' );
 

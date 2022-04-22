@@ -266,7 +266,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<int, array<string, mixed>>
 	 */
 	public function get_filtered_trace() {
 

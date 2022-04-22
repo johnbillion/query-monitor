@@ -115,6 +115,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			return $menu;
 		}
 
+		/** @var QM_Collector_DB_Queries|null $dbq */
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {

@@ -17,6 +17,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
+		/** @var QM_Collector_DB_Queries|null $dbq */
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( ! $dbq ) {

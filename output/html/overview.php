@@ -37,6 +37,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$db_query_num = null;
+		/** @var QM_Collector_DB_Queries|null $db_queries */
 		$db_queries = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
