@@ -62,12 +62,6 @@ class QM_Collector_Admin extends QM_DataCollector {
 
 		$current_screen = get_current_screen();
 
-		if ( isset( $_GET['page'] ) && null !== $current_screen ) { // phpcs:ignore
-			$this->data->base = $current_screen->base;
-		} else {
-			$this->data->base = $pagenow;
-		}
-
 		$this->data->pagenow = $pagenow;
 		$this->data->typenow = isset( $GLOBALS['typenow'] ) ? $GLOBALS['typenow'] : '';
 		$this->data->taxnow = isset( $GLOBALS['taxnow'] ) ? $GLOBALS['taxnow'] : '';

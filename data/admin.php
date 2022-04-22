@@ -7,11 +7,6 @@
 
 class QM_Data_Admin extends QM_Data {
 	/**
-	 * @var string
-	 */
-	public $base;
-
-	/**
 	 * @var ?WP_Screen
 	 */
 	public $current_screen;
