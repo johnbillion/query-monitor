@@ -253,10 +253,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
 		if ( $cache ) {
-			/** @var QM_Data_Cache $cache_data */
+			/** @var QM_Data_Cache|array<string, mixed> $cache_data */
 			$cache_data = $cache->get_data();
-			if ( isset( $cache_data->stats ) && isset( $cache_data->cache_hit_percentage ) ) {
-				$cache_hit_percentage = $cache_data->cache_hit_percentage;
+
+			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
+				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
 			}
 
 			if ( isset( $cache_hit_percentage ) ) {
@@ -265,13 +266,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
 					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
 					number_format_i18n( $cache_hit_percentage, 1 ),
-					number_format_i18n( $cache_data->stats['cache_hits'], 0 ),
-					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
+					number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
+					number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
 				) );
 				echo '</p>';
 			}
 
-			if ( $cache_data->has_object_cache ) {
+			if ( $cache_data['has_object_cache'] ) {
 				echo '<p><span class="qm-info">';
 				printf(
 					'<a href="%s" class="qm-link">%s</a>',
@@ -284,7 +285,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
 				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data->object_cache_extensions );
+				$potentials = array_filter( $cache_data['object_cache_extensions'] );
 
 				if ( ! empty( $potentials ) ) {
 					foreach ( $potentials as $name => $value ) {
@@ -325,14 +326,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</section>';
 
 		if ( $cache ) {
-			/** @var QM_Data_Cache $cache_data */
+			/** @var QM_Data_Cache|array<string, mixed> $cache_data */
 			$cache_data = $cache->get_data();
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
 
-			if ( $cache_data->has_opcode_cache ) {
-				foreach ( array_filter( $cache_data->opcode_cache_extensions ) as $opcache_name => $opcache_state ) {
+			if ( $cache_data['has_opcode_cache'] ) {
+				foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
 					echo '<p>';
 					echo esc_html( sprintf(
 						/* translators: %s: Name of cache driver */
