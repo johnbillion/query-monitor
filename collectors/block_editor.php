@@ -146,6 +146,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$this->data->post_has_blocks = self::wp_has_blocks( $content );
 		$this->data->post_blocks = self::wp_parse_blocks( $content );
 		$this->data->all_dynamic_blocks = self::wp_get_dynamic_block_names();
+		$this->data->total_blocks = 0;
+		$this->data->has_block_context = false;
+		$this->data->has_block_timing = false;
 
 		if ( $this->data->post_has_blocks ) {
 			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data->post_blocks ) ) );
