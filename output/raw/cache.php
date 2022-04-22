@@ -31,13 +31,13 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 			'misses' => null,
 		);
 
-		/** @var QM_Data_Cache $data */
+		/** @var QM_Data_Cache|array<string, mixed> $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data->stats ) && isset( $data->cache_hit_percentage ) ) {
-			$output['hit_percentage'] = (float) number_format_i18n( $data->cache_hit_percentage, 1 );
-			$output['hits'] = (int) number_format_i18n( $data->stats['cache_hits'], 0 );
-			$output['misses'] = (int) number_format_i18n( $data->stats['cache_misses'], 0 );
+		if ( isset( $data['stats'] ) && isset( $data['cache_hit_percentage'] ) ) {
+			$output['hit_percentage'] = (float) number_format_i18n( $data['cache_hit_percentage'], 1 );
+			$output['hits'] = (int) number_format_i18n( $data['stats']['cache_hits'], 0 );
+			$output['misses'] = (int) number_format_i18n( $data['stats']['cache_misses'], 0 );
 		}
 
 		return $output;
