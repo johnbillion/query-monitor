@@ -13,7 +13,12 @@ abstract class QM_Data implements \ArrayAccess {
 	public $types = array();
 
 	/**
-	 * @var array<string, mixed>
+	 * @var array<string, array<string, mixed>>
+	 * @phpstan-var array<string, array{
+	 *   component: string,
+	 *   ltime: float,
+	 *   types: array<string, int>,
+	 * }>
 	 */
 	public $component_times = array();
 
