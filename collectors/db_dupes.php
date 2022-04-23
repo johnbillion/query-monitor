@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_DB_Dupes extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_DB_Dupes>
+ */
+class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 	public $id = 'db_dupes';
+
+	public function get_storage() {
+		return new QM_Data_DB_Dupes();
+	}
 
 	/**
 	 * @return void
@@ -23,28 +30,32 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		if ( ! $dbq ) {
 			return;
 		}
-		if ( ! isset( $dbq->data['dupes'] ) ) {
+
+		/** @var QM_Data_DB_Queries $dbq_data */
+		$dbq_data = $dbq->get_data();
+
+		if ( ! isset( $dbq_data->dupes ) ) {
 			return;
 		}
 
 		// Filter out SQL queries that do not have dupes
-		$this->data['dupes'] = array_filter( $dbq->data['dupes'], array( $this, 'filter_dupe_items' ) );
+		$this->data->dupes = array_filter( $dbq_data->dupes, array( $this, 'filter_dupe_items' ) );
 
 		// Ignore dupes from `WP_Query->set_found_posts()`
-		unset( $this->data['dupes']['SELECT FOUND_ROWS()'] );
+		unset( $this->data->dupes['SELECT FOUND_ROWS()'] );
 
 		$stacks = array();
 		$callers = array();
 		$components = array();
 
 		// Loop over all SQL queries that have dupes
-		foreach ( $this->data['dupes'] as $sql => $query_ids ) {
+		foreach ( $this->data->dupes as $sql => $query_ids ) {
 
 			// Loop over each query
 			foreach ( $query_ids as $query_id ) {
 
-				if ( isset( $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'] ) ) {
-					$trace = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'];
+				if ( isset( $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'] ) ) {
+					$trace = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'];
 					$stack = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
 
@@ -55,7 +66,7 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					$stack = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'];
+					$stack = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['stack'];
 				}
 
 				// Populate the caller counts for this query
@@ -89,9 +100,9 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 		}
 
 		if ( ! empty( $sources ) ) {
-			$this->data['dupe_sources'] = $sources;
-			$this->data['dupe_callers'] = $callers;
-			$this->data['dupe_components'] = $components;
+			$this->data->dupe_sources = $sources;
+			$this->data->dupe_callers = $callers;
+			$this->data->dupe_components = $components;
 		}
 
 	}

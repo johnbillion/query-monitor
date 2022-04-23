@@ -40,4 +40,9 @@ class QM_Data_DB_Queries extends QM_Data {
 	 * }>
 	 */
 	public $times;
+
+	/**
+	 * @var array<string, array<int, int>>
+	 */
+	public $dupes;
 }

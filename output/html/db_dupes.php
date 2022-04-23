@@ -35,10 +35,10 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_DB_Dupes $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['dupes'] ) ) {
+		if ( empty( $data->dupes ) ) {
 			return;
 		}
 
@@ -50,7 +50,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
-		if ( ! empty( $data['dupe_components'] ) ) {
+		if ( ! empty( $data->dupe_components ) ) {
 			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
 		}
 		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
@@ -63,7 +63,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		/* translators: %s: Number of calls to a PHP function */
 		$call_text = _n_noop( '%s call', '%s calls', 'query-monitor' );
 
-		foreach ( $data['dupes'] as $sql => $queries ) {
+		foreach ( $data->dupes as $sql => $queries ) {
 
 			// This should probably happen in the collector's processor
 			$type = QM_Util::get_query_type( $sql );
@@ -81,7 +81,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
 			echo '</td>';
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
-			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
+			foreach ( $data->dupe_callers[ $sql ] as $caller => $calls ) {
 				printf(
 					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_attr( $caller ),
@@ -93,9 +93,9 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				);
 			}
 			echo '</td>';
-			if ( isset( $data['dupe_components'][ $sql ] ) ) {
+			if ( isset( $data->dupe_components[ $sql ] ) ) {
 				echo '<td class="qm-row-component qm-nowrap">';
-				foreach ( $data['dupe_components'][ $sql ] as $component => $calls ) {
+				foreach ( $data->dupe_components[ $sql ] as $component => $calls ) {
 					printf(
 						'%s<br><span class="qm-info qm-supplemental">%s</span><br>',
 						esc_html( $component ),
@@ -108,7 +108,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				echo '</td>';
 			}
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
-			foreach ( $data['dupe_sources'][ $sql ] as $source => $calls ) {
+			foreach ( $data->dupe_sources[ $sql ] as $source => $calls ) {
 				printf(
 					'<code>%s</code><br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_html( $source ),
@@ -135,11 +135,12 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		$dbq = QM_Collectors::get( 'db_dupes' );
 
 		if ( $dbq ) {
+			/** @var QM_Data_DB_Queries $dbq_data */
 			$dbq_data = $dbq->get_data();
-			if ( isset( $dbq_data['dupes'] ) && count( $dbq_data['dupes'] ) ) {
+			if ( ! empty( $dbq_data->dupes ) ) {
 				$count = 0;
 
-				foreach ( $dbq_data['dupes'] as $dupe ) {
+				foreach ( $dbq_data->dupes as $dupe ) {
 					$count += count( $dupe );
 				}
 
