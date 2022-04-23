@@ -65,7 +65,7 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @param string $type
+	 * @param string|int $type
 	 * @return void
 	 */
 	protected function log_type( $type ) {
@@ -81,7 +81,7 @@ abstract class QM_Collector {
 	/**
 	 * @param stdClass $component
 	 * @param float $ltime
-	 * @param string $type
+	 * @param string|int $type
 	 * @return void
 	 */
 	protected function log_component( $component, $ltime, $type ) {

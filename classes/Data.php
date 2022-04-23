@@ -8,7 +8,7 @@
  */
 abstract class QM_Data implements \ArrayAccess {
 	/**
-	 * @var array<string, mixed>
+	 * @var array<string|int, mixed>
 	 */
 	public $types = array();
 

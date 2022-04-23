@@ -26,15 +26,16 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 	 */
 	public function get_output() {
 		$output = array();
+		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['http'] ) ) {
+		if ( empty( $data->http ) ) {
 			return $output;
 		}
 
 		$requests = array();
 
-		foreach ( $data['http'] as $http ) {
+		foreach ( $data->http as $http ) {
 			$stack = array();
 
 			if ( isset( $http['trace'] ) ) {
@@ -55,7 +56,7 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 		}
 
 		$output['total'] = count( $requests );
-		$output['time'] = (float) number_format_i18n( $data['ltime'], 4 );
+		$output['time'] = (float) number_format_i18n( $data->ltime, 4 );
 		$output['requests'] = $requests;
 
 		return $output;

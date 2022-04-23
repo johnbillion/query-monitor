@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_HTTP extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_HTTP>
+ */
+class QM_Collector_HTTP extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -25,6 +28,10 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @var mixed|null
 	 */
 	private $info = null;
+
+	public function get_storage() {
+		return new QM_Data_HTTP();
+	}
 
 	/**
 	 * @return void
@@ -165,12 +172,12 @@ class QM_Collector_HTTP extends QM_Collector {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$start = $this->data['http'][ $args['_qm_key'] ]['start'];
+			$start = $this->data->http[ $args['_qm_key'] ]['start'];
 		} else {
 			$start = microtime( true );
 		}
 		$key = microtime( true ) . $url;
-		$this->data['http'][ $key ] = array(
+		$this->data->http[ $key ] = array(
 			'url' => $url,
 			'args' => $args,
 			'start' => $start,
@@ -222,9 +229,9 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			case 'response':
 				if ( ! empty( $class ) ) {
-					$this->data['http'][ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
+					$this->data->http[ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
 				} else {
-					$this->data['http'][ $args['_qm_key'] ]['transport'] = null;
+					$this->data->http[ $args['_qm_key'] ]['transport'] = null;
 				}
 
 				$this->log_http_response( $response, $args, $url );
@@ -280,20 +287,20 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url ) {
-		$this->data['http'][ $args['_qm_key'] ]['end'] = microtime( true );
-		$this->data['http'][ $args['_qm_key'] ]['response'] = $response;
-		$this->data['http'][ $args['_qm_key'] ]['args'] = $args;
+		$this->data->http[ $args['_qm_key'] ]['end'] = microtime( true );
+		$this->data->http[ $args['_qm_key'] ]['response'] = $response;
+		$this->data->http[ $args['_qm_key'] ]['args'] = $args;
 		if ( isset( $args['_qm_original_key'] ) ) {
-			$this->data['http'][ $args['_qm_original_key'] ]['end'] = $this->data['http'][ $args['_qm_original_key'] ]['start'];
-			$this->data['http'][ $args['_qm_original_key'] ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
+			$this->data->http[ $args['_qm_original_key'] ]['end'] = $this->data->http[ $args['_qm_original_key'] ]['start'];
+			$this->data->http[ $args['_qm_original_key'] ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
 				/* translators: %s: Hook name */
 				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
 				'pre_http_request'
 			) );
 		}
 
-		$this->data['http'][ $args['_qm_key'] ]['info'] = $this->info;
-		$this->data['http'][ $args['_qm_key'] ]['transport'] = $this->transport;
+		$this->data->http[ $args['_qm_key'] ]['info'] = $this->info;
+		$this->data->http[ $args['_qm_key'] ]['transport'] = $this->transport;
 		$this->info = null;
 		$this->transport = null;
 	}
@@ -302,9 +309,9 @@ class QM_Collector_HTTP extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		$this->data['ltime'] = 0;
+		$this->data->ltime = 0;
 
-		if ( ! isset( $this->data['http'] ) ) {
+		if ( ! isset( $this->data->http ) ) {
 			return;
 		}
 
@@ -322,7 +329,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
 
-		foreach ( $this->data['http'] as $key => & $http ) {
+		foreach ( $this->data->http as $key => & $http ) {
 
 			if ( ! isset( $http['response'] ) ) {
 				// Timed out
@@ -332,7 +339,7 @@ class QM_Collector_HTTP extends QM_Collector {
 
 			if ( is_wp_error( $http['response'] ) ) {
 				if ( ! in_array( $http['response']->get_error_code(), $silent, true ) ) {
-					$this->data['errors']['alert'][] = $key;
+					$this->data->errors['alert'][] = $key;
 				}
 				$http['type'] = -1;
 			} elseif ( ! $http['args']['blocking'] ) {
@@ -340,7 +347,7 @@ class QM_Collector_HTTP extends QM_Collector {
 			} else {
 				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
 				if ( $http['type'] >= 400 ) {
-					$this->data['errors']['warning'][] = $key;
+					$this->data->errors['warning'][] = $key;
 				}
 			}
 
@@ -355,7 +362,7 @@ class QM_Collector_HTTP extends QM_Collector {
 				}
 			}
 
-			$this->data['ltime'] += $http['ltime'];
+			$this->data->ltime += $http['ltime'];
 
 			$host = (string) parse_url( $http['url'], PHP_URL_HOST );
 
