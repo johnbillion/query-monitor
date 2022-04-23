@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_DB_Callers extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_DB_Callers>
+ */
+class QM_Collector_DB_Callers extends QM_DataCollector {
 
 	public $id = 'db_callers';
+
+	public function get_storage() {
+		return new QM_Data_DB_Callers();
+	}
 
 	/**
 	 * @return void
@@ -21,12 +28,16 @@ class QM_Collector_DB_Callers extends QM_Collector {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
-			if ( isset( $dbq->data['times'] ) ) {
-				$this->data['times'] = $dbq->data['times'];
-				QM_Util::rsort( $this->data['times'], 'ltime' );
+			/** @var QM_Data_DB_Queries $dbq_data */
+			$dbq_data = $dbq->get_data();
+
+			if ( isset( $dbq_data->times ) ) {
+				$this->data->times = $dbq_data->times;
+				QM_Util::rsort( $this->data->times, 'ltime' );
 			}
-			if ( isset( $dbq->data['types'] ) ) {
-				$this->data['types'] = $dbq->data['types'];
+
+			if ( isset( $dbq_data->types ) ) {
+				$this->data->types = $dbq_data->types;
 			}
 		}
 

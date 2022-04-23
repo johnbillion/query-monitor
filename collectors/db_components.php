@@ -21,12 +21,15 @@ class QM_Collector_DB_Components extends QM_Collector {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
-			if ( isset( $dbq->data['component_times'] ) ) {
-				$this->data['times'] = $dbq->data['component_times'];
+			/** @var QM_Data_DB_Queries $dbq_data */
+			$dbq_data = $dbq->get_data();
+
+			if ( isset( $dbq_data->component_times ) ) {
+				$this->data['times'] = $dbq_data->component_times;
 				QM_Util::rsort( $this->data['times'], 'ltime' );
 			}
-			if ( isset( $dbq->data['types'] ) ) {
-				$this->data['types'] = $dbq->data['types'];
+			if ( isset( $dbq_data->types ) ) {
+				$this->data['types'] = $dbq_data->types;
 			}
 		}
 
