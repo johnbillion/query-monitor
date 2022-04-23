@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Hooks extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Hooks>
+ */
+class QM_Collector_Hooks extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -20,6 +23,10 @@ class QM_Collector_Hooks extends QM_Collector {
 	 * @var bool
 	 */
 	protected static $hide_core;
+
+	public function get_storage() {
+		return new QM_Data_Hooks();
+	}
 
 	/**
 	 * @return void
@@ -39,9 +46,9 @@ class QM_Collector_Hooks extends QM_Collector {
 			$hooks[] = QM_Hook::process( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
-		$this->data['all_hooks'] = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;
+		$this->data->all_hooks = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;
 
-		if ( $this->data['all_hooks'] ) {
+		if ( $this->data->all_hooks ) {
 			// Show all hooks
 			$hook_names = array_keys( $wp_filter );
 		} else {
@@ -59,12 +66,12 @@ class QM_Collector_Hooks extends QM_Collector {
 
 		}
 
-		$this->data['hooks'] = $hooks;
-		$this->data['parts'] = array_unique( array_filter( $all_parts ) );
-		$this->data['components'] = array_unique( array_filter( $components ) );
+		$this->data->hooks = $hooks;
+		$this->data->parts = array_unique( array_filter( $all_parts ) );
+		$this->data->components = array_unique( array_filter( $components ) );
 
-		usort( $this->data['parts'], 'strcasecmp' );
-		usort( $this->data['components'], 'strcasecmp' );
+		usort( $this->data->parts, 'strcasecmp' );
+		usort( $this->data->components, 'strcasecmp' );
 	}
 
 }
