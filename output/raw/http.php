@@ -38,10 +38,8 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 		foreach ( $data->http as $http ) {
 			$stack = array();
 
-			if ( isset( $http['trace'] ) ) {
-				$filtered_trace = $http['trace']->get_filtered_trace();
-
-				foreach ( $filtered_trace as $item ) {
+			if ( ! empty( $http['filtered_trace'] ) ) {
+				foreach ( $http['filtered_trace'] as $item ) {
 					$stack[] = $item['display'];
 				}
 			}
