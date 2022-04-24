@@ -18,6 +18,12 @@ class QM_Data_Admin extends QM_Data {
 
 	/**
 	 * @var array<string, string>
+	 * @phpstan-var array{}|array{
+	 *   columns_filter: string,
+	 *   sortables_filter: string,
+	 *   column_action: string,
+	 *   class_name?: string,
+	 * }
 	 */
 	public $list_table;
 

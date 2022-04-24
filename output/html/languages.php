@@ -34,7 +34,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-		/** @var QM_Data_Languages */
+		/** @var QM_Data_Languages $data */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->languages ) ) {
