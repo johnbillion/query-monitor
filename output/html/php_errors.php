@@ -36,10 +36,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['errors'] ) && empty( $data['silenced'] ) && empty( $data['suppressed'] ) ) {
+		if ( empty( $data->errors ) && empty( $data->silenced ) && empty( $data->suppressed ) ) {
 			return;
 		}
 
@@ -49,7 +49,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'Strict',
 			'Deprecated',
 		);
-		$components = $data['components'];
+		$components = $data->components;
 
 		usort( $components, 'strcasecmp' );
 
@@ -74,11 +74,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		foreach ( $this->collector->types as $error_group => $error_types ) {
 			foreach ( $error_types as $type => $title ) {
 
-				if ( ! isset( $data[ $error_group ][ $type ] ) ) {
+				if ( ! isset( $data->{$error_group}[ $type ] ) ) {
 					continue;
 				}
 
-				foreach ( $data[ $error_group ][ $type ] as $error_key => $error ) {
+				foreach ( $data->{$error_group}[ $type ] as $error_key => $error ) {
 
 					$row_attr = array();
 					$row_attr['data-qm-type'] = ucfirst( $type );
@@ -180,11 +180,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-
+		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['errors'] ) ) {
-			foreach ( $data['errors'] as $type => $errors ) {
+		if ( ! empty( $data->errors ) ) {
+			foreach ( $data->errors as $type => $errors ) {
 				$class[] = 'qm-' . $type;
 			}
 		}
@@ -198,7 +198,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
 		$menu_label = array();
 
@@ -221,18 +221,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			$count = 0;
 			$has_errors = false;
 
-			if ( isset( $data['suppressed'][ $type ] ) ) {
+			if ( isset( $data->suppressed[ $type ] ) ) {
 				$has_errors = true;
 				$generic = true;
 			}
-			if ( isset( $data['silenced'][ $type ] ) ) {
+			if ( isset( $data->silenced[ $type ] ) ) {
 				$has_errors = true;
 				$generic = true;
 			}
-			if ( isset( $data['errors'][ $type ] ) ) {
+			if ( isset( $data->errors[ $type ] ) ) {
 				$has_errors = true;
 				$key = $type;
-				$count     += array_sum( wp_list_pluck( $data['errors'][ $type ], 'calls' ) );
+				$count     += array_sum( wp_list_pluck( $data->errors[ $type ], 'calls' ) );
 			}
 
 			if ( ! $has_errors ) {
@@ -288,6 +288,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $menu;
 		}
 
+		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
 		$count = 0;
 		$types = array(
@@ -297,8 +298,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		);
 
 		foreach ( $types as $type ) {
-			if ( ! empty( $data[ $type ] ) ) {
-				foreach ( $data[ $type ] as $errors ) {
+			if ( ! empty( $data->{$type} ) ) {
+				foreach ( $data->{$type} as $errors ) {
 					$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
 				}
 			}

@@ -22,17 +22,17 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 	 * @return array<string, mixed>
 	 */
 	public function get_output() {
-
+		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
 		$headers = array();
 
-		if ( empty( $data['errors'] ) ) {
+		if ( empty( $data->errors ) ) {
 			return array();
 		}
 
 		$count = 0;
 
-		foreach ( $data['errors'] as $type => $errors ) {
+		foreach ( $data->errors as $type => $errors ) {
 
 			foreach ( $errors as $error_key => $error ) {
 
@@ -40,13 +40,8 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 				$stack = array();
 
-				if ( $error['component'] ) {
-					$component = $error['component']->name;
-					if ( ! empty( $error['filtered_trace'] ) ) {
-						$stack = wp_list_pluck( $error['filtered_trace'], 'display' );
-					}
-				} else {
-					$component = __( 'Unknown', 'query-monitor' );
+				if ( ! empty( $error['filtered_trace'] ) ) {
+					$stack = wp_list_pluck( $error['filtered_trace'], 'display' );
 				}
 
 				$output_error = array(
@@ -56,7 +51,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 					'file' => QM_Util::standard_dir( $error['file'], '' ),
 					'line' => $error['line'],
 					'stack' => $stack,
-					'component' => $component,
+					'component' => $error['component']->name,
 				);
 
 				$key = sprintf( 'error-%d', $count );
