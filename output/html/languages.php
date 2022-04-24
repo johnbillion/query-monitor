@@ -34,10 +34,10 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_Languages */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['languages'] ) ) {
+		if ( empty( $data->languages ) ) {
 			return;
 		}
 
@@ -55,7 +55,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		echo '<tbody>';
 
-		foreach ( $data['languages'] as $textdomain => $mofiles ) {
+		foreach ( $data->languages as $textdomain => $mofiles ) {
 			foreach ( $mofiles as $mofile ) {
 				echo '<tr>';
 
@@ -76,6 +76,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<ol>';
 					echo '<li>';
+					// undefined:
 					echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
 					echo '</li>';
 					echo '</ol></td>';
@@ -117,8 +118,6 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
-		$data = $this->collector->get_data();
 		$args = array(
 			'title' => esc_html( $this->name() ),
 		);

@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Languages extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Languages>
+ */
+class QM_Collector_Languages extends QM_DataCollector {
 
 	public $id = 'languages';
+
+	public function get_storage() {
+		return new QM_Data_Languages();
+	}
 
 	/**
 	 * @return void
@@ -91,15 +98,15 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data['languages'] ) ) {
+		if ( empty( $this->data->languages ) ) {
 			return;
 		}
 
-		$this->data['locale'] = get_locale();
-		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		ksort( $this->data['languages'] );
+		$this->data->locale = get_locale();
+		$this->data->user_locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		ksort( $this->data->languages );
 
-		foreach ( $this->data['languages'] as & $mofiles ) {
+		foreach ( $this->data->languages as & $mofiles ) {
 			foreach ( $mofiles as & $mofile ) {
 				$mofile['found_formatted'] = $mofile['found'] ? size_format( $mofile['found'] ) : '';
 			}
@@ -135,7 +142,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		$found = file_exists( $mofile ) ? filesize( $mofile ) : false;
 
-		$this->data['languages'][ $domain ][] = array(
+		$this->data->languages[ $domain ][] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $mofile,
@@ -166,7 +173,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
 
-		$this->data['languages'][ $domain ][] = array(
+		$this->data->languages[ $domain ][] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,
