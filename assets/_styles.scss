@@ -1329,13 +1329,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		h3 {
+			border-left: 1px solid var( --qm-panel-separator ) !important;
 			clear: none !important;
-			float: left !important; /* why */
+			float: left !important;
 			font-size: 14px !important;
-			margin: 3px 8px 15px 0 !important;
+			margin: 3px 0 15px !important;
 			min-width: 150px !important;
-			padding: 5px 10px 15px !important;
+			padding: 5px 15px 15px !important;
 			text-align: center !important;
+
+			&:first-child {
+				border-left: none !important;
+			}
 
 			small {
 				font-size: 14px !important;
@@ -1376,6 +1381,22 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	#debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .filterui,
 	#debug-menu-target-Debug_Bar_Rewrite_Rules_Panel .dbrr {
 		margin: 0 !important;
+	}
+
+	#debug-menu-target-Debug_Bar_Rewrite_Testing_Panel {
+		padding: 10px 0 !important;
+	}
+
+	#debug-menu-target-EP_Debug_Bar_ElasticPress {
+		li {
+			border-top: 1px solid var( --qm-panel-separator ) !important;
+			line-height: 20px !important;
+			padding: 20px 0 !important;
+
+			.dashicons:hover {
+				background-color: var( --qm-panel-menu-bg-hover ) !important;
+			}
+		}
 	}
 
 	// Broken output handling
