@@ -43,7 +43,8 @@ jobs:
         git config user.email github-actions@github.com
         git checkout -b "release-$VERSION"
         git add -f assets/*
-        git add -f vendor/*
+        git add -f vendor/autoload.php
+        git add -f vendor/composer/*
         git commit -m "Release $VERSION"
         git tag "$VERSION"
         git push --tags
