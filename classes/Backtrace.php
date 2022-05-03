@@ -368,7 +368,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_class Array of class names to ignore. The array keys are class names to ignore,
 			 *                             the array values are whether to ignore the class or not (usually true).
 			 */
-			self::$ignore_class = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
+			self::$ignore_class = apply_filters( 'qm/trace/ignore_class', self::$ignore_class );
 
 			/**
 			 * Filters which class methods to ignore when constructing user-facing call stacks.
@@ -388,7 +388,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_func Array of function names to ignore. The array keys are function names to ignore,
 			 *                            the array values are whether to ignore the function or not (usually true).
 			 */
-			self::$ignore_func = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
+			self::$ignore_func = apply_filters( 'qm/trace/ignore_func', self::$ignore_func );
 
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
@@ -410,7 +410,7 @@ class QM_Backtrace {
 			 *                                  array keys are function names, the array values are either integers or
 			 *                                  "dir" to specifically treat the function argument as a directory path.
 			 */
-			self::$show_args = apply_filters( 'qm/trace/show_args',     self::$show_args );
+			self::$show_args = apply_filters( 'qm/trace/show_args', self::$show_args );
 
 			self::$filtered = true;
 
