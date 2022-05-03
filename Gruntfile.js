@@ -8,29 +8,6 @@ module.exports = function (grunt) {
 
 	config.pkg = pkg;
 
-	const sassFiles = {
-		'assets/query-monitor.css': 'assets/query-monitor.scss'
-	};
-	const sassOptions = {
-		implementation: require('sass'),
-		sourceMap: false,
-		outputStyle: 'expanded'
-	};
-
-	config.sass = {
-		dev: {
-			files: sassFiles,
-			options: {
-				...sassOptions,
-				sourceMap: true,
-			}
-		},
-		prod: {
-			files: sassFiles,
-			options: sassOptions,
-		},
-	};
-
 	config.watch = {
 		options: {
 			interval: 1000
