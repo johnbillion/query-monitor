@@ -8,7 +8,6 @@
 	"repository": "johnbillion/query-monitor",
 	"devDependencies": {
 		"@actions/github": "^2",
-		"load-grunt-tasks": "^4",
 		"replace-in-file": "^5",
 		"sass": "^1",
 		"semver": "^7",
