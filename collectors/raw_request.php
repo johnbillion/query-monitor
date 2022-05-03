@@ -69,23 +69,11 @@ class QM_Collector_Raw_Request extends QM_Collector {
 		ksort( $headers );
 
 		$response = array(
-			'status' => self::http_response_code(),
+			'status' => http_response_code(),
 			'headers' => $headers,
 		);
 
 		$this->data['response'] = $response;
-	}
-
-	/**
-	 * @return int|bool|null
-	 */
-	public static function http_response_code() {
-		if ( function_exists( 'http_response_code' ) ) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.http_response_codeFound
-			return http_response_code();
-		}
-
-		return null;
 	}
 }
 
