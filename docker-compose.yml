@@ -16,7 +16,7 @@ services:
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
 
   php:
-    image: wordpressdevelop/php:${LOCAL_PHP-7.4}-fpm
+    image: wordpressdevelop/php:${LOCAL_PHP-8.0}-fpm
     container_name: query-monitor-php
     restart: always
     environment:
