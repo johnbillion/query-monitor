@@ -34,6 +34,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
+		/** @var QM_Data_Overview $data */
 		$data = $this->collector->get_data();
 
 		$db_query_num = null;
@@ -94,12 +95,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			sprintf(
 				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
 				_x( '%ss', 'Time in seconds', 'query-monitor' ),
-				number_format_i18n( $data['time_taken'], 4 )
+				number_format_i18n( $data->time_taken, 4 )
 			)
 		);
 
-		if ( $data['time_limit'] > 0 ) {
-			if ( $data['display_time_usage_warning'] ) {
+		if ( $data->time_limit > 0 ) {
+			if ( $data->display_time_usage_warning ) {
 				echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 			} else {
 				echo '<br><span class="qm-info">';
@@ -107,8 +108,8 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo esc_html( sprintf(
 				/* translators: 1: Percentage of time limit used, 2: Time limit in seconds */
 				__( '%1$s%% of %2$ss limit', 'query-monitor' ),
-				number_format_i18n( $data['time_usage'], 1 ),
-				number_format_i18n( $data['time_limit'] )
+				number_format_i18n( $data->time_usage, 1 ),
+				number_format_i18n( $data->time_limit )
 			) );
 			echo '</span>';
 		} else {
@@ -128,18 +129,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
 		echo '<p>';
 
-		if ( empty( $data['memory'] ) ) {
+		if ( empty( $data->memory ) ) {
 			esc_html_e( 'Unknown', 'query-monitor' );
 		} else {
 			echo esc_html( sprintf(
 				/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
 				__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
-				number_format_i18n( $data['memory'] ),
-				number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 )
+				number_format_i18n( $data->memory ),
+				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
 			) );
 
-			if ( $data['wp_memory_limit'] > 0 ) {
-				if ( $data['display_memory_usage_warning'] ) {
+			if ( $data->wp_memory_limit > 0 ) {
+				if ( $data->display_memory_usage_warning ) {
 					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				} else {
 					echo '<br><span class="qm-info">';
@@ -147,14 +148,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html( sprintf(
 					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
 					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
-					number_format_i18n( $data['wp_memory_usage'], 1 ),
-					number_format_i18n( $data['wp_memory_limit'] / 1024 / 1024 )
+					number_format_i18n( $data->wp_memory_usage, 1 ),
+					number_format_i18n( $data->wp_memory_limit / 1024 / 1024 )
 				) );
 				echo '</span>';
 			}
 
-			if ( $data['memory_limit'] > 0 ) {
-				if ( $data['display_memory_usage_warning'] ) {
+			if ( $data->memory_limit > 0 ) {
+				if ( $data->display_memory_usage_warning ) {
 					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
 				} else {
 					echo '<br><span class="qm-info">';
@@ -162,8 +163,8 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html( sprintf(
 					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
 					__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
-					number_format_i18n( $data['memory_usage'], 1 ),
-					number_format_i18n( $data['memory_limit'] / 1024 / 1024 )
+					number_format_i18n( $data->memory_usage, 1 ),
+					number_format_i18n( $data->memory_limit / 1024 / 1024 )
 				) );
 				echo '</span>';
 			} else {
@@ -363,19 +364,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_title( array $existing ) {
-
+		/** @var QM_Data_Overview $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['memory'] ) ) {
+		if ( empty( $data->memory ) ) {
 			$memory = '??';
 		} else {
-			$memory = number_format_i18n( ( $data['memory'] / 1024 / 1024 ), 1 );
+			$memory = number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 );
 		}
 
 		$title[] = sprintf(
 			/* translators: %s: Time in seconds with a decimal fraction. Note the space between value and unit. */
 			esc_html__( '%s S', 'query-monitor' ),
-			number_format_i18n( $data['time_taken'], 2 )
+			number_format_i18n( $data->time_taken, 2 )
 		);
 		$title[] = sprintf(
 			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit. */
