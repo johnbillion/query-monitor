@@ -54,7 +54,7 @@
 		],
 		"test:phpstan": [
 			"codecept build",
-			"phpstan analyze"
+			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:integration": [
 			"bin/integration-tests.sh"
