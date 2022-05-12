@@ -5,6 +5,7 @@
 set -eo pipefail
 
 # Prep:
+docker-compose --profile acceptance-tests up -d
 WP_PORT=`docker port query-monitor-server | grep "[0-9]+$" -ohE | head -1`
 CHROME_PORT=`docker port query-monitor-chrome | grep "[0-9]+$" -ohE | head -1`
 DATABASE_PORT=`docker port query-monitor-database | grep "[0-9]+$" -ohE | head -1`
