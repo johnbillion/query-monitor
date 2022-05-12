@@ -65,7 +65,7 @@ services:
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
 
   chrome:
-    image: ${CHROME_IMAGE-selenium/standalone-chrome}
+    image: seleniarm/standalone-chromium
     container_name: query-monitor-chrome
     restart: always
     ports:

@@ -60,14 +60,14 @@
 			"bin/integration-tests.sh"
 		],
 		"test:start": [
-			"[[ `uname -m` = \"arm64\" ]] && export CHROME_IMAGE=\"seleniarm/standalone-chromium\"; docker-compose up -d"
+			"docker-compose up -d"
 		],
 		"test:acceptance": [
 			"npm run build",
 			"bin/acceptance-tests.sh"
 		],
 		"test:stop": [
-			"[[ `uname -m` = \"arm64\" ]] && export CHROME_IMAGE=\"seleniarm/standalone-chromium\"; docker-compose down"
+			"docker-compose down"
 		]
 	},
 	"autoload": {
