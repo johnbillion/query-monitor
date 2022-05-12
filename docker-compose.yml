@@ -27,6 +27,7 @@ services:
       WORDPRESS_DEBUG: ${LOCAL_WP_DEBUG-1}
     depends_on:
       - database
+    init: true
     volumes:
       - ./tests/wordpress:/var/www/html/:rw
       - ./tests/wp-config.php:/var/www/html/wp-config.php
