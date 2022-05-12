@@ -5,6 +5,7 @@ services:
   server:
     image: nginx:alpine
     container_name: query-monitor-server
+    restart: always
     ports:
       - 80
     depends_on:
@@ -72,7 +73,6 @@ services:
       - acceptance-tests
     depends_on:
       - server
-    restart: always
     ports:
       - 4444
     extra_hosts:
