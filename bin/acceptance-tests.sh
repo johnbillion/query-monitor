@@ -34,3 +34,6 @@ TEST_SITE_WEBDRIVER_PORT=$CHROME_PORT \
 	TEST_SITE_DATABASE_PORT=$DATABASE_PORT \
 	TEST_SITE_WP_URL=$WP_URL \
 	./vendor/bin/codecept run acceptance --steps "$1"
+
+# Ciao:
+docker-compose stop chrome
