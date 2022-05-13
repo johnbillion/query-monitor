@@ -1,6 +1,10 @@
 {
 	"name": "query-monitor-dev",
 	"dockerComposeFile": "../docker-compose.yml",
+	"postCreateCommand": ".devcontainer/setup.sh",
+	"forwardPorts": [
+		2502
+	],
 	"service": "php",
 	"workspaceFolder": "/var/www/html/wp-content/plugins/query-monitor"
 }

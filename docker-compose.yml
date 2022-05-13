@@ -7,7 +7,7 @@ services:
     container_name: query-monitor-server
     restart: always
     ports:
-      - 80
+      - 2502:80
     depends_on:
       - php
     volumes:
