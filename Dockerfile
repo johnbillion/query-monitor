@@ -2,12 +2,12 @@ ARG LOCAL_PHP="8.0"
 
 FROM wordpressdevelop/php:${LOCAL_PHP}-fpm
 
-# Allow devcontainer/Codespace use www-data as the remote user instead of root.
+# Allow devcontainer/Codespaces to use www-data as the remote user instead of root.
 RUN usermod --shell /bin/bash www-data
 RUN touch /var/www/.bashrc
 RUN chown -R www-data: /var/www/
 
-# Install wp-cli dependences
+# Install WP-CLI dependencies
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -15,7 +15,7 @@ RUN set -ex; \
 		virtual-mysql-client \
 	;
 
-# Install WP CLI
+# Install WP-CLI
 RUN curl -L -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x /usr/local/bin/wp
 ENV WP_CLI_ALLOW_ROOT=1
