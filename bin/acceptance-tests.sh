@@ -10,7 +10,7 @@ WP_PORT=`docker port query-monitor-server | grep "[0-9]+$" -ohE | head -1`
 CHROME_PORT=`docker port query-monitor-chrome | grep "[0-9]+$" -ohE | head -1`
 DATABASE_PORT=`docker port query-monitor-database | grep "[0-9]+$" -ohE | head -1`
 WP_URL="http://host.docker.internal:${WP_PORT}"
-WP="docker-compose run --rm wpcli wp --url=${WP_URL}"
+WP="docker-compose run php wp --url=${WP_URL}"
 
 # Reset or install the test database:
 echo "Installing database..."
@@ -24,7 +24,7 @@ $WP core install \
 	--admin_password="admin" \
 	--admin_email="admin@example.com" \
 	--skip-email \
-	--require="wp-content/plugins/query-monitor/bin/mysqli_report.php"
+	--require="bin/mysqli_report.php"
 echo "Home URL: $WP_URL"
 $WP plugin activate query-monitor
 

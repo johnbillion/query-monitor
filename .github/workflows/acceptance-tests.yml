@@ -89,7 +89,7 @@ jobs:
       run: docker ps -a
 
     - name: Debug WordPress version
-      run: docker-compose run --rm wpcli wp core version
+      run: docker-compose run php wp core version
 
     - name: Run the tests
       run: composer test:acceptance

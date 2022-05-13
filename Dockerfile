@@ -7,9 +7,18 @@ RUN usermod --shell /bin/bash www-data
 RUN touch /var/www/.bashrc
 RUN chown -R www-data: /var/www/
 
+# Install wp-cli dependences
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		less \
+		virtual-mysql-client \
+	;
+
 # Install WP CLI
 RUN curl -L -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x /usr/local/bin/wp
+ENV WP_CLI_ALLOW_ROOT=1
 
 # Install nvm and node
 ENV NODE_VERSION=16.15.0

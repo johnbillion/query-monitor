@@ -59,25 +59,6 @@ services:
     networks:
       - qm
 
-  wpcli:
-    image: wordpress:cli-php${LOCAL_PHP-7.4}
-    container_name: query-monitor-wpcli
-    environment:
-      WORDPRESS_DB_HOST: database
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
-    depends_on:
-      - database
-      - php
-    init: true
-    volumes:
-      - ./tests/wordpress:/var/www/html/:rw
-      - ./tests/wp-config.php:/var/www/html/wp-config.php
-      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
-    networks:
-      - qm
-
   chrome:
     image: seleniarm/standalone-chromium
     container_name: query-monitor-chrome
