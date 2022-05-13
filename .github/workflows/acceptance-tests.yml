@@ -88,8 +88,10 @@ jobs:
     - name: Log running Docker containers
       run: docker ps -a
 
-    - name: Debug WordPress version
-      run: docker-compose run php wp core version
+    - name: Debug versions
+      run: |
+        docker-compose run php php --version
+        docker-compose run php wp core version
 
     - name: Run the tests
       run: composer test:acceptance
