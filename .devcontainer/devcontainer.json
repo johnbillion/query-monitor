@@ -1,0 +1,6 @@
+{
+	"name": "query-monitor-dev",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "php",
+	"workspaceFolder": "/var/www/html/wp-content/plugins/query-monitor"
+}
