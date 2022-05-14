@@ -300,15 +300,15 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$host = (string) parse_url( $source, PHP_URL_HOST );
 		$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
 		$port = (string) parse_url( $source, PHP_URL_PORT );
-		$http_host = $data['host'];
-		$http_port = $data['port'];
+		$http_host = $data->host;
+		$http_port = $data->port;
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
 			$port = $http_port;
 		}
 
-		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
+		if ( $scheme && $data->is_ssl && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
 			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
 				'src' => $source,
 			) );
