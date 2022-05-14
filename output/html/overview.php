@@ -49,8 +49,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
+		/** @var QM_Collector_Raw_Request|null $raw_request */
 		$raw_request = QM_Collectors::get( 'raw_request' );
+
+		/** @var QM_Collector_Cache|null $cache */
 		$cache = QM_Collectors::get( 'cache' );
+
+		/** @var QM_Collector_HTTP|null $http */
 		$http = QM_Collectors::get( 'http' );
 
 		$qm_broken = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
@@ -68,18 +73,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		if ( $raw_request ) {
 			echo '<section id="qm-overview-raw-request">';
+			/** @var QM_Data_Raw_Request $raw_data */
 			$raw_data = $raw_request->get_data();
 
-			if ( ! empty( $raw_data['response']['status'] ) ) {
-				$status = $raw_data['response']['status'];
+			if ( ! empty( $raw_data->response['status'] ) ) {
+				$status = $raw_data->response['status'];
 			} else {
 				$status = __( 'Unknown HTTP Response Code', 'query-monitor' );
 			}
 
 			printf(
 				'<h3>%1$s %2$s → %3$s</h3>',
-				esc_html( $raw_data['request']['method'] ),
-				esc_html( $raw_data['request']['url'] ),
+				esc_html( $raw_data->request['method'] ),
+				esc_html( $raw_data->request['url'] ),
 				esc_html( $status )
 			);
 			echo '</section>';

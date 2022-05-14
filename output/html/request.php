@@ -39,6 +39,8 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		/** @var QM_Collector_DB_Queries|null $db_queries */
 		$db_queries = QM_Collectors::get( 'db_queries' );
+
+		/** @var QM_Collector_Raw_Request|null $raw_request */
 		$raw_request = QM_Collectors::get( 'raw_request' );
 
 		$this->before_non_tabular_output();
@@ -182,6 +184,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '</section>';
 
 		if ( ! empty( $raw_request ) ) {
+			/** @var QM_Data_Raw_Request $raw_data */
 			$raw_data = $raw_request->get_data();
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>';
@@ -194,7 +197,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			) as $item => $name ) {
 				echo '<tr>';
 				echo '<th scope="row">' . esc_html( $name ) . '</td>';
-				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data['request'][ $item ] ) . '</td>';
+				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data->request[ $item ] ) . '</td>';
 				echo '</tr>';
 			}
 

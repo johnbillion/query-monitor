@@ -4,9 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Raw_Request extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Raw_Request>
+ */
+class QM_Collector_Raw_Request extends QM_DataCollector {
 
 	public $id = 'raw_request';
+
+	public function get_storage() {
+		return new QM_Data_Raw_Request();
+	}
 
 	/**
 	 * Extracts headers from a PHP-style $_SERVER array.
@@ -57,7 +64,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 
 		$request['url'] = sprintf( '%s://%s%s', $request['scheme'], $request['host'], $request['path'] );
 
-		$this->data['request'] = $request;
+		$this->data->request = $request;
 
 		$headers = array();
 		$raw_headers = headers_list();
@@ -73,7 +80,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 			'headers' => $headers,
 		);
 
-		$this->data['response'] = $response;
+		$this->data->response = $response;
 	}
 
 	/**
