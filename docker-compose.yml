@@ -56,7 +56,7 @@ services:
       - qm
 
   wpcli:
-    image: wordpress:cli-php${LOCAL_PHP-7.4}
+    image: wordpress:cli-php${LOCAL_PHP-8.0}
     container_name: query-monitor-wpcli
     environment:
       WORDPRESS_DB_HOST: database

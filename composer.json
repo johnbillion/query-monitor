@@ -43,6 +43,7 @@
 	},
 	"scripts": {
 		"test": [
+			"composer validate --strict",
 			"@test:phpstan",
 			"@test:cs",
 			"@test:integration",
