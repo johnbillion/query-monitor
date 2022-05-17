@@ -41,7 +41,7 @@ $qm_dir = dirname( __FILE__ );
 require_once "{$qm_dir}/classes/PHP.php";
 
 if ( ! QM_PHP::version_met() ) {
-	add_action( 'admin_notices', 'QM_PHP::php_version_nope' );
+	add_action( 'all_admin_notices', 'QM_PHP::php_version_nope' );
 	return;
 }
 

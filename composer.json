@@ -43,6 +43,7 @@
 	},
 	"scripts": {
 		"test": [
+			"composer validate --strict",
 			"@test:phpstan",
 			"@test:cs",
 			"@test:integration",
@@ -54,20 +55,20 @@
 		],
 		"test:phpstan": [
 			"codecept build",
-			"phpstan analyze"
+			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:integration": [
 			"bin/integration-tests.sh"
 		],
 		"test:start": [
-			"[[ `uname -m` = \"arm64\" ]] && export CHROME_IMAGE=\"seleniarm/standalone-chromium\"; docker-compose up -d"
+			"docker-compose up -d"
 		],
 		"test:acceptance": [
 			"npm run build",
 			"bin/acceptance-tests.sh"
 		],
 		"test:stop": [
-			"[[ `uname -m` = \"arm64\" ]] && export CHROME_IMAGE=\"seleniarm/standalone-chromium\"; docker-compose down"
+			"docker-compose down"
 		]
 	},
 	"autoload": {
