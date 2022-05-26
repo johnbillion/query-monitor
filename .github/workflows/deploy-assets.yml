@@ -27,6 +27,13 @@ jobs:
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -f assets/*
+          git commit -m "Assets"
+
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-asset-update@1.4.1
         env:
