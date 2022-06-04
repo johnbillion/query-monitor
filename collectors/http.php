@@ -311,7 +311,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public function process() {
 		$this->data->ltime = 0;
 
-		if ( ! isset( $this->data->http ) ) {
+		if ( empty( $this->data->http ) ) {
 			return;
 		}
 

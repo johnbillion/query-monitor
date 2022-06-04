@@ -31,13 +31,10 @@ class QM_Collector_DB_Components extends QM_DataCollector {
 			/** @var QM_Data_DB_Queries $dbq_data */
 			$dbq_data = $dbq->get_data();
 
-			if ( isset( $dbq_data->component_times ) ) {
-				$this->data->times = $dbq_data->component_times;
-				QM_Util::rsort( $this->data->times, 'ltime' );
-			}
-			if ( isset( $dbq_data->types ) ) {
-				$this->data->types = $dbq_data->types;
-			}
+			$this->data->times = $dbq_data->component_times;
+			QM_Util::rsort( $this->data->times, 'ltime' );
+
+			$this->data->types = $dbq_data->types;
 		}
 
 	}

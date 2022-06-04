@@ -39,7 +39,7 @@ class QM_Data_DB_Queries extends QM_Data {
 	 *   types: array<string, int>,
 	 * }>
 	 */
-	public $times;
+	public $times = array();
 
 	/**
 	 * @var array<string, array<int, int>>

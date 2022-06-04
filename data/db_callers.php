@@ -14,5 +14,5 @@ class QM_Data_DB_Callers extends QM_Data {
 	 *   types: array<string, int>,
 	 * }>
 	 */
-	public $times;
+	public $times = array();
 }

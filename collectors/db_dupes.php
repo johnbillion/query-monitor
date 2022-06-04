@@ -34,7 +34,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 		/** @var QM_Data_DB_Queries $dbq_data */
 		$dbq_data = $dbq->get_data();
 
-		if ( ! isset( $dbq_data->dupes ) ) {
+		if ( empty( $dbq_data->dupes ) ) {
 			return;
 		}
 
