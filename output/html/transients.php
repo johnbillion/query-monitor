@@ -140,7 +140,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 		/** @var QM_Data_Transients $data */
 		$data = $this->collector->get_data();
-		$count = isset( $data->trans ) ? count( $data->trans ) : 0;
+		$count = count( $data->trans );
 
 		$title = ( empty( $count ) )
 			? __( 'Transient Updates', 'query-monitor' )

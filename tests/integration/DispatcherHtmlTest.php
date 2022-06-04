@@ -13,7 +13,7 @@ class DispatcherHTML extends Test {
 
 		parent::_before();
 
-		$admin = $this->factory->user->create_and_get( array(
+		$admin = self::factory()->user->create_and_get( array(
 			'role' => 'administrator',
 		) );
 

@@ -19,7 +19,7 @@ class QM_Data_Transients extends QM_Data {
 	 *   size_formatted: string,
 	 * }>
 	 */
-	public $trans;
+	public $trans = array();
 
 	/**
 	 * @var bool

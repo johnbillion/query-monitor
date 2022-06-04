@@ -23,6 +23,10 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 
 	/**
 	 * @return array<string, mixed>
+	 * @phpstan-return array<QM_Collector_Logger::*, list<array{
+	 *   message: string,
+	 *   stack: array<int, string>,
+	 * }>>
 	 */
 	public function get_output() {
 		$output = array();
@@ -34,19 +38,9 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 		}
 
 		foreach ( $data->logs as $log ) {
-			$stack = array();
-
-			if ( isset( $log['trace'] ) ) {
-				$filtered_trace = $log['trace']->get_filtered_trace();
-
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = $item['display'];
-				}
-			}
-
 			$output[ $log['level'] ][] = array(
 				'message' => $log['message'],
-				'stack' => $stack,
+				'stack' => wp_list_pluck( $log['filtered_trace'], 'display' ),
 			);
 		}
 
