@@ -7,17 +7,17 @@
 
 class QM_Data_Redirect extends QM_Data {
 	/**
-	 * @var QM_Backtrace
+	 * @var ?QM_Backtrace
 	 */
 	public $trace;
 
 	/**
-	 * @var string
+	 * @var ?string
 	 */
 	public $location;
 
 	/**
-	 * @var int
+	 * @var ?int
 	 */
 	public $status;
 }

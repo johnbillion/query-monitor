@@ -7,7 +7,7 @@
 
 class QM_Data_DB_Queries extends QM_Data {
 	/**
-	 * @var int
+	 * @var ?int
 	 */
 	public $total_qs;
 
@@ -27,7 +27,7 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $expensive;
 
 	/**
-	 * @var array<string, stdClass>
+	 * @var ?array<string, stdClass>
 	 */
 	public $dbs;
 

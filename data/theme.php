@@ -37,22 +37,22 @@ class QM_Data_Theme extends QM_Data {
 	public $template_path;
 
 	/**
-	 * @var string
+	 * @var ?string
 	 */
 	public $template_file;
 
 	/**
-	 * @var array<int, string>
+	 * @var ?array<int, string>
 	 */
 	public $template_hierarchy;
 
 	/**
-	 * @var array<int, string>
+	 * @var ?array<int, string>
 	 */
 	public $timber_files;
 
 	/**
-	 * @var array<int, string>
+	 * @var ?array<int, string>
 	 */
 	public $body_class;
 

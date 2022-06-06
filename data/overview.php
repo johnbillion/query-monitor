@@ -7,7 +7,7 @@
 
 class QM_Data_Overview extends QM_Data {
 	/**
-	 * @var float
+	 * @var ?float
 	 */
 	public $time_taken;
 
