@@ -194,9 +194,9 @@ class CollectorPHPErrors extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		self::assertArrayHasKey( 'errors', $actual );
-		self::assertArrayHasKey( 'notice', $actual['errors'] );
-		self::assertEquals( 2, count( $actual['errors']['notice'] ) );
+		self::assertObjectHasAttribute( 'errors', $actual );
+		self::assertArrayHasKey( 'notice', $actual->errors );
+		self::assertEquals( 2, count( $actual->errors['notice'] ) );
 
 		// silenced errors:
 		self::assertArrayNotHasKey( 'silenced', $actual );
@@ -237,15 +237,15 @@ class CollectorPHPErrors extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		self::assertArrayHasKey( 'errors', $actual );
-		self::assertArrayHasKey( 'warning', $actual['errors'] );
-		self::assertArrayNotHasKey( 'notice', $actual['errors'] );
-		self::assertEquals( 1, count( $actual['errors']['warning'] ) );
+		self::assertObjectHasAttribute( 'errors', $actual );
+		self::assertArrayHasKey( 'warning', $actual->errors );
+		self::assertArrayNotHasKey( 'notice', $actual->errors );
+		self::assertEquals( 1, count( $actual->errors['warning'] ) );
 
 		// silenced errors:
-		self::assertArrayHasKey( 'silenced', $actual );
-		self::assertArrayHasKey( 'notice', $actual['silenced'] );
-		self::assertArrayNotHasKey( 'warning', $actual['silenced'] );
-		self::assertEquals( 1, count( $actual['silenced']['notice'] ) );
+		self::assertObjectHasAttribute( 'silenced', $actual );
+		self::assertArrayHasKey( 'notice', $actual->silenced );
+		self::assertArrayNotHasKey( 'warning', $actual->silenced );
+		self::assertEquals( 1, count( $actual->silenced['notice'] ) );
 	}
 }
