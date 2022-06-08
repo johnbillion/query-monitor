@@ -42,7 +42,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		}
 
 		$total_time = 0;
-		$span = count( $data->types ) + 2;
 
 		$this->before_tabular_output();
 
@@ -65,7 +64,6 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody>';
-
 
 		foreach ( $data->times as $row ) {
 			$total_time += $row['ltime'];
