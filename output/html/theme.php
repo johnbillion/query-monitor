@@ -108,7 +108,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 					echo esc_html( $display );
 				}
 
-				if ( $data['count_template_parts'][ $filename ] > 1 ) {
+				if ( isset( $data['count_template_parts'][ $filename ] ) && $data['count_template_parts'][ $filename ] > 1 ) {
 					$count = sprintf(
 						/* translators: %s: The number of times that a template part file was included in the page */
 						_nx( 'Included %s time', 'Included %s times', $data['count_template_parts'][ $filename ], 'template parts', 'query-monitor' ),
