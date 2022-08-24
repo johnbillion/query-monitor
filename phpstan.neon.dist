@@ -34,3 +34,4 @@ parameters:
 		-
 			path: tests/acceptance/*
 			message: '#^Method [^:]+::data[a-zA-Z]+\(\) is unused\.$#'
+	reportUnmatchedIgnoredErrors: false
