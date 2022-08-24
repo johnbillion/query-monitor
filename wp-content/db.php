@@ -56,6 +56,7 @@ if ( ! QM_PHP::version_met() ) {
 }
 
 if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
+	add_action( 'all_admin_notices', 'QM_PHP::vendor_nope' );
 	return;
 }
 

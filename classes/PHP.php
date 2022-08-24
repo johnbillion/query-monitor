@@ -42,4 +42,22 @@ class QM_PHP {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
+	public static function vendor_nope() {
+		printf(
+			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
+			sprintf(
+				/* translators: 1: CLI command to run, 2: plugin directory name */
+				esc_html__( 'Dependencies for Query Monitor need to be installed. Run %1$s from the %2$s directory.', 'query-monitor' ),
+				'<code>composer install --no-dev</code>',
+				sprintf(
+					'<code>%s</code>',
+					esc_html( dirname( __FILE__, 2 ) )
+				)
+			)
+		);
+	}
+
 }
