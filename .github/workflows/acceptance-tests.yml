@@ -28,7 +28,7 @@ jobs:
             php: '8.1'
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       LOCAL_PHP: ${{ matrix.php }}
