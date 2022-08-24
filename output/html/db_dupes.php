@@ -49,6 +49,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['dupe_components'] ) ) {
 			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
@@ -68,6 +69,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			// This should probably happen in the collector's processor
 			$type = QM_Util::get_query_type( $sql );
 			$sql_out = self::format_sql( $sql );
+			$time = $data['dupe_times'][ $sql ];
 
 			if ( 'SELECT' !== $type ) {
 				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";
@@ -79,6 +81,9 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '</td>';
 			echo '<td class="qm-num">';
 			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
+			echo '</td>';
+			echo '<td class="qm-num">';
+			echo esc_html( number_format_i18n( $time, 4 ) );
 			echo '</td>';
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
