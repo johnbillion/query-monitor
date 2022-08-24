@@ -79,7 +79,6 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$this->data['default_version'] = get_bloginfo( 'version' );
 		$this->data['port'] = (string) parse_url( $this->data['host'], PHP_URL_PORT );
 
-		$home_url = home_url();
 		$positions = array(
 			'missing',
 			'broken',
@@ -169,7 +168,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "{$home_url}/", '/', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "https://{$this->data['host']}/", '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
