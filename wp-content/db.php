@@ -55,6 +55,10 @@ if ( ! QM_PHP::version_met() ) {
 	return;
 }
 
+if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
+	return;
+}
+
 require_once "{$qm_dir}/vendor/autoload.php";
 
 if ( ! class_exists( 'QM_Backtrace' ) ) {
