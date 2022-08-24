@@ -54,7 +54,7 @@ class QM_PHP {
 				'<code>composer install --no-dev</code>',
 				sprintf(
 					'<code>%s</code>',
-					esc_html( dirname( __FILE__, 2 ) )
+					esc_html( dirname( dirname( __FILE__ ) ) )
 				)
 			)
 		);
