@@ -298,7 +298,7 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Does this plugin work with PHP 8?
 
-Yes.
+Yes, it's actively tested and working up to PHP 8.1.
 
 ## Who can see Query Monitor's output?
 
@@ -320,7 +320,7 @@ Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease o
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
-* Backuping up or restoring your site
+* Backing up or restoring your site
 * Exporting a large amount of data
 * Running security scans
 
