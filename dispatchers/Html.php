@@ -46,7 +46,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
-		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+		add_action( 'shutdown', array( $this, 'dispatch' ), PHP_INT_MAX );
 
 		add_action( 'wp_footer', array( $this, 'action_footer' ) );
 		add_action( 'admin_footer', array( $this, 'action_footer' ) );
