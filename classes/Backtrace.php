@@ -158,6 +158,10 @@ class QM_Backtrace {
 		}
 	}
 
+	/**
+	 * @param mixed[] $frame
+	 * @return void
+	 */
 	public function push_frame( array $frame ) {
 		$this->top_frame = $frame;
 	}
