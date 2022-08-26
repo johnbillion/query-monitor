@@ -240,6 +240,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		$trace = new QM_Backtrace();
+		$trace->push_frame( array(
+			'file' => $file,
+			'line' => $line,
+		) );
 		$caller = $trace->get_caller();
 		$key = md5( $message . $file . $line . $caller['id'] );
 

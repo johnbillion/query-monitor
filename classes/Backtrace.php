@@ -119,6 +119,11 @@ class QM_Backtrace {
 	protected $component = null;
 
 	/**
+	 * @var mixed[]|null
+	 */
+	protected $top_frame = null;
+
+	/**
 	 * @param array<string, mixed[]> $args
 	 * @param mixed[] $trace
 	 */
@@ -153,6 +158,10 @@ class QM_Backtrace {
 		}
 	}
 
+	public function push_frame( array $frame ) {
+		$this->top_frame = $frame;
+	}
+
 	/**
 	 * @return array<int, string>
 	 */
@@ -185,8 +194,13 @@ class QM_Backtrace {
 		}
 
 		$components = array();
+		$frames = $this->get_filtered_trace();
 
-		foreach ( $this->get_filtered_trace() as $frame ) {
+		if ( $this->top_frame ) {
+			array_unshift( $frames, $this->top_frame );
+		}
+
+		foreach ( $frames as $frame ) {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
