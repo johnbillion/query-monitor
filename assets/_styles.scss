@@ -432,6 +432,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		overflow-y: scroll !important;
 		overscroll-behavior: contain !important;
 		height: auto !important;
+		min-width: 160px !important;
 
 		ul {
 			display: block !important;
