@@ -69,6 +69,12 @@ jobs:
       run: |
         composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
 
+    - name: Install node dependencies
+      run: npm install
+
+    - name: Run the build
+      run: npm run build
+
     - name: Start Docker environment
       run: |
         composer test:start
