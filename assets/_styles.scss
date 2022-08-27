@@ -358,6 +358,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		.qm-icon svg {
 			height: 20px !important;
 			width: 20px !important;
+			fill: var( --qm-title-button-fg ) !important;
 		}
 
 		.qm-button-container-close {
@@ -377,7 +378,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		button {
 			background: var( --qm-title-button-bg ) !important;
-			color: var( --qm-title-button-fg ) !important;
 			cursor: pointer !important;
 			display: inline-block !important;
 			margin: 0 0 0 0px !important;
@@ -975,6 +975,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr .qm-warn {
 		background-color: var( --qm-warn-bg ) !important;
 		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon svg {
+			fill: var( --qm-warn-fg ) !important;
+		}
 	}
 
 	.qm tbody tr th.qm-warn,
@@ -983,6 +987,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr.qm-warn th {
 		background-color: var( --qm-warn-bg ) !important;
 		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon svg {
+			fill: var( --qm-warn-fg ) !important;
+		}
 	}
 
 	.qm tbody tr.qm-odd th.qm-warn,
@@ -998,6 +1006,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn code {
 		background-color: transparent !important;
 		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon svg {
+			fill: var( --qm-warn-fg ) !important;
+		}
 	}
 
 	.qm .qm-notice {
@@ -1017,10 +1029,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		svg {
 			height: 16px !important;
 			width: 16px !important;
+			fill: var( --qm-container-fg ) !important;
+			vertical-align: top !important;
 		}
 	}
 
-	.qm .qm-icon-yes-alt path {
+	.qm .qm-icon-yes-alt svg {
 		fill: #0a0 !important;
 	}
 
