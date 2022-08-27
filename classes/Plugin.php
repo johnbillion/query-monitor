@@ -97,6 +97,10 @@ abstract class QM_Plugin {
 	}
 
 	public function icon( $name ) {
+		if ( 'blank' === $name ) {
+			return '<span class="qm-icon qm-icon-blank"></span>';
+		}
+
 		$file = $this->plugin_path( "assets/icons/{$name}.svg" );
 
 		if ( ! file_exists( $file ) ) {
