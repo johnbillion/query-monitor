@@ -16,7 +16,7 @@ If you discover a security issue in Query Monitor, please report it to [the secu
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and to run the tests.
+You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
 
 ### Prerequisites
 
@@ -33,8 +33,6 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 
        npm install
 
-3. If you want to run the tests locally, check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
-
 ## Building the Assets
 
 To compile the Sass files into CSS:
@@ -47,17 +45,33 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-To run the whole test suite which includes unit tests and linting:
+The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running, then start the containers with:
+
+	composer test:start
+
+To run the whole test suite which includes integration tests, acceptance tests, linting, and static analysis:
 
 	composer test
 
-To run just the PHPUnit tests:
+To run just the integration tests:
 
-	composer test:ut
+	composer test:integration
+
+To run just the acceptance tests:
+
+	composer test:acceptance
 
 To run just the code sniffer:
 
 	composer test:cs
+
+To run just the static analysis:
+
+	composer test:phpstan
+
+To stop the Docker containers:
+
+	composer test:stop
 
 ## Releasing a New Version
 
@@ -69,12 +83,10 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
 1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, "Tested up to" versions, FAQs, screenshots, etc.
-   - This is currently a manual process while I decide whether I want to sync parts of these files.
-1. Ensure `.distignore` is up to date with all files that shouldn't be part of the build.
-   - To do this, run `wp dist-archive . archive.zip` then check the contents for files that shouldn't be part of the package.
+1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
+   - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
-   - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.
 
 ### For Release
 
@@ -82,7 +94,6 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
    - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
-1. Commit the version number changes
 1. `git push origin develop`
 1. Wait until (and ensure that) [the build passes](https://github.com/johnbillion/query-monitor/actions)
 1. `git checkout master`

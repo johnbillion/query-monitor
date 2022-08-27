@@ -5,26 +5,56 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 abstract class QM_Collector_Assets extends QM_Collector {
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'wp_print_footer_scripts',    array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'admin_head',                 array( $this, 'action_head' ), 9999 );
-		add_action( 'wp_head',                    array( $this, 'action_head' ), 9999 );
-		add_action( 'login_head',                 array( $this, 'action_head' ), 9999 );
-		add_action( 'embed_head',                 array( $this, 'action_head' ), 9999 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		add_action( 'admin_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'wp_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'login_head', array( $this, 'action_head' ), 9999 );
+		add_action( 'embed_head', array( $this, 'action_head' ), 9999 );
 	}
 
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'admin_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'wp_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'login_head', array( $this, 'action_head' ), 9999 );
+		remove_action( 'embed_head', array( $this, 'action_head' ), 9999 );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * @return string
+	 */
 	abstract public function get_dependency_type();
 
+	/**
+	 * @return void
+	 */
 	public function action_head() {
 		$type = $this->get_dependency_type();
 
 		$this->data['header'] = $GLOBALS[ "wp_{$type}" ]->done;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function action_print_footer_scripts() {
 		if ( empty( $this->data['header'] ) ) {
 			return;
@@ -36,16 +66,19 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		if ( empty( $this->data['header'] ) && empty( $this->data['footer'] ) ) {
 			return;
 		}
 
-		$this->data['is_ssl']          = is_ssl();
-		$this->data['host']            = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data['is_ssl'] = is_ssl();
+		$this->data['host'] = wp_unslash( $_SERVER['HTTP_HOST'] );
 		$this->data['default_version'] = get_bloginfo( 'version' );
+		$this->data['port'] = (string) parse_url( $this->data['host'], PHP_URL_PORT );
 
-		$home_url  = home_url();
 		$positions = array(
 			'missing',
 			'broken',
@@ -55,10 +88,10 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 		$this->data['counts'] = array(
 			'missing' => 0,
-			'broken'  => 0,
-			'header'  => 0,
-			'footer'  => 0,
-			'total'   => 0,
+			'broken' => 0,
+			'header' => 0,
+			'footer' => 0,
+			'total' => 0,
 		);
 
 		$type = $this->get_dependency_type();
@@ -68,8 +101,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				$this->data[ $position ] = array();
 			}
 		}
-		$raw     = $GLOBALS[ "wp_{$type}" ];
-		$broken  = array_values( array_diff( $raw->queue, $raw->done ) );
+		$raw = $GLOBALS[ "wp_{$type}" ];
+		$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
 
 		// A broken asset is one which has been deregistered without also being dequeued
@@ -102,7 +135,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		}
 
 		$all_dependencies = array();
-		$all_dependents   = array();
+		$all_dependents = array();
 
 		$missing_dependencies = array();
 
@@ -119,10 +152,10 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				}
 
 				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
-				$dependents       = $this->get_dependents( $dependency, $raw );
-				$all_dependents   = array_merge( $all_dependents, $dependents );
+				$dependents = $this->get_dependents( $dependency, $raw );
+				$all_dependents = array_merge( $all_dependents, $dependents );
 
-				list( $host, $source, $local ) = $this->get_dependency_data( $dependency );
+				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
 				if ( empty( $dependency->ver ) ) {
 					$ver = '';
@@ -135,7 +168,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( $home_url, '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "https://{$this->data['host']}/", '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -148,13 +181,14 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				}
 
 				$this->data['assets'][ $position ][ $handle ] = array(
-					'host'         => $host,
-					'source'       => $source,
-					'local'        => $local,
-					'ver'          => $ver,
-					'warning'      => $warning,
-					'display'      => $display,
-					'dependents'   => $dependents,
+					'host' => $host,
+					'port' => $port,
+					'source' => $source,
+					'local' => $local,
+					'ver' => $ver,
+					'warning' => $warning,
+					'display' => $display,
+					'dependents' => $dependents,
 					'dependencies' => $dependencies,
 				);
 
@@ -176,12 +210,17 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$this->data['missing_dependencies'] = $missing_dependencies;
 	}
 
+	/**
+	 * @param _WP_Dependency $item
+	 * @param WP_Dependencies $dependencies
+	 * @return array<int, string>
+	 */
 	protected static function get_broken_dependencies( _WP_Dependency $item, WP_Dependencies $dependencies ) {
 		$broken = array();
 
 		foreach ( $item->deps as $handle ) {
 			$dep = $dependencies->query( $handle );
-			if ( $dep ) {
+			if ( $dep instanceof _WP_Dependency ) {
 				$broken = array_merge( $broken, self::get_broken_dependencies( $dep, $dependencies ) );
 			} else {
 				$broken[] = $item->handle;
@@ -191,13 +230,18 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		return $broken;
 	}
 
+	/**
+	 * @param _WP_Dependency $dependency
+	 * @param WP_Dependencies $dependencies
+	 * @return array<int, string>
+	 */
 	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
 		$dependents = array();
-		$handles    = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
+		$handles = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
 		foreach ( $handles as $handle ) {
 			$item = $dependencies->query( $handle );
-			if ( $item ) {
+			if ( $item instanceof _WP_Dependency ) {
 				if ( in_array( $dependency->handle, $item->deps, true ) ) {
 					$dependents[] = $handle;
 				}
@@ -209,10 +253,23 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		return $dependents;
 	}
 
+	/**
+	 * @param _WP_Dependency $dependency
+	 * @return mixed[]
+	 * @phpstan-return array{
+	 *   0: string,
+	 *   1: string|WP_Error,
+	 *   2: bool,
+	 *   3: string,
+	 * }
+	 */
 	public function get_dependency_data( _WP_Dependency $dependency ) {
-		$data   = $this->get_data();
+		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
-		$src    = $dependency->src;
+		$src = $dependency->src;
+		$host = '';
+		$scheme = '';
+		$port = '';
 
 		if ( null === $dependency->ver ) {
 			$ver = '';
@@ -227,12 +284,18 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host      = (string) parse_url( $source, PHP_URL_HOST );
-		$scheme    = (string) parse_url( $source, PHP_URL_SCHEME );
+		if ( is_string( $source ) ) {
+			$host = (string) parse_url( $source, PHP_URL_HOST );
+			$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
+			$port = (string) parse_url( $source, PHP_URL_PORT );
+		}
+
 		$http_host = $data['host'];
+		$http_port = $data['port'];
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
+			$port = $http_port;
 		}
 
 		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
@@ -248,12 +311,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			}
 		} elseif ( empty( $source ) ) {
 			$source = '';
-			$host   = '';
+			$host = '';
 		}
 
 		$local = ( $http_host === $host );
 
-		return array( $host, $source, $local );
+		return array( $host, $source, $local, $port );
 	}
 
 }

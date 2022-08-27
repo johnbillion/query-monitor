@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 
-	<config name="testVersion" value="5.3-"/>
+	<config name="testVersion" value="5.6-"/>
+	<arg name="extensions" value="php"/>
 
-	<exclude-pattern>*/.github/*</exclude-pattern>
-	<exclude-pattern>*/build/*</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/tests/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>Gruntfile\.js</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
+
+		<!-- Exclude short description sniff so short `@var` notation can be used -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
@@ -33,15 +35,13 @@
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
 
 	</rule>
 
 	<rule ref="WordPress-Docs" />
-
-	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
-		<exclude-pattern>*\.css</exclude-pattern>
-	</rule>
 
 	<!-- Custom rule properties -->
 	<rule ref="WordPress.WP.I18n">

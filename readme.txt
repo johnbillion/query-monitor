@@ -2,10 +2,10 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.7
-Stable tag: 3.6.7
+Tested up to: 5.9
+Stable tag: 3.9.0
 License: GPLv2 or later
-Requires PHP: 5.3
+Requires PHP: 5.6
 Donate link: https://johnblackbourn.com/donations/
 
 Query Monitor is the developer tools panel for WordPress.
@@ -39,7 +39,7 @@ In addition:
 
 * Whenever a redirect occurs, Query Monitor adds an HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to trace what triggered the redirect.
 * The response from any jQuery-initiated Ajax request on the page will contain various debugging information in its headers. PHP errors also get output to the browser's developer console.
-* The response from an authenticated WordPress REST API request will contain various debugging information in its headers, as long as the authenticated user has permission to view Query Monitor's output.
+* The response from an authenticated WordPress REST API request will contain an overview of performance information and PHP errors in its headers, as long as the authenticated user has permission to view Query Monitor's output. An [an enveloped REST API request](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/#_envelope) will include even more debugging information in the `qm` property of the response.
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
@@ -72,7 +72,7 @@ Query Monitor is private by default and always will be. It does not persistently
 
 ### Does this plugin work with PHP 8?
 
-Yes.
+Yes, it's actively tested and working up to PHP 8.1.
 
 ### Who can access Query Monitor's output?
 
@@ -88,11 +88,21 @@ Long answer: Query Monitor has a small impact on page generation time because it
 
 Query Monitor's memory usage typically accounts for around 10% of the total memory used to generate the page.
 
+### Can I prevent Query Monitor from collecting data during long-running requests?
+
+Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+
+This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
+
+* Backing up or restoring your site
+* Exporting a large amount of data
+* Running security scans
+
 ### Are there any add-on plugins for Query Monitor?
 
 [A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
 
-In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, just deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
+In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 
 ### Where can I suggest a new feature or report a bug?
 
@@ -105,6 +115,8 @@ Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-d
 ### Is Query Monitor available on WordPress.com VIP Go?
 
 Yes, it's included as part of the VIP Go platform. However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
+
+Please note that information about database queries and the environment is somewhat restricted on VIP. This is a platform restriction and not a Query Monitor issue.
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
@@ -120,8 +132,6 @@ Your `wpdb` instance will then show up as a separate panel, and the query time a
 ### Can I click on stack traces to open the file in my editor?
 
 Yes. You can enable this on the Settings panel.
-
-### Do you accept donations?
 
 ### Do you accept donations?
 

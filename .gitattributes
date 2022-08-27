@@ -7,7 +7,6 @@
 /bin export-ignore
 /node_modules export-ignore
 /tests export-ignore
-/vendor export-ignore
 
 # Files
 /.gitattributes export-ignore
@@ -15,13 +14,13 @@
 /.gitignore export-ignore
 /assets/*.map export-ignore
 /assets/*.scss export-ignore
-/composer.json export-ignore
+/codeception.dist.yml export-ignore
 /composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
-/Gruntfile.js export-ignore
+/docker-compose.yml export-ignore
 /package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
-/phpunit.xml.dist export-ignore
+/phpstan.neon.dist export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore
