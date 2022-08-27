@@ -255,7 +255,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 	/**
 	 * @param _WP_Dependency $dependency
-	 * @return array{
+	 * @return mixed[]
+	 * @phpstan-return array{
 	 *   0: string,
 	 *   1: string|WP_Error,
 	 *   2: bool,
