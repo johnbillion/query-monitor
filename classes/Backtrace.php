@@ -179,7 +179,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return mixed[]|false
 	 */
 	public function get_caller() {
 
@@ -303,7 +303,12 @@ class QM_Backtrace {
 				$lowest['display'] = $file;
 				$lowest['id'] = $file;
 				unset( $lowest['class'], $lowest['args'], $lowest['type'] );
-				$trace[0] = $lowest;
+
+				// When a PHP error is triggered which doesn't have a stack trace, for example a
+				// deprecated error, QM will blame itself due to its error handler. This prevents that.
+				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
+					$trace[0] = $lowest;
+				}
 			}
 
 			$this->filtered_trace = $trace;

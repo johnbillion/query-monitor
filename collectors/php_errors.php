@@ -245,7 +245,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			'line' => $line,
 		) );
 		$caller = $trace->get_caller();
-		$key = md5( $message . $file . $line . $caller['id'] );
+
+		if ( $caller ) {
+			$key = md5( $message . $file . $line . $caller['id'] );
+		} else {
+			$key = md5( $message . $file . $line );
+		}
 
 		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
 			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
