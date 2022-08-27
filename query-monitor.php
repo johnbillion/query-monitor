@@ -5,18 +5,18 @@
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
  * @author    John Blackbourn <john@johnblackbourn.com>
- * @copyright 2009-2021 John Blackbourn
+ * @copyright 2009-2022 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
- * Description:  The Developer Tools Panel for WordPress.
- * Version:      3.6.7
+ * Description:  The developer tools panel for WordPress.
+ * Version:      3.9.0
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
- * Requires PHP: 5.3.6
+ * Requires PHP: 5.6.20
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,30 +29,32 @@
  * GNU General Public License for more details.
  */
 
-defined( 'ABSPATH' ) || die();
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+define( 'QM_VERSION', '3.9.0' );
 
 $qm_dir = dirname( __FILE__ );
 
-require_once "{$qm_dir}/classes/Plugin.php";
+// This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
+require_once "{$qm_dir}/classes/PHP.php";
 
-if ( ! QM_Plugin::php_version_met() ) {
-	add_action( 'admin_notices', 'QM_Plugin::php_version_nope' );
+if ( ! QM_PHP::version_met() ) {
+	add_action( 'all_admin_notices', 'QM_PHP::php_version_nope' );
 	return;
 }
 
-# No autoloaders for us. See https://github.com/johnbillion/query-monitor/issues/7
-foreach ( array( 'Activation', 'Util', 'QM' ) as $qm_class ) {
-	require_once "{$qm_dir}/classes/{$qm_class}.php";
+if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
+	add_action( 'all_admin_notices', 'QM_PHP::vendor_nope' );
+	return;
 }
+
+require_once "{$qm_dir}/vendor/autoload.php";
 
 QM_Activation::init( __FILE__ );
 
-if ( ! QM_Plugin::php_version_met() ) {
-	return;
-}
-
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	require_once "{$qm_dir}/classes/CLI.php";
 	QM_CLI::init( __FILE__ );
 }
 
@@ -71,13 +73,6 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
-foreach ( array( 'QueryMonitor', 'Backtrace', 'Collectors', 'Collector', 'Dispatchers', 'Dispatcher', 'Hook', 'Output', 'Timer' ) as $qm_class ) {
-	require_once "{$qm_dir}/classes/{$qm_class}.php";
-}
+unset( $qm_dir );
 
-unset(
-	$qm_dir,
-	$qm_class
-);
-
-QueryMonitor::init( __FILE__ );
+QueryMonitor::init( __FILE__ )->set_up();

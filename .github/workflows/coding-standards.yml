@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
 name: Coding Standards
 on:
   push:
@@ -10,32 +12,41 @@ on:
       - '**'
 
 jobs:
-  build:
+  test:
     name: PHP Coding Standards
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
     - name: Composer cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-composer-dependencies
       with:
-        path: ~/.composer/cache
-        key: phpcs-composer-${{ hashFiles('composer.json') }}
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: 8.0-composer-${{ hashFiles('composer.json') }}
 
-    - name: PHPCS cache
-      uses: actions/cache@v1
+    - name: PHPCS and PHPStan cache
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-test-results
       with:
         path: tests/cache
         # This uses the hash of query-monitor.php in its cache key because Actions doesn't support
         # always pulling in a cache file and simultaneously always updating it, unlike Travis.
         # This way we always pull in a cache file and refresh it with each new version of QM.
-        key: phpcs-${{ hashFiles('query-monitor.php') }}
+        key: 8.0-phpcs-${{ hashFiles('query-monitor.php') }}
 
     - name: Install PHP
       uses: shivammathur/setup-php@2.7.0
       with:
-        php-version: '7.3'
+        php-version: '8.0'
         coverage: none
       env:
         fail-fast: true
@@ -52,7 +63,10 @@ jobs:
       run: |
         composer install --prefer-dist
 
+    - name: Run static analysis
+      run: |
+        composer test:phpstan
+
     - name: Run code sniffer
       run: |
-        composer require staabm/annotate-pull-request-from-checkstyle="^1.4"
-        composer test:cs2pr
+        composer test:cs

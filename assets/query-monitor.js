@@ -21,10 +21,10 @@ var QM_i18n = {
 		number = parseFloat( number );
 
 		var num_float = number.toFixed( decimals ),
-			num_int   = Math.floor( number ),
-			num_str   = num_int.toString(),
-			fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
-			o         = '';
+			num_int = Math.floor( number ),
+			num_str = num_int.toString(),
+			fraction = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
+			o = '';
 
 		if ( num_str.length > 3 ) {
 			for ( i = num_str.length; i > 3; i -= 3 ) {
@@ -48,24 +48,30 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var toolbarHeight          = $('#wpadminbar').outerHeight();
-		var minheight              = 100;
-		var maxheight              = ( $(window).height() - toolbarHeight );
-		var minwidth               = 300;
-		var maxwidth               = $(window).width();
-		var container              = $('#query-monitor-main');
-		var body                   = $('body');
-		var body_margin            = body.css('margin-bottom');
-		var container_height_key   = 'qm-container-height';
-		var container_pinned_key   = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
+		var toolbarHeight = $('#wpadminbar').length ? $('#wpadminbar').outerHeight() : 0;
+		var minheight = 100;
+		var maxheight = ( $(window).height() - toolbarHeight );
+		var minwidth = 300;
+		var maxwidth = $(window).width();
+		var container = $('#query-monitor-main');
+		var body = $('body');
+		var body_margin = body.css('margin-bottom');
+		var container_height_key = 'qm-container-height';
+		var container_pinned_key = 'qm-' + ( $('body').hasClass('wp-admin') ? 'admin' : 'front' ) + '-container-pinned';
 		var container_position_key = 'qm-container-position';
-		var container_width_key    = 'qm-container-width';
+		var container_width_key = 'qm-container-width';
 
 		if ( container.hasClass('qm-peek') ) {
 			minheight = 27;
 		}
 
 		container.removeClass('qm-no-js').addClass('qm-js');
+
+		var theme = localStorage.getItem( 'qm-theme' );
+		if ( theme ) {
+			container.attr('data-theme', theme);
+			$('.qm-theme-toggle[value="' + theme + '"]').prop('checked', true);
+		}
 
 		if ( $('#qm-fatal').length ) {
 			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
@@ -145,12 +151,12 @@ if ( window.jQuery ) {
 
 			if ( selected_menu.length ) {
 				var selected_menu_top = selected_menu.position().top - 27;
-				var menu_height       = $('#qm-panel-menu').height();
-				var menu_scroll       = $('#qm-panel-menu').scrollTop();
+				var menu_height = $('#qm-panel-menu').height();
+				var menu_scroll = $('#qm-panel-menu').scrollTop();
 				selected_menu.closest('#qm-panel-menu > ul > li').addClass('qm-current-menu');
 
 				var selected_menu_off_bottom = ( selected_menu_top > ( menu_height ) );
-				var selected_menu_off_top    = ( selected_menu_top < 0 );
+				var selected_menu_off_top = ( selected_menu_top < 0 );
 
 				if ( selected_menu_off_bottom || selected_menu_off_top ) {
 					$('#qm-panel-menu').scrollTop( selected_menu_top + menu_scroll - ( menu_height / 2 ) + ( selected_menu.outerHeight() / 2 ) );
@@ -217,13 +223,13 @@ if ( window.jQuery ) {
 		container.find('.qm-filter').on('change',function(e){
 
 			var filter = $(this).attr('data-filter'),
-				table  = $(this).closest('table'),
-				tr     = table.find('tbody tr[data-qm-' + filter + ']'),
+				table = $(this).closest('table'),
+				tr = table.find('tbody tr[data-qm-' + filter + ']'),
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
-				val    = $(this).val().replace(/[[\]()'"\\]/g, "\\$&"),
-				total  = tr.removeClass('qm-hide-' + filter).length,
+				val = $(this).val().replace(/[[\]()'"\\]/g, "\\$&"),
+				total = tr.removeClass('qm-hide-' + filter).length,
 				hilite = $(this).attr('data-highlight'),
-				time   = 0;
+				time = 0;
 
 			key = $(this).attr('id');
 			if ( val ) {
@@ -270,7 +276,7 @@ if ( window.jQuery ) {
 		});
 
 		container.find('.qm-filter').each(function () {
-			var key   = $(this).attr('id');
+			var key = $(this).attr('id');
 			var value = localStorage.getItem( key );
 			if ( value !== null ) {
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
@@ -284,7 +290,7 @@ if ( window.jQuery ) {
 
 		container.find('.qm-filter-trigger').on('click',function(e){
 			var filter = $(this).data('qm-filter'),
-				value  = $(this).data('qm-value'),
+				value = $(this).data('qm-value'),
 				target = $(this).data('qm-target');
 			$('#qm-' + target).find('.qm-filter').not('[data-filter="' + filter + '"]').val('').removeClass('qm-highlight').trigger('change');
 			$('#qm-' + target).find('[data-filter="' + filter + '"]').val(value).addClass('qm-highlight').trigger('change');
@@ -294,9 +300,9 @@ if ( window.jQuery ) {
 		});
 
 		container.find('.qm-toggle').on('click',function(e){
-			var el           = $(this);
+			var el = $(this);
 			var currentState = el.attr('aria-expanded');
-			var newState     = 'true';
+			var newState = 'true';
 			if (currentState === 'true') {
 				newState = 'false';
 			}
@@ -323,7 +329,7 @@ if ( window.jQuery ) {
 		container.find('.qm-highlighter').on('mouseenter',function(e){
 
 			var subject = $(this).data('qm-highlight');
-			var table   = $(this).closest('table');
+			var table = $(this).closest('table');
 
 			if ( ! subject ) {
 				return;
@@ -408,7 +414,7 @@ if ( window.jQuery ) {
 		} );
 
 		$('.qm-auth').on('click',function(e){
-			var state  = $('#qm-settings').data('qm-state');
+			var state = $('#qm-settings').data('qm-state');
 			var action = ( 'off' === state ? 'on' : 'off' );
 
 			$.ajax(qm_l10n.ajaxurl,{
@@ -435,7 +441,7 @@ if ( window.jQuery ) {
 		editorSuccessIndicator.hide();
 
 		$('.qm-editor-button').on('click',function(e){
-			var state  = $('#qm-settings').data('qm-state');
+			var state = $('#qm-settings').data('qm-state');
 			var editor = $('#qm-editor-select').val();
 
 			$.ajax(qm_l10n.ajaxurl,{
@@ -460,6 +466,11 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
+		$('.qm-theme-toggle').on('click',function(e){
+			container.attr('data-theme',$(this).val());
+			localStorage.setItem('qm-theme',$(this).val());
+		});
+
 		$.qm.tableSort({target: $('.qm-sortable')});
 
 		var startY, startX, resizerHeight;
@@ -468,8 +479,8 @@ if ( window.jQuery ) {
 			event.stopPropagation();
 
 			resizerHeight = $(this).outerHeight() - 1;
-			startY        = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
-			startX        = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
+			startY = container.outerHeight() + ( event.clientY || event.originalEvent.targetTouches[0].pageY );
+			startX = container.outerWidth() + ( event.clientX || event.originalEvent.targetTouches[0].pageX );
 
 			if ( ! container.hasClass('qm-show-right') ) {
 				$(document).on('mousemove touchmove', qm_do_resizer_drag_vertical);
@@ -537,11 +548,11 @@ if ( window.jQuery ) {
 		}
 
 		$(window).on('resize', function(){
-			var h         = container.height();
-			var w         = container.width();
+			var h = container.height();
+			var w = container.width();
 
 			maxheight = ( $(window).height() - toolbarHeight );
-			maxwidth  = $(window).width();
+			maxwidth = $(window).width();
 
 			if ( h < minheight ) {
 				container.height( minheight );
@@ -616,21 +627,21 @@ if ( window.jQuery ) {
 	 * Author: Gajus Kuizinas <g.kuizinas@anuary.com>
 	 */
 	(function ($) {
-		$.qm           = $.qm || {};
+		$.qm = $.qm || {};
 		$.qm.tableSort = function (settings) {
 			// @param	object	columns	NodeList table colums.
 			// @param	integer	row_width	defines the number of columns per row.
 			var table_to_array = function (columns, row_width) {
 				columns = Array.prototype.slice.call(columns, 0);
 
-				var rows      = [];
+				var rows = [];
 				var row_index = 0;
 
 				for (var i = 0, j = columns.length; i < j; i += row_width) {
 					var row	= [];
 
 					for (var k = 0; k < row_width; k++) {
-						var e    = columns[i + k];
+						var e = columns[i + k];
 						var data = e.dataset.qmSortWeight;
 
 						if (data === undefined) {
@@ -658,7 +669,7 @@ if ( window.jQuery ) {
 				var table = $(this);
 
 				table.find('.qm-sortable-column').on('click', function (e) {
-					var desc  = ! $(this).hasClass('qm-sorted-desc');
+					var desc = ! $(this).hasClass('qm-sorted-desc');
 					var index = $(this).index();
 
 					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').attr('aria-sort','none');
@@ -670,8 +681,8 @@ if ( window.jQuery ) {
 					}
 
 					table.find('tbody').each(function () {
-						var tbody   = $(this);
-						var rows    = this.rows;
+						var tbody = $(this);
+						var rows = this.rows;
 						var columns = this.querySelectorAll('th,td');
 
 						if (this.data_matrix === undefined) {
@@ -722,6 +733,7 @@ if ( window.jQuery ) {
 
 window.addEventListener('load', function() {
 	var main = document.getElementById( 'query-monitor-main' );
+	var ceased = document.getElementById( 'query-monitor-ceased' );
 	var broken = document.getElementById( 'qm-broken' );
 	var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
 
@@ -750,7 +762,12 @@ window.addEventListener('load', function() {
 	}
 
 	if ( ! main ) {
-		// QM's output has disappeared
-		console.error( 'QM error from JS: QM output does not exist' );
+		if ( ceased ) {
+			// QM was ceased
+			console.info( 'QM: collection and output was ceased' );
+		} else {
+			// QM's output has disappeared
+			console.error( 'QM error from JS: QM output does not exist' );
+		}
 	}
 } );

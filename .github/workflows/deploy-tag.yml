@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
 name: Deploy Tag
 on:
   release:
@@ -9,7 +11,8 @@ env:
 jobs:
   wordpress:
     name: WordPress.org
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - uses: octokit/request-action@v2.x
       name: Create GitHub deployment
@@ -36,14 +39,19 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     # @TODO need to cache the npm dependencies
     - name: Install Dependencies
       run: npm install
 
     - name: Populate Changelog
-      run: node .github/workflows/changelog.js readme.txt
+      run: |
+        node .github/workflows/changelog.js readme.txt
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add readme.txt
+        git commit -m "Readme"
       env:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -79,7 +87,8 @@ jobs:
 
   github:
     name: GitHub Milestones
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - name: Get next versions
       id: semvers

@@ -7,9 +7,16 @@
 
 class QM_Hook {
 
+	/**
+	 * @param string $name
+	 * @param array<string, mixed> $wp_filter
+	 * @param bool $hide_qm
+	 * @param bool $hide_core
+	 * @return mixed[]
+	 */
 	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
-		$actions    = array();
+		$actions = array();
 		$components = array();
 
 		if ( isset( $wp_filter[ $name ] ) ) {
@@ -49,9 +56,9 @@ class QM_Hook {
 		$parts = array_values( array_filter( preg_split( '#[_/.-]#', $name ) ) );
 
 		return array(
-			'name'       => $name,
-			'actions'    => $actions,
-			'parts'      => $parts,
+			'name' => $name,
+			'actions' => $actions,
+			'parts' => $parts,
 			'components' => $components,
 		);
 
