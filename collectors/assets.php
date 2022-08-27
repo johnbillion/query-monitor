@@ -266,6 +266,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;
+		$host = '';
+		$scheme = '';
+		$port = '';
 
 		if ( null === $dependency->ver ) {
 			$ver = '';
@@ -280,9 +283,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host = (string) parse_url( $source, PHP_URL_HOST );
-		$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
-		$port = (string) parse_url( $source, PHP_URL_PORT );
+		if ( is_string( $source ) ) {
+			$host = (string) parse_url( $source, PHP_URL_HOST );
+			$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
+			$port = (string) parse_url( $source, PHP_URL_PORT );
+		}
+
 		$http_host = $data['host'];
 		$http_port = $data['port'];
 
