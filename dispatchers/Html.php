@@ -230,7 +230,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
-			array( 'dashicons' ),
+			array(),
 			$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
