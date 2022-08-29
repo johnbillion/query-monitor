@@ -1093,24 +1093,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-external-link:after,
 	.qm a.qm-link:after,
 	.qm a.qm-edit-link:after,
-	.qm button.qm-filter-info:before,
 	.qm button.qm-filter-trigger:after {
 		display: inline-block !important;
-		font-family: dashicons !important; /* @TODO */
-		font-size: 14px !important;
+		width: 16px;
+		height: 16px;
 		left: 2px !important;
 		line-height: 13px !important;
 		position: relative !important;
 		text-decoration: none !important;
 		top: 2px !important;
-		visibility: hidden !important;
-	}
-
-	.qm button.qm-filter-info:before {
-		left: unset !important;
-		right: 2px !important;
-		content: '\f534' !important;
-		visibility: visible !important;
+		// visibility: hidden !important;
 	}
 
 	.qm a.qm-external-link:after,
@@ -1124,16 +1116,20 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm button.qm-filter-trigger:after {
-		content: '\f536' !important;
+		// filter.svg
+		content: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 4.5v-2s3.34-1 7-1 7 1 7 1v2l-5 7.030v6.97s-1.22-0.090-2.25-0.59-1.75-1.41-1.75-1.41v-4.97z'%3E%3C/path%3E%3C/svg%3E");
+		fill: var( --qm-link-fg ) !important;
 	}
 
 	.qm a.qm-edit-link:after {
-		content: '\f464' !important;
+		// edit.svg
+		content: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M13.89 3.39l2.71 2.72c0.46 0.46 0.42 1.24 0.030 1.64l-8.010 8.020-5.56 1.16 1.16-5.58s7.6-7.63 7.99-8.030c0.39-0.39 1.22-0.39 1.68 0.070zM11.16 6.18l-5.59 5.61 1.11 1.11 5.54-5.65zM8.19 14.41l5.58-5.6-1.070-1.080-5.59 5.6z'%3E%3C/path%3E%3C/svg%3E");
 	}
 
 	.qm a.qm-external-link:after,
 	.qm a.qm-link:after {
-		content: '\f504' !important;
+		// external.svg
+		content: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M9 3h8v8l-2-1v-3.080l-5.6 5.59-1.41-1.41 6.090-6.1h-4.080zM12 15v-3l2-2v7h-11v-11h8l-2 2h-4v7h7z'%3E%3C/path%3E%3C/svg%3E");
 	}
 
 	#qm-ajax-errors {
