@@ -395,6 +395,26 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
+	 * Returns a filter trigger.
+	 *
+	 * @param string $target
+	 * @param string $filter
+	 * @param string $value
+	 * @param string $label
+	 * @return string
+	 */
+	protected static function build_filter_trigger( $target, $filter, $value, $label ) {
+		return sprintf(
+			'<button class="qm-filter-trigger" data-qm-target="%1$s" data-qm-filter="%2$s" data-qm-value="%3$s">%4$s%5$s</button>',
+			esc_attr( $target ),
+			esc_attr( $filter ),
+			esc_attr( $value ),
+			$label,
+			QueryMonitor::init()->icon( 'filter' )
+		);
+	}
+
+	/**
 	 * @param array<string, mixed> $args
 	 * @return array<string, mixed>
 	 */

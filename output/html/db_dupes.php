@@ -87,10 +87,9 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '</td>';
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
+				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', $caller, '<code>' . esc_html( $caller ) . '</code>' ); // WPCS: XSS ok;
 				printf(
-					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
-					esc_attr( $caller ),
-					esc_html( $caller ),
+					'<br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_html( sprintf(
 						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
 						number_format_i18n( $calls )

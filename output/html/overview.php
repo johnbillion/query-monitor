@@ -198,20 +198,22 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( ! isset( $db_query_num['SELECT'] ) || count( $db_query_num ) > 1 ) {
 				foreach ( $db_query_num as $type_name => $type_count ) {
-					printf(
-						'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="%1$s">%2$s: %3$s</button><br>',
-						esc_attr( $type_name ),
+					$label = sprintf(
+						'%1$s: %2$s',
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )
 					);
+					echo self::build_filter_trigger( 'db_queries-wpdb', 'type', $type_name, esc_html( $label ) ); // WPCS: XSS ok;
+					echo '<br>';
 				}
 			}
 
-			printf(
-				'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
+			$label = sprintf(
+				'%1$s: %2$s',
 				esc_html( _x( 'Total', 'database queries', 'query-monitor' ) ),
 				esc_html( number_format_i18n( $db_queries_data['total_qs'] ) )
 			);
+			echo self::build_filter_trigger( 'db_queries-wpdb', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 
 			echo '</p>';
 			echo '</section>';
@@ -234,11 +236,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				);
 				echo '</p>';
 
-				printf(
-					'<button class="qm-filter-trigger" data-qm-target="http" data-qm-filter="type" data-qm-value="">%1$s: %2$s</button>',
+				$label = sprintf(
+					'%1$s: %2$s',
 					esc_html( _x( 'Total', 'HTTP API calls', 'query-monitor' ) ),
 					esc_html( number_format_i18n( count( $http_data['http'] ) ) )
 				);
+				echo self::build_filter_trigger( 'http', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 			} else {
 				printf(
 					'<p><em>%s</em></p>',
