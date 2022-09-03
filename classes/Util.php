@@ -589,6 +589,10 @@ class QM_Util {
 	 * @return string A shortened version of the name.
 	 */
 	public static function shorten_fqn( $fqn ) {
+		if ( substr_count( $fqn, '\\' ) < 3 ) {
+			return $fqn;
+		}
+
 		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]{4,}\\\\#', function( array $matches ) {
 			preg_match_all( '#\\\\([a-zA-Z0-9_])#', $matches[0], $m );
 			return '\\' . implode( '\\', $m[1] ) . '\\';
