@@ -140,21 +140,41 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				}
 				echo '</td>';
 
-				echo '<td class="qm-nowrap">';
-
 				if ( $mofile['found'] ) {
-					echo esc_html( $mofile['found_formatted'] );
+					echo '<td class="qm-nowrap qm-num">';
+					echo esc_html( sprintf(
+						/* translators: %s: Memory used in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						number_format_i18n( $mofile['found'] / 1024, 1 )
+					) );
+					echo '</td>';
 				} else {
+					echo '<td class="qm-nowrap">';
 					echo esc_html__( 'Not Found', 'query-monitor' );
+					echo '</td>';
 				}
-
-				echo '</td>';
 
 				echo '</tr>';
 			}
 		}
 
 		echo '</tbody>';
+
+		echo '<tfoot>';
+		echo '<tr>';
+		echo '<td colspan="4">&nbsp;</td>';
+		echo '<td class="qm-num">';
+
+		echo esc_html( sprintf(
+			/* translators: %s: Memory used in kilobytes */
+			__( '%s kB', 'query-monitor' ),
+			number_format_i18n( $data['total_size'] / 1024, 1 )
+		) );
+
+		echo '</td>';
+		echo '</tr>';
+		echo '</tfoot>';
+
 		echo '</table>';
 
 		$this->after_non_tabular_output();

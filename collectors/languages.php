@@ -116,11 +116,15 @@ class QM_Collector_Languages extends QM_Collector {
 			return;
 		}
 
+		$this->data['total_size'] = 0;
+
 		ksort( $this->data['languages'] );
 
 		foreach ( $this->data['languages'] as & $mofiles ) {
 			foreach ( $mofiles as & $mofile ) {
-				$mofile['found_formatted'] = $mofile['found'] ? size_format( $mofile['found'] ) : '';
+				if ( $mofile['found'] ) {
+					$this->data['total_size'] += $mofile['found'];
+				}
 			}
 		}
 	}
