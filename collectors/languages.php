@@ -20,7 +20,7 @@ class QM_Collector_Languages extends QM_Collector {
 
 		parent::set_up();
 
-		add_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999, 3 );
+		add_filter( 'load_textdomain_mofile', array( $this, 'log_file_load' ), 9999, 2 );
 		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
 		add_filter( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
@@ -30,7 +30,7 @@ class QM_Collector_Languages extends QM_Collector {
 	 * @return void
 	 */
 	public function tear_down() {
-		remove_filter( 'override_load_textdomain', array( $this, 'log_file_load' ), 9999 );
+		remove_filter( 'load_textdomain_mofile', array( $this, 'log_file_load' ), 9999 );
 		remove_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999 );
 		remove_filter( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
@@ -132,14 +132,13 @@ class QM_Collector_Languages extends QM_Collector {
 	/**
 	 * Store log data.
 	 *
-	 * @param bool   $override Whether to override the text domain. Default false.
-	 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
-	 * @param string $mofile   Path to the MO file.
-	 * @return bool
+	 * @param string $mofile Path to the MO file.
+	 * @param string $domain Text domain.
+	 * @return string
 	 */
-	public function log_file_load( $override, $domain, $mofile ) {
+	public function log_file_load( $mofile, $domain ) {
 		if ( 'query-monitor' === $domain && self::hide_qm() ) {
-			return $override;
+			return $mofile;
 		}
 
 		$trace = new QM_Backtrace( array(
@@ -167,7 +166,7 @@ class QM_Collector_Languages extends QM_Collector {
 			'type' => 'gettext',
 		);
 
-		return $override;
+		return $mofile;
 
 	}
 
