@@ -41,8 +41,55 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 			return;
 		}
 
-		$this->before_tabular_output();
+		$this->before_non_tabular_output();
 
+		echo '<section>';
+		echo '<h3><code>get_locale()</code></h3>';
+		echo '<p>' . esc_html( $data['locale'] ) . '</p>';
+		echo '</section>';
+
+		echo '<section>';
+		echo '<h3><code>get_user_locale()</code></h3>';
+		echo '<p>' . esc_html( $data['user_locale'] ) . '</p>';
+		echo '</section>';
+
+		echo '<section>';
+		echo '<h3><code>determine_locale()</code></h3>';
+		echo '<p>' . esc_html( $data['determined_locale'] ) . '</p>';
+		echo '</section>';
+
+		if ( isset( $data['mlp_language'] ) ) {
+			echo '<section>';
+			echo '<h3>';
+			printf(
+				/* translators: %s: Name of a multilingual plugin */
+				esc_html__( '%s Language', 'query-monitor' ),
+				'MultilingualPress'
+			);
+			echo '</h3>';
+			echo '<p>' . esc_html( $data['mlp_language'] ) . '</p>';
+			echo '</section>';
+		}
+
+		if ( isset( $data['pll_language'] ) ) {
+			echo '<section>';
+			echo '<h3>';
+			printf(
+				/* translators: %s: Name of a multilingual plugin */
+				esc_html__( '%s Language', 'query-monitor' ),
+				'Polylang'
+			);
+			echo '</h3>';
+			echo '<p>' . esc_html( $data['pll_language'] ) . '</p>';
+			echo '</section>';
+		}
+
+		echo '<section>';
+		echo '<h3><code>get_language_attributes()</code></h3>';
+		echo '<p><code>' . esc_html( $data['language_attributes'] ) . '</code></p>';
+		echo '</section>';
+
+		echo '<table class="qm-full-width">';
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
@@ -108,8 +155,9 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		}
 
 		echo '</tbody>';
+		echo '</table>';
 
-		$this->after_tabular_output();
+		$this->after_non_tabular_output();
 	}
 
 	/**
