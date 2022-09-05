@@ -508,15 +508,16 @@ abstract class QM_Output_Html extends QM_Output {
 		$link = sprintf( self::get_file_link_format(), rawurlencode( $file ), intval( $link_line ) );
 
 		if ( $is_filename ) {
-			$format = '<a href="%s" class="qm-edit-link">%s</a>';
+			$format = '<a href="%1$s" class="qm-edit-link">%2$s%3$s</a>';
 		} else {
-			$format = '<a href="%s" class="qm-edit-link"><code>%s</code></a>';
+			$format = '<a href="%1$s" class="qm-edit-link"><code>%2$s</code>%3$s</a>';
 		}
 
 		return sprintf(
 			$format,
 			esc_attr( $link ),
-			esc_html( $text )
+			esc_html( $text ),
+			QueryMonitor::init()->icon( 'edit' )
 		);
 	}
 
