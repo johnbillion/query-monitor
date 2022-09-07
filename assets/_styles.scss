@@ -355,19 +355,50 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			flex-shrink: 0 !important;
 		}
 
-		.qm-icon svg {
-			height: 20px !important;
-			width: 20px !important;
-			fill: var( --qm-title-button-fg ) !important;
+		.qm-icon {
+			display: inline-block !important;
+
+			svg {
+				height: 20px !important;
+				width: 20px !important;
+				fill: var( --qm-title-button-fg ) !important;
+			}
 		}
 
 		.qm-button-container-close {
 			margin-right: 10px !important;
+
+			.qm-icon {
+				margin: 4px 0 0 !important;
+
+				svg {
+					width: 18px !important;
+					height: 18px !important;
+				}
+			}
 		}
 
-		.qm-button-container-close .qm-icon {
-			font-size: 20px !important;
-			margin: 3px 0 3px !important;
+		.qm-button-container-position {
+			transform: scaleX(-1) rotate(90deg) !important;
+			padding-top: 5px !important;
+
+			.qm-icon {
+				svg {
+					width: 14px !important;
+					height: 14px !important;
+				}
+			}
+		}
+
+		.qm-button-container-settings {
+			.qm-icon {
+				margin: 4px 0 0 !important;
+
+				svg {
+					width: 16px !important;
+					height: 16px !important;
+				}
+			}
 		}
 
 		@media screen and (max-width: 960px) {
@@ -380,9 +411,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			background: var( --qm-title-button-bg ) !important;
 			cursor: pointer !important;
 			display: inline-block !important;
-			margin: 0 0 0 0px !important;
+			margin: 0 !important;
 			min-width: auto !important;
-			padding: 0px 4px !important;
+			padding: 0 5px !important;
 		}
 
 		button:focus *,
@@ -390,29 +421,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		button:focus,
 		button:hover {
 			background: var( --qm-title-button-bg-hover ) !important;
-			color: var( --qm-title-button-fg-hover ) !important;
+
+			svg {
+				fill: var( --qm-title-button-fg-hover ) !important;
+			}
 		}
 
 		button:active *,
 		button:active {
-			/* @TODO */
 			background: #ccc !important;
-		}
-
-		button.qm-button-active {
-			/* @TODO */
-			color: #3879d9 !important;
-		}
-
-		.qm-button-container-settings .qm-icon {
-			font-size: 17px !important;
-			margin: 4px 0 2px !important;
-		}
-
-		.qm-button-container-position .qm-icon {
-			font-size: 15px !important;
-			margin: 2px -1px 3px 4px !important;
-			transform: scaleX(-1) rotate(90deg) !important;
 		}
 	}
 
