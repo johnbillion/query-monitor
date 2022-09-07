@@ -118,8 +118,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo '<td class="qm-nowrap">';
 
 			if ( $is_warning ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo QueryMonitor::init()->icon( 'warning' );
 			} else {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo QueryMonitor::init()->icon( 'blank' );
 			}
 

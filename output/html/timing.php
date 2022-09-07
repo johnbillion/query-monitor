@@ -164,6 +164,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 				printf(
 					'<td colspan="4">%1$s%2$s</td>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					QueryMonitor::init()->icon( 'warning' ),
 					esc_html( $row['message'] )
 				);

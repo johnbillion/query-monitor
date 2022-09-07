@@ -119,6 +119,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<div id="query-monitor">';
 
 		echo '<p>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo QueryMonitor::init()->icon( 'info' );
 
 		if ( 'unknown' !== $component->type ) {

@@ -247,6 +247,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
 
 				if ( isset( $block['callback']['error'] ) ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<br>' . QueryMonitor::init()->icon( 'warning' );
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */

@@ -447,8 +447,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$close = QueryMonitor::init()->icon( 'no-alt' );
 
 		echo '</div>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '">' . $settings . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '">' . $toggle . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '">' . $close . '</button>';
 		echo '</div>'; // #qm-title
 
@@ -522,6 +525,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$yes = QueryMonitor::init()->icon( 'yes-alt' );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '</section>';
@@ -566,9 +570,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
 		echo '</ul>';
 
-
 		$yes = QueryMonitor::init()->icon( 'yes-alt' );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		echo '</section>';
 		echo '</div>';

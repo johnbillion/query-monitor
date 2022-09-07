@@ -123,6 +123,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<th scope="row" rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">';
 						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 							printf(
 								/* translators: %s: Action name */
@@ -175,6 +176,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
 
 						if ( isset( $action['callback']['error'] ) ) {
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							echo '<br>' . QueryMonitor::init()->icon( 'warning' );
 							echo esc_html( sprintf(
 								/* translators: %s: Error message text */

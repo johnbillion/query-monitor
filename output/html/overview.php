@@ -57,10 +57,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$this->before_non_tabular_output();
 
 		echo '<section id="qm-broken">';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( $qm_broken ) . '</p>';
 		echo '</section>';
 
 		echo '<section id="qm-ajax-errors">';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( $ajax_errors ) . '</p>';
 		echo '</section>';
 
@@ -99,6 +101,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		if ( $data['time_limit'] > 0 ) {
 			if ( $data['display_time_usage_warning'] ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 			} else {
 				echo '<br><span class="qm-info">';
@@ -111,6 +114,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			) );
 			echo '</span>';
 		} else {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 			printf(
 				/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
@@ -154,6 +158,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $data['memory_limit'] > 0 ) {
 				if ( $data['display_memory_usage_warning'] ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 				} else {
 					echo '<br><span class="qm-info">';
@@ -166,6 +171,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				) );
 				echo '</span>';
 			} else {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
 				printf(
 					/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */

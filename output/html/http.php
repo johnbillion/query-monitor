@@ -178,6 +178,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle qm-col-status">';
 				if ( $is_error ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo QueryMonitor::init()->icon( 'warning' );
 				}
 				echo esc_html( $response );

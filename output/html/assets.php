@@ -163,6 +163,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$warning = QueryMonitor::init()->icon( 'warning' );
 
 		if ( $asset['warning'] ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $warning;
 		}
 
