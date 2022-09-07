@@ -30,6 +30,11 @@ parameters:
 		- '#Access to private property wpdb::#'
 		- '#Access to protected property wpdb::#'
 		- '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+		# False positive
+		-
+			path: collectors/theme.php
+			message: '#^Offset (string|mixed) on array\{\} in isset\(\) does not exist\.$#'
+
 		# Data providers for acceptance tests:
 		-
 			path: tests/acceptance/*

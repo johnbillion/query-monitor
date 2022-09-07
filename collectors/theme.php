@@ -61,6 +61,7 @@ class QM_Collector_Theme extends QM_Collector {
 	 * Fires before the header/sidebar/footer template file is loaded.
 	 *
 	 * @param string|null $name Name of the specific file to use. Null for the default.
+	 * @return void
 	 */
 	public function action_get_position( $name ) {
 		$filter = current_filter();
