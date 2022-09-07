@@ -808,6 +808,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		table {
 			border-bottom-color: var( --qm-cell-border ) !important;
 		}
+
+		.qm-full-width {
+			border-top: 1px solid var(--qm-cell-border) !important;
+			margin-right: -20px !important;
+			margin-left: -20px !important;
+			width: calc( 100% + 40px ) !important;
+		}
 	}
 
 	#qm-conditionals li {

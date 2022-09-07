@@ -71,6 +71,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -217,20 +218,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						);
 					}
 
-					$size_fields = array(
-						'size_download' => __( 'Response Size', 'query-monitor' ),
-					);
-					foreach ( $size_fields as $key => $value ) {
-						if ( ! isset( $row['info'][ $key ] ) ) {
-							continue;
-						}
-						printf(
-							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
-							esc_html( $value ),
-							esc_html( size_format( $row['info'][ $key ] ) )
-						);
-					}
-
 					$other_fields = array(
 						'content_type' => __( 'Response Content Type', 'query-monitor' ),
 						'primary_ip' => __( 'IP Address', 'query-monitor' ),
@@ -275,6 +262,22 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
 				);
+
+				$size = '';
+
+				if ( isset( $row['info']['size_download'] ) ) {
+					$size = sprintf(
+						/* translators: %s: Memory used in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						number_format_i18n( $row['info']['size_download'] / 1024, 1 )
+					);
+				}
+
+				printf(
+					'<td class="qm-nowrap qm-num">%s</td>',
+					esc_html( $size )
+				);
+
 				printf(
 					'<td class="qm-num">%s</td>',
 					esc_html( $row['args']['timeout'] )
@@ -301,7 +304,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="6">%s</td>',
+				'<td colspan="7">%s</td>',
 				sprintf(
 					/* translators: %s: Number of HTTP API requests */
 					esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'HTTP API calls', 'query-monitor' ) ),

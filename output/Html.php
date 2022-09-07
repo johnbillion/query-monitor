@@ -246,7 +246,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param array<string, mixed> $vars
 	 * @return void
 	 */
-	public static function output_inner( $vars ) {
+	public static function output_inner( array $vars ) {
 
 		echo '<table>';
 
