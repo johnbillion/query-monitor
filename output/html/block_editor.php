@@ -193,13 +193,16 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		if ( $error_message ) {
 			echo '<br>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo QueryMonitor::init()->icon( 'warning' );
-			echo $error_message; // WPCS: XSS ok;
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $error_message;
 		}
 
 		if ( ! empty( $referenced_post ) && ! empty( $referenced_pto ) ) {
 			echo '<br>';
-			echo '<a href="' . esc_url( get_edit_post_link( $referenced_post ) ) . '" class="qm-link">' . esc_html( $referenced_pto->labels->edit_item ) . '</a>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::build_link( get_edit_post_link( $referenced_post ), esc_html( $referenced_pto->labels->edit_item ) );
 		}
 
 		echo '</span></td>';

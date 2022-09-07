@@ -415,6 +415,22 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
+	 * Returns a link.
+	 *
+	 * @param string $href
+	 * @param string $label
+	 * @return string
+	 */
+	protected static function build_link( $href, $label ) {
+		return sprintf(
+			'<a href="%1$s" class="qm-link">%2$s%3$s</a>',
+			esc_attr( $href ),
+			$label,
+			QueryMonitor::init()->icon( 'external' )
+		);
+	}
+
+	/**
 	 * @param array<string, mixed> $args
 	 * @return array<string, mixed>
 	 */

@@ -275,9 +275,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $cache_data['has_object_cache'] ) {
 				echo '<p><span class="qm-info">';
-				printf(
-					'<a href="%s" class="qm-link">%s</a>',
-					esc_url( network_admin_url( 'plugins.php?plugin_status=dropins' ) ),
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link(
+					network_admin_url( 'plugins.php?plugin_status=dropins' ),
 					esc_html__( 'Persistent object cache plugin in use', 'query-monitor' )
 				);
 				echo '</span></p>';

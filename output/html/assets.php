@@ -191,24 +191,24 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
-					'<span class="qm-warn">%1$s%2$s:</span><br><a href="%3$s" class="qm-link">%3$s</a>',
+					'<span class="qm-warn">%1$s%2$s:</span><br>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					$warning,
-					esc_html( $asset['source']->get_error_message() ),
-					esc_url( $error_data['src'] )
+					esc_html( $asset['source']->get_error_message() )
 				);
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link( $error_data['src'], esc_html( $error_data['src'] ) );
 			} else {
 				printf(
-					'<span class="qm-warn">%1$s$2%s</span>',
+					'<span class="qm-warn">%1$s%2$s</span>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					$warning,
 					esc_html( $asset['source']->get_error_message() )
 				);
 			}
 		} elseif ( ! empty( $asset['source'] ) ) {
-			printf(
-				'<a href="%s" class="qm-link">%s</a>',
-				esc_url( $asset['source'] ),
-				esc_html( $asset['display'] )
-			);
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::build_link( $asset['source'], esc_html( $asset['display'] ) );
 		}
 		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">';
