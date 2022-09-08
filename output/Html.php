@@ -378,7 +378,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$out .= '</span>';
 		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
-		$out .= '<span class="qm-sort-arrow" aria-hidden="true"></span>';
+		$out .= QueryMonitor::init()->icon( 'arrow-down' );
 		$out .= '</button>';
 		$out .= '</label>';
 		return $out;
