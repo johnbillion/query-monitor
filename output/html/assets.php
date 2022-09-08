@@ -131,8 +131,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $asset['dependencies'] as $dep ) {
 			if ( isset( $data['missing_dependencies'][ $dep ] ) ) {
+				$warning = QueryMonitor::init()->icon( 'warning' );
+
 				$dependency_output[] = sprintf(
-					'<span style="white-space:nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span style="white-space:nowrap">%1$s%2$s</span>',
+					$warning,
 					sprintf(
 						/* translators: %s: Name of missing script or style dependency */
 						__( '%s (missing)', 'query-monitor' ),
@@ -157,8 +160,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
+		$warning = QueryMonitor::init()->icon( 'warning' );
+
 		if ( $asset['warning'] ) {
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $warning;
 		}
 
 		echo esc_html( $label );
@@ -186,22 +192,24 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
-					esc_html( $asset['source']->get_error_message() ),
-					esc_url( $error_data['src'] )
+					'<span class="qm-warn">%1$s%2$s:</span><br>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$warning,
+					esc_html( $asset['source']->get_error_message() )
 				);
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link( $error_data['src'], esc_html( $error_data['src'] ) );
 			} else {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span class="qm-warn">%1$s%2$s</span>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$warning,
 					esc_html( $asset['source']->get_error_message() )
 				);
 			}
 		} elseif ( ! empty( $asset['source'] ) ) {
-			printf(
-				'<a href="%s" class="qm-link">%s</a>',
-				esc_url( $asset['source'] ),
-				esc_html( $asset['display'] )
-			);
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::build_link( $asset['source'], esc_html( $asset['display'] ) );
 		}
 		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">';

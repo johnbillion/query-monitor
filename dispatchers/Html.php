@@ -230,7 +230,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		// wp_enqueue_style(
 		// 	'query-monitor',
 		// 	$this->qm->plugin_url( 'assets/query-monitor.css' ),
-		// 	array( 'dashicons' ),
+		// 	array(),
 		// 	$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		// );
 		wp_enqueue_script(
@@ -449,10 +449,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</select>';
 
+		$settings = QueryMonitor::init()->icon( 'admin-generic' );
+		$toggle = QueryMonitor::init()->icon( 'image-rotate-left' );
+		$close = QueryMonitor::init()->icon( 'no-alt' );
+
 		echo '</div>';
-		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '">' . $settings . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '">' . $toggle . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '">' . $close . '</button>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
@@ -523,7 +530,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 
-		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
+		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '</section>';
 
@@ -554,7 +564,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</p><p>';
 		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
 		echo '</p>';
-		echo '<p id="qm-editor-save-status"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		echo '</section>';
 
 		echo '<section>';
@@ -568,6 +577,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
 		echo '</ul>';
 
+		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		echo '</section>';
 		echo '</div>';
 
