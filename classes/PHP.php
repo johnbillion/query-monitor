@@ -5,6 +5,7 @@
  * @package query-monitor
  */
 
+if ( ! class_exists( 'QM_PHP' ) ) {
 class QM_PHP {
 
 	/**
@@ -60,4 +61,5 @@ class QM_PHP {
 		);
 	}
 
+}
 }
