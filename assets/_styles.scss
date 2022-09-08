@@ -619,8 +619,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			margin-top: 5px !important;
 		}
 
+		thead,
+		tbody,
+		tfoot {
+			border: none !important;
+			background-color: inherit !important;
+		}
+
 		tr {
 			border: none !important;
+			background-color: inherit !important;
 		}
 
 		tbody th,
