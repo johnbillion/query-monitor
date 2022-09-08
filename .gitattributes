@@ -7,7 +7,6 @@
 /bin export-ignore
 /node_modules export-ignore
 /tests export-ignore
-/vendor export-ignore
 
 # Files
 /.gitattributes export-ignore
@@ -19,10 +18,10 @@
 /composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
 /docker-compose.yml export-ignore
-/Gruntfile.js export-ignore
 /package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
+/phpcs53.xml export-ignore
 /phpstan.neon.dist export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore

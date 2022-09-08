@@ -160,7 +160,11 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
-			$message = get_class( $message ) . ': ' . $message->getMessage();
+			$message = sprintf(
+				'%1$s: %2$s',
+				get_class( $message ),
+				$message->getMessage()
+			);
 		}
 
 		if ( ! QM_Util::is_stringy( $message ) ) {

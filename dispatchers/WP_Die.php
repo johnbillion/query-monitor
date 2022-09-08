@@ -51,8 +51,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			return;
 		}
 
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
 		$switched_locale = self::switch_to_locale( get_user_locale() );
 		$stack = array();
 		$filtered_trace = $this->trace->get_filtered_trace();
@@ -61,12 +59,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		foreach ( $filtered_trace as $i => $item ) {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
-
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
 
 		?>
 		<style>
@@ -109,10 +101,29 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				color: #666;
 			}
 
-			#query-monitor .dashicons-info {
-				color: #0071a1;
-				vertical-align: bottom;
+			#query-monitor .qm-icon-info {
+				vertical-align: middle;
 				margin-right: 5px;
+			}
+
+			#query-monitor .qm-icon-info svg {
+				fill: #0071a1;
+			}
+
+			#query-monitor a.qm-edit-link svg {
+				fill: #0071a1 !important;
+				width: 16px;
+				height: 16px;
+				left: 2px !important;
+				position: relative !important;
+				text-decoration: none !important;
+				top: 2px !important;
+				visibility: hidden !important;
+			}
+
+			#query-monitor a.qm-edit-link:hover svg,
+			#query-monitor a.qm-edit-link:focus svg {
+				visibility: visible !important;
 			}
 
 		</style>
@@ -121,7 +132,8 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<div id="query-monitor">';
 
 		echo '<p>';
-		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo QueryMonitor::init()->icon( 'info' );
 
 		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;

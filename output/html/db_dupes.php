@@ -49,6 +49,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
 		if ( ! empty( $data['dupe_components'] ) ) {
 			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
@@ -68,6 +69,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			// This should probably happen in the collector's processor
 			$type = QM_Util::get_query_type( $sql );
 			$sql_out = self::format_sql( $sql );
+			$time = $data['dupe_times'][ $sql ];
 
 			if ( 'SELECT' !== $type ) {
 				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";
@@ -80,12 +82,14 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			echo '<td class="qm-num">';
 			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
 			echo '</td>';
+			echo '<td class="qm-num">';
+			echo esc_html( number_format_i18n( $time, 4 ) );
+			echo '</td>';
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data['dupe_callers'][ $sql ] as $caller => $calls ) {
+				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', $caller, '<code>' . esc_html( $caller ) . '</code>' ); // WPCS: XSS ok;
 				printf(
-					'<button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="%s"><code>%s</code></button><br><span class="qm-info qm-supplemental">%s</span><br>',
-					esc_attr( $caller ),
-					esc_html( $caller ),
+					'<br><span class="qm-info qm-supplemental">%s</span><br>',
 					esc_html( sprintf(
 						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
 						number_format_i18n( $calls )

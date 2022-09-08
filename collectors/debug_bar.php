@@ -66,14 +66,11 @@ function register_qm_collectors_debug_bar() {
 
 	global $debug_bar;
 
-	if ( class_exists( 'Debug_Bar' ) || qm_debug_bar_being_activated() ) {
+	if ( class_exists( 'Debug_Bar', false ) || qm_debug_bar_being_activated() ) {
 		return;
 	}
 
 	$collectors = QM_Collectors::init();
-	$qm = QueryMonitor::init();
-
-	require_once $qm->plugin_path( 'classes/debug_bar.php' );
 
 	$debug_bar = new Debug_Bar();
 	$redundant = array(

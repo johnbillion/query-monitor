@@ -5,12 +5,13 @@
  * @package query-monitor
  */
 
+if ( ! class_exists( 'QM_PHP' ) ) {
 class QM_PHP {
 
 	/**
 	 * @var string
 	 */
-	public static $minimum_version = '5.3.6';
+	public static $minimum_version = '5.6.20';
 
 	/**
 	 * @return bool
@@ -42,4 +43,23 @@ class QM_PHP {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
+	public static function vendor_nope() {
+		printf(
+			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
+			sprintf(
+				/* translators: 1: CLI command to run, 2: plugin directory name */
+				esc_html__( 'Dependencies for Query Monitor need to be installed. Run %1$s from the %2$s directory.', 'query-monitor' ),
+				'<code>composer install --no-dev</code>',
+				sprintf(
+					'<code>%s</code>',
+					esc_html( dirname( dirname( __FILE__ ) ) )
+				)
+			)
+		);
+	}
+
+}
 }

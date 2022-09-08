@@ -4,9 +4,6 @@ declare(strict_types = 1);
 
 namespace QM\Tests;
 
-/**
- * @property \WP_UnitTest_Factory $factory
- */
 abstract class Test extends \Codeception\TestCase\WPTestCase {
 
 	public function _before(): void {

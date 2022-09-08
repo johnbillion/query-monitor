@@ -100,10 +100,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
-				printf(
-					'<p><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</button></p>',
-					esc_html__( 'View Main Query', 'query-monitor' )
-				);
+				echo '<p>';
+				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
+				echo '</p>';
 			}
 		}
 

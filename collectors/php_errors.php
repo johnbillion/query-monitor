@@ -240,8 +240,17 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		$trace = new QM_Backtrace();
+		$trace->push_frame( array(
+			'file' => $file,
+			'line' => $line,
+		) );
 		$caller = $trace->get_caller();
-		$key = md5( $message . $file . $line . $caller['id'] );
+
+		if ( $caller ) {
+			$key = md5( $message . $file . $line . $caller['id'] );
+		} else {
+			$key = md5( $message . $file . $line );
+		}
 
 		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
 			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
@@ -320,17 +329,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			wp_load_translations_early();
 		}
 
-		require_once dirname( __DIR__ ) . '/output/Html.php';
-
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
 		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
 
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%s" media="all" />',
@@ -356,8 +358,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$file = esc_html( $e['file'] );
 		}
 
+		$warning = QueryMonitor::init()->icon( 'warning' );
+
 		printf(
-			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			'<p>%1$s <b>%2$s</b>: %3$s<br>in <b>%4$s</b> on line <b>%5$d</b></p>',
+			$warning,
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
 			$file,

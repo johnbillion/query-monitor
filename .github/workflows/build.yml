@@ -9,15 +9,26 @@ on:
 jobs:
   wordpress:
     name: Release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install PHP
+      uses: shivammathur/setup-php@2.7.0
+      with:
+        php-version: 8.0
+        coverage: none
+      env:
+        fail-fast: true
+
       # @TODO need to cache the npm dependencies
     - name: Install Dependencies
       run: npm install
+
+    - name: Generate autoload file
+      run: composer dump-autoload --no-dev
 
     - name: Build Assets
       run: npm run build
@@ -32,6 +43,8 @@ jobs:
         git config user.email github-actions@github.com
         git checkout -b "release-$VERSION"
         git add -f assets/*
+        git add -f vendor/autoload.php
+        git add -f vendor/composer/*
         git commit -m "Release $VERSION"
         git tag "$VERSION"
         git push --tags
