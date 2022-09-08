@@ -143,7 +143,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			if ( $data['wp_memory_limit'] > 0 ) {
 				if ( $data['display_memory_usage_warning'] ) {
-					echo '<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+					echo '<br><span class="qm-warn">';
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo QueryMonitor::init()->icon( 'warning' );
+					echo '</span>';
 				} else {
 					echo '<br><span class="qm-info">';
 				}
@@ -288,7 +291,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				);
 				echo '</span></p>';
 			} else {
-				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<p><span class="qm-warn">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::init()->icon( 'warning' );
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
 				echo '</span></p>';
 
@@ -349,7 +354,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					echo '</p>';
 				}
 			} else {
-				echo '<p><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				echo '<p><span class="qm-warn">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::init()->icon( 'warning' );
 				echo esc_html__( 'Opcode cache not in use', 'query-monitor' );
 				echo '</span></p>';
 				echo '<p>';

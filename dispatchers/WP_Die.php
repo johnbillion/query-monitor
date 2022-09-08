@@ -60,12 +60,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
 
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
-
 		?>
 		<style>
 			#query-monitor {
@@ -107,10 +101,29 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				color: #666;
 			}
 
-			#query-monitor .dashicons-info { /* @TODO */
-				color: #0071a1;
-				vertical-align: bottom;
+			#query-monitor .qm-icon-info {
+				vertical-align: middle;
 				margin-right: 5px;
+			}
+
+			#query-monitor .qm-icon-info svg {
+				fill: #0071a1;
+			}
+
+			#query-monitor a.qm-edit-link svg {
+				fill: #0071a1 !important;
+				width: 16px;
+				height: 16px;
+				left: 2px !important;
+				position: relative !important;
+				text-decoration: none !important;
+				top: 2px !important;
+				visibility: hidden !important;
+			}
+
+			#query-monitor a.qm-edit-link:hover svg,
+			#query-monitor a.qm-edit-link:focus svg {
+				visibility: visible !important;
 			}
 
 		</style>
