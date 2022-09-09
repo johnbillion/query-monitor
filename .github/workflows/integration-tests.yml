@@ -24,7 +24,7 @@ jobs:
             dev: false
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       LOCAL_PHP: ${{ matrix.php }}
@@ -68,6 +68,12 @@ jobs:
     - name: Install dependencies
       run: |
         composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
+
+    - name: Install node dependencies
+      run: npm install
+
+    - name: Run the build
+      run: npm run build
 
     - name: Start Docker environment
       run: |

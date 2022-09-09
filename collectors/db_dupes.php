@@ -47,6 +47,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 		$stacks = array();
 		$callers = array();
 		$components = array();
+		$times = array();
 
 		// Loop over all SQL queries that have dupes
 		foreach ( $this->data->dupes as $sql => $query_ids ) {
@@ -79,6 +80,12 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 				// Populate the stack for this query
 				$stacks[ $sql ][] = $stack;
 
+				// Populate the time for this query
+				if ( isset( $times[ $sql ] ) ) {
+					$times[ $sql ] += $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['ltime'];
+				} else {
+					$times[ $sql ] = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['ltime'];
+				}
 			}
 
 			// Get the callers which are common to all stacks for this query
@@ -103,6 +110,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 			$this->data->dupe_sources = $sources;
 			$this->data->dupe_callers = $callers;
 			$this->data->dupe_components = $components;
+			$this->data->dupe_times = $times;
 		}
 
 	}

@@ -19,6 +19,11 @@ abstract class QM_Plugin {
 	public $file = '';
 
 	/**
+	 * @var array<string, string>
+	 */
+	private $icons = array();
+
+	/**
 	 * Class constructor
 	 *
 	 * @param string $file
@@ -95,5 +100,34 @@ abstract class QM_Plugin {
 		}
 		return $this->plugin[ $item ] . ltrim( $file, '/' );
 	}
+
+	/**
+	 * @param string $name Icon name.
+	 * @return string Icon HTML.
+	 */
+	public function icon( $name ) {
+		if ( 'blank' === $name ) {
+			return '<span class="qm-icon qm-icon-blank"></span>';
+		}
+
+		if ( isset( $this->icons[ $name ] ) ) {
+			return $this->icons[ $name ];
+		}
+
+		$file = $this->plugin_path( "assets/icons/{$name}.svg" );
+
+		if ( ! file_exists( $file ) ) {
+			return '';
+		}
+
+		$this->icons[ $name ] = sprintf(
+			'<span class="qm-icon qm-icon-%1$s" aria-hidden="true">%2$s</span>',
+			esc_attr( $name ),
+			file_get_contents( $file )
+		);
+
+		return $this->icons[ $name ];
+	}
+
 }
 }

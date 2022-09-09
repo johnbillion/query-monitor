@@ -68,7 +68,6 @@ class QM_Backtrace {
 		'get_header' => 1,
 		'get_sidebar' => 1,
 		'get_footer' => 1,
-		'get_option' => 1,
 		'update_option' => 1,
 		'get_transient' => 1,
 		'set_transient' => 1,
@@ -120,6 +119,11 @@ class QM_Backtrace {
 	protected $component = null;
 
 	/**
+	 * @var mixed[]|null
+	 */
+	protected $top_frame = null;
+
+	/**
 	 * @param array<string, mixed[]> $args
 	 * @param mixed[] $trace
 	 */
@@ -155,6 +159,14 @@ class QM_Backtrace {
 	}
 
 	/**
+	 * @param mixed[] $frame
+	 * @return void
+	 */
+	public function push_frame( array $frame ) {
+		$this->top_frame = $frame;
+	}
+
+	/**
 	 * @return array<int, string>
 	 */
 	public function get_stack() {
@@ -167,7 +179,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return mixed[]|false
 	 */
 	public function get_caller() {
 
@@ -186,8 +198,13 @@ class QM_Backtrace {
 		}
 
 		$components = array();
+		$frames = $this->get_filtered_trace();
 
-		foreach ( $this->get_filtered_trace() as $frame ) {
+		if ( $this->top_frame ) {
+			array_unshift( $frames, $this->top_frame );
+		}
+
+		foreach ( $frames as $frame ) {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
@@ -286,7 +303,12 @@ class QM_Backtrace {
 				$lowest['display'] = $file;
 				$lowest['id'] = $file;
 				unset( $lowest['class'], $lowest['args'], $lowest['type'] );
-				$trace[0] = $lowest;
+
+				// When a PHP error is triggered which doesn't have a stack trace, for example a
+				// deprecated error, QM will blame itself due to its error handler. This prevents that.
+				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
+					$trace[0] = $lowest;
+				}
 			}
 
 			$this->filtered_trace = $trace;

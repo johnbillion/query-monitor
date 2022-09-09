@@ -14,7 +14,7 @@ on:
 jobs:
   test:
     name: PHP Coding Standards
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - name: Checkout repository

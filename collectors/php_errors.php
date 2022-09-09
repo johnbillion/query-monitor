@@ -258,8 +258,17 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		$trace = new QM_Backtrace();
+		$trace->push_frame( array(
+			'file' => $file,
+			'line' => $line,
+		) );
 		$caller = $trace->get_caller();
-		$key = md5( $message . $file . $line . $caller['id'] );
+
+		if ( $caller ) {
+			$key = md5( $message . $file . $line . $caller['id'] );
+		} else {
+			$key = md5( $message . $file . $line );
+		}
 
 		if ( isset( $this->data->{$error_group}[ $type ][ $key ] ) ) {
 			$this->data->{$error_group}[ $type ][ $key ]['calls']++;
@@ -345,11 +354,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
 			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
 		);
 
@@ -372,8 +376,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			$file = esc_html( $e['file'] );
 		}
 
+		$warning = QueryMonitor::init()->icon( 'warning' );
+
 		printf(
-			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			'<p>%1$s <b>%2$s</b>: %3$s<br>in <b>%4$s</b> on line <b>%5$d</b></p>',
+			$warning,
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
 			$file,
