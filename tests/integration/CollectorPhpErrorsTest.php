@@ -199,7 +199,9 @@ class CollectorPHPErrors extends Test {
 		self::assertEquals( 2, count( $actual->errors['notice'] ) );
 
 		// silenced errors:
-		self::assertArrayNotHasKey( 'silenced', $actual );
+		self::assertObjectHasAttribute( 'silenced', $actual );
+		// @phpstan-ignore-next-line
+		self::assertFalse( isset( $actual->silenced ) );
 	}
 
 	function testItWillFilterNoticesFromPlugin(): void {
