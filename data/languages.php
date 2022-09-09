@@ -29,4 +29,9 @@ class QM_Data_Languages extends QM_Data {
 	 * @var string
 	 */
 	public $user_locale;
+
+	/**
+	 * @var int
+	 */
+	public $total_size;
 }

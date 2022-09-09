@@ -69,7 +69,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 			// This should probably happen in the collector's processor
 			$type = QM_Util::get_query_type( $sql );
 			$sql_out = self::format_sql( $sql );
-			$time = $data['dupe_times'][ $sql ];
+			$time = $data->dupe_times[ $sql ];
 
 			if ( 'SELECT' !== $type ) {
 				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";

@@ -130,7 +130,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 		foreach ( $this->data->languages as & $mofiles ) {
 			foreach ( $mofiles as & $mofile ) {
 				if ( $mofile['found'] ) {
-					$this->data['total_size'] += $mofile['found'];
+					$this->data->total_size += $mofile['found'];
 				}
 			}
 		}

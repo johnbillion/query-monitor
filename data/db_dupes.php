@@ -30,4 +30,9 @@ class QM_Data_DB_Dupes extends QM_Data {
 	 * @var array<string, array<int, int>>
 	 */
 	public $dupes;
+
+	/**
+	 * @var array<string, float>
+	 */
+	public $dupe_times;
 }
