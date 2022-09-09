@@ -250,7 +250,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_get_template_part( $slug, $name, $templates ) {
-		$data = compact( 'slug', 'name', 'templates' );
+		$part = compact( 'slug', 'name', 'templates' );
 
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
@@ -258,9 +258,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 			),
 		) );
 
-		$data['caller'] = $trace->get_caller();
+		$part['caller'] = $trace->get_caller();
 
-		$this->requested_template_parts[] = $data;
+		$this->requested_template_parts[] = $part;
 	}
 
 	/**
@@ -272,12 +272,12 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_post( $template_part_id, $attributes, WP_Post $post ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'post' => $post->ID,
 		);
-		$this->requested_template_part_posts[] = $data;
+		$this->requested_template_part_posts[] = $part;
 	}
 
 	/**
@@ -289,12 +289,12 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_file( $template_part_id, $attributes, $template_part_file_path ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'path' => $template_part_file_path,
 		);
-		$this->requested_template_part_files[] = $data;
+		$this->requested_template_part_files[] = $part;
 	}
 
 	/**
@@ -306,12 +306,12 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_none( $template_part_id, $attributes, $template_part_file_path ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'path' => $template_part_file_path,
 		);
-		$this->requested_template_part_nopes[] = $data;
+		$this->requested_template_part_nopes[] = $part;
 	}
 
 	/**
