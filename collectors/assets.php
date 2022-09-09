@@ -109,8 +109,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$type = $this->get_dependency_type();
 
 		foreach ( array( 'header', 'footer' ) as $position ) {
-			if ( empty( $this->data[ $position ] ) ) {
-				$this->data[ $position ] = array();
+			if ( empty( $this->data->{$position} ) ) {
+				$this->data->{$position} = array();
 			}
 		}
 
@@ -154,11 +154,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$missing_dependencies = array();
 
 		foreach ( $positions as $position ) {
-			if ( empty( $this->data[ $position ] ) ) {
+			if ( empty( $this->data->{$position} ) ) {
 				continue;
 			}
 
-			foreach ( $this->data[ $position ] as $handle ) {
+			foreach ( $this->data->{$position} as $handle ) {
 				$dependency = $raw->query( $handle );
 
 				if ( ! $dependency ) {
@@ -182,7 +182,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "https://{$this->data['host']}/", '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "https://{$this->data->host}/", '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
