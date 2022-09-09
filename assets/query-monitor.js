@@ -67,6 +67,12 @@ if ( window.jQuery ) {
 
 		container.removeClass('qm-no-js').addClass('qm-js');
 
+		var theme = localStorage.getItem( 'qm-theme' );
+		if ( theme ) {
+			container.attr('data-theme', theme);
+			$('.qm-theme-toggle[value="' + theme + '"]').prop('checked', true);
+		}
+
 		if ( $('#qm-fatal').length ) {
 			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
 
@@ -458,6 +464,11 @@ if ( window.jQuery ) {
 			});
 
 			e.preventDefault();
+		});
+
+		$('.qm-theme-toggle').on('click',function(e){
+			container.attr('data-theme',$(this).val());
+			localStorage.setItem('qm-theme',$(this).val());
 		});
 
 		$.qm.tableSort({target: $('.qm-sortable')});

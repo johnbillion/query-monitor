@@ -1,6 +1,10 @@
 <?php
 
-class QM_Test_Backtrace extends QM_Backtrace {
+declare(strict_types = 1);
+
+namespace QM\Tests\Supports;
+
+class TestBacktrace extends \QM_Backtrace {
 
 	/**
 	 * @param mixed[] $trace

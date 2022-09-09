@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
 Requires at least: 3.7
-Tested up to: 5.8
-Stable tag: 3.8.0
+Tested up to: 6.0
+Stable tag: 3.10.0
 License: GPLv2 or later
 Requires PHP: 7.2
 Donate link: https://johnblackbourn.com/donations/
@@ -72,7 +72,7 @@ Query Monitor is private by default and always will be. It does not persistently
 
 ### Does this plugin work with PHP 8?
 
-Yes.
+Yes, it's actively tested and working up to PHP 8.1.
 
 ### Who can access Query Monitor's output?
 
@@ -94,7 +94,7 @@ Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease o
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
-* Backuping up or restoring your site
+* Backing up or restoring your site
 * Exporting a large amount of data
 * Running security scans
 

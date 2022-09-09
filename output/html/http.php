@@ -71,6 +71,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -115,7 +116,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					if ( empty( $row['args']['sslverify'] ) && ! $row['local'] ) {
-						$info .= '<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>' . esc_html( sprintf(
+						$info .= '<span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
 							__( 'Certificate verification disabled (%s)', 'query-monitor' ),
 							'sslverify=false'
@@ -160,7 +161,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( ! empty( $row['redirected_to'] ) ) {
 					$url .= sprintf(
-						'<br><span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s</span><br>%2$s',
+						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
+						QueryMonitor::init()->icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
 						__( 'Redirected to:', 'query-monitor' ),
 						self::format_url( $row['redirected_to'] )
@@ -177,7 +179,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				echo '<td class="qm-has-toggle qm-col-status">';
 				if ( $is_error ) {
-					echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo QueryMonitor::init()->icon( 'warning' );
 				}
 				echo esc_html( $response );
 
@@ -212,20 +215,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
 							esc_html( $value ),
 							esc_html( number_format_i18n( $row['info'][ $key ], 4 ) )
-						);
-					}
-
-					$size_fields = array(
-						'size_download' => __( 'Response Size', 'query-monitor' ),
-					);
-					foreach ( $size_fields as $key => $value ) {
-						if ( ! isset( $row['info'][ $key ] ) ) {
-							continue;
-						}
-						printf(
-							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
-							esc_html( $value ),
-							esc_html( size_format( $row['info'][ $key ] ) )
 						);
 					}
 
@@ -273,6 +262,22 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					'<td class="qm-nowrap">%s</td>',
 					esc_html( $component->name )
 				);
+
+				$size = '';
+
+				if ( isset( $row['info']['size_download'] ) ) {
+					$size = sprintf(
+						/* translators: %s: Memory used in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						number_format_i18n( $row['info']['size_download'] / 1024, 1 )
+					);
+				}
+
+				printf(
+					'<td class="qm-nowrap qm-num">%s</td>',
+					esc_html( $size )
+				);
+
 				printf(
 					'<td class="qm-num">%s</td>',
 					esc_html( $row['args']['timeout'] )
@@ -299,7 +304,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			echo '<tr>';
 			printf(
-				'<td colspan="6">%s</td>',
+				'<td colspan="7">%s</td>',
 				sprintf(
 					/* translators: %s: Number of HTTP API requests */
 					esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'HTTP API calls', 'query-monitor' ) ),

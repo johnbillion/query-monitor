@@ -79,7 +79,6 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$this->data['default_version'] = get_bloginfo( 'version' );
 		$this->data['port'] = (string) parse_url( $this->data['host'], PHP_URL_PORT );
 
-		$home_url = home_url();
 		$positions = array(
 			'missing',
 			'broken',
@@ -169,7 +168,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "{$home_url}/", '/', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "https://{$this->data['host']}/", '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -256,7 +255,8 @@ abstract class QM_Collector_Assets extends QM_Collector {
 
 	/**
 	 * @param _WP_Dependency $dependency
-	 * @return array{
+	 * @return mixed[]
+	 * @phpstan-return array{
 	 *   0: string,
 	 *   1: string|WP_Error,
 	 *   2: bool,
@@ -267,6 +267,9 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;
+		$host = '';
+		$scheme = '';
+		$port = '';
 
 		if ( null === $dependency->ver ) {
 			$ver = '';
@@ -281,9 +284,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		/** This filter is documented in wp-includes/class.wp-scripts.php */
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
-		$host = (string) parse_url( $source, PHP_URL_HOST );
-		$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
-		$port = (string) parse_url( $source, PHP_URL_PORT );
+		if ( is_string( $source ) ) {
+			$host = (string) parse_url( $source, PHP_URL_HOST );
+			$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
+			$port = (string) parse_url( $source, PHP_URL_PORT );
+		}
+
 		$http_host = $data['host'];
 		$http_port = $data['port'];
 

@@ -1,6 +1,10 @@
 <?php
 
-class TestPlugin extends QM_UnitTestCase {
+declare(strict_types = 1);
+
+namespace QM\Tests;
+
+class Plugin extends Test {
 	/**
 	 * @var ?array{
 	 *   tested_up_to: string,
@@ -9,9 +13,9 @@ class TestPlugin extends QM_UnitTestCase {
 	 */
 	private $readme_data;
 
-	public function testStableTagIsUpToDate() {
+	public function testStableTagIsUpToDate(): void {
 		if ( ! $readme_data = $this->get_readme() ) {
-			$this->fail( 'There is no readme file' );
+			self::fail( 'There is no readme file' );
 		}
 
 		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );

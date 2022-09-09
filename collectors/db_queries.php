@@ -137,7 +137,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 		$has_result = false;
 		$has_trace = false;
 		$i = 0;
-		$request = trim( $wp_the_query->request );
+		$request = trim( $wp_the_query->request ? $wp_the_query->request : '' );
 
 		if ( method_exists( $db, 'remove_placeholder_escape' ) ) {
 			$request = $db->remove_placeholder_escape( $request );
@@ -249,7 +249,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$row = array(
 					'caller' => null,
 					'caller_name' => null,
-					'stack' => '',
+					'stack' => array(),
 					'sql' => $error['query'],
 					'ltime' => 0,
 					'result' => new WP_Error( 'qmdb', $error['error_str'] ),

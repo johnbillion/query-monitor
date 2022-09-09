@@ -31,6 +31,9 @@ class QM_Collector_Theme extends QM_Collector {
 		add_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		add_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10, 3 );
+		add_action( 'get_header', array( $this, 'action_get_position' ) );
+		add_action( 'get_sidebar', array( $this, 'action_get_position' ) );
+		add_action( 'get_footer', array( $this, 'action_get_position' ) );
 		add_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10, 3 );
 		add_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10, 3 );
 		add_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10, 3 );
@@ -44,11 +47,46 @@ class QM_Collector_Theme extends QM_Collector {
 		remove_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999 );
 		remove_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		remove_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10 );
+		remove_action( 'get_header', array( $this, 'action_get_position' ) );
+		remove_action( 'get_sidebar', array( $this, 'action_get_position' ) );
+		remove_action( 'get_footer', array( $this, 'action_get_position' ) );
 		remove_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10 );
 		remove_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10 );
 		remove_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10 );
 
 		parent::tear_down();
+	}
+
+	/**
+	 * Fires before the header/sidebar/footer template file is loaded.
+	 *
+	 * @param string|null $name Name of the specific file to use. Null for the default.
+	 * @return void
+	 */
+	public function action_get_position( $name ) {
+		$filter = current_filter();
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				$filter => true,
+			),
+		) );
+
+		$position = str_replace( 'get_', '', $filter );
+		$templates = array();
+		if ( '' !== (string) $name ) {
+			$templates[] = "{$position}-{$name}.php";
+		}
+
+		$templates[] = "{$position}.php";
+
+		$data = array(
+			'slug' => $position,
+			'name' => $name,
+			'templates' => $templates,
+			'caller' => $trace->get_caller(),
+		);
+
+		$this->data['requested_template_parts'][] = $data;
 	}
 
 	/**

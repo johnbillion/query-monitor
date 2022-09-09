@@ -43,8 +43,6 @@ class Debug_Bar {
 	 * @return void
 	 */
 	public function init_panels() {
-		require_once 'debug_bar_panel.php';
-
 		/**
 		 * Filters the debug bar panel list. This mimics the same filter called in the Debug Bar plugin.
 		 *

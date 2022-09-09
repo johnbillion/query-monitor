@@ -49,13 +49,13 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 				'url' => $http['url'],
 				'method' => $http['args']['method'],
 				'response' => is_wp_error( $http['response'] ) ? $http['response']->get_error_message() : $http['response']['response'],
-				'time' => (float) number_format_i18n( $http['end'] - $http['start'], 4 ),
+				'time' => round( $http['end'] - $http['start'], 4 ),
 				'stack' => $stack,
 			);
 		}
 
 		$output['total'] = count( $requests );
-		$output['time'] = (float) number_format_i18n( $data['ltime'], 4 );
+		$output['time'] = round( $data['ltime'], 4 );
 		$output['requests'] = $requests;
 
 		return $output;

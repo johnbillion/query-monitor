@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="Query Monitor PHP 5.3 compatibility">
+
+	<config name="testVersion" value="5.3-"/>
+
+	<!-- These files must remain compatible with PHP 5.3 to prevent an unwanted fatal error -->
+	<file>./classes/PHP.php</file>
+	<file>./query-monitor.php</file>
+	<file>./wp-content/db.php</file>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+</ruleset>

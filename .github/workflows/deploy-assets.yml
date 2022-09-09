@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
 name: Deploy Assets
 on:
   push:
@@ -7,11 +9,11 @@ on:
 jobs:
   wordpress:
     name: WordPress.org
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       # @TODO need to cache the npm dependencies
       - name: Install Dependencies
@@ -24,6 +26,14 @@ jobs:
         run: node .github/workflows/changelog.js readme.txt
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -f assets/*
+          git add readme.txt
+          git commit -m "Assets"
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-asset-update@1.4.1
