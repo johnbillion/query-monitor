@@ -31,6 +31,26 @@ class QM_Data_Languages extends QM_Data {
 	public $user_locale;
 
 	/**
+	 * @var string
+	 */
+	public $determined_locale;
+
+	/**
+	 * @var string
+	 */
+	public $language_attributes;
+
+	/**
+	 * @var string
+	 */
+	public $mlp_language;
+
+	/**
+	 * @var string
+	 */
+	public $pll_language;
+
+	/**
 	 * @var int
 	 */
 	public $total_size;

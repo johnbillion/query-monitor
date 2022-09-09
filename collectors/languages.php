@@ -48,17 +48,17 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 * @return void
 	 */
 	public function collect_locale_data() {
-		$this->data['locale'] = get_locale();
-		$this->data['user_locale'] = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		$this->data['determined_locale'] = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
-		$this->data['language_attributes'] = get_language_attributes();
+		$this->data->locale = get_locale();
+		$this->data->user_locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$this->data->determined_locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$this->data->language_attributes = get_language_attributes();
 
 		if ( function_exists( '\Inpsyde\MultilingualPress\siteLanguageTag' ) ) {
-			$this->data['mlp_language'] = \Inpsyde\MultilingualPress\siteLanguageTag();
+			$this->data->mlp_language = \Inpsyde\MultilingualPress\siteLanguageTag();
 		}
 
 		if ( function_exists( 'pll_current_language' ) ) {
-			$this->data['pll_language'] = pll_current_language();
+			$this->data->pll_language = pll_current_language();
 		}
 	}
 
