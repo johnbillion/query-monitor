@@ -88,7 +88,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		foreach ( $admin_globals as $key ) {
 			echo '<tr>';
 			echo '<th scope="row">$' . esc_html( $key ) . '</th>';
-			echo '<td>' . esc_html( $data[ $key ] ) . '</td>';
+			echo '<td>' . esc_html( $data->{$key} ) . '</td>';
 			echo '</tr>';
 		}
 

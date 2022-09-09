@@ -45,20 +45,20 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3><code>get_locale()</code></h3>';
-		echo '<p>' . esc_html( $data['locale'] ) . '</p>';
+		echo '<p>' . esc_html( $data->locale ) . '</p>';
 		echo '</section>';
 
 		echo '<section>';
 		echo '<h3><code>get_user_locale()</code></h3>';
-		echo '<p>' . esc_html( $data['user_locale'] ) . '</p>';
+		echo '<p>' . esc_html( $data->user_locale ) . '</p>';
 		echo '</section>';
 
 		echo '<section>';
 		echo '<h3><code>determine_locale()</code></h3>';
-		echo '<p>' . esc_html( $data['determined_locale'] ) . '</p>';
+		echo '<p>' . esc_html( $data->determined_locale ) . '</p>';
 		echo '</section>';
 
-		if ( isset( $data['mlp_language'] ) ) {
+		if ( isset( $data->mlp_language ) ) {
 			echo '<section>';
 			echo '<h3>';
 			printf(
@@ -67,11 +67,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				'MultilingualPress'
 			);
 			echo '</h3>';
-			echo '<p>' . esc_html( $data['mlp_language'] ) . '</p>';
+			echo '<p>' . esc_html( $data->mlp_language ) . '</p>';
 			echo '</section>';
 		}
 
-		if ( isset( $data['pll_language'] ) ) {
+		if ( isset( $data->pll_language ) ) {
 			echo '<section>';
 			echo '<h3>';
 			printf(
@@ -80,13 +80,13 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				'Polylang'
 			);
 			echo '</h3>';
-			echo '<p>' . esc_html( $data['pll_language'] ) . '</p>';
+			echo '<p>' . esc_html( $data->pll_language ) . '</p>';
 			echo '</section>';
 		}
 
 		echo '<section>';
 		echo '<h3><code>get_language_attributes()</code></h3>';
-		echo '<p><code>' . esc_html( $data['language_attributes'] ) . '</code></p>';
+		echo '<p><code>' . esc_html( $data->language_attributes ) . '</code></p>';
 		echo '</section>';
 
 		echo '<table class="qm-full-width">';
@@ -169,7 +169,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 		echo esc_html( sprintf(
 			/* translators: %s: Memory used in kilobytes */
 			__( '%s kB', 'query-monitor' ),
-			number_format_i18n( $data['total_size'] / 1024, 1 )
+			number_format_i18n( $data->total_size / 1024, 1 )
 		) );
 
 		echo '</td>';

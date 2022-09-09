@@ -82,9 +82,9 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 				// Populate the time for this query
 				if ( isset( $times[ $sql ] ) ) {
-					$times[ $sql ] += $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['ltime'];
+					$times[ $sql ] += $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
 				} else {
-					$times[ $sql ] = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['ltime'];
+					$times[ $sql ] = $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
 				}
 			}
 
