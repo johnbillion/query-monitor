@@ -113,7 +113,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 			'caller' => $trace->get_caller(),
 		);
 
-		$this->data['requested_template_parts'][] = $data;
+		$this->requested_template_parts[] = $data;
 	}
 
 	/**
