@@ -7,8 +7,8 @@
 
 class QM_Data_Languages extends QM_Data {
 	/**
-	 * @var array<string, array<int, array<string, mixed>>>
-	 * @phpstan-var array<string, array<int, array{
+	 * @var array<string, array<string, array<string, mixed>>>
+	 * @phpstan-var array<string, array<string, array{
 	 *   caller: mixed,
 	 *   domain: string,
 	 *   file: string|false,
