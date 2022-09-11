@@ -34,7 +34,7 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 
 		$transients = array();
 
-		foreach ( $data['trans'] as $transient ) {
+		foreach ( $data->trans as $transient ) {
 			$stack = array();
 
 			if ( isset( $transient['filtered_trace'] ) ) {

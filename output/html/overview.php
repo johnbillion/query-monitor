@@ -347,7 +347,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</section>';
 
 		if ( $cache ) {
-			/** @var QM_Data_Cache|array<string, mixed> $cache_data */
+			/** @var QM_Data_Cache $cache_data */
 			$cache_data = $cache->get_data();
 
 			echo '<section>';
