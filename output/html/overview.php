@@ -42,10 +42,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		$db_queries = QM_Collectors::get( 'db_queries' );
 
 		if ( $db_queries ) {
-			# @TODO: make this less derpy:
 			$db_queries_data = $db_queries->get_data();
-			if ( isset( $db_queries_data['types'] ) && isset( $db_queries_data['total_time'] ) ) {
-				$db_query_num = $db_queries_data['types'];
+			if ( isset( $db_queries_data->types ) && isset( $db_queries_data->total_time ) ) {
+				$db_query_num = $db_queries_data->types;
 			}
 		}
 
@@ -206,7 +205,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				sprintf(
 					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
 					_x( '%ss', 'Time in seconds', 'query-monitor' ),
-					number_format_i18n( $db_queries_data['total_time'], 4 )
+					number_format_i18n( $db_queries_data->total_time, 4 )
 				)
 			);
 			echo '</p>';
@@ -228,7 +227,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			$label = sprintf(
 				'%1$s: %2$s',
 				esc_html( _x( 'Total', 'database queries', 'query-monitor' ) ),
-				esc_html( number_format_i18n( $db_queries_data['total_qs'] ) )
+				esc_html( number_format_i18n( $db_queries_data->total_qs ) )
 			);
 			echo self::build_filter_trigger( 'db_queries-wpdb', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 
@@ -242,13 +241,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 			$http_data = $http->get_data();
 
-			if ( ! empty( $http_data['http'] ) ) {
+			if ( ! empty( $http_data->http ) ) {
 				echo '<p>';
 				echo esc_html(
 					sprintf(
 						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
 						_x( '%ss', 'Time in seconds', 'query-monitor' ),
-						number_format_i18n( $http_data['ltime'], 4 )
+						number_format_i18n( $http_data->ltime, 4 )
 					)
 				);
 				echo '</p>';
@@ -256,7 +255,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				$label = sprintf(
 					'%1$s: %2$s',
 					esc_html( _x( 'Total', 'HTTP API calls', 'query-monitor' ) ),
-					esc_html( number_format_i18n( count( $http_data['http'] ) ) )
+					esc_html( number_format_i18n( count( $http_data->http ) ) )
 				);
 				echo self::build_filter_trigger( 'http', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 			} else {
@@ -273,11 +272,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
 		if ( $cache ) {
-			/** @var QM_Data_Cache|array<string, mixed> $cache_data */
+			/** @var QM_Data_Cache $cache_data */
 			$cache_data = $cache->get_data();
 
-			if ( isset( $cache_data['stats'] ) && isset( $cache_data['cache_hit_percentage'] ) ) {
-				$cache_hit_percentage = $cache_data['cache_hit_percentage'];
+			if ( isset( $cache_data->stats ) && isset( $cache_data->cache_hit_percentage ) ) {
+				$cache_hit_percentage = $cache_data->cache_hit_percentage;
 			}
 
 			if ( isset( $cache_hit_percentage ) ) {
@@ -286,13 +285,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
 					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
 					number_format_i18n( $cache_hit_percentage, 1 ),
-					number_format_i18n( $cache_data['stats']['cache_hits'], 0 ),
-					number_format_i18n( $cache_data['stats']['cache_misses'], 0 )
+					number_format_i18n( $cache_data->stats['cache_hits'], 0 ),
+					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
 				) );
 				echo '</p>';
 			}
 
-			if ( $cache_data['has_object_cache'] ) {
+			if ( $cache_data->has_object_cache ) {
 				echo '<p><span class="qm-info">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo self::build_link(
@@ -307,7 +306,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
 				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data['object_cache_extensions'] );
+				$potentials = array_filter( $cache_data->object_cache_extensions );
 
 				if ( ! empty( $potentials ) ) {
 					foreach ( $potentials as $name => $value ) {
@@ -354,8 +353,8 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
 
-			if ( $cache_data['has_opcode_cache'] ) {
-				foreach ( array_filter( $cache_data['opcode_cache_extensions'] ) as $opcache_name => $opcache_state ) {
+			if ( $cache_data->has_opcode_cache ) {
+				foreach ( array_filter( $cache_data->opcode_cache_extensions ) as $opcache_name => $opcache_state ) {
 					echo '<p>';
 					echo esc_html( sprintf(
 						/* translators: %s: Name of cache driver */

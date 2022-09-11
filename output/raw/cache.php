@@ -31,7 +31,7 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 			'misses' => null,
 		);
 
-		/** @var QM_Data_Cache|array<string, mixed> $data */
+		/** @var QM_Data_Cache $data */
 		$data = $this->collector->get_data();
 
 		if ( isset( $data['stats'] ) && isset( $data['cache_hit_percentage'] ) ) {

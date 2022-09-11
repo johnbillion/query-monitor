@@ -212,7 +212,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 		}
 
-		unset( $this->data[ $position ] );
+		unset( $this->data->{$position} );
 
 		$all_dependencies = array_unique( $all_dependencies );
 		sort( $all_dependencies );
