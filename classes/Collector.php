@@ -14,7 +14,7 @@ abstract class QM_Collector {
 	protected $timer;
 
 	/**
-	 * @var array<string, mixed>|QM_Data
+	 * @var QM_Data
 	 */
 	protected $data;
 
@@ -70,10 +70,10 @@ abstract class QM_Collector {
 	 */
 	protected function log_type( $type ) {
 
-		if ( isset( $this->data['types'][ $type ] ) ) {
-			$this->data['types'][ $type ]++;
+		if ( isset( $this->data->types[ $type ] ) ) {
+			$this->data->types[ $type ]++;
 		} else {
-			$this->data['types'][ $type ] = 1;
+			$this->data->types[ $type ] = 1;
 		}
 
 	}
@@ -86,20 +86,20 @@ abstract class QM_Collector {
 	 */
 	protected function log_component( $component, $ltime, $type ) {
 
-		if ( ! isset( $this->data['component_times'][ $component->name ] ) ) {
-			$this->data['component_times'][ $component->name ] = array(
+		if ( ! isset( $this->data->component_times[ $component->name ] ) ) {
+			$this->data->component_times[ $component->name ] = array(
 				'component' => $component->name,
 				'ltime' => 0,
 				'types' => array(),
 			);
 		}
 
-		$this->data['component_times'][ $component->name ]['ltime'] += $ltime;
+		$this->data->component_times[ $component->name ]['ltime'] += $ltime;
 
-		if ( isset( $this->data['component_times'][ $component->name ]['types'][ $type ] ) ) {
-			$this->data['component_times'][ $component->name ]['types'][ $type ]++;
+		if ( isset( $this->data->component_times[ $component->name ]['types'][ $type ] ) ) {
+			$this->data->component_times[ $component->name ]['types'][ $type ]++;
 		} else {
-			$this->data['component_times'][ $component->name ]['types'][ $type ] = 1;
+			$this->data->component_times[ $component->name ]['types'][ $type ] = 1;
 		}
 
 	}
@@ -132,20 +132,17 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @return array<string, mixed>|QM_Data
+	 * @return QM_Data
 	 */
 	public function get_data() {
 		return $this->data;
 	}
 
 	/**
-	 * @return array<string, mixed>|QM_Data
+	 * @return QM_Data
 	 */
 	public function get_storage() {
-		return array(
-			'types' => array(),
-			'component_times' => array(),
-		);
+		return new QM_Data_Fallback();
 	}
 
 	/**
