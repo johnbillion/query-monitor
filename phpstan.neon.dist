@@ -30,6 +30,8 @@ parameters:
 		- '#Access to private property wpdb::#'
 		- '#Access to protected property wpdb::#'
 		- '#Property wpdb::\$use_mysqli \(bool\) in isset\(\) is not nullable#'
+		# Properties in QM_Data* classes are nullable
+		- '#^Property QM_Data(.*)is not nullable\.$#'
 		# False positive
 		-
 			path: collectors/theme.php
