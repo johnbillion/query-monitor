@@ -512,17 +512,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $data['dbs'] ) ) {
 			foreach ( $data['dbs'] as $key => $db ) {
-				/* translators: %s: Time in seconds. Note the space between value and unit. */
-				$text = _n( '%s S', '%s S', $db->total_time, 'query-monitor' );
-
-				// Avoid a potentially blank translation for the plural form.
-				// @see https://meta.trac.wordpress.org/ticket/5377
-				if ( '' === $text ) {
-					$text = '%s S';
-				}
 
 				$title[] = sprintf(
-					esc_html( '%s' . $text ),
+					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+					'%s' . esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
 					( count( $data['dbs'] ) > 1 ? '&bull;&nbsp;&nbsp' : '' ),
 					number_format_i18n( $db->total_time, 2 )
 				);
