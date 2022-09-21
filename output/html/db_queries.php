@@ -520,7 +520,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					number_format_i18n( $db->total_time, 2 )
 				);
 
-				/* translators: %s: Number of database queries. Note the space between value and unit. */
+				/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
 				$text = _n( '%s Q', '%s Q', $db->total_qs, 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
@@ -535,7 +535,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				);
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
-			/* translators: %s: Number of database queries. Note the space between value and unit. */
+			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
 			$text = _n( '%s Q', '%s Q', $data['total_qs'], 'query-monitor' );
 
 			// Avoid a potentially blank translation for the plural form.
