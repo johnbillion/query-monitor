@@ -529,10 +529,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					$text = '%s Q';
 				}
 
-				$title[] = sprintf(
+				$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
 					esc_html( $text ),
 					number_format_i18n( $db->total_qs )
-				);
+				) );
 			}
 		} elseif ( isset( $data['total_qs'] ) ) {
 			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
@@ -544,14 +544,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$text = '%s Q';
 			}
 
-			$title[] = sprintf(
+			$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
 				esc_html( $text ),
 				number_format_i18n( $data['total_qs'] )
-			);
-		}
-
-		foreach ( $title as &$t ) {
-			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
+			) );
 		}
 
 		$title = array_merge( $existing, $title );
