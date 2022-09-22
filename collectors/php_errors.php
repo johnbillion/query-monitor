@@ -49,11 +49,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	private static $unexpected_error = null;
 
 	/**
-	 * @var bool
-	 */
-	protected $hide_silenced_php_errors = false;
-
-	/**
 	 * @return void
 	 */
 	public function set_up() {
@@ -464,19 +459,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
-			/**
-			 * Controls whether silenced PHP errors are hidden entirely by Query Monitor.
-			 *
-			 * To hide silenced errors, use:
-			 *
-			 *     add_filter( 'qm/collect/hide_silenced_php_errors', '__return_true' );
-			 *
-			 * @since 2.7.0
-			 *
-			 * @param bool $hide Whether to hide silenced PHP errors. Default false.
-			 */
-			$this->hide_silenced_php_errors = apply_filters( 'qm/collect/hide_silenced_php_errors', false );
-
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
 
 			foreach ( $this->types as $error_group => $error_types ) {
@@ -523,10 +505,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 					}
 
 					unset( $this->data['errors'][ $error_level ][ $error_id ] );
-
-					if ( $this->hide_silenced_php_errors ) {
-						continue;
-					}
 
 					$this->data['silenced'][ $error_level ][ $error_id ] = $error;
 				}
