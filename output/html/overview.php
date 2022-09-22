@@ -276,11 +276,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			/** @var QM_Data_Cache $cache_data */
 			$cache_data = $cache->get_data();
 
-			if ( isset( $cache_data->stats ) && isset( $cache_data->cache_hit_percentage ) ) {
+			if ( ! empty( $cache_data->stats ) && ! empty( $cache_data->cache_hit_percentage ) ) {
 				$cache_hit_percentage = $cache_data->cache_hit_percentage;
-			}
 
-			if ( isset( $cache_hit_percentage ) ) {
 				echo '<p>';
 				echo esc_html( sprintf(
 					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
