@@ -91,10 +91,11 @@ class QM_Collector_Cache extends QM_DataCollector {
 
 		if ( function_exists( 'extension_loaded' ) ) {
 			$this->data->object_cache_extensions = array_map( 'extension_loaded', array(
-				'APCu' => 'APCu',
-				'Memcache' => 'Memcache',
-				'Memcached' => 'Memcached',
-				'Redis' => 'Redis',
+				'APCu' => 'apcu',
+				'Redis' => 'redis',
+				'Relay' => 'relay',
+				'Memcache' => 'memcache',
+				'Memcached' => 'memcached',
 			) );
 			$this->data->opcode_cache_extensions = array_map( 'extension_loaded', array(
 				'APC' => 'APC',

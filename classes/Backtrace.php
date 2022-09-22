@@ -58,6 +58,8 @@ class QM_Backtrace {
 		'apply_filters' => 1,
 		'do_action_ref_array' => 1,
 		'apply_filters_ref_array' => 1,
+		'do_action_deprecated' => 1,
+		'apply_filters_deprecated' => 1,
 		'get_query_template' => 1,
 		'resolve_block_template' => 1,
 		'get_template_part' => 2,

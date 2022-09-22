@@ -513,22 +513,15 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $data->dbs ) ) {
 			foreach ( $data->dbs as $key => $db ) {
-				/* translators: %s: Time in seconds. Note the space between value and unit. */
-				$text = _n( '%s S', '%s S', $db->total_time, 'query-monitor' );
-
-				// Avoid a potentially blank translation for the plural form.
-				// @see https://meta.trac.wordpress.org/ticket/5377
-				if ( '' === $text ) {
-					$text = '%s S';
-				}
 
 				$title[] = sprintf(
-					esc_html( '%s' . $text ),
+					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+					'%s' . esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
 					( count( $data->dbs ) > 1 ? '&bull;&nbsp;&nbsp' : '' ),
 					number_format_i18n( $db->total_time, 2 )
 				);
 
-				/* translators: %s: Number of database queries. Note the space between value and unit. */
+				/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
 				$text = _n( '%s Q', '%s Q', $db->total_qs, 'query-monitor' );
 
 				// Avoid a potentially blank translation for the plural form.
@@ -537,13 +530,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					$text = '%s Q';
 				}
 
-				$title[] = sprintf(
+				$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
 					esc_html( $text ),
 					number_format_i18n( $db->total_qs )
-				);
+				) );
 			}
 		} elseif ( isset( $data->total_qs ) ) {
-			/* translators: %s: Number of database queries. Note the space between value and unit. */
+			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
 			$text = _n( '%s Q', '%s Q', $data->total_qs, 'query-monitor' );
 
 			// Avoid a potentially blank translation for the plural form.
@@ -552,14 +545,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$text = '%s Q';
 			}
 
-			$title[] = sprintf(
+			$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
 				esc_html( $text ),
 				number_format_i18n( $data->total_qs )
-			);
-		}
-
-		foreach ( $title as &$t ) {
-			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
+			) );
 		}
 
 		$title = array_merge( $existing, $title );

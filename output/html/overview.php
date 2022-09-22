@@ -395,19 +395,15 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		}
 
 		$title[] = sprintf(
-			/* translators: %s: Time in seconds with a decimal fraction. Note the space between value and unit. */
-			esc_html__( '%s S', 'query-monitor' ),
+			/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+			esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
 			number_format_i18n( $data->time_taken, 2 )
 		);
-		$title[] = sprintf(
-			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit. */
+		$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
+			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
 			esc_html__( '%s MB', 'query-monitor' ),
 			$memory
-		);
-
-		foreach ( $title as &$t ) {
-			$t = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', $t );
-		}
+		) );
 
 		$title = array_merge( $existing, $title );
 
