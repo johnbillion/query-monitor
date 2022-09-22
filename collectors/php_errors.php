@@ -20,6 +20,12 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	/**
 	 * @var array<string, array<string, string>>
+	 * @phpstan-var array<string, array{
+	 *   warning: string,
+	 *   notice: string,
+	 *   strict: string,
+	 *   deprecated: string,
+	 * }>
 	 */
 	public $types = array();
 
