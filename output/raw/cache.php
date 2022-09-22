@@ -34,7 +34,7 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 		/** @var QM_Data_Cache $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data->stats ) && isset( $data->cache_hit_percentage ) ) {
+		if ( ! empty( $data->stats ) && ! empty( $data->cache_hit_percentage ) ) {
 			$output['hit_percentage'] = round( $data->cache_hit_percentage, 1 );
 			$output['hits'] = (int) $data->stats['cache_hits'];
 			$output['misses'] = (int) $data->stats['cache_misses'];
