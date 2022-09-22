@@ -34,7 +34,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-		/** @var QM_Data_Request|null $data */
+		/** @var QM_Data_Request $data */
 		$data = $this->collector->get_data();
 
 		/** @var QM_Collector_DB_Queries|null $db_queries */
@@ -213,7 +213,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Request|null $data */
+		/** @var QM_Data_Request $data */
 		$data = $this->collector->get_data();
 		$count = isset( $data->plugin_qvars ) ? count( $data->plugin_qvars ) : 0;
 
