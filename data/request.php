@@ -10,7 +10,7 @@ class QM_Data_Request extends QM_Data {
 	 * @var array<string, mixed>
 	 * @phpstan-var array{
 	 *   title: string,
-	 *   data: WP_User,
+	 *   data: WP_User|false,
 	 * }
 	 */
 	public $user;
