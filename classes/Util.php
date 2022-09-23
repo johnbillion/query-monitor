@@ -9,7 +9,7 @@ if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
 	/**
-	 * @var array<string, stdClass>
+	 * @var array<string, QM_Component>
 	 */
 	protected static $file_components = array();
 
@@ -159,12 +159,9 @@ class QM_Util {
 	 * Attempts to determine the component responsible for a given file name.
 	 *
 	 * @param string $file An absolute file path.
-	 * @return stdClass A stdClass object (ouch) representing the component.
+	 * @return QM_Component An object representing the component.
 	 */
 	public static function get_file_component( $file ) {
-
-		# @TODO turn this into a class (eg QM_File_Component)
-
 		$file = self::standard_dir( $file );
 		$type = '';
 
@@ -317,7 +314,12 @@ class QM_Util {
 				break;
 		}
 
-		self::$file_components[ $file ] = (object) compact( 'type', 'name', 'context' );
+		$component = new QM_Component();
+		$component->type = $type;
+		$component->name = $name;
+		$component->context = $context;
+
+		self::$file_components[ $file ] = $component;
 
 		return self::$file_components[ $file ];
 	}

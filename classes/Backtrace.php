@@ -115,7 +115,7 @@ class QM_Backtrace {
 	protected $calling_file = '';
 
 	/**
-	 * @var stdClass|null
+	 * @var QM_Component|null
 	 */
 	protected $component = null;
 
@@ -191,7 +191,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return stdClass
+	 * @return QM_Component
 	 */
 	public function get_component() {
 		if ( isset( $this->component ) ) {
@@ -227,11 +227,12 @@ class QM_Backtrace {
 			}
 		}
 
-		return (object) array(
-			'type' => 'unknown',
-			'name' => __( 'Unknown', 'query-monitor' ),
-			'context' => 'unknown',
-		);
+		$component = new QM_Component();
+		$component->type = 'unknown';
+		$component->name = __( 'Unknown', 'query-monitor' );
+		$component->context = 'unknown';
+
+		return $component;
 	}
 
 	/**
@@ -243,8 +244,8 @@ class QM_Backtrace {
 	 *   function?: string,
 	 *   file?: string,
 	 * } $frame
-	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
-	 *                       the component cannot be determined.
+	 * @return QM_Component|null An object representing the component, or null if
+	 *                           the component cannot be determined.
 	 */
 	public static function get_frame_component( array $frame ) {
 		try {

@@ -79,7 +79,7 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @param stdClass $component
+	 * @param QM_Component $component
 	 * @param float $ltime
 	 * @param string|int $type
 	 * @return void
