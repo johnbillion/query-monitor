@@ -327,6 +327,13 @@ class QM_Util {
 	/**
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
+	 * @phpstan-return array{
+	 *   function: mixed,
+	 *   class?: object,
+	 *   name?: string,
+	 *   error?: WP_Error,
+	 *   component?: QM_Component,
+	 * }
 	 */
 	public static function populate_callback( array $callback ) {
 

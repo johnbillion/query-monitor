@@ -9,7 +9,7 @@ class QM_Hook {
 
 	/**
 	 * @param string $name
-	 * @param array<string, mixed> $wp_filter
+	 * @param array<string, array<int, array<int, mixed[]>>> $wp_filter
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
 	 * @return array<int, array<string, mixed>>
@@ -35,9 +35,9 @@ class QM_Hook {
 
 			foreach ( $action as $priority => $callbacks ) {
 
-				foreach ( $callbacks as $callback ) {
+				foreach ( $callbacks as $cb ) {
 
-					$callback = QM_Util::populate_callback( $callback );
+					$callback = QM_Util::populate_callback( $cb );
 
 					if ( isset( $callback['component'] ) ) {
 						if (
