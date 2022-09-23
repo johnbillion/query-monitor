@@ -1,0 +1,97 @@
+version: '3.1'
+
+services:
+
+  server:
+    image: nginx:alpine
+    container_name: qm-server
+    restart: always
+    ports:
+      - 80
+    depends_on:
+      - php
+    volumes:
+      - ./tests/nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+    networks:
+      - qm
+
+  php:
+    image: wordpressdevelop/php:${LOCAL_PHP-8.0}-fpm
+    container_name: qm-php
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DEBUG: ${LOCAL_WP_DEBUG-1}
+    depends_on:
+      - database
+    init: true
+    volumes:
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./tests/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+    networks:
+      - qm
+
+  database:
+    image: mariadb:10.5.8
+    container_name: qm-database
+    restart: always
+    ports:
+      - 3306
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - database:/var/lib/mysql:rw
+    networks:
+      - qm
+
+  wpcli:
+    image: wordpress:cli-php${LOCAL_PHP-8.0}
+    container_name: qm-wpcli
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    depends_on:
+      - database
+      - php
+    init: true
+    volumes:
+      - ./tests/wordpress:/var/www/html/:rw
+      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./:/var/www/html/wp-content/plugins/query-monitor:rw
+    networks:
+      - qm
+
+  chrome:
+    image: seleniarm/standalone-chromium
+    container_name: qm-chrome
+    profiles:
+      - acceptance-tests
+    depends_on:
+      - server
+    ports:
+      - 4444
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    shm_size: 2gb
+    networks:
+      - qm
+
+volumes:
+  database:
+
+networks:
+  qm:
+    driver: bridge

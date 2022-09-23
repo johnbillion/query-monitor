@@ -144,6 +144,10 @@ class QM_Util {
 			self::$file_dirs['unknown'] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
+				if ( null === $dir ) {
+					continue;
+				}
+
 				self::$file_dirs[ $type ] = self::standard_dir( $dir );
 			}
 		}
@@ -254,6 +258,26 @@ class QM_Util {
 				$name = __( 'Unknown', 'query-monitor' );
 
 				/**
+				 * Filters the type of a custom or unknown component.
+				 *
+				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
+				 *
+				 * See also the corresponding filters:
+				 *
+				 *  - `qm/component_dirs`
+				 *  - `qm/component_name/{$type}`
+				 *  - `qm/component_context/{$type}`
+				 *
+				 * @since 3.8.1
+				 *
+				 * @param string $type    The component type.
+				 * @param string $file    The full file path for the file within the component.
+				 * @param string $name    The component name.
+				 * @param string $context The context for the component.
+				 */
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
+
+				/**
 				 * Filters the name of a custom or unknown component.
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
@@ -261,6 +285,7 @@ class QM_Util {
 				 * See also the corresponding filters:
 				 *
 				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
 				 *  - `qm/component_context/{$type}`
 				 *
 				 * @since 3.6.0
@@ -279,6 +304,7 @@ class QM_Util {
 				 * See also the corresponding filters:
 				 *
 				 *  - `qm/component_dirs`
+				 *  - `qm/component_type/{$type}`
 				 *  - `qm/component_name/{$type}`
 				 *
 				 * @since 3.8.0
@@ -481,7 +507,10 @@ class QM_Util {
 		}
 
 		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
-		$type = strtoupper( $words[0] );
+		$type = 'Unknown';
+		if ( isset( $words[0] ) ) {
+			$type = strtoupper( $words[0] );
+		}
 
 		return $type;
 	}
@@ -560,6 +589,10 @@ class QM_Util {
 	 * @return string A shortened version of the name.
 	 */
 	public static function shorten_fqn( $fqn ) {
+		if ( substr_count( $fqn, '\\' ) < 3 ) {
+			return $fqn;
+		}
+
 		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]{4,}\\\\#', function( array $matches ) {
 			preg_match_all( '#\\\\([a-zA-Z0-9_])#', $matches[0], $m );
 			return '\\' . implode( '\\', $m[1] ) . '\\';

@@ -46,7 +46,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
-		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+		// 9 is a magic number, it's the latest we can realistically use due to plugins
+		// which call `fastcgi_finish_request()` in a `shutdown` callback hooked on the
+		// default priority of 10, and QM needs to dispatch its output before those.
+		add_action( 'shutdown', array( $this, 'dispatch' ), 9 );
 
 		add_action( 'wp_footer', array( $this, 'action_footer' ) );
 		add_action( 'admin_footer', array( $this, 'action_footer' ) );
@@ -170,6 +173,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
+			return;
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
@@ -226,17 +230,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
-		$css = 'query-monitor';
-
-		if ( defined( 'QM_DARK_MODE' ) && QM_DARK_MODE ) {
-			$css .= '-dark';
-		}
-
 		wp_enqueue_style(
 			'query-monitor',
-			$this->qm->plugin_url( "assets/{$css}.css" ),
-			array( 'dashicons' ),
-			$this->qm->plugin_ver( "assets/{$css}.css" )
+			$this->qm->plugin_url( 'assets/query-monitor.css' ),
+			array(),
+			$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
 			'query-monitor',
@@ -270,7 +268,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.6.0
 		 *
-		 * @param \QM_Dispatcher_Html $this The HTML dispatcher.
+		 * @param \QM_Dispatcher_Html $dispatcher The HTML dispatcher.
 		 */
 		do_action( 'qm/output/enqueued-assets', $this );
 	}
@@ -343,9 +341,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
 			require_once $file;
 		}
@@ -412,7 +407,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="query-monitor-main" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
+		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
 		echo '<div id="qm-title" class="qm-resizer">';
 		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
@@ -450,10 +445,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</select>';
 
+		$settings = QueryMonitor::init()->icon( 'admin-generic' );
+		$toggle = QueryMonitor::init()->icon( 'image-rotate-left' );
+		$close = QueryMonitor::init()->icon( 'no-alt' );
+
 		echo '</div>';
-		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '"><span class="dashicons dashicons-admin-generic" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '"><span class="dashicons dashicons-image-rotate-left" aria-hidden="true"></span></button>';
-		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span></button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '">' . $settings . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '">' . $toggle . '</button>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '">' . $close . '</button>';
 		echo '</div>'; // #qm-title
 
 		echo '<div id="qm-wrapper">';
@@ -516,7 +518,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
 		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
 
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-grid">';
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
 
@@ -524,13 +526,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 
-		echo '<p data-qm-state-visibility="on"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
+		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
 
 		echo '</section>';
-		echo '</div>';
 
-		echo '<div class="qm-boxed">';
-		echo '<section class="qm-editor">';
+		echo '<section>';
 
 		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
 
@@ -557,16 +560,28 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</p><p>';
 		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
 		echo '</p>';
-		echo '<p id="qm-editor-save-status"><span class="dashicons dashicons-yes qm-dashicons-yes"></span> ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
+		echo '</section>';
+
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Appearance', 'query-monitor' ) . '</h3>';
+
+		echo '<p>' . esc_html__( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) . '</p>';
+
+		echo '<ul>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="auto" checked/>' . esc_html_x( 'Auto', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
+		echo '</ul>';
+
+		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		echo '</section>';
 		echo '</div>';
 
 		echo '<div class="qm-boxed">';
 		$constants = array(
-			'QM_DARK_MODE' => array(
-				'label' => __( 'Enable dark mode for Query Monitor\'s interface.', 'query-monitor' ),
-				'default' => false,
-			),
 			'QM_DB_EXPENSIVE' => array(
 				'label' => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
 				'default' => 0.05,
@@ -664,8 +679,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since  3.1.0
 		 *
-		 * @param QM_Dispatcher_Html $this             The HTML dispatcher instance.
-		 * @param QM_Output_Html[]   $this->outputters Array of outputters.
+		 * @param QM_Dispatcher_Html $dispatcher The HTML dispatcher instance.
+		 * @param QM_Output_Html[]   $outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
@@ -830,6 +845,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
 		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
+			return false;
+		}
+
+		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			return false;
 		}
 

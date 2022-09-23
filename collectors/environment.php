@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Environment extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Environment>
+ */
+class QM_Collector_Environment extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -28,6 +31,10 @@ class QM_Collector_Environment extends QM_Collector {
 		'log_errors',
 	);
 
+	public function get_storage() {
+		return new QM_Data_Environment();
+	}
+
 	/**
 	 * @return void
 	 */
@@ -45,7 +52,7 @@ class QM_Collector_Environment extends QM_Collector {
 			} else {
 				$val = ini_get( $setting );
 			}
-			$this->data['php']['variables'][ $setting ]['before'] = $val;
+			$this->data->php['variables'][ $setting ]['before'] = $val;
 		}
 
 	}
@@ -171,7 +178,7 @@ class QM_Collector_Environment extends QM_Collector {
 					'database' => $db->dbname,
 				);
 
-				$this->data['db'][ $id ] = array(
+				$this->data->db[ $id ] = array(
 					'info' => $info,
 					'vars' => $mysql_vars,
 					'variables' => $variables,
@@ -180,15 +187,15 @@ class QM_Collector_Environment extends QM_Collector {
 			}
 		}
 
-		$this->data['php']['version'] = phpversion();
-		$this->data['php']['sapi'] = php_sapi_name();
-		$this->data['php']['user'] = self::get_current_user();
+		$this->data->php['version'] = phpversion();
+		$this->data->php['sapi'] = php_sapi_name();
+		$this->data->php['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$this->data['php']['old'] = version_compare( $this->data['php']['version'], '7.4', '<' );
+		$this->data->php['old'] = version_compare( $this->data->php['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
-			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
+			$this->data->php['variables'][ $setting ]['after'] = ini_get( $setting );
 		}
 
 		if ( defined( 'SORT_FLAG_CASE' ) ) {
@@ -201,15 +208,15 @@ class QM_Collector_Environment extends QM_Collector {
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, $sort_flags );
-			$this->data['php']['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+			$this->data->php['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
 		} else {
-			$this->data['php']['extensions'] = array();
+			$this->data->php['extensions'] = array();
 		}
 
-		$this->data['php']['error_reporting'] = error_reporting();
-		$this->data['php']['error_levels'] = self::get_error_levels( $this->data['php']['error_reporting'] );
+		$this->data->php['error_reporting'] = error_reporting();
+		$this->data->php['error_levels'] = self::get_error_levels( $this->data->php['error_reporting'] );
 
-		$this->data['wp']['version'] = $wp_version;
+		$this->data->wp['version'] = $wp_version;
 		$constants = array(
 			'WP_DEBUG' => self::format_bool_constant( 'WP_DEBUG' ),
 			'WP_DEBUG_DISPLAY' => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
@@ -223,13 +230,13 @@ class QM_Collector_Environment extends QM_Collector {
 		);
 
 		if ( function_exists( 'wp_get_environment_type' ) ) {
-			$this->data['wp']['environment_type'] = wp_get_environment_type();
+			$this->data->wp['environment_type'] = wp_get_environment_type();
 		}
 
-		$this->data['wp']['constants'] = apply_filters( 'qm/environment-constants', $constants );
+		$this->data->wp['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
 		if ( is_multisite() ) {
-			$this->data['wp']['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
+			$this->data->wp['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
 		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
@@ -251,18 +258,19 @@ class QM_Collector_Environment extends QM_Collector {
 			$address = null;
 		}
 
-		$this->data['server'] = array(
+		$this->data->server = array(
 			'name' => $server[0],
 			'version' => $server_version,
 			'address' => $address,
 			'host' => null,
 			'OS' => null,
+			'arch' => null,
 		);
 
 		if ( function_exists( 'php_uname' ) ) {
-			$this->data['server']['host'] = php_uname( 'n' );
-			$this->data['server']['OS'] = php_uname( 's' ) . ' ' . php_uname( 'r' );
-			$this->data['server']['arch'] = php_uname( 'm' );
+			$this->data->server['host'] = php_uname( 'n' );
+			$this->data->server['OS'] = php_uname( 's' ) . ' ' . php_uname( 'r' );
+			$this->data->server['arch'] = php_uname( 'm' );
 		}
 
 	}

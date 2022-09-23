@@ -27,7 +27,7 @@ class QM_Output_Raw_Conditionals extends QM_Output_Raw {
 	public function get_output() {
 		$data = $this->collector->get_data();
 
-		return $data['conds']['true'];
+		return $data->conds['true'];
 	}
 }
 

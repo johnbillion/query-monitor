@@ -34,17 +34,17 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_Transients $data */
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['trans'] ) ) {
+		if ( ! empty( $data->trans ) ) {
 
 			$this->before_tabular_output();
 
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>';
-			if ( $data['has_type'] ) {
+			if ( $data->has_type ) {
 				echo '<th scope="col">' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
 			}
 			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
@@ -56,7 +56,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 			echo '<tbody>';
 
-			foreach ( $data['trans'] as $row ) {
+			foreach ( $data->trans as $row ) {
 				$component = $row['component'];
 
 				echo '<tr>';
@@ -64,7 +64,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 					'<td class="qm-ltr"><code>%s</code></td>',
 					esc_html( $row['name'] )
 				);
-				if ( $data['has_type'] ) {
+				if ( $data->has_type ) {
 					printf(
 						'<td class="qm-ltr qm-nowrap">%s</td>',
 						esc_html( $row['type'] )
@@ -79,7 +79,7 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 				} else {
 					printf(
 						'<td class="qm-nowrap">%s <span class="qm-info">(~%s)</span></td>',
-						esc_html( $row['expiration'] ),
+						esc_html( (string) $row['expiration'] ),
 						esc_html( $row['exp_diff'] )
 					);
 				}
@@ -138,9 +138,9 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Transients $data */
 		$data = $this->collector->get_data();
-		$count = isset( $data['trans'] ) ? count( $data['trans'] ) : 0;
+		$count = count( $data->trans );
 
 		$title = ( empty( $count ) )
 			? __( 'Transient Updates', 'query-monitor' )

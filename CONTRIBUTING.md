@@ -16,7 +16,7 @@ If you discover a security issue in Query Monitor, please report it to [the secu
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and to run the tests.
+You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
 
 ### Prerequisites
 
@@ -33,8 +33,6 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 
        npm install
 
-3. If you want to run the tests locally, check the MySQL database credentials in the `tests/.env` file and amend them as necessary.
-
 ## Building the Assets
 
 To compile the Sass files into CSS:
@@ -47,21 +45,33 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-To run the whole test suite which includes unit tests, linting, and static analysis:
+The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running, then start the containers with:
+
+	composer test:start
+
+To run the whole test suite which includes integration tests, acceptance tests, linting, and static analysis:
 
 	composer test
 
-To run just the PHPUnit tests:
+To run just the integration tests:
 
-	composer test:ut
+	composer test:integration
+
+To run just the acceptance tests:
+
+	composer test:acceptance
 
 To run just the code sniffer:
 
 	composer test:cs
 
-To run just the statis analysis:
+To run just the static analysis:
 
 	composer test:phpstan
+
+To stop the Docker containers:
+
+	composer test:stop
 
 ## Releasing a New Version
 
@@ -77,7 +87,6 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
-   - The `git changelog -x` command from [Git Extras](https://github.com/tj/git-extras) is handy for this.
 
 ### For Release
 

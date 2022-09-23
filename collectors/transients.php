@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Transients extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Transients>
+ */
+class QM_Collector_Transients extends QM_DataCollector {
 
 	public $id = 'transients';
+
+	public function get_storage() {
+		return new QM_Data_Transients();
+	}
 
 	/**
 	 * @return void
@@ -78,7 +85,7 @@ class QM_Collector_Transients extends QM_Collector {
 
 		$size = strlen( maybe_serialize( $value ) );
 
-		$this->data['trans'][] = array(
+		$this->data->trans[] = array(
 			'name' => $name,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
@@ -95,7 +102,7 @@ class QM_Collector_Transients extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		$this->data['has_type'] = is_multisite();
+		$this->data->has_type = is_multisite();
 	}
 
 }

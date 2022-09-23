@@ -35,9 +35,10 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 	 */
 	public function output() {
 
+		/** @var QM_Data_Admin $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['current_screen'] ) ) {
+		if ( empty( $data->current_screen ) ) {
 			return;
 		}
 
@@ -55,7 +56,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		foreach ( $data['current_screen'] as $key => $value ) {
+		foreach ( get_object_vars( $data->current_screen ) as $key => $value ) {
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>' . esc_html( $value ) . '</td>';
@@ -87,7 +88,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		foreach ( $admin_globals as $key ) {
 			echo '<tr>';
 			echo '<th scope="row">$' . esc_html( $key ) . '</th>';
-			echo '<td>' . esc_html( $data[ $key ] ) . '</td>';
+			echo '<td>' . esc_html( $data->{$key} ) . '</td>';
 			echo '</tr>';
 		}
 
@@ -95,21 +96,21 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</table>';
 		echo '</section>';
 
-		if ( ! empty( $data['list_table'] ) ) {
+		if ( ! empty( $data->list_table ) ) {
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'List Table', 'query-monitor' ) . '</h3>';
 
-			if ( ! empty( $data['list_table']['class_name'] ) ) {
+			if ( ! empty( $data->list_table['class_name'] ) ) {
 				echo '<h4>' . esc_html__( 'Class:', 'query-monitor' ) . '</h4>';
-				echo '<p><code>' . esc_html( $data['list_table']['class_name'] ) . '</code></p>';
+				echo '<p><code>' . esc_html( $data->list_table['class_name'] ) . '</code></p>';
 			}
 
 			echo '<h4>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data['list_table']['columns_filter'] ) . '</code></p>';
-			echo '<p><code>' . esc_html( $data['list_table']['sortables_filter'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['columns_filter'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['sortables_filter'] ) . '</code></p>';
 			echo '<h4>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data['list_table']['column_action'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['column_action'] ) . '</code></p>';
 			echo '</section>';
 
 		}

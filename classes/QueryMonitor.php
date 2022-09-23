@@ -212,8 +212,8 @@ class QueryMonitor extends QM_Plugin {
 	 *
 	 * @link https://wordpress.org/plugins/user-role-editor/
 	 *
-	 * @param array<string, array<string, mixed>> $groups Array of existing groups.
-	 * @return array<string, array<string, mixed>> Updated array of groups.
+	 * @param array<string, array<string, array<string, mixed>>> $groups Array of existing groups.
+	 * @return array<string, array<string, array<string, mixed>>> Updated array of groups.
 	 */
 	public function filter_ure_groups( array $groups ) {
 		$groups['query_monitor'] = array(

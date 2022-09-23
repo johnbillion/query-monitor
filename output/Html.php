@@ -246,7 +246,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @param array<string, mixed> $vars
 	 * @return void
 	 */
-	public static function output_inner( $vars ) {
+	public static function output_inner( array $vars ) {
 
 		echo '<table>';
 
@@ -378,7 +378,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$out .= '</span>';
 		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
-		$out .= '<span class="qm-sort-arrow" aria-hidden="true"></span>';
+		$out .= QueryMonitor::init()->icon( 'arrow-down' );
 		$out .= '</button>';
 		$out .= '</label>';
 		return $out;
@@ -392,6 +392,42 @@ abstract class QM_Output_Html extends QM_Output {
 	protected static function build_toggler() {
 		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr__( 'Toggle more information', 'query-monitor' ) . '"><span aria-hidden="true">+</span></button>';
 		return $out;
+	}
+
+	/**
+	 * Returns a filter trigger.
+	 *
+	 * @param string $target
+	 * @param string $filter
+	 * @param string $value
+	 * @param string $label
+	 * @return string
+	 */
+	protected static function build_filter_trigger( $target, $filter, $value, $label ) {
+		return sprintf(
+			'<button class="qm-filter-trigger" data-qm-target="%1$s" data-qm-filter="%2$s" data-qm-value="%3$s">%4$s%5$s</button>',
+			esc_attr( $target ),
+			esc_attr( $filter ),
+			esc_attr( $value ),
+			$label,
+			QueryMonitor::init()->icon( 'filter' )
+		);
+	}
+
+	/**
+	 * Returns a link.
+	 *
+	 * @param string $href
+	 * @param string $label
+	 * @return string
+	 */
+	protected static function build_link( $href, $label ) {
+		return sprintf(
+			'<a href="%1$s" class="qm-link">%2$s%3$s</a>',
+			esc_attr( $href ),
+			$label,
+			QueryMonitor::init()->icon( 'external' )
+		);
 	}
 
 	/**
@@ -422,7 +458,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$regex = 'ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR';
 		$sql = preg_replace( '# (' . $regex . ') #', '<br> $1 ', $sql );
 
-		$keywords = '\b(?:ACTION|ADD|AFTER|ALTER|AND|ASC|AS|AUTO_INCREMENT|BEGIN|BETWEEN|BIGINT|BINARY|BIT|BLOB|BOOLEAN|BOOL|BREAK|BY|CASE|COLLATE|COLUMNS?|COMMIT|CONTINUE|CREATE|DATA(?:BASES?)?|DATE(?:TIME)?|DECIMAL|DECLARE|DEC|DEFAULT|DELAYED|DELETE|DESCRIBE|DESC|DISTINCT|DOUBLE|DO|DROP|DUPLICATE|ELSE|END|ENUM|EXCEPT|EXISTS|EXPLAIN|FIELDS|FLOAT|FORCE|FOREIGN|FORCE|FOR|FROM|FULL|FUNCTION|GROUP|HAVING|IF|IGNORE|INDEX|INNER|INSERT|INTEGER|INTERSECT|INTERVAL|INTO|INT|IN|IS|JOIN|KEYS?|LEFT|LIKE|LIMIT|LONG(?:BLOB|TEXT)|MEDIUM(?:BLOB|INT|TEXT)|MERGE|MIDDLEINT|NOT|NO|NULLIF|ON|ORDER|OR|OUTER|PRIMARY|PROC(?:EDURE)?|REGEXP|RENAME|REPLACE|RIGHT|RLIKE|ROLLBACK|SCHEMA|SELECT|SET|SHOW|SMALLINT|START|TABLES?|TEXT(?:SIZE)?|THEN|TIME(?:STAMP)?|TINY(?:BLOB|INT|TEXT)|TRUNCATE|UNION|UNIQUE|UNSIGNED|UPDATE|USE|USING|VALUES?|VAR(?:BINARY|CHAR)|WHEN|WHERE|WHILE|XOR)\b';
+		$keywords = '\b(?:ACTION|ADD|AFTER|ALTER|AND|ASC|AS|AUTO_INCREMENT|BEGIN|BETWEEN|BIGINT|BINARY|BIT|BLOB|BOOLEAN|BOOL|BREAK|BY|CASE|COLLATE|COLUMNS?|COMMIT|CONTINUE|CREATE|DATA(?:BASES?)?|DATE(?:TIME)?|DECIMAL|DECLARE|DEC|DEFAULT|DELAYED|DELETE|DESCRIBE|DESC|DISTINCT|DOUBLE|DO|DROP|DUPLICATE|ELSE|END|ENUM|EXCEPT|EXISTS|EXPLAIN|FIELDS|FLOAT|FORCE|FOREIGN|FOR|FROM|FULL|FUNCTION|GROUP|HAVING|IF|IGNORE|INDEX|INNER|INSERT|INTEGER|INTERSECT|INTERVAL|INTO|INT|IN|IS|JOIN|KEYS?|LEFT|LIKE|LIMIT|LONG(?:BLOB|TEXT)|MEDIUM(?:BLOB|INT|TEXT)|MERGE|MIDDLEINT|NOT|NO|NULLIF|ON|ORDER|OR|OUTER|PRIMARY|PROC(?:EDURE)?|REGEXP|RENAME|REPLACE|RIGHT|RLIKE|ROLLBACK|SCHEMA|SELECT|SET|SHOW|SMALLINT|START|TABLES?|TEXT(?:SIZE)?|THEN|TIME(?:STAMP)?|TINY(?:BLOB|INT|TEXT)|TRUNCATE|UNION|UNIQUE|UNSIGNED|UPDATE|USE|USING|VALUES?|VAR(?:BINARY|CHAR)|WHEN|WHERE|WHILE|XOR)\b';
 		$sql = preg_replace( '#' . $keywords . '#', '<b>$0</b>', $sql );
 
 		return '<code>' . $sql . '</code>';
@@ -488,15 +524,16 @@ abstract class QM_Output_Html extends QM_Output {
 		$link = sprintf( self::get_file_link_format(), rawurlencode( $file ), intval( $link_line ) );
 
 		if ( $is_filename ) {
-			$format = '<a href="%s" class="qm-edit-link">%s</a>';
+			$format = '<a href="%1$s" class="qm-edit-link">%2$s%3$s</a>';
 		} else {
-			$format = '<a href="%s" class="qm-edit-link"><code>%s</code></a>';
+			$format = '<a href="%1$s" class="qm-edit-link"><code>%2$s</code>%3$s</a>';
 		}
 
 		return sprintf(
 			$format,
 			esc_attr( $link ),
-			esc_html( $text )
+			esc_html( $text ),
+			QueryMonitor::init()->icon( 'edit' )
 		);
 	}
 

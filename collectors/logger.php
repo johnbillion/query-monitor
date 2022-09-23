@@ -10,9 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * @extends QM_DataCollector<QM_Data_Logger>
  * @phpstan-type LogMessage WP_Error|Exception|Throwable|string|bool|null
  */
-class QM_Collector_Logger extends QM_Collector {
+class QM_Collector_Logger extends QM_DataCollector {
 
 	public $id = 'logger';
 
@@ -25,13 +26,17 @@ class QM_Collector_Logger extends QM_Collector {
 	const INFO = 'info';
 	const DEBUG = 'debug';
 
+	public function get_storage() {
+		return new QM_Data_Logger();
+	}
+
 	/**
 	 * @return void
 	 */
 	public function set_up() {
 		parent::set_up();
 
-		$this->data['counts'] = array_fill_keys( $this->get_levels(), 0 );
+		$this->data->counts = array_fill_keys( $this->get_levels(), 0 );
 
 		foreach ( $this->get_levels() as $level ) {
 			add_action( "qm/{$level}", array( $this, $level ), 10, 2 );
@@ -173,7 +178,11 @@ class QM_Collector_Logger extends QM_Collector {
 		}
 
 		if ( ( $message instanceof Exception ) || ( $message instanceof Throwable ) ) {
-			$message = get_class( $message ) . ': ' . $message->getMessage();
+			$message = sprintf(
+				'%1$s: %2$s',
+				get_class( $message ),
+				$message->getMessage()
+			);
 		}
 
 		if ( ! QM_Util::is_stringy( $message ) ) {
@@ -190,8 +199,8 @@ class QM_Collector_Logger extends QM_Collector {
 			$message = '(Empty string)';
 		}
 
-		$this->data['counts'][ $level ]++;
-		$this->data['logs'][] = array(
+		$this->data->counts[ $level ]++;
+		$this->data->logs[] = array(
 			'message' => self::interpolate( $message, $context ),
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
@@ -225,18 +234,18 @@ class QM_Collector_Logger extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data['logs'] ) ) {
+		if ( empty( $this->data->logs ) ) {
 			return;
 		}
 
 		$components = array();
 
-		foreach ( $this->data['logs'] as $row ) {
+		foreach ( $this->data->logs as $row ) {
 			$component = $row['component'];
 			$components[ $component->name ] = $component->name;
 		}
 
-		$this->data['components'] = $components;
+		$this->data->components = $components;
 	}
 
 	/**

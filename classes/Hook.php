@@ -12,7 +12,16 @@ class QM_Hook {
 	 * @param array<string, mixed> $wp_filter
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
-	 * @return mixed[]
+	 * @return array<int, array<string, mixed>>
+	 * @phpstan-return array{
+	 *   name: string,
+	 *   actions: array<int, array{
+	 *     priority: int,
+	 *     callback: array<string, mixed>,
+	 *   }>,
+	 *   parts: array<int, string>,
+	 *   components: array<string, string>,
+	 * }
 	 */
 	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 

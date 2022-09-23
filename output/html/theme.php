@@ -35,9 +35,10 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
+		/** @var QM_Data_Theme $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['stylesheet'] ) ) {
+		if ( empty( $data->stylesheet ) ) {
 			return;
 		}
 
@@ -45,11 +46,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Theme', 'query-monitor' ) . '</h3>';
-		echo '<p>' . esc_html( $data['stylesheet'] ) . '</p>';
+		echo '<p>' . esc_html( $data->stylesheet ) . '</p>';
 
-		if ( $data['is_child_theme'] ) {
+		if ( $data->is_child_theme ) {
 			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
-			echo '<p>' . esc_html( $data['template'] ) . '</p>';
+			echo '<p>' . esc_html( $data->template ) . '</p>';
 		}
 
 		echo '</section>';
@@ -57,14 +58,14 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
 
-		if ( ! empty( $data['template_path'] ) ) {
-			if ( $data['is_child_theme'] ) {
-				$display = $data['theme_template_file'];
+		if ( ! empty( $data->template_path ) ) {
+			if ( $data->is_child_theme ) {
+				$display = $data->theme_template_file;
 			} else {
-				$display = $data['template_file'];
+				$display = $data->template_file;
 			}
 			if ( self::has_clickable_links() ) {
-				$file = $data['template_path'];
+				$file = $data->template_path;
 			} else {
 				$file = false;
 			}
@@ -73,9 +74,9 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( ! empty( $data['template_hierarchy'] ) ) {
+		if ( ! empty( $data->template_hierarchy ) ) {
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
-			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data['template_hierarchy'] ) ) . '</li></ol>';
+			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data->template_hierarchy ) ) . '</li></ol>';
 		}
 
 		echo '</section>';
@@ -83,12 +84,12 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Template Parts', 'query-monitor' ) . '</h3>';
 
-		if ( ! empty( $data['template_parts'] ) ) {
+		if ( ! empty( $data->template_parts ) ) {
 
-			if ( $data['is_child_theme'] ) {
-				$parts = $data['theme_template_parts'];
+			if ( $data->is_child_theme ) {
+				$parts = $data->theme_template_parts;
 			} else {
-				$parts = $data['template_parts'];
+				$parts = $data->template_parts;
 			}
 
 			echo '<ul class="qm-ltr">';
@@ -99,7 +100,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				if ( is_int( $filename ) ) {
 					printf(
 						'<a href="%1$s">%2$s</a>',
-						esc_url( get_edit_post_link( $filename ) ),
+						esc_url( get_edit_post_link( (int) $filename ) ),
 						esc_html( $display )
 					);
 				} elseif ( self::has_clickable_links() ) {
@@ -108,11 +109,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 					echo esc_html( $display );
 				}
 
-				if ( $data['count_template_parts'][ $filename ] > 1 ) {
+				if ( $data->count_template_parts[ $filename ] > 1 ) {
 					$count = sprintf(
 						/* translators: %s: The number of times that a template part file was included in the page */
-						_nx( 'Included %s time', 'Included %s times', $data['count_template_parts'][ $filename ], 'template parts', 'query-monitor' ),
-						esc_html( number_format_i18n( $data['count_template_parts'][ $filename ] ) )
+						_nx( 'Included %s time', 'Included %s times', $data->count_template_parts[ $filename ], 'template parts', 'query-monitor' ),
+						esc_html( number_format_i18n( $data->count_template_parts[ $filename ] ) )
 					);
 					echo '<br><span class="qm-info qm-supplemental">' . esc_html( $count ) . '</span>';
 				}
@@ -125,13 +126,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( $data['has_template_part_action'] ) {
+		if ( $data->has_template_part_action ) {
 			echo '<h4>' . esc_html__( 'Not Loaded', 'query-monitor' ) . '</h4>';
 
-			if ( ! empty( $data['unsuccessful_template_parts'] ) ) {
+			if ( ! empty( $data->unsuccessful_template_parts ) ) {
 				echo '<ul>';
 
-				foreach ( $data['unsuccessful_template_parts'] as $requested ) {
+				foreach ( $data->unsuccessful_template_parts as $requested ) {
 					if ( $requested['name'] ) {
 						echo '<li>';
 						$text = $requested['slug'] . '-' . $requested['name'] . '.php';
@@ -153,12 +154,12 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 
 		echo '</section>';
 
-		if ( ! empty( $data['timber_files'] ) ) {
+		if ( ! empty( $data->timber_files ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Twig Template Files', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
-			foreach ( $data['timber_files'] as $filename ) {
+			foreach ( $data->timber_files as $filename ) {
 				echo '<li>' . esc_html( $filename ) . '</li>';
 			}
 
@@ -166,13 +167,13 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '</section>';
 		}
 
-		if ( ! empty( $data['body_class'] ) ) {
+		if ( ! empty( $data->body_class ) ) {
 			echo '<section>';
 
 			echo '<h3>' . esc_html__( 'Body Classes', 'query-monitor' ) . '</h3>';
 			echo '<ul class="qm-ltr">';
 
-			foreach ( $data['body_class'] as $class ) {
+			foreach ( $data->body_class as $class ) {
 				echo '<li>' . esc_html( $class ) . '</li>';
 			}
 
@@ -188,11 +189,11 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Theme $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['template_file'] ) ) {
-			$name = ( $data['is_child_theme'] ) ? $data['theme_template_file'] : $data['template_file'];
+		if ( isset( $data->template_file ) ) {
+			$name = ( $data->is_child_theme ) ? $data->theme_template_file : $data->template_file;
 		} else {
 			$name = __( 'Unknown', 'query-monitor' );
 		}
