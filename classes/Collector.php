@@ -85,7 +85,6 @@ abstract class QM_Collector {
 	 * @return void
 	 */
 	protected function log_component( $component, $ltime, $type ) {
-
 		if ( ! isset( $this->data->component_times[ $component->name ] ) ) {
 			$this->data->component_times[ $component->name ] = array(
 				'component' => $component->name,
