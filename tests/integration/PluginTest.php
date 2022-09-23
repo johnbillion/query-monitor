@@ -37,7 +37,13 @@ class Plugin extends Test {
 				return false;
 			}
 
-			$file_contents = implode( '', file( $file ) );
+			$file_contents = file( $file );
+
+			if ( ! $file_contents ) {
+				return false;
+			}
+
+			$file_contents = implode( '', $file_contents );
 
 			preg_match( '|Tested up to:(.*)|i', $file_contents, $_tested_up_to );
 			preg_match( '|Stable tag:(.*)|i', $file_contents, $_stable_tag );

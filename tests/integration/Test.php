@@ -33,7 +33,7 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 
 		ob_start();
 		require ABSPATH . WPINC . '/template-loader.php';
-		return ob_get_clean();
+		return (string) ob_get_clean();
 	}
 
 }
