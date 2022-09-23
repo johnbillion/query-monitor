@@ -517,8 +517,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 					unset( $this->data->errors[ $error_level ][ $error_id ] );
 
-					unset( $this->data['errors'][ $error_level ][ $error_id ] );
-
 					$this->data->silenced[ $error_level ][ $error_id ] = $error;
 				}
 			}
