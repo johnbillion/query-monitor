@@ -331,7 +331,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		foreach ( $this->data->http as $key => & $http ) {
 
-			if ( ! isset( $http['response'] ) ) {
+			if ( empty( $http['response'] ) ) {
 				// Timed out
 				$http['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
 				$http['end'] = floatval( $http['start'] + $http['args']['timeout'] );
