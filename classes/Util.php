@@ -405,11 +405,10 @@ class QM_Util {
 			if ( ! empty( $callback['file'] ) ) {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
-				$callback['component'] = (object) array(
-					'type' => 'php',
-					'name' => 'PHP',
-					'context' => '',
-				);
+				$callback['component'] = new QM_Component();
+				$callback['component']->type = 'php';
+				$callback['component']->name = 'PHP';
+				$callback['component']->context = '';
 			}
 		} catch ( ReflectionException $e ) {
 
