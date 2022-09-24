@@ -388,6 +388,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
 
+				if ( ! isset( $callback['name'] ) ) {
+					continue;
+				}
+
 				printf(
 					'<li>%s</li>',
 					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
@@ -529,9 +533,9 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * Checks if the component is of the given type and has the given context. This is
 	 * used to scope an error to a plugin or theme.
 	 *
-	 * @param object $component         The component.
-	 * @param string $component_type    The component type for comparison.
-	 * @param string $component_context The component context for comparison.
+	 * @param QM_Component $component         The component.
+	 * @param string       $component_type    The component type for comparison.
+	 * @param string       $component_context The component context for comparison.
 	 * @return bool
 	 */
 	public function is_affected_component( $component, $component_type, $component_context ) {

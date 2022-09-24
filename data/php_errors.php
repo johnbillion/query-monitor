@@ -14,7 +14,7 @@
  *   filename: string,
  *   line: int|null,
  *   filtered_trace: array<int, array<string, mixed>>|null,
- *   component: stdClass,
+ *   component: QM_Component,
  *   calls: int,
  * }>>
  */

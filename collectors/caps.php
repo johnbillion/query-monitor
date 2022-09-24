@@ -249,7 +249,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 * @phpstan-param array{
 	 *   args: array<int, mixed>,
 	 *   filtered_trace: array<int, array<string, mixed>>,
-	 *   component: stdClass,
+	 *   component: QM_Component,
 	 *   result: bool,
 	 *   parts: array<int, string>,
 	 *   name: string,

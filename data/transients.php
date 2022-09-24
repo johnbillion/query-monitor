@@ -10,7 +10,7 @@ class QM_Data_Transients extends QM_Data {
 	 * @var array<int, array{
 	 *   name: string,
 	 *   filtered_trace: mixed[],
-	 *   component: stdClass,
+	 *   component: QM_Component,
 	 *   type: string,
 	 *   value: mixed,
 	 *   expiration: int,

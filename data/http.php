@@ -10,7 +10,7 @@ class QM_Data_HTTP extends QM_Data {
 	 * @var array<string, array<string, mixed>>
 	 * @phpstan-var array<string, array{
 	 *   args: array<string, mixed>,
-	 *   component: stdClass,
+	 *   component: QM_Component,
 	 *   end: float,
 	 *   filtered_trace: array<int, array<string, mixed>>,
 	 *   info: array<string, mixed>|null,
