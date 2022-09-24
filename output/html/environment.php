@@ -87,17 +87,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tr>';
 
 		foreach ( $data->php['variables'] as $key => $val ) {
-			$class = '';
-			$warners = array(
-				'max_execution_time',
-				'memory_limit',
-			);
-
-			if ( ! $val && in_array( $key, $warners, true ) ) {
-				$class = 'qm-warn';
-			}
-
-			echo '<tr class="' . esc_attr( $class ) . '">';
+			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>';
 
