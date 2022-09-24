@@ -331,6 +331,8 @@ class QM_Util {
 	 *   function: mixed,
 	 *   class?: object,
 	 *   name?: string,
+	 *   file?: string,
+	 *   line?: string,
 	 *   error?: WP_Error,
 	 *   component?: QM_Component,
 	 * }
