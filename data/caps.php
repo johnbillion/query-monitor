@@ -26,7 +26,7 @@ class QM_Data_Caps extends QM_Data {
 	public $parts;
 
 	/**
-	 * @var array<int, string>
+	 * @var array<int, int>
 	 */
 	public $users;
 

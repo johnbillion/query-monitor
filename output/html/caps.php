@@ -81,7 +81,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			$users = $data->users;
 
-			usort( $users, 'strcasecmp' );
+			sort( $users );
 
 			echo '<th scope="col" class="qm-filterable-column qm-num">';
 			echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;

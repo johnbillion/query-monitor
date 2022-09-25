@@ -221,6 +221,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		$all_parts = array();
 		$all_users = array();
 		$components = array();
+		$this->data->caps = array();
 
 		$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_noise' ) ) );
 
@@ -242,15 +243,18 @@ class QM_Collector_Caps extends QM_DataCollector {
 			if ( is_array( $pieces ) ) {
 				$parts = array_values( array_filter( $pieces ) );
 			}
+
+			$capability = array_shift( $cap['args'] );
+			$user_id = array_shift( $cap['args'] );
+
 			$cap['parts'] = $parts;
 			$cap['name'] = $name;
-			$cap['user'] = $cap['args'][1];
-			$cap['args'] = array_slice( $cap['args'], 2 );
+			$cap['user'] = $user_id;
 
 			$this->data->caps[] = $cap;
 
 			$all_parts = array_merge( $all_parts, $parts );
-			$all_users[] = (string) $cap['args'][1];
+			$all_users[] = (int) $user_id;
 			$components[ $component->name ] = $component->name;
 		}
 
