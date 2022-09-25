@@ -122,6 +122,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		// A broken asset is one which has been deregistered without also being dequeued
 		if ( ! empty( $broken ) ) {
 			foreach ( $broken as $key => $handle ) {
+				/** @var _WP_Dependency|false $item */
 				$item = $raw->query( $handle );
 				if ( $item ) {
 					$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
@@ -158,7 +159,9 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				continue;
 			}
 
+			/** @var string $handle */
 			foreach ( $this->data->{$position} as $handle ) {
+				/** @var _WP_Dependency|false $dependency */
 				$dependency = $raw->query( $handle );
 
 				if ( ! $dependency ) {
@@ -187,14 +190,13 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$dependencies = $dependency->deps;
 
-				foreach ( $dependencies as & $dep ) {
+				foreach ( $dependencies as $dep ) {
 					if ( ! $raw->query( $dep ) ) {
 						// A missing dependency is a dependecy on an asset that doesn't exist
 						$missing_dependencies[ $dep ] = true;
 					}
 				}
 
-				// @TODO
 				$this->data->assets[ $position ][ $handle ] = array(
 					'host' => $host,
 					'port' => $port,

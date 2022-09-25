@@ -261,7 +261,7 @@ class QM_Collector_Request extends QM_DataCollector {
 				break;
 
 			case is_a( $qo, 'WP_Term' ):
-			case property_exists( $qo, 'term_id' ):
+			case property_exists( $qo, 'slug' ):
 				// Term archive
 				$this->data->queried_object['title'] = sprintf(
 					/* translators: %s: Taxonomy term name */

@@ -87,6 +87,10 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tr>';
 
 		foreach ( $data->php['variables'] as $key => $val ) {
+			if ( false === $val ) {
+				continue;
+			}
+
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>';
