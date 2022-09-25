@@ -9,15 +9,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Multisite extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Multisite>
+ */
+class QM_Collector_Multisite extends QM_DataCollector {
 	public $id = 'multisite';
 
 	public function __construct() {
 		parent::__construct();
 
-		$this->data['switches'] = array();
+		$this->data->switches = array();
 
 		add_action( 'switch_blog', array( $this, 'action_switch_blog' ), 10, 3 );
+	}
+
+	public function get_storage() {
+		return new QM_Data_Multisite();
 	}
 
 	/**
@@ -34,7 +41,7 @@ class QM_Collector_Multisite extends QM_Collector {
 			return;
 		}
 
-		$this->data['switches'][] = array(
+		$this->data->switches[] = array(
 			'new' => $new_blog_id,
 			'prev' => $prev_blog_id,
 			'to' => ( 'switch' === $context ),
