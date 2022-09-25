@@ -20,16 +20,4 @@ abstract class QM_DataCollector extends QM_Collector {
 	final public function get_data() {
 		return $this->data;
 	}
-
-	/**
-	 * @param string|int $type
-	 * @return void
-	 */
-	protected function log_type( $type ) {
-		if ( isset( $this->data->types[ $type ] ) ) {
-			$this->data->types[ $type ]++;
-		} else {
-			$this->data->types[ $type ] = 1;
-		}
-	}
 }

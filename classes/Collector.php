@@ -69,13 +69,11 @@ abstract class QM_Collector {
 	 * @return void
 	 */
 	protected function log_type( $type ) {
-
 		if ( isset( $this->data->types[ $type ] ) ) {
 			$this->data->types[ $type ]++;
 		} else {
 			$this->data->types[ $type ] = 1;
 		}
-
 	}
 
 	/**
