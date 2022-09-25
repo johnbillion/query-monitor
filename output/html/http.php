@@ -47,7 +47,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 			$status_output = array();
 
-			foreach ( $statuses as $key => $status ) {
+			foreach ( $statuses as $status ) {
 				if ( -1 === $status ) {
 					$status_output[-1] = __( 'Error', 'query-monitor' );
 				} elseif ( -2 === $status ) {
@@ -80,7 +80,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tbody>';
 			$i = 0;
 
-			foreach ( $data->http as $key => $row ) {
+			foreach ( $data->http as $row ) {
 				$ltime = $row['ltime'];
 				$i++;
 				$is_error = false;
