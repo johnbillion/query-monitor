@@ -40,6 +40,8 @@ class QM_Collector_Cache extends QM_DataCollector {
 				$this->data->stats['cache_misses'] = (int) $object_vars['cache_misses'];
 			}
 
+			$stats = array();
+
 			if ( method_exists( $wp_object_cache, 'getStats' ) ) {
 				$stats = $wp_object_cache->getStats();
 			} elseif ( array_key_exists( 'stats', $object_vars ) && is_array( $object_vars['stats'] ) ) {
@@ -58,6 +60,9 @@ class QM_Collector_Cache extends QM_DataCollector {
 
 				foreach ( $stats as $key => $value ) {
 					if ( ! is_scalar( $value ) ) {
+						continue;
+					}
+					if ( ! is_string( $key ) ) {
 						continue;
 					}
 					$this->data->stats[ $key ] = $value;
