@@ -312,6 +312,9 @@ abstract class QM_Collector {
 
 	/**
 	 * @param array<string, mixed> $item
+	 * @phpstan-param array{
+	 *   component: QM_Component,
+	 * } $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {
