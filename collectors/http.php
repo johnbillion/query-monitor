@@ -341,12 +341,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				if ( ! in_array( $http['response']->get_error_code(), $silent, true ) ) {
 					$this->data->errors['alert'][] = $key;
 				}
-				$http['type'] = -1;
+				$http['type'] = 'error';
 			} elseif ( ! $http['args']['blocking'] ) {
-				$http['type'] = -2;
+				$http['type'] = 'non-blocking';
 			} else {
-				$http['type'] = intval( wp_remote_retrieve_response_code( $http['response'] ) );
-				if ( $http['type'] >= 400 ) {
+				$code = intval( wp_remote_retrieve_response_code( $http['response'] ) );
+				$http['type'] = "http:{$code}";
+				if ( $code >= 400 ) {
 					$this->data->errors['warning'][] = $key;
 				}
 			}

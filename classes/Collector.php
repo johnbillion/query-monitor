@@ -65,7 +65,7 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @param string|int $type
+	 * @param string $type
 	 * @return void
 	 */
 	protected function log_type( $type ) {
