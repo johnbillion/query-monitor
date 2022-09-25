@@ -51,5 +51,7 @@ class QM_Collector_Multisite extends QM_Collector {
 	}
 }
 
-# Load early to detect as many happenings during the bootstrap process as possible
-QM_Collectors::add( new QM_Collector_Multisite() );
+if ( is_multisite() ) {
+	# Load early to detect as many happenings during the bootstrap process as possible
+	QM_Collectors::add( new QM_Collector_Multisite() );
+}
