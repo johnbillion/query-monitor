@@ -8,7 +8,7 @@
 class QM_Data_Multisite extends QM_Data {
 	/**
 	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var array<int, array{
+	 * @phpstan-var list<array{
 	 *   new: int,
 	 *   prev: int,
 	 *   to: bool,

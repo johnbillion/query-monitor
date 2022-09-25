@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @extends QM_DataCollector<QM_Data_Caps>
  * @phpstan-type CapCheck array{
- *   args: array<int, mixed>,
- *   filtered_trace: array<int, array<string, mixed>>,
+ *   args: list<mixed>,
+ *   filtered_trace: list<array<string, mixed>>,
  *   component: QM_Component,
  *   result: bool,
  * }
@@ -24,7 +24,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 	/**
 	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var array<int, CapCheck>
+	 * @phpstan-var list<CapCheck>
 	 */
 	private $cap_checks = array();
 

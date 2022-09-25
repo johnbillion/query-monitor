@@ -15,11 +15,11 @@ class QM_Hook {
 	 * @return array<int, array<string, mixed>>
 	 * @phpstan-return array{
 	 *   name: string,
-	 *   actions: array<int, array{
+	 *   actions: list<array{
 	 *     priority: int,
 	 *     callback: array<string, mixed>,
 	 *   }>,
-	 *   parts: array<int, string>,
+	 *   parts: list<string>,
 	 *   components: array<string, string>,
 	 * }
 	 */

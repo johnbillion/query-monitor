@@ -25,7 +25,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 	 * @return array<string, array<int, array<string, mixed>>>
 	 * @phpstan-return array<QM_Collector_Logger::*, list<array{
 	 *   message: string,
-	 *   stack: array<int, string>,
+	 *   stack: list<string>,
 	 * }>>
 	 */
 	public function get_output() {

@@ -297,7 +297,7 @@ class QM_Backtrace {
 
 	/**
 	 * @return array<int, array<string, mixed>>
-	 * @phpstan-return array<int, array{
+	 * @phpstan-return list<array{
 	 *   file: string,
 	 *   line: int,
 	 *   display: string,

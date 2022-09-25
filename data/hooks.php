@@ -8,13 +8,13 @@
 class QM_Data_Hooks extends QM_Data {
 	/**
 	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var array<int, array{
+	 * @phpstan-var list<array{
 	 *   name: string,
-	 *   actions: array<int, array{
+	 *   actions: list<array{
 	 *     priority: int,
 	 *     callback: array<string, mixed>,
 	 *   }>,
-	 *   parts: array<int, string>,
+	 *   parts: list<string>,
 	 *   components: array<string, string>,
 	 * }>
 	 */

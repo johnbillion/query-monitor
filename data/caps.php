@@ -8,12 +8,12 @@
 class QM_Data_Caps extends QM_Data {
 	/**
 	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var array<int, array{
-	 *   args: array<int, mixed>,
-	 *   filtered_trace: array<int, array<string, mixed>>,
+	 * @phpstan-var list<array{
+	 *   args: list<mixed>,
+	 *   filtered_trace: list<array<string, mixed>>,
 	 *   component: QM_Component,
 	 *   result: bool,
-	 *   parts: array<int, string>,
+	 *   parts: list<string>,
 	 *   name: string,
 	 *   user: string,
 	 * }>

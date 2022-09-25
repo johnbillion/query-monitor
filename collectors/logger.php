@@ -250,7 +250,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 
 	/**
 	 * @return array<int, string>
-	 * @phpstan-return array<int, self::*>
+	 * @phpstan-return list<self::*>
 	 */
 	public function get_levels() {
 		return array(
@@ -267,7 +267,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 
 	/**
 	 * @return array<int, string>
-	 * @phpstan-return array<int, self::*>
+	 * @phpstan-return list<self::*>
 	 */
 	public function get_warning_levels() {
 		return array(
