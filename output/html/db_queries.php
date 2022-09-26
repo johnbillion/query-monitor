@@ -121,7 +121,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function output_expensive_queries( array $expensive ) {
-		$dp = strlen( substr( strrchr( (string) QM_DB_EXPENSIVE, '.' ), 1 ) );
+		$dp = strlen( substr( strrchr( (string) QM_DB_EXPENSIVE, '.' ) ?: '.0', 1 ) );
 
 		$panel_name = sprintf(
 			/* translators: %s: Database query time in seconds */

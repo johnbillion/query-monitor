@@ -67,14 +67,14 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo QueryMonitor::init()->icon( 'warning' );
 		}
 
-		echo esc_html( $data->php['version'] );
+		echo esc_html( $data->php['version'] ?: esc_html__( 'Unknown', 'query-monitor' ) );
 		echo $append; // WPCS: XSS ok.
 		echo '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th scope="row">SAPI</th>';
-		echo '<td>' . esc_html( $data->php['sapi'] ) . '</td>';
+		echo '<td>' . esc_html( $data->php['sapi'] ?: esc_html__( 'Unknown', 'query-monitor' ) ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
