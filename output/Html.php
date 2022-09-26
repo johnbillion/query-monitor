@@ -542,10 +542,9 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Provides a protocol URL for edit links in QM stack traces for various editors.
 	 *
-	 * @param string $editor the chosen code editor
-	 * @param string $default_format a format to use if no editor is found
-	 *
-	 * @return string a protocol URL format
+	 * @param string       $editor         The chosen code editor.
+	 * @param string|false $default_format A format to use if no editor is found.
+	 * @return string|false A protocol URL format or boolean false.
 	 */
 	public static function get_editor_file_link_format( $editor, $default_format ) {
 		switch ( $editor ) {
