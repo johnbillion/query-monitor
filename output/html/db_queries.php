@@ -512,12 +512,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		if ( isset( $data->dbs ) ) {
+			$count = count( $data->dbs );
+
 			foreach ( $data->dbs as $key => $db ) {
 
 				$title[] = sprintf(
 					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 					'%s' . esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
-					( count( $data->dbs ) > 1 ? '&bull;&nbsp;&nbsp' : '' ),
+					( $count > 1 ? '&bull;&nbsp;&nbsp' : '' ),
 					number_format_i18n( $db->total_time, 2 )
 				);
 
