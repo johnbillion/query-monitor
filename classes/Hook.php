@@ -9,7 +9,7 @@ class QM_Hook {
 
 	/**
 	 * @param string $name
-	 * @param array<string, array<int, array<int, mixed[]>>> $wp_filter
+	 * @param array<string, WP_Hook> $wp_filter
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
 	 * @return array<int, array<string, mixed>>
