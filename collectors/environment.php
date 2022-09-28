@@ -125,6 +125,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 					}
 				}
 
+				/** @var array<int, stdClass>|null */
 				$variables = $db->get_results( "
 					SHOW VARIABLES
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
@@ -191,7 +192,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$this->data->php['old'] = version_compare( $this->data->php['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
-			$this->data->php['variables'][ $setting ]['after'] = ini_get( $setting );
+			$this->data->php['variables'][ $setting ]['after'] = ini_get( $setting ) ?: null;
 		}
 
 		if ( defined( 'SORT_FLAG_CASE' ) ) {
@@ -278,7 +279,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 	public function get_extension_version( $extension ) {
 		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
 		// crap to their version number, so we need to pluck out the first numeric value in the string.
-		$version = trim( phpversion( $extension ) );
+		$version = trim( phpversion( $extension ) ?: '' );
 
 		if ( ! $version ) {
 			return $version;
