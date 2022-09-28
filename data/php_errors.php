@@ -6,7 +6,7 @@
  */
 
 /**
- * @phpstan-type errorObject array<string, array<string, array{
+ * @phpstan-type errorObject array{
  *   errno: int,
  *   type: string,
  *   message: string,
@@ -16,7 +16,8 @@
  *   filtered_trace: list<array<string, mixed>>|null,
  *   component: QM_Component,
  *   calls: int,
- * }>>
+ * }
+ * @phpstan-type errorObjects array<string, array<string, errorObject>>
  */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
@@ -26,19 +27,19 @@ class QM_Data_PHP_Errors extends QM_Data {
 
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObject
+	 * @phpstan-var errorObjects
 	 */
 	public $errors;
 
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObject
+	 * @phpstan-var errorObjects
 	 */
 	public $suppressed;
 
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObject
+	 * @phpstan-var errorObjects
 	 */
 	public $silenced;
 }

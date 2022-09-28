@@ -19,6 +19,7 @@ define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | 
  *   strict: string,
  *   deprecated: string,
  * }
+ * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
 
@@ -486,6 +487,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			foreach ( $this->types as $error_group => $error_types ) {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data->{$error_group}[ $type ] ) ) {
+						/**
+						 * @var array<string, mixed> $error
+						 * @phpstan-var errorObject $error
+						 */
 						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
 							$components[ $error['component']->name ] = $error['component']->name;
 						}
