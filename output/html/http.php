@@ -40,7 +40,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( ! empty( $data->http ) ) {
 			$statuses = array_keys( $data->types );
-			$components = wp_list_pluck( $data->component_times, 'component' );
+			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );

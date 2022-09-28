@@ -57,7 +57,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 				if ( isset( $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'] ) ) {
 					$trace = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'];
-					$stack = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
+					$stack = array_column( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
 
 					// Populate the component counts for this query
@@ -102,7 +102,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 			}
 
 			// Wave a magic wand
-			$sources[ $sql ] = array_count_values( wp_list_pluck( $stacks[ $sql ], 0 ) );
+			$sources[ $sql ] = array_count_values( array_column( $stacks[ $sql ], 0 ) );
 
 		}
 

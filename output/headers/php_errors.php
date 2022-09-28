@@ -41,7 +41,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 				$stack = array();
 
 				if ( ! empty( $error['filtered_trace'] ) ) {
-					$stack = wp_list_pluck( $error['filtered_trace'], 'display' );
+					$stack = array_column( $error['filtered_trace'], 'display' );
 				}
 
 				$output_error = array(

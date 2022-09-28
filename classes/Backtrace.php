@@ -173,7 +173,7 @@ class QM_Backtrace {
 	public function get_stack() {
 
 		$trace = $this->get_filtered_trace();
-		$stack = wp_list_pluck( $trace, 'display' );
+		$stack = array_column( $trace, 'display' );
 
 		return $stack;
 
