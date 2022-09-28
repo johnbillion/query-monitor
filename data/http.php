@@ -11,16 +11,14 @@ class QM_Data_HTTP extends QM_Data {
 	 * @phpstan-var array<string, array{
 	 *   args: array<string, mixed>,
 	 *   component: QM_Component,
-	 *   end: float,
 	 *   filtered_trace: list<array<string, mixed>>,
 	 *   info: array<string, mixed>|null,
 	 *   local: bool,
 	 *   ltime: float,
-	 *   redirected_to?: string,
+	 *   redirected_to: string|null,
 	 *   response: mixed[]|WP_Error,
-	 *   start: float,
 	 *   transport: string|null,
-	 *   type: int,
+	 *   type: string,
 	 *   url: string,
 	 * }>
 	 */

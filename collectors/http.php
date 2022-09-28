@@ -29,6 +29,30 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 */
 	private $info = null;
 
+	/**
+	 * @var array<string, array<string, mixed>>
+	 * @phpstan-var array<string, array{
+	 *   url: string,
+	 *   start: float,
+	 *   args: array<string, mixed>,
+	 *   filtered_trace: list<array<string, mixed>>,
+	 *   component: QM_Component,
+	 * }>
+	 */
+	private $http_requests = array();
+
+	/**
+	 * @var array<string, array<string, mixed>>
+	 * @phpstan-var array<string, array{
+	 *   end: float,
+	 *   args: array<string, mixed>,
+	 *   response: mixed[]|WP_Error,
+	 *   transport: string|null,
+	 *   info: array<string, mixed>|null,
+	 * }>
+	 */
+	private $http_responses = array();
+
 	public function get_storage() {
 		return new QM_Data_HTTP();
 	}
@@ -168,16 +192,17 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			),
 		) );
 
-		if ( isset( $args['_qm_key'] ) ) {
+		if ( isset( $args['_qm_key'], $this->http_requests[ $args['_qm_key'] ] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
 			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
-			$start = $this->data->http[ $args['_qm_key'] ]['start'];
+			$start = $this->http_requests[ $args['_qm_key'] ]['start'];
 		} else {
 			$start = microtime( true );
 		}
+
 		$key = microtime( true ) . $url;
-		$this->data->http[ $key ] = array(
+		$this->http_requests[ $key ] = array(
 			'url' => $url,
 			'args' => $args,
 			'start' => $start,
@@ -195,10 +220,10 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
-	 * @param bool|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
-	 * @param array<string, mixed>  $args     HTTP request arguments.
-	 * @param string                $url      The request URL.
-	 * @return bool|mixed[]|WP_Error The preemptive HTTP response.
+	 * @param false|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
+	 * @param array<string, mixed>   $args     HTTP request arguments.
+	 * @param string                 $url      The request URL.
+	 * @return false|mixed[]|WP_Error The preemptive HTTP response.
 	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
 
@@ -224,14 +249,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
+		$this->transport = null;
 
 		switch ( $action ) {
 
 			case 'response':
 				if ( ! empty( $class ) ) {
-					$this->data->http[ $args['_qm_key'] ]['transport'] = str_replace( 'wp_http_', '', strtolower( $class ) );
-				} else {
-					$this->data->http[ $args['_qm_key'] ]['transport'] = null;
+					$this->transport = str_replace( 'wp_http_', '', strtolower( $class ) );
 				}
 
 				$this->log_http_response( $response, $args, $url );
@@ -287,20 +311,30 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url ) {
-		$this->data->http[ $args['_qm_key'] ]['end'] = microtime( true );
-		$this->data->http[ $args['_qm_key'] ]['response'] = $response;
-		$this->data->http[ $args['_qm_key'] ]['args'] = $args;
+		/** @var string */
+		$key = $args['_qm_key'];
+
+		$http_response = array(
+			'end' => microtime( true ),
+			'response' => $response,
+			'args' => $args,
+			'info' => $this->info,
+			'transport' => $this->transport,
+		);
+
 		if ( isset( $args['_qm_original_key'] ) ) {
-			$this->data->http[ $args['_qm_original_key'] ]['end'] = $this->data->http[ $args['_qm_original_key'] ]['start'];
-			$this->data->http[ $args['_qm_original_key'] ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
+			/** @var string */
+			$original_key = $args['_qm_original_key'];
+			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
+			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
 				/* translators: %s: Hook name */
 				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
 				'pre_http_request'
 			) );
 		}
 
-		$this->data->http[ $args['_qm_key'] ]['info'] = $this->info;
-		$this->data->http[ $args['_qm_key'] ]['transport'] = $this->transport;
+		$this->http_responses[ $key ] = $http_response;
+
 		$this->info = null;
 		$this->transport = null;
 	}
@@ -311,7 +345,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public function process() {
 		$this->data->ltime = 0;
 
-		if ( empty( $this->data->http ) ) {
+		if ( empty( $this->http_requests ) ) {
 			return;
 		}
 
@@ -329,49 +363,62 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
 
-		foreach ( $this->data->http as $key => & $http ) {
+		foreach ( $this->http_requests as $key => $request ) {
+			$response = $this->http_responses[ $key ];
 
-			if ( empty( $http['response'] ) ) {
+			if ( empty( $response['response'] ) ) {
 				// Timed out
-				$http['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
-				$http['end'] = floatval( $http['start'] + $http['args']['timeout'] );
+				$response['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
+				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
 			}
 
-			if ( is_wp_error( $http['response'] ) ) {
-				if ( ! in_array( $http['response']->get_error_code(), $silent, true ) ) {
+			if ( is_wp_error( $response['response'] ) ) {
+				if ( ! in_array( $response['response']->get_error_code(), $silent, true ) ) {
 					$this->data->errors['alert'][] = $key;
 				}
-				$http['type'] = 'error';
-			} elseif ( ! $http['args']['blocking'] ) {
-				$http['type'] = 'non-blocking';
+				$type = 'error';
+			} elseif ( ! $response['args']['blocking'] ) {
+				$type = 'non-blocking';
 			} else {
-				$code = intval( wp_remote_retrieve_response_code( $http['response'] ) );
-				$http['type'] = "http:{$code}";
+				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
+				$type = "http:{$code}";
 				if ( $code >= 400 ) {
 					$this->data->errors['warning'][] = $key;
 				}
 			}
 
-			$http['ltime'] = ( $http['end'] - $http['start'] );
+			$ltime = ( $response['end'] - $request['start'] );
+			$redirected_to = null;
 
-			if ( isset( $http['info'] ) && ! empty( $http['info']['url'] ) ) {
+			if ( isset( $response['info'] ) && is_string( $response['info']['url'] ) && ! empty( $response['info']['url'] ) ) {
 				// Ignore query variables when detecting a redirect.
-				$from = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['url'] ) );
-				$to = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $http['info']['url'] ) );
+				$from = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $request['url'] ) );
+				$to = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $response['info']['url'] ) );
 				if ( $from !== $to ) {
-					$http['redirected_to'] = $http['info']['url'];
+					$redirected_to = $response['info']['url'];
 				}
 			}
 
-			$this->data->ltime += $http['ltime'];
+			$this->data->ltime += $ltime;
 
-			$host = (string) parse_url( $http['url'], PHP_URL_HOST );
+			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
+			$local = ( $host === $home_host );
 
-			$http['local'] = ( $host === $home_host );
-
-			$this->log_type( $http['type'] );
-			$this->log_component( $http['component'], $http['ltime'], $http['type'] );
-
+			$this->log_type( $type );
+			$this->log_component( $request['component'], $ltime, $type );
+			$this->data->http[ $key ] = array(
+				'args' => $response['args'],
+				'component' => $request['component'],
+				'filtered_trace' => $request['filtered_trace'],
+				'info' => $response['info'],
+				'local' => $local,
+				'ltime' => $ltime,
+				'redirected_to' => $redirected_to,
+				'response' => $response['response'],
+				'transport' => $response['transport'],
+				'type' => $type,
+				'url' => $request['url'],
+			);
 		}
 
 	}
