@@ -70,7 +70,6 @@ class QM_Backtrace {
 		'get_header' => 1,
 		'get_sidebar' => 1,
 		'get_footer' => 1,
-		'update_option' => 1,
 		'get_transient' => 1,
 		'set_transient' => 1,
 		'class_exists' => 2,
