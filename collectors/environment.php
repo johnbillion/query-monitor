@@ -146,7 +146,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 
 				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
 					$client = mysqli_get_client_version();
-					$info = mysqli_get_server_info( $dbh );
 				} else {
 					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
 					// phpcs:ignore
@@ -155,9 +154,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 					} else {
 						$client = null;
 					}
-					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore
-					$info = mysql_get_server_info( $dbh );
 				}
 
 				if ( $client ) {
