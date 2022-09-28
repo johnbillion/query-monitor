@@ -51,7 +51,6 @@ class QM_Backtrace {
 
 	/**
 	 * @var array<string, int|string>
-	 * @phpstan-var array<string, positive-int|'dir'>
 	 */
 	protected static $show_args = array(
 		'do_action' => 1,
@@ -115,7 +114,7 @@ class QM_Backtrace {
 	protected $calling_file = '';
 
 	/**
-	 * @var stdClass|null
+	 * @var QM_Component|null
 	 */
 	protected $component = null;
 
@@ -147,7 +146,7 @@ class QM_Backtrace {
 			if ( isset( $frame['function'] ) && isset( self::$show_args[ $frame['function'] ] ) ) {
 				$show = self::$show_args[ $frame['function'] ];
 
-				if ( 'dir' === $show ) {
+				if ( ! is_int( $show ) ) {
 					$show = 1;
 				}
 
@@ -173,7 +172,7 @@ class QM_Backtrace {
 	public function get_stack() {
 
 		$trace = $this->get_filtered_trace();
-		$stack = wp_list_pluck( $trace, 'display' );
+		$stack = array_column( $trace, 'display' );
 
 		return $stack;
 
@@ -191,7 +190,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return stdClass
+	 * @return QM_Component
 	 */
 	public function get_component() {
 		if ( isset( $this->component ) ) {
@@ -227,24 +226,30 @@ class QM_Backtrace {
 			}
 		}
 
-		return (object) array(
-			'type' => 'unknown',
-			'name' => __( 'Unknown', 'query-monitor' ),
-			'context' => 'unknown',
-		);
+		$component = new QM_Component();
+		$component->type = 'unknown';
+		$component->name = __( 'Unknown', 'query-monitor' );
+		$component->context = 'unknown';
+
+		return $component;
 	}
 
 	/**
 	 * Attempts to determine the component responsible for a given frame.
 	 *
 	 * @param mixed[] $frame A single frame from a trace.
-	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
-	 *                       the component cannot be determined.
+	 * @phpstan-param array{
+	 *   class?: class-string,
+	 *   function?: string,
+	 *   file?: string,
+	 * } $frame
+	 * @return QM_Component|null An object representing the component, or null if
+	 *                           the component cannot be determined.
 	 */
 	public static function get_frame_component( array $frame ) {
 		try {
 
-			if ( isset( $frame['class'] ) ) {
+			if ( isset( $frame['class'] ) && isset( $frame['function'] ) ) {
 				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
@@ -259,6 +264,10 @@ class QM_Backtrace {
 			} elseif ( isset( $frame['file'] ) ) {
 				$file = $frame['file'];
 			} else {
+				return null;
+			}
+
+			if ( ! $file ) {
 				return null;
 			}
 
@@ -287,6 +296,11 @@ class QM_Backtrace {
 
 	/**
 	 * @return array<int, array<string, mixed>>
+	 * @phpstan-return list<array{
+	 *   file: string,
+	 *   line: int,
+	 *   display: string,
+	 * }>
 	 */
 	public function get_filtered_trace() {
 

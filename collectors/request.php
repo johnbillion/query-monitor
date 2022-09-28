@@ -203,6 +203,8 @@ class QM_Collector_Request extends QM_DataCollector {
 
 		/** This filter is documented in wp-includes/class-wp.php */
 		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
+
+		/** @var array<string, mixed> */
 		$qvars = $wp_query->query_vars;
 		$query_vars = array();
 
@@ -261,7 +263,7 @@ class QM_Collector_Request extends QM_DataCollector {
 				break;
 
 			case is_a( $qo, 'WP_Term' ):
-			case property_exists( $qo, 'term_id' ):
+			case property_exists( $qo, 'slug' ):
 				// Term archive
 				$this->data->queried_object['title'] = sprintf(
 					/* translators: %s: Taxonomy term name */
@@ -303,7 +305,10 @@ class QM_Collector_Request extends QM_DataCollector {
 
 		$matching = array();
 
-		foreach ( $wp_rewrite->rules as $match => $query ) {
+		/** @var array<string, string> */
+		$rewrite_rules = $wp_rewrite->rules;
+
+		foreach ( $rewrite_rules as $match => $query ) {
 			if ( preg_match( "#^{$match}#", $this->data->request['request'] ) ) {
 				$matching[ $match ] = $query;
 			}

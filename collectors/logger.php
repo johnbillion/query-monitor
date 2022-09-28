@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_Logger>
+ * @phpstan-type LogMessage WP_Error|Exception|Throwable|string|bool|null
  */
 class QM_Collector_Logger extends QM_DataCollector {
 
@@ -60,6 +61,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function emergency( $message, array $context = array() ) {
@@ -69,6 +71,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function alert( $message, array $context = array() ) {
@@ -78,6 +81,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function critical( $message, array $context = array() ) {
@@ -87,6 +91,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function error( $message, array $context = array() ) {
@@ -96,6 +101,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function warning( $message, array $context = array() ) {
@@ -105,6 +111,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function notice( $message, array $context = array() ) {
@@ -114,6 +121,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function info( $message, array $context = array() ) {
@@ -123,6 +131,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function debug( $message, array $context = array() ) {
@@ -134,6 +143,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
 	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	public function log( $level, $message, array $context = array() ) {
@@ -149,6 +159,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	 * @param mixed $message
 	 * @param array<string, mixed> $context
 	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
 	protected function store( $level, $message, array $context = array() ) {
@@ -174,7 +185,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 			);
 		}
 
-		if ( ! QM_Util::is_stringy( $message ) ) {
+		if ( ! is_string( $message ) ) {
 			if ( null === $message ) {
 				$message = 'null';
 			} elseif ( false === $message ) {
@@ -210,7 +221,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 			// check that the value can be casted to string
 			if ( is_bool( $val ) ) {
 				$replace[ "{{$key}}" ] = ( $val ? 'true' : 'false' );
-			} elseif ( is_scalar( $val ) || QM_Util::is_stringy( $val ) ) {
+			} elseif ( is_scalar( $val ) ) {
 				$replace[ "{{$key}}" ] = $val;
 			}
 		}
@@ -239,7 +250,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 
 	/**
 	 * @return array<int, string>
-	 * @phpstan-return array<int, self::*>
+	 * @phpstan-return list<self::*>
 	 */
 	public function get_levels() {
 		return array(
@@ -256,7 +267,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 
 	/**
 	 * @return array<int, string>
-	 * @phpstan-return array<int, self::*>
+	 * @phpstan-return list<self::*>
 	 */
 	public function get_warning_levels() {
 		return array(

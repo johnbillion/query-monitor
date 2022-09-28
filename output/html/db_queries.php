@@ -121,7 +121,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function output_expensive_queries( array $expensive ) {
-		$dp = strlen( substr( strrchr( (string) QM_DB_EXPENSIVE, '.' ), 1 ) );
+		$dp = strlen( substr( strrchr( (string) QM_DB_EXPENSIVE, '.' ) ?: '.0', 1 ) );
 
 		$panel_name = sprintf(
 			/* translators: %s: Database query time in seconds */
@@ -230,7 +230,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			$types = array_keys( $db->types );
 			$prepend = array();
-			$callers = wp_list_pluck( $data->times, 'caller' );
+			$callers = array_column( $data->times, 'caller' );
 
 			sort( $types );
 			usort( $callers, 'strcasecmp' );
@@ -265,7 +265,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</th>';
 
 			if ( $db->has_trace ) {
-				$components = wp_list_pluck( $data->component_times, 'component' );
+				$components = array_column( $data->component_times, 'component' );
 
 				usort( $components, 'strcasecmp' );
 

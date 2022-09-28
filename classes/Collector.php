@@ -65,27 +65,24 @@ abstract class QM_Collector {
 	}
 
 	/**
-	 * @param string|int $type
+	 * @param string $type
 	 * @return void
 	 */
 	protected function log_type( $type ) {
-
 		if ( isset( $this->data->types[ $type ] ) ) {
 			$this->data->types[ $type ]++;
 		} else {
 			$this->data->types[ $type ] = 1;
 		}
-
 	}
 
 	/**
-	 * @param stdClass $component
+	 * @param QM_Component $component
 	 * @param float $ltime
 	 * @param string|int $type
 	 * @return void
 	 */
 	protected function log_component( $component, $ltime, $type ) {
-
 		if ( ! isset( $this->data->component_times[ $component->name ] ) ) {
 			$this->data->component_times[ $component->name ] = array(
 				'component' => $component->name,
@@ -315,6 +312,9 @@ abstract class QM_Collector {
 
 	/**
 	 * @param array<string, mixed> $item
+	 * @phpstan-param array{
+	 *   component: QM_Component,
+	 * } $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {

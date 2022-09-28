@@ -9,7 +9,7 @@ if ( ! class_exists( 'QM_Util' ) ) {
 class QM_Util {
 
 	/**
-	 * @var array<string, stdClass>
+	 * @var array<string, QM_Component>
 	 */
 	protected static $file_components = array();
 
@@ -118,7 +118,7 @@ class QM_Util {
 			 *
 			 * @since 3.6.0
 			 *
-			 * @param string[] $dirs Array of absolute directory paths keyed by component identifier.
+			 * @param array<string, string|null> $dirs Array of absolute directory paths keyed by component identifier.
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
@@ -159,12 +159,9 @@ class QM_Util {
 	 * Attempts to determine the component responsible for a given file name.
 	 *
 	 * @param string $file An absolute file path.
-	 * @return stdClass A stdClass object (ouch) representing the component.
+	 * @return QM_Component An object representing the component.
 	 */
 	public static function get_file_component( $file ) {
-
-		# @TODO turn this into a class (eg QM_File_Component)
-
 		$file = self::standard_dir( $file );
 		$type = '';
 
@@ -317,7 +314,12 @@ class QM_Util {
 				break;
 		}
 
-		self::$file_components[ $file ] = (object) compact( 'type', 'name', 'context' );
+		$component = new QM_Component();
+		$component->type = $type;
+		$component->name = $name;
+		$component->context = $context;
+
+		self::$file_components[ $file ] = $component;
 
 		return self::$file_components[ $file ];
 	}
@@ -325,6 +327,15 @@ class QM_Util {
 	/**
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
+	 * @phpstan-return array{
+	 *   function: mixed,
+	 *   class?: object,
+	 *   name?: string,
+	 *   file?: string|false,
+	 *   line?: string|false,
+	 *   error?: WP_Error,
+	 *   component?: QM_Component,
+	 * }
 	 */
 	public static function populate_callback( array $callback ) {
 
@@ -353,14 +364,25 @@ class QM_Util {
 				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
-				if ( is_a( $callback['function'], 'Closure' ) ) {
+				if ( $callback['function'] instanceof Closure ) {
 					$ref = new ReflectionFunction( $callback['function'] );
-					$file = self::standard_dir( $ref->getFileName(), '' );
-					if ( 0 === strpos( $file, '/' ) ) {
-						$file = basename( $ref->getFileName() );
+					$filename = $ref->getFileName();
+
+					if ( $filename ) {
+						$file = self::standard_dir( $filename, '' );
+						if ( 0 === strpos( $file, '/' ) ) {
+							$file = basename( $filename );
+						}
+						$callback['name'] = sprintf(
+							/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
+							__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
+							$ref->getStartLine(),
+							$file
+						);
+					} else {
+						/* translators: A closure is an anonymous PHP function */
+						$callback['name'] = __( 'Unknown closure', 'query-monitor' );
 					}
-					/* translators: 1: Line number, 2: File name */
-					$callback['name'] = sprintf( __( 'Closure on line %1$d of %2$s', 'query-monitor' ), $ref->getStartLine(), $file );
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
@@ -379,7 +401,7 @@ class QM_Util {
 			$name = trim( $ref->getName() );
 
 			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
-				if ( preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
+				if ( $callback['file'] && preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
 					$callback['file'] = $matches['file'];
 					$callback['line'] = $matches['line'];
 					$file = trim( self::standard_dir( $callback['file'], '' ), '/' );
@@ -396,11 +418,10 @@ class QM_Util {
 			if ( ! empty( $callback['file'] ) ) {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
-				$callback['component'] = (object) array(
-					'type' => 'php',
-					'name' => 'PHP',
-					'context' => '',
-				);
+				$callback['component'] = new QM_Component();
+				$callback['component']->type = 'php';
+				$callback['component']->name = 'PHP';
+				$callback['component']->context = '';
 			}
 		} catch ( ReflectionException $e ) {
 
@@ -508,7 +529,8 @@ class QM_Util {
 
 		$words = preg_split( '/\b/', trim( $sql ), 2, PREG_SPLIT_NO_EMPTY );
 		$type = 'Unknown';
-		if ( isset( $words[0] ) ) {
+
+		if ( is_array( $words ) && isset( $words[0] ) ) {
 			$type = strtoupper( $words[0] );
 		}
 
@@ -615,6 +637,10 @@ class QM_Util {
 
 		$json = json_encode( $data, $json_options );
 
+		if ( false === $json ) {
+			return '';
+		}
+
 		if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
 			$json = wp_unslash( $json );
 		}
@@ -623,6 +649,7 @@ class QM_Util {
 	}
 
 	/**
+	 * @deprecated
 	 * @param mixed $data
 	 * @return bool
 	 */

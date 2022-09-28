@@ -13,7 +13,7 @@ class QM_Data_Environment extends QM_Data {
 	 *   variables: array<string, array{
 	 *     before: string|null,
 	 *     after: string|null,
-	 *   }|false>,
+	 *   }>,
 	 *   version: string|false,
 	 *   sapi: string|false,
 	 *   user: string,
@@ -38,7 +38,7 @@ class QM_Data_Environment extends QM_Data {
 	 *     database: string,
 	 *   },
 	 *   vars: array<string, bool|string>,
-	 *   variables: array<int, stdClass>,
+	 *   variables: list<stdClass>,
 	 * }>
 	 */
 	public $db;

@@ -14,10 +14,10 @@ class QM_Data_Logger extends QM_Data {
 
 	/**
 	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var array<int, array{
+	 * @phpstan-var list<array{
 	 *   message: string,
 	 *   filtered_trace: mixed[],
-	 *   component: stdClass,
+	 *   component: QM_Component,
 	 *   level: QM_Collector_Logger::*,
 	 * }>
 	 */

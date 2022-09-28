@@ -6,4 +6,5 @@
  * @package query-monitor
  */
 
+#[AllowDynamicProperties]
 class QM_Data_Fallback extends QM_Data {}

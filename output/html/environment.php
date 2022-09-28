@@ -67,14 +67,14 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo QueryMonitor::init()->icon( 'warning' );
 		}
 
-		echo esc_html( $data->php['version'] );
+		echo esc_html( $data->php['version'] ?: esc_html__( 'Unknown', 'query-monitor' ) );
 		echo $append; // WPCS: XSS ok.
 		echo '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
 		echo '<th scope="row">SAPI</th>';
-		echo '<td>' . esc_html( $data->php['sapi'] ) . '</td>';
+		echo '<td>' . esc_html( $data->php['sapi'] ?: esc_html__( 'Unknown', 'query-monitor' ) ) . '</td>';
 		echo '</tr>';
 
 		echo '<tr>';
@@ -87,17 +87,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</tr>';
 
 		foreach ( $data->php['variables'] as $key => $val ) {
-			$class = '';
-			$warners = array(
-				'max_execution_time',
-				'memory_limit',
-			);
-
-			if ( ! $val && in_array( $key, $warners, true ) ) {
-				$class = 'qm-warn';
-			}
-
-			echo '<tr class="' . esc_attr( $class ) . '">';
+			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>';
 
@@ -218,16 +208,16 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				foreach ( $db['variables'] as $setting ) {
 
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$key = $setting->Variable_name;
+					$key = (string) $setting->Variable_name;
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$val = $setting->Value;
+					$val = (string) $setting->Value;
 
 					$append = '';
 
 					if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
 						$append .= sprintf(
 							'&nbsp;<span class="qm-info">(~%s)</span>',
-							esc_html( size_format( $val ) )
+							esc_html( (string) size_format( $val ) )
 						);
 					}
 

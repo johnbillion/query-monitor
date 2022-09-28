@@ -19,6 +19,7 @@ define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | 
  *   strict: string,
  *   deprecated: string,
  * }
+ * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
 
@@ -388,6 +389,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
 
+				if ( ! isset( $callback['name'] ) ) {
+					continue;
+				}
+
 				printf(
 					'<li>%s</li>',
 					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
@@ -482,6 +487,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			foreach ( $this->types as $error_group => $error_types ) {
 				foreach ( $error_types as $type => $title ) {
 					if ( isset( $this->data->{$error_group}[ $type ] ) ) {
+						/**
+						 * @var array<string, mixed> $error
+						 * @phpstan-var errorObject $error
+						 */
 						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
 							$components[ $error['component']->name ] = $error['component']->name;
 						}
@@ -529,9 +538,9 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * Checks if the component is of the given type and has the given context. This is
 	 * used to scope an error to a plugin or theme.
 	 *
-	 * @param object $component         The component.
-	 * @param string $component_type    The component type for comparison.
-	 * @param string $component_context The component context for comparison.
+	 * @param QM_Component $component         The component.
+	 * @param string       $component_type    The component type for comparison.
+	 * @param string       $component_context The component context for comparison.
 	 * @return bool
 	 */
 	public function is_affected_component( $component, $component_type, $component_context ) {

@@ -220,7 +220,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )
 					);
-					echo self::build_filter_trigger( 'db_queries-wpdb', 'type', $type_name, esc_html( $label ) ); // WPCS: XSS ok;
+					echo self::build_filter_trigger( 'db_queries-wpdb', 'type', (string) $type_name, esc_html( $label ) ); // WPCS: XSS ok;
 					echo '<br>';
 				}
 			}

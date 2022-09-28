@@ -40,19 +40,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 		if ( ! empty( $data->http ) ) {
 			$statuses = array_keys( $data->types );
-			$components = wp_list_pluck( $data->component_times, 'component' );
+			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
 
 			$status_output = array();
 
-			foreach ( $statuses as $key => $status ) {
-				if ( -1 === $status ) {
-					$status_output[-1] = __( 'Error', 'query-monitor' );
-				} elseif ( -2 === $status ) {
+			foreach ( $statuses as $status ) {
+				if ( 'error' === $status ) {
+					$status_output['error'] = __( 'Error', 'query-monitor' );
+				} elseif ( 'non-blocking' === $status ) {
 					/* translators: A non-blocking HTTP API request */
-					$status_output[-2] = __( 'Non-blocking', 'query-monitor' );
+					$status_output['non-blocking'] = __( 'Non-blocking', 'query-monitor' );
 				} else {
 					$status_output[] = $status;
 				}
@@ -80,7 +80,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tbody>';
 			$i = 0;
 
-			foreach ( $data->http as $key => $row ) {
+			foreach ( $data->http as $row ) {
 				$ltime = $row['ltime'];
 				$i++;
 				$is_error = false;

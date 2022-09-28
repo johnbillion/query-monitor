@@ -234,7 +234,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			if ( isset( $data->errors[ $type ] ) ) {
 				$has_errors = true;
 				$key = $type;
-				$count     += array_sum( wp_list_pluck( $data->errors[ $type ], 'calls' ) );
+				$count += (int) array_sum( array_column( $data->errors[ $type ], 'calls' ) );
 			}
 
 			if ( ! $has_errors ) {
@@ -302,7 +302,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		foreach ( $types as $type ) {
 			if ( ! empty( $data->{$type} ) ) {
 				foreach ( $data->{$type} as $errors ) {
-					$count += array_sum( wp_list_pluck( $errors, 'calls' ) );
+					$count += array_sum( array_column( $errors, 'calls' ) );
 				}
 			}
 		}

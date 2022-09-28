@@ -149,10 +149,12 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>';
 
 		if ( ! empty( $data->queried_object ) ) {
-			printf( // WPCS: XSS ok.
+			$class = get_class( $data->queried_object['data'] );
+			$class = $class ? $class : __( 'Unknown', 'query-monitor' );
+			printf(
 				'<p>%1$s (%2$s)</p>',
 				esc_html( $data->queried_object['title'] ),
-				esc_html( get_class( $data->queried_object['data'] ) )
+				esc_html( $class )
 			);
 		} else {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';

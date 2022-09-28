@@ -57,7 +57,10 @@ class QM_Collector_Admin extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-
+		/**
+		 * @var string $pagenow
+		 * @var ?WP_List_Table $wp_list_table
+		 */
 		global $pagenow, $wp_list_table;
 
 		$current_screen = get_current_screen();
@@ -82,47 +85,45 @@ class QM_Collector_Admin extends QM_DataCollector {
 			'users-network' => true,
 		);
 
-		if ( ! empty( $this->data->current_screen ) && isset( $screens[ $this->data->current_screen->base ] ) ) {
-
-			$list_table = array();
-
-			# And now, WordPress' legendary inconsistency comes into play:
-
-			if ( ! empty( $this->data->current_screen->taxonomy ) ) {
-				$list_table['column'] = $this->data->current_screen->taxonomy;
-			} elseif ( ! empty( $this->data->current_screen->post_type ) ) {
-				$list_table['column'] = $this->data->current_screen->post_type . '_posts';
-			} else {
-				$list_table['column'] = $this->data->current_screen->base;
-			}
-
-			if ( ! empty( $this->data->current_screen->post_type ) && empty( $this->data->current_screen->taxonomy ) ) {
-				$list_table['columns'] = $this->data->current_screen->post_type . '_posts';
-			} else {
-				$list_table['columns'] = $this->data->current_screen->id;
-			}
-
-			if ( 'edit-comments' === $list_table['column'] ) {
-				$list_table['column'] = 'comments';
-			} elseif ( 'upload' === $list_table['column'] ) {
-				$list_table['column'] = 'media';
-			} elseif ( 'link-manager' === $list_table['column'] ) {
-				$list_table['column'] = 'link';
-			}
-
-			$list_table['sortables'] = $this->data->current_screen->id;
-
-			$this->data->list_table = array(
-				'columns_filter' => "manage_{$list_table['columns']}_columns",
-				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
-				'column_action' => "manage_{$list_table['column']}_custom_column",
-			);
-
-			if ( ! empty( $wp_list_table ) ) {
-				$this->data->list_table['class_name'] = get_class( $wp_list_table );
-			}
+		if ( empty( $this->data->current_screen ) || ! isset( $screens[ $this->data->current_screen->base ] ) ) {
+			return;
 		}
 
+		# And now, WordPress' legendary inconsistency comes into play:
+
+		$columns = $this->data->current_screen->id;
+		$sortables = $this->data->current_screen->id;
+		$column = $this->data->current_screen->base;
+
+		if ( ! empty( $this->data->current_screen->taxonomy ) ) {
+			$column = $this->data->current_screen->taxonomy;
+		} elseif ( ! empty( $this->data->current_screen->post_type ) ) {
+			$column = $this->data->current_screen->post_type . '_posts';
+		}
+
+		if ( ! empty( $this->data->current_screen->post_type ) && empty( $this->data->current_screen->taxonomy ) ) {
+			$columns = $this->data->current_screen->post_type . '_posts';
+		}
+
+		if ( 'edit-comments' === $column ) {
+			$column = 'comments';
+		} elseif ( 'upload' === $column ) {
+			$column = 'media';
+		} elseif ( 'link-manager' === $column ) {
+			$column = 'link';
+		}
+
+		$list_table_data = array(
+			'columns_filter' => "manage_{$columns}_columns",
+			'sortables_filter' => "manage_{$sortables}_sortable_columns",
+			'column_action' => "manage_{$column}_custom_column",
+		);
+
+		if ( ! empty( $wp_list_table ) ) {
+			$list_table_data['class_name'] = get_class( $wp_list_table );
+		}
+
+		$this->data->list_table = $list_table_data;
 	}
 
 }

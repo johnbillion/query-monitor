@@ -32,7 +32,10 @@ class QM_Collector_Hooks extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-
+		/**
+		 * @var array<string, int> $wp_actions
+		 * @var array<string, WP_Hook> $wp_filter
+		 */
 		global $wp_actions, $wp_filter;
 
 		self::$hide_qm = self::hide_qm();

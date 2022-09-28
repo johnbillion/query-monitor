@@ -57,17 +57,17 @@ class QM_Data_Theme extends QM_Data {
 	public $body_class;
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string|int, string>
 	 */
 	public $template_parts;
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string|int, string>
 	 */
 	public $theme_template_parts;
 
 	/**
-	 * @var array<string, int>
+	 * @var array<string|int, int>
 	 */
 	public $count_template_parts;
 

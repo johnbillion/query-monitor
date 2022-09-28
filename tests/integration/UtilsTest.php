@@ -21,9 +21,10 @@ class Utils extends Test {
 	}
 
 	/**
-	 * @return array<string, array{
+	 * @return array<string, array<int, int|array<int, int>>>
+	 * @phpstan-return array<string, array{
 	 *   0: int,
-	 *   1: array<int, int>
+	 *   1: list<int>
 	 * }>
 	 */
 	public function dataClientVersion() {

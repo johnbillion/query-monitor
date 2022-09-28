@@ -46,7 +46,7 @@ class QM_Data_Request extends QM_Data {
 	public $request_method;
 
 	/**
-	 * @var array<string, mixed>
+	 * @var array<string, string>
 	 */
 	public $matching_rewrites;
 }

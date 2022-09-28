@@ -198,8 +198,9 @@ class QM_Collector_Languages extends QM_DataCollector {
 		) );
 
 		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
+		$key = $file ?: uniqid();
 
-		$this->data->languages[ $domain ][] = array(
+		$this->data->languages[ $domain ][ $key ] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,

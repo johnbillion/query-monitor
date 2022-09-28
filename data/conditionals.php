@@ -9,9 +9,9 @@ class QM_Data_Conditionals extends QM_Data {
 	/**
 	 * @var array<string, array<int, string>>
 	 * @phpstan-var array{
-	 *   true: array<int, string>,
-	 *   false: array<int, string>,
-	 *   na: array<int, string>,
+	 *   true: list<string>,
+	 *   false: list<string>,
+	 *   na: list<string>,
 	 * }
 	 */
 	public $conds;

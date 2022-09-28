@@ -22,10 +22,10 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 	}
 
 	/**
-	 * @return array<string, mixed>
+	 * @return array<string, array<int, array<string, mixed>>>
 	 * @phpstan-return array<QM_Collector_Logger::*, list<array{
 	 *   message: string,
-	 *   stack: array<int, string>,
+	 *   stack: list<string>,
 	 * }>>
 	 */
 	public function get_output() {
@@ -40,7 +40,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 		foreach ( $data->logs as $log ) {
 			$output[ $log['level'] ][] = array(
 				'message' => $log['message'],
-				'stack' => wp_list_pluck( $log['filtered_trace'], 'display' ),
+				'stack' => array_column( $log['filtered_trace'], 'display' ),
 			);
 		}
 

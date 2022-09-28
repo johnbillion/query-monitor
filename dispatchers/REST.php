@@ -51,7 +51,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			include_once $file;
 		}
 	}

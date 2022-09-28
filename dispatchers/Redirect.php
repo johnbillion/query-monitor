@@ -50,7 +50,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			require_once $file;
 		}
 	}
