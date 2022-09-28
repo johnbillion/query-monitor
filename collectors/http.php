@@ -382,7 +382,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			} else {
 				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
 				$type = "http:{$code}";
-				if ( $code >= 400 ) {
+				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
 				}
 			}
