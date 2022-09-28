@@ -146,7 +146,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$attr = '';
 				foreach ( $row_attr as $a => $v ) {
-					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+					$attr .= ' ' . $a . '="' . esc_attr( (string) $v ) . '"';
 				}
 
 				printf( // WPCS: XSS ok.
