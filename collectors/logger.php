@@ -185,7 +185,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 			);
 		}
 
-		if ( ! QM_Util::is_stringy( $message ) ) {
+		if ( ! is_string( $message ) ) {
 			if ( null === $message ) {
 				$message = 'null';
 			} elseif ( false === $message ) {
@@ -221,7 +221,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 			// check that the value can be casted to string
 			if ( is_bool( $val ) ) {
 				$replace[ "{{$key}}" ] = ( $val ? 'true' : 'false' );
-			} elseif ( is_scalar( $val ) || QM_Util::is_stringy( $val ) ) {
+			} elseif ( is_scalar( $val ) ) {
 				$replace[ "{{$key}}" ] = $val;
 			}
 		}

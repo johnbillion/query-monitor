@@ -637,6 +637,7 @@ class QM_Util {
 	}
 
 	/**
+	 * @deprecated
 	 * @param mixed $data
 	 * @return bool
 	 */
