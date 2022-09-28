@@ -56,6 +56,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 			foreach ( $query_ids as $query_id ) {
 
 				if ( isset( $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'] ) ) {
+					/** @var QM_Backtrace */
 					$trace = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'];
 					$stack = array_column( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
@@ -67,6 +68,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
+					/** @var array<int, string> */
 					$stack = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['stack'];
 				}
 
