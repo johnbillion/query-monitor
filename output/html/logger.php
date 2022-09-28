@@ -20,7 +20,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 46 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 47 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
