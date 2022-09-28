@@ -119,7 +119,7 @@ class QM_Activation extends QM_Plugin {
 	 * @param string $file
 	 * @return self
 	 */
-	public static function init( $file = null ) {
+	public static function init( $file ) {
 
 		static $instance = null;
 
