@@ -143,7 +143,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 				}
 
 				$client = mysqli_get_client_version();
-				$info = mysqli_get_server_info( $dbh );
 
 				if ( $client ) {
 					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
