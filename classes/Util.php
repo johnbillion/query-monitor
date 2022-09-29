@@ -28,11 +28,6 @@ class QM_Util {
 	 */
 	protected static $contentpath = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected static $sort_field = null;
-
 	private function __construct() {}
 
 	/**
@@ -659,51 +654,24 @@ class QM_Util {
 
 	/**
 	 * @param mixed[] $array
-	 * @param string $field
+	 * @param string  $field
 	 * @return void
 	 */
 	public static function sort( array &$array, $field ) {
-		self::$sort_field = $field;
-		usort( $array, array( self::class, '_sort' ) );
+		usort( $array, function( array $a, array $b ) use ( $field ): int {
+			return $a[ $field ] <=> $b[ $field ];
+		} );
 	}
 
 	/**
 	 * @param mixed[] $array
-	 * @param string $field
+	 * @param string  $field
 	 * @return void
 	 */
 	public static function rsort( array &$array, $field ) {
-		self::$sort_field = $field;
-		usort( $array, array( self::class, '_rsort' ) );
+		usort( $array, function( array $a, array $b ) use ( $field ): int {
+			return $b[ $field ] <=> $a[ $field ];
+		} );
 	}
-
-	/**
-	 * @param array<string, mixed> $a
-	 * @param array<string, mixed> $b
-	 * @return int
-	 * @phpstan-return -1|0|1
-	 */
-	private static function _rsort( $a, $b ) {
-		$field = self::$sort_field;
-
-		return $a[ $field ] <=> $b[ $field ];
-	}
-
-	/**
-	 * @param array<string, mixed> $a
-	 * @param array<string, mixed> $b
-	 * @return int
-	 * @phpstan-return -1|0|1
-	 */
-	private static function _sort( $a, $b ) {
-		$field = self::$sort_field;
-
-		if ( $a[ $field ] === $b[ $field ] ) {
-			return 0;
-		} else {
-			return ( $a[ $field ] > $b[ $field ] ) ? 1 : -1;
-		}
-	}
-
 }
 }
