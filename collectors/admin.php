@@ -63,13 +63,11 @@ class QM_Collector_Admin extends QM_DataCollector {
 		 */
 		global $pagenow, $wp_list_table;
 
-		$current_screen = get_current_screen();
-
 		$this->data->pagenow = $pagenow;
 		$this->data->typenow = $GLOBALS['typenow'] ?? '';
 		$this->data->taxnow = $GLOBALS['taxnow'] ?? '';
 		$this->data->hook_suffix = $GLOBALS['hook_suffix'] ?? '';
-		$this->data->current_screen = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
+		$this->data->current_screen = get_current_screen();
 
 		$screens = array(
 			'edit' => true,
