@@ -26,36 +26,33 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 	 */
 	public function get_output() {
 		$output = array();
+		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['http'] ) ) {
+		if ( empty( $data->http ) ) {
 			return $output;
 		}
 
 		$requests = array();
 
-		foreach ( $data['http'] as $http ) {
+		foreach ( $data->http as $http ) {
 			$stack = array();
 
-			if ( isset( $http['trace'] ) ) {
-				$filtered_trace = $http['trace']->get_filtered_trace();
-
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = $item['display'];
-				}
+			foreach ( $http['filtered_trace'] as $item ) {
+				$stack[] = $item['display'];
 			}
 
 			$requests[] = array(
 				'url' => $http['url'],
 				'method' => $http['args']['method'],
 				'response' => is_wp_error( $http['response'] ) ? $http['response']->get_error_message() : $http['response']['response'],
-				'time' => round( $http['end'] - $http['start'], 4 ),
+				'time' => round( $http['ltime'], 4 ),
 				'stack' => $stack,
 			);
 		}
 
 		$output['total'] = count( $requests );
-		$output['time'] = round( $data['ltime'], 4 );
+		$output['time'] = round( $data->ltime, 4 );
 		$output['requests'] = $requests;
 
 		return $output;

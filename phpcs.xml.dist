@@ -38,6 +38,7 @@
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
 		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
 
 	</rule>
 

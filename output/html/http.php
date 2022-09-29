@@ -35,24 +35,24 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['http'] ) ) {
-			$statuses = array_keys( $data['types'] );
-			$components = wp_list_pluck( $data['component_times'], 'component' );
+		if ( ! empty( $data->http ) ) {
+			$statuses = array_keys( $data->types );
+			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
 			usort( $components, 'strcasecmp' );
 
 			$status_output = array();
 
-			foreach ( $statuses as $key => $status ) {
-				if ( -1 === $status ) {
-					$status_output[-1] = __( 'Error', 'query-monitor' );
-				} elseif ( -2 === $status ) {
+			foreach ( $statuses as $status ) {
+				if ( 'error' === $status ) {
+					$status_output['error'] = __( 'Error', 'query-monitor' );
+				} elseif ( 'non-blocking' === $status ) {
 					/* translators: A non-blocking HTTP API request */
-					$status_output[-2] = __( 'Non-blocking', 'query-monitor' );
+					$status_output['non-blocking'] = __( 'Non-blocking', 'query-monitor' );
 				} else {
 					$status_output[] = $status;
 				}
@@ -80,7 +80,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tbody>';
 			$i = 0;
 
-			foreach ( $data['http'] as $key => $row ) {
+			foreach ( $data->http as $row ) {
 				$ltime = $row['ltime'];
 				$i++;
 				$is_error = false;
@@ -146,7 +146,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$attr = '';
 				foreach ( $row_attr as $a => $v ) {
-					$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
+					$attr .= ' ' . $a . '="' . esc_attr( (string) $v ) . '"';
 				}
 
 				printf( // WPCS: XSS ok.
@@ -299,8 +299,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</tbody>';
 			echo '<tfoot>';
 
-			$total_stime = number_format_i18n( $data['ltime'], 4 );
-			$count = count( $data['http'] );
+			$total_stime = number_format_i18n( $data->ltime, 4 );
+			$count = count( $data->http );
 
 			echo '<tr>';
 			printf(
@@ -331,13 +331,13 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-
+		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['errors']['alert'] ) ) {
+		if ( isset( $data->errors['alert'] ) ) {
 			$class[] = 'qm-alert';
 		}
-		if ( isset( $data['errors']['warning'] ) ) {
+		if ( isset( $data->errors['warning'] ) ) {
 			$class[] = 'qm-warning';
 		}
 
@@ -350,10 +350,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		$count = isset( $data['http'] ) ? count( $data['http'] ) : 0;
+		$count = ! empty( $data->http ) ? count( $data->http ) : 0;
 
 		$title = ( empty( $count ) )
 			? __( 'HTTP API Calls', 'query-monitor' )
@@ -367,10 +367,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			) ),
 		);
 
-		if ( isset( $data['errors']['alert'] ) ) {
+		if ( isset( $data->errors['alert'] ) ) {
 			$args['meta']['classname'] = 'qm-alert';
 		}
-		if ( isset( $data['errors']['warning'] ) ) {
+		if ( isset( $data->errors['warning'] ) ) {
 			$args['meta']['classname'] = 'qm-warning';
 		}
 

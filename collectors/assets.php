@@ -9,7 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-abstract class QM_Collector_Assets extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Assets>
+ */
+abstract class QM_Collector_Assets extends QM_DataCollector {
+
+	public function get_storage() {
+		return new QM_Data_Assets();
+	}
 
 	/**
 	 * @return void
@@ -49,35 +56,40 @@ abstract class QM_Collector_Assets extends QM_Collector {
 	public function action_head() {
 		$type = $this->get_dependency_type();
 
-		$this->data['header'] = $GLOBALS[ "wp_{$type}" ]->done;
+		/** @var WP_Dependencies $dependencies */
+		$dependencies = $GLOBALS[ "wp_{$type}" ];
+
+		$this->data->header = $dependencies->done;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function action_print_footer_scripts() {
-		if ( empty( $this->data['header'] ) ) {
+		if ( empty( $this->data->header ) ) {
 			return;
 		}
 
 		$type = $this->get_dependency_type();
 
-		$this->data['footer'] = array_diff( $GLOBALS[ "wp_{$type}" ]->done, $this->data['header'] );
+		/** @var WP_Dependencies $dependencies */
+		$dependencies = $GLOBALS[ "wp_{$type}" ];
 
+		$this->data->footer = array_diff( $dependencies->done, $this->data->header );
 	}
 
 	/**
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data['header'] ) && empty( $this->data['footer'] ) ) {
+		if ( empty( $this->data->header ) && empty( $this->data->footer ) ) {
 			return;
 		}
 
-		$this->data['is_ssl'] = is_ssl();
-		$this->data['host'] = wp_unslash( $_SERVER['HTTP_HOST'] );
-		$this->data['default_version'] = get_bloginfo( 'version' );
-		$this->data['port'] = (string) parse_url( $this->data['host'], PHP_URL_PORT );
+		$this->data->is_ssl = is_ssl();
+		$this->data->host = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data->default_version = get_bloginfo( 'version' );
+		$this->data->port = (string) parse_url( $this->data->host, PHP_URL_PORT );
 
 		$positions = array(
 			'missing',
@@ -86,7 +98,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			'footer',
 		);
 
-		$this->data['counts'] = array(
+		$this->data->counts = array(
 			'missing' => 0,
 			'broken' => 0,
 			'header' => 0,
@@ -97,10 +109,12 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$type = $this->get_dependency_type();
 
 		foreach ( array( 'header', 'footer' ) as $position ) {
-			if ( empty( $this->data[ $position ] ) ) {
-				$this->data[ $position ] = array();
+			if ( empty( $this->data->{$position} ) ) {
+				$this->data->{$position} = array();
 			}
 		}
+
+		/** @var WP_Dependencies $raw */
 		$raw = $GLOBALS[ "wp_{$type}" ];
 		$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
@@ -108,6 +122,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		// A broken asset is one which has been deregistered without also being dequeued
 		if ( ! empty( $broken ) ) {
 			foreach ( $broken as $key => $handle ) {
+				/** @var _WP_Dependency|false $item */
 				$item = $raw->query( $handle );
 				if ( $item ) {
 					$broken = array_merge( $broken, self::get_broken_dependencies( $item, $raw ) );
@@ -118,14 +133,14 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			}
 
 			if ( ! empty( $broken ) ) {
-				$this->data['broken'] = array_unique( $broken );
+				$this->data->broken = array_unique( $broken );
 			}
 		}
 
 		// A missing asset is one which has been enqueued with dependencies that don't exist
 		if ( ! empty( $missing ) ) {
-			$this->data['missing'] = array_unique( $missing );
-			foreach ( $this->data['missing'] as $handle ) {
+			$this->data->missing = array_unique( $missing );
+			foreach ( $this->data->missing as $handle ) {
 				$raw->add( $handle, false );
 				$key = array_search( $handle, $raw->done, true );
 				if ( false !== $key ) {
@@ -140,11 +155,13 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		$missing_dependencies = array();
 
 		foreach ( $positions as $position ) {
-			if ( empty( $this->data[ $position ] ) ) {
+			if ( empty( $this->data->{$position} ) ) {
 				continue;
 			}
 
-			foreach ( $this->data[ $position ] as $handle ) {
+			/** @var string $handle */
+			foreach ( $this->data->{$position} as $handle ) {
+				/** @var _WP_Dependency|false $dependency */
 				$dependency = $raw->query( $handle );
 
 				if ( ! $dependency ) {
@@ -168,19 +185,19 @@ abstract class QM_Collector_Assets extends QM_Collector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "https://{$this->data['host']}/", '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( str_replace( "https://{$this->data->host}/", '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
 
-				foreach ( $dependencies as & $dep ) {
+				foreach ( $dependencies as $dep ) {
 					if ( ! $raw->query( $dep ) ) {
 						// A missing dependency is a dependecy on an asset that doesn't exist
 						$missing_dependencies[ $dep ] = true;
 					}
 				}
 
-				$this->data['assets'][ $position ][ $handle ] = array(
+				$this->data->assets[ $position ][ $handle ] = array(
 					'host' => $host,
 					'port' => $port,
 					'source' => $source,
@@ -192,22 +209,22 @@ abstract class QM_Collector_Assets extends QM_Collector {
 					'dependencies' => $dependencies,
 				);
 
-				$this->data['counts'][ $position ]++;
-				$this->data['counts']['total']++;
+				$this->data->counts[ $position ]++;
+				$this->data->counts['total']++;
 			}
 		}
 
-		unset( $this->data[ $position ] );
+		unset( $this->data->{$position} );
 
 		$all_dependencies = array_unique( $all_dependencies );
 		sort( $all_dependencies );
-		$this->data['dependencies'] = $all_dependencies;
+		$this->data->dependencies = $all_dependencies;
 
 		$all_dependents = array_unique( $all_dependents );
 		sort( $all_dependents );
-		$this->data['dependents'] = $all_dependents;
+		$this->data->dependents = $all_dependents;
 
-		$this->data['missing_dependencies'] = $missing_dependencies;
+		$this->data->missing_dependencies = $missing_dependencies;
 	}
 
 	/**
@@ -264,6 +281,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 	 * }
 	 */
 	public function get_dependency_data( _WP_Dependency $dependency ) {
+		/** @var QM_Data_Assets */
 		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;
@@ -274,7 +292,7 @@ abstract class QM_Collector_Assets extends QM_Collector {
 		if ( null === $dependency->ver ) {
 			$ver = '';
 		} else {
-			$ver = $dependency->ver ? $dependency->ver : $this->data['default_version'];
+			$ver = $dependency->ver ? $dependency->ver : $this->data->default_version;
 		}
 
 		if ( ! empty( $src ) && ! empty( $ver ) ) {
@@ -290,15 +308,15 @@ abstract class QM_Collector_Assets extends QM_Collector {
 			$port = (string) parse_url( $source, PHP_URL_PORT );
 		}
 
-		$http_host = $data['host'];
-		$http_port = $data['port'];
+		$http_host = $data->host;
+		$http_port = $data->port;
 
 		if ( empty( $host ) && ! empty( $http_host ) ) {
 			$host = $http_host;
 			$port = $http_port;
 		}
 
-		if ( $scheme && $data['is_ssl'] && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
+		if ( $scheme && $data->is_ssl && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
 			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
 				'src' => $source,
 			) );

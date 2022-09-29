@@ -20,7 +20,9 @@ abstract class QM_Output_Headers extends QM_Output {
 			}
 
 			# Remove illegal characters (Header may not contain NUL bytes)
-			$value = str_replace( chr( 0 ), '', $value );
+			if ( is_string( $value ) ) {
+				$value = str_replace( chr( 0 ), '', $value );
+			}
 
 			header( sprintf( 'X-QM-%s-%s: %s', $id, $key, $value ) );
 		}

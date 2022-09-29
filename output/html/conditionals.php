@@ -35,6 +35,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
+		/** @var QM_Data_Conditionals $data */
 		$data = $this->collector->get_data();
 
 		$this->before_non_tabular_output();
@@ -43,7 +44,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>';
 
 		echo '<ul>';
-		foreach ( $data['conds']['true'] as $cond ) {
+		foreach ( $data->conds['true'] as $cond ) {
 			echo '<li class="qm-ltr qm-true"><code>' . esc_html( $cond ) . '() </code></li>';
 		}
 		echo '</ul>';
@@ -56,7 +57,7 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
 
 		echo '<ul>';
-		foreach ( $data['conds']['false'] as $cond ) {
+		foreach ( $data->conds['false'] as $cond ) {
 			echo '<li class="qm-ltr qm-false"><code>' . esc_html( $cond ) . '() </code></li>';
 		}
 		echo '</ul>';
@@ -71,10 +72,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Conditionals $data */
 		$data = $this->collector->get_data();
 
-		foreach ( $data['conds']['true'] as $cond ) {
+		foreach ( $data->conds['true'] as $cond ) {
 			$id = $this->collector->id() . '-' . $cond;
 			$menu[ $id ] = $this->menu( array(
 				'title' => esc_html( $cond . '()' ),
@@ -94,10 +95,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function panel_menu( array $menu ) {
-
+		/** @var QM_Data_Conditionals $data */
 		$data = $this->collector->get_data();
 
-		foreach ( $data['conds']['true'] as $cond ) {
+		foreach ( $data->conds['true'] as $cond ) {
 			$id = $this->collector->id() . '-' . $cond;
 			unset( $menu[ $id ] );
 		}

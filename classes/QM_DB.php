@@ -29,8 +29,14 @@ class QM_DB extends wpdb {
 	 */
 	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
 
-		foreach ( $this->qm_php_vars as $setting => &$val ) {
-			$val = ini_get( $setting );
+		foreach ( array_keys( $this->qm_php_vars ) as $setting ) {
+			$value = ini_get( $setting );
+
+			if ( false === $value ) {
+				continue;
+			}
+
+			$this->qm_php_vars[ $setting ] = $value;
 		}
 
 		parent::__construct( $dbuser, $dbpassword, $dbname, $dbhost );

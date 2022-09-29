@@ -75,10 +75,16 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		$f = preg_quote( basename( $this->plugin_base() ), '/' );
+		$qm = preg_grep( '/' . $f . '$/', $plugins );
+		$notqm = preg_grep( '/' . $f . '$/', $plugins, PREG_GREP_INVERT );
+
+		if ( false === $qm || false === $notqm ) {
+			return $plugins;
+		}
 
 		return array_merge(
-			preg_grep( '/' . $f . '$/', $plugins ),
-			preg_grep( '/' . $f . '$/', $plugins, PREG_GREP_INVERT )
+			$qm,
+			$notqm
 		);
 
 	}

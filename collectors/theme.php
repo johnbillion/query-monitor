@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Theme extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Theme>
+ */
+class QM_Collector_Theme extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -20,6 +23,30 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @var bool
 	 */
 	protected $got_theme_compat = false;
+
+	/**
+	 * @var array<int, mixed>
+	 */
+	protected $requested_template_parts = array();
+
+	/**
+	 * @var array<int, mixed>
+	 */
+	protected $requested_template_part_posts = array();
+
+	/**
+	 * @var array<int, mixed>
+	 */
+	protected $requested_template_part_files = array();
+
+	/**
+	 * @var array<int, mixed>
+	 */
+	protected $requested_template_part_nopes = array();
+
+	public function get_storage() {
+		return new QM_Data_Theme();
+	}
 
 	/**
 	 * @return void
@@ -86,7 +113,7 @@ class QM_Collector_Theme extends QM_Collector {
 			'caller' => $trace->get_caller(),
 		);
 
-		$this->data['requested_template_parts'][] = $data;
+		$this->requested_template_parts[] = $data;
 	}
 
 	/**
@@ -223,7 +250,7 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return void
 	 */
 	public function action_get_template_part( $slug, $name, $templates ) {
-		$data = compact( 'slug', 'name', 'templates' );
+		$part = compact( 'slug', 'name', 'templates' );
 
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
@@ -231,9 +258,9 @@ class QM_Collector_Theme extends QM_Collector {
 			),
 		) );
 
-		$data['caller'] = $trace->get_caller();
+		$part['caller'] = $trace->get_caller();
 
-		$this->data['requested_template_parts'][] = $data;
+		$this->requested_template_parts[] = $part;
 	}
 
 	/**
@@ -245,12 +272,12 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_post( $template_part_id, $attributes, WP_Post $post ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'post' => $post->ID,
 		);
-		$this->data['requested_template_part_posts'][] = $data;
+		$this->requested_template_part_posts[] = $part;
 	}
 
 	/**
@@ -262,12 +289,12 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_file( $template_part_id, $attributes, $template_part_file_path ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'path' => $template_part_file_path,
 		);
-		$this->data['requested_template_part_files'][] = $data;
+		$this->requested_template_part_files[] = $part;
 	}
 
 	/**
@@ -279,12 +306,12 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return void
 	 */
 	public function action_render_block_core_template_part_none( $template_part_id, $attributes, $template_part_file_path ) {
-		$data = array(
+		$part = array(
 			'id' => $template_part_id,
 			'attributes' => $attributes,
 			'path' => $template_part_file_path,
 		);
-		$this->data['requested_template_part_nopes'][] = $data;
+		$this->requested_template_part_nopes[] = $part;
 	}
 
 	/**
@@ -292,8 +319,8 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return array<int, string>
 	 */
 	public function filter_template_hierarchy( array $templates ) {
-		if ( ! isset( $this->data['template_hierarchy'] ) ) {
-			$this->data['template_hierarchy'] = array();
+		if ( ! isset( $this->data->template_hierarchy ) ) {
+			$this->data->template_hierarchy = array();
 		}
 
 		foreach ( $templates as $template_name ) {
@@ -303,7 +330,7 @@ class QM_Collector_Theme extends QM_Collector {
 			}
 		}
 
-		$this->data['template_hierarchy'] = array_merge( $this->data['template_hierarchy'], $templates );
+		$this->data->template_hierarchy = array_merge( $this->data->template_hierarchy, $templates );
 
 		return $templates;
 	}
@@ -313,16 +340,16 @@ class QM_Collector_Theme extends QM_Collector {
 	 * @return array<int, string>
 	 */
 	public function filter_body_class( array $class ) {
-		$this->data['body_class'] = $class;
+		$this->data->body_class = $class;
 		return $class;
 	}
 
 	/**
-	 * @param array<int, string> $template_path
-	 * @return array<int, string>
+	 * @param string $template_path
+	 * @return string
 	 */
 	public function filter_template_include( $template_path ) {
-		$this->data['template_path'] = $template_path;
+		$this->data->template_path = $template_path;
 		return $template_path;
 	}
 
@@ -334,7 +361,7 @@ class QM_Collector_Theme extends QM_Collector {
 	 */
 	public function filter_timber_output( $output, $data = null, $file = null ) {
 		if ( $file ) {
-			$this->data['timber_files'][] = $file;
+			$this->data->timber_files[] = $file;
 		}
 
 		return $output;
@@ -349,35 +376,35 @@ class QM_Collector_Theme extends QM_Collector {
 		$template_directory = QM_Util::standard_dir( get_template_directory() );
 		$theme_directory = QM_Util::standard_dir( get_theme_root() );
 
-		if ( isset( $this->data['template_hierarchy'] ) ) {
-			$this->data['template_hierarchy'] = array_unique( $this->data['template_hierarchy'] );
+		if ( isset( $this->data->template_hierarchy ) ) {
+			$this->data->template_hierarchy = array_unique( $this->data->template_hierarchy );
 		}
 
-		$this->data['has_template_part_action'] = function_exists( 'wp_body_open' );
+		$this->data->has_template_part_action = function_exists( 'wp_body_open' );
 
-		if ( $this->data['has_template_part_action'] ) {
+		if ( $this->data->has_template_part_action ) {
 			// Since WP 5.2, the `get_template_part` action populates this data nicely:
-			if ( ! empty( $this->data['requested_template_parts'] ) ) {
-				$this->data['template_parts'] = array();
-				$this->data['theme_template_parts'] = array();
-				$this->data['count_template_parts'] = array();
+			if ( ! empty( $this->requested_template_parts ) ) {
+				$this->data->template_parts = array();
+				$this->data->theme_template_parts = array();
+				$this->data->count_template_parts = array();
 
-				foreach ( $this->data['requested_template_parts'] as $part ) {
+				foreach ( $this->requested_template_parts as $part ) {
 					$file = locate_template( $part['templates'] );
 
 					if ( ! $file ) {
-						$this->data['unsuccessful_template_parts'][] = $part;
+						$this->data->unsuccessful_template_parts[] = $part;
 						continue;
 					}
 
 					$file = QM_Util::standard_dir( $file );
 
-					if ( isset( $this->data['count_template_parts'][ $file ] ) ) {
-						$this->data['count_template_parts'][ $file ]++;
+					if ( isset( $this->data->count_template_parts[ $file ] ) ) {
+						$this->data->count_template_parts[ $file ]++;
 						continue;
 					}
 
-					$this->data['count_template_parts'][ $file ] = 1;
+					$this->data->count_template_parts[ $file ] = 1;
 
 					$filename = str_replace( array(
 						$stylesheet_directory,
@@ -387,8 +414,8 @@ class QM_Collector_Theme extends QM_Collector {
 					$display = trim( $filename, '/' );
 					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
 
-					$this->data['template_parts'][ $file ] = $display;
-					$this->data['theme_template_parts'][ $file ] = $theme_display;
+					$this->data->template_parts[ $file ] = $display;
+					$this->data->theme_template_parts[ $file ] = $theme_display;
 				}
 			}
 		} else {
@@ -406,16 +433,16 @@ class QM_Collector_Theme extends QM_Collector {
 					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
 					$count = did_action( "get_template_part_{$slug}" );
 					if ( $count ) {
-						$this->data['template_parts'][ $file ] = $display;
-						$this->data['theme_template_parts'][ $file ] = $theme_display;
-						$this->data['count_template_parts'][ $file ] = $count;
+						$this->data->template_parts[ $file ] = $display;
+						$this->data->theme_template_parts[ $file ] = $theme_display;
+						$this->data->count_template_parts[ $file ] = $count;
 					} else {
 						$slug = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
 						$count = did_action( "get_template_part_{$slug}" );
 						if ( $count ) {
-							$this->data['template_parts'][ $file ] = $display;
-							$this->data['theme_template_parts'][ $file ] = $theme_display;
-							$this->data['count_template_parts'][ $file ] = $count;
+							$this->data->template_parts[ $file ] = $display;
+							$this->data->theme_template_parts[ $file ] = $theme_display;
+							$this->data->count_template_parts[ $file ] = $count;
 						}
 					}
 				}
@@ -423,31 +450,31 @@ class QM_Collector_Theme extends QM_Collector {
 		}
 
 		if (
-			! empty( $this->data['requested_template_part_posts'] ) ||
-			! empty( $this->data['requested_template_part_files'] ) ||
-			! empty( $this->data['requested_template_part_nopes'] )
+			! empty( $this->requested_template_part_posts ) ||
+			! empty( $this->requested_template_part_files ) ||
+			! empty( $this->requested_template_part_nopes )
 		) {
-			$this->data['template_parts'] = array();
-			$this->data['theme_template_parts'] = array();
-			$this->data['count_template_parts'] = array();
+			$this->data->template_parts = array();
+			$this->data->theme_template_parts = array();
+			$this->data->count_template_parts = array();
 
-			$posts = ! empty( $this->data['requested_template_part_posts'] ) ? $this->data['requested_template_part_posts'] : array();
-			$files = ! empty( $this->data['requested_template_part_files'] ) ? $this->data['requested_template_part_files'] : array();
-			$nopes = ! empty( $this->data['requested_template_part_nopes'] ) ? $this->data['requested_template_part_nopes'] : array();
+			$posts = ! empty( $this->requested_template_part_posts ) ? $this->requested_template_part_posts : array();
+			$files = ! empty( $this->requested_template_part_files ) ? $this->requested_template_part_files : array();
+			$nopes = ! empty( $this->requested_template_part_nopes ) ? $this->requested_template_part_nopes : array();
 
-			$this->data['has_template_part_action'] = true;
+			$this->data->has_template_part_action = true;
 
 			$all = array_merge( $posts, $files, $nopes );
 
 			foreach ( $all as $part ) {
 				$file = $part['path'] ?? $part['post'];
 
-				if ( isset( $this->data['count_template_parts'][ $file ] ) ) {
-					$this->data['count_template_parts'][ $file ]++;
+				if ( isset( $this->data->count_template_parts[ $file ] ) ) {
+					$this->data->count_template_parts[ $file ]++;
 					continue;
 				}
 
-				$this->data['count_template_parts'][ $file ] = 1;
+				$this->data->count_template_parts[ $file ] = 1;
 
 				if ( isset( $part['post'] ) ) {
 					$display = sprintf(
@@ -468,29 +495,29 @@ class QM_Collector_Theme extends QM_Collector {
 					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
 				}
 
-				$this->data['template_parts'][ $file ] = $display;
-				$this->data['theme_template_parts'][ $file ] = $theme_display;
+				$this->data->template_parts[ $file ] = $display;
+				$this->data->theme_template_parts[ $file ] = $theme_display;
 			}
 		}
 
-		if ( ! empty( $this->data['template_path'] ) ) {
-			$template_path = QM_Util::standard_dir( $this->data['template_path'] );
+		if ( ! empty( $this->data->template_path ) ) {
+			$template_path = QM_Util::standard_dir( $this->data->template_path );
 			$template_file = str_replace( array( $stylesheet_directory, $template_directory, ABSPATH ), '', $template_path );
 			$template_file = ltrim( $template_file, '/' );
 			$theme_template_file = str_replace( array( $theme_directory, ABSPATH ), '', $template_path );
 			$theme_template_file = ltrim( $theme_template_file, '/' );
 
-			$this->data['template_path'] = $template_path;
-			$this->data['template_file'] = $template_file;
-			$this->data['theme_template_file'] = $theme_template_file;
+			$this->data->template_path = $template_path;
+			$this->data->template_file = $template_file;
+			$this->data->theme_template_file = $theme_template_file;
 		}
 
-		$this->data['stylesheet'] = get_stylesheet();
-		$this->data['template'] = get_template();
-		$this->data['is_child_theme'] = ( $this->data['stylesheet'] !== $this->data['template'] );
+		$this->data->stylesheet = get_stylesheet();
+		$this->data->template = get_template();
+		$this->data->is_child_theme = ( $this->data->stylesheet !== $this->data->template );
 
-		if ( isset( $this->data['body_class'] ) ) {
-			asort( $this->data['body_class'] );
+		if ( isset( $this->data->body_class ) ) {
+			asort( $this->data->body_class );
 		}
 
 	}

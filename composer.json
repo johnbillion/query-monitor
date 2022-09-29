@@ -74,6 +74,7 @@
 	"autoload": {
 		"classmap": [
 			"classes",
+			"data",
 			"output"
 		]
 	},
