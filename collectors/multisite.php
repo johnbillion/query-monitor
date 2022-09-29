@@ -23,7 +23,7 @@ class QM_Collector_Multisite extends QM_DataCollector {
 		add_action( 'switch_blog', array( $this, 'action_switch_blog' ), 10, 3 );
 	}
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Multisite();
 	}
 

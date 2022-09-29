@@ -44,7 +44,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	protected $requested_template_part_nopes = array();
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Theme();
 	}
 

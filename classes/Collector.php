@@ -138,7 +138,7 @@ abstract class QM_Collector {
 	/**
 	 * @return QM_Data
 	 */
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Fallback();
 	}
 

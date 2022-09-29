@@ -26,7 +26,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	public const INFO = 'info';
 	public const DEBUG = 'debug';
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Logger();
 	}
 

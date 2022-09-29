@@ -16,7 +16,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 
 	public $id = 'transients';
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Transients();
 	}
 

@@ -16,7 +16,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 
 	public $id = 'overview';
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Overview();
 	}
 

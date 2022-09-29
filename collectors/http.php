@@ -53,7 +53,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 */
 	private $http_responses = array();
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_HTTP();
 	}
 

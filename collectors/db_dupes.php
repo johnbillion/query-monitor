@@ -16,7 +16,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 	public $id = 'db_dupes';
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Dupes();
 	}
 

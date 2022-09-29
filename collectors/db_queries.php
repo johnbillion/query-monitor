@@ -35,7 +35,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 */
 	public $db_objects = array();
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
 	}
 

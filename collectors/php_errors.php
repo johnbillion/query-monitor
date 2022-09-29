@@ -63,7 +63,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 */
 	private static $unexpected_error = null;
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_PHP_Errors();
 	}
 

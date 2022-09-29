@@ -28,7 +28,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	private $cap_checks = array();
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Caps();
 	}
 

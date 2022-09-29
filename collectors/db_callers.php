@@ -16,7 +16,7 @@ class QM_Collector_DB_Callers extends QM_DataCollector {
 
 	public $id = 'db_callers';
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Callers();
 	}
 

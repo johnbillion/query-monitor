@@ -31,7 +31,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 */
 	protected $block_timer = null;
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Block_Editor();
 	}
 

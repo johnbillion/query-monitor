@@ -24,7 +24,7 @@ class QM_Collector_Hooks extends QM_DataCollector {
 	 */
 	protected static $hide_core;
 
-	public function get_storage() {
+	public function get_storage(): QM_Data {
 		return new QM_Data_Hooks();
 	}
 
