@@ -6,16 +6,18 @@
  */
 
 /**
- * @template T of QM_Data
+ * @phpstan-template T of QM_Data
  */
 abstract class QM_DataCollector extends QM_Collector {
 	/**
-	 * @var T
+	 * @var QM_Data
+	 * @phpstan-var T
 	 */
 	protected $data;
 
 	/**
-	 * @return T
+	 * @return QM_Data
+	 * @phpstan-return T
 	 */
 	final public function get_data() {
 		return $this->data;
