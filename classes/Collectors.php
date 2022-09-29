@@ -49,10 +49,8 @@ class QM_Collectors implements IteratorAggregate {
 	 */
 	public static function get( $id ) {
 		$collectors = self::init();
-		if ( isset( $collectors->items[ $id ] ) ) {
-			return $collectors->items[ $id ];
-		}
-		return null;
+
+		return $collectors->items[ $id ] ?? null;
 	}
 
 	/**

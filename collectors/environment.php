@@ -47,7 +47,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		# caught early before any plugins had a chance to alter them
 
 		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars ) && isset( $wpdb->qm_php_vars[ $setting ] ) ) {
+			if ( isset( $wpdb->qm_php_vars, $wpdb->qm_php_vars[ $setting ] ) ) {
 				$val = $wpdb->qm_php_vars[ $setting ];
 			} else {
 				$val = ini_get( $setting );
@@ -230,11 +230,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 			$server = array( '' );
 		}
 
-		if ( isset( $server[1] ) ) {
-			$server_version = $server[1];
-		} else {
-			$server_version = null;
-		}
+		$server_version = $server[1] ?? null;
 
 		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
 			$address = wp_unslash( $_SERVER['SERVER_ADDR'] );

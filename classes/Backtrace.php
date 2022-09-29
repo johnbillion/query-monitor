@@ -143,7 +143,7 @@ class QM_Backtrace {
 				continue;
 			}
 
-			if ( isset( $frame['function'] ) && isset( self::$show_args[ $frame['function'] ] ) ) {
+			if ( isset( $frame['function'], self::$show_args[ $frame['function'] ] ) ) {
 				$show = self::$show_args[ $frame['function'] ];
 
 				if ( ! is_int( $show ) ) {
@@ -249,7 +249,7 @@ class QM_Backtrace {
 	public static function get_frame_component( array $frame ) {
 		try {
 
-			if ( isset( $frame['class'] ) && isset( $frame['function'] ) ) {
+			if ( isset( $frame['class'], $frame['function'] ) ) {
 				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
@@ -497,7 +497,7 @@ class QM_Backtrace {
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
 					}
 				} else {
-					if ( isset( $hook_functions[ $frame['function'] ] ) && isset( $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
+					if ( isset( $hook_functions[ $frame['function'] ], $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
 						$return = null;
 					} else {
 						$args = array();

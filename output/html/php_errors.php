@@ -134,7 +134,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						// https://bugs.php.net/bug.php?id=39070
 						// https://bugs.php.net/bug.php?id=64987
 						foreach ( $filtered_trace as $i => $item ) {
-							if ( isset( $item['file'] ) && isset( $item['line'] ) ) {
+							if ( isset( $item['file'], $item['line'] ) ) {
 								$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
 							} elseif ( 0 === $i ) {
 								$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
