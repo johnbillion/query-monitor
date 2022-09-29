@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Multisite collector, used for monitoring use of `switch_to_blog()` and `restore_current_blog()`.
  *

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * REST API enveloped request dispatcher.
  *

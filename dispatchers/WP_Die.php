@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Dispatcher for output that gets added to `wp_die()` calls.
  *

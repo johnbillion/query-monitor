@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * PSR-3 compatible logging collector.
  *
