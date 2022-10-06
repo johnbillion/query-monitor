@@ -22,6 +22,7 @@ parameters:
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
 	dynamicConstantNames:
+		- COOKIE_DOMAIN
 		- SAVEQUERIES
 	ignoreErrors:
 		# Uses func_get_args()

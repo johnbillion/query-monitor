@@ -88,8 +88,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$expiration = time() + ( 2 * DAY_IN_SECONDS );
 		$secure = self::secure_cookie();
 		$cookie = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
+		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
+		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, false );
 
 		wp_send_json_success();
 
@@ -105,8 +106,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$expiration = time() - 31536000;
+		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, COOKIE_DOMAIN );
+		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, $domain );
 
 		wp_send_json_success();
 
@@ -124,8 +126,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$expiration = time() + ( 2 * YEAR_IN_SECONDS );
 		$secure = self::secure_cookie();
 		$editor = wp_unslash( $_POST['editor'] );
+		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_EDITOR_COOKIE, $editor, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
+		setcookie( QM_EDITOR_COOKIE, $editor, $expiration, COOKIEPATH, $domain, $secure, false );
 
 		wp_send_json_success( $editor );
 
