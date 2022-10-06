@@ -150,6 +150,19 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$request = $db->remove_placeholder_escape( $request );
 		}
 
+		/**
+		 * @phpstan-var array{
+		 *   0: string,
+		 *   1: float,
+		 *   2: string,
+		 *   trace?: QM_Backtrace,
+		 *   result?: int|bool|WP_Error,
+		 * }|array{
+		 *   query: string,
+		 *   elapsed: float,
+		 *   debug: string,
+		 * } $query
+		 */
 		foreach ( $db->queries as $query ) {
 			$has_trace = false;
 			$has_result = false;
@@ -160,7 +173,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$sql = $query['query'];
 				$ltime = $query['elapsed'];
 				$stack = $query['debug'];
-			} else {
+			} elseif ( isset( $query[0], $query[1], $query[2] ) ) {
 				// Standard WP.
 				$sql = $query[0];
 				$ltime = $query[1];
@@ -169,6 +182,9 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				// Query Monitor db.php drop-in.
 				$has_trace = isset( $query['trace'] );
 				$has_result = isset( $query['result'] );
+			} else {
+				// ¯\_(ツ)_/¯
+				continue;
 			}
 
 			// @TODO: decide what I want to do with this:
@@ -177,21 +193,16 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				continue;
 			}
 
-			if ( $has_result ) {
-				$result = $query['result'];
-			} else {
-				$result = null;
-			}
-
+			$result = $query['result'] ?? null;
 			$total_time += $ltime;
 
-			if ( $has_trace ) {
+			if ( isset( $query['trace'] ) ) {
 
 				$trace = $query['trace'];
 				$component = $query['trace']->get_component();
 				$caller = $query['trace']->get_caller();
-				$caller_name = $caller['display'];
-				$caller = $caller['display'];
+				$caller_name = $caller ? $caller['display'] : 'Unknown';
+				$caller = $caller ? $caller['display'] : 'Unknown';
 
 			} else {
 
