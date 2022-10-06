@@ -65,7 +65,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 		}
 
 		$this->data->time_limit = (int) ini_get( 'max_execution_time' );
-		$this->data->time_start = $GLOBALS['timestart'];
+		$this->data->time_start = $_SERVER['REQUEST_TIME_FLOAT'];
 
 		if ( ! empty( $this->data->time_limit ) ) {
 			$this->data->time_usage = ( 100 / $this->data->time_limit ) * $this->data->time_taken;

@@ -126,8 +126,8 @@ class QM_Collector_Timing extends QM_DataCollector {
 			'laps' => $function_laps,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
-			'start_time' => ( $start_time - $GLOBALS['timestart'] ),
-			'end_time' => ( $end_time - $GLOBALS['timestart'] ),
+			'start_time' => ( $start_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
+			'end_time' => ( $end_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
 		);
 	}
 

@@ -83,7 +83,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 			'_transient_',
 		), '', $transient );
 
-		$size = strlen( maybe_serialize( $value ) );
+		$size = strlen( (string) maybe_serialize( $value ) );
 
 		$this->data->trans[] = array(
 			'name' => $name,

@@ -24,6 +24,7 @@ class QM_Backtrace {
 		'Debug_Bar_PHP' => true,
 		'WP_Hook' => true,
 		'Altis\Cloud\DB' => true,
+		'Yoast\WP\Lib\ORM' => true,
 	);
 
 	/**
