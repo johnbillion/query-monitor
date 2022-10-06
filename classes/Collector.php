@@ -105,8 +105,7 @@ abstract class QM_Collector {
 	 * @return float
 	 */
 	public static function timer_stop_float() {
-		global $timestart;
-		return microtime( true ) - $timestart;
+		return microtime( true ) - $_SERVER['REQUEST_TIME_FLOAT'];
 	}
 
 	/**
