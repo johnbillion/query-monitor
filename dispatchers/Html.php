@@ -407,7 +407,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
-		echo '<div id="qm-icon-container">';
+		echo '<svg id="qm-icon-container">';
 		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
 			if ( ! $icon ) {
 				continue;
@@ -426,7 +426,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$contents
 			);
 		}
-		echo '</div>';
+		echo '</svg>';
 
 		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
