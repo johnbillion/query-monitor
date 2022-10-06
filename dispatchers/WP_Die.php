@@ -64,8 +64,9 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		<style>
 			#query-monitor {
 				position: absolute;
-				margin: 0.9em 0 1em;
-				box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.13 );
+				margin: 4em 0 1em -2em;
+				border: 1px solid #ccd0d4;
+				box-shadow: 0 1px 1px rgb( 0 0 0 / 4% );
 				background: #fff;
 				padding-top: 1em;
 				max-width: 700px;
@@ -75,7 +76,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			#query-monitor h2 {
 				font-size: 12px;
 				font-weight: normal;
-				padding: 5px;
+				padding: 7px;
 				background: #f3f3f3;
 				margin: 0;
 				border-top: 1px solid #ddd;
@@ -85,11 +86,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			#query-monitor p {
 				font-size: 12px;
 				padding: 0;
-				margin: 1em 2em;
+				margin: 1em 2.5em;
 			}
 
 			#query-monitor ol {
-				padding: 0 0 1em 1em;
+				padding: 0 0 1em 0;
 			}
 
 			#query-monitor li {
@@ -101,29 +102,8 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				color: #666;
 			}
 
-			#query-monitor .qm-icon-info {
-				vertical-align: middle;
-				margin-right: 5px;
-			}
-
-			#query-monitor .qm-icon-info svg {
-				fill: #0071a1;
-			}
-
 			#query-monitor a.qm-edit-link svg {
-				fill: #0071a1 !important;
-				width: 16px;
-				height: 16px;
-				left: 2px !important;
-				position: relative !important;
-				text-decoration: none !important;
-				top: 2px !important;
-				visibility: hidden !important;
-			}
-
-			#query-monitor a.qm-edit-link:hover svg,
-			#query-monitor a.qm-edit-link:focus svg {
-				visibility: visible !important;
+				display: none !important;
 			}
 
 		</style>
@@ -132,8 +112,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<div id="query-monitor">';
 
 		echo '<p>';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo QueryMonitor::init()->icon( 'info' );
 
 		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;
