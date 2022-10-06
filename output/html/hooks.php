@@ -124,7 +124,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 						if ( 'all' === $hook['name'] ) {
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo '<br><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' );
+							echo '<br><span class="qm-warn">' . QueryMonitor::icon( 'warning' );
 							printf(
 								/* translators: %s: Action name */
 								esc_html__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
@@ -177,7 +177,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 						if ( isset( $action['callback']['error'] ) ) {
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo '<br>' . QueryMonitor::init()->icon( 'warning' );
+							echo '<br>' . QueryMonitor::icon( 'warning' );
 							echo esc_html( sprintf(
 								/* translators: %s: Error message text */
 								__( 'Error: %s', 'query-monitor' ),

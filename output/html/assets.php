@@ -133,7 +133,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		foreach ( $asset['dependencies'] as $dep ) {
 			if ( isset( $data->missing_dependencies[ $dep ] ) ) {
-				$warning = QueryMonitor::init()->icon( 'warning' );
+				$warning = QueryMonitor::icon( 'warning' );
 
 				$dependency_output[] = sprintf(
 					'<span style="white-space:nowrap">%1$s%2$s</span>',
@@ -162,7 +162,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
-		$warning = QueryMonitor::init()->icon( 'warning' );
+		$warning = QueryMonitor::icon( 'warning' );
 
 		if ( $asset['warning'] ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

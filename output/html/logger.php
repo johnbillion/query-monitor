@@ -119,10 +119,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 			if ( $is_warning ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::init()->icon( 'warning' );
+				echo QueryMonitor::icon( 'warning' );
 			} else {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::init()->icon( 'blank' );
+				echo QueryMonitor::icon( 'blank' );
 			}
 
 			echo esc_html( ucfirst( $row['level'] ) );

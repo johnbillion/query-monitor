@@ -378,7 +378,7 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$out .= '</span>';
 		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
-		$out .= QueryMonitor::init()->icon( 'arrow-down' );
+		$out .= QueryMonitor::icon( 'arrow-down' );
 		$out .= '</button>';
 		$out .= '</label>';
 		return $out;
@@ -410,7 +410,7 @@ abstract class QM_Output_Html extends QM_Output {
 			esc_attr( $filter ),
 			esc_attr( $value ),
 			$label,
-			QueryMonitor::init()->icon( 'filter' )
+			QueryMonitor::icon( 'filter' )
 		);
 	}
 
@@ -426,7 +426,7 @@ abstract class QM_Output_Html extends QM_Output {
 			'<a href="%1$s" class="qm-link">%2$s%3$s</a>',
 			esc_attr( $href ),
 			$label,
-			QueryMonitor::init()->icon( 'external' )
+			QueryMonitor::icon( 'external' )
 		);
 	}
 
@@ -535,7 +535,7 @@ abstract class QM_Output_Html extends QM_Output {
 			$format,
 			esc_attr( $link ),
 			esc_html( $text ),
-			QueryMonitor::init()->icon( 'edit' )
+			QueryMonitor::icon( 'edit' )
 		);
 	}
 

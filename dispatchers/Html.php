@@ -407,6 +407,27 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
+		echo '<div id="qm-icon-container">';
+		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
+			if ( ! $icon ) {
+				continue;
+			}
+
+			$icon_name = basename( $icon, '.svg' );
+			$contents = (string) file_get_contents( $icon );
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo str_replace(
+				'<path ',
+				sprintf(
+					'<path id="qm-icon-%s" ',
+					$icon_name
+				),
+				$contents
+			);
+		}
+		echo '</div>';
+
 		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
 		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
 		echo '<div id="qm-title" class="qm-resizer">';
@@ -445,9 +466,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '</select>';
 
-		$settings = QueryMonitor::init()->icon( 'admin-generic' );
-		$toggle = QueryMonitor::init()->icon( 'image-rotate-left' );
-		$close = QueryMonitor::init()->icon( 'no-alt' );
+		$settings = QueryMonitor::icon( 'admin-generic' );
+		$toggle = QueryMonitor::icon( 'image-rotate-left' );
+		$close = QueryMonitor::icon( 'no-alt' );
 
 		echo '</div>';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -526,7 +547,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
 
-		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+		$yes = QueryMonitor::icon( 'yes-alt' );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
@@ -573,7 +594,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
 		echo '</ul>';
 
-		$yes = QueryMonitor::init()->icon( 'yes-alt' );
+		$yes = QueryMonitor::icon( 'yes-alt' );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';

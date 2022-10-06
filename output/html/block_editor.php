@@ -195,7 +195,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( $error_message ) {
 			echo '<br>';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo QueryMonitor::init()->icon( 'warning' );
+			echo QueryMonitor::icon( 'warning' );
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $error_message;
 		}
@@ -249,7 +249,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 				if ( isset( $block['callback']['error'] ) ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo '<br>' . QueryMonitor::init()->icon( 'warning' );
+					echo '<br>' . QueryMonitor::icon( 'warning' );
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */
 						__( 'Error: %s', 'query-monitor' ),

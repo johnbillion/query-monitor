@@ -64,7 +64,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		if ( $php_warning ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo QueryMonitor::init()->icon( 'warning' );
+			echo QueryMonitor::icon( 'warning' );
 		}
 
 		echo esc_html( $data->php['version'] ?: esc_html__( 'Unknown', 'query-monitor' ) );
@@ -93,7 +93,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			if ( 'qm-warn' === $class ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::init()->icon( 'warning' );
+				echo QueryMonitor::icon( 'warning' );
 			}
 
 			echo esc_html( $val['after'] );
@@ -196,7 +196,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 					if ( ! isset( $db['info'][ $field ] ) ) {
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						echo '<td><span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
+						echo '<td><span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 					} else {
 						echo '<td>' . esc_html( $db['info'][ $field ] ) . '</td>';
 					}

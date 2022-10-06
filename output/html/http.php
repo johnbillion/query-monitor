@@ -116,7 +116,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
 					if ( empty( $row['args']['sslverify'] ) && ! $row['local'] ) {
-						$info .= '<span class="qm-warn">' . QueryMonitor::init()->icon( 'warning' ) . esc_html( sprintf(
+						$info .= '<span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
 							__( 'Certificate verification disabled (%s)', 'query-monitor' ),
 							'sslverify=false'
@@ -162,7 +162,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				if ( ! empty( $row['redirected_to'] ) ) {
 					$url .= sprintf(
 						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
-						QueryMonitor::init()->icon( 'warning' ),
+						QueryMonitor::icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
 						__( 'Redirected to:', 'query-monitor' ),
 						self::format_url( $row['redirected_to'] )
@@ -180,7 +180,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo '<td class="qm-has-toggle qm-col-status">';
 				if ( $is_error ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo QueryMonitor::init()->icon( 'warning' );
+					echo QueryMonitor::icon( 'warning' );
 				}
 				echo esc_html( $response );
 
