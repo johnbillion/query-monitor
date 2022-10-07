@@ -19,11 +19,6 @@ abstract class QM_Plugin {
 	public $file = '';
 
 	/**
-	 * @var array<string, string>
-	 */
-	private $icons = array();
-
-	/**
 	 * Class constructor
 	 *
 	 * @param string $file
