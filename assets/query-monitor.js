@@ -672,7 +672,7 @@ if ( window.jQuery ) {
 					var desc = ! $(this).hasClass('qm-sorted-desc');
 					var index = $(this).index();
 
-					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').attr('aria-sort','none');
+					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').removeAttr('aria-sort');
 
 					if ( desc ) {
 						$(this).addClass('qm-sorted-desc').attr('aria-sort','descending');

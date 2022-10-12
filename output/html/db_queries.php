@@ -280,12 +280,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				} else {
 					$class = '';
 				}
-				echo '<th scope="col" class="' . esc_attr( $class ) . ' qm-sortable-column" role="columnheader" aria-sort="none">';
+				echo '<th scope="col" class="' . esc_attr( $class ) . ' qm-sortable-column" role="columnheader">';
 				echo $this->build_sorter( __( 'Rows', 'query-monitor' ) ); // WPCS: XSS ok.
 				echo '</th>';
 			}
 
-			echo '<th scope="col" class="qm-num qm-sortable-column" role="columnheader" aria-sort="none">';
+			echo '<th scope="col" class="qm-num qm-sortable-column" role="columnheader">';
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
