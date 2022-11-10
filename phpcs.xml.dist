@@ -53,7 +53,7 @@
 
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="3.7" />
+			<property name="minimum_supported_version" value="4.9" />
 		</properties>
 	</rule>
 
