@@ -29,7 +29,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 
 		add_filter( 'load_textdomain_mofile', array( $this, 'log_file_load' ), 9999, 2 );
 		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
-		add_filter( 'init', array( $this, 'collect_locale_data' ), 9999 );
+		add_action( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
 	}
 
@@ -39,7 +39,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	public function tear_down() {
 		remove_filter( 'load_textdomain_mofile', array( $this, 'log_file_load' ), 9999 );
 		remove_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999 );
-		remove_filter( 'init', array( $this, 'collect_locale_data' ), 9999 );
+		remove_action( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
 		parent::tear_down();
 	}
