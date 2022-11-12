@@ -25,7 +25,7 @@ class QueryMonitor extends QM_Plugin {
 		add_filter( 'ure_capabilities_groups_tree', array( $this, 'filter_ure_groups' ) );
 		add_filter( 'network_admin_plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
 		add_filter( 'plugin_action_links_query-monitor/query-monitor.php', array( $this, 'filter_plugin_action_links' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 4 );
+		add_filter( 'plugin_row_meta', array( $this, 'filter_plugin_row_meta' ), 10, 2 );
 
 		# Load and register built-in collectors:
 		$collectors = array();
