@@ -1,7 +1,7 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
-Requires at least: 3.7
+Requires at least: 4.9
 Tested up to: 6.0
 Stable tag: 3.10.1
 License: GPLv2 or later
