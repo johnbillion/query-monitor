@@ -168,8 +168,16 @@ class QM_Collector_Languages extends QM_DataCollector {
 
 		$found = file_exists( $mofile ) ? filesize( $mofile ) : false;
 
+		$caller = $trace->get_caller();
+		if( !isset( $caller['file'] ) && isset( $caller['calling_file'] ) ) {
+			$caller['file'] = $caller['calling_file'];
+		}
+		if( !isset( $caller['line'] ) && isset( $caller['calling_line'] ) ) {
+			$caller['line'] = $caller['calling_line'];
+		}
+
 		$this->data->languages[ $domain ][ $mofile ] = array(
-			'caller' => $trace->get_caller(),
+			'caller' => $caller,
 			'domain' => $domain,
 			'file' => $mofile,
 			'found' => $found,
