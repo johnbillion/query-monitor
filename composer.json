@@ -32,6 +32,8 @@
 	"config": {
 		"preferred-install": "dist",
 		"sort-packages": true,
+		"prepend-autoloader": false,
+		"classmap-authoritative": true,
 		"allow-plugins": {
 			"composer/installers": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true,

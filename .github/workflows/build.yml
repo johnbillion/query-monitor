@@ -30,7 +30,9 @@ jobs:
       run: npm install
 
     - name: Generate autoload file
-      run: composer dump-autoload --no-dev
+      run: |
+        composer remove composer/installers --update-no-dev
+        composer dump-autoload --no-dev
 
     - name: Build Assets
       run: npm run build
