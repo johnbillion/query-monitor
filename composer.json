@@ -12,7 +12,7 @@
 	],
 	"require": {
 		"php": ">=7.2.0",
-		"composer/installers": "~1.0"
+		"composer/installers": "~1.0 || ~2.0"
 	},
 	"require-dev": {
 		"codeception/module-asserts": "^1.0",
