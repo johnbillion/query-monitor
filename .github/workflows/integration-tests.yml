@@ -55,6 +55,7 @@ jobs:
         tools: composer:v2
         extensions: xmlwriter
         coverage: none
+        ini-file: development
       env:
         fail-fast: true
 

@@ -58,6 +58,7 @@ jobs:
         php-version: 8.0
         tools: composer:v2
         coverage: none
+        ini-file: development
       env:
         fail-fast: true
 
