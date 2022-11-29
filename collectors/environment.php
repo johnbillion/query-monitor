@@ -296,10 +296,10 @@ class QM_Collector_Environment extends QM_DataCollector {
 		if ( function_exists( 'posix_getpwuid' ) && function_exists( 'posix_getuid' ) && function_exists( 'posix_getgrgid' ) ) {
 			$u = posix_getpwuid( posix_getuid() );
 
-			if ( ! empty( $u ) && isset( $u['gid']) ) {
+			if ( $u !== false ) {
 				$g = posix_getgrgid( $u['gid'] );
 
-				if ( ! empty( $g ) && isset( $u['name'], $g['name'] ) ) {
+				if ( $g !== false ) {
 					$php_u = $u['name'] . ':' . $g['name'];
 				}
 			}
