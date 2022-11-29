@@ -149,15 +149,19 @@ class QM_Collector_Environment extends QM_DataCollector {
 			}
 		}
 
-		$this->data->php['version'] = phpversion();
-		$this->data->php['sapi'] = php_sapi_name();
-		$this->data->php['user'] = self::get_current_user();
+		$php_data = array(
+			'variables' => array(),
+		);
+
+		$php_data['version'] = phpversion();
+		$php_data['sapi'] = php_sapi_name();
+		$php_data['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$this->data->php['old'] = version_compare( $this->data->php['version'], '7.4', '<' );
+		$php_data['old'] = version_compare( $php_data['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
-			$this->data->php['variables'][ $setting ]['after'] = ini_get( $setting ) ?: null;
+			$php_data['variables'][ $setting ] = ini_get( $setting ) ?: null;
 		}
 
 		if ( defined( 'SORT_FLAG_CASE' ) ) {
@@ -170,13 +174,13 @@ class QM_Collector_Environment extends QM_DataCollector {
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, $sort_flags );
-			$this->data->php['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
 		} else {
-			$this->data->php['extensions'] = array();
+			$php_data['extensions'] = array();
 		}
 
-		$this->data->php['error_reporting'] = error_reporting();
-		$this->data->php['error_levels'] = self::get_error_levels( $this->data->php['error_reporting'] );
+		$php_data['error_reporting'] = error_reporting();
+		$php_data['error_levels'] = self::get_error_levels( $php_data['error_reporting'] );
 
 		$this->data->wp['version'] = $wp_version;
 		$constants = array(
@@ -215,6 +219,8 @@ class QM_Collector_Environment extends QM_DataCollector {
 		} else {
 			$address = null;
 		}
+
+		$this->data->php = $php_data;
 
 		$this->data->server = array(
 			'name' => $server[0],
