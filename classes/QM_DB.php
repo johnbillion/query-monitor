@@ -13,37 +13,6 @@ class QM_DB extends wpdb {
 	public $time_start;
 
 	/**
-	 * @var array<string, string|null>
-	 */
-	public $qm_php_vars = array(
-		'max_execution_time' => null,
-		'memory_limit' => null,
-		'upload_max_filesize' => null,
-		'post_max_size' => null,
-		'display_errors' => null,
-		'log_errors' => null,
-	);
-
-	/**
-	 * Class constructor
-	 */
-	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
-
-		foreach ( array_keys( $this->qm_php_vars ) as $setting ) {
-			$value = ini_get( $setting );
-
-			if ( false === $value ) {
-				continue;
-			}
-
-			$this->qm_php_vars[ $setting ] = $value;
-		}
-
-		parent::__construct( $dbuser, $dbpassword, $dbname, $dbhost );
-
-	}
-
-	/**
 	 * Performs a MySQL database query, using current database connection.
 	 *
 	 * @see wpdb::query()

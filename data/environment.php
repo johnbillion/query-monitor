@@ -10,10 +10,7 @@ class QM_Data_Environment extends QM_Data {
 	 * @TODO data class
 	 * @var array<string, mixed>
 	 * @phpstan-var array{
-	 *   variables: array<string, array{
-	 *     before: string|null,
-	 *     after: string|null,
-	 *   }>,
+	 *   variables: array<string, string|null>,
 	 *   version: string|false,
 	 *   sapi: string|false,
 	 *   user: string,

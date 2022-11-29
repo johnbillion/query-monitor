@@ -90,25 +90,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>';
-
-			if ( 'qm-warn' === $class ) {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::icon( 'warning' );
-			}
-
-			echo esc_html( $val['after'] );
-
-			if ( $val['after'] !== $val['before'] ) {
-				printf(
-					'<br><span class="qm-info qm-supplemental">%s</span>',
-					esc_html( sprintf(
-						/* translators: %s: Original value of a variable */
-						__( 'Overridden at runtime from %s', 'query-monitor' ),
-						$val['before']
-					) )
-				);
-			}
-
+			echo esc_html( $val );
 			echo '</td>';
 			echo '</tr>';
 		}

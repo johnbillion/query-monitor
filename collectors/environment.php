@@ -36,28 +36,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function set_up() {
-		global $wpdb;
-
-		parent::set_up();
-
-		# If QM_DB is in place then we'll use the values which were
-		# caught early before any plugins had a chance to alter them
-
-		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars, $wpdb->qm_php_vars[ $setting ] ) ) {
-				$val = $wpdb->qm_php_vars[ $setting ];
-			} else {
-				$val = ini_get( $setting );
-			}
-			$this->data->php['variables'][ $setting ]['before'] = $val;
-		}
-
-	}
-
-	/**
 	 * @param int $error_reporting
 	 * @return array<string, bool>
 	 */
