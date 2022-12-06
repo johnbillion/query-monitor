@@ -836,6 +836,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
+		// Don't dispatch inside the Site Editor:
+		if ( isset( $_SERVER['SCRIPT_NAME'] ) && '/wp-admin/site-editor.php' === $_SERVER['SCRIPT_NAME'] ) {
+			return false;
+		}
+
 		return true;
 	}
 
