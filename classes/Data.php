@@ -6,6 +6,7 @@
 /**
  * @implements ArrayAccess<string,mixed>
  */
+#[AllowDynamicProperties]
 abstract class QM_Data implements \ArrayAccess {
 	/**
 	 * @var array<string, mixed>
@@ -29,7 +30,6 @@ abstract class QM_Data implements \ArrayAccess {
 	 */
 	#[ReturnTypeWillChange]
 	final public function offsetSet( $offset, $value ) {
-		// @TODO might be able to no-op this
 		if ( is_string( $offset ) ) {
 			$this->$offset = $value;
 		}
