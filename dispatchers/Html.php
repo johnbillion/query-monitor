@@ -358,7 +358,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $menus Array of menus.
+		 * @param array<string, mixed[]> $menus Array of menus.
 		 */
 		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
 
@@ -367,7 +367,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $admin_bar_menu Array of menus.
+		 * @param array<string, mixed[]> $admin_bar_menu Array of menus.
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
