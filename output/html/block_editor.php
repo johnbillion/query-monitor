@@ -121,6 +121,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		$row_class = '';
 		$referenced_post = null;
 		$referenced_type = null;
+		$referenced_template_part = null;
 		$referenced_pto = null;
 		$error_message = null;
 
@@ -176,6 +177,19 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			}
 		}
 
+		$template_part_blocks = array(
+			'core/template-part' => true,
+		);
+
+		if ( isset( $template_part_blocks[ $block['blockName'] ] ) && is_array( $block['attrs'] ) && ! empty( $block['attrs']['slug'] ) && ! empty( $block['attrs']['theme'] ) ) {
+			$referenced_template_part = sprintf(
+				'%s//%s',
+				$block['attrs']['theme'],
+				$block['attrs']['slug']
+			);
+			$referenced_pto = get_post_type_object( 'wp_template_part' );
+		}
+
 		if ( $block_error ) {
 			$row_class = 'qm-warn';
 		}
@@ -204,6 +218,12 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '<br>';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo self::build_link( get_edit_post_link( $referenced_post ), esc_html( $referenced_pto->labels->edit_item ) );
+		}
+
+		if ( ! empty( $referenced_template_part ) ) {
+			echo '<br>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::build_link( QM_Util::get_site_editor_url( $referenced_template_part ), esc_html( $referenced_pto->labels->edit_item ) );
 		}
 
 		echo '</span></td>';

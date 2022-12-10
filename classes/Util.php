@@ -644,6 +644,22 @@ class QM_Util {
 	}
 
 	/**
+	 * Returns the site editor URL for a given template part name.
+	 *
+	 * @param string $template_part The site template part name, for example `twentytwentytwo//header-small-dark`.
+	 * @return string The admin URL for editing the site template part.
+	 */
+	public static function get_site_editor_url( string $template_part ): string {
+		return add_query_arg(
+			array(
+				'postType' => 'wp_template_part',
+				'postId' => urlencode( $template_part ),
+			),
+			admin_url( 'site-editor.php' )
+		);
+	}
+
+	/**
 	 * @deprecated
 	 * @param mixed $data
 	 * @return bool
