@@ -49,7 +49,7 @@ jobs:
         key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
     - name: Install PHP
-      uses: shivammathur/setup-php@2.7.0
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
         tools: composer:v2
