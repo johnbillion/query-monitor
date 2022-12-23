@@ -197,10 +197,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '</p>';
 		echo '</section>';
 
-		if ( isset( $db_query_num, $db_queries_data ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
 
+		if ( isset( $db_query_num, $db_queries_data ) ) {
 			echo '<p>';
 			echo esc_html(
 				sprintf(
@@ -233,8 +233,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo self::build_filter_trigger( 'db_queries-wpdb', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 
 			echo '</p>';
-			echo '</section>';
+		} else {
+			printf(
+				'<p><em>%s</em></p>',
+				esc_html__( 'None', 'query-monitor' )
+			);
 		}
+
+		echo '</section>';
 
 		if ( $http ) {
 			echo '<section>';

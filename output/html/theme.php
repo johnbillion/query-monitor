@@ -98,16 +98,7 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 				echo '<li>';
 
 				if ( is_int( $filename ) ) {
-					$link = get_edit_post_link( $filename );
-					if ( $link ) {
-						printf(
-							'<a href="%1$s">%2$s</a>',
-							esc_url( $link ),
-							esc_html( $display )
-						);
-					} else {
-						echo esc_html( $display );
-					}
+					echo self::build_link( QM_Util::get_site_editor_url( $display ), esc_html( $display ) ); // WPCS: XSS ok.
 				} elseif ( self::has_clickable_links() ) {
 					echo self::output_filename( $display, $filename, 0, true ); // WPCS: XSS ok.
 				} else {

@@ -477,11 +477,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 				$this->data->count_template_parts[ $file ] = 1;
 
 				if ( isset( $part['post'] ) ) {
-					$display = sprintf(
-						'%1$s (post ID %2$d)',
-						$part['id'],
-						$part['post']
-					);
+					$display = $part['id'];
 					$theme_display = $display;
 				} else {
 					$file = QM_Util::standard_dir( $file );

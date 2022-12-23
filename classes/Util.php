@@ -617,18 +617,14 @@ class QM_Util {
 	}
 
 	/**
-	 * Helper function for JSON encoding data and formatting it in a consistent and compatible manner.
+	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
 	 */
 	public static function json_format( $data ) {
-		$json_options = JSON_PRETTY_PRINT;
-
-		if ( defined( 'JSON_UNESCAPED_SLASHES' ) ) {
-			// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
-			$json_options |= JSON_UNESCAPED_SLASHES;
-		}
+		// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
+		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
 		$json = json_encode( $data, $json_options );
 
@@ -636,11 +632,23 @@ class QM_Util {
 			return '';
 		}
 
-		if ( ! defined( 'JSON_UNESCAPED_SLASHES' ) ) {
-			$json = wp_unslash( $json );
-		}
-
 		return $json;
+	}
+
+	/**
+	 * Returns the site editor URL for a given template part name.
+	 *
+	 * @param string $template_part The site template part name, for example `twentytwentytwo//header-small-dark`.
+	 * @return string The admin URL for editing the site template part.
+	 */
+	public static function get_site_editor_url( string $template_part ): string {
+		return add_query_arg(
+			array(
+				'postType' => 'wp_template_part',
+				'postId' => urlencode( $template_part ),
+			),
+			admin_url( 'site-editor.php' )
+		);
 	}
 
 	/**
