@@ -4,6 +4,12 @@
 	<config name="testVersion" value="7.2-"/>
 	<arg name="extensions" value="php"/>
 
+	<!--
+	Prevent deprecated errors caused by WordPress Coding Standards not supporting PHP 8.0+.
+	See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
+	-->
+	<ini name="error_reporting" value="E_ALL &#38; ~E_DEPRECATED" />
+
 	<exclude-pattern>/build/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
