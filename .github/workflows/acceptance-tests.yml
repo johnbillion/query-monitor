@@ -19,15 +19,13 @@ jobs:
   acceptance:
     strategy:
       matrix:
-        wp: ['6.0','5.6','nightly']
+        wp: ['6.1','5.6','nightly']
         php: ['8.0','7.4','7.2']
         include:
-          - wp: '6.0'
+          - wp: '6.1'
             php: '8.1'
           - wp: '6.1'
             php: '8.2'
-          - wp: 'nightly'
-            php: '8.1'
           - wp: 'nightly'
             php: '8.2'
       fail-fast: false
