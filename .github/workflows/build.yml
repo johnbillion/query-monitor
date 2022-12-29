@@ -31,9 +31,7 @@ jobs:
       run: npm install
 
     - name: Generate autoload file
-      run: |
-        composer remove composer/installers --update-no-dev
-        composer dump-autoload --no-dev
+      run: ./bin/build.sh
 
     - name: Build Assets
       run: npm run build
