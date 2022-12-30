@@ -14,4 +14,7 @@ rm vendor/composer/autoload_real.php.bak
 
 # Remove autoloading for `\Composer\InstalledVersions`:
 sed -i.bak '/Composer\\\\InstalledVersions/d' vendor/composer/autoload_classmap.php
+sed -i.bak '/Composer\\\\InstalledVersions/d' vendor/composer/autoload_static.php
 rm vendor/composer/autoload_classmap.php.bak
+rm vendor/composer/autoload_static.php.bak
+rm vendor/composer/InstalledVersions.php
