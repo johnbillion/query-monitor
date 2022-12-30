@@ -1,6 +1,6 @@
 # Query Monitor
 Contributors: johnbillion
-Tags: debug, debug-bar, debugging, development, developer, performance, profiler, queries, query monitor, rest-api
+Tags: debug, debug-bar, development, performance, query monitor, rest-api
 Requires at least: 4.9
 Tested up to: 6.1
 Stable tag: 3.11.0
