@@ -15,7 +15,7 @@ jobs:
   test:
     strategy:
       matrix:
-        php: ['8.1', '8.0', '7.4', '7.1']
+        php: ['8.2', '8.1', '8.0', '7.4', '7.2']
         wp: ['*', 'dev-nightly']
         dev:
           - ${{ github.ref_name == 'develop' }}
@@ -24,11 +24,11 @@ jobs:
             dev: false
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       LOCAL_PHP: ${{ matrix.php }}
-      LOCAL_WP_DEBUG: ${{ matrix.php != '8.1' && 1 || 0 }}
+      LOCAL_WP_DEBUG: ${{ matrix.php < 8.1 && 1 || 0 }}
     steps:
     - name: Matrix values
       run: echo "${{ toJSON(matrix) }}"
@@ -38,7 +38,7 @@ jobs:
 
     - name: Get Composer cache directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Composer cache
       uses: actions/cache@v2
@@ -49,13 +49,16 @@ jobs:
         key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
     - name: Install PHP
-      uses: shivammathur/setup-php@2.7.0
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
+        tools: composer:v2
         extensions: xmlwriter
         coverage: none
+        ini-file: development
       env:
         fail-fast: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Debugging
       run: |
@@ -68,6 +71,12 @@ jobs:
     - name: Install dependencies
       run: |
         composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
+
+    - name: Install node dependencies
+      run: npm install
+
+    - name: Run the build
+      run: npm run build
 
     - name: Start Docker environment
       run: |

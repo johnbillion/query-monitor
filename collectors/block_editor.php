@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Block editor (née Gutenberg) collector.
  *
@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Block_Editor extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Block_Editor>
+ */
+class QM_Collector_Block_Editor extends QM_DataCollector {
 
 	public $id = 'block_editor';
 
@@ -27,6 +30,10 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	 * @var QM_Timer|null
 	 */
 	protected $block_timer = null;
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Block_Editor();
+	}
 
 	/**
 	 * @return void
@@ -123,7 +130,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 	public function process() {
 		global $_wp_current_template_content;
 
-		$this->data['block_editor_enabled'] = self::wp_block_editor_enabled();
+		$this->data->block_editor_enabled = self::wp_block_editor_enabled();
 
 		if ( ! empty( $_wp_current_template_content ) ) {
 			// Full site editor:
@@ -136,15 +143,15 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return;
 		}
 
-		$this->data['post_has_blocks'] = self::wp_has_blocks( $content );
-		$this->data['post_blocks'] = self::wp_parse_blocks( $content );
-		$this->data['all_dynamic_blocks'] = self::wp_get_dynamic_block_names();
-		$this->data['total_blocks'] = 0;
-		$this->data['has_block_context'] = false;
-		$this->data['has_block_timing'] = false;
+		$this->data->post_has_blocks = self::wp_has_blocks( $content );
+		$this->data->post_blocks = self::wp_parse_blocks( $content );
+		$this->data->all_dynamic_blocks = self::wp_get_dynamic_block_names();
+		$this->data->total_blocks = 0;
+		$this->data->has_block_context = false;
+		$this->data->has_block_timing = false;
 
-		if ( $this->data['post_has_blocks'] ) {
-			$this->data['post_blocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data['post_blocks'] ) ) );
+		if ( $this->data->post_has_blocks ) {
+			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data->post_blocks ) ) );
 		}
 	}
 
@@ -161,7 +168,7 @@ class QM_Collector_Block_Editor extends QM_Collector {
 			return null;
 		}
 
-		$this->data['total_blocks']++;
+		$this->data->total_blocks++;
 
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
 		$dynamic = false;
@@ -183,12 +190,12 @@ class QM_Collector_Block_Editor extends QM_Collector {
 
 		if ( $context ) {
 			$block['context'] = $context;
-			$this->data['has_block_context'] = true;
+			$this->data->has_block_context = true;
 		}
 
 		if ( $timing ) {
 			$block['timing'] = $timing->get_time();
-			$this->data['has_block_timing'] = true;
+			$this->data->has_block_timing = true;
 		}
 
 		if ( ! empty( $block['innerBlocks'] ) ) {

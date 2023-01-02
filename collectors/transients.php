@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Transient storage collector.
  *
@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Transients extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Transients>
+ */
+class QM_Collector_Transients extends QM_DataCollector {
 
 	public $id = 'transients';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Transients();
+	}
 
 	/**
 	 * @return void
@@ -76,9 +83,9 @@ class QM_Collector_Transients extends QM_Collector {
 			'_transient_',
 		), '', $transient );
 
-		$size = strlen( maybe_serialize( $value ) );
+		$size = strlen( (string) maybe_serialize( $value ) );
 
-		$this->data['trans'][] = array(
+		$this->data->trans[] = array(
 			'name' => $name,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
@@ -87,7 +94,7 @@ class QM_Collector_Transients extends QM_Collector {
 			'expiration' => $expiration,
 			'exp_diff' => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
 			'size' => $size,
-			'size_formatted' => size_format( $size ),
+			'size_formatted' => (string) size_format( $size ),
 		);
 	}
 
@@ -95,7 +102,7 @@ class QM_Collector_Transients extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		$this->data['has_type'] = is_multisite();
+		$this->data->has_type = is_multisite();
 	}
 
 }

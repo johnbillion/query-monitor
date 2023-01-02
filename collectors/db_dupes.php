@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Duplicate database query collector.
  *
@@ -9,42 +9,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_DB_Dupes extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_DB_Dupes>
+ */
+class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 	public $id = 'db_dupes';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_DB_Dupes();
+	}
 
 	/**
 	 * @return void
 	 */
 	public function process() {
+		/** @var QM_Collector_DB_Queries|null $dbq */
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( ! $dbq ) {
 			return;
 		}
-		if ( ! isset( $dbq->data['dupes'] ) ) {
+
+		/** @var QM_Data_DB_Queries $dbq_data */
+		$dbq_data = $dbq->get_data();
+
+		if ( empty( $dbq_data->dupes ) ) {
 			return;
 		}
 
 		// Filter out SQL queries that do not have dupes
-		$this->data['dupes'] = array_filter( $dbq->data['dupes'], array( $this, 'filter_dupe_items' ) );
+		$this->data->dupes = array_filter( $dbq_data->dupes, array( $this, 'filter_dupe_items' ) );
 
 		// Ignore dupes from `WP_Query->set_found_posts()`
-		unset( $this->data['dupes']['SELECT FOUND_ROWS()'] );
+		unset( $this->data->dupes['SELECT FOUND_ROWS()'] );
 
 		$stacks = array();
 		$callers = array();
 		$components = array();
+		$times = array();
 
 		// Loop over all SQL queries that have dupes
-		foreach ( $this->data['dupes'] as $sql => $query_ids ) {
+		foreach ( $this->data->dupes as $sql => $query_ids ) {
 
 			// Loop over each query
 			foreach ( $query_ids as $query_id ) {
 
-				if ( isset( $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'] ) ) {
-					$trace = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['trace'];
-					$stack = wp_list_pluck( $trace->get_filtered_trace(), 'id' );
+				if ( isset( $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'] ) ) {
+					/** @var QM_Backtrace */
+					$trace = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'];
+					$stack = array_column( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
 
 					// Populate the component counts for this query
@@ -54,7 +68,8 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					$stack = $dbq->data['dbs']['$wpdb']->rows[ $query_id ]['stack'];
+					/** @var array<int, string> */
+					$stack = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['stack'];
 				}
 
 				// Populate the caller counts for this query
@@ -67,6 +82,12 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 				// Populate the stack for this query
 				$stacks[ $sql ][] = $stack;
 
+				// Populate the time for this query
+				if ( isset( $times[ $sql ] ) ) {
+					$times[ $sql ] += $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
+				} else {
+					$times[ $sql ] = $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
+				}
 			}
 
 			// Get the callers which are common to all stacks for this query
@@ -83,14 +104,15 @@ class QM_Collector_DB_Dupes extends QM_Collector {
 			}
 
 			// Wave a magic wand
-			$sources[ $sql ] = array_count_values( wp_list_pluck( $stacks[ $sql ], 0 ) );
+			$sources[ $sql ] = array_count_values( array_column( $stacks[ $sql ], 0 ) );
 
 		}
 
 		if ( ! empty( $sources ) ) {
-			$this->data['dupe_sources'] = $sources;
-			$this->data['dupe_callers'] = $callers;
-			$this->data['dupe_components'] = $components;
+			$this->data->dupe_sources = $sources;
+			$this->data->dupe_callers = $callers;
+			$this->data->dupe_components = $components;
+			$this->data->dupe_times = $times;
 		}
 
 	}

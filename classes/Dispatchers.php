@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Container for dispatchers.
  *
@@ -38,10 +38,8 @@ class QM_Dispatchers implements IteratorAggregate {
 	 */
 	public static function get( $id ) {
 		$dispatchers = self::init();
-		if ( isset( $dispatchers->items[ $id ] ) ) {
-			return $dispatchers->items[ $id ];
-		}
-		return false;
+
+		return $dispatchers->items[ $id ] ?? false;
 	}
 
 	/**

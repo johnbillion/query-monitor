@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * User capability check collector.
  *
@@ -9,9 +9,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Caps extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Caps>
+ * @phpstan-type CapCheck array{
+ *   args: list<mixed>,
+ *   filtered_trace: list<array<string, mixed>>,
+ *   component: QM_Component,
+ *   result: bool,
+ * }
+ */
+class QM_Collector_Caps extends QM_DataCollector {
 
 	public $id = 'caps';
+
+	/**
+	 * @var array<int, array<string, mixed>>
+	 * @phpstan-var list<CapCheck>
+	 */
+	private $cap_checks = array();
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Caps();
+	}
 
 	/**
 	 * @return void
@@ -127,7 +146,7 @@ class QM_Collector_Caps extends QM_Collector {
 			}
 		}
 
-		$this->data['caps'][] = array(
+		$this->cap_checks[] = array(
 			'args' => $args,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
@@ -181,7 +200,7 @@ class QM_Collector_Caps extends QM_Collector {
 		array_unshift( $args, $user_id );
 		array_unshift( $args, $cap );
 
-		$this->data['caps'][] = array(
+		$this->cap_checks[] = array(
 			'args' => $args,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
@@ -195,21 +214,22 @@ class QM_Collector_Caps extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data['caps'] ) ) {
+		if ( empty( $this->cap_checks ) ) {
 			return;
 		}
 
 		$all_parts = array();
 		$all_users = array();
 		$components = array();
+		$this->data->caps = array();
 
-		$this->data['caps'] = array_values( array_filter( $this->data['caps'], array( $this, 'filter_remove_noise' ) ) );
+		$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_noise' ) ) );
 
 		if ( self::hide_qm() ) {
-			$this->data['caps'] = array_values( array_filter( $this->data['caps'], array( $this, 'filter_remove_qm' ) ) );
+			$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_qm' ) ) );
 		}
 
-		foreach ( $this->data['caps'] as $i => $cap ) {
+		foreach ( $this->cap_checks as $cap ) {
 			$name = $cap['args'][0];
 
 			if ( ! is_string( $name ) ) {
@@ -217,24 +237,35 @@ class QM_Collector_Caps extends QM_Collector {
 			}
 
 			$component = $cap['component'];
+			$parts = array();
+			$pieces = preg_split( '#[_/-]#', $name );
 
-			$parts = array_values( array_filter( preg_split( '#[_/-]#', $name ) ) );
-			$this->data['caps'][ $i ]['parts'] = $parts;
-			$this->data['caps'][ $i ]['name'] = $name;
-			$this->data['caps'][ $i ]['user'] = $cap['args'][1];
-			$this->data['caps'][ $i ]['args'] = array_slice( $cap['args'], 2 );
+			if ( is_array( $pieces ) ) {
+				$parts = array_values( array_filter( $pieces ) );
+			}
+
+			$capability = array_shift( $cap['args'] );
+			$user_id = array_shift( $cap['args'] );
+
+			$cap['parts'] = $parts;
+			$cap['name'] = $name;
+			$cap['user'] = $user_id;
+
+			$this->data->caps[] = $cap;
+
 			$all_parts = array_merge( $all_parts, $parts );
-			$all_users[] = $cap['args'][1];
+			$all_users[] = (int) $user_id;
 			$components[ $component->name ] = $component->name;
 		}
 
-		$this->data['parts'] = array_values( array_unique( array_filter( $all_parts ) ) );
-		$this->data['users'] = array_values( array_unique( array_filter( $all_users ) ) );
-		$this->data['components'] = $components;
+		$this->data->parts = array_values( array_unique( array_filter( $all_parts ) ) );
+		$this->data->users = array_values( array_unique( array_filter( $all_users ) ) );
+		$this->data->components = $components;
 	}
 
 	/**
 	 * @param array<string, mixed> $cap
+	 * @phpstan-param CapCheck $cap
 	 * @return bool
 	 */
 	public function filter_remove_noise( array $cap ) {

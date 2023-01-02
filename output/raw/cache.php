@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Raw cache output.
  *
@@ -30,12 +30,14 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
 			'hits' => null,
 			'misses' => null,
 		);
+
+		/** @var QM_Data_Cache $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data['stats'] ) && isset( $data['cache_hit_percentage'] ) ) {
-			$output['hit_percentage'] = (float) number_format_i18n( $data['cache_hit_percentage'], 1 );
-			$output['hits'] = (int) number_format_i18n( $data['stats']['cache_hits'], 0 );
-			$output['misses'] = (int) number_format_i18n( $data['stats']['cache_misses'], 0 );
+		if ( ! empty( $data->stats ) && ! empty( $data->cache_hit_percentage ) ) {
+			$output['hit_percentage'] = round( $data->cache_hit_percentage, 1 );
+			$output['hits'] = (int) $data->stats['cache_hits'];
+			$output['misses'] = (int) $data->stats['cache_misses'];
 		}
 
 		return $output;

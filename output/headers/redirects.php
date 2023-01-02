@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * HTTP redirects output for HTTP headers.
  *
@@ -22,15 +22,15 @@ class QM_Output_Headers_Redirects extends QM_Output_Headers {
 	 * @return array<string, mixed>
 	 */
 	public function get_output() {
-
+		/** @var QM_Data_Redirect $data */
 		$data = $this->collector->get_data();
 		$headers = array();
 
-		if ( empty( $data['trace'] ) ) {
+		if ( ! isset( $data->trace ) ) {
 			return array();
 		}
 
-		$headers['Redirect-Trace'] = implode( ', ', $data['trace']->get_stack() );
+		$headers['Redirect-Trace'] = implode( ', ', $data->trace->get_stack() );
 		return $headers;
 
 	}

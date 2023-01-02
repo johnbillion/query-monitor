@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * General HTML request dispatcher.
  *
@@ -46,7 +46,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
-		add_action( 'shutdown', array( $this, 'dispatch' ), 0 );
+		// 9 is a magic number, it's the latest we can realistically use due to plugins
+		// which call `fastcgi_finish_request()` in a `shutdown` callback hooked on the
+		// default priority of 10, and QM needs to dispatch its output before those.
+		add_action( 'shutdown', array( $this, 'dispatch' ), 9 );
 
 		add_action( 'wp_footer', array( $this, 'action_footer' ) );
 		add_action( 'admin_footer', array( $this, 'action_footer' ) );
@@ -85,8 +88,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$expiration = time() + ( 2 * DAY_IN_SECONDS );
 		$secure = self::secure_cookie();
 		$cookie = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
+		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, false );
+		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, false );
 
 		wp_send_json_success();
 
@@ -102,8 +106,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		$expiration = time() - 31536000;
+		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, COOKIE_DOMAIN );
+		setcookie( QM_COOKIE, ' ', $expiration, COOKIEPATH, $domain );
 
 		wp_send_json_success();
 
@@ -151,6 +156,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
+			return;
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
@@ -210,7 +216,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
-			array( 'dashicons' ),
+			array(),
 			$this->qm->plugin_ver( 'assets/query-monitor.css' )
 		);
 		wp_enqueue_script(
@@ -253,7 +259,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.6.0
 		 *
-		 * @param \QM_Dispatcher_Html $this The HTML dispatcher.
+		 * @param \QM_Dispatcher_Html $dispatcher The HTML dispatcher.
 		 */
 		do_action( 'qm/output/enqueued-assets', $this );
 
@@ -331,10 +337,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
-		foreach ( glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
 			require_once $file;
 		}
 
@@ -348,7 +351,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $menus Array of menus.
+		 * @param array<string, mixed[]> $menus Array of menus.
 		 */
 		$this->admin_bar_menu = apply_filters( 'qm/output/menus', array() );
 
@@ -357,7 +360,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $admin_bar_menu Array of menus.
+		 * @param array<string, mixed[]> $admin_bar_menu Array of menus.
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
@@ -485,6 +488,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
+		// Don't dispatch inside the Site Editor:
+		if ( isset( $_SERVER['SCRIPT_NAME'] ) && '/wp-admin/site-editor.php' === $_SERVER['SCRIPT_NAME'] ) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -518,6 +526,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
 		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
+			return false;
+		}
+
+		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			return false;
 		}
 

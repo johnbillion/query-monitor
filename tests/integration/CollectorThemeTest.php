@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace QM\Tests;
 
@@ -14,7 +12,7 @@ class CollectorTheme extends Test {
 
 		$contents = file_get_contents( $file );
 
-		self::assertNotEmpty( $contents );
+		self::assertNotFalse( $contents );
 
 		// Pre-5.3 regex:
 		$regex = '#^\s*(?:else)?if\s+\(\s*(is_[a-z0-9_]+)\(\)(?:.*?)get_([a-z0-9_]+)_template\(\)#m';

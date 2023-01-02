@@ -29,4 +29,9 @@ modules:
       window_size: 1024x768
       capabilities:
         chromeOptions:
-          args: ["--headless", "--disable-gpu", "--proxy-server='direct://'", "--proxy-bypass-list=*"]
+          args: [
+            "--headless",
+            "--disable-gpu",
+            "--proxy-server='direct://'",
+            "--proxy-bypass-list=*"
+          ]

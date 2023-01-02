@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Dispatcher for output that gets added to `wp_die()` calls.
  *
@@ -51,8 +51,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			return;
 		}
 
-		require_once $this->qm->plugin_path( 'output/Html.php' );
-
 		$switched_locale = self::switch_to_locale( get_user_locale() );
 		$stack = array();
 		$filtered_trace = $this->trace->get_filtered_trace();
@@ -62,18 +60,13 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
 		}
 
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
-
 		?>
 		<style>
 			#query-monitor {
 				position: absolute;
-				margin: 0.9em 0 1em;
-				box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.13 );
+				margin: 4em 0 1em -2em;
+				border: 1px solid #ccd0d4;
+				box-shadow: 0 1px 1px rgb( 0 0 0 / 4% );
 				background: #fff;
 				padding-top: 1em;
 				max-width: 700px;
@@ -83,7 +76,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			#query-monitor h2 {
 				font-size: 12px;
 				font-weight: normal;
-				padding: 5px;
+				padding: 7px;
 				background: #f3f3f3;
 				margin: 0;
 				border-top: 1px solid #ddd;
@@ -93,11 +86,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 			#query-monitor p {
 				font-size: 12px;
 				padding: 0;
-				margin: 1em 2em;
+				margin: 1em 2.5em;
 			}
 
 			#query-monitor ol {
-				padding: 0 0 1em 1em;
+				padding: 0 0 1em 0;
 			}
 
 			#query-monitor li {
@@ -109,10 +102,8 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 				color: #666;
 			}
 
-			#query-monitor .dashicons-info {
-				color: #0071a1;
-				vertical-align: bottom;
-				margin-right: 5px;
+			#query-monitor a.qm-edit-link svg {
+				display: none !important;
 			}
 
 		</style>
@@ -121,7 +112,6 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		echo '<div id="query-monitor">';
 
 		echo '<p>';
-		echo '<span class="dashicons dashicons-info" aria-hidden="true"></span>';
 
 		if ( 'unknown' !== $component->type ) {
 			$name = ( 'plugin' === $component->type ) ? $component->context : $component->name;

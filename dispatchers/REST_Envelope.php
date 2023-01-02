@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * REST API enveloped request dispatcher.
  *
@@ -47,9 +47,7 @@ class QM_Dispatcher_REST_Envelope extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
-		require_once $this->qm->plugin_path( 'output/Raw.php' );
-
-		foreach ( glob( $this->qm->plugin_path( 'output/raw/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->qm->plugin_path( 'output/raw/*.php' ) ) as $file ) {
 			include_once $file;
 		}
 	}

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Plugin CLI command.
  *
@@ -29,7 +29,9 @@ class QM_CLI extends QM_Plugin {
 		$drop_in = WP_CONTENT_DIR . '/db.php';
 
 		if ( file_exists( $drop_in ) ) {
-			if ( false !== strpos( file_get_contents( $drop_in ), 'class QM_DB' ) ) {
+			$contents = file_get_contents( $drop_in );
+
+			if ( false !== $contents && false !== strpos( $contents, 'class QM_DB' ) ) {
 				WP_CLI::success( "Query Monitor's wp-content/db.php is already in place" );
 				exit( 0 );
 			} else {

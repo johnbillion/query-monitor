@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Raw database query output.
  *
@@ -31,29 +31,30 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 */
 	public function get_output() {
 		$output = array();
+		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['dbs'] ) ) {
+		if ( empty( $data->dbs ) ) {
 			return $output;
 		}
 
 		$dbs = array();
 
-		foreach ( $data['dbs'] as $name => $db ) {
+		foreach ( $data->dbs as $name => $db ) {
 			$dbs[ $name ] = $this->output_queries( $name, $db, $data );
 		}
 
 		$output['dbs'] = $dbs;
 
-		if ( ! empty( $data['errors'] ) ) {
+		if ( ! empty( $data->errors ) ) {
 			$output['errors'] = array(
-				'total' => count( $data['errors'] ),
-				'errors' => $data['errors'],
+				'total' => count( $data->errors ),
+				'errors' => $data->errors,
 			);
 		}
 
-		if ( ! empty( $data['dupes'] ) ) {
-			$dupes = $data['dupes'];
+		if ( ! empty( $data->dupes ) ) {
+			$dupes = $data->dupes;
 
 			// Filter out SQL queries that do not have dupes
 			$dupes = array_filter( $dupes, array( $this->collector, 'filter_dupe_items' ) );
@@ -73,7 +74,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	/**
 	 * @param string $name
 	 * @param stdClass $db
-	 * @param mixed[] $data
+	 * @param QM_Data_DB_Queries $data
 	 * @return array
 	 * @phpstan-return array{
 	 *   total: int,
@@ -81,7 +82,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 *   queries: mixed[],
 	 * }|array{}
 	 */
-	protected function output_queries( $name, stdClass $db, array $data ) {
+	protected function output_queries( $name, stdClass $db, QM_Data_DB_Queries $data ) {
 		$this->query_row = 0;
 
 		$output = array();

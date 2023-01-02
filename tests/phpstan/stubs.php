@@ -1,6 +1,4 @@
-<?php
-
-require_once dirname( __DIR__, 2 ) . '/classes/Backtrace.php';
+<?php declare(strict_types = 1);
 
 // QM constants:
 
@@ -37,20 +35,9 @@ function members_register_cap_group( string $name, array $args = [] ): void {}
 
 function members_register_cap( string $name, array $args = [] ): void {}
 
-// Compat functions:
+// WPBrowser compatibility:
 
-/**
- * @return string
- */
-function mysql_get_client_info() {}
-
-/**
- * @return int
- */
-function mysql_errno( $link_identifier = null ) {}
-
-/**
- * @param resource $link_identifier
- * @return string|false
- */
-function mysql_get_server_info( $link_identifier = null ) {}
+class_alias(
+	'\\Codeception\\Test\\Unit',
+	'\\tad\\WPBrowser\\Compat\\Codeception\\Unit'
+);

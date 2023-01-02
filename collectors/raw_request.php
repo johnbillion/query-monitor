@@ -1,12 +1,19 @@
-<?php
+<?php declare(strict_types = 1);
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Raw_Request extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Raw_Request>
+ */
+class QM_Collector_Raw_Request extends QM_DataCollector {
 
 	public $id = 'raw_request';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Raw_Request();
+	}
 
 	/**
 	 * Extracts headers from a PHP-style $_SERVER array.
@@ -57,7 +64,7 @@ class QM_Collector_Raw_Request extends QM_Collector {
 
 		$request['url'] = sprintf( '%s://%s%s', $request['scheme'], $request['host'], $request['path'] );
 
-		$this->data['request'] = $request;
+		$this->data->request = $request;
 
 		$headers = array();
 		$raw_headers = headers_list();
@@ -69,23 +76,11 @@ class QM_Collector_Raw_Request extends QM_Collector {
 		ksort( $headers );
 
 		$response = array(
-			'status' => self::http_response_code(),
+			'status' => http_response_code(),
 			'headers' => $headers,
 		);
 
-		$this->data['response'] = $response;
-	}
-
-	/**
-	 * @return int|bool|null
-	 */
-	public static function http_response_code() {
-		if ( function_exists( 'http_response_code' ) ) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.http_response_codeFound
-			return http_response_code();
-		}
-
-		return null;
+		$this->data->response = $response;
 	}
 }
 

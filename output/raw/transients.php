@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Raw transients output.
  *
@@ -28,21 +28,17 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 		$output = array();
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['trans'] ) ) {
+		if ( empty( $data->trans ) ) {
 			return $output;
 		}
 
 		$transients = array();
 
-		foreach ( $data['trans'] as $transient ) {
+		foreach ( $data->trans as $transient ) {
 			$stack = array();
 
-			if ( isset( $transient['filtered_trace'] ) ) {
-				$filtered_trace = $transient['filtered_trace'];
-
-				foreach ( $filtered_trace as $item ) {
-					$stack[] = $item['display'];
-				}
+			foreach ( $transient['filtered_trace'] as $frame ) {
+				$stack[] = $frame['display'];
 			}
 
 			$transients[] = array(

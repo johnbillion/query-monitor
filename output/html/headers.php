@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Request and response headers output for HTML pages.
  *
@@ -46,11 +46,12 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output_request() {
+		/** @var QM_Data_Raw_Request $data */
 		$data = $this->collector->get_data();
 
 		$this->before_tabular_output();
 
-		$this->output_header_table( $data['request']['headers'], __( 'Request Header Name', 'query-monitor' ) );
+		$this->output_header_table( $data->request['headers'], __( 'Request Header Name', 'query-monitor' ) );
 
 		$this->after_tabular_output();
 	}
@@ -59,12 +60,13 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output_response() {
+		/** @var QM_Data_Raw_Request $data */
 		$data = $this->collector->get_data();
 		$id = sprintf( 'qm-%s-response', $this->collector->id );
 
 		$this->before_tabular_output( $id );
 
-		$this->output_header_table( $data['response']['headers'], __( 'Response Header Name', 'query-monitor' ) );
+		$this->output_header_table( $data->response['headers'], __( 'Response Header Name', 'query-monitor' ) );
 
 		$this->after_tabular_output();
 	}

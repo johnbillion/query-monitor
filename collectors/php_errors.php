@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * PHP error collector.
  *
@@ -11,7 +11,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
 
-class QM_Collector_PHP_Errors extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_PHP_Errors>
+ * @phpstan-type errorLabels array{
+ *   warning: string,
+ *   notice: string,
+ *   strict: string,
+ *   deprecated: string,
+ * }
+ * @phpstan-import-type errorObject from QM_Data_PHP_Errors
+ */
+class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -20,8 +30,13 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 
 	/**
 	 * @var array<string, array<string, string>>
+	 * @phpstan-var array{
+	 *   errors: errorLabels,
+	 *   suppressed: errorLabels,
+	 *   silenced: errorLabels,
+	 * }
 	 */
-	public $types = array();
+	public $types;
 
 	/**
 	 * @var int|null
@@ -48,10 +63,9 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 */
 	private static $unexpected_error = null;
 
-	/**
-	 * @var bool
-	 */
-	protected $hide_silenced_php_errors = false;
+	public function get_storage(): QM_Data {
+		return new QM_Data_PHP_Errors();
+	}
 
 	/**
 	 * @return void
@@ -66,15 +80,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		// Capture the last error that occurred before QM loaded:
 		$prior_error = error_get_last();
 
-		// Non-fatal error handler for all PHP versions:
+		// Non-fatal error handler:
 		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
-		if ( ! interface_exists( 'Throwable' ) ) {
-			// Fatal error handler for PHP < 7:
-			register_shutdown_function( array( $this, 'shutdown_handler' ) );
-		}
-
-		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		// Fatal error and uncaught exception handler:
 		$this->previous_exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
@@ -121,19 +130,16 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	}
 
 	/**
-	 * Uncaught exception handler.
+	 * Uncaught error handler.
 	 *
-	 * In PHP >= 7 this will receive a Throwable object.
-	 * In PHP < 7 it will receive an Exception object.
-	 *
-	 * @param Throwable|Exception $e The error or exception.
+	 * @param Throwable $e The error or exception.
 	 * @return void
 	 */
 	public function exception_handler( $e ) {
-		if ( is_a( $e, 'Exception' ) ) {
+		$error = 'Uncaught Error';
+
+		if ( $e instanceof Exception ) {
 			$error = 'Uncaught Exception';
-		} else {
-			$error = 'Uncaught Error';
 		}
 
 		$this->output_fatal( 'Fatal error', array(
@@ -147,7 +153,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			'trace' => $e->getTrace(),
 		) );
 
-		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
+		// The error must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
 		if ( $this->previous_exception_handler ) {
 			call_user_func( $this->previous_exception_handler, $e );
@@ -240,18 +246,27 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		}
 
 		$trace = new QM_Backtrace();
+		$trace->push_frame( array(
+			'file' => $file,
+			'line' => $line,
+		) );
 		$caller = $trace->get_caller();
-		$key = md5( $message . $file . $line . $caller['id'] );
 
-		if ( isset( $this->data[ $error_group ][ $type ][ $key ] ) ) {
-			$this->data[ $error_group ][ $type ][ $key ]['calls']++;
+		if ( $caller ) {
+			$key = md5( $message . $file . $line . $caller['id'] );
 		} else {
-			$this->data[ $error_group ][ $type ][ $key ] = array(
+			$key = md5( $message . $file . $line );
+		}
+
+		if ( isset( $this->data->{$error_group}[ $type ][ $key ] ) ) {
+			$this->data->{$error_group}[ $type ][ $key ]['calls']++;
+		} else {
+			$this->data->{$error_group}[ $type ][ $key ] = array(
 				'errno' => $errno,
 				'type' => $type,
 				'message' => wp_strip_all_tags( $message ),
 				'file' => $file,
-				'filename' => QM_Util::standard_dir( $file, '' ),
+				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
 				'line' => $line,
 				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
 				'component' => $trace->get_component(),
@@ -269,28 +284,6 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
-	}
-
-	/**
-	 * Displays fatal error output for sites running PHP < 7.
-	 *
-	 * @return void
-	 */
-	public function shutdown_handler() {
-
-		$e = error_get_last();
-
-		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
-			return;
-		}
-
-		if ( $e['type'] & E_RECOVERABLE_ERROR ) {
-			$error = 'Catchable fatal error';
-		} else {
-			$error = 'Fatal error';
-		}
-
-		$this->output_fatal( $error, $e );
 	}
 
 	/**
@@ -320,17 +313,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			wp_load_translations_early();
 		}
 
-		require_once dirname( __DIR__ ) . '/output/Html.php';
-
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
 		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
 
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( includes_url( 'css/dashicons.css' ) )
-		);
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%s" media="all" />',
@@ -356,8 +342,11 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			$file = esc_html( $e['file'] );
 		}
 
+		$warning = QueryMonitor::icon( 'warning' );
+
 		printf(
-			'<p><span class="dashicons dashicons-warning" aria-hidden="true"></span> <b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
+			'<p>%1$s <b>%2$s</b>: %3$s<br>in <b>%4$s</b> on line <b>%5$d</b></p>',
+			$warning,
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
 			$file,
@@ -369,6 +358,10 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			echo '<ol>';
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
+
+				if ( ! isset( $callback['name'] ) ) {
+					continue;
+				}
 
 				printf(
 					'<li>%s</li>',
@@ -418,7 +411,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 		);
 		$components = array();
 
-		if ( ! empty( $this->data ) && ! empty( $this->data['errors'] ) ) {
+		if ( ! empty( $this->data->errors ) ) {
 			/**
 			 * Filters the levels used for reported PHP errors on a per-component basis.
 			 *
@@ -459,36 +452,24 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
-			/**
-			 * Controls whether silenced PHP errors are hidden entirely by Query Monitor.
-			 *
-			 * To hide silenced errors, use:
-			 *
-			 *     add_filter( 'qm/collect/hide_silenced_php_errors', '__return_true' );
-			 *
-			 * @since 2.7.0
-			 *
-			 * @param bool $hide Whether to hide silenced PHP errors. Default false.
-			 */
-			$this->hide_silenced_php_errors = apply_filters( 'qm/collect/hide_silenced_php_errors', false );
-
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
 
 			foreach ( $this->types as $error_group => $error_types ) {
 				foreach ( $error_types as $type => $title ) {
-					if ( isset( $this->data[ $error_group ][ $type ] ) ) {
-						foreach ( $this->data[ $error_group ][ $type ] as $error ) {
-							if ( $error['component'] ) {
-								$component = $error['component'];
-								$components[ $component->name ] = $component->name;
-							}
+					if ( isset( $this->data->{$error_group}[ $type ] ) ) {
+						/**
+						 * @var array<string, mixed> $error
+						 * @phpstan-var errorObject $error
+						 */
+						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
+							$components[ $error['component']->name ] = $error['component']->name;
 						}
 					}
 				}
 			}
 		}
 
-		$this->data['components'] = $components;
+		$this->data->components = $components;
 	}
 
 	/**
@@ -500,7 +481,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @return void
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {
-		$all_errors = $this->data['errors'];
+		$all_errors = $this->data->errors;
 
 		foreach ( $components as $component_context => $allowed_level ) {
 			foreach ( $all_errors as $error_level => $errors ) {
@@ -509,35 +490,27 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 						continue;
 					}
 
-					if ( ! $error['component'] ) {
-						continue;
-					}
-
 					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
 						continue;
 					}
 
-					unset( $this->data['errors'][ $error_level ][ $error_id ] );
+					unset( $this->data->errors[ $error_level ][ $error_id ] );
 
-					if ( $this->hide_silenced_php_errors ) {
-						continue;
-					}
-
-					$this->data['silenced'][ $error_level ][ $error_id ] = $error;
+					$this->data->silenced[ $error_level ][ $error_id ] = $error;
 				}
 			}
 		}
 
-		$this->data['errors'] = array_filter( $this->data['errors'] );
+		$this->data->errors = array_filter( $this->data->errors );
 	}
 
 	/**
 	 * Checks if the component is of the given type and has the given context. This is
 	 * used to scope an error to a plugin or theme.
 	 *
-	 * @param object $component         The component.
-	 * @param string $component_type    The component type for comparison.
-	 * @param string $component_context The component context for comparison.
+	 * @param QM_Component $component         The component.
+	 * @param string       $component_type    The component type for comparison.
+	 * @param string       $component_context The component context for comparison.
 	 * @return bool
 	 */
 	public function is_affected_component( $component, $component_type, $component_context ) {
@@ -582,7 +555,7 @@ class QM_Collector_PHP_Errors extends QM_Collector {
 	 * @return void
 	 */
 	public function set_php_errors( $errors ) {
-		$this->data['errors'] = $errors;
+		$this->data->errors = $errors;
 	}
 }
 

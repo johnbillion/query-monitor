@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Scripts and styles output for HTML pages.
  *
@@ -34,10 +34,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 */
 	public function output() {
 
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 		$type_label = $this->get_type_labels();
 
-		if ( empty( $data['assets'] ) ) {
+		if ( empty( $data->assets ) ) {
 			$this->before_non_tabular_output();
 			$notice = esc_html( $type_label['none'] );
 			echo $this->build_notice( $notice ); // WPCS: XSS ok.
@@ -68,17 +69,17 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<th scope="col" class="qm-filterable-column">';
 		$args = array(
 			'prepend' => array(
-				'local' => $data['host'],
+				'local' => $data->host,
 			),
 		);
 		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependencies', $data['dependencies'], __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependencies', $data->dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( $type . '-dependents', $data['dependents'], __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( $type . '-dependents', $data->dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
 		echo '</tr>';
@@ -87,8 +88,8 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $position_labels as $position => $label ) {
-			if ( ! empty( $data['assets'][ $position ] ) ) {
-				foreach ( $data['assets'][ $position ] as $handle => $asset ) {
+			if ( ! empty( $data->assets[ $position ] ) ) {
+				foreach ( $data->assets[ $position ] as $handle => $asset ) {
 					$this->dependency_row( $handle, $asset, $label );
 				}
 			}
@@ -103,7 +104,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'<td colspan="7">%1$s</td>',
 			sprintf(
 				esc_html( $type_label['total'] ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data['counts']['total'] ) ) . '</span>'
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
 			)
 		);
 		echo '</tr>';
@@ -119,6 +120,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function dependency_row( $handle, array $asset, $label ) {
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
 		$highlight_deps = array_map( array( $this, '_prefix_type' ), $asset['dependencies'] );
@@ -130,9 +132,12 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$dependency_output = array();
 
 		foreach ( $asset['dependencies'] as $dep ) {
-			if ( isset( $data['missing_dependencies'][ $dep ] ) ) {
+			if ( isset( $data->missing_dependencies[ $dep ] ) ) {
+				$warning = QueryMonitor::icon( 'warning' );
+
 				$dependency_output[] = sprintf(
-					'<span style="white-space:nowrap"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span style="white-space:nowrap">%1$s%2$s</span>',
+					$warning,
 					sprintf(
 						/* translators: %s: Name of missing script or style dependency */
 						__( '%s (missing)', 'query-monitor' ),
@@ -157,8 +162,11 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
 		echo '<td class="qm-nowrap">';
 
+		$warning = QueryMonitor::icon( 'warning' );
+
 		if ( $asset['warning'] ) {
-			echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $warning;
 		}
 
 		echo esc_html( $label );
@@ -186,22 +194,24 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%1$s:</span><br><a href="%2$s" class="qm-link">%2$s</a>',
-					esc_html( $asset['source']->get_error_message() ),
-					esc_url( $error_data['src'] )
+					'<span class="qm-warn">%1$s%2$s:</span><br>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$warning,
+					esc_html( $asset['source']->get_error_message() )
 				);
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link( $error_data['src'], esc_html( $error_data['src'] ) );
 			} else {
 				printf(
-					'<span class="qm-warn"><span class="dashicons dashicons-warning" aria-hidden="true"></span>%s</span>',
+					'<span class="qm-warn">%1$s%2$s</span>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$warning,
 					esc_html( $asset['source']->get_error_message() )
 				);
 			}
 		} elseif ( ! empty( $asset['source'] ) ) {
-			printf(
-				'<a href="%s" class="qm-link">%s</a>',
-				esc_url( $asset['source'] ),
-				esc_html( $asset['display'] )
-			);
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::build_link( $asset['source'], esc_html( $asset['display'] ) );
 		}
 		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">';
@@ -229,10 +239,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
-		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
+		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
 			$class[] = 'qm-error';
 		}
 
@@ -245,24 +255,24 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Assets */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['assets'] ) ) {
+		if ( empty( $data->assets ) ) {
 			return $menu;
 		}
 
 		$type_label = $this->get_type_labels();
 		$label = sprintf(
 			$type_label['count'],
-			number_format_i18n( $data['counts']['total'] )
+			number_format_i18n( $data->counts['total'] )
 		);
 
 		$args = array(
 			'title' => $label,
 		);
 
-		if ( ! empty( $data['broken'] ) || ! empty( $data['missing'] ) ) {
+		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
 			$args['meta']['classname'] = 'qm-error';
 		}
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Template conditionals output for HTML pages.
  *
@@ -37,10 +37,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	}
 
 	public function admin_menu( array $menu ) {
-
+		/** @var QM_Data_Conditionals $data */
 		$data = $this->collector->get_data();
 
-		foreach ( $data['conds']['true'] as $cond ) {
+		foreach ( $data->conds['true'] as $cond ) {
 			$id = $this->collector->id() . '-' . $cond;
 			$menu[ $id ] = $this->menu( array(
 				'title' => $cond . '()',
@@ -60,10 +60,10 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function panel_menu( array $menu ) {
-
+		/** @var QM_Data_Conditionals $data */
 		$data = $this->collector->get_data();
 
-		foreach ( $data['conds']['true'] as $cond ) {
+		foreach ( $data->conds['true'] as $cond ) {
 			$id = $this->collector->id() . '-' . $cond;
 			unset( $menu[ $id ] );
 		}

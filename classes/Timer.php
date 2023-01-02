@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Timer that collects timing and memory usage.
  *
@@ -12,7 +12,7 @@ class QM_Timer {
 	 * @phpstan-var array{
 	 *   time: float,
 	 *   memory: int,
-	 *   data: mixed[],
+	 *   data: mixed[]|null,
 	 * }|null
 	 */
 	protected $start = null;
@@ -22,7 +22,7 @@ class QM_Timer {
 	 * @phpstan-var array{
 	 *   time: float,
 	 *   memory: int,
-	 *   data: mixed[],
+	 *   data: mixed[]|null,
 	 * }|null
 	 */
 	protected $end = null;
@@ -37,7 +37,7 @@ class QM_Timer {
 	 * @phpstan-var array<string, array{
 	 *   time: float,
 	 *   memory: int,
-	 *   data: mixed[],
+	 *   data: mixed[]|null,
 	 * }>
 	 */
 	protected $laps = array();

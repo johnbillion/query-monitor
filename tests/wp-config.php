@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * This is the configuration file that's used for the acceptance tests and WP-CLI commands.
  */

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Database query collector.
  *
@@ -20,7 +20,10 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 	$GLOBALS['wpdb']->save_queries = true;
 }
 
-class QM_Collector_DB_Queries extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_DB_Queries>
+ */
+class QM_Collector_DB_Queries extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -32,12 +35,16 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	 */
 	public $db_objects = array();
 
+	public function get_storage(): QM_Data {
+		return new QM_Data_DB_Queries();
+	}
+
 	/**
 	 * @return mixed[]|false
 	 */
 	public function get_errors() {
-		if ( ! empty( $this->data['errors'] ) ) {
-			return $this->data['errors'];
+		if ( ! empty( $this->data->errors ) ) {
+			return $this->data->errors;
 		}
 		return false;
 	}
@@ -46,8 +53,8 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	 * @return mixed[]|false
 	 */
 	public function get_expensive() {
-		if ( ! empty( $this->data['expensive'] ) ) {
-			return $this->data['expensive'];
+		if ( ! empty( $this->data->expensive ) ) {
+			return $this->data->expensive;
 		}
 		return false;
 	}
@@ -64,9 +71,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	 * @return void
 	 */
 	public function process() {
-		$this->data['total_qs'] = 0;
-		$this->data['total_time'] = 0;
-		$this->data['errors'] = array();
+		$this->data->total_qs = 0;
+		$this->data->total_time = 0;
+		$this->data->errors = array();
 
 		/**
 		 * Filters the `wpdb` instances that are exposed to QM.
@@ -99,20 +106,20 @@ class QM_Collector_DB_Queries extends QM_Collector {
 	 */
 	protected function log_caller( $caller, $ltime, $type ) {
 
-		if ( ! isset( $this->data['times'][ $caller ] ) ) {
-			$this->data['times'][ $caller ] = array(
+		if ( ! isset( $this->data->times[ $caller ] ) ) {
+			$this->data->times[ $caller ] = array(
 				'caller' => $caller,
 				'ltime' => 0,
 				'types' => array(),
 			);
 		}
 
-		$this->data['times'][ $caller ]['ltime'] += $ltime;
+		$this->data->times[ $caller ]['ltime'] += $ltime;
 
-		if ( isset( $this->data['times'][ $caller ]['types'][ $type ] ) ) {
-			$this->data['times'][ $caller ]['types'][ $type ]++;
+		if ( isset( $this->data->times[ $caller ]['types'][ $type ] ) ) {
+			$this->data->times[ $caller ]['types'][ $type ]++;
 		} else {
-			$this->data['times'][ $caller ]['types'][ $type ] = 1;
+			$this->data->times[ $caller ]['types'][ $type ] = 1;
 		}
 
 	}
@@ -127,7 +134,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
 		if ( empty( $db->queries ) ) {
-			$this->data['total_qs'] += $db->num_queries;
+			$this->data->total_qs += $db->num_queries;
 			return;
 		}
 
@@ -143,6 +150,19 @@ class QM_Collector_DB_Queries extends QM_Collector {
 			$request = $db->remove_placeholder_escape( $request );
 		}
 
+		/**
+		 * @phpstan-var array{
+		 *   0: string,
+		 *   1: float,
+		 *   2: string,
+		 *   trace?: QM_Backtrace,
+		 *   result?: int|bool|WP_Error,
+		 * }|array{
+		 *   query: string,
+		 *   elapsed: float,
+		 *   debug: string,
+		 * } $query
+		 */
 		foreach ( $db->queries as $query ) {
 			$has_trace = false;
 			$has_result = false;
@@ -153,7 +173,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$sql = $query['query'];
 				$ltime = $query['elapsed'];
 				$stack = $query['debug'];
-			} else {
+			} elseif ( isset( $query[0], $query[1], $query[2] ) ) {
 				// Standard WP.
 				$sql = $query[0];
 				$ltime = $query[1];
@@ -162,6 +182,9 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				// Query Monitor db.php drop-in.
 				$has_trace = isset( $query['trace'] );
 				$has_result = isset( $query['result'] );
+			} else {
+				// ¯\_(ツ)_/¯
+				continue;
 			}
 
 			// @TODO: decide what I want to do with this:
@@ -170,21 +193,16 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				continue;
 			}
 
-			if ( $has_result ) {
-				$result = $query['result'];
-			} else {
-				$result = null;
-			}
-
+			$result = $query['result'] ?? null;
 			$total_time += $ltime;
 
-			if ( $has_trace ) {
+			if ( isset( $query['trace'] ) ) {
 
 				$trace = $query['trace'];
 				$component = $query['trace']->get_component();
 				$caller = $query['trace']->get_caller();
-				$caller_name = $caller['display'];
-				$caller = $caller['display'];
+				$caller_name = $caller ? $caller['display'] : 'Unknown';
+				$caller = $caller ? $caller['display'] : 'Unknown';
 				$filtered_trace = $query['trace']->get_filtered_trace();
 
 			} else {
@@ -232,12 +250,14 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$row['stack'] = $callers;
 			}
 
+			// @TODO these should store a reference ($i) instead of the whole row
 			if ( is_wp_error( $result ) ) {
-				$this->data['errors'][] = $row;
+				$this->data->errors[] = $row;
 			}
 
+			// @TODO these should store a reference ($i) instead of the whole row
 			if ( self::is_expensive( $row ) ) {
-				$this->data['expensive'][] = $row;
+				$this->data->expensive[] = $row;
 			}
 
 			$rows[ $i ] = $row;
@@ -251,7 +271,7 @@ class QM_Collector_DB_Queries extends QM_Collector {
 				$row = array(
 					'caller' => null,
 					'caller_name' => null,
-					'stack' => '',
+					'stack' => array(),
 					'sql' => $error['query'],
 					'ltime' => 0,
 					'result' => new WP_Error( 'qmdb', $error['error_str'] ),
@@ -260,14 +280,14 @@ class QM_Collector_DB_Queries extends QM_Collector {
 					'trace' => null,
 					'is_main_query' => false,
 				);
-				$this->data['errors'][] = $row;
+				$this->data->errors[] = $row;
 			}
 		}
 
 		$total_qs = count( $rows );
 
-		$this->data['total_qs']   += $total_qs;
-		$this->data['total_time'] += $total_time;
+		$this->data->total_qs   += $total_qs;
+		$this->data->total_time += $total_time;
 
 		$has_main_query = wp_list_filter( $rows, array(
 			'is_main_query' => true,
@@ -275,10 +295,24 @@ class QM_Collector_DB_Queries extends QM_Collector {
 
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data['dbs'][ $id ] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
+		$this->data->dbs[ $id ] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
 
 	}
 
+	/**
+	 * @param string $sql
+	 * @param int $i
+	 * @return void
+	 */
+	protected function maybe_log_dupe( $sql, $i ) {
+		$sql = str_replace( array( "\r\n", "\r", "\n" ), ' ', $sql );
+		$sql = str_replace( array( "\t", '`' ), '', $sql );
+		$sql = preg_replace( '/ +/', ' ', $sql );
+		$sql = trim( $sql );
+		$sql = rtrim( $sql, ';' );
+
+		$this->data->dupes[ $sql ][] = $i;
+	}
 }
 
 /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Function call backtrace container.
  *
@@ -18,10 +18,13 @@ class QM_Backtrace {
 	protected static $ignore_class = array(
 		'wpdb' => true,
 		'hyperdb' => true,
+		'LudicrousDB' => true,
 		'QueryMonitor' => true,
 		'W3_Db' => true,
 		'Debug_Bar_PHP' => true,
 		'WP_Hook' => true,
+		'Altis\Cloud\DB' => true,
+		'Yoast\WP\Lib\ORM' => true,
 	);
 
 	/**
@@ -49,13 +52,14 @@ class QM_Backtrace {
 
 	/**
 	 * @var array<string, int|string>
-	 * @phpstan-var array<string, positive-int|'dir'>
 	 */
 	protected static $show_args = array(
 		'do_action' => 1,
 		'apply_filters' => 1,
 		'do_action_ref_array' => 1,
 		'apply_filters_ref_array' => 1,
+		'do_action_deprecated' => 1,
+		'apply_filters_deprecated' => 1,
 		'get_query_template' => 1,
 		'resolve_block_template' => 1,
 		'get_template_part' => 2,
@@ -66,8 +70,6 @@ class QM_Backtrace {
 		'get_header' => 1,
 		'get_sidebar' => 1,
 		'get_footer' => 1,
-		'get_option' => 1,
-		'update_option' => 1,
 		'get_transient' => 1,
 		'set_transient' => 1,
 		'class_exists' => 2,
@@ -113,16 +115,21 @@ class QM_Backtrace {
 	protected $calling_file = '';
 
 	/**
-	 * @var stdClass|null
+	 * @var QM_Component|null
 	 */
 	protected $component = null;
+
+	/**
+	 * @var mixed[]|null
+	 */
+	protected $top_frame = null;
 
 	/**
 	 * @param array<string, mixed[]> $args
 	 * @param mixed[] $trace
 	 */
 	public function __construct( array $args = array(), array $trace = null ) {
-		$this->trace = ( null === $trace ) ? debug_backtrace( 0 ) : $trace;
+		$this->trace = $trace ?? debug_backtrace( 0 );
 
 		$this->args = array_merge( array(
 			'ignore_class' => array(),
@@ -137,10 +144,10 @@ class QM_Backtrace {
 				continue;
 			}
 
-			if ( isset( $frame['function'] ) && isset( self::$show_args[ $frame['function'] ] ) ) {
+			if ( isset( $frame['function'], self::$show_args[ $frame['function'] ] ) ) {
 				$show = self::$show_args[ $frame['function'] ];
 
-				if ( 'dir' === $show ) {
+				if ( ! is_int( $show ) ) {
 					$show = 1;
 				}
 
@@ -153,19 +160,27 @@ class QM_Backtrace {
 	}
 
 	/**
+	 * @param mixed[] $frame
+	 * @return void
+	 */
+	public function push_frame( array $frame ) {
+		$this->top_frame = $frame;
+	}
+
+	/**
 	 * @return array<int, string>
 	 */
 	public function get_stack() {
 
 		$trace = $this->get_filtered_trace();
-		$stack = wp_list_pluck( $trace, 'display' );
+		$stack = array_column( $trace, 'display' );
 
 		return $stack;
 
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return mixed[]|false
 	 */
 	public function get_caller() {
 
@@ -176,7 +191,7 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return stdClass
+	 * @return QM_Component
 	 */
 	public function get_component() {
 		if ( isset( $this->component ) ) {
@@ -184,8 +199,13 @@ class QM_Backtrace {
 		}
 
 		$components = array();
+		$frames = $this->get_filtered_trace();
 
-		foreach ( $this->get_filtered_trace() as $frame ) {
+		if ( $this->top_frame ) {
+			array_unshift( $frames, $this->top_frame );
+		}
+
+		foreach ( $frames as $frame ) {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
@@ -207,24 +227,30 @@ class QM_Backtrace {
 			}
 		}
 
-		return (object) array(
-			'type' => 'unknown',
-			'name' => __( 'Unknown', 'query-monitor' ),
-			'context' => 'unknown',
-		);
+		$component = new QM_Component();
+		$component->type = 'unknown';
+		$component->name = __( 'Unknown', 'query-monitor' );
+		$component->context = 'unknown';
+
+		return $component;
 	}
 
 	/**
 	 * Attempts to determine the component responsible for a given frame.
 	 *
 	 * @param mixed[] $frame A single frame from a trace.
-	 * @return stdClass|null A stdClass object (ouch) representing the component, or null if
-	 *                       the component cannot be determined.
+	 * @phpstan-param array{
+	 *   class?: class-string,
+	 *   function?: string,
+	 *   file?: string,
+	 * } $frame
+	 * @return QM_Component|null An object representing the component, or null if
+	 *                           the component cannot be determined.
 	 */
 	public static function get_frame_component( array $frame ) {
 		try {
 
-			if ( isset( $frame['class'] ) ) {
+			if ( isset( $frame['class'], $frame['function'] ) ) {
 				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
@@ -239,6 +265,10 @@ class QM_Backtrace {
 			} elseif ( isset( $frame['file'] ) ) {
 				$file = $frame['file'];
 			} else {
+				return null;
+			}
+
+			if ( ! $file ) {
 				return null;
 			}
 
@@ -266,7 +296,12 @@ class QM_Backtrace {
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<int, array<string, mixed>>
+	 * @phpstan-return list<array{
+	 *   file: string,
+	 *   line: int,
+	 *   display: string,
+	 * }>
 	 */
 	public function get_filtered_trace() {
 
@@ -284,7 +319,12 @@ class QM_Backtrace {
 				$lowest['display'] = $file;
 				$lowest['id'] = $file;
 				unset( $lowest['class'], $lowest['args'], $lowest['type'] );
-				$trace[0] = $lowest;
+
+				// When a PHP error is triggered which doesn't have a stack trace, for example a
+				// deprecated error, QM will blame itself due to its error handler. This prevents that.
+				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
+					$trace[0] = $lowest;
+				}
 			}
 
 			$this->filtered_trace = $trace;
@@ -366,7 +406,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_class Array of class names to ignore. The array keys are class names to ignore,
 			 *                             the array values are whether to ignore the class or not (usually true).
 			 */
-			self::$ignore_class = apply_filters( 'qm/trace/ignore_class',  self::$ignore_class );
+			self::$ignore_class = apply_filters( 'qm/trace/ignore_class', self::$ignore_class );
 
 			/**
 			 * Filters which class methods to ignore when constructing user-facing call stacks.
@@ -386,7 +426,7 @@ class QM_Backtrace {
 			 * @param bool[] $ignore_func Array of function names to ignore. The array keys are function names to ignore,
 			 *                            the array values are whether to ignore the function or not (usually true).
 			 */
-			self::$ignore_func = apply_filters( 'qm/trace/ignore_func',   self::$ignore_func );
+			self::$ignore_func = apply_filters( 'qm/trace/ignore_func', self::$ignore_func );
 
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
@@ -408,7 +448,7 @@ class QM_Backtrace {
 			 *                                  array keys are function names, the array values are either integers or
 			 *                                  "dir" to specifically treat the function argument as a directory path.
 			 */
-			self::$show_args = apply_filters( 'qm/trace/show_args',     self::$show_args );
+			self::$show_args = apply_filters( 'qm/trace/show_args', self::$show_args );
 
 			self::$filtered = true;
 
@@ -458,7 +498,7 @@ class QM_Backtrace {
 						$return['display'] = $frame['function'] . "('{$arg}')";
 					}
 				} else {
-					if ( isset( $hook_functions[ $frame['function'] ] ) && isset( $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
+					if ( isset( $hook_functions[ $frame['function'] ], $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
 						$return = null;
 					} else {
 						$args = array();

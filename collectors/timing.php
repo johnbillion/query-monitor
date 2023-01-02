@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Timing and profiling collector.
  *
@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Timing extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Timing>
+ */
+class QM_Collector_Timing extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -30,6 +33,10 @@ class QM_Collector_Timing extends QM_Collector {
 	 * @var array<string, QM_Timer>
 	 */
 	private $stop = array();
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Timing();
+	}
 
 	/**
 	 * @return void
@@ -69,7 +76,7 @@ class QM_Collector_Timing extends QM_Collector {
 	public function action_function_time_stop( $function ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
 			$trace = new QM_Backtrace();
-			$this->data['warning'][] = array(
+			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),
 				'filtered_trace' => $trace->get_filtered_trace(),
@@ -89,7 +96,7 @@ class QM_Collector_Timing extends QM_Collector {
 	public function action_function_time_lap( $function, $name = null ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
 			$trace = new QM_Backtrace();
-			$this->data['warning'][] = array(
+			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),
 				'filtered_trace' => $trace->get_filtered_trace(),
@@ -112,15 +119,15 @@ class QM_Collector_Timing extends QM_Collector {
 		$start_time = $this->track_timer[ $function ]->get_start_time();
 		$end_time = $this->track_timer[ $function ]->get_end_time();
 
-		$this->data['timing'][] = array(
+		$this->data->timing[] = array(
 			'function' => $function,
 			'function_time' => $function_time,
 			'function_memory' => $function_memory,
 			'laps' => $function_laps,
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'component' => $trace->get_component(),
-			'start_time' => ( $start_time - $GLOBALS['timestart'] ),
-			'end_time' => ( $end_time - $GLOBALS['timestart'] ),
+			'start_time' => ( $start_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
+			'end_time' => ( $end_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
 		);
 	}
 
@@ -131,7 +138,7 @@ class QM_Collector_Timing extends QM_Collector {
 		foreach ( $this->start as $function => $value ) {
 			if ( ! isset( $this->stop[ $function ] ) ) {
 				$trace = $this->track_timer[ $function ]->get_trace();
-				$this->data['warning'][] = array(
+				$this->data->warning[] = array(
 					'function' => $function,
 					'message' => __( 'Timer not stopped', 'query-monitor' ),
 					'filtered_trace' => $trace->get_filtered_trace(),
@@ -140,8 +147,8 @@ class QM_Collector_Timing extends QM_Collector {
 			}
 		}
 
-		if ( ! empty( $this->data['timing'] ) ) {
-			usort( $this->data['timing'], array( $this, 'sort_by_start_time' ) );
+		if ( ! empty( $this->data->timing ) ) {
+			usort( $this->data->timing, array( $this, 'sort_by_start_time' ) );
 		}
 	}
 

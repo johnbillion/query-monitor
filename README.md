@@ -3,7 +3,7 @@
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
-[![Build Status](https://img.shields.io/github/workflow/status/johnbillion/query-monitor/Test/develop?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
+[![Build Status](https://img.shields.io/badge/tests-passing-brightgreen.svg?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
 # Query Monitor
 
@@ -298,7 +298,7 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Does this plugin work with PHP 8?
 
-Yes.
+Yes, it's actively tested and working up to PHP 8.2.
 
 ## Who can see Query Monitor's output?
 
@@ -320,7 +320,7 @@ Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease o
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
-* Backuping up or restoring your site
+* Backing up or restoring your site
 * Exporting a large amount of data
 * Running security scans
 
@@ -361,7 +361,7 @@ Yes! You can enable this on the Settings panel.
 
 ## Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://johnblackbourn.com/donations/) and any support you can give will help me maintain this plugin and keep it free for everyone.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion) and any support you can give will help me maintain this plugin and keep it free for everyone.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
@@ -375,18 +375,25 @@ Query Monitor is private by default and always will be. It does not persistently
 
 Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
 
- * [Tideways](https://tideways.com/profiler/xhprof-for-php7) or [XHProf](https://github.com/phacility/xhprof) for low level profiling of PHP.
- * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
+## WordPress Plugins
+
  * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
  * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
  * [Laps](https://github.com/Rarst/laps) for lightweight WordPress profiling.
- * [Clockwork](https://github.com/itsgoingd/clockwork) for debugging and profiling PHP applications.
- * [Blackfire](https://blackfire.io/) for PHP performance testing.
- * [New Relic](https://newrelic.com/) for complete software performance analytics.
+ * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
+ * [Block Xray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
 
 Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
+
+## Other tools and services
+
+ * [Tideways](https://tideways.com/profiler/xhprof-for-php7) or [XHProf](https://github.com/phacility/xhprof) for low level profiling of PHP.
+ * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
+ * [Clockwork](https://github.com/itsgoingd/clockwork) for debugging and profiling PHP applications.
+ * [Blackfire](https://blackfire.io/) for PHP performance testing.
+ * [New Relic](https://newrelic.com/) for complete software performance analytics.
 
 # Contributing
 

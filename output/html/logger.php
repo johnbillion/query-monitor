@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * PSR-3 compatible logging output for HTML pages.
  *
@@ -25,7 +25,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 46 );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 47 );
 		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
 	}
 
@@ -40,10 +40,10 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-
+		/** @var QM_Data_Logger $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['logs'] ) ) {
+		if ( empty( $data->logs ) ) {
 			$this->before_non_tabular_output();
 
 			$notice = sprintf(
@@ -61,11 +61,11 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$levels = array();
 
 		foreach ( $this->collector->get_levels() as $level ) {
-			if ( $data['counts'][ $level ] ) {
+			if ( $data->counts[ $level ] ) {
 				$levels[ $level ] = sprintf(
 					'%s (%d)',
 					ucfirst( $level ),
-					$data['counts'][ $level ]
+					$data->counts[ $level ]
 				);
 			} else {
 				$levels[ $level ] = ucfirst( $level );
@@ -78,7 +78,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			'all' => sprintf(
 				/* translators: %s: Total number of items in a list */
 				__( 'All (%d)', 'query-monitor' ),
-				count( $data['logs'] )
+				count( $data->logs )
 			),
 		);
 
@@ -90,14 +90,14 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data['components'], __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'component', $data->components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
 
-		foreach ( $data['logs'] as $row ) {
+		foreach ( $data->logs as $row ) {
 			$component = $row['component'];
 
 			$row_attr = array();
@@ -123,9 +123,11 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			echo '<td class="qm-nowrap">';
 
 			if ( $is_warning ) {
-				echo '<span class="dashicons dashicons-warning" aria-hidden="true"></span>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::icon( 'warning' );
 			} else {
-				echo '<span class="dashicons" aria-hidden="true"></span>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::icon( 'blank' );
 			}
 
 			echo esc_html( ucfirst( $row['level'] ) );
@@ -180,13 +182,14 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
+		/** @var QM_Data_Logger $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['logs'] ) ) {
+		if ( empty( $data->logs ) ) {
 			return $class;
 		}
 
-		foreach ( $data['logs'] as $log ) {
+		foreach ( $data->logs as $log ) {
 			if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
 				$class[] = 'qm-warning';
 				break;
@@ -201,12 +204,13 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
+		/** @var QM_Data_Logger $data */
 		$data = $this->collector->get_data();
 		$key = 'log';
 		$count = 0;
 
-		if ( ! empty( $data['logs'] ) ) {
-			$count = count( $data['logs'] );
+		if ( ! empty( $data->logs ) ) {
+			$count = count( $data->logs );
 
 			/* translators: %s: Number of logs that are available */
 			$label = __( 'Logs (%s)', 'query-monitor' );

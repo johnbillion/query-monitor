@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Template conditionals collector.
  *
@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Conditionals extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Conditionals>
+ */
+class QM_Collector_Conditionals extends QM_DataCollector {
 
 	public $id = 'conditionals';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Conditionals();
+	}
 
 	/**
 	 * @return void
@@ -100,7 +107,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 				$na[] = $cond;
 			}
 		}
-		$this->data['conds'] = compact( 'true', 'false', 'na' );
+		$this->data->conds = compact( 'true', 'false', 'na' );
 
 	}
 

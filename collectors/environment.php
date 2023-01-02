@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Environment data collector.
  *
@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Environment extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Environment>
+ */
+class QM_Collector_Environment extends QM_DataCollector {
 
 	/**
 	 * @var string
@@ -28,26 +31,8 @@ class QM_Collector_Environment extends QM_Collector {
 		'log_errors',
 	);
 
-	/**
-	 * @return void
-	 */
-	public function set_up() {
-		global $wpdb;
-
-		parent::set_up();
-
-		# If QM_DB is in place then we'll use the values which were
-		# caught early before any plugins had a chance to alter them
-
-		foreach ( $this->php_vars as $setting ) {
-			if ( isset( $wpdb->qm_php_vars ) && isset( $wpdb->qm_php_vars[ $setting ] ) ) {
-				$val = $wpdb->qm_php_vars[ $setting ];
-			} else {
-				$val = ini_get( $setting );
-			}
-			$this->data['php']['variables'][ $setting ]['before'] = $val;
-		}
-
+	public function get_storage(): QM_Data {
+		return new QM_Data_Environment();
 	}
 
 	/**
@@ -118,18 +103,16 @@ class QM_Collector_Environment extends QM_Collector {
 					}
 				}
 
+				/** @var array<int, stdClass>|null */
 				$variables = $db->get_results( "
 					SHOW VARIABLES
 					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 				" );
 
-				/** @var mysqli|resource|false|null $dbh */
+				/** @var mysqli|false|null $dbh */
 				$dbh = $db->dbh;
 
-				if ( is_resource( $dbh ) ) {
-					# Old mysql extension
-					$extension = 'mysql';
-				} elseif ( is_object( $dbh ) ) {
+				if ( is_object( $dbh ) ) {
 					# mysqli or PDO
 					$extension = get_class( $dbh );
 				} else {
@@ -137,21 +120,7 @@ class QM_Collector_Environment extends QM_Collector {
 					$extension = null;
 				}
 
-				if ( isset( $db->use_mysqli ) && $db->use_mysqli ) {
-					$client = mysqli_get_client_version();
-					$info = mysqli_get_server_info( $dbh );
-				} else {
-					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore
-					if ( preg_match( '|[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}|', mysql_get_client_info(), $matches ) ) {
-						$client = $matches[0];
-					} else {
-						$client = null;
-					}
-					// Please do not report this code as a PHP 7 incompatibility. Observe the surrounding logic.
-					// phpcs:ignore
-					$info = mysql_get_server_info( $dbh );
-				}
+				$client = mysqli_get_client_version();
 
 				if ( $client ) {
 					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
@@ -171,45 +140,42 @@ class QM_Collector_Environment extends QM_Collector {
 					'database' => $db->dbname,
 				);
 
-				$this->data['db'][ $id ] = array(
+				$this->data->db[ $id ] = array(
 					'info' => $info,
 					'vars' => $mysql_vars,
-					'variables' => $variables,
+					'variables' => $variables ?: array(),
 				);
 
 			}
 		}
 
-		$this->data['php']['version'] = phpversion();
-		$this->data['php']['sapi'] = php_sapi_name();
-		$this->data['php']['user'] = self::get_current_user();
+		$php_data = array(
+			'variables' => array(),
+		);
+
+		$php_data['version'] = phpversion();
+		$php_data['sapi'] = php_sapi_name();
+		$php_data['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$this->data['php']['old'] = version_compare( $this->data['php']['version'], '7.4', '<' );
+		$php_data['old'] = version_compare( $php_data['version'], '7.4', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
-			$this->data['php']['variables'][ $setting ]['after'] = ini_get( $setting );
-		}
-
-		if ( defined( 'SORT_FLAG_CASE' ) ) {
-			// phpcs:ignore PHPCompatibility.Constants.NewConstants
-			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
-		} else {
-			$sort_flags = SORT_STRING;
+			$php_data['variables'][ $setting ] = ini_get( $setting ) ?: null;
 		}
 
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
-			sort( $extensions, $sort_flags );
-			$this->data['php']['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+			sort( $extensions, SORT_STRING | SORT_FLAG_CASE );
+			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
 		} else {
-			$this->data['php']['extensions'] = array();
+			$php_data['extensions'] = array();
 		}
 
-		$this->data['php']['error_reporting'] = error_reporting();
-		$this->data['php']['error_levels'] = self::get_error_levels( $this->data['php']['error_reporting'] );
+		$php_data['error_reporting'] = error_reporting();
+		$php_data['error_levels'] = self::get_error_levels( $php_data['error_reporting'] );
 
-		$this->data['wp']['version'] = $wp_version;
+		$this->data->wp['version'] = $wp_version;
 		$constants = array(
 			'WP_DEBUG' => self::format_bool_constant( 'WP_DEBUG' ),
 			'WP_DEBUG_DISPLAY' => self::format_bool_constant( 'WP_DEBUG_DISPLAY' ),
@@ -223,13 +189,13 @@ class QM_Collector_Environment extends QM_Collector {
 		);
 
 		if ( function_exists( 'wp_get_environment_type' ) ) {
-			$this->data['wp']['environment_type'] = wp_get_environment_type();
+			$this->data->wp['environment_type'] = wp_get_environment_type();
 		}
 
-		$this->data['wp']['constants'] = apply_filters( 'qm/environment-constants', $constants );
+		$this->data->wp['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
 		if ( is_multisite() ) {
-			$this->data['wp']['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
+			$this->data->wp['constants']['SUNRISE'] = self::format_bool_constant( 'SUNRISE' );
 		}
 
 		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
@@ -239,11 +205,7 @@ class QM_Collector_Environment extends QM_Collector {
 			$server = array( '' );
 		}
 
-		if ( isset( $server[1] ) ) {
-			$server_version = $server[1];
-		} else {
-			$server_version = null;
-		}
+		$server_version = $server[1] ?? null;
 
 		if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
 			$address = wp_unslash( $_SERVER['SERVER_ADDR'] );
@@ -251,18 +213,21 @@ class QM_Collector_Environment extends QM_Collector {
 			$address = null;
 		}
 
-		$this->data['server'] = array(
+		$this->data->php = $php_data;
+
+		$this->data->server = array(
 			'name' => $server[0],
 			'version' => $server_version,
 			'address' => $address,
 			'host' => null,
 			'OS' => null,
+			'arch' => null,
 		);
 
 		if ( function_exists( 'php_uname' ) ) {
-			$this->data['server']['host'] = php_uname( 'n' );
-			$this->data['server']['OS'] = php_uname( 's' ) . ' ' . php_uname( 'r' );
-			$this->data['server']['arch'] = php_uname( 'm' );
+			$this->data->server['host'] = php_uname( 'n' );
+			$this->data->server['OS'] = php_uname( 's' ) . ' ' . php_uname( 'r' );
+			$this->data->server['arch'] = php_uname( 'm' );
 		}
 
 	}
@@ -274,7 +239,7 @@ class QM_Collector_Environment extends QM_Collector {
 	public function get_extension_version( $extension ) {
 		// Nothing is simple in PHP. The exif and mysqlnd extensions (and probably others) add a bunch of
 		// crap to their version number, so we need to pluck out the first numeric value in the string.
-		$version = trim( phpversion( $extension ) );
+		$version = trim( phpversion( $extension ) ?: '' );
 
 		if ( ! $version ) {
 			return $version;
@@ -324,10 +289,10 @@ class QM_Collector_Environment extends QM_Collector {
 		if ( function_exists( 'posix_getpwuid' ) && function_exists( 'posix_getuid' ) && function_exists( 'posix_getgrgid' ) ) {
 			$u = posix_getpwuid( posix_getuid() );
 
-			if ( ! empty( $u ) && isset( $u['gid']) ) {
+			if ( $u !== false ) {
 				$g = posix_getgrgid( $u['gid'] );
 
-				if ( ! empty( $g ) && isset( $u['name'], $g['name'] ) ) {
+				if ( $g !== false ) {
 					$php_u = $u['name'] . ':' . $g['name'];
 				}
 			}

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * HTTP redirect collector.
  *
@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Redirects extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Redirect>
+ */
+class QM_Collector_Redirects extends QM_DataCollector {
 
 	public $id = 'redirects';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Redirect();
+	}
 
 	/**
 	 * @return void
@@ -50,9 +57,9 @@ class QM_Collector_Redirects extends QM_Collector {
 			),
 		) );
 
-		$this->data['trace'] = $trace;
-		$this->data['location'] = $location;
-		$this->data['status'] = $status;
+		$this->data->trace = $trace;
+		$this->data->location = $location;
+		$this->data->status = $status;
 
 		return $location;
 

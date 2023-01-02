@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Abstract output class for HTTP headers.
  *
@@ -15,11 +15,16 @@ abstract class QM_Output_Headers extends QM_Output {
 		$id = $this->collector->id;
 
 		foreach ( $this->get_output() as $key => $value ) {
-			if ( is_scalar( $value ) ) {
-				header( sprintf( 'X-QM-%s-%s: %s', $id, $key, $value ) );
-			} else {
-				header( sprintf( 'X-QM-%s-%s: %s', $id, $key, json_encode( $value ) ) );
+			if ( ! is_scalar( $value ) ) {
+				$value = json_encode( $value );
 			}
+
+			# Remove illegal characters (Header may not contain NUL bytes)
+			if ( is_string( $value ) ) {
+				$value = str_replace( chr( 0 ), '', $value );
+			}
+
+			header( sprintf( 'X-QM-%s-%s: %s', $id, $key, $value ) );
 		}
 
 	}
