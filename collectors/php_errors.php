@@ -80,15 +80,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		// Capture the last error that occurred before QM loaded:
 		$prior_error = error_get_last();
 
-		// Non-fatal error handler for all PHP versions:
+		// Non-fatal error handler:
 		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
 
-		if ( ! interface_exists( 'Throwable' ) ) {
-			// Fatal error handler for PHP < 7:
-			register_shutdown_function( array( $this, 'shutdown_handler' ) );
-		}
-
-		// Fatal error handler for PHP >= 7, and uncaught exception handler for all PHP versions:
+		// Fatal error and uncaught exception handler:
 		$this->previous_exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
 
 		$this->error_reporting = error_reporting();
@@ -135,19 +130,16 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	}
 
 	/**
-	 * Uncaught exception handler.
+	 * Uncaught error handler.
 	 *
-	 * In PHP >= 7 this will receive a Throwable object.
-	 * In PHP < 7 it will receive an Exception object.
-	 *
-	 * @param Throwable|Exception $e The error or exception.
+	 * @param Throwable $e The error or exception.
 	 * @return void
 	 */
 	public function exception_handler( $e ) {
-		if ( is_a( $e, 'Exception' ) ) {
+		$error = 'Uncaught Error';
+
+		if ( $e instanceof Exception ) {
 			$error = 'Uncaught Exception';
-		} else {
-			$error = 'Uncaught Error';
 		}
 
 		$this->output_fatal( 'Fatal error', array(
@@ -161,7 +153,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			'trace' => $e->getTrace(),
 		) );
 
-		// The exception must be re-thrown or passed to the previously registered exception handler so that the error
+		// The error must be re-thrown or passed to the previously registered exception handler so that the error
 		// is logged appropriately instead of discarded silently.
 		if ( $this->previous_exception_handler ) {
 			call_user_func( $this->previous_exception_handler, $e );
@@ -292,28 +284,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
 
-	}
-
-	/**
-	 * Displays fatal error output for sites running PHP < 7.
-	 *
-	 * @return void
-	 */
-	public function shutdown_handler() {
-
-		$e = error_get_last();
-
-		if ( empty( $e ) || ! ( $e['type'] & QM_ERROR_FATALS ) ) {
-			return;
-		}
-
-		if ( $e['type'] & E_RECOVERABLE_ERROR ) {
-			$error = 'Catchable fatal error';
-		} else {
-			$error = 'Fatal error';
-		}
-
-		$this->output_fatal( $error, $e );
 	}
 
 	/**
