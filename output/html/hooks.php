@@ -148,8 +148,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( PHP_INT_MAX === $action['priority'] ) {
 						echo ' <span class="qm-info">(PHP_INT_MAX)</span>';
-					// phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
-					} elseif ( defined( 'PHP_INT_MIN' ) && PHP_INT_MIN === $action['priority'] ) {
+					} elseif ( PHP_INT_MIN === $action['priority'] ) {
 						echo ' <span class="qm-info">(PHP_INT_MIN)</span>';
 					} elseif ( -PHP_INT_MAX === $action['priority'] ) {
 						echo ' <span class="qm-info">(-PHP_INT_MAX)</span>';

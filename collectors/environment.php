@@ -164,16 +164,9 @@ class QM_Collector_Environment extends QM_DataCollector {
 			$php_data['variables'][ $setting ] = ini_get( $setting ) ?: null;
 		}
 
-		if ( defined( 'SORT_FLAG_CASE' ) ) {
-			// phpcs:ignore PHPCompatibility.Constants.NewConstants
-			$sort_flags = SORT_STRING | SORT_FLAG_CASE;
-		} else {
-			$sort_flags = SORT_STRING;
-		}
-
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
-			sort( $extensions, $sort_flags );
+			sort( $extensions, SORT_STRING | SORT_FLAG_CASE );
 			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
 		} else {
 			$php_data['extensions'] = array();
