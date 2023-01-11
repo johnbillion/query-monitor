@@ -26,9 +26,14 @@ jobs:
           fail-fast: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # @TODO need to cache the npm dependencies
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Generate autoload file
         run: ./bin/build.sh

@@ -72,7 +72,7 @@ jobs:
         docker --version
         docker-compose --version
 
-    - name: Install dependencies
+    - name: Install Composer dependencies
       run: |
         if [ "${{ matrix.wp }}" == "nightly" ]
         then
@@ -81,9 +81,14 @@ jobs:
           composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="~${{ matrix.wp }}.0"
         fi
 
-    # @TODO need to cache the npm dependencies
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        cache: npm
+
     - name: Install node dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run the build
       run: npm run build
