@@ -40,7 +40,7 @@ jobs:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@1.4.1
+      uses: 10up/action-wordpress-plugin-deploy@2.1.1
       env:
         SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
