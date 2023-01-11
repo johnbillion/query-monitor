@@ -48,8 +48,6 @@ jobs:
 
     - name: Composer cache
       uses: actions/cache@v3
-      env:
-        cache-name: cache-composer-dependencies
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: 8.0-composer-${{ hashFiles('composer.json') }}
