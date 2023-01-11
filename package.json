@@ -6,6 +6,9 @@
 	"private": true,
 	"author": "John Blackbourn",
 	"repository": "johnbillion/query-monitor",
+	"engines": {
+		"node": ">=18"
+	},
 	"devDependencies": {
 		"@actions/github": "^2",
 		"replace-in-file": "^5",

@@ -3,7 +3,6 @@
 /composer.lock
 /vendor
 /node_modules
-/package-lock.json
 /tests/_output/
 /tests/_support/_generated
 /tests/.env
