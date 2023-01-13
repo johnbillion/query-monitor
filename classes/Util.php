@@ -539,6 +539,8 @@ class QM_Util {
 	public static function display_variable( $value ) {
 		if ( is_string( $value ) ) {
 			return $value;
+		} elseif ( $value === null ) {
+			return 'null';
 		} elseif ( is_bool( $value ) ) {
 			return ( $value ) ? 'true' : 'false';
 		} elseif ( is_scalar( $value ) ) {
