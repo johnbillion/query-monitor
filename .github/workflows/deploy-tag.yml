@@ -11,6 +11,8 @@ jobs:
   wordpress:
     name: WordPress.org
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     environment:
       name: WordPress.org
@@ -48,6 +50,8 @@ jobs:
   github:
     name: GitHub Milestones
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     timeout-minutes: 10
     steps:
     - name: Get next versions

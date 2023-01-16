@@ -15,6 +15,8 @@ jobs:
   test:
     name: PHP Coding Standards
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     steps:
     - name: Checkout repository

@@ -31,6 +31,8 @@ jobs:
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     env:
       LOCAL_PHP: ${{ matrix.php }}
