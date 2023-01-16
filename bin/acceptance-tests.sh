@@ -12,6 +12,10 @@ DATABASE_PORT=`docker port qm-database | grep "[0-9]+$" -ohE | head -1`
 WP_URL="http://host.docker.internal:${WP_PORT}"
 WP="docker-compose run --rm wpcli --url=${WP_URL}"
 
+# Wait for Selenium and the database:
+./node_modules/.bin/wait-port -t 10000 $CHROME_PORT
+./node_modules/.bin/wait-port -t 10000 $DATABASE_PORT
+
 # Reset or install the test database:
 echo "Installing database..."
 $WP db reset --yes
