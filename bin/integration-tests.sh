@@ -15,11 +15,11 @@ DATABASE_PORT=`docker port qm-database | grep "[0-9]+$" -ohE | head -1`
 docker-compose exec \
 	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required "$1" \
+	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required --debug "$1" \
 	< /dev/null
 
 docker-compose exec \
 	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded "$1" \
+	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded --debug "$1" \
 	< /dev/null
