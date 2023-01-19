@@ -8,7 +8,7 @@ set -eo pipefail
 echo "Running tests..."
 
 # Wait for the database:
-DATABASE_PORT=`docker port qm-database | grep "[0-9]+$" -ohE | head -1`
+DATABASE_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "3306/tcp" 0).HostPort}}' qm-database`
 ./node_modules/.bin/wait-port -t 10000 $DATABASE_PORT
 
 # Why are these sent to /dev/null? See https://github.com/docker/compose/issues/8833
