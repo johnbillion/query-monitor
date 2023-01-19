@@ -12,10 +12,15 @@ DATABASE_PORT=`docker inspect --type=container --format='{{(index .NetworkSettin
 WP_URL="http://host.docker.internal:${WP_PORT}"
 WP="docker-compose run --rm wpcli --url=${WP_URL}"
 
-# Wait for Selenium, the web server, and the database:
-./node_modules/.bin/wait-port -t 10000 $CHROME_PORT
+# Wait for the web server and the database:
 ./node_modules/.bin/wait-port -t 10000 $WP_PORT
 ./node_modules/.bin/wait-port -t 10000 $DATABASE_PORT
+
+# Wait for Selenium
+while ! curl -sSL "http://localhost:${CHROME_PORT}/wd/hub/status" 2>&1 | grep '"ready": true' >/dev/null; do
+	echo 'Waiting for Selenium...'
+	sleep 1
+done
 
 # Reset or install the test database:
 echo "Installing database..."
