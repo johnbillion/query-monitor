@@ -12,11 +12,16 @@ DATABASE_PORT=`docker inspect --type=container --format='{{(index .NetworkSettin
 WP_URL="http://host.docker.internal:${WP_PORT}"
 WP="docker-compose run --rm wpcli --url=${WP_URL}"
 
-# Wait for the web server and the database:
+# Wait for the web server:
 ./node_modules/.bin/wait-port -t 10000 $WP_PORT
-./node_modules/.bin/wait-port -t 10000 $DATABASE_PORT
 
-# Wait for Selenium
+# Wait for MariaDB:
+while ! docker container exec -it qm-database mysqladmin ping -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" | grep 'mysqld is alive' >/dev/null; do
+	echo 'Waiting for MariaDB...'
+	sleep 1
+done
+
+# Wait for Selenium:
 while ! curl -sSL "http://localhost:${CHROME_PORT}/wd/hub/status" 2>&1 | grep '"ready": true' >/dev/null; do
 	echo 'Waiting for Selenium...'
 	sleep 1
