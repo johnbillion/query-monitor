@@ -7,9 +7,11 @@ set -eo pipefail
 # Run the integration tests:
 echo "Running tests..."
 
-# Wait for the database:
-DATABASE_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "3306/tcp" 0).HostPort}}' qm-database`
-./node_modules/.bin/wait-port -t 10000 $DATABASE_PORT
+# Wait for MariaDB:
+while ! docker container exec -it qm-database mysqladmin ping -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" | grep 'mysqld is alive' >/dev/null; do
+	echo 'Waiting for MariaDB...'
+	sleep 1
+done
 
 # Why are these sent to /dev/null? See https://github.com/docker/compose/issues/8833
 docker-compose exec \
