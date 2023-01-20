@@ -14,7 +14,8 @@
 		"replace-in-file": "^5",
 		"sass": "^1",
 		"semver": "^7",
-		"version-bump-prompt": "^6.1.0"
+		"version-bump-prompt": "^6.1.0",
+		"wait-port": "^1.0.4"
 	},
 	"scripts": {
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",

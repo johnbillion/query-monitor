@@ -4,13 +4,30 @@
 # -o pipefail Produce a failure return code if any command errors
 set -eo pipefail
 
+echo "Starting up..."
+
 # Prep:
 docker-compose --profile acceptance-tests up -d
-WP_PORT=`docker port qm-server | grep "[0-9]+$" -ohE | head -1`
-CHROME_PORT=`docker port qm-chrome | grep "[0-9]+$" -ohE | head -1`
-DATABASE_PORT=`docker port qm-database | grep "[0-9]+$" -ohE | head -1`
+WP_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "80/tcp" 0).HostPort}}' qm-server`
+CHROME_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "4444/tcp" 0).HostPort}}' qm-chrome`
+DATABASE_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "3306/tcp" 0).HostPort}}' qm-database`
 WP_URL="http://host.docker.internal:${WP_PORT}"
 WP="docker-compose run --rm wpcli --url=${WP_URL}"
+
+# Wait for the web server:
+./node_modules/.bin/wait-port -t 10000 $WP_PORT
+
+# Wait for MariaDB:
+while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
+	echo 'Waiting for MariaDB...'
+	sleep 1
+done
+
+# Wait for Selenium:
+while ! curl -sSL "http://localhost:${CHROME_PORT}/wd/hub/status" 2>&1 | grep '"ready": true' >/dev/null; do
+	echo 'Waiting for Selenium...'
+	sleep 1
+done
 
 # Reset or install the test database:
 echo "Installing database..."

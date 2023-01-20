@@ -44,7 +44,8 @@ jobs:
       run: npm run build
 
     - name: Setup
-      run: 'echo "VERSION=$(grep -Po ''\"version\": \"[0-9\\.]+\"'' package.json | grep -Po ''[0-9\\.]+'')" >> $GITHUB_ENV'
+      run: >
+        echo VERSION=$(node -p "require('./package.json').version") >> $GITHUB_ENV
 
     - name: Tag
       run: |
