@@ -8,7 +8,7 @@ set -eo pipefail
 echo "Running tests..."
 
 # Wait for MariaDB:
-while ! docker container exec -it qm-database mysqladmin ping -uexampleuser -pexamplepass | grep 'mysqld is alive' >/dev/null; do
+while ! docker container exec -it qm-database /bin/bash -c 'mysqladmin ping -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}"' | grep 'mysqld is alive' >/dev/null; do
 	echo 'Waiting for MariaDB...'
 	sleep 1
 done
