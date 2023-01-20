@@ -4,14 +4,16 @@
 # -o pipefail Produce a failure return code if any command errors
 set -eo pipefail
 
-# Run the integration tests:
-echo "Running tests..."
+echo "Starting up..."
 
 # Wait for MariaDB:
 while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
 	echo 'Waiting for MariaDB...'
 	sleep 1
 done
+
+# Run the integration tests:
+echo "Running tests..."
 
 # Why are these sent to /dev/null? See https://github.com/docker/compose/issues/8833
 docker-compose exec \

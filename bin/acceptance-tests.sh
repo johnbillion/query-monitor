@@ -4,6 +4,8 @@
 # -o pipefail Produce a failure return code if any command errors
 set -eo pipefail
 
+echo "Starting up..."
+
 # Prep:
 docker-compose --profile acceptance-tests up -d
 WP_PORT=`docker inspect --type=container --format='{{(index .NetworkSettings.Ports "80/tcp" 0).HostPort}}' qm-server`
