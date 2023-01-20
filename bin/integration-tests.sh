@@ -7,9 +7,6 @@ set -eo pipefail
 # Run the integration tests:
 echo "Running tests..."
 
-# Debugging:
-docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent'
-
 # Wait for MariaDB:
 while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
 	echo 'Waiting for MariaDB...'

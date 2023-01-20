@@ -15,9 +15,6 @@ WP="docker-compose run --rm wpcli --url=${WP_URL}"
 # Wait for the web server:
 ./node_modules/.bin/wait-port -t 10000 $WP_PORT
 
-# Debugging:
-docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent'
-
 # Wait for MariaDB:
 while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
 	echo 'Waiting for MariaDB...'
