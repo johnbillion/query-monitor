@@ -6,16 +6,15 @@ set -eo pipefail
 
 echo "Starting up..."
 
-set -x
-
 # Prep:
 docker-compose --profile acceptance-tests up -d
 WP_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettings.Ports "80/tcp" 0).HostPort}}' qm-server)"
 CHROME_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettings.Ports "4444/tcp" 0).HostPort}}' qm-chrome)"
 DATABASE_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettings.Ports "3306/tcp" 0).HostPort}}' qm-database)"
 WP_URL="http://host.docker.internal:${WP_PORT}"
-WP="docker-compose run --rm wpcli --url=${WP_URL}"
-echo "|$WP_PORT|$CHROME_PORT|$DATABASE_PORT|$WP_URL|$WP|"
+wp() {
+	docker-compose run --rm wpcli --url="${WP_URL}" "$@"
+}
 
 # Wait for the web server:
 ./node_modules/.bin/wait-port -t 10000 "${WP_PORT}"
@@ -34,11 +33,11 @@ done
 
 # Reset or install the test database:
 echo "Installing database..."
-"${WP}" db reset --yes
+wp db reset --yes
 
 # Install WordPress:
 echo "Installing WordPress..."
-"${WP}" core install \
+wp core install \
 	--title="Example" \
 	--admin_user="admin" \
 	--admin_password="admin" \
@@ -46,7 +45,7 @@ echo "Installing WordPress..."
 	--skip-email \
 	--require="wp-content/plugins/query-monitor/bin/mysqli_report.php"
 echo "Home URL: ${WP_URL}"
-"${WP}" plugin activate query-monitor
+wp plugin activate query-monitor
 
 # Run the acceptance tests:
 echo "Running tests..."
