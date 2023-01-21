@@ -6,6 +6,8 @@ set -eo pipefail
 
 echo "Starting up..."
 
+set -x
+
 # Prep:
 docker-compose --profile acceptance-tests up -d
 WP_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettings.Ports "80/tcp" 0).HostPort}}' qm-server)"
@@ -13,6 +15,7 @@ CHROME_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettin
 DATABASE_PORT="$(docker inspect --type=container --format='{{(index .NetworkSettings.Ports "3306/tcp" 0).HostPort}}' qm-database)"
 WP_URL="http://host.docker.internal:${WP_PORT}"
 WP="docker-compose run --rm wpcli --url=${WP_URL}"
+echo "|$WP_PORT|$CHROME_PORT|$DATABASE_PORT|$WP_URL|$WP|"
 
 # Wait for the web server:
 ./node_modules/.bin/wait-port -t 10000 "${WP_PORT}"
