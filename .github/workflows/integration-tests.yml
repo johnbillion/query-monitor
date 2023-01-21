@@ -33,9 +33,6 @@ jobs:
       LOCAL_PHP: ${{ matrix.php }}
       LOCAL_WP_DEBUG: ${{ matrix.php < 8.1 && 1 || 0 }}
     steps:
-    - name: Matrix values
-      run: echo "${{ toJSON(matrix) }}"
-
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -61,17 +58,8 @@ jobs:
         fail-fast: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Debugging
-      run: |
-        php --version
-        php -m
-        composer --version
-        docker --version
-        docker-compose --version
-
     - name: Install Composer dependencies
-      run: |
-        composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
+      run: composer require --dev --update-with-dependencies --prefer-dist "roots/wordpress:${{ matrix.wp }}"
 
     - name: Setup node
       uses: actions/setup-node@v3

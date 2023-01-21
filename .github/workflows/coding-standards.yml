@@ -50,22 +50,14 @@ jobs:
         fail-fast: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Debugging
-      run: |
-        php --version
-        composer --version
-
     - name: Composer validate
       run: composer validate --strict
 
     - name: Install dependencies
-      run: |
-        composer install --prefer-dist
+      run: composer install --prefer-dist
 
     - name: Run static analysis
-      run: |
-        composer test:phpstan
+      run: composer test:phpstan
 
     - name: Run code sniffer
-      run: |
-        composer test:cs
+      run: composer test:cs

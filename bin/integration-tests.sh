@@ -7,7 +7,7 @@ set -eo pipefail
 echo "Starting up..."
 
 # Wait for MariaDB:
-while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
+while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep --quiet 'mysqld is alive'; do
 	echo 'Waiting for MariaDB...'
 	sleep 1
 done
@@ -15,15 +15,15 @@ done
 # Run the integration tests:
 echo "Running tests..."
 
-# Why are these sent to /dev/null? See https://github.com/docker/compose/issues/8833
+# Why is /dev/null piped into stdout? See https://github.com/docker/compose/issues/8833
 docker-compose exec \
-	-T \
+	--no-TTY \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required --debug "$1" \
+	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required "$1" \
 	< /dev/null
 
 docker-compose exec \
-	-T \
+	--no-TTY \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded --debug "$1" \
+	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded "$1" \
 	< /dev/null
