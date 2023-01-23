@@ -7,7 +7,7 @@
 	"author": "John Blackbourn",
 	"repository": "johnbillion/query-monitor",
 	"engines": {
-		"node": ">=18"
+		"node": ">=16"
 	},
 	"main": "src/index.tsx",
 	"dependencies": {
