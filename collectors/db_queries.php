@@ -144,7 +144,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$has_result = false;
 		$has_trace = false;
 		$i = 0;
-		$request = trim( $wp_the_query->request ? $wp_the_query->request : '' );
+		$request = trim( $wp_the_query->request ?: '' );
 
 		if ( method_exists( $db, 'remove_placeholder_escape' ) ) {
 			$request = $db->remove_placeholder_escape( $request );
@@ -201,8 +201,8 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$trace = $query['trace'];
 				$component = $query['trace']->get_component();
 				$caller = $query['trace']->get_caller();
-				$caller_name = $caller ? $caller['display'] : 'Unknown';
-				$caller = $caller ? $caller['display'] : 'Unknown';
+				$caller_name = $caller['display'] ?? 'Unknown';
+				$caller = $caller['display'] ?? 'Unknown';
 
 			} else {
 

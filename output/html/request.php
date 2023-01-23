@@ -150,7 +150,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		if ( ! empty( $data->queried_object ) ) {
 			$class = get_class( $data->queried_object['data'] );
-			$class = $class ? $class : __( 'Unknown', 'query-monitor' );
+			$class = $class ?: __( 'Unknown', 'query-monitor' );
 			printf(
 				'<p>%1$s (%2$s)</p>',
 				esc_html( $data->queried_object['title'] ),
