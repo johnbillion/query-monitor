@@ -10,10 +10,12 @@ jobs:
   wordpress:
     name: WordPress.org
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -26,9 +28,14 @@ jobs:
           fail-fast: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # @TODO need to cache the npm dependencies
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Generate autoload file
         run: ./bin/build.sh

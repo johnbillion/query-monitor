@@ -5,12 +5,12 @@
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
  * @author    John Blackbourn <john@johnblackbourn.com>
- * @copyright 2009-2022 John Blackbourn
+ * @copyright 2009-2023 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.11.0
+ * Version:      3.11.1
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.11.0' );
+define( 'QM_VERSION', '3.11.1' );
 
 $qm_dir = dirname( __FILE__ );
 

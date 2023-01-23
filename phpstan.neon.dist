@@ -17,7 +17,6 @@ parameters:
 		- tests/_support
 	excludePaths:
 		analyse:
-			- tests/cache
 			- tests/integration/Supports
 	bootstrapFiles:
 		- tests/phpstan/stubs.php

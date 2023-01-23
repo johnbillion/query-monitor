@@ -5,45 +5,31 @@ on:
   release:
     types: [published]
 
-env:
-  ENVIRONMENT_URL: https://wordpress.org/plugins/query-monitor
+concurrency: WordPress.org
 
 jobs:
   wordpress:
     name: WordPress.org
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
+    environment:
+      name: WordPress.org
+      url: https://wordpress.org/plugins/query-monitor
     steps:
-    - uses: octokit/request-action@v2.x
-      name: Create GitHub deployment
-      id: deployment
-      with:
-        route: POST /repos/:repository/deployments
-        repository: ${{ github.repository }}
-        ref: ${{ github.ref }}
-        required_contexts: "[]"
-        environment: WordPress.org
-        description: "Deploy version ${{ github.event.release.tag_name }} to the plugin directory"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: octokit/request-action@v2.x
-      name: Set GitHub deployment status
-      with:
-        route: POST /repos/:repository/deployments/:deployment_id/statuses
-        repository: ${{ github.repository }}
-        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
-        state: pending
-        environment_url: ${{ env.ENVIRONMENT_URL }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    # @TODO need to cache the npm dependencies
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        cache: npm
+
     - name: Install Dependencies
-      run: npm install
+      run: npm ci
 
     - name: Populate Changelog
       run: |
@@ -56,38 +42,16 @@ jobs:
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@1.4.1
+      uses: 10up/action-wordpress-plugin-deploy@2.1.1
       env:
         SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
 
-    - name: Deployment Succeeded
-      if: success()
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/deployments/:deployment_id/statuses
-        repository: ${{ github.repository }}
-        state: success
-        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
-        environment_url: ${{ env.ENVIRONMENT_URL }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Deployment Failed
-      if: failure()
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/deployments/:deployment_id/statuses
-        repository: ${{ github.repository }}
-        state: failure
-        deployment_id: ${{ fromJson( steps.deployment.outputs.data ).id }}
-        environment_url: ${{ env.ENVIRONMENT_URL }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   github:
     name: GitHub Milestones
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     timeout-minutes: 10
     steps:
     - name: Get next versions

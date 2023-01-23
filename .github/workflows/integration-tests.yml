@@ -10,6 +10,7 @@ on:
   pull_request:
     branches:
       - '**'
+  workflow_dispatch:
 
 jobs:
   test:
@@ -25,6 +26,8 @@ jobs:
       fail-fast: false
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 10
     env:
       LOCAL_PHP: ${{ matrix.php }}
@@ -34,16 +37,14 @@ jobs:
       run: echo "${{ toJSON(matrix) }}"
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Get Composer cache directory
       id: composer-cache
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Composer cache
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-composer-dependencies
+      uses: actions/cache@v3
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
@@ -68,20 +69,24 @@ jobs:
         docker --version
         docker-compose --version
 
-    - name: Install dependencies
+    - name: Install Composer dependencies
       run: |
         composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="${{ matrix.wp }}"
 
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        cache: npm
+
     - name: Install node dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run the build
       run: npm run build
 
     - name: Start Docker environment
-      run: |
-        composer test:start
-        sleep 10
+      run: composer test:start
 
     - name: Log running Docker containers
       run: docker ps -a

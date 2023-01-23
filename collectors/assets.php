@@ -292,7 +292,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( null === $dependency->ver ) {
 			$ver = '';
 		} else {
-			$ver = $dependency->ver ? $dependency->ver : $this->data->default_version;
+			$ver = $dependency->ver ?: $this->data->default_version;
 		}
 
 		if ( ! empty( $src ) && ! empty( $ver ) ) {

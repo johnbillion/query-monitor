@@ -503,7 +503,7 @@ class QM_Backtrace {
 					} else {
 						$args = array();
 						for ( $i = 0; $i < $show; $i++ ) {
-							if ( isset( $frame['args'][ $i ] ) ) {
+							if ( isset( $frame['args'] ) && array_key_exists( $i, $frame['args'] ) ) {
 								if ( is_string( $frame['args'][ $i ] ) ) {
 									$args[] = '\'' . $frame['args'][ $i ] . '\'';
 								} else {

@@ -498,7 +498,7 @@ abstract class QM_Output_Html extends QM_Output {
 			}
 		}
 
-		$link_line = ( $line ) ? $line : 1;
+		$link_line = $line ?: 1;
 
 		if ( ! self::has_clickable_links() ) {
 			$fallback = QM_Util::standard_dir( $file, '' );

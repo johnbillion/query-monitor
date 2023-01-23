@@ -4,6 +4,14 @@
 # -o pipefail Produce a failure return code if any command errors
 set -eo pipefail
 
+echo "Starting up..."
+
+# Wait for MariaDB:
+while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
+	echo 'Waiting for MariaDB...'
+	sleep 1
+done
+
 # Run the integration tests:
 echo "Running tests..."
 
@@ -11,11 +19,11 @@ echo "Running tests..."
 docker-compose exec \
 	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required "$1" \
+	./vendor/bin/codecept run integration --env singlesite --skip-group ms-required --debug "$1" \
 	< /dev/null
 
 docker-compose exec \
 	-T \
 	--workdir /var/www/html/wp-content/plugins/query-monitor php \
-	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded "$1" \
+	./vendor/bin/codecept run integration --env multisite --skip-group ms-excluded --debug "$1" \
 	< /dev/null
