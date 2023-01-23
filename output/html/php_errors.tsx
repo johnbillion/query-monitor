@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import * as classNames from 'classnames';
 import {
 	iPanelProps,
 	QMComponent,
@@ -46,7 +46,7 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 						return Object.keys( errors ).map( id => {
 							const error = errors[id];
 							const warn = ( type === 'warning' );
-							const classes = classnames( {
+							const classes = classNames( {
 								'qm-warn': warn,
 							} );
 

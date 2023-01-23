@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import { Icon } from 'qmi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

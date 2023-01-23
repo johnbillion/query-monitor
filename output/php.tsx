@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import * as classNames from 'classnames';
 import { Toggler, Warning, iQM_i18n } from 'qmi';
 import * as React from 'react';
 
@@ -15,7 +15,7 @@ class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 	render() {
 		const { php } = this.props;
 		const warning = php.old;
-		const classes = classnames( {
+		const classes = classNames( {
 			'qm-warn': warning,
 		} );
 
