@@ -15,7 +15,7 @@ declare const QM_i18n: iQM_i18n;
 
 interface iTimingProps extends iPanelProps {
 	data: {
-		timing: {
+		timing?: {
 			end_time: number;
 			function: string;
 			function_memory: number;
@@ -39,6 +39,10 @@ class Timing extends React.Component<iTimingProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
+
+		if ( ! data.timing ) {
+			return null;
+		}
 
 		return (
 			<Tabular id={ this.props.id }>

@@ -46,7 +46,7 @@ export interface iPanelsProps {
 	php_errors?: QMPanelData;
 	request?: QMPanelData;
 	response?: QMPanelData;
-	timing: QMPanelData;
+	timing?: QMPanelData;
 	transients: QMPanelData;
 	active?: string;
 }
