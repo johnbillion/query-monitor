@@ -30,9 +30,9 @@ export function formatURL( url: string ) {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
 	const collection: JSX.Element[] = [
-		<>
+		<React.Fragment key="part-0">
 			{ parts[0] }
-		</>,
+		</React.Fragment>,
 	];
 	let index = 0;
 
@@ -40,10 +40,10 @@ export function formatURL( url: string ) {
 		index += 2;
 
 		collection.push(
-			<>
+			<React.Fragment key={ `part-${index}` }>
 				<br />
 				{ `${ keyword }${ parts[ index ] }` }
-			</>
+			</React.Fragment>
 		);
 
 		return '';
