@@ -174,7 +174,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
-				if ( empty( $dependency->ver ) ) {
+				if ( empty( $dependency->ver ) || $dependency->ver === true ) {
 					$ver = '';
 				} else {
 					$ver = $dependency->ver;

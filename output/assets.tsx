@@ -1,13 +1,57 @@
 import { PanelFooter } from 'qmi';
 import * as React from 'react';
+import { WP_Error } from 'wp-types';
 
 import {
 	__,
 	_x,
 } from '@wordpress/i18n';
 
+interface iAsset {
+	host: string;
+	port: string;
+	source: string|WP_Error;
+	local: boolean;
+	ver: string;
+	warning: boolean;
+	display: string;
+	dependents: Array<string>;
+	dependencies: Array<string>;
+}
+
+interface iAssetList {
+	[k:string]: iAsset;
+}
+
 interface iAssetsProps {
-	data: any;
+	data: {
+		assets: {
+			missing: iAssetList;
+			broken: iAssetList;
+			header: iAssetList;
+			footer: iAssetList;
+		};
+		broken: any;
+		counts: {
+			missing: number;
+			broken: number;
+			header: number;
+			footer: number;
+			total: number;
+		};
+		default_version: string;
+		dependencies: Array<string>;
+		dependents: Array<string>;
+		footer: Array<string>;
+		header: Array<string>;
+		host: string;
+		is_ssl: boolean;
+		missing: Array<string>;
+		missing_dependencies: {
+			[k:string]: true;
+		};
+		port: string;
+	};
 }
 
 interface iPositionLabels {

@@ -5,9 +5,29 @@
  * @package query-monitor
  */
 
+/**
+ * @phpstan-type Asset array{
+ *   host: string,
+ *   port: string,
+ *   source: string|WP_Error,
+ *   local: bool,
+ *   ver: string,
+ *   warning: bool,
+ *   display: string,
+ *   dependents: array<int, string>,
+ *   dependencies: array<int, string>,
+ * }
+ * @phpstan-type AssetList array<string, Asset>
+ */
 class QM_Data_Assets extends QM_Data {
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
+	 * @phpstan-var array{
+	 *   missing: AssetList,
+	 *   broken: AssetList,
+	 *   header: AssetList,
+	 *   footer: AssetList,
+	 * }
 	 */
 	public $assets;
 
@@ -18,6 +38,13 @@ class QM_Data_Assets extends QM_Data {
 
 	/**
 	 * @var array<string, int>
+	 * @phpstan-var array{
+	 *   missing: int,
+	 *   broken: int,
+	 *   header: int,
+	 *   footer: int,
+	 *   total: int,
+	 * }
 	 */
 	public $counts;
 
