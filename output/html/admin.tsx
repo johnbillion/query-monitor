@@ -6,16 +6,28 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iAdminProps extends iPanelProps {
+	data: {
+		current_screen: {
+			[k: string]: string|boolean;
+		};
+		hook_suffix: string;
+		pagenow: string;
+		taxnow: string;
+		typenow: string;
+		list_table?: {
+			columns_filter: string;
+			sortables_filter: string;
+			column_action: string;
+			class_name?: string;
+		};
+	};
+}
+
+class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
-		const admin_globals = [
-			'pagenow',
-			'typenow',
-			'taxnow',
-			'hook_suffix',
-		];
 
 		return (
 			<NonTabular id={ this.props.id }>
@@ -41,7 +53,11 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 										{ key }
 									</th>
 									<td>
-										{ data.current_screen[ key ] }
+										{ ( typeof data.current_screen[ key ] ) === 'string' ? (
+											data.current_screen[ key ]
+										) : (
+											data.current_screen[ key ] ? 'true' : 'false'
+										) }
 									</td>
 								</tr>
 							) ) }
@@ -64,16 +80,38 @@ class Admin extends React.Component<iPanelProps, Record<string, unknown>> {
 							</tr>
 						</thead>
 						<tbody>
-							{ admin_globals.map( global => (
-								<tr key={ global }>
-									<th scope="row">
-										{ global }
-									</th>
-									<td>
-										{ data[ global ] }
-									</td>
-								</tr>
-							) ) }
+							<tr>
+								<th scope="row">
+									pagenow
+								</th>
+								<td>
+									{ data.pagenow }
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									taxnow
+								</th>
+								<td>
+									{ data.taxnow }
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									typenow
+								</th>
+								<td>
+									{ data.typenow }
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									hook_suffix
+								</th>
+								<td>
+									{ data.hook_suffix }
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</section>
