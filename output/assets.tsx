@@ -131,29 +131,20 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 											{ asset.display }
 										</td>
 										<td>
-											{ asset.dependencies.map( ( dep, i ) => {
-												let out: ( React.ReactElement|string ) = dep;
-
-												if ( data.missing_dependencies.includes( dep ) ) {
-													out = (
-														<span
-															key={ dep }
-															style={ {
-																whiteSpace: 'nowrap',
-															} }
-														>
-															<Warning/>
-															&nbsp;
-															{ dep }
-														</span>
-													);
-												}
-
-												return [
-													i > 0 && ', ',
-													out,
-												];
-											} ) }
+											{ asset.dependencies.map( ( dep, i ) => [
+												i > 0 && ', ',
+												<span
+													key={ dep }
+													style={ {
+														whiteSpace: 'nowrap',
+													} }
+												>
+													{ data.missing_dependencies.includes( dep ) && (
+														<Warning/>
+													) }
+													{ dep }
+												</span>,
+											] ) }
 										</td>
 										<td>
 											{ asset.dependents.join( ', ' ) }
