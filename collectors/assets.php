@@ -13,6 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends QM_DataCollector<QM_Data_Assets>
  */
 abstract class QM_Collector_Assets extends QM_DataCollector {
+	/**
+	 * @var array<int, string>
+	 */
+	protected $header = array();
+
+	/**
+	 * @var array<int, string>
+	 */
+	protected $footer = array();
+
+	/**
+	 * @var array<int, string>
+	 */
+	protected $broken = array();
+
+	/**
+	 * @var array<int, string>
+	 */
+	protected $missing = array();
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_Assets();
@@ -59,14 +78,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		/** @var WP_Dependencies $dependencies */
 		$dependencies = $GLOBALS[ "wp_{$type}" ];
 
-		$this->data->header = $dependencies->done;
+		$this->header = $dependencies->done;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function action_print_footer_scripts() {
-		if ( empty( $this->data->header ) ) {
+		if ( empty( $this->header ) ) {
 			return;
 		}
 
@@ -75,14 +94,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		/** @var WP_Dependencies $dependencies */
 		$dependencies = $GLOBALS[ "wp_{$type}" ];
 
-		$this->data->footer = array_diff( $dependencies->done, $this->data->header );
+		$this->footer = array_diff( $dependencies->done, $this->header );
 	}
 
 	/**
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data->header ) && empty( $this->data->footer ) ) {
+		if ( empty( $this->header ) && empty( $this->footer ) ) {
 			return;
 		}
 
@@ -108,12 +127,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		$type = $this->get_dependency_type();
 
-		foreach ( array( 'header', 'footer' ) as $position ) {
-			if ( empty( $this->data->{$position} ) ) {
-				$this->data->{$position} = array();
-			}
-		}
-
 		/** @var WP_Dependencies $raw */
 		$raw = $GLOBALS[ "wp_{$type}" ];
 		$broken = array_values( array_diff( $raw->queue, $raw->done ) );
@@ -133,14 +146,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 
 			if ( ! empty( $broken ) ) {
-				$this->data->broken = array_unique( $broken );
+				$this->broken = array_unique( $broken );
 			}
 		}
 
 		// A missing asset is one which has been enqueued with dependencies that don't exist
 		if ( ! empty( $missing ) ) {
-			$this->data->missing = array_unique( $missing );
-			foreach ( $this->data->missing as $handle ) {
+			$this->missing = array_unique( $missing );
+			foreach ( $this->missing as $handle ) {
 				$raw->add( $handle, false );
 				$key = array_search( $handle, $raw->done, true );
 				if ( false !== $key ) {
@@ -151,16 +164,16 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		$all_dependencies = array();
 		$all_dependents = array();
-
+		$asset_data = array();
 		$missing_dependencies = array();
 
 		foreach ( $positions as $position ) {
-			if ( empty( $this->data->{$position} ) ) {
+			if ( empty( $this->{$position} ) ) {
 				continue;
 			}
 
 			/** @var string $handle */
-			foreach ( $this->data->{$position} as $handle ) {
+			foreach ( $this->{$position} as $handle ) {
 				/** @var _WP_Dependency|false $dependency */
 				$dependency = $raw->query( $handle );
 
@@ -193,11 +206,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				foreach ( $dependencies as $dep ) {
 					if ( ! $raw->query( $dep ) ) {
 						// A missing dependency is a dependecy on an asset that doesn't exist
-						$missing_dependencies[ $dep ] = true;
+						$missing_dependencies[] = $dep;
 					}
 				}
 
-				$this->data->assets[ $position ][ $handle ] = array(
+				$asset_data[ $position ][ $handle ] = array(
 					'host' => $host,
 					'port' => $port,
 					'source' => $source,
@@ -214,7 +227,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 		}
 
-		unset( $this->data->{$position} );
+		$this->data->assets = $asset_data;
 
 		$all_dependencies = array_unique( $all_dependencies );
 		sort( $all_dependencies );
@@ -224,7 +237,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		sort( $all_dependents );
 		$this->data->dependents = $all_dependents;
 
-		$this->data->missing_dependencies = $missing_dependencies;
+		$this->data->missing_dependencies = array_unique( $missing_dependencies );
 	}
 
 	/**

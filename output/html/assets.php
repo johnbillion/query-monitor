@@ -132,7 +132,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$dependency_output = array();
 
 		foreach ( $asset['dependencies'] as $dep ) {
-			if ( isset( $data->missing_dependencies[ $dep ] ) ) {
+			if ( in_array( $dep, $data->missing_dependencies, true ) ) {
 				$warning = QueryMonitor::icon( 'warning' );
 
 				$dependency_output[] = sprintf(

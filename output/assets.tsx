@@ -31,7 +31,6 @@ interface iAssetsProps {
 			header: iAssetList;
 			footer: iAssetList;
 		};
-		broken: any;
 		counts: {
 			missing: number;
 			broken: number;
@@ -46,7 +45,6 @@ interface iAssetsProps {
 		header: Array<string>;
 		host: string;
 		is_ssl: boolean;
-		missing: Array<string>;
 		missing_dependencies: {
 			[k:string]: true;
 		};

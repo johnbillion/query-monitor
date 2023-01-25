@@ -14,15 +14,15 @@
  *   ver: string,
  *   warning: bool,
  *   display: string,
- *   dependents: array<int, string>,
- *   dependencies: array<int, string>,
+ *   dependents: array<string>,
+ *   dependencies: array<string>,
  * }
  * @phpstan-type AssetList array<string, Asset>
  */
 class QM_Data_Assets extends QM_Data {
 	/**
-	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var array{
+	 * @var ?array<string, array<string, array<string, mixed>>>
+	 * @phpstan-var ?array{
 	 *   missing: AssetList,
 	 *   broken: AssetList,
 	 *   header: AssetList,
@@ -30,11 +30,6 @@ class QM_Data_Assets extends QM_Data {
 	 * }
 	 */
 	public $assets;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $broken;
 
 	/**
 	 * @var array<string, int>
@@ -85,11 +80,6 @@ class QM_Data_Assets extends QM_Data {
 
 	/**
 	 * @var array<int, string>
-	 */
-	public $missing;
-
-	/**
-	 * @var array<string, true>
 	 */
 	public $missing_dependencies;
 
