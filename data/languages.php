@@ -40,11 +40,15 @@ class QM_Data_Languages extends QM_Data {
 	public $language_attributes;
 
 	/**
+	 * MultilingualPress language.
+	 *
 	 * @var string
 	 */
 	public $mlp_language;
 
 	/**
+	 * Polylang language.
+	 *
 	 * @var string
 	 */
 	public $pll_language;
