@@ -29,6 +29,10 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 	render() {
 		const { data } = this.props;
 
+		if ( ! data.current_screen ) {
+			return null;
+		}
+
 		return (
 			<NonTabular id={ this.props.id }>
 				<section>
@@ -82,7 +86,7 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 						<tbody>
 							<tr>
 								<th scope="row">
-									pagenow
+									$pagenow
 								</th>
 								<td>
 									{ data.pagenow }
@@ -90,7 +94,7 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 							</tr>
 							<tr>
 								<th scope="row">
-									taxnow
+									$taxnow
 								</th>
 								<td>
 									{ data.taxnow }
@@ -98,7 +102,7 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 							</tr>
 							<tr>
 								<th scope="row">
-									typenow
+									$typenow
 								</th>
 								<td>
 									{ data.typenow }
@@ -106,7 +110,7 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 							</tr>
 							<tr>
 								<th scope="row">
-									hook_suffix
+									$hook_suffix
 								</th>
 								<td>
 									{ data.hook_suffix }
