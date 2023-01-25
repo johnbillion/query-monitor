@@ -119,6 +119,7 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 								return (
 									<tr key={ handle }>
 										<td>
+											{ asset.warning && ( <Warning/> ) }
 											{ position_labels[ key ] }
 										</td>
 										<td>
