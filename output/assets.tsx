@@ -127,6 +127,7 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 										</td>
 										<td>
 											{ asset.host }
+											{ asset.port && ( `:${asset.port}` ) }
 										</td>
 										<td>
 											{ asset.display }
