@@ -139,10 +139,17 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 														whiteSpace: 'nowrap',
 													} }
 												>
-													{ data.missing_dependencies.includes( dep ) && (
-														<Warning/>
-													) }
-													{ dep }
+													{ data.missing_dependencies.includes( dep ) ? (
+														<>
+															<Warning/>
+															&nbsp;
+															{ sprintf(
+																/* translators: %s: Name of missing script or style dependency */
+																__( '%s (missing)', 'query-monitor' ),
+																dep
+															) }
+														</>
+													) : dep }
 												</span>,
 											] ) }
 										</td>
