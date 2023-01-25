@@ -1,4 +1,4 @@
-import { PanelFooter } from 'qmi';
+import { Notice, PanelFooter, Tabular } from 'qmi';
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
@@ -24,6 +24,7 @@ interface iAssetList {
 }
 
 interface iAssetsProps {
+	id: string;
 	data: {
 		assets: {
 			missing: iAssetList;
@@ -50,6 +51,9 @@ interface iAssetsProps {
 		};
 		port: string;
 	};
+	labels: {
+		none: string;
+	};
 }
 
 interface iPositionLabels {
@@ -70,8 +74,18 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 			footer: __( 'Footer', 'query-monitor' ),
 		};
 
+		if ( ! data.assets ) {
+			return (
+				<Notice id={ this.props.id }>
+					<p>
+						{ this.props.labels.none }
+					</p>
+				</Notice>
+			);
+		}
+
 		return (
-			<>
+			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -136,7 +150,7 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 					count={ data.counts.total }
 					label={ _x( 'Total:', 'Total assets', 'query-monitor' ) }
 				/>
-			</>
+			</Tabular>
 		);
 	}
 

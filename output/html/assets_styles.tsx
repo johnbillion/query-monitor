@@ -1,20 +1,30 @@
 import {
 	iPanelProps,
-	Tabular,
 } from 'qmi';
 import * as React from 'react';
+
+import {
+	__,
+} from '@wordpress/i18n';
 
 import Assets from '../assets';
 
 class Styles extends React.Component<iPanelProps, Record<string, unknown>> {
 
 	render() {
-		const { data } = this.props;
+		const {
+			data,
+			id,
+		} = this.props;
 
 		return (
-			<Tabular id={ this.props.id }>
-				<Assets data={ data }/>
-			</Tabular>
+			<Assets
+				data={ data }
+				id={ id }
+				labels={ {
+					none: __( 'No CSS files were enqueued.', 'query-monitor' ),
+				} }
+			/>
 		);
 	}
 
