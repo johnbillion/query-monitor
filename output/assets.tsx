@@ -1,10 +1,11 @@
-import { Notice, PanelFooter, Tabular } from 'qmi';
+import { Notice, PanelFooter, Tabular, Warning } from 'qmi';
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
 import {
 	__,
 	_x,
+	sprintf,
 } from '@wordpress/i18n';
 
 interface iAsset {
@@ -46,9 +47,7 @@ interface iAssetsProps {
 		header: Array<string>;
 		host: string;
 		is_ssl: boolean;
-		missing_dependencies: {
-			[k:string]: true;
-		};
+		missing_dependencies: Array<string>;
 		port: string;
 	};
 	labels: {
@@ -116,6 +115,7 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 						<React.Fragment key={ key }>
 							{ data.assets[ key ] && Object.keys( data.assets[ key ] ).map( handle => {
 								const asset = data.assets[ key ][ handle ];
+
 								return (
 									<tr key={ handle }>
 										<td>
@@ -131,7 +131,29 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 											{ asset.display }
 										</td>
 										<td>
-											{ asset.dependencies.join( ', ' ) }
+											{ asset.dependencies.map( ( dep, i ) => {
+												let out: ( React.ReactElement|string ) = dep;
+
+												if ( data.missing_dependencies.includes( dep ) ) {
+													out = (
+														<span
+															key={ dep }
+															style={ {
+																whiteSpace: 'nowrap',
+															} }
+														>
+															<Warning/>
+															&nbsp;
+															{ dep }
+														</span>
+													);
+												}
+
+												return [
+													i > 0 && ', ',
+													out,
+												];
+											} ) }
 										</td>
 										<td>
 											{ asset.dependents.join( ', ' ) }
