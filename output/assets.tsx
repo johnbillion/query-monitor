@@ -1,3 +1,4 @@
+import * as classNames from 'classnames';
 import { Notice, PanelFooter, Tabular, Warning } from 'qmi';
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
@@ -115,9 +116,15 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 						<React.Fragment key={ key }>
 							{ data.assets[ key ] && Object.keys( data.assets[ key ] ).map( handle => {
 								const asset = data.assets[ key ][ handle ];
+								const classes = {
+									'qm-warn': asset.warning,
+								};
 
 								return (
-									<tr key={ handle }>
+									<tr
+										key={ handle }
+										className={ classNames( classes ) }
+									>
 										<td>
 											{ asset.warning && ( <Warning/> ) }
 											{ position_labels[ key ] }
