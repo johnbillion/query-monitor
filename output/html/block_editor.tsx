@@ -1,5 +1,6 @@
 import {
 	iPanelProps,
+	Notice,
 	PanelFooter,
 	Tabular,
 } from 'qmi';
@@ -10,19 +11,29 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
+interface iBlock {
+	attrs?: object;
+	context?: object;
+	blockName: string;
+	innerHTML: string;
+	innerBlocks: iBlock[];
+	dynamic: boolean;
+	callback?: {
+		name: string;
+	};
+	size: number;
+	timing: number;
+}
+
 interface iBlocksProps extends iPanelProps {
 	data: {
-		post_blocks: {
-			attrs?: any[];
-			blockName: string;
-			innerHTML: string;
-			dynamic: boolean;
-			callback?: {
-				name: string;
-			};
-			size: number;
-			timing: number;
-		}[];
+		all_dynamic_blocks: string[];
+		block_editor_enabled: boolean;
+		has_block_context: boolean;
+		has_block_timing: boolean;
+		post_blocks: iBlock[] | null;
+		post_has_blocks: boolean;
+		total_blocks: number;
 	};
 }
 class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>> {
@@ -31,14 +42,23 @@ class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>>
 		const { data } = this.props;
 
 		if ( ! data.post_blocks || ! data.post_blocks.length ) {
-			return null;
+			return (
+				<Notice id={ this.props.id }>
+					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
+				</Notice>
+			);
 		}
+
+		let colspan = 5;
+
+		data.has_block_context && colspan++;
+		data.has_block_timing && colspan++;
 
 		return (
 			<Tabular id={ this.props.id }>
 				<thead>
 					<tr>
-						<th role="columnheader" scope="col">
+						<th scope="col">
 							#
 						</th>
 						<th scope="col">
@@ -47,58 +67,87 @@ class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>>
 						<th scope="col">
 							{ __( 'Attributes', 'query-monitor' ) }
 						</th>
+						{ data.has_block_context && (
+							<th scope="col">
+								{ __( 'Context', 'query-monitor' ) }
+							</th>
+						) }
 						<th scope="col">
 							{ __( 'Render Callback', 'query-monitor' ) }
 						</th>
-						<th scope="col">
-							{ __( 'Render Time', 'query-monitor' ) }
-						</th>
+						{ data.has_block_timing && (
+							<th scope="col">
+								{ __( 'Render Time', 'query-monitor' ) }
+							</th>
+						) }
 						<th scope="col">
 							{ __( 'Inner HTML', 'query-monitor' ) }
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					{ data.post_blocks.map( function ( block, i ){
-						const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
-						return (
-							<tr key={ i }>
-								<th className="qm-row-num qm-num" scope="row">
-									{ 1 + i }
-								</th>
-								<td className="qm-ltr qm-wrap">
-									{ block.blockName }
-								</td>
-								<td>
-									<pre className="qm-pre-wrap">
-										<code>
-											{ show_attrs && JSON.stringify( block.attrs, null, 2 ) }
-										</code>
-									</pre>
-								</td>
-								<td>
-									{ block.dynamic && block.callback && block.callback.name }
-								</td>
-								<td>
-									{ block.dynamic && block.timing }
-								</td>
-								<td>
-									<pre className="qm-pre-wrap">
-										<code>
-											{ block.innerHTML }
-										</code>
-									</pre>
-								</td>
-							</tr>
-						);
-					} ) }
+					{ data.post_blocks.map( ( block, i ) => this.renderBlock( block, `${i + 1}` ) ) }
 				</tbody>
 				<PanelFooter
-					cols={ 6 }
+					cols={ colspan }
 					count={ data.post_blocks.length }
 					label={ _x( 'Total:', 'Content blocks used', 'query-monitor' ) }
 				/>
 			</Tabular>
+		);
+	}
+
+	renderBlock( block: iBlock, i: string ) {
+		const { data } = this.props;
+		const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
+
+		return (
+			<React.Fragment key={ i }>
+				<tr>
+					<th className="qm-row-num qm-num" scope="row">
+						{ i }
+					</th>
+					<td className="qm-ltr qm-wrap">
+						{ block.blockName }
+					</td>
+					<td className="qm-row-block-attrs">
+						<pre className="qm-pre-wrap">
+							<code>
+								{ show_attrs && JSON.stringify( block.attrs, null, 2 ) }
+							</code>
+						</pre>
+					</td>
+					{ data.has_block_context && (
+						<td className="qm-row-block-context">
+							{ block.context && (
+								<pre className="qm-pre-wrap">
+									<code>
+										{ show_attrs && JSON.stringify( block.context, null, 2 ) }
+									</code>
+								</pre>
+							) }
+						</td>
+					) }
+					<td>
+						{ block.dynamic && block.callback?.name }
+					</td>
+					{ data.has_block_timing && (
+						<td>
+							{ block.dynamic && block.timing }
+						</td>
+					) }
+					<td className="qm-row-block-html">
+						<pre className="qm-pre-wrap">
+							<code>
+								{ block.innerHTML }
+							</code>
+						</pre>
+					</td>
+				</tr>
+				{ block.innerBlocks.map( ( innerBlock, j ) => (
+					this.renderBlock( innerBlock, `${i}.${j + 1}` )
+				) ) }
+			</React.Fragment>
 		);
 	}
 
