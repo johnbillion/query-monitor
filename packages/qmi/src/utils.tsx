@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { WP_Error } from 'wp-types';
 
 export function formatSQL( sql: string ) {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
@@ -50,4 +51,42 @@ export function formatURL( url: string ) {
 	} );
 
 	return collection;
+}
+
+export function isWPError( data: ( string | WP_Error ) ): boolean {
+	return ( ( typeof data === 'object' ) && 'errors' in data );
+}
+
+export function getErrorData( data: ( string | WP_Error ) ): any {
+	if ( ! ( ( typeof data === 'object' ) && 'error_data' in data ) ) {
+		return null;
+	}
+
+	if ( Array.isArray( data.error_data ) ) {
+		return null;
+	}
+
+	for ( const key in data.error_data ) {
+		return data.error_data[key];
+	}
+
+	return null;
+}
+
+export function getErrorMessage( data: ( string | WP_Error ) ): string|null {
+	if ( ! ( ( typeof data === 'object' ) && 'errors' in data ) ) {
+		return null;
+	}
+
+	if ( Array.isArray( data.errors ) ) {
+		return null;
+	}
+
+	for ( const key in data.errors ) {
+		for ( const message_key in data.errors[key] ) {
+			return data.errors[key][message_key];
+		}
+	}
+
+	return null;
 }

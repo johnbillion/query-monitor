@@ -1,5 +1,5 @@
 import * as classNames from 'classnames';
-import { Notice, PanelFooter, Tabular, Warning } from 'qmi';
+import { Notice, PanelFooter, Tabular, Warning, Utils } from 'qmi';
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
@@ -61,6 +61,40 @@ interface iPositionLabels {
 	broken : string;
 	header : string;
 	footer : string;
+}
+
+interface iAssetSourceProps {
+	asset: iAsset;
+}
+
+class AssetSource extends React.Component<iAssetSourceProps, Record<string, unknown>> {
+	render() {
+		const { asset } = this.props;
+		const errorData = Utils.getErrorData( asset.source );
+		const errorMessage = Utils.getErrorMessage( asset.source );
+
+		if ( errorData?.src ) {
+			return (
+				<>
+					<Warning/>
+					{ errorMessage }
+					<br/>
+					{ errorData.src }
+				</>
+			);
+		}
+
+		if ( errorMessage ) {
+			return (
+				<>
+					<Warning/>
+					{ errorMessage }
+				</>
+			);
+		}
+
+		return asset.display;
+	}
 }
 
 class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
@@ -133,11 +167,12 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 											{ handle }
 										</td>
 										<td>
-											{ asset.host }
-											{ asset.port && ( `:${asset.port}` ) }
+											{ asset.port ? `${ asset.host }:${ asset.port }` : asset.host }
 										</td>
 										<td>
-											{ asset.display }
+											<AssetSource
+												asset={ asset }
+											/>
 										</td>
 										<td>
 											{ asset.dependencies.map( ( dep, i ) => [
