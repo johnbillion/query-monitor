@@ -33,7 +33,7 @@ class Transients extends React.Component<iTransientsProps, Record<string, unknow
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.trans || ! data.trans.length ) {
+		if ( ! data.trans?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>

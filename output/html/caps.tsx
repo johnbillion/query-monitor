@@ -53,7 +53,7 @@ class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 
 		const { data } = this.props;
 
-		if ( ! data.caps || ! data.caps.length ) {
+		if ( ! data.caps?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>

@@ -39,7 +39,7 @@ class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.hooks || ! data.hooks.length ) {
+		if ( ! data.hooks?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>

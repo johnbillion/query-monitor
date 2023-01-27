@@ -33,7 +33,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.rows || ! data.rows.length ) {
+		if ( ! data.rows?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>

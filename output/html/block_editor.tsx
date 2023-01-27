@@ -41,7 +41,7 @@ class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>>
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.post_blocks || ! data.post_blocks.length ) {
+		if ( ! data.post_blocks?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
