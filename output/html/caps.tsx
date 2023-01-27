@@ -37,7 +37,7 @@ class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 						{ sprintf(
 						/* translators: %s: Configuration file name. */
 							__( 'For performance reasons, this panel is not enabled by default. To enable it, add the following code to your %s file:', 'query-monitor' ),
-							'<code>wp-config.php</code>'
+							'wp-config.php'
 						) }
 					</p>
 					<p>
