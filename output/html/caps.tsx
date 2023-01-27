@@ -19,6 +19,8 @@ interface iCapsProps extends iPanelProps {
 	data: {
 		caps: {
 			name: string;
+			args: any[];
+			parts: string[];
 			user: number;
 			result: boolean;
 			filtered_trace: FrameItem[];
@@ -88,6 +90,11 @@ class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
 							<td className="qm-ltr qm-nowrap">
 								<code>
 									{ cap.name }
+									{ cap.args.map( ( arg ) => (
+										<>
+											,&nbsp;{ arg }
+										</>
+									) ) }
 								</code>
 							</td>
 							<td className="qm-num">
