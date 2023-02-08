@@ -406,6 +406,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
  * [Blackfire](https://blackfire.io/)
  * [Datadog](https://www.datadoghq.com/)
+ * [Loggly](https://www.loggly.com/)
  * [New Relic](https://newrelic.com/)
  * [Scout](https://scoutapm.com/)
  * [Sentry](https://sentry.io/])
