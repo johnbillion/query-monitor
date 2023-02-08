@@ -391,18 +391,24 @@ Query Monitor also has [several add-on plugins](https://github.com/johnbillion/q
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
-## Other tools and services
+## Other tools
 
- * [Blackfire](https://blackfire.io/)
  * [Clockwork](https://underground.works/clockwork/)
- * [Datadog](https://www.datadoghq.com/)
- * [New Relic](https://newrelic.com/)
+ * [Meminfo](https://github.com/BitOne/php-meminfo)
+ * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
  * [Ray](https://myray.app/)
- * [Scout](https://scoutapm.com/)
- * [Sentry](https://sentry.io/])
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
+
+## Hosted services
+
+ * [Blackfire](https://blackfire.io/)
+ * [Datadog](https://www.datadoghq.com/)
+ * [New Relic](https://newrelic.com/)
+ * [Scout](https://scoutapm.com/)
+ * [Sentry](https://sentry.io/])
 
 # Contributing
 
