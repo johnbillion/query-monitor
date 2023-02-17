@@ -244,9 +244,9 @@ if ( window.jQuery ) {
 
 			if ( $(this).val() !== '' ) {
 				if ( hilite ) {
-					tr.filter('[data-qm-' + hilite + '*="' + val + '"]').addClass('qm-highlight');
+					tr.filter('[data-qm-' + hilite + '="' + val + '"]').addClass('qm-highlight');
 				}
-				tr.not('[data-qm-' + filter + '*="' + val + '"]').addClass('qm-hide-' + filter);
+				tr.not('[data-qm-' + filter + '="' + val + '"]').addClass('qm-hide-' + filter);
 				$(this).closest('th').addClass('qm-filtered');
 			} else {
 				$(this).closest('th').removeClass('qm-filtered');
