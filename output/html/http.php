@@ -185,7 +185,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo esc_html( $response );
 
 				if ( $show_toggle ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
+					// translators: HTTP query method, queried URL, HTTP response.
+					$context = sprintf( __( '%1$s to %2$s with status %3$s', 'query-monitor' ), $row['args']['method'], $url, $response );
+					echo self::build_toggler( $context ); // WPCS: XSS ok;
 					echo '<ul class="qm-toggled">';
 				}
 
@@ -245,7 +247,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
 
 				if ( ! empty( $stack ) ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
+					echo self::build_toggler( $caller ); // WPCS: XSS ok;
 				}
 
 				echo '<ol>';

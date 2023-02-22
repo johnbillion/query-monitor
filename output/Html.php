@@ -387,10 +387,12 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns a toggle control. Safe for output.
 	 *
+	 * @param string $context Information to uniquely label the toggle button for screen readers.
+	 *
 	 * @return string Markup for the column sorter controls.
 	 */
-	protected static function build_toggler() {
-		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr__( 'Toggle more information', 'query-monitor' ) . '"><span aria-hidden="true">+</span></button>';
+	protected static function build_toggler( $context ) {
+		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . sprintf( esc_attr__( 'View details for %s', 'query-monitor' ), strip_tags( $context ) ) . '"><span aria-hidden="true">+</span></button>';
 		return $out;
 	}
 

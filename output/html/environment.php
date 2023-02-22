@@ -112,7 +112,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '<td class="qm-has-toggle qm-ltr">';
 
 		echo esc_html( (string) $data->php['error_reporting'] );
-		echo self::build_toggler(); // WPCS: XSS ok;
+		echo self::build_toggler( __( 'Error Reporting', 'query-monitor' ) ); // WPCS: XSS ok;
 
 		echo '<div class="qm-toggled">';
 		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
@@ -129,7 +129,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			printf( // WPCS: XSS ok.
 				'<div class="qm-inner-toggle">%1$s %2$s</div>',
 				esc_html( number_format_i18n( count( $data->php['extensions'] ) ) ),
-				self::build_toggler()
+				self::build_toggler( __( 'Extensions', 'query-monitor' ) )
 			);
 
 			echo '<div class="qm-toggled">';
