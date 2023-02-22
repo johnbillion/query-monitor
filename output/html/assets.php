@@ -183,7 +183,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$host = implode( '.', $parts );
 
-		if ( ! empty( $asset['port'] ) ) {
+		if ( ! empty( $asset['port'] ) && ! empty( $asset['host'] ) ) {
 			$host = "{$host}:{$asset['port']}";
 		}
 

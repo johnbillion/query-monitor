@@ -185,7 +185,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "https://{$this->data->host}/", '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
