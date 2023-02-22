@@ -185,7 +185,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				echo esc_html( $response );
 
 				if ( $show_toggle ) {
-					// translators: HTTP query method, queried URL, HTTP response.
+					// translators: 1) HTTP query method, 2) queried URL, 3) HTTP response.
 					$context = sprintf( __( '%1$s to %2$s with status %3$s', 'query-monitor' ), $row['args']['method'], $url, $response );
 					echo self::build_toggler( $context ); // WPCS: XSS ok;
 					echo '<ul class="qm-toggled">';
