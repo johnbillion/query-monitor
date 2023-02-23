@@ -59,27 +59,20 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return void
 	 */
 	protected function before_tabular_output( $id = null, $name = null ) {
-		if ( null === $id ) {
-			$id = $this->collector->id();
-		}
-		if ( null === $name ) {
-			$name = $this->name();
-		}
-
-		$this->current_id = $id;
-		$this->current_name = $name;
+		$this->current_id = $id ?? $this->collector->id();
+		$this->current_name = $name ?? $this->name();
 
 		printf(
 			'<div class="qm" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
-			esc_attr( $id )
+			esc_attr( $this->current_id )
 		);
 
 		echo '<table class="qm-sortable">';
 
 		printf(
 			'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>',
-			esc_attr( $id ),
-			esc_html( $name )
+			esc_attr( $this->current_id ),
+			esc_html( $this->current_name )
 		);
 	}
 
@@ -99,27 +92,20 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return void
 	 */
 	protected function before_non_tabular_output( $id = null, $name = null ) {
-		if ( null === $id ) {
-			$id = $this->collector->id();
-		}
-		if ( null === $name ) {
-			$name = $this->name();
-		}
-
-		$this->current_id = $id;
-		$this->current_name = $name;
+		$this->current_id = $id ?? $this->collector->id();
+		$this->current_name = $name ?? $name = $this->name();
 
 		printf(
 			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
-			esc_attr( $id )
+			esc_attr( $this->current_id )
 		);
 
 		echo '<div class="qm-boxed">';
 
 		printf(
 			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
-			esc_attr( $id ),
-			esc_html( $name )
+			esc_attr( $this->current_id ),
+			esc_html( $this->current_name )
 		);
 	}
 
@@ -200,22 +186,15 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return void
 	 */
 	protected function before_debug_bar_output( $id = null, $name = null ) {
-		if ( null === $id ) {
-			$id = $this->collector->id();
-		}
-		if ( null === $name ) {
-			$name = $this->name();
-		}
-
 		printf(
 			'<div class="qm qm-debug-bar" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
-			esc_attr( $id )
+			esc_attr( $id ?? $this->collector->id() )
 		);
 
 		printf(
 			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
-			esc_attr( $id ),
-			esc_html( $name )
+			esc_attr( $id ?? $this->collector->id() ),
+			esc_html( $name ?? $this->name() )
 		);
 	}
 
@@ -276,7 +255,6 @@ abstract class QM_Output_Html extends QM_Output {
 			echo '</tr>';
 		}
 		echo '</table>';
-
 	}
 
 	/**
@@ -356,7 +334,6 @@ abstract class QM_Output_Html extends QM_Output {
 		$out .= '</div>';
 
 		return $out;
-
 	}
 
 	/**
@@ -381,6 +358,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$out .= QueryMonitor::icon( 'arrow-down' );
 		$out .= '</button>';
 		$out .= '</span>';
+
 		return $out;
 	}
 
@@ -391,6 +369,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected static function build_toggler() {
 		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr__( 'Toggle more information', 'query-monitor' ) . '"><span aria-hidden="true">+</span></button>';
+
 		return $out;
 	}
 
@@ -435,12 +414,10 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return array<string, mixed>
 	 */
 	protected function menu( array $args ) {
-
 		return array_merge( array(
 			'id' => esc_attr( "query-monitor-{$this->collector->id}" ),
 			'href' => esc_attr( '#' . $this->collector->id() ),
 		), $args );
-
 	}
 
 	/**
@@ -450,7 +427,6 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string      The SQL formatted with markup.
 	 */
 	public static function format_sql( $sql ) {
-
 		$sql = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $sql );
 		$sql = esc_html( $sql );
 		$sql = trim( $sql );
@@ -462,7 +438,6 @@ abstract class QM_Output_Html extends QM_Output {
 		$sql = preg_replace( '#' . $keywords . '#', '<b>$0</b>', $sql );
 
 		return '<code>' . $sql . '</code>';
-
 	}
 
 	/**
@@ -490,9 +465,9 @@ abstract class QM_Output_Html extends QM_Output {
 		if ( empty( $file ) ) {
 			if ( $is_filename ) {
 				return esc_html( $text );
-			} else {
-				return '<code>' . esc_html( $text ) . '</code>';
 			}
+
+			return '<code>' . esc_html( $text ) . '</code>';
 		}
 
 		$link_line = $line ?: 1;
@@ -510,6 +485,7 @@ abstract class QM_Output_Html extends QM_Output {
 			if ( $fallback !== $text ) {
 				$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
 			}
+
 			return $return;
 		}
 
@@ -617,7 +593,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return bool
 	 */
 	public static function has_clickable_links() {
-		return ( false !== self::get_file_link_format() );
+		return false !== self::get_file_link_format();
 	}
 
 }
