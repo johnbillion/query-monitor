@@ -8,11 +8,11 @@ echo "Starting up..."
 
 # Wait for MariaDB:
 while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --silent' | grep 'mysqld is alive' >/dev/null; do
-	echo 'Waiting for MariaDB...'
+	echo 'Waiting for MariaDB ping...'
 	sleep 1
 done
 while ! docker-compose exec -T database /bin/bash -c 'mysql --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --execute="SHOW DATABASES;"' | grep 'information_schema' >/dev/null; do
-	echo 'Waiting for MariaDB...'
+	echo 'Waiting for MariaDB query...'
 	sleep 1
 done
 
