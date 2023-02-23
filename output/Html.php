@@ -93,7 +93,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected function before_non_tabular_output( $id = null, $name = null ) {
 		$this->current_id = $id ?? $this->collector->id();
-		$this->current_name = $name ?? $name = $this->name();
+		$this->current_name = $name ?? $this->name();
 
 		printf(
 			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
