@@ -11,7 +11,7 @@ while ! docker-compose exec -T database /bin/bash -c 'mysqladmin ping --user="${
 	echo 'Waiting for MariaDB...'
 	sleep 1
 done
-while ! docker-compose exec -T database /bin/bash -c 'mysql --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --execute="SELECT User FROM mysql.user;"' | grep 'User' >/dev/null; do
+while ! docker-compose exec -T database /bin/bash -c 'mysql --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --execute="SHOW DATABASES;"' | grep 'information_schema' >/dev/null; do
 	echo 'Waiting for MariaDB...'
 	sleep 1
 done
