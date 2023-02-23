@@ -377,23 +377,39 @@ Debugging is rarely done with just one tool. Along with Query Monitor, you shoul
 
 ## WordPress Plugins
 
- * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/) for performance trend analysis of the plugins in use on your site.
- * [Time Stack](https://github.com/joehoyle/Time-Stack) for WordPress-specific operation profiling.
- * [Laps](https://github.com/Rarst/laps) for lightweight WordPress profiling.
- * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Block Xray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
+ * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
+ * [Debug This](https://wordpress.org/plugins/debug-this/)
+ * [Laps](https://github.com/Rarst/laps)
+ * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/)
+ * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
+ * [Time Stack](https://github.com/joehoyle/Time-Stack)
+ * [User Switching](https://wordpress.org/plugins/user-switching/)
+ * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
 
 Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
-## Other tools and services
+## Other tools
 
- * [Tideways](https://tideways.com/profiler/xhprof-for-php7) or [XHProf](https://github.com/phacility/xhprof) for low level profiling of PHP.
- * [Xdebug](https://xdebug.org/) for a host of PHP debugging tools.
- * [Clockwork](https://github.com/itsgoingd/clockwork) for debugging and profiling PHP applications.
- * [Blackfire](https://blackfire.io/) for PHP performance testing.
- * [New Relic](https://newrelic.com/) for complete software performance analytics.
+ * [Clockwork](https://underground.works/clockwork/)
+ * [Meminfo](https://github.com/BitOne/php-meminfo)
+ * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
+ * [Ray](https://myray.app/)
+ * [SPX](https://github.com/NoiseByNorthwest/php-spx)
+ * [Xdebug](https://xdebug.org/)
+ * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
+
+## Hosted services
+
+ * [Blackfire](https://blackfire.io/)
+ * [Datadog](https://www.datadoghq.com/)
+ * [Loggly](https://www.loggly.com/)
+ * [New Relic](https://newrelic.com/)
+ * [Scout](https://scoutapm.com/)
+ * [Sentry](https://sentry.io/])
 
 # Contributing
 

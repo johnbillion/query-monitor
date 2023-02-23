@@ -592,7 +592,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 					'id' => esc_attr( sprintf( 'query-monitor-%s-db-%s', $this->collector->id(), $name_attr ) ),
 					'title' => esc_html( sprintf(
 						/* translators: %s: Name of database controller */
-						__( 'Queries: %s', 'query-monitor' ),
+						__( 'Database Queries: %s', 'query-monitor' ),
 						$name
 					) ),
 					'href' => esc_attr( sprintf( '#%s-%s', $this->collector->id(), $name_attr ) ),
@@ -601,7 +601,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		} else {
 			$id = $this->collector->id() . '-$wpdb';
 			$menu[ $id ] = $this->menu( array(
-				'title' => esc_html__( 'Queries', 'query-monitor' ),
+				'title' => esc_html__( 'Database Queries', 'query-monitor' ),
 				'href' => esc_attr( sprintf( '#%s-wpdb', $this->collector->id() ) ),
 			) );
 		}

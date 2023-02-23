@@ -23,8 +23,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	public function set_up() {
 		parent::set_up();
-		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
-		add_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
 		add_action( 'admin_head', array( $this, 'action_head' ), 9999 );
 		add_action( 'wp_head', array( $this, 'action_head' ), 9999 );
 		add_action( 'login_head', array( $this, 'action_head' ), 9999 );
@@ -35,8 +35,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * @return void
 	 */
 	public function tear_down() {
-		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
-		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ) );
+		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
+		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
 		remove_action( 'admin_head', array( $this, 'action_head' ), 9999 );
 		remove_action( 'wp_head', array( $this, 'action_head' ), 9999 );
 		remove_action( 'login_head', array( $this, 'action_head' ), 9999 );
@@ -185,7 +185,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( is_wp_error( $source ) ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( str_replace( "https://{$this->data->host}/", '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -292,7 +292,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( null === $dependency->ver ) {
 			$ver = '';
 		} else {
-			$ver = $dependency->ver ? $dependency->ver : $this->data->default_version;
+			$ver = $dependency->ver ?: $this->data->default_version;
 		}
 
 		if ( ! empty( $src ) && ! empty( $ver ) ) {

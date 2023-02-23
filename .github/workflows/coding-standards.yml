@@ -23,6 +23,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+        tools: composer:v2
+        coverage: none
+        ini-file: development
+      env:
+        fail-fast: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Get Composer cache directory
       id: composer-cache
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -38,17 +49,6 @@ jobs:
       with:
         path: tests/cache
         key: 8.0-phpcs-${{ hashFiles('composer.json') }}
-
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.0'
-        tools: composer:v2
-        coverage: none
-        ini-file: development
-      env:
-        fail-fast: true
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Composer validate
       run: composer validate --strict

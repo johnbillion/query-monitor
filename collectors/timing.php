@@ -159,11 +159,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	 * @phpstan-return -1|0|1
 	 */
 	public function sort_by_start_time( array $a, array $b ) {
-		if ( $a['start_time'] === $b['start_time'] ) {
-			return 0;
-		} else {
-			return ( $a['start_time'] > $b['start_time'] ) ? 1 : -1;
-		}
+		return $a['start_time'] <=> $b['start_time'];
 	}
 
 }

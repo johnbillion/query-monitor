@@ -12,6 +12,8 @@
 /.gitattributes export-ignore
 /.editorconfig export-ignore
 /.gitignore export-ignore
+/.npmrc export-ignore
+/.nvmrc export-ignore
 /assets/*.map export-ignore
 /assets/*.scss export-ignore
 /codeception.dist.yml export-ignore

@@ -25,6 +25,7 @@ class QM_Backtrace {
 		'WP_Hook' => true,
 		'Altis\Cloud\DB' => true,
 		'Yoast\WP\Lib\ORM' => true,
+		'Perflab_SQLite_DB' => true,
 	);
 
 	/**
