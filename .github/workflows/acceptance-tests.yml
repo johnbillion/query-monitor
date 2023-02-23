@@ -44,16 +44,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Get Composer cache directory
-      id: composer-cache
-      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-    - name: Composer cache
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: 8.0-composer-${{ hashFiles('composer.json') }}
-
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -64,6 +54,16 @@ jobs:
       env:
         fail-fast: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Composer cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: 8.0-composer-${{ hashFiles('composer.json') }}
 
     - name: Debugging
       run: |
