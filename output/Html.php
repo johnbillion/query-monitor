@@ -367,7 +367,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected function build_sorter( $heading = '' ) {
 		$out = '';
-		$out .= '<label class="qm-th">';
+		$out .= '<span class="qm-th">';
 		$out .= '<span class="qm-sort-heading">';
 
 		if ( '#' === $heading ) {
@@ -380,7 +380,7 @@ abstract class QM_Output_Html extends QM_Output {
 		$out .= '<button class="qm-sort-controls" aria-label="' . esc_attr__( 'Sort data by this column', 'query-monitor' ) . '">';
 		$out .= QueryMonitor::icon( 'arrow-down' );
 		$out .= '</button>';
-		$out .= '</label>';
+		$out .= '</span>';
 		return $out;
 	}
 
