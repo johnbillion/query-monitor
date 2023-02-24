@@ -44,6 +44,11 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	protected $requested_template_part_nopes = array();
 
+	/**
+	 * @var ?WP_Block_Template
+	 */
+	protected $block_template = null;
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Theme();
 	}
@@ -235,8 +240,10 @@ class QM_Collector_Theme extends QM_DataCollector {
 			if ( function_exists( $conditional ) && function_exists( $get_template ) && call_user_func( $conditional ) ) {
 				$filter = str_replace( '_', '', "{$template}" );
 				add_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+				add_filter( "{$filter}_template", array( $this, 'filter_template' ), PHP_INT_MAX, 3 );
 				call_user_func( $get_template );
 				remove_filter( "{$filter}_template_hierarchy", array( $this, 'filter_template_hierarchy' ), PHP_INT_MAX );
+				remove_filter( "{$filter}_template", array( $this, 'filter_template' ), PHP_INT_MAX );
 			}
 		}
 	}
@@ -347,6 +354,26 @@ class QM_Collector_Theme extends QM_DataCollector {
 		}
 
 		return $templates;
+	}
+
+	/**
+	 * @param string   $template  Path to the template. See locate_template().
+	 * @param string   $type      Sanitized filename without extension.
+	 * @param string[] $templates A list of template candidates, in descending order of priority.
+	 * @return string Full path to template file.
+	 */
+	public function filter_template( $template, $type, $templates ) {
+		if ( $this->data->block_template instanceof \WP_Block_Template ) {
+			return $template;
+		}
+
+		$block_template = self::wp_resolve_block_template( $type, $templates, $template );
+
+		if ( $block_template ) {
+			$this->data->block_template = $block_template;
+		}
+
+		return $template;
 	}
 
 	/**
@@ -525,6 +552,13 @@ class QM_Collector_Theme extends QM_DataCollector {
 		$this->data->stylesheet = get_stylesheet();
 		$this->data->template = get_template();
 		$this->data->is_child_theme = ( $this->data->stylesheet !== $this->data->template );
+		$this->data->theme_dirs = array(
+			$this->data->stylesheet => $stylesheet_directory,
+			$this->data->template => $template_directory,
+		);
+
+		$this->data->theme_folders = self::wp_get_block_theme_folders();
+
 
 		if ( isset( $this->data->body_class ) ) {
 			asort( $this->data->body_class );
@@ -551,6 +585,20 @@ class QM_Collector_Theme extends QM_DataCollector {
 		}
 
 		return get_block_theme_folders();
+	}
+
+	/**
+	 * @param string   $template_type      The current template type.
+	 * @param string[] $template_hierarchy The current template hierarchy, ordered by priority.
+	 * @param string   $fallback_template  A PHP fallback template to use if no matching block template is found.
+	 * @return WP_Block_Template|null template A template object, or null if none could be found.
+	 */
+	protected static function wp_resolve_block_template( $template_type, $template_hierarchy, $fallback_template ) {
+		if ( ! function_exists( 'resolve_block_template' ) ) {
+			return null;
+		}
+
+		return resolve_block_template( $template_type, $template_hierarchy, $fallback_template );
 	}
 }
 

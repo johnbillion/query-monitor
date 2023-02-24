@@ -74,6 +74,37 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
 		}
 
+		if ( ! empty( $data->block_template ) ) {
+			echo '<h3>' . esc_html__( 'Block Template', 'query-monitor' ) . '</h3>';
+
+			if ( $data->block_template->wp_id ) {
+				echo '<p>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link(
+					QM_Util::get_site_editor_url( $data->block_template->id, 'wp_template' ),
+					esc_html( $data->block_template->id )
+				);
+				echo '</p>';
+			} else {
+				if ( self::has_clickable_links() ) {
+					$file = sprintf(
+						'%s/%s/%s.html',
+						$data->theme_dirs[ $data->block_template->theme ],
+						$data->theme_folders[ $data->block_template->type ],
+						$data->block_template->slug
+					);
+				} else {
+					$file = '';
+				}
+
+				echo '<p class="qm-ltr">' . self::output_filename( sprintf(
+					'%s/%s.html',
+					$data->theme_folders[ $data->block_template->type ],
+					$data->block_template->slug
+				), $file, 0, true ) . '</p>'; // WPCS: XSS ok.
+			}
+		}
+
 		if ( ! empty( $data->template_hierarchy ) ) {
 			echo '<h3>' . esc_html__( 'Template Hierarchy', 'query-monitor' ) . '</h3>';
 			echo '<ol class="qm-ltr"><li>' . implode( '</li><li>', array_map( 'esc_html', $data->template_hierarchy ) ) . '</li></ol>';
