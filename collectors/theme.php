@@ -330,7 +330,15 @@ class QM_Collector_Theme extends QM_DataCollector {
 			}
 		}
 
-		$this->data->template_hierarchy = array_merge( $this->data->template_hierarchy, $templates );
+		if ( self::wp_is_block_theme() ) {
+			$block_theme_folders = self::wp_get_block_theme_folders();
+			foreach ( $templates as $template ) {
+				$this->data->template_hierarchy[] = $block_theme_folders['wp_template'] . '/' . str_replace( '.php', '.html', $template );
+				$this->data->template_hierarchy[] = $template;
+			}
+		} else {
+			$this->data->template_hierarchy = array_merge( $this->data->template_hierarchy, $templates );
+		}
 
 		return $templates;
 	}
@@ -518,6 +526,26 @@ class QM_Collector_Theme extends QM_DataCollector {
 
 	}
 
+	/**
+	 * @return bool
+	 */
+	protected static function wp_is_block_theme() {
+		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	protected static function wp_get_block_theme_folders() {
+		if ( ! function_exists( 'get_block_theme_folders' ) ) {
+			return array(
+				'wp_template'      => 'templates',
+				'wp_template_part' => 'parts',
+			);
+		}
+
+		return get_block_theme_folders();
+	}
 }
 
 /**
