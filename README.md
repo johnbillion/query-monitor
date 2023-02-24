@@ -9,7 +9,7 @@
 
 Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
@@ -72,10 +72,11 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Theme
 
  * Shows the template filename for the current request
- * Shows the complete template hierarchy for the current request (WordPress 4.7+)
+ * Shows the complete template hierarchy for the current request
  * Shows all template parts loaded or not loaded on the current request
  * Shows the available body classes for the current request
  * Shows the active theme name
+ * Fully supports block themes and full site editing (FSE)
 
 ## PHP Errors
 
@@ -85,6 +86,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Block Content
 
  * Post content blocks and associated information (when using WordPress 5.0+ or the Gutenberg plugin)
+ * Block theme blocks and full site editing (FSE) blocks and context
 
 ## Request
 
@@ -99,7 +101,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Languages
 
  * Shows you language settings and text domains
- * Shows you the MO files for each text domain and which ones were loaded or not
+ * Shows you the MO and JSON files for each text domain and which ones were loaded or not
 
 ## HTTP API Requests
 
@@ -361,7 +363,7 @@ Yes! You can enable this on the Settings panel.
 
 ## Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion) and any support you can give will help me maintain this plugin and keep it free for everyone.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 

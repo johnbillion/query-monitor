@@ -14,7 +14,7 @@ Query Monitor is the developer tools panel for WordPress.
 
 Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
@@ -23,12 +23,12 @@ For complete information, please see [the Query Monitor website](https://querymo
 Here's an overview of what's shown for each page load:
 
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
-* The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded.
+* The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
-* Blocks and associated properties in post content when using WordPress 5.0+ or the Gutenberg plugin.
+* Blocks and associated properties within post content and within full site editing (FSE).
 * Matched rewrite rules, associated query strings, and query vars.
 * Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.
-* Language settings and loaded translation files (MO files) for each text domain.
+* Language settings and loaded translation files (MO files and JSON files) for each text domain.
 * HTTP API requests, with response code, responsible component, and time taken, with alerts for failed or erroneous requests.
 * User capability checks, along with the result and any parameters passed to the capability check.
 * Environment information, including detailed information about PHP, the database, WordPress, and the web server.
@@ -135,7 +135,7 @@ Yes. You can enable this on the Settings panel.
 
 ### Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://johnblackbourn.com/donations/) and any support you can give will help me maintain this plugin and keep it free for everyone.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
