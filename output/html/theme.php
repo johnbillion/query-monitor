@@ -122,30 +122,25 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( $data->has_template_part_action ) {
+		if ( ! empty( $data->unsuccessful_template_parts ) ) {
 			echo '<h4>' . esc_html__( 'Not Loaded', 'query-monitor' ) . '</h4>';
+			echo '<ul>';
 
-			if ( ! empty( $data->unsuccessful_template_parts ) ) {
-				echo '<ul>';
-
-				foreach ( $data->unsuccessful_template_parts as $requested ) {
-					if ( $requested['name'] ) {
-						echo '<li>';
-						$text = $requested['slug'] . '-' . $requested['name'] . '.php';
-						echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
-						echo '</li>';
-					}
-
+			foreach ( $data->unsuccessful_template_parts as $requested ) {
+				if ( $requested['name'] ) {
 					echo '<li>';
-					$text = $requested['slug'] . '.php';
+					$text = $requested['slug'] . '-' . $requested['name'] . '.php';
 					echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 				}
 
-				echo '</ul>';
-			} else {
-				echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
+				echo '<li>';
+				$text = $requested['slug'] . '.php';
+				echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
+				echo '</li>';
 			}
+
+			echo '</ul>';
 		}
 
 		echo '</section>';
