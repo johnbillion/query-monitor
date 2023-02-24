@@ -559,6 +559,16 @@ class QM_Collector_Theme extends QM_DataCollector {
 
 		$this->data->theme_folders = self::wp_get_block_theme_folders();
 
+		$stylesheet_theme_json = $stylesheet_directory . '/theme.json';
+		$template_theme_json = $template_directory . '/theme.json';
+
+		if ( is_readable( $stylesheet_theme_json ) ) {
+			$this->data->stylesheet_theme_json = $stylesheet_theme_json;
+		}
+
+		if ( is_readable( $template_theme_json ) ) {
+			$this->data->template_theme_json = $template_theme_json;
+		}
 
 		if ( isset( $this->data->body_class ) ) {
 			asort( $this->data->body_class );

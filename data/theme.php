@@ -12,6 +12,16 @@ class QM_Data_Theme extends QM_Data {
 	public $is_child_theme;
 
 	/**
+	 * @var string
+	 */
+	public $stylesheet_theme_json;
+
+	/**
+	 * @var string
+	 */
+	public $template_theme_json;
+
+	/**
 	 * @var WP_Block_Template
 	 */
 	public $block_template;
