@@ -22,7 +22,7 @@ class QM_Data_Theme extends QM_Data {
 	public $template_theme_json;
 
 	/**
-	 * @var WP_Block_Template
+	 * @var WP_Block_Template|null
 	 */
 	public $block_template;
 
