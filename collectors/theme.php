@@ -333,8 +333,14 @@ class QM_Collector_Theme extends QM_DataCollector {
 		if ( self::wp_is_block_theme() ) {
 			$block_theme_folders = self::wp_get_block_theme_folders();
 			foreach ( $templates as $template ) {
-				$this->data->template_hierarchy[] = $block_theme_folders['wp_template'] . '/' . str_replace( '.php', '.html', $template );
-				$this->data->template_hierarchy[] = $template;
+				if ( str_ends_with( $template, '.php' ) ) {
+					// Standard PHP template, inject the HTML version:
+					$this->data->template_hierarchy[] = $block_theme_folders['wp_template'] . '/' . str_replace( '.php', '.html', $template );
+					$this->data->template_hierarchy[] = $template;
+				} else {
+					// Block theme custom template (eg. from `customTemplates` in theme.json), doesn't have a suffix:
+					$this->data->template_hierarchy[] = $block_theme_folders['wp_template'] . '/' . $template . '.html';
+				}
 			}
 		} else {
 			$this->data->template_hierarchy = array_merge( $this->data->template_hierarchy, $templates );
