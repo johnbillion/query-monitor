@@ -323,8 +323,6 @@ class QM_Util {
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
 	 * @phpstan-return array{
-	 *   function: mixed,
-	 *   class?: object,
 	 *   name?: string,
 	 *   file?: string|false,
 	 *   line?: string|false,
@@ -423,6 +421,8 @@ class QM_Util {
 			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
 
 		}
+
+		unset( $callback['function'], $callback['class'] );
 
 		return $callback;
 
