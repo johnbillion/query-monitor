@@ -27,9 +27,9 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $expensive;
 
 	/**
-	 * @var ?array<string, stdClass>
+	 * @var stdClass
 	 */
-	public $dbs;
+	public $wpdb;
 
 	/**
 	 * @var array<string, array<string, mixed>>

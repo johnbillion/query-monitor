@@ -146,80 +146,68 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		echo '</section>';
 
 		if ( isset( $data->db ) ) {
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Database', 'query-monitor' ) . '</h3>';
 
-			foreach ( $data->db as $id => $db ) {
+			echo '<table>';
+			echo '<tbody>';
 
-				if ( 1 === count( $data->db ) ) {
-					$name = __( 'Database', 'query-monitor' );
+			$info = array(
+				'server-version' => __( 'Server Version', 'query-monitor' ),
+				'extension' => __( 'Extension', 'query-monitor' ),
+				'client-version' => __( 'Client Version', 'query-monitor' ),
+				'user' => __( 'User', 'query-monitor' ),
+				'host' => __( 'Host', 'query-monitor' ),
+				'database' => __( 'Database', 'query-monitor' ),
+			);
+
+			foreach ( $info as $field => $label ) {
+
+				echo '<tr>';
+				echo '<th scope="row">' . esc_html( $label ) . '</th>';
+
+				if ( ! isset( $data->db['info'][ $field ] ) ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo '<td><span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
 				} else {
-					/* translators: %s: Name of database controller */
-					$name = sprintf( __( 'Database: %s', 'query-monitor' ), $id );
+					echo '<td>' . esc_html( $data->db['info'][ $field ] ) . '</td>';
 				}
 
-				echo '<section>';
-				echo '<h3>' . esc_html( $name ) . '</h3>';
-
-				echo '<table>';
-				echo '<tbody>';
-
-				$info = array(
-					'server-version' => __( 'Server Version', 'query-monitor' ),
-					'extension' => __( 'Extension', 'query-monitor' ),
-					'client-version' => __( 'Client Version', 'query-monitor' ),
-					'user' => __( 'User', 'query-monitor' ),
-					'host' => __( 'Host', 'query-monitor' ),
-					'database' => __( 'Database', 'query-monitor' ),
-				);
-
-				foreach ( $info as $field => $label ) {
-
-					echo '<tr>';
-					echo '<th scope="row">' . esc_html( $label ) . '</th>';
-
-					if ( ! isset( $db['info'][ $field ] ) ) {
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						echo '<td><span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
-					} else {
-						echo '<td>' . esc_html( $db['info'][ $field ] ) . '</td>';
-					}
-
-					echo '</tr>';
-
-				}
-
-				foreach ( $db['variables'] as $setting ) {
-
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$key = (string) $setting->Variable_name;
-					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$val = (string) $setting->Value;
-
-					$append = '';
-
-					if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
-						$append .= sprintf(
-							'&nbsp;<span class="qm-info">(~%s)</span>',
-							esc_html( (string) size_format( $val ) )
-						);
-					}
-
-					echo '<tr>';
-
-					echo '<th scope="row">' . esc_html( $key ) . '</th>';
-					echo '<td>';
-					echo esc_html( $val );
-					echo $append; // WPCS: XSS ok.
-					echo '</td>';
-
-					echo '</tr>';
-				}
-
-				echo '</tbody>';
-				echo '</table>';
-
-				echo '</section>';
+				echo '</tr>';
 
 			}
+
+			foreach ( $data->db['variables'] as $setting ) {
+
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$key = (string) $setting->Variable_name;
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$val = (string) $setting->Value;
+
+				$append = '';
+
+				if ( is_numeric( $val ) && ( $val >= ( 1024 * 1024 ) ) ) {
+					$append .= sprintf(
+						'&nbsp;<span class="qm-info">(~%s)</span>',
+						esc_html( (string) size_format( $val ) )
+					);
+				}
+
+				echo '<tr>';
+
+				echo '<th scope="row">' . esc_html( $key ) . '</th>';
+				echo '<td>';
+				echo esc_html( $val );
+				echo $append; // WPCS: XSS ok.
+				echo '</td>';
+
+				echo '</tr>';
+			}
+
+			echo '</tbody>';
+			echo '</table>';
+
+			echo '</section>';
 		}
 
 		echo '<section>';
