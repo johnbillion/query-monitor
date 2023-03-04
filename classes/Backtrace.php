@@ -534,7 +534,6 @@ class QM_Backtrace {
 			if ( ! isset( $return['line'] ) ) {
 				$return['line'] = $this->calling_line;
 			}
-
 		}
 
 		if ( isset( $frame['line'] ) ) {
