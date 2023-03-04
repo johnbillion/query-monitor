@@ -100,11 +100,13 @@ class QM_Collector_Environment extends QM_DataCollector {
 				}
 			}
 
+			// phpcs:disable
 			/** @var array<int, stdClass>|null */
 			$variables = $dbq->wpdb->get_results( "
 				SHOW VARIABLES
 				WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
 			" );
+			// phpcs:enable
 
 			/** @var mysqli|false|null $dbh */
 			$dbh = $dbq->wpdb->dbh;
