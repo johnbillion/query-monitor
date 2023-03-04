@@ -120,7 +120,7 @@ Please note that information about database queries and the environment is somew
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
-This feature was removed from Query Monitor in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using Query Monitor 3.11 if you need to make use of this feature.
+This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
 
 ### Can I click on stack traces to open the file in my editor?
 
