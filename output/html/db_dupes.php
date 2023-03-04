@@ -168,7 +168,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	public function panel_menu( array $menu ) {
 		$id = $this->collector->id();
 		if ( isset( $menu[ $id ] ) ) {
-			$menu['qm-db_queries-$wpdb']['children'][] = $menu[ $id ];
+			$menu['qm-db_queries']['children'][] = $menu[ $id ];
 			unset( $menu[ $id ] );
 		}
 

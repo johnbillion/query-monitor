@@ -120,14 +120,7 @@ Please note that information about database queries and the environment is somew
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
-You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
-
-    add_filter( 'qm/collect/db_objects', function( $objects ) {
-        $objects['my_db'] = $GLOBALS['my_db'];
-        return $objects;
-    } );
-
-Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+This feature was removed from Query Monitor in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using Query Monitor 3.11 if you need to make use of this feature.
 
 ### Can I click on stack traces to open the file in my editor?
 

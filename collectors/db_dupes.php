@@ -55,9 +55,9 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 			// Loop over each query
 			foreach ( $query_ids as $query_id ) {
 
-				if ( isset( $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'] ) ) {
+				if ( isset( $dbq_data->wpdb->rows[ $query_id ]['trace'] ) ) {
 					/** @var QM_Backtrace */
-					$trace = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['trace'];
+					$trace = $dbq_data->wpdb->rows[ $query_id ]['trace'];
 					$stack = array_column( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
 
@@ -69,7 +69,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 					}
 				} else {
 					/** @var array<int, string> */
-					$stack = $dbq_data->dbs['$wpdb']->rows[ $query_id ]['stack'];
+					$stack = $dbq_data->wpdb->rows[ $query_id ]['stack'];
 				}
 
 				// Populate the caller counts for this query
@@ -84,9 +84,9 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 
 				// Populate the time for this query
 				if ( isset( $times[ $sql ] ) ) {
-					$times[ $sql ] += $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
+					$times[ $sql ] += $dbq->data->wpdb->rows[ $query_id ]['ltime'];
 				} else {
-					$times[ $sql ] = $dbq->data->dbs['$wpdb']->rows[ $query_id ]['ltime'];
+					$times[ $sql ] = $dbq->data->wpdb->rows[ $query_id ]['ltime'];
 				}
 			}
 

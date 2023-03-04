@@ -123,7 +123,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 			/** @var QM_Data_DB_Queries $dbq_data */
 			$dbq_data = $dbq->get_data();
 			if ( ! empty( $dbq_data->component_times ) ) {
-				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+				$menu['qm-db_queries']['children'][] = $this->menu( array(
 					'title' => esc_html__( 'Queries by Component', 'query-monitor' ),
 				) );
 			}
