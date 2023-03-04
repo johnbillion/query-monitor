@@ -466,24 +466,7 @@ class QM_Util {
 	 * @return bool
 	 */
 	public static function is_multi_network() {
-		global $wpdb;
-
-		if ( function_exists( 'is_multi_network' ) ) {
-			return is_multi_network();
-		}
-
-		if ( ! is_multisite() ) {
-			return false;
-		}
-
-		// phpcs:disable
-		$num_sites = $wpdb->get_var( "
-			SELECT COUNT(*)
-			FROM {$wpdb->site}
-		" );
-		// phpcs:enable
-
-		return ( $num_sites > 1 );
+		return ( function_exists( 'is_multi_network' ) && is_multi_network() );
 	}
 
 	/**
