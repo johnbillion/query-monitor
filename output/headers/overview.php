@@ -41,15 +41,6 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
 			);
 
-			if ( $data->wp_memory_limit > 0 ) {
-				$headers['wp_memory_usage'] = sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
-					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
-					number_format_i18n( $data->wp_memory_usage, 1 ),
-					number_format_i18n( $data->wp_memory_limit / 1024 / 1024 )
-				);
-			}
-
 			if ( $data->memory_limit > 0 ) {
 				$headers['memory_usage'] = sprintf(
 					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */

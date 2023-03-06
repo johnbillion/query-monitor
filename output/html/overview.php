@@ -149,24 +149,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
 			) );
 
-			if ( $data->wp_memory_limit > 0 ) {
-				if ( $data->display_memory_usage_warning ) {
-					echo '<br><span class="qm-warn">';
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo QueryMonitor::icon( 'warning' );
-					echo '</span>';
-				} else {
-					echo '<br><span class="qm-info">';
-				}
-				echo esc_html( sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
-					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
-					number_format_i18n( $data->wp_memory_usage, 1 ),
-					number_format_i18n( $data->wp_memory_limit / 1024 / 1024 )
-				) );
-				echo '</span>';
-			}
-
 			if ( $data->memory_limit > 0 ) {
 				if ( $data->display_memory_usage_warning ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
