@@ -374,6 +374,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor, you shoul
  * [Block Xray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
+ * [Decalog](https://wordpress.org/plugins/decalog/)
  * [Laps](https://github.com/Rarst/laps)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
