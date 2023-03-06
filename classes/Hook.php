@@ -17,7 +17,7 @@ class QM_Hook {
 	 *   name: string,
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array<string, mixed>,
+	 *     callback: QM_Callback,
 	 *   }>,
 	 *   parts: list<string>,
 	 *   components: array<string, string>,
@@ -36,19 +36,16 @@ class QM_Hook {
 			foreach ( $action as $priority => $callbacks ) {
 
 				foreach ( $callbacks as $cb ) {
+					$callback = QM_Callback::from_callable( $cb );
 
-					$callback = QM_Util::populate_callback( $cb );
-
-					if ( isset( $callback['component'] ) ) {
-						if (
-							( $hide_qm && 'query-monitor' === $callback['component']->context )
-							|| ( $hide_core && 'core' === $callback['component']->context )
-						) {
-							continue;
-						}
-
-						$components[ $callback['component']->name ] = $callback['component']->name;
+					if (
+						( $hide_qm && 'query-monitor' === $callback->component->context )
+						|| ( $hide_core && 'core' === $callback->component->context )
+					) {
+						continue;
 					}
+
+					$components[ $callback->component->name ] = $callback->component->name;
 
 					$actions[] = array(
 						'priority' => $priority,
