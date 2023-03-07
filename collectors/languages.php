@@ -166,7 +166,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			),
 		) );
 
-		$found = file_exists( $mofile ) ? filesize( $mofile ) : false;
+		$found = ( is_string( $mofile ) ) && file_exists( $mofile ) ? filesize( $mofile ) : false;
 
 		$this->data->languages[ $domain ][ $mofile ] = array(
 			'caller' => $trace->get_caller(),
