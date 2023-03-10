@@ -242,38 +242,38 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo '</td>';
 		}
 
-		if ( isset( $block['callback']['error'] ) ) {
+		if ( $block['callback'] instanceof WP_Error ) {
 			$class = ' qm-warn';
 		} else {
 			$class = '';
 		}
 
 		if ( $block['dynamic'] ) {
-			if ( isset( $block['callback']['file'] ) ) {
+			if ( ! $block['callback'] instanceof WP_Error ) {
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
-					echo self::output_filename( $block['callback']['name'], $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
+					echo self::output_filename( $block['callback']->name, $block['callback']->file, $block['callback']->line ); // WPCS: XSS ok.
 					echo '</td>';
 				} else {
 					echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<ol>';
 					echo '<li>';
-					echo self::output_filename( $block['callback']['name'], $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
+					echo self::output_filename( $block['callback']->name, $block['callback']->file, $block['callback']->line ); // WPCS: XSS ok.
 					echo '</li>';
 					echo '</ol></td>';
 				}
 			} else {
 				echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
+				echo '<code>' . esc_html( $block['callback']->get_error_data() ) . '</code>';
 
-				if ( isset( $block['callback']['error'] ) ) {
+				if ( $block['callback'] instanceof WP_Error ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<br>' . QueryMonitor::icon( 'warning' );
 					echo esc_html( sprintf(
 						/* translators: %s: Error message text */
 						__( 'Error: %s', 'query-monitor' ),
-						$block['callback']['error']->get_error_message()
+						$block['callback']->get_error_message()
 					) );
 				}
 

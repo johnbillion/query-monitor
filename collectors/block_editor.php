@@ -171,14 +171,15 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$this->data->total_blocks++;
 
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
-		$dynamic = false;
+		$dynamic = ( $block_type && $block_type->is_dynamic() );
 		$callback = null;
 
-		if ( $block_type && $block_type->is_dynamic() ) {
-			$dynamic = true;
-			$callback = QM_Util::populate_callback( array(
-				'function' => $block_type->render_callback,
-			) );
+		if ( $dynamic ) {
+			try {
+				$callback = QM_Callback::from_callable( $block_type->render_callback );
+			} catch ( QM_CallbackException $e ) {
+				$callback = $e->to_wp_error();
+			}
 		}
 
 		$timing = array_shift( $this->block_timing );

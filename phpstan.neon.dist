@@ -40,3 +40,6 @@ parameters:
 	reportUnmatchedIgnoredErrors: false
 	universalObjectCratesClasses:
 		- QM_Data_Fallback
+	exceptions:
+		check:
+			tooWideThrowType: true

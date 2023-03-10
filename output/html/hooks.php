@@ -73,6 +73,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	 */
 	public static function output_hook_table( array $hooks ) {
 		$core = __( 'WordPress Core', 'query-monitor' );
+		$has_clickable_links = self::has_clickable_links();
 
 		foreach ( $hooks as $hook ) {
 			$row_attr = array();
@@ -102,8 +103,9 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 				foreach ( $hook['actions'] as $action ) {
 					$component = '';
 					$subject = '';
+					$is_error = ( $action['callback'] instanceof WP_Error );
 
-					if ( isset( $action['callback']->component ) ) {
+					if ( ! $is_error ) {
 						$component = $action['callback']->component->name;
 						$subject = $component;
 					}
@@ -136,7 +138,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					}
 
-					if ( ! $action['callback']->is_valid() ) {
+					if ( $is_error ) {
 						$class = ' qm-warn';
 					} else {
 						$class = '';
@@ -156,12 +158,12 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					echo '</td>';
 
-					if ( isset( $action['callback']->file ) ) {
-						if ( self::has_clickable_links() ) {
+					if ( ! $is_error ) {
+						if ( $has_clickable_links && isset( $action['callback']->file, $action['callback']->line ) ) {
 							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
 							echo self::output_filename( $action['callback']->name, $action['callback']->file, $action['callback']->line ); // WPCS: XSS ok.
 							echo '</td>';
-						} else {
+						} elseif ( isset( $action['callback']->file, $action['callback']->line ) ) {
 							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 							echo self::build_toggler(); // WPCS: XSS ok;
 							echo '<ol>';
@@ -169,21 +171,21 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							echo self::output_filename( $action['callback']->name, $action['callback']->file, $action['callback']->line ); // WPCS: XSS ok.
 							echo '</li>';
 							echo '</ol></td>';
+						} else {
+							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
+							echo '<code>' . esc_html( $action['callback']->name ) . '</code>';
+							echo '</td>';
 						}
 					} else {
 						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-						echo '<code>' . esc_html( $action['callback']->name ) . '</code>';
-
-						if ( ! $action['callback']->is_valid() ) {
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo '<br>' . QueryMonitor::icon( 'warning' );
-							echo esc_html( sprintf(
-								/* translators: %s: Error message text */
-								__( 'Error: %s', 'query-monitor' ),
-								$action['callback']->error
-							) );
-						}
-
+						echo '<code>' . esc_html( $action['callback']->get_error_data() ) . '</code>';
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo '<br>' . QueryMonitor::icon( 'warning' );
+						echo esc_html( sprintf(
+							/* translators: %s: Error message text */
+							__( 'Error: %s', 'query-monitor' ),
+							$action['callback']->get_error_message()
+						) );
 						echo '</td>';
 					}
 
