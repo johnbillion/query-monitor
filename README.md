@@ -397,6 +397,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
  * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
 
 ## Hosted services
