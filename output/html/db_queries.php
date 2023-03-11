@@ -368,7 +368,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$row_attr = array();
 
-		if ( is_wp_error( $row['result'] ) ) {
+		if ( $row['result'] instanceof WP_Error ) {
 			$row_attr['class'] = 'qm-warn';
 		}
 		if ( isset( $cols['sql'] ) ) {
@@ -456,7 +456,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( isset( $cols['result'] ) ) {
-			if ( is_wp_error( $row['result'] ) ) {
+			if ( $row['result'] instanceof WP_Error ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo "<td class='qm-row-result qm-row-error'>" . QueryMonitor::icon( 'warning' ) . esc_html( $row['result']->get_error_message() ) . "</td>\n";
 			} else {
@@ -464,7 +464,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			}
 		}
 
-		if ( isset( $cols['errno'] ) && is_wp_error( $row['result'] ) ) {
+		if ( isset( $cols['errno'] ) && ( $row['result'] instanceof WP_Error ) ) {
 			echo "<td class='qm-row-result qm-row-error'>" . esc_html( $row['result']->get_error_code() ) . "</td>\n";
 		}
 

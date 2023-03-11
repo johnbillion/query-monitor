@@ -228,7 +228,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			// @TODO these should store a reference ($i) instead of the whole row
-			if ( is_wp_error( $result ) ) {
+			if ( $result instanceof WP_Error ) {
 				$this->data->errors[] = $row;
 			}
 

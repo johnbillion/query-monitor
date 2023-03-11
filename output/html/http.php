@@ -87,7 +87,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$row_attr = array();
 				$css = '';
 
-				if ( is_wp_error( $row['response'] ) ) {
+				if ( $row['response'] instanceof WP_Error ) {
 					$response = $row['response']->get_error_message();
 					$is_error = true;
 				} elseif ( ! $row['args']['blocking'] ) {

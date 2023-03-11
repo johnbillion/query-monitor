@@ -182,7 +182,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$warning = ! in_array( $handle, $raw->done, true );
 
-				if ( is_wp_error( $source ) ) {
+				if ( $source instanceof WP_Error ) {
 					$display = $source->get_error_message();
 				} else {
 					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
@@ -322,7 +322,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			) );
 		}
 
-		if ( is_wp_error( $source ) ) {
+		if ( $source instanceof WP_Error ) {
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				$host = (string) parse_url( $error_data['src'], PHP_URL_HOST );
