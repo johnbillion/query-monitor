@@ -148,19 +148,16 @@ final class QM_Callback {
 			throw ( new QM_CallbackException( $e->getMessage(), $e->getCode(), $e ) )->add_data( $name );
 		}
 
-		if ( '__lambda_func' === $ref->getName() ) {
-			$func = self::init( $name, $ref );
+		$func = self::init( $name, $ref );
 
+		if ( $func->file && '__lambda_func' === $ref->getName() ) {
 			preg_match( '#(?P<file>.*)\((?P<line>[0-9]+)\)#', $func->file, $matches );
 
 			$func->file = $matches['file'];
 			$func->line = (int) $matches['line'];
-
-			return $func;
 		}
 
-		return self::init( $name, $ref );
-
+		return $func;
 	}
 
 	protected static function init( string $name, ReflectionFunctionAbstract $ref ): self {
