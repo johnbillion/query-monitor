@@ -644,6 +644,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			),
 		);
 
+		/**
+		 * Filters which constants are displayed on the settings panel.
+		 *
+		 * @since n.e.x.t
+		 *
+		 * @param array $constants The displayed settings constants.
+		 */
+		$constants = apply_filters( 'qm/constants', $constants );
+
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>';
 		echo '<p>';
