@@ -488,11 +488,10 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	}
 
 	/**
-	 * @param array<int, string> $existing
+	 * @param array<int, string> $title
 	 * @return array<int, string>
 	 */
-	public function admin_title( array $existing ) {
-		$title = array();
+	public function admin_title( array $title ) {
 		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();
 
@@ -531,8 +530,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				number_format_i18n( $data->total_qs )
 			) );
 		}
-
-		$title = array_merge( $existing, $title );
 
 		return $title;
 	}

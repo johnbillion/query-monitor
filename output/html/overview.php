@@ -368,10 +368,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	}
 
 	/**
-	 * @param array<int, string> $existing
+	 * @param array<int, string> $title
 	 * @return array<int, string>
 	 */
-	public function admin_title( array $existing ) {
+	public function admin_title( array $title ) {
 		/** @var QM_Data_Overview $data */
 		$data = $this->collector->get_data();
 
@@ -391,8 +391,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			esc_html__( '%s MB', 'query-monitor' ),
 			$memory
 		) );
-
-		$title = array_merge( $existing, $title );
 
 		return $title;
 	}
