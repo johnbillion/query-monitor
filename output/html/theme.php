@@ -242,7 +242,17 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		/** @var QM_Data_Theme $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data->template_file ) ) {
+		if ( ! empty( $data->block_template ) ) {
+			if ( $data->block_template->wp_id ) {
+				$name = $data->block_template->id;
+			} else {
+				$name = sprintf(
+					'%s/%s.html',
+					$data->theme_folders[ $data->block_template->type ],
+					$data->block_template->slug
+				);
+			}
+		} elseif ( isset( $data->template_file ) ) {
 			$name = ( $data->is_child_theme ) ? $data->theme_template_file : $data->template_file;
 		} else {
 			$name = __( 'Unknown', 'query-monitor' );
