@@ -261,7 +261,6 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Allows it to log details about **all** database queries (including ones that happen before plugins are loaded)
  * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
  * Logs the query result, which allows it to display the affected rows or error message if applicable
- * Logs various PHP configurations before anything has loaded, which allows it to display a message if these get altered at runtime by a plugin or theme
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
