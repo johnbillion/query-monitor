@@ -645,11 +645,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		/**
-		 * Filters which constants are displayed on the settings panel.
+		 * Filters which PHP constants for configuring Query Monitor are displayed on its settings panel.
 		 *
-		 * @since n.e.x.t
+		 * @since 3.12.0
 		 *
 		 * @param array $constants The displayed settings constants.
+		 * @phpstan-param array<string, array{
+		 *   label: string,
+		 *   default: mixed,
+		 * }> $constants
 		 */
 		$constants = apply_filters( 'qm/constants', $constants );
 
