@@ -37,11 +37,6 @@ class QM_Data_Theme extends QM_Data {
 	public $theme_folders;
 
 	/**
-	 * @var bool
-	 */
-	public $has_template_part_action;
-
-	/**
 	 * @var string
 	 */
 	public $stylesheet;
