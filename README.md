@@ -261,7 +261,6 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Allows it to log details about **all** database queries (including ones that happen before plugins are loaded)
  * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
  * Logs the query result, which allows it to display the affected rows or error message if applicable
- * Logs various PHP configurations before anything has loaded, which allows it to display a message if these get altered at runtime by a plugin or theme
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
@@ -365,9 +364,17 @@ Query Monitor is private by default and always will be. It does not persistently
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
 
+# Accessibility Statement
+
+Query Monitor aims to be fully accessible to all of its users. It implements best practices for web accessibility, outputs semantic and structured markup, uses the accessibility APIs provided by WordPress and web browsers where appropriate, and is fully accessible via keyboard.
+
+That said, Query Monitor does _not_ conform to the Web Content Accessibility Guidelines (WCAG) 2.0 at level AA like WordPress itself does. The main issue is that the user interface uses small font sizes to maintain a high information density for sighted users. Users with poor vision or poor motor skills may struggle to view or interact with some areas of Query Monitor because of this. This is something which I'm acutely aware of and which I work to gradually improve, but the underlying issue of small font sizes remains.
+
+If you've experienced or identified another accessibility issue in Query Monitor, please open a thread in [the Query Monitor plugin support forum](https://wordpress.org/support/plugin/query-monitor/) and I'll try my best to address it swiftly.
+
 # Related Tools
 
-Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
+Debugging is rarely done with just one tool. Along with Query Monitor you should be aware of other plugins and tools for debugging and profiling your website. Here are some recommendations:
 
 ## WordPress Plugins
 
@@ -397,6 +404,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
  * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
 
 ## Hosted services

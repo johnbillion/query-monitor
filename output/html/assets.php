@@ -190,7 +190,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>';
 		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
 		echo '<td class="qm-ltr">';
-		if ( is_wp_error( $asset['source'] ) ) {
+		if ( $asset['source'] instanceof WP_Error ) {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
 				printf(

@@ -139,7 +139,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * Store log data.
 	 *
-	 * @param string $mofile Path to the MO file.
+	 * @param mixed $mofile Should be a string path to the MO file, could be anything.
 	 * @param string $domain Text domain.
 	 * @return string
 	 */
@@ -148,7 +148,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return $mofile;
 		}
 
-		if ( isset( $this->data->languages[ $domain ][ $mofile ] ) ) {
+		if ( is_string( $mofile ) && isset( $this->data->languages[ $domain ][ $mofile ] ) ) {
 			return $mofile;
 		}
 
@@ -166,7 +166,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 			),
 		) );
 
-		$found = file_exists( $mofile ) ? filesize( $mofile ) : false;
+		$found = ( is_string( $mofile ) ) && file_exists( $mofile ) ? filesize( $mofile ) : false;
+
+		if ( ! is_string( $mofile ) ) {
+			$mofile = gettype( $mofile );
+		}
 
 		$this->data->languages[ $domain ][ $mofile ] = array(
 			'caller' => $trace->get_caller(),

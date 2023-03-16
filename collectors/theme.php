@@ -421,72 +421,38 @@ class QM_Collector_Theme extends QM_DataCollector {
 			$this->data->template_hierarchy = array_unique( $this->data->template_hierarchy );
 		}
 
-		$this->data->has_template_part_action = function_exists( 'wp_body_open' );
+		if ( ! empty( $this->requested_template_parts ) ) {
+			$this->data->template_parts = array();
+			$this->data->theme_template_parts = array();
+			$this->data->count_template_parts = array();
 
-		if ( $this->data->has_template_part_action ) {
-			// Since WP 5.2, the `get_template_part` action populates this data nicely:
-			if ( ! empty( $this->requested_template_parts ) ) {
-				$this->data->template_parts = array();
-				$this->data->theme_template_parts = array();
-				$this->data->count_template_parts = array();
+			foreach ( $this->requested_template_parts as $part ) {
+				$file = locate_template( $part['templates'] );
 
-				foreach ( $this->requested_template_parts as $part ) {
-					$file = locate_template( $part['templates'] );
-
-					if ( ! $file ) {
-						$this->data->unsuccessful_template_parts[] = $part;
-						continue;
-					}
-
-					$file = QM_Util::standard_dir( $file );
-
-					if ( isset( $this->data->count_template_parts[ $file ] ) ) {
-						$this->data->count_template_parts[ $file ]++;
-						continue;
-					}
-
-					$this->data->count_template_parts[ $file ] = 1;
-
-					$filename = str_replace( array(
-						$stylesheet_directory,
-						$template_directory,
-					), '', $file );
-
-					$display = trim( $filename, '/' );
-					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
-
-					$this->data->template_parts[ $file ] = $display;
-					$this->data->theme_template_parts[ $file ] = $theme_display;
+				if ( ! $file ) {
+					$this->data->unsuccessful_template_parts[] = $part;
+					continue;
 				}
-			}
-		} else {
-			// Prior to WP 5.2, we need to look into `get_included_files()` and do our best to figure out
-			// if each one is a template part:
-			foreach ( get_included_files() as $file ) {
+
 				$file = QM_Util::standard_dir( $file );
+
+				if ( isset( $this->data->count_template_parts[ $file ] ) ) {
+					$this->data->count_template_parts[ $file ]++;
+					continue;
+				}
+
+				$this->data->count_template_parts[ $file ] = 1;
+
 				$filename = str_replace( array(
 					$stylesheet_directory,
 					$template_directory,
 				), '', $file );
-				if ( $filename !== $file ) {
-					$slug = trim( str_replace( '.php', '', $filename ), '/' );
-					$display = trim( $filename, '/' );
-					$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
-					$count = did_action( "get_template_part_{$slug}" );
-					if ( $count ) {
-						$this->data->template_parts[ $file ] = $display;
-						$this->data->theme_template_parts[ $file ] = $theme_display;
-						$this->data->count_template_parts[ $file ] = $count;
-					} else {
-						$slug = trim( preg_replace( '|\-[^\-]+$|', '', $slug ), '/' );
-						$count = did_action( "get_template_part_{$slug}" );
-						if ( $count ) {
-							$this->data->template_parts[ $file ] = $display;
-							$this->data->theme_template_parts[ $file ] = $theme_display;
-							$this->data->count_template_parts[ $file ] = $count;
-						}
-					}
-				}
+
+				$display = trim( $filename, '/' );
+				$theme_display = trim( str_replace( $theme_directory, '', $file ), '/' );
+
+				$this->data->template_parts[ $file ] = $display;
+				$this->data->theme_template_parts[ $file ] = $theme_display;
 			}
 		}
 
@@ -502,8 +468,6 @@ class QM_Collector_Theme extends QM_DataCollector {
 			$posts = ! empty( $this->requested_template_part_posts ) ? $this->requested_template_part_posts : array();
 			$files = ! empty( $this->requested_template_part_files ) ? $this->requested_template_part_files : array();
 			$nopes = ! empty( $this->requested_template_part_nopes ) ? $this->requested_template_part_nopes : array();
-
-			$this->data->has_template_part_action = true;
 
 			$all = array_merge( $posts, $files, $nopes );
 

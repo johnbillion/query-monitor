@@ -372,7 +372,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
 			}
 
-			if ( is_wp_error( $response['response'] ) ) {
+			if ( $response['response'] instanceof WP_Error ) {
 				if ( ! in_array( $response['response']->get_error_code(), $silent, true ) ) {
 					$this->data->errors['alert'][] = $key;
 				}

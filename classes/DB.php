@@ -48,6 +48,7 @@ class QM_DB extends wpdb {
 		if ( $this->last_error ) {
 			$code = 'qmdb';
 
+			// This needs to remain in place to account for a user still on PHP 5. Don't want to kill their site.
 			if ( $this->dbh instanceof mysqli ) {
 				$code = mysqli_errno( $this->dbh );
 			}

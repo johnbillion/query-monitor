@@ -1,9 +1,9 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 4.9
+Requires at least: 5.2
 Tested up to: 6.2
-Stable tag: 3.11.2
+Stable tag: 3.12.0
 License: GPLv2 or later
 Requires PHP: 7.2
 Donate link: https://github.com/sponsors/johnbillion
@@ -57,6 +57,14 @@ I maintain several other plugins for developers. Check them out:
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+
+### Accessibility Statement
+
+Query Monitor aims to be fully accessible to all of its users. It implements best practices for web accessibility, outputs semantic and structured markup, uses the accessibility APIs provided by WordPress and web browsers where appropriate, and is fully accessible via keyboard.
+
+That said, Query Monitor does _not_ conform to the Web Content Accessibility Guidelines (WCAG) 2.0 at level AA like WordPress itself does. The main issue is that the user interface uses small font sizes to maintain a high information density for sighted users. Users with poor vision or poor motor skills may struggle to view or interact with some areas of Query Monitor because of this. This is something which I'm acutely aware of and which I work to gradually improve, but the underlying issue of small font sizes remains.
+
+If you've experienced or identified another accessibility issue in Query Monitor, please open a thread in [the Query Monitor plugin support forum](https://wordpress.org/support/plugin/query-monitor/) and I'll try my best to address it swiftly.
 
 ## Screenshots
 
