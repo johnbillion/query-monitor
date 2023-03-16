@@ -1,5 +1,5 @@
 // Main container
-$qm-container-fg: #444 !default;
+$qm-container-fg: #333 !default;
 $qm-container-bg: #f3f3f3 !default;
 $qm-container-overflow: #ececec !default;
 
@@ -11,11 +11,11 @@ $qm-panel-separator: #ddd !default;
 
 // Panel menus
 $qm-panel-menu-border: #ddd !default;
-$qm-panel-menu-fg: #444 !default;
+$qm-panel-menu-fg: #333 !default;
 $qm-panel-menu-bg: $qm-container-bg !default;
-$qm-panel-menu-fg-hover: #444 !default;
+$qm-panel-menu-fg-hover: #333 !default;
 $qm-panel-menu-bg-hover: #cde !default;
-$qm-panel-menu-fg-current: #444 !default;
+$qm-panel-menu-fg-current: #333 !default;
 $qm-panel-menu-bg-current: #def !default;
 $qm-panel-menu-bg-current-focus: lighten( $qm-panel-menu-bg-current, 5% ) !default;
 $qm-panel-menu-fg-selected: #fff !default;
