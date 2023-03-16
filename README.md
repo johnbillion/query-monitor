@@ -374,7 +374,7 @@ If you've experienced or identified another accessibility issue in Query Monitor
 
 # Related Tools
 
-Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
+Debugging is rarely done with just one tool. Along with Query Monitor you should be aware of other plugins and tools for debugging and profiling your website. Here are some recommendations:
 
 ## WordPress Plugins
 
