@@ -322,7 +322,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		);
 
 		// This unused wrapper with an attribute serves to help the #qm-fatal div break out of an
-		// attribute if a fatal has occured within one.
+		// attribute if a fatal has occurred within one.
 		echo '<div data-qm="qm">';
 
 		printf(

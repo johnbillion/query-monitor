@@ -629,7 +629,7 @@ if ( window.jQuery ) {
 	(function ($) {
 		$.qm = $.qm || {};
 		$.qm.tableSort = function (settings) {
-			// @param	object	columns	NodeList table colums.
+			// @param	object	columns	NodeList table columns.
 			// @param	integer	row_width	defines the number of columns per row.
 			var table_to_array = function (columns, row_width) {
 				columns = Array.prototype.slice.call(columns, 0);

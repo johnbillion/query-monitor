@@ -192,7 +192,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				foreach ( $dependencies as $dep ) {
 					if ( ! $raw->query( $dep ) ) {
-						// A missing dependency is a dependecy on an asset that doesn't exist
+						// A missing dependency is a dependency on an asset that doesn't exist
 						$missing_dependencies[ $dep ] = true;
 					}
 				}
