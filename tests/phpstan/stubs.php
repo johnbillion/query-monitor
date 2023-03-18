@@ -16,10 +16,3 @@ define( 'Altis\ROOT_DIR', '' );
 function members_register_cap_group( string $name, array $args = [] ): void {}
 
 function members_register_cap( string $name, array $args = [] ): void {}
-
-// WPBrowser compatibility:
-
-class_alias(
-	'\\Codeception\\Test\\Unit',
-	'\\tad\\WPBrowser\\Compat\\Codeception\\Unit'
-);
