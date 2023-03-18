@@ -13,7 +13,7 @@ services:
     volumes:
       - ./tests/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./tests/wordpress:/var/www/html/:rw
-      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/html/wp-config.php
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
     networks:
       - qm
@@ -33,7 +33,7 @@ services:
     init: true
     volumes:
       - ./tests/wordpress:/var/www/html/:rw
-      - ./tests/wp-config.php:/var/www/html/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/html/wp-config.php
       - ./tests/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
     networks:
@@ -69,7 +69,7 @@ services:
     init: true
     volumes:
       - ./tests/wordpress:/var/www/:rw
-      - ./tests/wp-config.php:/var/www/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/wp-config.php
       - ./tests/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
       - ./:/var/www/wp-content/plugins/query-monitor:rw
     networks:
