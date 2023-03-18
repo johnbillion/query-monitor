@@ -32,6 +32,7 @@
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"ergebnis/composer-normalize": "^2.30",
+		"johnbillion/plugin-infrastructure": "dev-trunk",
 		"lucatume/wp-browser": "^3.0.21",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
 		"phpstan/phpstan": "^1.0",
@@ -82,7 +83,7 @@
 			"bin/acceptance-tests.sh"
 		],
 		"test:integration": [
-			"bin/integration-tests.sh"
+			"integration-tests"
 		],
 		"test:phpcs": [
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' . --standard=phpcs53.xml",
