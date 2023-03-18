@@ -67,7 +67,7 @@
 		"sort-packages": true
 	},
 	"extra": {
-		"wordpress-install-dir": "tests/wordpress"
+		"wordpress-install-dir": "vendor/roots/wordpress"
 	},
 	"scripts": {
 		"build-vendor": [
