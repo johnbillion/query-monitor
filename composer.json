@@ -31,7 +31,7 @@
 		"codeception/module-webdriver": "^1.0",
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
-		"ergebnis/composer-normalize": "^2.30",
+		"ergebnis/composer-normalize": "^2",
 		"lucatume/wp-browser": "^3.0.21",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
 		"phpstan/phpstan": "^1.0",
