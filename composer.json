@@ -70,6 +70,9 @@
 		"wordpress-install-dir": "tests/wordpress"
 	},
 	"scripts": {
+		"build-vendor": [
+			"build-vendor"
+		],
 		"test": [
 			"composer validate --strict --no-check-lock",
 			"composer normalize --dry-run",

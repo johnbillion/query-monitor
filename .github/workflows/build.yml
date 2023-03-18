@@ -38,7 +38,9 @@ jobs:
       run: npm ci
 
     - name: Generate autoload file
-      run: ./bin/build.sh
+      run: |
+        composer ci
+        composer run build-vendor
 
     - name: Build Assets
       run: npm run build
