@@ -19,6 +19,7 @@ parameters:
 		analyse:
 			- tests/integration/Supports
 	bootstrapFiles:
+		- vendor/johnbillion/plugin-infrastructure/phpstan-stubs.php
 		- tests/phpstan/stubs.php
 	dynamicConstantNames:
 		- COOKIE_DOMAIN
