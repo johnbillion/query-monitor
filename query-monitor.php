@@ -33,7 +33,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.12.0' );
+if ( ! defined( 'QM_VERSION' ) ) {
+	define( 'QM_VERSION', '3.12.0' );
+}
 
 $qm_dir = dirname( __FILE__ );
 
