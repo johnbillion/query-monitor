@@ -14,5 +14,5 @@ on:
 
 jobs:
   test:
-    name: PHP Coding Standards
+    name: Coding Standards
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
