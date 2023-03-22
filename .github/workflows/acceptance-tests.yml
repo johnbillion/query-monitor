@@ -17,7 +17,7 @@ on:
 
 jobs:
   test:
-    name: Acceptance Tests
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     strategy:
       matrix:
         wp: ['6.1','5.6','nightly']
