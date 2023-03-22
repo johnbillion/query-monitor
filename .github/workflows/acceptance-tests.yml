@@ -17,6 +17,7 @@ on:
 
 jobs:
   test:
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     strategy:
       matrix:
         wp: ['6.1','5.6','nightly']
@@ -29,7 +30,7 @@ jobs:
           - wp: 'nightly'
             php: '8.2'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
     with:
       wp: ${{ matrix.wp }}
       php: ${{ matrix.php }}

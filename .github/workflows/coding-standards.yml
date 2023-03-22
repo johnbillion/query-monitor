@@ -14,4 +14,4 @@ on:
 
 jobs:
   test:
-    uses: johnbillion/plugin-infrastructure/.github/workflows/coding-standards.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
