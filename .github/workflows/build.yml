@@ -11,3 +11,5 @@ jobs:
   build:
     name: Build
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+    with:
+      test: ${{ github.ref_name == 'test-release' }}
