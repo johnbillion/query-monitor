@@ -39,7 +39,7 @@ jobs:
 
       - name: Generate autoload file
         run: |
-          composer ci
+          composer install
           composer run build-vendor
 
       - name: Build Assets
