@@ -233,9 +233,9 @@ if ( window.jQuery ) {
 
 			key = $(this).attr('id');
 			if ( val ) {
-				localStorage.setItem( key, $(this).val() );
+				sessionStorage.setItem( key, $(this).val() );
 			} else {
-				localStorage.removeItem( key );
+				sessionStorage.removeItem( key );
 			}
 
 			if ( hilite ) {
@@ -277,7 +277,7 @@ if ( window.jQuery ) {
 
 		container.find('.qm-filter').each(function () {
 			var key = $(this).attr('id');
-			var value = localStorage.getItem( key );
+			var value = sessionStorage.getItem( key );
 			if ( value !== null ) {
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
 				var val = value.replace(/[[\]()'"\\]/g, "\\$&");
