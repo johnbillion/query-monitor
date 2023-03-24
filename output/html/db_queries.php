@@ -65,11 +65,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function output_empty_queries() {
-		$id = sprintf(
-			'%s-wpdb',
-			$this->collector->id()
-		);
-		$this->before_non_tabular_output( $id );
+		$this->before_non_tabular_output();
 
 		if ( ! SAVEQUERIES ) {
 			$notice = sprintf(
