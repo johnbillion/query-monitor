@@ -11,9 +11,9 @@ services:
     depends_on:
       - php
     volumes:
-      - ./vendor/johnbillion/plugin-infrastructure/nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./vendor/johnbillion/plugin-infrastructure/tests/nginx.conf:/etc/nginx/templates/default.conf.template
       - ./vendor/roots/wordpress:/var/www/html/:rw
-      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/html/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/tests/wp-config.php:/var/www/html/wp-config.php
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
     networks:
       - qm
@@ -33,8 +33,8 @@ services:
     init: true
     volumes:
       - ./vendor/roots/wordpress:/var/www/html/:rw
-      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/html/wp-config.php
-      - ./vendor/johnbillion/plugin-infrastructure/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
+      - ./vendor/johnbillion/plugin-infrastructure/tests/wp-config.php:/var/www/html/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/tests/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
       - ./:/var/www/html/wp-content/plugins/query-monitor:rw
     networks:
       - qm
@@ -69,8 +69,8 @@ services:
     init: true
     volumes:
       - ./vendor/roots/wordpress:/var/www/:rw
-      - ./vendor/johnbillion/plugin-infrastructure/wp-config.php:/var/www/wp-config.php
-      - ./vendor/johnbillion/plugin-infrastructure/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
+      - ./vendor/johnbillion/plugin-infrastructure/tests/wp-config.php:/var/www/wp-config.php
+      - ./vendor/johnbillion/plugin-infrastructure/tests/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini
       - ./:/var/www/wp-content/plugins/query-monitor:rw
     networks:
       - qm
