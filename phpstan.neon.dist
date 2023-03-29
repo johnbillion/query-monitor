@@ -1,9 +1,9 @@
 includes:
 	- vendor/phpstan/phpstan-phpunit/extension.neon
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
+	- vendor/johnbillion/plugin-infrastructure/phpstan/extension.neon
 parameters:
 	level: 7
-	tmpDir: tests/cache
 	paths:
 		- query-monitor.php
 		- classes
@@ -20,9 +20,6 @@ parameters:
 			- tests/integration/Supports
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
-	dynamicConstantNames:
-		- COOKIE_DOMAIN
-		- SAVEQUERIES
 	ignoreErrors:
 		# Uses func_get_args()
 		- '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'

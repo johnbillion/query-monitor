@@ -45,7 +45,7 @@ $WP core install \
 	--admin_password="admin" \
 	--admin_email="admin@example.com" \
 	--skip-email \
-	--require="wp-content/plugins/query-monitor/bin/mysqli_report.php"
+	--require="wp-content/plugins/query-monitor/vendor/johnbillion/plugin-infrastructure/tests/require.php"
 echo "Home URL: $WP_URL"
 $WP plugin activate query-monitor
 

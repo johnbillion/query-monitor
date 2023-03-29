@@ -70,7 +70,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 				echo '<tr>';
 				echo '<td class="qm-ltr">';
-				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
+				echo self::build_filter_trigger( 'db_queries', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
 				echo '</td>';
 
 				foreach ( $data->types as $type_name => $type_count ) {

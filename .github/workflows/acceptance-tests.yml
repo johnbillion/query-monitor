@@ -16,7 +16,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  acceptance:
+  test:
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     strategy:
       matrix:
         wp: ['6.1','5.6','nightly']
@@ -29,85 +30,7 @@ jobs:
           - wp: 'nightly'
             php: '8.2'
       fail-fast: false
-    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    timeout-minutes: 10
-    env:
-      LOCAL_PHP: ${{ matrix.php }}
-      LOCAL_WP_DEBUG: ${{ matrix.php < 8.1 && 1 || 0 }}
-    steps:
-    - name: Matrix values
-      run: echo "${{ toJSON(matrix) }}"
-
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: 8.0
-        tools: composer:v2
-        coverage: none
-        ini-file: development
-      env:
-        fail-fast: true
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Get Composer cache directory
-      id: composer-cache
-      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-    - name: Composer cache
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: 8.0-composer-${{ hashFiles('composer.json') }}
-
-    - name: Debugging
-      run: |
-        php --version
-        composer --version
-        docker --version
-        docker-compose --version
-
-    - name: Install Composer dependencies
-      run: |
-        if [ "${{ matrix.wp }}" == "nightly" ]
-        then
-          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="dev-nightly"
-        else
-          composer require --dev --update-with-dependencies --prefer-dist roots/wordpress="~${{ matrix.wp }}.0"
-        fi
-
-    - name: Setup node
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: '.nvmrc'
-        cache: npm
-
-    - name: Install node dependencies
-      run: npm ci
-
-    - name: Run the build
-      run: npm run build
-
-    - name: Start Docker environment
-      run: composer test:start
-
-    - name: Log running Docker containers
-      run: docker ps -a
-
-    - name: Debug WordPress version
-      run: docker-compose run --rm wpcli core version
-
-    - name: Run the tests
-      run: composer test:acceptance
-
-    - name: Upload test artifacts
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: acceptance-wp-${{ matrix.wp }}-php-${{ matrix.php }}
-        path: tests/_output
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    with:
+      wp: ${{ matrix.wp }}
+      php: ${{ matrix.php }}

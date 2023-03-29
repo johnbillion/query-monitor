@@ -104,7 +104,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data->wpdb->has_main_query ) ) {
 				echo '<p>';
-				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
+				echo self::build_filter_trigger( 'db_queries', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
 				echo '</p>';
 			}
 		}

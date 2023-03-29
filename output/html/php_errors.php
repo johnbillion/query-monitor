@@ -50,6 +50,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'Deprecated',
 		);
 		$components = $data->components;
+		$count = 0;
 
 		usort( $components, 'strcasecmp' );
 
@@ -61,8 +62,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
@@ -79,10 +80,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				}
 
 				foreach ( $data->{$error_group}[ $type ] as $error_key => $error ) {
+					$count += $error['calls'];
 
 					$row_attr = array();
 					$row_attr['data-qm-type'] = ucfirst( $type );
 					$row_attr['data-qm-key'] = $error_key;
+					$row_attr['data-qm-count'] = $error['calls'];
 
 					if ( $error['component'] ) {
 						$component = $error['component'];
@@ -122,7 +125,6 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					echo '</td>';
 
 					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
-					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
 					$stack = array();
 
@@ -160,6 +162,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo '</ol></td>';
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
 
 					if ( ! empty( $component ) ) {
 						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
@@ -173,6 +176,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		}
 
 		echo '</tbody>';
+
+		echo '<tfoot>';
+		echo '<tr>';
+		echo '<td colspan="5">';
+		printf(
+			/* translators: %s: Number of PHP errors */
+			esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'PHP error count', 'query-monitor' ) ),
+			'<span class="qm-items-number">' . esc_html( number_format_i18n( $count ) ) . '</span>'
+		);
+		echo '</td>';
+		echo '</tr>';
+		echo '</tfoot>';
 
 		$this->after_tabular_output();
 	}

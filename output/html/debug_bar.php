@@ -28,13 +28,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	 */
 	public function name() {
 		/** @var string */
-		$title = $this->collector->get_panel()->title();
-
-		return sprintf(
-			/* translators: Debug Bar add-on name */
-			__( 'Debug Bar: %s', 'query-monitor' ),
-			$title
-		);
+		return $this->collector->get_panel()->title();
 	}
 
 	/**
