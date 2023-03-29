@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'QM_Backtrace' ) ) {
+/**
+ * @deprecated Use QM_StackTrace instead
+ */
 class QM_Backtrace {
 
 	/**
