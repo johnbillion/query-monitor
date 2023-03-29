@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type errorObject from QM_Data_PHP_Errors
+ */
 class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 	/**
@@ -79,6 +82,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					continue;
 				}
 
+				/** @phpstan-var errorObject $error */
 				foreach ( $data->{$error_group}[ $type ] as $error_key => $error ) {
 					$count += $error['calls'];
 
