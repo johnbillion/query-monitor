@@ -111,6 +111,17 @@ final class QM_StackFrame {
 	}
 
 	/**
+	 * What can cause a frame in a stack trace to miss its file and line number?
+	 *
+	 * - An error that occurs within a shutdown handler
+	 * - A deprecated error
+	 *
+	 * Examples:
+	 *
+	 *     add_action( 'shutdown', function() {
+	 *         foreach ( true as $foo );
+	 *     }, -999 );
+	 *
 	 * @param array<string, mixed> $frame
 	 * @phpstan-param array{
 	 *   file?: string,
