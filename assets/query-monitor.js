@@ -310,7 +310,7 @@ if ( window.jQuery ) {
 			var toggle = $(this).closest('td').find('.qm-toggled');
 			if ( currentState === 'true' ) {
 				if ( toggle.length ) {
-					toggle.slideToggle(200,function(){
+					toggle.slideToggle(150,function(){
 						el.closest('td').removeClass('qm-toggled-on');
 						el.text(el.attr('data-on'));
 					});
@@ -321,7 +321,7 @@ if ( window.jQuery ) {
 			} else {
 				el.closest('td').addClass('qm-toggled-on');
 				el.text(el.attr('data-off'));
-				toggle.slideToggle(200);
+				toggle.slideToggle(150);
 			}
 			e.preventDefault();
 		});
