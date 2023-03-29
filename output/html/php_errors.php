@@ -91,8 +91,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$row_attr['data-qm-key'] = $error_key;
 					$row_attr['data-qm-count'] = $error['calls'];
 
-					if ( $error['component'] ) {
-						$component = $error['component'];
+					$component = $error['trace'] ? $error['trace']->get_component() : null;
+
+					if ( $component instanceof QM_Component ) {
 						$row_attr['data-qm-component'] = $component->name;
 
 						if ( 'core' !== $component->context ) {

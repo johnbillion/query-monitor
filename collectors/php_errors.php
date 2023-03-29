@@ -218,10 +218,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		if ( ! class_exists( 'QM_Backtrace' ) ) {
-			return false;
-		}
-
 		$error_group = 'errors';
 
 		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
@@ -247,15 +243,16 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		$trace = new QM_Backtrace();
-		$trace->push_frame( array(
-			'file' => $file,
-			'line' => $line,
-		) );
-		$caller = $trace->get_caller();
+		$caller = null;
+		$trace = null;
+
+		if ( $do_trace ) {
+			$trace = QM_StackTrace::init();
+			$caller = $trace->get_caller();
+		}
 
 		if ( $caller ) {
-			$key = md5( $message . $file . $line . $caller['id'] );
+			$key = md5( $message . $file . $line . $caller->get_fqn() );
 		} else {
 			$key = md5( $message . $file . $line );
 		}
@@ -268,10 +265,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				'type' => $type,
 				'message' => wp_strip_all_tags( $message ),
 				'file' => $file,
-				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
 				'line' => $line,
-				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
-				'component' => $trace->get_component(),
+				'trace' => ( $do_trace ? $trace : null ),
 				'calls' => 1,
 			);
 		}
