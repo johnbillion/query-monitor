@@ -133,20 +133,14 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					$stack = array();
 
-					if ( $error['filtered_trace'] ) {
-						$filtered_trace = $error['filtered_trace'];
-
-						// debug_backtrace() (used within QM_Backtrace) doesn't like being used within an error handler so
-						// we need to handle its somewhat unreliable stack trace items.
-						// https://bugs.php.net/bug.php?id=39070
-						// https://bugs.php.net/bug.php?id=64987
-						foreach ( $filtered_trace as $i => $item ) {
-							if ( isset( $item['file'], $item['line'] ) ) {
-								$stack[] = self::output_filename( $item['display'], $item['file'], $item['line'] );
+					if ( $error['trace'] instanceof QM_StackTrace ) {
+						foreach ( $error['trace'] as $i => $item ) {
+							if ( isset( $item->file, $item->line ) ) {
+								$stack[] = self::output_filename( $item->get_display(), $item->file, $item->line );
 							} elseif ( 0 === $i ) {
-								$stack[] = self::output_filename( $item['display'], $error['file'], $error['line'] );
+								$stack[] = self::output_filename( $item->get_display(), $error['file'], $error['line'] );
 							} else {
-								$stack[] = $item['display'] . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
+								$stack[] = $item->get_display() . '<br><span class="qm-info qm-supplemental"><em>' . __( 'Unknown location', 'query-monitor' ) . '</em></span>';
 							}
 						}
 					}
@@ -159,7 +153,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '<ol>';
 					echo '<li>';
-					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
+					echo self::output_filename( QM_Util::standard_dir( $error['file'], '' ) . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 
 					if ( ! empty( $stack ) ) {

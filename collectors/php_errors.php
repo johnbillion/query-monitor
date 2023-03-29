@@ -455,7 +455,13 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 						 * @phpstan-var errorObject $error
 						 */
 						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
-							$components[ $error['component']->name ] = $error['component']->name;
+							if ( $error['trace'] instanceof QM_StackTrace ) {
+								$component = $error['trace']->get_component();
+
+								if ( $component instanceof QM_Component ) {
+									$components[ $component->name ] = $component->name;
+								}
+							}
 						}
 					}
 				}

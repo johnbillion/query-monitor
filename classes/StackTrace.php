@@ -14,9 +14,9 @@
  *   class?: string,
  *   type?: '->'|'::',
  * }
- * @implements ArrayAccess<int,QM_StackFrame>
+ * @implements \IteratorAggregate<int,QM_StackFrame>
  */
-final class QM_StackTrace implements \ArrayAccess {
+final class QM_StackTrace implements IteratorAggregate {
 	/**
 	 * @var array<int,QM_StackFrame>
 	 */
@@ -308,41 +308,10 @@ final class QM_StackTrace implements \ArrayAccess {
 	}
 
 	/**
-	 * @param mixed $offset
-	 * @param mixed $value
-	 * @return void
-	 * @phpstan-param QM_StackFrame $value
+	 * @return ArrayIterator<int,QM_StackFrame>
 	 */
-	#[ReturnTypeWillChange]
-	public function offsetSet( $offset, $value ) {
-		$this->frames[ $offset ] = $value;
-	}
-
-	/**
-	 * @param mixed $offset
-	 * @return bool
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetExists( $offset ) {
-		return isset( $this->frames[ $offset ] );
-	}
-
-	/**
-	 * @param mixed $offset
-	 * @return void
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetUnset( $offset ) {
-		unset( $this->frames[ $offset ] );
-	}
-
-	/**
-	 * @param mixed $offset
-	 * @return mixed
-	 * @phpstan-return ?QM_StackFrame
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetGet( $offset ) {
-		return $this->frames[ $offset ] ?? null;
+	#[\ReturnTypeWillChange]
+	public function getIterator() {
+		return new ArrayIterator( $this->frames );
 	}
 }
