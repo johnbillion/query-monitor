@@ -50,6 +50,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'Deprecated',
 		);
 		$components = $data->components;
+		$count = 0;
 
 		usort( $components, 'strcasecmp' );
 
@@ -79,10 +80,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 				}
 
 				foreach ( $data->{$error_group}[ $type ] as $error_key => $error ) {
+					$count += $error['calls'];
 
 					$row_attr = array();
 					$row_attr['data-qm-type'] = ucfirst( $type );
 					$row_attr['data-qm-key'] = $error_key;
+					$row_attr['data-qm-count'] = $error['calls'];
 
 					if ( $error['component'] ) {
 						$component = $error['component'];
@@ -173,6 +176,18 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		}
 
 		echo '</tbody>';
+
+		echo '<tfoot>';
+		echo '<tr>';
+		echo '<td colspan="5">';
+		printf(
+			/* translators: %s: Number of PHP errors */
+			esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'PHP error count', 'query-monitor' ) ),
+			'<span class="qm-items-number">' . esc_html( number_format_i18n( $count ) ) . '</span>'
+		);
+		echo '</td>';
+		echo '</tr>';
+		echo '</tfoot>';
 
 		$this->after_tabular_output();
 	}
