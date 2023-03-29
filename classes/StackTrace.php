@@ -98,9 +98,9 @@ final class QM_StackTrace implements IteratorAggregate {
 	protected static $filtered = false;
 
 	/**
-	 * @var ?array<string, mixed>
+	 * @var array<string, mixed>
 	 */
-	protected $options = null;
+	protected $options = array();
 
 	/**
 	 * @var ?QM_Component
@@ -153,7 +153,7 @@ final class QM_StackTrace implements IteratorAggregate {
 
 		$this->frames = array_values( array_filter( array_map( array( $this, 'process_frame' ), $trace ) ) );
 
-		$this->options = null;
+		$this->options = array();
 	}
 
 	/**
@@ -198,7 +198,7 @@ final class QM_StackTrace implements IteratorAggregate {
 			return null;
 		}
 
-		return QM_StackFrame::from_function_frame( $frame );
+		return QM_StackFrame::from_function_frame( $frame, $this->options );
 	}
 
 	/**
