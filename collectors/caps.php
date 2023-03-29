@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends QM_DataCollector<QM_Data_Caps>
  * @phpstan-type CapCheck array{
  *   args: list<mixed>,
- *   filtered_trace: list<array<string, mixed>>,
- *   component: QM_Component,
+ *   trace: QM_StackTrace,
  *   result: bool,
  * }
  */
@@ -122,7 +121,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 * @return bool[] Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
-		$trace = new QM_Backtrace( array(
+		$trace = QM_StackTrace::init( array(
 			'ignore_hook' => array(
 				current_filter() => true,
 			),
@@ -148,8 +147,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 		$this->cap_checks[] = array(
 			'args' => $args,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'result' => $result,
 		);
 
@@ -180,7 +178,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 			return $required_caps;
 		}
 
-		$trace = new QM_Backtrace( array(
+		$trace = QM_StackTrace::init( array(
 			'ignore_hook' => array(
 				current_filter() => true,
 			),
@@ -202,8 +200,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 		$this->cap_checks[] = array(
 			'args' => $args,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'result' => $result,
 		);
 
@@ -236,7 +233,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 				$name = '';
 			}
 
-			$component = $cap['component'];
+			$component = $cap['trace']->get_component();
 			$parts = array();
 			$pieces = preg_split( '#[_/-]#', $name );
 
@@ -269,7 +266,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 * @return bool
 	 */
 	public function filter_remove_noise( array $cap ) {
-		$trace = $cap['filtered_trace'];
+		$trace = $cap['trace'];
 
 		$exclude_files = array(
 			ABSPATH . 'wp-admin/menu.php',
@@ -281,10 +278,10 @@ class QM_Collector_Caps extends QM_DataCollector {
 		);
 
 		foreach ( $trace as $item ) {
-			if ( isset( $item['file'] ) && in_array( $item['file'], $exclude_files, true ) ) {
+			if ( isset( $item->file ) && in_array( $item->file, $exclude_files, true ) ) {
 				return false;
 			}
-			if ( isset( $item['function'] ) && in_array( $item['function'], $exclude_functions, true ) ) {
+			if ( in_array( $item->function, $exclude_functions, true ) ) {
 				return false;
 			}
 		}

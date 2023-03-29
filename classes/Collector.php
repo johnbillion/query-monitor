@@ -6,6 +6,9 @@
  */
 
 if ( ! class_exists( 'QM_Collector' ) ) {
+/**
+ * @phpstan-import-type CapCheck from QM_Collector_Caps
+ */
 abstract class QM_Collector {
 
 	/**
@@ -311,13 +314,11 @@ abstract class QM_Collector {
 
 	/**
 	 * @param array<string, mixed> $item
-	 * @phpstan-param array{
-	 *   component: QM_Component,
-	 * } $item
+	 * @phpstan-param CapCheck $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {
-		return ( 'query-monitor' !== $item['component']->context );
+		return ( 'query-monitor' !== $item['trace']->get_component()->context );
 	}
 
 	/**
