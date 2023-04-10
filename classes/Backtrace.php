@@ -432,7 +432,7 @@ class QM_Backtrace {
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
 			 *
-			 * @since x.x.x
+			 * @since 3.8.0
 			 *
 			 * @param bool[] $ignore_hook Array of hook names to ignore. The array keys are hook names to ignore,
 			 *                            the array values are whether to ignore the hook or not (usually true).
