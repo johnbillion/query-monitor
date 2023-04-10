@@ -15,7 +15,7 @@ $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
-$qm-font-code-line-height: 19px;
+$qm-font-code-line-height: 20px;
 
 // === Admin Menu ===
 
@@ -470,7 +470,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			color: var( --qm-panel-menu-fg ) !important;
 			cursor: pointer !important;
 			display: block !important;
-			padding: 6px 32px 6px 10px !important;
+			padding: 8px 32px 8px 10px !important;
 			position: relative !important;
 			text-decoration: none !important;
 			width: 100% !important;
@@ -629,7 +629,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		tfoot th,
 		tfoot td {
 			border: 1px solid var( --qm-cell-border ) !important;
-			padding: 5px 5px 4px 5px !important;
+			padding: 7px 7px 6px 7px !important;
 			vertical-align: top !important;
 		}
 
@@ -644,7 +644,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			border: 1px solid var( --qm-cell-border ) !important;
 			border-top: none !important;
 			box-shadow: 0 1px 0 var( --qm-cell-border ) !important;
-			padding: 5px !important;
+			padding: 5px 5px 5px 7px !important;
 			position: -webkit-sticky !important;
 			position: sticky !important;
 			top: 0 !important;
@@ -719,7 +719,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		td.qm-has-toggle {
-			padding-right: 24px !important;
+			padding-right: 28px !important;
 			position: relative !important;
 		}
 
@@ -831,6 +831,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm li {
 		display: list-item !important;
 		list-style: none !important;
+		line-height: 20px !important;
 
 		&::before {
 			content: '' !important;
