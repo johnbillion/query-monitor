@@ -16,7 +16,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	public function __construct( QM_Plugin $qm ) {
 		parent::__construct( $qm );
 
-		add_filter( 'rest_post_dispatch', array( $this, 'filter_rest_post_dispatch' ), 1, 3 );
+		add_filter( 'rest_post_dispatch', array( $this, 'filter_rest_post_dispatch' ), 1 );
 
 	}
 
@@ -24,11 +24,9 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	 * Filters a REST API response in order to add QM's headers.
 	 *
 	 * @param WP_HTTP_Response $result  Result to send to the client. Usually a WP_REST_Response.
-	 * @param WP_REST_Server   $server  Server instance.
-	 * @param WP_REST_Request  $request Request used to generate the response.
 	 * @return WP_HTTP_Response Result to send to the client.
 	 */
-	public function filter_rest_post_dispatch( WP_HTTP_Response $result, WP_REST_Server $server, WP_REST_Request $request ) {
+	public function filter_rest_post_dispatch( WP_HTTP_Response $result ) {
 
 		if ( ! $this->should_dispatch() ) {
 			return $result;
