@@ -237,13 +237,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
 			array(),
-			$this->qm->plugin_ver( 'assets/query-monitor.css' )
+			QM_VERSION
 		);
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
 			$deps,
-			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
+			QM_VERSION,
 			false
 		);
 		wp_localize_script(
