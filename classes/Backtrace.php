@@ -96,9 +96,9 @@ class QM_Backtrace {
 	protected $args = array();
 
 	/**
-	 * @var mixed[]|null
+	 * @var mixed[]
 	 */
-	protected $trace = null;
+	protected $trace;
 
 	/**
 	 * @var mixed[]|null

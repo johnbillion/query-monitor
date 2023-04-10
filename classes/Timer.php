@@ -8,14 +8,14 @@
 class QM_Timer {
 
 	/**
-	 * @var array<string, mixed>|null
+	 * @var array<string, mixed>
 	 * @phpstan-var array{
 	 *   time: float,
 	 *   memory: int,
 	 *   data: mixed[]|null,
-	 * }|null
+	 * }
 	 */
-	protected $start = null;
+	protected $start;
 
 	/**
 	 * @var array<string, mixed>|null
@@ -28,9 +28,9 @@ class QM_Timer {
 	protected $end = null;
 
 	/**
-	 * @var QM_Backtrace|null
+	 * @var QM_Backtrace
 	 */
-	protected $trace = null;
+	protected $trace;
 
 	/**
 	 * @var array<string, array<string, mixed>>
