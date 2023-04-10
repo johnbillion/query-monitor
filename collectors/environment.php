@@ -164,7 +164,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, SORT_STRING | SORT_FLAG_CASE );
-			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) ) ?: array();
 		} else {
 			$php_data['extensions'] = array();
 		}
