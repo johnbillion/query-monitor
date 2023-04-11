@@ -7,7 +7,7 @@
 	"author": "John Blackbourn",
 	"repository": "johnbillion/query-monitor",
 	"engines": {
-		"node": ">=16"
+		"node": "16"
 	},
 	"main": "src/index.tsx",
 	"dependencies": {
@@ -49,7 +49,7 @@
 		"wait-port": "^1.0.4",
 		"webpack-cli": "^4.9.1",
 		"webpack": "^5.47.1",
-		"wp-types": "^2"
+		"wp-types": "^3"
 	},
 	"scripts": {
 		"lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
