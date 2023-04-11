@@ -47,7 +47,7 @@ class DispatcherHTML extends Test {
 
 		self::assertArrayHasKey( 'query-monitor', $registered );
 		self::assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
-		self::assertSame( 'https', parse_url( $registered['query-monitor']->src, PHP_URL_SCHEME ) );
+		self::assertSame( 'https', parse_url( $registered['query-monitor']->src ?: '', PHP_URL_SCHEME ) );
 
 		if ( isset( $https ) ) {
 			$_SERVER['HTTPS'] = $https;

@@ -5,7 +5,6 @@ namespace QM\Tests;
 class Plugin extends Test {
 	/**
 	 * @var ?array{
-	 *   tested_up_to: string,
 	 *   stable_tag: string,
 	 * }
 	 */
@@ -23,7 +22,6 @@ class Plugin extends Test {
 
 	/**
 	 * @return array{
-	 *   tested_up_to: string,
 	 *   stable_tag: string,
 	 * }|false
 	 */
@@ -43,11 +41,9 @@ class Plugin extends Test {
 
 			$file_contents = implode( '', $file_contents );
 
-			preg_match( '|Tested up to:(.*)|i', $file_contents, $_tested_up_to );
 			preg_match( '|Stable tag:(.*)|i', $file_contents, $_stable_tag );
 
 			$this->readme_data = array(
-				'tested_up_to' => trim( trim( $_tested_up_to[1], '*' ) ),
 				'stable_tag' => trim( trim( $_stable_tag[1], '*' ) )
 			);
 		}

@@ -63,7 +63,7 @@ To run just the acceptance tests:
 
 To run just the code sniffer:
 
-	composer test:cs
+	composer test:phpcs
 
 To run just the static analysis:
 

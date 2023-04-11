@@ -34,17 +34,11 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data->dbs ) ) {
+		if ( empty( $data->wpdb ) ) {
 			return $output;
 		}
 
-		$dbs = array();
-
-		foreach ( $data->dbs as $name => $db ) {
-			$dbs[ $name ] = $this->output_queries( $name, $db, $data );
-		}
-
-		$output['dbs'] = $dbs;
+		$output['wpdb'] = $this->output_queries( $data->wpdb );
 
 		if ( ! empty( $data->errors ) ) {
 			$output['errors'] = array(
@@ -72,9 +66,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	}
 
 	/**
-	 * @param string $name
 	 * @param stdClass $db
-	 * @param QM_Data_DB_Queries $data
 	 * @return array
 	 * @phpstan-return array{
 	 *   total: int,
@@ -82,7 +74,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 *   queries: mixed[],
 	 * }|array{}
 	 */
-	protected function output_queries( $name, stdClass $db, QM_Data_DB_Queries $data ) {
+	protected function output_queries( stdClass $db ) {
 		$this->query_row = 0;
 
 		$output = array();

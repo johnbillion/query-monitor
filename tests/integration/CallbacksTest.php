@@ -30,7 +30,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( '__return_false()',   $actual['name'] );
 		self::assertEquals( $ref->getFileName(),  $actual['file'] );
 		self::assertEquals( $ref->getStartLine(), $actual['line'] );
@@ -49,7 +48,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $function,                 $actual['function'] );
 		self::assertEquals( 'QM\T\S\TestObject->hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
@@ -68,7 +66,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
 		self::assertEquals( $ref->getFileName(),  $actual['file'] );
 		self::assertEquals( $ref->getStartLine(), $actual['line'] );
@@ -86,7 +83,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $function,                 $actual['function'] );
 		self::assertEquals( '\Q\T\S\TestObject::hello()', $actual['name'] );
 		self::assertEquals( $ref->getFileName(),       $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
@@ -104,7 +100,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( array( '\QM\Tests\Supports\TestObject', 'hello' ), $actual['function'] );
 		self::assertEquals( '\Q\T\S\TestObject::hello()',          $actual['name'] );
 		self::assertEquals( $ref->getFileName(),                $actual['file'] );
 		self::assertEquals( $ref->getStartLine(),               $actual['line'] );
@@ -128,7 +123,6 @@ class Callbacks extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $function,            $actual['function'] );
 		self::assertEquals( $name,                $actual['name'] );
 		self::assertEquals( $ref->getFileName(),  $actual['file'] );
 		self::assertEquals( $ref->getStartLine(), $actual['line'] );

@@ -170,7 +170,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 		) );
 		$filtered_trace = $trace->get_display_trace();
 
-		if ( is_wp_error( $message ) ) {
+		if ( $message instanceof WP_Error ) {
 			$message = sprintf(
 				'WP_Error: %s (%s)',
 				$message->get_error_message(),

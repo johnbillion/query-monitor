@@ -7,7 +7,7 @@
 
 class QM_Data_DB_Queries extends QM_Data {
 	/**
-	 * @var ?int
+	 * @var int
 	 */
 	public $total_qs;
 
@@ -22,18 +22,18 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $errors;
 
 	/**
-	 * @var array<int, array<string, mixed>>
+	 * @var ?array<int, array<string, mixed>>
 	 */
 	public $expensive;
 
 	/**
-	 * @var ?array<string, stdClass>
+	 * @var ?stdClass
 	 */
-	public $dbs;
+	public $wpdb;
 
 	/**
-	 * @var array<string, array<string, mixed>>
-	 * @phpstan-var array<string, array{
+	 * @var ?array<string, array<string, mixed>>
+	 * @phpstan-var ?array<string, array{
 	 *   caller: string,
 	 *   ltime: float,
 	 *   types: array<string, int>,
@@ -42,7 +42,7 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $times = array();
 
 	/**
-	 * @var array<string, array<int, int>>
+	 * @var ?array<string, array<int, int>>
 	 */
 	public $dupes;
 }

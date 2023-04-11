@@ -149,24 +149,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
 			) );
 
-			if ( $data->wp_memory_limit > 0 ) {
-				if ( $data->display_memory_usage_warning ) {
-					echo '<br><span class="qm-warn">';
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo QueryMonitor::icon( 'warning' );
-					echo '</span>';
-				} else {
-					echo '<br><span class="qm-info">';
-				}
-				echo esc_html( sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
-					__( '%1$s%% of %2$s MB WordPress limit', 'query-monitor' ),
-					number_format_i18n( $data->wp_memory_usage, 1 ),
-					number_format_i18n( $data->wp_memory_limit / 1024 / 1024 )
-				) );
-				echo '</span>';
-			}
-
 			if ( $data->memory_limit > 0 ) {
 				if ( $data->display_memory_usage_warning ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -220,7 +202,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 						esc_html( $type_name ),
 						esc_html( number_format_i18n( $type_count ) )
 					);
-					echo self::build_filter_trigger( 'db_queries-wpdb', 'type', (string) $type_name, esc_html( $label ) ); // WPCS: XSS ok;
+					echo self::build_filter_trigger( 'db_queries', 'type', (string) $type_name, esc_html( $label ) ); // WPCS: XSS ok;
 					echo '<br>';
 				}
 			}
@@ -230,7 +212,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				esc_html( _x( 'Total', 'database queries', 'query-monitor' ) ),
 				esc_html( number_format_i18n( $db_queries_data->total_qs ) )
 			);
-			echo self::build_filter_trigger( 'db_queries-wpdb', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
+			echo self::build_filter_trigger( 'db_queries', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 
 			echo '</p>';
 		} else {
@@ -386,10 +368,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 	}
 
 	/**
-	 * @param array<int, string> $existing
+	 * @param array<int, string> $title
 	 * @return array<int, string>
 	 */
-	public function admin_title( array $existing ) {
+	public function admin_title( array $title ) {
 		/** @var QM_Data_Overview $data */
 		$data = $this->collector->get_data();
 
@@ -409,8 +391,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			esc_html__( '%s MB', 'query-monitor' ),
 			$memory
 		) );
-
-		$title = array_merge( $existing, $title );
 
 		return $title;
 	}

@@ -164,9 +164,9 @@ if ( window.jQuery ) {
 
 			key = $(this).attr('id');
 			if ( val ) {
-				localStorage.setItem( key, $(this).val() );
+				sessionStorage.setItem( key, $(this).val() );
 			} else {
-				localStorage.removeItem( key );
+				sessionStorage.removeItem( key );
 			}
 
 			if ( hilite ) {
@@ -184,20 +184,38 @@ if ( window.jQuery ) {
 			}
 
 			var matches = tr.filter(':visible');
+			var filtered_count = 0;
+			var total_count = 0;
 			matches.each(function(i){
 				var row_time = $(this).attr('data-qm-time');
 				if ( row_time ) {
 					time += parseFloat( row_time );
+				}
+
+				var row_count = $(this).attr('data-qm-count');
+				if ( row_count ) {
+					filtered_count += parseFloat( row_count );
+				} else {
+					filtered_count++;
 				}
 			});
 			if ( time ) {
 				time = QM_i18n.number_format( time, 4 );
 			}
 
+			tr.each(function(i){
+				var row_count = $(this).attr('data-qm-count');
+				if ( row_count ) {
+					total_count += parseFloat( row_count );
+				} else {
+					total_count++;
+				}
+			});
+
 			if ( table.find('.qm-filtered').length ) {
-				var count = matches.length + ' / ' + tr.length;
+				var count = filtered_count + ' / ' + total_count;
 			} else {
-				var count = matches.length;
+				var count = filtered_count;
 			}
 
 			table.find('.qm-items-number').text(count);
@@ -206,7 +224,7 @@ if ( window.jQuery ) {
 
 		container.find('.qm-filter').each(function () {
 			var key = $(this).attr('id');
-			var value = localStorage.getItem( key );
+			var value = sessionStorage.getItem( key );
 			if ( value !== null ) {
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
 				var val = value.replace(/[[\]()'"\\]/g, "\\$&");
@@ -239,7 +257,7 @@ if ( window.jQuery ) {
 			var toggle = $(this).closest('td').find('.qm-toggled');
 			if ( currentState === 'true' ) {
 				if ( toggle.length ) {
-					toggle.slideToggle(200,function(){
+					toggle.slideToggle(150,function(){
 						el.closest('td').removeClass('qm-toggled-on');
 						el.text(el.attr('data-on'));
 					});
@@ -250,7 +268,7 @@ if ( window.jQuery ) {
 			} else {
 				el.closest('td').addClass('qm-toggled-on');
 				el.text(el.attr('data-off'));
-				toggle.slideToggle(200);
+				toggle.slideToggle(150);
 			}
 			e.preventDefault();
 		});
@@ -456,7 +474,7 @@ if ( window.jQuery ) {
 	(function ($) {
 		$.qm = $.qm || {};
 		$.qm.tableSort = function (settings) {
-			// @param	object	columns	NodeList table colums.
+			// @param	object	columns	NodeList table columns.
 			// @param	integer	row_width	defines the number of columns per row.
 			var table_to_array = function (columns, row_width) {
 				columns = Array.prototype.slice.call(columns, 0);

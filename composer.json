@@ -1,13 +1,24 @@
 {
 	"name": "johnbillion/query-monitor",
-	"type": "wordpress-plugin",
 	"description": "The Developer Tools panel for WordPress.",
-	"homepage": "https://github.com/johnbillion/query-monitor/",
 	"license": "GPL-2.0-or-later",
+	"type": "wordpress-plugin",
 	"authors": [
 		{
 			"name": "John Blackbourn",
 			"homepage": "https://johnblackbourn.com/"
+		}
+	],
+	"homepage": "https://github.com/johnbillion/query-monitor/",
+	"support": {
+		"issues": "https://github.com/johnbillion/query-monitor/issues",
+		"forum": "https://wordpress.org/support/plugin/query-monitor",
+		"source": "https://github.com/johnbillion/query-monitor"
+	},
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/johnbillion"
 		}
 	],
 	"require": {
@@ -16,10 +27,12 @@
 	},
 	"require-dev": {
 		"codeception/module-asserts": "^1.0",
-		"codeception/module-webdriver": "^1.0",
 		"codeception/module-db": "^1.0",
+		"codeception/module-webdriver": "^1.0",
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
+		"ergebnis/composer-normalize": "^2",
+		"johnbillion/plugin-infrastructure": "dev-trunk",
 		"lucatume/wp-browser": "^3.0.21",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
 		"phpstan/phpstan": "^1.0",
@@ -28,50 +41,6 @@
 		"squizlabs/php_codesniffer": "3.7.1",
 		"szepeviktor/phpstan-wordpress": "1.1.6",
 		"wp-coding-standards/wpcs": "2.3.0"
-	},
-	"config": {
-		"preferred-install": "dist",
-		"sort-packages": true,
-		"prepend-autoloader": false,
-		"classmap-authoritative": true,
-		"allow-plugins": {
-			"composer/installers": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true,
-			"roots/wordpress-core-installer": true
-		}
-	},
-	"extra": {
-		"wordpress-install-dir": "tests/wordpress"
-	},
-	"scripts": {
-		"test": [
-			"composer validate --strict",
-			"@test:phpstan",
-			"@test:cs",
-			"@test:integration",
-			"@test:acceptance"
-		],
-		"test:cs": [
-			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' --standard=phpcs53.xml",
-			"phpcs -nps --colors --report-code --report-width=80 --cache=tests/cache/phpcs --basepath='./' ."
-		],
-		"test:phpstan": [
-			"codecept build",
-			"phpstan analyze --memory-limit=1024M"
-		],
-		"test:integration": [
-			"bin/integration-tests.sh"
-		],
-		"test:start": [
-			"docker-compose up -d"
-		],
-		"test:acceptance": [
-			"npm run build",
-			"bin/acceptance-tests.sh"
-		],
-		"test:stop": [
-			"docker-compose down"
-		]
 	},
 	"autoload": {
 		"classmap": [
@@ -85,15 +54,53 @@
 			"QM\\Tests\\": "tests/integration"
 		}
 	},
-	"support": {
-		"issues": "https://github.com/johnbillion/query-monitor/issues",
-		"forum": "https://wordpress.org/support/plugin/query-monitor",
-		"source": "https://github.com/johnbillion/query-monitor"
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"ergebnis/composer-normalize": true,
+			"roots/wordpress-core-installer": true,
+			"composer/installers": true
+		},
+		"classmap-authoritative": true,
+		"preferred-install": "dist",
+		"prepend-autoloader": false,
+		"sort-packages": true
 	},
-	"funding": [
-		{
-			"type": "github",
-			"url": "https://github.com/sponsors/johnbillion"
-		}
-	]
+	"extra": {
+		"wordpress-install-dir": "vendor/roots/wordpress"
+	},
+	"scripts": {
+		"build-vendor": [
+			"build-vendor"
+		],
+		"test": [
+			"composer validate --strict --no-check-lock",
+			"composer normalize --dry-run",
+			"@test:phpstan",
+			"@test:phpcs",
+			"@test:integration",
+			"@test:acceptance"
+		],
+		"test:acceptance": [
+			"npm run build",
+			"bin/acceptance-tests.sh"
+		],
+		"test:integration": [
+			"integration-tests"
+		],
+		"test:phpcs": [
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' --standard=phpcs53.xml",
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' ."
+		],
+		"test:phpstan": [
+			"codecept build",
+			"phpstan analyze --memory-limit=1024M"
+		],
+		"test:start": [
+			"docker-compose up -d"
+		],
+		"test:stop": [
+			"docker-compose down"
+		]
+	}
 }

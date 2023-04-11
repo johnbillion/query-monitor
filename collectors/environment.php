@@ -92,61 +92,58 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
-
-			foreach ( $dbq->db_objects as $id => $db ) {
-
-				if ( method_exists( $db, 'db_version' ) ) {
-					$server = $db->db_version();
-					// query_cache_* deprecated since MySQL 5.7.20
-					if ( version_compare( $server, '5.7.20', '>=' ) ) {
-						unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
-					}
+			if ( method_exists( $dbq->wpdb, 'db_version' ) ) {
+				$server = $dbq->wpdb->db_version();
+				// query_cache_* deprecated since MySQL 5.7.20
+				if ( version_compare( $server, '5.7.20', '>=' ) ) {
+					unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
 				}
-
-				/** @var array<int, stdClass>|null */
-				$variables = $db->get_results( "
-					SHOW VARIABLES
-					WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
-				" );
-
-				/** @var mysqli|false|null $dbh */
-				$dbh = $db->dbh;
-
-				if ( is_object( $dbh ) ) {
-					# mysqli or PDO
-					$extension = get_class( $dbh );
-				} else {
-					# Who knows?
-					$extension = null;
-				}
-
-				$client = mysqli_get_client_version();
-
-				if ( $client ) {
-					$client_version = implode( '.', QM_Util::get_client_version( $client ) );
-					$client_version = sprintf( '%s (%s)', $client, $client_version );
-				} else {
-					$client_version = null;
-				}
-
-				$server_version = self::get_server_version( $db );
-
-				$info = array(
-					'server-version' => $server_version,
-					'extension' => $extension,
-					'client-version' => $client_version,
-					'user' => $db->dbuser,
-					'host' => $db->dbhost,
-					'database' => $db->dbname,
-				);
-
-				$this->data->db[ $id ] = array(
-					'info' => $info,
-					'vars' => $mysql_vars,
-					'variables' => $variables ?: array(),
-				);
-
 			}
+
+			// phpcs:disable
+			/** @var array<int, stdClass>|null */
+			$variables = $dbq->wpdb->get_results( "
+				SHOW VARIABLES
+				WHERE Variable_name IN ( '" . implode( "', '", array_keys( $mysql_vars ) ) . "' )
+			" );
+			// phpcs:enable
+
+			/** @var mysqli|false|null $dbh */
+			$dbh = $dbq->wpdb->dbh;
+
+			if ( is_object( $dbh ) ) {
+				# mysqli or PDO
+				$extension = get_class( $dbh );
+			} else {
+				# Who knows?
+				$extension = null;
+			}
+
+			$client = mysqli_get_client_version();
+
+			if ( $client ) {
+				$client_version = implode( '.', QM_Util::get_client_version( $client ) );
+				$client_version = sprintf( '%s (%s)', $client, $client_version );
+			} else {
+				$client_version = null;
+			}
+
+			$server_version = self::get_server_version( $dbq->wpdb );
+
+			$info = array(
+				'server-version' => $server_version,
+				'extension' => $extension,
+				'client-version' => $client_version,
+				'user' => $dbq->wpdb->dbuser,
+				'host' => $dbq->wpdb->dbhost,
+				'database' => $dbq->wpdb->dbname,
+			);
+
+			$this->data->db = array(
+				'info' => $info,
+				'vars' => $mysql_vars,
+				'variables' => $variables ?: array(),
+			);
 		}
 
 		$php_data = array(
@@ -167,7 +164,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		if ( function_exists( 'get_loaded_extensions' ) ) {
 			$extensions = get_loaded_extensions();
 			sort( $extensions, SORT_STRING | SORT_FLAG_CASE );
-			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) );
+			$php_data['extensions'] = array_combine( $extensions, array_map( array( $this, 'get_extension_version' ), $extensions ) ) ?: array();
 		} else {
 			$php_data['extensions'] = array();
 		}

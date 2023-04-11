@@ -93,14 +93,6 @@ class QM_Collector_Overview extends QM_DataCollector {
 			$this->data->memory_usage = 0;
 		}
 
-		$this->data->wp_memory_limit = QM_Util::convert_hr_to_bytes( trim( WP_MEMORY_LIMIT ) ); // Pull the config value
-
-		if ( $this->data->wp_memory_limit > 0 ) {
-			$this->data->wp_memory_usage = ( 100 / $this->data->wp_memory_limit ) * $this->data->memory;
-		} else {
-			$this->data->wp_memory_usage = 0;
-		}
-
 		$this->data->display_time_usage_warning = ( $this->data->time_usage >= 75 );
 		$this->data->display_memory_usage_warning = ( $this->data->memory_usage >= 75 );
 

@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.11.1",
+	"version": "3.12.1",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -24,7 +24,6 @@
 		"whatwg-fetch": "^3.6.2"
 	},
 	"devDependencies": {
-		"@actions/github": "^2",
 		"@babel/eslint-parser": "^7",
 		"@humanmade/eslint-config": "1.1.1",
 		"@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -43,9 +42,8 @@
 		"eslint": "^7.26.0",
 		"gitattributes-globs": "^1",
 		"gitignore-globs": "^0.1",
-		"replace-in-file": "^5",
+		"plugin-infrastructure": "file:vendor/johnbillion/plugin-infrastructure",
 		"sass": "^1",
-		"semver": "^7",
 		"source-map-loader": "^2",
 		"ts-loader": "^9",
 		"typescript": "^4.5.0",

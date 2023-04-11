@@ -216,13 +216,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
 			array(),
-			$this->qm->plugin_ver( 'assets/query-monitor.css' )
+			QM_VERSION
 		);
 		wp_enqueue_script(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
 			$deps,
-			$this->qm->plugin_ver( 'assets/query-monitor.js' ),
+			QM_VERSION,
 			false
 		);
 		wp_localize_script(
@@ -477,8 +477,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return bool
 	 */
 	public static function request_supported() {
-		// Don't dispatch if this is an async request and not a customizer preview:
-		if ( QM_Util::is_async() && ( ! function_exists( 'is_customize_preview' ) || ! is_customize_preview() ) ) {
+		// Don't dispatch if this is an async request:
+		if ( QM_Util::is_async() ) {
+			return false;
+		}
+
+		// Don't dispatch during a Customizer preview request:
+		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
 			return false;
 		}
 

@@ -31,9 +31,9 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	public $id = 'db_queries';
 
 	/**
-	 * @var array<string, wpdb>
+	 * @var wpdb
 	 */
-	public $db_objects = array();
+	public $wpdb;
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
@@ -74,28 +74,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$this->data->total_qs = 0;
 		$this->data->total_time = 0;
 		$this->data->errors = array();
-
-		/**
-		 * Filters the `wpdb` instances that are exposed to QM.
-		 *
-		 * This allows Query Monitor to display multiple instances of `wpdb` on one page load.
-		 *
-		 * @since 2.7.0
-		 *
-		 * @param wpdb[] $db_objects Array of `wpdb` instances, keyed by their name.
-		 */
-		$this->db_objects = apply_filters( 'qm/collect/db_objects', array(
-			'$wpdb' => $GLOBALS['wpdb'],
-		) );
-
-		foreach ( $this->db_objects as $name => $db ) {
-			if ( is_a( $db, 'wpdb' ) ) {
-				$this->process_db_object( $name, $db );
-			} else {
-				unset( $this->db_objects[ $name ] );
-			}
-		}
-
+		$this->process_db_object();
 	}
 
 	/**
@@ -125,16 +104,16 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
-	 * @param string $id
-	 * @param wpdb $db
 	 * @return void
 	 */
-	public function process_db_object( $id, wpdb $db ) {
-		global $EZSQL_ERROR, $wp_the_query;
+	public function process_db_object() {
+		global $EZSQL_ERROR, $wp_the_query, $wpdb;
+
+		$this->wpdb = $wpdb;
 
 		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
-		if ( empty( $db->queries ) ) {
-			$this->data->total_qs += $db->num_queries;
+		if ( empty( $wpdb->queries ) ) {
+			$this->data->total_qs += $wpdb->num_queries;
 			return;
 		}
 
@@ -146,8 +125,8 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$i = 0;
 		$request = trim( $wp_the_query->request ?: '' );
 
-		if ( method_exists( $db, 'remove_placeholder_escape' ) ) {
-			$request = $db->remove_placeholder_escape( $request );
+		if ( method_exists( $wpdb, 'remove_placeholder_escape' ) ) {
+			$request = $wpdb->remove_placeholder_escape( $request );
 		}
 
 		/**
@@ -163,7 +142,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		 *   debug: string,
 		 * } $query
 		 */
-		foreach ( $db->queries as $query ) {
+		foreach ( $wpdb->queries as $query ) {
 			$has_trace = false;
 			$has_result = false;
 			$callers = array();
@@ -251,7 +230,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			// @TODO these should store a reference ($i) instead of the whole row
-			if ( is_wp_error( $result ) ) {
+			if ( $result instanceof WP_Error ) {
 				$this->data->errors[] = $row;
 			}
 
@@ -265,7 +244,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 		}
 
-		if ( '$wpdb' === $id && ! $has_result && ! empty( $EZSQL_ERROR ) && is_array( $EZSQL_ERROR ) ) {
+		if ( ! $has_result && ! empty( $EZSQL_ERROR ) && is_array( $EZSQL_ERROR ) ) {
 			// Fallback for displaying database errors when wp-content/db.php isn't in place
 			foreach ( $EZSQL_ERROR as $error ) {
 				$row = array(
@@ -295,7 +274,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data->dbs[ $id ] = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
+		$this->data->wpdb = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
 
 	}
 

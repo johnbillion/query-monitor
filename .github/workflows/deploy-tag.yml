@@ -8,84 +8,12 @@ on:
 concurrency: WordPress.org
 
 jobs:
-  wordpress:
-    name: WordPress.org
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    timeout-minutes: 10
-    environment:
-      name: WordPress.org
-      url: https://wordpress.org/plugins/query-monitor
-    steps:
-
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Setup node
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: '.nvmrc'
-        cache: npm
-
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Populate Changelog
-      run: |
-        node .github/workflows/changelog.js readme.txt
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add readme.txt
-        git commit -m "Readme"
-      env:
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.1.1
-      env:
-        SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
-
-  github:
-    name: GitHub Milestones
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-    timeout-minutes: 10
-    steps:
-    - name: Get next versions
-      id: semvers
-      uses: WyriHaximus/github-action-next-semvers@v1.0
-      with:
-        version: ${{ github.event.release.tag_name }}
-
-    - name: Create next patch milestone
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/milestones
-        repository: ${{ github.repository }}
-        title: ${{ steps.semvers.outputs.patch }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      continue-on-error: true
-
-    - name: Create next minor milestone
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/milestones
-        repository: ${{ github.repository }}
-        title: ${{ steps.semvers.outputs.minor }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      continue-on-error: true
-
-    - name: Create next major milestone
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/milestones
-        repository: ${{ github.repository }}
-        title: ${{ steps.semvers.outputs.major }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      continue-on-error: true
+  test:
+    name: Deploy Tag
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
+    with:
+      plugin: query-monitor
+      readme: readme.txt
+    secrets:
+      WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+      WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

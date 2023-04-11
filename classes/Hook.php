@@ -50,9 +50,6 @@ class QM_Hook {
 						$components[ $callback['component']->name ] = $callback['component']->name;
 					}
 
-					// This isn't used and takes up a ton of memory:
-					unset( $callback['function'] );
-
 					$actions[] = array(
 						'priority' => $priority,
 						'callback' => $callback,

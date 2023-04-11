@@ -1,9 +1,9 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.0
-Tested up to: 6.1
-Stable tag: 3.11.1
+Requires at least: 5.2
+Tested up to: 6.2
+Stable tag: 3.12.1
 License: GPLv2 or later
 Requires PHP: 7.2
 Donate link: https://github.com/sponsors/johnbillion
@@ -14,7 +14,7 @@ Query Monitor is the developer tools panel for WordPress.
 
 Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
@@ -23,12 +23,12 @@ For complete information, please see [the Query Monitor website](https://querymo
 Here's an overview of what's shown for each page load:
 
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
-* The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded.
+* The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
-* Blocks and associated properties in post content when using WordPress 5.0+ or the Gutenberg plugin.
+* Blocks and associated properties within post content and within full site editing (FSE).
 * Matched rewrite rules, associated query strings, and query vars.
 * Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.
-* Language settings and loaded translation files (MO files) for each text domain.
+* Language settings and loaded translation files (MO files and JSON files) for each text domain.
 * HTTP API requests, with response code, responsible component, and time taken, with alerts for failed or erroneous requests.
 * User capability checks, along with the result and any parameters passed to the capability check.
 * Environment information, including detailed information about PHP, the database, WordPress, and the web server.
@@ -57,6 +57,14 @@ I maintain several other plugins for developers. Check them out:
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+
+### Accessibility Statement
+
+Query Monitor aims to be fully accessible to all of its users. It implements best practices for web accessibility, outputs semantic and structured markup, uses the accessibility APIs provided by WordPress and web browsers where appropriate, and is fully accessible via keyboard.
+
+That said, Query Monitor does _not_ conform to the Web Content Accessibility Guidelines (WCAG) 2.0 at level AA like WordPress itself does. The main issue is that the user interface uses small font sizes to maintain a high information density for sighted users. Users with poor vision or poor motor skills may struggle to view or interact with some areas of Query Monitor because of this. This is something which I'm acutely aware of and which I work to gradually improve, but the underlying issue of small font sizes remains.
+
+If you've experienced or identified another accessibility issue in Query Monitor, please open a thread in [the Query Monitor plugin support forum](https://wordpress.org/support/plugin/query-monitor/) and I'll try my best to address it swiftly.
 
 ## Screenshots
 
@@ -120,14 +128,7 @@ Please note that information about database queries and the environment is somew
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
-You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
-
-    add_filter( 'qm/collect/db_objects', function( $objects ) {
-        $objects['my_db'] = $GLOBALS['my_db'];
-        return $objects;
-    } );
-
-Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
 
 ### Can I click on stack traces to open the file in my editor?
 
@@ -135,7 +136,7 @@ Yes. You can enable this on the Settings panel.
 
 ### Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://johnblackbourn.com/donations/) and any support you can give will help me maintain this plugin and keep it free for everyone.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 

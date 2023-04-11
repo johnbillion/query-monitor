@@ -9,7 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
+if ( ! defined( 'QM_ERROR_FATALS' ) ) {
+	define( 'QM_ERROR_FATALS', E_ERROR | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
+}
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
@@ -309,22 +311,19 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return;
 		}
 
-		if ( ! function_exists( '__' ) ) {
-			wp_load_translations_early();
-		}
-
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
 		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
 
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) )
+			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ),
+			esc_attr( QM_VERSION )
 		);
 
-		// This unused wrapper with ann attribute serves to help the #qm-fatal div break out of an
-		// attribute if a fatal has occured within one.
+		// This unused wrapper with an attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occurred within one.
 		echo '<div data-qm="qm">';
 
 		printf(
@@ -354,7 +353,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		); // WPCS: XSS ok.
 
 		if ( ! empty( $e['trace'] ) ) {
-			echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
+			echo '<p>Call stack:</p>';
 			echo '<ol>';
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
@@ -373,7 +372,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		echo '</div>';
 
-		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
+		echo '<h2>Query Monitor</h2>';
 
 		echo '</div>';
 		echo '</div>';

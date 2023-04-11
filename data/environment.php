@@ -24,8 +24,8 @@ class QM_Data_Environment extends QM_Data {
 
 	/**
 	 * @TODO data class
-	 * @var ?array<string, array<string, mixed>>
-	 * @phpstan-var ?array<string, array{
+	 * @var array<string, mixed>
+	 * @phpstan-var array{
 	 *   info: array{
 	 *     server-version: string,
 	 *     extension: string|null,
@@ -36,7 +36,7 @@ class QM_Data_Environment extends QM_Data {
 	 *   },
 	 *   vars: array<string, bool|string>,
 	 *   variables: list<stdClass>,
-	 * }>
+	 * }
 	 */
 	public $db;
 

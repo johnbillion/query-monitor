@@ -25,6 +25,7 @@ class QM_Backtrace {
 		'WP_Hook' => true,
 		'Altis\Cloud\DB' => true,
 		'Yoast\WP\Lib\ORM' => true,
+		'Perflab_SQLite_DB' => true,
 	);
 
 	/**
@@ -95,9 +96,9 @@ class QM_Backtrace {
 	protected $args = array();
 
 	/**
-	 * @var mixed[]|null
+	 * @var mixed[]
 	 */
-	protected $trace = null;
+	protected $trace;
 
 	/**
 	 * @var mixed[]|null
@@ -431,7 +432,7 @@ class QM_Backtrace {
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
 			 *
-			 * @since x.x.x
+			 * @since 3.8.0
 			 *
 			 * @param bool[] $ignore_hook Array of hook names to ignore. The array keys are hook names to ignore,
 			 *                            the array values are whether to ignore the hook or not (usually true).
@@ -526,6 +527,13 @@ class QM_Backtrace {
 			$return['calling_file'] = $this->calling_file;
 			$return['calling_line'] = $this->calling_line;
 
+			if ( ! isset( $return['file'] ) ) {
+				$return['file'] = $this->calling_file;
+			}
+
+			if ( ! isset( $return['line'] ) ) {
+				$return['line'] = $this->calling_line;
+			}
 		}
 
 		if ( isset( $frame['line'] ) ) {

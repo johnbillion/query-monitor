@@ -75,7 +75,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 
 				echo '<tr>';
 				echo '<td class="qm-ltr">';
-				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
+				echo self::build_filter_trigger( 'db_queries', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
 				echo '</td>';
 
 				foreach ( $data->types as $type_name => $type_count ) {
@@ -132,7 +132,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 			/** @var QM_Data_DB_Queries $dbq_data */
 			$dbq_data = $dbq->get_data();
 			if ( ! empty( $dbq_data->times ) ) {
-				$menu['qm-db_queries-$wpdb']['children'][] = $this->menu( array(
+				$menu['qm-db_queries']['children'][] = $this->menu( array(
 					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );
 			}

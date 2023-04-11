@@ -42,16 +42,6 @@ class QM_Data_Overview extends QM_Data {
 	public $memory_usage;
 
 	/**
-	 * @var float
-	 */
-	public $wp_memory_limit;
-
-	/**
-	 * @var int|float
-	 */
-	public $wp_memory_usage;
-
-	/**
 	 * @var ?array<string, mixed>
 	 */
 	public $current_user;

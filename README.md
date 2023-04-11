@@ -9,7 +9,7 @@
 
 Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
-It includes some advanced features such as debugging of Ajax calls, REST API calls, and user capability checks. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
+It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
@@ -59,7 +59,6 @@ Here's an example of Query Monitor's output. This is the panel showing aggregate
  * Filter queries by component (WordPress core, Plugin X, Plugin Y, theme)
  * Filter queries by calling function
  * View aggregate query information grouped by component, calling function, and type
- * Super advanced: Supports multiple instances of wpdb (more info in the FAQ)
 
 Filtering queries by component or calling function makes it easy to see which plugins, themes, or functions on your site are making the most (or the slowest) database queries.
 
@@ -72,10 +71,11 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Theme
 
  * Shows the template filename for the current request
- * Shows the complete template hierarchy for the current request (WordPress 4.7+)
+ * Shows the complete template hierarchy for the current request
  * Shows all template parts loaded or not loaded on the current request
  * Shows the available body classes for the current request
  * Shows the active theme name
+ * Fully supports block themes and full site editing (FSE)
 
 ## PHP Errors
 
@@ -85,6 +85,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Block Content
 
  * Post content blocks and associated information (when using WordPress 5.0+ or the Gutenberg plugin)
+ * Block theme blocks and full site editing (FSE) blocks and context
 
 ## Request
 
@@ -99,7 +100,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ## Languages
 
  * Shows you language settings and text domains
- * Shows you the MO files for each text domain and which ones were loaded or not
+ * Shows you the MO and JSON files for each text domain and which ones were loaded or not
 
 ## HTTP API Requests
 
@@ -260,7 +261,6 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Allows it to log details about **all** database queries (including ones that happen before plugins are loaded)
  * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
  * Logs the query result, which allows it to display the affected rows or error message if applicable
- * Logs various PHP configurations before anything has loaded, which allows it to display a message if these get altered at runtime by a plugin or theme
 
 If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
 
@@ -346,14 +346,7 @@ Please note that information about database queries and the environment is somew
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
-You'll need to hook into the `qm/collect/db_objects` filter and add an item to the array containing your `wpdb` instance. For example:
-
-    add_filter( 'qm/collect/db_objects', function( $objects ) {
-        $objects['my_db'] = $GLOBALS['my_db'];
-        return $objects;
-    } );
-
-Your `wpdb` instance will then show up as a separate panel, and the query time and query count will show up separately in the admin toolbar menu. Aggregate information (queries by caller and component) will not be separated.
+This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
 
 ## Can I click on stack traces to open the file in my editor?
 
@@ -361,7 +354,7 @@ Yes! You can enable this on the Settings panel.
 
 ## Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion) and any support you can give will help me maintain this plugin and keep it free for everyone.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
@@ -371,17 +364,25 @@ Query Monitor is private by default and always will be. It does not persistently
 
 [Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
 
+# Accessibility Statement
+
+Query Monitor aims to be fully accessible to all of its users. It implements best practices for web accessibility, outputs semantic and structured markup, uses the accessibility APIs provided by WordPress and web browsers where appropriate, and is fully accessible via keyboard.
+
+That said, Query Monitor does _not_ conform to the Web Content Accessibility Guidelines (WCAG) 2.0 at level AA like WordPress itself does. The main issue is that the user interface uses small font sizes to maintain a high information density for sighted users. Users with poor vision or poor motor skills may struggle to view or interact with some areas of Query Monitor because of this. This is something which I'm acutely aware of and which I work to gradually improve, but the underlying issue of small font sizes remains.
+
+If you've experienced or identified another accessibility issue in Query Monitor, please open a thread in [the Query Monitor plugin support forum](https://wordpress.org/support/plugin/query-monitor/) and I'll try my best to address it swiftly.
+
 # Related Tools
 
-Debugging is rarely done with just one tool. Along with Query Monitor, you should be aware of other plugins and tools which aid in debugging and profiling your website. Here are some examples:
+Debugging is rarely done with just one tool. Along with Query Monitor you should be aware of other plugins and tools for debugging and profiling your website. Here are some recommendations:
 
 ## WordPress Plugins
 
  * [Block Xray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
+ * [Decalog](https://wordpress.org/plugins/decalog/)
  * [Laps](https://github.com/Rarst/laps)
- * [P3 Profiler](https://wordpress.org/plugins/p3-profiler/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
@@ -391,18 +392,29 @@ Query Monitor also has [several add-on plugins](https://github.com/johnbillion/q
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
-## Other tools and services
+## Other tools
 
- * [Blackfire](https://blackfire.io/)
  * [Clockwork](https://underground.works/clockwork/)
- * [Datadog](https://www.datadoghq.com/)
- * [New Relic](https://newrelic.com/)
+ * [Meminfo](https://github.com/BitOne/php-meminfo)
+ * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
+ * [phpspy](https://github.com/adsr/phpspy)
+ * [Psysh](http://psysh.org/)
  * [Ray](https://myray.app/)
- * [Scout](https://scoutapm.com/)
- * [Sentry](https://sentry.io/])
+ * [Reli](https://github.com/reliforp/reli-prof)
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
+ * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
+
+## Hosted services
+
+ * [Blackfire](https://blackfire.io/)
+ * [Datadog](https://www.datadoghq.com/)
+ * [Loggly](https://www.loggly.com/)
+ * [New Relic](https://newrelic.com/)
+ * [Scout](https://scoutapm.com/)
+ * [Sentry](https://sentry.io/])
 
 # Contributing
 

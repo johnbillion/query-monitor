@@ -53,30 +53,89 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Theme', 'query-monitor' ) . '</h3>';
 		echo '<p>' . esc_html( $data->stylesheet ) . '</p>';
 
+		if ( self::has_clickable_links() ) {
+			echo '<p>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->stylesheet ] ), 0, true );
+			echo '</p>';
+
+			if ( $data->stylesheet_theme_json ) {
+				echo '<p>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::output_filename( 'theme.json', $data->stylesheet_theme_json, 0, true );
+				echo '</p>';
+			}
+		}
+
 		if ( $data->is_child_theme ) {
 			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
 			echo '<p>' . esc_html( $data->template ) . '</p>';
+
+			if ( self::has_clickable_links() ) {
+				echo '<p>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->template ] ), 0, true );
+				echo '</p>';
+
+				if ( $data->template_theme_json ) {
+					echo '<p>';
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo self::output_filename( 'theme.json', $data->template_theme_json, 0, true );
+					echo '</p>';
+				}
+			}
 		}
 
 		echo '</section>';
 
 		echo '<section>';
-		echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
+		if ( ! empty( $data->block_template ) ) {
+			echo '<h3>' . esc_html__( 'Block Template', 'query-monitor' ) . '</h3>';
 
-		if ( ! empty( $data->template_path ) ) {
-			if ( $data->is_child_theme ) {
-				$display = $data->theme_template_file;
+			if ( $data->block_template->wp_id ) {
+				echo '<p>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo self::build_link(
+					QM_Util::get_site_editor_url( $data->block_template->id, 'wp_template' ),
+					esc_html( $data->block_template->id )
+				);
+				echo '</p>';
 			} else {
-				$display = $data->template_file;
+				if ( self::has_clickable_links() ) {
+					$file = sprintf(
+						'%s/%s/%s.html',
+						$data->theme_dirs[ $data->block_template->theme ],
+						$data->theme_folders[ $data->block_template->type ],
+						$data->block_template->slug
+					);
+				} else {
+					$file = '';
+				}
+
+				echo '<p class="qm-ltr">' . self::output_filename( sprintf(
+					'%s/%s.html',
+					$data->theme_folders[ $data->block_template->type ],
+					$data->block_template->slug
+				), $file, 0, true ) . '</p>'; // WPCS: XSS ok.
 			}
-			if ( self::has_clickable_links() ) {
-				$file = $data->template_path;
-			} else {
-				$file = '';
-			}
-			echo '<p class="qm-ltr">' . self::output_filename( $display, $file, 0, true ) . '</p>'; // WPCS: XSS ok.
 		} else {
-			echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
+			echo '<h3>' . esc_html__( 'Template File', 'query-monitor' ) . '</h3>';
+
+			if ( ! empty( $data->template_path ) ) {
+				if ( $data->is_child_theme ) {
+					$display = $data->theme_template_file;
+				} else {
+					$display = $data->template_file;
+				}
+				if ( self::has_clickable_links() ) {
+					$file = $data->template_path;
+				} else {
+					$file = '';
+				}
+				echo '<p class="qm-ltr">' . self::output_filename( $display, $file, 0, true ) . '</p>'; // WPCS: XSS ok.
+			} else {
+				echo '<p><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></p>';
+			}
 		}
 
 		if ( ! empty( $data->template_hierarchy ) ) {
@@ -127,30 +186,25 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 			echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
 		}
 
-		if ( $data->has_template_part_action ) {
+		if ( ! empty( $data->unsuccessful_template_parts ) ) {
 			echo '<h4>' . esc_html__( 'Not Loaded', 'query-monitor' ) . '</h4>';
+			echo '<ul>';
 
-			if ( ! empty( $data->unsuccessful_template_parts ) ) {
-				echo '<ul>';
-
-				foreach ( $data->unsuccessful_template_parts as $requested ) {
-					if ( $requested['name'] ) {
-						echo '<li>';
-						$text = $requested['slug'] . '-' . $requested['name'] . '.php';
-						echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
-						echo '</li>';
-					}
-
+			foreach ( $data->unsuccessful_template_parts as $requested ) {
+				if ( $requested['name'] ) {
 					echo '<li>';
-					$text = $requested['slug'] . '.php';
+					$text = $requested['slug'] . '-' . $requested['name'] . '.php';
 					echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
 					echo '</li>';
 				}
 
-				echo '</ul>';
-			} else {
-				echo '<p><em>' . esc_html__( 'None', 'query-monitor' ) . '</em></p>';
+				echo '<li>';
+				$text = $requested['slug'] . '.php';
+				echo self::output_filename( $text, $requested['caller']['file'], $requested['caller']['line'], true ); // WPCS: XSS ok.
+				echo '</li>';
 			}
+
+			echo '</ul>';
 		}
 
 		echo '</section>';
@@ -193,7 +247,17 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		/** @var QM_Data_Theme $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data->template_file ) ) {
+		if ( ! empty( $data->block_template ) ) {
+			if ( $data->block_template->wp_id ) {
+				$name = $data->block_template->id;
+			} else {
+				$name = sprintf(
+					'%s/%s.html',
+					$data->theme_folders[ $data->block_template->type ],
+					$data->block_template->slug
+				);
+			}
+		} elseif ( isset( $data->template_file ) ) {
 			$name = ( $data->is_child_theme ) ? $data->theme_template_file : $data->template_file;
 		} else {
 			$name = __( 'Unknown', 'query-monitor' );
