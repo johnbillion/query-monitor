@@ -13,22 +13,24 @@ import {
 
 interface iLanguagesProps extends iPanelProps {
 	data: {
+		determined_locale: string;
+		language_attributes: string;
 		languages: {
-			[key: string]: {
-				domain: string;
-				file: string;
-				handle: string;
-				type: string;
-				found: string;
-				caller: FrameItem;
-			}[];
+			[textdomain: string]: {
+				[mofile: string]: {
+					caller: FrameItem;
+					domain: string;
+					file: string|false;
+					found: number|false;
+					handle: string|null;
+					type: 'gettext'|'jed';
+				};
+			};
 		};
 		locale: string;
-		user_locale: string;
-		determined_locale: string;
 		mlp_language: string;
 		pll_language: string;
-		language_attributes: string;
+		user_locale: string;
 	};
 }
 
@@ -107,10 +109,10 @@ class Languages extends React.Component<iLanguagesProps, Record<string, unknown>
 							</tr>
 						</thead>
 						<tbody>
-							{ Object.keys( data.languages ).map( key => (
-								<React.Fragment key={ key }>
-									{ Object.keys( data.languages[key] ).map( lang_path => {
-										const lang = data.languages[key][lang_path];
+							{ Object.keys( data.languages ).map( textdomain => (
+								<React.Fragment key={ textdomain }>
+									{ Object.keys( data.languages[textdomain] ).map( mofile => {
+										const lang = data.languages[textdomain][mofile];
 
 										return (
 											<tr key={ lang.domain + lang.handle + lang.file }>
