@@ -18,13 +18,49 @@ import {
 
 interface iDBQueriesProps extends iPanelProps {
 	data: {
-		rows: {
-			sql: string;
-			result: string;
-			ltime: number;
-			filtered_trace: any[];
-			component: any;
-		}[];
+		component_times: {
+			[component: string]: {
+				component: string;
+				ltime: number;
+				types: {
+					[type: string]: number;
+				};
+			};
+		}
+		dupes: {
+			[sql: string]: number[];
+		};
+		times: {
+			[caller: string]: {
+				caller: string;
+				ltime: number;
+				types: {
+					[type: string]: number;
+				};
+			};
+		};
+		total_qs: number;
+		total_time: number;
+		types: {
+			[type: string]: number;
+		}
+		wpdb: {
+			has_result: boolean;
+			has_trace: boolean;
+			total_qs: number;
+			total_time: number;
+			rows: {
+				caller: string;
+				caller_name: string;
+				is_main_query: boolean;
+				sql: string;
+				type: string;
+				result: number;
+				ltime: number;
+				filtered_trace: any[];
+				component: any;
+			}[];
+		};
 	};
 }
 
@@ -33,7 +69,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.rows?.length ) {
+		if ( ! data.wpdb?.rows?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>
@@ -68,7 +104,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 					</tr>
 				</thead>
 				<tbody>
-					{ data.rows.map( ( row, i ) => (
+					{ data.wpdb.rows.map( ( row, i ) => (
 						<tr key={ i }>
 							<th className="qm-row-num qm-num" scope="row">
 								{ 1 + i }
@@ -89,10 +125,10 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 				</tbody>
 				<PanelFooter
 					cols={ 5 }
-					count={ data.rows.length }
+					count={ data.wpdb.rows.length }
 					label={ _x( 'Total:', 'Database query count', 'query-monitor' ) }
 				>
-					<TotalTime rows={ data.rows }/>
+					<TotalTime rows={ data.wpdb.rows }/>
 				</PanelFooter>
 			</Tabular>
 		);
