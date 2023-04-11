@@ -28,11 +28,11 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 						<th scope="col">
 							{ __( 'Message', 'query-monitor' ) }
 						</th>
-						<th className="qm-num" scope="col">
-							{ __( 'Count', 'query-monitor' ) }
-						</th>
 						<th scope="col">
 							{ __( 'Location', 'query-monitor' ) }
+						</th>
+						<th className="qm-num" scope="col">
+							{ __( 'Count', 'query-monitor' ) }
 						</th>
 						<th scope="col">
 							{ __( 'Component', 'query-monitor' ) }
@@ -59,11 +59,11 @@ class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
 									<td className="qm-ltr">
 										{ error.message }
 									</td>
-									<td className="qm-num">
-										{ error.calls }
-									</td>
 									<td className="qm-row-caller qm-row-stack qm-nowrap qm-ltr">
 										{ error.filename }:{ error.line }
+									</td>
+									<td className="qm-num">
+										{ error.calls }
 									</td>
 									{ error.component ? (
 										<QMComponent component={ error.component } />

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ErrorMessage } from './error';
+import { Warning } from './warning';
 
 interface ErrorBoundaryProps {
 	children: React.ReactNode;
@@ -23,15 +24,15 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<st
 					{ ( this.state.hasError instanceof Error ) ? (
 						<>
 							<p>
-								An error occurred while rendering this panel:
+								<Warning /> An error occurred while rendering this panel:
 							</p>
-							<p><code>
+							<p>
 								{ this.state.hasError.message }
-							</code></p>
+							</p>
 						</>
 					) : (
 						<p>
-							An unknown error occurred while rendering this panel.
+							<Warning /> An unknown error occurred while rendering this panel.
 						</p>
 					) }
 				</ErrorMessage>
