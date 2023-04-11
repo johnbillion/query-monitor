@@ -314,6 +314,11 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		/** @var string */
 		$key = $args['_qm_key'];
 
+		if ( is_array( $response ) && isset( $response['body'] ) ) {
+			// The response body can be huge, so kill it:
+			unset( $response['response']['body'] );
+		}
+
 		$http_response = array(
 			'end' => microtime( true ),
 			'response' => $response,
@@ -385,9 +390,6 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
 				}
-
-				// The response body can be huge, so kill it:
-				unset( $http['response']['body'] );
 			}
 
 			$ltime = ( $response['end'] - $request['start'] );
