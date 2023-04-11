@@ -47,8 +47,6 @@ interface iDBQueriesProps extends iPanelProps {
 		wpdb: {
 			has_result: boolean;
 			has_trace: boolean;
-			total_qs: number;
-			total_time: number;
 			rows: {
 				caller: string;
 				caller_name: string;

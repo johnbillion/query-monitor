@@ -38,7 +38,11 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 			return $output;
 		}
 
-		$output['wpdb'] = $this->output_queries( $data->wpdb );
+		$output['wpdb'] = array(
+			'total' => $data->total_qs,
+			'time' => round( $data->total_time, 4 ),
+			'queries' => $this->output_queries( $data->wpdb ),
+		);
 
 		if ( ! empty( $data->errors ) ) {
 			$output['errors'] = array(
@@ -68,11 +72,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	/**
 	 * @param stdClass $db
 	 * @return array
-	 * @phpstan-return array{
-	 *   total: int,
-	 *   time: float,
-	 *   queries: mixed[],
-	 * }|array{}
+	 * @phpstan-return mixed[]
 	 */
 	protected function output_queries( stdClass $db ) {
 		$this->query_row = 0;
@@ -87,11 +87,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 			$output[] = $this->output_query_row( $row );
 		}
 
-		return array(
-			'total' => $db->total_qs,
-			'time' => round( $db->total_time, 4 ),
-			'queries' => $output,
-		);
+		return $output;
 	}
 
 	/**

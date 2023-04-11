@@ -263,10 +263,8 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 		}
 
-		$total_qs = count( $rows );
-
-		$this->data->total_qs   += $total_qs;
-		$this->data->total_time += $total_time;
+		$this->data->total_qs   = count( $rows );
+		$this->data->total_time = $total_time;
 
 		$has_main_query = wp_list_filter( $rows, array(
 			'is_main_query' => true,
@@ -274,7 +272,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 		# @TODO put errors in here too:
 		# @TODO proper class instead of (object)
-		$this->data->wpdb = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
+		$this->data->wpdb = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'has_main_query' );
 
 	}
 

@@ -63,7 +63,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$this->output_expensive_queries( $data->expensive );
 		}
 
-		$this->output_queries( $data->wpdb, $data );
+		$this->output_queries( $data );
 	}
 
 	/**
@@ -156,13 +156,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	}
 
 	/**
-	 * @param stdClass $db
 	 * @param QM_Data_DB_Queries $data
 	 * @return void
 	 */
-	protected function output_queries( stdClass $db, QM_Data_DB_Queries $data ) {
+	protected function output_queries( QM_Data_DB_Queries $data ) {
 		$this->query_row = 0;
 		$span = 4;
+		$db = $data->wpdb;
 
 		if ( $db->has_result ) {
 			$span++;
@@ -286,14 +286,14 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '</tbody>';
 			echo '<tfoot>';
 
-			$total_stime = number_format_i18n( $db->total_time, 4 );
+			$total_stime = number_format_i18n( $data->total_time, 4 );
 
 			echo '<tr>';
 			echo '<td colspan="' . intval( $span - 1 ) . '">';
 			printf(
 				/* translators: %s: Number of database queries */
-				esc_html( _nx( 'Total: %s', 'Total: %s', $db->total_qs, 'Query count', 'query-monitor' ) ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( $db->total_qs ) ) . '</span>'
+				esc_html( _nx( 'Total: %s', 'Total: %s', $data->total_qs, 'Query count', 'query-monitor' ) ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->total_qs ) ) . '</span>'
 			);
 			echo '</td>';
 			echo '<td class="qm-num qm-items-time">' . esc_html( $total_stime ) . '</td>';
@@ -500,11 +500,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$title[] = sprintf(
 				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 				esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
-				number_format_i18n( $data->wpdb->total_time, 2 )
+				number_format_i18n( $data->total_time, 2 )
 			);
 
 			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
-			$text = _n( '%s Q', '%s Q', $data->wpdb->total_qs, 'query-monitor' );
+			$text = _n( '%s Q', '%s Q', $data->total_qs, 'query-monitor' );
 
 			// Avoid a potentially blank translation for the plural form.
 			// @see https://meta.trac.wordpress.org/ticket/5377
@@ -514,7 +514,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			$title[] = preg_replace( '#\s?([^0-9,\.]+)#', '<small>$1</small>', sprintf(
 				esc_html( $text ),
-				number_format_i18n( $data->wpdb->total_qs )
+				number_format_i18n( $data->total_qs )
 			) );
 		} elseif ( isset( $data->total_qs ) ) {
 			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
