@@ -1,0 +1,15 @@
+{
+	"$schema": "http://json-schema.org/draft-07/hyper-schema#",
+	"$id": "https://schemas.querymonitor.com/src/schema.json",
+	"title": "DataTypes",
+	"type": "object",
+	"properties": {
+		"Admin": {
+			"$ref": "src/schemas/admin.json"
+		},
+		"Block_Editor": {
+			"$ref": "src/schemas/block_editor.json"
+		}
+	},
+	"additionalProperties": false
+}

@@ -28,6 +28,6 @@
 	"dependencies": {
 		"@types/react": "^17",
 		"@types/react-dom": "^17",
-		"wp-types": "^2"
+		"wp-types": "^3"
 	}
 }

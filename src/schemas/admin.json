@@ -1,0 +1,60 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/admin.json",
+	"title": "Admin",
+	"description": "Admin screen data transfer object.",
+	"type": "object",
+	"required": [
+		"hook_suffix",
+		"pagenow",
+		"taxnow",
+		"typenow"
+	],
+	"properties": {
+		"current_screen": {
+			"type": "object",
+			"tsType": "WP_Screen",
+			"allOf": [
+				{
+					"$ref": "../../node_modules/wp-json-schemas/schemas/screen.json"
+				}
+			]
+		},
+		"hook_suffix": {
+			"type": "string"
+		},
+		"list_table": {
+			"type": "object",
+			"required": [
+				"columns_filter",
+				"sortables_filter",
+				"column_action"
+			],
+			"properties": {
+				"columns_filter": {
+					"type": "string"
+				},
+				"sortables_filter": {
+					"type": "string"
+				},
+				"column_action": {
+					"type": "string"
+				},
+				"class_name": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": false
+		},
+		"pagenow": {
+			"type": "string"
+		},
+		"taxnow": {
+			"type": "string"
+		},
+		"typenow": {
+			"type": "string"
+		}
+	},
+	"additionalProperties": false
+}

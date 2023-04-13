@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/block_editor.json",
+	"title": "Block_Editor",
+	"description": "Block editor data transfer object.",
+	"type": "object",
+	"required": [
+		"all_dynamic_blocks",
+		"block_editor_enabled",
+		"has_block_context",
+		"has_block_timing",
+		"post_blocks",
+		"post_has_blocks",
+		"total_blocks"
+	],
+	"properties": {
+		"all_dynamic_blocks": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"block_editor_enabled": {
+			"type": "boolean"
+		},
+		"has_block_context": {
+			"type": "boolean"
+		},
+		"has_block_timing": {
+			"type": "boolean"
+		},
+		"post_blocks": {
+			"type": [
+				"array",
+				"null"
+			]
+		},
+		"post_has_blocks": {
+			"type": "boolean"
+		},
+		"total_blocks": {
+			"type": "number"
+		}
+	},
+	"additionalProperties": false
+}
