@@ -2,26 +2,15 @@ import {
 	NonTabular,
 	iPanelProps,
 } from 'qmi';
+import {
+	Admin as AdminData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iAdminProps extends iPanelProps {
-	data: {
-		current_screen: {
-			[k: string]: string|boolean;
-		};
-		hook_suffix: string;
-		pagenow: string;
-		taxnow: string;
-		typenow: string;
-		list_table?: {
-			columns_filter: string;
-			sortables_filter: string;
-			column_action: string;
-			class_name?: string;
-		};
-	};
+	data: AdminData;
 }
 
 class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
@@ -51,7 +40,7 @@ class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
 							</tr>
 						</thead>
 						<tbody>
-							{ Object.keys( data.current_screen ).map( key => (
+							{ Object.keys( data.current_screen ).map( ( key: keyof typeof data.current_screen ) => (
 								<tr key={ key }>
 									<th scope="row">
 										{ key }

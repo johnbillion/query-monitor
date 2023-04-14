@@ -4,6 +4,9 @@ import {
 	PanelFooter,
 	Tabular,
 } from 'qmi';
+import {
+	Block_Editor as Block_EditorData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -26,16 +29,11 @@ interface iBlock {
 }
 
 interface iBlocksProps extends iPanelProps {
-	data: {
-		all_dynamic_blocks: string[];
-		block_editor_enabled: boolean;
-		has_block_context: boolean;
-		has_block_timing: boolean;
+	data: Omit<Block_EditorData, 'post_blocks'> & {
 		post_blocks: iBlock[] | null;
-		post_has_blocks: boolean;
-		total_blocks: number;
 	};
 }
+
 class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>> {
 
 	render() {
