@@ -18,7 +18,7 @@ for ( const file of files ) {
  *
  * @package query-monitor
  */
-
+${schema.$comment ? `\n${schema.$comment}` : ''}
 class QM_Data_${schema.title} extends QM_Data {`;
 
 	for ( const key in schema.properties ) {

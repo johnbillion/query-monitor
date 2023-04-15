@@ -6,6 +6,7 @@ import {
 
 export interface DataTypes {
 	Admin?: Admin;
+	Assets?: Assets;
 	Block_Editor?: Block_Editor;
 }
 /**
@@ -23,6 +24,33 @@ export interface Admin {
 	pagenow: string;
 	taxnow: string;
 	typenow: string;
+}
+/**
+ * Asset data transfer object.
+ */
+export interface Assets {
+	assets?: {
+		missing: AssetList;
+		broken: AssetList;
+		header: AssetList;
+		footer: AssetList;
+	};
+	counts: {
+		missing: number;
+		broken: number;
+		header: number;
+		footer: number;
+		total: number;
+	};
+	default_version: string;
+	dependencies: string[];
+	dependents: string[];
+	footer: string[];
+	header: string[];
+	host: string;
+	is_ssl: boolean;
+	missing_dependencies: string[];
+	port: string;
 }
 /**
  * Block editor data transfer object.

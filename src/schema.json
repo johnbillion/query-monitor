@@ -7,6 +7,9 @@
 		"Admin": {
 			"$ref": "src/schemas/admin.json"
 		},
+		"Assets": {
+			"$ref": "src/schemas/assets.json"
+		},
 		"Block_Editor": {
 			"$ref": "src/schemas/block_editor.json"
 		}

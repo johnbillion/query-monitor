@@ -1,0 +1,121 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/assets.json",
+	"title": "Assets",
+	"description": "Asset data transfer object.",
+	"$comment": "/**\n * @phpstan-type Asset array{\n *   host: string,\n *   port: string,\n *   source: string|WP_Error,\n *   local: bool,\n *   ver: string,\n *   warning: bool,\n *   display: string,\n *   dependents: array<string>,\n *   dependencies: array<string>,\n * }\n * @phpstan-type AssetList array<string, Asset>\n */",
+	"type": "object",
+	"required": [
+		"counts",
+		"default_version",
+		"dependencies",
+		"dependents",
+		"footer",
+		"header",
+		"host",
+		"is_ssl",
+		"missing_dependencies",
+		"port"
+	],
+	"properties": {
+		"assets": {
+			"type": "object",
+			"properties": {
+				"missing": {
+					"type": "object",
+					"tsType": "AssetList"
+				},
+				"broken": {
+					"type": "object",
+					"tsType": "AssetList"
+				},
+				"header": {
+					"type": "object",
+					"tsType": "AssetList"
+				},
+				"footer": {
+					"type": "object",
+					"tsType": "AssetList"
+				}
+			},
+			"required": [
+				"missing",
+				"broken",
+				"header",
+				"footer"
+			],
+			"additionalProperties": false
+		},
+		"counts": {
+			"type": "object",
+			"properties": {
+				"missing": {
+					"type": "number"
+				},
+				"broken": {
+					"type": "number"
+				},
+				"header": {
+					"type": "number"
+				},
+				"footer": {
+					"type": "number"
+				},
+				"total": {
+					"type": "number"
+				}
+			},
+			"required": [
+				"missing",
+				"broken",
+				"header",
+				"footer",
+				"total"
+			],
+			"additionalProperties": false
+		},
+		"default_version": {
+			"type": "string"
+		},
+		"dependencies": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"dependents": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"footer": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"header": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"host": {
+			"type": "string"
+		},
+		"is_ssl": {
+			"type": "boolean"
+		},
+		"missing_dependencies": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"port": {
+			"type": "string"
+		}
+	},
+	"additionalProperties": false
+}
