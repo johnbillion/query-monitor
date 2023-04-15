@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/cache.json",
+	"title": "Cache",
+	"description": "Cache data transfer object.",
+	"type": "object",
+	"required": [
+		"has_object_cache",
+		"display_hit_rate_warning",
+		"has_opcode_cache",
+		"cache_hit_percentage",
+		"stats",
+		"object_cache_extensions",
+		"opcode_cache_extensions"
+	],
+	"properties": {
+		"has_object_cache": {
+			"type": "boolean"
+		},
+		"display_hit_rate_warning": {
+			"type": "boolean"
+		},
+		"has_opcode_cache": {
+			"type": "boolean"
+		},
+		"cache_hit_percentage": {
+			"type": "number"
+		},
+		"stats": {
+			"type": "object"
+		},
+		"object_cache_extensions": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "boolean"
+			}
+		},
+		"opcode_cache_extensions": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "boolean"
+			}
+		}
+	},
+	"additionalProperties": false
+}

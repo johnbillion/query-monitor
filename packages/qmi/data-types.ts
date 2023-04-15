@@ -8,6 +8,7 @@ export interface DataTypes {
 	Admin?: Admin;
 	Assets?: Assets;
 	Block_Editor?: Block_Editor;
+	Cache?: Cache;
 }
 /**
  * Admin screen data transfer object.
@@ -63,4 +64,22 @@ export interface Block_Editor {
 	post_blocks: unknown[];
 	post_has_blocks: boolean;
 	total_blocks: number;
+}
+/**
+ * Cache data transfer object.
+ */
+export interface Cache {
+	has_object_cache: boolean;
+	display_hit_rate_warning: boolean;
+	has_opcode_cache: boolean;
+	cache_hit_percentage: number;
+	stats: {
+		[k: string]: unknown;
+	};
+	object_cache_extensions: {
+		[k: string]: boolean;
+	};
+	opcode_cache_extensions: {
+		[k: string]: boolean;
+	};
 }

@@ -12,6 +12,9 @@
 		},
 		"Block_Editor": {
 			"$ref": "src/schemas/block_editor.json"
+		},
+		"Cache": {
+			"$ref": "src/schemas/cache.json"
 		}
 	},
 	"additionalProperties": false

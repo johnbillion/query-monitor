@@ -25,6 +25,7 @@ class QM_Data_${schema.title} extends QM_Data {`;
 		const requiredMarker = schema.required && schema.required.includes( key ) ? '' : '?';
 		const prop = schema.properties[key];
 		let phpStanVar = null;
+		let phpDocVar = null;
 
 		output += `
 	/**`;
@@ -34,16 +35,22 @@ class QM_Data_${schema.title} extends QM_Data {`;
 		} else if ( ! prop.tsType ) {
 			switch ( prop.type ) {
 				case 'object':
-					phpStanVar = 'array{';
-					for ( const subKey in prop.properties ) {
-						const subRequiredMarker = prop.required && prop.required.includes( subKey ) ? '' : '?';
-						const sub = prop.properties[subKey];
+					if ( prop.properties ) {
+						phpStanVar = 'array{';
+						for ( const subKey in prop.properties ) {
+							const subRequiredMarker = prop.required && prop.required.includes( subKey ) ? '' : '?';
+							const sub = prop.properties[subKey];
 
-						phpStanVar += `
+							phpStanVar += `
 	 *   ${subKey}${subRequiredMarker}: ${mapType( ( sub.tsType || sub.type ), sub )},`;
-					}
-					phpStanVar += `
+						}
+						phpStanVar += `
 	 * }`;
+					} else if ( prop.additionalProperties?.type ) {
+						phpDocVar = `array<string, ${mapType( prop.additionalProperties.type, prop.additionalProperties )}>`;
+					} else {
+						phpDocVar = 'array<string, mixed>';
+					}
 					break;
 				default:
 					break;
@@ -53,6 +60,9 @@ class QM_Data_${schema.title} extends QM_Data {`;
 		if ( phpStanVar ) {
 			output += `
 	 * @phpstan-var ${requiredMarker}${phpStanVar}`;
+		} else if ( phpDocVar ) {
+			output += `
+	 * @var ${requiredMarker}${phpDocVar}`;
 		} else {
 			output += `
 	 * @var ${requiredMarker}${mapType( ( prop.tsType || prop.type ), prop )}`;
