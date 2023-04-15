@@ -32,7 +32,7 @@ class QM_Data_Block_Editor extends QM_Data {
 	public $has_block_timing;
 
 	/**
-	 * @var array<int, mixed>|null
+	 * @var array<int, mixed>
 	 */
 	public $post_blocks;
 

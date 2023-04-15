@@ -32,7 +32,7 @@ export interface Block_Editor {
 	block_editor_enabled: boolean;
 	has_block_context: boolean;
 	has_block_timing: boolean;
-	post_blocks: unknown[] | null;
+	post_blocks: unknown[];
 	post_has_blocks: boolean;
 	total_blocks: number;
 }

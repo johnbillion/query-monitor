@@ -30,7 +30,7 @@ interface iBlock {
 
 interface iBlocksProps extends iPanelProps {
 	data: Omit<Block_EditorData, 'post_blocks'> & {
-		post_blocks: iBlock[] | null;
+		post_blocks: iBlock[];
 	};
 }
 
@@ -39,7 +39,11 @@ class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>>
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.post_blocks?.length ) {
+		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
+			return null;
+		}
+
+		if ( ! data.post_has_blocks ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>

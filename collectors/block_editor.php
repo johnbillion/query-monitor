@@ -228,7 +228,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 
 	/**
 	 * @param string $content
-	 * @return mixed[]|null
+	 * @return mixed[]
 	 */
 	protected static function wp_parse_blocks( $content ) {
 		if ( function_exists( 'parse_blocks' ) ) {
@@ -237,11 +237,11 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			return gutenberg_parse_blocks( $content );
 		}
 
-		return null;
+		return array();
 	}
 
 	/**
-	 * @return string[]|null
+	 * @return string[]
 	 */
 	protected static function wp_get_dynamic_block_names() {
 		if ( function_exists( 'get_dynamic_block_names' ) ) {

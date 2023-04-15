@@ -30,10 +30,7 @@
 			"type": "boolean"
 		},
 		"post_blocks": {
-			"type": [
-				"array",
-				"null"
-			]
+			"type": "array"
 		},
 		"post_has_blocks": {
 			"type": "boolean"
