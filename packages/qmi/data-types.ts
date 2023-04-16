@@ -14,6 +14,7 @@ export interface DataTypes {
 	Cache?: Cache;
 	Caps?: Caps;
 	Conditionals?: Conditionals;
+	DB_Callers?: DB_Callers;
 }
 /**
  * Admin screen data transfer object.
@@ -119,5 +120,19 @@ export interface Conditionals {
 		true: string[];
 		false: string[];
 		na: string[];
+	};
+}
+/**
+ * Database query callers data transfer object.
+ */
+export interface DB_Callers {
+	times: {
+		[k: string]: {
+			caller: string;
+			ltime: number;
+			types: {
+				[k: string]: number;
+			};
+		};
 	};
 }

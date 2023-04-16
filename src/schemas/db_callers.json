@@ -1,0 +1,40 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/db_callers.json",
+	"title": "DB_Callers",
+	"description": "Database query callers data transfer object.",
+	"type": "object",
+	"required": [
+		"times"
+	],
+	"properties": {
+		"times": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"properties": {
+					"caller": {
+						"type": "string"
+					},
+					"ltime": {
+						"phpType": "float",
+						"type": "number"
+					},
+					"types": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"caller",
+					"ltime",
+					"types"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

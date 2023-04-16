@@ -21,6 +21,9 @@
 		},
 		"Conditionals": {
 			"$ref": "src/schemas/conditionals.json"
+		},
+		"DB_Callers": {
+			"$ref": "src/schemas/db_callers.json"
 		}
 	},
 	"additionalProperties": false
