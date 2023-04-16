@@ -18,6 +18,9 @@
 		},
 		"Caps": {
 			"$ref": "src/schemas/caps.json"
+		},
+		"Conditionals": {
+			"$ref": "src/schemas/conditionals.json"
 		}
 	},
 	"additionalProperties": false

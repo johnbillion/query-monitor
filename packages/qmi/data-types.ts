@@ -13,6 +13,7 @@ export interface DataTypes {
 	Block_Editor?: Block_Editor;
 	Cache?: Cache;
 	Caps?: Caps;
+	Conditionals?: Conditionals;
 }
 /**
  * Admin screen data transfer object.
@@ -108,5 +109,15 @@ export interface Caps {
 	users: number[];
 	components: {
 		[k: string]: string;
+	};
+}
+/**
+ * Conditionals data transfer object.
+ */
+export interface Conditionals {
+	conds: {
+		true: string[];
+		false: string[];
+		na: string[];
 	};
 }

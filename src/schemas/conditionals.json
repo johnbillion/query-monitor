@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/conditionals.json",
+	"title": "Conditionals",
+	"description": "Conditionals data transfer object.",
+	"type": "object",
+	"required": [
+		"conds"
+	],
+	"properties": {
+		"conds": {
+			"type": "object",
+			"properties": {
+				"true": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"false": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"na": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"true",
+				"false",
+				"na"
+			],
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}
