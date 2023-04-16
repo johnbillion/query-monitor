@@ -24,6 +24,9 @@
 		},
 		"DB_Callers": {
 			"$ref": "src/schemas/db_callers.json"
+		},
+		"DB_Components": {
+			"$ref": "src/schemas/db_components.json"
 		}
 	},
 	"additionalProperties": false

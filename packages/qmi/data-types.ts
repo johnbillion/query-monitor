@@ -15,6 +15,7 @@ export interface DataTypes {
 	Caps?: Caps;
 	Conditionals?: Conditionals;
 	DB_Callers?: DB_Callers;
+	DB_Components?: DB_Components;
 }
 /**
  * Admin screen data transfer object.
@@ -133,6 +134,20 @@ export interface DB_Callers {
 			types: {
 				[k: string]: number;
 			};
+		};
+	};
+}
+/**
+ * Database query components data transfer object.
+ */
+export interface DB_Components {
+	times: {
+		[k: string]: {
+			ltime: number;
+			types: {
+				[k: string]: number;
+			};
+			component: string;
 		};
 	};
 }
