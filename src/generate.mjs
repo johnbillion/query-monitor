@@ -22,50 +22,20 @@ ${schema.$comment ? `\n${schema.$comment}` : ''}
 class QM_Data_${schema.title} extends QM_Data {`;
 
 	for ( const key in schema.properties ) {
-		const requiredMarker = schema.required && schema.required.includes( key ) ? '' : '?';
+		const required = schema.required && schema.required.includes( key );
 		const prop = schema.properties[key];
-		let phpStanVar = null;
-		let phpDocVar = null;
 
 		output += `
 	/**`;
 
-		if ( prop.phpStanVar ) {
-			phpStanVar = prop.phpStanVar;
-		} else if ( ! prop.tsType ) {
-			switch ( prop.type ) {
-				case 'object':
-					if ( prop.properties ) {
-						phpStanVar = 'array{';
-						for ( const subKey in prop.properties ) {
-							const subRequiredMarker = prop.required && prop.required.includes( subKey ) ? '' : '?';
-							const sub = prop.properties[subKey];
+		const type = mapType( prop, required );
 
-							phpStanVar += `
-	 *   ${subKey}${subRequiredMarker}: ${mapType( ( sub.tsType || sub.type ), sub )},`;
-						}
-						phpStanVar += `
-	 * }`;
-					} else if ( prop.additionalProperties?.type ) {
-						phpDocVar = `array<string, ${mapType( prop.additionalProperties.type, prop.additionalProperties )}>`;
-					} else {
-						phpDocVar = 'array<string, mixed>';
-					}
-					break;
-				default:
-					break;
-			}
-		}
-
-		if ( phpStanVar ) {
+		if ( type.includes( 'array{' ) ) {
 			output += `
-	 * @phpstan-var ${requiredMarker}${phpStanVar}`;
-		} else if ( phpDocVar ) {
-			output += `
-	 * @var ${requiredMarker}${phpDocVar}`;
+	 * @phpstan-var ${type}`;
 		} else {
 			output += `
-	 * @var ${requiredMarker}${mapType( ( prop.tsType || prop.type ), prop )}`;
+	 * @var ${type}`;
 		}
 
 		output += `
@@ -80,22 +50,62 @@ class QM_Data_${schema.title} extends QM_Data {`;
 	fs.writeFileSync( `./data/${basename}.php`, output );
 }
 
-function mapType( type, prop ) {
+/**
+ * @param {object} prop
+ * @param {boolean} required
+ * @param {number} level
+ * @returns {string}
+ */
+function mapType( prop, required, level = 1 ) {
+	if ( prop.phpType ) {
+		return prop.phpType;
+	}
+
+	const type = ( prop.tsType || prop.type );
+	const requiredMarker = required ? '' : '?';
+	let returnType = type;
+
 	if ( typeof type == 'object' ) {
-		return type.map( ( t ) => mapType( t, prop ) ).join( '|' );
+		return type.map( ( t ) => mapType( t, true, level + 1 ) ).join( '|' );
 	}
 
 	switch ( type ) {
 		case 'number':
-			return 'int';
+			returnType = 'int';
+			break;
 		case 'boolean':
-			return 'bool';
+			returnType = 'bool';
+			break;
 		case 'array':
 			if ( prop.items ) {
-				return `array<int, ${mapType( ( prop.items.tsType || prop.items.type ), prop.items )}>`;
+				returnType = `array<int, ${mapType( prop.items, true, level + 1 )}>`;
+			} else {
+				returnType = 'array<int, mixed>';
 			}
-			return 'array<int, mixed>';
+			break;
+		case 'object':
+			if ( prop.properties ) {
+				let type = 'array{';
+				for ( const subKey in prop.properties ) {
+					const subRequiredMarker = prop.required && prop.required.includes( subKey ) ? '' : '?';
+					const sub = prop.properties[subKey];
+
+					type += `
+\t *   ${subKey}${subRequiredMarker}: ${mapType( sub, true, level + 1 )},`;
+				}
+				type += `
+\t * }`;
+				returnType = type;
+			} else if ( prop.additionalProperties?.type ) {
+				returnType = `array<string, ${mapType( prop.additionalProperties, true, level + 1 )}>`;
+			} else {
+				returnType = 'array<string, mixed>';
+			}
+			break;
 		default:
-			return type;
+			returnType = type;
+			break;
 	}
+
+	return `${requiredMarker}${returnType}`;
 }
