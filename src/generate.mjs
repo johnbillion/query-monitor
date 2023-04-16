@@ -57,16 +57,16 @@ class QM_Data_${schema.title} extends QM_Data {`;
  * @returns {string}
  */
 function mapType( prop, required, level = 1 ) {
-	if ( prop.phpType ) {
-		return prop.phpType;
-	}
-
 	const type = ( prop.tsType || prop.type );
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
+	if ( prop.phpType ) {
+		return `${requiredMarker}${prop.phpType}`;
+	}
+
 	if ( typeof type == 'object' ) {
-		return type.map( ( t ) => mapType( t, true, level + 1 ) ).join( '|' );
+		return `${requiredMarker}${ type.map( ( t ) => mapType( t, true, level + 1 ) ).join( '|' ) }`;
 	}
 
 	switch ( type ) {

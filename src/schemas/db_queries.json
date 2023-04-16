@@ -1,0 +1,74 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/db_queries.json",
+	"title": "DB_Queries",
+	"description": "Database queries data transfer object.",
+	"type": "object",
+	"required": [
+		"total_qs",
+		"total_time",
+		"errors"
+	],
+	"properties": {
+		"total_qs": {
+			"type": "number"
+		},
+		"total_time": {
+			"phpType": "float",
+			"type": "number"
+		},
+		"errors": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		},
+		"expensive": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		},
+		"wpdb": {
+			"phpType": "stdClass",
+			"type": "object"
+		},
+		"times": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"properties": {
+					"caller": {
+						"type": "string"
+					},
+					"ltime": {
+						"phpType": "float",
+						"type": "number"
+					},
+					"types": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"caller",
+					"ltime",
+					"types"
+				],
+				"additionalProperties": false
+			}
+		},
+		"dupes": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "array",
+				"items": {
+					"type": "number"
+				}
+			}
+		}
+	},
+	"additionalProperties": false
+}
