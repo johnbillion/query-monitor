@@ -12,6 +12,7 @@ export interface DataTypes {
 	Assets?: Assets;
 	Block_Editor?: Block_Editor;
 	Cache?: Cache;
+	Caps?: Caps;
 }
 /**
  * Admin screen data transfer object.
@@ -84,5 +85,28 @@ export interface Cache {
 	};
 	opcode_cache_extensions: {
 		[k: string]: boolean;
+	};
+}
+/**
+ * User capability checks data transfer object.
+ */
+export interface Caps {
+	caps: {
+		args: unknown[];
+		filtered_trace: {
+			[k: string]: unknown;
+		}[];
+		component: {
+			[k: string]: unknown;
+		};
+		result: boolean;
+		parts: string[];
+		name: string;
+		user: string;
+	}[];
+	parts: string[];
+	users: number[];
+	components: {
+		[k: string]: string;
 	};
 }

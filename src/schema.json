@@ -15,6 +15,9 @@
 		},
 		"Cache": {
 			"$ref": "src/schemas/cache.json"
+		},
+		"Caps": {
+			"$ref": "src/schemas/caps.json"
 		}
 	},
 	"additionalProperties": false

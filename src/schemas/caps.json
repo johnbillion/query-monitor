@@ -1,0 +1,80 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/caps.json",
+	"title": "Caps",
+	"description": "User capability checks data transfer object.",
+	"type": "object",
+	"required": [
+		"caps",
+		"parts",
+		"users",
+		"components"
+	],
+	"properties": {
+		"caps": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"args",
+					"filtered_trace",
+					"component",
+					"result",
+					"parts",
+					"name",
+					"user"
+				],
+				"properties": {
+					"args": {
+						"type": "array"
+					},
+					"filtered_trace": {
+						"type": "array",
+						"items": {
+							"type": "object"
+						}
+					},
+					"component": {
+						"phpType": "QM_Component",
+						"type": "object"
+					},
+					"result": {
+						"type": "boolean"
+					},
+					"parts": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"name": {
+						"type": "string"
+					},
+					"user": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"parts": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"users": {
+			"type": "array",
+			"items": {
+				"type": "number"
+			}
+		},
+		"components": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		}
+	},
+	"additionalProperties": false
+}
