@@ -16,6 +16,7 @@ export interface DataTypes {
 	Conditionals?: Conditionals;
 	DB_Callers?: DB_Callers;
 	DB_Components?: DB_Components;
+	DB_Dupes?: DB_Dupes;
 }
 /**
  * Admin screen data transfer object.
@@ -149,5 +150,32 @@ export interface DB_Components {
 			};
 			component: string;
 		};
+	};
+}
+/**
+ * Duplicate database queries data transfer object.
+ */
+export interface DB_Dupes {
+	total_qs: number;
+	dupe_sources: {
+		[k: string]: {
+			[k: string]: number;
+		};
+	};
+	dupe_callers: {
+		[k: string]: {
+			[k: string]: number;
+		};
+	};
+	dupe_components: {
+		[k: string]: {
+			[k: string]: number;
+		};
+	};
+	dupes: {
+		[k: string]: number[];
+	};
+	dupe_times: {
+		[k: string]: number;
 	};
 }

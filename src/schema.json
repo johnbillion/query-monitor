@@ -27,6 +27,9 @@
 		},
 		"DB_Components": {
 			"$ref": "src/schemas/db_components.json"
+		},
+		"DB_Dupes": {
+			"$ref": "src/schemas/db_dupes.json"
 		}
 	},
 	"additionalProperties": false
