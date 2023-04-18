@@ -83,7 +83,7 @@
 		],
 		"test:acceptance": [
 			"npm run build",
-			"bin/acceptance-tests.sh"
+			"acceptance-tests"
 		],
 		"test:integration": [
 			"integration-tests"
