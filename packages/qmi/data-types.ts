@@ -259,7 +259,6 @@ export interface Hooks {
 					name: string;
 					type: string;
 				};
-				[k: string]: unknown;
 			};
 		}[];
 		parts: string[];

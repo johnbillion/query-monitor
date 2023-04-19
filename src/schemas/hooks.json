@@ -86,7 +86,8 @@
 									},
 									"required": [
 										"accepted_args"
-									]
+									],
+									"additionalProperties": false
 								}
 							},
 							"required": [
