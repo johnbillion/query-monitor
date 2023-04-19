@@ -20,6 +20,7 @@ export interface DataTypes {
 	DB_Dupes?: DB_Dupes;
 	Environment?: Environment;
 	Hooks?: Hooks;
+	HTTP?: HTTP;
 }
 /**
  * Admin screen data transfer object.
@@ -271,4 +272,41 @@ export interface Hooks {
 		[k: string]: string;
 	};
 	all_hooks: boolean;
+}
+/**
+ * HTTP data transfer object.
+ */
+export interface HTTP {
+	http: {
+		[k: string]: {
+			args: {
+				[k: string]: unknown;
+			};
+			component: {
+				[k: string]: unknown;
+			};
+			filtered_trace: {
+				[k: string]: unknown;
+			}[];
+			info: {
+				[k: string]: unknown;
+			} | null;
+			local: boolean;
+			ltime: number;
+			redirected_to: string | null;
+			response:
+				| {
+						[k: string]: unknown;
+				  }
+				| WP_Error;
+			transport: string | null;
+			type: string;
+			url: string;
+		};
+	};
+	ltime: number;
+	errors: {
+		alert?: string[];
+		warning?: string[];
+	};
 }

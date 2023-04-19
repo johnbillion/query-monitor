@@ -1,0 +1,112 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/http.json",
+	"title": "HTTP",
+	"description": "HTTP data transfer object.",
+	"type": "object",
+	"required": [
+		"http",
+		"ltime",
+		"errors"
+	],
+	"properties": {
+		"http": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"properties": {
+					"args": {
+						"type": "object"
+					},
+					"component": {
+						"type": "object",
+						"phpType": "QM_Component"
+					},
+					"filtered_trace": {
+						"type": "array",
+						"items": {
+							"type": "object"
+						}
+					},
+					"info": {
+						"type": [
+							"object",
+							"null"
+						],
+						"phpType": "array<string, mixed>|null"
+					},
+					"local": {
+						"type": "boolean"
+					},
+					"ltime": {
+						"type": "number",
+						"phpType": "float"
+					},
+					"redirected_to": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"response": {
+						"type": [
+							"array",
+							"object"
+						],
+						"phpType": "array<string, mixed>|WP_Error",
+						"tsType": "{\n[k: string]: unknown;\n}|WP_Error"
+					},
+					"transport": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"type": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"args",
+					"component",
+					"filtered_trace",
+					"info",
+					"local",
+					"ltime",
+					"redirected_to",
+					"response",
+					"transport",
+					"type",
+					"url"
+				],
+				"additionalProperties": false
+			}
+		},
+		"ltime": {
+			"type": "number",
+			"phpType": "float"
+		},
+		"errors": {
+			"type": "object",
+			"properties": {
+				"alert": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"warning": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

@@ -46,7 +46,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @phpstan-var array<string, array{
 	 *   end: float,
 	 *   args: array<string, mixed>,
-	 *   response: mixed[]|WP_Error,
+	 *   response: array<string, mixed>|WP_Error,
 	 *   transport: string|null,
 	 *   info: array<string, mixed>|null,
 	 * }>

@@ -36,6 +36,9 @@
 		},
 		"Hooks": {
 			"$ref": "src/schemas/hooks.json"
+		},
+		"HTTP": {
+			"$ref": "src/schemas/http.json"
 		}
 	},
 	"additionalProperties": false
