@@ -141,7 +141,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 
 			$this->data->db = array(
 				'info' => $info,
-				'vars' => $mysql_vars,
 				'variables' => $variables ?: array(),
 			);
 		}

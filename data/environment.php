@@ -35,7 +35,6 @@ class QM_Data_Environment extends QM_Data {
 	 *     host: string,
 	 *     database: string,
 	 *   },
-	 *   vars: array<string, bool|string>,
 	 *   variables: array<int, stdClass>,
 	 * }
 	 */

@@ -1,9 +1,12 @@
+import {
+	Environment as EnvironmentData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iWordPressProps {
-	wordpress: any;
+	wordpress: EnvironmentData['wp'];
 }
 
 class WordPress extends React.Component<iWordPressProps, Record<string, unknown>> {

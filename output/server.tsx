@@ -1,25 +1,20 @@
 import { Warning } from 'qmi';
+import {
+	Environment as EnvironmentData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface ServerItem {
-	name: string;
-	version: string;
-	address: string;
-	host: string;
-	OS: string;
-}
-
 interface iServerProps {
-	server: ServerItem;
+	server: EnvironmentData['server'];
 }
 
 class WordPress extends React.Component<iServerProps, Record<string, unknown>> {
 
 	render() {
 		const { server } = this.props;
-		const info: ServerItem = {
+		const info = {
 			name: __( 'Software', 'query-monitor' ),
 			version: __( 'Version', 'query-monitor' ),
 			address: __( 'Address', 'query-monitor' ),

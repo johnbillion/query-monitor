@@ -217,9 +217,6 @@ export interface Environment {
 			host: string;
 			database: string;
 		};
-		vars: {
-			[k: string]: boolean | string;
-		};
 		variables: {
 			Variable_name: string;
 			Value: string;

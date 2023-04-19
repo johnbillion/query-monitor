@@ -1,27 +1,15 @@
 import { Warning } from 'qmi';
+import {
+	Environment as EnvironmentData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
 	__,
 } from '@wordpress/i18n';
 
-interface dbItem {
-	'server-version': string; // @TODO check
-	'extension': string; // @TODO check
-	'client-version': string; // @TODO check
-	'user': string;
-	'host': string;
-	'database': string;
-}
-
 interface iDBProps {
-	db: {
-		info: dbItem;
-		variables: {
-			Variable_name: string;
-			Value: string;
-		}[];
-	};
+	db: EnvironmentData['db'];
 }
 
 class DB extends React.Component<iDBProps, Record<string, unknown>> {
@@ -30,7 +18,7 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 		const {
 			db,
 		} = this.props;
-		const infoLabels: dbItem = {
+		const infoLabels = {
 			'server-version': __( 'Server Version', 'query-monitor' ),
 			'extension': __( 'Extension', 'query-monitor' ),
 			'client-version': __( 'Client Version', 'query-monitor' ),

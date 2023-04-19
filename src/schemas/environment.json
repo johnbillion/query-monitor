@@ -114,15 +114,6 @@
 					],
 					"additionalProperties": false
 				},
-				"vars": {
-					"type": "object",
-					"additionalProperties": {
-						"type": [
-							"boolean",
-							"string"
-						]
-					}
-				},
 				"variables": {
 					"type": "array",
 					"tsType": "{\nVariable_name: string;\nValue: string;\n}[]",
@@ -134,7 +125,6 @@
 			},
 			"required": [
 				"info",
-				"vars",
 				"variables"
 			],
 			"additionalProperties": false

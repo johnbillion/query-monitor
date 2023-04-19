@@ -1,11 +1,14 @@
 import * as classNames from 'classnames';
 import { Toggler, Warning, iQM_i18n } from 'qmi';
+import {
+	Environment as EnvironmentData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iPHPProps {
-	php: any;
+	php: EnvironmentData['php'];
 }
 
 declare const QM_i18n: iQM_i18n;
@@ -68,7 +71,7 @@ class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 									{ key }
 								</th>
 								<td>
-									{ php.variables[ key ].after }
+									{ php.variables[ key ] }
 								</td>
 							</tr>
 						) ) }
