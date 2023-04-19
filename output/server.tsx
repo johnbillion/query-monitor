@@ -19,7 +19,9 @@ class WordPress extends React.Component<iServerProps, Record<string, unknown>> {
 			version: __( 'Version', 'query-monitor' ),
 			address: __( 'Address', 'query-monitor' ),
 			host: __( 'Host', 'query-monitor' ),
+			/* translators: OS stands for Operating System */
 			OS: __( 'OS', 'query-monitor' ),
+			arch: __( 'Architecture', 'query-monitor' ),
 		};
 
 		return (
