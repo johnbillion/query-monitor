@@ -221,7 +221,8 @@ export interface Environment {
 			[k: string]: boolean | string;
 		};
 		variables: {
-			[k: string]: unknown;
+			Variable_name: string;
+			Value: string;
 		}[];
 	};
 	wp: {

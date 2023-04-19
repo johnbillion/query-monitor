@@ -28,6 +28,7 @@
 						"string",
 						"boolean"
 					],
+					"phpType": "string|false",
 					"tsType": "string|false"
 				},
 				"sapi": {
@@ -35,6 +36,7 @@
 						"string",
 						"boolean"
 					],
+					"phpType": "string|false",
 					"tsType": "string|false"
 				},
 				"user": {
@@ -123,6 +125,7 @@
 				},
 				"variables": {
 					"type": "array",
+					"tsType": "{\nVariable_name: string;\nValue: string;\n}[]",
 					"items": {
 						"type": "object",
 						"phpType": "stdClass"

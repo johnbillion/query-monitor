@@ -57,7 +57,7 @@ class QM_Data_${schema.title} extends QM_Data {`;
  * @returns {string}
  */
 function mapType( prop, required, level = 0 ) {
-	const type = ( prop.tsType || prop.type );
+	const type = prop.type;
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 

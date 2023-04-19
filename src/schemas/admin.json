@@ -14,6 +14,7 @@
 		"current_screen": {
 			"type": "object",
 			"tsType": "WP_Screen",
+			"phpType": "WP_Screen",
 			"allOf": [
 				{
 					"$ref": "../../node_modules/wp-json-schemas/schemas/screen.json"
