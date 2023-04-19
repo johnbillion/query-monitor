@@ -56,7 +56,7 @@ class QM_Data_${schema.title} extends QM_Data {`;
  * @param {number} level
  * @returns {string}
  */
-function mapType( prop, required, level = 1 ) {
+function mapType( prop, required, level = 0 ) {
 	const type = ( prop.tsType || prop.type );
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
@@ -69,6 +69,8 @@ function mapType( prop, required, level = 1 ) {
 		return `${requiredMarker}${ type.join( '|' ) }`;
 	}
 
+	const indentation = '  '.repeat( level );
+
 	switch ( type ) {
 		case 'number':
 			returnType = 'int';
@@ -78,7 +80,7 @@ function mapType( prop, required, level = 1 ) {
 			break;
 		case 'array':
 			if ( prop.items ) {
-				returnType = `array<int, ${mapType( prop.items, true, level + 1 )}>`;
+				returnType = `array<int, ${mapType( prop.items, true, level )}>`;
 			} else {
 				returnType = 'array<int, mixed>';
 			}
@@ -91,13 +93,13 @@ function mapType( prop, required, level = 1 ) {
 					const sub = prop.properties[subKey];
 
 					type += `
-\t *   ${subKey}${subRequiredMarker}: ${mapType( sub, true, level + 1 )},`;
+\t *${indentation}   ${subKey}${subRequiredMarker}: ${mapType( sub, true, level + 1 )},`;
 				}
 				type += `
-\t * }`;
+\t *${indentation} }`;
 				returnType = type;
 			} else if ( prop.additionalProperties?.type ) {
-				returnType = `array<string, ${mapType( prop.additionalProperties, true, level + 1 )}>`;
+				returnType = `array<string, ${mapType( prop.additionalProperties, true, level )}>`;
 			} else {
 				returnType = 'array<string, mixed>';
 			}
