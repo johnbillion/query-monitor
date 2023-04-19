@@ -66,7 +66,7 @@ function mapType( prop, required, level = 1 ) {
 	}
 
 	if ( typeof type == 'object' ) {
-		return `${requiredMarker}${ type.map( ( t ) => mapType( t, true, level + 1 ) ).join( '|' ) }`;
+		return `${requiredMarker}${ type.join( '|' ) }`;
 	}
 
 	switch ( type ) {
