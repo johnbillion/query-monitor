@@ -33,6 +33,9 @@
 		},
 		"Environment": {
 			"$ref": "src/schemas/environment.json"
+		},
+		"Hooks": {
+			"$ref": "src/schemas/hooks.json"
 		}
 	},
 	"additionalProperties": false

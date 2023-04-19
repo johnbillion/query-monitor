@@ -17,7 +17,14 @@ class QM_Hook {
 	 *   name: string,
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array<string, mixed>,
+	 *     callback: array{
+	 *       accepted_args: int,
+	 *       name?: string,
+	 *       file?: string|false,
+	 *       line?: int|false,
+	 *       error?: WP_Error,
+	 *       component?: QM_Component,
+	 *     },
 	 *   }>,
 	 *   parts: list<string>,
 	 *   components: array<string, string>,

@@ -1,0 +1,138 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/hooks.json",
+	"title": "Hooks",
+	"description": "Hooks data transfer object.",
+	"type": "object",
+	"required": [
+		"hooks",
+		"parts",
+		"components",
+		"all_hooks"
+	],
+	"properties": {
+		"hooks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"actions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"priority": {
+									"type": "number"
+								},
+								"callback": {
+									"type": "object",
+									"properties": {
+										"accepted_args": {
+											"type": "number"
+										},
+										"name": {
+											"type": "string"
+										},
+										"file": {
+											"phpType": "string|false",
+											"tsType": "string|false",
+											"type": [
+												"string",
+												"boolean"
+											]
+										},
+										"line": {
+											"phpType": "int|false",
+											"tsType": "number|false",
+											"type": [
+												"number",
+												"boolean"
+											]
+										},
+										"error": {
+											"type": "object",
+											"tsType": "WP_Error",
+											"phpType": "WP_Error",
+											"allOf": [
+												{
+													"$ref": "../../node_modules/wp-json-schemas/schemas/error.json"
+												}
+											]
+										},
+										"component": {
+											"phpType": "QM_Component",
+											"type": "object",
+											"properties": {
+												"context": {
+													"type": "string"
+												},
+												"name": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"context",
+												"name",
+												"type"
+											],
+											"additionalProperties": false
+										}
+									},
+									"required": [
+										"accepted_args"
+									]
+								}
+							},
+							"required": [
+								"priority",
+								"callback"
+							],
+							"additionalProperties": false
+						}
+					},
+					"parts": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"components": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "string"
+						}
+					}
+				},
+				"required": [
+					"name",
+					"actions",
+					"parts",
+					"components"
+				],
+				"additionalProperties": false
+			}
+		},
+		"parts": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"components": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"all_hooks": {
+			"type": "boolean"
+		}
+	},
+	"additionalProperties": false
+}

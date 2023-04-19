@@ -5,6 +5,7 @@
 
 import {
 	WP_Screen,
+	WP_Error,
 } from 'wp-types';
 
 export interface DataTypes {
@@ -18,6 +19,7 @@ export interface DataTypes {
 	DB_Components?: DB_Components;
 	DB_Dupes?: DB_Dupes;
 	Environment?: Environment;
+	Hooks?: Hooks;
 }
 /**
  * Admin screen data transfer object.
@@ -237,4 +239,37 @@ export interface Environment {
 		OS: string | null;
 		arch: string | null;
 	};
+}
+/**
+ * Hooks data transfer object.
+ */
+export interface Hooks {
+	hooks: {
+		name: string;
+		actions: {
+			priority: number;
+			callback: {
+				accepted_args: number;
+				name?: string;
+				file?: string | false;
+				line?: number | false;
+				error?: WP_Error;
+				component?: {
+					context: string;
+					name: string;
+					type: string;
+				};
+				[k: string]: unknown;
+			};
+		}[];
+		parts: string[];
+		components: {
+			[k: string]: string;
+		};
+	}[];
+	parts: string[];
+	components: {
+		[k: string]: string;
+	};
+	all_hooks: boolean;
 }

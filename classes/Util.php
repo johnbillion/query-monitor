@@ -323,9 +323,10 @@ class QM_Util {
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
 	 * @phpstan-return array{
+	 *   accepted_args: int,
 	 *   name?: string,
 	 *   file?: string|false,
-	 *   line?: string|false,
+	 *   line?: int|false,
 	 *   error?: WP_Error,
 	 *   component?: QM_Component,
 	 * }
@@ -396,7 +397,7 @@ class QM_Util {
 			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
 				if ( $callback['file'] && preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
 					$callback['file'] = $matches['file'];
-					$callback['line'] = $matches['line'];
+					$callback['line'] = (int) $matches['line'];
 					$file = trim( self::standard_dir( $callback['file'], '' ), '/' );
 					/* translators: 1: Line number, 2: File name */
 					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );

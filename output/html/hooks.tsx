@@ -5,6 +5,9 @@ import {
 	Tabular,
 	Warning,
 } from 'qmi';
+import {
+	Hooks as HooksData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -13,25 +16,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iHooksProps extends iPanelProps {
-	data: {
-		hooks: {
-			name: string;
-			actions: {
-				callback: {
-					accepted_args: number;
-					file: string;
-					line: number;
-					name: string;
-					component: {
-						context: string;
-						name: string;
-						type: string;
-					};
-				};
-				priority: number;
-			}[];
-		}[];
-	}
+	data: HooksData;
 }
 
 class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
