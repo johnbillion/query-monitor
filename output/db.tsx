@@ -3,7 +3,6 @@ import * as React from 'react';
 
 import {
 	__,
-	sprintf,
 } from '@wordpress/i18n';
 
 interface dbItem {
@@ -16,24 +15,22 @@ interface dbItem {
 }
 
 interface iDBProps {
-	name: string;
 	db: {
 		info: dbItem;
 		variables: {
 			Variable_name: string;
 			Value: string;
 		}[];
-	}
+	};
 }
 
 class DB extends React.Component<iDBProps, Record<string, unknown>> {
 
 	render() {
 		const {
-			name,
 			db,
 		} = this.props;
-		const info: dbItem = {
+		const infoLabels: dbItem = {
 			'server-version': __( 'Server Version', 'query-monitor' ),
 			'extension': __( 'Extension', 'query-monitor' ),
 			'client-version': __( 'Client Version', 'query-monitor' ),
@@ -45,14 +42,14 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 		return (
 			<section>
 				<h3>
-					{ sprintf( __( 'Database: %s', 'query-monitor' ), name ) }
+					{ __( 'Database', 'query-monitor' ) }
 				</h3>
 				<table>
 					<tbody>
-						{ Object.keys( info ).map( ( key: keyof typeof info ) => (
+						{ Object.keys( infoLabels ).map( ( key: keyof typeof infoLabels ) => (
 							<tr key={ key }>
 								<th scope="row">
-									{ info[key] }
+									{ infoLabels[key] }
 								</th>
 								<td>
 									{ db.info[key] || (

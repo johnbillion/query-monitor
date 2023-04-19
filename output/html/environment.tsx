@@ -2,6 +2,9 @@ import {
 	iPanelProps,
 	NonTabular,
 } from 'qmi';
+import {
+	Environment as EnvironmentData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import DB from '../db';
@@ -9,7 +12,11 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-class Environment extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iEnvironmentProps extends iPanelProps {
+	data: EnvironmentData;
+}
+
+class Environment extends React.Component<iEnvironmentProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -17,13 +24,7 @@ class Environment extends React.Component<iPanelProps, Record<string, unknown>> 
 		return (
 			<NonTabular id={ this.props.id }>
 				<PHP php={ data.php }/>
-				{ data.db && (
-					<>
-						{ Object.keys( data.db ).map( key =>
-							<DB key={ key } db={ data.db[key] } name={ key }/>
-						) }
-					</>
-				) }
+				<DB db={ data.db }/>
 				<WordPress wordpress={ data.wp }/>
 				<Server server={ data.server }/>
 			</NonTabular>
