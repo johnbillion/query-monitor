@@ -30,6 +30,9 @@
 		},
 		"DB_Dupes": {
 			"$ref": "src/schemas/db_dupes.json"
+		},
+		"Environment": {
+			"$ref": "src/schemas/environment.json"
 		}
 	},
 	"additionalProperties": false

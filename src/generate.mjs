@@ -66,18 +66,12 @@ function mapType( prop, required, level = 0 ) {
 	}
 
 	if ( typeof type == 'object' ) {
-		return `${requiredMarker}${ type.join( '|' ) }`;
+		return `${requiredMarker}${ type.map( getPHPType ).join( '|' ) }`;
 	}
 
 	const indentation = '  '.repeat( level );
 
 	switch ( type ) {
-		case 'number':
-			returnType = 'int';
-			break;
-		case 'boolean':
-			returnType = 'bool';
-			break;
 		case 'array':
 			if ( prop.items ) {
 				returnType = `array<int, ${mapType( prop.items, true, level )}>`;
@@ -105,9 +99,26 @@ function mapType( prop, required, level = 0 ) {
 			}
 			break;
 		default:
-			returnType = type;
+			returnType = getPHPType( type );
 			break;
 	}
 
 	return `${requiredMarker}${returnType}`;
+}
+
+/**
+ * @param {string} type
+ * @returns {string}
+ */
+function getPHPType( type ) {
+	switch ( type ) {
+		case 'number':
+			return 'int';
+		case 'boolean':
+			return 'bool';
+		case 'object':
+			return 'array';
+		default:
+			return type;
+	}
 }

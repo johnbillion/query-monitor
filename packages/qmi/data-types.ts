@@ -17,6 +17,7 @@ export interface DataTypes {
 	DB_Callers?: DB_Callers;
 	DB_Components?: DB_Components;
 	DB_Dupes?: DB_Dupes;
+	Environment?: Environment;
 }
 /**
  * Admin screen data transfer object.
@@ -185,5 +186,57 @@ export interface DB_Dupes {
 	};
 	dupe_times: {
 		[k: string]: number;
+	};
+}
+/**
+ * Environment data transfer object.
+ */
+export interface Environment {
+	php: {
+		variables: {
+			[k: string]: string | null;
+		};
+		version: string | false;
+		sapi: string | false;
+		user: string;
+		old: boolean;
+		extensions: {
+			[k: string]: string;
+		};
+		error_reporting: number;
+		error_levels: {
+			[k: string]: boolean;
+		};
+	};
+	db: {
+		info: {
+			"server-version": string;
+			extension: string | null;
+			"client-version": string | null;
+			user: string;
+			host: string;
+			database: string;
+		};
+		vars: {
+			[k: string]: boolean | string;
+		};
+		variables: {
+			[k: string]: unknown;
+		}[];
+	};
+	wp: {
+		version: string;
+		environment_type?: string;
+		constants: {
+			[k: string]: string;
+		};
+	};
+	server: {
+		name: string;
+		version: string | null;
+		address: string | null;
+		host: string | null;
+		OS: string | null;
+		arch: string | null;
 	};
 }

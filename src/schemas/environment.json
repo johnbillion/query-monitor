@@ -1,0 +1,210 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/environment.json",
+	"title": "Environment",
+	"description": "Environment data transfer object.",
+	"type": "object",
+	"required": [
+		"php",
+		"db",
+		"wp",
+		"server"
+	],
+	"properties": {
+		"php": {
+			"type": "object",
+			"properties": {
+				"variables": {
+					"type": "object",
+					"additionalProperties": {
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				},
+				"version": {
+					"type": [
+						"string",
+						"boolean"
+					],
+					"tsType": "string|false"
+				},
+				"sapi": {
+					"type": [
+						"string",
+						"boolean"
+					],
+					"tsType": "string|false"
+				},
+				"user": {
+					"type": "string"
+				},
+				"old": {
+					"type": "boolean"
+				},
+				"extensions": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"error_reporting": {
+					"type": "number"
+				},
+				"error_levels": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "boolean"
+					}
+				}
+			},
+			"required": [
+				"variables",
+				"version",
+				"sapi",
+				"user",
+				"old",
+				"extensions",
+				"error_reporting",
+				"error_levels"
+			],
+			"additionalProperties": false
+		},
+		"db": {
+			"type": "object",
+			"properties": {
+				"info": {
+					"type": "object",
+					"properties": {
+						"server-version": {
+							"type": "string"
+						},
+						"extension": {
+							"type": [
+								"string",
+								"null"
+							]
+						},
+						"client-version": {
+							"type": [
+								"string",
+								"null"
+							]
+						},
+						"user": {
+							"type": "string"
+						},
+						"host": {
+							"type": "string"
+						},
+						"database": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"server-version",
+						"extension",
+						"client-version",
+						"user",
+						"host",
+						"database"
+					],
+					"additionalProperties": false
+				},
+				"vars": {
+					"type": "object",
+					"additionalProperties": {
+						"type": [
+							"boolean",
+							"string"
+						]
+					}
+				},
+				"variables": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"phpType": "stdClass"
+					}
+				}
+			},
+			"required": [
+				"info",
+				"vars",
+				"variables"
+			],
+			"additionalProperties": false
+		},
+		"wp": {
+			"type": "object",
+			"properties": {
+				"version": {
+					"type": "string"
+				},
+				"environment_type": {
+					"type": "string"
+				},
+				"constants": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"version",
+				"constants"
+			],
+			"additionalProperties": false
+		},
+		"server": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"version": {
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"address": {
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"host": {
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"OS": {
+					"type": [
+						"string",
+						"null"
+					]
+				},
+				"arch": {
+					"type": [
+						"string",
+						"null"
+					]
+				}
+			},
+			"required": [
+				"name",
+				"version",
+				"address",
+				"host",
+				"OS",
+				"arch"
+			],
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}
