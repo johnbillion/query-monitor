@@ -39,10 +39,18 @@ export interface Admin {
  */
 export interface Assets {
 	assets?: {
-		missing: AssetList;
-		broken: AssetList;
-		header: AssetList;
-		footer: AssetList;
+		missing: {
+			[k: string]: unknown;
+		};
+		broken: {
+			[k: string]: unknown;
+		};
+		header: {
+			[k: string]: unknown;
+		};
+		footer: {
+			[k: string]: unknown;
+		};
 	};
 	counts: {
 		missing: number;

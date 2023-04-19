@@ -23,19 +23,19 @@
 			"properties": {
 				"missing": {
 					"type": "object",
-					"tsType": "AssetList"
+					"phpType": "AssetList"
 				},
 				"broken": {
 					"type": "object",
-					"tsType": "AssetList"
+					"phpType": "AssetList"
 				},
 				"header": {
 					"type": "object",
-					"tsType": "AssetList"
+					"phpType": "AssetList"
 				},
 				"footer": {
 					"type": "object",
-					"tsType": "AssetList"
+					"phpType": "AssetList"
 				}
 			},
 			"required": [
