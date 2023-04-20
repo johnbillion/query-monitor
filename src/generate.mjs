@@ -57,7 +57,7 @@ class QM_Data_${schema.title} extends QM_Data {`;
  * @returns {string}
  */
 function mapType( prop, required, level = 0 ) {
-	const type = prop.type;
+	const type = prop.enum || prop.type;
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
@@ -112,15 +112,20 @@ function mapType( prop, required, level = 0 ) {
  */
 function getPHPType( type ) {
 	switch ( type ) {
+		case 'string':
+			return 'string';
+		case 'null':
+			return 'null';
 		case 'number':
 			return 'float';
 		case 'integer':
 			return 'int';
 		case 'boolean':
 			return 'bool';
+		case 'array':
 		case 'object':
 			return 'array';
 		default:
-			return type;
+			return `'${type}'`;
 	}
 }
