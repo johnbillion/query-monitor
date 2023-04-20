@@ -52,7 +52,7 @@
 					}
 				},
 				"error_reporting": {
-					"type": "number"
+					"type": "integer"
 				},
 				"error_levels": {
 					"type": "object",

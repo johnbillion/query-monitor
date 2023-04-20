@@ -113,6 +113,8 @@ function mapType( prop, required, level = 0 ) {
 function getPHPType( type ) {
 	switch ( type ) {
 		case 'number':
+			return 'float';
+		case 'integer':
 			return 'int';
 		case 'boolean':
 			return 'bool';

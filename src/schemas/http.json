@@ -39,8 +39,7 @@
 						"type": "boolean"
 					},
 					"ltime": {
-						"type": "number",
-						"phpType": "float"
+						"type": "number"
 					},
 					"redirected_to": {
 						"type": [
@@ -86,8 +85,7 @@
 			}
 		},
 		"ltime": {
-			"type": "number",
-			"phpType": "float"
+			"type": "number"
 		},
 		"errors": {
 			"type": "object",

@@ -25,13 +25,13 @@
 							"type": "object",
 							"properties": {
 								"priority": {
-									"type": "number"
+									"type": "integer"
 								},
 								"callback": {
 									"type": "object",
 									"properties": {
 										"accepted_args": {
-											"type": "number"
+											"type": "integer"
 										},
 										"name": {
 											"type": "string"

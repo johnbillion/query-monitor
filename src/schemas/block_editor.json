@@ -36,7 +36,7 @@
 			"type": "boolean"
 		},
 		"total_blocks": {
-			"type": "number"
+			"type": "integer"
 		}
 	},
 	"additionalProperties": false

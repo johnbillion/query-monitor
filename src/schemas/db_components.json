@@ -14,13 +14,12 @@
 				"type": "object",
 				"properties": {
 					"ltime": {
-						"phpType": "float",
 						"type": "number"
 					},
 					"types": {
 						"type": "object",
 						"additionalProperties": {
-							"type": "number"
+							"type": "integer"
 						}
 					},
 					"component": {

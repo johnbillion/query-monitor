@@ -11,10 +11,9 @@
 	],
 	"properties": {
 		"total_qs": {
-			"type": "number"
+			"type": "integer"
 		},
 		"total_time": {
-			"phpType": "float",
 			"type": "number"
 		},
 		"errors": {
@@ -42,13 +41,12 @@
 						"type": "string"
 					},
 					"ltime": {
-						"phpType": "float",
 						"type": "number"
 					},
 					"types": {
 						"type": "object",
 						"additionalProperties": {
-							"type": "number"
+							"type": "integer"
 						}
 					}
 				},
@@ -65,7 +63,7 @@
 			"additionalProperties": {
 				"type": "array",
 				"items": {
-					"type": "number"
+					"type": "integer"
 				}
 			}
 		}

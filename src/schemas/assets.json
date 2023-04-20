@@ -50,19 +50,19 @@
 			"type": "object",
 			"properties": {
 				"missing": {
-					"type": "number"
+					"type": "integer"
 				},
 				"broken": {
-					"type": "number"
+					"type": "integer"
 				},
 				"header": {
-					"type": "number"
+					"type": "integer"
 				},
 				"footer": {
-					"type": "number"
+					"type": "integer"
 				},
 				"total": {
-					"type": "number"
+					"type": "integer"
 				}
 			},
 			"required": [

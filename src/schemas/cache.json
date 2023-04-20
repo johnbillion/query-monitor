@@ -24,7 +24,7 @@
 			"type": "boolean"
 		},
 		"cache_hit_percentage": {
-			"type": "number"
+			"type": "integer"
 		},
 		"stats": {
 			"type": "object"

@@ -17,13 +17,12 @@
 						"type": "string"
 					},
 					"ltime": {
-						"phpType": "float",
 						"type": "number"
 					},
 					"types": {
 						"type": "object",
 						"additionalProperties": {
-							"type": "number"
+							"type": "integer"
 						}
 					}
 				},

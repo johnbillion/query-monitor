@@ -14,14 +14,14 @@
 	],
 	"properties": {
 		"total_qs": {
-			"type": "number"
+			"type": "integer"
 		},
 		"dupe_sources": {
 			"type": "object",
 			"additionalProperties": {
 				"type": "object",
 				"additionalProperties": {
-					"type": "number"
+					"type": "integer"
 				}
 			}
 		},
@@ -30,7 +30,7 @@
 			"additionalProperties": {
 				"type": "object",
 				"additionalProperties": {
-					"type": "number"
+					"type": "integer"
 				}
 			}
 		},
@@ -39,7 +39,7 @@
 			"additionalProperties": {
 				"type": "object",
 				"additionalProperties": {
-					"type": "number"
+					"type": "integer"
 				}
 			}
 		},
@@ -48,14 +48,13 @@
 			"additionalProperties": {
 				"type": "array",
 				"items": {
-					"type": "number"
+					"type": "integer"
 				}
 			}
 		},
 		"dupe_times": {
 			"type": "object",
 			"additionalProperties": {
-				"phpType": "float",
 				"type": "number"
 			}
 		}
