@@ -39,6 +39,9 @@
 		},
 		"HTTP": {
 			"$ref": "src/schemas/http.json"
+		},
+		"Languages": {
+			"$ref": "src/schemas/languages.json"
 		}
 	},
 	"additionalProperties": false

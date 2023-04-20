@@ -23,6 +23,7 @@ export interface DataTypes {
 	Environment?: Environment;
 	Hooks?: Hooks;
 	HTTP?: HTTP;
+	Languages?: Languages;
 }
 /**
  * Admin screen data transfer object.
@@ -311,4 +312,30 @@ export interface HTTP {
 		alert?: string[];
 		warning?: string[];
 	};
+}
+/**
+ * Languages data transfer object.
+ */
+export interface Languages {
+	languages: {
+		[k: string]: {
+			[k: string]: {
+				caller: {
+					[k: string]: unknown;
+				};
+				domain: string;
+				file: string | false;
+				found: number | false;
+				handle: string | null;
+				type: "gettext" | "jed";
+			};
+		};
+	};
+	locale: string;
+	user_locale: string;
+	determined_locale: string;
+	language_attributes: string;
+	mlp_language: string;
+	pll_language: string;
+	total_size: number;
 }

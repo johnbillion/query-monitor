@@ -1,0 +1,96 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/languages.json",
+	"title": "Languages",
+	"description": "Languages data transfer object.",
+	"type": "object",
+	"required": [
+		"languages",
+		"locale",
+		"user_locale",
+		"determined_locale",
+		"language_attributes",
+		"mlp_language",
+		"pll_language",
+		"total_size"
+	],
+	"properties": {
+		"languages": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "object",
+					"properties": {
+						"caller": {
+							"phpType": "mixed"
+						},
+						"domain": {
+							"type": "string"
+						},
+						"file": {
+							"type": [
+								"string",
+								"boolean"
+							],
+							"phpType": "string|false",
+							"tsType": "string|false"
+						},
+						"found": {
+							"type": [
+								"integer",
+								"boolean"
+							],
+							"phpType": "int|false",
+							"tsType": "number|false"
+						},
+						"handle": {
+							"type": [
+								"string",
+								"null"
+							]
+						},
+						"type": {
+							"type": "string",
+							"enum": [
+								"gettext",
+								"jed"
+							]
+						}
+					},
+					"required": [
+						"caller",
+						"domain",
+						"file",
+						"found",
+						"handle",
+						"type"
+					],
+					"additionalProperties": false
+				}
+			}
+		},
+		"locale": {
+			"type": "string"
+		},
+		"user_locale": {
+			"type": "string"
+		},
+		"determined_locale": {
+			"type": "string"
+		},
+		"language_attributes": {
+			"type": "string"
+		},
+		"mlp_language": {
+			"type": "string"
+		},
+		"pll_language": {
+			"type": "string"
+		},
+		"total_size": {
+			"type": "integer"
+		}
+	},
+	"additionalProperties": false
+}
