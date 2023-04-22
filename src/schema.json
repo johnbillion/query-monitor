@@ -42,6 +42,9 @@
 		},
 		"Languages": {
 			"$ref": "src/schemas/languages.json"
+		},
+		"Logger": {
+			"$ref": "src/schemas/logger.json"
 		}
 	},
 	"additionalProperties": false

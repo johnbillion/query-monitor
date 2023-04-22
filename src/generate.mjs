@@ -30,7 +30,7 @@ class QM_Data_${schema.title} extends QM_Data {`;
 
 		const type = mapType( prop, required );
 
-		if ( type.includes( 'array{' ) ) {
+		if ( type.includes( 'array{' ) || prop.phpStanType ) {
 			output += `
 	 * @phpstan-var ${type}`;
 		} else {
@@ -61,8 +61,8 @@ function mapType( prop, required, level = 0 ) {
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
-	if ( prop.phpType ) {
-		return `${requiredMarker}${prop.phpType}`;
+	if ( prop.phpStanType || prop.phpType ) {
+		return `${requiredMarker}${prop.phpStanType || prop.phpType}`;
 	}
 
 	if ( typeof type == 'object' ) {

@@ -1,0 +1,74 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/logger.json",
+	"title": "Logger",
+	"description": "Logger data transfer object.",
+	"type": "object",
+	"required": [
+		"counts",
+		"logs",
+		"components",
+		"levels",
+		"warning_levels"
+	],
+	"properties": {
+		"counts": {
+			"type": "object",
+			"phpStanType": "array<QM_Collector_Logger::*, int>",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "integer"
+				}
+			}
+		},
+		"logs": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"filtered_trace": {
+						"type": "array"
+					},
+					"component": {
+						"type": "object",
+						"phpType": "QM_Component"
+					},
+					"level": {
+						"type": "string",
+						"phpType": "QM_Collector_Logger::*"
+					}
+				},
+				"required": [
+					"message",
+					"filtered_trace",
+					"component",
+					"level"
+				],
+				"additionalItems": false
+			}
+		},
+		"components": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"levels": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"warning_levels": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	},
+	"additionalProperties": false
+}

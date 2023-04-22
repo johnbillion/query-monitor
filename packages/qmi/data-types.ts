@@ -24,6 +24,7 @@ export interface DataTypes {
 	Hooks?: Hooks;
 	HTTP?: HTTP;
 	Languages?: Languages;
+	Logger?: Logger;
 }
 /**
  * Admin screen data transfer object.
@@ -338,4 +339,28 @@ export interface Languages {
 	mlp_language: string;
 	pll_language: string;
 	total_size: number;
+}
+/**
+ * Logger data transfer object.
+ */
+export interface Logger {
+	counts: {
+		[k: string]: {
+			[k: string]: number;
+		};
+	};
+	logs: {
+		message: string;
+		filtered_trace: unknown[];
+		component: {
+			[k: string]: unknown;
+		};
+		level: string;
+		[k: string]: unknown;
+	}[];
+	components: {
+		[k: string]: string;
+	};
+	levels: string[];
+	warning_levels: string[];
 }
