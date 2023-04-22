@@ -45,6 +45,9 @@
 		},
 		"Logger": {
 			"$ref": "src/schemas/logger.json"
+		},
+		"Multisite": {
+			"$ref": "src/schemas/multisite.json"
 		}
 	},
 	"additionalProperties": false

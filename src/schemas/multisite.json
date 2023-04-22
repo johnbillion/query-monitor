@@ -1,0 +1,41 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/multisite.json",
+	"title": "Multisite",
+	"description": "Multisite data transfer object.",
+	"type": "object",
+	"required": [
+		"switches"
+	],
+	"properties": {
+		"switches": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"new": {
+						"type": "integer"
+					},
+					"prev": {
+						"type": "integer"
+					},
+					"to": {
+						"type": "boolean"
+					},
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace"
+					}
+				},
+				"required": [
+					"new",
+					"prev",
+					"to",
+					"trace"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

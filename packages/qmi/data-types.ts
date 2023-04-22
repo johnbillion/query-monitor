@@ -25,6 +25,7 @@ export interface DataTypes {
 	HTTP?: HTTP;
 	Languages?: Languages;
 	Logger?: Logger;
+	Multisite?: Multisite;
 }
 /**
  * Admin screen data transfer object.
@@ -363,4 +364,17 @@ export interface Logger {
 	};
 	levels: string[];
 	warning_levels: string[];
+}
+/**
+ * Multisite data transfer object.
+ */
+export interface Multisite {
+	switches: {
+		new: number;
+		prev: number;
+		to: boolean;
+		trace: {
+			[k: string]: unknown;
+		};
+	}[];
 }
