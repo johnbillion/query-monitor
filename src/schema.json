@@ -54,6 +54,9 @@
 		},
 		"PHP_Errors": {
 			"$ref": "src/schemas/php_errors.json"
+		},
+		"Raw_Request": {
+			"$ref": "src/schemas/raw_request.json"
 		}
 	},
 	"additionalProperties": false

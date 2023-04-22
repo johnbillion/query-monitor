@@ -28,6 +28,7 @@ export interface DataTypes {
 	Multisite?: Multisite;
 	Overview?: Overview;
 	PHP_Errors?: PHP_Errors;
+	Raw_Request?: Raw_Request;
 }
 /**
  * Admin screen data transfer object.
@@ -428,5 +429,16 @@ export interface PHP_Errors {
 				[k: string]: unknown;
 			};
 		};
+	};
+}
+/**
+ * Raw request data transfer object.
+ */
+export interface Raw_Request {
+	request: {
+		[k: string]: unknown;
+	};
+	response: {
+		[k: string]: unknown;
 	};
 }
