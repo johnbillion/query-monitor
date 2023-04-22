@@ -61,6 +61,14 @@ function mapType( prop, required, level = 0 ) {
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
+	if ( prop.anyOf ) {
+		return `${requiredMarker}${ prop.anyOf.map( ( one ) => mapType( one, true, level ) ).join( '|' ) }`;
+	}
+
+	if ( prop.oneOf ) {
+		return `${requiredMarker}${ prop.oneOf.map( ( one ) => mapType( one, true, level ) ).join( '|' ) }`;
+	}
+
 	if ( typeof type === 'undefined' ) {
 		return `${requiredMarker}mixed`;
 	}
