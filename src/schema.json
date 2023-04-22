@@ -66,6 +66,9 @@
 		},
 		"Timing": {
 			"$ref": "src/schemas/timing.json"
+		},
+		"Transients": {
+			"$ref": "src/schemas/transients.json"
 		}
 	},
 	"additionalProperties": false

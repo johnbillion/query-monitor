@@ -1,0 +1,63 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/transients.json",
+	"title": "Transients",
+	"description": "Transients data transfer object.",
+	"type": "object",
+	"required": [
+		"trans",
+		"has_type"
+	],
+	"properties": {
+		"trans": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"filtered_trace": {
+						"type": "array"
+					},
+					"component": {
+						"type": "object",
+						"phpType": "QM_Component"
+					},
+					"type": {
+						"type": "string"
+					},
+					"value": {},
+					"expiration": {
+						"type": "integer"
+					},
+					"exp_diff": {
+						"type": "string"
+					},
+					"size": {
+						"type": "integer"
+					},
+					"size_formatted": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"filtered_trace",
+					"component",
+					"type",
+					"value",
+					"expiration",
+					"exp_diff",
+					"size",
+					"size_formatted"
+				],
+				"additionalProperties": false
+			}
+		},
+		"has_type": {
+			"type": "boolean"
+		}
+	},
+	"additionalProperties": false
+}

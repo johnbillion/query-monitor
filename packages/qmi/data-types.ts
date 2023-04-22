@@ -32,6 +32,7 @@ export interface DataTypes {
 	Redirect?: Redirect;
 	Request?: Request;
 	Timing?: Timing;
+	Transients?: Transients;
 }
 /**
  * Admin screen data transfer object.
@@ -499,4 +500,23 @@ export interface Timing {
 	timing: {
 		[k: string]: unknown;
 	}[];
+}
+/**
+ * Transients data transfer object.
+ */
+export interface Transients {
+	trans: {
+		name: string;
+		filtered_trace: unknown[];
+		component: {
+			[k: string]: unknown;
+		};
+		type: string;
+		value: unknown;
+		expiration: number;
+		exp_diff: string;
+		size: number;
+		size_formatted: string;
+	}[];
+	has_type: boolean;
 }

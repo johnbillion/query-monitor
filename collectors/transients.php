@@ -26,6 +26,8 @@ class QM_Collector_Transients extends QM_DataCollector {
 	public function set_up() {
 		parent::set_up();
 
+		$this->data->trans = array();
+
 		add_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10, 3 );
 		add_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10, 3 );
 	}
