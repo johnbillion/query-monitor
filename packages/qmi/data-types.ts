@@ -30,6 +30,7 @@ export interface DataTypes {
 	PHP_Errors?: PHP_Errors;
 	Raw_Request?: Raw_Request;
 	Redirect?: Redirect;
+	Request?: Request;
 }
 /**
  * Admin screen data transfer object.
@@ -452,4 +453,38 @@ export interface Redirect {
 	};
 	location?: string;
 	status?: number;
+}
+/**
+ * Request data transfer object.
+ */
+export interface Request {
+	user: {
+		title: string;
+		data:
+			| {
+					[k: string]: unknown;
+			  }
+			| boolean;
+	};
+	multisite: {
+		[k: string]: {
+			[k: string]: unknown;
+		};
+	};
+	request: {
+		[k: string]: unknown;
+	};
+	qvars: {
+		[k: string]: unknown;
+	};
+	plugin_qvars: {
+		[k: string]: unknown;
+	};
+	queried_object: {
+		[k: string]: unknown;
+	};
+	request_method: string;
+	matching_rewrites: {
+		[k: string]: string;
+	};
 }

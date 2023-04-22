@@ -1,0 +1,67 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/request.json",
+	"title": "Request",
+	"description": "Request data transfer object.",
+	"type": "object",
+	"required": [
+		"user",
+		"multisite",
+		"request",
+		"qvars",
+		"plugin_qvars",
+		"queried_object",
+		"request_method",
+		"matching_rewrites"
+	],
+	"properties": {
+		"user": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"type": "string"
+				},
+				"data": {
+					"type": [
+						"object",
+						"boolean"
+					],
+					"phpType": "WP_User|false"
+				}
+			},
+			"required": [
+				"title",
+				"data"
+			],
+			"additionalProperties": false
+		},
+		"multisite": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object"
+			}
+		},
+		"request": {
+			"type": "object"
+		},
+		"qvars": {
+			"type": "object"
+		},
+		"plugin_qvars": {
+			"type": "object"
+		},
+		"queried_object": {
+			"type": "object"
+		},
+		"request_method": {
+			"type": "string"
+		},
+		"matching_rewrites": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		}
+	},
+	"additionalProperties": false
+}

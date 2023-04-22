@@ -60,6 +60,9 @@
 		},
 		"Redirect": {
 			"$ref": "src/schemas/redirect.json"
+		},
+		"Request": {
+			"$ref": "src/schemas/request.json"
 		}
 	},
 	"additionalProperties": false
