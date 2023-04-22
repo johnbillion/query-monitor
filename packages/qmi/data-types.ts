@@ -29,6 +29,7 @@ export interface DataTypes {
 	Overview?: Overview;
 	PHP_Errors?: PHP_Errors;
 	Raw_Request?: Raw_Request;
+	Redirect?: Redirect;
 }
 /**
  * Admin screen data transfer object.
@@ -441,4 +442,14 @@ export interface Raw_Request {
 	response: {
 		[k: string]: unknown;
 	};
+}
+/**
+ * Redirect data transfer object.
+ */
+export interface Redirect {
+	trace?: {
+		[k: string]: unknown;
+	};
+	location?: string;
+	status?: number;
 }

@@ -57,6 +57,9 @@
 		},
 		"Raw_Request": {
 			"$ref": "src/schemas/raw_request.json"
+		},
+		"Redirect": {
+			"$ref": "src/schemas/redirect.json"
 		}
 	},
 	"additionalProperties": false

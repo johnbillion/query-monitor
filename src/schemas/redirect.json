@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/redirect.json",
+	"title": "Redirect",
+	"description": "Redirect data transfer object.",
+	"type": "object",
+	"properties": {
+		"trace": {
+			"type": "object",
+			"phpType": "QM_Backtrace"
+		},
+		"location": {
+			"type": "string"
+		},
+		"status": {
+			"type": "integer"
+		}
+	},
+	"additionalProperties": false
+}
