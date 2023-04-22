@@ -51,6 +51,9 @@
 		},
 		"Overview": {
 			"$ref": "src/schemas/overview.json"
+		},
+		"PHP_Errors": {
+			"$ref": "src/schemas/php_errors.json"
 		}
 	},
 	"additionalProperties": false

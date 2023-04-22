@@ -27,6 +27,7 @@ export interface DataTypes {
 	Logger?: Logger;
 	Multisite?: Multisite;
 	Overview?: Overview;
+	PHP_Errors?: PHP_Errors;
 }
 /**
  * Admin screen data transfer object.
@@ -399,4 +400,33 @@ export interface Overview {
 	display_time_usage_warning: boolean;
 	display_memory_usage_warning: boolean;
 	is_admin: boolean;
+}
+/**
+ * PHP errors data transfer object.
+ */
+export interface PHP_Errors {
+	components: {
+		[k: string]: string;
+	};
+	errors: {
+		[k: string]: {
+			[k: string]: {
+				[k: string]: unknown;
+			};
+		};
+	};
+	suppressed: {
+		[k: string]: {
+			[k: string]: {
+				[k: string]: unknown;
+			};
+		};
+	};
+	silenced: {
+		[k: string]: {
+			[k: string]: {
+				[k: string]: unknown;
+			};
+		};
+	};
 }

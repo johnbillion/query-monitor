@@ -1,0 +1,53 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/php_errors.json",
+	"title": "PHP_Errors",
+	"description": "PHP errors data transfer object.",
+	"$comment": "/**\n * @phpstan-type errorObject array{\n *   errno: int,\n *   type: string,\n *   message: string,\n *   file: string|null,\n *   filename: string,\n *   line: int|null,\n *   filtered_trace: list<array<string, mixed>>|null,\n *   component: QM_Component,\n *   calls: int,\n * }\n * @phpstan-type errorObjects array<string, array<string, errorObject>>\n */",
+	"type": "object",
+	"required": [
+		"components",
+		"errors",
+		"suppressed",
+		"silenced"
+	],
+	"properties": {
+		"components": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"errors": {
+			"type": "object",
+			"phpStanType": "errorObjects",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "object"
+				}
+			}
+		},
+		"suppressed": {
+			"type": "object",
+			"phpStanType": "errorObjects",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "object"
+				}
+			}
+		},
+		"silenced": {
+			"type": "object",
+			"phpStanType": "errorObjects",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "object"
+				}
+			}
+		}
+	},
+	"additionalProperties": false
+}
