@@ -26,6 +26,7 @@ export interface DataTypes {
 	Languages?: Languages;
 	Logger?: Logger;
 	Multisite?: Multisite;
+	Overview?: Overview;
 }
 /**
  * Admin screen data transfer object.
@@ -377,4 +378,25 @@ export interface Multisite {
 			[k: string]: unknown;
 		};
 	}[];
+}
+/**
+ * Overview data transfer object.
+ */
+export interface Overview {
+	time_taken?: number;
+	time_limit: number;
+	time_start: number;
+	time_usage: number;
+	memory: number;
+	memory_limit: number;
+	memory_usage: number;
+	current_user?: {
+		[k: string]: unknown;
+	};
+	switched_user?: {
+		[k: string]: unknown;
+	};
+	display_time_usage_warning: boolean;
+	display_memory_usage_warning: boolean;
+	is_admin: boolean;
 }

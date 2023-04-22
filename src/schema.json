@@ -48,6 +48,9 @@
 		},
 		"Multisite": {
 			"$ref": "src/schemas/multisite.json"
+		},
+		"Overview": {
+			"$ref": "src/schemas/overview.json"
 		}
 	},
 	"additionalProperties": false
