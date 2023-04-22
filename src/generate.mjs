@@ -61,6 +61,10 @@ function mapType( prop, required, level = 0 ) {
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
+	if ( typeof type === 'undefined' ) {
+		return `${requiredMarker}mixed`;
+	}
+
 	if ( prop.phpStanType || prop.phpType ) {
 		return `${requiredMarker}${prop.phpStanType || prop.phpType}`;
 	}
