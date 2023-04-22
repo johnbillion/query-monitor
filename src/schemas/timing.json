@@ -1,0 +1,26 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/timing.json",
+	"title": "Timing",
+	"description": "Timing data transfer object.",
+	"type": "object",
+	"required": [
+		"warning",
+		"timing"
+	],
+	"properties": {
+		"warning": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		},
+		"timing": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		}
+	},
+	"additionalProperties": false
+}

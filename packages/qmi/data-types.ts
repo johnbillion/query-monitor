@@ -31,6 +31,7 @@ export interface DataTypes {
 	Raw_Request?: Raw_Request;
 	Redirect?: Redirect;
 	Request?: Request;
+	Timing?: Timing;
 }
 /**
  * Admin screen data transfer object.
@@ -487,4 +488,15 @@ export interface Request {
 	matching_rewrites: {
 		[k: string]: string;
 	};
+}
+/**
+ * Timing data transfer object.
+ */
+export interface Timing {
+	warning: {
+		[k: string]: unknown;
+	}[];
+	timing: {
+		[k: string]: unknown;
+	}[];
 }

@@ -63,6 +63,9 @@
 		},
 		"Request": {
 			"$ref": "src/schemas/request.json"
+		},
+		"Timing": {
+			"$ref": "src/schemas/timing.json"
 		}
 	},
 	"additionalProperties": false
