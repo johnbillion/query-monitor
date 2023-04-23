@@ -31,6 +31,9 @@
 		"DB_Dupes": {
 			"$ref": "src/schemas/db_dupes.json"
 		},
+		"DB_Queries": {
+			"$ref": "src/schemas/db_queries.json"
+		},
 		"Environment": {
 			"$ref": "src/schemas/environment.json"
 		},

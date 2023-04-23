@@ -21,6 +21,7 @@ export interface DataTypes {
 	DB_Callers?: DB_Callers;
 	DB_Components?: DB_Components;
 	DB_Dupes?: DB_Dupes;
+	DB_Queries?: DB_Queries;
 	Environment?: Environment;
 	Hooks?: Hooks;
 	HTTP?: HTTP;
@@ -203,6 +204,34 @@ export interface DB_Dupes {
 	};
 	dupe_times: {
 		[k: string]: number;
+	};
+}
+/**
+ * Database queries data transfer object.
+ */
+export interface DB_Queries {
+	total_qs: number;
+	total_time: number;
+	errors: {
+		[k: string]: unknown;
+	}[];
+	expensive?: {
+		[k: string]: unknown;
+	}[];
+	wpdb?: {
+		[k: string]: unknown;
+	};
+	times?: {
+		[k: string]: {
+			caller: string;
+			ltime: number;
+			types: {
+				[k: string]: number;
+			};
+		};
+	};
+	dupes?: {
+		[k: string]: number[];
 	};
 }
 /**
