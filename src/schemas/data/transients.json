@@ -18,7 +18,14 @@
 						"type": "string"
 					},
 					"filtered_trace": {
-						"type": "array"
+						"type": "array",
+						"items": {
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
+						}
 					},
 					"component": {
 						"phpType": "QM_Component",

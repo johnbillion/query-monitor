@@ -1,7 +1,8 @@
 import { Frame } from 'qmi';
+import {
+	FrameItem,
+} from 'qmi/data-types';
 import * as React from 'react';
-
-import type { FrameItem } from './frame';
 
 export interface CallerProps {
 	trace: FrameItem[];

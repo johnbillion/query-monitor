@@ -31,7 +31,11 @@
 					"filtered_trace": {
 						"type": "array",
 						"items": {
-							"type": "object"
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
 						}
 					},
 					"info": {

@@ -5,11 +5,15 @@
 	"type": "object",
 	"required": [
 		"Component",
+		"FrameItem",
 		"Data"
 	],
 	"properties": {
 		"Component": {
 			"$ref": "src/schemas/component.json"
+		},
+		"FrameItem": {
+			"$ref": "src/schemas/frameitem.json"
 		},
 		"Data": {
 			"required": [

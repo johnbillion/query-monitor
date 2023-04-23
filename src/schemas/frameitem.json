@@ -1,0 +1,47 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/frameitem.json",
+	"title": "FrameItem",
+	"description": "Stack trace frame.",
+	"type": "object",
+	"required": [
+		"display",
+		"args",
+		"calling_file",
+		"calling_line",
+		"file",
+		"function",
+		"id",
+		"line"
+	],
+	"properties": {
+		"display": {
+			"type": "string"
+		},
+		"args": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"calling_file": {
+			"type": "string"
+		},
+		"calling_line": {
+			"type": "integer"
+		},
+		"file": {
+			"type": "string"
+		},
+		"function": {
+			"type": "string"
+		},
+		"id": {
+			"type": "string"
+		},
+		"line": {
+			"type": "integer"
+		}
+	},
+	"additionalProperties": false
+}

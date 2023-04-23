@@ -19,6 +19,7 @@ import {
 
 export interface DataTypes {
 	Component: Component;
+	FrameItem: FrameItem;
 	Data: {
 		Admin: Admin;
 		Assets: Assets;
@@ -53,6 +54,19 @@ export interface Component {
 	type: string;
 	name: string;
 	context: string;
+}
+/**
+ * Stack trace frame.
+ */
+export interface FrameItem {
+	display: string;
+	args: string[];
+	calling_file: string;
+	calling_line: number;
+	file: string;
+	function: string;
+	id: string;
+	line: number;
 }
 /**
  * Admin screen data transfer object.
@@ -141,9 +155,7 @@ export interface Cache {
 export interface Caps {
 	caps: {
 		args: unknown[];
-		filtered_trace: {
-			[k: string]: unknown;
-		}[];
+		filtered_trace: FrameItem[];
 		component: Component;
 		result: boolean;
 		parts: string[];
@@ -337,9 +349,7 @@ export interface HTTP {
 				[k: string]: unknown;
 			};
 			component: Component;
-			filtered_trace: {
-				[k: string]: unknown;
-			}[];
+			filtered_trace: FrameItem[];
 			info: {
 				[k: string]: unknown;
 			} | null;
@@ -399,7 +409,7 @@ export interface Logger {
 	};
 	logs: {
 		message: string;
-		filtered_trace: unknown[];
+		filtered_trace: FrameItem[];
 		component: Component;
 		level: string;
 		[k: string]: unknown;
@@ -577,7 +587,7 @@ export interface Timing {
 export interface Transients {
 	trans: {
 		name: string;
-		filtered_trace: unknown[];
+		filtered_trace: FrameItem[];
 		component: Component;
 		type: string;
 		value: unknown;
