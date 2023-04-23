@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/admin.json",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/admin.json",
 	"title": "Admin",
 	"description": "Admin screen data transfer object.",
 	"type": "object",
@@ -17,7 +17,7 @@
 			"phpType": "WP_Screen",
 			"allOf": [
 				{
-					"$ref": "../../node_modules/wp-json-schemas/schemas/screen.json"
+					"$ref": "../../../node_modules/wp-json-schemas/schemas/screen.json"
 				}
 			]
 		},

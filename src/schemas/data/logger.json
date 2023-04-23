@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/logger.json",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/logger.json",
 	"title": "Logger",
 	"description": "Logger data transfer object.",
 	"type": "object",

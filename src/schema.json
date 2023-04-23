@@ -1,81 +1,88 @@
 {
-	"$schema": "http://json-schema.org/draft-07/hyper-schema#",
+	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "https://schemas.querymonitor.com/src/schema.json",
 	"title": "DataTypes",
 	"type": "object",
 	"properties": {
-		"Admin": {
-			"$ref": "src/schemas/admin.json"
-		},
-		"Assets": {
-			"$ref": "src/schemas/assets.json"
-		},
-		"Block_Editor": {
-			"$ref": "src/schemas/block_editor.json"
-		},
-		"Cache": {
-			"$ref": "src/schemas/cache.json"
-		},
-		"Caps": {
-			"$ref": "src/schemas/caps.json"
-		},
-		"Conditionals": {
-			"$ref": "src/schemas/conditionals.json"
-		},
-		"DB_Callers": {
-			"$ref": "src/schemas/db_callers.json"
-		},
-		"DB_Components": {
-			"$ref": "src/schemas/db_components.json"
-		},
-		"DB_Dupes": {
-			"$ref": "src/schemas/db_dupes.json"
-		},
-		"DB_Queries": {
-			"$ref": "src/schemas/db_queries.json"
-		},
-		"Environment": {
-			"$ref": "src/schemas/environment.json"
-		},
-		"Hooks": {
-			"$ref": "src/schemas/hooks.json"
-		},
-		"HTTP": {
-			"$ref": "src/schemas/http.json"
-		},
-		"Languages": {
-			"$ref": "src/schemas/languages.json"
-		},
-		"Logger": {
-			"$ref": "src/schemas/logger.json"
-		},
-		"Multisite": {
-			"$ref": "src/schemas/multisite.json"
-		},
-		"Overview": {
-			"$ref": "src/schemas/overview.json"
-		},
-		"PHP_Errors": {
-			"$ref": "src/schemas/php_errors.json"
-		},
-		"Raw_Request": {
-			"$ref": "src/schemas/raw_request.json"
-		},
-		"Redirect": {
-			"$ref": "src/schemas/redirect.json"
-		},
-		"Request": {
-			"$ref": "src/schemas/request.json"
-		},
-		"Theme": {
-			"$ref": "src/schemas/theme.json"
-		},
-		"Timing": {
-			"$ref": "src/schemas/timing.json"
-		},
-		"Transients": {
-			"$ref": "src/schemas/transients.json"
+		"Data": {
+			"properties": {
+				"Admin": {
+					"$ref": "src/schemas/data/admin.json"
+				},
+				"Assets": {
+					"$ref": "src/schemas/data/assets.json"
+				},
+				"Block_Editor": {
+					"$ref": "src/schemas/data/block_editor.json"
+				},
+				"Cache": {
+					"$ref": "src/schemas/data/cache.json"
+				},
+				"Caps": {
+					"$ref": "src/schemas/data/caps.json"
+				},
+				"Conditionals": {
+					"$ref": "src/schemas/data/conditionals.json"
+				},
+				"DB_Callers": {
+					"$ref": "src/schemas/data/db_callers.json"
+				},
+				"DB_Components": {
+					"$ref": "src/schemas/data/db_components.json"
+				},
+				"DB_Dupes": {
+					"$ref": "src/schemas/data/db_dupes.json"
+				},
+				"DB_Queries": {
+					"$ref": "src/schemas/data/db_queries.json"
+				},
+				"Environment": {
+					"$ref": "src/schemas/data/environment.json"
+				},
+				"Hooks": {
+					"$ref": "src/schemas/data/hooks.json"
+				},
+				"HTTP": {
+					"$ref": "src/schemas/data/http.json"
+				},
+				"Languages": {
+					"$ref": "src/schemas/data/languages.json"
+				},
+				"Logger": {
+					"$ref": "src/schemas/data/logger.json"
+				},
+				"Multisite": {
+					"$ref": "src/schemas/data/multisite.json"
+				},
+				"Overview": {
+					"$ref": "src/schemas/data/overview.json"
+				},
+				"PHP_Errors": {
+					"$ref": "src/schemas/data/php_errors.json"
+				},
+				"Raw_Request": {
+					"$ref": "src/schemas/data/raw_request.json"
+				},
+				"Redirect": {
+					"$ref": "src/schemas/data/redirect.json"
+				},
+				"Request": {
+					"$ref": "src/schemas/data/request.json"
+				},
+				"Theme": {
+					"$ref": "src/schemas/data/theme.json"
+				},
+				"Timing": {
+					"$ref": "src/schemas/data/timing.json"
+				},
+				"Transients": {
+					"$ref": "src/schemas/data/transients.json"
+				}
+			}
 		}
 	},
+	"required": [
+		"Data"
+	],
 	"additionalProperties": false
 }

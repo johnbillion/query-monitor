@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const dir = './src/schemas';
+const dir = './src/schemas/data';
 const files = fs.readdirSync( dir );
 
 for ( const file of files ) {

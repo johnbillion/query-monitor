@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/request.json",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/request.json",
 	"title": "Request",
 	"description": "Request data transfer object.",
 	"type": "object",
@@ -45,7 +45,7 @@
 					"phpType": "WP_Site",
 					"allOf": [
 						{
-							"$ref": "../../node_modules/wp-json-schemas/schemas/site.json"
+							"$ref": "../../../node_modules/wp-json-schemas/schemas/site.json"
 						}
 					]
 				},
@@ -55,7 +55,7 @@
 					"phpType": "WP_Network",
 					"allOf": [
 						{
-							"$ref": "../../node_modules/wp-json-schemas/schemas/network.json"
+							"$ref": "../../../node_modules/wp-json-schemas/schemas/network.json"
 						}
 					]
 				}
@@ -88,7 +88,7 @@
 							"tsType": "WP_Term",
 							"allOf": [
 								{
-									"$ref": "../../node_modules/wp-json-schemas/schemas/term.json"
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/term.json"
 								}
 							]
 						},
@@ -98,7 +98,7 @@
 							"tsType": "WP_Post_Type",
 							"allOf": [
 								{
-									"$ref": "../../node_modules/wp-json-schemas/schemas/post-type.json"
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/post-type.json"
 								}
 							]
 						},
@@ -108,7 +108,7 @@
 							"tsType": "WP_Post",
 							"allOf": [
 								{
-									"$ref": "../../node_modules/wp-json-schemas/schemas/post.json"
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/post.json"
 								}
 							]
 						},
@@ -118,7 +118,7 @@
 							"tsType": "WP_User",
 							"allOf": [
 								{
-									"$ref": "../../node_modules/wp-json-schemas/schemas/user.json"
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/user.json"
 								}
 							]
 						}

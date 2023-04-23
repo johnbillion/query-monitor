@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/caps.json",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/caps.json",
 	"title": "Caps",
 	"description": "User capability checks data transfer object.",
 	"type": "object",

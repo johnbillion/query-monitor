@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/languages.json",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/languages.json",
 	"title": "Languages",
 	"description": "Languages data transfer object.",
 	"type": "object",
