@@ -581,7 +581,22 @@ export interface Timing {
 		component: Component;
 	}[];
 	timing: {
-		[k: string]: unknown;
+		function: string;
+		function_time: number;
+		function_memory: number;
+		laps: {
+			[k: string]: {
+				time: number;
+				time_used: number;
+				memory: number;
+				memory_used: number;
+				data: unknown;
+			};
+		};
+		filtered_trace: FrameItem[];
+		component: Component;
+		start_time: number;
+		end_time: number;
 	}[];
 }
 /**

@@ -22,7 +22,22 @@ class QM_Data_Timing extends QM_Data {
 	public $warning;
 
 	/**
-	 * @var array<int, array<string, mixed>>
+	 * @phpstan-var array<int, array{
+	 *   function: string,
+	 *   function_time: float,
+	 *   function_memory: int,
+	 *   laps: array<string, array{
+	 *     time: float,
+	 *     time_used: float,
+	 *     memory: int,
+	 *     memory_used: int,
+	 *     data: mixed,
+	 *   }>,
+	 *   filtered_trace: array<int, array<string, mixed>>,
+	 *   component: QM_Component,
+	 *   start_time: float,
+	 *   end_time: float,
+	 * }>
 	 */
 	public $timing;
 }

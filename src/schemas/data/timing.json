@@ -54,7 +54,85 @@
 		"timing": {
 			"type": "array",
 			"items": {
-				"type": "object"
+				"type": "object",
+				"properties": {
+					"function": {
+						"type": "string"
+					},
+					"function_time": {
+						"type": "number"
+					},
+					"function_memory": {
+						"type": "integer"
+					},
+					"laps": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "object",
+							"properties": {
+								"time": {
+									"type": "number"
+								},
+								"time_used": {
+									"type": "number"
+								},
+								"memory": {
+									"type": "integer"
+								},
+								"memory_used": {
+									"type": "integer"
+								},
+								"data": {}
+							},
+							"required": [
+								"time",
+								"time_used",
+								"memory",
+								"memory_used",
+								"data"
+							],
+							"additionalProperties": false
+						}
+					},
+					"filtered_trace": {
+						"phpType": "array<int, array<string, mixed>>",
+						"type": "array",
+						"items": {
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
+						}
+					},
+					"component": {
+						"phpType": "QM_Component",
+						"tsType": "Component",
+						"type": "object",
+						"allOf": [
+							{
+								"$ref": "../component.json"
+							}
+						]
+					},
+					"start_time": {
+						"type": "number"
+					},
+					"end_time": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"function",
+					"function_time",
+					"function_memory",
+					"laps",
+					"filtered_trace",
+					"component",
+					"start_time",
+					"end_time"
+				],
+				"additionalProperties": false
 			}
 		}
 	},

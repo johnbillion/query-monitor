@@ -102,7 +102,14 @@ class QM_Timer {
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<string, array<string, mixed>>
+	 * @phpstan-var array<string, array{
+	 *   time: float,
+	 *   time_used: float,
+	 *   memory: int,
+	 *   memory_used: int,
+	 *   data: mixed[]|null,
+	 * }>
 	 */
 	public function get_laps() {
 
