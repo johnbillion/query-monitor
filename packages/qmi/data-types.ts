@@ -18,33 +18,32 @@ import {
 } from 'wp-types';
 
 export interface DataTypes {
-	Component?: Component;
+	Component: Component;
 	Data: {
-		Admin?: Admin;
-		Assets?: Assets;
-		Block_Editor?: Block_Editor;
-		Cache?: Cache;
-		Caps?: Caps;
-		Conditionals?: Conditionals;
-		DB_Callers?: DB_Callers;
-		DB_Components?: DB_Components;
-		DB_Dupes?: DB_Dupes;
-		DB_Queries?: DB_Queries;
-		Environment?: Environment;
-		Hooks?: Hooks;
-		HTTP?: HTTP;
-		Languages?: Languages;
-		Logger?: Logger;
-		Multisite?: Multisite;
-		Overview?: Overview;
-		PHP_Errors?: PHP_Errors;
-		Raw_Request?: Raw_Request;
-		Redirect?: Redirect;
-		Request?: Request;
-		Theme?: Theme;
-		Timing?: Timing;
-		Transients?: Transients;
-		[k: string]: unknown;
+		Admin: Admin;
+		Assets: Assets;
+		Block_Editor: Block_Editor;
+		Cache: Cache;
+		Caps: Caps;
+		Conditionals: Conditionals;
+		DB_Callers: DB_Callers;
+		DB_Components: DB_Components;
+		DB_Dupes: DB_Dupes;
+		DB_Queries: DB_Queries;
+		Environment: Environment;
+		Hooks: Hooks;
+		HTTP: HTTP;
+		Languages: Languages;
+		Logger: Logger;
+		Multisite: Multisite;
+		Overview: Overview;
+		PHP_Errors: PHP_Errors;
+		Raw_Request: Raw_Request;
+		Redirect: Redirect;
+		Request: Request;
+		Theme: Theme;
+		Timing: Timing;
+		Transients: Transients;
 	};
 }
 /**

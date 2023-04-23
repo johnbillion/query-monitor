@@ -3,11 +3,41 @@
 	"$id": "https://schemas.querymonitor.com/src/schema.json",
 	"title": "DataTypes",
 	"type": "object",
+	"required": [
+		"Component",
+		"Data"
+	],
 	"properties": {
 		"Component": {
 			"$ref": "src/schemas/component.json"
 		},
 		"Data": {
+			"required": [
+				"Admin",
+				"Assets",
+				"Block_Editor",
+				"Cache",
+				"Caps",
+				"Conditionals",
+				"DB_Callers",
+				"DB_Components",
+				"DB_Dupes",
+				"DB_Queries",
+				"Environment",
+				"Hooks",
+				"HTTP",
+				"Languages",
+				"Logger",
+				"Multisite",
+				"Overview",
+				"PHP_Errors",
+				"Raw_Request",
+				"Redirect",
+				"Request",
+				"Theme",
+				"Timing",
+				"Transients"
+			],
 			"properties": {
 				"Admin": {
 					"$ref": "src/schemas/data/admin.json"
@@ -81,11 +111,9 @@
 				"Transients": {
 					"$ref": "src/schemas/data/transients.json"
 				}
-			}
+			},
+			"additionalProperties": false
 		}
 	},
-	"required": [
-		"Data"
-	],
 	"additionalProperties": false
 }
