@@ -1,12 +1,14 @@
 import {
 	Caller,
-	FrameItem,
 	iPanelProps,
 	Notice,
 	PanelFooter,
 	QMComponent,
 	Tabular,
 } from 'qmi';
+import {
+	Caps as CapsData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -16,17 +18,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iCapsProps extends iPanelProps {
-	data: {
-		caps: {
-			name: string;
-			args: any[];
-			parts: string[];
-			user: number;
-			result: boolean;
-			filtered_trace: FrameItem[];
-			component: any;
-		}[];
-	};
+	data: CapsData;
 }
 
 class Caps extends React.Component<iCapsProps, Record<string, unknown>> {

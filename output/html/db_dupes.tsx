@@ -2,6 +2,9 @@ import {
 	iPanelProps,
 	Tabular,
 } from 'qmi';
+import {
+	DB_Dupes as DB_DupesData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -10,7 +13,11 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-class DBDupes extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iDBDupesProps extends iPanelProps {
+	data: DB_DupesData;
+}
+
+class DBDupes extends React.Component<iDBDupesProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

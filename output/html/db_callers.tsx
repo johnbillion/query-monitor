@@ -4,23 +4,15 @@ import {
 	Time,
 	TotalTime,
 } from 'qmi';
+import {
+	DB_Callers as DB_CallersData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iDBCallerTypeTimes {
-	[key: string]: number;
-}
-
 interface iDBCallersProps extends iPanelProps {
-	data: {
-		times?: {
-			caller: string;
-			ltime: number;
-			types: iDBCallerTypeTimes;
-		}[];
-		types: iDBCallerTypeTimes;
-	};
+	data: DB_CallersData;
 }
 
 class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>> {

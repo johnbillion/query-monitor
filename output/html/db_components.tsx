@@ -4,23 +4,15 @@ import {
 	Time,
 	TotalTime,
 } from 'qmi';
+import {
+	DB_Components as DB_ComponentsData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iDBComponentTypeTimes {
-	[key: string]: number;
-}
-
 interface iDBComponentsProps extends iPanelProps {
-	data: {
-		times: {
-			component: string;
-			ltime: number;
-			types: iDBComponentTypeTimes;
-		}[];
-		types: iDBComponentTypeTimes;
-	};
+	data: DB_ComponentsData;
 }
 
 class DBComponents extends React.Component<iDBComponentsProps, Record<string, unknown>> {
