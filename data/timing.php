@@ -12,7 +12,12 @@
 
 class QM_Data_Timing extends QM_Data {
 	/**
-	 * @var array<int, array<string, mixed>>
+	 * @phpstan-var array<int, array{
+	 *   function: string,
+	 *   message: string,
+	 *   filtered_trace: array<int, array<string, mixed>>,
+	 *   component: QM_Component,
+	 * }>
 	 */
 	public $warning;
 

@@ -12,7 +12,43 @@
 		"warning": {
 			"type": "array",
 			"items": {
-				"type": "object"
+				"type": "object",
+				"properties": {
+					"function": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"filtered_trace": {
+						"phpType": "array<int, array<string, mixed>>",
+						"type": "array",
+						"items": {
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
+						}
+					},
+					"component": {
+						"phpType": "QM_Component",
+						"tsType": "Component",
+						"type": "object",
+						"allOf": [
+							{
+								"$ref": "../component.json"
+							}
+						]
+					}
+				},
+				"required": [
+					"function",
+					"message",
+					"filtered_trace",
+					"component"
+				],
+				"additionalProperties": false
 			}
 		},
 		"timing": {

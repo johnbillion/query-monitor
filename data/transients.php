@@ -14,7 +14,7 @@ class QM_Data_Transients extends QM_Data {
 	/**
 	 * @phpstan-var array<int, array{
 	 *   name: string,
-	 *   filtered_trace: array<int, mixed>,
+	 *   filtered_trace: array<int, array<string, mixed>>,
 	 *   component: QM_Component,
 	 *   type: string,
 	 *   value: mixed,

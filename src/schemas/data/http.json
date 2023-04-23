@@ -29,6 +29,7 @@
 						]
 					},
 					"filtered_trace": {
+						"phpType": "array<int, array<string, mixed>>",
 						"type": "array",
 						"items": {
 							"allOf": [

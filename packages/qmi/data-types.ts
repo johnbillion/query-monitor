@@ -575,7 +575,10 @@ export interface Theme {
  */
 export interface Timing {
 	warning: {
-		[k: string]: unknown;
+		function: string;
+		message: string;
+		filtered_trace: FrameItem[];
+		component: Component;
 	}[];
 	timing: {
 		[k: string]: unknown;
