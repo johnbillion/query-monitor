@@ -64,6 +64,9 @@
 		"Request": {
 			"$ref": "src/schemas/request.json"
 		},
+		"Theme": {
+			"$ref": "src/schemas/theme.json"
+		},
 		"Timing": {
 			"$ref": "src/schemas/timing.json"
 		},

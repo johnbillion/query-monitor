@@ -1,0 +1,124 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/theme.json",
+	"title": "Theme",
+	"description": "Theme data transfer object.",
+	"type": "object",
+	"required": [
+		"is_child_theme",
+		"stylesheet_theme_json",
+		"template_theme_json",
+		"block_template",
+		"theme_dirs",
+		"theme_folders",
+		"stylesheet",
+		"template",
+		"theme_template_file",
+		"template_path",
+		"template_parts",
+		"theme_template_parts",
+		"count_template_parts",
+		"unsuccessful_template_parts"
+	],
+	"properties": {
+		"is_child_theme": {
+			"type": "boolean"
+		},
+		"stylesheet_theme_json": {
+			"type": "string"
+		},
+		"template_theme_json": {
+			"type": "string"
+		},
+		"block_template": {
+			"oneOf": [
+				{
+					"type": "object",
+					"tsType": "WP_Block_Template",
+					"phpType": "WP_Block_Template",
+					"allOf": [
+						{
+							"$ref": "../../node_modules/wp-json-schemas/schemas/block-template.json"
+						}
+					]
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"theme_dirs": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"theme_folders": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"stylesheet": {
+			"type": "string"
+		},
+		"template": {
+			"type": "string"
+		},
+		"theme_template_file": {
+			"type": "string"
+		},
+		"template_path": {
+			"type": "string"
+		},
+		"template_file": {
+			"type": "string"
+		},
+		"template_hierarchy": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"timber_files": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"body_class": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"template_parts": {
+			"type": "object",
+			"phpType": "array<string|int, string>",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"theme_template_parts": {
+			"type": "object",
+			"phpType": "array<string|int, string>",
+			"additionalProperties": {
+				"type": "string"
+			}
+		},
+		"count_template_parts": {
+			"type": "object",
+			"phpType": "array<string|int, int>",
+			"additionalProperties": {
+				"type": "integer"
+			}
+		},
+		"unsuccessful_template_parts": {
+			"type": "array",
+			"items": {
+				"type": "object"
+			}
+		}
+	},
+	"additionalProperties": false
+}

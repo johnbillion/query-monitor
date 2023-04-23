@@ -8,6 +8,7 @@
 import {
 	WP_Screen,
 	WP_Error,
+	WP_Block_Template,
 } from 'wp-types';
 
 export interface DataTypes {
@@ -31,6 +32,7 @@ export interface DataTypes {
 	Raw_Request?: Raw_Request;
 	Redirect?: Redirect;
 	Request?: Request;
+	Theme?: Theme;
 	Timing?: Timing;
 	Transients?: Transients;
 }
@@ -489,6 +491,41 @@ export interface Request {
 	matching_rewrites: {
 		[k: string]: string;
 	};
+}
+/**
+ * Theme data transfer object.
+ */
+export interface Theme {
+	is_child_theme: boolean;
+	stylesheet_theme_json: string;
+	template_theme_json: string;
+	block_template: WP_Block_Template | null;
+	theme_dirs: {
+		[k: string]: string;
+	};
+	theme_folders: {
+		[k: string]: string;
+	};
+	stylesheet: string;
+	template: string;
+	theme_template_file: string;
+	template_path: string;
+	template_file?: string;
+	template_hierarchy?: string[];
+	timber_files?: string[];
+	body_class?: string[];
+	template_parts: {
+		[k: string]: string;
+	};
+	theme_template_parts: {
+		[k: string]: string;
+	};
+	count_template_parts: {
+		[k: string]: number;
+	};
+	unsuccessful_template_parts: {
+		[k: string]: unknown;
+	}[];
 }
 /**
  * Timing data transfer object.
