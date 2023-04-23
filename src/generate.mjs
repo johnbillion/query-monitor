@@ -4,7 +4,7 @@ const dir = './src/schemas/data';
 const files = fs.readdirSync( dir );
 
 for ( const file of files ) {
-	const { basename, ext } = file.split( '.' );
+	const [ basename, ext ] = file.split( '.' );
 
 	if ( ext !== 'json' ) {
 		continue;
