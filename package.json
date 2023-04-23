@@ -59,7 +59,7 @@
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json readme.txt wp-content/db.php",
-		"build": "concurrently \"sass --no-source-map assets/query-monitor.scss assets/query-monitor.css\" \"wp-scripts build\"",
-		"watch": "concurrently \"sass --watch --poll assets/query-monitor.scss assets/query-monitor.css\" \"wp-scripts build\" \"wp-scripts start\""
+		"build": "npm run build-schemas && concurrently \"sass --no-source-map assets/query-monitor.scss assets/query-monitor.css\" \"wp-scripts build\"",
+		"watch": "npm run build-schemas && concurrently \"sass --watch --poll assets/query-monitor.scss assets/query-monitor.css\" \"wp-scripts build\" \"wp-scripts start\""
 	}
 }
