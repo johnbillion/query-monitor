@@ -36,7 +36,13 @@
 					},
 					"component": {
 						"phpType": "QM_Component",
-						"type": "object"
+						"tsType": "Component",
+						"type": "object",
+						"allOf": [
+							{
+								"$ref": "../component.json"
+							}
+						]
 					},
 					"result": {
 						"type": "boolean"

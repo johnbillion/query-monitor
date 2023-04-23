@@ -18,6 +18,7 @@ import {
 } from 'wp-types';
 
 export interface DataTypes {
+	Component?: Component;
 	Data: {
 		Admin?: Admin;
 		Assets?: Assets;
@@ -45,6 +46,14 @@ export interface DataTypes {
 		Transients?: Transients;
 		[k: string]: unknown;
 	};
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Admin screen data transfer object.
@@ -136,9 +145,7 @@ export interface Caps {
 		filtered_trace: {
 			[k: string]: unknown;
 		}[];
-		component: {
-			[k: string]: unknown;
-		};
+		component: Component;
 		result: boolean;
 		parts: string[];
 		name: string;
@@ -307,11 +314,7 @@ export interface Hooks {
 				file?: string | false;
 				line?: number | false;
 				error?: WP_Error;
-				component?: {
-					context: string;
-					name: string;
-					type: string;
-				};
+				component?: Component;
 			};
 		}[];
 		parts: string[];
@@ -334,9 +337,7 @@ export interface HTTP {
 			args: {
 				[k: string]: unknown;
 			};
-			component: {
-				[k: string]: unknown;
-			};
+			component: Component;
 			filtered_trace: {
 				[k: string]: unknown;
 			}[];
@@ -400,9 +401,7 @@ export interface Logger {
 	logs: {
 		message: string;
 		filtered_trace: unknown[];
-		component: {
-			[k: string]: unknown;
-		};
+		component: Component;
 		level: string;
 		[k: string]: unknown;
 	}[];
@@ -580,9 +579,7 @@ export interface Transients {
 	trans: {
 		name: string;
 		filtered_trace: unknown[];
-		component: {
-			[k: string]: unknown;
-		};
+		component: Component;
 		type: string;
 		value: unknown;
 		expiration: number;

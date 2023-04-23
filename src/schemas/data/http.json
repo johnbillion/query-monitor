@@ -19,8 +19,14 @@
 						"type": "object"
 					},
 					"component": {
+						"phpType": "QM_Component",
+						"tsType": "Component",
 						"type": "object",
-						"phpType": "QM_Component"
+						"allOf": [
+							{
+								"$ref": "../component.json"
+							}
+						]
 					},
 					"filtered_trace": {
 						"type": "array",

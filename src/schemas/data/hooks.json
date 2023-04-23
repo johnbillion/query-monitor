@@ -64,24 +64,13 @@
 										},
 										"component": {
 											"phpType": "QM_Component",
+											"tsType": "Component",
 											"type": "object",
-											"properties": {
-												"context": {
-													"type": "string"
-												},
-												"name": {
-													"type": "string"
-												},
-												"type": {
-													"type": "string"
+											"allOf": [
+												{
+													"$ref": "../component.json"
 												}
-											},
-											"required": [
-												"context",
-												"name",
-												"type"
-											],
-											"additionalProperties": false
+											]
 										}
 									},
 									"required": [

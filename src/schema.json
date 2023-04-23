@@ -4,6 +4,9 @@
 	"title": "DataTypes",
 	"type": "object",
 	"properties": {
+		"Component": {
+			"$ref": "src/schemas/component.json"
+		},
 		"Data": {
 			"properties": {
 				"Admin": {

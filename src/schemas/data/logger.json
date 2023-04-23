@@ -34,8 +34,14 @@
 						"type": "array"
 					},
 					"component": {
+						"phpType": "QM_Component",
+						"tsType": "Component",
 						"type": "object",
-						"phpType": "QM_Component"
+						"allOf": [
+							{
+								"$ref": "../component.json"
+							}
+						]
 					},
 					"level": {
 						"type": "string",

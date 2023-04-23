@@ -1,11 +1,10 @@
+import {
+	Component,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 interface iComponentProps {
-	component: {
-		context: string;
-		name: string;
-		type: string;
-	};
+	component: Component;
 }
 
 export class QMComponent extends React.Component<iComponentProps, Record<string, unknown>> {
