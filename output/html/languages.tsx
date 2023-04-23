@@ -1,9 +1,11 @@
 import {
 	Caller,
-	FrameItem,
 	iPanelProps,
 	NonTabular,
 } from 'qmi';
+import {
+	Languages as LanguagesData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -12,26 +14,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iLanguagesProps extends iPanelProps {
-	data: {
-		determined_locale: string;
-		language_attributes: string;
-		languages: {
-			[textdomain: string]: {
-				[mofile: string]: {
-					caller: FrameItem;
-					domain: string;
-					file: string|false;
-					found: number|false;
-					handle: string|null;
-					type: 'gettext'|'jed';
-				};
-			};
-		};
-		locale: string;
-		mlp_language: string;
-		pll_language: string;
-		user_locale: string;
-	};
+	data: LanguagesData;
 }
 
 class Languages extends React.Component<iLanguagesProps, Record<string, unknown>> {

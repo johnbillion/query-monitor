@@ -9,6 +9,9 @@ import {
 	TotalTime,
 	Utils,
 } from 'qmi';
+import {
+	DB_Queries as DB_QueriesData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -17,49 +20,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iDBQueriesProps extends iPanelProps {
-	data: {
-		component_times: {
-			[component: string]: {
-				component: string;
-				ltime: number;
-				types: {
-					[type: string]: number;
-				};
-			};
-		}
-		dupes: {
-			[sql: string]: number[];
-		};
-		times: {
-			[caller: string]: {
-				caller: string;
-				ltime: number;
-				types: {
-					[type: string]: number;
-				};
-			};
-		};
-		total_qs: number;
-		total_time: number;
-		types: {
-			[type: string]: number;
-		}
-		wpdb: {
-			has_result: boolean;
-			has_trace: boolean;
-			rows: {
-				caller: string;
-				caller_name: string;
-				is_main_query: boolean;
-				sql: string;
-				type: string;
-				result: number;
-				ltime: number;
-				filtered_trace: any[];
-				component: any;
-			}[];
-		};
-	};
+	data: DB_QueriesData;
 }
 
 class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>> {

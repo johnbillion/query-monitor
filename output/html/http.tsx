@@ -9,6 +9,9 @@ import {
 	TotalTime,
 	Utils,
 } from 'qmi';
+import {
+	HTTP as HTTPData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -16,7 +19,11 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-class HTTP extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iHTTPProps extends iPanelProps {
+	data: HTTPData;
+}
+
+class HTTP extends React.Component<iHTTPProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

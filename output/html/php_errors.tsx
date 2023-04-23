@@ -5,11 +5,17 @@ import {
 	Tabular,
 	Warning,
 } from 'qmi';
+import {
+	DB_Queries as DB_QueriesData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-class PHPErrors extends React.Component<iPanelProps, Record<string, unknown>> {
+interface iDB_QueriesProps extends iPanelProps {
+	data: DB_QueriesData;
+}
+class PHPErrors extends React.Component<iDB_QueriesProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

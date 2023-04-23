@@ -4,8 +4,10 @@ import {
 	QMComponent,
 	Tabular,
 	iPanelProps,
-	FrameItem,
 } from 'qmi';
+import {
+	Transients as TransientsData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -14,18 +16,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iTransientsProps extends iPanelProps {
-	data: {
-		trans: {
-			name: string;
-			type?: string;
-			expiration: number;
-			exp_diff: string;
-			size_formatted: string;
-			filtered_trace: FrameItem[];
-			component: any;
-		}[];
-		has_type: boolean;
-	}
+	data: TransientsData;
 }
 
 class Transients extends React.Component<iTransientsProps, Record<string, unknown>> {

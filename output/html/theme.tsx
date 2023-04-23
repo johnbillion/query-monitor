@@ -2,6 +2,9 @@ import {
 	iPanelProps,
 	NonTabular,
 } from 'qmi';
+import {
+	Theme as ThemeData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -14,12 +17,11 @@ interface iParts {
 	[key: string]: string;
 }
 
-interface iRequested {
-	name?: string;
-	slug: string;
+interface iThemePanelProps extends iPanelProps {
+	data: ThemeData;
 }
 
-class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
+class Theme extends React.Component<iThemePanelProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -116,35 +118,31 @@ class Theme extends React.Component<iPanelProps, Record<string, unknown>> {
 						</p>
 					) }
 
-					{ data.has_template_part_action && (
-						<>
-							<h4>
-								{ __( 'Not Loaded', 'query-monitor' ) }
-							</h4>
+					<h4>
+						{ __( 'Not Loaded', 'query-monitor' ) }
+					</h4>
 
-							{ data.unsuccessful_template_parts ? (
-								<ul>
-									{ data.unsuccessful_template_parts.map( ( requested: iRequested ) => (
-										<>
-											{ requested.name && (
-												<li>
-													{ `${ requested.slug }-${ requested.name }.php` }
-												</li>
-											) }
-											<li>
-												{ `${ requested.slug }.php` }
-											</li>
-										</>
-									) ) }
-								</ul>
-							) : (
-								<p>
-									<em>
-										{ __( 'None', 'query-monitor' ) }
-									</em>
-								</p>
-							) }
-						</>
+					{ data.unsuccessful_template_parts ? (
+						<ul>
+							{ data.unsuccessful_template_parts.map( ( requested ) => (
+								<>
+									{ requested.name && (
+										<li>
+											{ `${ requested.slug }-${ requested.name }.php` }
+										</li>
+									) }
+									<li>
+										{ `${ requested.slug }.php` }
+									</li>
+								</>
+							) ) }
+						</ul>
+					) : (
+						<p>
+							<em>
+								{ __( 'None', 'query-monitor' ) }
+							</em>
+						</p>
 					) }
 				</section>
 

@@ -4,6 +4,9 @@ import {
 	QMComponent,
 	Tabular,
 } from 'qmi';
+import {
+	Timing as TimingData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -14,25 +17,7 @@ import {
 declare const QM_i18n: iQM_i18n;
 
 interface iTimingProps extends iPanelProps {
-	data: {
-		timing?: {
-			end_time: number;
-			function: string;
-			function_memory: number;
-			function_time: number;
-			laps: {
-				[k: string]: {
-					data: any;
-					memory: number;
-					memory_used: number;
-					time: number;
-					time_used: number;
-				};
-			};
-			start_time: number;
-			component: any;
-		}[];
-	}
+	data: TimingData;
 }
 
 class Timing extends React.Component<iTimingProps, Record<string, unknown>> {

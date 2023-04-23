@@ -6,23 +6,15 @@ import {
 	Tabular,
 	Warning,
 } from 'qmi';
+import {
+	Logger as LoggerData,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export interface LogItem {
-	level: string;
-	message: string;
-	filtered_trace: any[];
-	component: any;
-}
-
 export interface iLoggerProps extends iPanelProps {
-	data: {
-		logs: LogItem[];
-		levels: string[];
-		warning_levels: string[];
-	};
+	data: LoggerData;
 }
 
 class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {
