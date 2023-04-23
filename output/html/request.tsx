@@ -3,48 +3,15 @@ import {
 	NonTabular,
 	Utils,
 } from 'qmi';
-import * as React from 'react';
 import {
-	WP_Network,
-	WP_Post_Type,
-	WP_Post,
-	WP_Site,
-	WP_Term,
-	WP_User,
-} from 'wp-types';
+	Request as RequestData,
+} from 'qmi/data-types';
+import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
-interface iItems {
-	request: string;
-	matched_rule?: string;
-	matched_query?: string;
-	query_string?: string;
-}
-
 interface iRequestPanelProps extends iPanelProps {
-	data: {
-		request: iItems;
-		request_method: string;
-		user?: WP_User;
-		matching_rewrites?: {
-			[k: string]: string;
-		};
-		qvars?: {
-			[k: string]: string;
-		};
-		queried_object?: {
-			title: string;
-			type?: 'WP_Term' | 'WP_Post_Type' | 'WP_Post' | 'WP_User';
-			data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
-		};
-		multisite?: {
-			current_site: WP_Site;
-			current_network?: WP_Network & {
-				id: number;
-			};
-		};
-	}
+	data: RequestData;
 }
 
 class Request extends React.Component<iRequestPanelProps, Record<string, unknown>> {
@@ -186,15 +153,6 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 								data.multisite.current_site.blog_id
 							) }
 						</p>
-						{ data.multisite.current_network && (
-							<p>
-								{ sprintf(
-									/* translators: %d: Multisite network ID */
-									__( 'Current Network: #%d', 'query-monitor' ),
-									data.multisite.current_network.id
-								) }
-							</p>
-						) }
 					</section>
 				) }
 			</NonTabular>

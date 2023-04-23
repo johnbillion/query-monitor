@@ -20,7 +20,10 @@ class QM_Data_Request extends QM_Data {
 	public $user;
 
 	/**
-	 * @var array<string, array<string, mixed>>
+	 * @phpstan-var array{
+	 *   current_site: WP_Site,
+	 *   current_network?: WP_Network,
+	 * }
 	 */
 	public $multisite;
 
@@ -40,7 +43,11 @@ class QM_Data_Request extends QM_Data {
 	public $plugin_qvars;
 
 	/**
-	 * @var array<string, mixed>
+	 * @phpstan-var array{
+	 *   title: string,
+	 *   data?: WP_Term|WP_Post_Type|WP_Post|WP_User,
+	 *   type?: 'WP_Term'|'WP_Post_Type'|'WP_Post'|'WP_User',
+	 * }
 	 */
 	public $queried_object;
 

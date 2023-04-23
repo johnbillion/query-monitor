@@ -26,6 +26,7 @@
 						"object",
 						"boolean"
 					],
+					"tsType": "WP_User|false",
 					"phpType": "WP_User|false"
 				}
 			},
@@ -37,9 +38,32 @@
 		},
 		"multisite": {
 			"type": "object",
-			"additionalProperties": {
-				"type": "object"
-			}
+			"properties": {
+				"current_site": {
+					"type": "object",
+					"tsType": "WP_Site",
+					"phpType": "WP_Site",
+					"allOf": [
+						{
+							"$ref": "../../node_modules/wp-json-schemas/schemas/site.json"
+						}
+					]
+				},
+				"current_network": {
+					"type": "object",
+					"tsType": "WP_Network",
+					"phpType": "WP_Network",
+					"allOf": [
+						{
+							"$ref": "../../node_modules/wp-json-schemas/schemas/network.json"
+						}
+					]
+				}
+			},
+			"required": [
+				"current_site"
+			],
+			"additionalProperties": false
 		},
 		"request": {
 			"type": "object"
@@ -51,7 +75,69 @@
 			"type": "object"
 		},
 		"queried_object": {
-			"type": "object"
+			"type": "object",
+			"properties": {
+				"title": {
+					"type": "string"
+				},
+				"data": {
+					"oneOf": [
+						{
+							"type": "object",
+							"phpType": "WP_Term",
+							"tsType": "WP_Term",
+							"allOf": [
+								{
+									"$ref": "../../node_modules/wp-json-schemas/schemas/term.json"
+								}
+							]
+						},
+						{
+							"type": "object",
+							"phpType": "WP_Post_Type",
+							"tsType": "WP_Post_Type",
+							"allOf": [
+								{
+									"$ref": "../../node_modules/wp-json-schemas/schemas/post-type.json"
+								}
+							]
+						},
+						{
+							"type": "object",
+							"phpType": "WP_Post",
+							"tsType": "WP_Post",
+							"allOf": [
+								{
+									"$ref": "../../node_modules/wp-json-schemas/schemas/post.json"
+								}
+							]
+						},
+						{
+							"type": "object",
+							"phpType": "WP_User",
+							"tsType": "WP_User",
+							"allOf": [
+								{
+									"$ref": "../../node_modules/wp-json-schemas/schemas/user.json"
+								}
+							]
+						}
+					]
+				},
+				"type": {
+					"type": "string",
+					"enum": [
+						"WP_Term",
+						"WP_Post_Type",
+						"WP_Post",
+						"WP_User"
+					]
+				}
+			},
+			"required": [
+				"title"
+			],
+			"additionalProperties": false
 		},
 		"request_method": {
 			"type": "string"

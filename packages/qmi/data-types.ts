@@ -6,9 +6,15 @@
  */
 
 import {
-	WP_Screen,
-	WP_Error,
 	WP_Block_Template,
+	WP_Error,
+	WP_Network,
+	WP_Post_Type,
+	WP_Post,
+	WP_Screen,
+	WP_Site,
+	WP_Term,
+	WP_User,
 } from 'wp-types';
 
 export interface DataTypes {
@@ -493,16 +499,11 @@ export interface Redirect {
 export interface Request {
 	user: {
 		title: string;
-		data:
-			| {
-					[k: string]: unknown;
-			  }
-			| boolean;
+		data: WP_User | false;
 	};
 	multisite: {
-		[k: string]: {
-			[k: string]: unknown;
-		};
+		current_site: WP_Site;
+		current_network?: WP_Network;
 	};
 	request: {
 		[k: string]: unknown;
@@ -514,7 +515,9 @@ export interface Request {
 		[k: string]: unknown;
 	};
 	queried_object: {
-		[k: string]: unknown;
+		title: string;
+		data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
+		type?: "WP_Term" | "WP_Post_Type" | "WP_Post" | "WP_User";
 	};
 	request_method: string;
 	matching_rewrites: {
