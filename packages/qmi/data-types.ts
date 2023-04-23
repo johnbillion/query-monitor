@@ -517,7 +517,10 @@ export interface Request {
 		current_network?: WP_Network;
 	};
 	request: {
-		[k: string]: unknown;
+		request: string;
+		matched_rule?: string;
+		matched_query?: string;
+		query_string: string;
 	};
 	qvars: {
 		[k: string]: unknown;

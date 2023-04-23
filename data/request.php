@@ -28,7 +28,12 @@ class QM_Data_Request extends QM_Data {
 	public $multisite;
 
 	/**
-	 * @var array<string, mixed>
+	 * @phpstan-var array{
+	 *   request: string,
+	 *   matched_rule?: string,
+	 *   matched_query?: string,
+	 *   query_string: string,
+	 * }
 	 */
 	public $request;
 

@@ -128,7 +128,7 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 
 				<section>
 					<h3>{ __( 'Current User', 'query-monitor' ) }</h3>
-					{ data.user ? (
+					{ data.user.data ? (
 						<p>
 							{ sprintf(
 								/* translators: %d: User ID */
