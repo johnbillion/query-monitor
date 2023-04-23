@@ -4,9 +4,14 @@ const dir = './src/schemas/data';
 const files = fs.readdirSync( dir );
 
 for ( const file of files ) {
+	const { basename, ext } = file.split( '.' );
+
+	if ( ext !== 'json' ) {
+		continue;
+	}
+
 	const path = `${dir}/${file}`;
 	const schema = JSON.parse( fs.readFileSync( path, 'utf8' ) );
-	const basename = file.split( '.' )[0];
 	const output = getOutput( schema );
 
 	fs.writeFileSync( `./data/${basename}.php`, output );
