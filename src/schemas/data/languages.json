@@ -23,7 +23,13 @@
 					"type": "object",
 					"properties": {
 						"caller": {
-							"phpType": "mixed"
+							"phpType": "array<string, mixed>",
+							"type": "object",
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
 						},
 						"domain": {
 							"type": "string"

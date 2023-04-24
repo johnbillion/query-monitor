@@ -379,9 +379,7 @@ export interface Languages {
 	languages: {
 		[k: string]: {
 			[k: string]: {
-				caller: {
-					[k: string]: unknown;
-				};
+				caller: FrameItem;
 				domain: string;
 				file: string | false;
 				found: number | false;
