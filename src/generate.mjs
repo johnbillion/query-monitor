@@ -38,12 +38,12 @@ class QM_Data_${schema.title} extends QM_Data {`;
 
 	for ( const key in schema.properties ) {
 		const required = schema.required && schema.required.includes( key );
-		const prop = schema.properties[key];
+		const prop = resolveRef( schema.properties[key], schema );
 
 		output += `
 	/**`;
 
-		const type = mapType( prop, required );
+		const type = mapType( prop, required, schema );
 
 		if ( type.includes( 'array{' ) || prop.phpStanType ) {
 			output += `
@@ -68,20 +68,23 @@ class QM_Data_${schema.title} extends QM_Data {`;
 /**
  * @param {object} prop
  * @param {boolean} required
+ * @param {object} schema
  * @param {number} level
  * @returns {string}
  */
-function mapType( prop, required, level = 0 ) {
+function mapType( prop, required, schema, level = 0 ) {
+	prop = resolveRef( prop, schema );
+
 	const type = prop.enum || prop.type;
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
 	if ( prop.anyOf ) {
-		return `${requiredMarker}${ prop.anyOf.map( ( one ) => mapType( one, true, level ) ).join( '|' ) }`;
+		return `${requiredMarker}${ prop.anyOf.map( ( one ) => mapType( one, true, schema, level ) ).join( '|' ) }`;
 	}
 
 	if ( prop.oneOf ) {
-		return `${requiredMarker}${ prop.oneOf.map( ( one ) => mapType( one, true, level ) ).join( '|' ) }`;
+		return `${requiredMarker}${ prop.oneOf.map( ( one ) => mapType( one, true, schema, level ) ).join( '|' ) }`;
 	}
 
 	if ( typeof type === 'undefined' ) {
@@ -101,7 +104,7 @@ function mapType( prop, required, level = 0 ) {
 	switch ( type ) {
 		case 'array':
 			if ( prop.items ) {
-				returnType = `array<int, ${mapType( prop.items, true, level )}>`;
+				returnType = `array<int, ${mapType( prop.items, true, schema, level )}>`;
 			} else {
 				returnType = 'array<int, mixed>';
 			}
@@ -114,13 +117,13 @@ function mapType( prop, required, level = 0 ) {
 					const sub = prop.properties[subKey];
 
 					type += `
-\t *${indentation}   ${subKey}${subRequiredMarker}: ${mapType( sub, true, level + 1 )},`;
+\t *${indentation}   ${subKey}${subRequiredMarker}: ${mapType( sub, true, schema, level + 1 )},`;
 				}
 				type += `
 \t *${indentation} }`;
 				returnType = type;
 			} else if ( prop.additionalProperties?.type ) {
-				returnType = `array<string, ${mapType( prop.additionalProperties, true, level )}>`;
+				returnType = `array<string, ${mapType( prop.additionalProperties, true, schema, level )}>`;
 			} else {
 				returnType = 'array<string, mixed>';
 			}
@@ -131,6 +134,24 @@ function mapType( prop, required, level = 0 ) {
 	}
 
 	return `${requiredMarker}${returnType}`;
+}
+
+/**
+ * @param {object} prop
+ * @param {object} schema
+ * @returns {object}
+ */
+function resolveRef( prop, schema ) {
+	if ( ! prop.$ref ) {
+		return prop;
+	}
+
+	if ( prop.$ref.startsWith( '#/definitions/' ) ) {
+		const definition = prop.$ref.replace( '#/definitions/', '' );
+		return schema.definitions[definition] || prop;
+	}
+
+	return prop;
 }
 
 /**
