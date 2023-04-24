@@ -79,6 +79,10 @@ function mapType( prop, required, schema, level = 0 ) {
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
+	if ( prop.phpStanType || prop.phpType ) {
+		return `${requiredMarker}${prop.phpStanType || prop.phpType}`;
+	}
+
 	if ( prop.anyOf ) {
 		return `${requiredMarker}${ prop.anyOf.map( ( one ) => mapType( one, true, schema, level ) ).join( '|' ) }`;
 	}
@@ -89,10 +93,6 @@ function mapType( prop, required, schema, level = 0 ) {
 
 	if ( typeof type === 'undefined' ) {
 		return `${requiredMarker}mixed`;
-	}
-
-	if ( prop.phpStanType || prop.phpType ) {
-		return `${requiredMarker}${prop.phpStanType || prop.phpType}`;
 	}
 
 	if ( typeof type == 'object' ) {
