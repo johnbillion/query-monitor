@@ -461,25 +461,22 @@ export interface PHP_Errors {
 	components: {
 		[k: string]: string;
 	};
-	errors: {
+	errors: ErrorObjects;
+	suppressed: ErrorObjects;
+	silenced: ErrorObjects;
+}
+export interface ErrorObjects {
+	[k: string]: {
 		[k: string]: {
-			[k: string]: {
-				[k: string]: unknown;
-			};
-		};
-	};
-	suppressed: {
-		[k: string]: {
-			[k: string]: {
-				[k: string]: unknown;
-			};
-		};
-	};
-	silenced: {
-		[k: string]: {
-			[k: string]: {
-				[k: string]: unknown;
-			};
+			errno: number;
+			type: string;
+			message: string;
+			file: string | null;
+			filename: string;
+			line: number | null;
+			filtered_trace: FrameItem[] | null;
+			component: Component;
+			calls: number;
 		};
 	};
 }

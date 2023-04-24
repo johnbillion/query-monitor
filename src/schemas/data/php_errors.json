@@ -5,6 +5,87 @@
 	"description": "PHP errors data transfer object.",
 	"$comment": "/**\n * @phpstan-type errorObject array{\n *   errno: int,\n *   type: string,\n *   message: string,\n *   file: string|null,\n *   filename: string,\n *   line: int|null,\n *   filtered_trace: list<array<string, mixed>>|null,\n *   component: QM_Component,\n *   calls: int,\n * }\n * @phpstan-type errorObjects array<string, array<string, errorObject>>\n */",
 	"type": "object",
+	"definitions": {
+		"errorObjects": {
+			"type": "object",
+			"phpStanType": "errorObjects",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": {
+					"type": "object",
+					"properties": {
+						"errno": {
+							"type": "integer"
+						},
+						"type": {
+							"type": "string"
+						},
+						"message": {
+							"type": "string"
+						},
+						"file": {
+							"type": [
+								"string",
+								"null"
+							]
+						},
+						"filename": {
+							"type": "string"
+						},
+						"line": {
+							"type": [
+								"integer",
+								"null"
+							]
+						},
+						"filtered_trace": {
+							"oneOf": [
+								{
+									"phpType": "array<int, array<string, mixed>>",
+									"type": "array",
+									"items": {
+										"allOf": [
+											{
+												"$ref": "../frameitem.json"
+											}
+										]
+									}
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"component": {
+							"phpType": "QM_Component",
+							"tsType": "Component",
+							"type": "object",
+							"allOf": [
+								{
+									"$ref": "../component.json"
+								}
+							]
+						},
+						"calls": {
+							"type": "integer"
+						}
+					},
+					"required": [
+						"errno",
+						"type",
+						"message",
+						"file",
+						"filename",
+						"line",
+						"filtered_trace",
+						"component",
+						"calls"
+					],
+					"additionalProperties": false
+				}
+			}
+		}
+	},
 	"required": [
 		"components",
 		"errors",
@@ -19,34 +100,13 @@
 			}
 		},
 		"errors": {
-			"type": "object",
-			"phpStanType": "errorObjects",
-			"additionalProperties": {
-				"type": "object",
-				"additionalProperties": {
-					"type": "object"
-				}
-			}
+			"$ref": "#/definitions/errorObjects"
 		},
 		"suppressed": {
-			"type": "object",
-			"phpStanType": "errorObjects",
-			"additionalProperties": {
-				"type": "object",
-				"additionalProperties": {
-					"type": "object"
-				}
-			}
+			"$ref": "#/definitions/errorObjects"
 		},
 		"silenced": {
-			"type": "object",
-			"phpStanType": "errorObjects",
-			"additionalProperties": {
-				"type": "object",
-				"additionalProperties": {
-					"type": "object"
-				}
-			}
+			"$ref": "#/definitions/errorObjects"
 		}
 	},
 	"additionalProperties": false
