@@ -74,8 +74,8 @@
 			"build-vendor"
 		],
 		"test": [
-			"composer validate --strict --no-check-lock",
-			"composer normalize --dry-run",
+			"@composer validate --strict --no-check-lock",
+			"@composer normalize --dry-run",
 			"@test:phpstan",
 			"@test:phpcs",
 			"@test:integration",
