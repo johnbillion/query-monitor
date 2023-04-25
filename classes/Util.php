@@ -630,9 +630,9 @@ class QM_Util {
 	public static function get_site_editor_url( string $template, string $type = 'wp_template_part' ): string {
 		return add_query_arg(
 			array(
-				'canvas' => 'view',
 				'postType' => $type,
 				'postId' => urlencode( $template ),
+				'canvas' => 'edit',
 			),
 			admin_url( 'site-editor.php' )
 		);
