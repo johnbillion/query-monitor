@@ -175,7 +175,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$url
 				);
 
-				$show_toggle = ( ! empty( $row['transport'] ) && ! empty( $row['info'] ) );
+				$show_toggle = ! empty( $row['info'] );
 
 				echo '<td class="qm-has-toggle qm-col-status">';
 				if ( $is_error ) {
@@ -187,18 +187,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				if ( $show_toggle ) {
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<ul class="qm-toggled">';
-				}
-
-				if ( ! empty( $row['transport'] ) ) {
-					$transport = sprintf(
-						/* translators: %s HTTP API transport name */
-						__( 'HTTP API Transport: %s', 'query-monitor' ),
-						$row['transport']
-					);
-					printf(
-						'<li><span class="qm-info qm-supplemental">%s</span></li>',
-						esc_html( $transport )
-					);
 				}
 
 				if ( ! empty( $row['info'] ) ) {

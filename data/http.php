@@ -17,7 +17,6 @@ class QM_Data_HTTP extends QM_Data {
 	 *   ltime: float,
 	 *   redirected_to: string|null,
 	 *   response: mixed[]|WP_Error,
-	 *   transport: string|null,
 	 *   type: string,
 	 *   url: string,
 	 * }>
