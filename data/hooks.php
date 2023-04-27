@@ -12,10 +12,10 @@ class QM_Data_Hooks extends QM_Data {
 	 *   name: string,
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array<string, mixed>,
+	 *     callback: QM_Callback|WP_Error,
 	 *   }>,
 	 *   parts: list<string>,
-	 *   components: array<string, string>,
+	 *   components: list<string>,
 	 * }>
 	 */
 	public $hooks;

@@ -9,7 +9,7 @@ class QM_Hook {
 
 	/**
 	 * @param string $name
-	 * @param array<string, WP_Hook> $wp_filter
+	 * @param ?WP_Hook $hook
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
 	 * @return array<int, array<string, mixed>>
@@ -17,44 +17,39 @@ class QM_Hook {
 	 *   name: string,
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array<string, mixed>,
+	 *     callback: QM_Callback|WP_Error,
 	 *   }>,
 	 *   parts: list<string>,
-	 *   components: array<string, string>,
+	 *   components: list<string>,
 	 * }
 	 */
-	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
+	public static function process( $name, WP_Hook $hook = null, $hide_qm = false, $hide_core = false ) {
 
 		$actions = array();
 		$components = array();
 
-		if ( isset( $wp_filter[ $name ] ) ) {
-
-			# http://core.trac.wordpress.org/ticket/17817
-			$action = $wp_filter[ $name ];
-
-			foreach ( $action as $priority => $callbacks ) {
+		if ( $hook instanceof \WP_Hook ) {
+			foreach ( $hook as $priority => $callbacks ) {
 
 				foreach ( $callbacks as $cb ) {
-
-					$callback = QM_Util::populate_callback( $cb );
-
-					if ( isset( $callback['component'] ) ) {
+					try {
+						$callback = QM_Callback::from_callable( $cb['function'] );
 						if (
-							( $hide_qm && 'query-monitor' === $callback['component']->context )
-							|| ( $hide_core && 'core' === $callback['component']->context )
+							( $hide_qm && 'query-monitor' === $callback->component->context )
+							|| ( $hide_core && 'core' === $callback->component->context )
 						) {
 							continue;
 						}
 
-						$components[ $callback['component']->name ] = $callback['component']->name;
+						$components[] = $callback->component->name;
+					} catch ( QM_CallbackException $e ) {
+						$callback = $e->to_wp_error();
 					}
 
 					$actions[] = array(
 						'priority' => $priority,
 						'callback' => $callback,
 					);
-
 				}
 			}
 		}
@@ -65,7 +60,7 @@ class QM_Hook {
 			'name' => $name,
 			'actions' => $actions,
 			'parts' => $parts,
-			'components' => $components,
+			'components' => array_unique( $components ),
 		);
 
 	}

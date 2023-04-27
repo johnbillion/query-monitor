@@ -6,6 +6,9 @@
  */
 
 if ( ! class_exists( 'QM_Collector' ) ) {
+/**
+ * @phpstan-import-type CapCheck from QM_Collector_Caps
+ */
 abstract class QM_Collector {
 
 	/**
@@ -215,14 +218,14 @@ abstract class QM_Collector {
 
 		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
-				$this->concerned_actions[ $action ] = QM_Hook::process( $action, $wp_filter, true, false );
+				$this->concerned_actions[ $action ] = QM_Hook::process( $action, $wp_filter[ $action ], true, false );
 			}
 			$tracked[] = $action;
 		}
 
 		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
-				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
+				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter[ $filter ], true, false );
 			}
 			$tracked[] = $filter;
 		}
@@ -244,7 +247,7 @@ abstract class QM_Collector {
 					$option
 				);
 				if ( has_filter( $filter ) ) {
-					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
+					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter[ $filter ], true, false );
 				}
 				$tracked[] = $filter;
 			}
@@ -311,13 +314,11 @@ abstract class QM_Collector {
 
 	/**
 	 * @param array<string, mixed> $item
-	 * @phpstan-param array{
-	 *   component: QM_Component,
-	 * } $item
+	 * @phpstan-param CapCheck $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {
-		return ( 'query-monitor' !== $item['component']->context );
+		return ( 'query-monitor' !== $item['trace']->get_component()->context );
 	}
 
 	/**

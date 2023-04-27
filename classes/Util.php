@@ -320,6 +320,11 @@ class QM_Util {
 	}
 
 	/**
+	 * Populates callback information for a frame within the call stack of a PHP fatal error.
+	 *
+	 * Using this method to populate information for a frame from any other kind of call stack
+	 * or for a callable is not likely to be reliable.
+	 *
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
 	 * @phpstan-return array{

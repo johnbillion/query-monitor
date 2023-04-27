@@ -41,12 +41,11 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		self::$hide_qm = self::hide_qm();
 		self::$hide_core = ( defined( 'QM_HIDE_CORE_ACTIONS' ) && QM_HIDE_CORE_ACTIONS );
 
-		$hooks = array();
 		$all_parts = array();
 		$components = array();
 
 		if ( has_filter( 'all' ) ) {
-			$hooks[] = QM_Hook::process( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
+			$this->data->hooks[] = QM_Hook::process( 'all', $wp_filter['all'], self::$hide_qm, self::$hide_core );
 		}
 
 		$this->data->all_hooks = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;
@@ -60,18 +59,15 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		}
 
 		foreach ( $hook_names as $name ) {
+			$hook = QM_Hook::process( $name, $wp_filter[ $name ] ?? null, self::$hide_qm, self::$hide_core );
+			$this->data->hooks[] = $hook;
 
-			$hook = QM_Hook::process( $name, $wp_filter, self::$hide_qm, self::$hide_core );
-			$hooks[] = $hook;
-
-			$all_parts = array_merge( $all_parts, $hook['parts'] );
-			$components = array_merge( $components, $hook['components'] );
-
+			$all_parts[] = $hook['parts'];
+			$components[] = $hook['components'];
 		}
 
-		$this->data->hooks = $hooks;
-		$this->data->parts = array_unique( array_filter( $all_parts ) );
-		$this->data->components = array_unique( array_filter( $components ) );
+		$this->data->parts = array_unique( array_merge( ...$all_parts ) );
+		$this->data->components = array_unique( array_merge( ...$components ) );
 
 		usort( $this->data->parts, 'strcasecmp' );
 		usort( $this->data->components, 'strcasecmp' );

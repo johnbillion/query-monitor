@@ -2,216 +2,165 @@
 
 namespace QM\Tests;
 
+use QM_Callback;
+
 class Callbacks extends Test {
-
-	/**
-	 * @param mixed $function
-	 * @return mixed[]
-	 */
-	protected static function get_callback( $function ) {
-
-		add_action( 'qm/tests', $function );
-
-		$actions = $GLOBALS['wp_filter']['qm/tests'][10];
-		$keys = array_keys( $actions );
-
-		return $actions[ $keys[0] ];
-
-	}
-
 	public function testCallbackIsCorrectlyPopulatedWithProceduralFunction(): void {
+		$callback = '__return_false';
 
-		$function = '__return_false';
-		$callback = self::get_callback( $function );
+		$ref = new \ReflectionFunction( $callback );
+		$actual = QM_Callback::from_callable( $callback );
 
-		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( '__return_false()',   $actual['name'] );
-		self::assertEquals( $ref->getFileName(),  $actual['file'] );
-		self::assertEquals( $ref->getStartLine(), $actual['line'] );
-
+		self::assertSame( '__return_false()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithObjectMethod(): void {
-
 		$obj = new Supports\TestObject;
-		$function = array( $obj, 'hello' );
-		$callback = self::get_callback( $function );
+		$callback = array( $obj, 'hello' );
 
-		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( $callback[0], $callback[1] );
+		$actual = QM_Callback::from_callable( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( 'QM\T\S\TestObject->hello()', $actual['name'] );
-		self::assertEquals( $ref->getFileName(),       $actual['file'] );
-		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
-
+		self::assertSame( 'QM\T\S\TestObject->hello()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvokable(): void {
+		$callback = new Supports\TestInvokable;
 
-		$function = new Supports\TestInvokable;
-		$callback = self::get_callback( $function );
-
-		$ref = new \ReflectionMethod( $function, '__invoke' );
-		$actual = \QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionMethod( $callback, '__invoke' );
+		$actual = QM_Callback::from_callable( $callback );
 		$name = 'QM\T\S\TestInvokable->__invoke()';
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $name,                $actual['name'] );
-		self::assertEquals( $ref->getFileName(),  $actual['file'] );
-		self::assertEquals( $ref->getStartLine(), $actual['line'] );
-
+		self::assertSame( $name, $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithStaticMethodArray(): void {
+		$callback = array( '\QM\Tests\Supports\TestObject', 'hello' );
 
-		$function = array( '\QM\Tests\Supports\TestObject', 'hello' );
-		$callback = self::get_callback( $function );
+		$ref = new \ReflectionMethod( $callback[0], $callback[1] );
+		$actual = QM_Callback::from_callable( $callback );
 
-		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( '\Q\T\S\TestObject::hello()', $actual['name'] );
-		self::assertEquals( $ref->getFileName(),       $actual['file'] );
-		self::assertEquals( $ref->getStartLine(),      $actual['line'] );
-
+		self::assertSame( '\Q\T\S\TestObject::hello()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithStaticMethodString(): void {
-
-		$function = '\QM\Tests\Supports\TestObject::hello';
-		$callback = self::get_callback( $function );
+		$callback = '\QM\Tests\Supports\TestObject::hello';
 
 		$ref = new \ReflectionMethod( '\QM\Tests\Supports\TestObject', 'hello' );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = QM_Callback::from_callable( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( '\Q\T\S\TestObject::hello()',          $actual['name'] );
-		self::assertEquals( $ref->getFileName(),                $actual['file'] );
-		self::assertEquals( $ref->getStartLine(),               $actual['line'] );
-
+		self::assertSame( '\Q\T\S\TestObject::hello()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithClosure(): void {
+		$callback = function() {};
 
-		$function = require_once __DIR__ . '/includes/dummy-closures.php';
-
-		$callback = self::get_callback( $function );
-
-		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
+		$ref = new \ReflectionFunction( $callback );
+		$actual = QM_Callback::from_callable( $callback );
 		$name = sprintf(
 			'Closure on line %1$d of %2$s',
 			$ref->getStartLine(),
-			'wp-content/plugins/query-monitor/tests/integration/includes/dummy-closures.php'
+			'wp-content/plugins/query-monitor/tests/integration/CallbacksTest.php'
 		);
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertEquals( $name,                $actual['name'] );
-		self::assertEquals( $ref->getFileName(),  $actual['file'] );
-		self::assertEquals( $ref->getStartLine(), $actual['line'] );
+		self::assertSame( $name, $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
+	}
 
+	public function testCallbackIsCorrectlyPopulatedWithNativePHPFunction(): void {
+		$callback = 'strrev';
+
+		$actual = QM_Callback::from_callable( $callback );
+		$name = 'strrev()';
+
+		self::assertSame( $name, $actual->name );
+		self::assertNull( $actual->file );
+		self::assertNull( $actual->line );
+	}
+
+	/**
+	 * @requires PHP >= 7.4
+	 */
+	public function testCallbackIsCorrectlyPopulatedWithArrowFunction(): void {
+		$callback = require_once __DIR__ . '/includes/dummy-arrow-function.php';
+
+		$ref = new \ReflectionFunction( $callback );
+		$actual = QM_Callback::from_callable( $callback );
+		$name = sprintf(
+			'Closure on line %d of wp-content/plugins/query-monitor/tests/integration/includes/dummy-arrow-function.php',
+			$ref->getStartLine()
+		);
+
+		self::assertSame( $name, $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = 'invalid_function';
-		$callback = self::get_callback( $function );
+		$callback = 'invalid_function';
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		$actual = QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidObjectMethod(): void {
+		self::expectException( \QM_CallbackException::class );
 
 		$obj = new Supports\TestObject;
-		$function = array( $obj, 'goodbye' );
-		$callback = self::get_callback( $function );
+		$callback = array( $obj, 'goodbye' );
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidInvokable(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = new Supports\TestObject;
-		$callback = self::get_callback( $function );
+		$callback = new Supports\TestObject;
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodArray(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
-		$callback = self::get_callback( $function );
+		$callback = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticMethodString(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = '\QM\Tests\Supports\TestObject::goodbye';
-		$callback = self::get_callback( $function );
+		$callback = '\QM\Tests\Supports\TestObject::goodbye';
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassArray(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = array( 'Invalid_Class', 'goodbye' );
-		$callback = self::get_callback( $function );
+		$callback = array( 'Invalid_Class', 'goodbye' );
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
 
 	public function testCallbackIsCorrectlyPopulatedWithInvalidStaticClassString(): void {
+		self::expectException( \QM_CallbackException::class );
 
-		$function = 'Invalid_Class::goodbye';
-		$callback = self::get_callback( $function );
+		$callback = 'Invalid_Class::goodbye';
 
-		$actual = \QM_Util::populate_callback( $callback );
-
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
-
+		QM_Callback::from_callable( $callback );
 	}
-
 }

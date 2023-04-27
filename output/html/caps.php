@@ -100,7 +100,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '<tbody>';
 
 			foreach ( $data->caps as $row ) {
-				$component = $row['component'];
+				$component = $row['trace']->get_component();
 
 				$row_attr = array();
 				$row_attr['data-qm-name'] = implode( ' ', $row['parts'] );
@@ -153,8 +153,8 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				$stack = array();
 
-				foreach ( $row['filtered_trace'] as $frame ) {
-					$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
+				foreach ( $row['trace'] as $frame ) {
+					$stack[] = self::output_filename( $frame->get_display(), $frame->file, $frame->line );
 				}
 
 				$caller = array_shift( $stack );

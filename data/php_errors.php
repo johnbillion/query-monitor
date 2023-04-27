@@ -8,13 +8,11 @@
 /**
  * @phpstan-type errorObject array{
  *   errno: int,
+ *   file: string,
+ *   line: int,
  *   type: string,
  *   message: string,
- *   file: string|null,
- *   filename: string,
- *   line: int|null,
- *   filtered_trace: list<array<string, mixed>>|null,
- *   component: QM_Component,
+ *   trace: ?QM_StackTrace,
  *   calls: int,
  * }
  * @phpstan-type errorObjects array<string, array<string, errorObject>>
