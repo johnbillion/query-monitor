@@ -26,7 +26,7 @@ parameters:
 		# The `wpdb` class exposes its properties via `__get()`
 		- '#^Access to protected property wpdb::#'
 		# Properties in QM_Data* classes are nullable
-		- '#^Property QM_Data\S+ is not nullable\.$#'
+		- '#^Property QM_Data_.+ is not nullable\.$#'
 		# Data providers for acceptance tests
 		-
 			path: tests/acceptance/*
