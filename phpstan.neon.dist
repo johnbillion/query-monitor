@@ -23,16 +23,14 @@ parameters:
 	universalObjectCratesClasses:
 		- QM_Data_Fallback
 	ignoreErrors:
-		# Uses func_get_args()
-		- '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
 		# The `wpdb` class exposes its properties via `__get()`
-		- '#Access to protected property wpdb::#'
+		- '#^Access to protected property wpdb::#'
 		# Properties in QM_Data* classes are nullable
-		- '#^Property QM_Data(.*)is not nullable\.$#'
-		# Data providers for acceptance tests:
+		- '#^Property QM_Data\S+ is not nullable\.$#'
+		# Data providers for acceptance tests
 		-
 			path: tests/acceptance/*
-			message: '#^Method [^:]+::data[a-zA-Z]+\(\) is unused\.$#'
+			message: '#^Method \S+::data[a-zA-Z]+\(\) is unused\.$#'
 		# Passing ints and floats to these functions is fine
-		- '#Parameter \#1 \$text of function esc_(html|attr) expects string, int\|string given#'
-		- '#Parameter \#1 \$text of function esc_(html|attr) expects string, float\|int\|string given#'
+		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, int\|string given#'
+		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, float\|int\|string given#'
