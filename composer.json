@@ -85,6 +85,9 @@
 			"npm run build",
 			"acceptance-tests"
 		],
+		"test:destroy": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down --volumes --remove-orphans"
+		],
 		"test:integration": [
 			"integration-tests"
 		],
