@@ -12,8 +12,7 @@
 	"devDependencies": {
 		"plugin-infrastructure": "file:vendor/johnbillion/plugin-infrastructure",
 		"sass": "^1",
-		"version-bump-prompt": "^6.1.0",
-		"wait-port": "^1.0.4"
+		"version-bump-prompt": "^6.1.0"
 	},
 	"scripts": {
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
