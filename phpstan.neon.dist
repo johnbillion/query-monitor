@@ -6,20 +6,22 @@ parameters:
 	level: 7
 	paths:
 		- query-monitor.php
-		- classes
-		- collectors
-		- dispatchers
-		- output
-		- tests/acceptance
-		- tests/integration
-		- wp-content
+		- classes/
+		- collectors/
+		- dispatchers/
+		- output/
+		- tests/acceptance/
+		- tests/integration/
+		- wp-content/
 	scanDirectories:
-		- tests/_support
+		- tests/_support/
 	excludePaths:
 		analyse:
-			- tests/integration/Supports
+			- tests/integration/Supports/
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
+	universalObjectCratesClasses:
+		- QM_Data_Fallback
 	ignoreErrors:
 		# Uses func_get_args()
 		- '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
@@ -34,6 +36,3 @@ parameters:
 		# Passing ints and floats to these functions is fine
 		- '#Parameter \#1 \$text of function esc_(html|attr) expects string, int\|string given#'
 		- '#Parameter \#1 \$text of function esc_(html|attr) expects string, float\|int\|string given#'
-	reportUnmatchedIgnoredErrors: false
-	universalObjectCratesClasses:
-		- QM_Data_Fallback
