@@ -5,7 +5,7 @@ import {
 	Tabular,
 } from 'qmi';
 import {
-	Block_Editor as Block_EditorData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -29,7 +29,7 @@ interface iBlock {
 }
 
 interface iBlocksProps extends iPanelProps {
-	data: Omit<Block_EditorData, 'post_blocks'> & {
+	data: Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 		post_blocks: iBlock[];
 	};
 }

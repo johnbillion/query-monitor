@@ -6,14 +6,14 @@ import {
 	Warning,
 } from 'qmi';
 import {
-	PHP_Errors as PHP_ErrorsData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iPHP_ErrorsProps extends iPanelProps {
-	data: PHP_ErrorsData;
+	data: DataTypes['PHP_Errors'];
 }
 class PHPErrors extends React.Component<iPHP_ErrorsProps, Record<string, unknown>> {
 

@@ -5,14 +5,14 @@ import {
 	TotalTime,
 } from 'qmi';
 import {
-	DB_Components as DB_ComponentsData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iDBComponentsProps extends iPanelProps {
-	data: DB_ComponentsData;
+	data: DataTypes['DB_Components'];
 }
 
 class DBComponents extends React.Component<iDBComponentsProps, Record<string, unknown>> {

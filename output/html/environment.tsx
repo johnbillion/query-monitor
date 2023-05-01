@@ -3,7 +3,7 @@ import {
 	NonTabular,
 } from 'qmi';
 import {
-	Environment as EnvironmentData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -13,7 +13,7 @@ import Server from '../server';
 import WordPress from '../wordpress';
 
 interface iEnvironmentProps extends iPanelProps {
-	data: EnvironmentData;
+	data: DataTypes['Environment'];
 }
 
 class Environment extends React.Component<iEnvironmentProps, Record<string, unknown>> {

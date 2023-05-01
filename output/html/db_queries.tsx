@@ -10,7 +10,7 @@ import {
 	Utils,
 } from 'qmi';
 import {
-	DB_Queries as DB_QueriesData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -20,7 +20,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iDBQueriesProps extends iPanelProps {
-	data: DB_QueriesData;
+	data: DataTypes['DB_Queries'];
 }
 
 class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>> {

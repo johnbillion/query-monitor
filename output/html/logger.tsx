@@ -7,14 +7,14 @@ import {
 	Warning,
 } from 'qmi';
 import {
-	Logger as LoggerData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 export interface iLoggerProps extends iPanelProps {
-	data: LoggerData;
+	data: DataTypes['Logger'];
 }
 
 class Logger extends React.Component<iLoggerProps, Record<string, unknown>> {

@@ -3,7 +3,7 @@ import {
 	Tabular,
 } from 'qmi';
 import {
-	DB_Dupes as DB_DupesData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -14,7 +14,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iDBDupesProps extends iPanelProps {
-	data: DB_DupesData;
+	data: DataTypes['DB_Dupes'];
 }
 
 class DBDupes extends React.Component<iDBDupesProps, Record<string, unknown>> {

@@ -3,7 +3,7 @@ import {
 	NonTabular,
 } from 'qmi';
 import {
-	Theme as ThemeData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -18,7 +18,7 @@ interface iParts {
 }
 
 interface iThemePanelProps extends iPanelProps {
-	data: ThemeData;
+	data: DataTypes['Theme'];
 }
 
 class Theme extends React.Component<iThemePanelProps, Record<string, unknown>> {

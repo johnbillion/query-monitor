@@ -10,7 +10,7 @@ import {
 	Utils,
 } from 'qmi';
 import {
-	HTTP as HTTPData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -20,7 +20,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iHTTPProps extends iPanelProps {
-	data: HTTPData;
+	data: DataTypes['HTTP'];
 }
 
 class HTTP extends React.Component<iHTTPProps, Record<string, unknown>> {

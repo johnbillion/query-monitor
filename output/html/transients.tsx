@@ -6,7 +6,7 @@ import {
 	iPanelProps,
 } from 'qmi';
 import {
-	Transients as TransientsData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -16,7 +16,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iTransientsProps extends iPanelProps {
-	data: TransientsData;
+	data: DataTypes['Transients'];
 }
 
 class Transients extends React.Component<iTransientsProps, Record<string, unknown>> {

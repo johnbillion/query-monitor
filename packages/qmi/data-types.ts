@@ -18,55 +18,44 @@ import {
 } from 'wp-types';
 
 export interface DataTypes {
-	Component: Component;
-	FrameItem: FrameItem;
-	Data: {
-		Admin: Admin;
-		Assets: Assets;
-		Block_Editor: Block_Editor;
-		Cache: Cache;
-		Caps: Caps;
-		Conditionals: Conditionals;
-		DB_Callers: DB_Callers;
-		DB_Components: DB_Components;
-		DB_Dupes: DB_Dupes;
-		DB_Queries: DB_Queries;
-		Environment: Environment;
-		Hooks: Hooks;
-		HTTP: HTTP;
-		Languages: Languages;
-		Logger: Logger;
-		Multisite: Multisite;
-		Overview: Overview;
-		PHP_Errors: PHP_Errors;
-		Raw_Request: Raw_Request;
-		Redirect: Redirect;
-		Request: Request;
-		Theme: Theme;
-		Timing: Timing;
-		Transients: Transients;
+	Admin: AbstractData & Admin;
+	Assets: AbstractData & Assets;
+	Block_Editor: AbstractData & Block_Editor;
+	Cache: AbstractData & Cache;
+	Caps: AbstractData & Caps;
+	Conditionals: AbstractData & Conditionals;
+	DB_Callers: AbstractData & DB_Callers;
+	DB_Components: AbstractData & DB_Components;
+	DB_Dupes: AbstractData & DB_Dupes;
+	DB_Queries: AbstractData & DB_Queries;
+	Environment: AbstractData & Environment;
+	Hooks: AbstractData & Hooks;
+	HTTP: AbstractData & HTTP;
+	Languages: AbstractData & Languages;
+	Logger: AbstractData & Logger;
+	Multisite: AbstractData & Multisite;
+	Overview: AbstractData & Overview;
+	PHP_Errors: AbstractData & PHP_Errors;
+	Raw_Request: AbstractData & Raw_Request;
+	Redirect: AbstractData & Redirect;
+	Request: AbstractData & Request;
+	Theme: AbstractData & Theme;
+	Timing: AbstractData & Timing;
+	Transients: AbstractData & Transients;
+}
+export interface AbstractData {
+	types: {
+		[k: string]: unknown;
 	};
-}
-/**
- * Class representing a component.
- */
-export interface Component {
-	type: string;
-	name: string;
-	context: string;
-}
-/**
- * Stack trace frame.
- */
-export interface FrameItem {
-	display: string;
-	args: string[];
-	calling_file: string;
-	calling_line: number;
-	file: string;
-	function: string;
-	id: string;
-	line: number;
+	component_times: {
+		[k: string]: {
+			component: string;
+			ltime: number;
+			types: {
+				[k: string]: number;
+			};
+		};
+	};
 }
 /**
  * Admin screen data transfer object.
@@ -167,6 +156,27 @@ export interface Caps {
 	components: {
 		[k: string]: string;
 	};
+}
+/**
+ * Stack trace frame.
+ */
+export interface FrameItem {
+	display: string;
+	args: string[];
+	calling_file: string;
+	calling_line: number;
+	file: string;
+	function: string;
+	id: string;
+	line: number;
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Conditionals data transfer object.

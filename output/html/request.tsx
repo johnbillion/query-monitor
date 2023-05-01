@@ -4,14 +4,14 @@ import {
 	Utils,
 } from 'qmi';
 import {
-	Request as RequestData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
 interface iRequestPanelProps extends iPanelProps {
-	data: RequestData;
+	data: DataTypes['Request'];
 }
 
 class Request extends React.Component<iRequestPanelProps, Record<string, unknown>> {

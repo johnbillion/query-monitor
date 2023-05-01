@@ -64,7 +64,6 @@
 										},
 										"component": {
 											"phpType": "QM_Component",
-											"tsType": "Component",
 											"type": "object",
 											"allOf": [
 												{

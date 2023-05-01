@@ -3,14 +3,14 @@ import {
 	iPanelProps,
 } from 'qmi';
 import {
-	Admin as AdminData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iAdminProps extends iPanelProps {
-	data: AdminData;
+	data: DataTypes['Admin'];
 }
 
 class Admin extends React.Component<iAdminProps, Record<string, unknown>> {

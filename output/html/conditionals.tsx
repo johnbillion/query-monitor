@@ -3,14 +3,14 @@ import {
 	NonTabular,
 } from 'qmi';
 import {
-	Conditionals as ConditionalsData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
 interface iConditionalsProps extends iPanelProps {
-	data: ConditionalsData;
+	data: DataTypes['Conditionals'];
 }
 
 class Conditionals extends React.Component<iConditionalsProps, Record<string, unknown>> {

@@ -4,7 +4,7 @@ import {
 	NonTabular,
 } from 'qmi';
 import {
-	Languages as LanguagesData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -14,7 +14,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iLanguagesProps extends iPanelProps {
-	data: LanguagesData;
+	data: DataTypes['Languages'];
 }
 
 class Languages extends React.Component<iLanguagesProps, Record<string, unknown>> {

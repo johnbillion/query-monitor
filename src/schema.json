@@ -4,119 +4,313 @@
 	"title": "DataTypes",
 	"type": "object",
 	"required": [
-		"Component",
-		"FrameItem",
-		"Data"
+		"Admin",
+		"Assets",
+		"Block_Editor",
+		"Cache",
+		"Caps",
+		"Conditionals",
+		"DB_Callers",
+		"DB_Components",
+		"DB_Dupes",
+		"DB_Queries",
+		"Environment",
+		"Hooks",
+		"HTTP",
+		"Languages",
+		"Logger",
+		"Multisite",
+		"Overview",
+		"PHP_Errors",
+		"Raw_Request",
+		"Redirect",
+		"Request",
+		"Theme",
+		"Timing",
+		"Transients"
 	],
-	"properties": {
-		"Component": {
-			"$ref": "src/schemas/component.json"
-		},
-		"FrameItem": {
-			"$ref": "src/schemas/frameitem.json"
-		},
-		"Data": {
+	"definitions": {
+		"data": {
+			"title": "AbstractData",
+			"type": "object",
 			"required": [
-				"Admin",
-				"Assets",
-				"Block_Editor",
-				"Cache",
-				"Caps",
-				"Conditionals",
-				"DB_Callers",
-				"DB_Components",
-				"DB_Dupes",
-				"DB_Queries",
-				"Environment",
-				"Hooks",
-				"HTTP",
-				"Languages",
-				"Logger",
-				"Multisite",
-				"Overview",
-				"PHP_Errors",
-				"Raw_Request",
-				"Redirect",
-				"Request",
-				"Theme",
-				"Timing",
-				"Transients"
+				"types",
+				"component_times"
 			],
 			"properties": {
-				"Admin": {
-					"$ref": "src/schemas/data/admin.json"
+				"types": {
+					"type": "object"
 				},
-				"Assets": {
-					"$ref": "src/schemas/data/assets.json"
-				},
-				"Block_Editor": {
-					"$ref": "src/schemas/data/block_editor.json"
-				},
-				"Cache": {
-					"$ref": "src/schemas/data/cache.json"
-				},
-				"Caps": {
-					"$ref": "src/schemas/data/caps.json"
-				},
-				"Conditionals": {
-					"$ref": "src/schemas/data/conditionals.json"
-				},
-				"DB_Callers": {
-					"$ref": "src/schemas/data/db_callers.json"
-				},
-				"DB_Components": {
-					"$ref": "src/schemas/data/db_components.json"
-				},
-				"DB_Dupes": {
-					"$ref": "src/schemas/data/db_dupes.json"
-				},
-				"DB_Queries": {
-					"$ref": "src/schemas/data/db_queries.json"
-				},
-				"Environment": {
-					"$ref": "src/schemas/data/environment.json"
-				},
-				"Hooks": {
-					"$ref": "src/schemas/data/hooks.json"
-				},
-				"HTTP": {
-					"$ref": "src/schemas/data/http.json"
-				},
-				"Languages": {
-					"$ref": "src/schemas/data/languages.json"
-				},
-				"Logger": {
-					"$ref": "src/schemas/data/logger.json"
-				},
-				"Multisite": {
-					"$ref": "src/schemas/data/multisite.json"
-				},
-				"Overview": {
-					"$ref": "src/schemas/data/overview.json"
-				},
-				"PHP_Errors": {
-					"$ref": "src/schemas/data/php_errors.json"
-				},
-				"Raw_Request": {
-					"$ref": "src/schemas/data/raw_request.json"
-				},
-				"Redirect": {
-					"$ref": "src/schemas/data/redirect.json"
-				},
-				"Request": {
-					"$ref": "src/schemas/data/request.json"
-				},
-				"Theme": {
-					"$ref": "src/schemas/data/theme.json"
-				},
-				"Timing": {
-					"$ref": "src/schemas/data/timing.json"
-				},
-				"Transients": {
-					"$ref": "src/schemas/data/transients.json"
+				"component_times": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "object",
+						"required": [
+							"component",
+							"ltime",
+							"types"
+						],
+						"properties": {
+							"component": {
+								"type": "string"
+							},
+							"ltime": {
+								"type": "number"
+							},
+							"types": {
+								"type": "object",
+								"additionalProperties": {
+									"type": "integer"
+								}
+							}
+						},
+						"additionalProperties": false
+					}
 				}
 			},
 			"additionalProperties": false
+		}
+	},
+	"properties": {
+		"Admin": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/admin.json"
+				}
+			]
+		},
+		"Assets": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/assets.json"
+				}
+			]
+		},
+		"Block_Editor": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/block_editor.json"
+				}
+			]
+		},
+		"Cache": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/cache.json"
+				}
+			]
+		},
+		"Caps": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/caps.json"
+				}
+			]
+		},
+		"Conditionals": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/conditionals.json"
+				}
+			]
+		},
+		"DB_Callers": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/db_callers.json"
+				}
+			]
+		},
+		"DB_Components": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/db_components.json"
+				}
+			]
+		},
+		"DB_Dupes": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/db_dupes.json"
+				}
+			]
+		},
+		"DB_Queries": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/db_queries.json"
+				}
+			]
+		},
+		"Environment": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/environment.json"
+				}
+			]
+		},
+		"Hooks": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/hooks.json"
+				}
+			]
+		},
+		"HTTP": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/http.json"
+				}
+			]
+		},
+		"Languages": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/languages.json"
+				}
+			]
+		},
+		"Logger": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/logger.json"
+				}
+			]
+		},
+		"Multisite": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/multisite.json"
+				}
+			]
+		},
+		"Overview": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/overview.json"
+				}
+			]
+		},
+		"PHP_Errors": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/php_errors.json"
+				}
+			]
+		},
+		"Raw_Request": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/raw_request.json"
+				}
+			]
+		},
+		"Redirect": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/redirect.json"
+				}
+			]
+		},
+		"Request": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/request.json"
+				}
+			]
+		},
+		"Theme": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/theme.json"
+				}
+			]
+		},
+		"Timing": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/timing.json"
+				}
+			]
+		},
+		"Transients": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/transients.json"
+				}
+			]
 		}
 	},
 	"additionalProperties": false

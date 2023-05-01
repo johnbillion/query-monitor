@@ -7,7 +7,7 @@ import {
 	Tabular,
 } from 'qmi';
 import {
-	Caps as CapsData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -18,7 +18,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iCapsProps extends iPanelProps {
-	data: CapsData;
+	data: DataTypes['Caps'];
 }
 
 class Caps extends React.Component<iCapsProps, Record<string, unknown>> {

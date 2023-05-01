@@ -6,7 +6,7 @@ import {
 	Warning,
 } from 'qmi';
 import {
-	Hooks as HooksData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -16,7 +16,7 @@ import {
 } from '@wordpress/i18n';
 
 interface iHooksProps extends iPanelProps {
-	data: HooksData;
+	data: DataTypes['Hooks'];
 }
 
 class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {

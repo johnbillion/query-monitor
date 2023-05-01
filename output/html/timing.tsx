@@ -5,7 +5,7 @@ import {
 	Tabular,
 } from 'qmi';
 import {
-	Timing as TimingData,
+	DataTypes,
 } from 'qmi/data-types';
 import * as React from 'react';
 
@@ -17,7 +17,7 @@ import {
 declare const QM_i18n: iQM_i18n;
 
 interface iTimingProps extends iPanelProps {
-	data: TimingData;
+	data: DataTypes['Timing'];
 }
 
 class Timing extends React.Component<iTimingProps, Record<string, unknown>> {
