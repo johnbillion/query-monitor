@@ -8,11 +8,12 @@ modules:
   enabled:
     - WPWebDriver
     - WPDb
+    - \Helper\Acceptance
   config:
     WPDb:
-      dsn: 'mysql:host=localhost:%TEST_SITE_DATABASE_PORT%;dbname=exampledb'
-      user: exampleuser
-      password: examplepass
+      dsn: 'mysql:host=localhost:%TEST_SITE_DATABASE_PORT%;dbname=plugindb'
+      user: pluginuser
+      password: pluginpass
       url: '%TEST_SITE_WP_URL%'
       tablePrefix: wp_acceptance_
       dump: false
@@ -26,7 +27,7 @@ modules:
       browser: chrome
       host: localhost
       port: '%TEST_SITE_WEBDRIVER_PORT%'
-      window_size: 1024x768
+      window_size: 1440x900
       capabilities:
         chromeOptions:
           args: [

@@ -74,8 +74,8 @@
 			"build-vendor"
 		],
 		"test": [
-			"composer validate --strict --no-check-lock",
-			"composer normalize --dry-run",
+			"@composer validate --strict --no-check-lock",
+			"@composer normalize --dry-run",
 			"@test:phpstan",
 			"@test:phpcs",
 			"@test:integration",
@@ -83,7 +83,10 @@
 		],
 		"test:acceptance": [
 			"npm run build",
-			"bin/acceptance-tests.sh"
+			"acceptance-tests"
+		],
+		"test:destroy": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down --volumes --remove-orphans"
 		],
 		"test:integration": [
 			"integration-tests"
@@ -97,10 +100,10 @@
 			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:start": [
-			"docker-compose up -d"
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose up -d"
 		],
 		"test:stop": [
-			"docker-compose down"
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down"
 		]
 	}
 }
