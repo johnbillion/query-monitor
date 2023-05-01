@@ -79,8 +79,12 @@ function mapType( prop, required, schema, level = 0 ) {
 	const requiredMarker = required ? '' : '?';
 	let returnType = type;
 
-	if ( prop.phpStanType || prop.phpType ) {
-		return `${requiredMarker}${prop.phpStanType || prop.phpType}`;
+	if ( prop.phpStanType && prop.phpStanType !== 'object' ) {
+		return `${requiredMarker}${prop.phpStanType}`;
+	}
+
+	if ( prop.phpType ) {
+		return `${requiredMarker}${prop.phpType}`;
 	}
 
 	if ( prop.anyOf ) {
@@ -100,6 +104,7 @@ function mapType( prop, required, schema, level = 0 ) {
 	}
 
 	const indentation = '  '.repeat( level );
+	let baseType = 'array';
 
 	switch ( type ) {
 		case 'array':
@@ -110,8 +115,11 @@ function mapType( prop, required, schema, level = 0 ) {
 			}
 			break;
 		case 'object':
+			if ( prop.phpStanType && prop.phpStanType === 'object' ) {
+				baseType = 'object';
+			}
 			if ( prop.properties ) {
-				let type = 'array{';
+				let type = `${baseType}{`;
 				for ( const subKey in prop.properties ) {
 					const subRequiredMarker = prop.required && prop.required.includes( subKey ) ? '' : '?';
 					const sub = prop.properties[subKey];
@@ -123,9 +131,9 @@ function mapType( prop, required, schema, level = 0 ) {
 \t *${indentation} }`;
 				returnType = type;
 			} else if ( prop.additionalProperties?.type ) {
-				returnType = `array<string, ${mapType( prop.additionalProperties, true, schema, level )}>`;
+				returnType = `${baseType}<string, ${mapType( prop.additionalProperties, true, schema, level )}>`;
 			} else {
-				returnType = 'array<string, mixed>';
+				returnType = `${baseType}<string, mixed>`;
 			}
 			break;
 		default:

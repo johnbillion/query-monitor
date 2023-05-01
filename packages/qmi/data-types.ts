@@ -256,6 +256,31 @@ export interface DB_Queries {
 		[k: string]: unknown;
 	}[];
 	wpdb?: {
+		rows: {
+			caller: {
+				[k: string]: unknown;
+			} | null;
+			caller_name: string | null;
+			stack: {
+				[k: string]: unknown;
+			};
+			sql: string;
+			ltime: number;
+			result: number | boolean | WP_Error;
+			type: string;
+			component: Component | null;
+			trace: {
+				[k: string]: unknown;
+			};
+			is_main_query: boolean;
+			filtered_trace?: FrameItem[];
+		}[];
+		types: {
+			[k: string]: unknown;
+		};
+		has_result: boolean;
+		has_trace: boolean;
+		has_main_query: boolean;
 		[k: string]: unknown;
 	};
 	times?: {

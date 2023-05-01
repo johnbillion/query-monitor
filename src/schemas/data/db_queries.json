@@ -29,8 +29,127 @@
 			}
 		},
 		"wpdb": {
-			"phpType": "stdClass",
-			"type": "object"
+			"phpStanType": "object",
+			"type": "object",
+			"properties": {
+				"rows": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": [
+							"caller",
+							"caller_name",
+							"stack",
+							"sql",
+							"ltime",
+							"result",
+							"type",
+							"component",
+							"trace",
+							"is_main_query"
+						],
+						"properties": {
+							"caller": {
+								"type": [
+									"object",
+									"null"
+								]
+							},
+							"caller_name": {
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"stack": {
+								"type": "object"
+							},
+							"sql": {
+								"type": "string"
+							},
+							"ltime": {
+								"type": "number"
+							},
+							"result": {
+								"oneOf": [
+									{
+										"type": "integer"
+									},
+									{
+										"type": "boolean"
+									},
+									{
+										"type": "object",
+										"tsType": "WP_Error",
+										"phpType": "WP_Error",
+										"allOf": [
+											{
+												"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
+											}
+										]
+									}
+								]
+							},
+							"type": {
+								"type": "string"
+							},
+							"component": {
+								"oneOf": [
+									{
+										"phpType": "QM_Component",
+										"type": "object",
+										"allOf": [
+											{
+												"$ref": "../component.json"
+											}
+										]
+									},
+									{
+										"type": "null"
+									}
+								]
+							},
+							"trace": {
+								"type": "object"
+							},
+							"is_main_query": {
+								"type": "boolean"
+							},
+							"filtered_trace": {
+								"phpType": "array<int, array<string, mixed>>",
+								"type": "array",
+								"items": {
+									"allOf": [
+										{
+											"$ref": "../frameitem.json"
+										}
+									]
+								}
+							}
+						},
+						"additionalProperties": false
+					}
+				},
+				"types": {
+					"type": "object"
+				},
+				"has_result": {
+					"type": "boolean"
+				},
+				"has_trace": {
+					"type": "boolean"
+				},
+				"has_main_query": {
+					"type": "boolean"
+				}
+			},
+			"required": [
+				"rows",
+				"types",
+				"has_result",
+				"has_trace",
+				"has_main_query"
+			]
 		},
 		"times": {
 			"type": "object",
