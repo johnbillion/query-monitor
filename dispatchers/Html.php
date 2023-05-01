@@ -518,6 +518,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
+		// Don't dispatch on the interim login screen:
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET['interim-login'] ) ) {
+			return false;
+		}
+
 		return true;
 	}
 

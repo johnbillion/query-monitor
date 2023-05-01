@@ -96,6 +96,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 
 		if ( function_exists( 'extension_loaded' ) ) {
 			$this->data->object_cache_extensions = array_map( 'extension_loaded', array(
+				'Afterburner' => 'afterburner',
 				'APCu' => 'apcu',
 				'Redis' => 'redis',
 				'Relay' => 'relay',

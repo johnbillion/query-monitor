@@ -9,14 +9,14 @@ modules:
   config:
     WPLoader:
       wpRootFolder: /var/www/html
-      dbName: exampledb
+      dbName: plugindb
       dbHost: database
-      dbUser: exampleuser
-      dbPassword: examplepass
+      dbUser: pluginuser
+      dbPassword: pluginpass
       configFile: tests/integration/includes/bootstrap.php
       tablePrefix: wp_integration_
-      plugins: ['query-monitor/query-monitor.php']
-      activatePlugins: ['query-monitor/query-monitor.php']
+      plugins: ['%COMPOSE_PROJECT_NAME%/%COMPOSE_PROJECT_NAME%.php']
+      activatePlugins: ['%COMPOSE_PROJECT_NAME%/%COMPOSE_PROJECT_NAME%.php']
 env:
   singlesite:
     modules:

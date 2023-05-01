@@ -338,11 +338,9 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
-## Is Query Monitor available on WordPress.com VIP Go?
+## Is Query Monitor available on WordPress.com VIP?
 
-Yep! However, a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator.
-
-Please note that information about database queries and the environment is somewhat restricted on VIP. This is a platform restriction and not a Query Monitor issue.
+Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress.com VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
 
 ## I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
@@ -378,7 +376,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
 
 ## WordPress Plugins
 
- * [Block Xray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
+ * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
  * [Decalog](https://wordpress.org/plugins/decalog/)
@@ -386,6 +384,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
+ * [Variable Inspector](https://wordpress.org/plugins/variable-inspector/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
 
 Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
