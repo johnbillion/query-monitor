@@ -361,7 +361,6 @@ export interface HTTP {
 						[k: string]: unknown;
 				  }
 				| WP_Error;
-			transport: string | null;
 			type: string;
 			url: string;
 		};
