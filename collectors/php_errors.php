@@ -287,7 +287,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		 * @param bool $return_value Error handler return value. Default false.
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false )
-			|| ( is_callable( $this->previous_error_handler ) && call_user_func( $this->previous_error_handler, func_get_args() ) );
+			|| ( is_callable( $this->previous_error_handler ) && call_user_func_array( $this->previous_error_handler, func_get_args() ) );
 
 	}
 
