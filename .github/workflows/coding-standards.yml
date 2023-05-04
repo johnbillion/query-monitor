@@ -16,3 +16,14 @@ jobs:
   test:
     name: Coding Standards
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
+    strategy:
+      matrix:
+        php:
+          - '8.2'
+          - '8.1'
+          - '8.0'
+          - '7.4'
+          - '7.2'
+      fail-fast: false
+    with:
+      php: ${{ matrix.php }}
