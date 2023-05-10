@@ -233,6 +233,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
+		// Measure Web Vitals with the web-vitals.js script. See https://github.com/GoogleChrome/web-vitals.
+		wp_enqueue_script(
+			'web-vitals',
+			$this->qm->plugin_url( 'assets/web-vitals.js' ),
+			array(),
+			QM_VERSION
+		);
+
+
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
