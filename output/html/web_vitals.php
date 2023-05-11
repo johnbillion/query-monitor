@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Output_Web_Vitals_Hooks extends QM_Output_Html {
+class QM_Output_Web_Vitals extends QM_Output_Html {
 
 	/**
 	 * Collector instance.
@@ -36,35 +36,41 @@ class QM_Output_Web_Vitals_Hooks extends QM_Output_Html {
 	public function output() {
 		$this->before_tabular_output();
 		echo '<thead>';
-		echo '<script>
-				// Insert the web vital into the qm-web-vitals div.
-				function insertWebVital( webVital ) {
-					console.log( { webVital } );
-					var webVitalsDiv = document.getElementById( "qm-web-vitals-inner" );
-					var divToAdd = document.createElement("tr");
-					divToAdd.innerHTML = "<td>" + webVital.name + "</td><td>" + webVital.value + "</td><td>" + webVital.rating + "</td>";
-					webVitalsDiv.appendChild( divToAdd );
-				}
 
-				webVitals.onCLS( insertWebVital );
-				webVitals.onFID( insertWebVital );
-				webVitals.onLCP( insertWebVital );
-
-			</script>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Metric', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Score', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Rating', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Details', 'query-monitor' ) . '</th>';
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
-		echo '<tbody>';
-		echo '<tr id="qm-web-vitals-inner">';
-		echo '</tr>';
+		echo '<tbody id="qm-web-vitals-inner">';
 		echo '</tbody>';
 
 		$this->after_tabular_output();
+		echo '<script>
+		// Insert the web vital into the qm-web-vitals div.
+		function insertWebVital( webVital ) {
+			console.log( { webVital } );
+			var webVitalsDiv = document.getElementById( "qm-web-vitals-inner" );
+			var divToAdd = document.createElement("tr");
+			divToAdd.innerHTML = "<td>" + webVital.name + "</td>" +
+				"<td>" + webVital.value + "</td>" +
+				"<td>" + webVital.rating + "</td>" +
+				"<td><pre class=\"qm-pre-wrap\"><code>" + JSON.stringify( webVital ) + "</code></pre></td>";
+			webVitalsDiv.appendChild( divToAdd );
+		}
+
+		// Collect and display the available metrics.
+		webVitals.onFCP( insertWebVital ); // Available at load
+		webVitals.onTTFB( insertWebVital ); // Available at load
+		webVitals.onFID( insertWebVital ); // Available after interaction
+		webVitals.onLCP( insertWebVital ); // Available after interaction
+		webVitals.onCLS( insertWebVital ); // Only available on unload.
+		webVitals.onINP( insertWebVital ); // Only available on unload.
+	</script>';
 	}
 
 
@@ -78,7 +84,7 @@ class QM_Output_Web_Vitals_Hooks extends QM_Output_Html {
 function register_qm_output_web_vitals( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'web-vitals' );
 	if ( $collector ) {
-		$output['web-vitals'] = new QM_Output_Web_Vitals_Hooks( $collector );
+		$output['web-vitals'] = new QM_Output_Web_Vitals( $collector );
 	}
 	return $output;
 }
