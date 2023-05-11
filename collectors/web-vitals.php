@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Hooks and actions collector.
+ * Web vitals dummy collector.
  *
  * @package query-monitor
  */
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * @extends QM_DataCollector<QM_Data_Hooks>
+ * @extends QM_DataCollector<QM_Data_Web_Vitals>
  */
 class QM_Collector_Web_Vitals extends QM_DataCollector {
 
@@ -25,7 +25,7 @@ class QM_Collector_Web_Vitals extends QM_DataCollector {
 	protected static $hide_core;
 
 	public function get_storage(): QM_Data {
-		return new QM_Data_Hooks();
+		return new QM_Data_Web_Vitals();
 	}
 
 	/**
@@ -37,5 +37,4 @@ class QM_Collector_Web_Vitals extends QM_DataCollector {
 
 }
 
-# Load early to catch all hooks
 QM_Collectors::add( new QM_Collector_Web_Vitals() );
