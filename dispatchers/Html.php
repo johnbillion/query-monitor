@@ -241,7 +241,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			QM_VERSION
 		);
 
-
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
