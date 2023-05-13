@@ -139,3 +139,5 @@ Yes. You can enable this on the Settings panel.
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
 <!-- changelog -->
+
+<!-- vim: syntax=Markdown -->
