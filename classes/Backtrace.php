@@ -446,9 +446,9 @@ class QM_Backtrace {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param (int|string)[] $show_args The number of argument values to show for the given function name. The
-			 *                                  array keys are function names, the array values are either integers or
-			 *                                  "dir" to specifically treat the function argument as a directory path.
+			 * @param array<string,int|string> $show_args The number of argument values to show for the given function name. The
+			 *                                            array keys are function names, the array values are either integers or
+			 *                                            "dir" to specifically treat the function argument as a directory path.
 			 */
 			self::$show_args = apply_filters( 'qm/trace/show_args', self::$show_args );
 

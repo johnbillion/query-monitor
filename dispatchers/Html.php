@@ -348,7 +348,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			require_once $file;
 		}
 
-		/** @var QM_Output_Html[] */
+		/** @var array<string, QM_Output_Html> $outputters */
 		$outputters = $this->get_outputters( 'html' );
 
 		$this->outputters = $outputters;
@@ -716,8 +716,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @since  3.1.0
 		 *
-		 * @param QM_Dispatcher_Html $dispatcher The HTML dispatcher instance.
-		 * @param QM_Output_Html[]   $outputters Array of outputters.
+		 * @param QM_Dispatcher_Html            $dispatcher The HTML dispatcher instance.
+		 * @param array<string, QM_Output_Html> $outputters Array of outputters.
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 

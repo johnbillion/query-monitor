@@ -475,8 +475,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * Filters the reportable PHP errors using the table specified. Users can customize the levels
 	 * using the `qm/collect/php_error_levels` filter.
 	 *
-	 * @param int[]  $components     The error levels keyed by component name.
-	 * @param string $component_type The component type, for example 'plugin' or 'theme'.
+	 * @param array<string, int> $components     The error levels keyed by component name.
+	 * @param string             $component_type The component type, for example 'plugin' or 'theme'.
 	 * @return void
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {

@@ -189,7 +189,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<int|string, string>
 	 */
 	public static function get_query_filter_names() {
 		$names = array();
@@ -243,9 +243,10 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * Fires before a template part is loaded.
 	 *
-	 * @param string   $slug      The slug name for the generic template.
-	 * @param string   $name      The name of the specialized template.
-	 * @param string[] $templates Array of template files to search for, in order.
+	 * @param string             $slug      The slug name for the generic template.
+	 * @param string             $name      The name of the specialized template or an empty
+	 *                                      string if there is none.
+	 * @param array<int, string> $templates Array of template files to search for, in order.
 	 * @return void
 	 */
 	public function action_get_template_part( $slug, $name, $templates ) {
@@ -349,9 +350,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 	}
 
 	/**
-	 * @param string   $template  Path to the template. See locate_template().
-	 * @param string   $type      Sanitized filename without extension.
-	 * @param string[] $templates A list of template candidates, in descending order of priority.
+	 * @param string             $template  Path to the template. See locate_template().
+	 * @param string             $type      Sanitized filename without extension.
+	 * @param array<int, string> $templates A list of template candidates, in descending order of priority.
 	 * @return string Full path to template file.
 	 */
 	public function filter_template( $template, $type, $templates ) {
@@ -554,9 +555,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 	}
 
 	/**
-	 * @param string   $template_type      The current template type.
-	 * @param string[] $template_hierarchy The current template hierarchy, ordered by priority.
-	 * @param string   $fallback_template  A PHP fallback template to use if no matching block template is found.
+	 * @param string             $template_type      The current template type.
+	 * @param array<int, string> $template_hierarchy The current template hierarchy, ordered by priority.
+	 * @param string             $fallback_template  A PHP fallback template to use if no matching block template is found.
 	 * @return WP_Block_Template|null template A template object, or null if none could be found.
 	 */
 	protected static function wp_resolve_block_template( $template_type, $template_hierarchy, $fallback_template ) {

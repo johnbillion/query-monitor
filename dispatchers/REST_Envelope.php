@@ -31,8 +31,10 @@ class QM_Dispatcher_REST_Envelope extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Raw[] */
-		foreach ( $this->get_outputters( 'raw' ) as $id => $output ) {
+		/** @var array<string, QM_Output_Raw> $outputters */
+		$outputters = $this->get_outputters( 'raw' );
+
+		foreach ( $outputters as $id => $output ) {
 			$data[ $id ] = $output->get_output();
 		}
 

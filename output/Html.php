@@ -608,7 +608,7 @@ abstract class QM_Output_Html extends QM_Output {
 		 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 		 * @since 3.0.0
 		 *
-		 * @param string[] $file_map Array of file path mappings. Keys are the source paths and values are the replacement paths.
+		 * @param array<string, string> $file_map Array of file path mappings. Keys are the source paths and values are the replacement paths.
 		 */
 		return apply_filters( 'qm/output/file_path_map', array() );
 	}
