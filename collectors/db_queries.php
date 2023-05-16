@@ -107,7 +107,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process_db_object() {
-		global $EZSQL_ERROR, $wp_the_query, $wpdb;
+		global $wp_the_query, $wpdb;
 
 		$this->wpdb = $wpdb;
 
@@ -240,25 +240,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$rows[ $i ] = $row;
 			$i++;
 
-		}
-
-		if ( ! $has_result && ! empty( $EZSQL_ERROR ) && is_array( $EZSQL_ERROR ) ) {
-			// Fallback for displaying database errors when wp-content/db.php isn't in place
-			foreach ( $EZSQL_ERROR as $error ) {
-				$row = array(
-					'caller' => null,
-					'caller_name' => null,
-					'stack' => array(),
-					'sql' => $error['query'],
-					'ltime' => 0,
-					'result' => new WP_Error( 'qmdb', $error['error_str'] ),
-					'type' => '',
-					'component' => false,
-					'trace' => null,
-					'is_main_query' => false,
-				);
-				$this->data->errors[] = $row;
-			}
 		}
 
 		$total_qs = count( $rows );
