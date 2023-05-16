@@ -171,11 +171,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 		$names['search'] = 'is_search';
 		$names['front_page'] = 'is_front_page';
 		$names['home'] = 'is_home';
-
-		if ( function_exists( 'is_privacy_policy' ) ) {
-			$names['privacy_policy'] = 'is_privacy_policy';
-		}
-
+		$names['privacy_policy'] = 'is_privacy_policy';
 		$names['post_type_archive'] = 'is_post_type_archive';
 		$names['taxonomy'] = 'is_tax';
 		$names['attachment'] = 'is_attachment';
@@ -203,11 +199,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 		$names['search'] = 'search_template';
 		$names['front_page'] = 'frontpage_template';
 		$names['home'] = 'home_template';
-
-		if ( function_exists( 'is_privacy_policy' ) ) {
-			$names['privacy_policy'] = 'privacypolicy_template';
-		}
-
+		$names['privacy_policy'] = 'privacypolicy_template';
 		$names['taxonomy'] = 'taxonomy_template';
 		$names['attachment'] = 'attachment_template';
 		$names['single'] = 'single_template';
