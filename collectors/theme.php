@@ -564,6 +564,10 @@ class QM_Collector_Theme extends QM_DataCollector {
 			return null;
 		}
 
+		if ( ! current_theme_supports( 'block-templates' ) ) {
+			return null;
+		}
+
 		return resolve_block_template( $template_type, $template_hierarchy, $fallback_template );
 	}
 }
