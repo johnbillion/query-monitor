@@ -69,6 +69,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 		add_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10, 3 );
 		add_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10, 3 );
 		add_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10, 3 );
+		add_action( 'gutenberg_render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10, 3 );
+		add_action( 'gutenberg_render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10, 3 );
+		add_action( 'gutenberg_render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10, 3 );
 	}
 
 	/**
@@ -85,6 +88,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 		remove_action( 'render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10 );
 		remove_action( 'render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10 );
 		remove_action( 'render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10 );
+		remove_action( 'gutenberg_render_block_core_template_part_post', array( $this, 'action_render_block_core_template_part_post' ), 10 );
+		remove_action( 'gutenberg_render_block_core_template_part_file', array( $this, 'action_render_block_core_template_part_file' ), 10 );
+		remove_action( 'gutenberg_render_block_core_template_part_none', array( $this, 'action_render_block_core_template_part_none' ), 10 );
 
 		parent::tear_down();
 	}
