@@ -17,8 +17,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: develop
 
       - name: Push
-        run: git push origin release:master
+        run: git push origin develop:master
     env:
       TOKEN: ${{ secrets.GITHUB_TOKEN }}
