@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.12.2
+ * Version:      3.12.3
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.12.2' );
+define( 'QM_VERSION', '3.12.3' );
 
 $qm_dir = dirname( __FILE__ );
 
