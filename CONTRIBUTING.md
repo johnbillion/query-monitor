@@ -96,11 +96,8 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
 1. `git push origin develop`
 1. Wait until (and ensure that) [the build passes](https://github.com/johnbillion/query-monitor/actions)
-1. `git checkout master`
-1. `git merge develop`
-1. `git push origin master`
-1. `git push origin master:release`
-1. Wait for [the Build Release action](https://github.com/johnbillion/query-monitor/actions?query=workflow%3A%22Build+Release%22) to complete
+1. `git push origin develop:release`
+1. Wait for [the Build action](https://github.com/johnbillion/query-monitor/actions/workflows/build.yml) to complete
 1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 
 ### Post Release
