@@ -49,6 +49,8 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 			'is_feed',
 			'is_front_page',
 			'is_home',
+			'is_local_attachment',
+			'is_login',
 			'is_main_network',
 			'is_main_site',
 			'is_month',
@@ -59,6 +61,7 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 			'is_post_type_archive',
 			'is_preview',
 			'is_privacy_policy',
+			'is_protected_endpoint',
 			'is_robots',
 			'is_rtl',
 			'is_search',
@@ -72,6 +75,7 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 			'is_trackback',
 			'is_user_admin',
 			'is_year',
+			'wp_is_site_protected_by_basic_auth',
 		) );
 
 		/**
