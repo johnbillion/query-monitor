@@ -90,7 +90,7 @@ class QM_Collector_Emails extends QM_DataCollector {
 		$this->data->preempted[]     = $hash;
 		$this->data->emails[ $hash ] = array(
 			'atts'           => $atts,
-			'error'          => null,
+			'error'          => new WP_Error( 'pre_wp_mail', 'Preempted sending email.' ),
 			'filtered_trace' => $trace->get_filtered_trace(),
 		);
 
@@ -148,7 +148,7 @@ class QM_Collector_Emails extends QM_DataCollector {
 		if ( ! is_array( $this->data->failed ) ) {
 			$this->data->failed = array();
 		}
-do_action( 'qm/debug', $this->data->emails );
+
 		foreach ( $this->data->emails as $hash => $email ) {
 			$this->data->counts['total']++;
 

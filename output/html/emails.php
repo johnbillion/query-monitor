@@ -69,7 +69,7 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'To', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Subject', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		// echo '<th scope="col">' . esc_html__( 'Headers', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Headers', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Attachments', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -121,7 +121,7 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 			if ( is_wp_error( $row['error'] ) ) {
 				$error = QueryMonitor::icon( 'warning' );
-				echo '<br />' . $error . ' ' . $row['error']->get_error_message( 'wp_mail_failed' );
+				echo '<br />' . $error . ' ' . $row['error']->get_error_message();
 			}
 
 			echo '</td>';
@@ -144,9 +144,9 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 			echo '</ol></td>';
 
-			// echo '<td class="qm-has-inner qm-ltr">';
-			// self::output_inner( $row['atts']['headers'] );
-			// echo '</td>';
+			echo '<td class="qm-has-inner qm-ltr">';
+			self::output_inner( $row['atts']['headers'] );
+			echo '</td>';
 
 			printf(
 				'<td class="qm-num">%d</td>',
@@ -157,18 +157,26 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 		}
 
 		echo '</tbody>';
-		echo '<tfoot>';
 
-		echo '<tr>';
+		echo '<tfoot>';
 		printf(
-			'<td colspan="5">%s</td>',
+			'<tr><td colspan="5">%s %s %s</td></tr>',
 			sprintf(
-				/* translators: %s: Number of HTTP API requests */
-				esc_html( _nx( 'Total: %s', 'Total: %s', $data->counts['total'], 'Emails', 'query-monitor' ) ),
+				/* translators: %s: Total number of emails */
+				esc_html_x( 'Total: %s', 'Total emails', 'query-monitor' ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
+			),
+			sprintf(
+				/* translators: %s: Total number of emails preempted */
+				esc_html_x( 'Preempted: %s', 'Preempted emails', 'query-monitor' ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['preempted'] ) ) . '</span>'
+			),
+			sprintf(
+				/* translators: %s: Total number of emails failed */
+				esc_html_x( 'Failed: %s', 'Failed emails', 'query-monitor' ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['failed'] ) ) . '</span>'
 			)
 		);
-		echo '</tr>';
 		echo '</tfoot>';
 
 		$this->after_tabular_output();
