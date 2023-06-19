@@ -101,6 +101,10 @@ class QM_Collector_Emails extends QM_DataCollector {
 			$atts['to'] = explode( ',', $atts['to'] );
 		}
 
+		if ( ! is_array( $atts['attachments'] ) ) {
+			$atts['attachments'] = explode( "\n", str_replace( "\r\n", "\n", $atts['attachments'] ) );
+		}
+
 		$hash  = $this->hash( $atts );
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(

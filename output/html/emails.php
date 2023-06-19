@@ -148,14 +148,25 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 			echo '</ol></td>';
 
-			echo '<td class="qm-has-inner qm-ltr">';
-			self::output_inner( $row['atts']['headers'] );
+			$is_empty = empty( $row['atts']['headers'] );
+
+			echo '<td class="' . ( $is_empty ? '' : 'qm-has-inner' ) . ' qm-ltr">';
+			if ( $is_empty ) {
+				echo '&mdash;';
+			} else {
+				self::output_inner( $row['atts']['headers'] );
+			}
 			echo '</td>';
 
-			printf(
-				'<td class="qm-num">%d</td>',
-				count( $row['atts']['attachments'] )
-			);
+			$is_empty = empty( $row['atts']['attachments'] );
+
+			echo '<td class="' . ( $is_empty ? '' : 'qm-has-inner' ) . ' qm-ltr">';
+			if ( $is_empty ) {
+				echo '&mdash;';
+			} else {
+				self::output_inner( $row['atts']['attachments'] );
+			}
+			echo '</td>';
 
 			echo '</tr>';
 		}
