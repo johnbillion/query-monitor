@@ -571,6 +571,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'Default/Xdebug' => '',
 				'Atom' => 'atom',
 				'Netbeans' => 'netbeans',
+				'Nova' => 'nova',
 				'PhpStorm' => 'phpstorm',
 				'Sublime Text' => 'sublime',
 				'TextMate' => 'textmate',
