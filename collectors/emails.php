@@ -25,8 +25,8 @@ class QM_Collector_Emails extends QM_DataCollector {
 	 */
 	public function set_up() {
 		parent::set_up();
+		add_filter( 'wp_mail', array( $this, 'filter_wp_mail' ), 9999 );
 		add_filter( 'pre_wp_mail', array( $this, 'filter_pre_wp_mail' ), 9999, 2 );
-		add_action( 'wp_mail_succeeded', array( $this, 'action_wp_mail_succeeded' ) );
 		add_action( 'wp_mail_failed', array( $this, 'action_wp_mail_failed' ) );
 	}
 
@@ -34,8 +34,8 @@ class QM_Collector_Emails extends QM_DataCollector {
 	 * @return void
 	 */
 	public function tear_down() {
+		remove_filter( 'wp_mail', array( $this, 'filter_wp_mail' ), 9999 );
 		remove_filter( 'pre_wp_mail', array( $this, 'filter_pre_wp_mail' ), 9999 );
-		remove_action( 'wp_mail_succeeded', array( $this, 'action_wp_mail_succeeded' ) );
 		remove_action( 'wp_mail_failed', array( $this, 'action_wp_mail_failed' ) );
 
 		parent::tear_down();
@@ -66,38 +66,41 @@ class QM_Collector_Emails extends QM_DataCollector {
 		);
 	}
 
-	protected function hash( $value ) {
-		$value = json_encode( $value );
+	/**
+	 * Other attributes of wp_mail() are changed,
+	 * so use the attributes that aren't changed
+	 * to generate identifying hash.
+	 */
+	protected function hash( $atts ) {
+		$to = $atts['to'];
+
+		if ( ! is_array( $to ) ) {
+			$to = explode( ',', $to );
+			$to = array_map( 'trim', $to );
+		}
+
+		$value = json_encode( array(
+			'to'      => $to,
+			'subject' => $atts['subject'],
+			'message' => $atts['message'],
+		) );
+
 		return wp_hash( $value );
 	}
 
-	public function filter_pre_wp_mail( $preempt, $atts ) {
-		if ( is_null( $preempt ) ) {
-			return null;
-		}
-
-		if ( is_null( $this->data->preempted ) ) {
-			$this->data->preempted = array();
-		}
-
-		$hash  = $this->hash( $atts );
-		$trace = new QM_Backtrace( array(
-			'ignore_hook' => array(
-				current_filter() => true,
-			),
+	public function filter_wp_mail( $atts ) {
+		$atts = wp_parse_args( $atts, array(
+			'to'          => array(),
+			'subject'     => '',
+			'message'     => '',
+			'headers'     => array(),
+			'attachments' => array(),
 		) );
 
-		$this->data->preempted[]     = $hash;
-		$this->data->emails[ $hash ] = array(
-			'atts'           => $atts,
-			'error'          => new WP_Error( 'pre_wp_mail', 'Preempted sending email.' ),
-			'filtered_trace' => $trace->get_filtered_trace(),
-		);
+		if ( ! is_array( $atts['to'] ) ) {
+			$atts['to'] = explode( ',', $atts['to'] );
+		}
 
-		return $preempt;
-	}
-
-	public function action_wp_mail_succeeded( $atts ) {
 		$hash  = $this->hash( $atts );
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
@@ -110,6 +113,25 @@ class QM_Collector_Emails extends QM_DataCollector {
 			'error'          => null,
 			'filtered_trace' => $trace->get_filtered_trace(),
 		);
+
+		return $atts;
+	}
+
+	public function filter_pre_wp_mail( $preempt, $atts ) {
+		if ( is_null( $preempt ) ) {
+			return null;
+		}
+
+		if ( is_null( $this->data->preempted ) ) {
+			$this->data->preempted = array();
+		}
+
+		$hash = $this->hash( $atts );
+
+		$this->data->preempted[] = $hash;
+		$this->data->emails[ $hash ]['error'] = new WP_Error( 'pre_wp_mail', 'Preempted sending email.' );
+
+		return $preempt;
 	}
 
 	public function action_wp_mail_failed( $error ) {
@@ -119,18 +141,9 @@ class QM_Collector_Emails extends QM_DataCollector {
 
 		$atts  = $error->get_error_data( 'wp_mail_failed' );
 		$hash  = $this->hash( $atts );
-		$trace = new QM_Backtrace( array(
-			'ignore_hook' => array(
-				current_filter() => true,
-			),
-		) );
 
 		$this->data->failed[]        = $hash;
-		$this->data->emails[ $hash ] = array(
-			'atts'           => $atts,
-			'error'          => $error,
-			'filtered_trace' => $trace->get_filtered_trace(),
-		);
+		$this->data->emails[ $hash ]['error'] = $error;
 	}
 
 	public function process() {

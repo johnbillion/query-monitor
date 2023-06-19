@@ -104,6 +104,10 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 				$attr .= ' ' . $a . '="' . esc_attr( (string) $v ) . '"';
 			}
 
+			if ( ! is_array( $row['atts']['headers'] ) ) {
+				$row['atts']['headers'] = array();
+			}
+
 			printf( // WPCS: XSS ok.
 				'<tr %s class="%s">',
 				$attr,
@@ -120,8 +124,8 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 			echo esc_html( $row['atts']['subject'] );
 
 			if ( is_wp_error( $row['error'] ) ) {
-				$error = QueryMonitor::icon( 'warning' );
-				echo '<br />' . $error . ' ' . $row['error']->get_error_message();
+				$icon = QueryMonitor::icon( 'warning' );
+				echo '<br />' . $icon . __( 'Failed sending:', 'query-monitor' ) . ' ' . $row['error']->get_error_message();
 			}
 
 			echo '</td>';
