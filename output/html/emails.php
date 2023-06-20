@@ -78,7 +78,6 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 		foreach ( $data->emails as $hash => $row ) {
 			$is_error = false;
-			$row_attr = array();
 			$stack    = array();
 			$css      = '';
 			$to       = $row['atts']['to'];
@@ -99,18 +98,12 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 				$css = 'qm-warn';
 			}
 
-			$attr = '';
-			foreach ( $row_attr as $a => $v ) {
-				$attr .= ' ' . $a . '="' . esc_attr( (string) $v ) . '"';
-			}
-
 			if ( ! is_array( $row['atts']['headers'] ) ) {
 				$row['atts']['headers'] = array();
 			}
 
 			printf( // WPCS: XSS ok.
-				'<tr %s class="%s">',
-				$attr,
+				'<tr class="%s">',
 				esc_attr( $css )
 			);
 
@@ -202,7 +195,7 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-		/** @var QM_Data_Email */
+		/** @var QM_Data_Emails */
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data->preempted ) || ! empty( $data->failed ) ) {
@@ -218,7 +211,7 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Email */
+		/** @var QM_Data_Emails */
 		$data = $this->collector->get_data();
 
 		$type_label = $this->get_type_labels();
@@ -229,8 +222,8 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 		$args = array(
 			'title' => esc_html( $label ),
-			'id' => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href' => esc_attr( '#' . $this->collector->id() ),
+			'id'    => esc_attr( "query-monitor-{$this->collector->id}" ),
+			'href'  => esc_attr( '#' . $this->collector->id() ),
 		);
 
 		if ( ! empty( $data->preempted ) || ! empty( $data->failed ) ) {

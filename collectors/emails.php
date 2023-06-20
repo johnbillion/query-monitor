@@ -70,6 +70,9 @@ class QM_Collector_Emails extends QM_DataCollector {
 	 * Other attributes of wp_mail() are changed,
 	 * so use the attributes that aren't changed
 	 * to generate identifying hash.
+	 *
+	 * @param array<string, string|array<int, string>> $atts
+	 * @return string
 	 */
 	protected function hash( $atts ) {
 		$to = $atts['to'];
@@ -79,15 +82,25 @@ class QM_Collector_Emails extends QM_DataCollector {
 			$to = array_map( 'trim', $to );
 		}
 
-		$value = json_encode( array(
+		$data = array(
 			'to'      => $to,
 			'subject' => $atts['subject'],
 			'message' => $atts['message'],
-		) );
+		);
 
-		return wp_hash( $value );
+		$datastring = json_encode( $data );
+
+		if ( ! is_string( $datastring ) ) {
+			$datastring = print_r( $data, true );
+		}
+
+		return wp_hash( $datastring );
 	}
 
+	/**
+	 * @param array<string, string|array<int, string>> $atts
+	 * @return array<string, string|array<int, string>>
+	 */
 	public function filter_wp_mail( $atts ) {
 		$atts = wp_parse_args( $atts, array(
 			'to'          => array(),
@@ -121,13 +134,14 @@ class QM_Collector_Emails extends QM_DataCollector {
 		return $atts;
 	}
 
+	/**
+	 * @param null|bool $preempt
+	 * @param array<string, string|array<int, string>> $atts
+	 * @return null|bool
+	 */
 	public function filter_pre_wp_mail( $preempt, $atts ) {
 		if ( is_null( $preempt ) ) {
 			return null;
-		}
-
-		if ( is_null( $this->data->preempted ) ) {
-			$this->data->preempted = array();
 		}
 
 		$hash = $this->hash( $atts );
@@ -138,11 +152,11 @@ class QM_Collector_Emails extends QM_DataCollector {
 		return $preempt;
 	}
 
+	/**
+	 * @param WP_Error $error
+	 * @return void
+	 */
 	public function action_wp_mail_failed( $error ) {
-		if ( is_null( $this->data->failed ) ) {
-			$this->data->failed = array();
-		}
-
 		$atts  = $error->get_error_data( 'wp_mail_failed' );
 		$hash  = $this->hash( $atts );
 
@@ -150,6 +164,9 @@ class QM_Collector_Emails extends QM_DataCollector {
 		$this->data->emails[ $hash ]['error'] = $error;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
 		$this->data->counts = array(
 			'preempted' => 0,
