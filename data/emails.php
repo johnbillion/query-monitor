@@ -6,6 +6,9 @@
  */
 
 class QM_Data_Emails extends QM_Data {
+	/**
+	 * @var array<string, array<string, mixed>>
+	 */
 	public $emails;
 
 	/**
