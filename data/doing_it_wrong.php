@@ -7,11 +7,6 @@
 
 class QM_Data_Doing_It_Wrong extends QM_Data {
 	/**
-	 * @var array<int, array<int, string>> */
+	 * @var array<int, array<string, mixed>> */
 	public $actions;
-
-	/**
-	 * @var array<string, int>
-	 */
-	public $counts;
 }

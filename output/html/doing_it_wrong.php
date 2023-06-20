@@ -84,7 +84,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 			echo '<tr>';
 
-			printf( '<td>%s</td>', $row['message'] );
+			printf( '<td>%s</td>', esc_html( wp_strip_all_tags( $row['message'] ) ) );
 
 			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
 
@@ -114,7 +114,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 			sprintf(
 				/* translators: %s: Total number of emails */
 				esc_html_x( 'Total: %s', 'Total Doing It Wrong occurrences', 'query-monitor' ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data->actions ) ) ) . '</span>'
 			)
 		);
 		echo '</tfoot>';
@@ -154,7 +154,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 		$type_label = $this->get_type_labels();
 		$label = sprintf(
 			$type_label['count'],
-			number_format_i18n( $data->counts['total'] )
+			number_format_i18n( count( $data->actions ) )
 		);
 
 		$args = array(
