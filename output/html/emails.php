@@ -118,7 +118,8 @@ class QM_Output_Html_Emails extends QM_Output_Html {
 
 			if ( is_wp_error( $row['error'] ) ) {
 				$icon = QueryMonitor::icon( 'warning' );
-				echo '<br />' . $icon . __( 'Failed sending:', 'query-monitor' ) . ' ' . $row['error']->get_error_message();
+				echo '<br />' . $icon; // WPCS: XSS ok.
+				echo esc_html( __( 'Failed sending:', 'query-monitor' ) . ' ' . $row['error']->get_error_message() );
 			}
 
 			echo '</td>';
