@@ -560,6 +560,8 @@ abstract class QM_Output_Html extends QM_Output {
 				return 'txmt://open/?url=file://%f&line=%l';
 			case 'netbeans':
 				return 'nbopen://%f:%l';
+			case 'nova':
+				return 'nova://open?path=%f&line=%l';
 			default:
 				return $default_format;
 		}
