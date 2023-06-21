@@ -593,7 +593,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		} else {
 			$warn = QueryMonitor::icon( 'warning' );
-			echo '<p>' . $warn . 'File link format set by <code>qm/output/file_link_format</code> filter.</p>';
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<p>' . $warn;
+			esc_html_e( 'File link format set by', 'query-monitor' );
+			echo ' <code>qm/output/file_link_format</code> ';
+			echo esc_html__( 'filter', 'query-monitor' ) . '.</p>';
 		}
 
 		echo '</section>';
