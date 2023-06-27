@@ -97,7 +97,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'filtered_trace' => $trace->get_filtered_trace(),
 			'message'        => sprintf(
 				/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: WordPress version number. */
-				__( 'Function %1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'query-monitor' ),
+				__( 'Function %1$s was called incorrectly. %2$s %3$s', 'query-monitor' ),
 				$function_name,
 				$message,
 				$version
@@ -120,7 +120,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 
 		$message = sprintf(
 			/* translators: 1: PHP function name, 2: Version number. */
-			__( 'Function %1$s is <strong>deprecated</strong> since version %2$s with no alternative available.', 'query-monitor' ),
+			__( 'Function %1$s is deprecated since version %2$s with no alternative available.', 'query-monitor' ),
 			$function_name,
 			$version
 		);
@@ -128,7 +128,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		if ( $replacement ) {
 			$message = sprintf(
 				/* translators: 1: PHP function name, 2: Version number, 3: Alternative function name. */
-				__( 'Function %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'query-monitor' ),
+				__( 'Function %1$s is deprecated since version %2$s! Use %3$s instead.', 'query-monitor' ),
 				$function_name,
 				$version,
 				$replacement
@@ -157,7 +157,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 
 		$message = sprintf(
 			/* translators: 1: PHP class name, 2: Version number, 3: __construct() method. */
-			__( 'The called constructor method for %1$s class is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'query-monitor' ),
+			__( 'The called constructor method for %1$s class is deprecated since version %2$s! Use %3$s instead.', 'query-monitor' ),
 			$class_name,
 			$version,
 			'<code>__construct()</code>'
@@ -166,7 +166,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		if ( $parent_class ) {
 			$message = sprintf(
 				/* translators: 1: PHP class name, 2: PHP parent class name, 3: Version number, 4: __construct() method. */
-				__( 'The called constructor method for %1$s class in %2$s is <strong>deprecated</strong> since version %3$s! Use %4$s instead.', 'query-monitor' ),
+				__( 'The called constructor method for %1$s class in %2$s is deprecated since version %3$s! Use %4$s instead.', 'query-monitor' ),
 				$class_name,
 				$parent_class,
 				$version,
@@ -198,7 +198,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		if ( $replacement ) {
 			$message = sprintf(
 				/* translators: 1: PHP file name, 2: Version number, 3: Alternative file name, 4: Optional message regarding the change. */
-				__( 'File %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
+				__( 'File %1$s is deprecated since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
 				$file,
 				$version,
 				$replacement,
@@ -207,7 +207,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		} else {
 			$message = sprintf(
 				/* translators: 1: PHP file name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'File %1$s is <strong>deprecated</strong> since version %2$s with no alternative available. %3$s', 'query-monitor' ),
+				__( 'File %1$s is deprecated since version %2$s with no alternative available. %3$s', 'query-monitor' ),
 				$file,
 				$version,
 				$message
@@ -237,7 +237,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		if ( $message ) {
 			$message = sprintf(
 				/* translators: 1: PHP function name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'Function %1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s', 'query-monitor' ),
+				__( 'Function %1$s was called with an argument that is deprecated since version %2$s! %3$s', 'query-monitor' ),
 				$function_name,
 				$version,
 				$message
@@ -245,7 +245,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		} else {
 			$message = sprintf(
 				/* translators: 1: PHP function name, 2: Version number. */
-				__( 'Function %1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.', 'query-monitor' ),
+				__( 'Function %1$s was called with an argument that is deprecated since version %2$s with no alternative available.', 'query-monitor' ),
 				$function_name,
 				$version
 			);
@@ -275,7 +275,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		if ( $replacement ) {
 			$message = sprintf(
 				/* translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name, 4: Optional message regarding the change. */
-				__( 'Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
+				__( 'Hook %1$s is deprecated since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
 				$hook,
 				$version,
 				$replacement,
@@ -284,7 +284,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		} else {
 			$message = sprintf(
 				/* translators: 1: WordPress hook name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'Hook %1$s is <strong>deprecated</strong> since version %2$s with no alternative available. %3$s', 'query-monitor' ),
+				__( 'Hook %1$s is deprecated since version %2$s with no alternative available. %3$s', 'query-monitor' ),
 				$hook,
 				$version,
 				$message
