@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.2
 Stable tag: 3.12.3
 License: GPLv2 or later
-Requires PHP: 7.2
+Requires PHP: 7.4
 Donate link: https://github.com/sponsors/johnbillion
 
 Query Monitor is the developer tools panel for WordPress.
