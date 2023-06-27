@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Doing It Wrong output for HTML pages.
+ * Doing it Wrong output for HTML pages.
  *
  * @package query-monitor
  */
@@ -28,7 +28,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 * @return string
 	 */
 	public function name() {
-		return __( 'Doing It Wrong', 'query-monitor' );
+		return __( 'Doing it Wrong', 'query-monitor' );
 	}
 
 	/**
@@ -36,11 +36,11 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 */
 	public function get_type_labels() {
 		return array(
-			/* translators: %s: Total number of Doing It Wrong occurrences */
-			'total' => _x( 'Total: %s', 'Doing It Wrong', 'query-monitor' ),
-			'plural' => __( 'Doing It Wrong occurrences', 'query-monitor' ),
-			/* translators: %s: Total number of Doing It Wrong occurrences */
-			'count' => _x( 'Doing It Wrong (%s)', 'Doing It Wrong', 'query-monitor' ),
+			/* translators: %s: Total number of Doing it Wrong occurrences */
+			'total' => _x( 'Total: %s', 'Doing it Wrong', 'query-monitor' ),
+			'plural' => __( 'Doing it Wrong occurrences', 'query-monitor' ),
+			/* translators: %s: Total number of Doing it Wrong occurrences */
+			'count' => _x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
 		);
 	}
 
@@ -113,7 +113,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 			'<tr><td colspan="2">%s</td></tr>',
 			sprintf(
 				/* translators: %s: Total number of emails */
-				esc_html_x( 'Total: %s', 'Total Doing It Wrong occurrences', 'query-monitor' ),
+				esc_html_x( 'Total: %s', 'Total Doing it Wrong occurrences', 'query-monitor' ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data->actions ) ) ) . '</span>'
 			)
 		);

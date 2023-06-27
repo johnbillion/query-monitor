@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Doing It Wrong data transfer object.
+ * Doing it Wrong data transfer object.
  *
  * @package query-monitor
  */

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Doing It Wrong collector.
+ * Doing it Wrong collector.
  *
  * @package query-monitor
  */
