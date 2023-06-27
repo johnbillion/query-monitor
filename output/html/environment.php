@@ -235,6 +235,20 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			echo '</tr>';
 		}
 
+		if ( isset( $data->wp['development_mode'] ) ) {
+			echo '<tr>';
+			echo '<th scope="row">';
+			esc_html_e( 'Development Mode', 'query-monitor' );
+			printf(
+				'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
+				'https://core.trac.wordpress.org/changeset/56042',
+				esc_html__( 'Help', 'query-monitor' )
+			);
+			echo '</th>';
+			echo '<td>' . esc_html( $data->wp['development_mode'] ) . '</td>';
+			echo '</tr>';
+		}
+
 		foreach ( $data->wp['constants'] as $key => $val ) {
 
 			echo '<tr>';
