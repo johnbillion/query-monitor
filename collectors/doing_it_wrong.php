@@ -25,12 +25,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 */
 	public function set_up() {
 		parent::set_up();
-		add_action( 'doing_it_wrong_run', array( $this, 'action__doing_it_wrong_run' ), 10, 3 );
-		add_action( 'deprecated_function_run', array( $this, 'action__deprecated_function_run' ), 10, 3 );
-		add_action( 'deprecated_constructor_run', array( $this, 'action__deprecated_constructor_run' ), 10, 3 );
-		add_action( 'deprecated_file_included', array( $this, 'action__deprecated_file_included' ), 10, 4 );
-		add_action( 'deprecated_argument_run', array( $this, 'action__deprecated_argument_run' ), 10, 3 );
-		add_action( 'deprecated_hook_run', array( $this, 'action__deprecated_hook_run' ), 10, 4 );
+		add_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ), 10, 3 );
+		add_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ), 10, 3 );
+		add_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ), 10, 3 );
+		add_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ), 10, 4 );
+		add_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ), 10, 3 );
+		add_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ), 10, 4 );
 	}
 
 	/**
@@ -38,12 +38,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 */
 	public function tear_down() {
 		parent::tear_down();
-		remove_action( 'doing_it_wrong_run', array( $this, 'action__doing_it_wrong_run' ) );
-		remove_action( 'deprecated_function_run', array( $this, 'action__deprecated_function_run' ) );
-		remove_action( 'deprecated_constructor_run', array( $this, 'action__deprecated_constructor_run' ) );
-		remove_action( 'deprecated_file_included', array( $this, 'action__deprecated_file_included' ) );
-		remove_action( 'deprecated_argument_run', array( $this, 'action__deprecated_argument_run' ) );
-		remove_action( 'deprecated_hook_run', array( $this, 'action__deprecated_hook_run' ) );
+		remove_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ) );
+		remove_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ) );
+		remove_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ) );
+		remove_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ) );
+		remove_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ) );
+		remove_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ) );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $version
 	 * @return void
 	 */
-	public function action__doing_it_wrong_run( $function_name, $message, $version ) {
+	public function action_doing_it_wrong_run( $function_name, $message, $version ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -111,7 +111,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $version
 	 * @return void
 	 */
-	public function action__deprecated_function_run( $function_name, $replacement, $version ) {
+	public function action_deprecated_function_run( $function_name, $replacement, $version ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -148,7 +148,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $parent_class
 	 * @return void
 	 */
-	public function action__deprecated_constructor_run( $class_name, $version, $parent_class ) {
+	public function action_deprecated_constructor_run( $class_name, $version, $parent_class ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -188,7 +188,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $message
 	 * @return void
 	 */
-	public function action__deprecated_file_included( $file, $replacement, $version, $message ) {
+	public function action_deprecated_file_included( $file, $replacement, $version, $message ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -227,7 +227,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $version
 	 * @return void
 	 */
-	public function action__deprecated_argument_run( $function_name, $message, $version ) {
+	public function action_deprecated_argument_run( $function_name, $message, $version ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -265,7 +265,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @param string $message
 	 * @return void
 	 */
-	public function action__deprecated_hook_run( $hook, $replacement, $version, $message ) {
+	public function action_deprecated_hook_run( $hook, $replacement, $version, $message ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
