@@ -25,12 +25,20 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 */
 	public function set_up() {
 		parent::set_up();
+
 		add_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ), 10, 3 );
 		add_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ), 10, 3 );
 		add_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ), 10, 3 );
 		add_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ), 10, 4 );
 		add_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ), 10, 3 );
 		add_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ), 10, 4 );
+
+		add_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_file_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 	}
 
 	/**
@@ -38,12 +46,35 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 */
 	public function tear_down() {
 		parent::tear_down();
+
 		remove_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ) );
 		remove_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ) );
 		remove_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ) );
 		remove_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ) );
 		remove_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ) );
 		remove_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ) );
+
+		remove_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'deprecated_file_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ) );
+	}
+
+	/**
+	 * Prevents the PHP error (notice or deprecated) from being triggered for doing it wrong calls when the
+	 * current user can view Query Monitor output.
+	 *
+	 * @param bool $trigger
+	 * @return bool
+	 */
+	public function maybe_prevent_error( $trigger ) {
+		if ( current_user_can( 'view_query_monitor' ) ) {
+			return false;
+		}
+
+		return $trigger;
 	}
 
 	/**
