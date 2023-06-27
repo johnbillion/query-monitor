@@ -587,18 +587,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
 			echo '</p>';
 
-			$yes = QueryMonitor::icon( 'yes-alt' );
-
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		} else {
-			$warn = QueryMonitor::icon( 'warning' );
-
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<p>' . $warn;
-			esc_html_e( 'File link format set by', 'query-monitor' );
-			echo ' <code>qm/output/file_link_format</code> ';
-			echo esc_html__( 'filter', 'query-monitor' ) . '.</p>';
+			printf(
+				/* translators: %s: Name of WordPress filter */
+				esc_html__( 'The file link format for your editor is set by the %s filter.', 'query-monitor' ),
+				'<code>qm/output/file_link_format</code>'
+			);
+			echo '</p>';
 		}
 
 		echo '</section>';
