@@ -561,35 +561,43 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
 
-		echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
+		if ( ! has_filter( 'qm/output/file_link_format' ) ) {
+			echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
 
-		echo '<p>';
-		echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
+			echo '<p>';
+			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
 
-		$editors = array(
-			'Default/Xdebug' => '',
-			'Atom' => 'atom',
-			'Netbeans' => 'netbeans',
-			'Nova' => 'nova',
-			'PhpStorm' => 'phpstorm',
-			'Sublime Text' => 'sublime',
-			'TextMate' => 'textmate',
-			'Visual Studio Code' => 'vscode',
-		);
+			$editors = array(
+				'Default/Xdebug' => '',
+				'Atom' => 'atom',
+				'Netbeans' => 'netbeans',
+				'Nova' => 'nova',
+				'PhpStorm' => 'phpstorm',
+				'Sublime Text' => 'sublime',
+				'TextMate' => 'textmate',
+				'Visual Studio Code' => 'vscode',
+			);
 
-		foreach ( $editors as $name => $value ) {
-			echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
+			foreach ( $editors as $name => $value ) {
+				echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
+			}
+
+			echo '</select>';
+			echo '</p><p>';
+			echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
+			echo '</p>';
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
+		} else {
+			printf(
+				/* translators: %s: Name of WordPress filter */
+				esc_html__( 'The file link format for your editor is set by the %s filter.', 'query-monitor' ),
+				'<code>qm/output/file_link_format</code>'
+			);
+			echo '</p>';
 		}
 
-		echo '</select>';
-		echo '</p><p>';
-		echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
-		echo '</p>';
-
-		$yes = QueryMonitor::icon( 'yes-alt' );
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
 		echo '</section>';
 
 		echo '<section>';
