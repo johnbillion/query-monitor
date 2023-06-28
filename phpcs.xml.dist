@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 
-	<config name="testVersion" value="7.2-"/>
+	<config name="testVersion" value="7.4-"/>
 	<arg name="extensions" value="php"/>
 
 	<!--
@@ -62,7 +62,7 @@
 
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="5.2" />
+			<property name="minimum_supported_version" value="5.3" />
 		</properties>
 	</rule>
 
