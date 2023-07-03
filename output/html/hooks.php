@@ -57,8 +57,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		if ( $data->all_hooks ) {
 			$callback_label = __( 'Callback', 'query-monitor' );
-			$th_type = '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
-			$th_type = '<th scope="col">' . $this->build_filter( 'type', array( 'action', 'filter' ), __( 'Type', 'query-monitor' ) ) . '</th>';
+			$th_type = '<th scope="col" class="qm-filterable-column">' . $this->build_filter( 'type', array( 'action', 'filter' ), __( 'Type', 'query-monitor' ) ) . '</th>';
 		}
 
 		echo '<thead>';
