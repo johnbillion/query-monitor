@@ -9,6 +9,7 @@ class QM_Hook {
 
 	/**
 	 * @param string $name
+	 * @param string $type
 	 * @param array<string, WP_Hook> $wp_filter
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
@@ -23,7 +24,7 @@ class QM_Hook {
 	 *   components: array<string, string>,
 	 * }
 	 */
-	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
+	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
 		$actions = array();
 		$components = array();
@@ -63,6 +64,7 @@ class QM_Hook {
 
 		return array(
 			'name' => $name,
+			'type' => $type,
 			'actions' => $actions,
 			'parts' => $parts,
 			'components' => $components,
