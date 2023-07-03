@@ -227,7 +227,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$attr_title = ( empty( $count ) )
 			? ''
 			/* translators: %s: Number of additional query variables */
-			: __( '+%s non-standard query variables in request. See Query Vars section.' );
+			: __( '+%s non-standard query variables in request. See Query Vars section.', 'query-monitor' );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
 			'title' => esc_html( sprintf(
