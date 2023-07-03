@@ -112,7 +112,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 		printf(
 			'<tr><td colspan="2">%s</td></tr>',
 			sprintf(
-				/* translators: %s: Total number of emails */
+				/* translators: %s: Total number of Doing it Wrong occurrences */
 				esc_html_x( 'Total: %s', 'Total Doing it Wrong occurrences', 'query-monitor' ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data->actions ) ) ) . '</span>'
 			)
@@ -184,7 +184,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 function register_qm_output_html_doing_it_wrong( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'doing_it_wrong' );
 	if ( $collector ) {
-		$output['emails'] = new QM_Output_Html_Doing_It_Wrong( $collector );
+		$output['doing_it_wrong'] = new QM_Output_Html_Doing_It_Wrong( $collector );
 	}
 	return $output;
 }
