@@ -46,8 +46,10 @@ class QM_Backtrace {
 		'trigger_error' => true,
 		'_doing_it_wrong' => true,
 		'_deprecated_argument' => true,
+		'_deprecated_constructor' => true,
 		'_deprecated_file' => true,
 		'_deprecated_function' => true,
+		'_deprecated_hook' => true,
 		'dbDelta' => true,
 	);
 
