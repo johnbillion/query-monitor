@@ -240,7 +240,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'web-vitals',
 				$this->qm->plugin_url( 'assets/web-vitals.js' ),
 				array(),
-				QM_VERSION
+				QM_VERSION,
+				true
 			);
 		}
 
