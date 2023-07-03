@@ -66,7 +66,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Method', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'host', $hosts, __( 'URL', 'query-monitor' ) );
+			echo $this->build_filter( 'host', $hosts, __( 'URL', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', $status_output, __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
