@@ -68,6 +68,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -102,15 +103,16 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 			echo '</ol></td>';
 
-			echo '</tr>';
+			echo '<td class="qm-nowrap">' . esc_html( $row['component']->name ) . '</td>';
 
+			echo '</tr>';
 		}
 
 		echo '</tbody>';
 
 		echo '<tfoot>';
 		printf(
-			'<tr><td colspan="2">%s</td></tr>',
+			'<tr><td colspan="3">%s</td></tr>',
 			sprintf(
 				/* translators: %s: Total number of Doing it Wrong occurrences */
 				esc_html_x( 'Total: %s', 'Total Doing it Wrong occurrences', 'query-monitor' ),
