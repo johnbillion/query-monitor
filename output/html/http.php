@@ -46,7 +46,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			usort( $components, 'strcasecmp' );
 
 			$status_output = array();
-			$hosts = array_column( $data->http, 'host' );
+			$hosts = array_unique( array_column( $data->http, 'host' ) );
 			sort( $hosts );
 
 			foreach ( $statuses as $status ) {
