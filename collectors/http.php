@@ -380,6 +380,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				'args' => $response['args'],
 				'component' => $request['component'],
 				'filtered_trace' => $request['filtered_trace'],
+				'host' => $host,
 				'info' => $response['info'],
 				'local' => $local,
 				'ltime' => $ltime,
