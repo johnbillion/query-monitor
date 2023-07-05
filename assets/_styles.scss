@@ -1225,7 +1225,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm-hide-name,
 	.qm-hide-type,
 	.qm-hide-caller,
-	.qm-hide-component {
+	.qm-hide-component,
+	.qm-hide-host {
 		display: none !important;
 	}
 
