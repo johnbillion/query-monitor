@@ -25,6 +25,7 @@ Here's an overview of what's shown for each page load:
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
 * The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
+* Usage of "Doing it Wrong" or "Deprecated" functionality in the code on your site.
 * Blocks and associated properties within post content and within full site editing (FSE).
 * Matched rewrite rules, associated query strings, and query vars.
 * Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.
@@ -34,6 +35,7 @@ Here's an overview of what's shown for each page load:
 * Environment information, including detailed information about PHP, the database, WordPress, and the web server.
 * The values of all WordPress conditional functions such as `is_single()`, `is_home()`, etc.
 * Transients that were updated.
+* Usage of `switch_to_blog()` and `restore_current_blog()` on Multisite installations.
 
 In addition:
 
