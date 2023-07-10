@@ -172,6 +172,7 @@ abstract class QM_Output_Html extends QM_Output {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
@@ -185,7 +186,7 @@ abstract class QM_Output_Html extends QM_Output {
 				continue;
 			}
 
-			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key );
+			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key, true );
 		}
 
 		echo '</tbody>';
