@@ -45,8 +45,8 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		$all_parts = array();
 		$components = array();
 
-		if ( has_filter( 'all' ) ) {
-			$hooks[] = QM_Hook::process( 'all', 'filter', $wp_filter, self::$hide_qm, self::$hide_core );
+		if ( has_action( 'all' ) ) {
+			$hooks[] = QM_Hook::process( 'all', 'action', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
 		$this->data->all_hooks = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;

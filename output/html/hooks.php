@@ -33,7 +33,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		$name = __( 'Hooks & Actions', 'query-monitor' );
 
 		if ( $data->all_hooks ) {
-			$name = __( 'Hooks, Actions, Filters', 'query-monitor' );
+			$name = __( 'Hooks, Actions, & Filters', 'query-monitor' );
 		}
 
 		return $name;
@@ -57,7 +57,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		if ( $data->all_hooks ) {
 			$callback_label = __( 'Callback', 'query-monitor' );
-			$th_type = '<th scope="col" class="qm-filterable-column">' . $this->build_filter( 'type', array( 'action', 'filter' ), __( 'Type', 'query-monitor' ) ) . '</th>';
+			$th_type = '<th scope="col" class="qm-filterable-column">' . $this->build_filter( 'type', array(
+				'action' => __( 'Action', 'query-monitor' ),
+				'filter' => __( 'Filter', 'query-monitor' ),
+			), __( 'Type', 'query-monitor' ) ) . '</th>';
 		}
 
 		echo '<thead>';
@@ -88,7 +91,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	 * @param bool                $all_hooks
 	 * @return void
 	 */
-	public static function output_hook_table( array $hooks, bool $all_hooks = false ) {
+	public static function output_hook_table( array $hooks, bool $all_hooks ) {
 		$core = __( 'WordPress Core', 'query-monitor' );
 
 		foreach ( $hooks as $hook ) {
@@ -153,7 +156,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '</span></th>';
 
 						if ( $all_hooks ) {
-							echo '<td rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">' . esc_html( $hook['type'] ) . '</td>';
+							$type = ( 'action' === $hook['type'] ) ? __( 'Action', 'query-monitor' ) : __( 'Filter', 'query-monitor' );
+							echo '<td rowspan="' . intval( $rowspan ) . '" class="qm-nowrap qm-ltr"><span class="qm-sticky">' . esc_html( $type ) . '</td>';
 						}
 					}
 

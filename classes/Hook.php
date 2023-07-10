@@ -14,8 +14,10 @@ class QM_Hook {
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
 	 * @return array<int, array<string, mixed>>
+	 * @phpstan-param 'action'|'filter' $type
 	 * @phpstan-return array{
 	 *   name: string,
+	 *   type: 'action'|'filter',
 	 *   actions: list<array{
 	 *     priority: int,
 	 *     callback: array<string, mixed>,
