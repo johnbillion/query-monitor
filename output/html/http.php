@@ -179,12 +179,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				);
 
 				if ( ! empty( $row['redirected_to'] ) ) {
+					$query         = parse_url( $row['redirected_to'], PHP_URL_QUERY );
+					$redirected_to = $row['redirected_to'];
+
+					if ( ! empty( $query ) ) {
+						$redirected_to = str_replace( '?' . $query, '', $redirected_to );
+					}
+
 					$url .= sprintf(
 						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
 						QueryMonitor::icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
 						__( 'Redirected to:', 'query-monitor' ),
-						self::format_url( $row['redirected_to'] )
+						self::format_url( $redirected_to )
 					);
 				}
 
