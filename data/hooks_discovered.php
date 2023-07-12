@@ -6,7 +6,6 @@
  */
 
 class QM_Data_Hooks_Discovered extends QM_Data {
-
 	/**
 	 * @var array<string, int>
 	 */
@@ -26,5 +25,4 @@ class QM_Data_Hooks_Discovered extends QM_Data {
 	 * @var array<string, array<int, array<string, mixed>>>
 	 */
 	public $hooks;
-
 }

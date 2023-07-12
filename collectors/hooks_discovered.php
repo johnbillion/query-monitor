@@ -5,6 +5,9 @@
  * @package query-monitor
  */
 
+/**
+ * @extends QM_DataCollector<QM_Data_Hooks_Discovered>
+ */
 class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 
 	public $id = 'hooks_discovered';
@@ -13,6 +16,9 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 		return new QM_Data_Hooks_Discovered();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Discovered Hooks', 'query-monitor' );
 	}
