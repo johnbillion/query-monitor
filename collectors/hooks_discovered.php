@@ -53,7 +53,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 	 * @param string $id
 	 * @return void
 	 */
-	public function action_listener_start( $id ) {
+	public function action_listener_start( string $id ) {
 		if ( $this->is_active( $id ) ) {
 			return;
 		}
@@ -62,7 +62,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			trigger_error( sprintf(
 				/* translators: %s: Hook discovery ID */
 				esc_html__( 'Hook discovery ID `%s` already exists', 'query-monitor' ),
-				$id,
+				esc_html( $id ),
 			), E_USER_NOTICE );
 
 			return;
@@ -99,12 +99,12 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 	 * @param string $id
 	 * @return void
 	 */
-	public function action_listener_stop( $id ) {
+	public function action_listener_stop( string $id ) {
 		if ( ! $this->is_active( $id ) && ! array_key_exists( $id, $this->data->hooks ) ) {
 			trigger_error( sprintf(
 				/* translators: %s: Hook discovery ID */
 				esc_html__( 'Hook discovery starting bound for `%s` has not been set', 'query-monitor' ),
-				$id
+				esc_html( $id )
 			), E_USER_NOTICE );
 
 			return;
@@ -145,7 +145,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			$last = current( $this->data->hooks[ $id ] );
 
 			if ( ! empty( $last ) && current_action() === $last['name'] ) {
-				$i = key( $this->data->hooks[ $id ] );
+				$i = absint( key( $this->data->hooks[ $id ] ) );
 				$this->data->hooks[ $id ][ $i ]['fires']++;
 			} else {
 				$this->data->hooks[ $id ][] = array(
@@ -172,7 +172,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			return;
 		}
 
-		foreach ( $this->data->active as $id ) {
+		foreach ( array_keys( $this->data->active ) as $id ) {
 			$this->action_listener_stop( $id );
 		}
 	}
@@ -181,7 +181,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 	 * @param string $id
 	 * @return bool
 	 */
-	protected function is_active( $id = '' ) {
+	protected function is_active( string $id = '' ) {
 		if ( empty( $id ) ) {
 			return ! empty( $this->data->active );
 		}

@@ -90,7 +90,7 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody>';
-error_log( print_r( $data->hooks, true ) );
+
 		foreach ( $data->hooks as $id => $hooks ) {
 			$trace_text__start = '';
 			$trace_text__stop  = '';
@@ -118,7 +118,7 @@ error_log( print_r( $data->hooks, true ) );
 					$type = $types['action'];
 				}
 
-				printf( '<tr data-qm-type="%s">', strtolower( $type ) );
+				printf( '<tr data-qm-type="%s">', esc_attr( strtolower( $type ) ) );
 
 				if ( $first ) {
 					$first = false;
@@ -129,7 +129,7 @@ error_log( print_r( $data->hooks, true ) );
 						esc_html( $id ),
 						$trace_text__start,
 						$trace_text__stop
-					);
+					); // WPCS: XSS ok.
 				}
 
 				printf( '<td class="qm-num">%d</td>', absint( ++$i ) );
@@ -141,7 +141,7 @@ error_log( print_r( $data->hooks, true ) );
 				}
 				echo '</td>';
 
-				printf( '<td>%s</td>', $type );
+				printf( '<td>%s</td>', esc_html( $type ) );
 
 				echo '</tr>';
 			}
