@@ -30,6 +30,10 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 		return __( 'Discovered Hooks', 'query-monitor' );
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function action_output_menus( array $menu ) {
 		$hooks = QM_Collectors::get( 'hooks' );
 
@@ -48,7 +52,7 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-		/** @var QM_Data_Discovered_Hooks */
+		/** @var QM_Data_Hooks_Discovered */
 		$data = $this->collector->get_data();
 
 		$types = array(
@@ -65,7 +69,7 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 
 			$this->before_non_tabular_output();
 			echo $this->build_notice( $notice ); // WPCS: XSS ok.
-			echo $this->after_non_tabular_output();
+			$this->after_non_tabular_output();
 
 			return;
 		}
@@ -88,8 +92,8 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 		echo '<tbody>';
 
 		foreach ( $data->hooks as $id => $hooks ) {
-			$trace_file_start = '';
-			$trace_file_stop  = '';
+			$trace_text__start = '';
+			$trace_text__stop  = '';
 
 			$bounds = $data->bounds[ $id ];
 
@@ -121,14 +125,14 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 
 					printf(
 						'<th scope="row" rowspan="%d" class="qm-nowrap"><span class="qm-sticky">%s%s%s</span>',
-						esc_attr( count( $hooks ) ),
+						absint( count( $hooks ) ),
 						esc_html( $id ),
 						$trace_text__start,
 						$trace_text__stop
 					);
 				}
 
-				printf( '<td class="qm-num">%d</td>', esc_html( ++$i ) );
+				printf( '<td class="qm-num">%d</td>', absint( ++$i ) );
 
 				echo '<td>';
 				printf( '<code>%s</code>', esc_html( $hook['hook'] ) );

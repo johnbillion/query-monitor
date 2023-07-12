@@ -43,6 +43,10 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 		remove_action( 'shutdown', array( $this, 'action_shutdown' ) );
 	}
 
+	/**
+	 * @param string $id
+	 * @return void
+	 */
 	public function action_listener_start( $id ) {
 		if ( $this->is_active( $id ) ) {
 			return;
@@ -85,6 +89,10 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 		);
 	}
 
+	/**
+	 * @param string $id
+	 * @return void
+	 */
 	public function action_listener_stop( $id ) {
 		if ( ! $this->is_active( $id ) && ! array_key_exists( $id, $this->data->hooks ) ) {
 			trigger_error( sprintf(
@@ -106,6 +114,10 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 		remove_action( 'all', array( $this, 'action_all' ) );
 	}
 
+	/**
+	 * @param mixed $var
+	 * @return void
+	 */
 	public function action_all( $var ) {
 		if ( ! $this->is_active() ) {
 			remove_action( 'all', array( $this, 'action_all' ) );
@@ -146,14 +158,21 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 		}
 	}
 
-	protected function is_active( $id = false ) {
-		if ( false === $id ) {
+	/**
+	 * @param string $id
+	 * @return bool
+	 */
+	protected function is_active( $id = '' ) {
+		if ( empty( $id ) ) {
 			return ! empty( $this->data->active );
 		}
 
 		return is_array( $this->data->active ) && array_key_exists( $id, $this->data->active );
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function maybe_add_all_callback() {
 		if ( $this->is_active() ) {
 			return;
