@@ -111,16 +111,16 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			return;
 		}
 
-		remove_action( 'all', array( $this, 'action_all' ) );
+		remove_filter( 'all', array( $this, 'filter_all' ) );
 	}
 
 	/**
 	 * @param mixed $var
 	 * @return mixed
 	 */
-	public function action_all( $var ) {
+	public function filter_all( $var ) {
 		if ( ! $this->is_active() ) {
-			remove_action( 'all', array( $this, 'action_all' ) );
+			remove_filter( 'all', array( $this, 'filter_all' ) );
 
 			return $var;
 		}
@@ -166,7 +166,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			return;
 		}
 
-		foreach ( array_keys( $this->data->active ) as $id ) {
+		foreach ( $this->data->active as $id ) {
 			$this->action_listener_stop( $id );
 		}
 	}
@@ -191,7 +191,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			return;
 		}
 
-		add_action( 'all', array( $this, 'action_all' ) );
+		add_filter( 'all', array( $this, 'filter_all' ) );
 	}
 
 }

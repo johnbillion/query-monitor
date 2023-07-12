@@ -23,12 +23,7 @@ class QM_Data_Hooks_Discovered extends QM_Data {
 	public $counts;
 
 	/**
-	 * @var array<string, array<string, mixed>>
-	 * @phpstan-var list<array{
-	 *   name: string,
-	 *   is_action: bool,
-	 *   fires: int,
-	 * }>
+	 * @var array<string, array<int, array<string, mixed>>>
 	 */
 	public $hooks;
 

@@ -90,7 +90,7 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody>';
-
+error_log( print_r( $data->hooks, true ) );
 		foreach ( $data->hooks as $id => $hooks ) {
 			$trace_text__start = '';
 			$trace_text__stop  = '';
