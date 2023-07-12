@@ -135,9 +135,9 @@ class QM_Output_Html_Hooks_Discovered extends QM_Output_Html {
 				printf( '<td class="qm-num">%d</td>', absint( ++$i ) );
 
 				echo '<td>';
-				printf( '<code>%s</code>', esc_html( $hook['hook'] ) );
+				printf( '<code>%s</code>', esc_html( $hook['name'] ) );
 				if ( 1 < $hook['fires'] ) {
-					printf( '<br /><span class="qm-info qm-supplemental">Fired %d times</span>', esc_html( $hook['fires'] ) );
+					printf( '<br /><span class="qm-info qm-supplemental">Fired %d times</span>', absint( $hook['fires'] ) );
 				}
 				echo '</td>';
 

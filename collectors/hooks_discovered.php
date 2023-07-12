@@ -116,7 +116,7 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 
 	/**
 	 * @param mixed $var
-	 * @return void
+	 * @return mixed
 	 */
 	public function action_all( $var ) {
 		if ( ! $this->is_active() ) {
@@ -138,12 +138,12 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			end( $this->data->hooks[ $id ] );
 			$last = current( $this->data->hooks[ $id ] );
 
-			if ( ! empty( $last ) && current_action() === $last['hook'] ) {
+			if ( ! empty( $last ) && current_action() === $last['name'] ) {
 				$i = key( $this->data->hooks[ $id ] );
 				$this->data->hooks[ $id ][ $i ]['fires']++;
 			} else {
 				$this->data->hooks[ $id ][] = array(
-					'hook'      => current_action(),
+					'name'      => current_action(),
 					'is_action' => array_key_exists( current_action(), $wp_actions ),
 					'fires'     => 1,
 				);
@@ -155,6 +155,19 @@ class QM_Collector_Hooks_Discovered extends QM_DataCollector {
 			}
 
 			return $var;
+		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function action_shutdown() {
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
+		foreach ( array_keys( $this->data->active ) as $id ) {
+			$this->action_listener_stop( $id );
 		}
 	}
 
