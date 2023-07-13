@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Build
+on:
+  push:
+    branches:
+      - 'release'
+
+jobs:
+  build:
+    name: Build
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+  master:
+    name: Push to master
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+
+      - name: Push
+        run: git push origin develop:master
+    env:
+      TOKEN: ${{ secrets.GITHUB_TOKEN }}

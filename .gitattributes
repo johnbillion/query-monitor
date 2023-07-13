@@ -1,16 +1,29 @@
 * text=auto
 
-/assets-wp-repo export-ignore
+# Directories
+/.git export-ignore
+/.github export-ignore
+/.wordpress-org export-ignore
 /bin export-ignore
+/node_modules export-ignore
 /tests export-ignore
 
-/.editorconfig export-ignore
+# Files
 /.gitattributes export-ignore
+/.editorconfig export-ignore
 /.gitignore export-ignore
-/.travis.yml export-ignore
+/.npmrc export-ignore
+/.nvmrc export-ignore
+/assets/*.map export-ignore
 /assets/*.scss export-ignore
+/codeception.dist.yml export-ignore
+/composer.lock export-ignore
 /CONTRIBUTING.md export-ignore
-/Gruntfile.js export-ignore
+/docker-compose.yml export-ignore
+/package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
-/phpunit.xml.dist export-ignore
+/phpcs53.xml export-ignore
+/phpstan.neon.dist export-ignore
+/README.md export-ignore
+/SECURITY.md export-ignore

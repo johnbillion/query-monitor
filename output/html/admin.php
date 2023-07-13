@@ -1,22 +1,44 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Admin screen output for HTML pages.
  *
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Admin extends QM_Output_Html {
+
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Admin Collector.
+	 */
+	protected $collector;
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 60 );
 	}
 
+	/**
+	 * @return string
+	 */
+	public function name() {
+		return __( 'Admin Screen', 'query-monitor' );
+	}
+
+	/**
+	 * @return void
+	 */
 	public function output() {
 
+		/** @var QM_Data_Admin $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data['current_screen'] ) ) {
+		if ( empty( $data->current_screen ) ) {
 			return;
 		}
 
@@ -34,7 +56,7 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</thead>';
 		echo '<tbody>';
 
-		foreach ( $data['current_screen'] as $key => $value ) {
+		foreach ( get_object_vars( $data->current_screen ) as $key => $value ) {
 			echo '<tr>';
 			echo '<th scope="row">' . esc_html( $key ) . '</th>';
 			echo '<td>' . esc_html( $value ) . '</td>';
@@ -46,25 +68,49 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		echo '</section>';
 
 		echo '<section>';
-		echo '<h3>$pagenow</h3>';
-		echo '<p>' . esc_html( $data['pagenow'] ) . '</p>';
+		echo '<h3>' . esc_html__( 'Globals', 'query-monitor' ) . '</h3>';
+		echo '<table>';
+		echo '<thead class="qm-screen-reader-text">';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Global Variable', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+
+		$admin_globals = array(
+			'pagenow',
+			'typenow',
+			'taxnow',
+			'hook_suffix',
+		);
+
+		foreach ( $admin_globals as $key ) {
+			echo '<tr>';
+			echo '<th scope="row">$' . esc_html( $key ) . '</th>';
+			echo '<td>' . esc_html( $data->{$key} ) . '</td>';
+			echo '</tr>';
+		}
+
+		echo '</tbody>';
+		echo '</table>';
 		echo '</section>';
 
-		if ( ! empty( $data['list_table'] ) ) {
+		if ( ! empty( $data->list_table ) ) {
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'List Table', 'query-monitor' ) . '</h3>';
 
-			if ( ! empty( $data['list_table']['class_name'] ) ) {
+			if ( ! empty( $data->list_table['class_name'] ) ) {
 				echo '<h4>' . esc_html__( 'Class:', 'query-monitor' ) . '</h4>';
-				echo '<p><code>' . esc_html( $data['list_table']['class_name'] ) . '</code></p>';
+				echo '<p><code>' . esc_html( $data->list_table['class_name'] ) . '</code></p>';
 			}
 
 			echo '<h4>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data['list_table']['columns_filter'] ) . '</code></p>';
-			echo '<p><code>' . esc_html( $data['list_table']['sortables_filter'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['columns_filter'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['sortables_filter'] ) . '</code></p>';
 			echo '<h4>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data['list_table']['column_action'] ) . '</code></p>';
+			echo '<p><code>' . esc_html( $data->list_table['column_action'] ) . '</code></p>';
 			echo '</section>';
 
 		}
@@ -74,11 +120,16 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_admin( array $output, QM_Collectors $collectors ) {
 	if ( ! is_admin() ) {
 		return $output;
 	}
-	$collector = $collectors::get( 'response' );
+	$collector = QM_Collectors::get( 'response' );
 	if ( $collector ) {
 		$output['response'] = new QM_Output_Html_Admin( $collector );
 	}

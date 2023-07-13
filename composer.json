@@ -1,53 +1,109 @@
 {
-	"name"       : "johnbillion/query-monitor",
+	"name": "johnbillion/query-monitor",
 	"description": "The Developer Tools panel for WordPress.",
-	"homepage"   : "https://github.com/johnbillion/query-monitor/",
-	"type"       : "wordpress-plugin",
-	"license"    : "GPL-2.0-or-later",
-	"authors"    : [
+	"license": "GPL-2.0-or-later",
+	"type": "wordpress-plugin",
+	"authors": [
 		{
-			"name"    : "John Blackbourn",
+			"name": "John Blackbourn",
 			"homepage": "https://johnblackbourn.com/"
 		}
 	],
+	"homepage": "https://github.com/johnbillion/query-monitor/",
 	"support": {
 		"issues": "https://github.com/johnbillion/query-monitor/issues",
 		"forum": "https://wordpress.org/support/plugin/query-monitor",
 		"source": "https://github.com/johnbillion/query-monitor"
 	},
-	"repositories": [
+	"funding": [
 		{
-			"type": "package",
-			"package": {
-			  "name": "danieltj27/dark-mode",
-			  "version": "3.2",
-			  "source": {
-					"type" : "git",
-					"url" : "git://github.com/danieltj27/Dark-Mode.git",
-					"reference" : "3.2"
-				},
-				"dist": {
-					"url": "https://github.com/danieltj27/Dark-Mode/archive/31e1407ef72af69bcd5d94cc3c502163547d4898.zip",
-					"type": "zip"
-				}
-			}
+			"type": "github",
+			"url": "https://github.com/sponsors/johnbillion"
 		}
 	],
 	"require": {
-		"php": ">=5.3",
-		"composer/installers": "~1.0"
+		"php": ">=7.4.0",
+		"composer/installers": "^1.0 || ^2.0"
 	},
-	"require-dev" : {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-		"squizlabs/php_codesniffer": "^3.2",
-		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"danieltj27/dark-mode": "3.2",
-		"wp-coding-standards/wpcs": "^2",
-		"phpunit/phpunit": "^5"
+	"require-dev": {
+		"codeception/module-asserts": "^1.0",
+		"codeception/module-db": "^1.0",
+		"codeception/module-webdriver": "^1.0",
+		"codeception/util-universalframework": "^1.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
+		"ergebnis/composer-normalize": "^2",
+		"johnbillion/plugin-infrastructure": "dev-trunk",
+		"lucatume/wp-browser": "^3.0.21",
+		"phpcompatibility/phpcompatibility-wp": "2.1.4",
+		"phpstan/phpstan": "^1.0",
+		"phpstan/phpstan-phpunit": "^1.0",
+		"roots/wordpress": "*",
+		"squizlabs/php_codesniffer": "3.7.1",
+		"szepeviktor/phpstan-wordpress": "1.3.0",
+		"wp-coding-standards/wpcs": "2.3.0"
+	},
+	"autoload": {
+		"classmap": [
+			"classes",
+			"data",
+			"output"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"QM\\Tests\\": "tests/integration"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"ergebnis/composer-normalize": true,
+			"roots/wordpress-core-installer": true,
+			"composer/installers": true
+		},
+		"classmap-authoritative": true,
+		"preferred-install": "dist",
+		"prepend-autoloader": false,
+		"sort-packages": true
+	},
+	"extra": {
+		"wordpress-install-dir": "vendor/roots/wordpress"
 	},
 	"scripts": {
+		"build-vendor": [
+			"build-vendor"
+		],
 		"test": [
-			"bin/test.sh"
+			"@composer validate --strict --no-check-lock",
+			"@composer normalize --dry-run",
+			"@test:phpstan",
+			"@test:phpcs",
+			"@test:integration",
+			"@test:acceptance"
+		],
+		"test:acceptance": [
+			"npm run build",
+			"acceptance-tests"
+		],
+		"test:destroy": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down --volumes --remove-orphans"
+		],
+		"test:integration": [
+			"integration-tests"
+		],
+		"test:phpcs": [
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' --standard=phpcs53.xml",
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' ."
+		],
+		"test:phpstan": [
+			"codecept build",
+			"phpstan analyze --memory-limit=1024M"
+		],
+		"test:start": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose up -d"
+		],
+		"test:stop": [
+			"COMPOSE_PROJECT_NAME=query-monitor docker-compose down"
 		]
 	}
 }

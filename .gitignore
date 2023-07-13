@@ -1,8 +1,8 @@
+/assets/*.css
+/assets/*.map
 /composer.lock
-/svn-assets
 /vendor
 /node_modules
-/.sass-cache
-/package-lock.json
-/languages
-/build
+/tests/_output/
+/tests/_support/_generated
+/tests/cache

@@ -1,18 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Admin screen collector.
  *
  * @package query-monitor
  */
 
-class QM_Collector_Admin extends QM_Collector {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * @extends QM_DataCollector<QM_Data_Admin>
+ */
+class QM_Collector_Admin extends QM_DataCollector {
 
 	public $id = 'response';
 
-	public function name() {
-		return __( 'Admin Screen', 'query-monitor' );
+	public function get_storage(): QM_Data {
+		return new QM_Data_Admin();
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
@@ -22,98 +32,105 @@ class QM_Collector_Admin extends QM_Collector {
 			'user_admin_notices',
 		);
 
-		if ( ! empty( $this->data['list_table'] ) ) {
-			$actions[] = $this->data['list_table']['column_action'];
+		if ( ! empty( $this->data->list_table ) ) {
+			$actions[] = $this->data->list_table['column_action'];
 		}
 
 		return $actions;
 	}
 
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		$filters = array();
 
-		if ( ! empty( $this->data['list_table'] ) ) {
-			$filters[] = $this->data['list_table']['columns_filter'];
-			$filters[] = $this->data['list_table']['sortables_filter'];
+		if ( ! empty( $this->data->list_table ) ) {
+			$filters[] = $this->data->list_table['columns_filter'];
+			$filters[] = $this->data->list_table['sortables_filter'];
 		}
 
 		return $filters;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
-
+		/**
+		 * @var string $pagenow
+		 * @var ?WP_List_Table $wp_list_table
+		 */
 		global $pagenow, $wp_list_table;
 
-		$current_screen = get_current_screen();
-
-		if ( isset( $_GET['page'] ) && null !== $current_screen ) { // @codingStandardsIgnoreLine
-			$this->data['base'] = $current_screen->base;
-		} else {
-			$this->data['base'] = $pagenow;
-		}
-
-		$this->data['pagenow']        = $pagenow;
-		$this->data['current_screen'] = ( $current_screen ) ? get_object_vars( $current_screen ) : null;
+		$this->data->pagenow = $pagenow;
+		$this->data->typenow = $GLOBALS['typenow'] ?? '';
+		$this->data->taxnow = $GLOBALS['taxnow'] ?? '';
+		$this->data->hook_suffix = $GLOBALS['hook_suffix'] ?? '';
+		$this->data->current_screen = get_current_screen();
 
 		$screens = array(
-			'edit'            => true,
-			'edit-comments'   => true,
-			'edit-tags'       => true,
-			'link-manager'    => true,
-			'plugins'         => true,
+			'edit' => true,
+			'edit-comments' => true,
+			'edit-tags' => true,
+			'link-manager' => true,
+			'plugins' => true,
 			'plugins-network' => true,
-			'sites-network'   => true,
-			'themes-network'  => true,
-			'upload'          => true,
-			'users'           => true,
-			'users-network'   => true,
+			'sites-network' => true,
+			'themes-network' => true,
+			'upload' => true,
+			'users' => true,
+			'users-network' => true,
 		);
 
-		if ( ! empty( $this->data['current_screen'] ) && isset( $screens[ $this->data['current_screen']['base'] ] ) ) {
-
-			$list_table = array();
-
-			# And now, WordPress' legendary inconsistency comes into play:
-
-			if ( ! empty( $this->data['current_screen']['taxonomy'] ) ) {
-				$list_table['column'] = $this->data['current_screen']['taxonomy'];
-			} elseif ( ! empty( $this->data['current_screen']['post_type'] ) ) {
-				$list_table['column'] = $this->data['current_screen']['post_type'] . '_posts';
-			} else {
-				$list_table['column'] = $this->data['current_screen']['base'];
-			}
-
-			if ( ! empty( $this->data['current_screen']['post_type'] ) && empty( $this->data['current_screen']['taxonomy'] ) ) {
-				$list_table['columns'] = $this->data['current_screen']['post_type'] . '_posts';
-			} else {
-				$list_table['columns'] = $this->data['current_screen']['id'];
-			}
-
-			if ( 'edit-comments' === $list_table['column'] ) {
-				$list_table['column'] = 'comments';
-			} elseif ( 'upload' === $list_table['column'] ) {
-				$list_table['column'] = 'media';
-			} elseif ( 'link-manager' === $list_table['column'] ) {
-				$list_table['column'] = 'link';
-			}
-
-			$list_table['sortables'] = $this->data['current_screen']['id'];
-
-			$this->data['list_table'] = array(
-				'columns_filter'   => "manage_{$list_table['columns']}_columns",
-				'sortables_filter' => "manage_{$list_table['sortables']}_sortable_columns",
-				'column_action'    => "manage_{$list_table['column']}_custom_column",
-			);
-
-			if ( ! empty( $wp_list_table ) ) {
-				$this->data['list_table']['class_name'] = get_class( $wp_list_table );
-			}
+		if ( empty( $this->data->current_screen ) || ! isset( $screens[ $this->data->current_screen->base ] ) ) {
+			return;
 		}
 
+		# And now, WordPress' legendary inconsistency comes into play:
+
+		$columns = $this->data->current_screen->id;
+		$sortables = $this->data->current_screen->id;
+		$column = $this->data->current_screen->base;
+
+		if ( ! empty( $this->data->current_screen->taxonomy ) ) {
+			$column = $this->data->current_screen->taxonomy;
+		} elseif ( ! empty( $this->data->current_screen->post_type ) ) {
+			$column = $this->data->current_screen->post_type . '_posts';
+		}
+
+		if ( ! empty( $this->data->current_screen->post_type ) && empty( $this->data->current_screen->taxonomy ) ) {
+			$columns = $this->data->current_screen->post_type . '_posts';
+		}
+
+		if ( 'edit-comments' === $column ) {
+			$column = 'comments';
+		} elseif ( 'upload' === $column ) {
+			$column = 'media';
+		} elseif ( 'link-manager' === $column ) {
+			$column = 'link';
+		}
+
+		$list_table_data = array(
+			'columns_filter' => "manage_{$columns}_columns",
+			'sortables_filter' => "manage_{$sortables}_sortable_columns",
+			'column_action' => "manage_{$column}_custom_column",
+		);
+
+		if ( ! empty( $wp_list_table ) ) {
+			$list_table_data['class_name'] = get_class( $wp_list_table );
+		}
+
+		$this->data->list_table = $list_table_data;
 	}
 
 }
 
+/**
+ * @param array<string, QM_Collector> $collectors
+ * @param QueryMonitor $qm
+ * @return array<string, QM_Collector>
+ */
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
 	$collectors['response'] = new QM_Collector_Admin();
 	return $collectors;

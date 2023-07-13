@@ -1,40 +1,65 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Request data output for HTML pages.
  *
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Request extends QM_Output_Html {
+
+	/**
+	 * Collector instance.
+	 *
+	 * @var QM_Collector_Request Collector.
+	 */
+	protected $collector;
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 50 );
 	}
 
-	public function output() {
+	/**
+	 * @return string
+	 */
+	public function name() {
+		return __( 'Request', 'query-monitor' );
+	}
 
+	/**
+	 * @return void
+	 */
+	public function output() {
+		/** @var QM_Data_Request $data */
 		$data = $this->collector->get_data();
 
+		/** @var QM_Collector_DB_Queries|null $db_queries */
 		$db_queries = QM_Collectors::get( 'db_queries' );
+
+		/** @var QM_Collector_Raw_Request|null $raw_request */
+		$raw_request = QM_Collectors::get( 'raw_request' );
 
 		$this->before_non_tabular_output();
 
 		foreach ( array(
-			'request'       => __( 'Request', 'query-monitor' ),
-			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
+			'request' => __( 'Request', 'query-monitor' ),
+			'matched_rule' => __( 'Matched Rule', 'query-monitor' ),
 			'matched_query' => __( 'Matched Query', 'query-monitor' ),
-			'query_string'  => __( 'Query String', 'query-monitor' ),
+			'query_string' => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
-			if ( is_admin() && ! isset( $data['request'][ $item ] ) ) {
+			if ( is_admin() && ! isset( $data->request[ $item ] ) ) {
 				continue;
 			}
 
-			if ( ! empty( $data['request'][ $item ] ) ) {
+			if ( ! empty( $data->request[ $item ] ) ) {
 				if ( in_array( $item, array( 'request', 'matched_query', 'query_string' ), true ) ) {
-					$value = self::format_url( $data['request'][ $item ] );
+					$value = self::format_url( $data->request[ $item ] );
 				} else {
-					$value = esc_html( $data['request'][ $item ] );
+					$value = esc_html( $data->request[ $item ] );
 				}
 			} else {
 				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
@@ -48,14 +73,14 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '</div>';
 
-		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<div class="qm-boxed">';
 
-		if ( ! empty( $data['matching_rewrites'] ) ) {
+		if ( ! empty( $data->matching_rewrites ) ) {
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</h3>';
 			echo '<table>';
 
-			foreach ( $data['matching_rewrites'] as $rule => $query ) {
+			foreach ( $data->matching_rewrites as $rule => $query ) {
 				$query = str_replace( 'index.php?', '', $query );
 
 				echo '<tr>';
@@ -77,23 +102,22 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
-			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
-				printf(
-					'<p><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</button></p>',
-					esc_html__( 'View Main Query', 'query-monitor' )
-				);
+			if ( ! empty( $db_queries_data->wpdb->has_main_query ) ) {
+				echo '<p>';
+				echo self::build_filter_trigger( 'db_queries', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
+				echo '</p>';
 			}
 		}
 
-		if ( ! empty( $data['qvars'] ) ) {
+		if ( ! empty( $data->qvars ) ) {
 
 			echo '<table>';
 
-			foreach ( $data['qvars'] as $var => $value ) {
+			foreach ( $data->qvars as $var => $value ) {
 
 				echo '<tr>';
 
-				if ( isset( $data['plugin_qvars'][ $var ] ) ) {
+				if ( isset( $data->plugin_qvars[ $var ] ) ) {
 					echo '<th scope="row" class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></td>';
 				} else {
 					echo '<th scope="row" class="qm-ltr">' . esc_html( $var ) . '</td>';
@@ -121,44 +145,64 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '</section>';
 
 		echo '<section>';
-		echo '<h3>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h3>';
+		echo '<h3>' . esc_html__( 'Response', 'query-monitor' ) . '</h3>';
+		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>';
 
-		if ( ! empty( $data['queried_object'] ) ) {
-			printf( // WPCS: XSS ok.
+		if ( ! empty( $data->queried_object ) ) {
+			$class = get_class( $data->queried_object['data'] );
+			$class = $class ?: __( 'Unknown', 'query-monitor' );
+			printf(
 				'<p>%1$s (%2$s)</p>',
-				esc_html( $data['queried_object']['title'] ),
-				esc_html( get_class( $data['queried_object']['data'] ) )
+				esc_html( $data->queried_object['title'] ),
+				esc_html( $class )
 			);
 		} else {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
+		echo '<h4>' . esc_html__( 'Current User', 'query-monitor' ) . '</h4>';
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Current User', 'query-monitor' ) . '</h3>';
-
-		if ( ! empty( $data['user']['data'] ) ) {
+		if ( ! empty( $data->user['data'] ) ) {
 			printf( // WPCS: XSS ok.
-				'<p>%1$s</p>',
-				esc_html( $data['user']['title'] )
+				'<p>%s</p>',
+				esc_html( $data->user['title'] )
 			);
 		} else {
 			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
 		}
 
-		echo '</section>';
+		if ( ! empty( $data->multisite ) ) {
+			echo '<h4>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h4>';
 
-		if ( ! empty( $data['multisite'] ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h3>';
-
-			foreach ( $data['multisite'] as $var => $value ) {
+			foreach ( $data->multisite as $var => $value ) {
 				printf( // WPCS: XSS ok.
-					'<p>%1$s</p>',
+					'<p>%s</p>',
 					esc_html( $value['title'] )
 				);
 			}
+		}
+
+		echo '</section>';
+
+		if ( ! empty( $raw_request ) ) {
+			/** @var QM_Data_Raw_Request $raw_data */
+			$raw_data = $raw_request->get_data();
+			echo '<section>';
+			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>';
+			echo '<table>';
+
+			foreach ( array(
+				'ip' => __( 'Remote IP', 'query-monitor' ),
+				'method' => __( 'HTTP method', 'query-monitor' ),
+				'url' => __( 'Requested URL', 'query-monitor' ),
+			) as $item => $name ) {
+				echo '<tr>';
+				echo '<th scope="row">' . esc_html( $name ) . '</td>';
+				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data->request[ $item ] ) . '</td>';
+				echo '</tr>';
+			}
+
+			echo '</table>';
 
 			echo '</section>';
 		}
@@ -166,10 +210,14 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
-
-		$data  = $this->collector->get_data();
-		$count = isset( $data['plugin_qvars'] ) ? count( $data['plugin_qvars'] ) : 0;
+		/** @var QM_Data_Request $data */
+		$data = $this->collector->get_data();
+		$count = isset( $data->plugin_qvars ) ? count( $data->plugin_qvars ) : 0;
 
 		$title = ( empty( $count ) )
 			? __( 'Request', 'query-monitor' )
@@ -188,8 +236,13 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_request( array $output, QM_Collectors $collectors ) {
-	$collector = $collectors::get( 'request' );
+	$collector = QM_Collectors::get( 'request' );
 	if ( $collector ) {
 		$output['request'] = new QM_Output_Html_Request( $collector );
 	}

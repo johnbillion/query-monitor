@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Mock 'Debug Bar' plugin class.
  *
@@ -6,6 +6,9 @@
  */
 
 class Debug_Bar {
+	/**
+	 * @var array<int, Debug_Bar_Panel>
+	 */
 	public $panels = array();
 
 	public function __construct() {
@@ -15,6 +18,9 @@ class Debug_Bar {
 		$this->init_panels();
 	}
 
+	/**
+	 * @return void
+	 */
 	public function enqueue() {
 		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_style( 'debug-bar', false, array(
@@ -33,27 +39,38 @@ class Debug_Bar {
 		do_action( 'debug_bar_enqueue_scripts' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init_panels() {
-		require_once 'debug_bar_panel.php';
-
 		/**
 		 * Filters the debug bar panel list. This mimics the same filter called in the Debug Bar plugin.
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param Debug_Bar_Panel[] $panels Array of Debug Bar panel instances.
+		 * @param array<int, Debug_Bar_Panel> $panels Array of Debug Bar panel instances.
 		 */
 		$this->panels = apply_filters( 'debug_bar_panels', array() );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function ensure_ajaxurl() {
-		?>
-		<script type="text/javascript">
-		var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
-		</script>
-		<?php
+		$dispatcher = QM_Dispatchers::get( 'html' );
+
+		if ( $this->panels && $dispatcher && $dispatcher::user_can_view() ) {
+			?>
+			<script type="text/javascript">
+			var ajaxurl = '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>';
+			</script>
+			<?php
+		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function Debug_Bar() {
 		self::__construct();
 	}

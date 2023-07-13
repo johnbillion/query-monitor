@@ -1,16 +1,26 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 
-	<config name="testVersion" value="5.3-"/>
+	<config name="testVersion" value="7.4-"/>
+	<arg name="extensions" value="php"/>
 
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/tests/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>Gruntfile.js</exclude-pattern>
+	<!--
+	Prevent deprecated errors caused by WordPress Coding Standards not supporting PHP 8.0+.
+	See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
+	-->
+	<ini name="error_reporting" value="E_ALL &#38; ~E_DEPRECATED" />
+
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
+
+		<!-- Exclude short description sniff so short `@var` notation can be used -->
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
 
 		<!-- QM is a debugging plugin, so silence warnings about usage of development functionality -->
 		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
@@ -20,6 +30,7 @@
 		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
+		<exclude name="WordPress.PHP.IniSet.display_errors_Blacklisted" />
 		<exclude name="WordPress.DB.RestrictedFunctions" />
 
 		<!-- @TODO remove this exclusion: -->
@@ -30,15 +41,17 @@
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+
+		<!-- We have the means -->
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
 
 	</rule>
 
 	<rule ref="WordPress-Docs" />
-
-	<!-- Not interested in whitespace issues in JS and CSS files at the moment -->
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed">
-		<exclude-pattern>*.css</exclude-pattern>
-	</rule>
 
 	<!-- Custom rule properties -->
 	<rule ref="WordPress.WP.I18n">
@@ -49,7 +62,7 @@
 
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="3.7" />
+			<property name="minimum_supported_version" value="5.3" />
 		</properties>
 	</rule>
 

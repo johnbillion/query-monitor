@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Hook processor.
  *
@@ -7,9 +7,28 @@
 
 class QM_Hook {
 
-	public static function process( $name, array $wp_filter, $hide_qm = false, $hide_core = false ) {
+	/**
+	 * @param string $name
+	 * @param string $type
+	 * @param array<string, WP_Hook> $wp_filter
+	 * @param bool $hide_qm
+	 * @param bool $hide_core
+	 * @return array<int, array<string, mixed>>
+	 * @phpstan-param 'action'|'filter' $type
+	 * @phpstan-return array{
+	 *   name: string,
+	 *   type: 'action'|'filter',
+	 *   actions: list<array{
+	 *     priority: int,
+	 *     callback: array<string, mixed>,
+	 *   }>,
+	 *   parts: list<string>,
+	 *   components: array<string, string>,
+	 * }
+	 */
+	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {
 
-		$actions    = array();
+		$actions = array();
 		$components = array();
 
 		if ( isset( $wp_filter[ $name ] ) ) {
@@ -19,9 +38,9 @@ class QM_Hook {
 
 			foreach ( $action as $priority => $callbacks ) {
 
-				foreach ( $callbacks as $callback ) {
+				foreach ( $callbacks as $cb ) {
 
-					$callback = QM_Util::populate_callback( $callback );
+					$callback = QM_Util::populate_callback( $cb );
 
 					if ( isset( $callback['component'] ) ) {
 						if (
@@ -34,9 +53,6 @@ class QM_Hook {
 						$components[ $callback['component']->name ] = $callback['component']->name;
 					}
 
-					// This isn't used and takes up a ton of memory:
-					unset( $callback['function'] );
-
 					$actions[] = array(
 						'priority' => $priority,
 						'callback' => $callback,
@@ -46,12 +62,13 @@ class QM_Hook {
 			}
 		}
 
-		$parts = array_filter( preg_split( '#[_/-]#', $name ) );
+		$parts = array_values( array_filter( (array) preg_split( '#[_/.-]#', $name ) ) );
 
 		return array(
-			'name'       => $name,
-			'actions'    => $actions,
-			'parts'      => $parts,
+			'name' => $name,
+			'type' => $type,
+			'actions' => $actions,
+			'parts' => $parts,
 			'components' => $components,
 		);
 

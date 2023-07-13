@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Acceptance Tests
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'trunk'
+      - 'master'
+  pull_request:
+    branches:
+      - '**'
+  # Once weekly on Thursdays at 11:00 UTC.
+  schedule:
+    - cron: '0 11 * * 4'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
+    strategy:
+      matrix:
+        wp:
+          - 'nightly'
+          - '6.2'
+          - '5.6'
+        php:
+          - '8.0'
+          - '7.4'
+        include:
+          - wp: '6.2'
+            php: '8.1'
+          - wp: '6.2'
+            php: '8.2'
+          - wp: 'nightly'
+            php: '8.1'
+          - wp: 'nightly'
+            php: '8.2'
+      fail-fast: false
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    with:
+      wp: ${{ matrix.wp }}
+      php: ${{ matrix.php }}

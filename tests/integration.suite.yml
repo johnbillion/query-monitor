@@ -1,0 +1,30 @@
+# Codeception Test Suite Configuration
+#
+# Suite for integration tests that require WordPress functions and classes.
+
+actor: WpunitTester
+modules:
+  enabled:
+    - WPLoader
+  config:
+    WPLoader:
+      wpRootFolder: /var/www/html
+      dbName: plugindb
+      dbHost: database
+      dbUser: pluginuser
+      dbPassword: pluginpass
+      configFile: tests/integration/includes/bootstrap.php
+      tablePrefix: wp_integration_
+      plugins: ['%COMPOSE_PROJECT_NAME%/%COMPOSE_PROJECT_NAME%.php']
+      activatePlugins: ['%COMPOSE_PROJECT_NAME%/%COMPOSE_PROJECT_NAME%.php']
+env:
+  singlesite:
+    modules:
+      config:
+        WPLoader:
+          multisite: false
+  multisite:
+    modules:
+      config:
+        WPLoader:
+          multisite: true

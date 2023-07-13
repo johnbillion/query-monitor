@@ -1,29 +1,43 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * PSR-3 compatible logging collector.
  *
  * @package query-monitor
  */
 
-class QM_Collector_Logger extends QM_Collector {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * @extends QM_DataCollector<QM_Data_Logger>
+ * @phpstan-type LogMessage WP_Error|Throwable|string|bool|null
+ */
+class QM_Collector_Logger extends QM_DataCollector {
 
 	public $id = 'logger';
 
-	const EMERGENCY = 'emergency';
-	const ALERT     = 'alert';
-	const CRITICAL  = 'critical';
-	const ERROR     = 'error';
-	const WARNING   = 'warning';
-	const NOTICE    = 'notice';
-	const INFO      = 'info';
-	const DEBUG     = 'debug';
+	public const EMERGENCY = 'emergency';
+	public const ALERT = 'alert';
+	public const CRITICAL = 'critical';
+	public const ERROR = 'error';
+	public const WARNING = 'warning';
+	public const NOTICE = 'notice';
+	public const INFO = 'info';
+	public const DEBUG = 'debug';
 
-	public function name() {
-		return __( 'Logger', 'query-monitor' );
+	public function get_storage(): QM_Data {
+		return new QM_Data_Logger();
 	}
 
-	public function __construct() {
-		parent::__construct();
+	/**
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		$this->data->counts = array_fill_keys( $this->get_levels(), 0 );
+
 		foreach ( $this->get_levels() as $level ) {
 			add_action( "qm/{$level}", array( $this, $level ), 10, 2 );
 		}
@@ -31,52 +45,131 @@ class QM_Collector_Logger extends QM_Collector {
 		add_action( 'qm/log', array( $this, 'log' ), 10, 3 );
 	}
 
+	/**
+	 * @return void
+	 */
+	public function tear_down() {
+		foreach ( $this->get_levels() as $level ) {
+			remove_action( "qm/{$level}", array( $this, $level ), 10 );
+		}
+
+		remove_action( 'qm/log', array( $this, 'log' ), 10 );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function emergency( $message, array $context = array() ) {
-		$this->store( 'emergency', $message, $context );
+		$this->store( self::EMERGENCY, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function alert( $message, array $context = array() ) {
-		$this->store( 'alert', $message, $context );
+		$this->store( self::ALERT, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function critical( $message, array $context = array() ) {
-		$this->store( 'critical', $message, $context );
+		$this->store( self::CRITICAL, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function error( $message, array $context = array() ) {
-		$this->store( 'error', $message, $context );
+		$this->store( self::ERROR, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function warning( $message, array $context = array() ) {
-		$this->store( 'warning', $message, $context );
+		$this->store( self::WARNING, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function notice( $message, array $context = array() ) {
-		$this->store( 'notice', $message, $context );
+		$this->store( self::NOTICE, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function info( $message, array $context = array() ) {
-		$this->store( 'info', $message, $context );
+		$this->store( self::INFO, $message, $context );
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function debug( $message, array $context = array() ) {
-		$this->store( 'debug', $message, $context );
+		$this->store( self::DEBUG, $message, $context );
 	}
 
+	/**
+	 * @param string $level
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	public function log( $level, $message, array $context = array() ) {
 		if ( ! in_array( $level, $this->get_levels(), true ) ) {
-			throw new InvalidArgumentException( __( 'Unsupported log level', 'query-monitor' ) );
+			throw new InvalidArgumentException( 'Unsupported log level' );
 		}
 
 		$this->store( $level, $message, $context );
 	}
 
+	/**
+	 * @param string $level
+	 * @param mixed $message
+	 * @param array<string, mixed> $context
+	 * @phpstan-param self::* $level
+	 * @phpstan-param LogMessage $message
+	 * @return void
+	 */
 	protected function store( $level, $message, array $context = array() ) {
 		$trace = new QM_Backtrace( array(
-			'ignore_frames' => 2,
+			'ignore_hook' => array(
+				current_filter() => true,
+			),
 		) );
 
-		if ( is_wp_error( $message ) ) {
+		if ( $message instanceof WP_Error ) {
 			$message = sprintf(
 				'WP_Error: %s (%s)',
 				$message->get_error_message(),
@@ -84,22 +177,42 @@ class QM_Collector_Logger extends QM_Collector {
 			);
 		}
 
-		if ( $message instanceof Exception ) {
-			$message = get_class( $message ) . ': ' . $message->getMessage();
+		if ( $message instanceof Throwable ) {
+			$message = sprintf(
+				'%1$s: %2$s',
+				get_class( $message ),
+				$message->getMessage()
+			);
 		}
 
-		if ( ! QM_Util::is_stringy( $message ) ) {
-			$message = QM_Util::json_format( $message );
+		if ( ! is_string( $message ) ) {
+			if ( null === $message ) {
+				$message = 'null';
+			} elseif ( false === $message ) {
+				$message = 'false';
+			} elseif ( true === $message ) {
+				$message = 'true';
+			}
+
+			$message = print_r( $message, true );
+		} elseif ( '' === trim( $message ) ) {
+			$message = '(Empty string)';
 		}
 
-		$this->data['logs'][] = array(
+		$this->data->counts[ $level ]++;
+		$this->data->logs[] = array(
 			'message' => self::interpolate( $message, $context ),
-			'context' => $context,
-			'trace'   => $trace,
-			'level'   => $level,
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'component' => $trace->get_component(),
+			'level' => $level,
 		);
 	}
 
+	/**
+	 * @param string $message
+	 * @param array<string, mixed> $context
+	 * @return string
+	 */
 	protected static function interpolate( $message, array $context = array() ) {
 		// build a replacement array with braces around the context keys
 		$replace = array();
@@ -108,7 +221,7 @@ class QM_Collector_Logger extends QM_Collector {
 			// check that the value can be casted to string
 			if ( is_bool( $val ) ) {
 				$replace[ "{{$key}}" ] = ( $val ? 'true' : 'false' );
-			} elseif ( is_scalar( $val ) || QM_Util::is_stringy( $val ) ) {
+			} elseif ( is_scalar( $val ) ) {
 				$replace[ "{{$key}}" ] = $val;
 			}
 		}
@@ -117,21 +230,28 @@ class QM_Collector_Logger extends QM_Collector {
 		return strtr( $message, $replace );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process() {
-		if ( empty( $this->data['logs'] ) ) {
+		if ( empty( $this->data->logs ) ) {
 			return;
 		}
 
 		$components = array();
 
-		foreach ( $this->data['logs'] as $row ) {
-			$component                      = $row['trace']->get_component();
+		foreach ( $this->data->logs as $row ) {
+			$component = $row['component'];
 			$components[ $component->name ] = $component->name;
 		}
 
-		$this->data['components'] = $components;
+		$this->data->components = $components;
 	}
 
+	/**
+	 * @return array<int, string>
+	 * @phpstan-return list<self::*>
+	 */
 	public function get_levels() {
 		return array(
 			self::EMERGENCY,
@@ -145,6 +265,10 @@ class QM_Collector_Logger extends QM_Collector {
 		);
 	}
 
+	/**
+	 * @return array<int, string>
+	 * @phpstan-return list<self::*>
+	 */
 	public function get_warning_levels() {
 		return array(
 			self::EMERGENCY,

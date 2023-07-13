@@ -1,9 +1,13 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * HTTP redirect dispatcher.
  *
  * @package query-monitor
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
@@ -21,6 +25,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	 *
 	 * @param string $location The path to redirect to.
 	 * @param int    $status   Status code to use.
+	 * @return string
 	 */
 	public function filter_wp_redirect( $location, $status ) {
 
@@ -30,8 +35,10 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Headers[] */
-		foreach ( $this->get_outputters( 'headers' ) as $id => $output ) {
+		/** @var array<string, QM_Output_Headers> $outputters */
+		$outputters = $this->get_outputters( 'headers' );
+
+		foreach ( $outputters as $output ) {
 			$output->output();
 		}
 
@@ -41,18 +48,21 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function before_output() {
-
-		require_once $this->qm->plugin_path( 'output/Headers.php' );
-
-		foreach ( glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
+		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			require_once $file;
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_active() {
 
-		if ( ! $this->user_can_view() ) {
+		if ( ! self::user_can_view() ) {
 			return false;
 		}
 
@@ -78,6 +88,11 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 }
 
+/**
+ * @param array<string, QM_Dispatcher> $dispatchers
+ * @param QM_Plugin $qm
+ * @return array<string, QM_Dispatcher>
+ */
 function register_qm_dispatcher_redirect( array $dispatchers, QM_Plugin $qm ) {
 	$dispatchers['redirect'] = new QM_Dispatcher_Redirect( $qm );
 	return $dispatchers;

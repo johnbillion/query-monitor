@@ -1,62 +1,130 @@
+// === Functions ===
+
+@function map-get-strict($map, $key) {
+	@if map-has-key($map, $key) {
+		@return map-get($map, $key);
+	} @else {
+		@error "Index '#{$key}' does not exist";
+	}
+}
+
+// === Fonts ===
 
 $qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $qm-font-default-size: 12px;
 $qm-font-default-line-height: 18px;
 $qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 $qm-font-code-size: 11px;
-$qm-font-code-line-height: 18px;
+$qm-font-code-line-height: 20px;
+
+// === Admin Menu ===
+
 $qm-admin-toolbar-height: 32px;
+$qm-menu-icon: #aaa;
+$qm-menu-alert-bg: #f60 !default;
+$qm-menu-notice-bg: #740 !default;
+$qm-menu-notice-bg-hover: darken( $qm-menu-notice-bg, 5% ) !default;
+$qm-menu-expensive-bg: #b60 !default;
+$qm-menu-expensive-bg-hover: darken( $qm-menu-expensive-bg, 5% ) !default;
+$qm-menu-warning-bg: #c00 !default;
+$qm-menu-warning-bg-hover: darken( $qm-menu-warning-bg, 5% ) !default;
+$qm-menu-fg: #eee !default;
+$qm-menu-true-fg: #8c8 !default;
+$qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
+
+// === Properties ===
+
+#query-monitor-main {
+	@each $var, $colour in $colours-default {
+		--qm-#{$var}: #{$colour};
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	#query-monitor-main[data-theme="auto"] {
+		@each $var, $colour in $colours-default {
+			--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
+		}
+	}
+}
+
+#query-monitor-main[data-theme="dark"] {
+	@each $var, $colour in $colours-default {
+		--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
+	}
+}
 
 // === Admin Toolbar ===
 
 #wpadminbar {
 	.quicklinks .menupop ul li.qm-true > a {
-		color: $qm-toolbar-true-fg !important;
+		color: $qm-menu-true-fg !important;
 
 		&:focus,
 		&:hover {
-			color: $qm-toolbar-true-fg-hover !important;
+			color: $qm-menu-true-fg-hover !important;
 		}
 	}
 
 	.qm-alert {
-		background-color: $qm-toolbar-alert-bg;
+		background-color: $qm-menu-alert-bg;
 	}
 
-	#wp-admin-bar-query-monitor-notices a,
-	.qm-notice {
-		background-color: #740;
-	}
-
-	#wp-admin-bar-query-monitor-deprecateds a,
-	.qm-deprecated {
-		background-color: #3c3c3c;
-	}
-
+	#wp-admin-bar-query-monitor-doing_it_wrong a,
 	#wp-admin-bar-query-monitor-stricts a,
-	.qm-strict {
-		background-color: #3c3c3c;
+	#wp-admin-bar-query-monitor-deprecateds a,
+	#wp-admin-bar-query-monitor-notices a,
+	.qm-strict,
+	.qm-deprecated,
+	.qm-notice {
+		background-color: $qm-menu-notice-bg;
+
+		&:focus,
+		&:hover {
+			background-color: $qm-menu-notice-bg-hover;
+		}
 	}
 
 	#wp-admin-bar-query-monitor-expensive a,
 	.qm-expensive {
-		background-color: #b60;
+		background-color: $qm-menu-expensive-bg;
+
+		&:focus,
+		&:hover {
+			background-color: $qm-menu-expensive-bg-hover;
+		}
 	}
 
 	#wp-admin-bar-query-monitor-logger-warning a,
 	#wp-admin-bar-query-monitor-warnings a,
+	#wp-admin-bar-query-monitor-errors a,
+	.qm-error,
 	.qm-warning {
-		background-color: #c00;
+		background-color: $qm-menu-warning-bg;
 
+		&:focus,
 		&:hover {
-			background-color: #b00;
-			color: #ddd !important;
+			background-color: $qm-menu-warning-bg-hover;
 		}
 	}
 
-	#wp-admin-bar-query-monitor-errors a,
-	.qm-error {
-		background-color: #c00;
+	#wp-admin-bar-query-monitor .ab-icon {
+		color: $qm-menu-icon !important;
+		display: none !important;
+		font: 18px/44px $qm-font-default-face !important;
+		padding: 0 10px !important;
+		width: auto !important;
+	}
+
+	@media screen and (max-width: 782px) {
+		// force menu icon to show up
+		#wp-admin-bar-query-monitor .ab-icon {
+			display: block !important;
+		}
+		// hide menu text
+		#wp-admin-bar-query-monitor .ab-label {
+			display: none !important;
+		}
 	}
 }
 
@@ -67,6 +135,10 @@ $qm-admin-toolbar-height: 32px;
 }
 
 body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
+#wp-admin-bar-query-monitor-default .qm-alert a,
+#wp-admin-bar-query-monitor-default .qm-error a,
+#wp-admin-bar-query-monitor-default .qm-warning a,
+#wp-admin-bar-query-monitor-doing_it_wrong a,
 #wp-admin-bar-query-monitor-deprecateds a,
 #wp-admin-bar-query-monitor-stricts a,
 #wp-admin-bar-query-monitor-notices a,
@@ -74,7 +146,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wp-admin-bar-query-monitor-logger-warning a,
 #wp-admin-bar-query-monitor-warnings a,
 #wp-admin-bar-query-monitor-errors a {
-	color: #eee !important;
+	color: $qm-menu-fg !important;
 }
 
 #wp-admin-bar-query-monitor small {
@@ -91,25 +163,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	display: none;
 }
 
-#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
-	color: #aaa !important;
-	display: none !important;
-	font: 18px/44px $qm-font-default-face !important;
-	padding: 0 10px !important;
-	width: auto !important;
-}
-
-@media screen and (max-width: 782px) {
-	// force menu icon to show up
-	#wpadminbar #wp-admin-bar-query-monitor .ab-icon {
-		display: block !important;
-	}
-	// hide menu text
-	#wpadminbar #wp-admin-bar-query-monitor .ab-label {
-		display: none !important;
-	}
-}
-
 // === Main QM Panel ===
 
 @mixin qm-narrow() {
@@ -123,12 +176,52 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 }
 
+@mixin global-reset {
+	background: transparent !important;
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	box-sizing: border-box !important;
+	clear: both !important;
+	color: var( --qm-container-fg ) !important;
+	float: none !important;
+	font-family: $qm-font-default-face !important;
+	font-size: $qm-font-default-size !important;
+	-webkit-font-smoothing: auto !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	letter-spacing: -0.1px !important;
+	line-height: $qm-font-default-line-height !important;
+	margin: 0 !important;
+	min-height: auto !important;
+	outline: none !important;
+	padding: 0 !important;
+	text-align: left !important;
+	text-decoration: none !important;
+	text-indent: 0 !important;
+	text-shadow: none !important;
+	text-transform: none !important;
+	transition: none !important;
+	vertical-align: baseline !important;
+	word-break: normal !important;
+	word-wrap: normal !important;
+
+	&::before,
+	&::after {
+		display: none !important;
+	}
+}
+
+#qm-icon-container {
+	display: none !important;
+}
+
 #query-monitor-main {
-	&,
 	dl,
 	dt,
 	dd,
 	button,
+	caption,
 	label,
 	select,
 	table,
@@ -138,6 +231,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	ol,
 	li,
 	code,
+	pre,
 	a,
 	h1,
 	h2,
@@ -148,44 +242,18 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	section,
 	nav,
 	p {
-		background: transparent !important;
-		border: none !important;
-		border-radius: 0 !important;
-		box-shadow: none !important;
-		box-sizing: border-box !important;
-		clear: both !important;
-		color: $qm-container-fg !important;
-		float: none !important;
-		font-family: $qm-font-default-face !important;
-		font-size: $qm-font-default-size !important;
-		-webkit-font-smoothing: auto !important;
-		font-style: normal !important;
-		font-weight: normal !important;
-		letter-spacing: normal !important;
-		line-height: $qm-font-default-line-height !important;
-		margin: 0 !important;
-		outline: none !important;
-		padding: 0 !important;
-		text-align: left !important;
-		text-decoration: none !important;
-		text-indent: 0 !important;
-		text-shadow: none !important;
-		text-transform: none !important;
-		transition: none !important;
-		vertical-align: baseline !important;
-		word-break: normal !important;
-		word-wrap: normal !important;
+		@include global-reset;
 
-		&::before,
-		&::after {
-			display: none !important;
-		}
+		width: auto !important;
 	}
 
 	& {
-		background: $qm-panel-bg !important;
-		border-top: 1px solid $qm-panel-border !important;
+		@include global-reset;
+
+		background: var( --qm-panel-bg ) !important;
+		border-top: 1px solid var( --qm-panel-border ) !important;
 		bottom: 0 !important;
+		contain: layout paint;
 		direction: ltr !important;
 		display: none;
 		left: 0 !important;
@@ -197,8 +265,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	::selection {
-		background-color: #B9D6FB !important;
-		color: $qm-container-fg !important;
+		background-color: var( --qm-selection-bg ) !important;
+		color: var( --qm-selection-fg ) !important;
 	}
 
 	strong,
@@ -219,8 +287,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	&.qm-show {
-		height: 40%;
-		width: 40%;
+		height: 60%;
+		width: 60%;
 	}
 
 	&:not(.qm-show-right) {
@@ -232,7 +300,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		top: $qm-admin-toolbar-height !important;
 		left: unset !important;
 		border-top: 0 !important;
-		border-left: 1px solid $qm-panel-border !important;
+		border-left: 1px solid var( --qm-panel-border ) !important;
 
 		@include qm-narrow();
 
@@ -267,83 +335,102 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	#qm-title {
 		align-items: center !important;
-		background: $qm-container-bg !important;
-		border-bottom: 1px solid $qm-panel-border !important;
+		background: var( --qm-container-bg ) !important;
+		border-bottom: 1px solid var( --qm-panel-border ) !important;
 		cursor: ns-resize !important;
 		display: flex !important;
 		flex-shrink: 0 !important;
 		height: 27px !important;
-		padding: 0 0 0 5px !important;
+		padding: 0 0 0 10px !important;
 		-moz-user-select: none !important;
 		-ms-user-select: none !important;
 		-webkit-user-select: none !important;
 		user-select: none !important;
-	}
 
-	#qm-title .qm-title-heading {
-		border-right: 1px solid #bbb !important;
-		flex-grow: 1 !important;
-		margin-right: 6px !important;
-	}
+		.qm-title-heading {
+			border-right: 1px solid #bbb !important;
+			flex-grow: 1 !important;
+			margin-right: 6px !important;
+		}
 
-	#qm-title div.qm-title-heading {
-		display: none;
-	}
+		div.qm-title-heading {
+			display: none;
+		}
 
-	#qm-title .qm-title-button {
-		flex-shrink: 0 !important;
-	}
+		.qm-title-button {
+			flex-shrink: 0 !important;
+		}
 
-	#qm-title .dashicons {
-		transition: none !important;
-	}
+		.qm-icon {
+			display: inline-block !important;
+			height: 20px !important;
+			width: 20px !important;
+			fill: var( --qm-title-button-fg ) !important;
+		}
 
-	#qm-title .qm-button-container-settings .dashicons {
-		font-size: 17px !important;
-		margin: 3px 0 2px !important;
-	}
+		.qm-button-container-close {
+			margin-right: 10px !important;
 
-	#qm-title .qm-button-container-position .dashicons {
-		font-size: 15px !important;
-		margin: 4px 0 1px !important;
-	}
+			.qm-icon {
+				margin: 4px 0 0 !important;
+				width: 18px !important;
+				height: 18px !important;
+			}
+		}
 
-	#qm-title .qm-button-container-close {
-		margin-right: 5px !important;
-	}
+		.qm-button-container-position {
+			transform: scaleX(-1) rotate(90deg) !important;
+			padding-top: 5px !important;
 
-	#qm-title .qm-button-container-close .dashicons {
-		margin: 2px 0 3px !important;
-	}
+			.qm-icon {
+				width: 14px !important;
+				height: 14px !important;
+			}
+		}
 
-	@media screen and (max-width: 960px) {
-		#qm-title .qm-button-container-position {
-			display: none !important;
+		.qm-button-container-settings {
+			.qm-icon {
+				margin: 4px 0 0 !important;
+				width: 16px !important;
+				height: 16px !important;
+			}
+		}
+
+		@media screen and (max-width: 960px) {
+			.qm-button-container-position {
+				display: none !important;
+			}
+		}
+
+		button {
+			background: var( --qm-title-button-bg ) !important;
+			cursor: pointer !important;
+			display: inline-block !important;
+			margin: 0 !important;
+			min-width: auto !important;
+			padding: 0 5px !important;
+		}
+
+		button:focus *,
+		button:hover *,
+		button:focus,
+		button:hover {
+			background: var( --qm-title-button-bg-hover ) !important;
+
+			svg {
+				fill: var( --qm-title-button-fg-hover ) !important;
+			}
+		}
+
+		button:active *,
+		button:active {
+			background: #ccc !important;
 		}
 	}
 
-	#qm-title button {
-		background: $qm-title-button-bg !important;
-		color: $qm-title-button-fg !important;
-		cursor: pointer !important;
-		display: inline-block !important;
-		margin: 0 0 0 0px !important;
-		min-width: auto !important;
-		padding: 0px 4px !important;
-	}
-
-	#qm-title button:focus,
-	#qm-title button:hover {
-		background: $qm-title-button-bg-hover !important;
-		color: $qm-title-button-fg-hover !important;
-	}
-
-	#qm-title button:active {
-		background: #ccc !important;
-	}
-
-	#qm-title button.qm-button-active {
-		color: #3879d9 !important;
+	&.qm-show-right #qm-title .qm-button-container-position .qm-icon {
+		margin: 4px 1px 0 1px !important;
+		transform: none !important;
 	}
 
 	.qm {
@@ -351,76 +438,121 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	#qm-panel-menu {
-		background: $qm-container-overflow !important;
+		background: var( --qm-container-overflow ) !important;
 		flex-shrink: 0 !important;
-		overflow-y:  scroll !important;
+		overflow-y: scroll !important;
 		overscroll-behavior: contain !important;
-	}
+		height: auto !important;
+		min-width: 160px !important;
 
-	#qm-panel-menu ul {
-		display: block !important;
-		list-style: none !important;
-		margin: 0 !important;
-		padding: 0 !important;
-	}
+		ul {
+			display: block !important;
+			list-style: none !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			width: auto !important;
+			height: auto !important;
+		}
 
-	#qm-panel-menu li {
-		display: list-item !important;
-		margin: 0 !important;
-		padding: 0 !important;
-	}
+		li {
+			display: list-item !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			height: auto !important;
 
-	#qm-panel-menu li button {
-		background: $qm-panel-menu-bg !important;
-		border-bottom: 1px solid $qm-panel-menu-border !important;
-		border-right: 1px solid $qm-panel-border !important;
-		color: $qm-panel-menu-fg !important;
-		cursor: pointer !important;
-		display: block !important;
-		padding: 8px 28px 8px 6px !important;
-		position: relative !important;
-		text-decoration: none !important;
-		width: 100% !important;
-	}
+			ul {
+				display: none !important;
+			}
+		}
 
-	#qm-panel-menu li button:focus,
-	#qm-panel-menu li button:hover {
-		background: $qm-panel-menu-bg-hover !important;
-		color: $qm-panel-menu-fg-hover !important;
-	}
+		li button {
+			background: var( --qm-panel-menu-bg ) !important;
+			border-bottom: 1px solid var( --qm-panel-menu-border ) !important;
+			border-right: 1px solid var( --qm-panel-border ) !important;
+			color: var( --qm-panel-menu-fg ) !important;
+			cursor: pointer !important;
+			display: block !important;
+			padding: 7px 32px 7px 10px !important;
+			position: relative !important;
+			text-decoration: none !important;
+			width: 100% !important;
+		}
 
-	#qm-panel-menu li button:focus {
-		text-decoration: underline !important;
-	}
+		li button:focus,
+		li button:hover {
+			background: var( --qm-panel-menu-bg-hover ) !important;
+			color: var( --qm-panel-menu-fg-hover ) !important;
+		}
 
-	#qm-panel-menu li.qm-current-menu button {
-		background: $qm-panel-menu-bg-hover !important;
-		color: $qm-panel-menu-fg-hover !important;
-	}
+		li button:focus {
+			text-decoration: underline !important;
+		}
 
-	#qm-panel-menu li button.qm-selected-menu {
-		background: $qm-panel-menu-bg-selected !important;
-		color: $qm-panel-menu-fg-selected !important;
-		text-shadow: 0 -1px 1px $qm-panel-menu-shadow, 1px 0 1px $qm-panel-menu-shadow, 0 1px 1px $qm-panel-menu-shadow, -1px 0 1px $qm-panel-menu-shadow !important;
-	}
+		li button:active {
+			text-decoration: none !important;
+			background: var( --qm-panel-menu-bg-selected ) !important;
+			color: var( --qm-panel-menu-fg-selected ) !important;
+			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow ) !important;
+		}
 
-	#qm-panel-menu li button.qm-selected-menu:focus {
-		background: $qm-panel-menu-bg-selected-focus !important;
-		color: $qm-panel-menu-fg-selected !important;
-	}
+		li.qm-current-menu {
+			ul {
+				display: block !important;
+			}
 
-	#qm-panel-menu li button.qm-selected-menu:after {
-		border: solid 8px transparent;
-		border-right-color: $qm-panel-bg;
-		content: " ";
-		display: inline-block !important;
-		height: 0;
-		margin-top: -8px;
-		pointer-events: none;
-		position: absolute;
-		right: -1px;
-		top: 50%;
-		width: 0;
+			button {
+				background: var( --qm-panel-menu-bg-current ) !important;
+				color: var( --qm-panel-menu-fg-current ) !important;
+
+				&:focus {
+					background: var( --qm-panel-menu-bg-current-focus ) !important;
+					color: var( --qm-panel-menu-fg-current ) !important;
+				}
+
+				&:hover {
+					background: var( --qm-panel-menu-bg-hover ) !important;
+					color: var( --qm-panel-menu-fg-hover ) !important;
+				}
+			}
+		}
+
+		li li button {
+			&::before {
+				content: "\2514" !important;
+				display: inline-block !important;
+				margin-right: 5px !important;
+			}
+		}
+
+		li button[aria-selected="true"] {
+			background: var( --qm-panel-menu-bg-selected ) !important;
+			color: var( --qm-panel-menu-fg-selected ) !important;
+			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow ) !important;
+
+			&:focus {
+				background: var( --qm-panel-menu-bg-selected-focus ) !important;
+				color: var( --qm-panel-menu-fg-selected ) !important;
+			}
+
+			&:hover {
+				background: var( --qm-panel-menu-bg-selected ) !important;
+				color: var( --qm-panel-menu-fg-selected ) !important;
+			}
+
+			&:after {
+				border: solid 8px transparent;
+				border-right-color: var( --qm-panel-bg );
+				content: " ";
+				display: inline-block !important;
+				height: 0;
+				margin-top: -8px;
+				pointer-events: none;
+				position: absolute;
+				right: -1px;
+				top: 50%;
+				width: 0;
+			}
+		}
 	}
 
 	#qm-panels {
@@ -437,212 +569,260 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		outline: 0 !important; /* @TODO might not need this any more */
 	}
 
-	.qm-non-tabular {
-		padding: 10px 20px !important;
-	}
-
 	.qm-boxed {
 		display: flex !important;
 		flex-wrap: wrap !important;
+
+		&:not(#qm-broken) + .qm-grid,
+		&:not(#qm-broken) + .qm-boxed {
+			border-top: 1px solid var( --qm-panel-separator ) !important;
+			padding-top: 10px !important;
+		}
 	}
 
-	.qm-boxed:not(#qm-broken) + .qm-boxed {
-		border-top: 1px solid $qm-panel-separator !important;
-		padding-top: 10px !important;
-	}
-
-	.qm-boxed-wrap {
-		flex-wrap: wrap !important;
-	}
-
-	.qm .qm-none {
-		margin: 2em !important;
-	}
-
-	.qm .qm-none p {
-		font-style: italic !important;
-		text-align: center !important;
-	}
-
-	.qm table {
-		border: none !important;
-		border-bottom: 1px solid $qm-cell-border !important;
-		border-collapse: collapse !important;
-		box-shadow: none !important;
-		color: $qm-panel-fg !important;
-		margin: 0 !important;
-		table-layout: auto !important;
-		width: 100% !important;
-	}
-
-	.qm table + table {
-		border-top: 1px solid $qm-cell-border !important;
-		margin-top: 5px !important;
-	}
-
-	.qm tr {
-		border: none !important;
-	}
-
-	.qm tbody th,
-	.qm tbody td,
-	.qm tfoot th,
-	.qm tfoot td {
-		border: 1px solid $qm-cell-border !important;
-		padding: 5px 5px 4px 5px !important;
-	}
-
-	.qm tbody th,
-	.qm tbody td {
-		border-bottom: none !important;
-		border-top: none !important;
-	}
-
-	.qm thead th {
-		background: $qm-table-header-bg !important;
-		border: 1px solid $qm-cell-border !important;
-		border-top: none !important;
-		box-shadow: 0px 1px 0px $qm-cell-border !important;
-		padding: 5px !important;
-		position: -webkit-sticky !important;
-		position: sticky !important;
-		top: 0 !important;
-		z-index: 1 !important;
-	}
-
-	.qm thead .qm-th {
+	.qm-grid {
 		display: flex !important;
+		flex-wrap: wrap !important;
+
+		section {
+			width: 22em !important;
+		}
 	}
 
-	.qm tfoot tr td,
-	.qm tfoot tr th {
-		background: $qm-table-footer-bg !important;
-		border: 1px solid $qm-cell-border !important;
-		border-bottom: none !important;
-		bottom: 0 !important;
-		box-shadow: inset 0px 1px 0px $qm-cell-border !important;
-		position: -webkit-sticky !important;
-		position: sticky !important;
-	}
+	.qm {
+		.qm-none {
+			margin: 2em !important;
+		}
 
-	.qm th:first-child,
-	.qm td:first-child {
-		border-left: none !important;
-	}
+		.qm-none p {
+			font-style: italic !important;
+			text-align: center !important;
+		}
 
-	.qm th:last-child,
-	.qm td:last-child {
-		border-right: none !important;
-	}
+		table {
+			border: none !important;
+			border-collapse: collapse !important;
+			box-shadow: 0 1px 0 0 var( --qm-panel-border ) !important;
+			color: var( --qm-panel-fg ) !important;
+			margin: 0 !important;
+			table-layout: auto !important;
+			width: 100% !important;
+		}
 
-	.qm tfoot td.qm-num,
-	.qm tfoot th.qm-num,
-	.qm thead td.qm-num,
-	.qm thead th.qm-num {
-		width: 5.5em !important;
-	}
+		table + table {
+			border-top: 1px solid var( --qm-cell-border ) !important;
+			margin-top: 5px !important;
+		}
 
-	.qm th.qm-num,
-	.qm td.qm-num {
-		text-align: right !important;
-	}
+		thead,
+		tbody,
+		tfoot {
+			border: none !important;
+			background-color: inherit !important;
+		}
 
-	.qm td.qm-row-sql {
-		min-width: 25em !important;
-	}
+		tr {
+			border: none !important;
+			background-color: inherit !important;
+		}
 
-	.qm td.qm-row-block-html {
-		max-width: 40em !important;
-	}
+		tbody th,
+		tbody td,
+		tfoot th,
+		tfoot td {
+			border: 1px solid var( --qm-cell-border ) !important;
+			padding: 6px 6px 5px 6px !important;
+			vertical-align: top !important;
+		}
 
-	.qm tr.qm-warn td.qm-col-status,
-	.qm td.qm-url,
-	.qm th.qm-col-message,
-	.qm td.qm-row-component {
-		min-width: 15em !important;
-	}
+		tbody th,
+		tbody td {
+			border-bottom: none !important;
+			border-top: none !important;
+		}
 
-	.qm td .qm-toggler {
-		padding: 0 22px 0 0 !important;
-		position: relative !important;
-	}
+		thead th {
+			background: var( --qm-table-header-bg ) !important;
+			border: 1px solid var( --qm-cell-border ) !important;
+			border-top: none !important;
+			box-shadow: 0 1px 0 var( --qm-cell-border ) !important;
+			padding: 5px 5px 5px 6px !important;
+			position: -webkit-sticky !important;
+			position: sticky !important;
+			top: 0 !important;
+			z-index: 1 !important;
+		}
 
-	.qm td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
-		display: none;
-	}
+		thead th,
+		thead td {
+			vertical-align: top !important;
+		}
 
-	.qm .qm-inner-toggle {
-		padding: 4px 6px !important;
-	}
+		thead .qm-th {
+			display: flex !important;
+		}
 
-	.qm-has-inner .qm-toggled > table {
-		border-bottom: none !important;
-		border-top: 1px solid $qm-cell-border !important;
-	}
+		tfoot tr td,
+		tfoot tr th {
+			background: var( --qm-table-footer-bg ) !important;
+			border: none !important;
+			bottom: 0 !important;
+			box-shadow: inset 0 1px 0 var( --qm-cell-border ) !important;
+			position: -webkit-sticky !important;
+			position: sticky !important;
+		}
 
-	.qm td.qm-has-inner .qm-toggler,
-	.qm td.qm-has-inner {
-		padding: 0 !important;
-	}
+		th:first-child,
+		td:first-child {
+			border-left: none !important;
+		}
 
-	.qm caption h2 {
-		font-size: 14px !important;
-		margin: 20px !important;
+		th:last-child,
+		td:last-child {
+			border-right: none !important;
+		}
+
+		tfoot td.qm-num,
+		tfoot th.qm-num,
+		thead td.qm-num,
+		thead th.qm-num {
+			width: 5.5em !important;
+		}
+
+		th.qm-num,
+		td.qm-num {
+			text-align: right !important;
+		}
+
+		td.qm-num {
+			font-family: $qm-font-code-face !important;
+			font-size: $qm-font-code-size !important;
+			line-height: $qm-font-code-line-height !important;
+		}
+
+		td.qm-row-sql {
+			min-width: 25em !important;
+		}
+
+		td.qm-row-block-attrs,
+		td.qm-row-block-context,
+		td.qm-row-block-html {
+			max-width: 40em !important;
+		}
+
+		td.qm-row-block-attrs,
+		td.qm-row-block-context,
+		td.qm-row-block-html,
+		tr.qm-warn td.qm-col-status,
+		td.qm-url,
+		th.qm-col-message,
+		td.qm-row-component {
+			min-width: 15em !important;
+		}
+
+		td.qm-has-toggle {
+			padding-right: 28px !important;
+			position: relative !important;
+		}
+
+		td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
+			display: none;
+		}
+
+		.qm-inner-toggle {
+			padding: 4px 6px !important;
+		}
+
+		.qm-has-inner .qm-toggled > table {
+			border-bottom: none !important;
+			border-top: 1px solid var( --qm-cell-border ) !important;
+		}
+
+		td.qm-has-inner .qm-toggler,
+		td.qm-has-inner {
+			padding: 0 !important;
+		}
+
+		caption h2 {
+			font-size: 14px !important;
+			margin: 20px !important;
+		}
 	}
 
 	.qm-concerns table {
-		border-top: 1px solid $qm-cell-border !important;
+		border-top: 1px solid var( --qm-cell-border ) !important;
 		margin-bottom: 20px !important;
 	}
 
-	.qm-non-tabular h3 {
-		font-size: 14px !important;
-		margin: 0 0 15px 0 !important;
-	}
+	.qm-non-tabular {
+		padding: 10px 20px !important;
 
-	.qm-non-tabular h4 {
-		font-size: 12px !important;
-		margin: 20px 0 10px !important;
-	}
+		h3 {
+			font-size: 14px !important;
+			margin: 0 0 15px 0 !important;
+		}
 
-	.qm-non-tabular p {
-		margin-bottom: 10px !important;
-	}
+		h4 {
+			font-size: 12px !important;
+			margin: 20px 0 10px !important;
+		}
 
-	.qm-non-tabular dd {
-		margin: 0 0 10px 10px !important;
-	}
+		p {
+			margin-bottom: 10px !important;
+		}
 
-	.qm-non-tabular h3 a {
-		float: right !important;
+		dl {
+			display: flex !important;
+			flex-wrap: wrap !important;
+			max-width: 60em !important;
+		}
+
+		dt {
+			border-top: 1px solid var( --qm-panel-separator ) !important;
+			flex-grow: 0;
+			flex: 1 0 16em;
+			padding: 10px 10px 10px 0 !important;
+		}
+
+		dd {
+			border-top: 1px solid var( --qm-panel-separator ) !important;
+			flex: 1 0 calc(100% - 10px - 16em);
+			padding: 10px 0 !important;
+		}
+
+		section,
+		.qm-section {
+			margin: 0 0 30px 0 !important;
+		}
+
+		.qm-grid section,
+		.qm-boxed section,
+		.qm-boxed .qm-section {
+			border-right: 1px solid var( --qm-panel-separator ) !important;
+			margin: 0 20px 10px 0 !important;
+			padding: 10px 20px 10px 0 !important;
+
+			&:last-child {
+				border-right: none !important;
+				margin-right: 0 !important;
+			}
+		}
+
+		table {
+			border-bottom-color: var( --qm-cell-border ) !important;
+		}
+
+		.qm-full-width {
+			border-top: 1px solid var(--qm-cell-border) !important;
+			margin-right: -20px !important;
+			margin-left: -20px !important;
+			width: calc( 100% + 40px ) !important;
+		}
 	}
 
 	#qm-conditionals li {
 		display: inline-block !important;
 		margin: 0 20px 5px 0 !important;
-	}
-
-	.qm-non-tabular section,
-	.qm-non-tabular .qm-section {
-		margin: 0 0 30px 0 !important;
-	}
-
-	.qm-non-tabular .qm-boxed section,
-	.qm-non-tabular .qm-boxed .qm-section {
-		border-right: 1px solid $qm-panel-separator !important;
-		margin: 0 20px 10px 0 !important;
-		padding: 10px 20px 10px 0 !important;
-	}
-
-	.qm-non-tabular .qm-boxed section:last-child,
-	.qm-non-tabular .qm-boxed .qm-section:last-child {
-		border-right: none !important;
-		margin-right: 0 !important;
-		padding-right: 20px !important;
-	}
-
-	.qm-non-tabular table {
-		border-bottom-color: $qm-cell-border !important;
 	}
 
 	.qm ol,
@@ -653,19 +833,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm li {
 		display: list-item !important;
 		list-style: none !important;
-	}
+		line-height: 20px !important;
 
-	.qm li::before {
-		content: '' !important;
-	}
-
-	.qm .qm-has-toggle ol.qm-numbered li {
-		list-style: none !important;
-	}
-
-	.qm .qm-toggled-on ol.qm-numbered li,
-	.qm ol.qm-numbered li {
-		list-style: decimal inside !important;
+		&::before {
+			content: '' !important;
+		}
 	}
 
 	.qm code,
@@ -687,13 +859,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm p.qm-true,
 	.qm span.qm-true,
 	.qm td.qm-true {
-		color: #4a4 !important;
+		/* @TODO */
+		color: #282 !important;
 	}
 
 	.qm .qm-false code,
 	.qm span.qm-false,
 	.qm td.qm-false {
-		color: #999 !important;
+		/* @TODO */
+		color: #767676 !important;
 	}
 
 	.qm .qm-num,
@@ -724,11 +898,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm td.qm-has-toggle p,
 	.qm .qm-nonselectsql code,
 	.qm .qm-nonselectsql {
-		color: $qm-nonselect-fg !important;
+		color: var( --qm-nonselect-fg ) !important;
 	}
 
 	.qm .qm-info {
-		color: #777 !important;
+		color: var( --qm-info-fg ) !important;
 	}
 
 	.qm .qm-supplemental {
@@ -743,13 +917,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm button.qm-button,
 	.qm .qm-toggle {
-		background: $qm-button-bg !important;
-		border: 1px solid $qm-button-border !important;
-		border-radius: 2px !important;
-		color: $qm-button-fg !important;
+		background: var( --qm-button-bg ) !important;
+		border: 1px solid var( --qm-button-bg ) !important;
+		border-radius: 3px !important;
+		color: var( --qm-button-fg ) !important;
 		cursor: pointer !important;
 		font-weight: normal !important;
-		text-shadow: 0 -1px 1px $qm-button-shadow, 1px 0 1px $qm-button-shadow, 0 1px 1px $qm-button-shadow, -1px 0 1px $qm-button-shadow !important;
+		text-shadow: none !important;
 	}
 
 	.qm .qm-toggle {
@@ -760,9 +934,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		line-height: 16px !important;
 		padding: 0 !important;
 		position: absolute !important;
-		right: 0 !important;
+		right: 5px !important;
 		text-align: center !important;
-		top: 0 !important;
+		top: 5px !important;
+		user-select: none;
 		width: 18px !important;
 	}
 
@@ -780,34 +955,77 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm button.qm-button:hover,
-	.qm button.qm-button:focus,
-	.qm .qm-toggle:focus,
 	.qm .qm-toggle:hover {
-		background: $qm-button-bg-hover !important;
-		color: $qm-button-fg-hover !important;
+		background: var( --qm-button-bg-hover ) !important;
+		border-color: var( --qm-button-bg-hover ) !important;
+		color: var( --qm-button-fg-hover ) !important;
 		text-decoration: none !important;
+	}
+
+	.qm button.qm-button:focus,
+	.qm .qm-toggle:focus {
+		background: var( --qm-button-bg-hover ) !important;
+		border-color: var( --qm-button-bg-hover ) !important;
+		color: var( --qm-button-fg-hover ) !important;
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover ) !important;
+	}
+
+	.qm button.qm-button:active,
+	.qm .qm-toggle:active {
+		background: var( --qm-button-bg-active ) !important;
+		border-color: var( --qm-button-bg-active ) !important;
+		color: var( --qm-button-fg-active ) !important;
+		box-shadow: none !important;
+	}
+
+	.qm input[type="radio"].qm-radio,
+	.qm input[type="radio"].qm-radio:checked,
+	.qm input[type="radio"].qm-radio:focus,
+	.qm input[type="radio"].qm-radio:checked:focus,
+	.qm input[type="radio"].qm-radio:hover,
+	.qm input[type="radio"].qm-radio:checked:hover {
+		all: revert !important;
+		accent-color: var( --qm-button-bg ) !important;
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
 	}
 
 	.qm tbody tr.qm-odd td,
 	.qm tbody tr.qm-odd th {
-		background: $qm-cell-bg-stripe !important;
+		background: var( --qm-cell-bg-stripe ) !important;
 	}
 
 	.qm-non-tabular .qm-warn,
 	.qm thead tr .qm-warn,
 	.qm tbody tr .qm-warn {
-		background-color: $qm-warn-bg !important;
-		color: $qm-warn-fg !important;
+		background-color: var( --qm-warn-bg ) !important;
+		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon {
+			fill: var( --qm-warn-fg ) !important;
+		}
 	}
 
 	.qm tbody tr th.qm-warn,
 	.qm tbody tr td.qm-warn,
 	.qm tbody tr.qm-warn td,
 	.qm tbody tr.qm-warn th {
-		background-color: $qm-warn-bg !important;
-		border-color: $qm-warn-border !important;
-		box-shadow: inset 0 -1px $qm-warn-border !important;
-		color: $qm-warn-fg !important;
+		background-color: var( --qm-warn-bg ) !important;
+		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon {
+			fill: var( --qm-warn-fg ) !important;
+		}
+	}
+
+	.qm tbody tr.qm-odd th.qm-warn,
+	.qm tbody tr.qm-odd td.qm-warn,
+	.qm tbody tr.qm-odd.qm-warn td,
+	.qm tbody tr.qm-odd.qm-warn th {
+		background-color: var( --qm-warn-bg-dark ) !important;
 	}
 
 	.qm-non-tabular .qm-warn code,
@@ -815,48 +1033,64 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn .qm-info,
 	.qm tbody .qm-warn code {
 		background-color: transparent !important;
-		color: $qm-warn-fg !important;
+		color: var( --qm-warn-fg ) !important;
+
+		.qm-icon {
+			fill: var( --qm-warn-fg ) !important;
+		}
 	}
 
 	.qm .qm-notice {
-		background: $qm-panel-menu-bg-hover !important;
-		border: 1px solid darken( $qm-panel-menu-bg-hover, 10% ) !important;
+		background: var( --qm-panel-menu-bg-current ) !important;
+		border: 1px solid var( --qm-panel-menu-bg-hover ) !important;
 		margin: 0 0 10px 0 !important;
+		max-width: 40em !important;
 		padding: 10px 20px 0 !important;
 	}
 
-	.qm .dashicons {
-		font-size: 16px !important;
-		height: 16px !important;
+	.qm .qm-icon {
 		margin-right: 0.3em !important;
-		transition: none !important;
+		display: inline-block !important;
+		height: 16px !important;
 		width: 16px !important;
+		height: 16px !important;
+		width: 16px !important;
+		fill: var( --qm-container-fg ) !important;
+		vertical-align: top !important;
 	}
 
-	.qm .qm-dashicons-yes {
-		background-color: #0a0 !important;
-		border-radius: 50% !important;
-		color: #fff !important;
+	.qm .qm-icon-yes-alt {
+		fill: #0a0 !important;
 	}
 
+	.qm tbody tr td.qm-highlight,
+	.qm tbody tr.qm-highlight th,
+	.qm tbody tr.qm-highlight td {
+		background-color: var( --qm-cell-bg-highlight ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
+	}
+
+	.qm tbody tr.qm-odd td.qm-highlight,
+	.qm tbody tr.qm-odd.qm-highlight th,
+	.qm tbody tr.qm-odd.qm-highlight td {
+		background-color: var( --qm-cell-bg-highlight-dark ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
+	}
+
+	.qm tbody tr.qm-odd.qm-hovered th,
+	.qm tbody tr.qm-odd.qm-hovered td,
+	.qm tbody tr.qm-odd:hover th,
+	.qm tbody tr.qm-odd:hover td,
 	.qm tbody tr.qm-hovered th,
 	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
 	.qm tbody tr:hover td {
-		background: $qm-cell-bg-hover !important;
+		background: var( --qm-cell-bg-hover ) !important;
 	}
 
 	.qm thead th.qm-filtered select.qm-filter {
-		background-color: $qm-cell-bg-highlight !important;
-		color: $qm-cell-fg-highlight !important;
-	}
-
-	.qm tbody tr td.qm-highlight,
-	.qm tbody tr.qm-highlight td {
-		background-color: $qm-cell-bg-highlight !important;
-		border-color: $qm-cell-border-highlight !important;
-		box-shadow: inset 0 -1px $qm-cell-border-highlight !important;
-		color: $qm-cell-fg-highlight !important;
+		background-color: var( --qm-cell-bg-highlight ) !important;
+		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
 	.qm button.qm-filter-trigger,
@@ -864,54 +1098,49 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody .qm-warn a code,
 	.qm a code,
 	.qm a {
-		color: $qm-link-fg !important;
+		color: var( --qm-link-fg ) !important;
 		cursor: pointer !important;
 		text-decoration: none !important;
 
 		&:after,
 		&:focus,
 		&:hover {
-			color: $qm-link-fg-hover !important;
+			color: var( --qm-link-fg-hover ) !important;
+			text-decoration: underline !important;
+		}
+
+		&:active {
+			color: var( --qm-link-fg-active ) !important;
 			text-decoration: underline !important;
 		}
 	}
 
-	.qm a.qm-external-link:after,
-	.qm a.qm-link:after,
-	.qm a.qm-edit-link:after,
-	.qm button.qm-filter-trigger:after {
-		display: inline-block !important;
-		font-family: dashicons !important;
-		font-size: 13px !important;
-		left: 2px !important;
-		line-height: 15px !important;
-		position: relative !important;
-		text-decoration: none !important;
-		top: 2px !important;
-		visibility: hidden !important;
+	.qm a.qm-external-link,
+	.qm a.qm-link,
+	.qm a.qm-edit-link,
+	.qm button.qm-filter-trigger {
+		svg {
+			fill: var( --qm-link-fg-hover ) !important;
+			width: 16px;
+			height: 16px;
+			left: 2px !important;
+			position: relative !important;
+			text-decoration: none !important;
+			top: 2px !important;
+			visibility: hidden !important;
+		}
 	}
 
-	.qm a.qm-external-link:after,
-	.qm a.qm-link:hover:after,
-	.qm a.qm-link:focus:after,
-	.qm a.qm-edit-link:hover:after,
-	.qm a.qm-edit-link:focus:after,
-	.qm button.qm-filter-trigger:hover:after,
-	.qm button.qm-filter-trigger:focus:after {
-		visibility: visible !important;
-	}
-
-	.qm button.qm-filter-trigger:after {
-		content: '\f536' !important;
-	}
-
-	.qm a.qm-edit-link:after {
-		content: '\f464' !important;
-	}
-
-	.qm a.qm-external-link:after,
-	.qm a.qm-link:after {
-		content: '\f504' !important;
+	.qm a.qm-external-link,
+	.qm a.qm-link:hover,
+	.qm a.qm-link:focus,
+	.qm a.qm-edit-link:hover,
+	.qm a.qm-edit-link:focus,
+	.qm button.qm-filter-trigger:hover,
+	.qm button.qm-filter-trigger:focus {
+		svg {
+			visibility: visible !important;
+		}
 	}
 
 	#qm-ajax-errors {
@@ -930,7 +1159,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm label {
-		color: $qm-panel-fg !important;
+		color: var( --qm-panel-fg ) !important;
 		cursor: pointer !important;
 		font-size: 12px !important;
 		font-style: normal !important;
@@ -956,27 +1185,32 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: none !important;
 	}
 
+	.qm-title-heading select,
 	.qm select.qm-filter {
 		-webkit-appearance: menulist !important;
 		-moz-appearance: menulist !important;
 		appearance: menulist !important;
-		background: $qm-table-header-bg !important;
+		background: var( --qm-table-header-bg ) !important;
 		border: none !important;
-		color: $qm-panel-fg !important;
+		color: var( --qm-panel-fg ) !important;
 		cursor: pointer !important;
 		display: block !important;
 		float: none !important;
 		height: auto !important;
-		letter-spacing: normal !important;
+		letter-spacing: -0.1px !important;
 		margin: 0 0 0 5px !important;
-		max-width: 10em !important;
-		outline: 1px solid $qm-panel-border !important;
+		max-width: 12em !important;
+		outline: 1px solid var( --qm-panel-border ) !important;
 		padding: 0 !important;
 		width: auto !important;
 	}
 
+	.qm-title-heading select {
+		max-width: unset !important;
+	}
+
 	.qm select.qm-filter:hover {
-		background: $qm-container-bg !important;
+		background: var( --qm-cell-bg-hover ) !important;
 	}
 
 	.qm-hide,
@@ -991,7 +1225,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm-hide-name,
 	.qm-hide-type,
 	.qm-hide-caller,
-	.qm-hide-component {
+	.qm-hide-component,
+	.qm-hide-host {
 		display: none !important;
 	}
 
@@ -999,10 +1234,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm thead th.qm-sortable-column {
 		cursor: pointer !important;
-	}
 
-	.qm thead th.qm-sortable-column:hover {
-		background: $qm-container-bg !important;
+		&:hover {
+			background: var( --qm-container-bg ) !important;
+		}
 	}
 
 	.qm .qm-sort-heading {
@@ -1012,42 +1247,40 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm .qm-sort-controls {
 		flex-shrink: 0 !important;
 		text-align: right !important;
+
+		.qm-icon {
+			margin-right: 0 !important;
+			fill: #ccc !important;
+		}
 	}
 
-	.qm .qm-sortable-column .qm-sort-arrow {
-		color: #ccc !important;
-		display: block !important;
-		font-family: dashicons !important;
-		font-size: 23px !important;
-		height: 10px !important;
-		margin: 0 !important;
-		width: 16px !important;
+	.qm .qm-sorted-desc .qm-sort-controls,
+	.qm .qm-sorted-asc .qm-sort-controls {
+		svg {
+			fill: var( --qm-container-fg ) !important;
+		}
 	}
 
-	.qm  .qm-sorted-desc .qm-sort-arrow,
-	.qm  .qm-sorted-asc .qm-sort-arrow {
-		color: $qm-container-fg !important;
+	.qm thead th.qm-sortable-column:hover .qm-sort-controls {
+		svg {
+			fill: var( --qm-panel-menu-bg-selected ) !important;
+		}
 	}
 
-	.qm thead th.qm-sortable-column:hover .qm-sort-arrow {
-		color: $qm-panel-menu-bg-selected !important;
-	}
-
-	.qm .qm-sortable-column .qm-sort-arrow::before {
-		content: "\f140" !important;
-		position: absolute !important;
-		right: 0 !important;
-		top: 4px !important;
-	}
-
-	.qm .qm-sortable-column.qm-sorted-asc .qm-sort-arrow::before {
-		content: "\f142" !important;
+	.qm .qm-sortable-column.qm-sorted-asc .qm-sort-controls {
+		transform: scaleY(-1) !important;
 	}
 
 	.qm button:focus,
 	.qm a:focus,
 	.qm select:focus {
-		box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8) !important;
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover ) !important;
+	}
+
+	.qm button:active,
+	.qm a:active,
+	.qm select:active {
+		box-shadow: none !important;
 	}
 
 	.qm-screen-reader-text,
@@ -1086,7 +1319,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm.qm-debug-bar {
 		textarea,
 		pre {
-			border: 1px solid $qm-panel-separator !important;
+			border: 1px solid var( --qm-panel-separator ) !important;
 			margin: 4px 0 !important;
 			padding: 10px !important;
 		}
@@ -1109,23 +1342,28 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		h3 {
+			border-left: 1px solid var( --qm-panel-separator ) !important;
 			clear: none !important;
-			float: left !important; /* why */
+			float: left !important;
 			font-size: 14px !important;
-			margin: 3px 8px 15px 0 !important;
+			margin: 3px 0 15px !important;
 			min-width: 150px !important;
-			padding: 5px 10px 15px !important;
+			padding: 5px 15px 15px !important;
 			text-align: center !important;
-		}
 
-		h3 small {
-			font-size: 14px !important;
-		}
+			&:first-child {
+				border-left: none !important;
+			}
 
-		h3 span {
-			display: block !important;
-			margin-bottom: 8px !important;
-			white-space: nowrap !important;
+			small {
+				font-size: 14px !important;
+			}
+
+			span {
+				display: block !important;
+				margin-bottom: 8px !important;
+				white-space: nowrap !important;
+			}
 		}
 
 		h4 {
@@ -1135,11 +1373,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 		.qm-debug-bar-output {
 			position: relative !important;
-		}
 
-		.qm-debug-bar-output table {
-			margin-bottom: 4px !important;
-			margin-top: 4px !important;
+			table {
+				margin-bottom: 4px !important;
+				margin-top: 4px !important;
+			}
 		}
 	}
 
@@ -1158,27 +1396,123 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin: 0 !important;
 	}
 
-	// Broken output handling
-
-	&.qm-broken #qm-title {
-		cursor: default !important;
+	#debug-menu-target-Debug_Bar_Rewrite_Testing_Panel {
+		padding: 10px 0 !important;
 	}
 
-	#qm-broken,
-	&.qm-broken .qm-title-button {
+	#debug-menu-target-EP_Debug_Bar_ElasticPress {
+		li {
+			border-top: 1px solid var( --qm-panel-separator ) !important;
+			line-height: 20px !important;
+			padding: 20px 0 !important;
+
+			.dashicons:hover {
+				background-color: var( --qm-panel-menu-bg-hover ) !important;
+			}
+		}
+	}
+
+	// Broken output handling
+
+	#qm-broken {
 		display: none !important;
 	}
 
+	&.qm-broken #qm-title {
+		cursor: default !important;
+
+		.qm-title-heading {
+			border-right: none !important;
+		}
+	}
+
+	&.qm-broken .qm td .qm-toggled,
 	&.qm-broken #qm-broken,
 	&.qm-broken .qm {
 		display: block !important;
 	}
 
+	&.qm-broken #qm-panel-menu,
+	&.qm-broken #qm-settings,
+	&.qm-broken #qm-title .qm-title-button {
+		display: none !important;
+	}
+
 	&.qm-broken .qm {
 		margin-bottom: 50px !important;
+
+		button.qm-filter-trigger {
+			color: var( --qm-container-fg ) !important;
+			cursor: text !important;
+
+			&:after {
+				display: none !important;
+			}
+
+			&:focus,
+			&:hover,
+			&:active {
+				text-decoration: none !important;
+			}
+		}
 	}
 
 	&.qm-broken #qm-broken h2 {
 		padding: 20px !important;
+	}
+}
+
+#qm-fatal {
+	margin: 1em !important;
+	/* @TODO */
+	border: 2px solid #c00 !important;
+	/* @TODO */
+	box-shadow: 0 0 0 2px #fff;
+	/* @TODO */
+	background: #fff !important;
+	max-width: 700px !important;
+	clear: both !important;
+	position: absolute !important;
+	z-index: 99999 !important;
+
+	h2 {
+		font-size: 12px !important;
+		font-weight: normal !important;
+		padding: 5px !important;
+		/* @TODO */
+		background: #f3f3f3 !important;
+		margin: 0 !important;
+	}
+
+	.qm-icon path {
+		fill: #c00 !important;
+	}
+
+	ol,
+	p {
+		font-size: 12px !important;
+		padding: 0 !important;
+		margin: 1em !important;
+	}
+
+	ol {
+		padding: 0 0 1em 1em !important;
+	}
+
+	li {
+		margin: 0 0 0.7em !important;
+		list-style: none !important;
+	}
+
+	.qm-info {
+		/* @TODO */
+		color: #666 !important;
+	}
+}
+
+body#error-page {
+	#qm-fatal {
+		margin: 0 !important;
+		border: none !important;
 	}
 }
