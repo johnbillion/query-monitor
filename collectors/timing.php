@@ -163,6 +163,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	}
 
 	/**
+	 * @param string $start_lap_stop
 	 * @return void
 	 */
 	public function hook( $start_lap_stop ) {
@@ -194,9 +195,32 @@ class QM_Collector_Timing extends QM_DataCollector {
 
 }
 
-function qm_start() { QM_Collectors::get( 'timing' )->hook( 'start' ); }
-function qm_lap()   { QM_Collectors::get( 'timing' )->hook( 'lap'   ); }
-function qm_stop()  { QM_Collectors::get( 'timing' )->hook( 'stop'  ); }
+/**
+ * @return void
+ */
+function qm_start() {
+	/** @var QM_Collector_Timing */
+	$collector = QM_Collectors::get( 'timing' );
+	$collector->hook( 'start' );
+}
+
+/**
+ * @return void
+ */
+function qm_lap() {
+	/** @var QM_Collector_Timing */
+	$collector = QM_Collectors::get( 'timing' );
+	$collector->hook( 'lap' );
+}
+
+/**
+ * @return void
+ */
+function qm_stop() {
+	/** @var QM_Collector_Timing */
+	$collector = QM_Collectors::get( 'timing' );
+	$collector->hook( 'stop' );
+}
 
 # Load early in case a plugin is setting the function to be checked when it initialises instead of after the `plugins_loaded` hook
 QM_Collectors::add( new QM_Collector_Timing() );
