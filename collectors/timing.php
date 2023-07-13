@@ -84,18 +84,34 @@ class QM_Collector_Timing extends QM_Collector {
 		}
 	}
 
-	function hook( $start_lap_stop ) {
-		if ( ! doing_action() )
+	/**
+	 * @return void
+	 */
+	public function hook( $start_lap_stop ) {
+		if ( ! doing_action() ) {
 			return;
+		}
 
 		global $wp_filter;
 
-		$function = '`' . current_action() . '` action';
-		$priority = $wp_filter[current_action()]->current_priority();
+		$function = 'Action: ' . current_action();
+		$priority = $wp_filter[ current_action() ]->current_priority();
 
-		'start' === $start_lap_stop && $this->action_function_time_start( $function );
-		  'lap' === $start_lap_stop && $this->action_function_time_lap(   $function, 'priority ' . $priority );
-		 'stop' === $start_lap_stop && $this->action_function_time_stop(  $function );
+		switch ( $start_lap_stop ) {
+
+			case 'start':
+				$this->action_function_time_start( $function );
+				break;
+
+			case 'lap':
+				$this->action_function_time_lap( $function, 'priority ' . $priority );
+				break;
+
+			case 'stop':
+				$this->action_function_time_stop( $function );
+				break;
+
+		}
 	}
 
 }
