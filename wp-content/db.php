@@ -46,6 +46,17 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
+# Don't load QM during plugin updates to prevent function signature changes causing issues between versions.
+if ( is_admin() ) {
+	if ( isset( $_GET['action'] ) && 'upgrade-plugin' === $_GET['action'] ) {
+		return;
+	}
+
+	if ( isset( $_POST['action'] ) && 'update-plugin' === $_POST['action'] ) {
+		return;
+	}
+}
+
 // This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 $qm_dir = dirname( dirname( __FILE__ ) );
 $qm_php = "{$qm_dir}/classes/PHP.php";

@@ -77,6 +77,17 @@ if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	return;
 }
 
+# Don't load QM during plugin updates to prevent function signature changes causing issues between versions.
+if ( is_admin() ) {
+	if ( isset( $_GET['action'] ) && 'upgrade-plugin' === $_GET['action'] ) {
+		return;
+	}
+
+	if ( isset( $_POST['action'] ) && 'update-plugin' === $_POST['action'] ) {
+		return;
+	}
+}
+
 unset( $qm_dir );
 
 QueryMonitor::init( __FILE__ )->set_up();
