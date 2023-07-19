@@ -237,10 +237,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		// Only load if the wp-admin bar is visible.
 		if ( is_admin_bar_showing() ) {
 			wp_enqueue_script(
-				'web-vitals',
+				'qm-web-vitals',
 				$this->qm->plugin_url( 'assets/web-vitals.js' ),
 				array(),
-				QM_VERSION,
+				'3.3.2',
 				true
 			);
 		}
