@@ -73,7 +73,7 @@ class QM_Output_Web_Vitals extends QM_Output_Html {
 				"<td>" + webVital.value + "</td>" +
 				"<td>" + webVital.rating + "</td>" +
 				"<td><pre class=\"qm-pre-wrap\"><code>" + JSON.stringify( webVital ) + "</code></pre></td>";
-    			webVitalsDiv.querySelector( ".waiting" )?.remove();
+			webVitalsDiv.querySelector( ".waiting" )?.remove();
 			webVitalsDiv.appendChild( divToAdd );
 		}
 
