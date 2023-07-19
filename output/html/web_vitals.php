@@ -37,7 +37,7 @@ class QM_Output_Web_Vitals extends QM_Output_Html {
 		if ( ! wp_script_is( 'qm-web-vitals', 'enqueued' ) && ! wp_script_is( 'qm-web-vitals', 'done' ) ) {
 			$this->before_non_tabular_output();
 			/* translators: %s: Script handle. */
-			$notice = sprintf( __( 'Script %s is not available.' ), 'query-monitor' ), 'web-vitals' );
+			$notice = sprintf( __( 'Script %s is not available.', 'query-monitor' ), 'qm-web-vitals' );
 			echo $this->build_notice( $notice );
 			$this->after_non_tabular_output();
 			return;
