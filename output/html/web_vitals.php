@@ -34,6 +34,15 @@ class QM_Output_Web_Vitals extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
+		if ( ! wp_script_is( 'qm-web-vitals', 'enqueued' ) && ! wp_script_is( 'qm-web-vitals', 'done' ) ) {
+			$this->before_non_tabular_output();
+			/* translators: %s: Script handle. */
+			$notice = sprintf( __( 'Script %s is not available.', 'query-monitor' ), 'qm-web-vitals' );
+			echo $this->build_notice( $notice );
+			$this->after_non_tabular_output();
+			return;
+		}
+
 		$this->before_tabular_output();
 		echo '<thead>';
 
@@ -47,19 +56,24 @@ class QM_Output_Web_Vitals extends QM_Output_Html {
 		echo '</thead>';
 
 		echo '<tbody id="qm-web-vitals-inner">';
+			echo '<tr class="waiting">';
+				echo '<td colspan="4">';
+					echo '<div class="qm-none"><p>Waiting for data...</p></div>';
+				echo '</td>';
+			echo '</tr>';
 		echo '</tbody>';
 
 		$this->after_tabular_output();
 		echo '<script>
 		// Insert the web vital into the qm-web-vitals div.
 		function insertWebVital( webVital ) {
-			console.log( { webVital } );
 			var webVitalsDiv = document.getElementById( "qm-web-vitals-inner" );
 			var divToAdd = document.createElement("tr");
 			divToAdd.innerHTML = "<td>" + webVital.name + "</td>" +
 				"<td>" + webVital.value + "</td>" +
 				"<td>" + webVital.rating + "</td>" +
 				"<td><pre class=\"qm-pre-wrap\"><code>" + JSON.stringify( webVital ) + "</code></pre></td>";
+			webVitalsDiv.querySelector( ".waiting" )?.remove();
 			webVitalsDiv.appendChild( divToAdd );
 		}
 
