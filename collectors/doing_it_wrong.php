@@ -70,7 +70,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return bool
 	 */
 	public function maybe_prevent_error( $trigger ) {
-		if ( current_user_can( 'view_query_monitor' ) ) {
+		if ( function_exists( 'wp_get_current_user' ) && current_user_can( 'view_query_monitor' ) ) {
 			return false;
 		}
 

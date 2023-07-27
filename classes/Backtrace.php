@@ -51,6 +51,7 @@ class QM_Backtrace {
 		'_deprecated_function' => true,
 		'_deprecated_hook' => true,
 		'dbDelta' => true,
+		'maybe_create_table' => true,
 	);
 
 	/**
