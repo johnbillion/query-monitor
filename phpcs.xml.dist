@@ -49,6 +49,8 @@
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
 
+		<!-- QM looks at several superglobals -->
+		<exclude name="WordPress.Security.NonceVerification.Missing" />
 	</rule>
 
 	<rule ref="WordPress-Docs" />
