@@ -360,7 +360,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$ltime = ( $response['end'] - $request['start'] );
 			$redirected_to = null;
 
-			if ( isset( $response['info'] ) && is_string( $response['info']['url'] ) && ! empty( $response['info']['url'] ) ) {
+			if ( isset( $response['info'] ) && ! empty( $response['info']['url'] ) && is_string( $response['info']['url'] ) ) {
 				// Ignore query variables when detecting a redirect.
 				$from = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $request['url'] ) );
 				$to = untrailingslashit( preg_replace( '#\?[^$]+$#', '', $response['info']['url'] ) );
