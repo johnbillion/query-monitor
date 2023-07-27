@@ -341,11 +341,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			$file = esc_html( $e['file'] );
 		}
 
-		$warning = QueryMonitor::icon( 'warning' );
-
 		printf(
-			'<p>%1$s <b>%2$s</b>: %3$s<br>in <b>%4$s</b> on line <b>%5$d</b></p>',
-			$warning,
+			'<p><b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
 			$file,
