@@ -69,7 +69,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '<th scope="col" class="qm-filterable-column">';
 		$args = array(
 			'prepend' => array(
-				'local' => $data->host,
+				'local' => $data->full_host,
 			),
 		);
 		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
