@@ -93,6 +93,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'plugin_locale',
 			'pre_determine_locale',
 			'pre_load_script_translations',
+			'pre_load_textdomain',
 			'theme_locale',
 		);
 	}
