@@ -10,9 +10,18 @@ on:
   pull_request:
     branches:
       - '**'
-  # Once weekly on Thursdays at 11:00 UTC.
   schedule:
-    - cron: '0 11 * * 4'
+    # Once weekly on Thursdays at 04:00 UTC.
+    #
+    #        ┌───────────── minute           (0 - 59)
+    #        │  ┌────────── hour             (0 - 23)
+    #        │  │  ┌─────── day of the month (1 - 31)
+    #        │  │  │  ┌──── month            (1 - 12 or JAN-DEC)
+    #        │  │  │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
+    #        │  │  │  │  │
+    #        │  │  │  │  │
+    #        │  │  │  │  │
+    - cron: '0  4  *  *  4'
   workflow_dispatch:
 
 jobs:
@@ -21,7 +30,7 @@ jobs:
     strategy:
       matrix:
         wp:
-          - 'nightly'
+          - 'dev-nightly'
           - '6.2'
           - '5.6'
         php:
@@ -32,10 +41,16 @@ jobs:
             php: '8.1'
           - wp: '6.2'
             php: '8.2'
-          - wp: 'nightly'
+          - wp: 'dev-nightly'
             php: '8.1'
-          - wp: 'nightly'
+          - wp: 'dev-nightly'
             php: '8.2'
+        dev:
+          - ${{ github.ref_name == 'develop' }}
+        exclude:
+          # Only run the dev-nightly tests on the develop branch.
+          - wp: 'dev-nightly'
+            dev: false
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
     with:
