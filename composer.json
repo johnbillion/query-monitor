@@ -101,7 +101,7 @@
 			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:start": [
-			"COMPOSE_PROJECT_NAME=query-monitor docker compose up -d"
+			"COMPOSE_PROJECT_NAME=query-monitor docker compose up --quiet-pull --detach"
 		],
 		"test:stop": [
 			"COMPOSE_PROJECT_NAME=query-monitor docker compose down"
