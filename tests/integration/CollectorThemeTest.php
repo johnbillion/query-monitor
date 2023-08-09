@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class CollectorTheme extends Test {
+class CollectorThemeTest extends Test {
 
 	public function testTemplateHierarchyAssumptionsAreAccurate(): void {
 

@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class DispatcherHTML extends Test {
+class DispatcherHtmlTest extends Test {
 
 	/** @var \QM_Dispatcher_Html|null */
 	protected $html = null;
