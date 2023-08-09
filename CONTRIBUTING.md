@@ -4,15 +4,19 @@
 
 Code contributions, bug reports, and feedback are very welcome. These should be submitted through [the GitHub repository](https://github.com/johnbillion/query-monitor). Development happens in the `develop` branch, and any pull requests should be made against that branch please.
 
-* [Reporting Security Issues](#reporting-security-issues)
-* [Setting up Locally](#setting-up-locally)
-* [Building the Assets](#building-the-assets)
-* [Running the Tests](#running-the-tests)
-* [Releasing a New Version](#releasing-a-new-version)
+## Reviews on WordPress.org
+
+If you enjoy using Query Monitor I would greatly appreciate it <a href="https://wordpress.org/support/plugin/query-monitor/reviews/">if you left a positive review on the WordPress.org Plugin Directory</a>. This is the fastest and easiest way to contribute to Query Monitor 😄.
 
 ## Reporting Security Issues
 
 If you discover a security issue in Query Monitor, please report it to [the security program on HackerOne](https://hackerone.com/johnblackbourn). Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
+
+## Inclusivity and Code of Conduct
+
+Contributions to Query Monitor are welcome from anyone. Whether you are new to Open Source or a seasoned veteran, all constructive contribution is welcome and I'll endeavour to support you when I can.
+
+This project is released with <a href="https://github.com/johnbillion/query-monitor/blob/develop/CODE_OF_CONDUCT.md">a contributor code of conduct</a> and by participating in this project you agree to abide by its terms. The code of conduct is nothing to worry about, if you are a respectful human being then all will be good.
 
 ## Setting up Locally
 
