@@ -23,6 +23,10 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 * [Composer](https://getcomposer.org/)
 * [Node](https://nodejs.org/)
 
+To run the tests, you'll also need:
+
+* [Docker Desktop](https://www.docker.com/desktop) running Docker Compose version 2.20 or higher
+
 ### Setup
 
 1. Install the PHP dependencies:
