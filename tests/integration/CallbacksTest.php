@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Callbacks extends Test {
+class CallbacksTest extends Test {
 
 	/**
 	 * @param mixed $function
