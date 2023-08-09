@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Utils extends Test {
+class UtilsTest extends Test {
 
 	/**
 	 * @dataProvider dataClientVersion
