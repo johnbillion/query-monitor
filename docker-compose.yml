@@ -1,6 +1,6 @@
 version: '3.1'
 
 include:
-   -
-     path: vendor/johnbillion/plugin-infrastructure/tests/docker-compose.yml
-     project_directory: .
+  -
+    path: vendor/johnbillion/plugin-infrastructure/tests/docker-compose.yml
+    project_directory: .
