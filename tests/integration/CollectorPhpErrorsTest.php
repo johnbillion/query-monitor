@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class CollectorPHPErrors extends Test {
+class CollectorPhpErrorsTest extends Test {
 
 	/**
 	 * @var \QM_Collector_PHP_Errors

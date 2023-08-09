@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Plugin extends Test {
+class PluginTest extends Test {
 	/**
 	 * @var ?array{
 	 *   stable_tag: string,
