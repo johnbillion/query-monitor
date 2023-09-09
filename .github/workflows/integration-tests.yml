@@ -56,12 +56,6 @@ jobs:
           # Oldest supported on PHP 7.4:
           - wp: '5.5'
             php: '7.4'
-        dev:
-          - ${{ github.ref_name == 'develop' }}
-        exclude:
-          # Only run the nightly tests on the develop branch.
-          - wp: 'nightly'
-            dev: false
       fail-fast: false
     with:
       wp: ${{ matrix.wp }}
