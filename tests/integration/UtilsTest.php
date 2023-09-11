@@ -14,7 +14,7 @@ class UtilsTest extends Test {
 
 		$ver = \QM_Util::get_client_version( $client );
 
-		self::assertEquals( $expected, array_values( $ver ) );
+		self::assertSame( $expected, array_values( $ver ) );
 
 	}
 
