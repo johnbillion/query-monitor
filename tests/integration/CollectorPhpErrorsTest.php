@@ -194,7 +194,7 @@ class CollectorPhpErrorsTest extends Test {
 		// errors:
 		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'notice', $actual->errors );
-		self::assertEquals( 2, count( $actual->errors['notice'] ) );
+		self::assertSame( 2, count( $actual->errors['notice'] ) );
 
 		// silenced errors:
 		self::assertTrue( property_exists( $actual, 'silenced' ) );
@@ -240,12 +240,12 @@ class CollectorPhpErrorsTest extends Test {
 		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'warning', $actual->errors );
 		self::assertArrayNotHasKey( 'notice', $actual->errors );
-		self::assertEquals( 1, count( $actual->errors['warning'] ) );
+		self::assertSame( 1, count( $actual->errors['warning'] ) );
 
 		// silenced errors:
 		self::assertTrue( property_exists( $actual, 'silenced' ) );
 		self::assertArrayHasKey( 'notice', $actual->silenced );
 		self::assertArrayNotHasKey( 'warning', $actual->silenced );
-		self::assertEquals( 1, count( $actual->silenced['notice'] ) );
+		self::assertSame( 1, count( $actual->silenced['notice'] ) );
 	}
 }
