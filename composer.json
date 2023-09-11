@@ -93,7 +93,7 @@
 			"integration-tests"
 		],
 		"test:phpcs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs53.json --basepath='./' --standard=phpcs53.xml",
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs56.json --basepath='./' --standard=phpcs56.xml",
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' ."
 		],
 		"test:phpstan": [

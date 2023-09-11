@@ -28,17 +28,33 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 	/**
 	 * @return array<string, mixed>
+	 * @phpstan-return array{
+	 *   total: int,
+	 *   time: float,
+	 *   queries: mixed[],
+	 *   errors?: array{
+	 *     total: int,
+	 *     errors: array<int, array<string, mixed>>,
+	 *   },
+	 *   dupes?: array{
+	 *     total: int,
+	 *     queries: array<string, int[]>,
+	 *   },
+	 * }|array{}
 	 */
 	public function get_output() {
-		$output = array();
 		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data->wpdb ) ) {
-			return $output;
+		if ( empty( $data->rows ) ) {
+			return array();
 		}
 
-		$output['wpdb'] = $this->output_queries( $data->wpdb );
+		$output = array(
+			'total' => $data->total_qs,
+			'time' => round( $data->total_time, 4 ),
+			'queries' => array_map( array( $this, 'output_query_row' ), $data->rows ),
+		);
 
 		if ( ! empty( $data->errors ) ) {
 			$output['errors'] = array(
@@ -63,35 +79,6 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		}
 
 		return $output;
-	}
-
-	/**
-	 * @param stdClass $db
-	 * @return array
-	 * @phpstan-return array{
-	 *   total: int,
-	 *   time: float,
-	 *   queries: mixed[],
-	 * }|array{}
-	 */
-	protected function output_queries( stdClass $db ) {
-		$this->query_row = 0;
-
-		$output = array();
-
-		if ( empty( $db->rows ) ) {
-			return $output;
-		}
-
-		foreach ( $db->rows as $row ) {
-			$output[] = $this->output_query_row( $row );
-		}
-
-		return array(
-			'total' => $db->total_qs,
-			'time' => round( $db->total_time, 4 ),
-			'queries' => $output,
-		);
 	}
 
 	/**
