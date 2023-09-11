@@ -117,7 +117,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			return;
 		}
 
-		$rows = array();
 		$types = array();
 		$total_time = 0;
 		$has_result = false;
@@ -143,8 +142,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		 * } $query
 		 */
 		foreach ( $wpdb->queries as $query ) {
-			$has_trace = false;
-			$has_result = false;
 			$callers = array();
 
 			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
@@ -200,27 +197,13 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 			$this->log_type( $type );
 			$this->log_caller( $caller_name, $ltime, $type );
-
 			$this->maybe_log_dupe( $sql, $i );
 
 			if ( $component ) {
 				$this->log_component( $component, $ltime, $type );
 			}
 
-			if ( ! isset( $types[ $type ]['total'] ) ) {
-				$types[ $type ]['total'] = 1;
-			} else {
-				$types[ $type ]['total']++;
-			}
-
-			if ( ! isset( $types[ $type ]['callers'][ $caller ] ) ) {
-				$types[ $type ]['callers'][ $caller ] = 1;
-			} else {
-				$types[ $type ]['callers'][ $caller ]++;
-			}
-
 			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
-
 			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {
@@ -237,24 +220,19 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$this->data->expensive[] = $row;
 			}
 
-			$rows[ $i ] = $row;
+			$this->data->rows[ $i ] = $row;
 			$i++;
-
 		}
 
-		$total_qs = count( $rows );
-
-		$this->data->total_qs   += $total_qs;
-		$this->data->total_time += $total_time;
-
-		$has_main_query = wp_list_filter( $rows, array(
+		$has_main_query = wp_list_filter( $this->data->rows, array(
 			'is_main_query' => true,
 		) );
 
-		# @TODO put errors in here too:
-		# @TODO proper class instead of (object)
-		$this->data->wpdb = (object) compact( 'rows', 'types', 'has_result', 'has_trace', 'total_time', 'total_qs', 'has_main_query' );
-
+		$this->data->total_qs = count( $this->data->rows );
+		$this->data->total_time = $total_time;
+		$this->data->has_result = $has_result;
+		$this->data->has_trace = $has_trace;
+		$this->data->has_main_query = ! empty( $has_main_query );
 	}
 
 	/**
