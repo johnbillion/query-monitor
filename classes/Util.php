@@ -310,6 +310,10 @@ class QM_Util {
 		}
 
 		if ( 'other' === $type ) {
+			if ( ! function_exists( '_get_dropins' ) ) {
+				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
+			}
+
 			$dropins = array_keys( _get_dropins() );
 
 			foreach ( $dropins as $dropin ) {
