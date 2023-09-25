@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Capabilities extends Test {
+class CapsTest extends Test {
 
 	/**
 	 * @dataProvider dataUserRolesAccess

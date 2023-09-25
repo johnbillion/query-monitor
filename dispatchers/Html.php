@@ -340,7 +340,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			require_once $file;
 		}
 
-		/** @var QM_Output_Html[] */
+		/** @var array<string, QM_Output_Html> $outputters */
 		$outputters = $this->get_outputters( 'html' );
 
 		$this->outputters = $outputters;

@@ -17,6 +17,7 @@ class QM_Data_HTTP extends QM_Data {
 	 *   component: QM_Component,
 	 *   filtered_trace: array<int, array<string, mixed>>,
 	 *   info: array<string, mixed>|null,
+	 *   host: string,
 	 *   local: bool,
 	 *   ltime: float,
 	 *   redirected_to: string|null,

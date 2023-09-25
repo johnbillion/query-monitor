@@ -74,6 +74,11 @@ class QM_Data_Assets extends QM_Data {
 	/**
 	 * @var string
 	 */
+	public $full_host;
+
+	/**
+	 * @var string
+	 */
 	public $host;
 
 	/**

@@ -52,7 +52,22 @@ class QM_Data_DB_Queries extends QM_Data {
 	 *   has_main_query: bool,
 	 * }
 	 */
-	public $wpdb;
+	public $rows;
+
+	/**
+	 * @var bool
+	 */
+	public $has_result;
+
+	/**
+	 * @var bool
+	 */
+	public $has_trace;
+
+	/**
+	 * @var bool
+	 */
+	public $has_main_query;
 
 	/**
 	 * @phpstan-var ?array<string, array{
