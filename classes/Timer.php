@@ -103,7 +103,7 @@ class QM_Timer {
 
 	/**
 	 * @return array<string, array<string, mixed>>
-	 * @phpstan-var array<string, array{
+	 * @phpstan-return array<string, array{
 	 *   time: float,
 	 *   time_used: float,
 	 *   memory: int,
