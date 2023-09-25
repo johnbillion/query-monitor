@@ -106,9 +106,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		}
 
 		$this->data->is_ssl = is_ssl();
-		$this->data->host = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data->full_host = wp_unslash( $_SERVER['HTTP_HOST'] );
+		$this->data->host = (string) parse_url( $this->data->full_host, PHP_URL_HOST );
 		$this->data->default_version = get_bloginfo( 'version' );
-		$this->data->port = (string) parse_url( $this->data->host, PHP_URL_PORT );
+		$this->data->port = (string) parse_url( $this->data->full_host, PHP_URL_PORT );
 
 		$positions = array(
 			'missing',
@@ -198,7 +199,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( $source instanceof WP_Error ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -299,6 +300,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;
 		$host = '';
+		$full_host = '';
 		$scheme = '';
 		$port = '';
 
@@ -319,14 +321,17 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$host = (string) parse_url( $source, PHP_URL_HOST );
 			$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
 			$port = (string) parse_url( $source, PHP_URL_PORT );
+			$full_host = $host;
+
+			if ( ! empty( $port ) ) {
+				$full_host .= ':' . $port;
+			}
 		}
 
-		$http_host = $data->host;
-		$http_port = $data->port;
-
-		if ( empty( $host ) && ! empty( $http_host ) ) {
-			$host = $http_host;
-			$port = $http_port;
+		if ( empty( $host ) ) {
+			$full_host = $data->full_host;
+			$host = $data->host;
+			$port = $data->port;
 		}
 
 		if ( $scheme && $data->is_ssl && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
@@ -345,7 +350,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$host = '';
 		}
 
-		$local = ( $http_host === $host );
+		$local = ( $data->full_host === $full_host );
 
 		return array( $host, $source, $local, $port );
 	}

@@ -10,13 +10,13 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.12.2
+ * Version:      3.13.1
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
- * Requires PHP: 7.2
+ * Requires PHP: 7.4
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.12.2' );
+define( 'QM_VERSION', '3.13.1' );
 
 $qm_dir = dirname( __FILE__ );
 
@@ -75,6 +75,17 @@ if ( 'cli' === php_sapi_name() && ! defined( 'QM_TESTS' ) ) {
 if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 	# Let's not load QM during cron events for the same reason as above.
 	return;
+}
+
+# Don't load QM during plugin updates to prevent function signature changes causing issues between versions.
+if ( is_admin() ) {
+	if ( isset( $_GET['action'] ) && 'upgrade-plugin' === $_GET['action'] ) {
+		return;
+	}
+
+	if ( isset( $_POST['action'] ) && 'update-plugin' === $_POST['action'] ) {
+		return;
+	}
 }
 
 unset( $qm_dir );

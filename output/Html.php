@@ -177,6 +177,7 @@ abstract class QM_Output_Html extends QM_Output {
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
@@ -190,7 +191,7 @@ abstract class QM_Output_Html extends QM_Output {
 				continue;
 			}
 
-			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key );
+			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key, true );
 		}
 
 		echo '</tbody>';
@@ -563,6 +564,8 @@ abstract class QM_Output_Html extends QM_Output {
 				return 'txmt://open/?url=file://%f&line=%l';
 			case 'netbeans':
 				return 'nbopen://%f:%l';
+			case 'nova':
+				return 'nova://open?path=%f&line=%l';
 			default:
 				return $default_format;
 		}
@@ -611,7 +614,7 @@ abstract class QM_Output_Html extends QM_Output {
 		 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 		 * @since 3.0.0
 		 *
-		 * @param string[] $file_map Array of file path mappings. Keys are the source paths and values are the replacement paths.
+		 * @param array<string, string> $file_map Array of file path mappings. Keys are the source paths and values are the replacement paths.
 		 */
 		return apply_filters( 'qm/output/file_path_map', array() );
 	}

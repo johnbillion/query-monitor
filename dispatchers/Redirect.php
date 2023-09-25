@@ -35,8 +35,10 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 
 		$this->before_output();
 
-		/* @var QM_Output_Headers[] */
-		foreach ( $this->get_outputters( 'headers' ) as $id => $output ) {
+		/** @var array<string, QM_Output_Headers> $outputters */
+		$outputters = $this->get_outputters( 'headers' );
+
+		foreach ( $outputters as $output ) {
 			$output->output();
 		}
 

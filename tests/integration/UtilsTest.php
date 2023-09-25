@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Utils extends Test {
+class UtilsTest extends Test {
 
 	/**
 	 * @dataProvider dataClientVersion
@@ -14,7 +14,7 @@ class Utils extends Test {
 
 		$ver = \QM_Util::get_client_version( $client );
 
-		self::assertEquals( $expected, array_values( $ver ) );
+		self::assertSame( $expected, array_values( $ver ) );
 
 	}
 

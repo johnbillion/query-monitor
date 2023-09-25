@@ -1,11 +1,11 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.2
-Tested up to: 6.2
-Stable tag: 3.12.2
+Requires at least: 5.5
+Tested up to: 6.3
+Stable tag: 3.13.1
 License: GPLv2 or later
-Requires PHP: 7.2
+Requires PHP: 7.4
 Donate link: https://github.com/sponsors/johnbillion
 
 Query Monitor is the developer tools panel for WordPress.
@@ -18,6 +18,8 @@ It includes some advanced features such as debugging of Ajax calls, REST API cal
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
+Query Monitor supports versions of WordPress up to three years old, and PHP version 7.4 or higher.
+
 For complete information, please see [the Query Monitor website](https://querymonitor.com/).
 
 Here's an overview of what's shown for each page load:
@@ -25,6 +27,7 @@ Here's an overview of what's shown for each page load:
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
 * The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
+* Usage of "Doing it Wrong" or "Deprecated" functionality in the code on your site.
 * Blocks and associated properties within post content and within full site editing (FSE).
 * Matched rewrite rules, associated query strings, and query vars.
 * Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.
@@ -34,6 +37,7 @@ Here's an overview of what's shown for each page load:
 * Environment information, including detailed information about PHP, the database, WordPress, and the web server.
 * The values of all WordPress conditional functions such as `is_single()`, `is_home()`, etc.
 * Transients that were updated.
+* Usage of `switch_to_blog()` and `restore_current_blog()` on Multisite installations.
 
 In addition:
 
@@ -120,9 +124,9 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
-### Is Query Monitor available on WordPress.com VIP?
+### Is Query Monitor available on WordPress VIP?
 
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress.com VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
+Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 

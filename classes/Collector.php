@@ -173,7 +173,7 @@ abstract class QM_Collector {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @param string[] $actions Array of action names that this panel concerns itself with.
+		 * @param array<int, string> $actions Array of action names that this panel concerns itself with.
 		 */
 		$concerned_actions = apply_filters( "qm/collect/concerned_actions/{$id}", $this->get_concerned_actions() );
 
@@ -185,7 +185,7 @@ abstract class QM_Collector {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @param string[] $filters Array of filter names that this panel concerns itself with.
+		 * @param array<int, string> $filters Array of filter names that this panel concerns itself with.
 		 */
 		$concerned_filters = apply_filters( "qm/collect/concerned_filters/{$id}", $this->get_concerned_filters() );
 
@@ -197,7 +197,7 @@ abstract class QM_Collector {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @param string[] $options Array of option names that this panel concerns itself with.
+		 * @param array<int, string> $options Array of option names that this panel concerns itself with.
 		 */
 		$concerned_options = apply_filters( "qm/collect/concerned_options/{$id}", $this->get_concerned_options() );
 
@@ -209,20 +209,20 @@ abstract class QM_Collector {
 		 *
 		 * @since 3.3.0
 		 *
-		 * @param string[] $constants Array of constant names that this panel concerns itself with.
+		 * @param array<int, string> $constants Array of constant names that this panel concerns itself with.
 		 */
 		$concerned_constants = apply_filters( "qm/collect/concerned_constants/{$id}", $this->get_concerned_constants() );
 
 		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
-				$this->concerned_actions[ $action ] = QM_Hook::process( $action, $wp_filter, true, false );
+				$this->concerned_actions[ $action ] = QM_Hook::process( $action, 'action', $wp_filter, true, false );
 			}
 			$tracked[] = $action;
 		}
 
 		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
-				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
+				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
 			}
 			$tracked[] = $filter;
 		}
@@ -244,7 +244,7 @@ abstract class QM_Collector {
 					$option
 				);
 				if ( has_filter( $filter ) ) {
-					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, $wp_filter, true, false );
+					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
 				}
 				$tracked[] = $filter;
 			}
