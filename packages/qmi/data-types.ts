@@ -103,6 +103,7 @@ export interface Assets {
 	dependents: string[];
 	footer: string[];
 	header: string[];
+	full_host: string;
 	host: string;
 	is_ssl: boolean;
 	missing_dependencies: string[];
@@ -255,7 +256,7 @@ export interface DB_Queries {
 	expensive?: {
 		[k: string]: unknown;
 	}[];
-	wpdb?: {
+	rows?: {
 		rows: {
 			caller: {
 				[k: string]: unknown;
@@ -283,6 +284,9 @@ export interface DB_Queries {
 		has_main_query: boolean;
 		[k: string]: unknown;
 	};
+	has_result: boolean;
+	has_trace: boolean;
+	has_main_query: boolean;
 	times?: {
 		[k: string]: {
 			caller: string;
@@ -333,6 +337,7 @@ export interface Environment {
 	wp: {
 		version: string;
 		environment_type?: string;
+		development_mode?: string;
 		constants: {
 			[k: string]: string;
 		};
@@ -388,6 +393,7 @@ export interface HTTP {
 			info: {
 				[k: string]: unknown;
 			} | null;
+			host: string;
 			local: boolean;
 			ltime: number;
 			redirected_to: string | null;

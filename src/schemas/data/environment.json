@@ -138,6 +138,9 @@
 				"environment_type": {
 					"type": "string"
 				},
+				"development_mode": {
+					"type": "string"
+				},
 				"constants": {
 					"type": "object",
 					"additionalProperties": {

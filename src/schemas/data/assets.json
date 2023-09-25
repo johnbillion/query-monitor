@@ -12,6 +12,7 @@
 		"dependents",
 		"footer",
 		"header",
+		"full_host",
 		"host",
 		"is_ssl",
 		"missing_dependencies",
@@ -100,6 +101,9 @@
 			"items": {
 				"type": "string"
 			}
+		},
+		"full_host": {
+			"type": "string"
 		},
 		"host": {
 			"type": "string"

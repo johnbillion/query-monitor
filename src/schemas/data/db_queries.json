@@ -7,6 +7,9 @@
 	"required": [
 		"total_qs",
 		"total_time",
+		"has_result",
+		"has_trace",
+		"has_main_query",
 		"errors"
 	],
 	"properties": {
@@ -28,7 +31,7 @@
 				"type": "object"
 			}
 		},
-		"wpdb": {
+		"rows": {
 			"phpStanType": "object",
 			"type": "object",
 			"properties": {
@@ -150,6 +153,15 @@
 				"has_trace",
 				"has_main_query"
 			]
+		},
+		"has_result": {
+			"type": "boolean"
+		},
+		"has_trace": {
+			"type": "boolean"
+		},
+		"has_main_query": {
+			"type": "boolean"
 		},
 		"times": {
 			"type": "object",

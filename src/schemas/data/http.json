@@ -45,6 +45,9 @@
 						],
 						"phpType": "array<string, mixed>|null"
 					},
+					"host": {
+						"type": "string"
+					},
 					"local": {
 						"type": "boolean"
 					},
@@ -76,6 +79,7 @@
 					"args",
 					"component",
 					"filtered_trace",
+					"host",
 					"info",
 					"local",
 					"ltime",
