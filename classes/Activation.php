@@ -32,6 +32,10 @@ class QM_Activation extends QM_Plugin {
 		$db = WP_CONTENT_DIR . '/db.php';
 		$create_symlink = defined( 'QM_DB_SYMLINK' ) ? QM_DB_SYMLINK : true;
 
+		if ( $create_symlink && defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
+			$create_symlink = false;
+		}
+
 		if ( $create_symlink && ! file_exists( $db ) && function_exists( 'symlink' ) ) {
 			@symlink( $this->plugin_path( 'wp-content/db.php' ), $db ); // phpcs:ignore
 		}
