@@ -21,8 +21,14 @@ class QM_Data_Request extends QM_Data {
 
 	/**
 	 * @phpstan-var array{
-	 *   current_site: WP_Site,
-	 *   current_network?: WP_Network,
+	 *   current_site?: array{
+	 *     title: string,
+	 *     data: WP_Site,
+	 *   },
+	 *   current_network?: array{
+	 *     title: string,
+	 *     data: WP_Network,
+	 *   },
 	 * }
 	 */
 	public $multisite;

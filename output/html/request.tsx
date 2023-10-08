@@ -143,14 +143,14 @@ class Request extends React.Component<iRequestPanelProps, Record<string, unknown
 					) }
 				</section>
 
-				{ data.multisite && (
+				{ data.multisite?.current_site && (
 					<section>
 						<h3>{ __( 'Multisite', 'query-monitor' ) }</h3>
 						<p>
 							{ sprintf(
 								/* translators: %d: Multisite site ID */
 								__( 'Current Site: #%d', 'query-monitor' ),
-								data.multisite.current_site.blog_id
+								data.multisite.current_site.data.blog_id
 							) }
 						</p>
 					</section>

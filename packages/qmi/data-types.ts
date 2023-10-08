@@ -550,8 +550,14 @@ export interface Request {
 		data: WP_User | false;
 	};
 	multisite: {
-		current_site: WP_Site;
-		current_network?: WP_Network;
+		current_site?: {
+			title: string;
+			data: WP_Site;
+		};
+		current_network?: {
+			title: string;
+			data: WP_Network;
+		};
 	};
 	request: {
 		request: string;

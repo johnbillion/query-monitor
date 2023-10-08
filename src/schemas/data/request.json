@@ -41,28 +41,51 @@
 			"properties": {
 				"current_site": {
 					"type": "object",
-					"tsType": "WP_Site",
-					"phpType": "WP_Site",
-					"allOf": [
-						{
-							"$ref": "../../../node_modules/wp-json-schemas/schemas/site.json"
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"data": {
+							"type": "object",
+							"tsType": "WP_Site",
+							"phpType": "WP_Site",
+							"allOf": [
+								{
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/site.json"
+								}
+							]
 						}
-					]
+					},
+					"required": [
+						"title",
+						"data"
+					],
+					"additionalProperties": false
 				},
 				"current_network": {
 					"type": "object",
-					"tsType": "WP_Network",
-					"phpType": "WP_Network",
-					"allOf": [
-						{
-							"$ref": "../../../node_modules/wp-json-schemas/schemas/network.json"
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"data": {
+							"type": "object",
+							"tsType": "WP_Network",
+							"phpType": "WP_Network",
+							"allOf": [
+								{
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/network.json"
+								}
+							]
 						}
-					]
+					},
+					"required": [
+						"title",
+						"data"
+					],
+					"additionalProperties": false
 				}
 			},
-			"required": [
-				"current_site"
-			],
 			"additionalProperties": false
 		},
 		"request": {
