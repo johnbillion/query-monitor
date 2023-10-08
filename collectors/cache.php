@@ -24,6 +24,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
+		/** @var ?object $wp_object_cache */
 		global $wp_object_cache;
 
 		$this->data->has_object_cache = (bool) wp_using_ext_object_cache();

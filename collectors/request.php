@@ -43,6 +43,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	 * @return array<int, string>
 	 */
 	public function get_concerned_filters() {
+		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 
 		$filters = array(
@@ -138,7 +139,13 @@ class QM_Collector_Request extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-
+		/**
+		 * @var \WP $wp
+		 * @var \WP_Query $wp_query
+		 * @var \WP_Site $current_blog
+		 * @var \WP_Network $current_site
+		 * @var \WP_Rewrite $wp_rewrite
+		*/
 		global $wp, $wp_query, $current_blog, $current_site, $wp_rewrite;
 
 		$qo = get_queried_object();
@@ -204,7 +211,7 @@ class QM_Collector_Request extends QM_DataCollector {
 		/** This filter is documented in wp-includes/class-wp.php */
 		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
 
-		/** @var array<string, mixed> */
+		/** @var array<string, mixed> $qvars */
 		$qvars = $wp_query->query_vars;
 		$query_vars = array();
 

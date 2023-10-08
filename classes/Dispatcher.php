@@ -209,6 +209,7 @@ abstract class QM_Dispatcher {
 	 * @return bool True on success, false on failure.
 	 */
 	public static function switch_to_locale( $locale ) {
+		/** @var ?WP_Locale_Switcher $wp_locale_switcher */
 		global $wp_locale_switcher;
 
 		if ( function_exists( 'switch_to_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
@@ -227,6 +228,7 @@ abstract class QM_Dispatcher {
 	 * @return string|false Locale on success, false on error.
 	 */
 	public static function restore_previous_locale() {
+		/** @var ?WP_Locale_Switcher $wp_locale_switcher */
 		global $wp_locale_switcher;
 
 		if ( function_exists( 'restore_previous_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {

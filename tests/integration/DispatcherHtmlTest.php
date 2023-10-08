@@ -33,6 +33,7 @@ class DispatcherHtmlTest extends Test {
 	 * https://github.com/johnbillion/query-monitor/issues/137
 	 */
 	public function testDispatcherRespectsLateChangeOfHttps(): void {
+		/** @var \WP_Scripts $wp_scripts */
 		global $wp_scripts;
 
 		if ( isset( $_SERVER['HTTPS'] ) ) {

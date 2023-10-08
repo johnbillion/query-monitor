@@ -75,7 +75,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-
+		/** @var string $wp_version */
 		global $wp_version;
 
 		$mysql_vars = array(

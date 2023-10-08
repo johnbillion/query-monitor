@@ -160,6 +160,7 @@ abstract class QM_Collector {
 	 * @return void
 	 */
 	final public function process_concerns() {
+		/** @var array<string, WP_Hook> $wp_filter */
 		global $wp_filter;
 
 		$tracked = array();

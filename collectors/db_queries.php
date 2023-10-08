@@ -107,6 +107,10 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process_db_object() {
+		/**
+		 * @var WP_Query $wp_the_query
+		 * @var wpdb $wpdb
+		 */
 		global $wp_the_query, $wpdb;
 
 		$this->wpdb = $wpdb;

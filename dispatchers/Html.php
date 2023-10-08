@@ -202,6 +202,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	public function enqueue_assets() {
+		/** @var WP_Locale $wp_locale */
 		global $wp_locale;
 
 		$deps = array(

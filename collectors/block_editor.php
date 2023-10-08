@@ -128,6 +128,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	}
 
 	public function process() {
+		/** @var ?string $_wp_current_template_content */
 		global $_wp_current_template_content;
 
 		$this->data->block_editor_enabled = self::wp_block_editor_enabled();
