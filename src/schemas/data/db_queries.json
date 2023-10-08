@@ -3,6 +3,7 @@
 	"$id": "https://schemas.querymonitor.com/src/schemas/data/db_queries.json",
 	"title": "DB_Queries",
 	"description": "Database queries data transfer object.",
+	"$comment": "/**\n * @phpstan-type QueryRow array{\n *   caller: array<mixed>|null,\n *   caller_name: string|null,\n *   stack: array<string, mixed>,\n *   sql: string,\n *   ltime: float,\n *   result: int|bool|WP_Error,\n *   type: string,\n *   component: QM_Component|null,\n *   trace: array<string, mixed>,\n *   is_main_query: bool,\n *   filtered_trace?: array<int, array<string, mixed>>,\n * }\n */",
 	"type": "object",
 	"required": [
 		"total_qs",
@@ -10,6 +11,7 @@
 		"has_result",
 		"has_trace",
 		"has_main_query",
+		"rows",
 		"errors"
 	],
 	"properties": {
@@ -32,127 +34,103 @@
 			}
 		},
 		"rows": {
-			"phpStanType": "object",
-			"type": "object",
-			"properties": {
-				"rows": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"required": [
-							"caller",
-							"caller_name",
-							"stack",
-							"sql",
-							"ltime",
-							"result",
-							"type",
-							"component",
-							"trace",
-							"is_main_query"
-						],
-						"properties": {
-							"caller": {
-								"type": [
-									"object",
-									"null"
-								]
+			"phpStanType": "array<int, QueryRow>",
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"caller",
+					"caller_name",
+					"stack",
+					"sql",
+					"ltime",
+					"result",
+					"type",
+					"component",
+					"trace",
+					"is_main_query"
+				],
+				"properties": {
+					"caller": {
+						"type": [
+							"object",
+							"null"
+						]
+					},
+					"caller_name": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"stack": {
+						"type": "object"
+					},
+					"sql": {
+						"type": "string"
+					},
+					"ltime": {
+						"type": "number"
+					},
+					"result": {
+						"oneOf": [
+							{
+								"type": "integer"
 							},
-							"caller_name": {
-								"type": [
-									"string",
-									"null"
-								]
-							},
-							"stack": {
-								"type": "object"
-							},
-							"sql": {
-								"type": "string"
-							},
-							"ltime": {
-								"type": "number"
-							},
-							"result": {
-								"oneOf": [
-									{
-										"type": "integer"
-									},
-									{
-										"type": "boolean"
-									},
-									{
-										"type": "object",
-										"tsType": "WP_Error",
-										"phpType": "WP_Error",
-										"allOf": [
-											{
-												"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
-											}
-										]
-									}
-								]
-							},
-							"type": {
-								"type": "string"
-							},
-							"component": {
-								"oneOf": [
-									{
-										"phpType": "QM_Component",
-										"type": "object",
-										"allOf": [
-											{
-												"$ref": "../component.json"
-											}
-										]
-									},
-									{
-										"type": "null"
-									}
-								]
-							},
-							"trace": {
-								"type": "object"
-							},
-							"is_main_query": {
+							{
 								"type": "boolean"
 							},
-							"filtered_trace": {
-								"phpType": "array<int, array<string, mixed>>",
-								"type": "array",
-								"items": {
-									"allOf": [
-										{
-											"$ref": "../frameitem.json"
-										}
-									]
-								}
+							{
+								"type": "object",
+								"tsType": "WP_Error",
+								"phpType": "WP_Error",
+								"allOf": [
+									{
+										"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
+									}
+								]
 							}
-						},
-						"additionalProperties": false
+						]
+					},
+					"type": {
+						"type": "string"
+					},
+					"component": {
+						"oneOf": [
+							{
+								"phpType": "QM_Component",
+								"type": "object",
+								"allOf": [
+									{
+										"$ref": "../component.json"
+									}
+								]
+							},
+							{
+								"type": "null"
+							}
+						]
+					},
+					"trace": {
+						"type": "object"
+					},
+					"is_main_query": {
+						"type": "boolean"
+					},
+					"filtered_trace": {
+						"phpType": "array<int, array<string, mixed>>",
+						"type": "array",
+						"items": {
+							"allOf": [
+								{
+									"$ref": "../frameitem.json"
+								}
+							]
+						}
 					}
 				},
-				"types": {
-					"type": "object"
-				},
-				"has_result": {
-					"type": "boolean"
-				},
-				"has_trace": {
-					"type": "boolean"
-				},
-				"has_main_query": {
-					"type": "boolean"
-				}
-			},
-			"required": [
-				"rows",
-				"types",
-				"has_result",
-				"has_trace",
-				"has_main_query"
-			]
+				"additionalProperties": false
+			}
 		},
 		"has_result": {
 			"type": "boolean"

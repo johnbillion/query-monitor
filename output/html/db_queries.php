@@ -162,7 +162,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	protected function output_queries( QM_Data_DB_Queries $data ) {
 		$this->query_row = 0;
 		$span = 4;
-		$db = $data->wpdb;
 
 		if ( $data->has_result ) {
 			$span++;
