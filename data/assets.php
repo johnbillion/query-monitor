@@ -87,7 +87,7 @@ class QM_Data_Assets extends QM_Data {
 	public $is_ssl;
 
 	/**
-	 * @var array<int, string>
+	 * @var array<string, true>
 	 */
 	public $missing_dependencies;
 

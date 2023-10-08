@@ -106,7 +106,9 @@ export interface Assets {
 	full_host: string;
 	host: string;
 	is_ssl: boolean;
-	missing_dependencies: string[];
+	missing_dependencies: {
+		[k: string]: true;
+	};
 	port: string;
 }
 /**

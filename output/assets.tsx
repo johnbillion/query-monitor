@@ -48,7 +48,9 @@ interface iAssetsProps {
 		header: Array<string>;
 		host: string;
 		is_ssl: boolean;
-		missing_dependencies: Array<string>;
+		missing_dependencies: {
+			[k:string]: true;
+		}
 		port: string;
 	};
 	labels: {
@@ -183,7 +185,7 @@ class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
 														whiteSpace: 'nowrap',
 													} }
 												>
-													{ data.missing_dependencies.includes( dep ) ? (
+													{ data.missing_dependencies[ dep ] ? (
 														<>
 															<Warning/>
 															&nbsp;

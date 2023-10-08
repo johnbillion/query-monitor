@@ -238,7 +238,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		sort( $all_dependents );
 		$this->data->dependents = $all_dependents;
 
-		$this->data->missing_dependencies = array_unique( $missing_dependencies );
+		$this->data->missing_dependencies = $missing_dependencies;
 	}
 
 	/**
