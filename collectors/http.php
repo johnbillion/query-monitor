@@ -283,7 +283,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url ) {
-		/** @var string */
+		/** @var string $key */
 		$key = $args['_qm_key'];
 
 		if ( is_array( $response ) && isset( $response['body'] ) ) {
@@ -299,7 +299,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		);
 
 		if ( isset( $args['_qm_original_key'] ) ) {
-			/** @var string */
+			/** @var string $original_key */
 			$original_key = $args['_qm_original_key'];
 			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
 			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(

@@ -4,7 +4,7 @@ namespace QM\Tests;
 
 class DispatcherHtmlTest extends Test {
 
-	/** @var \QM_Dispatcher_Html|null */
+	/** @var \QM_Dispatcher_Html|null $html */
 	protected $html = null;
 
 	public function _before(): void {
@@ -21,7 +21,7 @@ class DispatcherHtmlTest extends Test {
 
 		wp_set_current_user( $admin->ID );
 
-		/** @var \QM_Dispatcher_Html */
+		/** @var \QM_Dispatcher_Html $html */
 		$html = \QM_Dispatchers::get( 'html' );
 
 		$this->html = $html;

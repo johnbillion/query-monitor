@@ -27,8 +27,10 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	 * @return string
 	 */
 	public function name() {
-		/** @var string */
-		return $this->collector->get_panel()->title();
+		/** @var string $title */
+		$title = $this->collector->get_panel()->title();
+
+		return $title;
 	}
 
 	/**

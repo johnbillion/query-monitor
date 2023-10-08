@@ -525,7 +525,7 @@ abstract class QM_Output_Html extends QM_Output {
 			}
 		}
 
-		/** @var string */
+		/** @var string $link_format */
 		$link_format = self::get_file_link_format();
 		$link = sprintf( $link_format, rawurlencode( $file ), intval( $link_line ) );
 

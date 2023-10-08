@@ -130,7 +130,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-		/** @var QM_Data_Doing_It_Wrong */
+		/** @var QM_Data_Doing_It_Wrong $data */
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data->actions ) ) {
@@ -146,7 +146,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Doing_It_Wrong */
+		/** @var QM_Data_Doing_It_Wrong $data */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->actions ) ) {

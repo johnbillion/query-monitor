@@ -32,7 +32,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	 * @return string
 	 */
 	public function name() {
-		/** @var QM_Data_Hooks */
+		/** @var QM_Data_Hooks $data */
 		$data = $this->collector->get_data();
 
 		$name = __( 'Hooks & Actions', 'query-monitor' );
@@ -48,7 +48,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	 * @return void
 	 */
 	public function output() {
-		/** @var QM_Data_Hooks */
+		/** @var QM_Data_Hooks $data */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->hooks ) ) {

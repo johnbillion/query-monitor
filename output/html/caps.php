@@ -62,7 +62,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			return;
 		}
 
-		/** @var QM_Data_Caps */
+		/** @var QM_Data_Caps $data */
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data->caps ) ) {

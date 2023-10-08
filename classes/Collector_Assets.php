@@ -295,7 +295,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * }
 	 */
 	public function get_dependency_data( _WP_Dependency $dependency ) {
-		/** @var QM_Data_Assets */
+		/** @var QM_Data_Assets $data */
 		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;

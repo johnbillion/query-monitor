@@ -151,7 +151,7 @@ class QM {
 	 * @return void
 	 */
 	public static function log( $level, $message, array $context = array() ) {
-		/** @var QM_Collector_Logger */
+		/** @var QM_Collector_Logger $logger */
 		$logger = QM_Collectors::get( 'logger' );
 		$logger->log( $level, $message, $context );
 	}
