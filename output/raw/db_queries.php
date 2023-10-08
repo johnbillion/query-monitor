@@ -5,6 +5,9 @@
  * @package query-monitor
  */
 
+/**
+ * @phpstan-import-type QueryRow from QM_Data_DB_Queries
+ */
 class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 	/**
@@ -82,7 +85,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	}
 
 	/**
-	 * @param array<string, mixed> $row
+	 * @param QueryRow $row
 	 * @return array<string, mixed>
 	 */
 	protected function output_query_row( array $row ) {

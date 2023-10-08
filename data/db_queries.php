@@ -10,6 +10,21 @@
  * @package query-monitor
  */
 
+/**
+ * @phpstan-type QueryRow array{
+ *   caller: array<mixed>|null,
+ *   caller_name: string|null,
+ *   stack: array<string, mixed>,
+ *   sql: string,
+ *   ltime: float,
+ *   result: int|bool|WP_Error,
+ *   type: string,
+ *   component: QM_Component|null,
+ *   trace: array<string, mixed>,
+ *   is_main_query: bool,
+ *   filtered_trace?: array<int, array<string, mixed>>,
+ * }
+ */
 class QM_Data_DB_Queries extends QM_Data {
 	/**
 	 * @var int
@@ -32,25 +47,7 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $expensive;
 
 	/**
-	 * @phpstan-var ?object{
-	 *   rows: array<int, array{
-	 *     caller: array|null,
-	 *     caller_name: string|null,
-	 *     stack: array<string, mixed>,
-	 *     sql: string,
-	 *     ltime: float,
-	 *     result: int|bool|WP_Error,
-	 *     type: string,
-	 *     component: QM_Component|null,
-	 *     trace: array<string, mixed>,
-	 *     is_main_query: bool,
-	 *     filtered_trace?: array<int, array<string, mixed>>,
-	 *   }>,
-	 *   types: array<string, mixed>,
-	 *   has_result: bool,
-	 *   has_trace: bool,
-	 *   has_main_query: bool,
-	 * }
+	 * @phpstan-var array<int, QueryRow>
 	 */
 	public $rows;
 
