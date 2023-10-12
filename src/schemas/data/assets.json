@@ -39,12 +39,6 @@
 					"phpType": "AssetList"
 				}
 			},
-			"required": [
-				"missing",
-				"broken",
-				"header",
-				"footer"
-			],
 			"additionalProperties": false
 		},
 		"counts": {

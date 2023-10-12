@@ -78,16 +78,16 @@ export interface Admin {
  */
 export interface Assets {
 	assets?: {
-		missing: {
+		missing?: {
 			[k: string]: unknown;
 		};
-		broken: {
+		broken?: {
 			[k: string]: unknown;
 		};
-		header: {
+		header?: {
 			[k: string]: unknown;
 		};
-		footer: {
+		footer?: {
 			[k: string]: unknown;
 		};
 	};

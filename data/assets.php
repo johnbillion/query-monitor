@@ -29,10 +29,10 @@
 class QM_Data_Assets extends QM_Data {
 	/**
 	 * @phpstan-var ?array{
-	 *   missing: AssetList,
-	 *   broken: AssetList,
-	 *   header: AssetList,
-	 *   footer: AssetList,
+	 *   missing?: AssetList,
+	 *   broken?: AssetList,
+	 *   header?: AssetList,
+	 *   footer?: AssetList,
 	 * }
 	 */
 	public $assets;
