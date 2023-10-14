@@ -21,6 +21,19 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 }
 
 /**
+ * @phpstan-type QueryStandard array{
+ *   0: string,
+ *   1: float,
+ *   2: string,
+ *   trace?: QM_Backtrace,
+ *   result?: int|bool|WP_Error,
+ * }
+ * @phpstan-type QueryVIP array{
+ *   query: string,
+ *   elapsed: float,
+ *   debug: string,
+ * }
+ *
  * @extends QM_DataCollector<QM_Data_DB_Queries>
  */
 class QM_Collector_DB_Queries extends QM_DataCollector {
@@ -133,17 +146,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		}
 
 		/**
-		 * @phpstan-var array{
-		 *   0: string,
-		 *   1: float,
-		 *   2: string,
-		 *   trace?: QM_Backtrace,
-		 *   result?: int|bool|WP_Error,
-		 * }|array{
-		 *   query: string,
-		 *   elapsed: float,
-		 *   debug: string,
-		 * } $query
+		 * @phpstan-var QueryStandard|QueryVIP $query
 		 */
 		foreach ( $wpdb->queries as $query ) {
 			$callers = array();
