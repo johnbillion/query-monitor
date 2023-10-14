@@ -3,8 +3,79 @@
 	"$id": "https://schemas.querymonitor.com/src/schemas/data/assets.json",
 	"title": "Assets",
 	"description": "Asset data transfer object.",
-	"$comment": "/**\n * @phpstan-type Asset array{\n *   host: string,\n *   port: string,\n *   source: string|WP_Error,\n *   local: bool,\n *   ver: string,\n *   warning: bool,\n *   display: string,\n *   dependents: array<string>,\n *   dependencies: array<string>,\n * }\n * @phpstan-type AssetList array<string, Asset>\n */",
 	"type": "object",
+	"definitions": {
+		"Asset": {
+			"type": "object",
+			"properties": {
+				"host": {
+					"type": "string"
+				},
+				"port": {
+					"type": "string"
+				},
+				"source": {
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "object",
+							"tsType": "WP_Error",
+							"phpType": "WP_Error",
+							"allOf": [
+								{
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
+								}
+							]
+						}
+					]
+				},
+				"local": {
+					"type": "boolean"
+				},
+				"ver": {
+					"type": "string"
+				},
+				"warning": {
+					"type": "boolean"
+				},
+				"display": {
+					"type": "string"
+				},
+				"dependents": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"dependencies": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"host",
+				"port",
+				"source",
+				"local",
+				"ver",
+				"warning",
+				"display",
+				"dependents",
+				"dependencies"
+			]
+		},
+		"AssetList": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"$ref": "#/definitions/Asset"
+			}
+		}
+	},
 	"required": [
 		"counts",
 		"default_version",
@@ -23,20 +94,16 @@
 			"type": "object",
 			"properties": {
 				"missing": {
-					"type": "object",
-					"phpType": "AssetList"
+					"$ref": "#/definitions/AssetList"
 				},
 				"broken": {
-					"type": "object",
-					"phpType": "AssetList"
+					"$ref": "#/definitions/AssetList"
 				},
 				"header": {
-					"type": "object",
-					"phpType": "AssetList"
+					"$ref": "#/definitions/AssetList"
 				},
 				"footer": {
-					"type": "object",
-					"phpType": "AssetList"
+					"$ref": "#/definitions/AssetList"
 				}
 			},
 			"additionalProperties": false

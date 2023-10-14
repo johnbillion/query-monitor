@@ -14,9 +14,9 @@
 
 /**
  * @phpstan-type QueryRow array{
- *   caller: array<mixed>|null,
+ *   caller: array|null,
  *   caller_name: string|null,
- *   stack: array<string, mixed>,
+ *   stack?: array<string, mixed>,
  *   sql: string,
  *   ltime: float,
  *   result: int|bool|WP_Error,

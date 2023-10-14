@@ -21,8 +21,8 @@
  *   ver: string,
  *   warning: bool,
  *   display: string,
- *   dependents: array<string>,
- *   dependencies: array<string>,
+ *   dependents: array<int, string>,
+ *   dependencies: array<int, string>,
  * }
  * @phpstan-type AssetList array<string, Asset>
  */

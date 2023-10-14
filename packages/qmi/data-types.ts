@@ -78,18 +78,10 @@ export interface Admin {
  */
 export interface Assets {
 	assets?: {
-		missing?: {
-			[k: string]: unknown;
-		};
-		broken?: {
-			[k: string]: unknown;
-		};
-		header?: {
-			[k: string]: unknown;
-		};
-		footer?: {
-			[k: string]: unknown;
-		};
+		missing?: AssetList;
+		broken?: AssetList;
+		header?: AssetList;
+		footer?: AssetList;
 	};
 	counts: {
 		missing: number;
@@ -110,6 +102,21 @@ export interface Assets {
 		[k: string]: true;
 	};
 	port: string;
+}
+export interface AssetList {
+	[k: string]: Asset;
+}
+export interface Asset {
+	host: string;
+	port: string;
+	source: string | WP_Error;
+	local: boolean;
+	ver: string;
+	warning: boolean;
+	display: string;
+	dependents: string[];
+	dependencies: string[];
+	[k: string]: unknown;
 }
 /**
  * Block editor data transfer object.
@@ -258,25 +265,7 @@ export interface DB_Queries {
 	expensive?: {
 		[k: string]: unknown;
 	}[];
-	rows: {
-		caller: {
-			[k: string]: unknown;
-		} | null;
-		caller_name: string | null;
-		stack: {
-			[k: string]: unknown;
-		};
-		sql: string;
-		ltime: number;
-		result: number | boolean | WP_Error;
-		type: string;
-		component: Component | null;
-		trace: {
-			[k: string]: unknown;
-		};
-		is_main_query: boolean;
-		filtered_trace?: FrameItem[];
-	}[];
+	rows: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
 	has_main_query: boolean;
@@ -292,6 +281,25 @@ export interface DB_Queries {
 	dupes?: {
 		[k: string]: number[];
 	};
+}
+export interface QueryRow {
+	caller: {
+		[k: string]: unknown;
+	} | null;
+	caller_name: string | null;
+	stack?: {
+		[k: string]: unknown;
+	};
+	sql: string;
+	ltime: number;
+	result: number | boolean | WP_Error;
+	type: string;
+	component: Component | null;
+	trace: {
+		[k: string]: unknown;
+	};
+	is_main_query: boolean;
+	filtered_trace?: FrameItem[];
 }
 /**
  * Environment data transfer object.
@@ -498,18 +506,19 @@ export interface PHP_Errors {
 }
 export interface ErrorObjects {
 	[k: string]: {
-		[k: string]: {
-			errno: number;
-			type: string;
-			message: string;
-			file: string | null;
-			filename: string;
-			line: number | null;
-			filtered_trace: FrameItem[] | null;
-			component: Component;
-			calls: number;
-		};
+		[k: string]: ErrorObject;
 	};
+}
+export interface ErrorObject {
+	errno: number;
+	type: string;
+	message: string;
+	file: string | null;
+	filename: string;
+	line: number | null;
+	filtered_trace: FrameItem[] | null;
+	component: Component;
+	calls: number;
 }
 /**
  * Raw request data transfer object.

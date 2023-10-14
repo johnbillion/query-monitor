@@ -20,7 +20,7 @@
  *   file: string|null,
  *   filename: string,
  *   line: int|null,
- *   filtered_trace: list<array<string, mixed>>|null,
+ *   filtered_trace: array<int, array<string, mixed>>|null,
  *   component: QM_Component,
  *   calls: int,
  * }
