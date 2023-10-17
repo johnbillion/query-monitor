@@ -89,9 +89,11 @@
 			"type": "string"
 		},
 		"mlp_language": {
+			"description": "MultilingualPress language.",
 			"type": "string"
 		},
 		"pll_language": {
+			"description": "Polylang language.",
 			"type": "string"
 		},
 		"total_size": {

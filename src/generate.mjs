@@ -62,6 +62,12 @@ class QM_Data_${schema.title} extends QM_Data {`;
 		output += `
 	/**`;
 
+		if ( prop.description ) {
+			output += `
+	 * ${prop.description}
+	 *`;
+		}
+
 		const type = mapType( prop, required, schema );
 
 		if ( type.includes( 'array{' ) || prop.phpStanType ) {

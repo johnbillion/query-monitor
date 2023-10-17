@@ -429,7 +429,13 @@ export interface Languages {
 	user_locale: string;
 	determined_locale: string;
 	language_attributes: string;
+	/**
+	 * MultilingualPress language.
+	 */
 	mlp_language: string;
+	/**
+	 * Polylang language.
+	 */
 	pll_language: string;
 	total_size: number;
 }
