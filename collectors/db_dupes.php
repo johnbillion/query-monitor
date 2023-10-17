@@ -56,7 +56,6 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 			foreach ( $query_ids as $query_id ) {
 
 				if ( isset( $dbq_data->rows[ $query_id ]['trace'] ) ) {
-					/** @var QM_Backtrace $trace */
 					$trace = $dbq_data->rows[ $query_id ]['trace'];
 					$stack = array_column( $trace->get_filtered_trace(), 'id' );
 					$component = $trace->get_component();
@@ -68,7 +67,6 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					/** @var array<int, string> $stack */
 					$stack = $dbq_data->rows[ $query_id ]['stack'];
 				}
 
