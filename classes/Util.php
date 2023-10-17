@@ -309,6 +309,26 @@ class QM_Util {
 				break;
 		}
 
+		if ( 'other' === $type ) {
+			if ( ! function_exists( '_get_dropins' ) ) {
+				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
+			}
+
+			$dropins = array_keys( _get_dropins() );
+
+			foreach ( $dropins as $dropin ) {
+				$dropin_path = trailingslashit( constant( 'WP_CONTENT_DIR' ) ) . $dropin;
+
+				if ( $file !== $dropin_path ) {
+					continue;
+				}
+
+				$type = 'dropin';
+				/* translators: %s: Drop-in plugin file name */
+				$name = sprintf( __( 'Drop-in: %s', 'query-monitor' ), pathinfo( $dropin, PATHINFO_BASENAME ) );
+			}
+		}
+
 		$component = new QM_Component();
 		$component->type = $type;
 		$component->name = $name;
