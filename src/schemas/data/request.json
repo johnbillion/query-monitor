@@ -167,12 +167,7 @@
 				},
 				"type": {
 					"type": "string",
-					"enum": [
-						"WP_Term",
-						"WP_Post_Type",
-						"WP_Post",
-						"WP_User"
-					]
+					"tsType": "'WP_Term'|'WP_Post_Type'|'WP_Post'|'WP_User'"
 				}
 			},
 			"required": [

@@ -244,61 +244,57 @@ class QM_Collector_Request extends QM_DataCollector {
 			}
 		}
 
-		switch ( true ) {
+		if ( is_object( $qo ) ) {
+			$queried_object = array();
 
-			case ! is_object( $qo ):
-				// Nada
-				break;
+			switch ( $qo::class ) {
+				case WP_Post::class:
+					// Single post
+					$queried_object['title'] = sprintf(
+						/* translators: 1: Post type name, 2: Post ID */
+						__( 'Single %1$s: #%2$d', 'query-monitor' ),
+						get_post_type_object( $qo->post_type )->labels->singular_name,
+						$qo->ID
+					);
+					break;
 
-			case is_a( $qo, 'WP_Post' ):
-				// Single post
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: 1: Post type name, 2: Post ID */
-					__( 'Single %1$s: #%2$d', 'query-monitor' ),
-					get_post_type_object( $qo->post_type )->labels->singular_name,
-					$qo->ID
-				);
-				break;
+				case WP_User::class:
+					// Author archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Author name */
+						__( 'Author archive: %s', 'query-monitor' ),
+						$qo->user_nicename
+					);
+					break;
 
-			case is_a( $qo, 'WP_User' ):
-				// Author archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Author name */
-					__( 'Author archive: %s', 'query-monitor' ),
-					$qo->user_nicename
-				);
-				break;
+				case WP_Term::class:
+					// Term archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Taxonomy term name */
+						__( 'Term archive: %s', 'query-monitor' ),
+						$qo->slug
+					);
+					break;
 
-			case is_a( $qo, 'WP_Term' ):
-			case property_exists( $qo, 'slug' ):
-				// Term archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Taxonomy term name */
-					__( 'Term archive: %s', 'query-monitor' ),
-					$qo->slug
-				);
-				break;
+				case WP_Post_Type::class:
+					// Post type archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Post type name */
+						__( 'Post type archive: %s', 'query-monitor' ),
+						$qo->name
+					);
+					break;
 
-			case is_a( $qo, 'WP_Post_Type' ):
-			case property_exists( $qo, 'has_archive' ):
-				// Post type archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Post type name */
-					__( 'Post type archive: %s', 'query-monitor' ),
-					$qo->name
-				);
-				break;
+				default:
+					// Unknown, but we have a queried object
+					$queried_object['title'] = __( 'Unknown queried object', 'query-monitor' );
+					break;
+			}
 
-			default:
-				// Unknown, but we have a queried object
-				$this->data->queried_object['title'] = __( 'Unknown queried object', 'query-monitor' );
-				break;
+			$queried_object['data'] = $qo;
+			$queried_object['type'] = get_class( $qo );
 
-		}
-
-		if ( $qo ) {
-			$this->data->queried_object['data'] = $qo;
-			$this->data->queried_object['type'] = get_class( $qo );
+			$this->data->queried_object = $queried_object;
 		}
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
