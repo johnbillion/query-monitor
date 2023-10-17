@@ -66,7 +66,8 @@ function register_qm_collectors_debug_bar() {
 
 	global $debug_bar;
 
-	$debug_bar_exists = isset( $GLOBALS['debug_bar'] ) && $GLOBALS['debug_bar'] instanceof Debug_Bar;
+	$debug_bar_exists = isset( $GLOBALS['debug_bar'] ) && ( $GLOBALS['debug_bar'] instanceof Debug_Bar );
+
 	if ( $debug_bar_exists || qm_debug_bar_being_activated() ) {
 		return;
 	}
