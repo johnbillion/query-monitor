@@ -324,8 +324,8 @@ class QM_Util {
 				}
 
 				$type = 'dropin';
-				/* translators: %s: Drop-in file name */
-				$name = sprintf( __( 'Drop-in: %s', 'query-monitor' ), pathinfo( $dropin, PATHINFO_FILENAME ) );
+				/* translators: %s: Drop-in plugin file name */
+				$name = sprintf( __( 'Drop-in: %s', 'query-monitor' ), pathinfo( $dropin, PATHINFO_BASENAME ) );
 			}
 		}
 
