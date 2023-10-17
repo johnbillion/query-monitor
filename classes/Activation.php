@@ -49,9 +49,10 @@ class QM_Activation extends QM_Plugin {
 	}
 
 	/**
+	 * @param bool $network_wide
 	 * @return void
 	 */
-	public function deactivate() {
+	public function deactivate( $network_wide = false ) {
 		$admins = QM_Util::get_admins();
 
 		// Remove legacy capability handling:
@@ -59,8 +60,8 @@ class QM_Activation extends QM_Plugin {
 			$admins->remove_cap( 'view_query_monitor' );
 		}
 
-		# Only delete db.php if it belongs to Query Monitor
-		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB', false ) ) {
+		# Only delete db.php if a single site and db.php belongs to Query Monitor
+		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB', false ) && ( $network_wide || ! is_multisite() ) ) {
 			unlink( WP_CONTENT_DIR . '/db.php' ); // phpcs:ignore
 		}
 
