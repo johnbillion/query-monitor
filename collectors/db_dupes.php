@@ -67,7 +67,7 @@ class QM_Collector_DB_Dupes extends QM_DataCollector {
 						$components[ $sql ][ $component->name ] = 1;
 					}
 				} else {
-					$stack = $dbq_data->rows[ $query_id ]['stack'];
+					$stack = $dbq_data->rows[ $query_id ]['stack'] ?? array();
 				}
 
 				// Populate the caller counts for this query
