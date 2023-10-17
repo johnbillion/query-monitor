@@ -14,15 +14,15 @@
 
 /**
  * @phpstan-type QueryRow array{
- *   caller: array|null,
+ *   caller: string,
  *   caller_name: string|null,
- *   stack?: array<string, mixed>,
+ *   stack?: array<int, string>,
  *   sql: string,
  *   ltime: float,
  *   result: int|bool|WP_Error,
  *   type: string,
  *   component: QM_Component|null,
- *   trace: array<string, mixed>,
+ *   trace: ?QM_Backtrace,
  *   is_main_query: bool,
  *   filtered_trace?: array<int, array<string, mixed>>,
  * }

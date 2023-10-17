@@ -283,13 +283,9 @@ export interface DB_Queries {
 	};
 }
 export interface QueryRow {
-	caller: {
-		[k: string]: unknown;
-	} | null;
+	caller: string;
 	caller_name: string | null;
-	stack?: {
-		[k: string]: unknown;
-	};
+	stack?: string[];
 	sql: string;
 	ltime: number;
 	result: number | boolean | WP_Error;
@@ -297,7 +293,7 @@ export interface QueryRow {
 	component: Component | null;
 	trace: {
 		[k: string]: unknown;
-	};
+	} | null;
 	is_main_query: boolean;
 	filtered_trace?: FrameItem[];
 }

@@ -85,8 +85,16 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	}
 
 	/**
-	 * @param QueryRow $row
+	 * @param array $row
+	 * @phpstan-param QueryRow $row
 	 * @return array<string, mixed>
+	 * @phpstan-return array{
+	 *   i: int,
+	 *   sql: string,
+	 *   time: float,
+	 *   stack: string[],
+	 *   result: int|bool|WP_Error,
+	 * }
 	 */
 	protected function output_query_row( array $row ) {
 		$output = array();
@@ -103,7 +111,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 				$stack[] = $item['display'];
 			}
 		} else {
-			$stack = $row['stack'];
+			$stack = $row['stack'] ?? array();
 		}
 
 		$output['stack'] = $stack;

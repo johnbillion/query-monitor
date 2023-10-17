@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type QueryRow from QM_Data_DB_Queries
+ */
 class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	/**
@@ -303,6 +306,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 	/**
 	 * @param array<string, mixed> $row
+	 * @phpstan-param QueryRow $row
 	 * @param array<int, string> $cols
 	 * @return void
 	 */
@@ -349,7 +353,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				$caller_name = '<code>' . esc_html__( 'Unknown', 'query-monitor' ) . '</code>';
 			}
 
-			$stack = $row['stack'];
+			$stack = $row['stack'] ?? array();
 			array_shift( $stack );
 			$stack = array_map( function( $frame ) {
 				return '<code>' . esc_html( $frame ) . '</code>';
