@@ -56,7 +56,7 @@ class QM_Data_Request extends QM_Data {
 	public $plugin_qvars;
 
 	/**
-	 * @phpstan-var array{
+	 * @phpstan-var ?array{
 	 *   title: string,
 	 *   data?: WP_Term|WP_Post_Type|WP_Post|WP_User,
 	 *   type?: 'WP_Term'|'WP_Post_Type'|'WP_Post'|'WP_User',

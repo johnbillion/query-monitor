@@ -567,7 +567,7 @@ export interface Request {
 	plugin_qvars: {
 		[k: string]: unknown;
 	};
-	queried_object: {
+	queried_object?: {
 		title: string;
 		data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
 		type?: "WP_Term" | "WP_Post_Type" | "WP_Post" | "WP_User";

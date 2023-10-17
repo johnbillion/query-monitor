@@ -153,7 +153,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Response', 'query-monitor' ) . '</h3>';
 		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>';
 
-		if ( ! empty( $data->queried_object ) ) {
+		if ( isset( $data->queried_object['data'] ) ) {
 			$class = get_class( $data->queried_object['data'] );
 			$class = $class ?: __( 'Unknown', 'query-monitor' );
 			printf(

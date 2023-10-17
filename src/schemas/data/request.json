@@ -10,7 +10,6 @@
 		"request",
 		"qvars",
 		"plugin_qvars",
-		"queried_object",
 		"request_method",
 		"matching_rewrites"
 	],
