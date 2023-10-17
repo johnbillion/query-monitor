@@ -124,7 +124,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			error_reporting( $this->error_reporting );
 		}
 
-		if ( false !== $this->display_errors ) {
+		if ( is_string( $this->display_errors ) ) {
 			ini_set( 'display_errors', $this->display_errors );
 		}
 
