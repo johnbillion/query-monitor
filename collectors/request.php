@@ -247,7 +247,7 @@ class QM_Collector_Request extends QM_DataCollector {
 		if ( is_object( $qo ) ) {
 			$queried_object = array();
 
-			switch ( $qo::class ) {
+			switch ( get_class( $qo ) ) {
 				case WP_Post::class:
 					// Single post
 					$queried_object['title'] = sprintf(
