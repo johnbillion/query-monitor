@@ -23,7 +23,17 @@ class QM_Data_HTTP extends QM_Data {
 	 *   local: bool,
 	 *   ltime: float,
 	 *   redirected_to: string|null,
-	 *   response: array<string, mixed>|WP_Error,
+	 *   response: array{
+	 *     headers: array<string, mixed>,
+	 *     body: string,
+	 *     response: array{
+	 *       code: int,
+	 *       message: string,
+	 *     },
+	 *     cookies: array<int, WP_HTTP_Cookie>,
+	 *     filename: string|null,
+	 *     http_response: WP_HTTP_Requests_Response,
+	 *   }|WP_Error,
 	 *   type: string,
 	 *   url: string,
 	 * }>

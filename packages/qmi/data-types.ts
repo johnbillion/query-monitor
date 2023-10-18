@@ -396,7 +396,21 @@ export interface HTTP {
 			redirected_to: string | null;
 			response:
 				| {
-						[k: string]: unknown;
+						headers: {
+							[k: string]: unknown;
+						};
+						body: string;
+						response: {
+							code: number;
+							message: string;
+						};
+						cookies: {
+							[k: string]: unknown;
+						}[];
+						filename: string | null;
+						http_response: {
+							[k: string]: unknown;
+						};
 				  }
 				| WP_Error;
 			type: string;

@@ -42,7 +42,7 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 					</tr>
 				</thead>
 				<tbody>
-					{ data.times.map( caller => (
+					{ Object.values( data.times ).map( caller => (
 						<tr key={ caller.caller }>
 							<td>
 								{ caller.caller }
@@ -64,7 +64,7 @@ class DBCallers extends React.Component<iDBCallersProps, Record<string, unknown>
 								{ data.types[key] }
 							</td>
 						) ) }
-						<TotalTime rows={ data.times }/>
+						<TotalTime rows={ Object.values( data.times ) }/>
 					</tr>
 				</tfoot>
 			</Tabular>

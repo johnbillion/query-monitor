@@ -110,7 +110,6 @@
 		"has_result",
 		"has_trace",
 		"has_main_query",
-		"rows",
 		"errors"
 	],
 	"properties": {

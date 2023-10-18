@@ -61,12 +61,71 @@
 						]
 					},
 					"response": {
-						"type": [
-							"array",
-							"object"
-						],
-						"phpType": "array<string, mixed>|WP_Error",
-						"tsType": "{\n[k: string]: unknown;\n}|WP_Error"
+						"oneOf": [
+							{
+								"type": "object",
+								"properties": {
+									"headers": {
+										"type": "object"
+									},
+									"body": {
+										"type": "string"
+									},
+									"response": {
+										"type": "object",
+										"properties": {
+											"code": {
+												"type": "integer"
+											},
+											"message": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"code",
+											"message"
+										],
+										"additionalProperties": false
+									},
+									"cookies": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"phpType": "WP_HTTP_Cookie"
+										}
+									},
+									"filename": {
+										"type": [
+											"string",
+											"null"
+										]
+									},
+									"http_response": {
+										"type": "object",
+										"phpType": "WP_HTTP_Requests_Response"
+									}
+								},
+								"required": [
+									"headers",
+									"body",
+									"response",
+									"cookies",
+									"filename",
+									"http_response"
+								],
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"tsType": "WP_Error",
+								"phpType": "WP_Error",
+								"allOf": [
+									{
+										"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
+									}
+								]
+							}
+						]
 					},
 					"type": {
 						"type": "string"

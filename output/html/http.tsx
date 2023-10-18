@@ -78,7 +78,7 @@ class HTTP extends React.Component<iHTTPProps, Record<string, unknown>> {
 									{ Utils.formatURL( row.url ) }
 								</td>
 								<td>
-									{ ( row.response.response && row.response.response.code ) || __( 'Error', 'query-monitor' ) }
+									{ 'response' in row.response ? row.response.response.code : __( 'Error', 'query-monitor' ) }
 								</td>
 								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 								<QMComponent component={ row.component } />

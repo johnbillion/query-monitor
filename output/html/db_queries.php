@@ -53,7 +53,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data->rows ) ) {
+		if ( ! isset( $data->rows ) ) {
 			$this->output_empty_queries();
 			return;
 		}

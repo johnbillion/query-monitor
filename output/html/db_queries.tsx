@@ -28,7 +28,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 	render() {
 		const { data } = this.props;
 
-		if ( ! data.wpdb?.rows?.length ) {
+		if ( ! data.rows?.length ) {
 			return (
 				<Notice id={ this.props.id }>
 					<p>
@@ -63,7 +63,7 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 					</tr>
 				</thead>
 				<tbody>
-					{ data.wpdb.rows.map( ( row, i ) => (
+					{ data.rows.map( ( row, i ) => (
 						<tr key={ i }>
 							<th className="qm-row-num qm-num" scope="row">
 								{ 1 + i }
@@ -84,10 +84,10 @@ class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>
 				</tbody>
 				<PanelFooter
 					cols={ 5 }
-					count={ data.wpdb.rows.length }
+					count={ data.rows.length }
 					label={ _x( 'Total:', 'Database query count', 'query-monitor' ) }
 				>
-					<TotalTime rows={ data.wpdb.rows }/>
+					<TotalTime rows={ data.rows }/>
 				</PanelFooter>
 			</Tabular>
 		);

@@ -42,7 +42,7 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 					</tr>
 				</thead>
 				<tbody>
-					{ data.times.map( comp => (
+					{ Object.values( data.times ).map( comp => (
 						<tr key={ comp.component }>
 							<td>{ comp.component }</td>
 							{ Object.keys( data.types ).map( key =>
@@ -62,7 +62,7 @@ class DBComponents extends React.Component<iDBComponentsProps, Record<string, un
 								{ data.types[key] }
 							</td>
 						) ) }
-						<TotalTime rows={ data.times }/>
+						<TotalTime rows={ Object.values( data.times ) }/>
 					</tr>
 				</tfoot>
 			</Tabular>
