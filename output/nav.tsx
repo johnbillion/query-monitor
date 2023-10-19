@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
 
 import { __ } from '@wordpress/i18n';
 
@@ -31,7 +32,13 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 					{ __( 'Query Monitor Menu', 'query-monitor' ) }
 				</h2>
 				<ul role="tablist">
-					<li key="overview" role="presentation">
+					<li
+						key="overview"
+						className={ classNames( {
+							'qm-current-menu': this.props.active === 'overview',
+						} ) }
+						role="presentation"
+					>
 						<button aria-selected={ this.props.active === 'overview' } role="tab" onClick={ () => {
 							onSwitch( 'overview' );
 						} }>
@@ -39,7 +46,18 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 						</button>
 					</li>
 					{ Object.keys( menu ).map( key => (
-						<li key={ key } role="presentation">
+						<li
+							key={ key }
+							className={ classNames( {
+								'qm-current-menu': (
+									this.props.active === menu[ key ].panel ||
+									( menu[ key ].children && Object.keys( menu[ key ].children ).map( k => (
+										menu[ key ].children[ k ].panel
+									) ).includes( this.props.active ) )
+								),
+							} ) }
+							role="presentation"
+						>
 							<button
 								aria-selected={ this.props.active === menu[ key ].panel }
 								role="tab"
@@ -60,7 +78,7 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 													onSwitch( menu[ key ].children[ k ].panel );
 												} }
 											>
-												{ `└ ${ menu[ key ].children[ k ].title }` }
+												{ menu[ key ].children[ k ].title }
 											</button>
 										</li>
 									) ) }
