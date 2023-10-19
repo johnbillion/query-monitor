@@ -19,11 +19,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-interface iHTTPProps extends iPanelProps {
-	data: DataTypes['HTTP'];
-}
-
-class HTTP extends React.Component<iHTTPProps, Record<string, unknown>> {
+class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

@@ -13,11 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface iDBDupesProps extends iPanelProps {
-	data: DataTypes['DB_Dupes'];
-}
-
-class DBDupes extends React.Component<iDBDupesProps, Record<string, unknown>> {
+class DBDupes extends React.Component<iPanelProps<DataTypes['DB_Dupes']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

@@ -17,11 +17,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface iCapsProps extends iPanelProps {
-	data: DataTypes['Caps'];
-}
-
-class Caps extends React.Component<iCapsProps, Record<string, unknown>> {
+class Caps extends React.Component<iPanelProps<DataTypes['Caps']>, Record<string, unknown>> {
 
 	render() {
 		if ( ! this.props.enabled ) {

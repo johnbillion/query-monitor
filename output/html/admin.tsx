@@ -9,11 +9,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iAdminProps extends iPanelProps {
-	data: DataTypes['Admin'];
-}
-
-class Admin extends React.Component<iAdminProps, Record<string, unknown>> {
+class Admin extends React.Component<iPanelProps<DataTypes['Admin']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

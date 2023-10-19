@@ -15,11 +15,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-interface iTransientsProps extends iPanelProps {
-	data: DataTypes['Transients'];
-}
-
-class Transients extends React.Component<iTransientsProps, Record<string, unknown>> {
+class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

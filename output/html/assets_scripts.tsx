@@ -1,6 +1,9 @@
 import {
 	iPanelProps,
 } from 'qmi';
+import {
+	DataTypes,
+} from 'qmi/data-types';
 import * as React from 'react';
 
 import {
@@ -9,18 +12,12 @@ import {
 
 import Assets from '../assets';
 
-class Scripts extends React.Component<iPanelProps, Record<string, unknown>> {
+class Scripts extends React.Component<iPanelProps<DataTypes['Assets']>, Record<string, unknown>> {
 
 	render() {
-		const {
-			data,
-			id,
-		} = this.props;
-
 		return (
 			<Assets
-				data={ data }
-				id={ id }
+				{ ...this.props }
 				labels={ {
 					none: __( 'No JavaScript files were enqueued.', 'query-monitor' ),
 				} }

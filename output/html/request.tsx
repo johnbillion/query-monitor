@@ -10,11 +10,7 @@ import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
-interface iRequestPanelProps extends iPanelProps {
-	data: DataTypes['Request'];
-}
-
-class Request extends React.Component<iRequestPanelProps, Record<string, unknown>> {
+class Request extends React.Component<iPanelProps<DataTypes['Request']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

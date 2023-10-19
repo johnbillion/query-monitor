@@ -15,11 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface iHooksProps extends iPanelProps {
-	data: DataTypes['Hooks'];
-}
-
-class Hooks extends React.Component<iHooksProps, Record<string, unknown>> {
+class Hooks extends React.Component<iPanelProps<DataTypes['Hooks']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

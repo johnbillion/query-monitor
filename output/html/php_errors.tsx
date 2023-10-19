@@ -12,10 +12,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iPHP_ErrorsProps extends iPanelProps {
-	data: DataTypes['PHP_Errors'];
-}
-class PHPErrors extends React.Component<iPHP_ErrorsProps, Record<string, unknown>> {
+class PHPErrors extends React.Component<iPanelProps<DataTypes['PHP_Errors']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

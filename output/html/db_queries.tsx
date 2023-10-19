@@ -19,11 +19,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-interface iDBQueriesProps extends iPanelProps {
-	data: DataTypes['DB_Queries'];
-}
-
-class DBQueries extends React.Component<iDBQueriesProps, Record<string, unknown>> {
+class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

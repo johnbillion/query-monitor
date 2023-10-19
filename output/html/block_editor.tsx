@@ -28,13 +28,11 @@ interface iBlock {
 	timing: number;
 }
 
-interface iBlocksProps extends iPanelProps {
-	data: Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
-		post_blocks: iBlock[];
-	};
+type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
+	post_blocks: iBlock[];
 }
 
-class BlockEditor extends React.Component<iBlocksProps, Record<string, unknown>> {
+class BlockEditor extends React.Component<iPanelProps<iBlockData>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

@@ -16,11 +16,7 @@ import {
 
 declare const QM_i18n: iQM_i18n;
 
-interface iTimingProps extends iPanelProps {
-	data: DataTypes['Timing'];
-}
-
-class Timing extends React.Component<iTimingProps, Record<string, unknown>> {
+class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

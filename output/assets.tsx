@@ -1,7 +1,17 @@
 import * as classNames from 'classnames';
-import { Notice, PanelFooter, Tabular, Warning, Utils } from 'qmi';
+import {
+	iPanelProps,
+	Notice,
+	PanelFooter,
+	Tabular,
+	Utils,
+	Warning,
+} from 'qmi';
+import {
+	Asset as AssetDataType,
+	DataTypes,
+} from 'qmi/data-types';
 import * as React from 'react';
-import { WP_Error } from 'wp-types';
 
 import {
 	__,
@@ -9,54 +19,11 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface iAsset {
-	host: string;
-	port: string;
-	source: string|WP_Error;
-	local: boolean;
-	ver: string;
-	warning: boolean;
-	display: string;
-	dependents: Array<string>;
-	dependencies: Array<string>;
-}
-
-interface iAssetList {
-	[k:string]: iAsset;
-}
-
-interface iAssetsProps {
-	id: string;
-	data: {
-		assets: {
-			missing: iAssetList;
-			broken: iAssetList;
-			header: iAssetList;
-			footer: iAssetList;
-		};
-		counts: {
-			missing: number;
-			broken: number;
-			header: number;
-			footer: number;
-			total: number;
-		};
-		default_version: string;
-		dependencies: Array<string>;
-		dependents: Array<string>;
-		footer: Array<string>;
-		header: Array<string>;
-		host: string;
-		is_ssl: boolean;
-		missing_dependencies: {
-			[k:string]: true;
-		}
-		port: string;
-	};
+type myProps = iPanelProps<DataTypes['Assets']> & {
 	labels: {
 		none: string;
 	};
-}
+};
 
 interface iPositionLabels {
 	missing : string;
@@ -66,7 +33,7 @@ interface iPositionLabels {
 }
 
 interface iAssetSourceProps {
-	asset: iAsset;
+	asset: AssetDataType;
 }
 
 class AssetSource extends React.Component<iAssetSourceProps, Record<string, unknown>> {
@@ -99,7 +66,7 @@ class AssetSource extends React.Component<iAssetSourceProps, Record<string, unkn
 	}
 }
 
-class Assets extends React.Component<iAssetsProps, Record<string, unknown>> {
+class Assets extends React.Component<myProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

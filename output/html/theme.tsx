@@ -17,11 +17,7 @@ interface iParts {
 	[key: string]: string;
 }
 
-interface iThemePanelProps extends iPanelProps {
-	data: DataTypes['Theme'];
-}
-
-class Theme extends React.Component<iThemePanelProps, Record<string, unknown>> {
+class Theme extends React.Component<iPanelProps<DataTypes['Theme']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

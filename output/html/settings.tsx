@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import {
 	Icon,
-	iPanelProps,
 	NonTabular,
 } from 'qmi';
 import * as React from 'react';
@@ -11,7 +10,7 @@ import { __ } from '@wordpress/i18n';
 import { iNavMenu } from '../nav';
 import { iPanelsProps } from '../panels';
 
-export interface iSettingsProps extends iPanelProps {
+interface iSettingsProps {
 	verified: boolean;
 }
 

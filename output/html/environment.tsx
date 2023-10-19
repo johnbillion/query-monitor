@@ -12,11 +12,7 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-interface iEnvironmentProps extends iPanelProps {
-	data: DataTypes['Environment'];
-}
-
-class Environment extends React.Component<iEnvironmentProps, Record<string, unknown>> {
+class Environment extends React.Component<iPanelProps<DataTypes['Environment']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;

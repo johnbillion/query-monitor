@@ -13,11 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface iLanguagesProps extends iPanelProps {
-	data: DataTypes['Languages'];
-}
-
-class Languages extends React.Component<iLanguagesProps, Record<string, unknown>> {
+class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
