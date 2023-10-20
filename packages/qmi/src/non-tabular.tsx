@@ -1,26 +1,24 @@
 import * as React from 'react';
 
 export interface NonTabularProps {
-	id: string;
+	id?: string;
+	title?: string;
 }
 
 export class NonTabular extends React.Component<NonTabularProps, Record<string, unknown>> {
 
 	render() {
-		const caption = `qm-${ this.props.id }-caption`;
-
 		return (
-			<div className="qm-panel-container" id={ `qm-${ this.props.id }-container` }>
+			<div className="qm-panel-container">
 				<div
-					aria-labelledby={ caption }
+					aria-labelledby="qm-panel-title"
 					className="qm qm-panel-show qm-non-tabular"
-					id={ `qm-${ this.props.id }` }
 					role="tabpanel"
 					tabIndex={ -1 }
 				>
 					<div className="qm-boxed">
-						<h2 id={ caption }>
-							@TODO
+						<h2 id="qm-panel-title">
+							{ this.props.title ?? '@TODO' }
 						</h2>
 						{ this.props.children }
 					</div>
