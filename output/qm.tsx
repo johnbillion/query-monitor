@@ -82,7 +82,7 @@ export class QM extends React.Component<iQMProps, iState> {
 							</div>
 							<button
 								aria-label={ __( 'Settings', 'query-monitor' ) }
-								className="qm-title-button qm-button-container-settings"
+								className="qm-button-container-settings"
 								onClick={ () => {
 									setActivePanel( 'settings' );
 								} }
@@ -91,7 +91,7 @@ export class QM extends React.Component<iQMProps, iState> {
 							</button>
 							<button
 								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
-								className="qm-title-button qm-button-container-position"
+								className="qm-button-container-position"
 								onClick={ () => {
 									this.setState( {
 										side: ! this.state.side,
@@ -102,7 +102,7 @@ export class QM extends React.Component<iQMProps, iState> {
 							</button>
 							<button
 								aria-label={ __( 'Close Panel', 'query-monitor' ) }
-								className="qm-title-button qm-button-container-close"
+								className="qm-button-container-close"
 								onClick={ () => {
 									setActivePanel( '' );
 								} }
