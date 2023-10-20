@@ -208,41 +208,19 @@ class QM_Collector_Request extends QM_DataCollector {
 			}
 		}
 
-		/** This filter is documented in wp-includes/class-wp.php */
-		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
-
 		/** @var array<string, mixed> $qvars */
 		$qvars = $wp_query->query_vars;
 		$query_vars = array();
 
 		foreach ( $qvars as $k => $v ) {
-			if ( isset( $plugin_qvars[ $k ] ) ) {
-				if ( '' !== $v ) {
-					$query_vars[ $k ] = $v;
-				}
-			} else {
-				if ( ! empty( $v ) ) {
-					$query_vars[ $k ] = $v;
-				}
+			if ( '' !== $v ) {
+				$query_vars[ $k ] = $v;
 			}
 		}
 
 		ksort( $query_vars );
 
-		# First add plugin vars to $this->data->qvars:
-		foreach ( $query_vars as $k => $v ) {
-			if ( isset( $plugin_qvars[ $k ] ) ) {
-				$this->data->qvars[ $k ] = $v;
-				$this->data->plugin_qvars[ $k ] = $v;
-			}
-		}
-
-		# Now add all other vars to $this->data->qvars:
-		foreach ( $query_vars as $k => $v ) {
-			if ( ! isset( $plugin_qvars[ $k ] ) ) {
-				$this->data->qvars[ $k ] = $v;
-			}
-		}
+		$this->data->qvars = $query_vars;
 
 		if ( is_object( $qo ) ) {
 			$queried_object = array();

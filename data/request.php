@@ -46,14 +46,9 @@ class QM_Data_Request extends QM_Data {
 	public $request;
 
 	/**
-	 * @var array<string, mixed>
+	 * @var array<string, string|array|array>
 	 */
 	public $qvars;
-
-	/**
-	 * @var array<string, mixed>
-	 */
-	public $plugin_qvars;
 
 	/**
 	 * @phpstan-var ?array{

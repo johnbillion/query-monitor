@@ -582,10 +582,12 @@ export interface Request {
 		query_string: string;
 	};
 	qvars: {
-		[k: string]: unknown;
-	};
-	plugin_qvars: {
-		[k: string]: unknown;
+		[k: string]:
+			| string
+			| unknown[]
+			| {
+					[k: string]: unknown;
+			  };
 	};
 	queried_object?: {
 		title: string;

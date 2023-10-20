@@ -23,40 +23,11 @@ class QM_Output_Html_Request extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 50 );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Request', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Request $data */
-		$data = $this->collector->get_data();
-		$count = isset( $data->plugin_qvars ) ? count( $data->plugin_qvars ) : 0;
-
-		$title = ( empty( $count ) )
-			? __( 'Request', 'query-monitor' )
-			/* translators: %s: Number of additional query variables */
-			: __( 'Request (+%s)', 'query-monitor' );
-
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => sprintf(
-				$title,
-				number_format_i18n( $count )
-			),
-		) );
-		return $menu;
-
 	}
 
 }

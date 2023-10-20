@@ -9,7 +9,6 @@
 		"multisite",
 		"request",
 		"qvars",
-		"plugin_qvars",
 		"request_method",
 		"matching_rewrites"
 	],
@@ -110,10 +109,14 @@
 			"additionalProperties": false
 		},
 		"qvars": {
-			"type": "object"
-		},
-		"plugin_qvars": {
-			"type": "object"
+			"type": "object",
+			"additionalProperties": {
+				"type": [
+					"string",
+					"array",
+					"object"
+				]
+			}
 		},
 		"queried_object": {
 			"type": "object",
