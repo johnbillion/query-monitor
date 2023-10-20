@@ -45,7 +45,7 @@ export interface DataTypes {
 }
 export interface AbstractData {
 	types: {
-		[k: string]: unknown;
+		[k: string]: number;
 	};
 	component_times: {
 		[k: string]: {

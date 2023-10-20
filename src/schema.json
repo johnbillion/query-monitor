@@ -39,7 +39,10 @@
 			],
 			"properties": {
 				"types": {
-					"type": "object"
+					"type": "object",
+					"additionalProperties": {
+						"type": "integer"
+					}
 				},
 				"component_times": {
 					"type": "object",
