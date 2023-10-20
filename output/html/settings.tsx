@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import {
 	Icon,
 	NonTabular,
