@@ -550,8 +550,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		display: flex !important;
 		flex-wrap: wrap !important;
 
-		&:not(#qm-broken) + .qm-grid,
-		&:not(#qm-broken) + .qm-boxed {
+		& + .qm-grid,
+		& + .qm-boxed {
 			border-top: 1px solid var( --qm-panel-separator ) !important;
 			padding-top: 10px !important;
 		}
@@ -1386,55 +1386,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 				background-color: var( --qm-panel-menu-bg-hover ) !important;
 			}
 		}
-	}
-
-	// Broken output handling
-
-	#qm-broken {
-		display: none !important;
-	}
-
-	&.qm-broken #qm-title {
-		cursor: default !important;
-
-		.qm-title-heading {
-			border-right: none !important;
-		}
-	}
-
-	&.qm-broken .qm td .qm-toggled,
-	&.qm-broken #qm-broken,
-	&.qm-broken .qm {
-		display: block !important;
-	}
-
-	&.qm-broken #qm-panel-menu,
-	&.qm-broken #qm-settings,
-	&.qm-broken #qm-title .qm-title-button {
-		display: none !important;
-	}
-
-	&.qm-broken .qm {
-		margin-bottom: 50px !important;
-
-		button.qm-filter-trigger {
-			color: var( --qm-container-fg ) !important;
-			cursor: text !important;
-
-			&:after {
-				display: none !important;
-			}
-
-			&:focus,
-			&:hover,
-			&:active {
-				text-decoration: none !important;
-			}
-		}
-	}
-
-	&.qm-broken #qm-broken h2 {
-		padding: 20px !important;
 	}
 }
 

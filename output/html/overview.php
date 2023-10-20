@@ -60,15 +60,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		/** @var QM_Collector_HTTP|null $http */
 		$http = QM_Collectors::get( 'http' );
 
-		$qm_broken = __( 'A JavaScript problem on the page is preventing Query Monitor from working correctly. jQuery may have been blocked from loading.', 'query-monitor' );
 		$ajax_errors = __( 'PHP errors were triggered during an Ajax request. See your browser developer console for details.', 'query-monitor' );
 
 		$this->before_non_tabular_output();
-
-		echo '<section id="qm-broken">';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<p class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( $qm_broken ) . '</p>';
-		echo '</section>';
 
 		echo '<section id="qm-ajax-errors">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
