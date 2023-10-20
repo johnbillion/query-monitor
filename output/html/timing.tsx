@@ -77,7 +77,7 @@ class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<st
 							</tr>
 							{ timer.laps && (
 								<>
-									{ Object.keys( timer.laps ).map( ( key: keyof typeof timer.laps ) => (
+									{ Object.entries( timer.laps ).map( ( [ key, value ] ) => (
 										<tr key={ `${ timer.function }${ key }` }>
 											<td className="qm-ltr qm-nowrap">
 												<code>
@@ -87,12 +87,12 @@ class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<st
 											<td></td>
 											<td></td>
 											<td className="qm-num">
-												{ QM_i18n.number_format( timer.laps[ key ].time_used, 4 ) }
+												{ QM_i18n.number_format( value.time_used, 4 ) }
 											</td>
 											<td className="qm-num">
 												{ sprintf(
 													'~%s kB',
-													QM_i18n.number_format( timer.laps[ key ].memory_used / 1024 )
+													QM_i18n.number_format( value.memory_used / 1024 )
 												) }
 											</td>
 											<td></td>

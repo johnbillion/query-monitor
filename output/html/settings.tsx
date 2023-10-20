@@ -123,10 +123,10 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 									localStorage.setItem( 'qm-editor', e.target.value );
 								} }
 							>
-								{ Object.keys( editors ).map( ( key: keyof typeof editors ) => (
+								{ Object.entries( editors ).map( ( [ key, value ] ) => (
 									<option
 										key={ key }
-										value={ editors[ key ] }
+										value={ value }
 									>
 										{ key }
 									</option>

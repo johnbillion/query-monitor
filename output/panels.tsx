@@ -67,180 +67,160 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'admin' && (
 					<ErrorBoundary>
 						<Admin
-							data={ this.props.admin.data }
-							enabled={ this.props.admin.enabled }
-							id="admin"
+							{ ...this.props.admin }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'block_editor' && (
 					<ErrorBoundary>
 						<BlockEditor
-							data={ this.props.block_editor.data }
-							enabled={ this.props.block_editor.enabled }
-							id="block_editor"
+							{ ...this.props.block_editor }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'caps' && (
 					<ErrorBoundary>
 						<Caps
-							data={ this.props.caps.data }
-							enabled={ this.props.caps.enabled }
-							id="caps"
+							{ ...this.props.caps }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'conditionals' && (
 					<ErrorBoundary>
 						<Conditionals
-							data={ this.props.conditionals.data }
-							enabled={ this.props.conditionals.enabled }
-							id="conditionals"
+							{ ...this.props.conditionals }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'db_callers' && (
 					<ErrorBoundary>
 						<DBCallers
-							data={ this.props.db_callers.data }
-							enabled={ this.props.db_callers.enabled }
-							id="db_callers"
+							{ ...this.props.db_callers }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'db_components' && (
 					<ErrorBoundary>
 						<DBComponents
-							data={ this.props.db_components.data }
-							enabled={ this.props.db_components.enabled }
-							id="db_components"
+							{ ...this.props.db_components }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'db_dupes' && (
 					<ErrorBoundary>
 						<DBDupes
-							data={ this.props.db_dupes.data }
-							enabled={ this.props.db_dupes.enabled }
-							id="db_dupes"
+							{ ...this.props.db_dupes }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'db_queries' && (
 					<ErrorBoundary>
 						<DBQueries
-							data={ this.props.db_queries.data }
-							enabled={ this.props.db_queries.enabled }
-							id="db_queries"
+							{ ...this.props.db_queries }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'environment' && (
 					<ErrorBoundary>
 						<Environment
-							data={ this.props.environment.data }
-							enabled={ this.props.environment.enabled }
-							id="environment"
+							{ ...this.props.environment }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'hooks' && (
 					<ErrorBoundary>
 						<Hooks
-							data={ this.props.hooks.data }
-							enabled={ this.props.hooks.enabled }
-							id="hooks"
+							{ ...this.props.hooks }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'http' && (
 					<ErrorBoundary>
 						<HTTP
-							data={ this.props.http.data }
-							enabled={ this.props.http.enabled }
-							id="http"
+							{ ...this.props.http }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'logger' && (
 					<ErrorBoundary>
 						<Logger
-							data={ this.props.logger.data }
-							enabled={ this.props.logger.enabled }
-							id="logger"
+							{ ...this.props.logger }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'languages' && (
 					<ErrorBoundary>
 						<Languages
-							data={ this.props.languages.data }
-							enabled={ this.props.languages.enabled }
-							id="languages"
+							{ ...this.props.languages }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'php_errors' && (
 					<ErrorBoundary>
 						<PHPErrors
-							data={ this.props.php_errors.data }
-							enabled={ this.props.php_errors.enabled }
-							id="php_errors"
+							{ ...this.props.php_errors }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'request' && (
 					<ErrorBoundary>
 						<Request
-							data={ this.props.request.data }
-							enabled={ this.props.request.enabled }
-							id="request"
+							{ ...this.props.request }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'assets_scripts' && (
 					<ErrorBoundary>
 						<Scripts
-							data={ this.props.assets_scripts.data }
-							enabled={ this.props.assets_scripts.enabled }
-							id="assets_scripts"
+							{ ...this.props.assets_scripts }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'assets_styles' && (
 					<ErrorBoundary>
 						<Styles
-							data={ this.props.assets_styles.data }
-							enabled={ this.props.assets_styles.enabled }
-							id="assets_styles"
+							{ ...this.props.assets_styles }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'response' && (
 					<ErrorBoundary>
 						<Theme
-							data={ this.props.response.data }
-							enabled={ this.props.response.enabled }
-							id="response"
+							{ ...this.props.response }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'transients' && (
 					<ErrorBoundary>
 						<Transients
-							data={ this.props.transients.data }
-							enabled={ this.props.transients.enabled }
-							id="transients"
+							{ ...this.props.transients }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }
 				{ active === 'timing' && (
 					<ErrorBoundary>
 						<Timing
-							data={ this.props.timing.data }
-							enabled={ this.props.timing.enabled }
-							id="timing"
+							{ ...this.props.timing }
+							id={ active }
 						/>
 					</ErrorBoundary>
 				) }

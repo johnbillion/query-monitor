@@ -36,16 +36,16 @@ class Admin extends React.Component<iPanelProps<DataTypes['Admin']>, Record<stri
 							</tr>
 						</thead>
 						<tbody>
-							{ Object.keys( data.current_screen ).map( ( key: keyof typeof data.current_screen ) => (
+							{ Object.entries( data.current_screen ).map( ( [ key, value ] ) => (
 								<tr key={ key }>
 									<th scope="row">
 										{ key }
 									</th>
 									<td>
-										{ ( typeof data.current_screen[ key ] ) === 'string' ? (
-											data.current_screen[ key ]
+										{ ( typeof value ) === 'string' ? (
+											value
 										) : (
-											data.current_screen[ key ] ? 'true' : 'false'
+											value ? 'true' : 'false'
 										) }
 									</td>
 								</tr>
