@@ -90,16 +90,24 @@ class Request extends React.Component<iPanelProps<DataTypes['Request']>, Record<
 					{ data.qvars ? (
 						<table>
 							<tbody>
-								{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => (
-									<tr key={ key }>
-										<th className="qm-ltr" scope="row">
-											{ key }
-										</th>
-										<td className="qm-ltr qm-wrap">
-											{ data.qvars[ key ] }
-										</td>
-									</tr>
-								) ) }
+								{ Object.keys( data.qvars ).map( ( key: keyof typeof data.qvars ) => {
+									const value = data.qvars[ key ];
+
+									return (
+										<tr key={ key }>
+											<th className="qm-ltr" scope="row">
+												{ key }
+											</th>
+											<td className="qm-ltr qm-wrap">
+												{ typeof value === 'string' ? (
+													value
+												) : (
+													JSON.stringify( value )
+												) }
+											</td>
+										</tr>
+									);
+								} ) }
 							</tbody>
 						</table>
 					) : (

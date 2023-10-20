@@ -8,6 +8,7 @@ import {
 	Time,
 	TotalTime,
 	Utils,
+	Warning,
 } from 'qmi';
 import {
 	DataTypes,
@@ -17,6 +18,7 @@ import * as React from 'react';
 import {
 	__,
 	_x,
+	sprintf,
 } from '@wordpress/i18n';
 
 class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string, unknown>> {
@@ -74,7 +76,19 @@ class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string
 									{ Utils.formatURL( row.url ) }
 								</td>
 								<td>
-									{ 'response' in row.response ? row.response.response.code : __( 'Error', 'query-monitor' ) }
+									{ Utils.isWPError( row.response ) ? (
+										<>
+											<Warning/>
+											{ sprintf(
+												__( 'Error: %s', 'query-monitor' ),
+												Utils.getErrorMessage( row.response )
+											) }
+										</>
+									) : (
+										<>
+											{ `${row.response.response.code} ${row.response.response.message}` }
+										</>
+									) }
 								</td>
 								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 								<QMComponent component={ row.component } />

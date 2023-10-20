@@ -42,7 +42,7 @@ class Admin extends React.Component<iPanelProps<DataTypes['Admin']>, Record<stri
 										{ key }
 									</th>
 									<td>
-										{ ( typeof value ) === 'string' ? (
+										{ typeof value === 'string' ? (
 											value
 										) : (
 											value ? 'true' : 'false'
