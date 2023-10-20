@@ -49,7 +49,7 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $expensive;
 
 	/**
-	 * @phpstan-var array<int, QueryRow>
+	 * @phpstan-var ?array<int, QueryRow>
 	 */
 	public $rows;
 

@@ -53,11 +53,11 @@ export function formatURL( url: string ) {
 	return collection;
 }
 
-export function isWPError( data: ( string | WP_Error ) ): boolean {
+export function isWPError( data: any ): data is WP_Error {
 	return ( ( typeof data === 'object' ) && 'errors' in data );
 }
 
-export function getErrorData( data: ( string | WP_Error ) ): any {
+export function getErrorData( data: any ): any {
 	if ( ! ( ( typeof data === 'object' ) && 'error_data' in data ) ) {
 		return null;
 	}
@@ -73,7 +73,7 @@ export function getErrorData( data: ( string | WP_Error ) ): any {
 	return null;
 }
 
-export function getErrorMessage( data: ( string | WP_Error ) ): string|null {
+export function getErrorMessage( data: any ): string|null {
 	if ( ! ( ( typeof data === 'object' ) && 'errors' in data ) ) {
 		return null;
 	}

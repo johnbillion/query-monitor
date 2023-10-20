@@ -265,7 +265,7 @@ export interface DB_Queries {
 	expensive?: {
 		[k: string]: unknown;
 	}[];
-	rows: QueryRow[];
+	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
 	has_main_query: boolean;

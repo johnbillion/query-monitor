@@ -8,6 +8,7 @@ import {
 	Time,
 	TotalTime,
 	Utils,
+	Warning,
 } from 'qmi';
 import {
 	DataTypes,
@@ -72,7 +73,14 @@ class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Re
 							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
 							<QMComponent component={ row.component } />
 							<td className="qm-row-result qm-num">
-								{ row.result }
+								{ Utils.isWPError( row.result ) ? (
+									<>
+										<Warning />
+										{ Utils.getErrorMessage( row.result ) }
+									</>
+								) : (
+									row.result
+								) }
 							</td>
 							<Time value={ row.ltime }/>
 						</tr>
