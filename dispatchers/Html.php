@@ -376,9 +376,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 			}
 
-			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
+			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $output_id ] ) ) {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
-				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
+				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
 					'href' => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
 					'title' => sprintf(
 						/* translators: %s: Number of hooks */
