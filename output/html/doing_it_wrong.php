@@ -18,6 +18,8 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	// @TODO
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );

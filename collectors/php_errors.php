@@ -335,11 +335,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		echo '<div class="qm-fatal-wrap">';
 
-		if ( QM_Output_Html::has_clickable_links() ) {
-			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
-		} else {
-			$file = esc_html( $e['file'] );
-		}
+		$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
 
 		printf(
 			'<p><b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',

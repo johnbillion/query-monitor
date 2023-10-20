@@ -18,6 +18,8 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	// @TODO
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 20 );

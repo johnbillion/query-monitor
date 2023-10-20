@@ -45,53 +45,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_Hooks $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->hooks ) ) {
-			return;
-		}
-
-		$this->before_tabular_output();
-
-		$callback_label = __( 'Action', 'query-monitor' );
-		$th_type = '';
-
-		if ( $data->all_hooks ) {
-			$callback_label = __( 'Callback', 'query-monitor' );
-			$th_type = '<th scope="col" class="qm-filterable-column">' . $this->build_filter( 'type', array(
-				'action' => __( 'Action', 'query-monitor' ),
-				'filter' => __( 'Filter', 'query-monitor' ),
-			), __( 'Type', 'query-monitor' ) ) . '</th>';
-		}
-
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'name', $data->parts, __( 'Hook', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo $th_type; // WPCS: XSS ok.
-		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
-		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data->components, __( 'Component', 'query-monitor' ), array(
-			'highlight' => 'subject',
-		) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-		self::output_hook_table( $data->hooks, $data->all_hooks );
-		echo '</tbody>';
-
-		$this->after_tabular_output();
-	}
-
-	/**
 	 * @param array<int, mixed[]> $hooks
 	 * @param bool                $all_hooks
 	 * @return void
@@ -187,19 +140,13 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					echo '</td>';
 
 					if ( isset( $action['callback']['file'] ) ) {
-						if ( self::has_clickable_links() ) {
-							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
-							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
-							echo '</td>';
-						} else {
-							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
-							echo self::build_toggler(); // WPCS: XSS ok;
-							echo '<ol>';
-							echo '<li>';
-							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
-							echo '</li>';
-							echo '</ol></td>';
-						}
+						echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
+						echo self::build_toggler(); // WPCS: XSS ok;
+						echo '<ol>';
+						echo '<li>';
+						echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+						echo '</li>';
+						echo '</ol></td>';
 					} else {
 						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
 						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
