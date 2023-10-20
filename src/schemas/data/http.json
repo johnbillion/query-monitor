@@ -16,7 +16,28 @@
 				"type": "object",
 				"properties": {
 					"args": {
-						"type": "object"
+						"type": "object",
+						"properties": {
+							"method": {
+								"type": "string"
+							},
+							"timeout": {
+								"type": "number"
+							},
+							"redirection": {
+								"type": "integer"
+							},
+							"blocking": {
+								"type": "boolean"
+							},
+							"sslverify": {
+								"type": "boolean"
+							}
+						},
+						"required": [
+							"timeout",
+							"method"
+						]
 					},
 					"component": {
 						"phpType": "QM_Component",

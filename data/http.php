@@ -15,7 +15,13 @@
 class QM_Data_HTTP extends QM_Data {
 	/**
 	 * @phpstan-var array<string, array{
-	 *   args: array<string, mixed>,
+	 *   args: array{
+	 *     method: string,
+	 *     timeout: float,
+	 *     redirection?: int,
+	 *     blocking?: bool,
+	 *     sslverify?: bool,
+	 *   },
 	 *   component: QM_Component,
 	 *   filtered_trace: array<int, array<string, mixed>>,
 	 *   info: array<string, mixed>|null,

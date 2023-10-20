@@ -383,6 +383,11 @@ export interface HTTP {
 	http: {
 		[k: string]: {
 			args: {
+				method: string;
+				timeout: number;
+				redirection?: number;
+				blocking?: boolean;
+				sslverify?: boolean;
 				[k: string]: unknown;
 			};
 			component: Component;
