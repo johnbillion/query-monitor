@@ -499,109 +499,43 @@ abstract class QM_Output_Html extends QM_Output {
 			}
 		}
 
-		$link_line = $line ?: 1;
+		$fallback = QM_Util::standard_dir( $file, '' );
 
-		if ( ! self::has_clickable_links() ) {
-			$fallback = QM_Util::standard_dir( $file, '' );
-			if ( $line ) {
-				$fallback .= ':' . $line;
-			}
-			if ( $is_filename ) {
-				$return = esc_html( $text );
-			} else {
-				$return = '<code>' . esc_html( $text ) . '</code>';
-			}
-			if ( $fallback !== $text ) {
-				$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
-			}
-			return $return;
+		if ( $line ) {
+			$fallback .= ':' . $line;
 		}
-
-		$map = self::get_file_path_map();
-
-		if ( ! empty( $map ) ) {
-			foreach ( $map as $from => $to ) {
-				$file = str_replace( $from, $to, $file );
-			}
-		}
-
-		/** @var string $link_format */
-		$link_format = self::get_file_link_format();
-		$link = sprintf( $link_format, rawurlencode( $file ), intval( $link_line ) );
-
 		if ( $is_filename ) {
-			$format = '<a href="%1$s" class="qm-edit-link">%2$s%3$s</a>';
+			$return = esc_html( $text );
 		} else {
-			$format = '<a href="%1$s" class="qm-edit-link"><code>%2$s</code>%3$s</a>';
+			$return = '<code>' . esc_html( $text ) . '</code>';
+		}
+		if ( $fallback !== $text ) {
+			$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
 		}
 
-		return sprintf(
-			$format,
-			esc_attr( $link ),
-			esc_html( $text ),
-			QueryMonitor::icon( 'edit' )
-		);
+		return $return;
 	}
 
 	/**
 	 * Provides a protocol URL for edit links in QM stack traces for various editors.
+	 *
+	 * @deprecated
 	 *
 	 * @param string       $editor         The chosen code editor.
 	 * @param string|false $default_format A format to use if no editor is found.
 	 * @return string|false A protocol URL format or boolean false.
 	 */
 	public static function get_editor_file_link_format( $editor, $default_format ) {
-		switch ( $editor ) {
-			case 'phpstorm':
-				return 'phpstorm://open?file=%f&line=%l';
-			case 'vscode':
-				return 'vscode://file/%f:%l';
-			case 'atom':
-				return 'atom://open/?url=file://%f&line=%l';
-			case 'sublime':
-				return 'subl://open/?url=file://%f&line=%l';
-			case 'textmate':
-				return 'txmt://open/?url=file://%f&line=%l';
-			case 'netbeans':
-				return 'nbopen://%f:%l';
-			case 'nova':
-				return 'nova://open?path=%f&line=%l';
-			default:
-				return $default_format;
-		}
+		return $default_format;
 	}
 
 	/**
-	 * @return string|false
+	 * @deprecated
+	 *
+	 * @return false
 	 */
 	public static function get_file_link_format() {
-		if ( ! isset( self::$file_link_format ) ) {
-			$format = ini_get( 'xdebug.file_link_format' );
-
-			if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[ QM_EDITOR_COOKIE ] ) ) {
-				$format = self::get_editor_file_link_format(
-					$_COOKIE[ QM_EDITOR_COOKIE ],
-					$format
-				);
-			}
-
-			/**
-			 * Filters the clickable file link format.
-			 *
-			 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
-			 * @since 3.0.0
-			 *
-			 * @param string|false $format The format of the clickable file link, or false if there is none.
-			 */
-			$format = apply_filters( 'qm/output/file_link_format', $format );
-			if ( empty( $format ) ) {
-				self::$file_link_format = false;
-			} else {
-				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
-			}
-		}
-
-		return self::$file_link_format;
+		return false;
 	}
 
 	/**
@@ -620,10 +554,12 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * @return bool
+	 * @deprecated
+	 *
+	 * @return false
 	 */
 	public static function has_clickable_links() {
-		return ( false !== self::get_file_link_format() );
+		return false;
 	}
 
 }

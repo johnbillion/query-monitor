@@ -38,9 +38,6 @@ abstract class QM_Dispatcher {
 		if ( ! defined( 'QM_COOKIE' ) ) {
 			define( 'QM_COOKIE', 'wp-query_monitor_' . COOKIEHASH );
 		}
-		if ( ! defined( 'QM_EDITOR_COOKIE' ) ) {
-			define( 'QM_EDITOR_COOKIE', 'wp-query_monitor_editor_' . COOKIEHASH );
-		}
 
 		add_action( 'init', array( $this, 'init' ) );
 
@@ -178,12 +175,11 @@ abstract class QM_Dispatcher {
 	}
 
 	/**
+	 * @deprecated
+	 *
 	 * @return string
 	 */
 	public static function editor_cookie() {
-		if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[QM_EDITOR_COOKIE] ) ) { // phpcs:ignore
-			return $_COOKIE[QM_EDITOR_COOKIE]; // phpcs:ignore
-		}
 		return '';
 	}
 
