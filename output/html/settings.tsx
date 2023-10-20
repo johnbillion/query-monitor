@@ -61,11 +61,13 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 
 	render() {
 		const editors = {
-			'Default/Xdebug': '',
+			'None': '',
 			'Atom': 'atom',
 			'Netbeans': 'netbeans',
+			'Nova': 'nova',
 			'PhpStorm': 'phpstorm',
 			'Sublime Text': 'sublime',
+			'TextMate': 'textmate',
 			'Visual Studio Code': 'vscode',
 		};
 
