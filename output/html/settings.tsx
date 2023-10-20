@@ -89,19 +89,15 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 						<p>
 							<button className="qm-button" onClick={ () => this.setVerify() }>
 								{ this.state.verified ? (
-									<>
-										{ __( 'Clear authentication cookie', 'query-monitor' ) }
-									</>
+									__( 'Clear authentication cookie', 'query-monitor' )
 								) : (
-									<>
-										{ __( 'Set authentication cookie', 'query-monitor' ) }
-									</>
+									__( 'Set authentication cookie', 'query-monitor' )
 								) }
 							</button>
 						</p>
 						{ this.state.verified && (
 							<p>
-								<Icon name="yes"/>
+								<Icon name="yes-alt"/>
 								{ __( 'Authentication cookie is set', 'query-monitor' ) }
 							</p>
 						) }
@@ -137,6 +133,7 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 						</p>
 					</section>
 				</div>
+				{ /* @TODO light/dark/auto theme support */ }
 			</NonTabular>
 		);
 	}

@@ -62,6 +62,8 @@ export class QM extends React.Component<iQMProps, iState> {
 		localStorage.setItem( this.props.panel_key, this.state.active );
 		localStorage.setItem( this.props.position_key, this.state.side ? 'right' : '' );
 
+		// @TODO light/dark/auto theme support
+
 		const mainClass = classNames( 'qm-show', {
 			'qm-show-right': this.state.side,
 		} );
@@ -69,7 +71,7 @@ export class QM extends React.Component<iQMProps, iState> {
 		return (
 			<>
 				{ this.state.active && (
-					<div className={ mainClass } dir="ltr" id="query-monitor-main">
+					<div className={ mainClass } data-theme="auto" dir="ltr" id="query-monitor-main">
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 						<div className="qm-resizer" id="qm-title">
 							<h1 className="qm-title-heading">
