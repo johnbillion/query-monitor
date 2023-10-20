@@ -1,7 +1,11 @@
 import { Notice } from 'qmi';
 import * as React from 'react';
 
-export class NotEnabled extends React.Component {
+interface iNotEnabledProps {
+	children: React.ReactNode;
+}
+
+export class NotEnabled extends React.Component<iNotEnabledProps, Record<string, unknown>> {
 
 	render() {
 		const { id } = this.props as any;
