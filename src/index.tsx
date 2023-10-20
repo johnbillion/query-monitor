@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { iQMConfig } from '../output/html/settings';
 import { QM } from '../output/qm';
@@ -33,7 +33,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		transients: qm.data.transients,
 	};
 
-	ReactDOM.render(
+	createRoot( document.getElementById( 'query-monitor-container' ) ).render(
 		<QM
 			active={ localStorage.getItem( panelKey ) }
 			adminMenuElement={ document.getElementById( 'wp-admin-bar-query-monitor' ) }
@@ -43,7 +43,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			panels={ panels }
 			position_key={ positionKey }
 			side={ localStorage.getItem( positionKey ) === 'right' }
-		/>,
-		document.getElementById( 'query-monitor-container' )
+		/>
 	);
 } );

@@ -1,6 +1,6 @@
 {
 	"name": "qmi",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "User interface for developer tool panels, just like your browser dev tools",
 	"main": "build/index.js",
 	"types": "build/qmi/src/index.d.ts",
@@ -23,11 +23,11 @@
 		"build": "webpack --config=webpack.config.prod.js"
 	},
 	"peerDependencies": {
-		"react": "^17"
+		"react": "^18"
 	},
 	"dependencies": {
-		"@types/react": "^17",
-		"@types/react-dom": "^17",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
 		"wp-types": "^3"
 	}
 }

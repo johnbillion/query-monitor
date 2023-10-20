@@ -2,7 +2,11 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export class Toggler extends React.Component {
+interface TogglerProps {
+	children: React.ReactNode;
+}
+
+export class Toggler extends React.Component<TogglerProps, Record<string, unknown>> {
 
 	render() {
 		return (

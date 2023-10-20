@@ -5,6 +5,7 @@ interface iPanelFooterProps {
 	cols: number;
 	label: string;
 	count: number;
+	children?: React.ReactNode;
 }
 
 declare const QM_i18n: iQM_i18n;

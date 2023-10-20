@@ -3,6 +3,7 @@ import * as React from 'react';
 export interface NonTabularProps {
 	id?: string;
 	title?: string;
+	children: React.ReactNode;
 }
 
 export class NonTabular extends React.Component<NonTabularProps, Record<string, unknown>> {

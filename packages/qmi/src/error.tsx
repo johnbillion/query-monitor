@@ -3,6 +3,7 @@ import * as React from 'react';
 
 interface iErrorProps {
 	id: string;
+	children: React.ReactNode;
 }
 
 export class ErrorMessage extends React.Component<iErrorProps, Record<string, unknown>> {

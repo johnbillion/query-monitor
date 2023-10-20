@@ -3,6 +3,7 @@ import * as React from 'react';
 export interface TabularProps {
 	id?: string;
 	title?: string;
+	children: React.ReactNode;
 }
 
 export class Tabular extends React.Component<TabularProps, Record<string, unknown>> {

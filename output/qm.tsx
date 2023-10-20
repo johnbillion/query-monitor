@@ -157,6 +157,7 @@ export class QM extends React.Component<iQMProps, iState> {
 
 interface iAdminMenuProps {
 	element: HTMLElement;
+	children: React.ReactNode;
 }
 
 class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {

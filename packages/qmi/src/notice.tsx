@@ -3,6 +3,7 @@ import * as React from 'react';
 
 interface iNoticeProps {
 	id: string;
+	children: React.ReactNode;
 }
 
 export class Notice extends React.Component<iNoticeProps, Record<string, unknown>> {
