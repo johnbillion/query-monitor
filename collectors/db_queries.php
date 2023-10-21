@@ -194,7 +194,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$callers = array_reverse( explode( ',', $stack ) );
 				$callers = array_map( 'trim', $callers );
 				$callers = QM_Backtrace::get_filtered_stack( $callers );
-				$caller = reset( $callers );
+				$caller = reset( $callers ) ?: 'Unknown';
 				$caller_name = $caller;
 
 			}

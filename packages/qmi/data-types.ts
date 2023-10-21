@@ -284,7 +284,7 @@ export interface DB_Queries {
 }
 export interface QueryRow {
 	caller: string;
-	caller_name: string | null;
+	caller_name: string;
 	stack?: string[];
 	sql: string;
 	ltime: number;

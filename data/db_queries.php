@@ -15,7 +15,7 @@
 /**
  * @phpstan-type QueryRow array{
  *   caller: string,
- *   caller_name: string|null,
+ *   caller_name: string,
  *   stack?: array<int, string>,
  *   sql: string,
  *   ltime: float,
