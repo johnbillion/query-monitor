@@ -293,7 +293,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 			echo '<!-- Begin Query Monitor output -->' . "\n\n";
 			echo '<script type="text/javascript">' . "\n\n";
-			echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+			echo 'var qm = ' . wp_json_encode( $json ) . ';' . "\n\n";
 			echo '</script>' . "\n\n";
 			echo '<div id="query-monitor-ceased"></div>';
 			echo '<!-- End Query Monitor output -->' . "\n\n";
@@ -401,7 +401,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
+		echo 'var qm = ' . wp_json_encode( $json ) . ';' . "\n\n";
 		echo '</script>' . "\n\n";
 
 		echo '<svg id="qm-icon-container">';
