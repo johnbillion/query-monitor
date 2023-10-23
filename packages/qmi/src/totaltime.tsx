@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Time } from './time';
 
-export interface TotalTimeProps {
+interface TotalTimeProps {
 	rows: {
 		ltime: number;
 	}[];

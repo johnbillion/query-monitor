@@ -1,9 +1,9 @@
-import * as React from 'react';
 import * as classNames from 'classnames';
+import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export interface iNavProps {
+interface iNavProps {
 	active: string;
 	menu: iNavMenu;
 	onSwitch: {
@@ -15,7 +15,7 @@ export interface iNavMenu {
 	[k: string]: iNavMenuItem;
 }
 
-export interface iNavMenuItem {
+interface iNavMenuItem {
 	panel: string;
 	title: string;
 	children?: iNavMenu;

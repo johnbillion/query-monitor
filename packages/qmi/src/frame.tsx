@@ -3,7 +3,7 @@ import {
 } from 'qmi/data-types';
 import * as React from 'react';
 
-export interface FrameProps {
+interface FrameProps {
 	frame: FrameItem;
 }
 

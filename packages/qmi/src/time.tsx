@@ -1,7 +1,7 @@
 import { iQM_i18n } from 'qmi';
 import * as React from 'react';
 
-export interface TimeProps {
+interface TimeProps {
 	value: number;
 }
 

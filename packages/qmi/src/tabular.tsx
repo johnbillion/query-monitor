@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface TabularProps {
+interface TabularProps {
 	id?: string;
 	title?: string;
 	children: React.ReactNode;

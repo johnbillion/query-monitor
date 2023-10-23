@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface NonTabularProps {
+interface NonTabularProps {
 	id?: string;
 	title?: string;
 	children: React.ReactNode;

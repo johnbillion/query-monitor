@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface iIconProps {
+interface iIconProps {
 	name: string;
 }
 
