@@ -85,7 +85,10 @@ export default class PHP extends React.Component<iPHPProps, Record<string, unkno
 										{ Object.keys( php.error_levels ).map( ( key ) => (
 											<li key={ key }>
 												{ php.error_levels[ key ] ? (
-													`${ key }&nbsp;&#x2713;`
+													<>
+														{ key }
+														&nbsp;&#x2713;
+													</>
 												):(
 													<span className="qm-false">
 														{ key }
