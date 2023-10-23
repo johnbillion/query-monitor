@@ -17,8 +17,7 @@ class QM_Data_Timing extends QM_Data {
 	 * @phpstan-var array<int, array{
 	 *   function: string,
 	 *   message: string,
-	 *   filtered_trace: array<int, array<string, mixed>>,
-	 *   component: QM_Component,
+	 *   trace: QM_Backtrace,
 	 * }>
 	 */
 	public $warning;
@@ -35,8 +34,7 @@ class QM_Data_Timing extends QM_Data {
 	 *     memory_used: int,
 	 *     data: mixed,
 	 *   }>,
-	 *   filtered_trace: array<int, array<string, mixed>>,
-	 *   component: QM_Component,
+	 *   trace: QM_Backtrace,
 	 *   start_time: float,
 	 *   end_time: float,
 	 * }>

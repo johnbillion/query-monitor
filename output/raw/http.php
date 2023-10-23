@@ -36,18 +36,12 @@ class QM_Output_Raw_HTTP extends QM_Output_Raw {
 		$requests = array();
 
 		foreach ( $data->http as $http ) {
-			$stack = array();
-
-			foreach ( $http['filtered_trace'] as $item ) {
-				$stack[] = $item['display'];
-			}
-
 			$requests[] = array(
 				'url' => $http['url'],
 				'method' => $http['args']['method'],
 				'response' => ( $http['response'] instanceof WP_Error ) ? $http['response']->get_error_message() : $http['response']['response'],
 				'time' => round( $http['ltime'], 4 ),
-				'stack' => $stack,
+				'stack' => $http['trace']->get_stack(),
 			);
 		}
 

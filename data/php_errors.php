@@ -20,8 +20,7 @@
  *   file: string|null,
  *   filename: string,
  *   line: int|null,
- *   filtered_trace: array<int, array<string, mixed>>|null,
- *   component: QM_Component,
+ *   trace?: QM_Backtrace,
  *   calls: int,
  * }
  * @phpstan-type errorObjects array<string, array<string, errorObject>>

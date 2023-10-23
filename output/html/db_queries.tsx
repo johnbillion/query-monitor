@@ -70,8 +70,8 @@ class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Re
 									{ Utils.formatSQL( row.sql ) }
 								</code>
 							</td>
-							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-							<QMComponent component={ row.component } />
+							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+							<QMComponent component={ row.trace.component } />
 							<td className="qm-row-result qm-num">
 								{ Utils.isWPError( row.result ) ? (
 									<>

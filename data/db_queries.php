@@ -14,17 +14,13 @@
 
 /**
  * @phpstan-type QueryRow array{
- *   caller: string,
- *   caller_name: string,
  *   stack?: array<int, string>,
  *   sql: string,
  *   ltime: float,
  *   result: int|bool|WP_Error,
  *   type: string,
- *   component: QM_Component|null,
- *   trace: ?QM_Backtrace,
+ *   trace?: QM_Backtrace,
  *   is_main_query: bool,
- *   filtered_trace?: array<int, array<string, mixed>>,
  * }
  */
 class QM_Data_DB_Queries extends QM_Data {

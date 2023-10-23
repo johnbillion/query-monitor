@@ -89,8 +89,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 
 		$this->data->trans[] = array(
 			'name' => $name,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'type' => $type,
 			'value' => $value,
 			'expiration' => $expiration,

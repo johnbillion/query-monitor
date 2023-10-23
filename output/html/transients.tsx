@@ -90,9 +90,9 @@ class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, R
 							</td>
 							<Caller
 								toggleLabel={ __( 'View call stack', 'query-monitor' ) }
-								trace={ transient.filtered_trace }
+								trace={ transient.trace }
 							/>
-							<QMComponent component={ transient.component } />
+							<QMComponent component={ transient.trace.component } />
 						</tr>
 					) ) }
 				</tbody>

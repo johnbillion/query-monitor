@@ -16,9 +16,8 @@ class QM_Data_Doing_It_Wrong extends QM_Data {
 	/**
 	 * @phpstan-var array<int, array{
 	 *   hook: string,
-	 *   filtered_trace: array<int, array<string, mixed>>,
+	 *   trace: QM_Backtrace,
 	 *   message: string,
-	 *   component: QM_Component,
 	 * }>
 	 */
 	public $actions;

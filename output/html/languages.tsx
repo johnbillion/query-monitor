@@ -1,5 +1,6 @@
 import {
 	Caller,
+	Frame,
 	iPanelProps,
 	NonTabular,
 } from 'qmi';
@@ -107,7 +108,13 @@ class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Rec
 												<td>
 													{ lang.type }
 												</td>
-												<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ [ lang.caller ] } />
+												<td className="qm-has-toggle qm-nowrap qm-ltr">
+													<ol>
+														<li>
+															<Frame frame={ lang.caller } />
+														</li>
+													</ol>
+												</td>
 												{ lang.file ? (
 													<td className="qm-ltr">
 														{ lang.file }

@@ -56,8 +56,8 @@ class Logger extends React.Component<iPanelProps<DataTypes['Logger']>, Record<st
 								<td>
 									{ row.message }
 								</td>
-								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-								<QMComponent component={ row.component } />
+								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+								<QMComponent component={ row.trace.component } />
 							</tr>
 						);
 					} ) }

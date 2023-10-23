@@ -90,8 +90,8 @@ class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string
 										</>
 									) }
 								</td>
-								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.filtered_trace } />
-								<QMComponent component={ row.component } />
+								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+								<QMComponent component={ row.trace.component } />
 								<td className="qm-num">
 									{ row.args.timeout }
 								</td>

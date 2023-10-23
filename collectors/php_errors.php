@@ -270,8 +270,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				'file' => $file,
 				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
 				'line' => $line,
-				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
-				'component' => $trace->get_component(),
+				'trace' => ( $do_trace ? $trace : null ),
 				'calls' => 1,
 			);
 		}
@@ -454,7 +453,12 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 						 * @phpstan-var errorObject $error
 						 */
 						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
-							$components[ $error['component']->name ] = $error['component']->name;
+							if ( ! isset( $error['trace'] ) ) {
+								continue;
+							}
+
+							$component = $error['trace']->get_component();
+							$components[ $component->name ] = $component->name;
 						}
 					}
 				}
@@ -478,11 +482,15 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		foreach ( $components as $component_context => $allowed_level ) {
 			foreach ( $all_errors as $error_level => $errors ) {
 				foreach ( $errors as $error_id => $error ) {
+					if ( ! isset( $error['trace'] ) ) {
+						continue;
+					}
+
 					if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
 						continue;
 					}
 
-					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
+					if ( ! $this->is_affected_component( $error['trace']->get_component(), $component_type, $component_context ) ) {
 						continue;
 					}
 

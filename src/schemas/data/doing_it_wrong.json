@@ -14,36 +14,24 @@
 				"type": "object",
 				"required": [
 					"hook",
-					"filtered_trace",
-					"message",
-					"component"
+					"trace",
+					"message"
 				],
 				"properties": {
 					"hook": {
 						"type": "string"
 					},
-					"filtered_trace": {
-						"phpType": "array<int, array<string, mixed>>",
-						"type": "array",
-						"items": {
-							"allOf": [
-								{
-									"$ref": "../frameitem.json"
-								}
-							]
-						}
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace",
+						"allOf": [
+							{
+								"$ref": "../backtrace.json"
+							}
+						]
 					},
 					"message": {
 						"type": "string"
-					},
-					"component": {
-						"phpType": "QM_Component",
-						"type": "object",
-						"allOf": [
-							{
-								"$ref": "../component.json"
-							}
-						]
 					}
 				}
 			}

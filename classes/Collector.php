@@ -313,12 +313,21 @@ abstract class QM_Collector {
 	/**
 	 * @param array<string, mixed> $item
 	 * @phpstan-param array{
-	 *   component: QM_Component,
+	 *   component?: QM_Component,
+	 *   trace?: QM_Backtrace,
 	 * } $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {
-		return ( 'query-monitor' !== $item['component']->context );
+		if ( isset( $item['trace'] ) ) {
+			return ( 'query-monitor' !== $item['trace']->get_component()->context );
+		}
+
+		if ( isset( $item['component'] ) ) {
+			return ( 'query-monitor' !== $item['component']->context );
+		}
+
+		return true;
 	}
 
 	/**

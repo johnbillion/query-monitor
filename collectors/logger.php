@@ -168,7 +168,6 @@ class QM_Collector_Logger extends QM_DataCollector {
 				current_filter() => true,
 			),
 		) );
-		$filtered_trace = $trace->get_display_trace();
 
 		if ( $message instanceof WP_Error ) {
 			$message = sprintf(
@@ -204,8 +203,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 		$this->data->logs[] = array(
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
-			'component' => $trace->get_component(),
-			'filtered_trace' => $filtered_trace,
+			'trace' => $trace,
 			'level' => $level,
 		);
 	}
@@ -243,7 +241,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 		$components = array();
 
 		foreach ( $this->data->logs as $row ) {
-			$component = $row['component'];
+			$component = $row['trace']->get_component();
 			$components[ $component->name ] = $component->name;
 		}
 

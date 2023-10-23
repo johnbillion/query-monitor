@@ -30,8 +30,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   url: string,
 	 *   start: float,
 	 *   args: array<string, mixed>,
-	 *   filtered_trace: list<array<string, mixed>>,
-	 *   component: QM_Component,
+	 *   trace: QM_Backtrace,
 	 * }>
 	 */
 	private $http_requests = array();
@@ -198,8 +197,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			'url' => $url,
 			'args' => $args,
 			'start' => $start,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 		);
 		$args['_qm_key'] = $key;
 		return $args;
@@ -380,11 +378,10 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
-			$this->log_component( $request['component'], $ltime, $type );
+			$this->log_component( $request['trace']->get_component(), $ltime, $type );
 			$this->data->http[ $key ] = array(
 				'args' => $response['args'],
-				'component' => $request['component'],
-				'filtered_trace' => $request['filtered_trace'],
+				'trace' => $request['trace'],
 				'host' => $host,
 				'info' => $response['info'],
 				'local' => $local,

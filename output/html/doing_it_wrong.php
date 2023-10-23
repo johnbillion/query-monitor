@@ -79,7 +79,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 		foreach ( $data->actions as $row ) {
 			$stack = array();
 
-			foreach ( $row['filtered_trace'] as $frame ) {
+			foreach ( $row['trace']->get_filtered_trace() as $frame ) {
 				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 			}
 

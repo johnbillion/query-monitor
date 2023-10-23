@@ -17,8 +17,7 @@
 				"type": "object",
 				"required": [
 					"args",
-					"filtered_trace",
-					"component",
+					"trace",
 					"result",
 					"parts",
 					"name",
@@ -28,23 +27,12 @@
 					"args": {
 						"type": "array"
 					},
-					"filtered_trace": {
-						"phpType": "array<int, array<string, mixed>>",
-						"type": "array",
-						"items": {
-							"allOf": [
-								{
-									"$ref": "../frameitem.json"
-								}
-							]
-						}
-					},
-					"component": {
-						"phpType": "QM_Component",
+					"trace": {
 						"type": "object",
+						"phpType": "QM_Backtrace",
 						"allOf": [
 							{
-								"$ref": "../component.json"
+								"$ref": "../backtrace.json"
 							}
 						]
 					},

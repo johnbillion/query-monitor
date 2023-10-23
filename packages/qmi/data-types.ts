@@ -154,8 +154,7 @@ export interface Cache {
 export interface Caps {
 	caps: {
 		args: unknown[];
-		filtered_trace: FrameItem[];
-		component: Component;
+		trace: Backtrace;
 		result: boolean;
 		parts: string[];
 		name: string;
@@ -166,6 +165,21 @@ export interface Caps {
 	components: {
 		[k: string]: string;
 	};
+}
+/**
+ * Class representing a backtrace.
+ */
+export interface Backtrace {
+	component: Component;
+	frames: FrameItem[];
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Stack trace frame.
@@ -179,14 +193,6 @@ export interface FrameItem {
 	function: string;
 	id: string;
 	line: number;
-}
-/**
- * Class representing a component.
- */
-export interface Component {
-	type: string;
-	name: string;
-	context: string;
 }
 /**
  * Conditionals data transfer object.
@@ -283,19 +289,13 @@ export interface DB_Queries {
 	};
 }
 export interface QueryRow {
-	caller: string;
-	caller_name: string;
 	stack?: string[];
 	sql: string;
 	ltime: number;
 	result: number | boolean | WP_Error;
 	type: string;
-	component: Component | null;
-	trace: {
-		[k: string]: unknown;
-	} | null;
+	trace?: Backtrace;
 	is_main_query: boolean;
-	filtered_trace?: FrameItem[];
 }
 /**
  * Environment data transfer object.
@@ -390,8 +390,7 @@ export interface HTTP {
 				sslverify?: boolean;
 				[k: string]: unknown;
 			};
-			component: Component;
-			filtered_trace: FrameItem[];
+			trace: Backtrace;
 			info: {
 				[k: string]: unknown;
 			} | null;
@@ -469,8 +468,7 @@ export interface Logger {
 	};
 	logs: {
 		message: string;
-		filtered_trace: FrameItem[];
-		component: Component;
+		trace: Backtrace;
 		level: string;
 		[k: string]: unknown;
 	}[];
@@ -488,9 +486,7 @@ export interface Multisite {
 		new: number;
 		prev: number;
 		to: boolean;
-		trace: {
-			[k: string]: unknown;
-		};
+		trace: Backtrace;
 	}[];
 }
 /**
@@ -537,8 +533,7 @@ export interface ErrorObject {
 	file: string | null;
 	filename: string;
 	line: number | null;
-	filtered_trace: FrameItem[] | null;
-	component: Component;
+	trace?: Backtrace;
 	calls: number;
 }
 /**
@@ -556,9 +551,7 @@ export interface Raw_Request {
  * Redirect data transfer object.
  */
 export interface Redirect {
-	trace?: {
-		[k: string]: unknown;
-	};
+	trace?: Backtrace;
 	location?: string;
 	status?: number;
 }
@@ -646,8 +639,7 @@ export interface Timing {
 	warning: {
 		function: string;
 		message: string;
-		filtered_trace: FrameItem[];
-		component: Component;
+		trace: Backtrace;
 	}[];
 	timing: {
 		function: string;
@@ -662,8 +654,7 @@ export interface Timing {
 				data: unknown;
 			};
 		};
-		filtered_trace: FrameItem[];
-		component: Component;
+		trace: Backtrace;
 		start_time: number;
 		end_time: number;
 	}[];
@@ -674,8 +665,7 @@ export interface Timing {
 export interface Transients {
 	trans: {
 		name: string;
-		filtered_trace: FrameItem[];
-		component: Component;
+		trace: Backtrace;
 		type: string;
 		value: unknown;
 		expiration: number;

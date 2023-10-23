@@ -7,7 +7,12 @@
 	"properties": {
 		"trace": {
 			"type": "object",
-			"phpType": "QM_Backtrace"
+			"phpType": "QM_Backtrace",
+			"allOf": [
+				{
+					"$ref": "../backtrace.json"
+				}
+			]
 		},
 		"location": {
 			"type": "string"

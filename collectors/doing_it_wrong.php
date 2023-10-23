@@ -124,10 +124,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'doing_it_wrong_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => sprintf(
+			'hook' => 'doing_it_wrong_run',
+			'trace' => $trace,
+			'message' => sprintf(
 				/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: WordPress version number. */
 				__( 'Function %1$s was called incorrectly. %2$s %3$s', 'query-monitor' ),
 				$function_name,
@@ -168,10 +167,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'deprecated_function_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+			'hook' => 'deprecated_function_run',
+			'trace' => $trace,
+			'message' => $message,
 		);
 	}
 
@@ -208,10 +206,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'deprecated_constructor_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+			'hook' => 'deprecated_constructor_run',
+			'trace' => $trace,
+			'message' => $message,
 		);
 	}
 
@@ -249,10 +246,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'deprecated_file_included',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+			'hook' => 'deprecated_file_included',
+			'trace' => $trace,
+			'message' => $message,
 		);
 	}
 
@@ -287,10 +283,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'deprecated_argument_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+			'hook' => 'deprecated_argument_run',
+			'trace' => $trace,
+			'message' => $message,
 		);
 	}
 
@@ -328,10 +323,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		}
 
 		$this->data->actions[] = array(
-			'hook'           => 'deprecated_hook_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+			'hook' => 'deprecated_hook_run',
+			'trace' => $trace,
+			'message' => $message,
 		);
 	}
 

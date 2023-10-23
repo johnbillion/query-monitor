@@ -68,8 +68,8 @@ class PHPErrors extends React.Component<iPanelProps<DataTypes['PHP_Errors']>, Re
 									<td className="qm-num">
 										{ error.calls }
 									</td>
-									{ error.component ? (
-										<QMComponent component={ error.component } />
+									{ error.trace ? (
+										<QMComponent component={ error.trace.component } />
 									) : (
 										<td>
 											{ __( 'Unknown', 'query-monitor' ) }

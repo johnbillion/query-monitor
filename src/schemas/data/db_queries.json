@@ -8,23 +8,13 @@
 		"QueryRow": {
 			"type": "object",
 			"required": [
-				"caller",
-				"caller_name",
 				"sql",
 				"ltime",
 				"result",
 				"type",
-				"component",
-				"trace",
 				"is_main_query"
 			],
 			"properties": {
-				"caller": {
-					"type": "string"
-				},
-				"caller_name": {
-					"type": "string"
-				},
 				"stack": {
 					"type": "array",
 					"items": {
@@ -60,42 +50,17 @@
 				"type": {
 					"type": "string"
 				},
-				"component": {
-					"oneOf": [
-						{
-							"phpType": "QM_Component",
-							"type": "object",
-							"allOf": [
-								{
-									"$ref": "../component.json"
-								}
-							]
-						},
-						{
-							"type": "null"
-						}
-					]
-				},
 				"trace": {
-					"phpType": "?QM_Backtrace",
-					"type": [
-						"object",
-						"null"
+					"type": "object",
+					"phpType": "QM_Backtrace",
+					"allOf": [
+						{
+							"$ref": "../backtrace.json"
+						}
 					]
 				},
 				"is_main_query": {
 					"type": "boolean"
-				},
-				"filtered_trace": {
-					"phpType": "array<int, array<string, mixed>>",
-					"type": "array",
-					"items": {
-						"allOf": [
-							{
-								"$ref": "../frameitem.json"
-							}
-						]
-					}
 				}
 			},
 			"additionalProperties": false

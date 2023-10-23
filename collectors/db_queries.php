@@ -211,10 +211,12 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
-			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
+			$row = compact( 'sql', 'ltime', 'result', 'type', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {
 				$row['stack'] = $callers;
+			} else {
+				$row['trace'] = $trace;
 			}
 
 			// @TODO these should store a reference ($i) instead of the whole row

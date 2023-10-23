@@ -79,8 +79,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),
-				'filtered_trace' => $trace->get_filtered_trace(),
-				'component' => $trace->get_component(),
+				'trace' => $trace,
 			);
 			return;
 		}
@@ -99,8 +98,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),
-				'filtered_trace' => $trace->get_filtered_trace(),
-				'component' => $trace->get_component(),
+				'trace' => $trace,
 			);
 			return;
 		}
@@ -124,8 +122,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 			'function_time' => $function_time,
 			'function_memory' => $function_memory,
 			'laps' => $function_laps,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'start_time' => ( $start_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
 			'end_time' => ( $end_time - $_SERVER['REQUEST_TIME_FLOAT'] ),
 		);
@@ -141,8 +138,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 				$this->data->warning[] = array(
 					'function' => $function,
 					'message' => __( 'Timer not stopped', 'query-monitor' ),
-					'filtered_trace' => $trace->get_filtered_trace(),
-					'component' => $trace->get_component(),
+					'trace' => $trace,
 				);
 			}
 		}

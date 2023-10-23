@@ -32,30 +32,12 @@
 						"null"
 					]
 				},
-				"filtered_trace": {
-					"oneOf": [
-						{
-							"phpType": "array<int, array<string, mixed>>",
-							"type": "array",
-							"items": {
-								"allOf": [
-									{
-										"$ref": "../frameitem.json"
-									}
-								]
-							}
-						},
-						{
-							"type": "null"
-						}
-					]
-				},
-				"component": {
-					"phpType": "QM_Component",
+				"trace": {
 					"type": "object",
+					"phpType": "QM_Backtrace",
 					"allOf": [
 						{
-							"$ref": "../component.json"
+							"$ref": "../backtrace.json"
 						}
 					]
 				},
@@ -70,8 +52,6 @@
 				"file",
 				"filename",
 				"line",
-				"filtered_trace",
-				"component",
 				"calls"
 			],
 			"additionalProperties": false
