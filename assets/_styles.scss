@@ -702,10 +702,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			position: relative !important;
 		}
 
-		td.qm-has-toggle:not(.qm-toggled-on) .qm-supplemental {
-			display: none;
-		}
-
 		.qm-inner-toggle {
 			padding: 4px 6px !important;
 		}
@@ -885,11 +881,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm .qm-supplemental {
 		margin-left: 0.75em !important;
 		margin-right: 0.75em !important;
-	}
-
-	.qm td.qm-toggled-on .qm-inverse-toggled,
-	.qm td .qm-toggled {
-		display: none;
 	}
 
 	.qm button.qm-button,
