@@ -85,9 +85,7 @@ class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string
 											) }
 										</>
 									) : (
-										<>
-											{ `${row.response.response.code} ${row.response.response.message}` }
-										</>
+										`${row.response.response.code} ${row.response.response.message}`
 									) }
 								</td>
 								<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />

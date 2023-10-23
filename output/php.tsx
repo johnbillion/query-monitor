@@ -43,9 +43,7 @@ class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 										</a>)
 									</>
 								) : (
-									<>
-										{ php.version }
-									</>
+									php.version
 								) }
 							</td>
 						</tr>
@@ -87,9 +85,7 @@ class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 										{ Object.keys( php.error_levels ).map( ( key ) => (
 											<li key={ key }>
 												{ php.error_levels[ key ] ? (
-													<>
-														{ key }&nbsp;&#x2713;
-													</>
+													`${ key }&nbsp;&#x2713;`
 												):(
 													<span className="qm-false">
 														{ key }

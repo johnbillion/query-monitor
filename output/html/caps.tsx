@@ -79,9 +79,7 @@ class Caps extends React.Component<iPanelProps<DataTypes['Caps']>, Record<string
 								<code>
 									{ cap.name }
 									{ cap.args.map( ( arg ) => (
-										<>
-											,&nbsp;{ arg }
-										</>
+										`,&nbsp;${ arg }`
 									) ) }
 								</code>
 							</td>
