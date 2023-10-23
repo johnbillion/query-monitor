@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'QM_Backtrace' ) ) {
-class QM_Backtrace {
+class QM_Backtrace implements JsonSerializable {
 
 	/**
 	 * @var array<string, bool>
@@ -554,6 +554,18 @@ class QM_Backtrace {
 
 	}
 
+	/**
+	 * @phpstan-return array{
+	 *   component: QM_Component,
+	 *   frames: array<int, mixed>,
+	 * }
+	 */
+	public function jsonSerialize(): array {
+		return array(
+			'component' => $this->get_component(),
+			'frames' => $this->get_filtered_trace(),
+		);
+	}
 }
 } else {
 
