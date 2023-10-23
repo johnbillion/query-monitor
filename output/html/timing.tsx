@@ -1,8 +1,9 @@
 import {
 	iPanelProps,
-	iQM_i18n,
 	QMComponent,
 	Tabular,
+	Time,
+	ApproximateSize,
 } from 'qmi';
 import {
 	DataTypes,
@@ -11,10 +12,7 @@ import * as React from 'react';
 
 import {
 	__,
-	sprintf,
 } from '@wordpress/i18n';
-
-declare const QM_i18n: iQM_i18n;
 
 class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<string, unknown>> {
 
@@ -58,22 +56,11 @@ class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<st
 										{ timer.function }
 									</code>
 								</td>
-								<td className="qm-num">
-									{ QM_i18n.number_format( timer.start_time, 4 ) }
-								</td>
-								<td className="qm-num">
-									{ QM_i18n.number_format( timer.end_time, 4 ) }
-								</td>
-								<td className="qm-num">
-									{ QM_i18n.number_format( timer.function_time, 4 ) }
-								</td>
-								<td className="qm-num">
-									{ sprintf(
-										'~%s kB',
-										QM_i18n.number_format( timer.function_memory / 1024 )
-									) }
-								</td>
-								<QMComponent component={ timer.component } />
+								<Time value={ timer.start_time } />
+								<Time value={ timer.end_time } />
+								<Time value={ timer.function_time } />
+								<ApproximateSize value={ timer.function_memory } />
+								<QMComponent component={ timer.trace.component } />
 							</tr>
 							{ timer.laps && (
 								<>
@@ -86,15 +73,8 @@ class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<st
 											</td>
 											<td></td>
 											<td></td>
-											<td className="qm-num">
-												{ QM_i18n.number_format( value.time_used, 4 ) }
-											</td>
-											<td className="qm-num">
-												{ sprintf(
-													'~%s kB',
-													QM_i18n.number_format( value.memory_used / 1024 )
-												) }
-											</td>
+											<Time value={ value.time_used } />
+											<ApproximateSize value={ value.memory_used } />
 											<td></td>
 										</tr>
 									) ) }

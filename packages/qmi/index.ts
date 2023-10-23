@@ -1,3 +1,4 @@
+export { ApproximateSize } from './src/approximate-size';
 export { Caller } from './src/caller';
 export { Frame } from './src/frame';
 export { Icon } from './src/icon';
