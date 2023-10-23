@@ -1,5 +1,4 @@
 import {
-	Caller,
 	Frame,
 	iPanelProps,
 	NonTabular,
@@ -14,7 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Record<string, unknown>> {
+export default class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -148,5 +147,3 @@ class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Rec
 	}
 
 }
-
-export default Languages;

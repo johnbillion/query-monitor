@@ -17,7 +17,7 @@ interface iParts {
 	[key: string]: string;
 }
 
-class Theme extends React.Component<iPanelProps<DataTypes['Theme']>, Record<string, unknown>> {
+export default class Theme extends React.Component<iPanelProps<DataTypes['Theme']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -177,5 +177,3 @@ class Theme extends React.Component<iPanelProps<DataTypes['Theme']>, Record<stri
 	}
 
 }
-
-export default Theme;

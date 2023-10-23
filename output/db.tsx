@@ -12,7 +12,7 @@ interface iDBProps {
 	db: EnvironmentData['db'];
 }
 
-class DB extends React.Component<iDBProps, Record<string, unknown>> {
+export default class DB extends React.Component<iDBProps, Record<string, unknown>> {
 
 	render() {
 		const {
@@ -66,5 +66,3 @@ class DB extends React.Component<iDBProps, Record<string, unknown>> {
 	}
 
 }
-
-export default DB;

@@ -11,7 +11,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-class DBComponents extends React.Component<iPanelProps<DataTypes['DB_Components']>, Record<string, unknown>> {
+export default class DBComponents extends React.Component<iPanelProps<DataTypes['DB_Components']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -66,5 +66,3 @@ class DBComponents extends React.Component<iPanelProps<DataTypes['DB_Components'
 	}
 
 }
-
-export default DBComponents;

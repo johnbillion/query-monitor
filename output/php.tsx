@@ -13,7 +13,7 @@ interface iPHPProps {
 
 declare const QM_i18n: iQM_i18n;
 
-class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
+export default class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 
 	render() {
 		const { php } = this.props;
@@ -124,5 +124,3 @@ class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
 	}
 
 }
-
-export default PHP;

@@ -21,7 +21,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string, unknown>> {
+export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -110,5 +110,3 @@ class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string
 	}
 
 }
-
-export default HTTP;

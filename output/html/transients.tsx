@@ -15,7 +15,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, Record<string, unknown>> {
+export default class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -101,5 +101,3 @@ class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, R
 	}
 
 }
-
-export default Transients;

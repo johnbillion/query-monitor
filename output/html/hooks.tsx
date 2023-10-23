@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-class Hooks extends React.Component<iPanelProps<DataTypes['Hooks']>, Record<string, unknown>> {
+export default class Hooks extends React.Component<iPanelProps<DataTypes['Hooks']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -107,5 +107,3 @@ class Hooks extends React.Component<iPanelProps<DataTypes['Hooks']>, Record<stri
 	}
 
 }
-
-export default Hooks;

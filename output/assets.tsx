@@ -66,7 +66,7 @@ class AssetSource extends React.Component<iAssetSourceProps, Record<string, unkn
 	}
 }
 
-class Assets extends React.Component<myProps, Record<string, unknown>> {
+export default class Assets extends React.Component<myProps, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -188,5 +188,3 @@ class Assets extends React.Component<myProps, Record<string, unknown>> {
 	}
 
 }
-
-export default Assets;

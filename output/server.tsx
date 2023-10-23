@@ -10,7 +10,7 @@ interface iServerProps {
 	server: EnvironmentData['server'];
 }
 
-class WordPress extends React.Component<iServerProps, Record<string, unknown>> {
+export default class Server extends React.Component<iServerProps, Record<string, unknown>> {
 
 	render() {
 		const { server } = this.props;
@@ -53,5 +53,3 @@ class WordPress extends React.Component<iServerProps, Record<string, unknown>> {
 	}
 
 }
-
-export default WordPress;

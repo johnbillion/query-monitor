@@ -20,7 +20,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Record<string, unknown>> {
+export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -98,5 +98,3 @@ class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Re
 	}
 
 }
-
-export default DBQueries;

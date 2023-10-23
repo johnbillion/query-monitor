@@ -14,7 +14,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<string, unknown>> {
+export default class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -88,5 +88,3 @@ class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<st
 	}
 
 }
-
-export default Timing;

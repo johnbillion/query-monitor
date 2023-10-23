@@ -13,7 +13,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-class Logger extends React.Component<iPanelProps<DataTypes['Logger']>, Record<string, unknown>> {
+export default class Logger extends React.Component<iPanelProps<DataTypes['Logger']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -67,5 +67,3 @@ class Logger extends React.Component<iPanelProps<DataTypes['Logger']>, Record<st
 	}
 
 }
-
-export default Logger;

@@ -12,7 +12,7 @@ import {
 
 import Assets from '../assets';
 
-class Styles extends React.Component<iPanelProps<DataTypes['Assets']>, Record<string, unknown>> {
+export default class Styles extends React.Component<iPanelProps<DataTypes['Assets']>, Record<string, unknown>> {
 
 	render() {
 		return (
@@ -26,5 +26,3 @@ class Styles extends React.Component<iPanelProps<DataTypes['Assets']>, Record<st
 	}
 
 }
-
-export default Styles;

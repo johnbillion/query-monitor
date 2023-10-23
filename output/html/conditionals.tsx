@@ -9,7 +9,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-class Conditionals extends React.Component<iPanelProps<DataTypes['Conditionals']>, Record<string, unknown>> {
+export default class Conditionals extends React.Component<iPanelProps<DataTypes['Conditionals']>, Record<string, unknown>> {
 
 	render() {
 		const trueConds = this.props.data.conds['true'];
@@ -54,5 +54,3 @@ class Conditionals extends React.Component<iPanelProps<DataTypes['Conditionals']
 	}
 
 }
-
-export default Conditionals;

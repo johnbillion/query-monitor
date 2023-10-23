@@ -9,7 +9,7 @@ interface iWordPressProps {
 	wordpress: EnvironmentData['wp'];
 }
 
-class WordPress extends React.Component<iWordPressProps, Record<string, unknown>> {
+export default class WordPress extends React.Component<iWordPressProps, Record<string, unknown>> {
 
 	render() {
 		const { wordpress } = this.props;
@@ -46,5 +46,3 @@ class WordPress extends React.Component<iWordPressProps, Record<string, unknown>
 	}
 
 }
-
-export default WordPress;

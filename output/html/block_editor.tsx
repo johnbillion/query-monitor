@@ -32,7 +32,7 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 
-class BlockEditor extends React.Component<iPanelProps<iBlockData>, Record<string, unknown>> {
+export default class BlockEditor extends React.Component<iPanelProps<iBlockData>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -152,5 +152,3 @@ class BlockEditor extends React.Component<iPanelProps<iBlockData>, Record<string
 	}
 
 }
-
-export default BlockEditor;

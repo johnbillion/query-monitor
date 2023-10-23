@@ -13,7 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-class DBDupes extends React.Component<iPanelProps<DataTypes['DB_Dupes']>, Record<string, unknown>> {
+export default class DBDupes extends React.Component<iPanelProps<DataTypes['DB_Dupes']>, Record<string, unknown>> {
 
 	render() {
 		const { data } = this.props;
@@ -119,5 +119,3 @@ class DBDupes extends React.Component<iPanelProps<DataTypes['DB_Dupes']>, Record
 	}
 
 }
-
-export default DBDupes;
