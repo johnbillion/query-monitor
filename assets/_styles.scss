@@ -8,18 +8,8 @@
 	}
 }
 
-// === Fonts ===
-
-$qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-$qm-font-default-size: 12px;
-$qm-font-default-line-height: 18px;
-$qm-font-code-face: Menlo, Monaco, Consolas, monospace;
-$qm-font-code-size: 11px;
-$qm-font-code-line-height: 20px;
-
 // === Admin Menu ===
 
-$qm-admin-toolbar-height: 32px;
 $qm-menu-icon: #aaa;
 $qm-menu-alert-bg: #f60 !default;
 $qm-menu-notice-bg: #740 !default;
@@ -111,7 +101,7 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 	#wp-admin-bar-query-monitor .ab-icon {
 		color: $qm-menu-icon !important;
 		display: none !important;
-		font: 18px/44px $qm-font-default-face !important;
+		font: 18px/44px Arial !important;
 		padding: 0 10px !important;
 		width: auto !important;
 	}
@@ -180,13 +170,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	clear: both !important;
 	color: var( --qm-container-fg ) !important;
 	float: none !important;
-	font-family: $qm-font-default-face !important;
-	font-size: $qm-font-default-size !important;
+	font-family: var( --qm-font-default-face ) !important;
+	font-size: var( --qm-font-default-size ) !important;
 	-webkit-font-smoothing: auto !important;
 	font-style: normal !important;
 	font-weight: normal !important;
 	letter-spacing: -0.1px !important;
-	line-height: $qm-font-default-line-height !important;
+	line-height: var( --qm-font-default-line-height ) !important;
 	margin: 0 !important;
 	min-height: auto !important;
 	outline: none !important;
@@ -212,6 +202,17 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 }
 
 #query-monitor-main {
+	// === Fonts ===
+	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	--qm-font-default-size: 12px;
+	--qm-font-default-line-height: 18px;
+	--qm-font-code-face: Menlo, Monaco, Consolas, monospace;
+	--qm-font-code-size: 11px;
+	--qm-font-code-line-height: 20px;
+
+	// === Everything else ===
+	--qm-admin-toolbar-height: 32px;
+
 	dl,
 	dt,
 	dd,
@@ -286,8 +287,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	&.qm-show-right {
-		height: calc( 100vh - #{$qm-admin-toolbar-height} ) !important;
-		top: $qm-admin-toolbar-height !important;
+		height: calc( 100vh - var( --qm-admin-toolbar-height ) ) !important;
+		top: var( --qm-admin-toolbar-height ) !important;
 		left: unset !important;
 		border-top: 0 !important;
 		border-left: 1px solid var( --qm-panel-border ) !important;
@@ -672,9 +673,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 
 		td.qm-num {
-			font-family: $qm-font-code-face !important;
-			font-size: $qm-font-code-size !important;
-			line-height: $qm-font-code-line-height !important;
+			font-family: var( --qm-font-code-face ) !important;
+			font-size: var( --qm-font-code-size ) !important;
+			line-height: var( --qm-font-code-line-height ) !important;
 		}
 
 		td.qm-row-sql {
@@ -815,9 +816,9 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm code,
 	.qm pre {
-		font-family: $qm-font-code-face !important;
-		font-size: $qm-font-code-size !important;
-		line-height: $qm-font-code-line-height !important;
+		font-family: var( --qm-font-code-face ) !important;
+		font-size: var( --qm-font-code-size ) !important;
+		line-height: var( --qm-font-code-line-height ) !important;
 	}
 
 	.qm pre {
@@ -896,7 +897,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm .qm-toggle {
 		bottom: auto !important;
-		font-family: $qm-font-code-face !important;
+		font-family: var( --qm-font-code-face ) !important;
 		height: 18px !important;
 		left: auto !important;
 		line-height: 16px !important;
