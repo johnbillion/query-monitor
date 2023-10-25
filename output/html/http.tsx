@@ -1,3 +1,4 @@
+import * as classNames from 'classnames';
 import {
 	Caller,
 	iPanelProps,
@@ -68,7 +69,14 @@ export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>
 						const row = data.http[key];
 
 						return (
-							<tr key={ key }>
+							<tr
+								key={ key }
+								className={ classNames(
+									{
+										'qm-warn': Utils.isWPError( row.response ),
+									},
+								) }
+							>
 								<td>
 									{ row.args.method }
 								</td>
