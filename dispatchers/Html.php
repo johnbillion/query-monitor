@@ -153,11 +153,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
-		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
-			add_action( 'admin_notices', array( $this, 'build_warning' ) );
-			return;
-		}
-
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
@@ -178,24 +173,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_print_styles( array(
 			'query-monitor',
 		) );
-	}
-
-	/**
-	 * @return void
-	 */
-	public function build_warning() {
-		printf(
-			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
-			sprintf(
-				/* translators: 1: CLI command to run, 2: plugin directory name */
-				esc_html__( 'Asset files for Query Monitor need to be built. Run %1$s from the %2$s directory.', 'query-monitor' ),
-				'<code>npm i && npm run build</code>',
-				sprintf(
-					'<code>%s</code>',
-					esc_html( QM_Util::standard_dir( untrailingslashit( $this->qm->plugin_path() ), '' ) )
-				)
-			)
-		);
 	}
 
 	/**
@@ -558,10 +535,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
 		if ( ! apply_filters( 'qm/process', true, is_admin_bar_showing() ) ) {
-			return false;
-		}
-
-		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			return false;
 		}
 
