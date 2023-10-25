@@ -43,11 +43,11 @@ To run the tests, you'll also need:
 
 ## Building the Assets
 
-To compile the CSS and JavaScript:
+To compile the React components:
 
 	npm run build
 
-To start the file watcher which will watch for changes and automatically compile the CSS and JavaScript:
+To start the file watcher which will watch for changes and automatically compile the React components:
 
 	npm run watch
 
