@@ -1146,12 +1146,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
-	.qm tbody tr:nth-child(odd).qm-hovered th,
-	.qm tbody tr:nth-child(odd).qm-hovered td,
 	.qm tbody tr:nth-child(odd):hover th,
 	.qm tbody tr:nth-child(odd):hover td,
-	.qm tbody tr.qm-hovered th,
-	.qm tbody tr.qm-hovered td,
 	.qm tbody tr:hover th,
 	.qm tbody tr:hover td {
 		background: var( --qm-cell-bg-hover ) !important;
