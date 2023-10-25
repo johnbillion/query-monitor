@@ -77,13 +77,12 @@ export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>
 								</td>
 								<td>
 									{ Utils.isWPError( row.response ) ? (
-										<>
-											<Warning/>
+										<Warning>
 											{ sprintf(
 												__( 'Error: %s', 'query-monitor' ),
 												Utils.getErrorMessage( row.response )
 											) }
-										</>
+										</Warning>
 									) : (
 										`${row.response.response.code} ${row.response.response.message}`
 									) }

@@ -75,15 +75,16 @@ export default class Hooks extends React.Component<iPanelProps<DataTypes['Hooks'
 													</code>
 												</span>
 												{ hook.name === 'all' && (
-													<span className="qm-warn">
+													<>
 														<br/>
-														<Warning/>
-														{ sprintf(
-															/* translators: %s: Action name */
-															__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
-															'all'
-														) }
-													</span>
+														<Warning>
+															{ sprintf(
+																/* translators: %s: Action name */
+																__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
+																'all'
+															) }
+														</Warning>
+													</>
 												) }
 											</th>
 										) }

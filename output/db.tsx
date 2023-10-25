@@ -41,10 +41,9 @@ export default class DB extends React.Component<iDBProps, Record<string, unknown
 								</th>
 								<td>
 									{ db.info[key] || (
-										<span className="qm-warn">
-											<Warning/>
+										<Warning>
 											{ __( 'Unknown', 'query-monitor' ) }
-										</span>
+										</Warning>
 									) }
 								</td>
 							</tr>

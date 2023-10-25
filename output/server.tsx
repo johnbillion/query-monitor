@@ -38,10 +38,9 @@ export default class Server extends React.Component<iServerProps, Record<string,
 								</th>
 								<td>
 									{ server[key] || (
-										<span className="qm-warn">
-											<Warning/>
+										<Warning>
 											{ __( 'Unknown', 'query-monitor' ) }
-										</span>
+										</Warning>
 									) }
 								</td>
 							</tr>

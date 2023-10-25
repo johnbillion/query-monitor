@@ -35,13 +35,12 @@ export default class PHP extends React.Component<iPHPProps, Record<string, unkno
 							</th>
 							<td>
 								{ warning ? (
-									<>
-										<Warning/>
+									<Warning>
 										{ php.version }
 										&nbsp;(<a className="qm-external-link" href="https://wordpress.org/support/update-php/">
 											{ __( 'Help', 'query-monitor' ) }
 										</a>)
-									</>
+									</Warning>
 								) : (
 									php.version
 								) }

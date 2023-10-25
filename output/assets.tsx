@@ -44,21 +44,19 @@ class AssetSource extends React.Component<iAssetSourceProps, Record<string, unkn
 
 		if ( errorData?.src ) {
 			return (
-				<>
-					<Warning/>
+				<Warning>
 					{ errorMessage }
 					<br/>
 					{ errorData.src }
-				</>
+				</Warning>
 			);
 		}
 
 		if ( errorMessage ) {
 			return (
-				<>
-					<Warning/>
+				<Warning>
 					{ errorMessage }
-				</>
+				</Warning>
 			);
 		}
 
@@ -153,15 +151,14 @@ export default class Assets extends React.Component<myProps, Record<string, unkn
 													} }
 												>
 													{ data.missing_dependencies[ dep ] ? (
-														<>
-															<Warning/>
+														<Warning>
 															&nbsp;
 															{ sprintf(
 																/* translators: %s: Name of missing script or style dependency */
 																__( '%s (missing)', 'query-monitor' ),
 																dep
 															) }
-														</>
+														</Warning>
 													) : dep }
 												</span>,
 											] ) }

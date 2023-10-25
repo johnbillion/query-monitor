@@ -2,11 +2,18 @@ import * as React from 'react';
 
 import { Icon } from './icon';
 
-export class Warning extends React.Component {
+interface iWarningProps {
+	children?: React.ReactNode;
+}
+
+export class Warning extends React.Component<iWarningProps, Record<string, unknown>> {
 
 	render() {
 		return (
-			<Icon name="warning"/>
+			<span className="qm-warn">
+				<Icon name="warning"/>
+				{ this.props.children ?? null }
+			</span>
 		);
 	}
 

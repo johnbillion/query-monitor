@@ -24,7 +24,9 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<st
 					{ ( this.state.hasError instanceof Error ) ? (
 						<>
 							<p>
-								<Warning /> An error occurred while rendering this panel:
+								<Warning>
+									An error occurred while rendering this panel:
+								</Warning>
 							</p>
 							<pre>
 								{ this.state.hasError.stack }
@@ -32,7 +34,9 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<st
 						</>
 					) : (
 						<p>
-							<Warning /> An unknown error occurred while rendering this panel.
+							<Warning>
+								An unknown error occurred while rendering this panel.
+							</Warning>
 						</p>
 					) }
 				</ErrorMessage>

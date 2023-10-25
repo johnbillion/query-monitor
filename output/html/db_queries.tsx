@@ -74,10 +74,9 @@ export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB
 							<QMComponent component={ row.trace.component } />
 							<td className="qm-row-result qm-num">
 								{ Utils.isWPError( row.result ) ? (
-									<>
-										<Warning />
+									<Warning>
 										{ Utils.getErrorMessage( row.result ) }
-									</>
+									</Warning>
 								) : (
 									row.result
 								) }
