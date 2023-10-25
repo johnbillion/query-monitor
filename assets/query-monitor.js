@@ -246,28 +246,6 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
-		container.find('.qm-highlighter').on('mouseenter',function(e){
-
-			var subject = $(this).data('qm-highlight');
-			var table = $(this).closest('table');
-
-			if ( ! subject ) {
-				return;
-			}
-
-			$(this).addClass('qm-highlight');
-
-			$.each( subject.split(' '), function( i, el ){
-				table.find('tr[data-qm-subject="' + el + '"]').addClass('qm-highlight');
-			});
-
-		}).on('mouseleave',function(e){
-
-			$(this).removeClass('qm-highlight');
-			$(this).closest('table').find('tr').removeClass('qm-highlight');
-
-		});
-
 		$('.qm').find('tbody a,tbody button').on('focus',function(e){
 			$(this).closest('tr').addClass('qm-hovered');
 		}).on('blur',function(e){
