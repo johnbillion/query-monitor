@@ -33,16 +33,27 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		transients: qm.data.transients,
 	};
 
+	const onPanelChange = ( active: string ) => {
+		localStorage.setItem( panelKey, active );
+	}
+
+	const onSideChange = ( side: boolean ) => {
+		localStorage.setItem( positionKey, ( side ? 'right' : '' ) );
+	}
+
+	const active = localStorage.getItem( panelKey );
+	const side = localStorage.getItem( positionKey ) === 'right';
+
 	createRoot( document.getElementById( 'query-monitor-container' ) ).render(
 		<QM
-			active={ localStorage.getItem( panelKey ) }
+			active={ active }
 			adminMenuElement={ document.getElementById( 'wp-admin-bar-query-monitor' ) }
 			menu={ qm.menu }
-			panel_key={ panelKey }
 			panel_menu={ qm.panel_menu }
 			panels={ panels }
-			position_key={ positionKey }
-			side={ localStorage.getItem( positionKey ) === 'right' }
+			side={ side }
+			onPanelChange={ onPanelChange }
+			onSideChange={ onSideChange }
 		/>
 	);
 } );

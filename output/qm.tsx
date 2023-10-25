@@ -28,9 +28,9 @@ export interface iQMProps {
 	};
 	panels: iPanelsProps;
 	panel_menu: iNavMenu;
-	panel_key: string;
-	position_key: string;
 	side: boolean;
+	onPanelChange: ( active: string ) => void;
+	onSideChange: ( side: boolean ) => void;
 }
 
 interface iState {
@@ -53,16 +53,13 @@ export class QM extends React.Component<iQMProps, iState> {
 			this.setState( {
 				active,
 			} );
+			this.props.onPanelChange( active );
 			// @TODO focus the panel for a11y
 		};
 
 		const adminMenuElement = this.props.adminMenuElement;
 
-		// @TODO lift this up, use compose()
-		localStorage.setItem( this.props.panel_key, this.state.active );
-		localStorage.setItem( this.props.position_key, this.state.side ? 'right' : '' );
-
-		// @TODO light/dark/auto theme support
+		// @TODO light/dark/auto theme support as context
 
 		const mainClass = classNames( 'qm-show', {
 			'qm-show-right': this.state.side,
@@ -93,9 +90,11 @@ export class QM extends React.Component<iQMProps, iState> {
 								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
 								className="qm-button-container-position"
 								onClick={ () => {
+									const side = ! this.state.side;
 									this.setState( {
-										side: ! this.state.side,
+										side,
 									} );
+									this.props.onSideChange( side );
 								} }
 							>
 								<Icon name="image-rotate-left"/>
