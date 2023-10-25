@@ -18,32 +18,32 @@ $qm-panel-menu-fg-hover: #333 !default;
 $qm-panel-menu-bg-hover: #cde !default;
 $qm-panel-menu-fg-current: #333 !default;
 $qm-panel-menu-bg-current: #def !default;
-$qm-panel-menu-bg-current-focus: lighten( $qm-panel-menu-bg-current, 5% ) !default;
+$qm-panel-menu-bg-current-focus: #f7fbff !default;
 $qm-panel-menu-fg-selected: #fff !default;
 $qm-panel-menu-bg-selected: #0073aa !default;
-$qm-panel-menu-bg-selected-focus: lighten( $qm-panel-menu-bg-selected, 5% ) !default;
-$qm-panel-menu-shadow: darken( $qm-panel-menu-bg-selected, 5% ) !default;
+$qm-panel-menu-bg-selected-focus: #0084c4 !default;
+$qm-panel-menu-shadow: #006291 !default;
 
 // Tables
 $qm-cell-border: #e0e0e0 !default;
 $qm-cell-bg-hover: #eef3fa !default;
 $qm-cell-fg-highlight: $qm-container-fg !default;
 $qm-cell-bg-highlight: #ffd !default;
-$qm-cell-bg-highlight-dark: darken( $qm-cell-bg-highlight, 10% ) !default;
+$qm-cell-bg-highlight-dark: #ffffaa !default;
 $qm-cell-bg-stripe: #f9f9f9 !default;
 $qm-table-header-bg: #fff !default;
 $qm-table-footer-bg: $qm-container-bg !default;
 
 // Links and Buttons
 $qm-link-fg: #0073aa !default;
-$qm-link-fg-hover: lighten( $qm-link-fg, 10% ) !default;
-$qm-link-fg-active: lighten( $qm-link-fg-hover, 10% ) !default;
+$qm-link-fg-hover: #0096dd !default;
+$qm-link-fg-active: #11b2ff !default;
 $qm-button-fg: #fff !default;
 $qm-button-bg: #007cba !default;
 $qm-button-fg-hover: $qm-button-fg !default;
-$qm-button-bg-hover: darken( $qm-button-bg, 3% ) !default;
+$qm-button-bg-hover: #0072ab !default;
 $qm-button-fg-active: $qm-button-fg !default;
-$qm-button-bg-active: darken( $qm-button-bg, 6% ) !default;
+$qm-button-bg-active: #00689b !default;
 $qm-title-button-fg: #666 !default;
 $qm-title-button-bg: transparent !default;
 $qm-title-button-fg-hover: #000 !default;
@@ -53,7 +53,7 @@ $qm-info-fg: #666 !default;
 // Formatting
 $qm-warn-fg: #900 !default;
 $qm-warn-bg: #fff0f0 !default;
-$qm-warn-bg-dark: darken( $qm-warn-bg, 1.5% ) !default;
+$qm-warn-bg-dark: #ffe8e8 !default;
 $qm-warn-border: #ffd6d6 !default;
 $qm-nonselect-fg: #a0a !default;
 $qm-selection-fg: $qm-container-fg !default;
@@ -153,7 +153,7 @@ $editor-sunglo:   #e06c75;
 $editor-olivine:  #98c379;
 
 // Main container
-$qm-dark-container-fg: lighten( $light-grey, 15% ) !default;
+$qm-dark-container-fg: #eaeef2 !default;
 $qm-dark-container-bg: $dark-grey !default;
 $qm-dark-container-overflow: $base-grey !default;
 
@@ -165,24 +165,24 @@ $qm-dark-panel-separator: $dark-silver !default;
 
 // Panel menus
 $qm-dark-panel-menu-border: $dark-grey !default;
-$qm-dark-panel-menu-fg: lighten( $light-grey, 15% ) !default;
+$qm-dark-panel-menu-fg: #eaeef2 !default;
 $qm-dark-panel-menu-bg: $base-grey !default;
 $qm-dark-panel-menu-fg-hover: $light-grey !default;
-$qm-dark-panel-menu-bg-hover: lighten( $dark-grey, 5% ) !default;
-$qm-dark-panel-menu-fg-current: lighten( $light-grey, 15% ) !default;
+$qm-dark-panel-menu-bg-hover: #3e444a !default;
+$qm-dark-panel-menu-fg-current: #eaeef2 !default;
 $qm-dark-panel-menu-bg-current: $dark-grey !default;
-$qm-dark-panel-menu-bg-current-focus: lighten( $qm-dark-panel-menu-bg-current, 5% ) !default;
+$qm-dark-panel-menu-bg-current-focus: #3e444a !default;
 $qm-dark-panel-menu-fg-selected: #fff !default;
 $qm-dark-panel-menu-bg-selected: #0073aa !default;
-$qm-dark-panel-menu-bg-selected-focus: lighten( $qm-dark-panel-menu-bg-selected, 5% ) !default;
-$qm-dark-panel-menu-shadow: darken( $qm-dark-panel-menu-bg-selected, 5% ) !default;
+$qm-dark-panel-menu-bg-selected-focus: #0084c4 !default;
+$qm-dark-panel-menu-shadow: #006291 !default;
 
 // Tables
 $qm-dark-cell-border: $base-grey !default;
-$qm-dark-cell-bg-hover: lighten( $dark-grey, 2% ) !default;
+$qm-dark-cell-bg-hover: #373c42 !default;
 $qm-dark-cell-fg-highlight: $qm-dark-container-fg !default;
 $qm-dark-cell-bg-highlight: #57572a !default;
-$qm-dark-cell-bg-highlight-dark: darken( $qm-dark-cell-bg-highlight, 10% ) !default;
+$qm-dark-cell-bg-highlight-dark: #353519 !default;
 $qm-dark-cell-bg-stripe: $dark-grey !default;
 $qm-dark-table-header-bg: $dark-grey !default;
 $qm-dark-table-footer-bg: $dark-grey !default;
@@ -190,13 +190,13 @@ $qm-dark-table-footer-bg: $dark-grey !default;
 // Links and Buttons
 $qm-dark-link-fg: $bright-blue !default;
 $qm-dark-link-fg-hover: $light-blue !default;
-$qm-dark-link-fg-active: lighten( $light-blue, 10% ) !default;
+$qm-dark-link-fg-active: #69aadc !default;
 $qm-dark-button-fg: #fff !default;
 $qm-dark-button-bg: #0085ba !default;
 $qm-dark-button-fg-hover: $qm-dark-button-fg !default;
-$qm-dark-button-bg-hover: darken( $qm-dark-button-bg, 3% ) !default;
+$qm-dark-button-bg-hover: #007aab !default;
 $qm-dark-button-fg-active: $qm-dark-button-fg !default;
-$qm-dark-button-bg-active: darken( $qm-dark-button-bg, 6% ) !default;
+$qm-dark-button-bg-active: #006f9b !default;
 $qm-dark-title-button-fg: $light-grey !default;
 $qm-dark-title-button-bg: transparent !default;
 $qm-dark-title-button-fg-hover: $dark-grey !default;
@@ -206,7 +206,7 @@ $qm-dark-info-fg: #aaa !default;
 // Formatting
 $qm-dark-warn-fg: #fff0f0 !default;
 $qm-dark-warn-bg: #622 !default;
-$qm-dark-warn-bg-dark: lighten( $qm-dark-warn-bg, 1.5% ) !default;
+$qm-dark-warn-bg-dark: #6c2424 !default;
 $qm-dark-warn-border: #ffd6d6 !default;
 $qm-dark-nonselect-fg: #a6a !default;
 $qm-dark-selection-fg: $dark-grey !default;
@@ -289,14 +289,13 @@ $colours-dark: (
 $qm-menu-icon: #aaa;
 $qm-menu-alert-bg: #f60 !default;
 $qm-menu-notice-bg: #740 !default;
-$qm-menu-notice-bg-hover: darken( $qm-menu-notice-bg, 5% ) !default;
+$qm-menu-notice-bg-hover: #5e3500 !default;
 $qm-menu-expensive-bg: #b60 !default;
-$qm-menu-expensive-bg-hover: darken( $qm-menu-expensive-bg, 5% ) !default;
 $qm-menu-warning-bg: #c00 !default;
-$qm-menu-warning-bg-hover: darken( $qm-menu-warning-bg, 5% ) !default;
+$qm-menu-warning-bg-hover: #b30000 !default;
 $qm-menu-fg: #eee !default;
 $qm-menu-true-fg: #8c8 !default;
-$qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
+$qm-menu-true-fg-hover: #47a747 !default;
 
 // === Properties ===
 
@@ -357,7 +356,7 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 
 		&:focus,
 		&:hover {
-			background-color: $qm-menu-expensive-bg-hover;
+			background-color: #a25800;
 		}
 	}
 
@@ -1325,7 +1324,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr:nth-child(odd) td.qm-highlight,
 	.qm tbody tr:nth-child(odd).qm-highlight th,
 	.qm tbody tr:nth-child(odd).qm-highlight td {
-		background-color: darken( $qm-cell-bg-highlight, 4% ) !important;
+		background-color: #ffffc9 !important;
 		color: var( --qm-cell-fg-highlight ) !important;
 	}
 
