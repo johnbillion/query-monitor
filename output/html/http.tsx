@@ -5,7 +5,7 @@ import {
 	PanelFooter,
 	QMComponent,
 	Tabular,
-	Time,
+	TimeCell,
 	TotalTime,
 	Utils,
 	Warning,
@@ -93,7 +93,7 @@ export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>
 								<td className="qm-num">
 									{ row.args.timeout }
 								</td>
-								<Time value={ row.ltime }/>
+								<TimeCell value={ row.ltime }/>
 							</tr>
 						);
 					} ) }

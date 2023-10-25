@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Time } from './time';
+import { TimeCell } from './time';
 
 interface TotalTimeProps {
 	rows: {
@@ -14,7 +14,7 @@ export class TotalTime extends React.Component<TotalTimeProps, Record<string, un
 		const time = this.props.rows.reduce( ( a, b ) => a + b.ltime, 0 );
 
 		return (
-			<Time value={ time }/>
+			<TimeCell value={ time }/>
 		);
 	}
 

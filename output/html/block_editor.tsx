@@ -3,6 +3,7 @@ import {
 	Notice,
 	PanelFooter,
 	Tabular,
+	TimeCell,
 } from 'qmi';
 import {
 	DataTypes,
@@ -132,9 +133,11 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 						{ block.dynamic && block.callback?.name }
 					</td>
 					{ data.has_block_timing && (
-						<td>
-							{ block.dynamic && block.timing }
-						</td>
+						block.dynamic ? (
+							<TimeCell value={ block.timing } />
+						) : (
+							<td></td>
+						)
 					) }
 					<td className="qm-row-block-html">
 						<pre className="qm-pre-wrap">

@@ -2,7 +2,7 @@ import {
 	iPanelProps,
 	QMComponent,
 	Tabular,
-	Time,
+	TimeCell,
 	ApproximateSize,
 } from 'qmi';
 import {
@@ -56,9 +56,9 @@ export default class Timing extends React.Component<iPanelProps<DataTypes['Timin
 										{ timer.function }
 									</code>
 								</td>
-								<Time value={ timer.start_time } />
-								<Time value={ timer.end_time } />
-								<Time value={ timer.function_time } />
+								<TimeCell value={ timer.start_time } />
+								<TimeCell value={ timer.end_time } />
+								<TimeCell value={ timer.function_time } />
 								<ApproximateSize value={ timer.function_memory } />
 								<QMComponent component={ timer.trace.component } />
 							</tr>
@@ -73,7 +73,7 @@ export default class Timing extends React.Component<iPanelProps<DataTypes['Timin
 											</td>
 											<td></td>
 											<td></td>
-											<Time value={ value.time_used } />
+											<TimeCell value={ value.time_used } />
 											<ApproximateSize value={ value.memory_used } />
 											<td></td>
 										</tr>

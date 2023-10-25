@@ -5,7 +5,7 @@ import {
 	PanelFooter,
 	QMComponent,
 	Tabular,
-	Time,
+	TimeCell,
 	TotalTime,
 	Utils,
 	Warning,
@@ -82,7 +82,7 @@ export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB
 									row.result
 								) }
 							</td>
-							<Time value={ row.ltime }/>
+							<TimeCell value={ row.ltime }/>
 						</tr>
 					) ) }
 				</tbody>

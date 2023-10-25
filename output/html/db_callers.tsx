@@ -1,7 +1,7 @@
 import {
 	iPanelProps,
 	Tabular,
-	Time,
+	TimeCell,
 	TotalTime,
 } from 'qmi';
 import {
@@ -48,7 +48,7 @@ export default class DBCallers extends React.Component<iPanelProps<DataTypes['DB
 									{ caller.types[key] || '' }
 								</td>
 							) ) }
-							<Time value={ caller.ltime }/>
+							<TimeCell value={ caller.ltime }/>
 						</tr>
 					) ) }
 				</tbody>

@@ -8,7 +8,7 @@ export { Notice } from './src/notice';
 export { PanelFooter } from './src/panel-footer';
 export { QMComponent } from './src/component';
 export { Tabular } from './src/tabular';
-export { Time } from './src/time';
+export { TimeCell } from './src/time';
 export { TotalTime } from './src/totaltime';
 export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';
