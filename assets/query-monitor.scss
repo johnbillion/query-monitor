@@ -1,330 +1,132 @@
-
-// Main container
-$qm-container-fg: #333 !default;
-$qm-container-bg: #f3f3f3 !default;
-$qm-container-overflow: #ececec !default;
-
-// Panels
-$qm-panel-border: #aaa !default;
-$qm-panel-fg: $qm-container-fg !default;
-$qm-panel-bg: #fff !default;
-$qm-panel-separator: #ddd !default;
-
-// Panel menus
-$qm-panel-menu-border: #ddd !default;
-$qm-panel-menu-fg: #333 !default;
-$qm-panel-menu-bg: $qm-container-bg !default;
-$qm-panel-menu-fg-hover: #333 !default;
-$qm-panel-menu-bg-hover: #cde !default;
-$qm-panel-menu-fg-current: #333 !default;
-$qm-panel-menu-bg-current: #def !default;
-$qm-panel-menu-bg-current-focus: #f7fbff !default;
-$qm-panel-menu-fg-selected: #fff !default;
-$qm-panel-menu-bg-selected: #0073aa !default;
-$qm-panel-menu-bg-selected-focus: #0084c4 !default;
-$qm-panel-menu-shadow: #006291 !default;
-
-// Tables
-$qm-cell-border: #e0e0e0 !default;
-$qm-cell-bg-hover: #eef3fa !default;
-$qm-cell-fg-highlight: $qm-container-fg !default;
-$qm-cell-bg-highlight: #ffd !default;
-$qm-cell-bg-highlight-dark: #ffffaa !default;
-$qm-cell-bg-stripe: #f9f9f9 !default;
-$qm-table-header-bg: #fff !default;
-$qm-table-footer-bg: $qm-container-bg !default;
-
-// Links and Buttons
-$qm-link-fg: #0073aa !default;
-$qm-link-fg-hover: #0096dd !default;
-$qm-link-fg-active: #11b2ff !default;
-$qm-button-fg: #fff !default;
-$qm-button-bg: #007cba !default;
-$qm-button-fg-hover: $qm-button-fg !default;
-$qm-button-bg-hover: #0072ab !default;
-$qm-button-fg-active: $qm-button-fg !default;
-$qm-button-bg-active: #00689b !default;
-$qm-title-button-fg: #666 !default;
-$qm-title-button-bg: transparent !default;
-$qm-title-button-fg-hover: #000 !default;
-$qm-title-button-bg-hover: #e6e6e6 !default;
-$qm-info-fg: #666 !default;
-
-// Formatting
-$qm-warn-fg: #900 !default;
-$qm-warn-bg: #fff0f0 !default;
-$qm-warn-bg-dark: #ffe8e8 !default;
-$qm-warn-border: #ffd6d6 !default;
-$qm-nonselect-fg: #a0a !default;
-$qm-selection-fg: $qm-container-fg !default;
-$qm-selection-bg: #B9D6FB !default;
-
-$colours-default: (
-	// Main container
-	'container-fg': $qm-container-fg,
-	'container-bg': $qm-container-bg,
-	'container-overflow': $qm-container-overflow,
-
-	// Panels
-	'panel-border': $qm-panel-border,
-	'panel-fg': $qm-panel-fg,
-	'panel-bg': $qm-panel-bg,
-	'panel-separator': $qm-panel-separator,
-
-	// Panel menus
-	'panel-menu-border': $qm-panel-menu-border,
-	'panel-menu-fg': $qm-panel-menu-fg,
-	'panel-menu-bg': $qm-panel-menu-bg,
-	'panel-menu-fg-hover': $qm-panel-menu-fg-hover,
-	'panel-menu-bg-hover': $qm-panel-menu-bg-hover,
-	'panel-menu-fg-current': $qm-panel-menu-fg-current,
-	'panel-menu-bg-current': $qm-panel-menu-bg-current,
-	'panel-menu-bg-current-focus': $qm-panel-menu-bg-current-focus,
-	'panel-menu-fg-selected': $qm-panel-menu-fg-selected,
-	'panel-menu-bg-selected': $qm-panel-menu-bg-selected,
-	'panel-menu-bg-selected-focus': $qm-panel-menu-bg-selected-focus,
-	'panel-menu-shadow': $qm-panel-menu-shadow,
-
-	// Tables
-	'cell-border': $qm-cell-border,
-	'cell-bg-hover': $qm-cell-bg-hover,
-	'cell-fg-highlight': $qm-cell-fg-highlight,
-	'cell-bg-highlight': $qm-cell-bg-highlight,
-	'cell-bg-highlight-dark': $qm-cell-bg-highlight-dark,
-	'cell-bg-stripe': $qm-cell-bg-stripe,
-	'table-header-bg': $qm-table-header-bg,
-	'table-footer-bg': $qm-table-footer-bg,
-
-	// Links and Buttons
-	'link-fg': $qm-link-fg,
-	'link-fg-hover': $qm-link-fg-hover,
-	'link-fg-active': $qm-link-fg-active,
-	'button-fg': $qm-button-fg,
-	'button-bg': $qm-button-bg,
-	'button-fg-hover': $qm-button-fg-hover,
-	'button-bg-hover': $qm-button-bg-hover,
-	'button-fg-active': $qm-button-fg-active,
-	'button-bg-active': $qm-button-bg-active,
-	'title-button-fg': $qm-title-button-fg,
-	'title-button-bg': $qm-title-button-bg,
-	'title-button-fg-hover': $qm-title-button-fg-hover,
-	'title-button-bg-hover': $qm-title-button-bg-hover,
-	'info-fg': $qm-info-fg,
-
-	// Formatting
-	'warn-fg': $qm-warn-fg,
-	'warn-bg': $qm-warn-bg,
-	'warn-bg-dark': $qm-warn-bg-dark,
-	'warn-border': $qm-warn-border,
-	'nonselect-fg': $qm-nonselect-fg,
-	'selection-fg': $qm-selection-fg,
-	'selection-bg': $qm-selection-bg,
-);
-
-// The colours below are loosely based on the WordPress branding colours.
-// https://make.wordpress.org/design/handbook/design-guide/foundations/colors/
-$white:           #ffffff;
-$black:           #000000;
-$blue:            #0073aa;
-$medium-blue:     #00a0d2;
-$clear:           transparent;
-
-$accent-red:      #dc3232;
-$accent-orange:   #f56e28;
-$accent-yellow:   #ffb900;
-$accent-green:    #46b450;
-$accent-blue:     $blue;
-$accent-purple:   #826eb4;
-
-$base-grey:       #23282d;
-$light-grey:      #bbc8d4;
-$heavy-grey:      #37444c;
-$dark-grey:       #32373c;
-$ultra-grey:      #191f25;
-$dark-silver:     #50626f;
-$base-blue:       #2e74aa;
-$light-blue:      #4092d2;
-$dark-blue:       #2c5f88;
-$ultra-blue:      #1f3f58;
-$bright-blue:     #30ceff;
-
-$editor-lavender: #c678dd;
-$editor-sunglo:   #e06c75;
-$editor-olivine:  #98c379;
-
-// Main container
-$qm-dark-container-fg: #eaeef2 !default;
-$qm-dark-container-bg: $dark-grey !default;
-$qm-dark-container-overflow: $base-grey !default;
-
-// Panels
-$qm-dark-panel-border: $dark-silver !default;
-$qm-dark-panel-fg: $qm-dark-container-fg !default;
-$qm-dark-panel-bg: $base-grey !default;
-$qm-dark-panel-separator: $dark-silver !default;
-
-// Panel menus
-$qm-dark-panel-menu-border: $dark-grey !default;
-$qm-dark-panel-menu-fg: #eaeef2 !default;
-$qm-dark-panel-menu-bg: $base-grey !default;
-$qm-dark-panel-menu-fg-hover: $light-grey !default;
-$qm-dark-panel-menu-bg-hover: #3e444a !default;
-$qm-dark-panel-menu-fg-current: #eaeef2 !default;
-$qm-dark-panel-menu-bg-current: $dark-grey !default;
-$qm-dark-panel-menu-bg-current-focus: #3e444a !default;
-$qm-dark-panel-menu-fg-selected: #fff !default;
-$qm-dark-panel-menu-bg-selected: #0073aa !default;
-$qm-dark-panel-menu-bg-selected-focus: #0084c4 !default;
-$qm-dark-panel-menu-shadow: #006291 !default;
-
-// Tables
-$qm-dark-cell-border: $base-grey !default;
-$qm-dark-cell-bg-hover: #373c42 !default;
-$qm-dark-cell-fg-highlight: $qm-dark-container-fg !default;
-$qm-dark-cell-bg-highlight: #57572a !default;
-$qm-dark-cell-bg-highlight-dark: #353519 !default;
-$qm-dark-cell-bg-stripe: $dark-grey !default;
-$qm-dark-table-header-bg: $dark-grey !default;
-$qm-dark-table-footer-bg: $dark-grey !default;
-
-// Links and Buttons
-$qm-dark-link-fg: $bright-blue !default;
-$qm-dark-link-fg-hover: $light-blue !default;
-$qm-dark-link-fg-active: #69aadc !default;
-$qm-dark-button-fg: #fff !default;
-$qm-dark-button-bg: #0085ba !default;
-$qm-dark-button-fg-hover: $qm-dark-button-fg !default;
-$qm-dark-button-bg-hover: #007aab !default;
-$qm-dark-button-fg-active: $qm-dark-button-fg !default;
-$qm-dark-button-bg-active: #006f9b !default;
-$qm-dark-title-button-fg: $light-grey !default;
-$qm-dark-title-button-bg: transparent !default;
-$qm-dark-title-button-fg-hover: $dark-grey !default;
-$qm-dark-title-button-bg-hover: $light-grey !default;
-$qm-dark-info-fg: #aaa !default;
-
-// Formatting
-$qm-dark-warn-fg: #fff0f0 !default;
-$qm-dark-warn-bg: #622 !default;
-$qm-dark-warn-bg-dark: #6c2424 !default;
-$qm-dark-warn-border: #ffd6d6 !default;
-$qm-dark-nonselect-fg: #a6a !default;
-$qm-dark-selection-fg: $dark-grey !default;
-$qm-dark-selection-bg: #B9D6FB !default;
-
-$colours-dark: (
-	// Main container
-	'container-fg': $qm-dark-container-fg,
-	'container-bg': $qm-dark-container-bg,
-	'container-overflow': $qm-dark-container-overflow,
-
-	// Panels
-	'panel-border': $qm-dark-panel-border,
-	'panel-fg': $qm-dark-panel-fg,
-	'panel-bg': $qm-dark-panel-bg,
-	'panel-separator': $qm-dark-panel-separator,
-
-	// Panel menus
-	'panel-menu-border': $qm-dark-panel-menu-border,
-	'panel-menu-fg': $qm-dark-panel-menu-fg,
-	'panel-menu-bg': $qm-dark-panel-menu-bg,
-	'panel-menu-fg-hover': $qm-dark-panel-menu-fg-hover,
-	'panel-menu-bg-hover': $qm-dark-panel-menu-bg-hover,
-	'panel-menu-fg-current': $qm-dark-panel-menu-fg-current,
-	'panel-menu-bg-current': $qm-dark-panel-menu-bg-current,
-	'panel-menu-bg-current-focus': $qm-dark-panel-menu-bg-current-focus,
-	'panel-menu-fg-selected': $qm-dark-panel-menu-fg-selected,
-	'panel-menu-bg-selected': $qm-dark-panel-menu-bg-selected,
-	'panel-menu-bg-selected-focus': $qm-dark-panel-menu-bg-selected-focus,
-	'panel-menu-shadow': $qm-dark-panel-menu-shadow,
-
-	// Tables
-	'cell-border': $qm-dark-cell-border,
-	'cell-bg-hover': $qm-dark-cell-bg-hover,
-	'cell-fg-highlight': $qm-dark-cell-fg-highlight,
-	'cell-bg-highlight': $qm-dark-cell-bg-highlight,
-	'cell-bg-highlight-dark': $qm-dark-cell-bg-highlight-dark,
-	'cell-bg-stripe': $qm-dark-cell-bg-stripe,
-	'table-header-bg': $qm-dark-table-header-bg,
-	'table-footer-bg': $qm-dark-table-footer-bg,
-
-	// Links and Buttons
-	'link-fg': $qm-dark-link-fg,
-	'link-fg-hover': $qm-dark-link-fg-hover,
-	'link-fg-active': $qm-dark-link-fg-active,
-	'button-fg': $qm-dark-button-fg,
-	'button-bg': $qm-dark-button-bg,
-	'button-fg-hover': $qm-dark-button-fg-hover,
-	'button-bg-hover': $qm-dark-button-bg-hover,
-	'button-fg-active': $qm-dark-button-fg-active,
-	'button-bg-active': $qm-dark-button-bg-active,
-	'title-button-fg': $qm-dark-title-button-fg,
-	'title-button-bg': $qm-dark-title-button-bg,
-	'title-button-fg-hover': $qm-dark-title-button-fg-hover,
-	'title-button-bg-hover': $qm-dark-title-button-bg-hover,
-	'info-fg': $qm-dark-info-fg,
-
-	// Formatting
-	'warn-fg': $qm-dark-warn-fg,
-	'warn-bg': $qm-dark-warn-bg,
-	'warn-bg-dark': $qm-dark-warn-bg-dark,
-	'warn-border': $qm-dark-warn-border,
-	'nonselect-fg': $qm-dark-nonselect-fg,
-	'selection-fg': $qm-dark-selection-fg,
-	'selection-bg': $qm-dark-selection-bg,
-);
-
-// === Functions ===
-
-@function map-get-strict($map, $key) {
-	@if map-has-key($map, $key) {
-		@return map-get($map, $key);
-	} @else {
-		@error "Index '#{$key}' does not exist";
-	}
-}
-
-// === Admin Menu ===
-
-$qm-menu-icon: #aaa;
-$qm-menu-alert-bg: #f60 !default;
-$qm-menu-notice-bg: #740 !default;
-$qm-menu-notice-bg-hover: #5e3500 !default;
-$qm-menu-expensive-bg: #b60 !default;
-$qm-menu-warning-bg: #c00 !default;
-$qm-menu-warning-bg-hover: #b30000 !default;
-$qm-menu-fg: #eee !default;
-$qm-menu-true-fg: #8c8 !default;
-$qm-menu-true-fg-hover: #47a747 !default;
-
 // === Properties ===
 
-#query-monitor-main[data-theme="light"] {
-	@each $var, $colour in $colours-default {
-		--qm-#{$var}: #{$colour};
-	}
+#query-monitor-main[data-theme=light] {
+	--qm-container-fg: #333;
+	--qm-container-bg: #f3f3f3;
+	--qm-container-overflow: #ececec;
+	--qm-panel-border: #aaa;
+	--qm-panel-fg: #333;
+	--qm-panel-bg: #fff;
+	--qm-panel-separator: #ddd;
+	--qm-panel-menu-border: #ddd;
+	--qm-panel-menu-fg: #333;
+	--qm-panel-menu-bg: #f3f3f3;
+	--qm-panel-menu-fg-hover: #333;
+	--qm-panel-menu-bg-hover: #cde;
+	--qm-panel-menu-fg-current: #333;
+	--qm-panel-menu-bg-current: #def;
+	--qm-panel-menu-bg-current-focus: #f7fbff;
+	--qm-panel-menu-fg-selected: #fff;
+	--qm-panel-menu-bg-selected: #0073aa;
+	--qm-panel-menu-bg-selected-focus: #0084c4;
+	--qm-panel-menu-shadow: #006291;
+	--qm-cell-border: #e0e0e0;
+	--qm-cell-bg-hover: #eef3fa;
+	--qm-cell-fg-highlight: #333;
+	--qm-cell-bg-highlight: #ffd;
+	--qm-cell-bg-highlight-dark: #ffffaa;
+	--qm-cell-bg-stripe: #f9f9f9;
+	--qm-table-header-bg: #fff;
+	--qm-table-footer-bg: #f3f3f3;
+	--qm-link-fg: #0073aa;
+	--qm-link-fg-hover: #0096dd;
+	--qm-link-fg-active: #11b2ff;
+	--qm-button-fg: #fff;
+	--qm-button-bg: #007cba;
+	--qm-button-fg-hover: #fff;
+	--qm-button-bg-hover: #0072ab;
+	--qm-button-fg-active: #fff;
+	--qm-button-bg-active: #00689b;
+	--qm-title-button-fg: #666;
+	--qm-title-button-bg: transparent;
+	--qm-title-button-fg-hover: #000;
+	--qm-title-button-bg-hover: #e6e6e6;
+	--qm-info-fg: #666;
+	--qm-warn-fg: #900;
+	--qm-warn-bg: #fff0f0;
+	--qm-warn-bg-dark: #ffe8e8;
+	--qm-warn-border: #ffd6d6;
+	--qm-nonselect-fg: #a0a;
+	--qm-selection-fg: #333;
+	--qm-selection-bg: #B9D6FB;
 }
 
-#query-monitor-main[data-theme="dark"] {
-	@each $var, $colour in $colours-default {
-		--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
-	}
+#query-monitor-main[data-theme=dark] {
+	--qm-container-fg: #eaeef2;
+	--qm-container-bg: #32373c;
+	--qm-container-overflow: #23282d;
+	--qm-panel-border: #50626f;
+	--qm-panel-fg: #eaeef2;
+	--qm-panel-bg: #23282d;
+	--qm-panel-separator: #50626f;
+	--qm-panel-menu-border: #32373c;
+	--qm-panel-menu-fg: #eaeef2;
+	--qm-panel-menu-bg: #23282d;
+	--qm-panel-menu-fg-hover: #bbc8d4;
+	--qm-panel-menu-bg-hover: #3e444a;
+	--qm-panel-menu-fg-current: #eaeef2;
+	--qm-panel-menu-bg-current: #32373c;
+	--qm-panel-menu-bg-current-focus: #3e444a;
+	--qm-panel-menu-fg-selected: #fff;
+	--qm-panel-menu-bg-selected: #0073aa;
+	--qm-panel-menu-bg-selected-focus: #0084c4;
+	--qm-panel-menu-shadow: #006291;
+	--qm-cell-border: #23282d;
+	--qm-cell-bg-hover: #373c42;
+	--qm-cell-fg-highlight: #eaeef2;
+	--qm-cell-bg-highlight: #57572a;
+	--qm-cell-bg-highlight-dark: #353519;
+	--qm-cell-bg-stripe: #32373c;
+	--qm-table-header-bg: #32373c;
+	--qm-table-footer-bg: #32373c;
+	--qm-link-fg: #30ceff;
+	--qm-link-fg-hover: #4092d2;
+	--qm-link-fg-active: #69aadc;
+	--qm-button-fg: #fff;
+	--qm-button-bg: #0085ba;
+	--qm-button-fg-hover: #fff;
+	--qm-button-bg-hover: #007aab;
+	--qm-button-fg-active: #fff;
+	--qm-button-bg-active: #006f9b;
+	--qm-title-button-fg: #bbc8d4;
+	--qm-title-button-bg: transparent;
+	--qm-title-button-fg-hover: #32373c;
+	--qm-title-button-bg-hover: #bbc8d4;
+	--qm-info-fg: #aaa;
+	--qm-warn-fg: #fff0f0;
+	--qm-warn-bg: #622;
+	--qm-warn-bg-dark: #6c2424;
+	--qm-warn-border: #ffd6d6;
+	--qm-nonselect-fg: #a6a;
+	--qm-selection-fg: #32373c;
+	--qm-selection-bg: #B9D6FB;
 }
 
 // === Admin Toolbar ===
 
 #wpadminbar {
+	--qm-menu-icon: #aaa;
+	--qm-menu-alert-bg: #f60;
+	--qm-menu-notice-bg: #740;
+	--qm-menu-notice-bg-hover: #5e3500;
+	--qm-menu-expensive-bg: #b60;
+	--qm-menu-warning-bg: #c00;
+	--qm-menu-warning-bg-hover: #b30000;
+	--qm-menu-fg: #eee;
+	--qm-menu-true-fg: #8c8;
+	--qm-menu-true-fg-hover: #47a747;
+
 	.quicklinks .menupop ul li.qm-true > a {
-		color: $qm-menu-true-fg !important;
+		color: var( --qm-menu-true-fg ) !important;
 
 		&:focus,
 		&:hover {
-			color: $qm-menu-true-fg-hover !important;
+			color: var( --qm-menu-true-fg-hover ) !important;
 		}
 	}
 
 	.qm-alert {
-		background-color: $qm-menu-alert-bg;
+		background-color: var( --qm-menu-alert-bg );
 	}
 
 	#wp-admin-bar-query-monitor-doing_it_wrong a,
@@ -334,17 +136,17 @@ $qm-menu-true-fg-hover: #47a747 !default;
 	.qm-strict,
 	.qm-deprecated,
 	.qm-notice {
-		background-color: $qm-menu-notice-bg;
+		background-color: var( --qm-menu-notice-bg );
 
 		&:focus,
 		&:hover {
-			background-color: $qm-menu-notice-bg-hover;
+			background-color: var( --qm-menu-notice-bg-hover );
 		}
 	}
 
 	#wp-admin-bar-query-monitor-expensive a,
 	.qm-expensive {
-		background-color: $qm-menu-expensive-bg;
+		background-color: var( --qm-menu-expensive-bg );
 
 		&:focus,
 		&:hover {
@@ -357,16 +159,16 @@ $qm-menu-true-fg-hover: #47a747 !default;
 	#wp-admin-bar-query-monitor-errors a,
 	.qm-error,
 	.qm-warning {
-		background-color: $qm-menu-warning-bg;
+		background-color: var( --qm-menu-warning-bg );
 
 		&:focus,
 		&:hover {
-			background-color: $qm-menu-warning-bg-hover;
+			background-color: var( --qm-menu-warning-bg-hover );
 		}
 	}
 
 	#wp-admin-bar-query-monitor .ab-icon {
-		color: $qm-menu-icon !important;
+		color: var( --qm-menu-icon !important );
 		display: none !important;
 		font: 18px/44px Arial !important;
 		padding: 0 10px !important;
@@ -403,7 +205,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 #wp-admin-bar-query-monitor-logger-warning a,
 #wp-admin-bar-query-monitor-warnings a,
 #wp-admin-bar-query-monitor-errors a {
-	color: $qm-menu-fg !important;
+	color: var( --qm-menu-fg !important );
 }
 
 #wp-admin-bar-query-monitor small {
