@@ -6,11 +6,11 @@
 	],
 	"compilerOptions": {
 		"outDir": "./build/",
-		"sourceMap": true,
+		"sourceMap": false,
 		"allowJs": true,
 		"noImplicitAny": true,
-		"declaration": true,
-		"declarationMap": true,
+		"declaration": false,
+		"declarationMap": false,
 		"module": "commonjs",
 		"target": "es2017",
 		"jsx": "react"

@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require( 'webpack' );
-
-/** @type {webpack.Configuration} */
-const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
+const {
+	resolve,
+} = require( 'path' );
 
 /** @type {webpack.Configuration} */
 module.exports = {
-	...defaultConfig,
+	mode: 'production',
 	entry: './src/index.tsx',
+	output: {
+		clean: true,
+		filename: '[name].js',
+		path: resolve( process.cwd(), 'build' ),
+	},
 	resolve: {
 		extensions: [
 			'.ts',
@@ -23,7 +28,6 @@ module.exports = {
 			/vendor/,
 		],
 		rules: [
-			...defaultConfig.module.rules,
 			{
 				test: /\.ts(x?)$/,
 				exclude: [
@@ -41,11 +45,4 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [
-		// The plugins property is being explictly overridden here so the default DependencyExtractionWebpackPlugin
-		// plugin from wp-scripts is not loaded, meaning our dependencies such as React and ReactDOM all get bundled.
-		new webpack.ProvidePlugin( {
-			react: 'react',
-		} ),
-	],
 };
