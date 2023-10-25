@@ -299,17 +299,9 @@ $qm-menu-true-fg-hover: #47a747 !default;
 
 // === Properties ===
 
-#query-monitor-main {
+#query-monitor-main[data-theme="light"] {
 	@each $var, $colour in $colours-default {
 		--qm-#{$var}: #{$colour};
-	}
-}
-
-@media (prefers-color-scheme: dark) {
-	#query-monitor-main[data-theme="auto"] {
-		@each $var, $colour in $colours-default {
-			--qm-#{$var}: #{ map-get-strict( $colours-dark, $var ) };
-		}
 	}
 }
 

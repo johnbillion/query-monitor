@@ -59,7 +59,9 @@ export class QM extends React.Component<iQMProps, iState> {
 
 		const adminMenuElement = this.props.adminMenuElement;
 
-		// @TODO light/dark/auto theme support as context
+		const theme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
+			? 'dark'
+			: 'light';
 
 		const mainClass = classNames( 'qm-show', {
 			'qm-show-right': this.state.side,
@@ -68,7 +70,7 @@ export class QM extends React.Component<iQMProps, iState> {
 		return (
 			<>
 				{ this.state.active && (
-					<div className={ mainClass } data-theme="auto" dir="ltr" id="query-monitor-main">
+					<div className={ mainClass } data-theme={ theme } dir="ltr" id="query-monitor-main">
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 						<div className="qm-resizer" id="qm-title">
 							<h1 className="qm-title-heading">
