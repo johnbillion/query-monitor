@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
-export function formatSQL( sql: string ) {
+export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
 	const lines = formatted.split( new RegExp( lineRegex ) );
@@ -27,13 +27,13 @@ export function formatSQL( sql: string ) {
 	return collection;
 }
 
-export function formatURL( url: string ) {
+export function formatURL( url: string ): JSX.Element[] {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
 	const collection: JSX.Element[] = [
-		<React.Fragment key="part-0">
+		<>
 			{ parts[0] }
-		</React.Fragment>,
+		</>,
 	];
 	let index = 0;
 
@@ -41,10 +41,10 @@ export function formatURL( url: string ) {
 		index += 2;
 
 		collection.push(
-			<React.Fragment key={ `part-${index}` }>
+			<>
 				<br />
 				{ `${ keyword }${ parts[ index ] }` }
-			</React.Fragment>
+			</>
 		);
 
 		return '';
