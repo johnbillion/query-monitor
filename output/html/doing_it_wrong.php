@@ -34,100 +34,6 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	}
 
 	/**
-	 * @return array<string, string>
-	 */
-	public function get_type_labels() {
-		return array(
-			/* translators: %s: Total number of Doing it Wrong occurrences */
-			'total' => _x( 'Total: %s', 'Doing it Wrong', 'query-monitor' ),
-			'plural' => __( 'Doing it Wrong occurrences', 'query-monitor' ),
-			/* translators: %s: Total number of Doing it Wrong occurrences */
-			'count' => _x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
-		);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_Doing_It_Wrong $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->actions ) ) {
-			$this->before_non_tabular_output();
-
-			$notice = __( 'No occurrences.', 'query-monitor' );
-			echo $this->build_notice( $notice ); // WPCS: XSS ok.
-
-			$this->after_non_tabular_output();
-
-			return;
-		}
-
-		$this->before_tabular_output();
-
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-
-		foreach ( $data->actions as $row ) {
-			$stack = array();
-
-			foreach ( $row['trace']->get_filtered_trace() as $frame ) {
-				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
-			}
-
-			$caller = array_shift( $stack );
-
-			echo '<tr>';
-
-			printf( '<td>%s</td>', esc_html( wp_strip_all_tags( $row['message'] ) ) );
-
-			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
-
-			if ( ! empty( $stack ) ) {
-				echo self::build_toggler(); // WPCS: XSS ok;
-			}
-
-			echo '<ol>';
-
-			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
-
-			if ( ! empty( $stack ) ) {
-				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
-			}
-
-			echo '</ol></td>';
-
-			echo '<td class="qm-nowrap">' . esc_html( $row['component']->name ) . '</td>';
-
-			echo '</tr>';
-		}
-
-		echo '</tbody>';
-
-		echo '<tfoot>';
-		printf(
-			'<tr><td colspan="3">%s</td></tr>',
-			sprintf(
-				/* translators: %s: Total number of Doing it Wrong occurrences */
-				esc_html_x( 'Total: %s', 'Total Doing it Wrong occurrences', 'query-monitor' ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data->actions ) ) ) . '</span>'
-			)
-		);
-		echo '</tfoot>';
-
-		$this->after_tabular_output();
-
-	}
-
-	/**
 	 * @param array<int, string> $class
 	 * @return array<int, string>
 	 */
@@ -155,9 +61,9 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 			return $menu;
 		}
 
-		$type_label = $this->get_type_labels();
 		$label = sprintf(
-			$type_label['count'],
+			/* translators: %s: Total number of Doing it Wrong occurrences */
+			_x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
 			number_format_i18n( count( $data->actions ) )
 		);
 
