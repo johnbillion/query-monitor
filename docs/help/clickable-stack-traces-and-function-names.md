@@ -4,11 +4,11 @@ redirect_from: /blog/2019/02/clickable-stack-traces-and-function-names-in-query-
 
 Many panels in Query Monitor display function names or stack traces. Wouldn't it be great if you could click the function name and the file opens up in your text editor or IDE at the correct position? With the clickable file links feature you can, and you'll wonder how you lived without it:
 
-![Screenshot of clickable function names in Query Monitor](docs/assets/clickable.png)
+![Screenshot of clickable function names in Query Monitor](../assets/clickable.png)
 
 You just need to open up the Settings panel in Query Monitor (click the cog next to the Close icon) and choose your editor in the "Editor" section. That's it!
 
-![Screenshot of the Editor setting in Query Monitor](docs/assets/editor-setting.png)
+![Screenshot of the Editor setting in Query Monitor](../assets/editor-setting.png)
 
 If you use an editor other than VS Code or PhpStorm then you may first need to configure it so it opens when a certain URL scheme is encountered:
 
