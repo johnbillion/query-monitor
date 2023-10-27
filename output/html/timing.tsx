@@ -4,6 +4,7 @@ import {
 	Tabular,
 	TimeCell,
 	ApproximateSize,
+	Notice,
 } from 'qmi';
 import {
 	DataTypes,
@@ -15,8 +16,19 @@ import {
 } from '@wordpress/i18n';
 
 export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
-	if ( ! data.timing ) {
-		return null;
+	if ( ! data.timing && ! data.warning ) {
+		return (
+			<Notice id={ id }>
+				<p>
+					{ __( 'No data logged.', 'query-monitor' ) }
+				</p>
+				<p>
+					<a href="https://querymonitor.com/blog/2018/07/profiling-and-logging/">
+						{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
+					</a>
+				</p>
+			</Notice>
+		);
 	}
 
 	return (

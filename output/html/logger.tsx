@@ -5,6 +5,7 @@ import {
 	Component,
 	Tabular,
 	Warning,
+	Notice,
 } from 'qmi';
 import {
 	DataTypes,
@@ -15,7 +16,18 @@ import { __ } from '@wordpress/i18n';
 
 export default ( { data, id }: iPanelProps<DataTypes['Logger']> ) => {
 	if ( ! data.logs || ! data.logs.length ) {
-		return null;
+		return (
+			<Notice id={ id }>
+				<p>
+					{ __( 'No data logged.', 'query-monitor' ) }
+				</p>
+				<p>
+					<a href="https://querymonitor.com/blog/2018/07/profiling-and-logging/">
+						{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
+					</a>
+				</p>
+			</Notice>
+		);
 	}
 
 	return (
