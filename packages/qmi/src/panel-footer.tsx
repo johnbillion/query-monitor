@@ -11,14 +11,14 @@ interface iPanelFooterProps {
 declare const QM_i18n: iQM_i18n;
 
 export const PanelFooter = ( { children, cols, count, label }: iPanelFooterProps ) => (
-			<tfoot>
-				<tr>
-					<td colSpan={ cols }>
-						{ label }
-						&nbsp;
-						<span className="qm-items-number">{ QM_i18n.number_format( count ) }</span>
-					</td>
-					{ children }
-				</tr>
-			</tfoot>
-		);
+	<tfoot>
+		<tr>
+			<td colSpan={ cols }>
+				{ label }
+				&nbsp;
+				<span className="qm-items-number">{ QM_i18n.number_format( count ) }</span>
+			</td>
+			{ children }
+		</tr>
+	</tfoot>
+);

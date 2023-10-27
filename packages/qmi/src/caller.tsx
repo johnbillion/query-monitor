@@ -15,54 +15,54 @@ interface CallerProps {
 }
 
 export const Caller = ( { isFileList, trace, toggleLabel }: CallerProps ) => {
-		const [ expanded, setExpanded ] = React.useState( false );
+	const [ expanded, setExpanded ] = React.useState( false );
 
-		const frames = trace.frames;
+	const frames = trace.frames;
 
-		if ( frames.length === 0 ) {
-			return (
-				<td>
-					{ __( 'Unknown', 'query-monitor' ) }
-				</td>
-			);
-		}
-
-		const caller = frames.shift();
-
+	if ( frames.length === 0 ) {
 		return (
-			<td className="qm-has-toggle qm-nowrap qm-ltr">
-				{ frames.length > 0 && (
-					<button
-						aria-expanded={ expanded ? 'false' : 'true' }
-						aria-label={ toggleLabel }
-						className="qm-toggle"
-						onClick={ () => setExpanded( ! expanded ) }
-					>
-						<span aria-hidden="true">
-							{ expanded ? '-' : '+' }
-						</span>
-					</button>
-				) }
-				<ol>
-					<li>
-						<Frame
-							expanded={ expanded }
-							frame={ caller }
-							isFileName={ isFileList }
-						/>
-					</li>
-					{ frames.length > 0 && expanded && (
-						frames.map( frame => (
-							<li key={ frame.display }>
-								<Frame
-									expanded
-									frame={ frame }
-									isFileName={ isFileList }
-								/>
-							</li>
-						) )
-					) }
-				</ol>
+			<td>
+				{ __( 'Unknown', 'query-monitor' ) }
 			</td>
 		);
 	}
+
+	const caller = frames.shift();
+
+	return (
+		<td className="qm-has-toggle qm-nowrap qm-ltr">
+			{ frames.length > 0 && (
+				<button
+					aria-expanded={ expanded ? 'false' : 'true' }
+					aria-label={ toggleLabel }
+					className="qm-toggle"
+					onClick={ () => setExpanded( ! expanded ) }
+				>
+					<span aria-hidden="true">
+						{ expanded ? '-' : '+' }
+					</span>
+				</button>
+			) }
+			<ol>
+				<li>
+					<Frame
+						expanded={ expanded }
+						frame={ caller }
+						isFileName={ isFileList }
+					/>
+				</li>
+				{ frames.length > 0 && expanded && (
+					frames.map( frame => (
+						<li key={ frame.display }>
+							<Frame
+								expanded
+								frame={ frame }
+								isFileName={ isFileList }
+							/>
+						</li>
+					) )
+				) }
+			</ol>
+		</td>
+	);
+};

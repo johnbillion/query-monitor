@@ -54,176 +54,172 @@ export interface iPanelsProps {
 
 declare const qm: iQMConfig;
 
-export const Panels = ( props: iPanelsProps ) => {
-		const active = props.active;
-
-		return (
-			<div id="qm-panels">
-				{ active === 'admin' && (
-					<ErrorBoundary>
-						<Admin
-							{ ...props.admin }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'block_editor' && (
-					<ErrorBoundary>
-						<BlockEditor
-							{ ...props.block_editor }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'caps' && (
-					<ErrorBoundary>
-						<Caps
-							{ ...props.caps }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'conditionals' && (
-					<ErrorBoundary>
-						<Conditionals
-							{ ...props.conditionals }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'db_callers' && (
-					<ErrorBoundary>
-						<DBCallers
-							{ ...props.db_callers }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'db_components' && (
-					<ErrorBoundary>
-						<DBComponents
-							{ ...props.db_components }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'db_dupes' && (
-					<ErrorBoundary>
-						<DBDupes
-							{ ...props.db_dupes }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'db_queries' && (
-					<ErrorBoundary>
-						<DBQueries
-							{ ...props.db_queries }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'environment' && (
-					<ErrorBoundary>
-						<Environment
-							{ ...props.environment }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'hooks' && (
-					<ErrorBoundary>
-						<Hooks
-							{ ...props.hooks }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'http' && (
-					<ErrorBoundary>
-						<HTTP
-							{ ...props.http }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'logger' && (
-					<ErrorBoundary>
-						<Logger
-							{ ...props.logger }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'languages' && (
-					<ErrorBoundary>
-						<Languages
-							{ ...props.languages }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'php_errors' && (
-					<ErrorBoundary>
-						<PHPErrors
-							{ ...props.php_errors }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'request' && (
-					<ErrorBoundary>
-						<Request
-							{ ...props.request }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'assets_scripts' && (
-					<ErrorBoundary>
-						<Scripts
-							{ ...props.assets_scripts }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'assets_styles' && (
-					<ErrorBoundary>
-						<Styles
-							{ ...props.assets_styles }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'response' && (
-					<ErrorBoundary>
-						<Theme
-							{ ...props.response }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'transients' && (
-					<ErrorBoundary>
-						<Transients
-							{ ...props.transients }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'timing' && (
-					<ErrorBoundary>
-						<Timing
-							{ ...props.timing }
-							id={ active }
-						/>
-					</ErrorBoundary>
-				) }
-				{ active === 'settings' && (
-					<ErrorBoundary>
-						<Settings { ...qm.settings } />
-					</ErrorBoundary>
-				) }
-			</div>
-		);
-	}
+export const Panels = ( props: iPanelsProps ) => (
+	<div id="qm-panels">
+		{ props.active === 'admin' && (
+			<ErrorBoundary>
+				<Admin
+					{ ...props.admin }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'block_editor' && (
+			<ErrorBoundary>
+				<BlockEditor
+					{ ...props.block_editor }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'caps' && (
+			<ErrorBoundary>
+				<Caps
+					{ ...props.caps }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'conditionals' && (
+			<ErrorBoundary>
+				<Conditionals
+					{ ...props.conditionals }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'db_callers' && (
+			<ErrorBoundary>
+				<DBCallers
+					{ ...props.db_callers }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'db_components' && (
+			<ErrorBoundary>
+				<DBComponents
+					{ ...props.db_components }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'db_dupes' && (
+			<ErrorBoundary>
+				<DBDupes
+					{ ...props.db_dupes }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'db_queries' && (
+			<ErrorBoundary>
+				<DBQueries
+					{ ...props.db_queries }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'environment' && (
+			<ErrorBoundary>
+				<Environment
+					{ ...props.environment }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'hooks' && (
+			<ErrorBoundary>
+				<Hooks
+					{ ...props.hooks }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'http' && (
+			<ErrorBoundary>
+				<HTTP
+					{ ...props.http }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'logger' && (
+			<ErrorBoundary>
+				<Logger
+					{ ...props.logger }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'languages' && (
+			<ErrorBoundary>
+				<Languages
+					{ ...props.languages }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'php_errors' && (
+			<ErrorBoundary>
+				<PHPErrors
+					{ ...props.php_errors }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'request' && (
+			<ErrorBoundary>
+				<Request
+					{ ...props.request }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'assets_scripts' && (
+			<ErrorBoundary>
+				<Scripts
+					{ ...props.assets_scripts }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'assets_styles' && (
+			<ErrorBoundary>
+				<Styles
+					{ ...props.assets_styles }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'response' && (
+			<ErrorBoundary>
+				<Theme
+					{ ...props.response }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'transients' && (
+			<ErrorBoundary>
+				<Transients
+					{ ...props.transients }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'timing' && (
+			<ErrorBoundary>
+				<Timing
+					{ ...props.timing }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'settings' && (
+			<ErrorBoundary>
+				<Settings { ...qm.settings } />
+			</ErrorBoundary>
+		) }
+	</div>
+);

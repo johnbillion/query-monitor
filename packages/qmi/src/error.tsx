@@ -7,11 +7,11 @@ interface iErrorProps {
 }
 
 export const ErrorMessage = ( { id, children }: iErrorProps ) => (
-			<NonTabular id={ id }>
-				<section>
-					<div className="qm-error">
-						{ children }
-					</div>
-				</section>
-			</NonTabular>
-		);
+	<NonTabular id={ id }>
+		<section>
+			<div className="qm-error">
+				{ children }
+			</div>
+		</section>
+	</NonTabular>
+);

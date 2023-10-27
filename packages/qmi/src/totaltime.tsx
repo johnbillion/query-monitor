@@ -9,5 +9,5 @@ interface TotalTimeProps {
 }
 
 export const TotalTime = ( { rows }: TotalTimeProps ) => (
-			<TimeCell value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
-		);
+	<TimeCell value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
+);

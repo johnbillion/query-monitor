@@ -13,12 +13,12 @@ import {
 import Assets from '../assets';
 
 export default ( props: iPanelProps<DataTypes['Assets']> ) => {
-		return (
-			<Assets
-				{ ...props }
-				labels={ {
-					none: __( 'No JavaScript files were enqueued.', 'query-monitor' ),
-				} }
-			/>
-		);
-	}
+	return (
+		<Assets
+			{ ...props }
+			labels={ {
+				none: __( 'No JavaScript files were enqueued.', 'query-monitor' ),
+			} }
+		/>
+	);
+};

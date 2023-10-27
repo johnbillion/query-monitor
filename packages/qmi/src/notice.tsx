@@ -7,11 +7,11 @@ interface iNoticeProps {
 }
 
 export const Notice = ( { children, id }: iNoticeProps ) => (
-			<NonTabular id={ id }>
-				<section>
-					<div className="qm-notice">
-						{ children }
-					</div>
-				</section>
-			</NonTabular>
-		);
+	<NonTabular id={ id }>
+		<section>
+			<div className="qm-notice">
+				{ children }
+			</div>
+		</section>
+	</NonTabular>
+);

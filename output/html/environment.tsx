@@ -13,10 +13,10 @@ import Server from '../server';
 import WordPress from '../wordpress';
 
 export default ( { data, id }: iPanelProps<DataTypes['Environment']> ) => (
-			<NonTabular id={ id }>
-				<PHP php={ data.php }/>
-				<DB db={ data.db }/>
-				<WordPress wordpress={ data.wp }/>
-				<Server server={ data.server }/>
-			</NonTabular>
-		);
+	<NonTabular id={ id }>
+		<PHP php={ data.php }/>
+		<DB db={ data.db }/>
+		<WordPress wordpress={ data.wp }/>
+		<Server server={ data.server }/>
+	</NonTabular>
+);

@@ -10,15 +10,15 @@ interface FrameProps {
 }
 
 export const Frame = ( { frame, expanded }: FrameProps ) => (
+	<>
+		<code>{ frame.display }</code>
+		{ expanded && (
 			<>
-				<code>{ frame.display }</code>
-				{ expanded && (
-					<>
-						<br/>
-						<span className="qm-info qm-supplemental">
-							@TODO
-						</span>
-					</>
-				) }
+				<br/>
+				<span className="qm-info qm-supplemental">
+					@TODO
+				</span>
 			</>
-		);
+		) }
+	</>
+);

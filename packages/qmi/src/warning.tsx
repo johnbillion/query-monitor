@@ -7,8 +7,8 @@ interface iWarningProps {
 }
 
 export const Warning = ( { children }: iWarningProps ) => (
-			<span className="qm-warn">
-				<Icon name="warning"/>
-				{ children ?? null }
-			</span>
-		);
+	<span className="qm-warn">
+		<Icon name="warning"/>
+		{ children ?? null }
+	</span>
+);

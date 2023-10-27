@@ -34,109 +34,109 @@ export interface iQMProps {
 }
 
 export const QM = ( props: iQMProps ) => {
-		const [ active, setActive ] = React.useState( props.active );
-		const [ side, setSide ] = React.useState( props.side );
+	const [ active, setActive ] = React.useState( props.active );
+	const [ side, setSide ] = React.useState( props.side );
 
-		const setActivePanel = ( active: string ) => {
-			setActive( active );
-			props.onPanelChange( active );
-			// @TODO focus the panel for a11y
-		};
+	const setActivePanel = ( active: string ) => {
+		setActive( active );
+		props.onPanelChange( active );
+		// @TODO focus the panel for a11y
+	};
 
-		const adminMenuElement = props.adminMenuElement;
+	const adminMenuElement = props.adminMenuElement;
 
-		const theme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
-			? 'dark'
-			: 'light';
+	const theme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
+		? 'dark'
+		: 'light';
 
-		const mainClass = classNames( 'qm-show', {
-			'qm-show-right': side,
-		} );
+	const mainClass = classNames( 'qm-show', {
+		'qm-show-right': side,
+	} );
 
-		return (
-			<>
-				{ active && (
-					<div className={ mainClass } data-theme={ theme } dir="ltr" id="query-monitor-main">
-						<div className="qm-resizer" id="qm-side-resizer"></div>
-						<div className="qm-resizer" id="qm-title">
-							<h1 className="qm-title-heading">
-								{ __( 'Query Monitor', 'query-monitor' ) }
-							</h1>
-							<div className="qm-title-heading">
-								<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
-							</div>
-							<button
-								aria-label={ __( 'Settings', 'query-monitor' ) }
-								className="qm-button-container-settings"
-								onClick={ () => {
-									setActivePanel( 'settings' );
-								} }
-							>
-								<Icon name="admin-generic"/>
-							</button>
-							<button
-								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
-								className="qm-button-container-position"
-								onClick={ () => {
-									setSide( ! side );
-									props.onSideChange( ! side );
-								} }
-							>
-								<Icon name="image-rotate-left"/>
-							</button>
-							<button
-								aria-label={ __( 'Close Panel', 'query-monitor' ) }
-								className="qm-button-container-close"
-								onClick={ () => {
-									setActivePanel( '' );
-								} }
-							>
-								<Icon name="no-alt"/>
-							</button>
+	return (
+		<>
+			{ active && (
+				<div className={ mainClass } data-theme={ theme } dir="ltr" id="query-monitor-main">
+					<div className="qm-resizer" id="qm-side-resizer"></div>
+					<div className="qm-resizer" id="qm-title">
+						<h1 className="qm-title-heading">
+							{ __( 'Query Monitor', 'query-monitor' ) }
+						</h1>
+						<div className="qm-title-heading">
+							<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
 						</div>
-						<div id="qm-wrapper">
-							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
-							<Panels { ...props.panels } active={ active }/>
-						</div>
-					</div>
-				) }
-				{ adminMenuElement && (
-					<AdminMenu element={ adminMenuElement }>
-						<a
-							className="ab-item"
-							href="#qm-overview"
-							onClick={ ( e ) => {
-								setActivePanel( 'overview' );
-								adminMenuElement.classList.remove( 'hover' );
-								e.preventDefault();
+						<button
+							aria-label={ __( 'Settings', 'query-monitor' ) }
+							className="qm-button-container-settings"
+							onClick={ () => {
+								setActivePanel( 'settings' );
 							} }
 						>
-							{ props.menu.top.title.join( ' ' ) }
-						</a>
-						<div className="ab-sub-wrapper">
-							<ul className="ab-submenu">
-								{ Object.values( props.menu.sub ).map( ( menu ) => (
-									<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
-										<a
-											className="ab-item"
-											href={ `#qm-${ menu.panel }` }
-											onClick={ ( e ) => {
-												setActivePanel( menu.panel );
-												adminMenuElement.classList.remove( 'hover' );
-												e.preventDefault();
-											} }
-										>
-											{ menu.title }
-										</a>
-									</li>
-								) ) }
-							</ul>
-						</div>
-					</AdminMenu>
-				) }
-			</>
-		);
-	}
+							<Icon name="admin-generic"/>
+						</button>
+						<button
+							aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
+							className="qm-button-container-position"
+							onClick={ () => {
+								setSide( ! side );
+								props.onSideChange( ! side );
+							} }
+						>
+							<Icon name="image-rotate-left"/>
+						</button>
+						<button
+							aria-label={ __( 'Close Panel', 'query-monitor' ) }
+							className="qm-button-container-close"
+							onClick={ () => {
+								setActivePanel( '' );
+							} }
+						>
+							<Icon name="no-alt"/>
+						</button>
+					</div>
+					<div id="qm-wrapper">
+						<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+						<Panels { ...props.panels } active={ active }/>
+					</div>
+				</div>
+			) }
+			{ adminMenuElement && (
+				<AdminMenu element={ adminMenuElement }>
+					<a
+						className="ab-item"
+						href="#qm-overview"
+						onClick={ ( e ) => {
+							setActivePanel( 'overview' );
+							adminMenuElement.classList.remove( 'hover' );
+							e.preventDefault();
+						} }
+					>
+						{ props.menu.top.title.join( ' ' ) }
+					</a>
+					<div className="ab-sub-wrapper">
+						<ul className="ab-submenu">
+							{ Object.values( props.menu.sub ).map( ( menu ) => (
+								<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
+									<a
+										className="ab-item"
+										href={ `#qm-${ menu.panel }` }
+										onClick={ ( e ) => {
+											setActivePanel( menu.panel );
+											adminMenuElement.classList.remove( 'hover' );
+											e.preventDefault();
+										} }
+									>
+										{ menu.title }
+									</a>
+								</li>
+							) ) }
+						</ul>
+					</div>
+				</AdminMenu>
+			) }
+		</>
+	);
+};
 
 interface iAdminMenuProps {
 	element: HTMLElement;

@@ -108,64 +108,64 @@ interface iBlockProps {
 }
 
 const RenderBlock = ( { block, data, i }: iBlockProps ) => {
-		const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
+	const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
 
-		return (
-			<React.Fragment key={ i }>
-				<tr>
-					<th className="qm-row-num qm-num" scope="row">
-						{ i }
-					</th>
-					<td className="qm-ltr qm-wrap">
-						{/* @todo sticky */}
-						{ block.blockName }
-					</td>
-					<td className="qm-row-block-attrs">
-						{ show_attrs && (
+	return (
+		<React.Fragment key={ i }>
+			<tr>
+				<th className="qm-row-num qm-num" scope="row">
+					{ i }
+				</th>
+				<td className="qm-ltr qm-wrap">
+					{/* @todo sticky */}
+					{ block.blockName }
+				</td>
+				<td className="qm-row-block-attrs">
+					{ show_attrs && (
+						<pre className="qm-pre-wrap">
+							<code>
+								{ JSON.stringify( block.attrs, null, 2 ) }
+							</code>
+						</pre>
+					) }
+				</td>
+				{ data.has_block_context && (
+					<td className="qm-row-block-context">
+						{ block.context && show_attrs && (
 							<pre className="qm-pre-wrap">
 								<code>
-									{ JSON.stringify( block.attrs, null, 2 ) }
+									{ JSON.stringify( block.context, null, 2 ) }
 								</code>
 							</pre>
 						) }
 					</td>
-					{ data.has_block_context && (
-						<td className="qm-row-block-context">
-							{ block.context && show_attrs && (
-								<pre className="qm-pre-wrap">
-									<code>
-										{ JSON.stringify( block.context, null, 2 ) }
-									</code>
-								</pre>
-							) }
-						</td>
-					) }
-					<td>
-						{ block.dynamic && block.callback?.name }
-					</td>
-					{ data.has_block_timing && (
-						block.dynamic ? (
-							<TimeCell value={ block.timing } />
-						) : (
-							<td></td>
-						)
-					) }
-					<td className="qm-row-block-html">
-						<pre className="qm-pre-wrap">
-							<code>
-								{ block.innerHTML }
-							</code>
-						</pre>
-					</td>
-				</tr>
-				{ block.innerBlocks.map( ( innerBlock, j ) => (
-					<RenderBlock
-						key={ j }
-						block={ innerBlock }
-						data={ data }
-						i={ `${i}.${j + 1}` }
-					/>
-				) ) }
-			</React.Fragment>
-		);
-	}
+				) }
+				<td>
+					{ block.dynamic && block.callback?.name }
+				</td>
+				{ data.has_block_timing && (
+					block.dynamic ? (
+						<TimeCell value={ block.timing } />
+					) : (
+						<td></td>
+					)
+				) }
+				<td className="qm-row-block-html">
+					<pre className="qm-pre-wrap">
+						<code>
+							{ block.innerHTML }
+						</code>
+					</pre>
+				</td>
+			</tr>
+			{ block.innerBlocks.map( ( innerBlock, j ) => (
+				<RenderBlock
+					key={ j }
+					block={ innerBlock }
+					data={ data }
+					i={ `${i}.${j + 1}` }
+				/>
+			) ) }
+		</React.Fragment>
+	);
+};

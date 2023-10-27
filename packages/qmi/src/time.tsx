@@ -8,7 +8,7 @@ interface TimeCellProps {
 declare const QM_i18n: iQM_i18n;
 
 export const TimeCell = ( { value }: TimeCellProps ) => (
-			<td className="qm-num">
-				{ QM_i18n.number_format( value, 4 ) }
-			</td>
-		);
+	<td className="qm-num">
+		{ QM_i18n.number_format( value, 4 ) }
+	</td>
+);

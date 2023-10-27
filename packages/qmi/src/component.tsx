@@ -8,5 +8,5 @@ interface iComponentProps {
 }
 
 export const QMComponent = ( { component }: iComponentProps ) => (
-			<td className="qm-nowrap">{ component.name }</td>
-		);
+	<td className="qm-nowrap">{ component.name }</td>
+);
