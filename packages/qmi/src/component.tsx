@@ -1,12 +1,12 @@
 import {
-	Component,
+	Component as QM_Component,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 interface iComponentProps {
-	component: Component;
+	component: QM_Component;
 }
 
-export const QMComponent = ( { component }: iComponentProps ) => (
+export const Component = ( { component }: iComponentProps ) => (
 	<td className="qm-nowrap">{ component.name }</td>
 );

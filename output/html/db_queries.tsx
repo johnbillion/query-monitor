@@ -3,7 +3,7 @@ import {
 	iPanelProps,
 	Notice,
 	PanelFooter,
-	QMComponent,
+	Component,
 	Tabular,
 	TimeCell,
 	TotalTime,
@@ -66,7 +66,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 							</code>
 						</td>
 						<Caller trace={ row.trace } />
-						<QMComponent component={ row.trace.component } />
+						<Component component={ row.trace.component } />
 						<td className="qm-row-result qm-num">
 							{ Utils.isWPError( row.result ) ? (
 								<Warning>

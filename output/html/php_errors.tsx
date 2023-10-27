@@ -1,7 +1,7 @@
 import * as classNames from 'classnames';
 import {
 	iPanelProps,
-	QMComponent,
+	Component,
 	Tabular,
 	Warning,
 } from 'qmi';
@@ -65,7 +65,7 @@ export default ( { data, id }: iPanelProps<DataTypes['PHP_Errors']> ) => {
 									{ error.calls }
 								</td>
 								{ error.trace ? (
-									<QMComponent component={ error.trace.component } />
+									<Component component={ error.trace.component } />
 								) : (
 									<td>
 										{ __( 'Unknown', 'query-monitor' ) }

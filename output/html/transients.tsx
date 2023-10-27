@@ -1,7 +1,7 @@
 import {
 	Caller,
 	Notice,
-	QMComponent,
+	Component,
 	Tabular,
 	iPanelProps,
 } from 'qmi';
@@ -85,7 +85,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Transients']> ) => {
 							~{ transient.size_formatted }
 						</td>
 						<Caller trace={ transient.trace } />
-						<QMComponent component={ transient.trace.component } />
+						<Component component={ transient.trace.component } />
 					</tr>
 				) ) }
 			</tbody>

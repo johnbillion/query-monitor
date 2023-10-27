@@ -4,7 +4,7 @@ import {
 	iPanelProps,
 	Notice,
 	PanelFooter,
-	QMComponent,
+	Component,
 	Tabular,
 	TimeCell,
 	TotalTime,
@@ -91,7 +91,7 @@ export default ( { data, id }: iPanelProps<DataTypes['HTTP']> ) => {
 								) }
 							</td>
 							<Caller trace={ row.trace } />
-							<QMComponent component={ row.trace.component } />
+							<Component component={ row.trace.component } />
 							<td className="qm-num">
 								{ row.args.timeout }
 							</td>

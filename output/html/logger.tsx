@@ -2,7 +2,7 @@ import * as classNames from 'classnames';
 import {
 	Caller,
 	iPanelProps,
-	QMComponent,
+	Component,
 	Tabular,
 	Warning,
 } from 'qmi';
@@ -53,7 +53,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Logger']> ) => {
 								{ row.message }
 							</td>
 							<Caller trace={ row.trace } />
-							<QMComponent component={ row.trace.component } />
+							<Component component={ row.trace.component } />
 						</tr>
 					);
 				} ) }

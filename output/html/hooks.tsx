@@ -1,7 +1,7 @@
 import {
 	iPanelProps,
 	Notice,
-	QMComponent,
+	Component,
 	Tabular,
 	Warning,
 } from 'qmi';
@@ -92,7 +92,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Hooks']> ) => {
 											{ action.callback.name }
 										</code>
 									</td>
-									<QMComponent component={ action.callback.component } />
+									<Component component={ action.callback.component } />
 								</tr>
 							) ) }
 						</React.Fragment>

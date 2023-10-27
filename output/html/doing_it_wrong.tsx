@@ -3,7 +3,7 @@ import {
 	iPanelProps,
 	Notice,
 	PanelFooter,
-	QMComponent,
+	Component,
 	Tabular,
 } from 'qmi';
 import {
@@ -48,7 +48,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Doing_It_Wrong']> ) => {
 							{ action.message }
 						</td>
 						<Caller trace={ action.trace } />
-						<QMComponent component={ action.trace.component } />
+						<Component component={ action.trace.component } />
 					</tr>
 				) ) }
 			</tbody>

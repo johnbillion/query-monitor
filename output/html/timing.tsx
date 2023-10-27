@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	QMComponent,
+	Component,
 	Tabular,
 	TimeCell,
 	ApproximateSize,
@@ -56,7 +56,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
 							<TimeCell value={ timer.end_time } />
 							<TimeCell value={ timer.function_time } />
 							<ApproximateSize value={ timer.function_memory } />
-							<QMComponent component={ timer.trace.component } />
+							<Component component={ timer.trace.component } />
 						</tr>
 						{ timer.laps && (
 							<>

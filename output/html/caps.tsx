@@ -3,7 +3,7 @@ import {
 	iPanelProps,
 	Notice,
 	PanelFooter,
-	QMComponent,
+	Component,
 	Tabular,
 } from 'qmi';
 import {
@@ -87,7 +87,7 @@ export default ( { id, enabled, data }: iPanelProps<DataTypes['Caps']> ) => {
 							{ cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' }
 						</td>
 						<Caller trace={ cap.trace } />
-						<QMComponent component={ cap.trace.component } />
+						<Component component={ cap.trace.component } />
 					</tr>
 				) ) }
 			</tbody>
