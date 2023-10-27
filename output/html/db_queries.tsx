@@ -56,7 +56,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 			</thead>
 			<tbody>
 				{ data.rows.map( ( row, i ) => (
-					<tr key={ i }>
+					<tr>
 						<th className="qm-row-num qm-num" scope="row">
 							{ 1 + i }
 						</th>
