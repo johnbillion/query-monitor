@@ -17,6 +17,7 @@ import Hooks from './html/hooks';
 import HTTP from './html/http';
 import Languages from './html/languages';
 import Logger from './html/logger';
+import Multisite from './html/multisite';
 import PHPErrors from './html/php_errors';
 import Request from './html/request';
 import { Settings, iQMConfig } from './html/settings';
@@ -46,6 +47,7 @@ export interface iPanelsProps {
 	http: QMPanelData;
 	languages: QMPanelData;
 	logger?: QMPanelData;
+	multisite?: QMPanelData;
 	php_errors?: QMPanelData;
 	request?: QMPanelData;
 	response?: QMPanelData;
@@ -166,6 +168,14 @@ export const Panels = ( props: iPanelsProps ) => (
 			<ErrorBoundary>
 				<Languages
 					{ ...props.languages }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'multisite' && (
+			<ErrorBoundary>
+				<Multisite
+					{ ...props.multisite }
 					id={ props.active }
 				/>
 			</ErrorBoundary>
