@@ -17,7 +17,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_x,
 } from '@wordpress/i18n';
 
 export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
@@ -84,7 +83,6 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 			<PanelFooter
 				cols={ 5 }
 				count={ data.rows.length }
-				label={ _x( 'Total:', 'Database query count', 'query-monitor' ) }
 			>
 				<TotalTime rows={ data.rows }/>
 			</PanelFooter>

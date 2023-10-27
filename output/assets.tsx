@@ -15,7 +15,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_x,
 	sprintf,
 } from '@wordpress/i18n';
 
@@ -176,7 +175,6 @@ export default ( { data, id, labels }: myProps ) => {
 			<PanelFooter
 				cols={ 7 }
 				count={ data.counts.total }
-				label={ _x( 'Total:', 'Total assets', 'query-monitor' ) }
 			/>
 		</Tabular>
 	);

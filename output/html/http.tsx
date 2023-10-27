@@ -18,7 +18,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_x,
 	sprintf,
 } from '@wordpress/i18n';
 
@@ -104,7 +103,6 @@ export default ( { data, id }: iPanelProps<DataTypes['HTTP']> ) => {
 			<PanelFooter
 				cols={ 6 }
 				count={ Object.keys( data.http ).length }
-				label={ _x( 'Total:', 'HTTP API calls', 'query-monitor' ) }
 			>
 				<TotalTime rows={ Object.values( data.http ) }/>
 			</PanelFooter>

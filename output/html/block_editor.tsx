@@ -12,7 +12,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_x,
 } from '@wordpress/i18n';
 
 interface iBlock {
@@ -95,7 +94,6 @@ export default ( { data, id }: iPanelProps<iBlockData> ) => {
 				<PanelFooter
 					cols={ colspan }
 					count={ data.post_blocks.length }
-					label={ _x( 'Total:', 'Content blocks used', 'query-monitor' ) }
 				/>
 			</Tabular>
 		);

@@ -13,7 +13,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_x,
 	sprintf,
 } from '@wordpress/i18n';
 
@@ -95,7 +94,6 @@ export default ( { id, enabled, data }: iPanelProps<DataTypes['Caps']> ) => {
 			<PanelFooter
 				cols={ 5 }
 				count={ data.caps.length }
-				label={ _x( 'Total:', 'User capability checks', 'query-monitor' ) }
 			/>
 		</Tabular>
 	);
