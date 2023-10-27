@@ -14,6 +14,7 @@
 		"DB_Components",
 		"DB_Dupes",
 		"DB_Queries",
+		"Doing_It_Wrong",
 		"Environment",
 		"Hooks",
 		"HTTP",
@@ -172,6 +173,16 @@
 				},
 				{
 					"$ref": "src/schemas/data/db_queries.json"
+				}
+			]
+		},
+		"Doing_It_Wrong": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/doing_it_wrong.json"
 				}
 			]
 		},

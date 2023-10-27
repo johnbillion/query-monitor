@@ -28,6 +28,7 @@ export interface DataTypes {
 	DB_Components: AbstractData & DB_Components;
 	DB_Dupes: AbstractData & DB_Dupes;
 	DB_Queries: AbstractData & DB_Queries;
+	Doing_It_Wrong: AbstractData & Doing_It_Wrong;
 	Environment: AbstractData & Environment;
 	Hooks: AbstractData & Hooks;
 	HTTP: AbstractData & HTTP;
@@ -296,6 +297,15 @@ export interface QueryRow {
 	type: string;
 	trace?: Backtrace;
 	is_main_query: boolean;
+}
+/**
+ * Doing it Wrong data transfer object.
+ */
+export interface Doing_It_Wrong {
+	actions: {
+		trace: Backtrace;
+		message: string;
+	}[];
 }
 /**
  * Environment data transfer object.

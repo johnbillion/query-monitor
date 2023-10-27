@@ -18,7 +18,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	// @TODO
+	public static $client_side_rendered = true;
 
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );

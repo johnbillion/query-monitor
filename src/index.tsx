@@ -21,6 +21,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		db_components: qm.data.db_components,
 		db_dupes: qm.data.db_dupes,
 		db_queries: qm.data.db_queries,
+		doing_it_wrong: qm.data.doing_it_wrong,
 		environment: qm.data.environment,
 		hooks: qm.data.hooks,
 		http: qm.data.http,

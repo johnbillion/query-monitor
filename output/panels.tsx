@@ -11,6 +11,7 @@ import DBCallers from './html/db_callers';
 import DBComponents from './html/db_components';
 import DBDupes from './html/db_dupes';
 import DBQueries from './html/db_queries';
+import DoingItWrong from './html/doing_it_wrong';
 import Environment from './html/environment';
 import Hooks from './html/hooks';
 import HTTP from './html/http';
@@ -39,6 +40,7 @@ export interface iPanelsProps {
 	db_components: QMPanelData;
 	db_dupes: QMPanelData;
 	db_queries: QMPanelData;
+	doing_it_wrong: QMPanelData;
 	environment: QMPanelData;
 	hooks: QMPanelData;
 	http: QMPanelData;
@@ -116,6 +118,14 @@ export const Panels = ( props: iPanelsProps ) => (
 			<ErrorBoundary>
 				<DBQueries
 					{ ...props.db_queries }
+					id={ props.active }
+				/>
+			</ErrorBoundary>
+		) }
+		{ props.active === 'doing_it_wrong' && (
+			<ErrorBoundary>
+				<DoingItWrong
+					{ ...props.doing_it_wrong }
 					id={ props.active }
 				/>
 			</ErrorBoundary>

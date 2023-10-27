@@ -13,14 +13,10 @@
 			"items": {
 				"type": "object",
 				"required": [
-					"hook",
 					"trace",
 					"message"
 				],
 				"properties": {
-					"hook": {
-						"type": "string"
-					},
 					"trace": {
 						"type": "object",
 						"phpType": "QM_Backtrace",
@@ -33,7 +29,8 @@
 					"message": {
 						"type": "string"
 					}
-				}
+				},
+				"additionalProperties": false
 			}
 		}
 	},
