@@ -6,18 +6,12 @@ interface iNoticeProps {
 	children: React.ReactNode;
 }
 
-export class Notice extends React.Component<iNoticeProps, Record<string, unknown>> {
-
-	render() {
-		return (
-			<NonTabular id={ this.props.id }>
+export const Notice = ( { children, id }: iNoticeProps ) => (
+			<NonTabular id={ id }>
 				<section>
 					<div className="qm-notice">
-						{ this.props.children }
+						{ children }
 					</div>
 				</section>
 			</NonTabular>
 		);
-	}
-
-}

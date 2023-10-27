@@ -9,13 +9,10 @@ interface FrameProps {
 	isFileName?: boolean;
 }
 
-export class Frame extends React.Component<FrameProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const Frame = ( { frame, expanded }: FrameProps ) => (
 			<>
-				<code>{ this.props.frame.display }</code>
-				{ this.props.expanded && (
+				<code>{ frame.display }</code>
+				{ expanded && (
 					<>
 						<br/>
 						<span className="qm-info qm-supplemental">
@@ -25,6 +22,3 @@ export class Frame extends React.Component<FrameProps, Record<string, unknown>> 
 				) }
 			</>
 		);
-	}
-
-}

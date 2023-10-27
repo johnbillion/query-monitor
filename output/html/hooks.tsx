@@ -15,14 +15,10 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default class Hooks extends React.Component<iPanelProps<DataTypes['Hooks']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Hooks']> ) => {
 		if ( ! data.hooks?.length ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ __( 'No hooks were recorded.', 'query-monitor' ) }
 					</p>
@@ -31,7 +27,7 @@ export default class Hooks extends React.Component<iPanelProps<DataTypes['Hooks'
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -106,5 +102,3 @@ export default class Hooks extends React.Component<iPanelProps<DataTypes['Hooks'
 			</Tabular>
 		);
 	}
-
-}

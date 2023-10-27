@@ -14,21 +14,10 @@ interface CallerProps {
 	toggleLabel: string;
 }
 
-interface iState {
-	expanded: boolean;
-}
+export const Caller = ( { isFileList, trace, toggleLabel }: CallerProps ) => {
+		const [ expanded, setExpanded ] = React.useState( false );
 
-export class Caller extends React.Component<CallerProps, iState> {
-	constructor( props: CallerProps ) {
-		super( props );
-
-		this.state = {
-			expanded: false,
-		};
-	}
-
-	render() {
-		const frames = [ ...this.props.trace.frames ];
+		const frames = trace.frames;
 
 		if ( frames.length === 0 ) {
 			return (
@@ -44,31 +33,31 @@ export class Caller extends React.Component<CallerProps, iState> {
 			<td className="qm-has-toggle qm-nowrap qm-ltr">
 				{ frames.length > 0 && (
 					<button
-						aria-expanded={ this.state.expanded ? 'false' : 'true' }
-						aria-label={ this.props.toggleLabel }
+						aria-expanded={ expanded ? 'false' : 'true' }
+						aria-label={ toggleLabel }
 						className="qm-toggle"
-						onClick={ () => this.setState( { expanded: ! this.state.expanded } ) }
+						onClick={ () => setExpanded( ! expanded ) }
 					>
 						<span aria-hidden="true">
-							{ this.state.expanded ? '-' : '+' }
+							{ expanded ? '-' : '+' }
 						</span>
 					</button>
 				) }
 				<ol>
 					<li>
 						<Frame
-							expanded={ this.state.expanded }
+							expanded={ expanded }
 							frame={ caller }
-							isFileName={ this.props.isFileList }
+							isFileName={ isFileList }
 						/>
 					</li>
-					{ frames.length > 0 && this.state.expanded && (
+					{ frames.length > 0 && expanded && (
 						frames.map( frame => (
 							<li key={ frame.display }>
 								<Frame
 									expanded
 									frame={ frame }
-									isFileName={ this.props.isFileList }
+									isFileName={ isFileList }
 								/>
 							</li>
 						) )
@@ -77,5 +66,3 @@ export class Caller extends React.Component<CallerProps, iState> {
 			</td>
 		);
 	}
-
-}

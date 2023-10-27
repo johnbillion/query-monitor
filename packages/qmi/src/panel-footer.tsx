@@ -10,21 +10,15 @@ interface iPanelFooterProps {
 
 declare const QM_i18n: iQM_i18n;
 
-export class PanelFooter extends React.Component<iPanelFooterProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const PanelFooter = ( { children, cols, count, label }: iPanelFooterProps ) => (
 			<tfoot>
 				<tr>
-					<td colSpan={ this.props.cols }>
-						{ this.props.label }
+					<td colSpan={ cols }>
+						{ label }
 						&nbsp;
-						<span className="qm-items-number">{ QM_i18n.number_format( this.props.count ) }</span>
+						<span className="qm-items-number">{ QM_i18n.number_format( count ) }</span>
 					</td>
-					{ this.props.children }
+					{ children }
 				</tr>
 			</tfoot>
 		);
-	}
-
-}

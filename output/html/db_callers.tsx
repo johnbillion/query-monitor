@@ -11,17 +11,13 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default class DBCallers extends React.Component<iPanelProps<DataTypes['DB_Callers']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['DB_Callers']> ) => {
 		if ( ! data.times || ! data.times.length ) {
 			return null;
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -55,9 +51,9 @@ export default class DBCallers extends React.Component<iPanelProps<DataTypes['DB
 				<tfoot>
 					<tr>
 						<td></td>
-						{ Object.keys( data.types ).map( key => (
+						{ Object.entries( data.types ).map( ( [ key, value ] ) => (
 							<td key={ key } className="qm-num">
-								{ data.types[key] }
+								{ value }
 							</td>
 						) ) }
 						<TotalTime rows={ Object.values( data.times ) }/>
@@ -66,5 +62,3 @@ export default class DBCallers extends React.Component<iPanelProps<DataTypes['DB
 			</Tabular>
 		);
 	}
-
-}

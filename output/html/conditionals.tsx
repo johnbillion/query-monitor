@@ -9,14 +9,12 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default class Conditionals extends React.Component<iPanelProps<DataTypes['Conditionals']>, Record<string, unknown>> {
-
-	render() {
-		const trueConds = this.props.data.conds['true'];
-		const falseConds = this.props.data.conds['false'];
+export default ( { data, id }: iPanelProps<DataTypes['Conditionals']> ) => {
+		const trueConds = data.conds['true'];
+		const falseConds = data.conds['false'];
 
 		return (
-			<NonTabular id={ this.props.id }>
+			<NonTabular id={ id }>
 				<div className="qm-boxed">
 					<section>
 						<h3>
@@ -52,5 +50,3 @@ export default class Conditionals extends React.Component<iPanelProps<DataTypes[
 			</NonTabular>
 		);
 	}
-
-}

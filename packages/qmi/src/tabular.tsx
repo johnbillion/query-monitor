@@ -6,10 +6,7 @@ interface TabularProps {
 	children: React.ReactNode;
 }
 
-export class Tabular extends React.Component<TabularProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const Tabular = ( { children, title }: TabularProps ) => (
 			<div className="qm-panel-container">
 				<div
 					aria-labelledby="qm-panel-title"
@@ -20,14 +17,11 @@ export class Tabular extends React.Component<TabularProps, Record<string, unknow
 					<table className="qm-sortable">
 						<caption>
 							<h2 id="qm-panel-title">
-								{ this.props.title ?? '@TODO' }
+								{ title ?? '@TODO' }
 							</h2>
 						</caption>
-						{ this.props.children }
+						{ children }
 					</table>
 				</div>
 			</div>
 		);
-	}
-
-}

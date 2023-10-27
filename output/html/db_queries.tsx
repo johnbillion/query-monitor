@@ -20,14 +20,10 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB_Queries']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 		if ( ! data.rows?.length ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ __( 'No queries! Nice work.', 'query-monitor' ) }
 					</p>
@@ -36,7 +32,7 @@ export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th role="columnheader" scope="col">
@@ -95,5 +91,3 @@ export default class DBQueries extends React.Component<iPanelProps<DataTypes['DB
 			</Tabular>
 		);
 	}
-
-}

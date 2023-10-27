@@ -8,14 +8,6 @@ interface TotalTimeProps {
 	}[];
 }
 
-export class TotalTime extends React.Component<TotalTimeProps, Record<string, unknown>> {
-
-	render() {
-		const time = this.props.rows.reduce( ( a, b ) => a + b.ltime, 0 );
-
-		return (
-			<TimeCell value={ time }/>
+export const TotalTime = ( { rows }: TotalTimeProps ) => (
+			<TimeCell value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
 		);
-	}
-
-}

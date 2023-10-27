@@ -10,11 +10,7 @@ import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
-export default class Request extends React.Component<iPanelProps<DataTypes['Request']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Request']> ) => {
 		const items = {
 			request: __( 'Request', 'query-monitor' ),
 			matched_rule: __( 'Matched Rule', 'query-monitor' ),
@@ -29,7 +25,7 @@ export default class Request extends React.Component<iPanelProps<DataTypes['Requ
 		};
 
 		return (
-			<NonTabular id={ this.props.id }>
+			<NonTabular id={ id }>
 				{ Object.keys( items ).map( ( key: keyof typeof items ) => {
 					const name = items[key];
 					const value = data.request[ key ];
@@ -162,5 +158,3 @@ export default class Request extends React.Component<iPanelProps<DataTypes['Requ
 			</NonTabular>
 		);
 	}
-
-}

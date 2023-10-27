@@ -21,11 +21,7 @@ interface iNavMenuItem {
 	children?: iNavMenu;
 }
 
-export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
-	render() {
-		const menu = this.props.menu;
-		const onSwitch = this.props.onSwitch;
-
+export const Nav = ( { menu, onSwitch, active }: iNavProps ) => {
 		return (
 			<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
 				<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
@@ -35,11 +31,11 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 					<li
 						key="overview"
 						className={ classNames( {
-							'qm-current-menu': this.props.active === 'overview',
+							'qm-current-menu': active === 'overview',
 						} ) }
 						role="presentation"
 					>
-						<button aria-selected={ this.props.active === 'overview' } role="tab" onClick={ () => {
+						<button aria-selected={ active === 'overview' } role="tab" onClick={ () => {
 							onSwitch( 'overview' );
 						} }>
 							{ __( 'Overview', 'query-monitor' ) }
@@ -50,16 +46,16 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 							key={ key }
 							className={ classNames( {
 								'qm-current-menu': (
-									this.props.active === menu[ key ].panel ||
+									active === menu[ key ].panel ||
 									( menu[ key ].children && Object.keys( menu[ key ].children ).map( k => (
 										menu[ key ].children[ k ].panel
-									) ).includes( this.props.active ) )
+									) ).includes( active ) )
 								),
 							} ) }
 							role="presentation"
 						>
 							<button
-								aria-selected={ this.props.active === menu[ key ].panel }
+								aria-selected={ active === menu[ key ].panel }
 								role="tab"
 								onClick={ () => {
 									onSwitch( menu[ key ].panel );
@@ -72,7 +68,7 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 									{ Object.keys( menu[ key ].children ).map( k => (
 										<li key={ `${ key }-${ k }` } role="presentation">
 											<button
-												aria-selected={ this.props.active === menu[ key ].children[ k ].panel }
+												aria-selected={ active === menu[ key ].children[ k ].panel }
 												role="tab"
 												onClick={ () => {
 													onSwitch( menu[ key ].children[ k ].panel );
@@ -90,16 +86,11 @@ export class Nav extends React.Component<iNavProps, Record<string, unknown>> {
 			</nav>
 		);
 	}
-}
 
-export class NavSelect extends React.Component<iNavProps, Record<string, unknown>> {
-	render() {
-		const menu = this.props.menu;
-		const onSwitch = this.props.onSwitch;
-
+export const NavSelect = ( { active, menu, onSwitch }: iNavProps ) => {
 		return (
 			<select
-				value={ this.props.active }
+				value={ active }
 				onChange={ ( e ) => {
 					onSwitch( e.target.value );
 				} }
@@ -129,4 +120,3 @@ export class NavSelect extends React.Component<iNavProps, Record<string, unknown
 			</select>
 		);
 	}
-}

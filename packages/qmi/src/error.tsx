@@ -6,18 +6,12 @@ interface iErrorProps {
 	children: React.ReactNode;
 }
 
-export class ErrorMessage extends React.Component<iErrorProps, Record<string, unknown>> {
-
-	render() {
-		return (
-			<NonTabular id={ this.props.id }>
+export const ErrorMessage = ( { id, children }: iErrorProps ) => (
+			<NonTabular id={ id }>
 				<section>
 					<div className="qm-error">
-						{ this.props.children }
+						{ children }
 					</div>
 				</section>
 			</NonTabular>
 		);
-	}
-
-}

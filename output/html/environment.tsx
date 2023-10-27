@@ -12,19 +12,11 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-export default class Environment extends React.Component<iPanelProps<DataTypes['Environment']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
-		return (
-			<NonTabular id={ this.props.id }>
+export default ( { data, id }: iPanelProps<DataTypes['Environment']> ) => (
+			<NonTabular id={ id }>
 				<PHP php={ data.php }/>
 				<DB db={ data.db }/>
 				<WordPress wordpress={ data.wp }/>
 				<Server server={ data.server }/>
 			</NonTabular>
 		);
-	}
-
-}

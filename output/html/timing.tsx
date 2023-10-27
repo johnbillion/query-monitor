@@ -14,17 +14,13 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export default class Timing extends React.Component<iPanelProps<DataTypes['Timing']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
 		if ( ! data.timing ) {
 			return null;
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -86,5 +82,3 @@ export default class Timing extends React.Component<iPanelProps<DataTypes['Timin
 			</Tabular>
 		);
 	}
-
-}

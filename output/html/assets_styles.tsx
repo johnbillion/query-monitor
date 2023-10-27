@@ -12,17 +12,13 @@ import {
 
 import Assets from '../assets';
 
-export default class Styles extends React.Component<iPanelProps<DataTypes['Assets']>, Record<string, unknown>> {
-
-	render() {
+export default ( props: iPanelProps<DataTypes['Assets']> ) => {
 		return (
 			<Assets
-				{ ...this.props }
+				{ ...props }
 				labels={ {
 					none: __( 'No CSS files were enqueued.', 'query-monitor' ),
 				} }
 			/>
 		);
 	}
-
-}

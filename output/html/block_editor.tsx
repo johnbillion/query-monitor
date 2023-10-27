@@ -33,18 +33,14 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 
-export default class BlockEditor extends React.Component<iPanelProps<iBlockData>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<iBlockData> ) => {
 		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
 			return null;
 		}
 
 		if ( ! data.post_has_blocks ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
 				</Notice>
 			);
@@ -56,7 +52,7 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 		data.has_block_timing && colspan++;
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -87,7 +83,14 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 					</tr>
 				</thead>
 				<tbody>
-					{ data.post_blocks.map( ( block, i ) => this.renderBlock( block, `${i + 1}` ) ) }
+					{ data.post_blocks.map( ( block, i ) => (
+						<RenderBlock
+							key={ i }
+							block={ block }
+							data={ data }
+							i={ ( i + 1 ).toString() }
+						/>
+					) ) }
 				</tbody>
 				<PanelFooter
 					cols={ colspan }
@@ -96,10 +99,15 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 				/>
 			</Tabular>
 		);
-	}
+}
 
-	renderBlock( block: iBlock, i: string ) {
-		const { data } = this.props;
+interface iBlockProps {
+	block: iBlock;
+	data: iBlockData;
+	i: string;
+}
+
+const RenderBlock = ( { block, data, i }: iBlockProps ) => {
 		const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
 
 		return (
@@ -109,21 +117,24 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 						{ i }
 					</th>
 					<td className="qm-ltr qm-wrap">
+						{/* @todo sticky */}
 						{ block.blockName }
 					</td>
 					<td className="qm-row-block-attrs">
-						<pre className="qm-pre-wrap">
-							<code>
-								{ show_attrs && JSON.stringify( block.attrs, null, 2 ) }
-							</code>
-						</pre>
+						{ show_attrs && (
+							<pre className="qm-pre-wrap">
+								<code>
+									{ JSON.stringify( block.attrs, null, 2 ) }
+								</code>
+							</pre>
+						) }
 					</td>
 					{ data.has_block_context && (
 						<td className="qm-row-block-context">
-							{ block.context && (
+							{ block.context && show_attrs && (
 								<pre className="qm-pre-wrap">
 									<code>
-										{ show_attrs && JSON.stringify( block.context, null, 2 ) }
+										{ JSON.stringify( block.context, null, 2 ) }
 									</code>
 								</pre>
 							) }
@@ -148,10 +159,13 @@ export default class BlockEditor extends React.Component<iPanelProps<iBlockData>
 					</td>
 				</tr>
 				{ block.innerBlocks.map( ( innerBlock, j ) => (
-					this.renderBlock( innerBlock, `${i}.${j + 1}` )
+					<RenderBlock
+						key={ j }
+						block={ innerBlock }
+						data={ data }
+						i={ `${i}.${j + 1}` }
+					/>
 				) ) }
 			</React.Fragment>
 		);
 	}
-
-}

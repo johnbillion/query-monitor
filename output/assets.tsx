@@ -36,9 +36,7 @@ interface iAssetSourceProps {
 	asset: AssetDataType;
 }
 
-class AssetSource extends React.Component<iAssetSourceProps, Record<string, unknown>> {
-	render() {
-		const { asset } = this.props;
+const AssetSource = ( { asset }: iAssetSourceProps ) => {
 		const errorData = Utils.getErrorData( asset.source );
 		const errorMessage = Utils.getErrorMessage( asset.source );
 
@@ -60,14 +58,14 @@ class AssetSource extends React.Component<iAssetSourceProps, Record<string, unkn
 			);
 		}
 
-		return asset.display;
-	}
+		return (
+			<>
+				{ asset.display }
+			</>
+		);
 }
 
-export default class Assets extends React.Component<myProps, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
+export default ( { data, id, labels }: myProps ) => {
 		const position_labels: iPositionLabels = {
 			missing: __( 'Missing', 'query-monitor' ),
 			broken: __( 'Missing Dependencies', 'query-monitor' ),
@@ -77,16 +75,16 @@ export default class Assets extends React.Component<myProps, Record<string, unkn
 
 		if ( ! data.assets ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
-						{ this.props.labels.none }
+						{ labels.none }
 					</p>
 				</Notice>
 			);
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -182,6 +180,4 @@ export default class Assets extends React.Component<myProps, Record<string, unkn
 				/>
 			</Tabular>
 		);
-	}
-
 }

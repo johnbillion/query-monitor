@@ -10,10 +10,7 @@ interface iServerProps {
 	server: EnvironmentData['server'];
 }
 
-export default class Server extends React.Component<iServerProps, Record<string, unknown>> {
-
-	render() {
-		const { server } = this.props;
+export default ( { server }: iServerProps ) => {
 		const info = {
 			name: __( 'Software', 'query-monitor' ),
 			version: __( 'Version', 'query-monitor' ),
@@ -49,6 +46,4 @@ export default class Server extends React.Component<iServerProps, Record<string,
 				</table>
 			</section>
 		);
-	}
-
 }

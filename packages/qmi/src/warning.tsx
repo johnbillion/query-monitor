@@ -6,15 +6,9 @@ interface iWarningProps {
 	children?: React.ReactNode;
 }
 
-export class Warning extends React.Component<iWarningProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const Warning = ( { children }: iWarningProps ) => (
 			<span className="qm-warn">
 				<Icon name="warning"/>
-				{ this.props.children ?? null }
+				{ children ?? null }
 			</span>
 		);
-	}
-
-}

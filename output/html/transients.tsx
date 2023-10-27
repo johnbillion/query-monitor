@@ -15,14 +15,10 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-export default class Transients extends React.Component<iPanelProps<DataTypes['Transients']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Transients']> ) => {
 		if ( ! data.trans?.length ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ __( 'No transients set.', 'query-monitor' ) }
 					</p>
@@ -31,7 +27,7 @@ export default class Transients extends React.Component<iPanelProps<DataTypes['T
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -99,5 +95,3 @@ export default class Transients extends React.Component<iPanelProps<DataTypes['T
 			</Tabular>
 		);
 	}
-
-}

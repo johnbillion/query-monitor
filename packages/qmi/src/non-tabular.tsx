@@ -6,10 +6,7 @@ interface NonTabularProps {
 	children: React.ReactNode;
 }
 
-export class NonTabular extends React.Component<NonTabularProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const NonTabular = ( { title, children }: NonTabularProps ) => (
 			<div className="qm-panel-container">
 				<div
 					aria-labelledby="qm-panel-title"
@@ -19,13 +16,10 @@ export class NonTabular extends React.Component<NonTabularProps, Record<string, 
 				>
 					<div className="qm-boxed">
 						<h2 id="qm-panel-title">
-							{ this.props.title ?? '@TODO' }
+							{ title ?? '@TODO' }
 						</h2>
-						{ this.props.children }
+						{ children }
 					</div>
 				</div>
 			</div>
 		);
-	}
-
-}

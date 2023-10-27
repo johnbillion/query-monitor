@@ -4,9 +4,8 @@ interface iIconProps {
 	name: string;
 }
 
-export class Icon extends React.Component<iIconProps, Record<string, unknown>> {
-	render() {
-		if ( this.props.name === 'blank' ) {
+export const Icon = ( { name }: iIconProps ) => {
+		if ( name === 'blank' ) {
 			return (
 				<span className="qm-icon qm-icon-blank"></span>
 			);
@@ -15,14 +14,12 @@ export class Icon extends React.Component<iIconProps, Record<string, unknown>> {
 		return (
 			<svg
 				aria-hidden="true"
-				className={ `qm-icon qm-icon-${ this.props.name }` }
+				className={ `qm-icon qm-icon-${ name }` }
 				height="20"
 				viewBox="0 0 20 20"
 				width="20"
 			>
-				<use href={ `#qm-icon-${ this.props.name }` } />
+				<use href={ `#qm-icon-${ name }` } />
 			</svg>
 		);
 	}
-
-}

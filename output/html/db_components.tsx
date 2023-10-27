@@ -11,17 +11,13 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default class DBComponents extends React.Component<iPanelProps<DataTypes['DB_Components']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['DB_Components']> ) => {
 		if ( ! data.times || ! data.times.length ) {
 			return null;
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -53,9 +49,9 @@ export default class DBComponents extends React.Component<iPanelProps<DataTypes[
 				<tfoot>
 					<tr>
 						<td></td>
-						{ Object.keys( data.types ).map( key => (
+						{ Object.entries( data.types ).map( ( [ key, value ] ) => (
 							<td key={ key } className="qm-num">
-								{ data.types[key] }
+								{ value }
 							</td>
 						) ) }
 						<TotalTime rows={ Object.values( data.times ) }/>
@@ -64,5 +60,3 @@ export default class DBComponents extends React.Component<iPanelProps<DataTypes[
 			</Tabular>
 		);
 	}
-
-}

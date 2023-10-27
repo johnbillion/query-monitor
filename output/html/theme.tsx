@@ -17,10 +17,7 @@ interface iParts {
 	[key: string]: string;
 }
 
-export default class Theme extends React.Component<iPanelProps<DataTypes['Theme']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
+export default ( { data, id }: iPanelProps<DataTypes['Theme']> ) => {
 		let parts: iParts = null;
 
 		if ( data.template_parts ) {
@@ -32,7 +29,7 @@ export default class Theme extends React.Component<iPanelProps<DataTypes['Theme'
 		}
 
 		return (
-			<NonTabular id={ this.props.id }>
+			<NonTabular id={ id }>
 				<section>
 					<h3>
 						{ __( 'Theme', 'query-monitor' ) }
@@ -175,5 +172,3 @@ export default class Theme extends React.Component<iPanelProps<DataTypes['Theme'
 			</NonTabular>
 		);
 	}
-
-}

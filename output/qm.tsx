@@ -33,43 +33,29 @@ export interface iQMProps {
 	onSideChange: ( side: boolean ) => void;
 }
 
-interface iState {
-	active: string;
-	side: boolean;
-}
+export const QM = ( props: iQMProps ) => {
+		const [ active, setActive ] = React.useState( props.active );
+		const [ side, setSide ] = React.useState( props.side );
 
-export class QM extends React.Component<iQMProps, iState> {
-	constructor( props: iQMProps ) {
-		super( props );
-
-		this.state = {
-			active: props.active,
-			side: props.side,
-		};
-	}
-
-	render() {
 		const setActivePanel = ( active: string ) => {
-			this.setState( {
-				active,
-			} );
-			this.props.onPanelChange( active );
+			setActive( active );
+			props.onPanelChange( active );
 			// @TODO focus the panel for a11y
 		};
 
-		const adminMenuElement = this.props.adminMenuElement;
+		const adminMenuElement = props.adminMenuElement;
 
 		const theme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
 			? 'dark'
 			: 'light';
 
 		const mainClass = classNames( 'qm-show', {
-			'qm-show-right': this.state.side,
+			'qm-show-right': side,
 		} );
 
 		return (
 			<>
-				{ this.state.active && (
+				{ active && (
 					<div className={ mainClass } data-theme={ theme } dir="ltr" id="query-monitor-main">
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 						<div className="qm-resizer" id="qm-title">
@@ -77,7 +63,7 @@ export class QM extends React.Component<iQMProps, iState> {
 								{ __( 'Query Monitor', 'query-monitor' ) }
 							</h1>
 							<div className="qm-title-heading">
-								<NavSelect active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel }/>
+								<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
 							</div>
 							<button
 								aria-label={ __( 'Settings', 'query-monitor' ) }
@@ -92,11 +78,8 @@ export class QM extends React.Component<iQMProps, iState> {
 								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
 								className="qm-button-container-position"
 								onClick={ () => {
-									const side = ! this.state.side;
-									this.setState( {
-										side,
-									} );
-									this.props.onSideChange( side );
+									setSide( ! side );
+									props.onSideChange( ! side );
 								} }
 							>
 								<Icon name="image-rotate-left"/>
@@ -112,8 +95,8 @@ export class QM extends React.Component<iQMProps, iState> {
 							</button>
 						</div>
 						<div id="qm-wrapper">
-							<Nav active={ this.state.active } menu={ this.props.panel_menu } onSwitch={ setActivePanel } />
-							<Panels { ...this.props.panels } active={ this.state.active }/>
+							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+							<Panels { ...props.panels } active={ active }/>
 						</div>
 					</div>
 				) }
@@ -128,11 +111,11 @@ export class QM extends React.Component<iQMProps, iState> {
 								e.preventDefault();
 							} }
 						>
-							{ this.props.menu.top.title.join( ' ' ) }
+							{ props.menu.top.title.join( ' ' ) }
 						</a>
 						<div className="ab-sub-wrapper">
 							<ul className="ab-submenu">
-								{ Object.values( this.props.menu.sub ).map( ( menu ) => (
+								{ Object.values( props.menu.sub ).map( ( menu ) => (
 									<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
 										<a
 											className="ab-item"
@@ -154,7 +137,6 @@ export class QM extends React.Component<iQMProps, iState> {
 			</>
 		);
 	}
-}
 
 interface iAdminMenuProps {
 	element: HTMLElement;

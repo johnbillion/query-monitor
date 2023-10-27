@@ -12,12 +12,7 @@ interface iDBProps {
 	db: EnvironmentData['db'];
 }
 
-export default class DB extends React.Component<iDBProps, Record<string, unknown>> {
-
-	render() {
-		const {
-			db,
-		} = this.props;
+export default ( { db }: iDBProps) => {
 		const infoLabels = {
 			'server-version': __( 'Server Version', 'query-monitor' ),
 			'extension': __( 'Extension', 'query-monitor' ),
@@ -62,6 +57,4 @@ export default class DB extends React.Component<iDBProps, Record<string, unknown
 				</table>
 			</section>
 		);
-	}
-
 }

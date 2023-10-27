@@ -17,12 +17,10 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default class Caps extends React.Component<iPanelProps<DataTypes['Caps']>, Record<string, unknown>> {
-
-	render() {
-		if ( ! this.props.enabled ) {
+export default ( { id, enabled, data }: iPanelProps<DataTypes['Caps']> ) => {
+		if ( ! enabled ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ sprintf(
 						/* translators: %s: Configuration file name. */
@@ -39,11 +37,9 @@ export default class Caps extends React.Component<iPanelProps<DataTypes['Caps']>
 			);
 		}
 
-		const { data } = this.props;
-
 		if ( ! data.caps?.length ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ __( 'No capability checks were recorded.', 'query-monitor' ) }
 					</p>
@@ -52,7 +48,7 @@ export default class Caps extends React.Component<iPanelProps<DataTypes['Caps']>
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -104,5 +100,3 @@ export default class Caps extends React.Component<iPanelProps<DataTypes['Caps']>
 			</Tabular>
 		);
 	}
-
-}

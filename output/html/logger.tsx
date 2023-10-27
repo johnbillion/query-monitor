@@ -13,17 +13,13 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default class Logger extends React.Component<iPanelProps<DataTypes['Logger']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Logger']> ) => {
 		if ( ! data.logs || ! data.logs.length ) {
 			return null;
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -65,5 +61,3 @@ export default class Logger extends React.Component<iPanelProps<DataTypes['Logge
 			</Tabular>
 		);
 	}
-
-}

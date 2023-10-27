@@ -13,13 +13,9 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default class Languages extends React.Component<iPanelProps<DataTypes['Languages']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Languages']> ) => {
 		return (
-			<NonTabular id={ this.props.id }>
+			<NonTabular id={ id }>
 				<section>
 					<h3><code>get_locale()</code></h3>
 					<p>{ data.locale }</p>
@@ -145,5 +141,3 @@ export default class Languages extends React.Component<iPanelProps<DataTypes['La
 			</NonTabular>
 		);
 	}
-
-}

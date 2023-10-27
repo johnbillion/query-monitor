@@ -13,10 +13,7 @@ interface iPHPProps {
 
 declare const QM_i18n: iQM_i18n;
 
-export default class PHP extends React.Component<iPHPProps, Record<string, unknown>> {
-
-	render() {
-		const { php } = this.props;
+export default ( { php }: iPHPProps ) => {
 		const warning = php.old;
 		const classes = classNames( {
 			'qm-warn': warning,
@@ -124,5 +121,3 @@ export default class PHP extends React.Component<iPHPProps, Record<string, unkno
 			</section>
 		);
 	}
-
-}

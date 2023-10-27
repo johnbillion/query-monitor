@@ -6,10 +6,7 @@ interface TogglerProps {
 	children: React.ReactNode;
 }
 
-export class Toggler extends React.Component<TogglerProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const Toggler = ( { children }: TogglerProps ) => (
 			<>
 				<button
 					aria-expanded="false"
@@ -21,10 +18,7 @@ export class Toggler extends React.Component<TogglerProps, Record<string, unknow
 					<span aria-hidden="true">+</span>
 				</button>
 				<div className="qm-toggled">
-					{ this.props.children }
+					{ children }
 				</div>
 			</>
 		);
-	}
-
-}

@@ -52,22 +52,17 @@ export interface iPanelsProps {
 	active?: string;
 }
 
-interface iState {
-	active: string;
-}
-
 declare const qm: iQMConfig;
 
-export class Panels extends React.Component<iPanelsProps, iState> {
-	render() {
-		const active = this.props.active;
+export const Panels = ( props: iPanelsProps ) => {
+		const active = props.active;
 
 		return (
 			<div id="qm-panels">
 				{ active === 'admin' && (
 					<ErrorBoundary>
 						<Admin
-							{ ...this.props.admin }
+							{ ...props.admin }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -75,7 +70,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'block_editor' && (
 					<ErrorBoundary>
 						<BlockEditor
-							{ ...this.props.block_editor }
+							{ ...props.block_editor }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -83,7 +78,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'caps' && (
 					<ErrorBoundary>
 						<Caps
-							{ ...this.props.caps }
+							{ ...props.caps }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -91,7 +86,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'conditionals' && (
 					<ErrorBoundary>
 						<Conditionals
-							{ ...this.props.conditionals }
+							{ ...props.conditionals }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -99,7 +94,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'db_callers' && (
 					<ErrorBoundary>
 						<DBCallers
-							{ ...this.props.db_callers }
+							{ ...props.db_callers }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -107,7 +102,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'db_components' && (
 					<ErrorBoundary>
 						<DBComponents
-							{ ...this.props.db_components }
+							{ ...props.db_components }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -115,7 +110,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'db_dupes' && (
 					<ErrorBoundary>
 						<DBDupes
-							{ ...this.props.db_dupes }
+							{ ...props.db_dupes }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -123,7 +118,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'db_queries' && (
 					<ErrorBoundary>
 						<DBQueries
-							{ ...this.props.db_queries }
+							{ ...props.db_queries }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -131,7 +126,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'environment' && (
 					<ErrorBoundary>
 						<Environment
-							{ ...this.props.environment }
+							{ ...props.environment }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -139,7 +134,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'hooks' && (
 					<ErrorBoundary>
 						<Hooks
-							{ ...this.props.hooks }
+							{ ...props.hooks }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -147,7 +142,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'http' && (
 					<ErrorBoundary>
 						<HTTP
-							{ ...this.props.http }
+							{ ...props.http }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -155,7 +150,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'logger' && (
 					<ErrorBoundary>
 						<Logger
-							{ ...this.props.logger }
+							{ ...props.logger }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -163,7 +158,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'languages' && (
 					<ErrorBoundary>
 						<Languages
-							{ ...this.props.languages }
+							{ ...props.languages }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -171,7 +166,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'php_errors' && (
 					<ErrorBoundary>
 						<PHPErrors
-							{ ...this.props.php_errors }
+							{ ...props.php_errors }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -179,7 +174,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'request' && (
 					<ErrorBoundary>
 						<Request
-							{ ...this.props.request }
+							{ ...props.request }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -187,7 +182,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'assets_scripts' && (
 					<ErrorBoundary>
 						<Scripts
-							{ ...this.props.assets_scripts }
+							{ ...props.assets_scripts }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -195,7 +190,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'assets_styles' && (
 					<ErrorBoundary>
 						<Styles
-							{ ...this.props.assets_styles }
+							{ ...props.assets_styles }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -203,7 +198,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'response' && (
 					<ErrorBoundary>
 						<Theme
-							{ ...this.props.response }
+							{ ...props.response }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -211,7 +206,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'transients' && (
 					<ErrorBoundary>
 						<Transients
-							{ ...this.props.transients }
+							{ ...props.transients }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -219,7 +214,7 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 				{ active === 'timing' && (
 					<ErrorBoundary>
 						<Timing
-							{ ...this.props.timing }
+							{ ...props.timing }
 							id={ active }
 						/>
 					</ErrorBoundary>
@@ -232,4 +227,3 @@ export class Panels extends React.Component<iPanelsProps, iState> {
 			</div>
 		);
 	}
-}

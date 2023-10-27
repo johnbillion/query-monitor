@@ -7,14 +7,8 @@ interface TimeCellProps {
 
 declare const QM_i18n: iQM_i18n;
 
-export class TimeCell extends React.Component<TimeCellProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const TimeCell = ( { value }: TimeCellProps ) => (
 			<td className="qm-num">
-				{ QM_i18n.number_format( this.props.value, 4 ) }
+				{ QM_i18n.number_format( value, 4 ) }
 			</td>
 		);
-	}
-
-}

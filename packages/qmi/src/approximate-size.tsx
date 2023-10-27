@@ -13,17 +13,11 @@ interface SizeProps {
 
 declare const QM_i18n: iQM_i18n;
 
-export class ApproximateSize extends React.Component<SizeProps, Record<string, unknown>> {
-
-	render() {
-		return (
+export const ApproximateSize = ( { value }: SizeProps ) => (
 			<td className="qm-num">
 				{ sprintf(
 					'~%s kB',
-					QM_i18n.number_format( this.props.value / 1024 )
+					QM_i18n.number_format( value / 1024 )
 				) }
 			</td>
 		);
-	}
-
-}

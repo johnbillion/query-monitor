@@ -9,17 +9,13 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default class Admin extends React.Component<iPanelProps<DataTypes['Admin']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['Admin']> ) => {
 		if ( ! data.current_screen ) {
 			return null;
 		}
 
 		return (
-			<NonTabular id={ this.props.id }>
+			<NonTabular id={ id }>
 				<section>
 					<h3>
 						get_current_screen()
@@ -147,5 +143,3 @@ export default class Admin extends React.Component<iPanelProps<DataTypes['Admin'
 			</NonTabular>
 		);
 	}
-
-}

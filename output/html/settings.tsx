@@ -31,17 +31,11 @@ interface il10nConfig {
 
 declare const qm_l10n: il10nConfig;
 
-export class Settings extends React.Component<iSettingsProps, Record<string, unknown>> {
-	constructor( props: iSettingsProps ) {
-		super( props );
+export const Settings = ( props: iSettingsProps ) => {
+	const [ verified, setVerified ] = React.useState( props.verified );
 
-		this.state = {
-			verified: props.verified,
-		};
-	}
-
-	setVerify() {
-		const action = ( this.state.verified ? 'off' : 'on' );
+	const setVerify = () => {
+		const action = ( verified ? 'off' : 'on' );
 		const formData = new FormData();
 
 		formData.append( 'action', `qm_auth_${ action }` );
@@ -52,13 +46,10 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 			body: formData,
 			credentials: 'same-origin',
 		} ).then( () => {
-			this.setState( {
-				verified: ( ! this.state.verified ),
-			} );
+			setVerified( ! verified );
 		} );
-	}
+	};
 
-	render() {
 		const editors = {
 			'None': '',
 			'Atom': 'atom',
@@ -86,15 +77,15 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 							{ __( 'You can set an authentication cookie which allows you to view Query Monitor output when you are not logged in, or when you are logged in as a different user.', 'query-monitor' ) }
 						</p>
 						<p>
-							<button className="qm-button" onClick={ () => this.setVerify() }>
-								{ this.state.verified ? (
+							<button className="qm-button" onClick={ setVerify }>
+								{ verified ? (
 									__( 'Clear authentication cookie', 'query-monitor' )
 								) : (
 									__( 'Set authentication cookie', 'query-monitor' )
 								) }
 							</button>
 						</p>
-						{ this.state.verified && (
+						{ verified && (
 							<p>
 								<Icon name="yes-alt"/>
 								{ __( 'Authentication cookie is set', 'query-monitor' ) }
@@ -136,5 +127,3 @@ export class Settings extends React.Component<iSettingsProps, Record<string, unk
 			</NonTabular>
 		);
 	}
-
-}

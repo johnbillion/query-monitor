@@ -13,17 +13,13 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default class DBDupes extends React.Component<iPanelProps<DataTypes['DB_Dupes']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['DB_Dupes']> ) => {
 		if ( ! data.dupes || ! Object.keys( data.dupes ).length ) {
 			return null;
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -117,5 +113,3 @@ export default class DBDupes extends React.Component<iPanelProps<DataTypes['DB_D
 			</Tabular>
 		);
 	}
-
-}

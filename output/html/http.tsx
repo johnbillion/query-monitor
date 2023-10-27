@@ -22,14 +22,10 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>, Record<string, unknown>> {
-
-	render() {
-		const { data } = this.props;
-
+export default ( { data, id }: iPanelProps<DataTypes['HTTP']> ) => {
 		if ( ! data.http ) {
 			return (
-				<Notice id={ this.props.id }>
+				<Notice id={ id }>
 					<p>
 						{ __( 'No HTTP API calls.', 'query-monitor' ) }
 					</p>
@@ -38,7 +34,7 @@ export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>
 		}
 
 		return (
-			<Tabular id={ this.props.id }>
+			<Tabular id={ id }>
 				<thead>
 					<tr>
 						<th scope="col">
@@ -115,5 +111,3 @@ export default class HTTP extends React.Component<iPanelProps<DataTypes['HTTP']>
 			</Tabular>
 		);
 	}
-
-}
