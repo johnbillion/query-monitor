@@ -10,6 +10,7 @@
 /tests export-ignore
 
 # Files
+/_config.yml export-ignore
 /.gitattributes export-ignore
 /.editorconfig export-ignore
 /.gitignore export-ignore
