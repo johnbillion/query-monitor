@@ -1,6 +1,13 @@
 # Configuration for Jekyll, which is used to build the documentation site from the `/docs` directory.
 
-theme: minimal
+title: Query Monitor
+description: Query Monitor is the developer tools panel for WordPress
+
+remote_theme: just-the-docs/just-the-docs@0.7.0
+
+aux_links:
+  "Download":
+    - "https://wordpress.org/plugins/query-monitor/"
 
 plugins:
   - jekyll-redirect-from
