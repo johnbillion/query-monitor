@@ -84,10 +84,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Transients']> ) => {
 						<td className="qm-nowrap">
 							~{ transient.size_formatted }
 						</td>
-						<Caller
-							toggleLabel={ __( 'View call stack', 'query-monitor' ) }
-							trace={ transient.trace }
-						/>
+						<Caller trace={ transient.trace } />
 						<QMComponent component={ transient.trace.component } />
 					</tr>
 				) ) }

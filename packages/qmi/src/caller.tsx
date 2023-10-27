@@ -11,10 +11,9 @@ import {
 interface CallerProps {
 	isFileList?: boolean;
 	trace: Backtrace;
-	toggleLabel: string;
 }
 
-export const Caller = ( { isFileList, trace, toggleLabel }: CallerProps ) => {
+export const Caller = ( { isFileList, trace }: CallerProps ) => {
 	const [ expanded, setExpanded ] = React.useState( false );
 
 	const frames = trace.frames;
@@ -34,7 +33,7 @@ export const Caller = ( { isFileList, trace, toggleLabel }: CallerProps ) => {
 			{ frames.length > 0 && (
 				<button
 					aria-expanded={ expanded ? 'false' : 'true' }
-					aria-label={ toggleLabel }
+					aria-label={ __( 'View call stack', 'query-monitor' ) }
 					className="qm-toggle"
 					onClick={ () => setExpanded( ! expanded ) }
 				>

@@ -65,7 +65,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 								{ Utils.formatSQL( row.sql ) }
 							</code>
 						</td>
-						<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+						<Caller trace={ row.trace } />
 						<QMComponent component={ row.trace.component } />
 						<td className="qm-row-result qm-num">
 							{ Utils.isWPError( row.result ) ? (

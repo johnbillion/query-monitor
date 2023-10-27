@@ -86,7 +86,7 @@ export default ( { id, enabled, data }: iPanelProps<DataTypes['Caps']> ) => {
 						<td className="qm-nowrap">
 							{ cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' }
 						</td>
-						<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ cap.trace } />
+						<Caller trace={ cap.trace } />
 						<QMComponent component={ cap.trace.component } />
 					</tr>
 				) ) }

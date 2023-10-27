@@ -52,7 +52,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Logger']> ) => {
 							<td>
 								{ row.message }
 							</td>
-							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+							<Caller trace={ row.trace } />
 							<QMComponent component={ row.trace.component } />
 						</tr>
 					);

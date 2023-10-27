@@ -90,7 +90,7 @@ export default ( { data, id }: iPanelProps<DataTypes['HTTP']> ) => {
 									`${row.response.response.code} ${row.response.response.message}`
 								) }
 							</td>
-							<Caller toggleLabel={ __( 'View call stack', 'query-monitor' ) } trace={ row.trace } />
+							<Caller trace={ row.trace } />
 							<QMComponent component={ row.trace.component } />
 							<td className="qm-num">
 								{ row.args.timeout }
