@@ -1,0 +1,6 @@
+# Configuration for Jekyll, which is used to build the documentation site from the `/docs` directory.
+
+theme: minimal
+
+plugins:
+  - jekyll-redirect-from
