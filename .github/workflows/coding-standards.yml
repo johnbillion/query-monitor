@@ -7,9 +7,31 @@ on:
       - 'develop'
       - 'trunk'
       - 'master'
+    paths:
+      - '.github/**'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'composer.json'
+      - 'package.json'
+      - 'phpcs.xml.dist'
+      - 'phpcs56.yml'
+      - 'phpstan.neon.dist'
   pull_request:
     branches:
       - '**'
+    paths:
+      - '.github/**'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'composer.json'
+      - 'package.json'
+      - 'phpcs.xml.dist'
+      - 'phpcs56.yml'
+      - 'phpstan.neon.dist'
   schedule:
     # Once weekly on Thursdays at 03:00 UTC.
     #
