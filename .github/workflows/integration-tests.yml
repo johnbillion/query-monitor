@@ -7,9 +7,31 @@ on:
       - 'develop'
       - 'trunk'
       - 'master'
+    paths:
+      - '.github/**'
+      - 'tests/**'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'codeception.dist.yml'
+      - 'composer.json'
+      - 'docker-compose.yml'
+      - 'package.json'
   pull_request:
     branches:
       - '**'
+    paths:
+      - '.github/**'
+      - 'tests/**'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'codeception.dist.yml'
+      - 'composer.json'
+      - 'docker-compose.yml'
+      - 'package.json'
   schedule:
     # Once weekly on Thursdays at 05:00 UTC.
     #
