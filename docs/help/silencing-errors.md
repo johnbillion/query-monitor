@@ -20,7 +20,7 @@ add_filter( 'qm/collect/php_error_levels', function( array $levels ) {
 } );
 ```
 
-This code hooks into the `qm/collect/php_error_levels` filter and specifies the error levels which should get reported by Query Monitor for the specified plugin. The error levels are specified using the same bitmask syntax used for PHP's `error_reporting()` function, and in this example is telling Query Monitor to report all errors except notices.
+This code hooks into the `qm/collect/php_error_levels` filter and specifies the error levels which should get reported by Query Monitor for the specified plugin. The error levels are specified using the same bitmask syntax used for [PHP's `error_reporting()` function](https://secure.php.net/manual/en/function.error-reporting.php), and in this example is telling Query Monitor to report all errors except notices.
 
 The name to use for the plugin array's index is what Query Monitor shows as the name for the "Component", for example "Plugin: foo" ends up as "foo".
 
