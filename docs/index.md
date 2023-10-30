@@ -5,7 +5,7 @@ nav_order: 1
 
 # The developer tools panel for WordPress
 
-![](/assets/banner-1544x500.png)
+![](assets/banner-1544x500.png)
 
 {: .fs-6 .fw-300 }
 Query Monitor enables you to inspect and debug many aspects of your WordPress site, including:
@@ -28,4 +28,4 @@ Query Monitor is free and open source software, just like WordPress. It's also b
 ---
 
 [Download on WordPress.org](https://wordpress.org/plugins/query-monitor/){: .btn .btn-primary .fs-5 .mr-2 }
-[How to use](/wordpress-debugging/how-to-use/){: .btn .fs-5 .mr-2 }
+[How to use](wordpress-debugging/how-to-use/){: .btn .fs-5 .mr-2 }
