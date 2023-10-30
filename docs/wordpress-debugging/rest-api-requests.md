@@ -2,7 +2,6 @@
 title: Rest API requests
 parent: WordPress debugging
 redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
-nav_order: 3
 ---
 
 # Debugging WordPress REST API requests with Query Monitor

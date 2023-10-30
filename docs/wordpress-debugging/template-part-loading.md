@@ -2,7 +2,6 @@
 title: Template part loading
 parent: WordPress debugging
 redirect_from: /blog/2019/07/debugging-wordpress-template-part-loading/
-nav_order: 2
 ---
 
 # Debugging WordPress template part loading with Query Monitor
