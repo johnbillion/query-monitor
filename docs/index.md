@@ -5,7 +5,7 @@ nav_order: 1
 
 # The developer tools panel for WordPress
 
-![Alt text](../assets/banner-1544x500.png)
+![](/assets/banner-1544x500.png)
 
 {: .fs-6 .fw-300 }
 Query Monitor enables you to inspect and debug many aspects of your WordPress site, including:
