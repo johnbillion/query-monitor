@@ -1,3 +1,8 @@
+---
+title: Configuration constants
+parent: Help
+---
+
 # Configuration constants
 
 The following PHP constants can be defined in your wp-config.php file in order to control the behaviour of Query Monitor:

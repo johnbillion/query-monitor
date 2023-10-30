@@ -1,6 +1,10 @@
 ---
+title: Clickable stack traces
+parent: Help
 redirect_from: /blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 ---
+
+# Clickable stack traces and function names in Query Monitor
 
 Many panels in Query Monitor display function names or stack traces. Wouldn't it be great if you could click the function name and the file opens up in your text editor or IDE at the correct position? With the clickable file links feature you can, and you'll wonder how you lived without it:
 

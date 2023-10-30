@@ -1,3 +1,9 @@
+---
+title: How to use Query Monitor
+parent: WordPress debugging
+nav_order: 1
+---
+
 # How to use Query Monitor
 
 ## Installation

@@ -1,8 +1,11 @@
 ---
+title: Template part loading
+parent: WordPress debugging
 redirect_from: /blog/2019/07/debugging-wordpress-template-part-loading/
+nav_order: 2
 ---
 
-# Debugging WordPress Template Part Loading
+# Debugging WordPress template part loading with Query Monitor
 
 Template parts are a fundamental part of building WordPress themes, but sometimes it can be difficult to find out why a given template part is or isn't loading.
 

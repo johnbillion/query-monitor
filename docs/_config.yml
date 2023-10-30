@@ -9,10 +9,20 @@ gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: "https://github.com/johnbillion/query-monitor"
 gh_edit_branch: "develop"
+gh_edit_source: docs
+gh_edit_view_mode: "tree"
 
 aux_links:
-  "Download":
+  "Download on WordPress.org":
     - "https://wordpress.org/plugins/query-monitor/"
+nav_external_links:
+  - title: GitHub project
+    url: https://github.com/johnbillion/query-monitor
+  - title: Download plugin
+    url: https://wordpress.org/plugins/query-monitor
+  - title: Privacy statement
+    url: /privacy/
+    hide_icon: true
 
 plugins:
   - jekyll-redirect-from
