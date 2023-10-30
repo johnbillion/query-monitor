@@ -51,7 +51,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 	 */
 	public function process() {
 		$request = array(
-			'ip' => $_SERVER['REMOTE_ADDR'],
+			'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
 			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
 			'scheme' => is_ssl() ? 'https' : 'http',
 			'host' => wp_unslash( $_SERVER['HTTP_HOST'] ),
