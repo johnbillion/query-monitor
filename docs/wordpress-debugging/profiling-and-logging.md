@@ -2,6 +2,7 @@
 title: Profiling and logging
 parent: WordPress debugging
 redirect_from: /blog/2018/07/profiling-and-logging/
+redirect_from: /docs/logging-variables/
 ---
 
 # Profiling and logging in Query Monitor
@@ -51,7 +52,7 @@ Note that the times and memory usage displayed in the Timings panel should be tr
 
 ## Logging
 
-Debugging messages can be sent to the Logs panel in Query Monitor using actions in your code:
+Messages and variables can be logged in Query Monitor similarly to how you can call `console.log` in JavaScript to log data to the console. This can be used as a replacement for `var_dump()`.
 
 ```php
 do_action( 'qm/debug', 'This happened!' );
@@ -82,13 +83,15 @@ do_action( 'qm/warning', 'Unexpected value of {foo} encountered', [
 ] );
 ```
 
-A `WP_Error` or `Exception` object can be passed directly into the logger:
+A `WP_Error`, `Exception`, or `Throwable` object can be passed directly into the logger:
 
 ```php
 if ( is_wp_error( $response ) ) {
     do_action( 'qm/error', $response );
 }
+```
 
+```php
 try {
     // your code
 } catch ( Exception $e ) {
@@ -96,8 +99,17 @@ try {
 }
 ```
 
+Variables of any type can be logged and they'll be formatted appropriately:
+
+```php
+$var = [ 1, 2, 3 ];
+do_action( 'qm/debug', $var );
+```
+
 Finally, the static logging methods on the `QM` class can be used instead of calling `do_action()`:
 
 ```php
 QM::error( 'Everything is broken' );
 ```
+
+The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
