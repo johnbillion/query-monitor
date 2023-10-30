@@ -236,6 +236,12 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 		}
 
 		if ( isset( $data->wp['development_mode'] ) ) {
+			$mode = $data->wp['development_mode'];
+
+			if ( '' === $mode ) {
+				$mode = __( 'empty string', 'query-monitor' );
+			}
+
 			echo '<tr>';
 			echo '<th scope="row">';
 			esc_html_e( 'Development Mode', 'query-monitor' );
@@ -245,7 +251,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				esc_html__( 'Help', 'query-monitor' )
 			);
 			echo '</th>';
-			echo '<td>' . esc_html( $data->wp['development_mode'] ) . '</td>';
+			echo '<td>' . esc_html( $mode ) . '</td>';
 			echo '</tr>';
 		}
 

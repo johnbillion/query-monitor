@@ -119,7 +119,8 @@ class QM_Collector_Environment extends QM_DataCollector {
 				$extension = null;
 			}
 
-			$client = mysqli_get_client_version();
+			// mysqli_get_client_version() may not exist in Wasm environment.
+			$client = function_exists( 'mysqli_get_client_version' ) ? mysqli_get_client_version() : null;
 
 			if ( $client ) {
 				$client_version = implode( '.', QM_Util::get_client_version( $client ) );
@@ -142,7 +143,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 			$this->data->db = array(
 				'info' => $info,
 				'vars' => $mysql_vars,
-				'variables' => $variables ?: array(),
+				'variables' => is_array( $variables ) ? $variables : array(),
 			);
 		}
 
