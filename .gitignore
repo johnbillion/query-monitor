@@ -1,4 +1,7 @@
 /composer.lock
+/docs/_site
+/docs/Gemfile
+/docs/Gemfile.lock
 /vendor
 /node_modules
 /package-lock.json

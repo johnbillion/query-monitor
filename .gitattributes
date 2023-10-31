@@ -5,6 +5,7 @@
 /.github export-ignore
 /.wordpress-org export-ignore
 /bin export-ignore
+/docs export-ignore
 /node_modules export-ignore
 /tests export-ignore
 
