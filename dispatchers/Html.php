@@ -226,7 +226,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'query-monitor-ui',
 			$this->qm->plugin_url( 'build/main.js' ),
 			array(),
-			$this->qm->plugin_ver( 'build/main.js' )
+			QM_VERSION,
+			false
 		);
 
 		wp_set_script_translations( 'query-monitor-ui', 'query-monitor' );

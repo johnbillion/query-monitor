@@ -10,7 +10,7 @@ export { PanelFooter } from './src/panel-footer';
 export { Component } from './src/component';
 export { Tabular } from './src/tabular';
 export { TimeCell } from './src/time';
-export { TotalTime } from './src/totaltime';
+export { TotalTime } from './src/total-time';
 export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';
 export * as Utils from './src/utils';

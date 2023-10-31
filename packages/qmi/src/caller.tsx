@@ -16,7 +16,8 @@ interface CallerProps {
 export const Caller = ( { isFileList, trace }: CallerProps ) => {
 	const [ expanded, setExpanded ] = React.useState( false );
 
-	const frames = trace.frames;
+	// This creates a copy of the frames array.
+	const frames = [ ...trace.frames ];
 
 	if ( frames.length === 0 ) {
 		return (

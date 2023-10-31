@@ -1,6 +1,7 @@
 import {
 	iPanelProps,
 	Tabular,
+	Utils,
 } from 'qmi';
 import {
 	DataTypes,
@@ -47,7 +48,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Dupes']> ) => {
 					return (
 						<tr>
 							<td className="qm-row-sql qm-ltr qm-wrap">
-								{ key }
+								{ Utils.formatSQL( key ) }
 							</td>
 							<td className="qm-num">
 								{ row.length }
