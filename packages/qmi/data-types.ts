@@ -155,11 +155,9 @@ export interface Caps {
 		args: unknown[];
 		trace: Backtrace;
 		result: boolean;
-		parts: string[];
 		name: string;
 		user: string;
 	}[];
-	parts: string[];
 	users: number[];
 	components: {
 		[k: string]: string;
@@ -345,12 +343,10 @@ export interface Hooks {
 				component?: Component;
 			};
 		}[];
-		parts: string[];
 		components: {
 			[k: string]: string;
 		};
 	}[];
-	parts: string[];
 	components: {
 		[k: string]: string;
 	};

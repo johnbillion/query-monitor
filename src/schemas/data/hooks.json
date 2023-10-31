@@ -6,7 +6,6 @@
 	"type": "object",
 	"required": [
 		"hooks",
-		"parts",
 		"components",
 		"all_hooks"
 	],
@@ -85,12 +84,6 @@
 							"additionalProperties": false
 						}
 					},
-					"parts": {
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					},
 					"components": {
 						"type": "object",
 						"additionalProperties": {
@@ -101,16 +94,9 @@
 				"required": [
 					"name",
 					"actions",
-					"parts",
 					"components"
 				],
 				"additionalProperties": false
-			}
-		},
-		"parts": {
-			"type": "array",
-			"items": {
-				"type": "string"
 			}
 		},
 		"components": {

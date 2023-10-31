@@ -219,7 +219,6 @@ class QM_Collector_Caps extends QM_DataCollector {
 			return;
 		}
 
-		$all_parts = array();
 		$all_users = array();
 		$components = array();
 		$this->data->caps = array();
@@ -238,28 +237,18 @@ class QM_Collector_Caps extends QM_DataCollector {
 			}
 
 			$component = $cap['trace']->get_component();
-			$parts = array();
-			$pieces = preg_split( '#[_/-]#', $name );
-
-			if ( is_array( $pieces ) ) {
-				$parts = array_values( array_filter( $pieces ) );
-			}
-
 			$capability = array_shift( $cap['args'] );
 			$user_id = array_shift( $cap['args'] );
 
-			$cap['parts'] = $parts;
 			$cap['name'] = $name;
 			$cap['user'] = $user_id;
 
 			$this->data->caps[] = $cap;
 
-			$all_parts = array_merge( $all_parts, $parts );
 			$all_users[] = (int) $user_id;
 			$components[ $component->name ] = $component->name;
 		}
 
-		$this->data->parts = array_values( array_unique( array_filter( $all_parts ) ) );
 		$this->data->users = array_values( array_unique( array_filter( $all_users ) ) );
 		$this->data->components = $components;
 	}

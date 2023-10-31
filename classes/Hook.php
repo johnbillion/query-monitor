@@ -29,7 +29,6 @@ class QM_Hook {
 	 *       component?: QM_Component,
 	 *     },
 	 *   }>,
-	 *   parts: list<string>,
 	 *   components: array<string, string>,
 	 * }
 	 */
@@ -69,13 +68,10 @@ class QM_Hook {
 			}
 		}
 
-		$parts = array_values( array_filter( (array) preg_split( '#[_/.-]#', $name ) ) );
-
 		return array(
 			'name' => $name,
 			'type' => $type,
 			'actions' => $actions,
-			'parts' => $parts,
 			'components' => $components,
 		);
 

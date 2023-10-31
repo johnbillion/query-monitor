@@ -6,7 +6,6 @@
 	"type": "object",
 	"required": [
 		"caps",
-		"parts",
 		"users",
 		"components"
 	],
@@ -19,7 +18,6 @@
 					"args",
 					"trace",
 					"result",
-					"parts",
 					"name",
 					"user"
 				],
@@ -39,12 +37,6 @@
 					"result": {
 						"type": "boolean"
 					},
-					"parts": {
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					},
 					"name": {
 						"type": "string"
 					},
@@ -53,12 +45,6 @@
 					}
 				},
 				"additionalProperties": false
-			}
-		},
-		"parts": {
-			"type": "array",
-			"items": {
-				"type": "string"
 			}
 		},
 		"users": {

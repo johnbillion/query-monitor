@@ -54,7 +54,6 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		foreach ( $hooks as $hook ) {
 			$row_attr = array();
-			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
 			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
 			$row_attr['data-qm-type'] = $hook['type'];
 

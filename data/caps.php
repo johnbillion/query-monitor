@@ -18,17 +18,11 @@ class QM_Data_Caps extends QM_Data {
 	 *   args: array<int, mixed>,
 	 *   trace: QM_Backtrace,
 	 *   result: bool,
-	 *   parts: array<int, string>,
 	 *   name: string,
 	 *   user: string,
 	 * }>
 	 */
 	public $caps;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $parts;
 
 	/**
 	 * @var array<int, int>
