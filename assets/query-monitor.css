@@ -1208,10 +1208,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 	}
 
-	#qm-ajax-errors {
-		display: none;
-	}
-
 	/** Filters */
 
 	& button,

@@ -60,14 +60,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		/** @var QM_Collector_HTTP|null $http */
 		$http = QM_Collectors::get( 'http' );
 
-		$ajax_errors = __( 'PHP errors were triggered during an Ajax request. See your browser developer console for details.', 'query-monitor' );
-
 		$this->before_non_tabular_output();
-
-		echo '<section id="qm-ajax-errors">';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<p class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( $ajax_errors ) . '</p>';
-		echo '</section>';
 
 		if ( $raw_request ) {
 			echo '<section id="qm-overview-raw-request">';

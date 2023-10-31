@@ -129,28 +129,11 @@ if ( window.jQuery ) {
 							break;
 					}
 				}
-
-				if ( $('#qm-php_errors').find('[data-qm-key="' + error.key + '"]').length ) {
-					continue;
-				}
-
-				if ( $('#wp-admin-bar-query-monitor').length ) {
-					if ( ! qm.ajax_errors[error.type] ) {
-						$('#wp-admin-bar-query-monitor')
-							.addClass('qm-' + error.type)
-							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>');
-					}
-				}
-
-				qm.ajax_errors[error.type] = true;
-
 			}
 
 			if ( window.console ) {
 				console.groupEnd();
 			}
-
-			$( '#qm-ajax-errors' ).show();
 
 			return event;
 

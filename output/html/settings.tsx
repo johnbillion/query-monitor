@@ -20,7 +20,6 @@ interface iSettingsProps {
 
 export interface iQMConfig {
 	menu: any;
-	ajax_errors: any;
 	settings: iSettingsProps;
 	panel_menu: iNavMenu;
 	data: iPanelsProps;
