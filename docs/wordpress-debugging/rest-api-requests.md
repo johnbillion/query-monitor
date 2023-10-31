@@ -1,5 +1,5 @@
 ---
-title: Rest API requests
+title: REST API requests
 parent: WordPress debugging
 redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
 ---
@@ -7,8 +7,6 @@ redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
 # Debugging WordPress REST API requests with Query Monitor
 
 Query Monitor includes a feature which allows you to see comprehensive performance information about a REST API request on your site.
-
-[Download Query Monitor on WordPress.org](https://wordpress.org/plugins/query-monitor/).
 
 ## Authentication
 
