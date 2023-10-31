@@ -2,6 +2,7 @@
 title: How to use Query Monitor
 parent: WordPress debugging
 nav_order: 1
+redirect_from: /docs/how-to-use/
 ---
 
 # How to use Query Monitor

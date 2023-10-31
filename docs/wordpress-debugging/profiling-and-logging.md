@@ -1,8 +1,9 @@
 ---
 title: Profiling and logging
 parent: WordPress debugging
-redirect_from: /blog/2018/07/profiling-and-logging/
-redirect_from: /docs/logging-variables/
+redirect_from:
+  - /blog/2018/07/profiling-and-logging/
+  - /docs/logging-variables/
 ---
 
 # Profiling and logging in Query Monitor
