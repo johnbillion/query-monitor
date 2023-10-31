@@ -9,6 +9,8 @@ declare const qm: iQMConfig;
 document.addEventListener( 'DOMContentLoaded', function () {
 	const panelKey = `qm-${ document.body.classList.contains( 'wp-admin' ) ? 'admin' : 'front' }-panel`;
 	const positionKey = 'qm-container-position';
+	const themeKey = 'qm-theme';
+	const editorKey = 'qm-editor';
 
 	const panels = {
 		admin: qm.data.admin || null,
@@ -42,8 +44,18 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( positionKey, ( side ? 'right' : '' ) );
 	}
 
+	const onThemeChange = ( theme: string ) => {
+		localStorage.setItem( themeKey, theme );
+	}
+
+	const onEditorChange = ( editor: string ) => {
+		localStorage.setItem( editorKey, editor );
+	}
+
 	const active = localStorage.getItem( panelKey );
 	const side = localStorage.getItem( positionKey ) === 'right';
+	const editor = localStorage.getItem( editorKey );
+	const theme = localStorage.getItem( themeKey );
 
 	createRoot( document.getElementById( 'query-monitor-container' ) ).render(
 		<QM
@@ -53,8 +65,12 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			panel_menu={ qm.panel_menu }
 			panels={ panels }
 			side={ side }
+			theme={ theme }
+			editor={ editor }
 			onPanelChange={ onPanelChange }
 			onSideChange={ onSideChange }
+			onThemeChange={ onThemeChange }
+			onEditorChange={ onEditorChange }
 		/>
 	);
 } );

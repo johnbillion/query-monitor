@@ -1,10 +1,15 @@
 import {
 	Icon,
 	NonTabular,
+	Context,
+	Utils,
 } from 'qmi';
 import * as React from 'react';
 
-import { __ } from '@wordpress/i18n';
+import {
+	__,
+	_x,
+} from '@wordpress/i18n';
 
 import { iNavMenu } from '../nav';
 import { iPanelsProps } from '../panels';
@@ -33,6 +38,12 @@ declare const qm_l10n: il10nConfig;
 
 export const Settings = ( props: iSettingsProps ) => {
 	const [ verified, setVerified ] = React.useState( props.verified );
+	const {
+		editor,
+		setEditor,
+		theme,
+		setTheme,
+	} = React.useContext( Context );
 
 	const setVerify = () => {
 		const action = ( verified ? 'off' : 'on' );
@@ -61,14 +72,18 @@ export const Settings = ( props: iSettingsProps ) => {
 		'Visual Studio Code': 'vscode',
 	};
 
-	const editor = localStorage.getItem( 'qm-editor' );
+	const colours = {
+		'auto': _x( 'Auto', 'colour scheme', 'query-monitor' ),
+		'light': _x( 'Light', 'colour scheme', 'query-monitor' ),
+		'dark': _x( 'Dark', 'colour scheme', 'query-monitor' ),
+	};
 
 	return (
 		<NonTabular id="settings">
 			<h2 className="qm-screen-reader-text">
 				{ __( 'Settings', 'query-monitor' ) }
 			</h2>
-			<div className="qm-boxed">
+			<div className="qm-grid">
 				<section>
 					<h3>
 						{ __( 'Authentication', 'query-monitor' ) }
@@ -92,9 +107,7 @@ export const Settings = ( props: iSettingsProps ) => {
 						</p>
 					) }
 				</section>
-			</div>
-			<div className="qm-boxed">
-				<section className="qm-editor">
+				<section>
 					<h3>
 						{ __( 'Editor', 'query-monitor' ) }
 					</h3>
@@ -108,22 +121,48 @@ export const Settings = ( props: iSettingsProps ) => {
 							name="qm-editor-select"
 							value={ editor ?? '' }
 							onChange={ ( e ) => {
-								localStorage.setItem( 'qm-editor', e.target.value );
+								setEditor( e.target.value );
 							} }
 						>
-							{ Object.entries( editors ).map( ( [ key, value ] ) => (
+							{ Utils.getEditors().map( ( { label, name } ) => (
 								<option
-									key={ key }
-									value={ value }
+									key={ label }
+									value={ name }
 								>
-									{ key }
+									{ label }
 								</option>
 							) ) }
 						</select>
 					</p>
 				</section>
+				<section>
+					<h3>
+						{ __( 'Appearance', 'query-monitor' ) }
+					</h3>
+					<p>
+						{ __( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) }
+					</p>
+					<ul>
+						{ Object.entries( colours ).map( ( [ key, value ] ) => (
+							<li key={ key }>
+								<label>
+									<input
+										type="radio"
+										className="qm-theme-toggle qm-radio"
+										name="qm-theme"
+										value={ key }
+										defaultChecked={ theme === key }
+										onChange={ ( e ) => {
+											setTheme( e.target.value );
+										} }
+									/>
+									{ value }
+								</label>
+							</li>
+						) ) }
+					</ul>
+				</section>
 			</div>
-			{ /* @TODO light/dark/auto theme support */ }
 		</NonTabular>
 	);
 };

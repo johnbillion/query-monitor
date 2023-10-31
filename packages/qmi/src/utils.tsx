@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
+import {
+	Context,
+} from './context';
 
 export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
@@ -89,4 +92,61 @@ export function getErrorMessage( data: any ): string|null {
 	}
 
 	return null;
+}
+
+export function getEditors(): { label: string, name: string; format: string; }[] {
+	return [
+		{
+			label: 'None',
+			name: '',
+			format: '',
+		},
+		{
+			label: 'Atom',
+			name: 'atom',
+			format: 'atom://open/?url=file://%1$s&line=%2$s',
+		},
+		{
+			label: 'Netbeans',
+			name: 'netbeans',
+			format: 'nbopen://%1$s:%2$s',
+		},
+		{
+			label: 'Nova',
+			name: 'nova',
+			format: 'nova://open?path=%1$s&line=%2$s',
+		},
+		{
+			label: 'PhpStorm',
+			name: 'phpstorm',
+			format: 'phpstorm://open?file=%1$s&line=%2$s',
+		},
+		{
+			label: 'Sublime Text',
+			name: 'sublime',
+			format: 'subl://open/?url=file://%1$s&line=%2$s',
+		},
+		{
+			label: 'TextMate',
+			name: 'textmate',
+			format: 'txmt://open/?url=file://%1$s&line=%2$s',
+		},
+		{
+			label: 'Visual Studio Code',
+			name: 'vscode',
+			format: 'vscode://file/%1$s:%2$s',
+		},
+	];
+}
+
+export function getEditorFormat( name: string ): string {
+	const editors = getEditors();
+
+	for ( const editor of editors ) {
+		if ( editor.name === name ) {
+			return editor.format;
+		}
+	}
+
+	return '';
 }

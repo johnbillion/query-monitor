@@ -1,6 +1,8 @@
 export { ApproximateSize } from './src/approximate-size';
 export { Caller } from './src/caller';
+export { Context } from './src/context';
 export { Frame } from './src/frame';
+export { FileName } from './src/file-name';
 export { Icon } from './src/icon';
 export { NonTabular } from './src/non-tabular';
 export { Notice } from './src/notice';

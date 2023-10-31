@@ -1,5 +1,8 @@
 import * as classNames from 'classnames';
-import { Icon } from 'qmi';
+import {
+	Icon,
+	Context,
+} from 'qmi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -29,13 +32,19 @@ export interface iQMProps {
 	panels: iPanelsProps;
 	panel_menu: iNavMenu;
 	side: boolean;
+	theme: string;
+	editor: string;
 	onPanelChange: ( active: string ) => void;
 	onSideChange: ( side: boolean ) => void;
+	onThemeChange: ( theme: string ) => void;
+	onEditorChange: ( editor: string ) => void;
 }
 
 export const QM = ( props: iQMProps ) => {
 	const [ active, setActive ] = React.useState( props.active );
 	const [ side, setSide ] = React.useState( props.side );
+	const [ theme, setTheme ] = React.useState( props.theme );
+	const [ editor, setEditor ] = React.useState( props.editor );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
@@ -45,18 +54,35 @@ export const QM = ( props: iQMProps ) => {
 
 	const adminMenuElement = props.adminMenuElement;
 
-	const theme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
-		? 'dark'
-		: 'light';
+	let actualTheme = theme;
+
+	if ( ! [ 'light', 'dark' ].includes( actualTheme ) ) {
+		actualTheme = window.matchMedia && window.matchMedia( '(prefers-color-scheme: dark)' ).matches
+			? 'dark'
+			: 'light';
+	}
 
 	const mainClass = classNames( 'qm-show', {
 		'qm-show-right': side,
 	} );
 
+	const contextValue = {
+		theme: theme,
+		setTheme: ( theme: string ) => {
+			props.onThemeChange( theme );
+			setTheme( theme );
+		},
+		editor: editor,
+		setEditor: ( editor: string ) => {
+			props.onEditorChange( editor );
+			setEditor( editor );
+		},
+	};
+
 	return (
-		<>
+		<Context.Provider value={ contextValue }>
 			{ active && (
-				<div className={ mainClass } data-theme={ theme } dir="ltr" id="query-monitor-main">
+				<div className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
 					<div className="qm-resizer" id="qm-side-resizer"></div>
 					<div className="qm-resizer" id="qm-title">
 						<h1 className="qm-title-heading">
@@ -134,7 +160,7 @@ export const QM = ( props: iQMProps ) => {
 					</div>
 				</AdminMenu>
 			) }
-		</>
+		</Context.Provider>
 	);
 };
 
