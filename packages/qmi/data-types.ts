@@ -24,8 +24,6 @@ export interface DataTypes {
 	Cache: AbstractData & Cache;
 	Caps: AbstractData & Caps;
 	Conditionals: AbstractData & Conditionals;
-	DB_Callers: AbstractData & DB_Callers;
-	DB_Components: AbstractData & DB_Components;
 	DB_Dupes: AbstractData & DB_Dupes;
 	DB_Queries: AbstractData & DB_Queries;
 	Doing_It_Wrong: AbstractData & Doing_It_Wrong;
@@ -203,34 +201,6 @@ export interface Conditionals {
 		true: string[];
 		false: string[];
 		na: string[];
-	};
-}
-/**
- * Database query callers data transfer object.
- */
-export interface DB_Callers {
-	times: {
-		[k: string]: {
-			caller: string;
-			ltime: number;
-			types: {
-				[k: string]: number;
-			};
-		};
-	};
-}
-/**
- * Database query components data transfer object.
- */
-export interface DB_Components {
-	times: {
-		[k: string]: {
-			ltime: number;
-			types: {
-				[k: string]: number;
-			};
-			component: string;
-		};
 	};
 }
 /**

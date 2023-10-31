@@ -95,7 +95,7 @@ export const Panels = ( props: iPanelsProps ) => (
 		{ props.active === 'db_callers' && (
 			<ErrorBoundary>
 				<DBCallers
-					{ ...props.db_callers }
+					{ ...props.db_queries }
 					id={ props.active }
 				/>
 			</ErrorBoundary>
@@ -103,7 +103,7 @@ export const Panels = ( props: iPanelsProps ) => (
 		{ props.active === 'db_components' && (
 			<ErrorBoundary>
 				<DBComponents
-					{ ...props.db_components }
+					{ ...props.db_queries }
 					id={ props.active }
 				/>
 			</ErrorBoundary>

@@ -10,8 +10,6 @@
 		"Cache",
 		"Caps",
 		"Conditionals",
-		"DB_Callers",
-		"DB_Components",
 		"DB_Dupes",
 		"DB_Queries",
 		"Doing_It_Wrong",
@@ -133,26 +131,6 @@
 				},
 				{
 					"$ref": "src/schemas/data/conditionals.json"
-				}
-			]
-		},
-		"DB_Callers": {
-			"allOf": [
-				{
-					"$ref": "#/definitions/data"
-				},
-				{
-					"$ref": "src/schemas/data/db_callers.json"
-				}
-			]
-		},
-		"DB_Components": {
-			"allOf": [
-				{
-					"$ref": "#/definitions/data"
-				},
-				{
-					"$ref": "src/schemas/data/db_components.json"
 				}
 			]
 		},

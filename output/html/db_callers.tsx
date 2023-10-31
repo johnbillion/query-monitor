@@ -11,8 +11,8 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['DB_Callers']> ) => {
-	if ( ! data.times || ! data.times.length ) {
+export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
+	if ( ! data.times ) {
 		return null;
 	}
 

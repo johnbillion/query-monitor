@@ -11,8 +11,8 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['DB_Components']> ) => {
-	if ( ! data.times || ! data.times.length ) {
+export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
+	if ( ! data.component_times ) {
 		return null;
 	}
 
@@ -34,7 +34,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Components']> ) => {
 				</tr>
 			</thead>
 			<tbody>
-				{ Object.values( data.times ).map( comp => (
+				{ Object.values( data.component_times ).map( comp => (
 					<tr key={ comp.component }>
 						<td>{ comp.component }</td>
 						{ Object.keys( data.types ).map( key =>
@@ -54,7 +54,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Components']> ) => {
 							{ value }
 						</td>
 					) ) }
-					<TotalTime rows={ Object.values( data.times ) }/>
+					<TotalTime rows={ Object.values( data.component_times ) }/>
 				</tr>
 			</tfoot>
 		</Tabular>
