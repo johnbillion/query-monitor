@@ -2,11 +2,10 @@ import {
 	Caller,
 	iPanelProps,
 	Notice,
-	PanelFooter,
 	Component,
-	Tabular,
+	PanelTable,
+	TabularPanel,
 	TimeCell,
-	TotalTime,
 	Utils,
 	Warning,
 } from 'qmi';
@@ -31,61 +30,61 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 	}
 
 	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th role="columnheader" scope="col">
-						#
-					</th>
-					<th scope="col">
-						{ __( 'Query', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Caller', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Rows', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Time', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ data.rows.map( ( row, i ) => (
-					<tr>
-						<th className="qm-row-num qm-num" scope="row">
-							{ 1 + i }
-						</th>
-						<td className="qm-row-sql qm-ltr qm-wrap">
-							<code>
-								{ Utils.formatSQL( row.sql ) }
-							</code>
-						</td>
-						<Caller trace={ row.trace } />
-						<Component component={ row.trace.component } />
-						<td className="qm-row-result qm-num">
-							{ Utils.isWPError( row.result ) ? (
-								<Warning>
-									{ Utils.getErrorMessage( row.result ) }
-								</Warning>
-							) : (
-								row.result
-							) }
-						</td>
-						<TimeCell value={ row.ltime }/>
-					</tr>
-				) ) }
-			</tbody>
-			<PanelFooter
-				cols={ 5 }
-				count={ data.rows.length }
-			>
-				<TotalTime rows={ data.rows }/>
-			</PanelFooter>
-		</Tabular>
+		<TabularPanel
+			title={ __( 'Database Queries', 'query-monitor' ) }
+		>
+			<PanelTable
+				cols={ {
+					i: {
+						className: 'qm-num',
+						heading: '#',
+						render: ( row, i ) => (
+							<td className="qm-num">
+								{ i + 1 }
+							</td>
+						),
+					},
+					sql: {
+						heading: __( 'Query', 'query-monitor' ),
+						render: ( row ) => (
+							<td className="qm-row-sql qm-ltr qm-wrap">
+								<code>
+									{ Utils.formatSQL( row.sql ) }
+								</code>
+							</td>
+						),
+					},
+					caller: {
+						heading: __( 'Caller', 'query-monitor' ),
+						render: ( row ) => <Caller trace={ row.trace } />,
+					},
+					component: {
+						heading: __( 'Component', 'query-monitor' ),
+						render: ( row ) => <Component component={ row.trace.component } />,
+					},
+					result: {
+						className: 'qm-num',
+						heading: __( 'Rows', 'query-monitor' ),
+						render: ( row ) => (
+							<td className="qm-num">
+								{ Utils.isWPError( row.result ) ? (
+									<Warning>
+										{ Utils.getErrorMessage( row.result ) }
+									</Warning>
+								) : (
+									row.result
+								) }
+							</td>
+						),
+					},
+					time: {
+						className: 'qm-num',
+						heading: __( 'Time', 'query-monitor' ),
+						render: ( row ) => ( <TimeCell value={ row.ltime }/> ),
+					},
+				} }
+				data={ data.rows }
+			/>
+		</TabularPanel>
 	);
 };
