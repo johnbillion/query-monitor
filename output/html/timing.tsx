@@ -2,7 +2,7 @@ import {
 	iPanelProps,
 	Component,
 	Tabular,
-	TimeCell,
+	Time,
 	ApproximateSize,
 	Notice,
 } from 'qmi';
@@ -64,9 +64,15 @@ export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
 									{ timer.function }
 								</code>
 							</td>
-							<TimeCell value={ timer.start_time } />
-							<TimeCell value={ timer.end_time } />
-							<TimeCell value={ timer.function_time } />
+							<td>
+								<Time value={ timer.start_time } />
+							</td>
+							<td>
+								<Time value={ timer.end_time } />
+							</td>
+							<td>
+								<Time value={ timer.function_time } />
+							</td>
 							<ApproximateSize value={ timer.function_memory } />
 							<Component component={ timer.trace.component } />
 						</tr>
@@ -81,7 +87,9 @@ export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
 										</td>
 										<td></td>
 										<td></td>
-										<TimeCell value={ value.time_used } />
+										<td>
+											<Time value={ value.time_used } />
+										</td>
 										<ApproximateSize value={ value.memory_used } />
 										<td></td>
 									</tr>

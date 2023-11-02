@@ -6,7 +6,7 @@ import {
 	PanelFooter,
 	Component,
 	Tabular,
-	TimeCell,
+	Time,
 	TotalTime,
 	Utils,
 	Warning,
@@ -95,7 +95,7 @@ export default ( { data, id }: iPanelProps<DataTypes['HTTP']> ) => {
 							<td className="qm-num">
 								{ row.args.timeout }
 							</td>
-							<TimeCell value={ row.ltime }/>
+							<Time value={ row.ltime }/>
 						</tr>
 					);
 				} ) }

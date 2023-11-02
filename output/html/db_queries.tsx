@@ -5,7 +5,7 @@ import {
 	Component,
 	PanelTable,
 	TabularPanel,
-	TimeCell,
+	Time,
 	Utils,
 	Warning,
 } from 'qmi';
@@ -38,20 +38,14 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 					i: {
 						className: 'qm-num',
 						heading: '#',
-						render: ( row, i ) => (
-							<td className="qm-num">
-								{ i + 1 }
-							</td>
-						),
+						render: ( row, i ) => ( i + 1 ),
 					},
 					sql: {
 						heading: __( 'Query', 'query-monitor' ),
 						render: ( row ) => (
-							<td className="qm-row-sql qm-ltr qm-wrap">
-								<code>
-									{ Utils.formatSQL( row.sql ) }
-								</code>
-							</td>
+							<code>
+								{ Utils.formatSQL( row.sql ) }
+							</code>
 						),
 					},
 					caller: {
@@ -66,7 +60,7 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 						className: 'qm-num',
 						heading: __( 'Rows', 'query-monitor' ),
 						render: ( row ) => (
-							<td className="qm-num">
+							<>
 								{ Utils.isWPError( row.result ) ? (
 									<Warning>
 										{ Utils.getErrorMessage( row.result ) }
@@ -74,13 +68,13 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 								) : (
 									row.result
 								) }
-							</td>
+							</>
 						),
 					},
 					time: {
 						className: 'qm-num',
 						heading: __( 'Time', 'query-monitor' ),
-						render: ( row ) => ( <TimeCell value={ row.ltime }/> ),
+						render: ( row ) => ( <Time value={ row.ltime }/> ),
 					},
 				} }
 				data={ data.rows }

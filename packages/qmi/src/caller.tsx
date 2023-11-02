@@ -21,16 +21,16 @@ export const Caller = ( { isFileList, trace }: CallerProps ) => {
 
 	if ( frames.length === 0 ) {
 		return (
-			<td>
+			<>
 				{ __( 'Unknown', 'query-monitor' ) }
-			</td>
+			</>
 		);
 	}
 
 	const caller = frames.shift();
 
 	return (
-		<td className="qm-has-toggle qm-nowrap qm-ltr">
+		<>
 			{ frames.length > 0 && (
 				<button
 					aria-expanded={ expanded ? 'false' : 'true' }
@@ -63,6 +63,6 @@ export const Caller = ( { isFileList, trace }: CallerProps ) => {
 					) )
 				) }
 			</ol>
-		</td>
+		</>
 	);
 };

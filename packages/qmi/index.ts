@@ -11,7 +11,7 @@ export { PanelFooter } from './src/panel-footer';
 export { Component } from './src/component';
 export { Tabular } from './src/tabular';
 export { TabularPanel } from './src/tabular-panel';
-export { TimeCell } from './src/time';
+export { Time } from './src/time';
 export { TotalTime } from './src/total-time';
 export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';

@@ -1,14 +1,14 @@
 import { iQM_i18n } from 'qmi';
 import * as React from 'react';
 
-interface TimeCellProps {
+interface TimeProps {
 	value: number;
 }
 
 declare const QM_i18n: iQM_i18n;
 
-export const TimeCell = ( { value }: TimeCellProps ) => (
-	<td className="qm-num">
+export const Time = ( { value }: TimeProps ) => (
+	<>
 		{ QM_i18n.number_format( value, 4 ) }
-	</td>
+	</>
 );

@@ -49,7 +49,11 @@ export const PanelTable = <T extends unknown>( { title, cols, data, footer }: Pr
 			<tbody>
 				{ data.map( ( row, i ) => (
 					<tr key={ i }>
-						{ Object.values( cols ).map( col => col.render( row, i, col ) ) }
+						{ Object.entries( cols ).map( ( [ name, col ] ) => (
+							<td className={ `qm-col-${name}` }>
+								{ col.render( row, i, col ) }
+							</td>
+						) ) }
 					</tr>
 				) ) }
 			</tbody>

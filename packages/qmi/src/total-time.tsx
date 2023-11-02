@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { TimeCell } from './time';
+import { Time } from './time';
 
 interface TotalTimeProps {
 	rows: {
@@ -9,5 +9,5 @@ interface TotalTimeProps {
 }
 
 export const TotalTime = ( { rows }: TotalTimeProps ) => (
-	<TimeCell value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
+	<Time value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
 );

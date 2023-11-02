@@ -3,7 +3,7 @@ import {
 	Notice,
 	PanelFooter,
 	Tabular,
-	TimeCell,
+	Time,
 } from 'qmi';
 import {
 	DataTypes,
@@ -143,7 +143,9 @@ const RenderBlock = ( { block, data, i }: iBlockProps ) => {
 				</td>
 				{ data.has_block_timing && (
 					block.dynamic ? (
-						<TimeCell value={ block.timing } />
+						<td>
+							<Time value={ block.timing } />
+						</td>
 					) : (
 						<td></td>
 					)

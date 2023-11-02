@@ -1,7 +1,7 @@
 import {
 	iPanelProps,
 	Tabular,
-	TimeCell,
+	Time,
 	TotalTime,
 } from 'qmi';
 import {
@@ -42,7 +42,9 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 								{ comp.types[key] || '' }
 							</td> )
 						) }
-						<TimeCell value={ comp.ltime }/>
+						<td>
+							<Time value={ comp.ltime }/>
+						</td>
 					</tr>
 				) ) }
 			</tbody>
