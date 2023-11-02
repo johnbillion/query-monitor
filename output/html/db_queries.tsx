@@ -3,7 +3,6 @@ import {
 	iPanelProps,
 	Notice,
 	Component,
-	PanelTable,
 	TabularPanel,
 	Time,
 	Utils,
@@ -32,53 +31,50 @@ export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
 	return (
 		<TabularPanel
 			title={ __( 'Database Queries', 'query-monitor' ) }
-		>
-			<PanelTable
-				cols={ {
-					i: {
-						className: 'qm-num',
-						heading: '#',
-						render: ( row, i ) => ( i + 1 ),
-					},
-					sql: {
-						heading: __( 'Query', 'query-monitor' ),
-						render: ( row ) => (
-							<code>
-								{ Utils.formatSQL( row.sql ) }
-							</code>
-						),
-					},
-					caller: {
-						heading: __( 'Caller', 'query-monitor' ),
-						render: ( row ) => <Caller trace={ row.trace } />,
-					},
-					component: {
-						heading: __( 'Component', 'query-monitor' ),
-						render: ( row ) => <Component component={ row.trace.component } />,
-					},
-					result: {
-						className: 'qm-num',
-						heading: __( 'Rows', 'query-monitor' ),
-						render: ( row ) => (
-							<>
-								{ Utils.isWPError( row.result ) ? (
-									<Warning>
-										{ Utils.getErrorMessage( row.result ) }
-									</Warning>
-								) : (
-									row.result
-								) }
-							</>
-						),
-					},
-					time: {
-						className: 'qm-num',
-						heading: __( 'Time', 'query-monitor' ),
-						render: ( row ) => ( <Time value={ row.ltime }/> ),
-					},
-				} }
-				data={ data.rows }
-			/>
-		</TabularPanel>
+			cols={ {
+				i: {
+					className: 'qm-num',
+					heading: '#',
+					render: ( row, i ) => ( i + 1 ),
+				},
+				sql: {
+					heading: __( 'Query', 'query-monitor' ),
+					render: ( row ) => (
+						<code>
+							{ Utils.formatSQL( row.sql ) }
+						</code>
+					),
+				},
+				caller: {
+					heading: __( 'Caller', 'query-monitor' ),
+					render: ( row ) => <Caller trace={ row.trace } />,
+				},
+				component: {
+					heading: __( 'Component', 'query-monitor' ),
+					render: ( row ) => <Component component={ row.trace.component } />,
+				},
+				result: {
+					className: 'qm-num',
+					heading: __( 'Rows', 'query-monitor' ),
+					render: ( row ) => (
+						<>
+							{ Utils.isWPError( row.result ) ? (
+								<Warning>
+									{ Utils.getErrorMessage( row.result ) }
+								</Warning>
+							) : (
+								row.result
+							) }
+						</>
+					),
+				},
+				time: {
+					className: 'qm-num',
+					heading: __( 'Time', 'query-monitor' ),
+					render: ( row ) => ( <Time value={ row.ltime }/> ),
+				},
+			} }
+			data={ data.rows }
+		/>
 	);
 };
