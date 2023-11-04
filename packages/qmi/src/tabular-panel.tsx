@@ -1,14 +1,10 @@
 import {
 	Table,
+	KnownColumns,
+	Col,
 } from './table';
 
 import * as React from 'react';
-
-interface Col<T> {
-	className?: string;
-	heading: string;
-	render: ( row: T, i: number, col: Col<T> ) => React.ReactNode;
-}
 
 interface TabularProps<T> {
 	title: string;
@@ -16,10 +12,11 @@ interface TabularProps<T> {
 		[ key: string ]: Col<T>;
 	};
 	data: T[];
+	hasError?: ( row: T ) => boolean;
 	footer?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends unknown>( { cols, data, footer, title }: TabularProps<T> ) => (
+export const TabularPanel = <T extends KnownColumns>( { cols, data, footer, title }: TabularProps<T> ) => (
 	<div
 		aria-labelledby="qm-panel-title"
 		className="qm qm-panel-show"
