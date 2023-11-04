@@ -13,6 +13,7 @@ import * as React from 'react';
 import {
 	__,
 } from '@wordpress/i18n';
+import { sortFilters } from 'qmi/src/table';
 
 export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 	if ( ! data.rows?.length ) {
@@ -49,12 +50,44 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 						) }
 					</>
 				),
+				filters: () => {
+					const filters = Object.keys( data.types ).map( ( type ) => ( {
+						key: type,
+						label: type,
+					} ) );
+
+					if ( filters.length > 1 ) {
+						filters.unshift( {
+							key: 'non-select',
+							label: __( 'Non-SELECT', 'query-monitor' ),
+						} );
+					}
+
+					return filters;
+				},
 			},
 			caller: {
 				heading: __( 'Caller', 'query-monitor' ),
 			},
 			component: {
 				heading: __( 'Component', 'query-monitor' ),
+				filters: () => {
+					const filters = Object.keys( data.component_times ).map( ( component ) => ( {
+						key: component,
+						label: component,
+					} ) );
+
+					filters.sort( sortFilters );
+
+					if ( filters.length > 1 ) {
+						filters.unshift( {
+							key: 'non-core',
+							label: __( 'Non-WordPress Core', 'query-monitor' ),
+						} );
+					}
+
+					return filters;
+				}
 			},
 			result: {
 				className: 'qm-num',

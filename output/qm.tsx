@@ -2,6 +2,7 @@ import * as classNames from 'classnames';
 import {
 	Icon,
 	MainContext,
+	MainContextType,
 } from 'qmi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -34,10 +35,12 @@ export interface iQMProps {
 	side: boolean;
 	theme: string;
 	editor: string;
+	filters: MainContextType['filters'];
 	onPanelChange: ( active: string ) => void;
 	onSideChange: ( side: boolean ) => void;
 	onThemeChange: ( theme: string ) => void;
 	onEditorChange: ( editor: string ) => void;
+	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
 }
 
 export const QM = ( props: iQMProps ) => {
@@ -45,6 +48,7 @@ export const QM = ( props: iQMProps ) => {
 	const [ side, setSide ] = React.useState( props.side );
 	const [ theme, setTheme ] = React.useState( props.theme );
 	const [ editor, setEditor ] = React.useState( props.editor );
+	const [ filters, setFilters ] = React.useState( props.filters );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
@@ -76,6 +80,11 @@ export const QM = ( props: iQMProps ) => {
 		setEditor: ( editor: string ) => {
 			props.onEditorChange( editor );
 			setEditor( editor );
+		},
+		filters: filters,
+		setFilters: ( filters: MainContextType['filters'] ) => {
+			props.onFiltersChange( filters );
+			setFilters( filters ); // is this needed? the filtered panel will re-render anyway
 		},
 	};
 

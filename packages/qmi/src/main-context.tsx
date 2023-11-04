@@ -1,10 +1,28 @@
 import {
 	createContext,
 } from 'react';
+import {
+	PanelContextType,
+} from './panel-context';
 
-export const MainContext = createContext( {
+interface FiltersType {
+	[ panelName: string ]: PanelContextType['filters'];
+}
+
+export interface MainContextType {
+	editor: string;
+	setEditor: ( editor: string ) => void;
+	theme: string;
+	setTheme: ( theme: string ) => void;
+	filters: FiltersType;
+	setFilters: ( filters: FiltersType ) => void;
+}
+
+export const MainContext = createContext<MainContextType>( {
 	editor: '',
-	setEditor: ( editor: string ) => {},
+	setEditor: ( editor ) => {},
 	theme: 'auto',
-	setTheme: ( theme: string ) => {},
+	setTheme: ( theme ) => {},
+	filters: {},
+	setFilters: ( filters ) => {},
 } );

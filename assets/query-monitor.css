@@ -1275,23 +1275,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		background: var( --qm-cell-bg-hover ) !important;
 	}
 
-	.qm-hide,
-	.qm-hide-scripts-dependencies,
-	.qm-hide-styles-dependencies,
-	.qm-hide-scripts-dependents,
-	.qm-hide-styles-dependents,
-	.qm-hide-scripts-host,
-	.qm-hide-styles-host,
-	.qm-hide-user,
-	.qm-hide-result,
-	.qm-hide-name,
-	.qm-hide-type,
-	.qm-hide-caller,
-	.qm-hide-component,
-	.qm-hide-host {
-		display: none !important;
-	}
-
 	/** Sorters */
 
 	.qm thead th.qm-sortable-column {

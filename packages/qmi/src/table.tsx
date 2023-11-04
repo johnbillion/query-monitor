@@ -3,6 +3,7 @@ import {
 	Caller,
 	Component,
 	Time,
+	PanelContext,
 } from 'qmi';
 import {
 	Backtrace,
@@ -17,6 +18,10 @@ export interface Col<T> {
 	className?: string;
 	heading: string;
 	render?: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
+	filters?: () => {
+		key: string;
+		label: string;
+	}[];
 }
 
 interface TableProps<T> {
@@ -76,54 +81,102 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 	);
 };
 
-export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => (
-	<table>
-		<caption>
-			<h2 id={ id }>
-				{ title }
-			</h2>
-		</caption>
-		<thead>
-			<tr>
-				{ Object.entries( cols ).map( ( [ key, col ] ) => (
-					<th
-						key={ key }
-						className={ col.className }
-						role="columnheader"
-						scope="col"
-					>
-						{ col.heading }
-					</th>
-				) ) }
-			</tr>
-		</thead>
-		<tbody>
-			{ data.map( ( row, i ) => (
-				<tr
-					key={ i }
-					className={ classNames( {
-						// @todo remove this in favour of using a warning or error property on row objects
-						'qm-warn': hasError && hasError( row ),
+export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
+	if ( a.label < b.label ) {
+		return -1;
+	}
+
+	if ( a.label > b.label ) {
+		return 1;
+	}
+
+	return 0;
+};
+
+export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => {
+	const {
+		filters,
+		setFilter,
+	} = React.useContext( PanelContext );
+
+	return (
+		<table>
+			<caption>
+				<h2 id={ id }>
+					{ title }
+				</h2>
+			</caption>
+			<thead>
+				<tr>
+					{ Object.entries( cols ).map( ( [ key, col ] ) => {
+						const colFilters = col.filters ? col.filters() : [];
+						const filterValue = ( key in filters ) ? filters[ key ] : '';
+
+						return (
+							<th
+								key={ key }
+								className={ classNames( col.className, {
+									'qm-filterable-column': colFilters.length,
+								} ) }
+								role="columnheader"
+								scope="col"
+							>
+								{ colFilters.length ? (
+									<div className="qm-filter-container">
+										<label htmlFor={ `qm-filter-${ key }` }>
+											{ col.heading }
+										</label>
+										<select
+											id={ `qm-filter-${ key }` }
+											className="qm-filter"
+											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
+										>
+											<option value="">All</option>
+											{ colFilters.map( ( filter ) => (
+												<option
+													key={ filter.key }
+													selected={ filterValue === filter.key }
+													value={ filter.key }
+												>{ filter.label }</option>
+											) ) }
+										</select>
+									</div>
+								) : (
+									col.heading
+								) }
+							</th>
+						);
 					} ) }
-				>
-					{ Object.entries( cols ).map( ( [ name, col ] ) => (
-						<td className={ `qm-col-${name}` }>
-							<Cell
-								col={ col }
-								i={ i }
-								name={ name }
-								row={ row }
-							/>
-						</td>
-					) ) }
 				</tr>
-			) ) }
-		</tbody>
-		{ footer ?? (
-			<PanelFooter
-				cols={ Object.keys( cols ).length }
-				count={ data.length }
-			/>
-		) }
-	</table>
-);
+			</thead>
+			<tbody>
+				{ data.map( ( row, i ) => (
+					<tr
+						key={ i }
+						className={ classNames( {
+							// @todo remove this in favour of using a warning or error property on row objects
+							'qm-warn': hasError && hasError( row ),
+						} ) }
+					>
+						{ Object.entries( cols ).map( ( [ name, col ] ) => (
+							<td className={ `qm-col-${name}` }>
+								<Cell
+									col={ col }
+									i={ i }
+									name={ name }
+									row={ row }
+								/>
+							</td>
+						) ) }
+					</tr>
+				) ) }
+			</tbody>
+			{ footer ?? (
+				<PanelFooter
+					cols={ Object.keys( cols ).length }
+					count={ data.length }
+				/>
+			) }
+		</table>
+	);
+};

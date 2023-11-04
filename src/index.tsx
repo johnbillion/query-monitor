@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 
 import { iQMConfig } from '../output/html/settings';
 import { QM } from '../output/qm';
+import {
+	MainContextType,
+} from 'qmi';
 
 declare const qm: iQMConfig;
 
@@ -11,6 +14,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const positionKey = 'qm-container-position';
 	const themeKey = 'qm-theme';
 	const editorKey = 'qm-editor';
+	const filtersKey = 'qm-filters';
 
 	const panels = {
 		admin: qm.data.admin || null,
@@ -52,10 +56,16 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( editorKey, editor );
 	}
 
+	const onFiltersChange = ( filters: MainContextType['filters'] ) => {
+		sessionStorage.setItem( filtersKey, JSON.stringify( filters ) );
+	}
+
 	const active = localStorage.getItem( panelKey );
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey );
 	const theme = localStorage.getItem( themeKey );
+	const rawFilters = sessionStorage.getItem( filtersKey );
+	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 
 	createRoot( document.getElementById( 'query-monitor-container' ) ).render(
 		<QM
@@ -67,10 +77,12 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			side={ side }
 			theme={ theme }
 			editor={ editor }
+			filters={ filters }
 			onPanelChange={ onPanelChange }
 			onSideChange={ onSideChange }
 			onThemeChange={ onThemeChange }
 			onEditorChange={ onEditorChange }
+			onFiltersChange={ onFiltersChange }
 		/>
 	);
 } );

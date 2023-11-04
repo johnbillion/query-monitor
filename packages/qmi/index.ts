@@ -1,7 +1,13 @@
 export { ApproximateSize } from './src/approximate-size';
 export { Caller } from './src/caller';
-export { MainContext } from './src/main-context';
-export { PanelContext } from './src/panel-context';
+export {
+	MainContext,
+	MainContextType,
+} from './src/main-context';
+export {
+	PanelContext,
+	PanelContextType,
+} from './src/panel-context';
 export { Table } from './src/table';
 export { Frame } from './src/frame';
 export { FileName } from './src/file-name';
