@@ -50,27 +50,29 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 						) }
 					</>
 				),
-				filters: () => {
-					const filters = Object.keys( data.types ).map( ( type ) => ( {
-						key: type,
-						label: type,
-					} ) );
+				filters: {
+					options: () => {
+						const filters = Object.keys( data.types ).map( ( type ) => ( {
+							key: type,
+							label: type,
+						} ) );
 
-					if ( filters.length > 1 ) {
-						filters.unshift( {
-							key: 'non-select',
-							label: __( 'Non-SELECT', 'query-monitor' ),
-						} );
-					}
+						if ( filters.length > 1 ) {
+							filters.unshift( {
+								key: 'non-select',
+								label: __( 'Non-SELECT', 'query-monitor' ),
+							} );
+						}
 
-					return filters;
-				},
-				filterCallback: ( row, value ) => {
-					if ( value === 'non-select' ) {
-						return ( row.type !== 'SELECT' );
-					}
+						return filters;
+					},
+					callback: ( row, value ) => {
+						if ( value === 'non-select' ) {
+							return ( row.type !== 'SELECT' );
+						}
 
-					return ( row.type === value );
+						return ( row.type === value );
+					},
 				},
 			},
 			caller: {
@@ -78,29 +80,31 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			},
 			component: {
 				heading: __( 'Component', 'query-monitor' ),
-				filters: () => {
-					const filters = Object.keys( data.component_times ).map( ( component ) => ( {
-						key: component,
-						label: component,
-					} ) );
+				filters: {
+					options: () => {
+						const filters = Object.keys( data.component_times ).map( ( component ) => ( {
+							key: component,
+							label: component,
+						} ) );
 
-					filters.sort( sortFilters );
+						filters.sort( sortFilters );
 
-					if ( filters.length > 1 ) {
-						filters.unshift( {
-							key: 'non-core',
-							label: __( 'Non-WordPress Core', 'query-monitor' ),
-						} );
-					}
+						if ( filters.length > 1 ) {
+							filters.unshift( {
+								key: 'non-core',
+								label: __( 'Non-WordPress Core', 'query-monitor' ),
+							} );
+						}
 
-					return filters;
-				},
-				filterCallback: ( row, value ) => {
-					if ( value === 'non-core' ) {
-						return ( row.trace.component.name !== 'core' );
-					}
+						return filters;
+					},
+					callback: ( row, value ) => {
+						if ( value === 'non-core' ) {
+							return ( row.trace.component.context !== 'core' );
+						}
 
-					return ( row.trace.component.name === value );
+						return ( row.trace.component.name === value );
+					},
 				},
 			},
 			result: {

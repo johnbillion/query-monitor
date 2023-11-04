@@ -18,11 +18,13 @@ export interface Col<T> {
 	className?: string;
 	heading: string;
 	render?: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
-	filters?: () => {
-		key: string;
-		label: string;
-	}[];
-	filterCallback?: ( row: T, value: string ) => boolean;
+	filters?: {
+		options: () => {
+			key: string;
+			label: string;
+		}[];
+		callback: ( row: T, value: string ) => boolean;
+	},
 }
 
 interface TableProps<T> {
@@ -110,11 +112,11 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 					continue;
 				}
 
-				if ( ! cols[ filterName ].filterCallback ) {
+				if ( ! cols[ filterName ].filters ) {
 					continue;
 				}
 
-				if ( ! cols[ filterName ].filterCallback( row, filterValue ) ) {
+				if ( ! cols[ filterName ].filters.callback( row, filterValue ) ) {
 					return false;
 				}
 			}
@@ -133,7 +135,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			<thead>
 				<tr>
 					{ Object.entries( cols ).map( ( [ key, col ] ) => {
-						const colFilters = col.filters ? col.filters() : [];
+						const colFilters = col.filters ? col.filters.options() : [];
 						const filterValue = ( key in filters ) ? filters[ key ] : '';
 
 						return (
