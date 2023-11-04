@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	Notice,
+	EmptyPanel,
 	Component,
 	Tabular,
 	Warning,
@@ -18,11 +18,11 @@ import {
 export default ( { data, id }: iPanelProps<DataTypes['Hooks']> ) => {
 	if ( ! data.hooks?.length ) {
 		return (
-			<Notice id={ id }>
+			<EmptyPanel>
 				<p>
 					{ __( 'No hooks were recorded.', 'query-monitor' ) }
 				</p>
-			</Notice>
+			</EmptyPanel>
 		);
 	}
 

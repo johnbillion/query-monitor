@@ -79,7 +79,7 @@ abstract class QM_Output_Html extends QM_Output {
 			esc_attr( $id )
 		);
 
-		echo '<table class="qm-sortable">';
+		echo '<table>';
 
 		printf(
 			'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>',

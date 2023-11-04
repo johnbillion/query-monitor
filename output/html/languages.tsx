@@ -1,7 +1,7 @@
 import {
 	Frame,
 	iPanelProps,
-	NonTabular,
+	NonTabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -13,9 +13,9 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Languages']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Languages']> ) => {
 	return (
-		<NonTabular id={ id }>
+		<NonTabularPanel>
 			<section>
 				<h3><code>get_locale()</code></h3>
 				<p>{ data.locale }</p>
@@ -138,6 +138,6 @@ export default ( { data, id }: iPanelProps<DataTypes['Languages']> ) => {
 					</tbody>
 				</table>
 			) }
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };
