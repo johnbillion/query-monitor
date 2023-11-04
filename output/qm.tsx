@@ -1,7 +1,7 @@
 import * as classNames from 'classnames';
 import {
 	Icon,
-	Context,
+	MainContext,
 } from 'qmi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -80,7 +80,7 @@ export const QM = ( props: iQMProps ) => {
 	};
 
 	return (
-		<Context.Provider value={ contextValue }>
+		<MainContext.Provider value={ contextValue }>
 			{ active && (
 				<div className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
 					<div className="qm-resizer" id="qm-side-resizer"></div>
@@ -160,7 +160,7 @@ export const QM = ( props: iQMProps ) => {
 					</div>
 				</AdminMenu>
 			) }
-		</Context.Provider>
+		</MainContext.Provider>
 	);
 };
 

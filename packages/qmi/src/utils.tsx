@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
-import {
-	Context,
-} from './context';
 
 export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();

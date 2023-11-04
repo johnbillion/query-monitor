@@ -1,4 +1,5 @@
 import { ErrorBoundary } from 'qmi/src/error-boundary';
+import { PanelContext } from 'qmi/src/panel-context';
 import * as React from 'react';
 
 import Admin from './html/admin';
@@ -62,117 +63,163 @@ export const Panels = ( props: iPanelsProps ) => (
 	<div id="qm-panels">
 		{ props.active === 'admin' && (
 			<ErrorBoundary>
-				<Admin { ...props.admin } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Admin { ...props.admin } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'block_editor' && (
 			<ErrorBoundary>
-				<BlockEditor { ...props.block_editor } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<BlockEditor { ...props.block_editor } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'caps' && (
 			<ErrorBoundary>
-				<Caps { ...props.caps } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Caps { ...props.caps } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'conditionals' && (
 			<ErrorBoundary>
-				<Conditionals { ...props.conditionals } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Conditionals { ...props.conditionals } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_callers' && (
 			<ErrorBoundary>
-				<DBCallers { ...props.db_queries } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<DBCallers { ...props.db_queries } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_components' && (
 			<ErrorBoundary>
-				<DBComponents { ...props.db_queries } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<DBComponents { ...props.db_queries } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_dupes' && (
 			<ErrorBoundary>
-				<DBDupes { ...props.db_dupes } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<DBDupes { ...props.db_dupes } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_queries' && (
 			<ErrorBoundary>
-				<DBQueries { ...props.db_queries } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<DBQueries { ...props.db_queries } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'doing_it_wrong' && (
 			<ErrorBoundary>
-				<DoingItWrong { ...props.doing_it_wrong } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<DoingItWrong { ...props.doing_it_wrong } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'environment' && (
 			<ErrorBoundary>
-				<Environment { ...props.environment } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Environment { ...props.environment } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'hooks' && (
 			<ErrorBoundary>
-				<Hooks { ...props.hooks } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Hooks { ...props.hooks } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'http' && (
 			<ErrorBoundary>
-				<HTTP { ...props.http } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<HTTP { ...props.http } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'logger' && (
 			<ErrorBoundary>
-				<Logger { ...props.logger } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Logger { ...props.logger } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'languages' && (
 			<ErrorBoundary>
-				<Languages { ...props.languages } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Languages { ...props.languages } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'multisite' && (
 			<ErrorBoundary>
-				<Multisite { ...props.multisite } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Multisite { ...props.multisite } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'php_errors' && (
 			<ErrorBoundary>
-				<PHPErrors { ...props.php_errors } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<PHPErrors { ...props.php_errors } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'request' && (
 			<ErrorBoundary>
-				<Request { ...props.request } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Request { ...props.request } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'assets_scripts' && (
 			<ErrorBoundary>
-				<Scripts { ...props.assets_scripts } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Scripts { ...props.assets_scripts } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'assets_styles' && (
 			<ErrorBoundary>
-				<Styles { ...props.assets_styles } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Styles { ...props.assets_styles } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'response' && (
 			<ErrorBoundary>
-				<Theme { ...props.response } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Theme { ...props.response } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'transients' && (
 			<ErrorBoundary>
-				<Transients { ...props.transients } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Transients { ...props.transients } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'timing' && (
 			<ErrorBoundary>
-				<Timing { ...props.timing } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Timing { ...props.timing } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 		{ props.active === 'settings' && (
 			<ErrorBoundary>
-				<Settings { ...qm.settings } />
+				<PanelContext.Provider value={ { id: props.active } }>
+					<Settings { ...qm.settings } />
+				</PanelContext.Provider>
 			</ErrorBoundary>
 		) }
 	</div>

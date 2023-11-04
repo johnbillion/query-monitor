@@ -1,7 +1,7 @@
 import {
 	Icon,
 	NonTabularPanel,
-	Context,
+	MainContext,
 	Utils,
 } from 'qmi';
 import * as React from 'react';
@@ -42,7 +42,7 @@ export const Settings = ( props: iSettingsProps ) => {
 		setEditor,
 		theme,
 		setTheme,
-	} = React.useContext( Context );
+	} = React.useContext( MainContext );
 
 	const setVerify = () => {
 		const action = ( verified ? 'off' : 'on' );
@@ -58,17 +58,6 @@ export const Settings = ( props: iSettingsProps ) => {
 		} ).then( () => {
 			setVerified( ! verified );
 		} );
-	};
-
-	const editors = {
-		'None': '',
-		'Atom': 'atom',
-		'Netbeans': 'netbeans',
-		'Nova': 'nova',
-		'PhpStorm': 'phpstorm',
-		'Sublime Text': 'sublime',
-		'TextMate': 'textmate',
-		'Visual Studio Code': 'vscode',
 	};
 
 	const colours = {

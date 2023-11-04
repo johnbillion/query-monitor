@@ -1,6 +1,6 @@
 import {
 	Utils,
-	Context,
+	MainContext,
 } from 'qmi';
 import * as React from 'react';
 
@@ -18,7 +18,7 @@ interface FileProps {
 export const FileName = ( { text, file, line = 0, isFileName = false }: FileProps ) => {
 	const {
 		editor,
-	} = React.useContext( Context );
+	} = React.useContext( MainContext );
 
 	if ( ! file ) {
 		return ( isFileName )
