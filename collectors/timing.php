@@ -117,6 +117,8 @@ class QM_Collector_Timing extends QM_DataCollector {
 		$start_time = $this->track_timer[ $function ]->get_start_time();
 		$end_time = $this->track_timer[ $function ]->get_end_time();
 
+		$this->log_component( $trace->get_component(), $function_time, 0 );
+
 		$this->data->timing[] = array(
 			'function' => $function,
 			'function_time' => $function_time,

@@ -199,6 +199,8 @@ class QM_Collector_Logger extends QM_DataCollector {
 			$message = '(Empty string)';
 		}
 
+		$this->log_component( $trace->get_component(), 1, $level );
+
 		$this->data->counts[ $level ]++;
 		$this->data->logs[] = array(
 			'message' => self::interpolate( $message, $context ),
