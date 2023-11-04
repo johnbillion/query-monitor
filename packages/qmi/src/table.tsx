@@ -42,7 +42,6 @@ interface CellProps<T> {
 export interface KnownData {
 	trace?: Backtrace;
 	ltime?: number;
-	sql?: string;
 }
 
 const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
@@ -70,13 +69,6 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 		case 'ltime':
 			return (
 				<Time value={ item.ltime } />
-			);
-			break;
-		case 'sql':
-			return (
-				<code>
-					{ Utils.formatSQL( item.sql ) }
-				</code>
 			);
 			break;
 		}

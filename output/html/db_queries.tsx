@@ -33,6 +33,22 @@ export default ( { data }: iPanelProps<DataTypes['DB_Queries']> ) => {
 			},
 			sql: {
 				heading: __( 'Query', 'query-monitor' ),
+				render: ( row ) => (
+					<>
+						<code>
+							{ Utils.formatSQL( row.sql ) }
+						</code>
+						{ Utils.isWPError( row.result ) && (
+							<>
+								<br />
+								<br />
+								<Warning>
+									{ Utils.getErrorMessage( row.result ) }
+								</Warning>
+							</>
+						) }
+					</>
+				),
 			},
 			caller: {
 				heading: __( 'Caller', 'query-monitor' ),
@@ -45,11 +61,7 @@ export default ( { data }: iPanelProps<DataTypes['DB_Queries']> ) => {
 				heading: __( 'Rows', 'query-monitor' ),
 				render: ( row ) => (
 					<>
-						{ Utils.isWPError( row.result ) ? (
-							<Warning>
-								{ Utils.getErrorMessage( row.result ) }
-							</Warning>
-						) : (
+						{ ! Utils.isWPError( row.result ) && (
 							row.result
 						) }
 					</>
@@ -61,5 +73,6 @@ export default ( { data }: iPanelProps<DataTypes['DB_Queries']> ) => {
 			},
 		} }
 		data={ data.rows }
+		hasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };

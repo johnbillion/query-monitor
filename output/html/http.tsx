@@ -67,5 +67,6 @@ export default ( { data }: iPanelProps<DataTypes['HTTP']> ) => {
 			},
 		} }
 		data={ data.http }
+		hasError={ ( row ) => Utils.isWPError( row.response ) }
 	/>
 };

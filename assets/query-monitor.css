@@ -1083,6 +1083,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		}
 	}
 
+	.qm tbody tr:nth-child(odd) .qm-warn,
 	.qm tbody tr:nth-child(odd) th.qm-warn,
 	.qm tbody tr:nth-child(odd) td.qm-warn,
 	.qm tbody tr:nth-child(odd).qm-warn td,
