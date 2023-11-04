@@ -211,7 +211,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					}
 				}
 
-				$asset_data[ $position ][ $handle ] = array(
+				$asset_data[ $position ][] = array(
+					'handle' => $handle,
 					'host' => $host,
 					'port' => $port,
 					'source' => $source,

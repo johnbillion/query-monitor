@@ -14,6 +14,7 @@
 
 /**
  * @phpstan-type Asset array{
+ *   handle: string,
  *   host: string,
  *   port: string,
  *   source: string|WP_Error,
@@ -24,7 +25,7 @@
  *   dependents: array<int, string>,
  *   dependencies: array<int, string>,
  * }
- * @phpstan-type AssetList array<string, Asset>
+ * @phpstan-type AssetList array<int, Asset>
  */
 class QM_Data_Assets extends QM_Data {
 	/**

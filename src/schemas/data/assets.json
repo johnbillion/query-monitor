@@ -8,6 +8,9 @@
 		"Asset": {
 			"type": "object",
 			"properties": {
+				"handle": {
+					"type": "string"
+				},
 				"host": {
 					"type": "string"
 				},
@@ -57,6 +60,7 @@
 				}
 			},
 			"required": [
+				"handle",
 				"host",
 				"port",
 				"source",
@@ -69,8 +73,8 @@
 			]
 		},
 		"AssetList": {
-			"type": "object",
-			"additionalProperties": {
+			"type": "array",
+			"items": {
 				"type": "object",
 				"$ref": "#/definitions/Asset"
 			}

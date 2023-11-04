@@ -1,9 +1,7 @@
-import * as classNames from 'classnames';
 import {
 	iPanelProps,
-	Notice,
-	PanelFooter,
-	Tabular,
+	EmptyPanel,
+	TabularPanel,
 	Utils,
 	Warning,
 } from 'qmi';
@@ -74,108 +72,83 @@ export default ( { data, id, labels }: myProps ) => {
 
 	if ( ! data.assets ) {
 		return (
-			<Notice id={ id }>
+			<EmptyPanel>
 				<p>
 					{ labels.none }
 				</p>
-			</Notice>
+			</EmptyPanel>
 		);
 	}
 
-	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Position', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Handle', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Host', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Source', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Dependencies', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Dependents', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Version', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ Object.keys( position_labels ).map( ( key: keyof typeof position_labels ) => (
-					<React.Fragment key={ key }>
-						{ data.assets[ key ] && Object.keys( data.assets[ key ] ).map( handle => {
-							const asset = data.assets[ key ][ handle ];
-							const classes = {
-								'qm-warn': asset.warning,
-							};
+	const rows = [
+		...data.assets.broken,
+		...data.assets.missing,
+		...data.assets.header,
+		...data.assets.footer,
+	];
 
-							return (
-								<tr
-									key={ handle }
-									className={ classNames( classes ) }
+	return (
+		<TabularPanel
+			title={ __( 'Assets', 'query-monitor' ) }
+			cols={ {
+				position: {
+					heading: __( 'Position', 'query-monitor' ),
+					render: ( row ) => (
+						<>
+							{ row.warning && ( <Warning/> ) }
+							{ row.position }
+						</>
+					),
+				},
+				handle: {
+					heading: __( 'Handle', 'query-monitor' ),
+					render: ( row ) => row.handle,
+				},
+				host: {
+					heading: __( 'Host', 'query-monitor' ),
+					render: ( row ) => ( row.port ? `${ row.host }:${ row.port }` : row.host ),
+				},
+				source: {
+					heading: __( 'Source', 'query-monitor' ),
+					render: ( row ) => <AssetSource asset={ row } />,
+				},
+				dependencies: {
+					heading: __( 'Dependencies', 'query-monitor' ),
+					render: ( row ) => (
+						<>
+							{ row.dependencies.map( ( dep, i ) => [
+								i > 0 && ', ',
+								<span
+									key={ dep }
+									style={ {
+										whiteSpace: 'nowrap',
+									} }
 								>
-									<td>
-										{ asset.warning && ( <Warning/> ) }
-										{ position_labels[ key ] }
-									</td>
-									<td>
-										{ handle }
-									</td>
-									<td>
-										{ asset.port ? `${ asset.host }:${ asset.port }` : asset.host }
-									</td>
-									<td>
-										<AssetSource
-											asset={ asset }
-										/>
-									</td>
-									<td>
-										{ asset.dependencies.map( ( dep, i ) => [
-											i > 0 && ', ',
-											<span
-												key={ dep }
-												style={ {
-													whiteSpace: 'nowrap',
-												} }
-											>
-												{ data.missing_dependencies[ dep ] ? (
-													<Warning>
-														&nbsp;
-														{ sprintf(
-															/* translators: %s: Name of missing script or style dependency */
-															__( '%s (missing)', 'query-monitor' ),
-															dep
-														) }
-													</Warning>
-												) : dep }
-											</span>,
-										] ) }
-									</td>
-									<td>
-										{ asset.dependents.join( ', ' ) }
-									</td>
-									<td>
-										{ asset.ver }
-									</td>
-								</tr>
-							);
-						} ) }
-					</React.Fragment>
-				) ) }
-			</tbody>
-			<PanelFooter
-				cols={ 7 }
-				count={ data.counts.total }
-			/>
-		</Tabular>
+									{ data.missing_dependencies[ dep ] ? (
+										<Warning>
+											&nbsp;
+											{ sprintf(
+												/* translators: %s: Name of missing script or style dependency */
+												__( '%s (missing)', 'query-monitor' ),
+												dep
+											) }
+										</Warning>
+									) : dep }
+								</span>,
+							] ) }
+						</>
+					),
+				},
+				dependents: {
+					heading: __( 'Dependents', 'query-monitor' ),
+					render: ( row ) => row.dependents.join( ', ' ),
+				},
+				version: {
+					heading: __( 'Version', 'query-monitor' ),
+					render: ( row ) => row.ver,
+				},
+			}}
+			data={ rows }
+		/>
 	);
 };
