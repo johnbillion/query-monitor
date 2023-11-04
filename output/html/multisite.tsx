@@ -2,6 +2,8 @@ import {
 	PanelProps,
 	EmptyPanel,
 	TabularPanel,
+	getCallerCol,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -50,12 +52,8 @@ export default ( { data }: PanelProps<DataTypes['Multisite']> ) => {
 					</code>
 				),
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getCallerCol( data.switches ),
+			...getComponentCol( data.switches, data.component_times ),
 		}}
 		data={ data.switches }
 	/>

@@ -1,10 +1,10 @@
 import {
 	PanelProps,
-	Component,
 	TabularPanel,
 	Time,
 	ApproximateSize,
 	EmptyPanel,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -61,10 +61,7 @@ export default ( { data }: PanelProps<DataTypes['Timing']> ) => {
 				heading: __( 'Memory', 'query-monitor' ),
 				render: ( row ) => <ApproximateSize value={ row.function_memory } />,
 			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-				render: ( row ) => <Component component={ row.trace.component } />,
-			},
+			...getComponentCol( data.timing, data.component_times ),
 		} }
 		data={ data.timing }
 	/>;

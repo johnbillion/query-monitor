@@ -5,6 +5,8 @@ import {
 	Utils,
 	Warning,
 	getComponentCol,
+	getTimeCol,
+	getCallerCol,
 } from 'qmi';
 import {
 	DataTypes,
@@ -51,19 +53,14 @@ export default ( { data }: PanelProps<DataTypes['HTTP']> ) => {
 					`${row.response.response.code} ${row.response.response.message}`
 				),
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			...getComponentCol( data.component_times, data.http ),
+			...getCallerCol( data.http ),
+			...getComponentCol( data.http, data.component_times ),
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',
 				render: ( row ) => row.args.timeout,
 			},
-			ltime: {
-				heading: __( 'Time', 'query-monitor' ),
-				className: 'qm-num',
-			},
+			...getTimeCol( data.http ),
 		} }
 		data={ data.http }
 		hasError={ ( row ) => Utils.isWPError( row.response ) }

@@ -21,7 +21,7 @@ import * as React from 'react';
 export interface Col<T> {
 	className?: string;
 	heading: string;
-	render?: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
+	render: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
 	filters?: ColFilters<T>;
 }
 
@@ -60,6 +60,10 @@ interface RowWithTrace {
 	trace?: Backtrace;
 }
 
+interface RowWithTime {
+	ltime?: number;
+}
+
 export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	if ( a.label < b.label ) {
 		return -1;
@@ -72,8 +76,8 @@ export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	return 0;
 };
 
-export const getComponentCol = <T extends RowWithTrace, U extends unknown>( component_times: AbstractData['component_times'], rows: U[] ) => {
-	const column: Col<T & U> = {
+export const getComponentCol = <T extends unknown>( rows: T[], component_times: AbstractData['component_times'] ) => {
+	const column: Col<RowWithTrace & T> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace.component } />,
 		filters: {
@@ -109,6 +113,29 @@ export const getComponentCol = <T extends RowWithTrace, U extends unknown>( comp
 	};
 };
 
+export const getTimeCol = <T extends RowWithTime>( rows: T[] ) => {
+	const column: Col<T> = {
+		className: 'qm-num',
+		heading: __( 'Time', 'query-monitor' ),
+		render: ( row ) => <Time value={ row.ltime } />,
+	};
+
+	return {
+		time: column,
+	};
+}
+
+export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
+	const column: Col<T> = {
+		heading: __( 'Caller', 'query-monitor' ),
+		render: ( row ) => <Caller trace={ row.trace } />,
+	};
+
+	return {
+		caller: column,
+	};
+}
+
 const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 	if ( col.render ) {
 		return (
@@ -117,21 +144,6 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 			</>
 		);
 	}
-
-	const item = row as KnownData;
-
-	switch ( name ) {
-		case 'caller':
-			return (
-				<Caller trace={ item.trace } />
-			);
-			break;
-		case 'ltime':
-			return (
-				<Time value={ item.ltime } />
-			);
-			break;
-		}
 
 	return (
 		<></>

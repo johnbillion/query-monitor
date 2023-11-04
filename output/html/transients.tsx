@@ -1,9 +1,9 @@
 import {
-	Caller,
 	EmptyPanel,
-	Component,
 	TabularPanel,
 	PanelProps,
+	getCallerCol,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -69,14 +69,8 @@ export default ( { data }: PanelProps<DataTypes['Transients']> ) => {
 					</>
 				),
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-				render: ( row ) => <Caller trace={ row.trace } />,
-			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-				render: ( row ) => <Component component={ row.trace.component } />,
-			},
+			...getCallerCol( data.trans ),
+			...getComponentCol( data.trans, data.component_times ),
 		} }
 		data={ data.trans }
 	/>

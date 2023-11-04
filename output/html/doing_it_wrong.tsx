@@ -2,6 +2,8 @@ import {
 	PanelProps,
 	EmptyPanel,
 	TabularPanel,
+	getCallerCol,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -30,12 +32,8 @@ export default ( { data }: PanelProps<DataTypes['Doing_It_Wrong']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => row.message,
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getCallerCol( data.actions ),
+			...getComponentCol( data.actions, data.component_times ),
 		} }
 		data={ data.actions }
 	/>

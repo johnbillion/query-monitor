@@ -2,6 +2,8 @@ import {
 	PanelProps,
 	TabularPanel,
 	Warning,
+	getCallerCol,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -27,18 +29,13 @@ export default ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => ( row.message ),
 			},
-			caller: {
-				heading: __( 'Location', 'query-monitor' ),
-				// @todo render
-			},
+			...getCallerCol( Object.values( data.errors ) ),
 			count: {
 				className: 'qm-num',
 				heading: __( 'Count', 'query-monitor' ),
 				render: ( row ) => ( row.calls ),
 			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getComponentCol( Object.values( data.errors ), data.component_times ),
 		}}
 		hasError={ ( row ) => ( row.level === 'warning' ) }
 		data={ Object.values( data.errors ) }

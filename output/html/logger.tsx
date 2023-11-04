@@ -3,6 +3,8 @@ import {
 	TabularPanel,
 	Warning,
 	EmptyPanel,
+	getCallerCol,
+	getComponentCol
 } from 'qmi';
 import {
 	DataTypes,
@@ -43,12 +45,8 @@ export default ( { data }: PanelProps<DataTypes['Logger']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => row.message,
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getCallerCol( data.logs ),
+			...getComponentCol( data.logs, data.component_times ),
 		} }
 		data={ data.logs }
 	/>

@@ -5,6 +5,8 @@ import {
 	Utils,
 	Warning,
 	getComponentCol,
+	getTimeCol,
+	getCallerCol,
 } from 'qmi';
 import {
 	DataTypes,
@@ -75,10 +77,8 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					},
 				},
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			...getComponentCol( data.component_times, data.rows ),
+			...getCallerCol( data.rows ),
+			...getComponentCol( data.rows, data.component_times ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
@@ -90,10 +90,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					</>
 				),
 			},
-			ltime: {
-				className: 'qm-num',
-				heading: __( 'Time', 'query-monitor' ),
-			},
+			...getTimeCol( data.rows ),
 		} }
 		data={ data.rows }
 		hasError={ ( row ) => Utils.isWPError( row.result ) }

@@ -2,6 +2,8 @@ import {
 	PanelProps,
 	EmptyPanel,
 	TabularPanel,
+	getCallerCol,
+	getComponentCol,
 } from 'qmi';
 import {
 	DataTypes,
@@ -67,12 +69,8 @@ export default ( { enabled, data }: PanelProps<DataTypes['Caps']> ) => {
 				heading: __( 'Result', 'query-monitor' ),
 				render: ( cap ) => ( cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' ),
 			},
-			caller: {
-				heading: __( 'Caller', 'query-monitor' ),
-			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getCallerCol( data.caps ),
+			...getComponentCol( data.caps, data.component_times ),
 		} }
 		data={ data.caps }
 	/>
