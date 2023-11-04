@@ -1,8 +1,8 @@
 import {
 	Caller,
-	Notice,
+	EmptyPanel,
 	Component,
-	Tabular,
+	TabularPanel,
 	iPanelProps,
 } from 'qmi';
 import {
@@ -15,80 +15,69 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Transients']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Transients']> ) => {
 	if ( ! data.trans?.length ) {
 		return (
-			<Notice id={ id }>
+			<EmptyPanel>
 				<p>
 					{ __( 'No transients set.', 'query-monitor' ) }
 				</p>
-			</Notice>
+			</EmptyPanel>
 		);
 	}
 
-	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Updated Transient', 'query-monitor' ) }
-					</th>
-					{ data.has_type && (
-						<th scope="col">
-							{ _x( 'Type', 'transient type', 'query-monitor' ) }
-						</th>
-					) }
-					<th scope="col">
-						{ __( 'Expiration', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ _x( 'Size', 'size of transient value', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Caller', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ data.trans.map( transient => (
-					<tr key={ transient.name }>
-						<td className="qm-ltr qm-nowrap">
-							<code>
-								{ transient.name }
-							</code>
-						</td>
-						{ data.has_type && (
-							<td className="qm-ltr qm-nowrap">
-								{ transient.type }
-							</td>
-						) }
-
-						{ transient.expiration ? (
-							<td className="qm-nowrap">
-								{ transient.expiration }
+	return <TabularPanel
+		title={ __( 'Transients', 'query-monitor' ) }
+		cols={ {
+			name: {
+				heading: __( 'Updated Transient', 'query-monitor' ),
+				render: ( row ) => (
+					<code>
+						{ row.name }
+					</code>
+				),
+			},
+			type: data.has_type && {
+				heading: _x( 'Type', 'transient type', 'query-monitor' ),
+				render: ( row ) => ( row.type ),
+			},
+			expiration: {
+				heading: __( 'Expiration', 'query-monitor' ),
+				render: ( row ) => (
+					<>
+						{ row.expiration ? (
+							<>
+								{ row.expiration }
 								<span className="qm-info">
-									(~{ transient.exp_diff })
+									(~{ row.exp_diff })
 								</span>
-							</td>
+							</>
 						) : (
-							<td className="qm-nowrap">
-								<em>
-									{ __( 'none', 'query-monitor' ) }
-								</em>
-							</td>
+							<em>
+								{ __( 'none', 'query-monitor' ) }
+							</em>
 						) }
-
-						<td className="qm-nowrap">
-							~{ transient.size_formatted }
-						</td>
-						<Caller trace={ transient.trace } />
-						<Component component={ transient.trace.component } />
-					</tr>
-				) ) }
-			</tbody>
-		</Tabular>
-	);
+					</>
+				),
+			},
+			size: {
+				className: 'qm-num',
+				heading: _x( 'Size', 'size of transient value', 'query-monitor' ),
+				render: ( row ) => (
+					<>
+						~{ row.size_formatted }
+					</>
+				),
+			},
+			caller: {
+				heading: __( 'Caller', 'query-monitor' ),
+				render: ( row ) => <Caller trace={ row.trace } />,
+			},
+			component: {
+				heading: __( 'Component', 'query-monitor' ),
+				render: ( row ) => <Component component={ row.trace.component } />,
+			},
+		} }
+		data={ data.trans }
+	/>
 };
