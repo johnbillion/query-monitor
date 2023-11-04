@@ -14,10 +14,10 @@ interface Props {
 declare const QM_i18n: iQM_i18n;
 
 export const ApproximateSize = ( { value }: Props ) => (
-	<td className="qm-num">
+	<>
 		{ sprintf(
 			'~%s kB',
 			QM_i18n.number_format( value / 1024 )
 		) }
-	</td>
+	</>
 );
