@@ -10,7 +10,6 @@
 			"required": [
 				"sql",
 				"ltime",
-				"result",
 				"type",
 				"is_main_query"
 			],

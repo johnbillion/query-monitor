@@ -163,8 +163,14 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$stack = $query[2];
 
 				// Query Monitor db.php drop-in.
-				$has_trace = isset( $query['trace'] );
-				$has_result = isset( $query['result'] );
+				if ( isset( $query['trace'] ) ) {
+					$has_trace = true;
+					$trace = $query['trace'];
+				}
+				if ( isset( $query['result'] ) ) {
+					$has_result = true;
+					$result = $query['result'];
+				}
 			} else {
 				// ¯\_(ツ)_/¯
 				continue;
@@ -176,20 +182,17 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				continue;
 			}
 
-			$result = $query['result'] ?? null;
 			$total_time += $ltime;
 
-			if ( isset( $query['trace'] ) ) {
+			if ( isset( $trace ) ) {
 
-				$trace = $query['trace'];
-				$component = $query['trace']->get_component();
-				$caller = $query['trace']->get_caller();
+				$component = $trace->get_component();
+				$caller = $trace->get_caller();
 				$caller_name = $caller['display'] ?? 'Unknown';
 				$caller = $caller['display'] ?? 'Unknown';
 
 			} else {
 
-				$trace = null;
 				$component = null;
 				$callers = array_reverse( explode( ',', $stack ) );
 				$callers = array_map( 'trim', $callers );
@@ -211,7 +214,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
-			$row = compact( 'sql', 'ltime', 'result', 'type', 'is_main_query' );
+			$row = compact( 'sql', 'ltime', 'type', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {
 				$row['stack'] = $callers;
@@ -219,9 +222,13 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$row['trace'] = $trace;
 			}
 
-			// @TODO these should store a reference ($i) instead of the whole row
-			if ( $result instanceof WP_Error ) {
-				$this->data->errors[] = $row;
+			if ( isset( $result ) ) {
+				$row['result'] = $result;
+
+				// @TODO these should store a reference ($i) instead of the whole row
+				if ( $result instanceof WP_Error ) {
+					$this->data->errors[] = $row;
+				}
 			}
 
 			// @TODO these should store a reference ($i) instead of the whole row

@@ -261,7 +261,7 @@ export interface QueryRow {
 	stack?: string[];
 	sql: string;
 	ltime: number;
-	result: number | boolean | WP_Error;
+	result?: number | boolean | WP_Error;
 	type: string;
 	trace?: Backtrace;
 	is_main_query: boolean;
