@@ -21,6 +21,7 @@
 		"classnames": "^2.3",
 		"json-schema-to-typescript": "^12",
 		"plugin-infrastructure": "file:vendor/johnbillion/plugin-infrastructure",
+		"sharp-cli": "^4.1.1",
 		"ts-loader": "^9",
 		"typescript": "^4.5.0",
 		"version-bump-prompt": "^6.1.0",
@@ -34,6 +35,7 @@
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
+		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
 		"watch": "npm run build-schemas && webpack --watch",
 		"build": "npm run build-schemas && webpack"
 	}
