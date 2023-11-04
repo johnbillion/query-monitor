@@ -125,7 +125,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 
 	return (
 		<table>
-			<caption>
+			<caption className="qm-screen-reader-text">
 				<h2 id={ id }>
 					{ title }
 				</h2>
@@ -154,13 +154,13 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 										<select
 											id={ `qm-filter-${ key }` }
 											className="qm-filter"
+											defaultValue={ filterValue }
 											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 										>
 											<option value="">All</option>
 											{ colFilters.map( ( filter ) => (
 												<option
 													key={ filter.key }
-													selected={ filterValue === filter.key }
 													value={ filter.key }
 												>{ filter.label }</option>
 											) ) }
