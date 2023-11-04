@@ -17,6 +17,8 @@ import {
 	WP_User,
 } from 'wp-types';
 
+export type AssetList = Asset[];
+
 export interface DataTypes {
 	Admin: AbstractData & Admin;
 	Assets: AbstractData & Assets;
@@ -102,10 +104,8 @@ export interface Assets {
 	};
 	port: string;
 }
-export interface AssetList {
-	[k: string]: Asset;
-}
 export interface Asset {
+	handle: string;
 	host: string;
 	port: string;
 	source: string | WP_Error;
@@ -357,46 +357,44 @@ export interface Hooks {
  */
 export interface HTTP {
 	http: {
-		[k: string]: {
-			args: {
-				method: string;
-				timeout: number;
-				redirection?: number;
-				blocking?: boolean;
-				sslverify?: boolean;
-				[k: string]: unknown;
-			};
-			trace: Backtrace;
-			info: {
-				[k: string]: unknown;
-			} | null;
-			host: string;
-			local: boolean;
-			ltime: number;
-			redirected_to: string | null;
-			response:
-				| {
-						headers: {
-							[k: string]: unknown;
-						};
-						body: string;
-						response: {
-							code: number;
-							message: string;
-						};
-						cookies: {
-							[k: string]: unknown;
-						}[];
-						filename: string | null;
-						http_response: {
-							[k: string]: unknown;
-						};
-				  }
-				| WP_Error;
-			type: string;
-			url: string;
+		args: {
+			method: string;
+			timeout: number;
+			redirection?: number;
+			blocking?: boolean;
+			sslverify?: boolean;
+			[k: string]: unknown;
 		};
-	};
+		trace: Backtrace;
+		info: {
+			[k: string]: unknown;
+		} | null;
+		host: string;
+		local: boolean;
+		ltime: number;
+		redirected_to: string | null;
+		response:
+			| {
+					headers: {
+						[k: string]: unknown;
+					};
+					body: string;
+					response: {
+						code: number;
+						message: string;
+					};
+					cookies: {
+						[k: string]: unknown;
+					}[];
+					filename: string | null;
+					http_response: {
+						[k: string]: unknown;
+					};
+			  }
+			| WP_Error;
+		type: string;
+		url: string;
+	}[];
 	ltime: number;
 	errors: {
 		alert?: string[];
@@ -446,7 +444,6 @@ export interface Logger {
 		message: string;
 		trace: Backtrace;
 		level: string;
-		[k: string]: unknown;
 	}[];
 	components: {
 		[k: string]: string;
@@ -490,21 +487,14 @@ export interface Overview {
  * PHP errors data transfer object.
  */
 export interface PHP_Errors {
-	components: {
-		[k: string]: string;
-	};
-	errors: ErrorObjects;
-	suppressed: ErrorObjects;
-	silenced: ErrorObjects;
-}
-export interface ErrorObjects {
-	[k: string]: {
+	errors: {
 		[k: string]: ErrorObject;
 	};
 }
 export interface ErrorObject {
 	errno: number;
-	type: string;
+	level: string;
+	suppressed: boolean;
 	message: string;
 	file: string | null;
 	filename: string;
