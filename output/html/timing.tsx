@@ -1,10 +1,10 @@
 import {
 	iPanelProps,
 	Component,
-	Tabular,
+	TabularPanel,
 	Time,
 	ApproximateSize,
-	Notice,
+	EmptyPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -17,88 +17,55 @@ import {
 
 export default ( { data, id }: iPanelProps<DataTypes['Timing']> ) => {
 	if ( ! data.timing && ! data.warning ) {
-		return (
-			<Notice id={ id }>
-				<p>
-					{ __( 'No data logged.', 'query-monitor' ) }
-				</p>
-				<p>
-					<a href="https://querymonitor.com/blog/2018/07/profiling-and-logging/">
-						{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
-					</a>
-				</p>
-			</Notice>
-		);
+		return <EmptyPanel>
+			<p>
+				{ __( 'No data logged.', 'query-monitor' ) }
+			</p>
+			<p>
+				<a href="https://querymonitor.com/blog/2018/07/profiling-and-logging/">
+					{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
+				</a>
+			</p>
+		</EmptyPanel>
 	}
 
-	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Tracked Function', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Started', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Stopped', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Time', 'query-monitor' ) }
-					</th>
-					<th className="qm-num" scope="col">
-						{ __( 'Memory', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ data.timing.map( timer => (
-					<React.Fragment key={ timer.function }>
-						<tr>
-							<td className="qm-ltr qm-nowrap">
-								<code>
-									{ timer.function }
-								</code>
-							</td>
-							<td>
-								<Time value={ timer.start_time } />
-							</td>
-							<td>
-								<Time value={ timer.end_time } />
-							</td>
-							<td>
-								<Time value={ timer.function_time } />
-							</td>
-							<ApproximateSize value={ timer.function_memory } />
-							<Component component={ timer.trace.component } />
-						</tr>
-						{ timer.laps && (
-							<>
-								{ Object.entries( timer.laps ).map( ( [ key, value ] ) => (
-									<tr key={ `${ timer.function }${ key }` }>
-										<td className="qm-ltr qm-nowrap">
-											<code>
-												{ `- ${ key }` }
-											</code>
-										</td>
-										<td></td>
-										<td></td>
-										<td>
-											<Time value={ value.time_used } />
-										</td>
-										<ApproximateSize value={ value.memory_used } />
-										<td></td>
-									</tr>
-								) ) }
-							</>
-						) }
-					</React.Fragment>
-				) ) }
-			</tbody>
-		</Tabular>
-	);
+	return <TabularPanel
+		title={ __( 'Timing', 'query-monitor' ) }
+		cols={ {
+			function: {
+				heading: __( 'Tracked Function', 'query-monitor' ),
+				render: ( row ) => (
+					<code>
+						{ row.function }
+						@TODO laps
+					</code>
+				),
+			},
+			start_time: {
+				className: 'qm-num',
+				heading: __( 'Started', 'query-monitor' ),
+				render: ( row ) => <Time value={ row.start_time } />,
+			},
+			end_time: {
+				className: 'qm-num',
+				heading: __( 'Stopped', 'query-monitor' ),
+				render: ( row ) => <Time value={ row.end_time } />,
+			},
+			function_time: {
+				className: 'qm-num',
+				heading: __( 'Time', 'query-monitor' ),
+				render: ( row ) => <Time value={ row.function_time } />,
+			},
+			function_memory: {
+				className: 'qm-num',
+				heading: __( 'Memory', 'query-monitor' ),
+				render: ( row ) => <ApproximateSize value={ row.function_memory } />,
+			},
+			component: {
+				heading: __( 'Component', 'query-monitor' ),
+				render: ( row ) => <Component component={ row.trace.component } />,
+			},
+		} }
+		data={ data.timing }
+	/>;
 };
