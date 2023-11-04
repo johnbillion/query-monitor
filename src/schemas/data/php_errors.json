@@ -11,8 +11,11 @@
 				"errno": {
 					"type": "integer"
 				},
-				"type": {
+				"level": {
 					"type": "string"
+				},
+				"suppressed": {
+					"type": "boolean"
 				},
 				"message": {
 					"type": "string"
@@ -47,7 +50,8 @@
 			},
 			"required": [
 				"errno",
-				"type",
+				"level",
+				"suppressed",
 				"message",
 				"file",
 				"filename",
@@ -55,39 +59,18 @@
 				"calls"
 			],
 			"additionalProperties": false
-		},
-		"errorObjects": {
-			"type": "object",
-			"additionalProperties": {
-				"type": "object",
-				"additionalProperties": {
-					"type": "object",
-					"$ref": "#/definitions/errorObject"
-				}
-			}
 		}
 	},
 	"required": [
-		"components",
-		"errors",
-		"suppressed",
-		"silenced"
+		"errors"
 	],
 	"properties": {
-		"components": {
+		"errors": {
 			"type": "object",
 			"additionalProperties": {
-				"type": "string"
+				"type": "object",
+				"$ref": "#/definitions/errorObject"
 			}
-		},
-		"errors": {
-			"$ref": "#/definitions/errorObjects"
-		},
-		"suppressed": {
-			"$ref": "#/definitions/errorObjects"
-		},
-		"silenced": {
-			"$ref": "#/definitions/errorObjects"
 		}
 	},
 	"additionalProperties": false

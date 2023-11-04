@@ -15,7 +15,8 @@
 /**
  * @phpstan-type errorObject array{
  *   errno: int,
- *   type: string,
+ *   level: string,
+ *   suppressed: bool,
  *   message: string,
  *   file: string|null,
  *   filename: string,
@@ -23,26 +24,10 @@
  *   trace?: QM_Backtrace,
  *   calls: int,
  * }
- * @phpstan-type errorObjects array<string, array<string, errorObject>>
  */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
-	 * @var array<string, string>
-	 */
-	public $components;
-
-	/**
-	 * @phpstan-var errorObjects
+	 * @var array<string, errorObject>
 	 */
 	public $errors;
-
-	/**
-	 * @phpstan-var errorObjects
-	 */
-	public $suppressed;
-
-	/**
-	 * @phpstan-var errorObjects
-	 */
-	public $silenced;
 }
