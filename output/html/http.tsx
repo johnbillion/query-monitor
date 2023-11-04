@@ -1,5 +1,5 @@
 import {
-	iPanelPropsWithTotal,
+	iPanelProps,
 	EmptyPanel,
 	TabularPanel,
 	Utils,
@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelPropsWithTotal<DataTypes['HTTP']> ) => {
+export default ( { data }: iPanelProps<DataTypes['HTTP']> ) => {
 	if ( ! data.http ) {
 		return (
 			<EmptyPanel>
