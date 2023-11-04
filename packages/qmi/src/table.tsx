@@ -101,8 +101,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		filters,
 		setFilter,
 	} = React.useContext( PanelContext );
-
-	let filteredData = [ ...data ];
+	const total = data.length;
 
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
 		if ( ! ( filterName in cols ) ) {
@@ -117,7 +116,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			continue;
 		}
 
-		filteredData = filteredData.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
+		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
 	}
 
 	return (
@@ -172,7 +171,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 				</tr>
 			</thead>
 			<tbody>
-				{ filteredData.map( ( row, i ) => (
+				{ data.map( ( row, i ) => (
 					<tr
 						key={ i }
 						className={ classNames( {
@@ -196,8 +195,8 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			{ footer ?? (
 				<PanelFooter
 					cols={ Object.keys( cols ).length }
-					count={ filteredData.length }
-					total={ data.length }
+					count={ data.length }
+					total={ total }
 				/>
 			) }
 		</table>
