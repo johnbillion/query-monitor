@@ -1,0 +1,24 @@
+import * as React from 'react';
+
+interface NonTabularProps {
+	title?: string;
+	children: React.ReactNode;
+}
+
+export const NonTabularPanel = ( { title, children }: NonTabularProps ) => (
+	<div
+		aria-labelledby="qm-panel-title"
+		className="qm qm-panel-show qm-non-tabular"
+		role="tabpanel"
+		tabIndex={ -1 }
+	>
+		<div className="qm-boxed">
+			{ title && (
+				<h2 id="qm-panel-title">
+					{ title }
+				</h2>
+			) }
+			{ children }
+		</div>
+	</div>
+);

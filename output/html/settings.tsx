@@ -1,6 +1,6 @@
 import {
 	Icon,
-	NonTabular,
+	NonTabularPanel,
 	Context,
 	Utils,
 } from 'qmi';
@@ -78,7 +78,7 @@ export const Settings = ( props: iSettingsProps ) => {
 	};
 
 	return (
-		<NonTabular id="settings">
+		<NonTabularPanel>
 			<h2 className="qm-screen-reader-text">
 				{ __( 'Settings', 'query-monitor' ) }
 			</h2>
@@ -162,6 +162,6 @@ export const Settings = ( props: iSettingsProps ) => {
 					</ul>
 				</section>
 			</div>
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };

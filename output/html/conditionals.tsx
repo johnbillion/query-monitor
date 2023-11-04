@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	NonTabular,
+	NonTabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -14,7 +14,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Conditionals']> ) => {
 	const falseConds = data.conds['false'];
 
 	return (
-		<NonTabular id={ id }>
+		<NonTabularPanel>
 			<div className="qm-boxed">
 				<section>
 					<h3>
@@ -47,6 +47,6 @@ export default ( { data, id }: iPanelProps<DataTypes['Conditionals']> ) => {
 					</ul>
 				</section>
 			</div>
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };

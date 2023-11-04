@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	NonTabular,
+	NonTabularPanel,
 	Utils,
 } from 'qmi';
 import {
@@ -25,7 +25,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Request']> ) => {
 	};
 
 	return (
-		<NonTabular id={ id }>
+		<NonTabularPanel>
 			{ Object.keys( items ).map( ( key: keyof typeof items ) => {
 				const name = items[key];
 				const value = data.request[ key ];
@@ -155,6 +155,6 @@ export default ( { data, id }: iPanelProps<DataTypes['Request']> ) => {
 					</p>
 				</section>
 			) }
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };

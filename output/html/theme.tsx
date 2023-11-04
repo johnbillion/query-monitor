@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	NonTabular,
+	NonTabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -29,7 +29,7 @@ export default ( { data, id }: iPanelProps<DataTypes['Theme']> ) => {
 	}
 
 	return (
-		<NonTabular id={ id }>
+		<NonTabularPanel>
 			<section>
 				<h3>
 					{ __( 'Theme', 'query-monitor' ) }
@@ -169,6 +169,6 @@ export default ( { data, id }: iPanelProps<DataTypes['Theme']> ) => {
 				</section>
 			) }
 
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };

@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	NonTabular,
+	NonTabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -13,10 +13,10 @@ import Server from '../server';
 import WordPress from '../wordpress';
 
 export default ( { data, id }: iPanelProps<DataTypes['Environment']> ) => (
-	<NonTabular id={ id }>
+	<NonTabularPanel>
 		<PHP php={ data.php }/>
 		<DB db={ data.db }/>
 		<WordPress wordpress={ data.wp }/>
 		<Server server={ data.server }/>
-	</NonTabular>
+	</NonTabularPanel>
 );

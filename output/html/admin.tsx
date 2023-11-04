@@ -1,5 +1,5 @@
 import {
-	NonTabular,
+	NonTabularPanel,
 	iPanelProps,
 } from 'qmi';
 import {
@@ -9,13 +9,14 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Admin']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Admin']> ) => {
 	if ( ! data.current_screen ) {
+		// is this needed?
 		return null;
 	}
 
 	return (
-		<NonTabular id={ id }>
+		<NonTabularPanel>
 			<section>
 				<h3>
 					get_current_screen()
@@ -140,6 +141,6 @@ export default ( { data, id }: iPanelProps<DataTypes['Admin']> ) => {
 					</p>
 				</section>
 			) }
-		</NonTabular>
+		</NonTabularPanel>
 	);
 };
