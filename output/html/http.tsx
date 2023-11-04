@@ -4,6 +4,7 @@ import {
 	TabularPanel,
 	Utils,
 	Warning,
+	getComponentCol,
 } from 'qmi';
 import {
 	DataTypes,
@@ -53,9 +54,7 @@ export default ( { data }: PanelProps<DataTypes['HTTP']> ) => {
 			caller: {
 				heading: __( 'Caller', 'query-monitor' ),
 			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-			},
+			...getComponentCol( data.component_times, data.http ),
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',

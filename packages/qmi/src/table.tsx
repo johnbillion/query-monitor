@@ -6,11 +6,15 @@ import {
 	PanelContext,
 } from 'qmi';
 import {
+	AbstractData,
 	Backtrace,
 } from 'qmi/data-types';
 import {
 	PanelFooter,
 } from './panel-footer';
+import {
+	__,
+} from '@wordpress/i18n';
 
 import * as React from 'react';
 
@@ -18,13 +22,15 @@ export interface Col<T> {
 	className?: string;
 	heading: string;
 	render?: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
-	filters?: {
-		options: {
-			key: string;
-			label: string;
-		}[];
-		callback: ( row: T, value: string ) => boolean;
-	},
+	filters?: ColFilters<T>;
+}
+
+interface ColFilters<T> {
+	options: {
+		key: string;
+		label: string;
+	}[];
+	callback: ( row: T, value: string ) => boolean;
 }
 
 interface TableProps<T> {
@@ -50,6 +56,59 @@ export interface KnownData {
 	ltime?: number;
 }
 
+interface RowWithTrace {
+	trace?: Backtrace;
+}
+
+export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
+	if ( a.label < b.label ) {
+		return -1;
+	}
+
+	if ( a.label > b.label ) {
+		return 1;
+	}
+
+	return 0;
+};
+
+export const getComponentCol = <T extends RowWithTrace, U extends unknown>( component_times: AbstractData['component_times'], rows: U[] ) => {
+	const column: Col<T & U> = {
+		heading: __( 'Component', 'query-monitor' ),
+		render: ( row ) => <Component component={ row.trace.component } />,
+		filters: {
+			options: ( () => {
+				const filters = Object.keys( component_times ).map( ( component ) => ( {
+					key: component,
+					label: component,
+				} ) );
+
+				filters.sort( sortFilters );
+
+				if ( filters.length > 1 ) {
+					filters.unshift( {
+						key: 'non-core',
+						label: __( 'Non-WordPress Core', 'query-monitor' ),
+					} );
+				}
+
+				return filters;
+			} )(),
+			callback: ( row, value: string ) => {
+				if ( value === 'non-core' ) {
+					return ( row.trace.component.context !== 'core' );
+				}
+
+				return ( row.trace.component.name === value );
+			},
+		},
+	};
+
+	return {
+		component: column,
+	};
+};
+
 const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 	if ( col.render ) {
 		return (
@@ -67,11 +126,6 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 				<Caller trace={ item.trace } />
 			);
 			break;
-		case 'component':
-			return (
-				<Component component={ item.trace.component } />
-			);
-			break;
 		case 'ltime':
 			return (
 				<Time value={ item.ltime } />
@@ -82,18 +136,6 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 	return (
 		<></>
 	);
-};
-
-export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
-	if ( a.label < b.label ) {
-		return -1;
-	}
-
-	if ( a.label > b.label ) {
-		return 1;
-	}
-
-	return 0;
 };
 
 export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => {

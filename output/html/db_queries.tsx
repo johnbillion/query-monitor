@@ -4,6 +4,7 @@ import {
 	TabularPanel,
 	Utils,
 	Warning,
+	getComponentCol,
 } from 'qmi';
 import {
 	DataTypes,
@@ -13,7 +14,6 @@ import * as React from 'react';
 import {
 	__,
 } from '@wordpress/i18n';
-import { sortFilters } from 'qmi/src/table';
 
 export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 	if ( ! data.rows?.length ) {
@@ -78,35 +78,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			caller: {
 				heading: __( 'Caller', 'query-monitor' ),
 			},
-			component: {
-				heading: __( 'Component', 'query-monitor' ),
-				filters: {
-					options: ( () => {
-						const filters = Object.keys( data.component_times ).map( ( component ) => ( {
-							key: component,
-							label: component,
-						} ) );
-
-						filters.sort( sortFilters );
-
-						if ( filters.length > 1 ) {
-							filters.unshift( {
-								key: 'non-core',
-								label: __( 'Non-WordPress Core', 'query-monitor' ),
-							} );
-						}
-
-						return filters;
-					} )(),
-					callback: ( row, value ) => {
-						if ( value === 'non-core' ) {
-							return ( row.trace.component.context !== 'core' );
-						}
-
-						return ( row.trace.component.name === value );
-					},
-				},
-			},
+			...getComponentCol( data.component_times, data.rows ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),

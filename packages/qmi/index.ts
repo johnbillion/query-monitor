@@ -8,7 +8,7 @@ export {
 	PanelContext,
 	PanelContextType,
 } from './src/panel-context';
-export { Table } from './src/table';
+export { Table, getComponentCol } from './src/table';
 export { Frame } from './src/frame';
 export { FileName } from './src/file-name';
 export { Icon } from './src/icon';
