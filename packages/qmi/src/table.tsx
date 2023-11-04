@@ -136,20 +136,6 @@ export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
 	};
 }
 
-const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
-	if ( col.render ) {
-		return (
-			<>
-				{ col.render( row, i, col ) }
-			</>
-		);
-	}
-
-	return (
-		<></>
-	);
-};
-
 export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => {
 	const {
 		filters,
@@ -235,12 +221,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 					>
 						{ Object.entries( cols ).map( ( [ name, col ] ) => (
 							<td className={ `qm-col-${name}` }>
-								<Cell
-									col={ col }
-									i={ i }
-									name={ name }
-									row={ row }
-								/>
+								{ col.render( row, i, col ) }
 							</td>
 						) ) }
 					</tr>
