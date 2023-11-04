@@ -1,6 +1,5 @@
 import {
 	Table,
-	KnownColumns,
 	Col,
 } from './table';
 
@@ -16,7 +15,7 @@ interface TabularProps<T> {
 	footer?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends KnownColumns>( { cols, data, footer, title }: TabularProps<T> ) => (
+export const TabularPanel = <T extends unknown>( { cols, data, footer, title }: TabularProps<T> ) => (
 	<div
 		aria-labelledby="qm-panel-title"
 		className="qm qm-panel-show"

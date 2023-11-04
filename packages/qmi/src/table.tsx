@@ -46,7 +46,7 @@ export interface KnownColumns {
 	sql?: string;
 }
 
-const Cell = <T extends KnownColumns>( { col, i, name, row }: CellProps<T> ) => {
+const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 	if ( col.render ) {
 		return (
 			<>
@@ -55,26 +55,28 @@ const Cell = <T extends KnownColumns>( { col, i, name, row }: CellProps<T> ) => 
 		);
 	}
 
+	const item = row as KnownColumns;
+
 	switch ( name ) {
 		case 'caller':
 			return (
-				<Caller trace={ row.trace } />
+				<Caller trace={ item.trace } />
 			);
 			break;
 		case 'component':
 			return (
-				<Component component={ row.component } />
+				<Component component={ item.component } />
 			);
 			break;
 		case 'ltime':
 			return (
-				<Time value={ row.ltime } />
+				<Time value={ item.ltime } />
 			);
 			break;
 		case 'sql':
 			return (
 				<code>
-					{ Utils.formatSQL( row.sql ) }
+					{ Utils.formatSQL( item.sql ) }
 				</code>
 			);
 			break;
@@ -85,7 +87,7 @@ const Cell = <T extends KnownColumns>( { col, i, name, row }: CellProps<T> ) => 
 	);
 };
 
-export const Table = <T extends KnownColumns>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => (
+export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => (
 	<table>
 		<caption>
 			<h2 id={ id }>
