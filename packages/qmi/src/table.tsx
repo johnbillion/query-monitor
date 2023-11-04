@@ -102,31 +102,22 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		setFilter,
 	} = React.useContext( PanelContext );
 
-	const currentFilters = Object.entries( filters );
 	let filteredData = [ ...data ];
 
-	if ( currentFilters.length ) {
-		filteredData = filteredData.filter( ( row ) => {
-			for ( const [ filterName, filterValue ] of currentFilters ) {
-				if ( ! ( filterName in cols ) ) {
-					continue;
-				}
+	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
+		if ( ! ( filterName in cols ) ) {
+			continue;
+		}
 
-				if ( ! cols[ filterName ].filters ) {
-					continue;
-				}
+		if ( ! cols[ filterName ].filters ) {
+			continue;
+		}
 
-				if ( ! cols[ filterName ].filters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
-					return true;
-				}
+		if ( ! cols[ filterName ].filters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
+			continue;
+		}
 
-				if ( ! cols[ filterName ].filters.callback( row, filterValue ) ) {
-					return false;
-				}
-			}
-
-			return true;
-		} );
+		filteredData = filteredData.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
 	}
 
 	return (
