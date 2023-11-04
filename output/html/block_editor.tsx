@@ -1,8 +1,8 @@
 import {
 	iPanelProps,
-	Notice,
+	EmptyPanel,
 	PanelFooter,
-	Tabular,
+	Panel,
 	Time,
 } from 'qmi';
 import {
@@ -32,16 +32,16 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 
-export default ( { data, id }: iPanelProps<iBlockData> ) => {
+export default ( { data }: iPanelProps<iBlockData> ) => {
 		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
 			return null;
 		}
 
 		if ( ! data.post_has_blocks ) {
 			return (
-				<Notice id={ id }>
+				<EmptyPanel>
 					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
-				</Notice>
+				</EmptyPanel>
 			);
 		}
 
@@ -51,51 +51,58 @@ export default ( { data, id }: iPanelProps<iBlockData> ) => {
 		data.has_block_timing && colspan++;
 
 		return (
-			<Tabular id={ id }>
-				<thead>
-					<tr>
-						<th scope="col">
-							#
-						</th>
-						<th scope="col">
-							{ __( 'Block Name', 'query-monitor' ) }
-						</th>
-						<th scope="col">
-							{ __( 'Attributes', 'query-monitor' ) }
-						</th>
-						{ data.has_block_context && (
+			<Panel>
+				<table>
+					<caption>
+						<h2 id="qm-panel-title">
+							{ __( 'Blocks', 'query-monitor' ) }
+						</h2>
+					</caption>
+					<thead>
+						<tr>
 							<th scope="col">
-								{ __( 'Context', 'query-monitor' ) }
+								#
 							</th>
-						) }
-						<th scope="col">
-							{ __( 'Render Callback', 'query-monitor' ) }
-						</th>
-						{ data.has_block_timing && (
 							<th scope="col">
-								{ __( 'Render Time', 'query-monitor' ) }
+								{ __( 'Block Name', 'query-monitor' ) }
 							</th>
-						) }
-						<th scope="col">
-							{ __( 'Inner HTML', 'query-monitor' ) }
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ data.post_blocks.map( ( block, i ) => (
-						<RenderBlock
-							key={ i }
-							block={ block }
-							data={ data }
-							i={ ( i + 1 ).toString() }
-						/>
-					) ) }
-				</tbody>
-				<PanelFooter
-					cols={ colspan }
-					count={ data.post_blocks.length }
-				/>
-			</Tabular>
+							<th scope="col">
+								{ __( 'Attributes', 'query-monitor' ) }
+							</th>
+							{ data.has_block_context && (
+								<th scope="col">
+									{ __( 'Context', 'query-monitor' ) }
+								</th>
+							) }
+							<th scope="col">
+								{ __( 'Render Callback', 'query-monitor' ) }
+							</th>
+							{ data.has_block_timing && (
+								<th scope="col">
+									{ __( 'Render Time', 'query-monitor' ) }
+								</th>
+							) }
+							<th scope="col">
+								{ __( 'Inner HTML', 'query-monitor' ) }
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ data.post_blocks.map( ( block, i ) => (
+							<RenderBlock
+								key={ i }
+								block={ block }
+								data={ data }
+								i={ ( i + 1 ).toString() }
+							/>
+						) ) }
+					</tbody>
+					<PanelFooter
+						cols={ colspan }
+						count={ data.post_blocks.length }
+					/>
+				</table>
+			</Panel>
 		);
 }
 
