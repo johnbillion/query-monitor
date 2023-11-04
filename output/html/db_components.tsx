@@ -1,6 +1,6 @@
 import {
 	iPanelProps,
-	Tabular,
+	Panel,
 	Time,
 	TotalTime,
 } from 'qmi';
@@ -17,48 +17,55 @@ export default ( { data }: iPanelProps<DataTypes['DB_Queries']> ) => {
 	}
 
 	return (
-		<Tabular>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-					{ Object.keys( data.types ).map( key => (
-						<th key={ key } className="qm-num" scope="col">
-							{ key }
+		<Panel>
+			<table>
+				<caption>
+					<h2 id="qm-panel-title">
+						{ __( 'Queries by Component', 'query-monitor' ) }
+					</h2>
+				</caption>
+				<thead>
+					<tr>
+						<th scope="col">
+							{ __( 'Component', 'query-monitor' ) }
 						</th>
-					) ) }
-					<th className="qm-num" scope="col">
-						{ __( 'Time', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ Object.values( data.component_times ).map( comp => (
-					<tr key={ comp.component }>
-						<td>{ comp.component }</td>
-						{ Object.keys( data.types ).map( key =>
-							( <td key={ key } className="qm-num">
-								{ comp.types[key] || '' }
-							</td> )
-						) }
-						<td>
-							<Time value={ comp.ltime }/>
-						</td>
+						{ Object.keys( data.types ).map( key => (
+							<th key={ key } className="qm-num" scope="col">
+								{ key }
+							</th>
+						) ) }
+						<th className="qm-num" scope="col">
+							{ __( 'Time', 'query-monitor' ) }
+						</th>
 					</tr>
-				) ) }
-			</tbody>
-			<tfoot>
-				<tr>
-					<td></td>
-					{ Object.entries( data.types ).map( ( [ key, value ] ) => (
-						<td key={ key } className="qm-num">
-							{ value }
-						</td>
+				</thead>
+				<tbody>
+					{ Object.values( data.component_times ).map( comp => (
+						<tr key={ comp.component }>
+							<td>{ comp.component }</td>
+							{ Object.keys( data.types ).map( key =>
+								( <td key={ key } className="qm-num">
+									{ comp.types[key] || '' }
+								</td> )
+							) }
+							<td>
+								<Time value={ comp.ltime }/>
+							</td>
+						</tr>
 					) ) }
-					<TotalTime rows={ Object.values( data.component_times ) }/>
-				</tr>
-			</tfoot>
-		</Tabular>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						{ Object.entries( data.types ).map( ( [ key, value ] ) => (
+							<td key={ key } className="qm-num">
+								{ value }
+							</td>
+						) ) }
+						<TotalTime rows={ Object.values( data.component_times ) }/>
+					</tr>
+				</tfoot>
+			</table>
+		</Panel>
 	);
 };
