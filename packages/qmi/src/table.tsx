@@ -39,8 +39,7 @@ interface CellProps<T> {
 	row: T;
 }
 
-export interface KnownColumns {
-	component?: QM_Component;
+export interface KnownData {
 	trace?: Backtrace;
 	ltime?: number;
 	sql?: string;
@@ -55,7 +54,7 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 		);
 	}
 
-	const item = row as KnownColumns;
+	const item = row as KnownData;
 
 	switch ( name ) {
 		case 'caller':
@@ -65,7 +64,7 @@ const Cell = <T extends unknown>( { col, i, name, row }: CellProps<T> ) => {
 			break;
 		case 'component':
 			return (
-				<Component component={ item.component } />
+				<Component component={ item.trace.component } />
 			);
 			break;
 		case 'ltime':
