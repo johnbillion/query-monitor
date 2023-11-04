@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	NonTabularPanel,
 } from 'qmi';
 import {
@@ -12,7 +12,7 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-export default ( { data }: iPanelProps<DataTypes['Environment']> ) => (
+export default ( { data }: PanelProps<DataTypes['Environment']> ) => (
 	<NonTabularPanel>
 		<PHP php={ data.php }/>
 		<DB db={ data.db }/>

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PanelContext } from './panel-context';
 
-interface NonTabularProps {
+interface Props {
 	title?: string;
 	children: React.ReactNode;
 }
 
-export const NonTabularPanel = ( { title, children }: NonTabularProps ) => {
+export const NonTabularPanel = ( { title, children }: Props ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );

@@ -6,7 +6,7 @@ import {
 
 import * as React from 'react';
 
-interface TabularProps<T> {
+interface Props<T> {
 	title: string;
 	cols: {
 		[ key: string ]: Col<T>;
@@ -16,7 +16,7 @@ interface TabularProps<T> {
 	footer?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError, title }: TabularProps<T> ) => {
+export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError, title }: Props<T> ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );

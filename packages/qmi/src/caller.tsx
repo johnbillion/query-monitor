@@ -8,12 +8,12 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-interface CallerProps {
+interface Props {
 	isFileList?: boolean;
 	trace: Backtrace;
 }
 
-export const Caller = ( { isFileList, trace }: CallerProps ) => {
+export const Caller = ( { isFileList, trace }: Props ) => {
 	const [ expanded, setExpanded ] = React.useState( false );
 
 	// This creates a copy of the frames array.

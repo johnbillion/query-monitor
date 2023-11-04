@@ -1,6 +1,6 @@
 import {
 	NonTabularPanel,
-	iPanelProps,
+	PanelProps,
 } from 'qmi';
 import {
 	DataTypes,
@@ -9,7 +9,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Admin']> ) => {
+export default ( { data }: PanelProps<DataTypes['Admin']> ) => {
 	if ( ! data.current_screen ) {
 		// is this needed?
 		return null;

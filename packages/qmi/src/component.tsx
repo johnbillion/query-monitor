@@ -3,11 +3,11 @@ import {
 } from 'qmi/data-types';
 import * as React from 'react';
 
-interface iComponentProps {
+interface Props {
 	component: QM_Component;
 }
 
-export const Component = ( { component }: iComponentProps ) => (
+export const Component = ( { component }: Props ) => (
 	<>
 		{ component.name }
 	</>

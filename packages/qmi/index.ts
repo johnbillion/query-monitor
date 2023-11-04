@@ -19,7 +19,7 @@ export { Warning } from './src/warning';
 export * as Utils from './src/utils';
 export * as Data from './data-types';
 
-export interface iPanelProps<T> {
+export interface PanelProps<T> {
 	data: T;
 	enabled: boolean;
 }

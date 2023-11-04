@@ -8,11 +8,11 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-interface iDBProps {
+interface Props {
 	db: EnvironmentData['db'];
 }
 
-export default ( { db }: iDBProps) => {
+export default ( { db }: Props) => {
 	const infoLabels = {
 		'server-version': __( 'Server Version', 'query-monitor' ),
 		'extension': __( 'Extension', 'query-monitor' ),

@@ -3,11 +3,9 @@ import {
 	Caller,
 	Component,
 	Time,
-	Utils,
 } from 'qmi';
 import {
 	Backtrace,
-	Component as QM_Component,
 } from 'qmi/data-types';
 import {
 	PanelFooter,

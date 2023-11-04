@@ -7,13 +7,13 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface SizeProps {
+interface Props {
 	value: number;
 }
 
 declare const QM_i18n: iQM_i18n;
 
-export const ApproximateSize = ( { value }: SizeProps ) => (
+export const ApproximateSize = ( { value }: Props ) => (
 	<td className="qm-num">
 		{ sprintf(
 			'~%s kB',

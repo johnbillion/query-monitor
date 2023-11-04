@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
 	TabularPanel,
 } from 'qmi';
@@ -13,7 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { enabled, data }: iPanelProps<DataTypes['Caps']> ) => {
+export default ( { enabled, data }: PanelProps<DataTypes['Caps']> ) => {
 	if ( ! enabled ) {
 		return (
 			<EmptyPanel>

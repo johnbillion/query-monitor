@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
 	TabularPanel,
 	Utils,
@@ -16,7 +16,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-type myProps = iPanelProps<DataTypes['Assets']> & {
+type myProps = PanelProps<DataTypes['Assets']> & {
 	labels: {
 		none: string;
 	};

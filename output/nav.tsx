@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iNavProps {
+interface Props {
 	active: string;
 	menu: iNavMenu;
 	onSwitch: {
@@ -21,7 +21,7 @@ interface iNavMenuItem {
 	children?: iNavMenu;
 }
 
-export const Nav = ( { menu, onSwitch, active }: iNavProps ) => (
+export const Nav = ( { menu, onSwitch, active }: Props ) => (
 	<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
 		<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
 			{ __( 'Query Monitor Menu', 'query-monitor' ) }
@@ -85,7 +85,7 @@ export const Nav = ( { menu, onSwitch, active }: iNavProps ) => (
 	</nav>
 );
 
-export const NavSelect = ( { active, menu, onSwitch }: iNavProps ) => (
+export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 	<select
 		value={ active }
 		onChange={ ( e ) => {

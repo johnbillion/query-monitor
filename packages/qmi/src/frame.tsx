@@ -6,13 +6,13 @@ import {
 } from 'qmi';
 import * as React from 'react';
 
-interface FrameProps {
+interface Props {
 	frame: FrameItem;
 	expanded?: boolean;
 	isFileName?: boolean;
 }
 
-export const Frame = ( { frame, expanded, isFileName }: FrameProps ) => (
+export const Frame = ( { frame, expanded, isFileName }: Props ) => (
 	<>
 		<FileName
 			text={ frame.display }

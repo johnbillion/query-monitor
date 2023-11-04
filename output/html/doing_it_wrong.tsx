@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
 	TabularPanel,
 } from 'qmi';
@@ -12,7 +12,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Doing_It_Wrong']> ) => {
+export default ( { data }: PanelProps<DataTypes['Doing_It_Wrong']> ) => {
 	if ( ! data.actions?.length ) {
 		return (
 			<EmptyPanel>

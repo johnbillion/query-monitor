@@ -8,14 +8,14 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-interface FileProps {
+interface Props {
 	text: string,
 	file: string,
 	line?: number,
 	isFileName?: boolean,
 }
 
-export const FileName = ( { text, file, line = 0, isFileName = false }: FileProps ) => {
+export const FileName = ( { text, file, line = 0, isFileName = false }: Props ) => {
 	const {
 		editor,
 	} = React.useContext( MainContext );

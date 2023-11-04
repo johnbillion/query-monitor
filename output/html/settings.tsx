@@ -14,13 +14,13 @@ import {
 import { iNavMenu } from '../nav';
 import { iPanelsProps } from '../panels';
 
-interface iSettingsProps {
+interface Props {
 	verified: boolean;
 }
 
 export interface iQMConfig {
 	menu: any;
-	settings: iSettingsProps;
+	settings: Props;
 	panel_menu: iNavMenu;
 	data: iPanelsProps;
 }
@@ -35,7 +35,7 @@ interface il10nConfig {
 
 declare const qm_l10n: il10nConfig;
 
-export const Settings = ( props: iSettingsProps ) => {
+export const Settings = ( props: Props ) => {
 	const [ verified, setVerified ] = React.useState( props.verified );
 	const {
 		editor,

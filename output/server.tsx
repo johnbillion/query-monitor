@@ -6,11 +6,11 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iServerProps {
+interface Props {
 	server: EnvironmentData['server'];
 }
 
-export default ( { server }: iServerProps ) => {
+export default ( { server }: Props ) => {
 	const info = {
 		name: __( 'Software', 'query-monitor' ),
 		version: __( 'Version', 'query-monitor' ),

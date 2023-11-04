@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
 	PanelFooter,
 	Panel,
@@ -32,7 +32,7 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 
-export default ( { data }: iPanelProps<iBlockData> ) => {
+export default ( { data }: PanelProps<iBlockData> ) => {
 		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
 			return null;
 		}

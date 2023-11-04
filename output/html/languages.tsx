@@ -1,6 +1,6 @@
 import {
 	Frame,
-	iPanelProps,
+	PanelProps,
 	NonTabularPanel,
 } from 'qmi';
 import {
@@ -13,7 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Languages']> ) => {
+export default ( { data }: PanelProps<DataTypes['Languages']> ) => {
 	return (
 		<NonTabularPanel>
 			<section>

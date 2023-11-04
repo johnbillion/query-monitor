@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface TogglerProps {
+interface Props {
 	children: React.ReactNode;
 }
 
-export const Toggler = ( { children }: TogglerProps ) => (
+export const Toggler = ( { children }: Props ) => (
 	<>
 		<button
 			aria-expanded="false"

@@ -3,12 +3,12 @@ import * as React from 'react';
 import { ErrorPanel } from './error-panel';
 import { Warning } from './warning';
 
-interface ErrorBoundaryProps {
+interface Props {
 	children: React.ReactNode;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<string, unknown>> {
-	constructor( props: ErrorBoundaryProps ) {
+export class ErrorBoundary extends React.Component<Props, Record<string, unknown>> {
+	constructor( props: Props ) {
 		super( props );
 		this.state = { hasError: false };
 	}

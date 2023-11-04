@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	NonTabularPanel,
 } from 'qmi';
 import {
@@ -17,7 +17,7 @@ interface iParts {
 	[key: string]: string;
 }
 
-export default ( { data }: iPanelProps<DataTypes['Theme']> ) => {
+export default ( { data }: PanelProps<DataTypes['Theme']> ) => {
 	let parts: iParts = null;
 
 	if ( data.template_parts ) {

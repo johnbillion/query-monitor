@@ -5,11 +5,11 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface iWordPressProps {
+interface Props {
 	wordpress: EnvironmentData['wp'];
 }
 
-export default ( { wordpress }: iWordPressProps ) => (
+export default ( { wordpress }: Props ) => (
 	<section>
 		<h3>
 			WordPress
@@ -24,13 +24,13 @@ export default ( { wordpress }: iWordPressProps ) => (
 						{ wordpress.version }
 					</td>
 				</tr>
-				{ Object.keys( wordpress.constants ).map( key => (
+				{ Object.entries( wordpress.constants ).map( ( [ key, value ] ) => (
 					<tr key={ key }>
 						<th scope="row">
 							{ key }
 						</th>
 						<td>
-							{ wordpress.constants[ key ] }
+							{ value }
 						</td>
 					</tr>
 				) ) }

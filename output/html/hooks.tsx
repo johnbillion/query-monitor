@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
 	Component,
 	Panel,
@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Hooks']> ) => {
+export default ( { data }: PanelProps<DataTypes['Hooks']> ) => {
 	if ( ! data.hooks?.length ) {
 		return (
 			<EmptyPanel>

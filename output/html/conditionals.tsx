@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	NonTabularPanel,
 } from 'qmi';
 import {
@@ -9,7 +9,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Conditionals']> ) => {
+export default ( { data }: PanelProps<DataTypes['Conditionals']> ) => {
 	const trueConds = data.conds['true'];
 	const falseConds = data.conds['false'];
 

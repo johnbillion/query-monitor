@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	Component,
 	TabularPanel,
 	Time,
@@ -15,7 +15,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Timing']> ) => {
+export default ( { data }: PanelProps<DataTypes['Timing']> ) => {
 	if ( ! data.timing && ! data.warning ) {
 		return <EmptyPanel>
 			<p>

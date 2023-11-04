@@ -1,8 +1,6 @@
 import {
-	Caller,
-	iPanelProps,
+	PanelProps,
 	EmptyPanel,
-	Component,
 	TabularPanel,
 } from 'qmi';
 import {
@@ -15,7 +13,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Multisite']> ) => {
+export default ( { data }: PanelProps<DataTypes['Multisite']> ) => {
 	if ( ! data.switches.length ) {
 		return (
 			<EmptyPanel>

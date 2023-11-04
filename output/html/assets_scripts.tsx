@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 } from 'qmi';
 import {
 	DataTypes,
@@ -12,7 +12,7 @@ import {
 
 import Assets from '../assets';
 
-export default ( props: iPanelProps<DataTypes['Assets']> ) => {
+export default ( props: PanelProps<DataTypes['Assets']> ) => {
 	return (
 		<Assets
 			{ ...props }

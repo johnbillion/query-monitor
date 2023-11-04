@@ -1,5 +1,5 @@
 import {
-	iPanelProps,
+	PanelProps,
 	TabularPanel,
 	Warning,
 	EmptyPanel,
@@ -11,7 +11,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Logger']> ) => {
+export default ( { data }: PanelProps<DataTypes['Logger']> ) => {
 	if ( ! data.logs.length ) {
 		return (
 			<EmptyPanel>

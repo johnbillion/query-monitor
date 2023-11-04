@@ -3,7 +3,7 @@ import {
 	EmptyPanel,
 	Component,
 	TabularPanel,
-	iPanelProps,
+	PanelProps,
 } from 'qmi';
 import {
 	DataTypes,
@@ -15,7 +15,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-export default ( { data }: iPanelProps<DataTypes['Transients']> ) => {
+export default ( { data }: PanelProps<DataTypes['Transients']> ) => {
 	if ( ! data.trans?.length ) {
 		return (
 			<EmptyPanel>

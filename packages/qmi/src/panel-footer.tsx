@@ -1,7 +1,7 @@
 import { iQM_i18n } from 'qmi';
 import * as React from 'react';
 
-interface iPanelFooterProps {
+interface Props {
 	cols: number;
 	count: number;
 	total?: number;
@@ -15,7 +15,7 @@ import {
 
 declare const QM_i18n: iQM_i18n;
 
-export const PanelFooter = ( { children, cols, count, total = count }: iPanelFooterProps ) => (
+export const PanelFooter = ( { children, cols, count, total = count }: Props ) => (
 	<tfoot>
 		<tr>
 			<td colSpan={ cols }>

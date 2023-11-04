@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-interface iIconProps {
+interface Props {
 	name: string;
 }
 
-export const Icon = ( { name }: iIconProps ) => {
+export const Icon = ( { name }: Props ) => {
 	if ( name === 'blank' ) {
 		return (
 			<span className="qm-icon qm-icon-blank"></span>
