@@ -11,13 +11,13 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['DB_Queries']> ) => {
+export default ( { data }: iPanelProps<DataTypes['DB_Queries']> ) => {
 	if ( ! data.times ) {
 		return null;
 	}
 
 	return (
-		<Tabular id={ id }>
+		<Tabular>
 			<thead>
 				<tr>
 					<th scope="col">

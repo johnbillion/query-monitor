@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Hooks']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Hooks']> ) => {
 	if ( ! data.hooks?.length ) {
 		return (
 			<EmptyPanel>

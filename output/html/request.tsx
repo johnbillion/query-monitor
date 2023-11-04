@@ -10,7 +10,7 @@ import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Request']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Request']> ) => {
 	const items = {
 		request: __( 'Request', 'query-monitor' ),
 		matched_rule: __( 'Matched Rule', 'query-monitor' ),

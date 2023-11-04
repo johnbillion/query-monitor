@@ -14,7 +14,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['DB_Dupes']> ) => {
+export default ( { data }: iPanelProps<DataTypes['DB_Dupes']> ) => {
 	if ( ! data.dupes || ! Object.keys( data.dupes ).length ) {
 		return null;
 	}

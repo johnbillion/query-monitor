@@ -19,7 +19,6 @@ export * as Data from './data-types';
 
 export interface iPanelProps<T> {
 	data: T;
-	id: string;
 	enabled: boolean;
 }
 

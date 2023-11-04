@@ -12,7 +12,7 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-export default ( { data, id }: iPanelProps<DataTypes['Environment']> ) => (
+export default ( { data }: iPanelProps<DataTypes['Environment']> ) => (
 	<NonTabularPanel>
 		<PHP php={ data.php }/>
 		<DB db={ data.db }/>

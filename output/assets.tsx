@@ -62,7 +62,7 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	);
 };
 
-export default ( { data, id, labels }: myProps ) => {
+export default ( { data, labels }: myProps ) => {
 	const position_labels: iPositionLabels = {
 		missing: __( 'Missing', 'query-monitor' ),
 		broken: __( 'Missing Dependencies', 'query-monitor' ),

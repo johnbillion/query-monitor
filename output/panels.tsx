@@ -62,178 +62,112 @@ export const Panels = ( props: iPanelsProps ) => (
 	<div id="qm-panels">
 		{ props.active === 'admin' && (
 			<ErrorBoundary>
-				<Admin
-					{ ...props.admin }
-					id={ props.active }
-				/>
+				<Admin { ...props.admin } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'block_editor' && (
 			<ErrorBoundary>
-				<BlockEditor
-					{ ...props.block_editor }
-					id={ props.active }
-				/>
+				<BlockEditor { ...props.block_editor } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'caps' && (
 			<ErrorBoundary>
-				<Caps
-					{ ...props.caps }
-					id={ props.active }
-				/>
+				<Caps { ...props.caps } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'conditionals' && (
 			<ErrorBoundary>
-				<Conditionals
-					{ ...props.conditionals }
-					id={ props.active }
-				/>
+				<Conditionals { ...props.conditionals } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_callers' && (
 			<ErrorBoundary>
-				<DBCallers
-					{ ...props.db_queries }
-					id={ props.active }
-				/>
+				<DBCallers { ...props.db_queries } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_components' && (
 			<ErrorBoundary>
-				<DBComponents
-					{ ...props.db_queries }
-					id={ props.active }
-				/>
+				<DBComponents { ...props.db_queries } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_dupes' && (
 			<ErrorBoundary>
-				<DBDupes
-					{ ...props.db_dupes }
-					id={ props.active }
-				/>
+				<DBDupes { ...props.db_dupes } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'db_queries' && (
 			<ErrorBoundary>
-				<DBQueries
-					{ ...props.db_queries }
-					id={ props.active }
-				/>
+				<DBQueries { ...props.db_queries } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'doing_it_wrong' && (
 			<ErrorBoundary>
-				<DoingItWrong
-					{ ...props.doing_it_wrong }
-					id={ props.active }
-				/>
+				<DoingItWrong { ...props.doing_it_wrong } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'environment' && (
 			<ErrorBoundary>
-				<Environment
-					{ ...props.environment }
-					id={ props.active }
-				/>
+				<Environment { ...props.environment } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'hooks' && (
 			<ErrorBoundary>
-				<Hooks
-					{ ...props.hooks }
-					id={ props.active }
-				/>
+				<Hooks { ...props.hooks } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'http' && (
 			<ErrorBoundary>
-				<HTTP
-					{ ...props.http }
-					id={ props.active }
-				/>
+				<HTTP { ...props.http } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'logger' && (
 			<ErrorBoundary>
-				<Logger
-					{ ...props.logger }
-					id={ props.active }
-				/>
+				<Logger { ...props.logger } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'languages' && (
 			<ErrorBoundary>
-				<Languages
-					{ ...props.languages }
-					id={ props.active }
-				/>
+				<Languages { ...props.languages } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'multisite' && (
 			<ErrorBoundary>
-				<Multisite
-					{ ...props.multisite }
-					id={ props.active }
-				/>
+				<Multisite { ...props.multisite } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'php_errors' && (
 			<ErrorBoundary>
-				<PHPErrors
-					{ ...props.php_errors }
-					id={ props.active }
-				/>
+				<PHPErrors { ...props.php_errors } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'request' && (
 			<ErrorBoundary>
-				<Request
-					{ ...props.request }
-					id={ props.active }
-				/>
+				<Request { ...props.request } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'assets_scripts' && (
 			<ErrorBoundary>
-				<Scripts
-					{ ...props.assets_scripts }
-					id={ props.active }
-				/>
+				<Scripts { ...props.assets_scripts } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'assets_styles' && (
 			<ErrorBoundary>
-				<Styles
-					{ ...props.assets_styles }
-					id={ props.active }
-				/>
+				<Styles { ...props.assets_styles } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'response' && (
 			<ErrorBoundary>
-				<Theme
-					{ ...props.response }
-					id={ props.active }
-				/>
+				<Theme { ...props.response } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'transients' && (
 			<ErrorBoundary>
-				<Transients
-					{ ...props.transients }
-					id={ props.active }
-				/>
+				<Transients { ...props.transients } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'timing' && (
 			<ErrorBoundary>
-				<Timing
-					{ ...props.timing }
-					id={ props.active }
-				/>
+				<Timing { ...props.timing } />
 			</ErrorBoundary>
 		) }
 		{ props.active === 'settings' && (
