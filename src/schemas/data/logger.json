@@ -49,7 +49,7 @@
 					"trace",
 					"level"
 				],
-				"additionalItems": false
+				"additionalProperties": false
 			}
 		},
 		"components": {
