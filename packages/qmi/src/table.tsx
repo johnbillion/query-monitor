@@ -19,7 +19,7 @@ export interface Col<T> {
 	heading: string;
 	render?: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
 	filters?: {
-		options: () => {
+		options: {
 			key: string;
 			label: string;
 		}[];
@@ -135,7 +135,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			<thead>
 				<tr>
 					{ Object.entries( cols ).map( ( [ key, col ] ) => {
-						const colFilters = col.filters ? col.filters.options() : [];
+						const colFilters = col.filters ? col.filters.options : [];
 						const filterValue = ( key in filters ) ? filters[ key ] : '';
 
 						return (

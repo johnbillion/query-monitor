@@ -51,7 +51,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					</>
 				),
 				filters: {
-					options: () => {
+					options: ( () => {
 						const filters = Object.keys( data.types ).map( ( type ) => ( {
 							key: type,
 							label: type,
@@ -65,7 +65,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 						}
 
 						return filters;
-					},
+					} )(),
 					callback: ( row, value ) => {
 						if ( value === 'non-select' ) {
 							return ( row.type !== 'SELECT' );
@@ -81,7 +81,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			component: {
 				heading: __( 'Component', 'query-monitor' ),
 				filters: {
-					options: () => {
+					options: ( () => {
 						const filters = Object.keys( data.component_times ).map( ( component ) => ( {
 							key: component,
 							label: component,
@@ -97,7 +97,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 						}
 
 						return filters;
-					},
+					} )(),
 					callback: ( row, value ) => {
 						if ( value === 'non-core' ) {
 							return ( row.trace.component.context !== 'core' );
