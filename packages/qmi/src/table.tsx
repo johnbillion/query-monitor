@@ -22,6 +22,7 @@ export interface Col<T> {
 		key: string;
 		label: string;
 	}[];
+	filterCallback?: ( row: T, value: string ) => boolean;
 }
 
 interface TableProps<T> {
@@ -99,6 +100,29 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		setFilter,
 	} = React.useContext( PanelContext );
 
+	const currentFilters = Object.entries( filters );
+	let filteredData = [ ...data ];
+
+	if ( currentFilters.length ) {
+		filteredData = filteredData.filter( ( row ) => {
+			for ( const [ filterName, filterValue ] of currentFilters ) {
+				if ( ! ( filterName in cols ) ) {
+					continue;
+				}
+
+				if ( ! cols[ filterName ].filterCallback ) {
+					continue;
+				}
+
+				if ( ! cols[ filterName ].filterCallback( row, filterValue ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		} );
+	}
+
 	return (
 		<table>
 			<caption>
@@ -117,6 +141,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 								key={ key }
 								className={ classNames( col.className, {
 									'qm-filterable-column': colFilters.length,
+									'qm-filtered': filterValue !== '',
 								} ) }
 								role="columnheader"
 								scope="col"
@@ -150,7 +175,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 				</tr>
 			</thead>
 			<tbody>
-				{ data.map( ( row, i ) => (
+				{ filteredData.map( ( row, i ) => (
 					<tr
 						key={ i }
 						className={ classNames( {
@@ -174,7 +199,8 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			{ footer ?? (
 				<PanelFooter
 					cols={ Object.keys( cols ).length }
-					count={ data.length }
+					count={ filteredData.length }
+					total={ data.length }
 				/>
 			) }
 		</table>

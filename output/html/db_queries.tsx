@@ -65,6 +65,13 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 
 					return filters;
 				},
+				filterCallback: ( row, value ) => {
+					if ( value === 'non-select' ) {
+						return ( row.type !== 'SELECT' );
+					}
+
+					return ( row.type === value );
+				},
 			},
 			caller: {
 				heading: __( 'Caller', 'query-monitor' ),
@@ -87,7 +94,14 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					}
 
 					return filters;
-				}
+				},
+				filterCallback: ( row, value ) => {
+					if ( value === 'non-core' ) {
+						return ( row.trace.component.name !== 'core' );
+					}
+
+					return ( row.trace.component.name === value );
+				},
 			},
 			result: {
 				className: 'qm-num',

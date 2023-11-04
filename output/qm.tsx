@@ -84,7 +84,7 @@ export const QM = ( props: iQMProps ) => {
 		filters: filters,
 		setFilters: ( filters: MainContextType['filters'] ) => {
 			props.onFiltersChange( filters );
-			setFilters( filters ); // is this needed? the filtered panel will re-render anyway
+			setFilters( filters );
 		},
 	};
 
