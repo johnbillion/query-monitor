@@ -32,27 +32,23 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 		$count = 0;
 
-		foreach ( $data->errors as $errors ) {
+		foreach ( $data->errors as $error ) {
+			$count++;
 
-			foreach ( $errors as $error_key => $error ) {
-				$count++;
+			$stack = isset( $error['trace'] ) ? $error['trace']->get_stack() : array();
+			$component = isset( $error['trace'] ) ? $error['trace']->get_component()->name : '';
 
-				$stack = isset( $error['trace'] ) ? $error['trace']->get_stack() : array();
-				$component = isset( $error['trace'] ) ? $error['trace']->get_component()->name : '';
+			$output_error = array(
+				'level' => $error['level'],
+				'message' => $error['message'],
+				'file' => QM_Util::standard_dir( $error['file'], '' ),
+				'line' => $error['line'],
+				'stack' => $stack,
+				'component' => $component,
+			);
 
-				$output_error = array(
-					'key' => $error_key,
-					'type' => $error['type'],
-					'message' => $error['message'],
-					'file' => QM_Util::standard_dir( $error['file'], '' ),
-					'line' => $error['line'],
-					'stack' => $stack,
-					'component' => $component,
-				);
-
-				$key = sprintf( 'error-%d', $count );
-				$headers[ $key ] = json_encode( $output_error );
-			}
+			$key = sprintf( 'error-%d', $count );
+			$headers[ $key ] = json_encode( $output_error );
 		}
 
 		return array_merge(
