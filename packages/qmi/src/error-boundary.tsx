@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ErrorMessage } from './error';
+import { ErrorPanel } from './error-panel';
 import { Warning } from './warning';
 
 interface ErrorBoundaryProps {
@@ -20,7 +20,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<st
 	render() {
 		if ( this.state.hasError ) {
 			return (
-				<ErrorMessage id="qm-error-boundary">
+				<ErrorPanel>
 					{ ( this.state.hasError instanceof Error ) ? (
 						<>
 							<p>
@@ -39,7 +39,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, Record<st
 							</Warning>
 						</p>
 					) }
-				</ErrorMessage>
+				</ErrorPanel>
 			);
 		}
 
