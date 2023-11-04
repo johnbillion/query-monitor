@@ -1,10 +1,7 @@
 import {
-	Caller,
 	iPanelProps,
-	Notice,
-	PanelFooter,
-	Component,
-	Tabular,
+	EmptyPanel,
+	TabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -15,47 +12,31 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Doing_It_Wrong']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Doing_It_Wrong']> ) => {
 	if ( ! data.actions?.length ) {
 		return (
-			<Notice id={ id }>
+			<EmptyPanel>
 				<p>
 					{ __( 'No occurrences.', 'query-monitor' ) }
 				</p>
-			</Notice>
+			</EmptyPanel>
 		);
 	}
 
-	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Message', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Caller', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ data.actions.map( ( action ) => (
-					<tr>
-						<td>
-							{ action.message }
-						</td>
-						<Caller trace={ action.trace } />
-						<Component component={ action.trace.component } />
-					</tr>
-				) ) }
-			</tbody>
-			<PanelFooter
-				cols={ 3 }
-				count={ data.actions.length }
-			/>
-		</Tabular>
-	);
+	return <TabularPanel
+		title={ __( 'Doing it Wrong', 'query-monitor' ) }
+		cols={ {
+			message: {
+				heading: __( 'Message', 'query-monitor' ),
+				render: ( row ) => row.message,
+			},
+			caller: {
+				heading: __( 'Caller', 'query-monitor' ),
+			},
+			component: {
+				heading: __( 'Component', 'query-monitor' ),
+			},
+		} }
+		data={ data.actions }
+	/>
 };
