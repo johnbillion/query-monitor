@@ -11,8 +11,8 @@
 	],
 	"properties": {
 		"http": {
-			"type": "object",
-			"additionalProperties": {
+			"type": "array",
+			"items": {
 				"type": "object",
 				"properties": {
 					"args": {
@@ -160,6 +160,7 @@
 			}
 		},
 		"ltime": {
+			"@todo": "remove",
 			"type": "number"
 		},
 		"errors": {

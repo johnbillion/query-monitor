@@ -379,7 +379,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 			$this->log_type( $type );
 			$this->log_component( $request['trace']->get_component(), $ltime, $type );
-			$this->data->http[ $key ] = array(
+			$this->data->http[] = array(
 				'args' => $response['args'],
 				'trace' => $request['trace'],
 				'host' => $host,

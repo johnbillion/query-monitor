@@ -14,7 +14,7 @@
 
 class QM_Data_HTTP extends QM_Data {
 	/**
-	 * @phpstan-var array<string, array{
+	 * @phpstan-var array<int, array{
 	 *   args: array{
 	 *     method: string,
 	 *     timeout: float,
