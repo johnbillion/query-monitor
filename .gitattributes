@@ -1,6 +1,7 @@
 * text=auto
 
 # Directories
+/.config export-ignore
 /.git export-ignore
 /.github export-ignore
 /.wordpress-org export-ignore

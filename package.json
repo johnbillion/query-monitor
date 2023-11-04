@@ -36,7 +36,7 @@
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
-		"watch": "npm run build-schemas && webpack --watch",
-		"build": "npm run build-schemas && webpack"
+		"watch": "npm run build-schemas && webpack --config=.config/webpack.config.dev.js --watch",
+		"build": "npm run build-schemas && webpack --config=.config/webpack.config.prod.js"
 	}
 }

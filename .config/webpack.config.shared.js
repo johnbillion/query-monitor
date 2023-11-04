@@ -6,7 +6,6 @@ const {
 
 /** @type {webpack.Configuration} */
 module.exports = {
-	mode: 'production',
 	entry: './src/index.tsx',
 	output: {
 		clean: true,
