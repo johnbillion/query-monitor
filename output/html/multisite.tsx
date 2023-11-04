@@ -1,10 +1,9 @@
 import {
 	Caller,
 	iPanelProps,
-	Notice,
-	PanelFooter,
+	EmptyPanel,
 	Component,
-	Tabular,
+	TabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -16,59 +15,50 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data, id }: iPanelProps<DataTypes['Multisite']> ) => {
+export default ( { data }: iPanelProps<DataTypes['Multisite']> ) => {
 	if ( ! data.switches.length ) {
 		return (
-			<Notice id={ id }>
+			<EmptyPanel>
 				<p>
 					{ __( 'No data logged.', 'query-monitor' ) }
 				</p>
-			</Notice>
+			</EmptyPanel>
 		);
 	}
 
-	return (
-		<Tabular id={ id }>
-			<thead>
-				<tr>
-					<th scope="col">
-						{ __( 'Function', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Site Switch', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Caller', 'query-monitor' ) }
-					</th>
-					<th scope="col">
-						{ __( 'Component', 'query-monitor' ) }
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ data.switches.map( ( row ) => (
-					<tr>
-						<td className="qm-nowrap">
-							<code>
-								{ row.to ? (
-									sprintf(
-										'switch_to_blog(%d)',
-										row.new
-									)
-								) : (
-									'restore_current_blog()'
-								) }
-							</code>
-						</td>
-						<Caller trace={ row.trace } />
-						<Component component={ row.trace.component } />
-					</tr>
-				) ) }
-			</tbody>
-			<PanelFooter
-				cols={ 3 }
-				count={ data.switches.length }
-			/>
-		</Tabular>
-	);
+	return <TabularPanel
+		title={ __( 'Multisite', 'query-monitor' ) }
+		cols={ {
+			function: {
+				heading: __( 'Function', 'query-monitor' ),
+				render: ( row ) => (
+					<code>
+						{ row.to ? (
+							sprintf(
+								'switch_to_blog(%d)',
+								row.new
+							)
+						) : (
+							'restore_current_blog()'
+						) }
+					</code>
+				),
+			},
+			site: {
+				heading: __( 'Site Switch', 'query-monitor' ),
+				render: ( row ) => (
+					<code>
+						@todo
+					</code>
+				),
+			},
+			caller: {
+				heading: __( 'Caller', 'query-monitor' ),
+			},
+			component: {
+				heading: __( 'Component', 'query-monitor' ),
+			},
+		}}
+		data={ data.switches }
+	/>
 };
