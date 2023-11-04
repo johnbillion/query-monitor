@@ -116,6 +116,10 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 					continue;
 				}
 
+				if ( ! cols[ filterName ].filters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
+					return true;
+				}
+
 				if ( ! cols[ filterName ].filters.callback( row, filterValue ) ) {
 					return false;
 				}
