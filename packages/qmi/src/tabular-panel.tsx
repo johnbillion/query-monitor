@@ -13,7 +13,7 @@ interface Props<T> {
 	};
 	data: T[];
 	hasError?: ( row: T ) => boolean;
-	footer?: React.ReactNode;
+	footer?: ( args: { cols: number, count: number, total: number, data: T[] } ) => React.ReactNode;
 	children?: React.ReactNode;
 }
 

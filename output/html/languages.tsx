@@ -1,6 +1,7 @@
 import {
 	ApproximateSize,
 	Frame,
+	PanelFooter,
 	PanelProps,
 	TabularPanel,
 } from 'qmi';
@@ -70,6 +71,19 @@ export default ( { data }: PanelProps<DataTypes['Languages']> ) => {
 				},
 			} }
 			data={ data.languages }
+			footer={ ( { cols, count, total, data } ) => (
+				<PanelFooter
+					cols={ cols - 1 }
+					count={ count }
+					total={ total }
+				>
+					<td>
+						<ApproximateSize
+							value={ data.reduce( ( total, row ) => ( total + ( row.found ? row.found : 0 ) ), 0 ) }
+						/>
+					</td>
+				</PanelFooter>
+			) }
 		>
 			<section>
 				<h3><code>get_locale()</code></h3>

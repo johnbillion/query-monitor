@@ -41,7 +41,7 @@ interface TableProps<T> {
 	};
 	data: T[];
 	hasError?: ( row: T ) => boolean;
-	footer?: React.ReactNode;
+	footer?: ( args: { cols: number, count: number, total: number, data: T[] } ) => React.ReactNode;
 	children?: React.ReactNode;
 }
 
@@ -161,6 +161,8 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
 	}
 
+	const footerFunc = footer || PanelFooter;
+
 	const table = (
 		<table>
 			<caption className="qm-screen-reader-text">
@@ -229,13 +231,12 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 					</tr>
 				) ) }
 			</tbody>
-			{ footer ?? (
-				<PanelFooter
-					cols={ Object.keys( cols ).length }
-					count={ data.length }
-					total={ total }
-				/>
-			) }
+			{ footerFunc( {
+				cols: Object.keys( cols ).length,
+				count: data.length,
+				total: total,
+				data: data,
+			} ) }
 		</table>
 	);
 
