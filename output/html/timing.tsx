@@ -61,7 +61,7 @@ export default ( { data }: PanelProps<DataTypes['Timing']> ) => {
 				heading: __( 'Memory', 'query-monitor' ),
 				render: ( row ) => <ApproximateSize value={ row.function_memory } />,
 			},
-			...getComponentCol( data.timing, data.component_times ),
+			component: getComponentCol( data.timing, data.component_times ),
 		} }
 		data={ data.timing }
 	/>;

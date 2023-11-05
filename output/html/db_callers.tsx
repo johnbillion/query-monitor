@@ -42,7 +42,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					render: ( row ) => row.caller,
 				},
 				...getTypeCols(),
-				...getTimeCol( tableData ),
+				time: getTimeCol( tableData ),
 			}}
 			data={ tableData }
 			footer={ () => (

@@ -52,8 +52,8 @@ export default ( { data }: PanelProps<DataTypes['Logger']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => row.message,
 			},
-			...getCallerCol( data.logs ),
-			...getComponentCol( data.logs, data.component_times ),
+			caller: getCallerCol( data.logs ),
+			component: getComponentCol( data.logs, data.component_times ),
 		} }
 		data={ data.logs }
 		hasError={ ( row ) => data.warning_levels.includes( row.level ) }

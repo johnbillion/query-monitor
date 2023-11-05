@@ -32,8 +32,8 @@ export default ( { data }: PanelProps<DataTypes['Doing_It_Wrong']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => row.message,
 			},
-			...getCallerCol( data.actions ),
-			...getComponentCol( data.actions, data.component_times ),
+			caller: getCallerCol( data.actions ),
+			component: getComponentCol( data.actions, data.component_times ),
 		} }
 		data={ data.actions }
 	/>

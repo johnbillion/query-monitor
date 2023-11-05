@@ -77,8 +77,8 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					},
 				},
 			},
-			...getCallerCol( data.rows ),
-			...getComponentCol( data.rows, data.component_times ),
+			caller: getCallerCol( data.rows ),
+			component: getComponentCol( data.rows, data.component_times ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
@@ -90,7 +90,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					</>
 				),
 			},
-			...getTimeCol( data.rows ),
+			time: getTimeCol( data.rows ),
 		} }
 		data={ data.rows }
 		hasError={ ( row ) => Utils.isWPError( row.result ) }

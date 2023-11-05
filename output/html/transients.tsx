@@ -66,8 +66,8 @@ export default ( { data }: PanelProps<DataTypes['Transients']> ) => {
 				heading: _x( 'Size', 'size of transient value', 'query-monitor' ),
 				render: ( row ) => <ApproximateSize value={ row.size } />,
 			},
-			...getCallerCol( data.trans ),
-			...getComponentCol( data.trans, data.component_times ),
+			caller: getCallerCol( data.trans ),
+			component: getComponentCol( data.trans, data.component_times ),
 		} }
 		data={ data.trans }
 	/>

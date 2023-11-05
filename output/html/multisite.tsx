@@ -52,8 +52,8 @@ export default ( { data }: PanelProps<DataTypes['Multisite']> ) => {
 					</code>
 				),
 			},
-			...getCallerCol( data.switches ),
-			...getComponentCol( data.switches, data.component_times ),
+			caller: getCallerCol( data.switches ),
+			component: getComponentCol( data.switches, data.component_times ),
 		}}
 		data={ data.switches }
 	/>

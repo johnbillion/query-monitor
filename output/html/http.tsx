@@ -69,14 +69,14 @@ export default ( { data }: PanelProps<DataTypes['HTTP']> ) => {
 					},
 				},
 			},
-			...getCallerCol( data.http ),
-			...getComponentCol( data.http, data.component_times ),
+			caller: getCallerCol( data.http ),
+			component: getComponentCol( data.http, data.component_times ),
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',
 				render: ( row ) => row.args.timeout,
 			},
-			...getTimeCol( data.http ),
+			time: getTimeCol( data.http ),
 		} }
 		data={ data.http }
 		hasError={ ( row ) => Utils.isWPError( row.response ) }

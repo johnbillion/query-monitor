@@ -29,13 +29,13 @@ export default ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => ( row.message ),
 			},
-			...getCallerCol( Object.values( data.errors ) ),
+			caller: getCallerCol( Object.values( data.errors ) ),
 			count: {
 				className: 'qm-num',
 				heading: __( 'Count', 'query-monitor' ),
 				render: ( row ) => ( row.calls ),
 			},
-			...getComponentCol( Object.values( data.errors ), data.component_times ),
+			component: getComponentCol( Object.values( data.errors ), data.component_times ),
 		}}
 		hasError={ ( row ) => ( row.level === 'warning' ) }
 		data={ Object.values( data.errors ) }

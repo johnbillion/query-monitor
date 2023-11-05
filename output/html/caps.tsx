@@ -69,8 +69,8 @@ export default ( { enabled, data }: PanelProps<DataTypes['Caps']> ) => {
 				heading: __( 'Result', 'query-monitor' ),
 				render: ( cap ) => ( cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' ),
 			},
-			...getCallerCol( data.caps ),
-			...getComponentCol( data.caps, data.component_times ),
+			caller: getCallerCol( data.caps ),
+			component: getComponentCol( data.caps, data.component_times ),
 		} }
 		data={ data.caps }
 	/>

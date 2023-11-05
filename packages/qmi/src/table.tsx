@@ -45,13 +45,6 @@ interface TableProps<T> {
 	children?: React.ReactNode;
 }
 
-interface CellProps<T> {
-	col: Col<T>;
-	i: number;
-	name: string;
-	row: T;
-}
-
 export interface KnownData {
 	trace?: Backtrace;
 	ltime?: number;
@@ -65,7 +58,7 @@ interface RowWithTime {
 	ltime?: number;
 }
 
-export const sortFilters = ( a: { label: string }, b: { label: string } ) => {
+const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	if ( a.label < b.label ) {
 		return -1;
 	}
@@ -109,9 +102,7 @@ export const getComponentCol = <T extends unknown>( rows: T[], component_times: 
 		},
 	};
 
-	return {
-		component: column,
-	};
+	return column;
 };
 
 export const getTimeCol = <T extends RowWithTime>( rows: T[] ) => {
@@ -121,9 +112,7 @@ export const getTimeCol = <T extends RowWithTime>( rows: T[] ) => {
 		render: ( row ) => <Time value={ row.ltime } />,
 	};
 
-	return {
-		time: column,
-	};
+	return column;
 }
 
 export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
@@ -132,9 +121,7 @@ export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
 		render: ( row ) => <Caller trace={ row.trace } />,
 	};
 
-	return {
-		caller: column,
-	};
+	return column;
 }
 
 export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer, children }: TableProps<T> ) => {
