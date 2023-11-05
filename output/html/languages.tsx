@@ -1,7 +1,8 @@
 import {
+	ApproximateSize,
 	Frame,
 	PanelProps,
-	NonTabularPanel,
+	TabularPanel,
 } from 'qmi';
 import {
 	DataTypes,
@@ -15,7 +16,61 @@ import {
 
 export default ( { data }: PanelProps<DataTypes['Languages']> ) => {
 	return (
-		<NonTabularPanel>
+		<TabularPanel
+			title={ __( 'Languages', 'query-monitor' ) }
+			cols={ {
+				domain: {
+					heading: __( 'Text Domain', 'query-monitor' ),
+					render: ( row ) => (
+						row.handle ? (
+							`${ row.domain } (${ row.handle })`
+						) : (
+							row.domain
+						)
+					),
+				},
+				type: {
+					heading: __( 'Type', 'query-monitor' ),
+					render: ( row ) => row.type,
+				},
+				frame: {
+					heading: __( 'Caller', 'query-monitor' ),
+					render: ( row ) => (
+						row.caller ? (
+							<Frame
+								frame={ row.caller }
+								isFileName
+							/>
+						) : (
+							__( 'Unknown', 'query-monitor' )
+						)
+					),
+				},
+				file: {
+					heading: __( 'Translation File', 'query-monitor' ),
+					render: ( row ) => (
+						row.file ? (
+							row.file
+						) : (
+							__( 'None', 'query-monitor' )
+						)
+					),
+				},
+				found: {
+					heading: __( 'Size', 'query-monitor' ),
+					render: ( row ) => (
+						row.found ? (
+							<ApproximateSize
+								value={ row.found }
+							/>
+						) : (
+							__( 'Not Found', 'query-monitor' )
+						)
+					),
+				},
+			} }
+			data={ data.languages }
+		>
 			<section>
 				<h3><code>get_locale()</code></h3>
 				<p>{ data.locale }</p>
@@ -61,83 +116,6 @@ export default ( { data }: PanelProps<DataTypes['Languages']> ) => {
 				<h3><code>get_language_attributes()</code></h3>
 				<p>{ data.language_attributes }</p>
 			</section>
-
-			{ data.languages && (
-				<table className="qm-full-width">
-					<thead>
-						<tr>
-							<th scope="col">
-								{ __( 'Text Domain', 'query-monitor' ) }
-							</th>
-							<th scope="col">
-								{ __( 'Type', 'query-monitor' ) }
-							</th>
-							<th scope="col">
-								{ __( 'Caller', 'query-monitor' ) }
-							</th>
-							<th scope="col">
-								{ __( 'Translation File', 'query-monitor' ) }
-							</th>
-							<th scope="col">
-								{ __( 'Size', 'query-monitor' ) }
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ Object.keys( data.languages ).map( textdomain => (
-							<React.Fragment key={ textdomain }>
-								{ Object.keys( data.languages[textdomain] ).map( mofile => {
-									const lang = data.languages[textdomain][mofile];
-
-									return (
-										<tr key={ lang.domain + lang.handle + lang.file }>
-											{ lang.handle ? (
-												<td className="qm-ltr">
-													{ lang.domain } ({ lang.handle })
-												</td>
-											) : (
-												<td className="qm-ltr">
-													{ lang.domain }
-												</td>
-											) }
-											<td>
-												{ lang.type }
-											</td>
-											<td className="qm-has-toggle qm-nowrap qm-ltr">
-												<ol>
-													<li>
-														<Frame frame={ lang.caller } />
-													</li>
-												</ol>
-											</td>
-											{ lang.file ? (
-												<td className="qm-ltr">
-													{ lang.file }
-												</td>
-											) : (
-												<td className="qm-nowrap">
-													<em>
-														{ __( 'None', 'query-monitor' ) }
-													</em>
-												</td>
-											) }
-											{ lang.found ? (
-												<td className="qm-nowrap">
-													{ lang.found }
-												</td>
-											) : (
-												<td className="qm-nowrap">
-													{ __( 'Not Found', 'query-monitor' ) }
-												</td>
-											) }
-										</tr>
-									);
-								} ) }
-							</React.Fragment>
-						) ) }
-					</tbody>
-				</table>
-			) }
-		</NonTabularPanel>
+		</TabularPanel>
 	);
 };

@@ -11,69 +11,68 @@
 		"determined_locale",
 		"language_attributes",
 		"mlp_language",
-		"pll_language",
-		"total_size"
+		"pll_language"
 	],
 	"properties": {
 		"languages": {
-			"type": "object",
-			"additionalProperties": {
+			"type": "array",
+			"items": {
 				"type": "object",
-				"additionalProperties": {
-					"type": "object",
-					"properties": {
-						"caller": {
-							"phpType": "array<string, mixed>",
-							"type": "object",
-							"allOf": [
-								{
-									"$ref": "../frameitem.json"
-								}
-							]
-						},
-						"domain": {
-							"type": "string"
-						},
-						"file": {
-							"type": [
-								"string",
-								"boolean"
-							],
-							"phpType": "string|false",
-							"tsType": "string|false"
-						},
-						"found": {
-							"type": [
-								"integer",
-								"boolean"
-							],
-							"phpType": "int|false",
-							"tsType": "number|false"
-						},
-						"handle": {
-							"type": [
-								"string",
-								"null"
-							]
-						},
-						"type": {
-							"type": "string",
-							"enum": [
-								"gettext",
-								"jed"
-							]
-						}
+				"properties": {
+					"caller": {
+						"phpType": "array<string, mixed>|false",
+						"oneOf": [
+							{
+								"$ref": "../frameitem.json"
+							},
+							{
+								"type": "boolean",
+								"tsType": "false"
+							}
+						]
 					},
-					"required": [
-						"caller",
-						"domain",
-						"file",
-						"found",
-						"handle",
-						"type"
-					],
-					"additionalProperties": false
-				}
+					"domain": {
+						"type": "string"
+					},
+					"file": {
+						"type": [
+							"string",
+							"boolean"
+						],
+						"phpType": "string|false",
+						"tsType": "string|false"
+					},
+					"found": {
+						"type": [
+							"integer",
+							"boolean"
+						],
+						"phpType": "int|false",
+						"tsType": "number|false"
+					},
+					"handle": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"gettext",
+							"jed"
+						]
+					}
+				},
+				"required": [
+					"caller",
+					"domain",
+					"file",
+					"found",
+					"handle",
+					"type"
+				],
+				"additionalProperties": false
 			}
 		},
 		"locale": {
@@ -95,9 +94,6 @@
 		"pll_language": {
 			"description": "Polylang language.",
 			"type": "string"
-		},
-		"total_size": {
-			"type": "integer"
 		}
 	},
 	"additionalProperties": false

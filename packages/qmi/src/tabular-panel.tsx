@@ -14,9 +14,10 @@ interface Props<T> {
 	data: T[];
 	hasError?: ( row: T ) => boolean;
 	footer?: React.ReactNode;
+	children?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError, title }: Props<T> ) => {
+export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError, title, children }: Props<T> ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );
@@ -36,7 +37,9 @@ export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError,
 				footer={ footer }
 				hasError={ hasError }
 				title={ title }
-			/>
+			>
+				{ children }
+			</Table>
 		</div>
 	);
 };

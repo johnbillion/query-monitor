@@ -14,14 +14,14 @@
 
 class QM_Data_Languages extends QM_Data {
 	/**
-	 * @phpstan-var array<string, array<string, array{
-	 *   caller: array<string, mixed>,
+	 * @phpstan-var array<int, array{
+	 *   caller: array<string, mixed>|false,
 	 *   domain: string,
 	 *   file: string|false,
 	 *   found: int|false,
 	 *   handle: string|null,
 	 *   type: 'gettext'|'jed',
-	 * }>>
+	 * }>
 	 */
 	public $languages;
 
@@ -58,9 +58,4 @@ class QM_Data_Languages extends QM_Data {
 	 * @var string
 	 */
 	public $pll_language;
-
-	/**
-	 * @var int
-	 */
-	public $total_size;
 }

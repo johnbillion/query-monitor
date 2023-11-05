@@ -14,7 +14,7 @@ interface Props {
 declare const QM_i18n: iQM_i18n;
 
 export const ApproximateSize = ( { value }: Props ) => (
-	<>
+	<code>
 		{ ( value < 1024 ) ? (
 			sprintf(
 				'~%s B',
@@ -26,5 +26,5 @@ export const ApproximateSize = ( { value }: Props ) => (
 				QM_i18n.number_format( value / 1024 )
 			)
 		) }
-	</>
+	</code>
 );

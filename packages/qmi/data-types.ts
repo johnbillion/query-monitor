@@ -402,17 +402,13 @@ export interface HTTP {
  */
 export interface Languages {
 	languages: {
-		[k: string]: {
-			[k: string]: {
-				caller: FrameItem;
-				domain: string;
-				file: string | false;
-				found: number | false;
-				handle: string | null;
-				type: "gettext" | "jed";
-			};
-		};
-	};
+		caller: FrameItem | false;
+		domain: string;
+		file: string | false;
+		found: number | false;
+		handle: string | null;
+		type: "gettext" | "jed";
+	}[];
 	locale: string;
 	user_locale: string;
 	determined_locale: string;
@@ -425,7 +421,6 @@ export interface Languages {
 	 * Polylang language.
 	 */
 	pll_language: string;
-	total_size: number;
 }
 /**
  * Logger data transfer object.

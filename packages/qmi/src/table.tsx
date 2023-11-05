@@ -42,6 +42,7 @@ interface TableProps<T> {
 	data: T[];
 	hasError?: ( row: T ) => boolean;
 	footer?: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 interface CellProps<T> {
@@ -136,7 +137,7 @@ export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
 	};
 }
 
-export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer }: TableProps<T> ) => {
+export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer, children }: TableProps<T> ) => {
 	const {
 		filters,
 		setFilter,
@@ -160,7 +161,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
 	}
 
-	return (
+	const table = (
 		<table>
 			<caption className="qm-screen-reader-text">
 				<h2 id={ id }>
@@ -236,5 +237,16 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 				/>
 			) }
 		</table>
+	);
+
+	return (
+		<>
+			<div className="qm-table-children">
+				<div className="qm-boxed">
+					{ children }
+				</div>
+			</div>
+			{ table }
+		</>
 	);
 };

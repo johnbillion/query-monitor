@@ -821,6 +821,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		margin-bottom: 20px !important;
 	}
 
+	.qm-table-children,
 	.qm-non-tabular {
 		padding: 10px 20px !important;
 
