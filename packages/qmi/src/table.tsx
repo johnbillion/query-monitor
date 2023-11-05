@@ -241,11 +241,13 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 
 	return (
 		<>
-			<div className="qm-table-children">
-				<div className="qm-boxed">
-					{ children }
+			{ children && (
+				<div className="qm-table-children">
+					<div className="qm-boxed">
+						{ children }
+					</div>
 				</div>
-			</div>
+			) }
 			{ table }
 		</>
 	);
