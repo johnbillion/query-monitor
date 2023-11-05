@@ -4,7 +4,7 @@ import * as React from 'react';
 interface Props {
 	cols: number;
 	count: number;
-	total?: number;
+	total: number;
 	children?: React.ReactNode;
 }
 

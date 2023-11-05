@@ -100,6 +100,7 @@ export default ( { data }: PanelProps<iBlockData> ) => {
 					<PanelFooter
 						cols={ colspan }
 						count={ data.post_blocks.length }
+						total={ data.post_blocks.length }
 					/>
 				</table>
 			</Panel>
