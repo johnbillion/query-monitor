@@ -123,6 +123,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			$version = sprintf( __( '(This message was added in version %s.)', 'query-monitor' ), $version );
 		}
 
+		$this->log_component( $trace->get_component(), 0, 'doing_it_wrong_run' );
+
 		$this->data->actions[] = array(
 			'hook' => 'doing_it_wrong_run',
 			'trace' => $trace,
@@ -166,6 +168,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			);
 		}
 
+		$this->log_component( $trace->get_component(), 0, 'deprecated_function_run' );
+
 		$this->data->actions[] = array(
 			'hook' => 'deprecated_function_run',
 			'trace' => $trace,
@@ -204,6 +208,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				'<code>__construct()</code>'
 			);
 		}
+
+		$this->log_component( $trace->get_component(), 0, 'deprecated_constructor_run' );
 
 		$this->data->actions[] = array(
 			'hook' => 'deprecated_constructor_run',
@@ -245,6 +251,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			);
 		}
 
+		$this->log_component( $trace->get_component(), 0, 'deprecated_file_included' );
+
 		$this->data->actions[] = array(
 			'hook' => 'deprecated_file_included',
 			'trace' => $trace,
@@ -281,6 +289,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				$version
 			);
 		}
+
+		$this->log_component( $trace->get_component(), 0, 'deprecated_argument_run' );
 
 		$this->data->actions[] = array(
 			'hook' => 'deprecated_argument_run',
@@ -321,6 +331,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				$message
 			);
 		}
+
+		$this->log_component( $trace->get_component(), 0, 'deprecated_hook_run' );
 
 		$this->data->actions[] = array(
 			'hook' => 'deprecated_hook_run',
