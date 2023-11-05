@@ -40,6 +40,13 @@ export default ( { data }: PanelProps<DataTypes['Logger']> ) => {
 						{ row.level }
 					</>
 				),
+				filters: {
+					options: data.levels.map( ( level ) => ( {
+						key: level,
+						label: level,
+					} ) ),
+					callback: ( row, filter ) => row.level === filter,
+				},
 			},
 			message: {
 				heading: __( 'Message', 'query-monitor' ),
@@ -49,5 +56,6 @@ export default ( { data }: PanelProps<DataTypes['Logger']> ) => {
 			...getComponentCol( data.logs, data.component_times ),
 		} }
 		data={ data.logs }
+		hasError={ ( row ) => data.warning_levels.includes( row.level ) }
 	/>
 };

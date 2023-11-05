@@ -49,7 +49,7 @@ export default ( { data }: PanelProps<DataTypes['Transients']> ) => {
 							<>
 								{ row.expiration }
 								<span className="qm-info">
-									(~{ row.exp_diff })
+									&nbsp;(~{ row.exp_diff })
 								</span>
 							</>
 						) : (

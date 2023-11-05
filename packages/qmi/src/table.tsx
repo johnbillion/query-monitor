@@ -142,6 +142,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 		setFilter,
 	} = React.useContext( PanelContext );
 	const total = data.length;
+	const nonEmptyCols = Object.entries( cols ).filter( ( [ key, value ] ) => ( value ? true : false ) );
 
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
 		if ( ! ( filterName in cols ) ) {
@@ -168,7 +169,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 			</caption>
 			<thead>
 				<tr>
-					{ Object.entries( cols ).map( ( [ key, col ] ) => {
+					{ nonEmptyCols.map( ( [ key, col ] ) => {
 						const colFilters = col.filters ? col.filters.options : [];
 						const filterValue = ( key in filters ) ? filters[ key ] : '';
 
@@ -219,7 +220,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 							'qm-warn': hasError && hasError( row ),
 						} ) }
 					>
-						{ Object.entries( cols ).map( ( [ name, col ] ) => (
+						{ nonEmptyCols.map( ( [ name, col ] ) => (
 							<td className={ `qm-col-${name}` }>
 								{ col.render( row, i, col ) }
 							</td>
