@@ -42,9 +42,6 @@
 					},
 					"size": {
 						"type": "integer"
-					},
-					"size_formatted": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -54,8 +51,7 @@
 					"value",
 					"expiration",
 					"exp_diff",
-					"size",
-					"size_formatted"
+					"size"
 				],
 				"additionalProperties": false
 			}

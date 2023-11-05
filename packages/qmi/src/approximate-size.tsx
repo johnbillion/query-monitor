@@ -15,9 +15,16 @@ declare const QM_i18n: iQM_i18n;
 
 export const ApproximateSize = ( { value }: Props ) => (
 	<>
-		{ sprintf(
-			'~%s kB',
-			QM_i18n.number_format( value / 1024 )
+		{ ( value < 1024 ) ? (
+			sprintf(
+				'~%s B',
+				QM_i18n.number_format( value )
+			)
+		) : (
+			sprintf(
+				'~%s kB',
+				QM_i18n.number_format( value / 1024 )
+			)
 		) }
 	</>
 );

@@ -22,7 +22,6 @@ class QM_Data_Transients extends QM_Data {
 	 *   expiration: int,
 	 *   exp_diff: string,
 	 *   size: int,
-	 *   size_formatted: string,
 	 * }>
 	 */
 	public $trans;

@@ -3,7 +3,8 @@ import {
 	TabularPanel,
 	PanelProps,
 	getCallerCol,
-	getComponentCol
+	getComponentCol,
+	ApproximateSize,
 } from 'qmi';
 import {
 	DataTypes,
@@ -63,11 +64,7 @@ export default ( { data }: PanelProps<DataTypes['Transients']> ) => {
 			size: {
 				className: 'qm-num',
 				heading: _x( 'Size', 'size of transient value', 'query-monitor' ),
-				render: ( row ) => (
-					<>
-						~{ row.size_formatted }
-					</>
-				),
+				render: ( row ) => <ApproximateSize value={ row.size } />,
 			},
 			...getCallerCol( data.trans ),
 			...getComponentCol( data.trans, data.component_times ),

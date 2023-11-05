@@ -637,7 +637,6 @@ export interface Transients {
 		expiration: number;
 		exp_diff: string;
 		size: number;
-		size_formatted: string;
 	}[];
 	has_type: boolean;
 }
