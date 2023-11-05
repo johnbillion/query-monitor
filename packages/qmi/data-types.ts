@@ -158,10 +158,6 @@ export interface Caps {
 		name: string;
 		user: string;
 	}[];
-	users: number[];
-	components: {
-		[k: string]: string;
-	};
 }
 /**
  * Class representing a backtrace.

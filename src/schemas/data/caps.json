@@ -5,9 +5,7 @@
 	"description": "User capability checks data transfer object.",
 	"type": "object",
 	"required": [
-		"caps",
-		"users",
-		"components"
+		"caps"
 	],
 	"properties": {
 		"caps": {
@@ -45,18 +43,6 @@
 					}
 				},
 				"additionalProperties": false
-			}
-		},
-		"users": {
-			"type": "array",
-			"items": {
-				"type": "integer"
-			}
-		},
-		"components": {
-			"type": "object",
-			"additionalProperties": {
-				"type": "string"
 			}
 		}
 	},

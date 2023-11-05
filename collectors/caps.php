@@ -219,8 +219,6 @@ class QM_Collector_Caps extends QM_DataCollector {
 			return;
 		}
 
-		$all_users = array();
-		$components = array();
 		$this->data->caps = array();
 
 		$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_noise' ) ) );
@@ -230,27 +228,20 @@ class QM_Collector_Caps extends QM_DataCollector {
 		}
 
 		foreach ( $this->cap_checks as $cap ) {
-			$name = $cap['args'][0];
+			$name = array_shift( $cap['args'] );
+			$user_id = array_shift( $cap['args'] );
 
 			if ( ! is_string( $name ) ) {
 				$name = '';
 			}
-
-			$component = $cap['trace']->get_component();
-			$capability = array_shift( $cap['args'] );
-			$user_id = array_shift( $cap['args'] );
 
 			$cap['name'] = $name;
 			$cap['user'] = $user_id;
 
 			$this->data->caps[] = $cap;
 
-			$all_users[] = (int) $user_id;
-			$components[ $component->name ] = $component->name;
+			$this->log_component( $cap['trace']->get_component(), 0, $name );
 		}
-
-		$this->data->users = array_values( array_unique( array_filter( $all_users ) ) );
-		$this->data->components = $components;
 	}
 
 	/**
