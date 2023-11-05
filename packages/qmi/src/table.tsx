@@ -221,7 +221,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
-							<td className={ `qm-cell-${key} ${col.className}` }>
+							<td className={ classNames( `qm-cell-${key}`, col.className ) }>
 								{ col.render( row, i, col ) }
 							</td>
 						) ) }
