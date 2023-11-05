@@ -632,7 +632,7 @@ export interface Transients {
 	trans: {
 		name: string;
 		trace: Backtrace;
-		type: string;
+		type: "blog" | "site";
 		value: unknown;
 		expiration: number;
 		exp_diff: string;

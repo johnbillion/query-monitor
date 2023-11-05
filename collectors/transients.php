@@ -66,7 +66,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 	 * @param string $type
 	 * @param mixed $value
 	 * @param int $expiration
-	 * @phpstan-param 'site'|'blog' $value
+	 * @phpstan-param 'site'|'blog' $type
 	 * @return void
 	 */
 	public function setted_transient( $transient, $type, $value, $expiration ) {

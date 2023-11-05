@@ -17,7 +17,7 @@ class QM_Data_Transients extends QM_Data {
 	 * @phpstan-var array<int, array{
 	 *   name: string,
 	 *   trace: QM_Backtrace,
-	 *   type: string,
+	 *   type: 'blog'|'site',
 	 *   value: mixed,
 	 *   expiration: int,
 	 *   exp_diff: string,

@@ -27,7 +27,11 @@
 						]
 					},
 					"type": {
-						"type": "string"
+						"type": "string",
+						"enum": [
+							"blog",
+							"site"
+						]
 					},
 					"value": {},
 					"expiration": {
