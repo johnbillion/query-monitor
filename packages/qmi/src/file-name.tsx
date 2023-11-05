@@ -13,9 +13,10 @@ interface Props {
 	file: string,
 	line?: number,
 	isFileName?: boolean,
+	expanded?: boolean,
 }
 
-export const FileName = ( { text, file, line = 0, isFileName = false }: Props ) => {
+export const FileName = ( { text, file, line = 0, isFileName = false, expanded = false }: Props ) => {
 	const {
 		editor,
 	} = React.useContext( MainContext );
@@ -30,15 +31,25 @@ export const FileName = ( { text, file, line = 0, isFileName = false }: Props ) 
 	const format = Utils.getEditorFormat( editor );
 
 	if ( ! format ) {
-		let displayValue = file;
-
-		if ( line ) {
-			displayValue += `:${ line }`;
+		if ( isFileName ) {
+			return <> { text } </>;
 		}
 
-		return ( isFileName )
-			? <> { displayValue } </>
-			: <code>{ displayValue }</code>;
+		return (
+			<>
+				<code>
+					{ text }
+				</code>
+				{ expanded && (
+					<>
+						<br/>
+						<span className="qm-info qm-supplemental">
+							{ `${file}:${line}` }
+						</span>
+					</>
+				) }
+			</>
+		);
 	}
 
 	const output = sprintf(
@@ -48,6 +59,6 @@ export const FileName = ( { text, file, line = 0, isFileName = false }: Props ) 
 	);
 
 	return ( isFileName )
-		? <a href={ output }>{ output }</a>
+		? <a href={ output }>{ text }</a>
 		: <a href={ output }><code>{ text }</code></a>;
 };

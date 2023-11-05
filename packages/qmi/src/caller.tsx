@@ -34,7 +34,7 @@ export const Caller = ( { isFileList, trace }: Props ) => {
 			{ frames.length > 0 && (
 				<button
 					aria-expanded={ expanded ? 'false' : 'true' }
-					aria-label={ __( 'View call stack', 'query-monitor' ) }
+					aria-label={ __( 'Toggle full call stack', 'query-monitor' ) }
 					className="qm-toggle"
 					onClick={ () => setExpanded( ! expanded ) }
 				>
@@ -46,7 +46,7 @@ export const Caller = ( { isFileList, trace }: Props ) => {
 			<ol>
 				<li>
 					<Frame
-						expanded={ expanded }
+						expanded={ expanded || frames.length === 0 }
 						frame={ caller }
 						isFileName={ isFileList }
 					/>

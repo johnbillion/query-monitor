@@ -19,14 +19,7 @@ export const Frame = ( { frame, expanded, isFileName }: Props ) => (
 			file={ frame.file }
 			line={ frame.line }
 			isFileName={ isFileName }
+			expanded={ expanded }
 		/>
-		{ expanded && (
-			<>
-				<br/>
-				<span className="qm-info qm-supplemental">
-					@TODO
-				</span>
-			</>
-		) }
 	</>
 );
