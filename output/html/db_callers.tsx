@@ -1,7 +1,7 @@
 import {
 	PanelProps,
-	Panel,
-	Time,
+	TabularPanel,
+	getTimeCol,
 	TotalTime,
 } from 'qmi';
 import {
@@ -16,46 +16,36 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 		return null;
 	}
 
+	const tableData = Object.values( data.times ).map( row => ( {
+		...row,
+		types: Object.keys( data.types ).reduce( ( types, type ) => ( {
+			...types,
+			[ type ]: row.types[type] || '',
+		} ), {} ),
+	} ) );
+
+	const getTypeCols = () => Object.keys( data.types ).reduce( ( cols, type ) => ( {
+		...cols,
+		[ type ]: {
+			heading: type,
+			render: ( row: any ) => row.types[type],
+			className: 'qm-num',
+		},
+	} ), {} );
+
 	return (
-		<Panel>
-			<table>
-				<caption>
-					<h2 id="qm-panel-title">
-						{ __( 'Queries by Caller', 'query-monitor' ) }
-					</h2>
-				</caption>
-				<thead>
-					<tr>
-						<th scope="col">
-							{ __( 'Caller', 'query-monitor' ) }
-						</th>
-						{ Object.keys( data.types ).map( key => (
-							<th key={ key } className="qm-num" scope="col">
-								{ key }
-							</th>
-						) ) }
-						<th className="qm-num" scope="col">
-							{ __( 'Time', 'query-monitor' ) }
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ Object.values( data.times ).map( caller => (
-						<tr key={ caller.caller }>
-							<td>
-								{ caller.caller }
-							</td>
-							{ Object.keys( data.types ).map( key => (
-								<td key={ key } className="qm-num">
-									{ caller.types[key] || '' }
-								</td>
-							) ) }
-							<td>
-								<Time value={ caller.ltime }/>
-							</td>
-						</tr>
-					) ) }
-				</tbody>
+		<TabularPanel
+			title={ __( 'Queries by Caller', 'query-monitor' ) }
+			cols={{
+				caller: {
+					heading: __( 'Caller', 'query-monitor' ),
+					render: ( row ) => row.caller,
+				},
+				...getTypeCols(),
+				...getTimeCol( tableData ),
+			}}
+			data={ tableData }
+			footer={ () => (
 				<tfoot>
 					<tr>
 						<td></td>
@@ -64,10 +54,12 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 								{ value }
 							</td>
 						) ) }
-						<TotalTime rows={ Object.values( data.times ) }/>
+						<td className="qm-num">
+							<TotalTime rows={ tableData }/>
+						</td>
 					</tr>
 				</tfoot>
-			</table>
-		</Panel>
+			) }
+		/>
 	);
 };
