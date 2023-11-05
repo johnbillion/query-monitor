@@ -50,8 +50,24 @@ export default ( { data }: PanelProps<DataTypes['HTTP']> ) => {
 						) }
 					</Warning>
 				) : (
-					`${row.response.response.code} ${row.response.response.message}`
+					( row.args.blocking === false ? __( 'Non-blocking', 'query-monitor' ) : `${row.response.response.code} ${row.response.response.message}` )
 				),
+				filters: {
+					options: Object.keys( data.types ).map( ( type ) => ( {
+						key: type,
+						label: type,
+					} ) ),
+					callback: ( row, value ) => {
+						switch ( value ) {
+							case 'non-blocking':
+								return row.args.blocking === false;
+							case 'error':
+								return Utils.isWPError( row.response );
+							default:
+								return Utils.isWPError( row.response ) ? false : row.response.response.code.toString() === value;
+						}
+					},
+				},
 			},
 			...getCallerCol( data.http ),
 			...getComponentCol( data.http, data.component_times ),

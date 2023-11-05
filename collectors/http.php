@@ -354,7 +354,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				$type = 'non-blocking';
 			} else {
 				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
-				$type = "http:{$code}";
+				$type = "{$code}";
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
 				}
