@@ -176,7 +176,7 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 						return (
 							<th
 								key={ key }
-								className={ classNames( col.className, {
+								className={ classNames( `qm-col-${key}`, col.className, {
 									'qm-filterable-column': colFilters.length,
 									'qm-filtered': filterValue !== '',
 								} ) }
@@ -220,8 +220,8 @@ export const Table = <T extends unknown>( { title, cols, data, hasError, id, foo
 							'qm-warn': hasError && hasError( row ),
 						} ) }
 					>
-						{ nonEmptyCols.map( ( [ name, col ] ) => (
-							<td className={ `qm-col-${name}` }>
+						{ nonEmptyCols.map( ( [ key, col ] ) => (
+							<td className={ `qm-cell-${key} ${col.className}` }>
 								{ col.render( row, i, col ) }
 							</td>
 						) ) }

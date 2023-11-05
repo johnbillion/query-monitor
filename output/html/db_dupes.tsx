@@ -53,7 +53,7 @@ export default ( { data }: PanelProps<DataTypes['DB_Dupes']> ) => {
 						const sources = data.dupe_sources[key];
 						return (
 							<tr>
-								<td className="qm-row-sql qm-ltr qm-wrap">
+								<td className="qm-cell-sql qm-ltr qm-wrap">
 									{ Utils.formatSQL( key ) }
 								</td>
 								<td className="qm-num">

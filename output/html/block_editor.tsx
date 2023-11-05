@@ -118,14 +118,14 @@ const RenderBlock = ( { block, data, i }: iBlockProps ) => {
 	return (
 		<React.Fragment key={ i }>
 			<tr>
-				<th className="qm-row-num qm-num" scope="row">
+				<th className="qm-cell-num qm-num" scope="row">
 					{ i }
 				</th>
 				<td className="qm-ltr qm-wrap">
 					{/* @todo sticky */}
 					{ block.blockName }
 				</td>
-				<td className="qm-row-block-attrs">
+				<td className="qm-cell-block-attrs">
 					{ show_attrs && (
 						<pre className="qm-pre-wrap">
 							<code>
@@ -135,7 +135,7 @@ const RenderBlock = ( { block, data, i }: iBlockProps ) => {
 					) }
 				</td>
 				{ data.has_block_context && (
-					<td className="qm-row-block-context">
+					<td className="qm-cell-block-context">
 						{ block.context && show_attrs && (
 							<pre className="qm-pre-wrap">
 								<code>
@@ -157,7 +157,7 @@ const RenderBlock = ( { block, data, i }: iBlockProps ) => {
 						<td></td>
 					)
 				) }
-				<td className="qm-row-block-html">
+				<td className="qm-cell-block-html">
 					<pre className="qm-pre-wrap">
 						<code>
 							{ block.innerHTML }

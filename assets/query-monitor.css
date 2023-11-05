@@ -771,23 +771,23 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 			line-height: var( --qm-font-code-line-height ) !important;
 		}
 
-		& td.qm-row-sql {
+		& th.qm-col-sql {
 			min-width: 25em !important;
 		}
 
-		& td.qm-row-block-attrs,
-		& td.qm-row-block-context,
-		& td.qm-row-block-html {
+		& th.qm-col-block-attrs,
+		& th.qm-col-block-context,
+		& th.qm-col-block-html {
 			max-width: 40em !important;
 		}
 
-		& td.qm-row-block-attrs,
-		& td.qm-row-block-context,
-		& td.qm-row-block-html,
-		& tr.qm-warn td.qm-col-status,
-		& td.qm-url,
+		& th.qm-col-block-attrs,
+		& th.qm-col-block-context,
+		& th.qm-col-block-html,
+		& tr.qm-warn td.qm-cell-status,
+		& th.qm-col-url,
 		& th.qm-col-message,
-		& td.qm-row-component {
+		& th.qm-col-component {
 			min-width: 15em !important;
 		}
 
