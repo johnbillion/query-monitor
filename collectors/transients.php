@@ -80,6 +80,8 @@ class QM_Collector_Transients extends QM_DataCollector {
 			),
 		) );
 
+		$this->log_component( $trace->get_component(), 0, $type );
+
 		$name = str_replace( array(
 			'_site_transient_',
 			'_transient_',
