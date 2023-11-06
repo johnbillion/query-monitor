@@ -23,6 +23,7 @@ export interface Col<TDataRow> {
 	heading: string;
 	render: ( row: TDataRow, i: number, col: Col<TDataRow> ) => ( React.ReactNode | string );
 	filters?: ColFilters<TDataRow>;
+	sorting?: ColSorting<TDataRow>;
 }
 
 interface Cols<TDataRow> {
@@ -37,11 +38,18 @@ interface ColFilters<TDataRow> {
 	callback: ( row: TDataRow, value: string ) => boolean;
 }
 
+interface ColSorting<TDataRow> {
+	field: keyof TDataRow;
+	default?: 'asc'|'desc';
+}
+
 export interface TabularProps<TDataRow> {
 	cols: Cols<TDataRow>;
 	data: TDataRow[];
 	hasError?: ( row: TDataRow ) => boolean;
 	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
+	orderby?: string; // @todo restrict this to a key of the cols
+	order?: 'asc'|'desc';
 }
 
 interface TableProps<TDataRow> extends TabularProps<TDataRow> {
@@ -110,6 +118,10 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[] )
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Time value={ row.ltime } />,
+		sorting: {
+			field: 'ltime',
+			default: 'desc',
+		},
 	};
 
 	return column;
@@ -124,7 +136,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 	return column;
 }
 
-export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, footer, children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, footer, orderby = null, order = 'desc', children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
@@ -146,6 +158,29 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 		}
 
 		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
+	}
+
+	const [ sorting, setSorting ] = React.useState( {
+		orderby,
+		order,
+	} );
+
+	if ( sorting.orderby ) {
+		const sortField = cols[ sorting.orderby ].sorting?.field;
+
+		if ( sortField ) {
+			data.sort( ( a, b ) => {
+				if ( a[ sortField ] < b[ sortField ] ) {
+					return sorting.order === 'asc' ? -1 : 1;
+				}
+
+				if ( a[ sortField ] > b[ sortField ] ) {
+					return sorting.order === 'asc' ? 1 : -1;
+				}
+
+				return 0;
+			} );
+		}
 	}
 
 	const footerFunc = footer || PanelFooter;
@@ -204,7 +239,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 			<tbody>
 				{ data.map( ( row, i ) => (
 					<tr
-						key={ i }
+						key={ i } // @todo nope
 						className={ classNames( {
 							// @todo remove this in favour of using a warning or error property on row objects
 							'qm-warn': hasError && hasError( row ),

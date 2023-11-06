@@ -44,6 +44,8 @@ export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 				...getTypeCols(),
 				time: getTimeCol( tableData ),
 			}}
+			orderby="time"
+			order="desc"
 			data={ tableData }
 			footer={ () => (
 				<tfoot>
