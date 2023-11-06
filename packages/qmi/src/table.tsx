@@ -18,48 +18,43 @@ import {
 
 import * as React from 'react';
 
-export interface Col<T> {
+export interface Col<TDataRow> {
 	className?: string;
 	heading: string;
-	render: ( row: T, i: number, col: Col<T> ) => ( React.ReactNode | string );
-	filters?: ColFilters<T>;
+	render: ( row: TDataRow, i: number, col: Col<TDataRow> ) => ( React.ReactNode | string );
+	filters?: ColFilters<TDataRow>;
 }
 
-interface Cols<T> {
-	[ key: string ]: Col<T>;
+interface Cols<TDataRow> {
+	[ key: string ]: Col<TDataRow>;
 }
 
-interface ColFilters<T> {
+interface ColFilters<TDataRow> {
 	options: {
 		key: string;
 		label: string;
 	}[];
-	callback: ( row: T, value: string ) => boolean;
+	callback: ( row: TDataRow, value: string ) => boolean;
 }
 
-export interface TabularProps<T> {
-	cols: Cols<T>;
-	data: T[];
-	hasError?: ( row: T ) => boolean;
-	footer?: ( args: { cols: number, count: number, total: number, data: T[] } ) => React.ReactNode;
+export interface TabularProps<TDataRow> {
+	cols: Cols<TDataRow>;
+	data: TDataRow[];
+	hasError?: ( row: TDataRow ) => boolean;
+	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
 }
 
-interface TableProps<T> extends TabularProps<T> {
+interface TableProps<TDataRow> extends TabularProps<TDataRow> {
 	id: string;
 	title: string;
 	children?: React.ReactNode;
 }
 
-export interface KnownData {
-	trace?: Backtrace;
-	ltime?: number;
-}
-
-interface RowWithTrace {
+interface DataRowWithTrace {
 	trace?: Backtrace;
 }
 
-interface RowWithTime {
+interface DataRowWithTime {
 	ltime?: number;
 }
 
@@ -75,8 +70,8 @@ const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	return 0;
 };
 
-export const getComponentCol = <T extends {}>( rows: T[], component_times: AbstractData['component_times'] ) => {
-	const column: Col<RowWithTrace & T> = {
+export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], component_times: AbstractData['component_times'] ) => {
+	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace.component } />,
 		filters: {
@@ -110,8 +105,8 @@ export const getComponentCol = <T extends {}>( rows: T[], component_times: Abstr
 	return column;
 };
 
-export const getTimeCol = <T extends RowWithTime>( rows: T[], defaultSort: boolean = false ) => {
-	const column: Col<T> = {
+export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[] ) => {
+	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Time value={ row.ltime } />,
@@ -120,8 +115,8 @@ export const getTimeCol = <T extends RowWithTime>( rows: T[], defaultSort: boole
 	return column;
 }
 
-export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
-	const column: Col<T> = {
+export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
 		render: ( row ) => <Caller trace={ row.trace } />,
 	};
@@ -129,7 +124,7 @@ export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
 	return column;
 }
 
-export const Table = <T extends {}>( { title, cols, data, hasError, id, footer, children }: TableProps<T> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, footer, children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,

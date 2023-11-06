@@ -6,12 +6,12 @@ import {
 
 import * as React from 'react';
 
-export interface Props<T> extends TabularProps<T> {
+export interface Props<TDataRow> extends TabularProps<TDataRow> {
 	title: string;
 	children?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends {}>( { cols, data, footer, hasError, title, children }: Props<T> ) => {
+export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, hasError, title, children }: Props<TDataRow> ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );
