@@ -1,3 +1,8 @@
+---
+title: Add-on plugins
+parent: Help
+---
+
 # Query Monitor add-on plugins
 
 ## Third-party plugins that extend Query Monitor
