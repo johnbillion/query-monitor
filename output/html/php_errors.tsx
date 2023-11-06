@@ -31,6 +31,11 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 					<>
 						{ row.level === 'warning' && ( <Warning /> ) }
 						{ row.level }
+						{ row.suppressed && (
+							<>
+								&nbsp;({ __( 'suppressed', 'query-monitor' ) })
+							</>
+						) }
 					</>
 				),
 				filters: {
