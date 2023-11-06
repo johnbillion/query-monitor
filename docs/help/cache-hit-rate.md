@@ -1,3 +1,8 @@
+---
+title: Cache hit rate
+parent: Help
+---
+
 # Cache hit rate
 
 Does your object cache hit rate always show as `100%`? If so, this is possibly due to a bug in the Memcached object cache controller.
