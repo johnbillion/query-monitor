@@ -75,26 +75,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'warning' => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
 
-		$key = 'quiet';
-		$generic = false;
-
 		foreach ( $types as $type => $label ) {
-
 			$count = 0;
 			$has_errors = false;
 
-			if ( isset( $data->suppressed[ $type ] ) ) {
+			if ( isset( $data->types[ $type ] ) ) {
 				$has_errors = true;
-				$generic = true;
-			}
-			if ( isset( $data->silenced[ $type ] ) ) {
-				$has_errors = true;
-				$generic = true;
-			}
-			if ( isset( $data->errors[ $type ] ) ) {
-				$has_errors = true;
-				$key = $type;
-				$count += (int) array_sum( array_column( $data->errors[ $type ], 'calls' ) );
+				$count += $data->types[ $type ];
 			}
 
 			if ( ! $has_errors ) {
@@ -114,7 +101,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			}
 		}
 
-		if ( empty( $menu_label ) && ! $generic ) {
+		if ( empty( $menu_label ) ) {
 			return $menu;
 		}
 
@@ -124,17 +111,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		/* translators: used between list items, there is a space after the comma */
 		$sep = __( ', ', 'query-monitor' );
 
-		if ( count( $menu_label ) ) {
-			$title = sprintf(
-				$title,
-				implode( $sep, array_reverse( $menu_label ) )
-			);
-		} else {
-			$title = __( 'PHP Errors', 'query-monitor' );
-		}
+		$title = sprintf(
+			$title,
+			implode( $sep, array_reverse( $menu_label ) )
+		);
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id' => "query-monitor-{$key}s", // @TODO
 			'title' => $title,
 		) );
 		return $menu;
@@ -150,22 +132,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $menu;
 		}
 
-		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
-		$count = 0;
-		$types = array(
-			'suppressed',
-			'silenced',
-			'errors',
-		);
-
-		foreach ( $types as $type ) {
-			if ( ! empty( $data->{$type} ) ) {
-				foreach ( $data->{$type} as $errors ) {
-					$count += array_sum( array_column( $errors, 'calls' ) );
-				}
-			}
-		}
+		$count = array_sum( $data->types );
 
 		$menu[ $this->collector->id() ]['title'] = esc_html( sprintf(
 			/* translators: %s: Number of errors */

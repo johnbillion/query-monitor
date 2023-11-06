@@ -27,7 +27,7 @@
  */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
-	 * @var array<string, errorObject>
+	 * @var ?array<string, errorObject>
 	 */
 	public $errors;
 }

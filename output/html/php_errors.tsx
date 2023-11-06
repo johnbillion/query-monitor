@@ -2,6 +2,7 @@ import {
 	PanelProps,
 	TabularPanel,
 	Warning,
+	EmptyPanel,
 	getCallerCol,
 	getComponentCol
 } from 'qmi';
@@ -12,8 +13,16 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
-	<TabularPanel
+export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
+	if ( ! data.errors ) {
+		return <EmptyPanel>
+			<p>
+				{ __( 'No errors logged.', 'query-monitor' ) }
+			</p>
+		</EmptyPanel>
+	}
+
+	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
 		cols={{
 			level: {
@@ -39,5 +48,5 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
 		}}
 		hasError={ ( row ) => ( row.level === 'warning' ) }
 		data={ Object.values( data.errors ) }
-	/>
-);
+	/>;
+};

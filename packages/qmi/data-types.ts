@@ -478,7 +478,7 @@ export interface Overview {
  * PHP errors data transfer object.
  */
 export interface PHP_Errors {
-	errors: {
+	errors?: {
 		[k: string]: ErrorObject;
 	};
 }

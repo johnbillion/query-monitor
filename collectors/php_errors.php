@@ -15,12 +15,6 @@ if ( ! defined( 'QM_ERROR_FATALS' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
- * @phpstan-type errorLabels array{
- *   warning: string,
- *   notice: string,
- *   strict: string,
- *   deprecated: string,
- * }
  * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
@@ -266,10 +260,13 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 			if ( $do_trace ) {
 				$error['trace'] = $trace;
+				$this->log_component( $trace->get_component(), 0, $level );
 			}
 
 			$this->data->errors[ $key ] = $error;
 		}
+
+		$this->log_type( $level );
 
 		/**
 		 * Filters the PHP error handler return value. This can be used to control whether or not the default error
@@ -376,8 +373,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		$components = array();
-
 		if ( ! empty( $this->data->errors ) ) {
 			/**
 			 * Filters the levels used for reported PHP errors on a per-component basis.

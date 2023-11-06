@@ -192,13 +192,14 @@ class CollectorPhpErrorsTest extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
+		// @todo
 		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'notice', $actual->errors );
 		self::assertSame( 2, count( $actual->errors['notice'] ) );
 
 		// silenced errors:
+		// @todo
 		self::assertTrue( property_exists( $actual, 'silenced' ) );
-		// @phpstan-ignore-next-line
 		self::assertFalse( isset( $actual->silenced ) );
 	}
 
@@ -237,12 +238,14 @@ class CollectorPhpErrorsTest extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
+		// @todo
 		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'warning', $actual->errors );
 		self::assertArrayNotHasKey( 'notice', $actual->errors );
 		self::assertSame( 1, count( $actual->errors['warning'] ) );
 
 		// silenced errors:
+		// @todo
 		self::assertTrue( property_exists( $actual, 'silenced' ) );
 		self::assertArrayHasKey( 'notice', $actual->silenced );
 		self::assertArrayNotHasKey( 'warning', $actual->silenced );
