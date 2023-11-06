@@ -1,3 +1,7 @@
+---
+nav_exclude: true
+---
+
 # Privacy statement
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
