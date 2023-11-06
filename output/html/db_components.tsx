@@ -62,7 +62,9 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['DB_Queries']> ) =>
 								{ value }
 							</td>
 						) ) }
-						<TotalTime rows={ Object.values( data.component_times ) }/>
+						<td>
+							<TotalTime rows={ Object.values( data.component_times ) }/>
+						</td>
 					</tr>
 				</tfoot>
 			</table>
