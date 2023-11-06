@@ -1,4 +1,4 @@
-<img src=".wordpress-org/icon-128x128.png" align="right" width="100" height="100" alt="">
+<img src=".wordpress-org/icon-256x256.png" align="right" width="100" height="100" alt="">
 
 [![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
