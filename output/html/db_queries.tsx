@@ -17,7 +17,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+export const DBQueries = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 	if ( ! data.rows?.length ) {
 		return <EmptyPanel>
 			<p>

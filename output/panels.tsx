@@ -3,33 +3,32 @@ import {
 	PanelContext,
 	PanelContextType,
 	MainContext,
-	MainContextType,
 } from 'qmi';
 import * as React from 'react';
 
-import Admin from './html/admin';
-import Scripts from './html/assets_scripts';
-import Styles from './html/assets_styles';
-import BlockEditor from './html/block_editor';
-import Caps from './html/caps';
-import Conditionals from './html/conditionals';
-import DBCallers from './html/db_callers';
-import DBComponents from './html/db_components';
-import DBDupes from './html/db_dupes';
-import DBQueries from './html/db_queries';
-import DoingItWrong from './html/doing_it_wrong';
-import Environment from './html/environment';
-import Hooks from './html/hooks';
-import HTTP from './html/http';
-import Languages from './html/languages';
-import Logger from './html/logger';
-import Multisite from './html/multisite';
-import PHPErrors from './html/php_errors';
-import Request from './html/request';
+import { Admin } from './html/admin';
+import { Scripts } from './html/assets_scripts';
+import { Styles } from './html/assets_styles';
+import { BlockEditor } from './html/block_editor';
+import { Caps } from './html/caps';
+import { Conditionals } from './html/conditionals';
+import { DBCallers } from './html/db_callers';
+import { DBComponents } from './html/db_components';
+import { DBDupes } from './html/db_dupes';
+import { DBQueries } from './html/db_queries';
+import { DoingItWrong } from './html/doing_it_wrong';
+import { Environment } from './html/environment';
+import { Hooks } from './html/hooks';
+import { HTTP } from './html/http';
+import { Languages } from './html/languages';
+import { Logger } from './html/logger';
+import { Multisite } from './html/multisite';
+import { PHPErrors } from './html/php_errors';
+import { Request } from './html/request';
 import { Settings, iQMConfig } from './html/settings';
-import Theme from './html/theme';
-import Timing from './html/timing';
-import Transients from './html/transients';
+import { Theme } from './html/theme';
+import { Timing } from './html/timing';
+import { Transients } from './html/transients';
 
 interface QMPanelData {
 	data: any;

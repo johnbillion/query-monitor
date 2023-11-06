@@ -11,7 +11,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+export const DBComponents = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 	if ( ! data.component_times ) {
 		return null;
 	}

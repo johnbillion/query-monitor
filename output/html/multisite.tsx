@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export default ( { data }: PanelProps<DataTypes['Multisite']> ) => {
+export const Multisite = ( { data }: PanelProps<DataTypes['Multisite']> ) => {
 	if ( ! data.switches.length ) {
 		return (
 			<EmptyPanel>

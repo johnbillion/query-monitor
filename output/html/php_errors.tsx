@@ -12,7 +12,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export default ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
+export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => (
 	<TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
 		cols={{

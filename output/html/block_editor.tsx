@@ -32,7 +32,7 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 
-export default ( { data }: PanelProps<iBlockData> ) => {
+export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
 			return null;
 		}
