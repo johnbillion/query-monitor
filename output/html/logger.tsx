@@ -41,7 +41,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['Logger']> ) => {
 					</>
 				),
 				filters: {
-					options: data.levels.map( ( level ) => ( {
+					options: Object.keys( data.types ).map( ( level ) => ( {
 						key: level,
 						label: level,
 					} ) ),

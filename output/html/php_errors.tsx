@@ -33,6 +33,13 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 						{ row.level }
 					</>
 				),
+				filters: {
+					options: Object.keys( data.types ).map( ( level ) => ( {
+						key: level,
+						label: level,
+					} ) ),
+					callback: ( row, filter ) => row.level === filter,
+				},
 			},
 			message: {
 				heading: __( 'Message', 'query-monitor' ),

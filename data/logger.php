@@ -14,11 +14,6 @@
 
 class QM_Data_Logger extends QM_Data {
 	/**
-	 * @phpstan-var array<QM_Collector_Logger::*, int>
-	 */
-	public $counts;
-
-	/**
 	 * @phpstan-var array<int, array{
 	 *   message: string,
 	 *   trace: QM_Backtrace,
@@ -26,16 +21,6 @@ class QM_Data_Logger extends QM_Data {
 	 * }>
 	 */
 	public $logs;
-
-	/**
-	 * @var array<string, string>
-	 */
-	public $components;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $levels;
 
 	/**
 	 * @var array<int, string>

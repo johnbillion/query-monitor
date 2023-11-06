@@ -426,20 +426,11 @@ export interface Languages {
  * Logger data transfer object.
  */
 export interface Logger {
-	counts: {
-		[k: string]: {
-			[k: string]: number;
-		};
-	};
 	logs: {
 		message: string;
 		trace: Backtrace;
 		level: string;
 	}[];
-	components: {
-		[k: string]: string;
-	};
-	levels: string[];
 	warning_levels: string[];
 }
 /**
@@ -484,7 +475,7 @@ export interface PHP_Errors {
 }
 export interface ErrorObject {
 	errno: number;
-	level: string;
+	level: "warning" | "notice" | "strict" | "deprecated";
 	suppressed: boolean;
 	message: string;
 	file: string | null;

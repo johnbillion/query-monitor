@@ -5,23 +5,10 @@
 	"description": "Logger data transfer object.",
 	"type": "object",
 	"required": [
-		"counts",
 		"logs",
-		"components",
-		"levels",
 		"warning_levels"
 	],
 	"properties": {
-		"counts": {
-			"type": "object",
-			"phpStanType": "array<QM_Collector_Logger::*, int>",
-			"additionalProperties": {
-				"type": "object",
-				"additionalProperties": {
-					"type": "integer"
-				}
-			}
-		},
 		"logs": {
 			"type": "array",
 			"items": {
@@ -50,18 +37,6 @@
 					"level"
 				],
 				"additionalProperties": false
-			}
-		},
-		"components": {
-			"type": "object",
-			"additionalProperties": {
-				"type": "string"
-			}
-		},
-		"levels": {
-			"type": "array",
-			"items": {
-				"type": "string"
 			}
 		},
 		"warning_levels": {

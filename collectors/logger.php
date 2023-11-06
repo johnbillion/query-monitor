@@ -36,8 +36,6 @@ class QM_Collector_Logger extends QM_DataCollector {
 	public function set_up() {
 		parent::set_up();
 
-		$this->data->counts = array_fill_keys( $this->get_levels(), 0 );
-
 		foreach ( $this->get_levels() as $level ) {
 			add_action( "qm/{$level}", array( $this, $level ), 10, 2 );
 		}
@@ -200,8 +198,8 @@ class QM_Collector_Logger extends QM_DataCollector {
 		}
 
 		$this->log_component( $trace->get_component(), 1, $level );
+		$this->log_type( $level );
 
-		$this->data->counts[ $level ]++;
 		$this->data->logs[] = array(
 			'message' => self::interpolate( $message, $context ),
 			'context' => $context,
@@ -240,15 +238,6 @@ class QM_Collector_Logger extends QM_DataCollector {
 			return;
 		}
 
-		$components = array();
-
-		foreach ( $this->data->logs as $row ) {
-			$component = $row['trace']->get_component();
-			$components[ $component->name ] = $component->name;
-		}
-
-		$this->data->components = $components;
-		$this->data->levels = $this->get_levels();
 		$this->data->warning_levels = $this->get_warning_levels();
 	}
 

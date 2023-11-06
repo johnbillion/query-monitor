@@ -15,7 +15,7 @@
 /**
  * @phpstan-type errorObject array{
  *   errno: int,
- *   level: string,
+ *   level: 'warning'|'notice'|'strict'|'deprecated',
  *   suppressed: bool,
  *   message: string,
  *   file: string|null,
