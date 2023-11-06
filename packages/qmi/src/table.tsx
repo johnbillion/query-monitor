@@ -25,6 +25,10 @@ export interface Col<T> {
 	filters?: ColFilters<T>;
 }
 
+interface Cols<T> {
+	[ key: string ]: Col<T>;
+}
+
 interface ColFilters<T> {
 	options: {
 		key: string;
@@ -33,15 +37,16 @@ interface ColFilters<T> {
 	callback: ( row: T, value: string ) => boolean;
 }
 
-interface TableProps<T> {
-	id: string;
-	title: string;
-	cols: {
-		[ key: string ]: Col<T>;
-	};
+export interface TabularProps<T> {
+	cols: Cols<T>;
 	data: T[];
 	hasError?: ( row: T ) => boolean;
 	footer?: ( args: { cols: number, count: number, total: number, data: T[] } ) => React.ReactNode;
+}
+
+interface TableProps<T> extends TabularProps<T> {
+	id: string;
+	title: string;
 	children?: React.ReactNode;
 }
 
@@ -70,7 +75,7 @@ const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	return 0;
 };
 
-export const getComponentCol = <T extends unknown>( rows: T[], component_times: AbstractData['component_times'] ) => {
+export const getComponentCol = <T extends {}>( rows: T[], component_times: AbstractData['component_times'] ) => {
 	const column: Col<RowWithTrace & T> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace.component } />,
@@ -105,7 +110,7 @@ export const getComponentCol = <T extends unknown>( rows: T[], component_times: 
 	return column;
 };
 
-export const getTimeCol = <T extends RowWithTime>( rows: T[] ) => {
+export const getTimeCol = <T extends RowWithTime>( rows: T[], defaultSort: boolean = false ) => {
 	const column: Col<T> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
@@ -124,7 +129,7 @@ export const getCallerCol = <T extends RowWithTrace>( rows: T[] ) => {
 	return column;
 }
 
-export const Table = <T extends unknown>( { title, cols, data, hasError, id, footer, children }: TableProps<T> ) => {
+export const Table = <T extends {}>( { title, cols, data, hasError, id, footer, children }: TableProps<T> ) => {
 	const {
 		filters,
 		setFilter,

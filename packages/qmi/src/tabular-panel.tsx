@@ -1,23 +1,17 @@
 import { PanelContext } from './panel-context';
 import {
 	Table,
-	Col,
+	TabularProps,
 } from './table';
 
 import * as React from 'react';
 
-interface Props<T> {
+export interface Props<T> extends TabularProps<T> {
 	title: string;
-	cols: {
-		[ key: string ]: Col<T>;
-	};
-	data: T[];
-	hasError?: ( row: T ) => boolean;
-	footer?: ( args: { cols: number, count: number, total: number, data: T[] } ) => React.ReactNode;
 	children?: React.ReactNode;
 }
 
-export const TabularPanel = <T extends unknown>( { cols, data, footer, hasError, title, children }: Props<T> ) => {
+export const TabularPanel = <T extends {}>( { cols, data, footer, hasError, title, children }: Props<T> ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );
