@@ -1,4 +1,9 @@
-# db.php Symlink
+---
+title: db.php symlink
+parent: Help
+---
+
+# db.php symlink
 
 In addition to the main plugin files, Query Monitor includes a file named `db.php` which gets symlinked into your `wp-content` directory when the plugin is activated. This special file is a WordPress dropin plugin and it allows Query Monitor to provide extended functionality such as the result count, full stack trace, and error detection for all database queries.
 
