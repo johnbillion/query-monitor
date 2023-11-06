@@ -1,6 +1,9 @@
 /assets/*.css
 /assets/*.map
 /composer.lock
+/docs/_site
+/docs/Gemfile
+/docs/Gemfile.lock
 /vendor
 /node_modules
 /tests/_output/
