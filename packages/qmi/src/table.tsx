@@ -136,12 +136,22 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 	return column;
 }
 
+const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
+	return data.reduce( ( total, row ) => {
+		if ( 'count' in row ) {
+			return total += ( row.count as number );
+		}
+
+		return total += 1;
+	}, 0 );
+};
+
 export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, footer, orderby = null, order = 'desc', children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
 	} = React.useContext( PanelContext );
-	const total = data.length;
+	const total = countData( data );
 	const nonEmptyCols = Object.entries( cols ).filter( ( [ key, value ] ) => ( value ? true : false ) );
 
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
@@ -160,6 +170,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
 	}
 
+	const count = countData( data );
 	const [ sorting, setSorting ] = React.useState( {
 		orderby,
 		order,
@@ -246,7 +257,10 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
-							<td className={ classNames( `qm-cell-${key}`, col.className ) }>
+							<td
+								key={ key }
+								className={ classNames( `qm-cell-${key}`, col.className ) }
+							>
 								{ col.render( row, i, col ) }
 							</td>
 						) ) }
@@ -255,7 +269,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 			</tbody>
 			{ footerFunc( {
 				cols: Object.keys( cols ).length,
-				count: data.length,
+				count: count,
 				total: total,
 				data: data,
 			} ) }

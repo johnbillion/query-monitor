@@ -50,7 +50,7 @@
 						}
 					]
 				},
-				"calls": {
+				"count": {
 					"type": "integer"
 				}
 			},
@@ -62,7 +62,7 @@
 				"file",
 				"filename",
 				"line",
-				"calls"
+				"count"
 			],
 			"additionalProperties": false
 		}

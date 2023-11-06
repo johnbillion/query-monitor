@@ -245,7 +245,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		if ( isset( $this->data->errors[ $key ] ) ) {
-			$this->data->errors[ $key ]['calls']++;
+			$this->data->errors[ $key ]['count']++;
 		} else {
 			$error = array(
 				'errno' => $errno,
@@ -255,7 +255,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				'file' => $file,
 				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
 				'line' => $line,
-				'calls' => 1,
+				'count' => 1,
 			);
 
 			if ( $do_trace ) {

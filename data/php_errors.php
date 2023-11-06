@@ -22,7 +22,7 @@
  *   filename: string,
  *   line: int|null,
  *   trace?: QM_Backtrace,
- *   calls: int,
+ *   count: int,
  * }
  */
 class QM_Data_PHP_Errors extends QM_Data {

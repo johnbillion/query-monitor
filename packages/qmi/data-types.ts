@@ -482,7 +482,7 @@ export interface ErrorObject {
 	filename: string;
 	line: number | null;
 	trace?: Backtrace;
-	calls: number;
+	count: number;
 }
 /**
  * Raw request data transfer object.

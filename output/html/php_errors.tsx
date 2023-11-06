@@ -49,7 +49,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 			count: {
 				className: 'qm-num',
 				heading: __( 'Count', 'query-monitor' ),
-				render: ( row ) => ( row.calls ),
+				render: ( row ) => ( row.count ),
 			},
 			component: getComponentCol( Object.values( data.errors ), data.component_times ),
 		}}
