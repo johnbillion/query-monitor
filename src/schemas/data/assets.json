@@ -11,6 +11,15 @@
 				"handle": {
 					"type": "string"
 				},
+				"position": {
+					"type": "string",
+					"enum": [
+						"missing",
+						"broken",
+						"header",
+						"footer"
+					]
+				},
 				"host": {
 					"type": "string"
 				},
@@ -61,6 +70,7 @@
 			},
 			"required": [
 				"handle",
+				"position",
 				"host",
 				"port",
 				"source",
@@ -71,22 +81,10 @@
 				"dependents",
 				"dependencies"
 			]
-		},
-		"AssetList": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"$ref": "#/definitions/Asset"
-			}
 		}
 	},
 	"required": [
-		"counts",
 		"default_version",
-		"dependencies",
-		"dependents",
-		"footer",
-		"header",
 		"full_host",
 		"host",
 		"is_ssl",
@@ -95,77 +93,13 @@
 	],
 	"properties": {
 		"assets": {
-			"type": "object",
-			"properties": {
-				"missing": {
-					"$ref": "#/definitions/AssetList"
-				},
-				"broken": {
-					"$ref": "#/definitions/AssetList"
-				},
-				"header": {
-					"$ref": "#/definitions/AssetList"
-				},
-				"footer": {
-					"$ref": "#/definitions/AssetList"
-				}
-			},
-			"additionalProperties": false
-		},
-		"counts": {
-			"type": "object",
-			"properties": {
-				"missing": {
-					"type": "integer"
-				},
-				"broken": {
-					"type": "integer"
-				},
-				"header": {
-					"type": "integer"
-				},
-				"footer": {
-					"type": "integer"
-				},
-				"total": {
-					"type": "integer"
-				}
-			},
-			"required": [
-				"missing",
-				"broken",
-				"header",
-				"footer",
-				"total"
-			],
-			"additionalProperties": false
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/Asset"
+			}
 		},
 		"default_version": {
 			"type": "string"
-		},
-		"dependencies": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		},
-		"dependents": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		},
-		"footer": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		},
-		"header": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
 		},
 		"full_host": {
 			"type": "string"

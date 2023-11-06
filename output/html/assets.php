@@ -60,7 +60,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$type_label = $this->get_type_labels();
 		$label = sprintf(
 			$type_label['count'],
-			number_format_i18n( $data->counts['total'] )
+			number_format_i18n( array_sum( $data->types ) )
 		);
 
 		$args = array(

@@ -22,11 +22,8 @@ type myProps = PanelProps<DataTypes['Assets']> & {
 	};
 };
 
-interface iPositionLabels {
-	missing : string;
-	broken : string;
-	header : string;
-	footer : string;
+type iPositionLabels = {
+	[ key in AssetDataType['position'] ]: string;
 }
 
 interface iAssetSourceProps {
@@ -80,13 +77,6 @@ export default ( { data, labels }: myProps ) => {
 		);
 	}
 
-	const rows = [
-		...data.assets.broken,
-		...data.assets.missing,
-		...data.assets.header,
-		...data.assets.footer,
-	];
-
 	return (
 		<TabularPanel
 			title={ __( 'Assets', 'query-monitor' ) }
@@ -96,7 +86,7 @@ export default ( { data, labels }: myProps ) => {
 					render: ( row ) => (
 						<>
 							{ row.warning && ( <Warning/> ) }
-							{ row.position }
+							{ position_labels[ row.position ] }
 						</>
 					),
 				},
@@ -106,7 +96,7 @@ export default ( { data, labels }: myProps ) => {
 				},
 				host: {
 					heading: __( 'Host', 'query-monitor' ),
-					render: ( row ) => ( row.port ? `${ row.host }:${ row.port }` : row.host ),
+					render: ( row ) => ( row.host && row.port ? `${ row.host }:${ row.port }` : row.host ),
 				},
 				source: {
 					heading: __( 'Source', 'query-monitor' ),
@@ -148,7 +138,10 @@ export default ( { data, labels }: myProps ) => {
 					render: ( row ) => row.ver,
 				},
 			}}
-			data={ rows }
+			data={ data.assets }
+			hasError={ ( row ) => {
+				return row.warning;
+			} }
 		/>
 	);
 };

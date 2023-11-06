@@ -118,14 +118,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'footer',
 		);
 
-		$this->data->counts = array(
-			'missing' => 0,
-			'broken' => 0,
-			'header' => 0,
-			'footer' => 0,
-			'total' => 0,
-		);
-
 		$type = $this->get_dependency_type();
 
 		/** @var WP_Dependencies $raw */
@@ -163,8 +155,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 		}
 
-		$all_dependencies = array();
-		$all_dependents = array();
 		$asset_data = array();
 		$missing_dependencies = array();
 
@@ -182,9 +172,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					continue;
 				}
 
-				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
 				$dependents = $this->get_dependents( $dependency, $raw );
-				$all_dependents = array_merge( $all_dependents, $dependents );
 
 				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
@@ -211,8 +199,9 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					}
 				}
 
-				$asset_data[ $position ][] = array(
+				$asset_data[] = array(
 					'handle' => $handle,
+					'position' => $position,
 					'host' => $host,
 					'port' => $port,
 					'source' => $source,
@@ -224,21 +213,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'dependencies' => $dependencies,
 				);
 
-				$this->data->counts[ $position ]++;
-				$this->data->counts['total']++;
+				$this->log_type( $position );
 			}
 		}
 
 		$this->data->assets = $asset_data;
-
-		$all_dependencies = array_unique( $all_dependencies );
-		sort( $all_dependencies );
-		$this->data->dependencies = $all_dependencies;
-
-		$all_dependents = array_unique( $all_dependents );
-		sort( $all_dependents );
-		$this->data->dependents = $all_dependents;
-
 		$this->data->missing_dependencies = $missing_dependencies;
 	}
 

@@ -15,6 +15,7 @@
 /**
  * @phpstan-type Asset array{
  *   handle: string,
+ *   position: 'missing'|'broken'|'header'|'footer',
  *   host: string,
  *   port: string,
  *   source: string|WP_Error,
@@ -25,54 +26,17 @@
  *   dependents: array<int, string>,
  *   dependencies: array<int, string>,
  * }
- * @phpstan-type AssetList array<int, Asset>
  */
 class QM_Data_Assets extends QM_Data {
 	/**
-	 * @phpstan-var ?array{
-	 *   missing?: AssetList,
-	 *   broken?: AssetList,
-	 *   header?: AssetList,
-	 *   footer?: AssetList,
-	 * }
+	 * @var ?array<int, Asset>
 	 */
 	public $assets;
-
-	/**
-	 * @phpstan-var array{
-	 *   missing: int,
-	 *   broken: int,
-	 *   header: int,
-	 *   footer: int,
-	 *   total: int,
-	 * }
-	 */
-	public $counts;
 
 	/**
 	 * @var string
 	 */
 	public $default_version;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $dependencies;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $dependents;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $footer;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $header;
 
 	/**
 	 * @var string

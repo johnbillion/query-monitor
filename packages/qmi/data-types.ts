@@ -17,8 +17,6 @@ import {
 	WP_User,
 } from 'wp-types';
 
-export type AssetList = Asset[];
-
 export interface DataTypes {
 	Admin: AbstractData & Admin;
 	Assets: AbstractData & Assets;
@@ -78,24 +76,8 @@ export interface Admin {
  * Asset data transfer object.
  */
 export interface Assets {
-	assets?: {
-		missing?: AssetList;
-		broken?: AssetList;
-		header?: AssetList;
-		footer?: AssetList;
-	};
-	counts: {
-		missing: number;
-		broken: number;
-		header: number;
-		footer: number;
-		total: number;
-	};
+	assets?: Asset[];
 	default_version: string;
-	dependencies: string[];
-	dependents: string[];
-	footer: string[];
-	header: string[];
 	full_host: string;
 	host: string;
 	is_ssl: boolean;
@@ -106,6 +88,7 @@ export interface Assets {
 }
 export interface Asset {
 	handle: string;
+	position: "missing" | "broken" | "header" | "footer";
 	host: string;
 	port: string;
 	source: string | WP_Error;
