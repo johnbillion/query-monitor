@@ -126,14 +126,14 @@ do_action( 'qm/debug', 'This happened!' );
 
 The logger is PSR-3 compatible, so you can use any of the following actions which correspond to PSR-3 log levels:
 
- * `qm/emergency`
- * `qm/alert`
- * `qm/critical`
- * `qm/error`
- * `qm/warning`
- * `qm/notice`
- * `qm/info`
  * `qm/debug`
+ * `qm/info`
+ * `qm/notice`
+ * `qm/warning`
+ * `qm/error`
+ * `qm/critical`
+ * `qm/alert`
+ * `qm/emergency`
 
 A log level of `warning` or higher will trigger a notification in Query Monitor's admin toolbar.
 
