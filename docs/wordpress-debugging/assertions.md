@@ -26,9 +26,9 @@ do_action( 'qm/assert', $value === 5, 'Value is 5', $value );
 
 The `qm/assert` action accepts an assertion value as its first parameter which you'll usually provide in the form of an expression. This should be a boolean `true` or `false` value, although technically anything truthy or falsey is accepted.
 
-If the assertion passes then nothing happens. If the assertion fails then Query Monitor will show an error in the Logs panel, which in turn causes a red warning to appear in the admin toolbar so you get notified about the failure.
+If the assertion fails then Query Monitor will show an error in the Logs panel, which in turn causes a red warning to appear in the admin toolbar so you get notified about the failure. If the assertion passes then a debug level message will be shown in the Logs panel, which helps you confirm that your assertion is being executed.
 
-The second parameter is an optional short description of the assertion. If provided, this will be shown as the assertion failure message on the Logs screen. If the assertion passes, a debug level message will be shown, which helps you confirm that your assertion is actually being executed.
+The second parameter is an optional short description of the assertion. If provided, this will be shown along with the assertion failure or pass message.
 
 The third parameter is an optional value of any type that will get output below the error message if the assertion fails. This is useful for debugging an unexpected value.
 
