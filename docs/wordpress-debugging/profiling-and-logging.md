@@ -123,4 +123,4 @@ The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Lo
 {: .new }
 New in Query Monitor 3.15
 
-Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. [Read more about using assertions in Query Monitor](./assertions/).
+Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. [Read more about using assertions in Query Monitor](../assertions/).
