@@ -88,4 +88,4 @@ Just as with the `assert()` function in PHP, your code must handle the situation
 
 ## Profiling and logging
 
-[Read more about the profiling and logging functionality in Query Monitor](./profiling-and-logging/).
+[Read more about the profiling and logging functionality in Query Monitor](../profiling-and-logging/).
