@@ -12,7 +12,7 @@
  * Ensure this file is symlinked to your wp-content directory to provide
  * additional database query information in Query Monitor's output.
  *
- * @see https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink
+ * @see https://querymonitor.com/help/db-php-symlink/
  *
  * *********************************************************************
  *

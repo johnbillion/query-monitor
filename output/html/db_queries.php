@@ -201,7 +201,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 			printf(
 				' <a href="%s" target="_blank" class="qm-external-link">See this wiki page for more information.</a>',
-				'https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink'
+				'https://querymonitor.com/help/db-php-symlink/'
 			);
 			echo '</th>';
 			echo '</tr>';

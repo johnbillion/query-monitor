@@ -176,7 +176,7 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
  * Logs the query result, which allows it to display the affected rows or error message if applicable
 
-If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
+If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://querymonitor.com/help/db-php-symlink/) if you have permission.
 
 ## Screenshots
 
@@ -240,7 +240,7 @@ This is useful for long-running operations that perform a very high number of da
 
 ### Are there any add-on plugins for Query Monitor?
 
-[A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
+[A list of add-on plugins for Query Monitor can be found here.](https://querymonitor.com/help/add-on-plugins/)
 
 In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 
@@ -274,7 +274,7 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
-[Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+[Query Monitor's full privacy statement can be found here](https://querymonitor.com/privacy/).
 
 ## Accessibility Statement
 
@@ -301,7 +301,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Variable Inspector](https://wordpress.org/plugins/variable-inspector/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
 
-Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
+Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
