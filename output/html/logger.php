@@ -44,7 +44,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			$notice = sprintf(
 				/* translators: %s: Link to help article */
 				__( 'No data logged. <a href="%s">Read about logging variables in Query Monitor</a>.', 'query-monitor' ),
-				'https://querymonitor.com/docs/logging-variables/'
+				'https://querymonitor.com/wordpress-debugging/profiling-and-logging/'
 			);
 			echo $this->build_notice( $notice ); // WPCS: XSS ok.
 
