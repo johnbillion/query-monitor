@@ -98,11 +98,7 @@ Currently this includes PHP errors and some overview information such as memory 
 
 The response from an authenticated WordPress REST API request will contain various debugging information in its headers, as long as the authenticated user has permission to view Query Monitor's output.
 
-Currently this includes PHP errors and overview information.
-
-To see more detailed information about a REST API request you need to perform [an enveloped request](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/#_envelope) which means appending `?_envelope` to the requested URL. In this case, Query Monitor will include debugging data in a `qm` property in the response. Currently this includes database queries (including information about duplicates and errors), HTTP API requests, and transient updates. More information may be added in a future version.
-
-By using the combination of the HTTP headers and the `qm` property in the response to an enveloped request you'll get good insight into the aspects of a request which have the greatest impact on performance.
+[Read more about debugging REST API requests with Query Monitor](https://querymonitor.com/wordpress-debugging/rest-api-requests/).
 
 ### Admin Screen
 
@@ -118,7 +114,7 @@ By using the combination of the HTTP headers and the `qm` property in the respon
 
 ### Logging
 
-Debugging messages can be sent to the Logs panel in Query Monitor using actions. This works as a good replacement for `var_dump()`:
+Debugging messages can be sent to the Logs panel using actions. This works as a good replacement for `var_dump()`:
 
 ```php
 do_action( 'qm/debug', 'This happened!' );
@@ -126,56 +122,22 @@ do_action( 'qm/debug', 'This happened!' );
 
 The logger is PSR-3 compatible, so you can use any of the following actions which correspond to PSR-3 log levels:
 
- * `qm/emergency`
- * `qm/alert`
- * `qm/critical`
- * `qm/error`
- * `qm/warning`
- * `qm/notice`
- * `qm/info`
  * `qm/debug`
+ * `qm/info`
+ * `qm/notice`
+ * `qm/warning`
+ * `qm/error`
+ * `qm/critical`
+ * `qm/alert`
+ * `qm/emergency`
 
 A log level of `warning` or higher will trigger a notification in Query Monitor's admin toolbar.
 
-Contextual interpolation can be used via the curly brace syntax:
-
-```php
-do_action( 'qm/warning', 'Unexpected value of {foo} encountered', [
-    'foo' => $foo,
-] );
-```
-
-A `WP_Error`, `Exception`, or `Throwable` object can be passed directly into the logger:
-
-```php
-if ( is_wp_error( $response ) ) {
-    do_action( 'qm/error', $response );
-}
-```
-
-```php
-try {
-    // your code
-} catch ( Exception $e ) {
-    do_action( 'qm/error', $e );
-}
-```
-
-A non-scalar value can be passed to the logger and its value will be formatted and output in the same panel.
-
-```php
-do_action( 'qm/debug', get_queried_object() );
-```
-
-Finally, the static logging methods on the `QM` class can be used instead of calling `do_action()`.
-
-```php
-QM::error( 'Everything is broken' );
-```
+[Read more about profiling and logging in Query Monitor](https://querymonitor.com/wordpress-debugging/profiling-and-logging/).
 
 ### Profiling
 
-Basic performance profiling can be displayed in the Timings panel in Query Monitor using actions in your code:
+Basic performance profiling can be displayed in the Timings panel using actions in your code:
 
 ```php
 // Start the 'foo' timer:
@@ -188,25 +150,7 @@ my_potentially_slow_function();
 do_action( 'qm/stop', 'foo' );
 ```
 
-The time taken and approximate memory usage used between the `qm/start` and `qm/stop` actions for the given function name will be recorded and shown in the Timings panel. Timers can be nested, although be aware that this reduces the accuracy of the memory usage calculations.
-
-Timers can also make use of laps with the `qm/lap` action:
-
-```php
-// Start the 'bar' timer:
-do_action( 'qm/start', 'bar' );
-
-// Iterate over some data:
-foreach ( range( 1, 10 ) as $i ) {
-    my_potentially_slow_function( $i );
-    do_action( 'qm/lap', 'bar' );
-}
-
-// Stop the 'bar' timer:
-do_action( 'qm/stop', 'bar' );
-```
-
-Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf. See the [Related Tools](#related-tools) section for more information.
+[Read more about profiling and logging in Query Monitor](https://querymonitor.com/wordpress-debugging/profiling-and-logging/).
 
 ### Everything Else
 
@@ -232,7 +176,7 @@ In this file is Query Monitor's extension to the `wpdb` class which:
  * Logs the full stack trace for each query, which allows it to determine the component that's responsible for the query
  * Logs the query result, which allows it to display the affected rows or error message if applicable
 
-If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://github.com/johnbillion/query-monitor/wiki/db.php-Symlink) if you have permission.
+If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` can't be put in place, Query Monitor still functions, but this extended functionality won't be available. You can [manually create the db.php symlink](https://querymonitor.com/help/db-php-symlink/) if you have permission.
 
 ## Screenshots
 
@@ -296,7 +240,7 @@ This is useful for long-running operations that perform a very high number of da
 
 ### Are there any add-on plugins for Query Monitor?
 
-[A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
+[A list of add-on plugins for Query Monitor can be found here.](https://querymonitor.com/help/add-on-plugins/)
 
 In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 
@@ -330,7 +274,7 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
-[Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+[Query Monitor's full privacy statement can be found here](https://querymonitor.com/privacy/).
 
 ## Accessibility Statement
 
@@ -357,7 +301,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Variable Inspector](https://wordpress.org/plugins/variable-inspector/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
 
-Query Monitor also has [several add-on plugins](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
+Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
