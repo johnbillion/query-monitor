@@ -1,9 +1,9 @@
 # Query Monitor
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.5
-Tested up to: 6.3
-Stable tag: 3.14.1
+Requires at least: 5.6
+Tested up to: 6.4
+Stable tag: 3.15.0
 License: GPLv2 or later
 Requires PHP: 7.4
 Donate link: https://github.com/sponsors/johnbillion
@@ -60,7 +60,7 @@ I maintain several other plugins for developers. Check them out:
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
-[Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+[Query Monitor's full privacy statement can be found here](https://querymonitor.com/privacy/).
 
 ### Accessibility Statement
 
@@ -112,7 +112,7 @@ This is useful for long-running operations that perform a very high number of da
 
 ### Are there any add-on plugins for Query Monitor?
 
-[A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
+[A list of add-on plugins for Query Monitor can be found here.](https://querymonitor.com/help/add-on-plugins/)
 
 In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 

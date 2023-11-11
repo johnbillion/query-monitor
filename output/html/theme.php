@@ -48,36 +48,32 @@ class QM_Output_Html_Theme extends QM_Output_Html {
 		echo '<h3>' . esc_html__( 'Theme', 'query-monitor' ) . '</h3>';
 		echo '<p>' . esc_html( $data->stylesheet ) . '</p>';
 
-		if ( self::has_clickable_links() ) {
+		echo '<p>';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->stylesheet ] ), 0, true );
+		echo '</p>';
+
+		if ( $data->stylesheet_theme_json ) {
 			echo '<p>';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->stylesheet ] ), 0, true );
+			echo self::output_filename( 'theme.json', $data->stylesheet_theme_json, 0, true );
 			echo '</p>';
-
-			if ( $data->stylesheet_theme_json ) {
-				echo '<p>';
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo self::output_filename( 'theme.json', $data->stylesheet_theme_json, 0, true );
-				echo '</p>';
-			}
 		}
 
 		if ( $data->is_child_theme ) {
 			echo '<h3>' . esc_html__( 'Parent Theme', 'query-monitor' ) . '</h3>';
 			echo '<p>' . esc_html( $data->template ) . '</p>';
 
-			if ( self::has_clickable_links() ) {
+			echo '<p>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->template ] ), 0, true );
+			echo '</p>';
+
+			if ( $data->template_theme_json ) {
 				echo '<p>';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo self::output_filename( 'style.css', sprintf( '%s/style.css', $data->theme_dirs[ $data->template ] ), 0, true );
+				echo self::output_filename( 'theme.json', $data->template_theme_json, 0, true );
 				echo '</p>';
-
-				if ( $data->template_theme_json ) {
-					echo '<p>';
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo self::output_filename( 'theme.json', $data->template_theme_json, 0, true );
-					echo '</p>';
-				}
 			}
 		}
 
