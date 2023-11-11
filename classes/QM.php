@@ -144,6 +144,25 @@ class QM {
 	}
 
 	/**
+	 * @param mixed $assertion
+	 * @param string $message
+	 * @param ?mixed $value
+	 * @return void
+	 */
+	public static function assert( $assertion, string $message = '', $value = null ) {
+		/**
+		 * Fires when an assertion is performed.
+		 *
+		 * @since x.y.z
+		 *
+		 * @param mixed  $assertion The assertion result, ideally something that evaluates to true.
+		 * @param string $message   The assertion message. May be an empty string.
+		 * @param mixed  $value     Optional. A value to show along with the message when the assertion fails.
+		 */
+		do_action( 'qm/assert', $assertion, $message, $value );
+	}
+
+	/**
 	 * @param string $level
 	 * @param string $message
 	 * @param array<string, mixed> $context

@@ -482,7 +482,7 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns a file path, name, and line number, or a clickable link to the file. Safe for output.
 	 *
-	 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
+	 * @link https://querymonitor.com/help/clickable-stack-traces-and-function-names/
 	 *
 	 * @param  string $text        The display text, such as a function name or file name.
 	 * @param  string $file        The full file path and name.
@@ -545,7 +545,7 @@ abstract class QM_Output_Html extends QM_Output {
 		/**
 		 * Filters the file path mapping for clickable file links.
 		 *
-		 * @link https://querymonitor.com/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
+		 * @link https://querymonitor.com/help/clickable-stack-traces-and-function-names/
 		 * @since 3.0.0
 		 *
 		 * @param array<string, string> $file_map Array of file path mappings. Keys are the source paths and values are the replacement paths.

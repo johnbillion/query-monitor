@@ -8,7 +8,7 @@ redirect_from:
 
 # Profiling and logging in Query Monitor
 
-Query Monitor allows developers to profile the running time and memory usage of their code and to log debugging messages to the Query Monitor interface.
+Query Monitor allows developers to profile the running time and memory usage of a piece of code and to log debugging messages to the Query Monitor interface.
 
 Let's take a look at profiling and logging in detail.
 
@@ -61,14 +61,14 @@ do_action( 'qm/debug', 'This happened!' );
 
 You can use any of the following actions which correspond to PSR-3 and syslog log levels:
 
-* `qm/emergency`
-* `qm/alert`
-* `qm/critical`
-* `qm/error`
-* `qm/warning`
-* `qm/notice`
-* `qm/info`
 * `qm/debug`
+* `qm/info`
+* `qm/notice`
+* `qm/warning`
+* `qm/error`
+* `qm/critical`
+* `qm/alert`
+* `qm/emergency`
 
 A log level of `warning` or higher will trigger a notification in Query Monitor's admin toolbar.
 
@@ -102,6 +102,9 @@ try {
 
 Variables of any type can be logged and they'll be formatted appropriately:
 
+{: .warning }
+Be careful not to log very large values such as an array of post objects or the raw response from an HTTP request. If you really need to debug the value of something large, use a tool such as [step debugging in Xdebug](https://xdebug.org/docs/step_debug) or [debugging in Ray](https://myray.app/).
+
 ```php
 $var = [ 1, 2, 3 ];
 do_action( 'qm/debug', $var );
@@ -114,3 +117,10 @@ QM::error( 'Everything is broken' );
 ```
 
 The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
+
+## Assertions
+
+{: .new }
+New in Query Monitor 3.15
+
+Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. [Read more about using assertions in Query Monitor](../assertions/).
