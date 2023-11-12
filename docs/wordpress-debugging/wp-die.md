@@ -1,6 +1,5 @@
 ---
 title: wp_die()
-parent: WordPress debugging
 ---
 
 # wp_die() debugging in Query Monitor

@@ -1,6 +1,5 @@
 ---
 title: Silencing errors
-parent: Help
 redirect_from: /blog/2018/07/silencing-errors-from-plugins-and-themes/
 ---
 

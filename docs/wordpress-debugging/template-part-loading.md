@@ -1,6 +1,5 @@
 ---
 title: Template part loading
-parent: WordPress debugging
 redirect_from: /blog/2019/07/debugging-wordpress-template-part-loading/
 ---
 

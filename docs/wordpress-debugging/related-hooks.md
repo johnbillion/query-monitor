@@ -1,6 +1,5 @@
 ---
 title: Related hooks
-parent: WordPress debugging
 redirect_from: /blog/2019/02/new-features-in-query-monitor-3-3/
 ---
 

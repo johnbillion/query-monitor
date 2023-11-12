@@ -1,6 +1,5 @@
 ---
 title: Blocks
-parent: WordPress debugging
 ---
 
 # Debugging blocks in Query Monitor

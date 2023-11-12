@@ -1,6 +1,5 @@
 ---
 title: Translation files
-parent: WordPress debugging
 ---
 
 # Debugging translation files in Query Monitor

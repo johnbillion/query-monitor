@@ -1,6 +1,5 @@
 ---
 title: Assertions
-parent: WordPress debugging
 ---
 
 # Performing assertions in Query Monitor
