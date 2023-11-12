@@ -15,7 +15,7 @@ Install and activate Query Monitor as you would any other WordPress plugin. [You
 
 While you're logged in as an Administrator you'll see a new menu item in the admin toolbar menu:
 
-[![Admin Toolbar Menu](../assets/screenshot-1.png)](../assets/screenshot-1.png)
+[![Admin Toolbar Menu](/screenshot-1.png)](/screenshot-1.png)
 
 The numbers at the top show, in order:
 
@@ -40,7 +40,7 @@ The Queries &rarr; Queries by Component panel shows you aggregate information ab
 
 This panel is sorted by the total time taken for all the queries executed by each component. A plugin that performs a high number of queries, or performs queries that are slow, will contribute to the time that your site takes to load.
 
-[![Aggregate Database Queries by Component](../../assets/screenshot-2.png)](../../assets/screenshot-2.png)
+[![Aggregate Database Queries by Component](/screenshot-2.png)](/screenshot-2.png)
 
 ### 2. HTTP API Calls
 
@@ -48,7 +48,7 @@ The HTTP API Calls panel shows you information about the server-side HTTP reques
 
 If a plugin or theme regularly triggers an HTTP API call during the loading of a page, this will increase the time your site takes to load.
 
-[![HTTP API Requests](../../assets/screenshot-6.png)](../../assets/screenshot-6.png)
+[![HTTP API Requests](/screenshot-6.png)](/screenshot-6.png)
 
 ### 3. Object Cache
 

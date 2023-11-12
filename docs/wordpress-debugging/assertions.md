@@ -12,7 +12,7 @@ Query Monitor allows developers to perform assertions which will log an error in
 
 Here's what assertions look like in the Logs panel:
 
-[![Query Monitor's Logging Panel](../../assets/assertions.png)](../../assets/assertions.png)
+[![Query Monitor's Logging Panel](/assertions.png)](/assertions.png)
 
 Let's take a look at how to use this feature and what it's useful for.
 

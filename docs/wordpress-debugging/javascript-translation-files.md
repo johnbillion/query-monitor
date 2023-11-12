@@ -11,4 +11,4 @@ parent: WordPress debugging
 
 Query Monitor fully supports debugging the loading of these translation files in the Languages panel, so you know which files WordPress is attempting to load:
 
-[![Screenshot of the Languages panel in Query Monitor showing the Jed translation files that WordPress attempts to load](../../assets/jed.png)](../../assets/jed.png)
+[![Screenshot of the Languages panel in Query Monitor showing the Jed translation files that WordPress attempts to load](/jed.png)](/jed.png)

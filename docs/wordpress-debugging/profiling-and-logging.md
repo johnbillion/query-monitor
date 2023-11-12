@@ -47,7 +47,7 @@ do_action( 'qm/stop', 'bar' );
 
 Here's what the Timing panel looks like:
 
-[![Query Monitor's Timing Panel](../../assets/screenshot-8.png)](../../assets/screenshot-8.png)
+[![Query Monitor's Timing Panel](/screenshot-8.png)](/screenshot-8.png)
 
 Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf.
 
@@ -74,7 +74,7 @@ A log level of `warning` or higher will trigger a notification in Query Monitor'
 
 Here's what the Logs panel looks like:
 
-[![Query Monitor's Logging Panel](../../assets/screenshot-9.png)](../../assets/screenshot-9.png)
+[![Query Monitor's Logging Panel](/screenshot-9.png)](/screenshot-9.png)
 
 Contextual interpolation can be used via the curly brace syntax:
 

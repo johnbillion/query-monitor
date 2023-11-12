@@ -8,7 +8,7 @@ redirect_from: /blog/2018/07/silencing-errors-from-plugins-and-themes/
 
 When a PHP warning or notice occurs during the page load, Query Monitor displays a coloured notification in the admin toolbar that links to the PHP Errors panel. This is great for debugging but can be an annoyance if a third party plugin or theme continually triggers errors that aren't your responsibility to fix.
 
-[![Screenshot of a PHP error in Query Monitor](../../assets/php-errors.png)](../../assets/php-errors.png)
+[![Screenshot of a PHP error in Query Monitor](/php-errors.png)](/php-errors.png)
 
 Query Monitor allows you to silence errors from specified plugins or themes. Errors will still be shown in the PHP Errors panel but they won't trigger a coloured notification in the admin toolbar.
 
