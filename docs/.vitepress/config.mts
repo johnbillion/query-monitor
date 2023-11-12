@@ -16,12 +16,12 @@ export default defineConfig({
 			'link',
 			{
 				rel: 'icon',
-				href: '/assets/icon.svg',
+				href: '/icon.svg',
 			},
 		],
 	],
 	themeConfig: {
-		logo: '/assets/icon.svg',
+		logo: '/icon.svg',
 
 		nav: [
 			{
