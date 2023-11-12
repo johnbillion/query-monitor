@@ -101,8 +101,9 @@ try {
 
 Variables of any type can be logged and they'll be formatted appropriately:
 
-{: .warning }
+::: warning
 Be careful not to log very large values such as an array of post objects or the raw response from an HTTP request. If you really need to debug the value of something large, use a tool such as [step debugging in Xdebug](https://xdebug.org/docs/step_debug) or [debugging in Ray](https://myray.app/).
+:::
 
 ```php
 $var = [ 1, 2, 3 ];
@@ -119,7 +120,8 @@ The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Lo
 
 ## Assertions
 
-{: .new }
+::: tip New
 New in Query Monitor 3.15
+:::
 
 Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. [Read more about using assertions in Query Monitor](../assertions/).

@@ -4,8 +4,9 @@ title: Assertions
 
 # Performing assertions in Query Monitor
 
-{: .new }
+::: tip New
 This feature is new in Query Monitor 3.15
+:::
 
 Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. This is a convenience wrapper around the logging feature which allows you to get alerted to problems without performing conditional logic.
 
@@ -31,8 +32,9 @@ The second parameter is an optional short description of the assertion. If provi
 
 The third parameter is an optional value of any type that will get output below the error message if the assertion fails. This is useful for debugging an unexpected value.
 
-{: .warning }
+::: warning
 Be careful not to log very large values such as an array of post objects or the raw response from an HTTP request. If you really need to debug the value of something large, use a tool such as [step debugging in Xdebug](https://xdebug.org/docs/step_debug) or [debugging in Ray](https://myray.app/).
+:::
 
 ## More examples
 
