@@ -14,8 +14,7 @@
 		"sass": "^1",
 		"sharp-cli": "^4.1.1",
 		"version-bump-prompt": "^6.1.0",
-		"vitepress": "1.0.0-rc.25",
-		"vitepress-sidebar": "^1.18.0"
+		"vitepress": "1.0.0-rc.25"
 	},
 	"scripts": {
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
