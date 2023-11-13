@@ -25,6 +25,7 @@
 		"ts-loader": "^9",
 		"typescript": "^4.5.0",
 		"version-bump-prompt": "^6.1.0",
+		"vitepress": "1.0.0-rc.25",
 		"webpack": "^5.47.1",
 		"webpack-cli": "^4.9.1",
 		"wp-json-schemas": "^3",
@@ -37,6 +38,9 @@
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
 		"watch": "npm run build-schemas && webpack --config=.config/webpack.config.dev.js --watch",
-		"build": "npm run build-schemas && webpack --config=.config/webpack.config.prod.js"
+		"build": "npm run build-schemas && webpack --config=.config/webpack.config.prod.js",
+		"docs:dev": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:preview": "vitepress preview docs"
 	}
 }

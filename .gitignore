@@ -1,7 +1,6 @@
 /composer.lock
-/docs/_site
-/docs/Gemfile
-/docs/Gemfile.lock
+/docs/.vitepress/cache
+/docs/.vitepress/dist
 /vendor
 /node_modules
 /package-lock.json

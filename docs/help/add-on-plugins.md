@@ -1,6 +1,5 @@
 ---
 title: Add-on plugins
-parent: Help
 ---
 
 # Query Monitor add-on plugins

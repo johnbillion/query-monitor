@@ -1,6 +1,5 @@
 ---
 title: Configuration constants
-parent: Help
 redirect_from: /docs/configuration-constants/
 ---
 
