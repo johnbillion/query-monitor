@@ -1,6 +1,5 @@
 ---
 title: Profiling and logging
-parent: WordPress debugging
 redirect_from:
   - /blog/2018/07/profiling-and-logging/
   - /docs/logging-variables/
@@ -47,7 +46,7 @@ do_action( 'qm/stop', 'bar' );
 
 Here's what the Timing panel looks like:
 
-[![Query Monitor's Timing Panel](../../assets/screenshot-8.png)](../../assets/screenshot-8.png)
+[![Query Monitor's Timing Panel](/screenshot-8.png)](/screenshot-8.png)
 
 Note that the times and memory usage displayed in the Timings panel should be treated as approximations, because they are recorded at the PHP level and can be skewed by your environment and by other code. If you require highly accurate timings, you'll need to use a low level profiling tool such as XHProf.
 
@@ -74,7 +73,7 @@ A log level of `warning` or higher will trigger a notification in Query Monitor'
 
 Here's what the Logs panel looks like:
 
-[![Query Monitor's Logging Panel](../../assets/screenshot-9.png)](../../assets/screenshot-9.png)
+[![Query Monitor's Logging Panel](/screenshot-9.png)](/screenshot-9.png)
 
 Contextual interpolation can be used via the curly brace syntax:
 
@@ -102,8 +101,9 @@ try {
 
 Variables of any type can be logged and they'll be formatted appropriately:
 
-{: .warning }
+::: warning
 Be careful not to log very large values such as an array of post objects or the raw response from an HTTP request. If you really need to debug the value of something large, use a tool such as [step debugging in Xdebug](https://xdebug.org/docs/step_debug) or [debugging in Ray](https://myray.app/).
+:::
 
 ```php
 $var = [ 1, 2, 3 ];
@@ -120,7 +120,8 @@ The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Lo
 
 ## Assertions
 
-{: .new }
+::: tip New
 New in Query Monitor 3.15
+:::
 
 Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. [Read more about using assertions in Query Monitor](../assertions/).
