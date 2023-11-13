@@ -7,12 +7,6 @@ redirect_from: /docs/configuration-constants/
 
 The following PHP constants can be defined in your wp-config.php file in order to control the behaviour of Query Monitor:
 
-## `QM_DARK_MODE`
-
-Enable dark mode for Query Monitor's interface.
-
-Default `false`
-
 ## `QM_DB_EXPENSIVE`
 
 If an individual database query takes longer than this time to execute, it's considered "slow" and triggers a warning.
