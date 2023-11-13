@@ -5,6 +5,8 @@
 		}
 	],
 	"compilerOptions": {
+		"esModuleInterop": true,
+		"isolatedModules": true,
 		"outDir": "./build/",
 		"sourceMap": false,
 		"allowJs": true,

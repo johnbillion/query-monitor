@@ -1,4 +1,4 @@
-import * as classNames from 'classnames';
+import classNames from 'classnames';
 import { Toggler, Warning, iQM_i18n } from 'qmi';
 import {
 	Environment as EnvironmentData,
