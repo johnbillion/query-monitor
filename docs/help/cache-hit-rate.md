@@ -1,6 +1,5 @@
 ---
 title: Cache hit rate
-parent: Help
 ---
 
 # Cache hit rate
