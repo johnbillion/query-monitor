@@ -1,6 +1,5 @@
 ---
 title: db.php symlink
-parent: Help
 ---
 
 # db.php symlink
