@@ -1,6 +1,5 @@
 ---
 title: REST API requests
-parent: WordPress debugging
 redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
 ---
 
