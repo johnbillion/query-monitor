@@ -190,26 +190,27 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
-		wp_enqueue_style(
-			'query-monitor',
-			$this->qm->plugin_url( 'assets/query-monitor.css' ),
-			array(),
-			QM_VERSION
+		\QM\Vite\enqueue_asset(
+			dirname( __DIR__ ) . '/build',
+			'assets/query-monitor.css',
+			array(
+				'handle' => 'query-monitor-css',
+			)
 		);
 		wp_enqueue_script(
-			'query-monitor',
+			'query-monitor-js',
 			$this->qm->plugin_url( 'assets/query-monitor.js' ),
 			$deps,
 			QM_VERSION,
 			false
 		);
 		wp_localize_script(
-			'query-monitor',
+			'query-monitor-js',
 			'qm_number_format',
 			$wp_locale->number_format
 		);
 		wp_localize_script(
-			'query-monitor',
+			'query-monitor-js',
 			'qm_l10n',
 			array(
 				'ajax_error' => __( 'PHP Errors in Ajax Response', 'query-monitor' ),
@@ -222,12 +223,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		wp_enqueue_script(
-			'query-monitor-ui',
-			$this->qm->plugin_url( 'build/main.js' ),
-			array(),
-			QM_VERSION,
-			false
+		\QM\Vite\enqueue_asset(
+			dirname( __DIR__ ) . '/build',
+			'src/index.tsx',
+			array(
+				'handle' => 'query-monitor-ui',
+				'dependencies' => array( 'query-monitor-js' ),
+				'css-dependencies' => array( 'query-monitor-css' ),
+			)
 		);
 
 		wp_set_script_translations( 'query-monitor-ui', 'query-monitor' );
