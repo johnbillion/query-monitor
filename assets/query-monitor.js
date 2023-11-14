@@ -20,46 +20,6 @@ if ( window.jQuery ) {
 		var container_height_key = 'qm-container-height';
 		var container_position_key = 'qm-container-position';
 		var container_width_key = 'qm-container-width';
-
-		if ( $('#qm-fatal').length ) {
-			console.error(qm_l10n.fatal_error + ': ' + $('#qm-fatal').attr('data-qm-message') );
-
-			if ( $('#wp-admin-bar-query-monitor').length ) {
-				$('#wp-admin-bar-query-monitor')
-					.addClass('qm-error')
-					.find('a').eq(0)
-					.text(qm_l10n.fatal_error);
-
-				var fatal_container = document.createDocumentFragment();
-
-				// @TODO:
-				var fatal_message_menu = $('#wp-admin-bar-query-monitor-placeholder')
-					.clone()
-					.attr('id','wp-admin-bar-qm-fatal-message');
-
-				fatal_message_menu
-					.find('a').eq(0)
-					.text($('#qm-fatal').attr('data-qm-message'))
-					.attr('href','#qm-fatal');
-
-				fatal_container.appendChild( fatal_message_menu.get(0) );
-
-				// @TODO:
-				var fatal_file_menu = $('#wp-admin-bar-query-monitor-placeholder')
-					.clone()
-					.attr('id','wp-admin-bar-qm-fatal-file');
-
-				fatal_file_menu
-					.find('a').eq(0)
-					.text($('#qm-fatal').attr('data-qm-file') + ':' + $('#qm-fatal').attr('data-qm-line'))
-					.attr('href','#qm-fatal');
-
-				fatal_container.appendChild( fatal_file_menu.get(0) );
-
-				$('#wp-admin-bar-query-monitor ul').append(fatal_container);
-			}
-		}
-
 		var startY, startX, resizerHeight;
 
 		$(document).on('mousedown touchstart', '.qm-resizer', function(event) {

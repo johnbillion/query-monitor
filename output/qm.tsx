@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
 
-export type iQMProps = {
+type Props = {
 	active: string;
 	adminMenuElement?: HTMLElement;
 	menu: {
@@ -43,7 +43,7 @@ export type iQMProps = {
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
 }
 
-export const QM = ( props: iQMProps ) => {
+export const QM = ( props: Props ) => {
 	const [ active, setActive ] = React.useState( props.active );
 	const [ side, setSide ] = React.useState( props.side );
 	const [ theme, setTheme ] = React.useState( props.theme );

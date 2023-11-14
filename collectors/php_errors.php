@@ -361,6 +361,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		echo '</div>';
 		echo '</div>';
+		echo '<div id="qm-fatal-component"></div>';
 	}
 
 	/**

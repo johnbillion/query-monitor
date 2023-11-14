@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { iQMConfig } from '../output/html/settings';
 import { QM } from '../output/qm';
+import { Fatal } from '../output/fatal';
 import {
 	MainContextType,
 } from 'qmi';
@@ -10,6 +11,19 @@ import {
 declare const qm: iQMConfig;
 
 document.addEventListener( 'DOMContentLoaded', function () {
+	const fatalElement = document.getElementById( 'qm-fatal-component' );
+	const containerElement = document.getElementById( 'query-monitor-container' );
+	const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
+
+	if ( fatalElement ) {
+		createRoot( fatalElement ).render(
+			<Fatal
+				adminMenuElement={ adminMenuElement }
+			/>
+		);
+		return;
+	}
+
 	const panelKey = `qm-${ document.body.classList.contains( 'wp-admin' ) ? 'admin' : 'front' }-panel`;
 	const positionKey = 'qm-container-position';
 	const themeKey = 'qm-theme';
@@ -67,10 +81,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 
-	createRoot( document.getElementById( 'query-monitor-container' ) ).render(
+	createRoot( containerElement ).render(
 		<QM
 			active={ active }
-			adminMenuElement={ document.getElementById( 'wp-admin-bar-query-monitor' ) }
+			adminMenuElement={ adminMenuElement }
 			menu={ qm.menu }
 			panel_menu={ qm.panel_menu }
 			panels={ panels }
