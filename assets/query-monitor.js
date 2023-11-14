@@ -101,44 +101,6 @@ if ( window.jQuery ) {
 			}
 		}
 
-		$( document ).ajaxSuccess( function( event, response, options ) {
-
-			var errors = response.getResponseHeader( 'X-QM-php_errors-error-count' );
-
-			if ( ! errors ) {
-				return event;
-			}
-
-			errors = parseInt( errors, 10 );
-
-			if ( window.console ) {
-				console.group( qm_l10n.ajax_error );
-			}
-
-			for ( var key = 1; key <= errors; key++ ) {
-
-				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
-
-				if ( window.console ) {
-					switch ( error.type ) {
-						case 'warning':
-							console.error( error );
-							break;
-						default:
-							console.warn( error );
-							break;
-					}
-				}
-			}
-
-			if ( window.console ) {
-				console.groupEnd();
-			}
-
-			return event;
-
-		} );
-
 		var startY, startX, resizerHeight;
 
 		$(document).on('mousedown touchstart', '.qm-resizer', function(event) {
