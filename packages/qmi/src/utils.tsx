@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
+declare const qm_number_format: {
+	thousands_sep: string;
+	decimal_point: string;
+};
+
 export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
@@ -146,4 +151,36 @@ export function getEditorFormat( name: string ): string {
 	}
 
 	return '';
+}
+
+export function numberFormat( number: number, decimals: number = 0 ): string {
+	if ( isNaN( number ) ) {
+		return '';
+	}
+
+	if ( ! decimals ) {
+		decimals = 0;
+	}
+
+	const num_float = number.toFixed( decimals );
+	const num_int = Math.floor( number );
+	const num_str = num_int.toString();
+	const fraction = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length );
+	let o = '';
+
+	if ( num_str.length > 3 ) {
+		let i = 0;
+		for ( i = num_str.length; i > 3; i -= 3 ) {
+			o = qm_number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
+		}
+		o = num_str.slice( 0, i ) + o;
+	} else {
+		o = num_str;
+	}
+
+	if ( decimals ) {
+		o = o + qm_number_format.decimal_point + fraction;
+	}
+
+	return o;
 }

@@ -1,4 +1,4 @@
-import { iQM_i18n } from 'qmi';
+import { Utils } from 'qmi';
 import * as React from 'react';
 
 interface Props {
@@ -13,8 +13,6 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-declare const QM_i18n: iQM_i18n;
-
 export const PanelFooter = ( { children, cols, count, total = count }: Props ) => (
 	<tfoot>
 		<tr>
@@ -23,12 +21,12 @@ export const PanelFooter = ( { children, cols, count, total = count }: Props ) =
 				&nbsp;
 				<span className="qm-items-number">
 					{ ( total === count ) ? (
-						QM_i18n.number_format( count )
+						Utils.numberFormat( count )
 					) : (
 						sprintf(
 							'%1$s / %2$s',
-							QM_i18n.number_format( count ),
-							QM_i18n.number_format( total )
+							Utils.numberFormat( count ),
+							Utils.numberFormat( total )
 						)
 					) }
 				</span>

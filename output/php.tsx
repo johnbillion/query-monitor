@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Toggler, Warning, iQM_i18n } from 'qmi';
+import { Toggler, Warning, Utils } from 'qmi';
 import {
 	Environment as EnvironmentData,
 } from 'qmi/data-types';
@@ -10,8 +10,6 @@ import { __ } from '@wordpress/i18n';
 interface Props {
 	php: EnvironmentData['php'];
 }
-
-declare const QM_i18n: iQM_i18n;
 
 export default ( { php }: Props ) => (
 	<section>
@@ -98,7 +96,7 @@ export default ( { php }: Props ) => (
 							{ __( 'Extensions', 'query-monitor' ) }
 						</th>
 						<td className="qm-has-toggle qm-ltr">
-							{ QM_i18n.number_format( Object.keys( php.extensions ).length ) }
+							{ Utils.numberFormat( Object.keys( php.extensions ).length ) }
 
 							<Toggler>
 								<ul className="qm-supplemental">

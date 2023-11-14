@@ -6,47 +6,6 @@
  * @package query-monitor
  */
 
-var QM_i18n = {
-
-	// http://core.trac.wordpress.org/ticket/20491
-
-	number_format : function( number, decimals ) {
-
-		if ( isNaN( number ) ) {
-			return;
-		}
-
-		if ( ! decimals ) {
-			decimals = 0;
-		}
-
-		number = parseFloat( number );
-
-		var num_float = number.toFixed( decimals ),
-			num_int = Math.floor( number ),
-			num_str = num_int.toString(),
-			fraction = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
-			o = '';
-
-		if ( num_str.length > 3 ) {
-			for ( i = num_str.length; i > 3; i -= 3 ) {
-				o = qm_number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
-			}
-			o = num_str.slice( 0, i ) + o;
-		} else {
-			o = num_str;
-		}
-
-		if ( decimals ) {
-			o = o + qm_number_format.decimal_point + fraction;
-		}
-
-		return o;
-
-	}
-
-};
-
 if ( window.jQuery ) {
 
 	jQuery( function($) {

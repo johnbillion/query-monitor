@@ -1,5 +1,5 @@
 import {
-	iQM_i18n,
+	Utils,
 } from 'qmi';
 import * as React from 'react';
 
@@ -11,19 +11,17 @@ interface Props {
 	value: number;
 }
 
-declare const QM_i18n: iQM_i18n;
-
 export const ApproximateSize = ( { value }: Props ) => (
 	<code>
 		{ ( value < 1024 ) ? (
 			sprintf(
 				'~%s B',
-				QM_i18n.number_format( value )
+				Utils.numberFormat( value )
 			)
 		) : (
 			sprintf(
 				'~%s kB',
-				QM_i18n.number_format( value / 1024 )
+				Utils.numberFormat( value / 1024 )
 			)
 		) }
 	</code>
