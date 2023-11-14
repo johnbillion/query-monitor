@@ -1,8 +1,7 @@
 {
 	"name": "qmi",
 	"version": "0.0.4",
-	"description": "User interface for developer tool panels, just like your browser dev tools",
-	"main": "build/index.js",
+	"description": "User interface components for Query Monitor",
 	"types": "build/qmi/src/index.d.ts",
 	"keywords": [
 		"dev-tools"

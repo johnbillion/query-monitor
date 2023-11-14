@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+		"esModuleInterop": true,
+		"isolatedModules": true,
 		"composite": true,
 		"outDir": "./build/",
 		"sourceMap": true,

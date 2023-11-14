@@ -18,7 +18,7 @@ import {
 
 import * as React from 'react';
 
-export interface Col<TDataRow> {
+export type Col<TDataRow> = {
 	className?: string;
 	heading: string;
 	render: ( row: TDataRow, i: number, col: Col<TDataRow> ) => ( React.ReactNode | string );
@@ -43,7 +43,7 @@ interface ColSorting<TDataRow> {
 	default?: 'asc'|'desc';
 }
 
-export interface TabularProps<TDataRow> {
+export type TabularProps<TDataRow> = {
 	cols: Cols<TDataRow>;
 	data: TDataRow[];
 	hasError?: ( row: TDataRow ) => boolean;

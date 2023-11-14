@@ -2,12 +2,15 @@ export { ApproximateSize } from './src/approximate-size';
 export { Caller } from './src/caller';
 export {
 	MainContext,
-	MainContextType,
 } from './src/main-context';
+
+export type { MainContextType } from './src/main-context';
 export {
 	PanelContext,
-	PanelContextType,
 } from './src/panel-context';
+
+export type { PanelContextType } from './src/panel-context';
+
 export { Table, getComponentCol, getTimeCol, getCallerCol } from './src/table';
 export { Frame } from './src/frame';
 export { FileName } from './src/file-name';
@@ -25,12 +28,12 @@ export { Warning } from './src/warning';
 export * as Utils from './src/utils';
 export * as Data from './data-types';
 
-export interface PanelProps<T> {
+export type PanelProps<T> = {
 	data: T;
 	enabled: boolean;
 }
 
-export interface iQM_i18n {
+export type iQM_i18n = {
 	number_format: (
 		number: number,
 		decimals?: number,

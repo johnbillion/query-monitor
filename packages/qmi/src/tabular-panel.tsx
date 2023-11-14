@@ -6,7 +6,7 @@ import {
 
 import * as React from 'react';
 
-export interface Props<TDataRow> extends TabularProps<TDataRow> {
+interface Props<TDataRow> extends TabularProps<TDataRow> {
 	title: string;
 	children?: React.ReactNode;
 }

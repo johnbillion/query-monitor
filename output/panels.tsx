@@ -35,7 +35,7 @@ interface QMPanelData {
 	enabled: boolean;
 }
 
-export interface iPanelsProps {
+export type iPanelsProps = {
 	admin?: QMPanelData;
 	assets_scripts: QMPanelData;
 	assets_styles: QMPanelData;

@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelsProps } from './panels';
 
-export interface iQMProps {
+export type iQMProps = {
 	active: string;
 	adminMenuElement?: HTMLElement;
 	menu: {

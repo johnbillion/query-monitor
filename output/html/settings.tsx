@@ -18,7 +18,7 @@ interface Props {
 	verified: boolean;
 }
 
-export interface iQMConfig {
+export type iQMConfig = {
 	menu: any;
 	settings: Props;
 	panel_menu: iNavMenu;

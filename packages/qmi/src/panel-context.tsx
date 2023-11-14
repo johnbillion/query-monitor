@@ -2,7 +2,7 @@ import {
 	createContext,
 } from 'react';
 
-export interface PanelContextType {
+export type PanelContextType = {
 	id: string;
 	filters: {
 		[ filterName: string ]: string;

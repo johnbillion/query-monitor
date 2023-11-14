@@ -11,7 +11,7 @@ interface Props {
 	}
 }
 
-export interface iNavMenu {
+export type iNavMenu = {
 	[k: string]: iNavMenuItem;
 }
 

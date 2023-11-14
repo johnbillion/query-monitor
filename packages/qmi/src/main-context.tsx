@@ -9,7 +9,7 @@ interface FiltersType {
 	[ panelName: string ]: PanelContextType['filters'];
 }
 
-export interface MainContextType {
+export type MainContextType = {
 	editor: string;
 	setEditor: ( editor: string ) => void;
 	theme: string;
