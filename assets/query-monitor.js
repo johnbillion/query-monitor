@@ -68,29 +68,6 @@ if ( window.jQuery ) {
 			}
 		}
 
-		var p = localStorage.getItem( container_position_key );
-		var h = localStorage.getItem( container_height_key );
-		var w = localStorage.getItem( container_width_key );
-		if ( p === 'right' ) {
-			if ( w !== null ) {
-				if ( w < minwidth ) {
-					w = minwidth;
-				}
-				if ( w > maxwidth ) {
-					w = maxwidth;
-				}
-				container.width( w );
-			}
-		} else if ( p !== 'right' && h !== null ) {
-			if ( h < minheight ) {
-				h = minheight;
-			}
-			if ( h > maxheight ) {
-				h = maxheight;
-			}
-			container.height( h );
-		}
-
 		$(window).on('resize', function(){
 			var h = container.height();
 			var w = container.width();
