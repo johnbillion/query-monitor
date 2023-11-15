@@ -148,14 +148,18 @@ export const QM = ( props: Props ) => {
 		<MainContext.Provider value={ contextValue }>
 			{ active && (
 				<div className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
-					<div className="qm-resizer" id="qm-side-resizer"></div>
+					{ side && (
+						<div className="qm-resizer" id="qm-side-resizer"></div>
+					) }
 					<div className="qm-resizer" id="qm-title">
 						<h1 className="qm-title-heading">
 							{ __( 'Query Monitor', 'query-monitor' ) }
 						</h1>
-						<div className="qm-title-heading">
-							<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
-						</div>
+						{ side && (
+							<div className="qm-title-heading">
+								<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+							</div>
+						) }
 						<button
 							aria-label={ __( 'Settings', 'query-monitor' ) }
 							className="qm-button-container-settings"
@@ -186,7 +190,9 @@ export const QM = ( props: Props ) => {
 						</button>
 					</div>
 					<div id="qm-wrapper">
-						<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+						{ ! side && (
+							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+						) }
 						<Panels { ...props.panels } active={ active }/>
 					</div>
 				</div>

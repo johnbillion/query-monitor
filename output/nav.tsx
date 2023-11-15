@@ -40,40 +40,40 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 					{ __( 'Overview', 'query-monitor' ) }
 				</button>
 			</li>
-			{ Object.keys( menu ).map( key => (
+			{ Object.entries( menu ).map( ( [ key, item ] ) => (
 				<li
 					key={ key }
 					className={ classNames( {
 						'qm-current-menu': (
-							active === menu[ key ].panel ||
-							( menu[ key ].children && Object.keys( menu[ key ].children ).map( k => (
-								menu[ key ].children[ k ].panel
+							active === item.panel ||
+							( item.children && Object.keys( item.children ).map( k => (
+								item.children[ k ].panel
 							) ).includes( active ) )
 						),
 					} ) }
 					role="presentation"
 				>
 					<button
-						aria-selected={ active === menu[ key ].panel }
+						aria-selected={ active === item.panel }
 						role="tab"
 						onClick={ () => {
-							onSwitch( menu[ key ].panel );
+							onSwitch( item.panel );
 						} }
 					>
-						{ menu[ key ].title }
+						{ item.title }
 					</button>
-					{ menu[ key ].children && (
+					{ item.children && (
 						<ul role="presentation">
-							{ Object.keys( menu[ key ].children ).map( k => (
+							{ Object.keys( item.children ).map( k => (
 								<li key={ `${ key }-${ k }` } role="presentation">
 									<button
-										aria-selected={ active === menu[ key ].children[ k ].panel }
+										aria-selected={ active === item.children[ k ].panel }
 										role="tab"
 										onClick={ () => {
-											onSwitch( menu[ key ].children[ k ].panel );
+											onSwitch( item.children[ k ].panel );
 										} }
 									>
-										{ menu[ key ].children[ k ].title }
+										{ item.children[ k ].title }
 									</button>
 								</li>
 							) ) }
@@ -92,26 +92,26 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 			onSwitch( e.target.value );
 		} }
 	>
-		<option key="overview" value="#qm-overview">
+		<option key="overview" value="overview">
 			{ __( 'Overview', 'query-monitor' ) }
 		</option>
-		{ Object.keys( menu ).map( key => (
+		{ Object.entries( menu ).map( ( [ key, item ] ) => (
 			<React.Fragment key={ key }>
-				<option value={ menu[ key ].panel }>
-					{ menu[ key ].title }
+				<option value={ item.panel }>
+					{ item.title }
 				</option>
-				{ menu[ key ].children && (
+				{ item.children && (
 					<>
-						{ Object.keys( menu[ key ].children ).map( k => (
-							<option key={ `${ key }-${ k }` } value={ menu[ key ].children[ k ].panel }>
-								{ `└ ${ menu[ key ].children[ k ].title }` }
+						{ Object.keys( item.children ).map( k => (
+							<option key={ `${ key }-${ k }` } value={ item.children[ k ].panel }>
+								{ `└ ${ item.children[ k ].title }` }
 							</option>
 						) ) }
 					</>
 				) }
 			</React.Fragment>
 		) ) }
-		<option key="settings" value="#qm-settings">
+		<option key="settings" value="settings">
 			{ __( 'Settings', 'query-monitor' ) }
 		</option>
 	</select>

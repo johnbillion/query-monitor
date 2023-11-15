@@ -383,7 +383,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		border-top: 0 !important;
 		border-left: 1px solid var( --qm-panel-border ) !important;
 
-		#qm-panel-menu,
 		#qm-title h1.qm-title-heading {
 			display: none;
 		}
