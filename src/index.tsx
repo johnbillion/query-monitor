@@ -29,6 +29,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const themeKey = 'qm-theme';
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
+	const containerHeightKey = 'qm-container-height';
+	const containerWidthKey = 'qm-container-width';
 
 	const panels = {
 		admin: qm.data.admin || null,
@@ -74,6 +76,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		sessionStorage.setItem( filtersKey, JSON.stringify( filters ) );
 	}
 
+	const onContainerResize = ( height: number, width: number ) => {
+		localStorage.setItem( containerHeightKey, height.toString() );
+		localStorage.setItem( containerWidthKey, width.toString() );
+	}
+
 	const active = localStorage.getItem( panelKey );
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey );
@@ -93,6 +100,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			editor={ editor }
 			filters={ filters }
 			onPanelChange={ onPanelChange }
+			onContainerResize={ onContainerResize }
 			onSideChange={ onSideChange }
 			onThemeChange={ onThemeChange }
 			onEditorChange={ onEditorChange }

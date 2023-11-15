@@ -49,12 +49,6 @@ Hide Query Monitor itself from various panels. Set to `false` if you want to see
 
 Default `true`
 
-## `QM_NO_JQUERY`
-
-Don't specify jQuery as a dependency of Query Monitor. If jQuery isn't enqueued then Query Monitor will still operate, but with some reduced functionality.
-
-Default `false`
-
 ## `QM_SHOW_ALL_HOOKS`
 
 In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).

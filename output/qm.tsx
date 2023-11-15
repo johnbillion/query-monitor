@@ -37,6 +37,7 @@ type Props = {
 	editor: string;
 	filters: MainContextType['filters'];
 	onPanelChange: ( active: string ) => void;
+	onContainerResize: ( height: number, width: number ) => void;
 	onSideChange: ( side: boolean ) => void;
 	onThemeChange: ( theme: string ) => void;
 	onEditorChange: ( editor: string ) => void;
@@ -87,6 +88,61 @@ export const QM = ( props: Props ) => {
 			setFilters( filters );
 		},
 	};
+
+	const handleWindowResize = () => {
+		// @todo
+	}
+
+	const handleContainerResize = () => {
+		// @todo
+	}
+
+	/**
+	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
+	 * a comprehensive explanantion of modern pointer event handling.
+	 */
+	React.useEffect( () => {
+		let dragging = false;
+
+		const el = document.getElementById( 'qm-title' );
+		const qmMain = document.getElementById( 'query-monitor-main' );
+		let windowHeight = window.innerHeight;
+		let offset = 0;
+
+		const start = (event: PointerEvent) => {
+			if ( event.button !== 0 ) {
+				return;
+			}
+
+			offset = event.clientY - el.getBoundingClientRect().top;
+
+			dragging = true;
+			el.setPointerCapture(event.pointerId);
+		}
+
+		const move = (event: PointerEvent) => {
+			if (!dragging) {
+				return;
+			}
+
+			let newHeight = windowHeight - event.clientY + offset;
+
+			newHeight = Math.max( 27, newHeight );
+			newHeight = Math.min( windowHeight - 32, newHeight );
+
+			qmMain.style.height = `${ newHeight }px`;
+		}
+
+		const end = (event: PointerEvent) => {
+			dragging = false;
+		}
+
+		el.addEventListener( 'pointerdown', start );
+		el.addEventListener( 'pointermove', move );
+		el.addEventListener( 'pointerup', end );
+		el.addEventListener( 'pointercancel', end );
+		el.addEventListener( 'touchstart', (e) => e.preventDefault() );
+	}, [ handleWindowResize, handleContainerResize ] );
 
 	return (
 		<MainContext.Provider value={ contextValue }>

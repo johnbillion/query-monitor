@@ -169,14 +169,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/** @var WP_Locale $wp_locale */
 		global $wp_locale;
 
-		$deps = array(
-			'jquery',
-		);
-
-		if ( defined( 'QM_NO_JQUERY' ) && QM_NO_JQUERY ) {
-			$deps = array();
-		}
-
 		\QM\Vite\enqueue_asset(
 			dirname( __DIR__ ) . '/build',
 			'assets/query-monitor.css',
@@ -184,12 +176,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'handle' => 'query-monitor-css',
 			)
 		);
-		wp_enqueue_script(
-			'query-monitor-js',
-			$this->qm->plugin_url( 'assets/query-monitor.js' ),
-			$deps,
-			QM_VERSION,
-			false
+		\QM\Vite\enqueue_asset(
+			dirname( __DIR__ ) . '/build',
+			'src/index.tsx',
+			array(
+				'handle' => 'query-monitor-js',
+				'css-dependencies' => array( 'query-monitor-css' ),
+			)
 		);
 		wp_localize_script(
 			'query-monitor-js',
@@ -210,17 +203,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		\QM\Vite\enqueue_asset(
-			dirname( __DIR__ ) . '/build',
-			'src/index.tsx',
-			array(
-				'handle' => 'query-monitor-ui',
-				'dependencies' => array( 'query-monitor-js' ),
-				'css-dependencies' => array( 'query-monitor-css' ),
-			)
-		);
-
-		wp_set_script_translations( 'query-monitor-ui', 'query-monitor' );
+		wp_set_script_translations( 'query-monitor-js', 'query-monitor' );
 
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
