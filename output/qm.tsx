@@ -102,6 +102,10 @@ export const QM = ( props: Props ) => {
 	 * a comprehensive explanantion of modern pointer event handling.
 	 */
 	React.useEffect( () => {
+		if ( ! active ) {
+			return;
+		}
+
 		let dragging = false;
 
 		const el = document.getElementById( 'qm-title' );
@@ -142,7 +146,7 @@ export const QM = ( props: Props ) => {
 		el.addEventListener( 'pointerup', end );
 		el.addEventListener( 'pointercancel', end );
 		el.addEventListener( 'touchstart', (e) => e.preventDefault() );
-	}, [ handleWindowResize, handleContainerResize ] );
+	}, [ handleWindowResize, handleContainerResize, active ] );
 
 	return (
 		<MainContext.Provider value={ contextValue }>
