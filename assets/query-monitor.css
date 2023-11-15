@@ -129,6 +129,10 @@
 		background-color: var( --qm-menu-alert-bg );
 	}
 
+	#wp-admin-bar-query-monitor .ab-empty-item {
+		display: none !important;
+	}
+
 	#wp-admin-bar-query-monitor-doing_it_wrong a,
 	#wp-admin-bar-query-monitor-stricts a,
 	#wp-admin-bar-query-monitor-deprecateds a,

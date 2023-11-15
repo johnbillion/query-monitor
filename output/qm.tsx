@@ -178,14 +178,11 @@ interface iAdminMenuProps {
 	children: React.ReactNode;
 }
 
-class AdminMenu extends React.Component<iAdminMenuProps, Record<string, unknown>> {
-	constructor( props: iAdminMenuProps ) {
-		super( props );
+const AdminMenu = ( props: iAdminMenuProps ) => {
+	React.useMemo(() => {
+		props.element.classList.add( 'menupop' );
+		return true;
+	}, []);
 
-		this.props.element.innerHTML = '';
-	}
-
-	render() {
-		return ReactDOM.createPortal( this.props.children, this.props.element );
-	}
+	return ReactDOM.createPortal( props.children, props.element );
 }
