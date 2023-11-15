@@ -1189,7 +1189,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-link,
 	.qm a.qm-edit-link,
 	.qm button.qm-filter-trigger {
-		svg {
+		& svg {
 			fill: var( --qm-link-fg-hover ) !important;
 			width: 16px;
 			height: 16px;
@@ -1208,7 +1208,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-edit-link:focus,
 	.qm button.qm-filter-trigger:hover,
 	.qm button.qm-filter-trigger:focus {
-		svg {
+		& svg {
 			visibility: visible !important;
 		}
 	}
@@ -1305,13 +1305,13 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm .qm-sorted-desc .qm-sort-controls,
 	.qm .qm-sorted-asc .qm-sort-controls {
-		svg {
+		& svg {
 			fill: var( --qm-container-fg ) !important;
 		}
 	}
 
 	.qm thead th.qm-sortable-column:hover .qm-sort-controls {
-		svg {
+		& svg {
 			fill: var( --qm-panel-menu-bg-selected ) !important;
 		}
 	}
