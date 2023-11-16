@@ -16,7 +16,10 @@
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
+ * Requires at least: 5.6
  * Requires PHP: 7.4
+ * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * License:      GPL v2 or later
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
