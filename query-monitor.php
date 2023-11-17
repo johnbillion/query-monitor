@@ -4,7 +4,7 @@
  *
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
- * @author    John Blackbourn <john@johnblackbourn.com>
+ * @author    John Blackbourn
  * @copyright 2009-2023 John Blackbourn
  * @license   GPL v2 or later
  *
