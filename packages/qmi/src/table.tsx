@@ -21,7 +21,7 @@ import * as React from 'react';
 export type Col<TDataRow> = {
 	className?: string;
 	heading: string;
-	render: ( row: TDataRow, i: number, col: Col<TDataRow> ) => ( React.ReactNode | string );
+	render: ( row: TDataRow, i: number ) => ( React.ReactNode | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
 }
@@ -261,7 +261,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 								key={ key }
 								className={ classNames( `qm-cell-${key}`, col.className ) }
 							>
-								{ col.render( row, i, col ) }
+								{ col.render( row, i ) }
 							</td>
 						) ) }
 					</tr>
