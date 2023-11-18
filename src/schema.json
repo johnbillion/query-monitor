@@ -10,7 +10,6 @@
 		"Cache",
 		"Caps",
 		"Conditionals",
-		"DB_Dupes",
 		"DB_Queries",
 		"Doing_It_Wrong",
 		"Environment",
@@ -131,16 +130,6 @@
 				},
 				{
 					"$ref": "src/schemas/data/conditionals.json"
-				}
-			]
-		},
-		"DB_Dupes": {
-			"allOf": [
-				{
-					"$ref": "#/definitions/data"
-				},
-				{
-					"$ref": "src/schemas/data/db_dupes.json"
 				}
 			]
 		},

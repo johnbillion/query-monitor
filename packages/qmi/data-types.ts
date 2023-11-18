@@ -24,7 +24,6 @@ export interface DataTypes {
 	Cache: AbstractData & Cache;
 	Caps: AbstractData & Caps;
 	Conditionals: AbstractData & Conditionals;
-	DB_Dupes: AbstractData & DB_Dupes;
 	DB_Queries: AbstractData & DB_Queries;
 	Doing_It_Wrong: AbstractData & Doing_It_Wrong;
 	Environment: AbstractData & Environment;
@@ -181,33 +180,6 @@ export interface Conditionals {
 	};
 }
 /**
- * Duplicate database queries data transfer object.
- */
-export interface DB_Dupes {
-	total_qs: number;
-	dupe_sources: {
-		[k: string]: {
-			[k: string]: number;
-		};
-	};
-	dupe_callers: {
-		[k: string]: {
-			[k: string]: number;
-		};
-	};
-	dupe_components: {
-		[k: string]: {
-			[k: string]: number;
-		};
-	};
-	dupes: {
-		[k: string]: number[];
-	};
-	dupe_times: {
-		[k: string]: number;
-	};
-}
-/**
  * Database queries data transfer object.
  */
 export interface DB_Queries {
@@ -228,9 +200,20 @@ export interface DB_Queries {
 			};
 		};
 	};
-	dupes?: {
-		[k: string]: number[];
-	};
+	dupes: {
+		query: string;
+		count: number;
+		ltime: number;
+		callers: {
+			[k: string]: number;
+		};
+		components: {
+			[k: string]: number;
+		};
+		sources: {
+			[k: string]: number;
+		};
+	}[];
 }
 export interface QueryRow {
 	stack?: string[];

@@ -158,7 +158,7 @@ export const Panels = ( props: iPanelsProps ) => {
 			{ props.active === 'db_dupes' && (
 				<ErrorBoundary>
 					<PanelContext.Provider value={ panelContextValue }>
-						<DBDupes { ...props.db_dupes } />
+						<DBDupes { ...props.db_queries } />
 					</PanelContext.Provider>
 				</ErrorBoundary>
 			) }

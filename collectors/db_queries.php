@@ -48,6 +48,11 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 */
 	public $wpdb;
 
+	/**
+	 * @var ?array<string, array<int, int>>
+	 */
+	protected $dupes = array();
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
 	}
@@ -247,6 +252,74 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
 		$this->data->has_main_query = ! empty( $has_main_query );
+
+		// Filter out queries that do not have duplicates
+		$this->dupes = array_filter( $this->dupes, array( $this, 'filter_dupe_items' ) );
+
+		// Ignore duplicates from `WP_Query->set_found_posts()`
+		unset( $this->dupes['SELECT FOUND_ROWS()'] );
+
+		$stacks = array();
+
+		// Iterate all queries that have duplicates
+		foreach ( $this->dupes as $sql => $query_ids ) {
+			$dupe_data = array(
+				'query' => $sql,
+				'count' => count( $query_ids ),
+				'ltime' => 0,
+				'callers' => array(),
+				'components' => array(),
+				'sources' => array(),
+			);
+
+			foreach ( $query_ids as $query_id ) {
+				if ( isset( $this->data->rows[ $query_id ]['trace'] ) ) {
+					$trace = $this->data->rows[ $query_id ]['trace'];
+					$stack = array_column( $trace->get_filtered_trace(), 'id' );
+					$component = $trace->get_component();
+
+					// Populate the component counts for this query
+					if ( isset( $dupe_data['components'][ $component->name ] ) ) {
+						$dupe_data['components'][ $component->name ]++;
+					} else {
+						$dupe_data['components'][ $component->name ] = 1;
+					}
+				} else {
+					$stack = $this->data->rows[ $query_id ]['stack'] ?? array();
+				}
+
+				// Populate the caller counts for this query
+				if ( isset( $dupe_data['callers'][ $stack[0] ] ) ) {
+					$dupe_data['callers'][ $stack[0] ]++;
+				} else {
+					$dupe_data['callers'][ $stack[0] ] = 1;
+				}
+
+				// Populate the stack for this query
+				$stacks[ $sql ][] = $stack;
+
+				// Populate the time for this query
+				$dupe_data['ltime'] += $this->data->rows[ $query_id ]['ltime'];
+			}
+
+			// Get the callers which are common to all stacks for this query
+			$common = call_user_func_array( 'array_intersect', $stacks[ $sql ] );
+
+			// Remove callers which are common to all stacks for this query
+			foreach ( $stacks[ $sql ] as $i => $stack ) {
+				$stacks[ $sql ][ $i ] = array_values( array_diff( $stack, $common ) );
+
+				// No uncommon callers within the stack? Just use the topmost caller.
+				if ( empty( $stacks[ $sql ][ $i ] ) ) {
+					$stacks[ $sql ][ $i ] = array_keys( $dupe_data['callers'] );
+				}
+			}
+
+			// Wave a magic wand
+			$dupe_data['sources'] = array_count_values( array_column( $stacks[ $sql ], 0 ) );
+
+			$this->data->dupes[] = $dupe_data;
+		}
 	}
 
 	/**
@@ -255,13 +328,18 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 * @return void
 	 */
 	protected function maybe_log_dupe( $sql, $i ) {
+		// Replace all newlines with a single space
 		$sql = str_replace( array( "\r\n", "\r", "\n" ), ' ', $sql );
+		// Remove all tabs and backticks
 		$sql = str_replace( array( "\t", '`' ), '', $sql );
+		// Replace all instance of multiple spaces with a single space
 		$sql = preg_replace( '/ +/', ' ', $sql );
+		// Trim the SQL
 		$sql = trim( $sql );
+		// Remove trailing semicolon
 		$sql = rtrim( $sql, ';' );
 
-		$this->data->dupes[ $sql ][] = $i;
+		$this->dupes[ $sql ][] = $i;
 	}
 }
 

@@ -74,7 +74,14 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $times;
 
 	/**
-	 * @var ?array<string, array<int, int>>
+	 * @phpstan-var array<int, array{
+	 *   query: string,
+	 *   count: int,
+	 *   ltime: float,
+	 *   callers: array<string, int>,
+	 *   components: array<string, int>,
+	 *   sources: array<string, int>,
+	 * }>
 	 */
 	public $dupes;
 }

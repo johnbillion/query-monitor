@@ -41,30 +41,23 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Collector_DB_Dupes|null $dbq */
-		$dbq = QM_Collectors::get( 'db_dupes' );
+		/** @var QM_Collector_DB_Queries|null $dbq */
+		$dbq = QM_Collectors::get( 'db_queries' );
 
-		if ( $dbq ) {
-			/** @var QM_Data_DB_Queries $dbq_data */
-			$dbq_data = $dbq->get_data();
-			if ( ! empty( $dbq_data->dupes ) ) {
-				$count = 0;
+		/** @var QM_Data_DB_Queries $dbq_data */
+		$dbq_data = $dbq->get_data();
 
-				foreach ( $dbq_data->dupes as $dupe ) {
-					$count += count( $dupe );
-				}
-
-				$menu[ $this->collector->id() ] = $this->menu( array(
-					'title' => sprintf(
-						/* translators: %s: Number of duplicate database queries */
-						__( 'Duplicate Queries (%s)', 'query-monitor' ),
-						number_format_i18n( $count )
-					),
-				) );
-			}
+		if ( ! empty( $dbq_data->dupes ) ) {
+			$menu[ $this->collector->id() ] = $this->menu( array(
+				'title' => sprintf(
+					/* translators: %s: Number of duplicate database queries */
+					__( 'Duplicate Queries (%s)', 'query-monitor' ),
+					number_format_i18n( array_sum( array_column( $dbq_data->dupes, 'count' ) ) )
+				),
+			) );
 		}
-		return $menu;
 
+		return $menu;
 	}
 
 	/**
