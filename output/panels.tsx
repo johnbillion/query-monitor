@@ -30,6 +30,7 @@ import { Settings, iQMConfig } from './html/settings';
 import { Theme } from './html/theme';
 import { Timing } from './html/timing';
 import { Transients } from './html/transients';
+import { DBExpensive } from './html/db_expensive';
 
 interface QMPanelData {
 	data: any;
@@ -130,6 +131,13 @@ export const Panels = ( props: iPanelsProps ) => {
 				<ErrorBoundary>
 					<PanelContext.Provider value={ panelContextValue }>
 						<DBErrors { ...props.db_queries } />
+					</PanelContext.Provider>
+				</ErrorBoundary>
+			) }
+			{ props.active === 'db_expensive' && (
+				<ErrorBoundary>
+					<PanelContext.Provider value={ panelContextValue }>
+						<DBExpensive { ...props.db_queries } />
 					</PanelContext.Provider>
 				</ErrorBoundary>
 			) }

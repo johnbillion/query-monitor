@@ -24,6 +24,7 @@ export type Col<TDataRow> = {
 	render: ( row: TDataRow, i: number ) => ( React.ReactNode | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
+	hasError?: ( row: TDataRow, i: number ) => boolean;
 }
 
 interface Cols<TDataRow> {
@@ -113,11 +114,16 @@ export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], componen
 	return column;
 };
 
-export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[] ) => {
+interface isSlowCallback {
+	( row: DataRowWithTime, i: number ): boolean;
+}
+
+export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[], slow: isSlowCallback = () => false ) => {
 	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Time value={ row.ltime } />,
+		hasError: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
 			default: 'desc',
@@ -259,7 +265,9 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
 							<td
 								key={ key }
-								className={ classNames( `qm-cell-${key}`, col.className ) }
+								className={ classNames( `qm-cell-${key}`, col.className, {
+									'qm-warn': col.hasError && col.hasError( row, i ),
+								} ) }
 							>
 								{ col.render( row, i ) }
 							</td>

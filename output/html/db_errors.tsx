@@ -22,8 +22,6 @@ export const DBErrors = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 		return null;
 	}
 
-	const error_data = data.rows.filter( ( row, i ) => data.errors.includes( i ) );
-
 	return <TabularPanel
 		title={ __( 'Database Errors', 'query-monitor' ) }
 		cols={ {
@@ -45,7 +43,7 @@ export const DBErrors = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			caller: getCallerCol( data.rows ),
 			component: getComponentCol( data.rows, data.component_times ),
 		} }
-		data={ error_data }
+		data={ data.rows.filter( ( row, i ) => data.errors.includes( i ) ) }
 		hasError={ ( row ) => true }
 	/>
 };

@@ -17,23 +17,14 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export const DBQueries = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
-	if ( ! data.rows?.length ) {
-		return <EmptyPanel>
-			<p>
-				{ __( 'No queries! Nice work.', 'query-monitor' ) }
-			</p>
-		</EmptyPanel>
+export const DBExpensive = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+	if ( ! data.expensive?.length ) {
+		return null;
 	}
 
 	return <TabularPanel
-		title={ __( 'Database Queries', 'query-monitor' ) }
+		title={ __( 'Slow Database Queries', 'query-monitor' ) }
 		cols={ {
-			i: {
-				className: 'qm-num',
-				heading: '#',
-				render: ( row, i ) => ( i + 1 ),
-			},
 			sql: {
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
@@ -52,30 +43,6 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 						) }
 					</>
 				),
-				filters: {
-					options: ( () => {
-						const filters = Object.keys( data.types ).map( ( type ) => ( {
-							key: type,
-							label: type,
-						} ) );
-
-						if ( filters.length > 1 ) {
-							filters.unshift( {
-								key: 'non-select',
-								label: __( 'Non-SELECT', 'query-monitor' ),
-							} );
-						}
-
-						return filters;
-					} )(),
-					callback: ( row, value ) => {
-						if ( value === 'non-select' ) {
-							return ( row.type !== 'SELECT' );
-						}
-
-						return ( row.type === value );
-					},
-				},
 			},
 			caller: getCallerCol( data.rows ),
 			component: getComponentCol( data.rows, data.component_times ),
@@ -90,9 +57,9 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 					</>
 				),
 			},
-			time: getTimeCol( data.rows, ( row, i ) => data.expensive.includes( i ) ),
+			time: getTimeCol( data.rows, () => true ),
 		} }
-		data={ data.rows }
+		data={ data.rows.filter( ( row, i ) => data.expensive.includes( i ) ) }
 		hasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };
