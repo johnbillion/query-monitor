@@ -24,7 +24,7 @@ export type Col<TDataRow> = {
 	render: ( row: TDataRow, i: number ) => ( React.ReactNode | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
-	hasError?: ( row: TDataRow, i: number ) => boolean;
+	cellHasError?: ( row: TDataRow, i: number ) => boolean;
 }
 
 interface Cols<TDataRow> {
@@ -47,7 +47,7 @@ interface ColSorting<TDataRow> {
 export type TabularProps<TDataRow> = {
 	cols: Cols<TDataRow>;
 	data: TDataRow[];
-	hasError?: ( row: TDataRow ) => boolean;
+	rowHasError?: ( row: TDataRow ) => boolean;
 	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
 	orderby?: string; // @todo restrict this to a key of the cols
 	order?: 'asc'|'desc';
@@ -123,7 +123,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[], 
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Time value={ row.ltime } />,
-		hasError: ( row, i ) => slow && slow( row, i ),
+		cellHasError: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
 			default: 'desc',
@@ -152,7 +152,7 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, footer, orderby = null, order = 'desc', children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, orderby = null, order = 'desc', children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
@@ -259,14 +259,14 @@ export const Table = <TDataRow extends {}>( { title, cols, data, hasError, id, f
 						key={ i } // @todo nope
 						className={ classNames( {
 							// @todo remove this in favour of using a warning or error property on row objects
-							'qm-warn': hasError && hasError( row ),
+							'qm-warn': rowHasError && rowHasError( row ),
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
 							<td
 								key={ key }
 								className={ classNames( `qm-cell-${key}`, col.className, {
-									'qm-warn': col.hasError && col.hasError( row, i ),
+									'qm-warn': col.cellHasError && col.cellHasError( row, i ),
 								} ) }
 							>
 								{ col.render( row, i ) }

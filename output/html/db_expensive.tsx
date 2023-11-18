@@ -60,6 +60,6 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => 
 			time: getTimeCol( data.rows, () => true ),
 		} }
 		data={ data.rows.filter( ( row, i ) => data.expensive.includes( i ) ) }
-		hasError={ ( row ) => Utils.isWPError( row.result ) }
+		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };

@@ -58,7 +58,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 			},
 			component: getComponentCol( Object.values( data.errors ), data.component_times ),
 		}}
-		hasError={ ( row ) => ( row.level === 'warning' ) }
+		rowHasError={ ( row ) => ( row.level === 'warning' ) }
 		data={ Object.values( data.errors ) }
 	/>;
 };

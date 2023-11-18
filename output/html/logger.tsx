@@ -56,6 +56,6 @@ export const Logger = ( { data }: PanelProps<DataTypes['Logger']> ) => {
 			component: getComponentCol( data.logs, data.component_times ),
 		} }
 		data={ data.logs }
-		hasError={ ( row ) => data.warning_levels.includes( row.level ) }
+		rowHasError={ ( row ) => data.warning_levels.includes( row.level ) }
 	/>
 };

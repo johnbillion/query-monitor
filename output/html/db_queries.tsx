@@ -93,6 +93,6 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			time: getTimeCol( data.rows, ( row, i ) => data.expensive.includes( i ) ),
 		} }
 		data={ data.rows }
-		hasError={ ( row ) => Utils.isWPError( row.result ) }
+		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };

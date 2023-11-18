@@ -44,6 +44,6 @@ export const DBErrors = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
 			component: getComponentCol( data.rows, data.component_times ),
 		} }
 		data={ data.rows.filter( ( row, i ) => data.errors.includes( i ) ) }
-		hasError={ ( row ) => true }
+		rowHasError={ ( row ) => true }
 	/>
 };

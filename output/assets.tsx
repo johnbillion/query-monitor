@@ -139,7 +139,7 @@ export default ( { data, labels }: myProps ) => {
 				},
 			}}
 			data={ data.assets }
-			hasError={ ( row ) => {
+			rowHasError={ ( row ) => {
 				return row.warning;
 			} }
 		/>

@@ -79,6 +79,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['HTTP']> ) => {
 			time: getTimeCol( data.http ),
 		} }
 		data={ data.http }
-		hasError={ ( row ) => Utils.isWPError( row.response ) }
+		rowHasError={ ( row ) => Utils.isWPError( row.response ) }
 	/>
 };
