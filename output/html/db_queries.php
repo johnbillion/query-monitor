@@ -126,10 +126,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		) );
 
 		if ( $errors ) {
-			$id = $this->collector->id() . '-errors';
+			$id = 'db_errors';
 			$count = count( $errors );
 			$menu[ $id ] = $this->menu( array(
-				'id'    => 'query-monitor-errors',
+				'id'    => $id,
+				'panel' => $id,
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of database errors */
 					__( 'Database Errors (%s)', 'query-monitor' ),
@@ -139,10 +140,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		}
 
 		if ( $expensive ) {
-			$id = $this->collector->id() . '-expensive';
+			$id = 'db_expensive';
 			$count = count( $expensive );
 			$menu[ $id ] = $this->menu( array(
-				'id'    => 'query-monitor-expensive',
+				'id'    => $id,
+				'panel' => $id,
 				'title' => esc_html( sprintf(
 					/* translators: %s: Number of slow database queries */
 					__( 'Slow Queries (%s)', 'query-monitor' ),
@@ -161,7 +163,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 */
 	public function panel_menu( array $menu ) {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
-			$id = $this->collector->id() . '-' . $sub;
+			$id = 'db_' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
 				$menu['db_queries']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );

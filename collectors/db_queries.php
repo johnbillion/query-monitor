@@ -53,7 +53,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
-	 * @return mixed[]|false
+	 * @return int[]|false
 	 */
 	public function get_errors() {
 		if ( ! empty( $this->data->errors ) ) {
@@ -63,7 +63,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
-	 * @return mixed[]|false
+	 * @return int[]|false
 	 */
 	public function get_expensive() {
 		if ( ! empty( $this->data->expensive ) ) {
@@ -225,15 +225,13 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			if ( isset( $result ) ) {
 				$row['result'] = $result;
 
-				// @TODO these should store a reference ($i) instead of the whole row
 				if ( $result instanceof WP_Error ) {
-					$this->data->errors[] = $row;
+					$this->data->errors[] = $i;
 				}
 			}
 
-			// @TODO these should store a reference ($i) instead of the whole row
 			if ( self::is_expensive( $row ) ) {
-				$this->data->expensive[] = $row;
+				$this->data->expensive[] = $i;
 			}
 
 			$this->data->rows[ $i ] = $row;

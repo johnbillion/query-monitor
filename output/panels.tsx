@@ -12,6 +12,7 @@ import { Styles } from './html/assets_styles';
 import { BlockEditor } from './html/block_editor';
 import { Caps } from './html/caps';
 import { Conditionals } from './html/conditionals';
+import { DBErrors } from './html/db_errors';
 import { DBCallers } from './html/db_callers';
 import { DBComponents } from './html/db_components';
 import { DBDupes } from './html/db_dupes';
@@ -122,6 +123,13 @@ export const Panels = ( props: iPanelsProps ) => {
 				<ErrorBoundary>
 					<PanelContext.Provider value={ panelContextValue }>
 						<Conditionals { ...props.conditionals } />
+					</PanelContext.Provider>
+				</ErrorBoundary>
+			) }
+			{ props.active === 'db_errors' && (
+				<ErrorBoundary>
+					<PanelContext.Provider value={ panelContextValue }>
+						<DBErrors { ...props.db_queries } />
 					</PanelContext.Provider>
 				</ErrorBoundary>
 			) }

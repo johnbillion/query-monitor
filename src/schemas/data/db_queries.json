@@ -83,13 +83,13 @@
 		"errors": {
 			"type": "array",
 			"items": {
-				"type": "object"
+				"type": "integer"
 			}
 		},
 		"expensive": {
 			"type": "array",
 			"items": {
-				"type": "object"
+				"type": "integer"
 			}
 		},
 		"rows": {

@@ -213,12 +213,8 @@ export interface DB_Dupes {
 export interface DB_Queries {
 	total_qs: number;
 	total_time: number;
-	errors: {
-		[k: string]: unknown;
-	}[];
-	expensive?: {
-		[k: string]: unknown;
-	}[];
+	errors: number[];
+	expensive?: number[];
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;

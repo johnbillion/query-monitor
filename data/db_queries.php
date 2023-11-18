@@ -35,12 +35,12 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $total_time;
 
 	/**
-	 * @var array<int, array<string, mixed>>
+	 * @var array<int, int>
 	 */
 	public $errors;
 
 	/**
-	 * @var ?array<int, array<string, mixed>>
+	 * @var ?array<int, int>
 	 */
 	public $expensive;
 
