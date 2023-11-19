@@ -33,78 +33,78 @@ type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
 }
 
 export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
-		if ( ! data.block_editor_enabled || ! data.post_blocks ) {
-			return null;
-		}
+	if ( ! data.block_editor_enabled || ! data.post_blocks ) {
+		return null;
+	}
 
-		if ( ! data.post_has_blocks ) {
-			return (
-				<EmptyPanel>
-					<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
-				</EmptyPanel>
-			);
-		}
-
-		let colspan = 5;
-
-		data.has_block_context && colspan++;
-		data.has_block_timing && colspan++;
-
+	if ( ! data.post_has_blocks ) {
 		return (
-			<Panel>
-				<table>
-					<caption>
-						<h2 id="qm-panel-title">
-							{ __( 'Blocks', 'query-monitor' ) }
-						</h2>
-					</caption>
-					<thead>
-						<tr>
-							<th scope="col">
-								#
-							</th>
-							<th scope="col">
-								{ __( 'Block Name', 'query-monitor' ) }
-							</th>
-							<th scope="col">
-								{ __( 'Attributes', 'query-monitor' ) }
-							</th>
-							{ data.has_block_context && (
-								<th scope="col">
-									{ __( 'Context', 'query-monitor' ) }
-								</th>
-							) }
-							<th scope="col">
-								{ __( 'Render Callback', 'query-monitor' ) }
-							</th>
-							{ data.has_block_timing && (
-								<th scope="col">
-									{ __( 'Render Time', 'query-monitor' ) }
-								</th>
-							) }
-							<th scope="col">
-								{ __( 'Inner HTML', 'query-monitor' ) }
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ data.post_blocks.map( ( block, i ) => (
-							<RenderBlock
-								key={ i }
-								block={ block }
-								data={ data }
-								i={ ( i + 1 ).toString() }
-							/>
-						) ) }
-					</tbody>
-					<PanelFooter
-						cols={ colspan }
-						count={ data.post_blocks.length }
-						total={ data.post_blocks.length }
-					/>
-				</table>
-			</Panel>
+			<EmptyPanel>
+				<p>{ __( 'This post contains no blocks.', 'query-monitor' ) }</p>
+			</EmptyPanel>
 		);
+	}
+
+	let colspan = 5;
+
+	data.has_block_context && colspan++;
+	data.has_block_timing && colspan++;
+
+	return (
+		<Panel>
+			<table>
+				<caption>
+					<h2 id="qm-panel-title">
+						{ __( 'Blocks', 'query-monitor' ) }
+					</h2>
+				</caption>
+				<thead>
+					<tr>
+						<th scope="col">
+							#
+						</th>
+						<th scope="col">
+							{ __( 'Block Name', 'query-monitor' ) }
+						</th>
+						<th scope="col">
+							{ __( 'Attributes', 'query-monitor' ) }
+						</th>
+						{ data.has_block_context && (
+							<th scope="col">
+								{ __( 'Context', 'query-monitor' ) }
+							</th>
+						) }
+						<th scope="col">
+							{ __( 'Render Callback', 'query-monitor' ) }
+						</th>
+						{ data.has_block_timing && (
+							<th scope="col">
+								{ __( 'Render Time', 'query-monitor' ) }
+							</th>
+						) }
+						<th scope="col">
+							{ __( 'Inner HTML', 'query-monitor' ) }
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{ data.post_blocks.map( ( block, i ) => (
+						<RenderBlock
+							key={ i }
+							block={ block }
+							data={ data }
+							i={ ( i + 1 ).toString() }
+						/>
+					) ) }
+				</tbody>
+				<PanelFooter
+					cols={ colspan }
+					count={ data.post_blocks.length }
+					total={ data.post_blocks.length }
+				/>
+			</table>
+		</Panel>
+	);
 }
 
 interface iBlockProps {
