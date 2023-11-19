@@ -99,181 +99,85 @@ export const Panels = ( props: iPanelsProps ) => {
 
 	return (
 		<div id="qm-panels">
-			{ props.active === 'admin' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+			<ErrorBoundary key={ props.active }>
+				<PanelContext.Provider value={ panelContextValue }>
+					{ props.active === 'admin' && (
 						<Admin { ...props.admin } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'block_editor' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'block_editor' && (
 						<BlockEditor { ...props.block_editor } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'caps' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'caps' && (
 						<Caps { ...props.caps } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'conditionals' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'conditionals' && (
 						<Conditionals { ...props.conditionals } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_errors' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_errors' && (
 						<DBErrors { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_expensive' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_expensive' && (
 						<DBExpensive { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_callers' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_callers' && (
 						<DBCallers { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_components' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_components' && (
 						<DBComponents { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_dupes' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_dupes' && (
 						<DBDupes { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'db_queries' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'db_queries' && (
 						<DBQueries { ...props.db_queries } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'doing_it_wrong' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'doing_it_wrong' && (
 						<DoingItWrong { ...props.doing_it_wrong } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'environment' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'environment' && (
 						<Environment { ...props.environment } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'hooks' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'hooks' && (
 						<Hooks { ...props.hooks } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'http' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'http' && (
 						<HTTP { ...props.http } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'logger' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'logger' && (
 						<Logger { ...props.logger } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'languages' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'languages' && (
 						<Languages { ...props.languages } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'multisite' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'multisite' && (
 						<Multisite { ...props.multisite } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'php_errors' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'php_errors' && (
 						<PHPErrors { ...props.php_errors } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'request' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'request' && (
 						<Request { ...props.request } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'assets_scripts' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'assets_scripts' && (
 						<Scripts { ...props.assets_scripts } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'assets_styles' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'assets_styles' && (
 						<Styles { ...props.assets_styles } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'response' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'response' && (
 						<Theme { ...props.response } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'transients' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'transients' && (
 						<Transients { ...props.transients } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'timing' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'timing' && (
 						<Timing { ...props.timing } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
-			{ props.active === 'settings' && (
-				<ErrorBoundary>
-					<PanelContext.Provider value={ panelContextValue }>
+					) }
+					{ props.active === 'settings' && (
 						<Settings { ...qm.settings } />
-					</PanelContext.Provider>
-				</ErrorBoundary>
-			) }
+					) }
+				</PanelContext.Provider>
+			</ErrorBoundary>
 		</div>
 	);
 };
