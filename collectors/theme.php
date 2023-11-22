@@ -102,6 +102,10 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_get_position( $name ) {
+	    	if ( !is_string( $name ) && !is_null( $name ) )  {
+      			return;
+    		}
+		
 		$filter = current_filter();
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
