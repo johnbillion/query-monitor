@@ -54,6 +54,7 @@ class QM_Collector_Redirects extends QM_DataCollector {
 			),
 			'ignore_func' => array(
 				'wp_redirect' => true,
+				'wp_safe_redirect' => true,
 			),
 		) );
 
