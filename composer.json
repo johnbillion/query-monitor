@@ -31,7 +31,6 @@
 		"codeception/module-webdriver": "^1.0",
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
-		"ergebnis/composer-normalize": "^2",
 		"johnbillion/plugin-infrastructure": "dev-trunk",
 		"lucatume/wp-browser": "3.2.1",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
@@ -58,7 +57,6 @@
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,
-			"ergebnis/composer-normalize": true,
 			"roots/wordpress-core-installer": true,
 			"composer/installers": true
 		},
@@ -76,18 +74,19 @@
 		],
 		"test": [
 			"@composer validate --strict --no-check-lock",
-			"@composer normalize --dry-run",
 			"@test:phpstan",
 			"@test:phpcs",
+			"@test:start",
 			"@test:integration",
-			"@test:acceptance"
+			"@test:acceptance",
+			"@test:stop"
 		],
 		"test:acceptance": [
 			"npm run build",
 			"acceptance-tests"
 		],
 		"test:destroy": [
-			"COMPOSE_PROJECT_NAME=query-monitor docker compose down --volumes --remove-orphans"
+			"tests-destroy"
 		],
 		"test:integration": [
 			"integration-tests"
@@ -101,10 +100,10 @@
 			"phpstan analyze --memory-limit=1024M"
 		],
 		"test:start": [
-			"COMPOSE_PROJECT_NAME=query-monitor docker compose up -d"
+			"tests-start"
 		],
 		"test:stop": [
-			"COMPOSE_PROJECT_NAME=query-monitor docker compose down"
+			"tests-stop"
 		]
 	}
 }
