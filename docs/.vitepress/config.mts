@@ -11,6 +11,7 @@ const RSS: RSSOptions = {
 	baseUrl: siteURL,
 	copyright: `Copyright (c) 2009-${year}, John Blackbourn`,
 	description: 'The developer tools panel for WordPress',
+	filename: 'feed',
 }
 
 export default defineConfig({
