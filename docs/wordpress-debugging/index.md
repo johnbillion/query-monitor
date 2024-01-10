@@ -1,7 +1,5 @@
 ---
-redirect_from:
-  - /blog/
-  - /docs/
+publish: false
 ---
 
 # WordPress debugging

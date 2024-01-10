@@ -1,7 +1,16 @@
 import { defineConfig } from 'vitepress'
+import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
 
 const wpURL = 'https://wordpress.org/plugins/query-monitor/';
 const ghURL = 'https://github.com/johnbillion/query-monitor';
+const siteURL = 'https://querymonitor.com';
+
+const RSS: RSSOptions = {
+	title: 'Query Monitor',
+	baseUrl: siteURL,
+	copyright: 'Copyright (c) 2009-2024, John Blackbourn',
+	description: 'The developer tools panel for WordPress',
+}
 
 export default defineConfig({
 	title: 'Query Monitor',
@@ -145,6 +154,11 @@ export default defineConfig({
 	},
 	lastUpdated: true,
 	sitemap: {
-		hostname: 'https://querymonitor.com',
+		hostname: siteURL,
+	},
+	vite: {
+		plugins: [
+			RssPlugin(RSS),
+		],
 	},
 })
