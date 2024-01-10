@@ -4,11 +4,12 @@ import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
 const wpURL = 'https://wordpress.org/plugins/query-monitor/';
 const ghURL = 'https://github.com/johnbillion/query-monitor';
 const siteURL = 'https://querymonitor.com';
+const year = new Date().getFullYear();
 
 const RSS: RSSOptions = {
 	title: 'Query Monitor',
 	baseUrl: siteURL,
-	copyright: 'Copyright (c) 2009-2024, John Blackbourn',
+	copyright: `Copyright (c) 2009-${year}, John Blackbourn`,
 	description: 'The developer tools panel for WordPress',
 }
 
@@ -150,6 +151,10 @@ export default defineConfig({
 
 		search: {
 			provider: 'local',
+		},
+
+		footer: {
+			copyright: `© 2009-${year}, <a href="https://johnblackbourn.com">John Blackbourn</a>`,
 		},
 	},
 	lastUpdated: true,
