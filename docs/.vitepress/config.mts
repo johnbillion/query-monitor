@@ -76,7 +76,7 @@ export default defineConfig({
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
 					{
-						text: 'User Capabilities',
+						text: 'User capabilities',
 						link: '/wordpress-debugging/user-capabilities/',
 					},
 					{
@@ -103,7 +103,7 @@ export default defineConfig({
 			},
 			{
 				text: 'Help',
-				collapsed: true,
+				collapsed: false,
 				items: [
 					{
 						text: 'Clickable stack traces',
