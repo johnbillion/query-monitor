@@ -30,6 +30,15 @@ export default defineConfig({
 				href: '/icon.svg',
 			},
 		],
+		[
+			'link',
+			{
+				rel: 'alternate',
+				type: 'application/rss+xml',
+				title: 'Query Monitor',
+				href: `${siteURL}/feed`,
+			},
+		]
 	],
 	themeConfig: {
 		logo: '/icon.svg',
