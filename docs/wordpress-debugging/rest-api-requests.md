@@ -1,6 +1,5 @@
 ---
 title: REST API requests
-redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
 ---
 
 # Debugging WordPress REST API requests with Query Monitor

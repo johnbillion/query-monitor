@@ -1,6 +1,5 @@
 ---
 title: Template part loading
-redirect_from: /blog/2019/07/debugging-wordpress-template-part-loading/
 ---
 
 # Debugging WordPress template part loading with Query Monitor
