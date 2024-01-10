@@ -76,6 +76,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
 					{
+						text: 'User Capabilities',
+						link: '/wordpress-debugging/user-capabilities/',
+					},
+					{
 						text: 'REST API requests',
 						link: '/wordpress-debugging/rest-api-requests/',
 					},
