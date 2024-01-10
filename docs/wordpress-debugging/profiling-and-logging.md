@@ -116,7 +116,7 @@ Finally, the static logging methods on the `QM` class can be used instead of cal
 QM::error( 'Everything is broken' );
 ```
 
-The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
+The `QM` class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
 
 ## Assertions
 
