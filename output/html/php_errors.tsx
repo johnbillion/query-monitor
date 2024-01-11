@@ -22,6 +22,25 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 		</EmptyPanel>
 	}
 
+	const filterOptions = [
+		{
+			label: 'Warning',
+			key: 'warning',
+		},
+		{
+			label: 'Notice',
+			key: 'notice',
+		},
+		{
+			label: 'Strict',
+			key: 'strict',
+		},
+		{
+			label: 'Deprecated',
+			key: 'deprecated',
+		},
+	];
+
 	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
 		cols={{
@@ -39,10 +58,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
 					</>
 				),
 				filters: {
-					options: Object.keys( data.types ).map( ( level ) => ( {
-						key: level,
-						label: level,
-					} ) ),
+					options: filterOptions,
 					callback: ( row, filter ) => row.level === filter,
 				},
 			},

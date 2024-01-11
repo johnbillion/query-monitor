@@ -29,6 +29,41 @@ export const Logger = ( { data }: PanelProps<DataTypes['Logger']> ) => {
 		);
 	}
 
+	const filterOptions = [
+		{
+			label: 'Emergency',
+			key: 'emergency',
+		},
+		{
+			label: 'Alert',
+			key: 'alert',
+		},
+		{
+			label: 'Critical',
+			key: 'critical',
+		},
+		{
+			label: 'Error',
+			key: 'error',
+		},
+		{
+			label: 'Warning',
+			key: 'warning',
+		},
+		{
+			label: 'Notice',
+			key: 'notice',
+		},
+		{
+			label: 'Info',
+			key: 'info',
+		},
+		{
+			label: 'Debug',
+			key: 'debug',
+		},
+	];
+
 	return <TabularPanel
 		title={ __( 'Logs', 'query-monitor' ) }
 		cols={ {
@@ -41,10 +76,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['Logger']> ) => {
 					</>
 				),
 				filters: {
-					options: Object.keys( data.types ).map( ( level ) => ( {
-						key: level,
-						label: level,
-					} ) ),
+					options: filterOptions,
 					callback: ( row, filter ) => row.level === filter,
 				},
 			},
