@@ -1,5 +1,6 @@
 ---
 nav_exclude: true
+publish: false
 ---
 
 # Privacy statement

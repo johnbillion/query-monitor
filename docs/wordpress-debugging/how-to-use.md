@@ -1,6 +1,5 @@
 ---
 title: How to use Query Monitor
-redirect_from: /docs/how-to-use/
 ---
 
 # How to use Query Monitor

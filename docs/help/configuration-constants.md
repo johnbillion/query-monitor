@@ -1,17 +1,10 @@
 ---
 title: Configuration constants
-redirect_from: /docs/configuration-constants/
 ---
 
 # Configuration constants
 
 The following PHP constants can be defined in your wp-config.php file in order to control the behaviour of Query Monitor:
-
-## `QM_DARK_MODE`
-
-Enable dark mode for Query Monitor's interface.
-
-Default `false`
 
 ## `QM_DB_EXPENSIVE`
 
