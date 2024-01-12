@@ -82,15 +82,9 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
-				render: ( row ) => (
-					<>
-						{ ! Utils.isWPError( row.result ) && (
-							row.result
-						) }
-					</>
-				),
+				render: ( row ) => ( ! Utils.isWPError( row.result ) && row.result ),
 			},
-			time: getTimeCol( data.rows, ( row, i ) => data.expensive.includes( i ) ),
+			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ),
 		} }
 		data={ data.rows }
 		rowHasError={ ( row ) => Utils.isWPError( row.result ) }

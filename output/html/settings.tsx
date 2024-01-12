@@ -25,15 +25,13 @@ export type iQMConfig = {
 	data: iPanelsProps;
 }
 
-interface il10nConfig {
+declare const qm_l10n: {
 	ajaxurl: string;
 	auth_nonce: {
 		on: string;
 		off: string;
 	}
-}
-
-declare const qm_l10n: il10nConfig;
+};
 
 export const Settings = ( props: Props ) => {
 	const [ verified, setVerified ] = React.useState( props.verified );
