@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export const Hooks = ( { data }: PanelProps<DataTypes['Hooks']> ) => {
+export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 	if ( ! data.hooks?.length ) {
 		return (
 			<EmptyPanel>

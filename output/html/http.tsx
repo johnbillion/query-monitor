@@ -18,7 +18,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export const HTTP = ( { data }: PanelProps<DataTypes['HTTP']> ) => {
+export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 	if ( ! data.http ) {
 		return (
 			<EmptyPanel>

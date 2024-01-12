@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export const Languages = ( { data }: PanelProps<DataTypes['Languages']> ) => {
+export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 	return (
 		<TabularPanel
 			title={ __( 'Languages', 'query-monitor' ) }

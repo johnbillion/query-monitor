@@ -9,7 +9,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export const Admin = ( { data }: PanelProps<DataTypes['Admin']> ) => {
+export const Admin = ( { data }: PanelProps<DataTypes['admin']> ) => {
 	if ( ! data.current_screen ) {
 		// is this needed?
 		return null;

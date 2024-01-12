@@ -18,28 +18,28 @@ import {
 } from 'wp-types';
 
 export interface DataTypes {
-	Admin: AbstractData & Admin;
-	Assets: AbstractData & Assets;
-	Block_Editor: AbstractData & Block_Editor;
-	Cache: AbstractData & Cache;
-	Caps: AbstractData & Caps;
-	Conditionals: AbstractData & Conditionals;
-	DB_Queries: AbstractData & DB_Queries;
-	Doing_It_Wrong: AbstractData & Doing_It_Wrong;
-	Environment: AbstractData & Environment;
-	Hooks: AbstractData & Hooks;
-	HTTP: AbstractData & HTTP;
-	Languages: AbstractData & Languages;
-	Logger: AbstractData & Logger;
-	Multisite: AbstractData & Multisite;
-	Overview: AbstractData & Overview;
-	PHP_Errors: AbstractData & PHP_Errors;
-	Raw_Request: AbstractData & Raw_Request;
-	Redirect: AbstractData & Redirect;
-	Request: AbstractData & Request;
-	Theme: AbstractData & Theme;
-	Timing: AbstractData & Timing;
-	Transients: AbstractData & Transients;
+	admin: AbstractData & Admin;
+	assets: AbstractData & Assets;
+	block_editor: AbstractData & Block_Editor;
+	cache: AbstractData & Cache;
+	caps: AbstractData & Caps;
+	conditionals: AbstractData & Conditionals;
+	db_queries: AbstractData & DB_Queries;
+	doing_it_wrong: AbstractData & Doing_It_Wrong;
+	environment: AbstractData & Environment;
+	hooks: AbstractData & Hooks;
+	http: AbstractData & HTTP;
+	languages: AbstractData & Languages;
+	logger: AbstractData & Logger;
+	multisite: AbstractData & Multisite;
+	overview: AbstractData & Overview;
+	php_errors: AbstractData & PHP_Errors;
+	raw_request: AbstractData & Raw_Request;
+	redirect: AbstractData & Redirect;
+	request: AbstractData & Request;
+	theme: AbstractData & Theme;
+	timing: AbstractData & Timing;
+	transients: AbstractData & Transients;
 }
 export interface AbstractData {
 	types: {

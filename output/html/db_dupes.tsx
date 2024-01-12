@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export const DBDupes = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	if ( ! data.dupes.length ) {
 		return null;
 	}

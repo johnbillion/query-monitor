@@ -17,7 +17,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export const DBErrors = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+export const DBErrors = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	if ( ! data.errors?.length ) {
 		return null;
 	}

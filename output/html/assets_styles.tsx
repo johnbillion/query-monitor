@@ -12,7 +12,7 @@ import {
 
 import Assets from '../assets';
 
-export const Styles = ( props: PanelProps<DataTypes['Assets']> ) => {
+export const Styles = ( props: PanelProps<DataTypes['assets']> ) => {
 	return (
 		<Assets
 			{ ...props }

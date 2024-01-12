@@ -13,7 +13,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export const PHPErrors = ( { data }: PanelProps<DataTypes['PHP_Errors']> ) => {
+export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	if ( ! data.errors ) {
 		return <EmptyPanel>
 			<p>

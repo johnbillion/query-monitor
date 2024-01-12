@@ -14,7 +14,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export const DoingItWrong = ( { data }: PanelProps<DataTypes['Doing_It_Wrong']> ) => {
+export const DoingItWrong = ( { data }: PanelProps<DataTypes['doing_it_wrong']> ) => {
 	if ( ! data.actions?.length ) {
 		return (
 			<EmptyPanel>

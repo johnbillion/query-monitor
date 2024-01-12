@@ -17,7 +17,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export const DBExpensive = ( { data }: PanelProps<DataTypes['DB_Queries']> ) => {
+export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	if ( ! data.expensive?.length ) {
 		return null;
 	}

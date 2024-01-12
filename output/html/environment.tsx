@@ -12,7 +12,7 @@ import PHP from '../php';
 import Server from '../server';
 import WordPress from '../wordpress';
 
-export const Environment = ( { data }: PanelProps<DataTypes['Environment']> ) => (
+export const Environment = ( { data }: PanelProps<DataTypes['environment']> ) => (
 	<NonTabularPanel>
 		<PHP php={ data.php }/>
 		<DB db={ data.db }/>

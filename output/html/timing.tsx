@@ -15,7 +15,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-export const Timing = ( { data }: PanelProps<DataTypes['Timing']> ) => {
+export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 	if ( ! data.timing && ! data.warning ) {
 		return <EmptyPanel>
 			<p>

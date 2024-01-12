@@ -16,7 +16,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-type myProps = PanelProps<DataTypes['Assets']> & {
+type myProps = PanelProps<DataTypes['assets']> & {
 	labels: {
 		none: string;
 	};

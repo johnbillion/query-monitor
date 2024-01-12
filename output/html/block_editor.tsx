@@ -28,7 +28,7 @@ interface iBlock {
 	timing: number;
 }
 
-type iBlockData = Omit<DataTypes['Block_Editor'], 'post_blocks'> & {
+type iBlockData = Omit<DataTypes['block_editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
 

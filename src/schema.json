@@ -4,28 +4,28 @@
 	"title": "DataTypes",
 	"type": "object",
 	"required": [
-		"Admin",
-		"Assets",
-		"Block_Editor",
-		"Cache",
-		"Caps",
-		"Conditionals",
-		"DB_Queries",
-		"Doing_It_Wrong",
-		"Environment",
-		"Hooks",
-		"HTTP",
-		"Languages",
-		"Logger",
-		"Multisite",
-		"Overview",
-		"PHP_Errors",
-		"Raw_Request",
-		"Redirect",
-		"Request",
-		"Theme",
-		"Timing",
-		"Transients"
+		"admin",
+		"assets",
+		"block_editor",
+		"cache",
+		"caps",
+		"conditionals",
+		"db_queries",
+		"doing_it_wrong",
+		"environment",
+		"hooks",
+		"http",
+		"languages",
+		"logger",
+		"multisite",
+		"overview",
+		"php_errors",
+		"raw_request",
+		"redirect",
+		"request",
+		"theme",
+		"timing",
+		"transients"
 	],
 	"definitions": {
 		"data": {
@@ -73,7 +73,7 @@
 		}
 	},
 	"properties": {
-		"Admin": {
+		"admin": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -83,7 +83,7 @@
 				}
 			]
 		},
-		"Assets": {
+		"assets": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -93,7 +93,7 @@
 				}
 			]
 		},
-		"Block_Editor": {
+		"block_editor": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -103,7 +103,7 @@
 				}
 			]
 		},
-		"Cache": {
+		"cache": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -113,7 +113,7 @@
 				}
 			]
 		},
-		"Caps": {
+		"caps": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -123,7 +123,7 @@
 				}
 			]
 		},
-		"Conditionals": {
+		"conditionals": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -133,7 +133,7 @@
 				}
 			]
 		},
-		"DB_Queries": {
+		"db_queries": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -143,7 +143,7 @@
 				}
 			]
 		},
-		"Doing_It_Wrong": {
+		"doing_it_wrong": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -153,7 +153,7 @@
 				}
 			]
 		},
-		"Environment": {
+		"environment": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -163,7 +163,7 @@
 				}
 			]
 		},
-		"Hooks": {
+		"hooks": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -173,7 +173,7 @@
 				}
 			]
 		},
-		"HTTP": {
+		"http": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -183,7 +183,7 @@
 				}
 			]
 		},
-		"Languages": {
+		"languages": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -193,7 +193,7 @@
 				}
 			]
 		},
-		"Logger": {
+		"logger": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -203,7 +203,7 @@
 				}
 			]
 		},
-		"Multisite": {
+		"multisite": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -213,7 +213,7 @@
 				}
 			]
 		},
-		"Overview": {
+		"overview": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -223,7 +223,7 @@
 				}
 			]
 		},
-		"PHP_Errors": {
+		"php_errors": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -233,7 +233,7 @@
 				}
 			]
 		},
-		"Raw_Request": {
+		"raw_request": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -243,7 +243,7 @@
 				}
 			]
 		},
-		"Redirect": {
+		"redirect": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -253,7 +253,7 @@
 				}
 			]
 		},
-		"Request": {
+		"request": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -263,7 +263,7 @@
 				}
 			]
 		},
-		"Theme": {
+		"theme": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -273,7 +273,7 @@
 				}
 			]
 		},
-		"Timing": {
+		"timing": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"
@@ -283,7 +283,7 @@
 				}
 			]
 		},
-		"Transients": {
+		"transients": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"

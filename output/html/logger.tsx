@@ -13,7 +13,7 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-export const Logger = ( { data }: PanelProps<DataTypes['Logger']> ) => {
+export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	if ( ! data.logs.length ) {
 		return (
 			<EmptyPanel>

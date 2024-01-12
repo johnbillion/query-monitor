@@ -15,7 +15,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-export const Caps = ( { enabled, data }: PanelProps<DataTypes['Caps']> ) => {
+export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 	if ( ! enabled ) {
 		return (
 			<EmptyPanel>

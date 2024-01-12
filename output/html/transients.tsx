@@ -16,7 +16,7 @@ import {
 	_x,
 } from '@wordpress/i18n';
 
-export const Transients = ( { data }: PanelProps<DataTypes['Transients']> ) => {
+export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {
 	if ( ! data.trans?.length ) {
 		return (
 			<EmptyPanel>
