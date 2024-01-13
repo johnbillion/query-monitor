@@ -21,7 +21,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					{ __( 'No data logged.', 'query-monitor' ) }
 				</p>
 				<p>
-					<a href="https://querymonitor.com/blog/2018/07/profiling-and-logging/">
+					<a href="https://querymonitor.com/wordpress-debugging/profiling-and-logging/">
 						{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
 					</a>
 				</p>
