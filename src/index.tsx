@@ -1,14 +1,149 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { iQMConfig } from '../output/html/settings';
 import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
+import { iNavMenu } from '../output/nav';
+import { iPanelData } from '../output/panels';
 import {
 	MainContextType,
+	registerPanel,
 } from 'qmi';
 
-declare const qm: iQMConfig;
+import { Admin } from '../output/html/admin';
+import { BlockEditor } from '../output/html/block_editor';
+import { Caps } from '../output/html/caps';
+import { Conditionals } from '../output/html/conditionals';
+import { DBCallers } from '../output/html/db_callers';
+import { DBComponents } from '../output/html/db_components';
+import { DBDupes } from '../output/html/db_dupes';
+import { DBErrors } from '../output/html/db_errors';
+import { DBExpensive } from '../output/html/db_expensive';
+import { DBQueries } from '../output/html/db_queries';
+import { DoingItWrong } from '../output/html/doing_it_wrong';
+import { Environment } from '../output/html/environment';
+import { Hooks } from '../output/html/hooks';
+import { HTTP } from '../output/html/http';
+import { Languages } from '../output/html/languages';
+import { Logger } from '../output/html/logger';
+import { Multisite } from '../output/html/multisite';
+import { PHPErrors } from '../output/html/php_errors';
+import { Request } from '../output/html/request';
+import { Scripts } from '../output/html/assets_scripts';
+import { Styles } from '../output/html/assets_styles';
+import { Theme } from '../output/html/theme';
+import { Timing } from '../output/html/timing';
+import { Transients } from '../output/html/transients';
+
+// what is this?
+type iQM = {
+	menu: any;
+	settings: {
+		verified: boolean;
+	};
+	panel_menu: iNavMenu;
+	data: iPanelData;
+}
+
+// what is this?
+declare const qm: iQM;
+
+registerPanel( 'admin', {
+	render: ( data, enabled ) => <Admin data={ data } enabled={ enabled } />,
+	data: 'admin',
+} );
+// registerPanel( 'block_editor', {
+// 	render: ( data, enabled ) => <BlockEditor data={ data } enabled={ enabled } />,
+// 	data: 'block_editor',
+// } );
+registerPanel( 'caps', {
+	render: ( data, enabled ) => <Caps data={ data } enabled={ enabled } />,
+	data: 'caps',
+} );
+registerPanel( 'conditionals', {
+	render: ( data, enabled ) => <Conditionals data={ data } enabled={ enabled } />,
+	data: 'conditionals',
+} );
+registerPanel( 'db_callers', {
+	render: ( data, enabled ) => <DBCallers data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_components', {
+	render: ( data, enabled ) => <DBComponents data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_dupes', {
+	render: ( data, enabled ) => <DBDupes data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_errors', {
+	render: ( data, enabled ) => <DBErrors data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_expensive', {
+	render: ( data, enabled ) => <DBExpensive data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_queries', {
+	render: ( data, enabled ) => <DBQueries data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'doing_it_wrong', {
+	render: ( data, enabled ) => <DoingItWrong data={ data } enabled={ enabled } />,
+	data: 'doing_it_wrong',
+} );
+registerPanel( 'environment', {
+	render: ( data, enabled ) => <Environment data={ data } enabled={ enabled } />,
+	data: 'environment',
+} );
+registerPanel( 'hooks', {
+	render: ( data, enabled ) => <Hooks data={ data } enabled={ enabled } />,
+	data: 'hooks',
+} );
+registerPanel( 'http', {
+	render: ( data, enabled ) => <HTTP data={ data } enabled={ enabled } />,
+	data: 'http',
+} );
+registerPanel( 'languages', {
+	render: ( data, enabled ) => <Languages data={ data } enabled={ enabled } />,
+	data: 'languages',
+} );
+registerPanel( 'logger', {
+	render: ( data, enabled ) => <Logger data={ data } enabled={ enabled } />,
+	data: 'logger',
+} );
+registerPanel( 'multisite', {
+	render: ( data, enabled ) => <Multisite data={ data } enabled={ enabled } />,
+	data: 'multisite',
+} );
+registerPanel( 'php_errors', {
+	render: ( data, enabled ) => <PHPErrors data={ data } enabled={ enabled } />,
+	data: 'php_errors',
+} );
+registerPanel( 'request', {
+	render: ( data, enabled ) => <Request data={ data } enabled={ enabled } />,
+	data: 'request',
+} );
+// registerPanel( 'assets_scripts', {
+// 	render: ( data, enabled ) => <Scripts data={ data } enabled={ enabled } />,
+// 	data: 'assets_scripts',
+// } );
+// registerPanel( 'assets_styles', {
+// 	render: ( data, enabled ) => <Styles data={ data } enabled={ enabled } />,
+// 	data: 'assets_styles',
+// } );
+registerPanel( 'theme', {
+	render: ( data, enabled ) => <Theme data={ data } enabled={ enabled } />,
+	data: 'theme',
+} );
+registerPanel( 'timing', {
+	render: ( data, enabled ) => <Timing data={ data } enabled={ enabled } />,
+	data: 'timing',
+} );
+registerPanel( 'transients', {
+	render: ( data, enabled ) => <Transients data={ data } enabled={ enabled } />,
+	data: 'transients',
+} );
 
 document.addEventListener( 'DOMContentLoaded', function () {
 	const fatalElement = document.getElementById( 'qm-fatal-component' );
@@ -31,30 +166,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
 	const containerWidthKey = 'qm-container-width';
-
-	const panels = {
-		admin: qm.data.admin || null,
-		assets_scripts: qm.data.assets_scripts,
-		assets_styles: qm.data.assets_styles,
-		block_editor: qm.data.block_editor,
-		caps: qm.data.caps,
-		conditionals: qm.data.conditionals,
-		db_callers: qm.data.db_queries,
-		db_components: qm.data.db_queries,
-		db_dupes: qm.data.db_dupes,
-		db_queries: qm.data.db_queries,
-		doing_it_wrong: qm.data.doing_it_wrong,
-		environment: qm.data.environment,
-		hooks: qm.data.hooks,
-		http: qm.data.http,
-		languages: qm.data.languages,
-		logger: qm.data.logger || null,
-		php_errors: qm.data.php_errors || null,
-		request: qm.data.request || null,
-		response: qm.data.response || null,
-		timing: qm.data.timing || null,
-		transients: qm.data.transients,
-	};
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -94,7 +205,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			adminMenuElement={ adminMenuElement }
 			menu={ qm.menu }
 			panel_menu={ qm.panel_menu }
-			panels={ panels }
+			data={ qm.data }
 			side={ side }
 			theme={ theme }
 			editor={ editor }

@@ -3,69 +3,55 @@ import {
 	PanelContext,
 	PanelContextType,
 	MainContext,
+	getPanel,
+	ErrorPanel,
+	Warning,
 } from 'qmi';
+import {
+	DataTypes,
+} from 'qmi/data-types';
 import * as React from 'react';
 
-import { Admin } from './html/admin';
-import { Scripts } from './html/assets_scripts';
-import { Styles } from './html/assets_styles';
-import { BlockEditor } from './html/block_editor';
-import { Caps } from './html/caps';
-import { Conditionals } from './html/conditionals';
-import { DBErrors } from './html/db_errors';
-import { DBCallers } from './html/db_callers';
-import { DBComponents } from './html/db_components';
-import { DBDupes } from './html/db_dupes';
-import { DBQueries } from './html/db_queries';
-import { DoingItWrong } from './html/doing_it_wrong';
-import { Environment } from './html/environment';
-import { Hooks } from './html/hooks';
-import { HTTP } from './html/http';
-import { Languages } from './html/languages';
-import { Logger } from './html/logger';
-import { Multisite } from './html/multisite';
-import { PHPErrors } from './html/php_errors';
-import { Request } from './html/request';
-import { Settings, iQMConfig } from './html/settings';
-import { Theme } from './html/theme';
-import { Timing } from './html/timing';
-import { Transients } from './html/transients';
-import { DBExpensive } from './html/db_expensive';
-
-interface QMPanelData {
-	data: any;
+// what is this?
+interface QMPanelData<TDataKey extends keyof DataTypes> {
+	data: DataTypes[ TDataKey ];
 	enabled: boolean;
 }
 
-export type iPanelsProps = {
-	admin?: QMPanelData;
-	assets_scripts: QMPanelData;
-	assets_styles: QMPanelData;
-	block_editor: QMPanelData;
-	caps: QMPanelData;
-	conditionals: QMPanelData;
-	db_callers: QMPanelData;
-	db_components: QMPanelData;
-	db_dupes: QMPanelData;
-	db_queries: QMPanelData;
-	doing_it_wrong: QMPanelData;
-	environment: QMPanelData;
-	hooks: QMPanelData;
-	http: QMPanelData;
-	languages: QMPanelData;
-	logger?: QMPanelData;
-	multisite?: QMPanelData;
-	php_errors?: QMPanelData;
-	request?: QMPanelData;
-	response?: QMPanelData;
-	timing?: QMPanelData;
-	transients: QMPanelData;
+// what is this?
+export type iPanelData = {
+	admin?: QMPanelData<'admin'>;
+	assets_scripts: QMPanelData<'assets'>;
+	assets_styles: QMPanelData<'assets'>;
+	block_editor: QMPanelData<'block_editor'>;
+	caps: QMPanelData<'caps'>;
+	conditionals: QMPanelData<'conditionals'>;
+	db_callers: QMPanelData<'db_queries'>;
+	db_components: QMPanelData<'db_queries'>;
+	db_errors: QMPanelData<'db_queries'>;
+	db_dupes: QMPanelData<'db_queries'>;
+	db_queries: QMPanelData<'db_queries'>;
+	doing_it_wrong: QMPanelData<'doing_it_wrong'>;
+	environment: QMPanelData<'environment'>;
+	hooks: QMPanelData<'hooks'>;
+	http: QMPanelData<'http'>;
+	languages: QMPanelData<'languages'>;
+	logger?: QMPanelData<'logger'>;
+	multisite?: QMPanelData<'multisite'>;
+	php_errors?: QMPanelData<'php_errors'>;
+	request?: QMPanelData<'request'>;
+	theme?: QMPanelData<'theme'>;
+	timing?: QMPanelData<'timing'>;
+	transients: QMPanelData<'transients'>;
+};
+
+// what is this?
+type Props = {
+	data: iPanelData;
 	active?: string;
 }
 
-declare const qm: iQMConfig;
-
-export const Panels = ( props: iPanelsProps ) => {
+export const Panels = ( props: Props ) => {
 	const {
 		filters,
 		setFilters,
@@ -97,84 +83,38 @@ export const Panels = ( props: iPanelsProps ) => {
 		},
 	};
 
+	const panel = getPanel( props.active );
+	let output = null;
+
+	if ( panel ) {
+		// what is panelData?
+		const panelData = props.data[ panel.data ] ?? null;
+		// what is output?
+		output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+	}
+
 	return (
 		<div id="qm-panels">
 			<ErrorBoundary key={ props.active }>
 				<PanelContext.Provider value={ panelContextValue }>
-					{ props.active === 'admin' && (
-						<Admin { ...props.admin } />
-					) }
-					{ props.active === 'block_editor' && (
-						<BlockEditor { ...props.block_editor } />
-					) }
-					{ props.active === 'caps' && (
-						<Caps { ...props.caps } />
-					) }
-					{ props.active === 'conditionals' && (
-						<Conditionals { ...props.conditionals } />
-					) }
-					{ props.active === 'db_errors' && (
-						<DBErrors { ...props.db_queries } />
-					) }
-					{ props.active === 'db_expensive' && (
-						<DBExpensive { ...props.db_queries } />
-					) }
-					{ props.active === 'db_callers' && (
-						<DBCallers { ...props.db_queries } />
-					) }
-					{ props.active === 'db_components' && (
-						<DBComponents { ...props.db_queries } />
-					) }
-					{ props.active === 'db_dupes' && (
-						<DBDupes { ...props.db_queries } />
-					) }
-					{ props.active === 'db_queries' && (
-						<DBQueries { ...props.db_queries } />
-					) }
-					{ props.active === 'doing_it_wrong' && (
-						<DoingItWrong { ...props.doing_it_wrong } />
-					) }
-					{ props.active === 'environment' && (
-						<Environment { ...props.environment } />
-					) }
-					{ props.active === 'hooks' && (
-						<Hooks { ...props.hooks } />
-					) }
-					{ props.active === 'http' && (
-						<HTTP { ...props.http } />
-					) }
-					{ props.active === 'logger' && (
-						<Logger { ...props.logger } />
-					) }
-					{ props.active === 'languages' && (
-						<Languages { ...props.languages } />
-					) }
-					{ props.active === 'multisite' && (
-						<Multisite { ...props.multisite } />
-					) }
-					{ props.active === 'php_errors' && (
-						<PHPErrors { ...props.php_errors } />
-					) }
-					{ props.active === 'request' && (
-						<Request { ...props.request } />
-					) }
-					{ props.active === 'assets_scripts' && (
-						<Scripts { ...props.assets_scripts } />
-					) }
-					{ props.active === 'assets_styles' && (
-						<Styles { ...props.assets_styles } />
-					) }
-					{ props.active === 'response' && (
-						<Theme { ...props.response } />
-					) }
-					{ props.active === 'transients' && (
-						<Transients { ...props.transients } />
-					) }
-					{ props.active === 'timing' && (
-						<Timing { ...props.timing } />
-					) }
-					{ props.active === 'settings' && (
-						<Settings { ...qm.settings } />
+					{ panel ? (
+						output ?? (
+							<ErrorPanel>
+								<p>
+									<Warning>
+										Data not found for panel: <code>{ props.active }</code>
+									</Warning>
+								</p>
+							</ErrorPanel>
+						)
+					) : (
+						<ErrorPanel>
+							<p>
+								<Warning>
+									Panel not found: <code>{ props.active }</code>
+								</Warning>
+							</p>
+						</ErrorPanel>
 					) }
 				</PanelContext.Provider>
 			</ErrorBoundary>

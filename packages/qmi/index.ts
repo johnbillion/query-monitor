@@ -17,6 +17,7 @@ export { FileName } from './src/file-name';
 export { Icon } from './src/icon';
 export { NonTabularPanel } from './src/non-tabular-panel';
 export { EmptyPanel } from './src/empty-panel';
+export { ErrorPanel } from './src/error-panel';
 export { Panel } from './src/panel';
 export { PanelFooter } from './src/panel-footer';
 export { Component } from './src/component';
@@ -27,6 +28,10 @@ export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';
 export * as Utils from './src/utils';
 export * as Data from './data-types';
+export {
+	registerPanel,
+	getPanel,
+} from './src/panel-registry';
 
 export type PanelProps<T> = {
 	data: T;
