@@ -8,7 +8,7 @@ on:
       - 'trunk'
       - 'master'
     paths:
-      - '.github/**'
+      - '.github/workflows/coding-standards.yml'
       - '**.css'
       - '**.scss'
       - '**.js'
@@ -22,7 +22,7 @@ on:
     branches:
       - '**'
     paths:
-      - '.github/**'
+      - '.github/workflows/coding-standards.yml'
       - '**.css'
       - '**.scss'
       - '**.js'
@@ -42,8 +42,6 @@ jobs:
       matrix:
         php:
           - '8.2'
-          - '8.1'
-          - '8.0'
           - '7.4'
       fail-fast: false
     with:
