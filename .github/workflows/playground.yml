@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Playground
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+  master:
+    name: Leave comment
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+      - name: Generate zip
+        uses: 10up/action-wordpress-plugin-build-zip@stable
+        id:   generate-zip
+      - name: Leave comment
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            ## WordPress Playground
+            You can easily [test this pull request on the WordPress Playground](https://playground.wordpress.net/#{"landingPage":"/wp-admin/","features":{"networking":true},"steps":[{"step":"defineWpConfigConsts","consts":{"IS_PLAYGROUND_PREVIEW":true}},{"step":"login","username":"admin","password":"password"},{"step":"installPlugin","pluginZipFile":{"resource":"url","url":"https://bypass-cors.altha.workers.dev/${{ steps.generate-zip.outputs.artifact-url }}"},"options":{"activate":true}}]}), or [download the zip file](${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip).
