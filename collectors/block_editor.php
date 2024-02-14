@@ -135,7 +135,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		if ( ! empty( $_wp_current_template_content ) ) {
 			// Full site editor:
 			$content = $_wp_current_template_content;
-		} elseif ( is_singular() ) {
+		} elseif ( is_singular() && ! empty( get_queried_object_id() ) ) {
 			// Post editor:
 			$content = get_post( get_queried_object_id() )->post_content;
 		} else {
