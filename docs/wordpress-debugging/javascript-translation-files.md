@@ -2,7 +2,7 @@
 title: Translation files
 ---
 
-# Debugging translation files in Query Monitor
+# Debugging translation files with Query Monitor
 
 <!-- @todo docs about PHP/MO/PO translations -->
 

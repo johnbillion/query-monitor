@@ -1,6 +1,5 @@
 ---
 title: Configuration constants
-redirect_from: /docs/configuration-constants/
 ---
 
 # Configuration constants
