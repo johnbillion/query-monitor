@@ -5,9 +5,9 @@ redirect_from:
   - /docs/logging-variables/
 ---
 
-# Profiling and logging in Query Monitor
+# Profiling and logging with Query Monitor
 
-Query Monitor allows developers to profile the running time and memory usage of a piece of code and to log debugging messages to the Query Monitor interface.
+Query Monitor allows developers to profile the running time and memory usage of a piece of code on your WordPress site and to log debugging messages to the Query Monitor interface.
 
 Let's take a look at profiling and logging in detail.
 
@@ -52,7 +52,7 @@ Note that the times and memory usage displayed in the Timings panel should be tr
 
 ## Logging
 
-Messages and variables can be logged in Query Monitor similarly to how you can call `console.log` in JavaScript to log data to the console. This can be used as a replacement for `var_dump()`.
+Messages and variables can be logged in Query Monitor similarly to how you can call `console.log` in JavaScript to log data from WordPress to the console. This can be used as a replacement for `var_dump()`.
 
 ```php
 do_action( 'qm/debug', 'This happened!' );
@@ -116,7 +116,7 @@ Finally, the static logging methods on the `QM` class can be used instead of cal
 QM::error( 'Everything is broken' );
 ```
 
-The QM class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
+The `QM` class is PSR-3 compatible, although it doesn't actually implement `Psr\Log\LoggerInterface`.
 
 ## Assertions
 

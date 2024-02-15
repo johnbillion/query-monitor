@@ -1,7 +1,18 @@
 import { defineConfig } from 'vitepress'
+import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
 
 const wpURL = 'https://wordpress.org/plugins/query-monitor/';
 const ghURL = 'https://github.com/johnbillion/query-monitor';
+const siteURL = 'https://querymonitor.com';
+const year = new Date().getFullYear();
+
+const RSS: RSSOptions = {
+	title: 'Query Monitor',
+	baseUrl: siteURL,
+	copyright: `Copyright (c) 2009-${year}, John Blackbourn`,
+	description: 'The developer tools panel for WordPress',
+	filename: 'feed',
+}
 
 export default defineConfig({
 	title: 'Query Monitor',
@@ -19,6 +30,15 @@ export default defineConfig({
 				href: '/icon.svg',
 			},
 		],
+		[
+			'link',
+			{
+				rel: 'alternate',
+				type: 'application/rss+xml',
+				title: 'Query Monitor',
+				href: `${siteURL}/feed`,
+			},
+		]
 	],
 	themeConfig: {
 		logo: '/icon.svg',
@@ -56,6 +76,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
 					{
+						text: 'User capabilities',
+						link: '/wordpress-debugging/user-capabilities/',
+					},
+					{
 						text: 'REST API requests',
 						link: '/wordpress-debugging/rest-api-requests/',
 					},
@@ -79,7 +103,7 @@ export default defineConfig({
 			},
 			{
 				text: 'Help',
-				collapsed: true,
+				collapsed: false,
 				items: [
 					{
 						text: 'Clickable stack traces',
@@ -142,9 +166,18 @@ export default defineConfig({
 		search: {
 			provider: 'local',
 		},
+
+		footer: {
+			copyright: `© 2009-${year}, <a href="https://johnblackbourn.com">John Blackbourn</a>`,
+		},
 	},
 	lastUpdated: true,
 	sitemap: {
-		hostname: 'https://querymonitor.com',
+		hostname: siteURL,
+	},
+	vite: {
+		plugins: [
+			RssPlugin(RSS),
+		],
 	},
 })

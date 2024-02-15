@@ -8,7 +8,7 @@ on:
       - 'trunk'
       - 'master'
     paths:
-      - '.github/**'
+      - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
       - '**.css'
       - '**.scss'
@@ -22,7 +22,7 @@ on:
     branches:
       - '**'
     paths:
-      - '.github/**'
+      - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
       - '**.css'
       - '**.scss'
@@ -32,48 +32,27 @@ on:
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
-  schedule:
-    # Once weekly on Thursdays at 04:00 UTC.
-    #
-    #        ┌───────────── minute           (0 - 59)
-    #        │  ┌────────── hour             (0 - 23)
-    #        │  │  ┌─────── day of the month (1 - 31)
-    #        │  │  │  ┌──── month            (1 - 12 or JAN-DEC)
-    #        │  │  │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
-    #        │  │  │  │  │
-    #        │  │  │  │  │
-    #        │  │  │  │  │
-    - cron: '0  4  *  *  4'
   workflow_dispatch:
 
 jobs:
   test:
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     strategy:
-      # See the following for PHP Compatibility of WordPress versions:
+      # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
         wp:
-          # Nightly:
-          - 'nightly'
           # Latest three stable:
           - '6.4'
           - '6.3'
           - '6.2'
         php:
-          - '8.0'
+          - '8.2'
           - '7.4'
         include:
-          # Latest stable on PHP 8.1 and 8.2:
+          # Latest stable on PHP 8.3:
           - wp: '6.4'
-            php: '8.1'
-          - wp: '6.4'
-            php: '8.2'
-          # Nightly on PHP 8.1 and 8.2:
-          - wp: 'nightly'
-            php: '8.1'
-          - wp: 'nightly'
-            php: '8.2'
+            php: '8.3'
           # Oldest supported on PHP 7.4:
           - wp: '5.6'
             php: '7.4'
