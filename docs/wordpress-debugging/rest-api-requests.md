@@ -1,6 +1,5 @@
 ---
 title: REST API requests
-redirect_from: /blog/2021/05/debugging-wordpress-rest-api-requests/
 ---
 
 # Debugging WordPress REST API requests with Query Monitor
@@ -11,7 +10,7 @@ Query Monitor includes a feature which allows you to see comprehensive performan
 
 Just like requests to the front end or the admin area of your site, in order to see debugging information for the REST API you need to perform a request which is authenticated as a user who has permission to view Query Monitor’s output, for example an Administrator.
 
-* This usually means including a valid __wpnonce_ parameter in the URL, the value of which you can get by visiting `wp-admin/admin-ajax.php?action=rest-nonce`
+* This usually means including a valid `_wpnonce` parameter in the URL, the value of which you can get by visiting `wp-admin/admin-ajax.php?action=rest-nonce`
 * Alternatively you can pass an Application Password if you’re using WordPress 5.6 or later
 
 ## Overview and PHP error information
