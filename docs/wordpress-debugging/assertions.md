@@ -76,7 +76,7 @@ QM::assert( $value === 5, 'Value is 5', $value );
 
 This feature differs from the native `assert()` function in PHP because they serve different purposes.
 
-* The `assert()` function in PHP will terminate execution of the script if the assertions fails, this is not true for assertions in Query Monitor. Think of this like a soft assertion that raises an error instead. Code should behave as expected regardless of whether the assertion passes.
+* The `assert()` function in PHP will terminate execution of the script if the assertion fails, this is not true for an assertion in Query Monitor. Think of this like a soft assertion that raises an error instead. Code should behave as expected regardless of whether the assertion passes.
 * Query Monitor logs passed assertions too. This is useful for verifying that your assertion is being executed.
 * Assertions in Query Monitor will always be performed and logged as necessary. The `assert()` function in PHP will only perform the assertion if assertions are enabled in the `php.ini` configuration.
 * Assertions in Query Monitor can be passed an optional value to output for debugging purposes, which is not possible with `assert()`.

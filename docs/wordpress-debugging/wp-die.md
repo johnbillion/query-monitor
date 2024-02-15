@@ -2,7 +2,7 @@
 title: wp_die()
 ---
 
-# wp_die() debugging in Query Monitor
+# wp_die() debugging with Query Monitor
 
 The `wp_die()` output in WordPress is a thing of beauty... if you’re into minimalism.
 

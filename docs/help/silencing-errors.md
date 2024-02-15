@@ -1,6 +1,5 @@
 ---
 title: Silencing errors
-redirect_from: /blog/2018/07/silencing-errors-from-plugins-and-themes/
 ---
 
 # Silencing errors from certain plugins and themes in Query Monitor
