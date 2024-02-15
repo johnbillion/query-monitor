@@ -1,6 +1,5 @@
 ---
 title: Clickable stack traces
-redirect_from: /blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/
 ---
 
 # Clickable stack traces and function names in Query Monitor
