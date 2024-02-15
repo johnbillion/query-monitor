@@ -1,6 +1,5 @@
 ---
 title: Related hooks
-redirect_from: /blog/2019/02/new-features-in-query-monitor-3-3/
 ---
 
 # Related hooks with filters or actions attached

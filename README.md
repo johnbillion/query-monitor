@@ -307,6 +307,8 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
 ### Other tools
 
+ * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
+ * [Buggregator](https://buggregator.dev/)
  * [Clockwork](https://underground.works/clockwork/)
  * [Meminfo](https://github.com/BitOne/php-meminfo)
  * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
@@ -315,6 +317,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [Ray](https://myray.app/)
  * [Reli](https://github.com/reliforp/reli-prof)
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
+ * [Tinkerwell](https://tinkerwell.app/)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
  * [Wonolog](https://github.com/inpsyde/Wonolog)
