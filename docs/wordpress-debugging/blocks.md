@@ -2,7 +2,7 @@
 title: Blocks
 ---
 
-# Debugging blocks in Query Monitor
+# Debugging blocks with Query Monitor
 
 The Blocks panel in Query Monitor lists all of the blocks on the current page, along with their attributes and other debugging information. Nested blocks (for example for groups or columns) are fully supported.
 

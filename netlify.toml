@@ -1,0 +1,39 @@
+[build]
+  command = "npm run docs:build"
+  publish = "docs/.vitepress/dist"
+
+[[redirects]]
+  from = "/docs/logging-variables/"
+  to = "/wordpress-debugging/profiling-and-logging/"
+
+[[redirects]]
+  from = "/blog/2018/07/profiling-and-logging/"
+  to = "/wordpress-debugging/profiling-and-logging/"
+
+[[redirects]]
+  from = "/blog/2019/02/clickable-stack-traces-and-function-names-in-query-monitor/"
+  to = "/help/clickable-stack-traces-and-function-names/"
+
+[[redirects]]
+  from = "/docs/configuration-constants/"
+  to = "/help/configuration-constants/"
+
+[[redirects]]
+  from = "/blog/2018/07/silencing-errors-from-plugins-and-themes/"
+  to = "/help/silencing-errors/"
+
+[[redirects]]
+  from = "/docs/how-to-use/"
+  to = "/wordpress-debugging/how-to-use/"
+
+[[redirects]]
+  from = "/blog/2019/02/new-features-in-query-monitor-3-3/"
+  to = "/wordpress-debugging/related-hooks/"
+
+[[redirects]]
+  from = "/blog/2021/05/debugging-wordpress-rest-api-requests/"
+  to = "/wordpress-debugging/rest-api-requests/"
+
+[[redirects]]
+  from = "/blog/2019/07/debugging-wordpress-template-part-loading/"
+  to = "/wordpress-debugging/template-part-loading/"
