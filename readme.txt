@@ -1,4 +1,4 @@
-# Query Monitor
+# Query Monitor - The developer tools panel for WordPress
 
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
