@@ -101,12 +101,12 @@ Query Monitor's memory usage typically accounts for around 10% of the total memo
 
 ### Can I prevent Query Monitor from collecting data during long-running requests?
 
-Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+Yes, you can call `do_action( 'qm/cease' )` to instruct Query Monitor to cease operating for the remainder of the page generation. It will detach itself from further data collection, discard any data it's collected so far, and skip the output of its information.
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
 * Backing up or restoring your site
-* Exporting a large amount of data
+* Importing or exporting a large amount of data
 * Running security scans
 
 ### Are there any add-on plugins for Query Monitor?
