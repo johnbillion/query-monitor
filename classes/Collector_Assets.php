@@ -82,7 +82,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->data->header ) && empty( $this->data->footer ) ) {
+		$type = $this->get_dependency_type();
+		$modules = null;
+
+		if ( ( $type === 'scripts' ) && function_exists( 'wp_script_modules' ) ) {
+			$modules = wp_script_modules();
+		}
+
+		if ( empty( $this->data->header ) && empty( $this->data->footer ) && empty( $modules ) ) {
 			return;
 		}
 
@@ -107,12 +114,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'total' => 0,
 		);
 
-		$type = $this->get_dependency_type();
-
-		foreach ( array( 'header', 'footer' ) as $position ) {
-			if ( empty( $this->data->{$position} ) ) {
-				$this->data->{$position} = array();
-			}
+		if ( empty( $this->data->header ) ) {
+			$this->data->header = array();
+		}
+		if ( empty( $this->data->footer ) ) {
+			$this->data->footer = array();
+		}
+		if ( empty( $this->data->modules ) ) {
+			$this->data->modules = array();
 		}
 
 		/** @var WP_Dependencies $raw */
@@ -216,6 +225,29 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		}
 
 		unset( $this->data->{$position} );
+
+		if ( $modules instanceof \WP_Script_Modules ) {
+			foreach ( $modules->get_dependencies( array_keys( $modules->get_marked_for_enqueue() ) ) as $id => $module ) {
+				$src = $modules->get_versioned_src( $module );
+
+				list( $host, $source, $local, $port ) = $this->get_module_data( $module, $src );
+
+				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+
+				$this->data->assets['modules'][ $id ] = array(
+					'host' => $host,
+					'port' => $port,
+					'source' => $source,
+					'local' => $local,
+					'ver' => $module['version'] ?: '',
+					'warning' => false,
+					'display' => $display,
+					'dependents' => [],
+					'dependencies' => array_keys( $modules->get_dependencies( [ $id ] ) ),
+				);
+
+			}
+		}
 
 		$all_dependencies = array_unique( $all_dependencies );
 		sort( $all_dependencies );
@@ -342,4 +374,38 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		return array( $host, $source, $local, $port );
 	}
 
+	/**
+	 * @param array  $module
+	 * @param string $src
+	 * @return mixed[]
+	 * @phpstan-return array{
+	 *   0: string,
+	 *   1: string|WP_Error,
+	 *   2: bool,
+	 *   3: string,
+	 * }
+	 */
+	protected function get_module_data( array $module, string $src ): array {
+		/** @var QM_Data_Assets */
+		$data = $this->get_data();
+
+		$host = (string) parse_url( $src, PHP_URL_HOST );
+		$port = (string) parse_url( $src, PHP_URL_PORT );
+		$full_host = $host;
+
+		if ( ! empty( $port ) ) {
+			$full_host .= ':' . $port;
+		}
+
+		if ( empty( $host ) ) {
+			$full_host = $data->full_host;
+			$host = $data->host;
+			$port = $data->port;
+		}
+
+		$source = $src;
+		$local = ( $data->full_host === $full_host );
+
+		return array( $host, $source, $local, $port );
+	}
 }
