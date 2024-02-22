@@ -223,7 +223,13 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		unset( $this->data->{$position} );
 
 		if ( $modules instanceof \WP_Script_Modules ) {
-			foreach ( $modules->get_dependencies( array_keys( $modules->get_marked_for_enqueue() ) ) as $id => $module ) {
+			$enqueued = $modules->get_marked_for_enqueue();
+			$all_modules = array_merge(
+				$enqueued,
+				$modules->get_dependencies( array_keys( $enqueued ) )
+			);
+
+			foreach ( $all_modules as $id => $module ) {
 				$src = $modules->get_versioned_src( $module );
 
 				list( $host, $source, $local, $port ) = $this->get_module_data( $module, $src );
