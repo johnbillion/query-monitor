@@ -114,14 +114,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'total' => 0,
 		);
 
-		if ( empty( $this->data->header ) ) {
-			$this->data->header = array();
-		}
-		if ( empty( $this->data->footer ) ) {
-			$this->data->footer = array();
-		}
-		if ( empty( $this->data->modules ) ) {
-			$this->data->modules = array();
+		foreach ( array( 'header', 'footer' ) as $position ) {
+			if ( empty( $this->data->{$position} ) ) {
+				$this->data->{$position} = array();
+			}
 		}
 
 		/** @var WP_Dependencies $raw */
