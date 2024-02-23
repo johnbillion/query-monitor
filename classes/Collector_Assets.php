@@ -85,7 +85,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$type = $this->get_dependency_type();
 		$modules = null;
 
-		if ( ( $type === 'scripts' ) && function_exists( 'wp_script_modules' ) ) {
+		if ( ( $type === 'scripts' ) && function_exists( 'wp_script_modules' ) && ! is_admin() ) {
 			$modules = wp_script_modules();
 		}
 
