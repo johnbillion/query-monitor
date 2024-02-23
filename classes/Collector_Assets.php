@@ -229,12 +229,27 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				$modules->get_dependencies( array_keys( $enqueued ) )
 			);
 
+			$all_keys = array_keys( $all_modules );
+
+			$dependencies_keyed_by_id = array_map( function ( $module ) use ( $modules ) {
+				return array_keys( $modules->get_dependencies( [ $module ] ) );
+			}, $all_keys );
+
 			foreach ( $all_modules as $id => $module ) {
 				$src = $modules->get_versioned_src( $module );
 
 				list( $host, $source, $local, $port ) = $this->get_module_data( $module, $src );
 
 				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+
+				$dependents = array();
+				foreach ( $dependencies_keyed_by_id as $key => $deps ) {
+					if ( in_array( $id, $deps, true ) ) {
+						$dependents[] = $all_keys[ $key ];
+					}
+				}
+
+				$dependencies = array_keys( $modules->get_dependencies( [ $id ] ) );
 
 				$this->data->assets['modules'][ $id ] = array(
 					'host' => $host,
@@ -244,10 +259,12 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'ver' => $module['version'] ?: '',
 					'warning' => false,
 					'display' => $display,
-					'dependents' => [],
-					'dependencies' => array_keys( $modules->get_dependencies( [ $id ] ) ),
+					'dependents' => $dependents,
+					'dependencies' => $dependencies,
 				);
 
+				$all_dependencies = array_merge( $all_dependencies, $dependencies );
+				$all_dependents = array_merge( $all_dependents, $dependents );
 			}
 		}
 
