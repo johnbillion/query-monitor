@@ -510,9 +510,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function do_panel_menu_item( $id, array $menu ) {
+		if ( empty( $menu['attr-title'] ) ) {
+			$menu['attr-title'] = '';
+		}
+
 		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s" title="%2$s">%3$s</button>',
 			esc_attr( $menu['href'] ),
+			esc_attr( $menu['attr-title'] ),
 			esc_html( $menu['title'] )
 		);
 
