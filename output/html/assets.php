@@ -82,6 +82,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo $this->build_filter( $type . '-dependents', $data->dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Extra', 'query-monitor' ) . '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
@@ -101,7 +102,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		echo '<tr>';
 		printf(
-			'<td colspan="7">%1$s</td>',
+			'<td colspan="8">%1$s</td>',
 			sprintf(
 				esc_html( $type_label['total'] ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
@@ -150,6 +151,14 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		$qm_host = ( $asset['local'] ) ? 'local' : __( 'Other', 'query-monitor' );
+
+		$extra = array();
+
+		if ( ! empty( $asset['extra'] ) ) {
+			foreach ( $asset['extra'] as $key => $count ) {
+				$extra[] = $key . ( is_numeric( $count ) ? ' (' . $count . ')' : '' );
+			}
+		}
 
 		$class = '';
 
@@ -222,6 +231,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '</td>';
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependents'] ) ) . '</td>';
 		echo '<td class="qm-ltr">' . esc_html( $asset['ver'] ) . '</td>';
+		echo '<td>' . implode( ', ', array_map( 'esc_html', $extra ) ) . '</td>';
 
 		echo '</tr>';
 	}
