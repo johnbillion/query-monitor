@@ -117,7 +117,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 						echo '</td>';
 					} else {
 						echo '<td class="qm-nowrap qm-ltr qm-has-toggle">';
-						echo self::build_toggler(); // WPCS: XSS ok;
+						echo self::build_toggler( $mofile['caller']['display'] ); // WPCS: XSS ok;
 						echo '<ol>';
 						echo '<li>';
 						// undefined:
