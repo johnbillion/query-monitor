@@ -45,8 +45,8 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		$all_parts = array();
 		$components = array();
 
-		if ( has_filter( 'all' ) ) {
-			$hooks[] = QM_Hook::process( 'all', $wp_filter, self::$hide_qm, self::$hide_core );
+		if ( has_action( 'all' ) ) {
+			$hooks[] = QM_Hook::process( 'all', 'action', $wp_filter, self::$hide_qm, self::$hide_core );
 		}
 
 		$this->data->all_hooks = defined( 'QM_SHOW_ALL_HOOKS' ) && QM_SHOW_ALL_HOOKS;
@@ -60,8 +60,13 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		}
 
 		foreach ( $hook_names as $name ) {
+			$type = 'action';
 
-			$hook = QM_Hook::process( $name, $wp_filter, self::$hide_qm, self::$hide_core );
+			if ( $this->data->all_hooks ) {
+				$type = array_key_exists( $name, $wp_actions ) ? 'action' : 'filter';
+			}
+
+			$hook = QM_Hook::process( $name, $type, $wp_filter, self::$hide_qm, self::$hide_core );
 			$hooks[] = $hook;
 
 			$all_parts = array_merge( $all_parts, $hook['parts'] );

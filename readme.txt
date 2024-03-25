@@ -1,11 +1,10 @@
-# Query Monitor
+# Query Monitor - The developer tools panel for WordPress
+
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor, rest-api
-Requires at least: 5.2
-Tested up to: 6.2
-Stable tag: 3.12.2
+Tested up to: 6.4
+Stable tag: 3.15.0
 License: GPLv2 or later
-Requires PHP: 7.2
 Donate link: https://github.com/sponsors/johnbillion
 
 Query Monitor is the developer tools panel for WordPress.
@@ -18,6 +17,8 @@ It includes some advanced features such as debugging of Ajax calls, REST API cal
 
 Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.
 
+Query Monitor supports versions of WordPress up to three years old, and PHP version 7.4 or higher.
+
 For complete information, please see [the Query Monitor website](https://querymonitor.com/).
 
 Here's an overview of what's shown for each page load:
@@ -25,6 +26,7 @@ Here's an overview of what's shown for each page load:
 * Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (`SELECT`, `UPDATE`, `DELETE`, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.
 * The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).
 * PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.
+* Usage of "Doing it Wrong" or "Deprecated" functionality in the code on your site.
 * Blocks and associated properties within post content and within full site editing (FSE).
 * Matched rewrite rules, associated query strings, and query vars.
 * Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.
@@ -34,6 +36,7 @@ Here's an overview of what's shown for each page load:
 * Environment information, including detailed information about PHP, the database, WordPress, and the web server.
 * The values of all WordPress conditional functions such as `is_single()`, `is_home()`, etc.
 * Transients that were updated.
+* Usage of `switch_to_blog()` and `restore_current_blog()` on Multisite installations.
 
 In addition:
 
@@ -56,7 +59,7 @@ I maintain several other plugins for developers. Check them out:
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
-[Query Monitor's full privacy statement can be found here](https://github.com/johnbillion/query-monitor/wiki/Privacy-Statement).
+[Query Monitor's full privacy statement can be found here](https://querymonitor.com/privacy/).
 
 ### Accessibility Statement
 
@@ -98,17 +101,17 @@ Query Monitor's memory usage typically accounts for around 10% of the total memo
 
 ### Can I prevent Query Monitor from collecting data during long-running requests?
 
-Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+Yes, you can call `do_action( 'qm/cease' )` to instruct Query Monitor to cease operating for the remainder of the page generation. It will detach itself from further data collection, discard any data it's collected so far, and skip the output of its information.
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
 * Backing up or restoring your site
-* Exporting a large amount of data
+* Importing or exporting a large amount of data
 * Running security scans
 
 ### Are there any add-on plugins for Query Monitor?
 
-[A list of add-on plugins for Query Monitor can be found here.](https://github.com/johnbillion/query-monitor/wiki/Query-Monitor-Add-on-Plugins)
+[A list of add-on plugins for Query Monitor can be found here.](https://querymonitor.com/help/add-on-plugins/)
 
 In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
 
@@ -120,9 +123,9 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
-### Is Query Monitor available on WordPress.com VIP?
+### Is Query Monitor available on WordPress VIP?
 
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress.com VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
+Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
@@ -131,6 +134,10 @@ This feature was removed in version 3.12 as it was rarely used and considerably 
 ### Can I click on stack traces to open the file in my editor?
 
 Yes. You can enable this on the Settings panel.
+
+### How can I report a security bug?
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
 
 ### Do you accept donations?
 

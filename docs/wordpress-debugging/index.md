@@ -1,0 +1,5 @@
+---
+publish: false
+---
+
+# WordPress debugging

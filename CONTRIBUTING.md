@@ -4,15 +4,21 @@
 
 Code contributions, bug reports, and feedback are very welcome. These should be submitted through [the GitHub repository](https://github.com/johnbillion/query-monitor). Development happens in the `develop` branch, and any pull requests should be made against that branch please.
 
-* [Reporting Security Issues](#reporting-security-issues)
-* [Setting up Locally](#setting-up-locally)
-* [Building the Assets](#building-the-assets)
-* [Running the Tests](#running-the-tests)
-* [Releasing a New Version](#releasing-a-new-version)
+## Reviews on WordPress.org
+
+If you enjoy using Query Monitor I would greatly appreciate it <a href="https://wordpress.org/support/plugin/query-monitor/reviews/">if you left a positive review on the WordPress.org Plugin Directory</a>. This is the fastest and easiest way to contribute to Query Monitor 😄.
 
 ## Reporting Security Issues
 
-If you discover a security issue in Query Monitor, please report it to [the security program on HackerOne](https://hackerone.com/johnblackbourn). Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
+
+Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
+
+## Inclusivity and Code of Conduct
+
+Contributions to Query Monitor are welcome from anyone. Whether you are new to Open Source or a seasoned veteran, all constructive contribution is welcome and I'll endeavour to support you when I can.
+
+This project is released with <a href="https://github.com/johnbillion/query-monitor/blob/develop/CODE_OF_CONDUCT.md">a contributor code of conduct</a> and by participating in this project you agree to abide by its terms. The code of conduct is nothing to worry about, if you are a respectful human being then all will be good.
 
 ## Setting up Locally
 
@@ -22,6 +28,10 @@ You can clone this repo and activate it like a normal WordPress plugin, but you'
 
 * [Composer](https://getcomposer.org/)
 * [Node](https://nodejs.org/)
+
+To run the tests, you'll also need:
+
+* [Docker Desktop](https://www.docker.com/desktop) running Docker Compose version 2.20 or higher
 
 ### Setup
 
@@ -45,32 +55,22 @@ To start the file watcher which will watch for changes and automatically compile
 
 ## Running the Tests
 
-The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running, then start the containers with:
-
-	composer test:start
+The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running before running the tests.
 
 To run the whole test suite which includes integration tests, acceptance tests, linting, and static analysis:
 
 	composer test
 
-To run just the integration tests:
-
-	composer test:integration
-
-To run just the acceptance tests:
-
-	composer test:acceptance
-
-To run just the code sniffer:
+To run tests individually, run one of:
 
 	composer test:phpcs
-
-To run just the static analysis:
-
 	composer test:phpstan
+	composer test:integration
+	composer test:acceptance
 
-To stop the Docker containers:
+The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 
+	composer test:start
 	composer test:stop
 
 ## Releasing a New Version
@@ -83,9 +83,11 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
 1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, "Tested up to" versions, FAQs, screenshots, etc.
+   - Query Monitor supports the last nine versions of WordPress (support for versions up to approximately three years old)
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
    - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
+1. Run `git push origin develop` (if necessary) and ensure CI is passing.
 1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
 
 ### For Release
@@ -94,13 +96,8 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
    - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
-1. `git push origin develop`
-1. Wait until (and ensure that) [the build passes](https://github.com/johnbillion/query-monitor/actions)
-1. `git checkout master`
-1. `git merge develop`
-1. `git push origin master`
-1. `git push origin master:release`
-1. Wait for [the Build Release action](https://github.com/johnbillion/query-monitor/actions?query=workflow%3A%22Build+Release%22) to complete
+1. `git push origin develop:release`
+1. Wait for [the Build action](https://github.com/johnbillion/query-monitor/actions/workflows/build.yml) to complete
 1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
 
 ### Post Release

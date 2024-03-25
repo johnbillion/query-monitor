@@ -124,7 +124,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			error_reporting( $this->error_reporting );
 		}
 
-		if ( false !== $this->display_errors ) {
+		if ( is_string( $this->display_errors ) ) {
 			ini_set( 'display_errors', $this->display_errors );
 		}
 
@@ -341,11 +341,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			$file = esc_html( $e['file'] );
 		}
 
-		$warning = QueryMonitor::icon( 'warning' );
-
 		printf(
-			'<p>%1$s <b>%2$s</b>: %3$s<br>in <b>%4$s</b> on line <b>%5$d</b></p>',
-			$warning,
+			'<p><b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
 			esc_html( $error ),
 			nl2br( esc_html( $e['message'] ), false ),
 			$file,
@@ -475,8 +472,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * Filters the reportable PHP errors using the table specified. Users can customize the levels
 	 * using the `qm/collect/php_error_levels` filter.
 	 *
-	 * @param int[]  $components     The error levels keyed by component name.
-	 * @param string $component_type The component type, for example 'plugin' or 'theme'.
+	 * @param array<string, int> $components     The error levels keyed by component name.
+	 * @param string             $component_type The component type, for example 'plugin' or 'theme'.
 	 * @return void
 	 */
 	public function filter_reportable_errors( array $components, $component_type ) {

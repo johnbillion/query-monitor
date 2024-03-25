@@ -46,6 +46,8 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			usort( $components, 'strcasecmp' );
 
 			$status_output = array();
+			$hosts = array_unique( array_column( $data->http, 'host' ) );
+			sort( $hosts );
 
 			foreach ( $statuses as $status ) {
 				if ( 'error' === $status ) {
@@ -63,7 +65,9 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<thead>';
 			echo '<tr>';
 			echo '<th scope="col">' . esc_html__( 'Method', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'URL', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-filterable-column">';
+			echo $this->build_filter( 'host', $hosts, __( 'URL', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'type', $status_output, __( 'Status', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
@@ -139,6 +143,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type'] = $row['type'];
 				$row_attr['data-qm-time'] = $row['ltime'];
+				$row_attr['data-qm-host'] = $row['host'];
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';

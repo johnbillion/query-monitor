@@ -101,7 +101,7 @@ abstract class QM_Dispatcher {
 	 * Processes and fetches the outputters for this dispatcher.
 	 *
 	 * @param string $outputter_id The outputter ID.
-	 * @return QM_Output[] Array of outputters.
+	 * @return array<string, QM_Output> Array of outputters.
 	 */
 	public function get_outputters( $outputter_id ) {
 		$collectors = QM_Collectors::init();

@@ -5,6 +5,7 @@
 /.github export-ignore
 /.wordpress-org export-ignore
 /bin export-ignore
+/docs export-ignore
 /node_modules export-ignore
 /tests export-ignore
 
@@ -18,12 +19,14 @@
 /assets/*.scss export-ignore
 /codeception.dist.yml export-ignore
 /composer.lock export-ignore
+/CODE_OF_CONDUCT.md export-ignore
 /CONTRIBUTING.md export-ignore
 /docker-compose.yml export-ignore
+/netlify.toml export-ignore
 /package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
-/phpcs53.xml export-ignore
+/phpcs56.xml export-ignore
 /phpstan.neon.dist export-ignore
 /README.md export-ignore
 /SECURITY.md export-ignore

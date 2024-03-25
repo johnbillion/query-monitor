@@ -7,9 +7,31 @@ on:
       - 'develop'
       - 'trunk'
       - 'master'
+    paths:
+      - '.github/workflows/coding-standards.yml'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'composer.json'
+      - 'package.json'
+      - 'phpcs.xml.dist'
+      - 'phpcs56.yml'
+      - 'phpstan.neon.dist'
   pull_request:
     branches:
       - '**'
+    paths:
+      - '.github/workflows/coding-standards.yml'
+      - '**.css'
+      - '**.scss'
+      - '**.js'
+      - '**.php'
+      - 'composer.json'
+      - 'package.json'
+      - 'phpcs.xml.dist'
+      - 'phpcs56.yml'
+      - 'phpstan.neon.dist'
   workflow_dispatch:
 
 jobs:
@@ -20,10 +42,7 @@ jobs:
       matrix:
         php:
           - '8.2'
-          - '8.1'
-          - '8.0'
           - '7.4'
-          - '7.2'
       fail-fast: false
     with:
       php: ${{ matrix.php }}

@@ -26,6 +26,7 @@ class QM_Backtrace {
 		'Altis\Cloud\DB' => true,
 		'Yoast\WP\Lib\ORM' => true,
 		'Perflab_SQLite_DB' => true,
+		'WP_SQLite_DB' => true,
 	);
 
 	/**
@@ -46,9 +47,12 @@ class QM_Backtrace {
 		'trigger_error' => true,
 		'_doing_it_wrong' => true,
 		'_deprecated_argument' => true,
+		'_deprecated_constructor' => true,
 		'_deprecated_file' => true,
 		'_deprecated_function' => true,
+		'_deprecated_hook' => true,
 		'dbDelta' => true,
+		'maybe_create_table' => true,
 	);
 
 	/**
@@ -221,7 +225,10 @@ class QM_Backtrace {
 			}
 		}
 
-		foreach ( QM_Util::get_file_dirs() as $type => $dir ) {
+		$file_dirs = QM_Util::get_file_dirs();
+		$file_dirs['dropin'] = WP_CONTENT_DIR;
+
+		foreach ( $file_dirs as $type => $dir ) {
 			if ( isset( $components[ $type ] ) ) {
 				$this->component = $components[ $type ];
 				return $this->component;
@@ -446,9 +453,9 @@ class QM_Backtrace {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param (int|string)[] $show_args The number of argument values to show for the given function name. The
-			 *                                  array keys are function names, the array values are either integers or
-			 *                                  "dir" to specifically treat the function argument as a directory path.
+			 * @param array<string,int|string> $show_args The number of argument values to show for the given function name. The
+			 *                                            array keys are function names, the array values are either integers or
+			 *                                            "dir" to specifically treat the function argument as a directory path.
 			 */
 			self::$show_args = apply_filters( 'qm/trace/show_args', self::$show_args );
 

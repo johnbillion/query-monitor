@@ -110,16 +110,20 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 *
 	 * This does not get called for Super Admins. See filter_map_meta_cap() below.
 	 *
-	 * @param bool[]   $user_caps Concerned user's capabilities.
-	 * @param string[] $caps      Required primitive capabilities for the requested capability.
-	 * @param mixed[]  $args {
+	 * @param array<string, bool> $user_caps Concerned user's capabilities.
+	 * @param array<int, string>  $caps      Required primitive capabilities for the requested capability.
+	 * @param array<int, mixed>   $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type string    $0 Requested capability.
 	 *     @type int       $1 Concerned user ID.
 	 *     @type mixed  ...$2 Optional second and further parameters.
 	 * }
-	 * @return bool[] Concerned user's capabilities.
+	 * @phpstan-param array{
+	 *   0: string,
+	 *   1: int,
+	 * } $args
+	 * @return array<string, bool> Concerned user's capabilities.
 	 */
 	public function filter_user_has_cap( array $user_caps, array $caps, array $args ) {
 		$trace = new QM_Backtrace( array(
@@ -161,15 +165,15 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 *
 	 * This is needed because the `user_has_cap` filter doesn't fire for Super Admins.
 	 *
-	 * @param string[] $required_caps Required primitive capabilities for the requested capability.
-	 * @param string   $cap           Capability or meta capability being checked.
-	 * @param int      $user_id       Concerned user ID.
-	 * @param mixed[]  $args {
+	 * @param array<int, string> $required_caps Required primitive capabilities for the requested capability.
+	 * @param string             $cap           Capability or meta capability being checked.
+	 * @param int                $user_id       Concerned user ID.
+	 * @param mixed[]            $args {
 	 *     Arguments that accompany the requested capability check.
 	 *
 	 *     @type mixed ...$0 Optional second and further parameters.
 	 * }
-	 * @return string[] Required capabilities for the requested action.
+	 * @return array<int, string> Required capabilities for the requested action.
 	 */
 	public function filter_map_meta_cap( array $required_caps, $cap, $user_id, array $args ) {
 		if ( ! is_multisite() ) {

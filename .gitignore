@@ -1,6 +1,8 @@
 /assets/*.css
 /assets/*.map
 /composer.lock
+/docs/.vitepress/cache
+/docs/.vitepress/dist
 /vendor
 /node_modules
 /tests/_output/

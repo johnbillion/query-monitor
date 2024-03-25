@@ -2,7 +2,7 @@
 
 namespace QM\Tests;
 
-class Plugin extends Test {
+class PluginTest extends Test {
 	/**
 	 * @var ?array{
 	 *   stable_tag: string,
@@ -17,7 +17,7 @@ class Plugin extends Test {
 
 		$plugin_data = get_plugin_data( dirname( dirname( dirname( __FILE__ ) ) ) . '/query-monitor.php' );
 
-		self::assertEquals( $readme_data['stable_tag'], $plugin_data['Version'] );
+		self::assertSame( $readme_data['stable_tag'], $plugin_data['Version'] );
 	}
 
 	/**
