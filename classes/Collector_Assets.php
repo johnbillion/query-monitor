@@ -240,8 +240,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'dependencies' => $module['dependencies'],
 				);
 
-				$all_dependencies = array_merge( $all_dependencies, $dependencies );
-				$all_dependents = array_merge( $all_dependents, $dependents );
+				$all_dependencies = array_merge( $all_dependencies, $module['dependencies'] );
+				$all_dependents = array_merge( $all_dependents, $module['dependents'] );
 			}
 		}
 
@@ -344,7 +344,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			/** @var string $src */
 			$src = $get_src->invoke( $modules, $id );
 
-			$dependencies = array_keys( $get_dependencies->invoke( $modules, array( $id ) ) );
+			/**
+			 * @var array<string, array<string, mixed>> $script_dependencies
+			 */
+			$script_dependencies = $get_dependencies->invoke( $modules, array( $id ) );
+			$dependencies = array_keys( $script_dependencies );
 			$dependents = array();
 
 			foreach ( $all_modules as $dep_id => $dep ) {
