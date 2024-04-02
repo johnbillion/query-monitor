@@ -64,6 +64,7 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows all enqueued scripts and styles along with their handle, URL, and version
  * Shows their dependencies and dependents
  * Alerts you to any broken or missing dependencies
+ * Supports the script modules feature added in WordPress 6.5
 
 ### Languages
 
