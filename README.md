@@ -295,6 +295,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Debug This](https://wordpress.org/plugins/debug-this/)
  * [Decalog](https://wordpress.org/plugins/decalog/)
  * [Laps](https://github.com/Rarst/laps)
+ * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
@@ -321,7 +322,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
  * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Hosted services
 
