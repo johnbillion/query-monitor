@@ -17,7 +17,7 @@ Adds bbPress & BuddyPress functions to the Conditionals panel
 * [Memcache Stats](https://github.com/Automattic/qm-memcache-stats)  
 Shows Memcache stats
 * [GiveWP Conditionals](https://github.com/tw2113/QueryMonitor-GiveWP)  
-Adds [Give](https://wordpress.org/plugins/give/) functions to the Conditionals table
+Adds [Give](https://wordpress.org/plugins/give/) functions to the Conditionals panel
 * [Flamegraph](https://github.com/humanmade/query-monitor-flamegraph)  
 Adds profiling framegraphs via the [forp](http://anthonyterrien.com/forp/) PHP extension
 * [Twig Profile](https://github.com/NielsdeBlaauw/query-monitor-twig-profile/)  
