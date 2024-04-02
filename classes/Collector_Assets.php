@@ -85,8 +85,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$type = $this->get_dependency_type();
 		$modules = null;
 
-		if ( ( $type === 'scripts' ) && function_exists( 'wp_script_modules' ) && ! is_admin() ) {
-			$modules = wp_script_modules();
+		if ( $type === 'scripts' ) {
+			$modules = self::get_script_modules();
 		}
 
 		if ( empty( $this->data->header ) && empty( $this->data->footer ) && empty( $modules ) ) {
@@ -222,34 +222,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		unset( $this->data->{$position} );
 
-		if ( $modules instanceof \WP_Script_Modules ) {
-			$enqueued = $modules->get_marked_for_enqueue();
-			$all_modules = array_merge(
-				$enqueued,
-				$modules->get_dependencies( array_keys( $enqueued ) )
-			);
-
-			$all_keys = array_keys( $all_modules );
-
-			$dependencies_keyed_by_id = array_map( function ( $module ) use ( $modules ) {
-				return array_keys( $modules->get_dependencies( [ $module ] ) );
-			}, $all_keys );
-
-			foreach ( $all_modules as $id => $module ) {
-				$src = $modules->get_versioned_src( $module );
-
-				list( $host, $source, $local, $port ) = $this->get_module_data( $module, $src );
+		if ( is_array( $modules ) ) {
+			foreach ( $modules as $id => $module ) {
+				list( $host, $source, $local, $port ) = $this->get_module_data( $module['src'] );
 
 				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
-
-				$dependents = array();
-				foreach ( $dependencies_keyed_by_id as $key => $deps ) {
-					if ( in_array( $id, $deps, true ) ) {
-						$dependents[] = $all_keys[ $key ];
-					}
-				}
-
-				$dependencies = array_keys( $modules->get_dependencies( [ $id ] ) );
 
 				$this->data->assets['modules'][ $id ] = array(
 					'host' => $host,
@@ -259,8 +236,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'ver' => $module['version'] ?: '',
 					'warning' => false,
 					'display' => $display,
-					'dependents' => $dependents,
-					'dependencies' => $dependencies,
+					'dependents' => $module['dependents'],
+					'dependencies' => $module['dependencies'],
 				);
 
 				$all_dependencies = array_merge( $all_dependencies, $dependencies );
@@ -277,6 +254,117 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$this->data->dependents = $all_dependents;
 
 		$this->data->missing_dependencies = $missing_dependencies;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return array<string, array>|null
+	 * @phpstan-return array<string, array{
+	 *   id: string,
+	 *   src: string,
+	 *   version: string|false|null,
+	 *   dependencies: list<string>,
+	 *   dependents: list<string>,
+	 * }>|null
+	 */
+	protected static function get_script_modules(): ?array {
+		if ( ! function_exists( 'wp_script_modules' ) ) {
+			return null;
+		}
+
+		$modules = wp_script_modules();
+
+		if ( ! ( $modules instanceof \WP_Script_Modules ) ) {
+			return null;
+		}
+
+		$reflector = new ReflectionClass( $modules );
+
+		$get_marked_for_enqueue = $reflector->getMethod( 'get_marked_for_enqueue' );
+		$get_marked_for_enqueue->setAccessible( true );
+
+		$get_dependencies = $reflector->getMethod( 'get_dependencies' );
+		$get_dependencies->setAccessible( true );
+
+		$get_src = $reflector->getMethod( 'get_src' );
+		$get_src->setAccessible( true );
+
+		/**
+		 * @var array<string, array<string, mixed>> $enqueued
+		 * @phpstan-var array<string, array{
+		 *   src: string,
+		 *   version: string|false|null,
+		 *   enqueue: bool,
+		 *   dependencies: list<array{
+		 *     id: string,
+		 *     import: 'static'|'dynamic',
+		 *   }>,
+		 * }> $enqueued
+		 */
+		$enqueued = $get_marked_for_enqueue->invoke( $modules );
+
+		/**
+		 * @var array<string, array<string, mixed>> $deps
+		 * @phpstan-var array<string, array{
+		 *   src: string,
+		 *   version: string|false|null,
+		 *   enqueue: bool,
+		 *   dependencies: list<array{
+		 *     id: string,
+		 *     import: 'static'|'dynamic',
+		 *   }>,
+		 * }> $deps
+		 */
+		$deps = $get_dependencies->invoke( $modules, array_keys( $enqueued ) );
+
+		$all_modules = array_merge(
+			$enqueued,
+			$deps
+		);
+
+		/**
+		 * @var array<string, array<string, mixed>> $sources
+		 * @phpstan-var array<string, array{
+		 *   id: string,
+		 *   src: string,
+		 *   version: string|false|null,
+		 *   dependencies: list<string>,
+		 *   dependents: list<string>,
+		 * }> $sources
+		 */
+		$sources = array();
+
+		foreach ( $all_modules as $id => $module ) {
+			/** @var string $src */
+			$src = $get_src->invoke( $modules, $id );
+
+			$dependencies = array_keys( $get_dependencies->invoke( $modules, array( $id ) ) );
+			$dependents = array();
+
+			foreach ( $all_modules as $dep_id => $dep ) {
+				foreach ( $dep['dependencies'] as $dependency ) {
+					if ( $dependency['id'] === $id ) {
+						$dependents[] = $dep_id;
+					}
+				}
+			}
+
+			$sources[ $id ] = array(
+				'id' => $id,
+				'src' => $src,
+				'version' => $module['version'],
+				'dependencies' => $dependencies,
+				'dependents' => $dependents,
+			);
+		}
+
+		// @todo check isPrivate before changing visibility back
+		$get_marked_for_enqueue->setAccessible( false );
+		$get_dependencies->setAccessible( false );
+		$get_src->setAccessible( false );
+
+		return $sources;
 	}
 
 	/**
@@ -394,17 +482,16 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * @param array  $module
 	 * @param string $src
 	 * @return mixed[]
 	 * @phpstan-return array{
 	 *   0: string,
-	 *   1: string|WP_Error,
+	 *   1: string,
 	 *   2: bool,
 	 *   3: string,
 	 * }
 	 */
-	protected function get_module_data( array $module, string $src ): array {
+	protected function get_module_data( string $src ): array {
 		/** @var QM_Data_Assets */
 		$data = $this->get_data();
 
