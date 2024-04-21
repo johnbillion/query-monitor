@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
     name: Build
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@stable-stubs
   master:
     name: Push to master
     needs: build

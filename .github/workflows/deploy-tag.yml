@@ -14,7 +14,7 @@ permissions:
 jobs:
   test:
     name: Deploy Tag
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@stable-stubs
     with:
       plugin: query-monitor
       readme: readme.txt

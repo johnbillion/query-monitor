@@ -33,13 +33,13 @@ jobs:
           - '8.3'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@stable-stubs
     with:
       wp: 'nightly'
       php: ${{ matrix.php }}
   integration:
     name: Nightly integration / PHP ${{ matrix.php }}
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@stable-stubs
     strategy:
       matrix:
         php:
