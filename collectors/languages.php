@@ -85,6 +85,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'load_script_translation_file',
 			'load_script_translations',
 			'load_textdomain_mofile',
+			'load_translation_file',
 			'locale',
 			'ngettext',
 			'ngettext_with_context',
@@ -92,9 +93,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'override_unload_textdomain',
 			'plugin_locale',
 			'pre_determine_locale',
+			'pre_get_language_files_from_path',
 			'pre_load_script_translations',
 			'pre_load_textdomain',
 			'theme_locale',
+			'translation_file_format',
 		);
 	}
 
