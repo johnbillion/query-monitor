@@ -69,7 +69,7 @@ Filtering queries by component or calling function makes it easy to see which pl
 ### Languages
 
  * Shows you language settings and loaded text domains
- * Shows you the requested MO and JSON translation files for each text domain and which ones were loaded
+ * Shows you the requested MO, JSON, and PHP translation files for each text domain and which ones were loaded
 
 ### HTTP API Requests
 
