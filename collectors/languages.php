@@ -175,6 +175,10 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 * @phpstan-return T
 	 */
 	public function log_translation_file_load( $file, $domain ) {
+		if ( ! class_exists( 'WP_Translation_Controller' ) ) {
+			return $file;
+		}
+
 		$i18n_controller = \WP_Translation_Controller::get_instance();
 
 		$locale = determine_locale();

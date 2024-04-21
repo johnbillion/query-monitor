@@ -275,10 +275,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		$modules = wp_script_modules();
 
-		if ( ! ( $modules instanceof \WP_Script_Modules ) ) {
-			return null;
-		}
-
 		// https://core.trac.wordpress.org/ticket/60596
 		if ( ! did_action( 'wp_head' ) ) {
 			return null;
