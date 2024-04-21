@@ -21,6 +21,9 @@ on:
       - '.github/workflows/nightly-tests.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   acceptance:
     name: Nightly acceptance / PHP ${{ matrix.php }}

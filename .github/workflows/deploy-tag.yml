@@ -7,6 +7,10 @@ on:
 
 concurrency: WordPress.org
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   test:
     name: Deploy Tag

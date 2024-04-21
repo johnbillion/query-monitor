@@ -34,6 +34,9 @@ on:
       - 'package.json'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
