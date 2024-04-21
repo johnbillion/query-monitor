@@ -43,6 +43,11 @@ jobs:
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@stable-stubs
     strategy:
       matrix:
+        wp:
+          # Latest three stable:
+          - '6.5'
+          - '6.4'
+          - '6.3'
         php:
           - '8.2'
           - '7.4'
