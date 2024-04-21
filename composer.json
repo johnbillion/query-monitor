@@ -31,7 +31,7 @@
 		"codeception/module-webdriver": "^1.0",
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
-		"johnbillion/plugin-infrastructure": "dev-trunk",
+		"johnbillion/plugin-infrastructure": "dev-stable-stubs",
 		"lucatume/wp-browser": "3.2.1",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
 		"phpstan/phpstan": "1.10.39",
