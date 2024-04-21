@@ -53,4 +53,5 @@ jobs:
           - '7.4'
       fail-fast: false
     with:
+      wp: ${{ matrix.wp }}
       php: ${{ matrix.php }}
