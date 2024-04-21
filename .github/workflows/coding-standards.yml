@@ -39,7 +39,7 @@ permissions:
 
 jobs:
   test:
-    name: PHP / PHP ${{ matrix.php }}
+    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@stable-stubs
     strategy:
       matrix:
