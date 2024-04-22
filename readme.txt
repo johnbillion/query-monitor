@@ -79,7 +79,7 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 Yes, it's actively tested and working up to PHP 8.2.
 
-### Who can access Query Monitor's output?
+### Who can see Query Monitor's output?
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
@@ -89,9 +89,9 @@ In addition to this, you can set an authentication cookie which allows you to vi
 
 Short answer: Yes, but only a little.
 
-Long answer: Query Monitor has a small impact on page generation time because it hooks into WordPress in the same way that other plugins do. The impact is low; typically between 10ms and 100ms depending on the complexity of your site.
+Long answer: Query Monitor has a small impact on page generation time because it hooks into a few places in WordPress in the same way that other plugins do. The impact is negligible.
 
-Query Monitor's memory usage typically accounts for around 10% of the total memory used to generate the page.
+On pages that have an especially high number of database queries (in the hundreds), Query Monitor currently uses more memory than I would like it to. This is due to the amount of data that is captured in the stack trace for each query. I have been and will be working to continually reduce this.
 
 ### Can I prevent Query Monitor from collecting data during long-running requests?
 
