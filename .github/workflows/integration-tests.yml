@@ -58,7 +58,7 @@ jobs:
           - wp: '6.5'
             php: '8.3'
           # Oldest supported on PHP 7.4:
-          - wp: '5.6'
+          - wp: '5.7'
             php: '7.4'
       fail-fast: false
     with:

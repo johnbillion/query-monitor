@@ -269,6 +269,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * }>|null
 	 */
 	protected static function get_script_modules(): ?array {
+		// WP 6.5
 		if ( ! function_exists( 'wp_script_modules' ) ) {
 			return null;
 		}
