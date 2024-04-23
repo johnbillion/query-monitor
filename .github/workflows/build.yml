@@ -5,6 +5,13 @@ on:
   push:
     branches:
       - 'release'
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        default: false
+        type: boolean
+        description: Whether to tag the release
 
 permissions:
   contents: write
@@ -13,3 +20,5 @@ jobs:
   build:
     name: Build
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+    with:
+      tag: ${{ github.event_name != 'workflow_dispatch' && true || github.event.inputs.tag }}
