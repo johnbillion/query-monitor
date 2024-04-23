@@ -10,7 +10,7 @@ on:
         required: true
         default: false
         type: boolean
-        description: Whether to deploy the release to WordPress.org
+        description: Deploy the release to WordPress.org
       version:
         required: true
         type: string

@@ -11,7 +11,7 @@ on:
         required: true
         default: false
         type: boolean
-        description: Whether to tag the release
+        description: Tag the release
 
 permissions:
   contents: write
