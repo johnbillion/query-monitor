@@ -6,11 +6,6 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
-      deploy:
-        required: true
-        default: false
-        type: boolean
-        description: Deploy the release to WordPress.org
       version:
         required: true
         type: string
