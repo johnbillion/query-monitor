@@ -55,6 +55,11 @@ if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
 
 require_once "{$qm_dir}/vendor/autoload.php";
 
+// Safety check to ensure the autoloader is operational.
+if ( ! class_exists( 'QM_Activation' ) ) {
+	return;
+}
+
 QM_Activation::init( __FILE__ );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
