@@ -10,7 +10,6 @@
 		"node": ">=18"
 	},
 	"devDependencies": {
-		"plugin-infrastructure": "file:vendor/johnbillion/plugin-infrastructure",
 		"sass": "^1",
 		"sharp-cli": "^4.1.1",
 		"version-bump-prompt": "^6.1.0",
