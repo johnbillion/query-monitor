@@ -2,8 +2,6 @@
 
 name: Deploy Tag
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       version:
