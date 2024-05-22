@@ -77,7 +77,6 @@ if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
 
 require_once "{$qm_dir}/vendor/autoload.php";
 
-// Safety check to ensure the autoloader is operational.
 if ( ! class_exists( 'QM_Backtrace' ) ) {
 	return;
 }
