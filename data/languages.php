@@ -20,8 +20,8 @@ class QM_Data_Languages extends QM_Data {
 	 *   file: string|false,
 	 *   found: int|false,
 	 *   handle: string|null,
-	 *   type: 'gettext'|'jed',
-	 * }>
+	 *   type: 'gettext'|'jed'|'php'|'unknown',
+	 * }>>
 	 */
 	public $languages;
 

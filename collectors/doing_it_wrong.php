@@ -16,6 +16,11 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 
 	public $id = 'doing_it_wrong';
 
+	/**
+	 * @var bool
+	 */
+	private $collecting = false;
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Doing_It_Wrong();
 	}
@@ -112,6 +117,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_doing_it_wrong_run( $function_name, $message, $version ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -136,6 +147,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				$version
 			),
 		);
+
+		$this->collecting = false;
 	}
 
 	/**
@@ -145,6 +158,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_deprecated_function_run( $function_name, $replacement, $version ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -175,6 +194,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'trace' => $trace,
 			'message' => $message,
 		);
+
+		$this->collecting = false;
 	}
 
 	/**
@@ -184,6 +205,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_deprecated_constructor_run( $class_name, $version, $parent_class ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -216,6 +243,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'trace' => $trace,
 			'message' => $message,
 		);
+
+		$this->collecting = false;
 	}
 
 	/**
@@ -226,6 +255,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_deprecated_file_included( $file, $replacement, $version, $message ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -258,6 +293,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'trace' => $trace,
 			'message' => $message,
 		);
+
+		$this->collecting = false;
 	}
 
 	/**
@@ -267,6 +304,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_deprecated_argument_run( $function_name, $message, $version ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -297,6 +340,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'trace' => $trace,
 			'message' => $message,
 		);
+
+		$this->collecting = false;
 	}
 
 	/**
@@ -307,6 +352,12 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_deprecated_hook_run( $hook, $replacement, $version, $message ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
@@ -339,6 +390,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'trace' => $trace,
 			'message' => $message,
 		);
+
+		$this->collecting = false;
 	}
 
 }

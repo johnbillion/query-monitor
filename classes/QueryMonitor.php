@@ -58,6 +58,7 @@ class QueryMonitor extends QM_Plugin {
 	public function filter_plugin_action_links( array $actions ) {
 		return array_merge( array(
 			'add-ons' => '<a href="https://querymonitor.com/help/add-on-plugins/">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
+			'help' => '<a href="https://querymonitor.com/wordpress-debugging/how-to-use/">' . esc_html__( 'Help', 'query-monitor' ) . '</a>',
 		), $actions );
 	}
 

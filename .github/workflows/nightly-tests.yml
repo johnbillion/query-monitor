@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Nightly Tests
+on:
+  schedule:
+    # Once daily at 05:00 UTC.
+    #
+    #        ┌───────────── minute           (0 - 59)
+    #        │  ┌────────── hour             (0 - 23)
+    #        │  │  ┌─────── day of the month (1 - 31)
+    #        │  │  │  ┌──── month            (1 - 12 or JAN-DEC)
+    #        │  │  │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
+    #        │  │  │  │  │
+    #        │  │  │  │  │
+    #        │  │  │  │  │
+    - cron: '0  5  *  *  *'
+  push:
+    branches:
+      - 'develop'
+    paths:
+      - '.github/workflows/nightly-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    name: Nightly acceptance / PHP ${{ matrix.php }}
+    strategy:
+      matrix:
+        php:
+          - '8.3'
+          - '7.4'
+      fail-fast: false
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    with:
+      wp: 'nightly'
+      php: ${{ matrix.php }}
+  integration:
+    name: Nightly integration / PHP ${{ matrix.php }}
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
+    strategy:
+      matrix:
+        php:
+          - '8.3'
+          - '7.4'
+      fail-fast: false
+    with:
+      wp: 'nightly'
+      php: ${{ matrix.php }}

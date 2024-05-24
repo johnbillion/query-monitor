@@ -210,6 +210,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return bool
 	 */
 	protected static function wp_block_editor_enabled() {
+		// WP 5.0
 		return ( function_exists( 'parse_blocks' ) || function_exists( 'gutenberg_parse_blocks' ) );
 	}
 
@@ -218,6 +219,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return bool
 	 */
 	protected static function wp_has_blocks( $content ) {
+		// WP 5.0
 		if ( function_exists( 'has_blocks' ) ) {
 			return has_blocks( $content );
 		} elseif ( function_exists( 'gutenberg_has_blocks' ) ) {
@@ -232,6 +234,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return array<int, mixed>
 	 */
 	protected static function wp_parse_blocks( $content ) {
+		// WP 5.0
 		if ( function_exists( 'parse_blocks' ) ) {
 			return parse_blocks( $content );
 		} elseif ( function_exists( 'gutenberg_parse_blocks' ) ) {
@@ -245,6 +248,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return array<int, string>
 	 */
 	protected static function wp_get_dynamic_block_names() {
+		// WP 5.0
 		if ( function_exists( 'get_dynamic_block_names' ) ) {
 			return get_dynamic_block_names();
 		}

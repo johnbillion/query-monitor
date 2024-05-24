@@ -199,7 +199,7 @@ abstract class QM_Dispatcher {
 	 * Attempts to switch to the given locale.
 	 *
 	 * This is a wrapper around `switch_to_locale()` which is safe to call at any point, even
-	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 * before the `$wp_locale_switcher` global is initialised.
 	 *
 	 * @param string $locale The locale.
 	 * @return bool True on success, false on failure.
@@ -208,7 +208,7 @@ abstract class QM_Dispatcher {
 		/** @var ?WP_Locale_Switcher $wp_locale_switcher */
 		global $wp_locale_switcher;
 
-		if ( function_exists( 'switch_to_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+		if ( $wp_locale_switcher instanceof WP_Locale_Switcher ) {
 			return switch_to_locale( $locale );
 		}
 
@@ -219,7 +219,7 @@ abstract class QM_Dispatcher {
 	 * Attempts to restore the previous locale.
 	 *
 	 * This is a wrapper around `restore_previous_locale()` which is safe to call at any point, even
-	 * before the `$wp_locale_switcher` global is initialised or if the function does not exist.
+	 * before the `$wp_locale_switcher` global is initialised.
 	 *
 	 * @return string|false Locale on success, false on error.
 	 */
@@ -227,7 +227,7 @@ abstract class QM_Dispatcher {
 		/** @var ?WP_Locale_Switcher $wp_locale_switcher */
 		global $wp_locale_switcher;
 
-		if ( function_exists( 'restore_previous_locale' ) && ( $wp_locale_switcher instanceof WP_Locale_Switcher ) ) {
+		if ( $wp_locale_switcher instanceof WP_Locale_Switcher ) {
 			return restore_previous_locale();
 		}
 

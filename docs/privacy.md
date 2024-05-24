@@ -3,7 +3,9 @@ nav_exclude: true
 publish: false
 ---
 
-# Privacy statement
+# Privacy statements
+
+## Query Monitor plugin privacy statement
 
 Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
 
@@ -12,3 +14,11 @@ Query Monitor implements an optional browser cookie that allows a user to view Q
 Query Monitor stores some user preferences in the browser's Local Storage and Session Storage. It stores the ID of the most recently accessed panel, its dimensions and position, values for table column filters, the editor preference, and the dark/light mode preference. These data are stored using the browser's `localStorage` and `sessionStorage` APIs, which do not get sent with HTTP requests, and do not contain any personally identifiable information.
 
 Please note that in a future version of Query Monitor, opt-in features may be introduced which allow a user to choose to persistently store data and/or send data to a third party service. Such features will only ever be opt-in.
+
+## querymonitor.com website privacy statement
+
+* The querymonitor.com website makes no use of cookies and collects no data from visitors.
+* The querymonitor.com website is operated by [John Blackbourn](https://johnblackbourn.com/about/).
+* The querymonitor.com website is hosted on [Netlify](https://www.netlify.com/).
+
+This privacy statement is subject to change and was last updated on April 2, 2024.

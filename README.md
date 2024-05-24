@@ -64,11 +64,12 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows all enqueued scripts and styles along with their handle, URL, and version
  * Shows their dependencies and dependents
  * Alerts you to any broken or missing dependencies
+ * Supports the script modules feature added in WordPress 6.5
 
 ### Languages
 
  * Shows you language settings and loaded text domains
- * Shows you the requested MO and JSON translation files for each text domain and which ones were loaded
+ * Shows you the requested MO, JSON, and PHP translation files for each text domain and which ones were loaded
 
 ### HTTP API Requests
 
@@ -230,12 +231,12 @@ On pages that have an especially high number of database queries (in the hundred
 
 ### Can I prevent Query Monitor from collecting data during long-running requests?
 
-Yes, if anything calls `do_action( 'qm/cease' )` then Query Monitor will cease operating for the remainder of the page generation. It detaches itself from further data collection, discards any data it's collected so far, and skips the output of its information.
+Yes, you can call `do_action( 'qm/cease' )` to instruct Query Monitor to cease operating for the remainder of the page generation. It will detach itself from further data collection, discard any data it's collected so far, and skip the output of its information.
 
 This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
 
 * Backing up or restoring your site
-* Exporting a large amount of data
+* Importing or exporting a large amount of data
 * Running security scans
 
 ### Are there any add-on plugins for Query Monitor?
@@ -252,9 +253,9 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
 
-### Is Query Monitor available on WordPress.com VIP?
+### Is Query Monitor available on WordPress VIP?
 
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress.com VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
+Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
 
 ### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
 
@@ -262,7 +263,11 @@ This feature was removed in version 3.12 as it was rarely used and considerably 
 
 ### Can I click on stack traces to open the file in my editor?
 
-Yes! You can enable this on the Settings panel.
+Yes. You can enable this on the Settings panel.
+
+### How can I report a security bug?
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
 
 ### Do you accept donations?
 
@@ -295,6 +300,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Debug This](https://wordpress.org/plugins/debug-this/)
  * [Decalog](https://wordpress.org/plugins/decalog/)
  * [Laps](https://github.com/Rarst/laps)
+ * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
@@ -321,7 +327,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
  * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI profile command](https://developer.wordpress.org/cli/commands/profile/)
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Hosted services
 

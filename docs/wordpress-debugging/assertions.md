@@ -58,7 +58,7 @@ do_action( 'qm/assert', is_array( $data ), 'Data is an array', $data );
 do_action( 'qm/assert', array_key_exists( 'foo', $data ), 'Data contains foo', $data );
 ```
 
-Postconditions can be used to assert that a particular outcome occured:
+Postconditions can be used to assert that a particular outcome occurred:
 
 ```php
 do_action( 'qm/assert', did_action( 'my-action' ) );

@@ -314,6 +314,7 @@ class QM_Util {
 				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
 			}
 
+			/** @var array<int, string> $dropins */
 			$dropins = array_keys( _get_dropins() );
 
 			foreach ( $dropins as $dropin ) {

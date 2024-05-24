@@ -10,7 +10,7 @@ Install and activate Query Monitor as you would any other WordPress plugin. [You
 
 ## Usage
 
-While you're logged in as an Administrator you'll see a new menu item in the admin toolbar menu:
+While you're logged in as an Administrator you'll see a new menu in the admin toolbar:
 
 [![Admin Toolbar Menu](/screenshot-1.png)](/screenshot-1.png)
 
