@@ -21,7 +21,7 @@ class QM_Data_Languages extends QM_Data {
 	 *   found: int|false,
 	 *   handle: string|null,
 	 *   type: 'gettext'|'jed'|'php'|'unknown',
-	 * }>>
+	 * }>
 	 */
 	public $languages;
 

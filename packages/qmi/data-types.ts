@@ -369,7 +369,7 @@ export interface Languages {
 		file: string | false;
 		found: number | false;
 		handle: string | null;
-		type: "gettext" | "jed";
+		type: "gettext" | "jed" | "php" | "unknown";
 	}[];
 	locale: string;
 	user_locale: string;

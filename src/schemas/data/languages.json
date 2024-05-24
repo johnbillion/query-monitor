@@ -60,7 +60,9 @@
 						"type": "string",
 						"enum": [
 							"gettext",
-							"jed"
+							"jed",
+							"php",
+							"unknown"
 						]
 					}
 				},
