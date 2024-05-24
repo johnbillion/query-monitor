@@ -224,15 +224,16 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 		}
 
-		$this->data->assets = $asset_data;
-
 		if ( is_array( $modules ) ) {
 			foreach ( $modules as $id => $module ) {
 				list( $host, $source, $local, $port ) = $this->get_module_data( $module['src'] );
 
 				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+				$position = 'modules';
 
-				$this->data->assets['modules'][ $id ] = array(
+				$asset_data[] = array(
+					'handle' => $id,
+					'position' => $position,
 					'host' => $host,
 					'port' => $port,
 					'source' => $source,
@@ -244,19 +245,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'dependencies' => $module['dependencies'],
 				);
 
-				$all_dependencies = array_merge( $all_dependencies, $module['dependencies'] );
-				$all_dependents = array_merge( $all_dependents, $module['dependents'] );
+				$this->log_type( $position );
 			}
 		}
 
-		$all_dependencies = array_unique( $all_dependencies );
-		sort( $all_dependencies );
-		$this->data->dependencies = $all_dependencies;
-
-		$all_dependents = array_unique( $all_dependents );
-		sort( $all_dependents );
-		$this->data->dependents = $all_dependents;
-
+		$this->data->assets = $asset_data;
 		$this->data->missing_dependencies = $missing_dependencies;
 	}
 
