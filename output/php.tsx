@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Toggler, Warning, Utils } from 'qmi';
 import {
 	Environment as EnvironmentData,
@@ -18,7 +18,7 @@ export default ( { php }: Props ) => (
 		</h3>
 		<table>
 			<tbody>
-				<tr className={ classNames( {
+				<tr className={ clsx( {
 					'qm-warn': php.old,
 				} ) }>
 					<th scope="row">

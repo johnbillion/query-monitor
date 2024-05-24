@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import {
 	Icon,
 	MainContext,
@@ -67,7 +67,7 @@ export const QM = ( props: Props ) => {
 			: 'light';
 	}
 
-	const mainClass = classNames( 'qm-show', {
+	const mainClass = clsx( 'qm-show', {
 		'qm-show-right': side,
 	} );
 
@@ -217,7 +217,7 @@ export const QM = ( props: Props ) => {
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">
 							{ Object.values( props.menu.sub ).map( ( menu ) => (
-								<li key={ menu.id } className={ classNames( menu.meta && menu.meta.classname ) }>
+								<li key={ menu.id } className={ clsx( menu.meta && menu.meta.classname ) }>
 									<a
 										className="ab-item"
 										href={ `#qm-${ menu.panel }` }

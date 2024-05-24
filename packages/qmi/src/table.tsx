@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import {
 	Caller,
 	Component,
@@ -218,7 +218,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 						return (
 							<th
 								key={ key }
-								className={ classNames( `qm-col-${key}`, col.className, {
+								className={ clsx( `qm-col-${key}`, col.className, {
 									'qm-filterable-column': colFilters.length,
 									'qm-filtered': filterValue !== '',
 								} ) }
@@ -257,7 +257,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 				{ data.map( ( row, i ) => (
 					<tr
 						key={ i } // @todo nope
-						className={ classNames( {
+						className={ clsx( {
 							// @todo remove this in favour of using a warning or error property on row objects
 							'qm-warn': rowHasError && rowHasError( row ),
 						} ) }
@@ -265,7 +265,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
 							<td
 								key={ key }
-								className={ classNames( `qm-cell-${key}`, col.className, {
+								className={ clsx( `qm-cell-${key}`, col.className, {
 									'qm-warn': col.cellHasError && col.cellHasError( row, i ),
 								} ) }
 							>

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
@@ -29,7 +29,7 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 		<ul role="tablist">
 			<li
 				key="overview"
-				className={ classNames( {
+				className={ clsx( {
 					'qm-current-menu': active === 'overview',
 				} ) }
 				role="presentation"
@@ -43,7 +43,7 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 			{ Object.entries( menu ).map( ( [ key, item ] ) => (
 				<li
 					key={ key }
-					className={ classNames( {
+					className={ clsx( {
 						'qm-current-menu': (
 							active === item.panel ||
 							( item.children && Object.keys( item.children ).map( k => (
