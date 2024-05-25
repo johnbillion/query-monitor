@@ -5,22 +5,14 @@ on:
   push:
     branches:
       - 'release'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     name: Build
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
-  master:
-    name: Push to master
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          ref: develop
-
-      - name: Push
-        run: git push origin develop:master
-    env:
-      TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag: ${{ github.event_name != 'workflow_dispatch' }}

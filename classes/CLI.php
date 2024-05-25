@@ -31,7 +31,7 @@ class QM_CLI extends QM_Plugin {
 		if ( file_exists( $drop_in ) ) {
 			$contents = file_get_contents( $drop_in );
 
-			if ( false !== $contents && false !== strpos( $contents, 'class QM_DB' ) ) {
+			if ( false !== $contents && false !== strpos( $contents, 'new QM_DB' ) ) {
 				WP_CLI::success( "Query Monitor's wp-content/db.php is already in place" );
 				exit( 0 );
 			} else {
