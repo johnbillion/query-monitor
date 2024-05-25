@@ -128,7 +128,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 					echo '<td class="qm-ltr">';
 					if ( $mofile['file'] ) {
-						if ( $mofile['found'] && 'jed' === $mofile['type'] && self::has_clickable_links() ) {
+						if ( $mofile['found'] && 'gettext' !== $mofile['type'] && self::has_clickable_links() ) {
 							echo self::output_filename( QM_Util::standard_dir( $mofile['file'], '' ), $mofile['file'], 1, true ); // WPCS: XSS ok.
 						} else {
 							echo esc_html( QM_Util::standard_dir( $mofile['file'], '' ) );
