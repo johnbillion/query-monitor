@@ -60,6 +60,7 @@ class QueryMonitor extends QM_Plugin {
 		return array_merge( array(
 			'settings' => '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>',
 			'add-ons' => '<a href="https://querymonitor.com/help/add-on-plugins/">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
+			'help' => '<a href="https://querymonitor.com/wordpress-debugging/how-to-use/">' . esc_html__( 'Help', 'query-monitor' ) . '</a>',
 		), $actions );
 	}
 
