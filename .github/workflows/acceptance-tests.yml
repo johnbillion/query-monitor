@@ -34,6 +34,9 @@ on:
       - 'package.json'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
@@ -43,18 +46,18 @@ jobs:
       matrix:
         wp:
           # Latest three stable:
+          - '6.5'
           - '6.4'
           - '6.3'
-          - '6.2'
         php:
           - '8.2'
           - '7.4'
         include:
           # Latest stable on PHP 8.3:
-          - wp: '6.4'
+          - wp: '6.5'
             php: '8.3'
           # Oldest supported on PHP 7.4:
-          - wp: '5.6'
+          - wp: '5.7'
             php: '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk

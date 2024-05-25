@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.15.0",
+	"version": "3.16.3",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -10,10 +10,10 @@
 		"node": ">=18"
 	},
 	"devDependencies": {
-		"plugin-infrastructure": "file:vendor/johnbillion/plugin-infrastructure",
 		"sass": "^1",
 		"sharp-cli": "^4.1.1",
 		"version-bump-prompt": "^6.1.0",
+		"vitepress-plugin-rss": "^0.2.0",
 		"vitepress": "1.0.0-rc.25"
 	},
 	"scripts": {
@@ -26,8 +26,5 @@
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
-	},
-	"dependencies": {
-		"vitepress-plugin-rss": "^0.2.0"
 	}
 }
