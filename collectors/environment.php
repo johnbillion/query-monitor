@@ -156,7 +156,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$php_data['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$php_data['old'] = version_compare( $php_data['version'], '7.4', '<' );
+		$php_data['old'] = version_compare( $php_data['version'], '8.1', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
 			$php_data['variables'][ $setting ] = ini_get( $setting ) ?: null;
@@ -187,10 +187,12 @@ class QM_Collector_Environment extends QM_DataCollector {
 			'WP_DEVELOPMENT_MODE' => self::format_bool_constant( 'WP_DEVELOPMENT_MODE' ),
 		);
 
+		// WP 5.5
 		if ( function_exists( 'wp_get_environment_type' ) ) {
 			$this->data->wp['environment_type'] = wp_get_environment_type();
 		}
 
+		// WP 6.3
 		if ( function_exists( 'wp_get_development_mode' ) ) {
 			$this->data->wp['development_mode'] = wp_get_development_mode();
 		}
