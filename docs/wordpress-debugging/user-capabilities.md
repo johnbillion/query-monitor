@@ -10,7 +10,7 @@ Query Monitor can log all of the user capability checks that are performed durin
 
 The user capabilities panel is not enabled by default because it can cause performance issues on sites that perform a large number of user capability checks. To enable this panel, add the following code to your `wp-config.php` file:
 
-```
+```php
 define( 'QM_ENABLE_CAPS_PANEL', true );
 ```
 
