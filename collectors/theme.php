@@ -543,6 +543,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return bool
 	 */
 	protected static function wp_is_block_theme() {
+		// WP 5.9
 		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
 	}
 
@@ -550,6 +551,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return array<string, string>
 	 */
 	protected static function wp_get_block_theme_folders() {
+		// WP 5.9
 		if ( ! function_exists( 'get_block_theme_folders' ) ) {
 			return array(
 				'wp_template'      => 'templates',
@@ -567,6 +569,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 * @return WP_Block_Template|null template A template object, or null if none could be found.
 	 */
 	protected static function wp_resolve_block_template( $template_type, $template_hierarchy, $fallback_template ) {
+		// WP 5.8
 		if ( ! function_exists( 'resolve_block_template' ) ) {
 			return null;
 		}

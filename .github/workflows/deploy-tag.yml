@@ -4,8 +4,18 @@ name: Deploy Tag
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+        description: The version number of the release
 
 concurrency: WordPress.org
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   test:
@@ -14,6 +24,8 @@ jobs:
     with:
       plugin: query-monitor
       readme: readme.txt
+      version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
+      deploy: ${{ github.event_name != 'workflow_dispatch' }}
     secrets:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

@@ -6,6 +6,9 @@ on:
     branches:
       - deploy
 
+permissions:
+  contents: read
+
 jobs:
   wordpress:
     name: WordPress.org
