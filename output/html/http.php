@@ -131,6 +131,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					}
 				}
 
+				if ( empty( parse_url( $row['url'], PHP_URL_QUERY ) ) ) {
+					$url = trim( $url, '?' );
+				}
+
 				$component = $row['component'];
 
 				$stack = array();
