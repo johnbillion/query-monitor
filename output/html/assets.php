@@ -53,6 +53,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'modules' => __( 'Module', 'query-monitor' ),
 			'header' => __( 'Header', 'query-monitor' ),
 			'footer' => __( 'Footer', 'query-monitor' ),
+			'registered' => __( 'Registered', 'query-monitor' ),
 		);
 
 		$type = $this->collector->get_dependency_type();

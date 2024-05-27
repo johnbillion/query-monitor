@@ -106,6 +106,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'footer',
 		);
 
+		if ( defined( 'QM_SHOW_ALL_ASSETS' ) && QM_SHOW_ALL_ASSETS ) {
+			$positions[] = 'registered';
+		}
+
 		$this->data->counts = array(
 			'missing' => 0,
 			'broken' => 0,
@@ -124,6 +128,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$raw = $GLOBALS[ "wp_{$type}" ];
 		$broken = array_values( array_diff( $raw->queue, $raw->done ) );
 		$missing = array_values( array_diff( $raw->queue, array_keys( $raw->registered ) ) );
+
+		$this->data->registered = array_keys( $raw->registered );
 
 		// A broken asset is one which has been deregistered without also being dequeued
 		if ( ! empty( $broken ) ) {
@@ -159,6 +165,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$all_dependents = array();
 
 		$missing_dependencies = array();
+		$processed = array();
 
 		foreach ( $positions as $position ) {
 			if ( empty( $this->data->{$position} ) ) {
@@ -174,6 +181,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					continue;
 				}
 
+				if ( 'registered' === $position && in_array( $handle, $processed ) ) {
+					continue;
+				}
+
 				$all_dependencies = array_merge( $all_dependencies, $dependency->deps );
 				$dependents = $this->get_dependents( $dependency, $raw );
 				$all_dependents = array_merge( $all_dependents, $dependents );
@@ -186,7 +197,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					$ver = $dependency->ver;
 				}
 
-				$warning = ! in_array( $handle, $raw->done, true );
+				$warning = ! in_array( $handle, $raw->done, true ) && 'registered' !== $position;
 
 				if ( $source instanceof WP_Error ) {
 					$display = $source->get_error_message();
@@ -217,6 +228,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$this->data->counts[ $position ]++;
 				$this->data->counts['total']++;
+
+				$processed[] = $handle;
 			}
 		}
 
