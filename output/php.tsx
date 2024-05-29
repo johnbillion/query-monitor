@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Toggler, Warning, Utils } from 'qmi';
+import { Warning } from 'qmi';
 import {
 	Environment as EnvironmentData,
 } from 'qmi/data-types';
@@ -70,24 +70,22 @@ export default ( { php }: Props ) => (
 					<td className="qm-has-toggle qm-ltr">
 						{ php.error_reporting }
 
-						<Toggler>
-							<ul className="qm-supplemental">
-								{ Object.keys( php.error_levels ).map( ( key ) => (
-									<li key={ key }>
-										{ php.error_levels[ key ] ? (
-											<>
-												{ key }
-												&nbsp;&#x2713;
-											</>
-										):(
-											<span className="qm-false">
-												{ key }
-											</span>
-										) }
-									</li>
-								) ) }
-							</ul>
-						</Toggler>
+						<ul>
+							{ Object.keys( php.error_levels ).map( ( key ) => (
+								<li key={ key }>
+									{ php.error_levels[ key ] ? (
+										<>
+											{ key }
+											&nbsp;&#x2713;
+										</>
+									):(
+										<span className="qm-false">
+											{ key }
+										</span>
+									) }
+								</li>
+							) ) }
+						</ul>
 					</td>
 				</tr>
 				{ php.extensions && (
@@ -96,17 +94,13 @@ export default ( { php }: Props ) => (
 							{ __( 'Extensions', 'query-monitor' ) }
 						</th>
 						<td className="qm-has-toggle qm-ltr">
-							{ Utils.numberFormat( Object.keys( php.extensions ).length ) }
-
-							<Toggler>
-								<ul className="qm-supplemental">
-									{ Object.keys( php.extensions ).map( key => (
-										<li key={ key }>
-											{ key } ({ php.extensions[ key ] || __( 'Unknown', 'query-monitor' ) })
-										</li>
-									) ) }
-								</ul>
-							</Toggler>
+							<ul>
+								{ Object.keys( php.extensions ).map( key => (
+									<li key={ key }>
+										{ key } { php.extensions[ key ] || '' }
+									</li>
+								) ) }
+							</ul>
 						</td>
 					</tr>
 				) }

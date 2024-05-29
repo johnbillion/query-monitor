@@ -24,7 +24,6 @@ export { Component } from './src/component';
 export { TabularPanel } from './src/tabular-panel';
 export { Time } from './src/time';
 export { TotalTime } from './src/total-time';
-export { Toggler } from './src/toggler';
 export { Warning } from './src/warning';
 export * as Utils from './src/utils';
 export * as Data from './data-types';
