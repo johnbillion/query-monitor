@@ -15,7 +15,7 @@
 /**
  * @phpstan-type Asset array{
  *   handle: string,
- *   position: 'missing'|'broken'|'header'|'footer',
+ *   position: 'missing'|'broken'|'modules'|'header'|'footer',
  *   host: string,
  *   port: string,
  *   source: string|WP_Error,

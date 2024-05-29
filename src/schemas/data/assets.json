@@ -16,6 +16,7 @@
 					"enum": [
 						"missing",
 						"broken",
+						"modules",
 						"header",
 						"footer"
 					]
