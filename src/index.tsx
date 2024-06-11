@@ -124,14 +124,14 @@ registerPanel( 'request', {
 	render: ( data, enabled ) => <Request data={ data } enabled={ enabled } />,
 	data: 'request',
 } );
-// registerPanel( 'assets_scripts', {
-// 	render: ( data, enabled ) => <Scripts data={ data } enabled={ enabled } />,
-// 	data: 'assets_scripts',
-// } );
-// registerPanel( 'assets_styles', {
-// 	render: ( data, enabled ) => <Styles data={ data } enabled={ enabled } />,
-// 	data: 'assets_styles',
-// } );
+registerPanel( 'assets_scripts', {
+	render: ( data, enabled ) => <Scripts data={ data } enabled={ enabled } />,
+	data: 'assets_scripts',
+} );
+registerPanel( 'assets_styles', {
+	render: ( data, enabled ) => <Styles data={ data } enabled={ enabled } />,
+	data: 'assets_styles',
+} );
 registerPanel( 'theme', {
 	render: ( data, enabled ) => <Theme data={ data } enabled={ enabled } />,
 	data: 'theme',

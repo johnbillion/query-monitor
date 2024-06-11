@@ -5,7 +5,8 @@
 	"type": "object",
 	"required": [
 		"admin",
-		"assets",
+		"assets_scripts",
+		"assets_styles",
 		"block_editor",
 		"cache",
 		"caps",
@@ -83,7 +84,17 @@
 				}
 			]
 		},
-		"assets": {
+		"assets_scripts": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/data"
+				},
+				{
+					"$ref": "src/schemas/data/assets.json"
+				}
+			]
+		},
+		"assets_styles": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"

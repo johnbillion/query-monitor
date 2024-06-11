@@ -16,7 +16,7 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 
-type myProps = PanelProps<DataTypes['assets']> & {
+type myProps = PanelProps<DataTypes['assets_scripts'] | DataTypes['assets_styles']> & {
 	labels: {
 		none: string;
 	};
@@ -65,6 +65,7 @@ export default ( { data, labels }: myProps ) => {
 		broken: __( 'Missing Dependencies', 'query-monitor' ),
 		header: __( 'Header', 'query-monitor' ),
 		footer: __( 'Footer', 'query-monitor' ),
+		modules: __( 'Module', 'query-monitor' ),
 	};
 
 	if ( ! data.assets ) {

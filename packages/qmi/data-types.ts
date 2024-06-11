@@ -19,7 +19,8 @@ import {
 
 export interface DataTypes {
 	admin: AbstractData & Admin;
-	assets: AbstractData & Assets;
+	assets_scripts: AbstractData & Assets;
+	assets_styles: AbstractData & Assets;
 	block_editor: AbstractData & Block_Editor;
 	cache: AbstractData & Cache;
 	caps: AbstractData & Caps;
