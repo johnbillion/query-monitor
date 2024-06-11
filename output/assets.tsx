@@ -98,6 +98,25 @@ export default ( { data, labels }: myProps ) => {
 				host: {
 					heading: __( 'Host', 'query-monitor' ),
 					render: ( row ) => ( row.host && row.port ? `${ row.host }:${ row.port }` : row.host ),
+					filters: {
+						options: [
+							{
+								key: 'local',
+								label: data.full_host,
+							},
+							{
+								key: 'other',
+								label: __( 'Other', 'query-monitor' ),
+							},
+						],
+						callback: ( row, value ) => {
+							if ( value === 'local' ) {
+								return ( row.local );
+							}
+
+							return ( ! row.local );
+						},
+					},
 				},
 				source: {
 					heading: __( 'Source', 'query-monitor' ),
