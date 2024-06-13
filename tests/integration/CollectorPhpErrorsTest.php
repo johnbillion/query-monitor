@@ -248,4 +248,36 @@ class CollectorPhpErrorsTest extends Test {
 		self::assertArrayNotHasKey( 'warning', $actual->silenced );
 		self::assertSame( 1, count( $actual->silenced['notice'] ) );
 	}
+
+	function testItReturnsFalseWhenNoPreviousErrorHandler(): void {
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertFalse( $result );
+	}
+
+	function testItCallsFilterForErrorHandlerResult(): void {
+		add_filter( 'qm/collect/php_errors_return_value', '__return_true' );
+
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertTrue( $result );
+	}
+
+	function testItCallsPreviousErrorHandler(): void {
+		// Test needs the previous error handler set before the sut is set up.
+		ini_set( 'display_errors', '0' );
+		$this->collector->set_up();
+		$this->collector->tear_down();
+
+		set_error_handler(function( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
+			return true;
+		});
+
+		$this->collector = new \QM_Collector_PHP_Errors();
+		$this->collector->set_up();
+
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertTrue( $result );
+	}
 }
