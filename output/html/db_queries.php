@@ -404,7 +404,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			echo '<td class="qm-row-caller qm-ltr qm-has-toggle qm-nowrap">';
 
 			if ( ! empty( $stack ) ) {
-				echo self::build_toggler(); // WPCS: XSS ok;
+				echo self::build_toggler( $caller_name ); // WPCS: XSS ok;
 			}
 
 			echo '<ol>';
