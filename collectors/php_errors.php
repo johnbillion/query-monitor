@@ -359,6 +359,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 					continue;
 				}
 
+				$frame = wp_parse_args( $frame, array(
+					'file' => '',
+					'line' => '',
+				) );
+
 				printf(
 					'<li>%s</li>',
 					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
