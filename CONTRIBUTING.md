@@ -10,7 +10,7 @@ If you enjoy using Query Monitor I would greatly appreciate it <a href="https://
 
 ## Reporting Security Issues
 
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
+[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
 
 Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
 
