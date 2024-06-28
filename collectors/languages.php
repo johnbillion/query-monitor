@@ -83,6 +83,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'determine_locale',
 			'gettext',
 			'gettext_with_context',
+			'lang_dir_for_domain',
 			'language_attributes',
 			'load_script_textdomain_relative_path',
 			'load_script_translation_file',
