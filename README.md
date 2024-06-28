@@ -302,6 +302,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Laps](https://github.com/Rarst/laps)
  * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
+ * [Snitch](https://wordpress.org/plugins/snitch/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [Variable Inspector](https://wordpress.org/plugins/variable-inspector/)

@@ -140,8 +140,16 @@ export default defineConfig({
 				link: wpURL,
 			},
 			{
+				text: 'About the author',
+				link: '/about/',
+			},
+	{
 				text: 'Privacy statement',
 				link: '/privacy/',
+			},
+			{
+				text: 'Accessibility statement',
+				link: '/accessibility/',
 			},
 		],
 
@@ -168,7 +176,7 @@ export default defineConfig({
 		},
 
 		footer: {
-			copyright: `© 2009-${year}, <a href="https://johnblackbourn.com">John Blackbourn</a>`,
+			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>`,
 		},
 	},
 	lastUpdated: true,
