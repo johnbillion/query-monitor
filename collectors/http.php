@@ -369,7 +369,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 			$this->data->ltime += $ltime;
 
-			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
+			$host = (string) parse_url( $request['url'] ?? '', PHP_URL_HOST );
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
