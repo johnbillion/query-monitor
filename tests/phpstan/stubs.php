@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 
 define( 'WP_CONTENT_DIR', 'wp-content' );
+define( 'WP_PLUGIN_DIR', 'plugins' );
 
 // QM constants:
 
