@@ -27,7 +27,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @var array<string, array<string, mixed>>
 	 * @phpstan-var array<string, array{
-	 *   url: string,
+	 *   url?: string,
 	 *   start: float,
 	 *   args: array<string, mixed>,
 	 *   filtered_trace: list<array<string, mixed>>,
