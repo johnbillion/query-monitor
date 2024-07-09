@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+define( 'WP_CONTENT_DIR', 'wp-content' );
+
 // QM constants:
 
 define( 'QM_COOKIE', '' );
