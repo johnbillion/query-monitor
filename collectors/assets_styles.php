@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * qm-collectors assets_styles
+ * qm-collector assets_styles
  */
 class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 
