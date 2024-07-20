@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * qm-collectors assets_styles
+ */
 class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 
 	public $id = 'assets_styles';
@@ -28,15 +31,3 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 		);
 	}
 }
-
-/**
- * @param array<string, QM_Collector> $collectors
- * @param QueryMonitor $qm
- * @return array<string, QM_Collector>
- */
-function register_qm_collector_assets_styles( array $collectors, QueryMonitor $qm ) {
-	$collectors['assets_styles'] = new QM_Collector_Assets_Styles();
-	return $collectors;
-}
-
-add_filter( 'qm/collectors', 'register_qm_collector_assets_styles', 10, 2 );
