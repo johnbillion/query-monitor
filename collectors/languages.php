@@ -52,8 +52,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	public function collect_locale_data() {
 		$this->data->locale = get_locale();
 		$this->data->user_locale = get_user_locale();
-		// WP 5.0
-		$this->data->determined_locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$this->data->determined_locale = determine_locale();
 		$this->data->language_attributes = get_language_attributes();
 
 		if ( function_exists( '\Inpsyde\MultilingualPress\siteLanguageTag' ) ) {
