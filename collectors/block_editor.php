@@ -142,7 +142,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		}
 
 		$this->data->post_has_blocks = has_blocks( $content );
-		$this->data->post_blocks = parse_blocks( $content );
+		$this->data->post_blocks = array_values( parse_blocks( $content ) );
 		$this->data->all_dynamic_blocks = get_dynamic_block_names();
 		$this->data->total_blocks = 0;
 		$this->data->has_block_context = false;
