@@ -278,6 +278,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			/* translators: OS stands for Operating System */
 			'OS' => __( 'OS', 'query-monitor' ),
 			'arch' => __( 'Architecture', 'query-monitor' ),
+			'basicauth' => __( 'Basic Auth', 'query-monitor' ),
 		);
 
 		echo '<table>';
