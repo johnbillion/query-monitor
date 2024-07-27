@@ -133,7 +133,7 @@ class QM_Backtrace {
 	 * @param array<string, mixed[]> $args
 	 * @param mixed[] $trace
 	 */
-	public function __construct( array $args = array(), array $trace = null ) {
+	public function __construct( array $args = array(), ?array $trace = null ) {
 		$this->trace = $trace ?? debug_backtrace( 0 );
 
 		$this->args = array_merge( array(
