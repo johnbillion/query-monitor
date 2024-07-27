@@ -18,7 +18,7 @@ class BasicCest {
 	 * @param Example<string,mixed> $data
 	 */
 	public function BasicAccessShouldWorkAsExpected( AcceptanceTester $I, Example $data ): void {
-		/** @var dataRole $data */
+		/** @phpstan-var dataRole $data */
 
 		$I->haveUserInDatabase( $data['role'], $data['role'] );
 		$I->loginAs( $data['role'], $data['role'] );
@@ -38,7 +38,7 @@ class BasicCest {
 	}
 
 	/**
-	 * @return array<string,dataRole>
+	 * @phpstan-return array<string,dataRole>
 	 */
 	private function dataRoles(): array {
 		return [
