@@ -643,10 +643,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'label' => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
 				'default' => false,
 			),
-			'QM_SHOW_ALL_ASSETS' => array(
-				'label' => __( 'Add child panel to the Scripts and Styles panels, listing the registered assets.', 'query-monitor' ),
-				'default' => false,
-			),
 			'QM_SHOW_ALL_HOOKS' => array(
 				'label' => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
 				'default' => false,

@@ -104,6 +104,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'broken',
 			'header',
 			'footer',
+			'registered',
 		);
 
 		$this->data->counts = array(
@@ -112,12 +113,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'header' => 0,
 			'footer' => 0,
 			'total' => 0,
+			'registered' => 0,
 		);
-
-		if ( defined( 'QM_SHOW_ALL_ASSETS' ) && constant( 'QM_SHOW_ALL_ASSETS' ) ) {
-			$positions[] = 'registered';
-			$this->data->counts['registered'] = 0;
-		}
 
 		foreach ( array( 'header', 'footer' ) as $position ) {
 			if ( empty( $this->data->{$position} ) ) {

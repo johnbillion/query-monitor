@@ -113,14 +113,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$this->after_tabular_output();
 
-		if ( ! defined( 'QM_SHOW_ALL_ASSETS' ) || empty( constant( 'QM_SHOW_ALL_ASSETS' ) ) ) {
-			return;
-		}
-
 		$this->before_tabular_output( $this->collector->id() . '-registered', __( 'Registered', 'query-monitor' ) );
 
 		/* translators: %s: "styles" or "scripts" */
-		$caption_format = esc_html__( 'Missing, broken, and enqueued %s are not included.', 'query-monitor' );
+		$caption_format = esc_html__( 'Enqueued %s are not included.', 'query-monitor' );
 
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
@@ -345,10 +341,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$id = $this->collector->id();
 		$menu[ $id ] = $this->menu( $args );
-
-		if ( ! defined( 'QM_SHOW_ALL_ASSETS' ) || empty( constant( 'QM_SHOW_ALL_ASSETS' ) ) ) {
-			return $menu;
-		}
 
 		/* translators: %s: number of registered scripts */
 		$label_format = _x( 'Registered (%s)', 'Registered scripts', 'query-monitor' );
