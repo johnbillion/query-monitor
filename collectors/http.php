@@ -259,7 +259,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param mixed[] $info
 	 * @return void
 	 */
-	public function action_curl_after_request( $headers, array $info = null ) {
+	public function action_curl_after_request( $headers, ?array $info = null ) {
 		$this->info = $info;
 	}
 
@@ -268,7 +268,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param mixed[] $info
 	 * @return void
 	 */
-	public function action_fsockopen_after_request( $headers, array $info = null ) {
+	public function action_fsockopen_after_request( $headers, ?array $info = null ) {
 		$this->info = $info;
 	}
 
