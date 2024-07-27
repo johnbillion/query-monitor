@@ -187,10 +187,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 			'WP_DEVELOPMENT_MODE' => self::format_bool_constant( 'WP_DEVELOPMENT_MODE' ),
 		);
 
-		// WP 5.5
-		if ( function_exists( 'wp_get_environment_type' ) ) {
-			$this->data->wp['environment_type'] = wp_get_environment_type();
-		}
+		$this->data->wp['environment_type'] = wp_get_environment_type();
 
 		// WP 6.3
 		if ( function_exists( 'wp_get_development_mode' ) ) {
