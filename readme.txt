@@ -77,7 +77,7 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.2.
+Yes, it's actively tested and working up to PHP 8.4.
 
 ### Who can see Query Monitor's output?
 
