@@ -28,7 +28,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 		parent::set_up();
 
 		add_filter( 'load_textdomain_mofile', array( $this, 'log_mo_file_load' ), 9999, 2 );
-		add_filter( 'load_translation_file', array( $this, 'log_translation_file_load' ), 9999, 2 );
+		add_filter( 'load_translation_file', array( $this, 'log_translation_file_load' ), 9999, 3 );
 		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
 		add_action( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
@@ -169,17 +169,17 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 *
 	 * @phpstan-template T
 	 *
-	 * @param mixed  $file Should be a string path to the MO or PHP file, could be anything.
+	 * @param mixed  $file   Should be a string path to the MO or PHP file, could be anything.
 	 * @param string $domain Text domain.
+	 * @param string $locale Locale. Only present in 6.6 and later.
 	 * @return string The original file path.
 	 * @phpstan-param T $file
 	 * @phpstan-return T
 	 */
-	public function log_translation_file_load( $file, $domain ) {
+	public function log_translation_file_load( $file, $domain, string $locale = null ) {
 		$i18n_controller = \WP_Translation_Controller::get_instance();
 
-		$locale = determine_locale();
-		$found = $i18n_controller->load_file( $file, $domain, $locale );
+		$found = $i18n_controller->load_file( $file, $domain, $locale ?? determine_locale() );
 
 		return $this->log_file_load( $file, $domain, $found );
 	}

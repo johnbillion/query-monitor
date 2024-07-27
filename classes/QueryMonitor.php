@@ -267,7 +267,7 @@ class QueryMonitor extends QM_Plugin {
 	 * @param string $file
 	 * @return self
 	 */
-	public static function init( $file = null ) {
+	public static function init( ?string $file = null ) {
 
 		static $instance = null;
 
