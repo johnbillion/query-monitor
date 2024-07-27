@@ -20,7 +20,7 @@ Please note that in a future version of Query Monitor, opt-in features may be in
 ## querymonitor.com website privacy statement
 
 * The querymonitor.com website makes no use of cookies and collects no data from visitors.
-* The querymonitor.com website is operated by [John Blackbourn](https://johnblackbourn.com/about/).
+* The querymonitor.com website is operated by [John Blackbourn](/about/).
 * The querymonitor.com website is hosted on [Netlify](https://www.netlify.com/).
 
-This privacy statement is subject to change and was last updated on April 2, 2024.
+This privacy statement is subject to change and was last updated on June 28, 2024.
