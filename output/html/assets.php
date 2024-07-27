@@ -125,7 +125,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		printf(
 			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
 			esc_attr( $this->collector->id() . '-registered' ),
-			sprintf( $caption_format, strtolower( $type_label['plural'] ) )
+			esc_html( sprintf( $caption_format, strtolower( $type_label['plural'] ) ) )
 		);
 
 		echo '<thead>';
@@ -351,15 +351,18 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		$label = sprintf(
+			/* translators: %s: number of registered scripts */
 			_x( 'Registered (%s)', 'Registered scripts', 'query-monitor' ),
 			number_format_i18n( $data->counts['registered'] )
 		);
 
-		$menu[ $id ]['children'] = array( array(
-			'title' => esc_html( $label ),
-			'id' => esc_attr( "query-monitor-{$this->collector->id}-registered" ),
-			'href' => esc_attr( '#' . $this->collector->id() . '-registered' ),
-		) );
+		$menu[ $id ]['children'] = array(
+			array(
+				'title' => esc_html( $label ),
+				'id' => esc_attr( "query-monitor-{$this->collector->id}-registered" ),
+				'href' => esc_attr( '#' . $this->collector->id() . '-registered' ),
+			).
+		);
 
 		return $menu;
 
