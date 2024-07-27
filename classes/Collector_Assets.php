@@ -106,10 +106,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'footer',
 		);
 
-		if ( defined( 'QM_SHOW_ALL_ASSETS' ) && QM_SHOW_ALL_ASSETS ) {
-			$positions[] = 'registered';
-		}
-
 		$this->data->counts = array(
 			'missing' => 0,
 			'broken' => 0,
@@ -117,6 +113,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			'footer' => 0,
 			'total' => 0,
 		);
+
+		if ( defined( 'QM_SHOW_ALL_ASSETS' ) && constant( 'QM_SHOW_ALL_ASSETS' ) ) {
+			$positions[] = 'registered';
+			$this->data->counts['registered'] = 0;
+		}
 
 		foreach ( array( 'header', 'footer' ) as $position ) {
 			if ( empty( $this->data->{$position} ) ) {
@@ -227,7 +228,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				);
 
 				$this->data->counts[ $position ]++;
-				$this->data->counts['total']++;
+
+				if ( 'registered' !== $position ) {
+					$this->data->counts['total']++;
+				}
 
 				$processed[] = $handle;
 			}

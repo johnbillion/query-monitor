@@ -53,7 +53,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			'modules' => __( 'Module', 'query-monitor' ),
 			'header' => __( 'Header', 'query-monitor' ),
 			'footer' => __( 'Footer', 'query-monitor' ),
-			'registered' => __( 'Registered', 'query-monitor' ),
 		);
 
 		$type = $this->collector->get_dependency_type();
@@ -113,6 +112,70 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		echo '</tfoot>';
 
 		$this->after_tabular_output();
+
+		if ( ! defined( 'QM_SHOW_ALL_ASSETS' ) || empty( constant( 'QM_SHOW_ALL_ASSETS' ) ) ) {
+			return;
+		}
+
+		$this->before_tabular_output( $this->collector->id() . '-registered', __( 'Registered', 'query-monitor' ) );
+
+		/* translators: %s: "styles" or "scripts" */
+		$caption_format = esc_html__( 'Missing, broken, and enqueued %s are not included.', 'query-monitor' );
+
+		printf(
+			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
+			esc_attr( $this->collector->id() . '-registered' ),
+			sprintf( $caption_format, strtolower( $type_label['plural'] ) )
+		);
+
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		$args = array(
+			'prepend' => array(
+				'local' => $data->full_host,
+			),
+		);
+		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( $type . '-dependencies', $data->dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col" class="qm-filterable-column">';
+		echo $this->build_filter( $type . '-dependents', $data->dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo '</th>';
+		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
+		echo '</tr>';
+		echo '</thead>';
+
+		echo '<tbody>';
+
+		if ( ! empty( $data->assets['registered'] ) ) {
+			foreach ( $data->assets['registered'] as $handle => $asset ) {
+				$this->dependency_row( $handle, $asset, '' );
+			}
+		}
+
+		echo '</tbody>';
+
+		echo '<tfoot>';
+
+		echo '<tr>';
+		printf(
+			'<td colspan="7">%1$s</td>',
+			sprintf(
+				esc_html( $type_label['registered'] ),
+				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['registered'] ) ) . '</span>'
+			)
+		);
+		echo '</tr>';
+		echo '</tfoot>';
+
+		echo '</table>';
+		echo '</div>';
 	}
 
 	/**
@@ -282,6 +345,21 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$id = $this->collector->id();
 		$menu[ $id ] = $this->menu( $args );
+
+		if ( ! defined( 'QM_SHOW_ALL_ASSETS' ) || empty( constant( 'QM_SHOW_ALL_ASSETS' ) ) ) {
+			return $menu;
+		}
+
+		$label = sprintf(
+			_x( 'Registered (%s)', 'Registered scripts', 'query-monitor' ),
+			number_format_i18n( $data->counts['registered'] )
+		);
+
+		$menu[ $id ]['children'] = array( array(
+			'title' => esc_html( $label ),
+			'id' => esc_attr( "query-monitor-{$this->collector->id}-registered" ),
+			'href' => esc_attr( '#' . $this->collector->id() . '-registered' ),
+		) );
 
 		return $menu;
 
