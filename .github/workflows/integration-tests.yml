@@ -57,6 +57,9 @@ jobs:
           # Latest stable on PHP 8.3:
           - wp: '6.6'
             php: '8.3'
+          # Latest stable on PHP 8.4:
+          - wp: '6.6'
+            php: '8.4'
           # Oldest supported on PHP 7.4:
           - wp: '5.8'
             php: '7.4'
