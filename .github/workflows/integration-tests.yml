@@ -47,20 +47,21 @@ jobs:
       matrix:
         wp:
           # Latest three stable:
+          - '6.6'
           - '6.5'
           - '6.4'
-          - '6.3'
         php:
           - '8.2'
           - '7.4'
         include:
           # Latest stable on PHP 8.3:
-          - wp: '6.5'
+          - wp: '6.6'
             php: '8.3'
           # Oldest supported on PHP 7.4:
-          - wp: '5.7'
+          - wp: '5.8'
             php: '7.4'
       fail-fast: false
     with:
-      wp: ${{ matrix.wp }}
+      node: true
       php: ${{ matrix.php }}
+      wp: ${{ matrix.wp }}

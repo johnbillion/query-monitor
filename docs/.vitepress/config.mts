@@ -20,7 +20,10 @@ export default defineConfig({
 	rewrites: {
 		'help/:page.md': 'help/:page/index.md',
 		'wordpress-debugging/:page.md': 'wordpress-debugging/:page/index.md',
+		'about.md': 'about/index.md',
+		'accessibility.md': 'accessibility/index.md',
 		'privacy.md': 'privacy/index.md',
+		'security.md': 'security/index.md',
 	},
 	head: [
 		[
@@ -140,8 +143,20 @@ export default defineConfig({
 				link: wpURL,
 			},
 			{
+				text: 'About the author',
+				link: '/about/',
+			},
+			{
 				text: 'Privacy statement',
 				link: '/privacy/',
+			},
+			{
+				text: 'Accessibility statement',
+				link: '/accessibility/',
+			},
+			{
+				text: 'Security policy',
+				link: '/security/',
 			},
 		],
 
@@ -168,7 +183,7 @@ export default defineConfig({
 		},
 
 		footer: {
-			copyright: `© 2009-${year}, <a href="https://johnblackbourn.com">John Blackbourn</a>`,
+			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>`,
 		},
 	},
 	lastUpdated: true,

@@ -14,11 +14,6 @@ class QM_Data_Block_Editor extends QM_Data {
 	/**
 	 * @var bool
 	 */
-	public $block_editor_enabled;
-
-	/**
-	 * @var bool
-	 */
 	public $has_block_context;
 
 	/**
