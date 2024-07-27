@@ -267,7 +267,7 @@ Yes. You can enable this on the Settings panel.
 
 ### How can I report a security bug?
 
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
+[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
 
 ### Do you accept donations?
 
@@ -302,6 +302,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Laps](https://github.com/Rarst/laps)
  * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
+ * [Snitch](https://wordpress.org/plugins/snitch/)
  * [Time Stack](https://github.com/joehoyle/Time-Stack)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [Variable Inspector](https://wordpress.org/plugins/variable-inspector/)
