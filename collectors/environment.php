@@ -224,11 +224,8 @@ class QM_Collector_Environment extends QM_DataCollector {
 			'host' => null,
 			'OS' => null,
 			'arch' => null,
+			'basicauth' => wp_is_site_protected_by_basic_auth() ? 'true' : 'false',
 		);
-
-		if ( function_exists( 'wp_is_site_protected_by_basic_auth' ) ) {
-			$this->data->server['basicauth'] = wp_is_site_protected_by_basic_auth() ? 'true' : 'false';
-		}
 
 		if ( function_exists( 'php_uname' ) ) {
 			$this->data->server['host'] = php_uname( 'n' );
