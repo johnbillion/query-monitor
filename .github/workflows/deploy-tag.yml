@@ -22,10 +22,10 @@ jobs:
     name: Deploy Tag
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
     with:
+      deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
       readme: readme.txt
       version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
-      deploy: ${{ github.event_name != 'workflow_dispatch' }}
     secrets:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
