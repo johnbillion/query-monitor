@@ -6,7 +6,7 @@ title: The developer tools panel for WordPress
 
 hero:
   name: Debugging starts with Query Monitor.
-  text: It's the developer tools panel for WordPress.
+  text: The developer tools panel for WordPress.
   actions:
     - theme: brand
       text: Get started
