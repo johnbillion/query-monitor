@@ -350,11 +350,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			return $menu;
 		}
 
-		$label = sprintf(
-			/* translators: %s: number of registered scripts */
-			_x( 'Registered (%s)', 'Registered scripts', 'query-monitor' ),
-			number_format_i18n( $data->counts['registered'] )
-		);
+		/* translators: %s: number of registered scripts */
+		$label_format = _x( 'Registered (%s)', 'Registered scripts', 'query-monitor' );
+		$label = sprintf( $label_format, number_format_i18n( $data->counts['registered'] ) );
 
 		$menu[ $id ]['children'] = array(
 			array(
