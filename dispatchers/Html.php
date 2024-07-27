@@ -644,7 +644,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'default' => false,
 			),
 			'QM_SHOW_ALL_ASSETS' => array(
-				'label' => __( 'In the Scripts and Styles panels, show every registered asset, in addition to enqueued assets.', 'query-monitor' ),
+				'label' => __( 'Add child panel to the Scripts and Styles panels, listing the registered assets.', 'query-monitor' ),
 				'default' => false,
 			),
 			'QM_SHOW_ALL_HOOKS' => array(
