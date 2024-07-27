@@ -359,7 +359,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 				'title' => esc_html( $label ),
 				'id' => esc_attr( "query-monitor-{$this->collector->id}-registered" ),
 				'href' => esc_attr( '#' . $this->collector->id() . '-registered' ),
-			).
+			),
 		);
 
 		return $menu;
