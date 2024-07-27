@@ -280,11 +280,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			return null;
 		}
 
-		// https://core.trac.wordpress.org/ticket/60596
-		if ( ! did_action( 'wp_head' ) ) {
-			return null;
-		}
-
 		$reflector = new ReflectionClass( $modules );
 
 		$get_marked_for_enqueue = $reflector->getMethod( 'get_marked_for_enqueue' );

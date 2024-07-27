@@ -46,7 +46,7 @@ class QM_Timer {
 	 * @param mixed[] $data
 	 * @return self
 	 */
-	public function start( array $data = null ) {
+	public function start( ?array $data = null ) {
 		$this->trace = new QM_Backtrace();
 		$this->start = array(
 			'time' => microtime( true ),
@@ -60,7 +60,7 @@ class QM_Timer {
 	 * @param mixed[] $data
 	 * @return self
 	 */
-	public function stop( array $data = null ) {
+	public function stop( ?array $data = null ) {
 
 		$this->end = array(
 			'time' => microtime( true ),
@@ -77,7 +77,7 @@ class QM_Timer {
 	 * @param string $name
 	 * @return self
 	 */
-	public function lap( array $data = null, $name = null ) {
+	public function lap( ?array $data = null, ?string $name = null ) {
 
 		$lap = array(
 			'time' => microtime( true ),
@@ -176,7 +176,7 @@ class QM_Timer {
 	 * @param mixed[] $data
 	 * @return self
 	 */
-	public function end( array $data = null ) {
+	public function end( ?array $data = null ) {
 		return $this->stop( $data );
 	}
 
