@@ -32,6 +32,7 @@ Adds a panel for debugging Yoast SEO metadata and options
 Integrates with Query Monitor when using the Chargebee API
 * [Fluent Query Logger](https://wordpress.org/plugins/fluent-query-logger/)  
 Log Database Queries and analyze plugin database performance
+* Any plugin that uses the Freemius SDK provides a Freemius panel in Query Monitor
 
 ## Debug Bar add-ons
 
