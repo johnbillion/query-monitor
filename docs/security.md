@@ -1,4 +1,9 @@
-# Security Policy
+---
+nav_exclude: true
+publish: false
+---
+
+# Security policy
 
 ## How can I report a security bug?
 
