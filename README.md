@@ -211,65 +211,9 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Frequently Asked Questions
 
-### Does this plugin work with PHP 8?
+[See the FAQ on the WordPress.org plugin page for Query Monitor](https://wordpress.org/plugins/query-monitor/#faq).
 
-Yes, it's actively tested and working up to PHP 8.2.
-
-### Who can see Query Monitor's output?
-
-By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
-
-In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
-
-### Does Query Monitor itself impact the page generation time or memory usage?
-
-Short answer: Yes, but only a little.
-
-Long answer: Query Monitor has a small impact on page generation time because it hooks into a few places in WordPress in the same way that other plugins do. The impact is negligible.
-
-On pages that have an especially high number of database queries (in the hundreds), Query Monitor currently uses more memory than I would like it to. This is due to the amount of data that is captured in the stack trace for each query. I have been and will be working to continually reduce this.
-
-### Can I prevent Query Monitor from collecting data during long-running requests?
-
-Yes, you can call `do_action( 'qm/cease' )` to instruct Query Monitor to cease operating for the remainder of the page generation. It will detach itself from further data collection, discard any data it's collected so far, and skip the output of its information.
-
-This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:
-
-* Backing up or restoring your site
-* Importing or exporting a large amount of data
-* Running security scans
-
-### Are there any add-on plugins for Query Monitor?
-
-[A list of add-on plugins for Query Monitor can be found here.](https://querymonitor.com/help/add-on-plugins/)
-
-In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor's menu.
-
-### Where can I suggest a new feature or report a bug?
-
-Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
-
-### Is Query Monitor available on Altis?
-
-Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
-
-### Is Query Monitor available on WordPress VIP?
-
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
-
-### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
-
-This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
-
-### Can I click on stack traces to open the file in my editor?
-
-Yes. You can enable this on the Settings panel.
-
-### How can I report a security bug?
-
-[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
-
-### Do you accept donations?
+## Do you accept donations?
 
 [I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 

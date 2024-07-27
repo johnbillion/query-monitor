@@ -207,7 +207,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	 * @phpstan-param LogMessage $message
 	 * @return void
 	 */
-	protected function store( $level, $message, array $context = array(), string $prefix = null ) {
+	protected function store( $level, $message, array $context = array(), ?string $prefix = null ) {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_filter() => true,
@@ -259,7 +259,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	 * @param ?string $prefix
 	 * @return string
 	 */
-	protected static function interpolate( $message, array $context = array(), string $prefix = null ) {
+	protected static function interpolate( $message, array $context = array(), ?string $prefix = null ) {
 		// build a replacement array with braces around the context keys
 		$replace = array();
 
