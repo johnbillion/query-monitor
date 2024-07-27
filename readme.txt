@@ -77,7 +77,7 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.2.
+Yes, it's actively tested and working up to PHP 8.4.
 
 ### Who can see Query Monitor's output?
 
@@ -113,17 +113,12 @@ In addition, Query Monitor transparently supports add-ons for the Debug Bar plug
 
 Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com/johnbillion/query-monitor/issues) as it's easier to keep track of issues there, rather than on the wordpress.org support forums.
 
-### Is Query Monitor available on Altis?
+### Is Query Monitor already included with my hosting?
 
-Yes, the [Altis Developer Tools](https://www.altis-dxp.com/resources/developer-docs/dev-tools/) are built on top of Query Monitor.
+Some WordPress hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
 
-### Is Query Monitor available on WordPress VIP?
-
-Yes, but a user needs to be granted the `view_query_monitor` capability to see Query Monitor even if they're an administrator. [See the WordPress VIP documentation for more details](https://docs.wpvip.com/how-tos/enable-query-monitor/).
-
-### I'm using multiple instances of `wpdb`. How do I get my additional instances to show up in Query Monitor?
-
-This feature was removed in version 3.12 as it was rarely used and considerably increased the maintenance burden of Query Monitor itself. Feel free to continue using version 3.11 if you need to make use of this feature.
+* [Altis Cloud](https://www.altis-dxp.com/resources/developer-docs/dev-tools/).
+* [WordPress VIP](https://wpvip.com/), although users need to be granted the `view_query_monitor` capability even if they're an Administrator. [See the WordPress VIP documentation for details](https://docs.wpvip.com/performance/query-monitor/enable/).
 
 ### Can I click on stack traces to open the file in my editor?
 
