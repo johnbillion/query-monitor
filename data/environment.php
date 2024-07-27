@@ -62,6 +62,7 @@ class QM_Data_Environment extends QM_Data {
 	 *   host: string|null,
 	 *   OS: string|null,
 	 *   arch: string|null,
+	 *   basicauth: 'true'|'false',
 	 * }>
 	 */
 	public $server;
