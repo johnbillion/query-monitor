@@ -129,6 +129,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		$this->data->registered = array_keys( $raw->registered );
 
+		sort( $this->data->registered );
+
 		// A broken asset is one which has been deregistered without also being dequeued
 		if ( ! empty( $broken ) ) {
 			foreach ( $broken as $key => $handle ) {
