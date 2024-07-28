@@ -163,7 +163,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		printf(
 			'<td colspan="7">%1$s</td>',
 			sprintf(
-				esc_html( $type_label['registered'] ),
+				esc_html( $type_label['total'] ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['registered'] ) ) . '</span>'
 			)
 		);
