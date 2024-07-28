@@ -126,7 +126,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		echo '<thead>';
 		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
 		$args = array(
@@ -161,7 +160,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		echo '<tr>';
 		printf(
-			'<td colspan="7">%1$s</td>',
+			'<td colspan="6">%1$s</td>',
 			sprintf(
 				esc_html( $type_label['total'] ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['registered'] ) ) . '</span>'
@@ -221,17 +220,20 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$type = $this->collector->get_dependency_type();
 
 		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
-		echo '<td class="qm-nowrap">';
 
-		$warning = QueryMonitor::icon( 'warning' );
+		if ( $label !== '' ) {
+			echo '<td class="qm-nowrap">';
 
-		if ( $asset['warning'] ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $warning;
+			$warning = QueryMonitor::icon( 'warning' );
+
+			if ( $asset['warning'] ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $warning;
+			}
+
+			echo esc_html( $label );
+			echo '</td>';
 		}
-
-		echo esc_html( $label );
-		echo '</td>';
 
 		$host = $asset['host'];
 		$parts = explode( '.', $host );
