@@ -190,11 +190,10 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$dependents_list = implode( ' ', $asset['dependents'] );
 
 		$dependency_output = array();
+		$warning = QueryMonitor::icon( 'warning' );
 
 		foreach ( $asset['dependencies'] as $dep ) {
 			if ( isset( $data->missing_dependencies[ $dep ] ) ) {
-				$warning = QueryMonitor::icon( 'warning' );
-
 				$dependency_output[] = sprintf(
 					'<span style="white-space:nowrap">%1$s%2$s</span>',
 					$warning,
@@ -223,8 +222,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		if ( $label !== '' ) {
 			echo '<td class="qm-nowrap">';
-
-			$warning = QueryMonitor::icon( 'warning' );
 
 			if ( $asset['warning'] ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
