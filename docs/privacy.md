@@ -22,7 +22,7 @@ Please note that in a future version of Query Monitor, opt-in features may be in
 The querymonitor.com website:
 
 * Makes no use of cookies and collects no client-side data from visitors. Anonymous analytics are collected server-side.
-* Is operated by [John Blackbourn](/docs/about/).
+* Is operated by [John Blackbourn](/about/).
 * Is hosted on [Netlify](https://www.netlify.com/).
 
 This privacy statement is subject to change and was last updated on July 29, 2024.
