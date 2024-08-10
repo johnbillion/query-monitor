@@ -61,7 +61,7 @@ jobs:
           - wp: '5.8'
             php: '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@65c3dc42802e5d15620cfaa6a25872abf1e82b5c
     with:
       node: true
       php: ${{ matrix.php }}
