@@ -14,13 +14,15 @@ on:
 concurrency: WordPress.org
 
 permissions:
+  attestations: write
   contents: read
+  id-token: write
   issues: write
 
 jobs:
   test:
     name: Deploy Tag
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@attestation
     with:
       deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
