@@ -436,7 +436,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<div id="qm-title" class="qm-resizer">';
 		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
 		echo '<div class="qm-title-heading">';
-		echo '<select>';
+		echo '<select id="qm-title-heading-select">';
 
 		printf(
 			'<option value="%1$s">%2$s</option>',
