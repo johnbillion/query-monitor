@@ -40,7 +40,7 @@ permissions:
 jobs:
   test:
     name: PHP / PHP ${{ matrix.php }}
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@0075ca1c57e8abf6264ddc2b03639b82fc79a84c
     strategy:
       matrix:
         php:
