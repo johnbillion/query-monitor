@@ -32,7 +32,7 @@
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"johnbillion/plugin-infrastructure": "dev-trunk",
-		"johnbillion/wp-compat": "*",
+		"johnbillion/wp-compat": "0.1.0",
 		"lucatume/wp-browser": "3.2.1",
 		"phpcompatibility/phpcompatibility-wp": "2.1.4",
 		"phpstan/phpstan": "1.12.2",
