@@ -135,7 +135,13 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			$content = $_wp_current_template_content;
 		} elseif ( is_singular() ) {
 			// Post editor:
-			$content = get_post( get_queried_object_id() )->post_content;
+			$post = get_post( get_queried_object_id() );
+
+			if ( ! $post ) {
+				return;
+			}
+
+			$content = $post->post_content;
 		} else {
 			// Nada:
 			return;
