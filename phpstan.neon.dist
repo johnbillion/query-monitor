@@ -3,6 +3,7 @@ includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 	- vendor/johnbillion/plugin-infrastructure/phpstan/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon
+	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
 parameters:
 	level: 7
 	paths:
