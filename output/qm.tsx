@@ -108,7 +108,7 @@ export const QM = ( props: Props ) => {
 
 		let dragging = false;
 
-		const el = document.getElementById( 'qm-title' );
+		const el = document.getElementsByClassName( 'qm-resizer' )[0];
 		const qmMain = document.getElementById( 'query-monitor-main' );
 		let windowHeight = window.innerHeight;
 		let offset = 0;
@@ -155,8 +155,8 @@ export const QM = ( props: Props ) => {
 					{ side && (
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 					) }
-					<div className="qm-resizer" id="qm-title">
-						<h1 className="qm-title-heading">
+					<div id="qm-title">
+						<h1 className="qm-title-heading qm-resizer">
 							{ __( 'Query Monitor', 'query-monitor' ) }
 						</h1>
 						{ side && (
