@@ -212,7 +212,7 @@ export const QM = ( props: Props ) => {
 							e.preventDefault();
 						} }
 					>
-						{ props.menu.top.title.join( ' ' ) }
+						<span dangerouslySetInnerHTML={{ __html: props.menu.top.title.join('\u00A0\u00A0') }} />
 					</a>
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">
