@@ -76,6 +76,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 						return ( row.type === value );
 					},
 				},
+				wrap: true
 			},
 			caller: getCallerCol( data.rows ),
 			component: getComponentCol( data.rows, data.component_times ),

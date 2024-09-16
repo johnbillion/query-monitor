@@ -25,6 +25,7 @@ export type Col<TDataRow> = {
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
 	cellHasError?: ( row: TDataRow, i: number ) => boolean;
+	wrap?: boolean;
 }
 
 interface Cols<TDataRow> {
@@ -267,6 +268,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 								key={ key }
 								className={ clsx( `qm-cell-${key}`, col.className, {
 									'qm-warn': col.cellHasError && col.cellHasError( row, i ),
+									'qm-wrap': col.wrap,
 								} ) }
 							>
 								{ col.render( row, i ) }
