@@ -18,6 +18,7 @@ type Props = {
 	menu: {
 		top: {
 			title: string[];
+			classname: string;
 		};
 		sub: {
 			[k: string]: {
@@ -204,7 +205,7 @@ export const QM = ( props: Props ) => {
 			{ adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>
 					<a
-						className="ab-item"
+						className={ clsx( 'ab-item', props.menu.top.classname ) }
 						href="#qm-overview"
 						onClick={ ( e ) => {
 							setActivePanel( 'overview' );
