@@ -69,15 +69,7 @@ interface DataRowWithTime {
 }
 
 const sortFilters = ( a: { label: string }, b: { label: string } ) => {
-	if ( a.label < b.label ) {
-		return -1;
-	}
-
-	if ( a.label > b.label ) {
-		return 1;
-	}
-
-	return 0;
+	return a.label.localeCompare(b.label);
 };
 
 export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], component_times: AbstractData['component_times'] ) => {
