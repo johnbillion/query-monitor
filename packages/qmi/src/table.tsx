@@ -130,6 +130,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
 		render: ( row ) => <Caller trace={ row.trace } />,
+		className: 'qm-has-toggle',
 	};
 
 	return column;
