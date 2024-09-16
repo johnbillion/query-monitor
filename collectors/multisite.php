@@ -41,19 +41,24 @@ class QM_Collector_Multisite extends QM_DataCollector {
 			return;
 		}
 
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				'switch_blog' => true,
+			),
+			'ignore_func' => array(
+				'switch_to_blog' => true,
+				'restore_current_blog' => true,
+			),
+		) );
+		$to = ( 'switch' === $context );
+
+		$this->log_component( $trace->get_component(), 0, $context );
+
 		$this->data->switches[] = array(
 			'new' => $new_blog_id,
 			'prev' => $prev_blog_id,
-			'to' => ( 'switch' === $context ),
-			'trace' => new QM_Backtrace( array(
-				'ignore_hook' => array(
-					'switch_blog' => true,
-				),
-				'ignore_func' => array(
-					'switch_to_blog' => true,
-					'restore_current_blog' => true,
-				),
-			) ),
+			'to' => $to,
+			'trace' => $trace,
 		);
 	}
 }

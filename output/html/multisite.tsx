@@ -29,6 +29,11 @@ export const Multisite = ( { data }: PanelProps<DataTypes['multisite']> ) => {
 	return <TabularPanel
 		title={ __( 'Multisite', 'query-monitor' ) }
 		cols={ {
+			i: {
+				className: 'qm-num',
+				heading: '#',
+				render: ( row, i ) => ( i + 1 ),
+			},
 			function: {
 				heading: __( 'Function', 'query-monitor' ),
 				render: ( row ) => (
@@ -45,10 +50,10 @@ export const Multisite = ( { data }: PanelProps<DataTypes['multisite']> ) => {
 				),
 			},
 			site: {
-				heading: __( 'Site Switch', 'query-monitor' ),
+				heading: __( 'Site Switch', 'query-monitor' ), // @todo improve this label
 				render: ( row ) => (
 					<code>
-						@todo
+						{ row.prev } &rarr; { row.new }
 					</code>
 				),
 			},
