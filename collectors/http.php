@@ -27,7 +27,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @var array<string, array<string, mixed>>
 	 * @phpstan-var array<string, array{
-	 *   url: string,
+	 *   url?: string,
 	 *   start: float,
 	 *   args: array<string, mixed>,
 	 *   filtered_trace: list<array<string, mixed>>,
@@ -370,7 +370,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 			$this->data->ltime += $ltime;
 
-			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
+			$host = (string) parse_url( $request['url'] ?? '', PHP_URL_HOST );
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
