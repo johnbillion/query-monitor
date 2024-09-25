@@ -359,9 +359,32 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 					continue;
 				}
 
+				$args = array_map( function( $value ) {
+					$type = gettype( $value );
+
+					switch ( $type ) {
+						case 'object':
+							return get_class( $value );
+						case 'boolean':
+							return $value ? 'true' : 'false';
+						case 'integer':
+						case 'double':
+							return $value;
+						case 'string':
+							if ( strlen( $value ) > 50 ) {
+								return "'" . substr( $value, 0, 20 ) . '...' . substr( $value, -20 ) . "'";
+							}
+							return "'" . $value . "'";
+					}
+
+					return $type;
+				}, $frame['args'] ?? array() );
+
+				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback['name'] );
+
 				printf(
 					'<li>%s</li>',
-					QM_Output_Html::output_filename( $callback['name'], $frame['file'], $frame['line'] )
+					QM_Output_Html::output_filename( $name, $frame['file'], $frame['line'] )
 				); // WPCS: XSS ok.
 			}
 			echo '</ol>';
