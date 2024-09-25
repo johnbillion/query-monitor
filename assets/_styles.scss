@@ -1500,14 +1500,20 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	li {
-		margin: 0 0 0.7em !important;
-		list-style: none !important;
+		margin: 0 0 0.7em 1em !important;
 	}
 
 	.qm-info {
 		/* @TODO */
 		color: #666 !important;
 	}
+
+	a.qm-edit-link {
+		svg {
+			display: none;
+		}
+	}
+
 }
 
 body#error-page {
