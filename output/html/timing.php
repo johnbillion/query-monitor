@@ -82,7 +82,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					echo '</td>';
 				} else {
 					echo '<td class="qm-ltr qm-has-toggle">';
-					echo self::build_toggler(); // WPCS: XSS ok;
+					echo self::build_toggler( $row['function'] ); // WPCS: XSS ok;
 					echo '<ol>';
 					echo '<li>';
 					echo $file; // WPCS: XSS ok.
@@ -167,7 +167,7 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					echo '</td>';
 				} else {
 					echo '<td class="qm-ltr qm-has-toggle">';
-					echo self::build_toggler(); // WPCS: XSS ok;
+					echo self::build_toggler( $row['function'] ); // WPCS: XSS ok;
 					echo '<ol>';
 					echo '<li>';
 					echo $file; // WPCS: XSS ok.
