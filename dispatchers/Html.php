@@ -233,6 +233,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$deps = array();
 		}
 
+		// Measure Web Vitals with the web-vitals.js script. See https://github.com/GoogleChrome/web-vitals.
+		// Only load if the wp-admin bar is visible.
+		if ( is_admin_bar_showing() ) {
+			wp_enqueue_script(
+				'qm-web-vitals',
+				$this->qm->plugin_url( 'assets/web-vitals.js' ),
+				array(),
+				'3.3.2',
+				true
+			);
+		}
+
 		wp_enqueue_style(
 			'query-monitor',
 			$this->qm->plugin_url( 'assets/query-monitor.css' ),
