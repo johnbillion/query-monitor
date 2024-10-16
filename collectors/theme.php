@@ -472,6 +472,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 
 			foreach ( $all as $part ) {
 				$file = $part['path'] ?? $part['post'];
+				$file = QM_Util::standard_dir( $file );
 
 				if ( isset( $this->data->count_template_parts[ $file ] ) ) {
 					$this->data->count_template_parts[ $file ]++;
@@ -484,8 +485,6 @@ class QM_Collector_Theme extends QM_DataCollector {
 					$display = $part['id'];
 					$theme_display = $display;
 				} else {
-					$file = QM_Util::standard_dir( $file );
-
 					$filename = str_replace( array(
 						$stylesheet_directory,
 						$template_directory,
