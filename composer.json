@@ -13,6 +13,7 @@
 	"support": {
 		"issues": "https://github.com/johnbillion/query-monitor/issues",
 		"forum": "https://wordpress.org/support/plugin/query-monitor",
+		"security": "https://patchstack.com/database/vdp/query-monitor",
 		"source": "https://github.com/johnbillion/query-monitor"
 	},
 	"funding": [
