@@ -58,7 +58,7 @@ jobs:
           - wp: '6.7-RC1'
             php: '8.4'
           # Oldest supported WordPress
-          - wp: '5.8'
+          - wp: '5.9'
             php: '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
