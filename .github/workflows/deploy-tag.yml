@@ -20,7 +20,7 @@ permissions:
   issues: write
 
 jobs:
-  test:
+  deploy:
     name: Deploy Tag
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@attestation
     with:
@@ -31,3 +31,16 @@ jobs:
     secrets:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+  attest:
+    name: Attest release
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    needs: deploy
+    steps:
+      - name: Checkout repository
+        uses: johnbillion/plugin-infrastructure/@attestation
+        with:
+          attest: ${{ github.event_name != 'workflow_dispatch' }}
+          plugin: query-monitor
+          version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
+          zip-path: ${{ needs.deploy.outputs.zip-path }}
