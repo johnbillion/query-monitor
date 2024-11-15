@@ -45,9 +45,9 @@ jobs:
     needs: deploy
     steps:
       - name: Perform attestation
-        uses: johnbillion/plugin-infrastructure/@attestation
+        uses: johnbillion/action-wordpress-plugin-attest/@0.1.0
         with:
-          attest: ${{ github.event_name != 'workflow_dispatch' }}
+          dry-run: ${{ github.event_name == 'workflow_dispatch' }}
           plugin: query-monitor
           version: ${{ needs.deploy.outputs.version }}
           zip-path: ${{ needs.deploy.outputs.zip-path }}
