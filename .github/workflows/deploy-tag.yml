@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 70
     needs: deploy
     steps:
-      - name: Checkout repository
+      - name: Perform attestation
         uses: johnbillion/plugin-infrastructure/@attestation
         with:
           attest: ${{ github.event_name != 'workflow_dispatch' }}
