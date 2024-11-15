@@ -23,6 +23,9 @@ jobs:
   deploy:
     name: Deploy Tag
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@attestation
+    permissions:
+      contents: read
+      issues: write
     with:
       deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
@@ -34,6 +37,10 @@ jobs:
   attest:
     name: Attest release
     runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
     timeout-minutes: 70
     needs: deploy
     steps:
