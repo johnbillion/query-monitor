@@ -35,7 +35,7 @@ jobs:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
   attest:
-    name: Attest release
+    name: Attest build provenance for the release
     runs-on: ubuntu-latest
     permissions:
       attestations: write
@@ -44,8 +44,8 @@ jobs:
     timeout-minutes: 70
     needs: deploy
     steps:
-      - name: Perform attestation
-        uses: johnbillion/action-wordpress-plugin-attest/@0.1.0
+      - name: Perform build provenance attestation
+        uses: johnbillion/attest-wordpress-plugin-build-provenance/@0.1.0
         with:
           dry-run: ${{ github.event_name == 'workflow_dispatch' }}
           plugin: query-monitor
