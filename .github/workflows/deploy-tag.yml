@@ -22,7 +22,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy Tag
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@attestation
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
     permissions:
       contents: read
       issues: write
@@ -45,7 +45,7 @@ jobs:
     needs: deploy
     steps:
       - name: Perform build provenance attestation
-        uses: johnbillion/attest-wordpress-plugin-build-provenance/@0.1.0
+        uses: johnbillion/attest-wordpress-plugin-build-provenance/@0.1.1
         with:
           dry-run: ${{ github.event_name == 'workflow_dispatch' }}
           plugin: query-monitor
