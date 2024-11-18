@@ -44,6 +44,7 @@ jobs:
     strategy:
       matrix:
         php:
+          - '8.4'
           - '8.3'
           - '7.4'
       fail-fast: false
