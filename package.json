@@ -23,6 +23,7 @@
 		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
 		"build": "sass --no-source-map assets/query-monitor.scss assets/query-monitor.css",
 		"watch": "sass --watch --poll assets/query-monitor.scss assets/query-monitor.css",
+		"version": "npm install # See https://github.com/JS-DevTools/version-bump-prompt/issues/42",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
