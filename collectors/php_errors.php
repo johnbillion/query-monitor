@@ -203,15 +203,16 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				$type = 'notice';
 				break;
 
-			case E_STRICT:
-				$type = 'strict';
-				break;
-
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				$type = 'deprecated';
 				break;
 
+		}
+
+		// E_STRICT is deprecated in PHP 8.4 so it needs to be behind a version check.
+		if ( null === $type && version_compare( PHP_VERSION, '8.4', '<' ) && E_STRICT === $errno ) {
+			$type = 'strict';
 		}
 
 		if ( null === $type ) {

@@ -183,7 +183,7 @@ export default defineConfig({
 		},
 
 		footer: {
-			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>`,
+			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>. The WordPress® trademark is the intellectual property of the WordPress Foundation. Query Monitor is not affiliated with the WordPress Foundation.`,
 		},
 	},
 	lastUpdated: true,
