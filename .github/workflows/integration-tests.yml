@@ -47,7 +47,7 @@ jobs:
       matrix:
         wp:
           # Three most recent versions of WordPress
-          - '6.7-RC1'
+          - '6.7'
           - '6.6'
           - '6.5'
         php:
@@ -56,7 +56,7 @@ jobs:
           - '7.4'
         include:
           # Latest WordPress on PHP 8.4
-          - wp: '6.7-RC1'
+          - wp: '6.7'
             php: '8.4'
           # Oldest supported WordPress
           - wp: '5.9'
