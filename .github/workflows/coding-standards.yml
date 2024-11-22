@@ -39,10 +39,12 @@ permissions:
 
 jobs:
   test:
-    name: PHP / PHP ${{ matrix.php }}
+    name: ${{ matrix.label }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
     strategy:
       matrix:
+        label:
+          - 'PHP'
         php:
           - '8.4'
           - '8.3'
