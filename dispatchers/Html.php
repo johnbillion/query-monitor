@@ -303,9 +303,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			);
 
 			echo '<!-- Begin Query Monitor output -->' . "\n\n";
-			echo '<script type="text/javascript">' . "\n\n";
-			echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
-			echo '</script>' . "\n\n";
+			wp_print_inline_script_tag(
+				sprintf(
+					'var qm = %s;',
+					wp_json_encode( $json )
+				),
+				array(
+					'id' => 'query-monitor-inline-data',
+				)
+			);
 			echo '<div id="query-monitor-ceased"></div>';
 			echo '<!-- End Query Monitor output -->' . "\n\n";
 			return;
@@ -406,9 +412,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
-		echo '<script type="text/javascript">' . "\n\n";
-		echo 'var qm = ' . json_encode( $json ) . ';' . "\n\n";
-		echo '</script>' . "\n\n";
+		wp_print_inline_script_tag(
+			sprintf(
+				'var qm = %s;',
+				wp_json_encode( $json )
+			),
+			array(
+				'id' => 'query-monitor-inline-data',
+			)
+		);
 
 		echo '<svg id="qm-icon-container">';
 		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
@@ -741,9 +753,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
+		echo "\n\n";
 
-		echo '<script type="text/javascript">' . "\n\n";
-		?>
+		wp_print_inline_script_tag( <<<JS
 		window.addEventListener('load', function() {
 			var main = document.getElementById( 'query-monitor-main' );
 			var broken = document.getElementById( 'qm-broken' );
@@ -780,8 +792,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				main.className += ' qm-peek';
 			}
 		} );
-		<?php
-		echo '</script>' . "\n\n";
+		JS,
+			array(
+				'id' => 'query-monitor-inline-worst-case',
+			)
+		);
 		echo '<!-- End Query Monitor output -->' . "\n\n";
 
 	}
