@@ -59,4 +59,4 @@ The `db.php` file will sometimes conflict with another plugin that also uses a `
 * HyperDB
 * SQLite Database Integration
 
-**There is nothing that can be done about this**. This a WordPress core limitation due to the fact that the dropin plugin file must be called `db.php` and placed in the `wp-content` directory, and only one can exist there.
+**There is nothing that can be done about this**. This a WordPress core limitation due to the fact that the dropin plugin file must live at `wp-content/db.php` and only one file can exist there.
