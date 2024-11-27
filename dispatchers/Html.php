@@ -307,6 +307,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				sprintf(
 					'var qm = %s;',
 					wp_json_encode( $json )
+				),
+				array(
+					'id' => 'query-monitor-inline-data',
 				)
 			);
 			echo '<div id="query-monitor-ceased"></div>';
@@ -413,6 +416,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			sprintf(
 				'var qm = %s;',
 				wp_json_encode( $json )
+			),
+			array(
+				'id' => 'query-monitor-inline-data',
 			)
 		);
 
@@ -739,6 +745,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '</div>'; // #qm-panels
 		echo '</div>'; // #qm-wrapper
 		echo '</div>'; // #query-monitor-main
+		echo "\n\n";
 
 		wp_print_inline_script_tag( <<<JS
 		window.addEventListener('load', function() {
@@ -777,7 +784,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				main.className += ' qm-peek';
 			}
 		} );
-		JS );
+		JS,
+			array(
+				'id' => 'query-monitor-inline-worst-case',
+			)
+		);
 		echo '<!-- End Query Monitor output -->' . "\n\n";
 
 	}
