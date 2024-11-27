@@ -26,24 +26,26 @@ permissions:
 
 jobs:
   standards:
-    name: Nightly standards / PHP ${{ matrix.php }}
+    name: Nightly ${{ matrix.label }}
     strategy:
       matrix:
+        label:
+          - 'standards'
         php:
           - '8.4'
-          - '8.3'
           - '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
     with:
       php: ${{ matrix.php }}
   acceptance:
-    name: Nightly acceptance / PHP ${{ matrix.php }}
+    name: Nightly ${{ matrix.label }}
     strategy:
       matrix:
+        label:
+          - 'acceptance'
         php:
           - '8.4'
-          - '8.3'
           - '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
@@ -52,13 +54,14 @@ jobs:
       php: ${{ matrix.php }}
       wp: 'nightly'
   integration:
-    name: Nightly integration / PHP ${{ matrix.php }}
+    name: Nightly ${{ matrix.label }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
     strategy:
       matrix:
+        label:
+          - 'integration'
         php:
           - '8.4'
-          - '8.3'
           - '7.4'
       fail-fast: false
     with:
