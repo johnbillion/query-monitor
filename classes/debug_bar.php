@@ -64,6 +64,9 @@ class Debug_Bar {
 				sprintf(
 					"var ajaxurl = '%s';",
 					esc_url_raw( admin_url( 'admin-ajax.php' ) )
+				),
+				array(
+					'id' => 'query-monitor-inline-debug-bar',
 				)
 			);
 		}
