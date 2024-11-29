@@ -122,7 +122,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
 
 			if ( ! empty( $stack ) ) {
-				echo self::build_toggler(); // WPCS: XSS ok;
+				echo self::build_toggler( $caller ); // WPCS: XSS ok;
 			}
 
 			echo '<ol>';
