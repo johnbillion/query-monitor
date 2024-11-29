@@ -228,7 +228,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			'is_main_query' => true,
 		) );
 
-		$this->data->total_qs = count( $this->data->rows );
+		$this->data->total_qs = is_countable( $this->data->rows ) ? count( $this->data->rows ) : 0;
 		$this->data->total_time = $total_time;
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
