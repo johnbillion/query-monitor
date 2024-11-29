@@ -663,6 +663,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'label' => __( 'Allow the wp-content/db.php file symlink to be put into place during activation. Set to false to prevent the symlink creation.', 'query-monitor' ),
 				'default' => true,
 			),
+			'QM_DISABLED_HOOK_DISCOVERY' => array(
+				'label' => __( 'Prevent hook discovery, to safeguard against performance impact in production.', 'query-monitor' ),
+				'default' => false,
+			),
+			'QM_MAX_DISCOVERED_HOOKS' => array(
+				'label' => __( 'Maximum number of hooks to discover before terminating.', 'query-monitor' ),
+				'default' => 100,
+			),
 		);
 
 		/**
