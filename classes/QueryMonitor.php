@@ -15,6 +15,7 @@ class QueryMonitor extends QM_Plugin {
 		# Actions
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'set_current_user', array( $this, 'action_set_current_user' ) );
 		add_action( 'members_register_caps', array( $this, 'action_register_members_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'action_register_members_groups' ) );
 		add_action( 'qm/cease', array( $this, 'action_cease' ) );
@@ -170,6 +171,27 @@ class QueryMonitor extends QM_Plugin {
 	 */
 	public function action_init() {
 		load_plugin_textdomain( 'query-monitor', false, dirname( $this->plugin_base() ) . '/languages' );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function action_set_current_user() {
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( ! apply_filters( 'qm/admin-bar/match-user-option', false ) ) {
+			return;
+		}
+
+		$pref = get_user_option( 'show_admin_bar_front' );
+
+		if ( 'front' === $pref ) {
+			return;
+		}
+
+		do_action( 'qm/cease' );
 	}
 
 	/**
