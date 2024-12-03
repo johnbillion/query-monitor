@@ -49,3 +49,4 @@ jobs:
         with:
           version: ${{ needs.deploy.outputs.version }}
           zip-path: ${{ needs.deploy.outputs.zip-path }}
+          dry-run: true
