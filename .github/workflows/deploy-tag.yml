@@ -43,6 +43,8 @@ jobs:
       id-token: write
     timeout-minutes: 70
     needs: deploy
+    outputs:
+      base64-subjects: ${{ steps.attest.outputs.base64-subjects }}
     steps:
       - name: Attest
         id: attest
@@ -51,7 +53,13 @@ jobs:
           version: ${{ needs.deploy.outputs.version }}
           zip-path: ${{ needs.deploy.outputs.zip-path }}
           dry-run: true
-      - name: Generate
-        uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
-        with:
-          base64-subjects-as-file: "${{ steps.attest.outputs.base64-subjects }}"
+  slsa:
+    name: Generate SLSA provenance attestation
+    needs: attest
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
+    with:
+      base64-subjects-as-file: "${{ needs.attest.outputs.base64-subjects }}"
