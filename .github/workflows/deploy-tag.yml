@@ -57,7 +57,7 @@ jobs:
     name: Generate SLSA provenance attestation
     needs: attest
     permissions:
-      contents: read
+      contents: write
       id-token: write
       actions: read
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
