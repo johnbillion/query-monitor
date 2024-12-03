@@ -57,9 +57,9 @@ jobs:
     name: Generate SLSA provenance attestation
     needs: attest
     permissions:
-      attestations: write
       contents: read
       id-token: write
+      actions: read
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
     with:
       base64-subjects-as-file: "${{ needs.attest.outputs.base64-subjects }}"
