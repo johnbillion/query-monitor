@@ -32,6 +32,7 @@ jobs:
         label:
           - 'standards'
         php:
+          # Newest and oldest supported versions of PHP
           - '8.4'
           - '7.4'
       fail-fast: false
@@ -45,6 +46,7 @@ jobs:
         label:
           - 'acceptance'
         php:
+          # Newest and oldest supported versions of PHP
           - '8.4'
           - '7.4'
       fail-fast: false
@@ -61,6 +63,7 @@ jobs:
         label:
           - 'integration'
         php:
+          # Newest and oldest supported versions of PHP
           - '8.4'
           - '7.4'
       fail-fast: false
