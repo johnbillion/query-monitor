@@ -72,9 +72,6 @@
 		"wordpress-install-dir": "vendor/wordpress/wordpress"
 	},
 	"scripts": {
-		"build-vendor": [
-			"build-vendor"
-		],
 		"test": [
 			"@composer validate --strict --no-check-lock",
 			"@test:phpstan",
