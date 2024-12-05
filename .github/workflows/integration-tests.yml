@@ -40,7 +40,7 @@ permissions:
 jobs:
   test:
     name: WP ${{ matrix.wp }}
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@168d540bb83ddc6ce019ed85d99359f2f3b14498
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
