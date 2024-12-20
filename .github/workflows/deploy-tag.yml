@@ -13,11 +13,7 @@ on:
 
 concurrency: WordPress.org
 
-permissions:
-  attestations: write
-  contents: read
-  id-token: write
-  issues: write
+permissions: {}
 
 jobs:
   deploy:
@@ -34,6 +30,7 @@ jobs:
     secrets:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+
   attest:
     name: Generate attestation
     runs-on: ubuntu-latest

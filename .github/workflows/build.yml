@@ -7,13 +7,14 @@ on:
       - 'release'
   workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   build:
     name: Build
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@trunk
+    permissions:
+      contents: write
     with:
       node: true
       tag: ${{ github.event_name != 'workflow_dispatch' }}
