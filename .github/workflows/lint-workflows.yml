@@ -8,6 +8,7 @@ on:
       - '.github/workflows/**'
   push:
     branches:
+      - develop
       - trunk
     paths:
       # Only run when changes are made to workflow files.
