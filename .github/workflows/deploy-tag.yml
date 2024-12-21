@@ -42,7 +42,7 @@ jobs:
     needs: deploy
     steps:
       - name: Attest
-        uses: johnbillion/action-wordpress-plugin-attestation@0.5.1
+        uses: johnbillion/action-wordpress-plugin-attestation@0.6.0
         with:
           version: ${{ needs.deploy.outputs.version }}
           zip-path: ${{ needs.deploy.outputs.zip-path }}
