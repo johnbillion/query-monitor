@@ -42,7 +42,8 @@ jobs:
     needs: deploy
     steps:
       - name: Attest
-        uses: johnbillion/action-wordpress-plugin-attestation@0.5.1
+        uses: johnbillion/action-wordpress-plugin-attestation@custom-zip-url
         with:
           version: ${{ needs.deploy.outputs.version }}
           zip-path: ${{ needs.deploy.outputs.zip-path }}
+          dry-run: true
