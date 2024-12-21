@@ -1,3 +1,4 @@
+/.idea
 /assets/*.css
 /assets/*.map
 /composer.lock
