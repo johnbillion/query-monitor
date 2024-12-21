@@ -301,7 +301,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	/**
 	 * Fallback error handler.
 	 *
-	 * @param array $args Arguments.
+	 * @param array<int, string, string, int> $args Arguments.
 	 *
 	 * @return bool
 	 * @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection
