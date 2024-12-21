@@ -25,20 +25,6 @@ permissions:
   contents: read
 
 jobs:
-  standards:
-    name: Nightly ${{ matrix.label }}
-    strategy:
-      matrix:
-        label:
-          - 'standards'
-        php:
-          # Newest and oldest supported versions of PHP
-          - '8.4'
-          - '7.4'
-      fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
-    with:
-      php: ${{ matrix.php }}
   acceptance:
     name: Nightly ${{ matrix.label }}
     strategy:
@@ -55,6 +41,7 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+
   integration:
     name: Nightly ${{ matrix.label }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
