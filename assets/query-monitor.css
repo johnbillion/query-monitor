@@ -1500,10 +1500,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		color: #666 !important;
 	}
 
-	a.qm-edit-link {
-		svg {
-			display: none;
-		}
+	& a.qm-edit-link svg {
+		display: none;
 	}
 
 }
