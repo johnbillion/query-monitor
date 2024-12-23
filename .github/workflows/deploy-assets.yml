@@ -14,8 +14,10 @@ jobs:
     name: WordPress.org
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-assets.yml@trunk
     with:
+      node: true
       plugin: query-monitor
       readme: readme.txt
+      vendor: true
     secrets:
       WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

@@ -336,8 +336,8 @@ class QM_Collector_Theme extends QM_DataCollector {
 			}
 		}
 
-		if ( self::wp_is_block_theme() ) {
-			$block_theme_folders = self::wp_get_block_theme_folders();
+		if ( wp_is_block_theme() ) {
+			$block_theme_folders = get_block_theme_folders();
 			foreach ( $templates as $template ) {
 				if ( str_ends_with( $template, '.php' ) ) {
 					// Standard PHP template, inject the HTML version:
@@ -471,7 +471,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 			$all = array_merge( $posts, $files, $nopes );
 
 			foreach ( $all as $part ) {
-				$file = $part['path'] ?? $part['post'];
+				$file = isset( $part['path'] ) ? QM_Util::standard_dir( $part['path'] ) : $part['post'];
 
 				if ( isset( $this->data->count_template_parts[ $file ] ) ) {
 					$this->data->count_template_parts[ $file ]++;
@@ -484,8 +484,6 @@ class QM_Collector_Theme extends QM_DataCollector {
 					$display = $part['id'];
 					$theme_display = $display;
 				} else {
-					$file = QM_Util::standard_dir( $file );
-
 					$filename = str_replace( array(
 						$stylesheet_directory,
 						$template_directory,
@@ -520,7 +518,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 			$this->data->template => $template_directory,
 		);
 
-		$this->data->theme_folders = self::wp_get_block_theme_folders();
+		$this->data->theme_folders = get_block_theme_folders();
 
 		$stylesheet_theme_json = $stylesheet_directory . '/theme.json';
 		$template_theme_json = $template_directory . '/theme.json';
@@ -540,40 +538,12 @@ class QM_Collector_Theme extends QM_DataCollector {
 	}
 
 	/**
-	 * @return bool
-	 */
-	protected static function wp_is_block_theme() {
-		// WP 5.9
-		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
-	}
-
-	/**
-	 * @return array<string, string>
-	 */
-	protected static function wp_get_block_theme_folders() {
-		// WP 5.9
-		if ( ! function_exists( 'get_block_theme_folders' ) ) {
-			return array(
-				'wp_template'      => 'templates',
-				'wp_template_part' => 'parts',
-			);
-		}
-
-		return get_block_theme_folders();
-	}
-
-	/**
 	 * @param string             $template_type      The current template type.
 	 * @param array<int, string> $template_hierarchy The current template hierarchy, ordered by priority.
 	 * @param string             $fallback_template  A PHP fallback template to use if no matching block template is found.
 	 * @return WP_Block_Template|null template A template object, or null if none could be found.
 	 */
 	protected static function wp_resolve_block_template( $template_type, $template_hierarchy, $fallback_template ) {
-		// WP 5.8
-		if ( ! function_exists( 'resolve_block_template' ) ) {
-			return null;
-		}
-
 		if ( ! current_theme_supports( 'block-templates' ) ) {
 			return null;
 		}

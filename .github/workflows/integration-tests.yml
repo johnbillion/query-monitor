@@ -39,28 +39,30 @@ permissions:
 
 jobs:
   test:
-    name: WP ${{ matrix.wp }} / PHP ${{ matrix.php }}
+    name: WP ${{ matrix.wp }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
         wp:
-          # Latest three stable:
+          # Three most recent versions of WordPress
+          - '6.7'
+          - '6.6'
           - '6.5'
-          - '6.4'
-          - '6.3'
         php:
-          - '8.2'
+          # Most recent version of PHP supported by all of the above, plus 7.4
+          - '8.3'
           - '7.4'
         include:
-          # Latest stable on PHP 8.3:
-          - wp: '6.5'
-            php: '8.3'
-          # Oldest supported on PHP 7.4:
-          - wp: '5.7'
+          # Latest WordPress on PHP 8.4
+          - wp: '6.7'
+            php: '8.4'
+          # Oldest supported WordPress
+          - wp: '5.9'
             php: '7.4'
       fail-fast: false
     with:
-      wp: ${{ matrix.wp }}
+      node: true
       php: ${{ matrix.php }}
+      wp: ${{ matrix.wp }}

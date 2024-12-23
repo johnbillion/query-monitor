@@ -26,26 +26,35 @@ permissions:
 
 jobs:
   acceptance:
-    name: Nightly acceptance / PHP ${{ matrix.php }}
+    name: Nightly ${{ matrix.label }}
     strategy:
       matrix:
+        label:
+          - 'acceptance'
         php:
-          - '8.3'
+          # Newest and oldest supported versions of PHP
+          - '8.4'
           - '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
     with:
-      wp: 'nightly'
+      node: true
       php: ${{ matrix.php }}
+      wp: 'nightly'
+
   integration:
-    name: Nightly integration / PHP ${{ matrix.php }}
+    name: Nightly ${{ matrix.label }}
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
     strategy:
       matrix:
+        label:
+          - 'integration'
         php:
-          - '8.3'
+          # Newest and oldest supported versions of PHP
+          - '8.4'
           - '7.4'
       fail-fast: false
     with:
-      wp: 'nightly'
+      node: true
       php: ${{ matrix.php }}
+      wp: 'nightly'

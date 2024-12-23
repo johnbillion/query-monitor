@@ -45,7 +45,7 @@ class QM_Data_Environment extends QM_Data {
 	/**
 	 * @phpstan-var array{
 	 *   version: string,
-	 *   environment_type?: string,
+	 *   environment_type: string,
 	 *   development_mode?: string,
 	 *   constants: array<string, string>,
 	 * }
@@ -60,7 +60,8 @@ class QM_Data_Environment extends QM_Data {
 	 *   host: string|null,
 	 *   OS: string|null,
 	 *   arch: string|null,
-	 * }
+	 *   basicauth: 'true'|'false',
+	 * }>
 	 */
 	public $server;
 }

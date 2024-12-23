@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.16.3",
+	"version": "3.17.0",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -39,6 +39,7 @@
 		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
 		"watch": "npm run build-schemas && vite",
 		"build": "npm run build-schemas && vite build",
+		"version": "npm install # See https://github.com/JS-DevTools/version-bump-prompt/issues/42",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"

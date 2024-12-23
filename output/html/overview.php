@@ -90,7 +90,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<p>';
 		echo esc_html(
 			sprintf(
-				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 				_x( '%ss', 'Time in seconds', 'query-monitor' ),
 				number_format_i18n( $data->time_taken, 4 )
 			)
@@ -175,7 +175,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			echo '<p>';
 			echo esc_html(
 				sprintf(
-					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+					/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 					_x( '%ss', 'Time in seconds', 'query-monitor' ),
 					number_format_i18n( $db_queries_data->total_time, 4 )
 				)
@@ -223,7 +223,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo '<p>';
 				echo esc_html(
 					sprintf(
-						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit. */
+						/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 						_x( '%ss', 'Time in seconds', 'query-monitor' ),
 						number_format_i18n( $http_data->ltime, 4 )
 					)

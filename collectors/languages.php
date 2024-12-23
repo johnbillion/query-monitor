@@ -33,7 +33,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 		parent::set_up();
 
 		add_filter( 'load_textdomain_mofile', array( $this, 'log_mo_file_load' ), 9999, 2 );
-		add_filter( 'load_translation_file', array( $this, 'log_translation_file_load' ), 9999, 2 );
+		add_filter( 'load_translation_file', array( $this, 'log_translation_file_load' ), 9999, 3 );
 		add_filter( 'load_script_translation_file', array( $this, 'log_script_file_load' ), 9999, 3 );
 		add_action( 'init', array( $this, 'collect_locale_data' ), 9999 );
 
@@ -57,8 +57,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	public function collect_locale_data() {
 		$this->data->locale = get_locale();
 		$this->data->user_locale = get_user_locale();
-		// WP 5.0
-		$this->data->determined_locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$this->data->determined_locale = determine_locale();
 		$this->data->language_attributes = get_language_attributes();
 
 		if ( function_exists( '\Inpsyde\MultilingualPress\siteLanguageTag' ) ) {
@@ -88,6 +87,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'determine_locale',
 			'gettext',
 			'gettext_with_context',
+			'lang_dir_for_domain',
 			'language_attributes',
 			'load_script_textdomain_relative_path',
 			'load_script_translation_file',
@@ -164,17 +164,19 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 *
 	 * @phpstan-template T
 	 *
-	 * @param mixed  $file Should be a string path to the MO or PHP file, could be anything.
+	 * @param mixed  $file   Should be a string path to the MO or PHP file, could be anything.
 	 * @param string $domain Text domain.
+	 * @param string $locale Locale. Only present in 6.6 and later.
 	 * @return string The original file path.
 	 * @phpstan-param T $file
 	 * @phpstan-return T
 	 */
-	public function log_translation_file_load( $file, $domain ) {
+	public function log_translation_file_load( $file, $domain, ?string $locale = null ) {
+		// @phpstan-ignore WPCompat.methodNotAvailable
 		$i18n_controller = \WP_Translation_Controller::get_instance();
 
-		$locale = determine_locale();
-		$found = $i18n_controller->load_file( $file, $domain, $locale );
+		// @phpstan-ignore WPCompat.methodNotAvailable
+		$found = $i18n_controller->load_file( $file, $domain, $locale ?? determine_locale() );
 
 		return $this->log_file_load( $file, $domain, $found );
 	}

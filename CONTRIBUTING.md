@@ -10,7 +10,7 @@ If you enjoy using Query Monitor I would greatly appreciate it <a href="https://
 
 ## Reporting Security Issues
 
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability here](https://patchstack.com/database/vdp/query-monitor).
+[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
 
 Do not report security issues on GitHub or the WordPress.org support forums. Thank you.
 
@@ -80,15 +80,14 @@ These are the steps to take to release a new version of Query Monitor (for contr
 ### Prior to Release
 
 1. Check [the milestone on GitHub](https://github.com/johnbillion/query-monitor/milestones) for open issues or PRs. Fix or reassign as necessary.
-1. If this is a non-patch release, check issues and PRs assigned to the patch or minor milestones that will get skipped. Reassign as necessary.
+1. If this is a non-patch release, reassign issues and PRs assigned to the patch or minor milestones that will get skipped.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
-1. Ensure both `README.md` and `readme.txt` contain up to date descriptions, "Tested up to" versions, FAQs, screenshots, etc.
-   - Query Monitor supports the last nine versions of WordPress (support for versions up to approximately three years old)
+1. Ensure `README.md` and `readme.txt` contain up to date "Tested up to" versions, descriptions, FAQs, and screenshots.
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
    - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
 1. Run `composer test` and ensure everything passes.
-1. Run `git push origin develop` (if necessary) and ensure CI is passing.
-1. Prepare a changelog for [the Releases page on GitHub](https://github.com/johnbillion/query-monitor/releases).
+1. Run `git push origin develop` and ensure CI is passing.
+1. Prepare a changelog for the release.
 
 ### For Release
 
@@ -96,9 +95,12 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
    - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
+1. `git push origin develop`
 1. `git push origin develop:release`
 1. Wait for [the Build action](https://github.com/johnbillion/query-monitor/actions/workflows/build.yml) to complete
-1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it.
+1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it
+1. Approve the release on [the WordPress.org release management dashboard](https://wordpress.org/plugins/developers/releases/)
+1. `git push origin develop:master`
 
 ### Post Release
 
@@ -106,9 +108,8 @@ Publishing a release on GitHub triggers an action which deploys the release to t
 
 New milestones are automatically created for the next major, minor, and patch releases where appropriate.
 
-1. Close the milestone.
 1. If this is a non-patch release, manually delete any [unused patch and minor milestones on GitHub](https://github.com/johnbillion/query-monitor/milestones).
-1. Check the new version has appeared [on the WordPress.org plugin page](https://wordpress.org/plugins/query-monitor/) (it'll take a few minutes).
+1. Check the new version has appeared [on the WordPress.org plugin page](https://wordpress.org/plugins/query-monitor/).
 1. Resolve relevant threads on [the plugin's support forums](https://wordpress.org/support/plugin/query-monitor/).
 1. Consume tea and cake as necessary.
 

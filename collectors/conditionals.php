@@ -49,6 +49,7 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 			'is_feed',
 			'is_front_page',
 			'is_home',
+			'is_login',
 			'is_main_network',
 			'is_main_site',
 			'is_month',
