@@ -19,3 +19,4 @@ jobs:
       node: true
       tag: ${{ github.event_name != 'workflow_dispatch' }}
       vendor: true
+      plugin: query-monitor
