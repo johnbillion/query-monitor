@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Lint workflow files
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - develop
+      - trunk
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@trunk
