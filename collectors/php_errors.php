@@ -360,6 +360,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 					continue;
 				}
 
+				$frame = wp_parse_args( $frame, array(
+					'file' => '',
+					'line' => '',
+				) );
+
 				$args = array_map( function( $value ) {
 					$type = gettype( $value );
 
