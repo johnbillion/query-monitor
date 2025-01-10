@@ -36,7 +36,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 
 		if ( ! empty( $data->memory ) ) {
 			$headers['memory'] = sprintf(
-				/* translators: %s: Memory used in megabytes */
+				/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
 				__( '%s MB', 'query-monitor' ),
 				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
 			);
