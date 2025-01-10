@@ -1,33 +1,23 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 
-name: Coding Standards
+name: Static Analysis
 on:
   push:
     branches:
       - 'develop'
       - 'trunk'
     paths:
-      - '.github/workflows/coding-standards.yml'
-      - '**.css'
-      - '**.scss'
-      - '**.js'
+      - '.github/workflows/static-analysis.yml'
       - '**.php'
       - 'composer.json'
-      - 'package.json'
-      - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
   pull_request:
     branches:
       - '**'
     paths:
-      - '.github/workflows/coding-standards.yml'
-      - '**.css'
-      - '**.scss'
-      - '**.js'
+      - '.github/workflows/static-analysis.yml'
       - '**.php'
       - 'composer.json'
-      - 'package.json'
-      - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
   workflow_dispatch:
 
@@ -38,13 +28,14 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@trunk
     strategy:
       matrix:
         label:
           - 'PHP'
         php:
-          - '8.4'
+          - '8.3'
+          - '7.4'
       fail-fast: false
     with:
       php: ${{ matrix.php }}
