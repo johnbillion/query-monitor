@@ -6,7 +6,6 @@ on:
     branches:
       - 'develop'
       - 'trunk'
-      - 'master'
     paths:
       - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
@@ -34,12 +33,13 @@ on:
       - 'package.json'
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   test:
     name: WP ${{ matrix.wp }}
+    permissions:
+      contents: read
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
