@@ -165,6 +165,18 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
+## Sponsors
+
+The time that I spend maintaining this plugin and others is in part sponsored by:
+
+[![Automattic](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/assets/sponsors/automattic.png)](https://automattic.com)
+
+Plus all my kind sponsors on GitHub:
+
+[![Sponsors](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/sponsors.svg)](https://github.com/sponsors/johnbillion)
+
+[Click here to find out about supporting this plugin and my other WordPress development tools and plugins](https://github.com/sponsors/johnbillion).
+
 ## Notes
 
 ### A Note on Query Monitor's Implementation
@@ -283,7 +295,7 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
 
 ## Contributing
 
-Code contributions, feedback, and feature suggestions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/master/CONTRIBUTING.md) for more details.
+Code contributions, feedback, and feature suggestions are very welcome. See [CONTRIBUTING.md](https://github.com/johnbillion/query-monitor/blob/trunk/CONTRIBUTING.md) for more details.
 
 ## Icon
 
