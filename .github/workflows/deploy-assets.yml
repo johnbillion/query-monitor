@@ -13,7 +13,7 @@ jobs:
     name: WordPress.org
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-assets.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-assets.yml@e893132e33848f47334e6106eb662f1678faee4c
     with:
       plugin: query-monitor
       readme: readme.txt
