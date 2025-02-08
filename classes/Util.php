@@ -218,6 +218,26 @@ class QM_Util {
 				$name = str_replace( dirname( self::$file_dirs[ QM_Component::TYPE_OTHER ] ), '', $name );
 				$parts = explode( '/', trim( $name, '/' ) );
 				$context = $parts[0] . '/' . $parts[1];
+
+				// Now detect specific drop-in plugins:
+				if ( ! function_exists( '_get_dropins' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+
+				/** @var array<int, string> $dropins */
+				$dropins = array_keys( _get_dropins() );
+
+				foreach ( $dropins as $dropin ) {
+					$dropin_path = WP_CONTENT_DIR . $dropin;
+
+					if ( $file !== $dropin_path ) {
+						continue;
+					}
+
+					$type = QM_Component::TYPE_DROPIN;
+					$context = pathinfo( $dropin, PATHINFO_BASENAME );
+				}
+
 				break;
 			case QM_Component::TYPE_UNKNOWN:
 			default:
@@ -281,27 +301,6 @@ class QM_Util {
 				break;
 		}
 
-		if ( QM_Component::TYPE_OTHER === $type ) {
-			if ( ! function_exists( '_get_dropins' ) ) {
-				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
-			}
-
-			/** @var array<int, string> $dropins */
-			$dropins = array_keys( _get_dropins() );
-
-			foreach ( $dropins as $dropin ) {
-				$dropin_path = trailingslashit( constant( 'WP_CONTENT_DIR' ) ) . $dropin;
-
-				if ( $file !== $dropin_path ) {
-					continue;
-				}
-
-				$type = QM_Component::TYPE_DROPIN; // !
-				$context = pathinfo( $dropin, PATHINFO_BASENAME );
-			}
-		}
-
-		self::$file_components[ $file ] = QM_Component::from( $type, $context );
 
 		return self::$file_components[ $file ];
 	}
