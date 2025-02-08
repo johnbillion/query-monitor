@@ -40,8 +40,14 @@ class QM_Component implements JsonSerializable {
 	 */
 	public $context;
 
-	public function __construct( string $context, string $type = '' ) {
+	/**
+	 * @var string
+	 */
+	public $file;
+
+	public function __construct( string $context, string $file = '', string $type = '' ) {
 		$this->context = $context;
+		$this->file = $file;
 		$this->type = $type;
 	}
 
@@ -81,39 +87,37 @@ class QM_Component implements JsonSerializable {
 		return false;
 	}
 
-	final public static function from( string $type, string $context = '' ): QM_Component {
+	final public static function from( string $type, string $context = '', string $file = '' ): QM_Component {
 		switch ( $type ) {
 			case self::TYPE_ALTIS_VENDOR:
-				return new QM_Component_Altis_Vendor( $context, $type );
+				return new QM_Component_Altis_Vendor( $context, $file, $type );
 			case self::TYPE_PLUGIN:
-				return new QM_Component_Plugin( $context, $type );
+				return new QM_Component_Plugin( $context, $file, $type );
 			case self::TYPE_MU_PLUGIN:
-				return new QM_Component_MU_Plugin( $context, $type );
+				return new QM_Component_MU_Plugin( $context, $file, $type );
 			case self::TYPE_MU_VENDOR:
-				return new QM_Component_MU_Vendor( $context, $type );
+				return new QM_Component_MU_Vendor( $context, $file, $type );
 			case self::TYPE_GO_PLUGIN:
-				return new QM_Component_Go_Plugin( $context, $type );
+				return new QM_Component_Go_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_PLUGIN:
-				return new QM_Component_VIP_Plugin( $context, $type );
+				return new QM_Component_VIP_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_CLIENT_MU_PLUGIN:
-				return new QM_Component_VIP_Client_MU_Plugin( $context, $type );
+				return new QM_Component_VIP_Client_MU_Plugin( $context, $file, $type );
 			case self::TYPE_STYLESHEET:
-				return new QM_Component_Stylesheet( $context, $type );
+				return new QM_Component_Stylesheet( $context, $file, $type );
 			case self::TYPE_TEMPLATE:
-				return new QM_Component_Template( $context, $type );
+				return new QM_Component_Template( $context, $file, $type );
 			case self::TYPE_OTHER:
-				return new QM_Component_Other( $context, $type );
+				return new QM_Component_Other( $context, $file, $type );
 			case self::TYPE_CORE:
-				return new QM_Component_Core( $context, $type );
+				return new QM_Component_Core( $context, $file, $type );
 			case self::TYPE_DROPIN:
-				return new QM_Component_Dropin( $context, $type );
-			case self::TYPE_UNKNOWN:
-				return new QM_Component_Unknown( $context, $type );
+				return new QM_Component_Dropin( $context, $file, $type );
 			case self::TYPE_PHP:
-				return new QM_Component_PHP( $context, $type );
+				return new QM_Component_PHP( $context, $file, $type );
 		}
 
-		return new QM_Component( $context, $type );
+		return new QM_Component_Unknown( $context, $file, $type );
 	}
 
 	/**

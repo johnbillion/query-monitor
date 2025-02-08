@@ -259,29 +259,11 @@ class QM_Util {
 				 * @param string $name    The component name.
 				 * @param string $context The context for the component.
 				 */
-				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
-
-				/**
-				 * Filters the name of a custom or unknown component.
-				 *
-				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
-				 *
-				 * See also the corresponding filters:
-				 *
-				 *  - `qm/component_dirs`
-				 *  - `qm/component_type/{$type}`
-				 *  - `qm/component_context/{$type}`
-				 *
-				 * @since 3.6.0
-				 *
-				 * @param string $name The component name.
-				 * @param string $file The full file path for the file within the component.
-				 */
-				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $file, $context );
 
 				/**
 				 * Filters the context for a custom or unknown component. The context is usually a
-				 * representation of its type more specific to the individual component.
+				 * representation specific to the individual component, for example the file base name.
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
@@ -297,10 +279,11 @@ class QM_Util {
 				 * @param string $file    The full file path for the file within the component.
 				 * @param string $name    The component name.
 				 */
-				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $file );
 				break;
 		}
 
+		self::$file_components[ $file ] = QM_Component::from( $type, $context, $file );
 
 		return self::$file_components[ $file ];
 	}
