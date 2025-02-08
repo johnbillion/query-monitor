@@ -23,7 +23,7 @@ class QM_Hook {
 	 *     callback: array<string, mixed>,
 	 *   }>,
 	 *   parts: list<string>,
-	 *   components: array<string, string>,
+	 *   components: array<string, QM_Component>,
 	 * }
 	 */
 	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {
@@ -50,7 +50,7 @@ class QM_Hook {
 							continue;
 						}
 
-						$components[ $callback['component']->name ] = $callback['component']->name;
+						$components[ $callback['component']->get_id() ] = $callback['component'];
 					}
 
 					$actions[] = array(

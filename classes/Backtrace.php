@@ -214,7 +214,7 @@ class QM_Backtrace {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
-				if ( 'plugin' === $component->type ) {
+				if ( $component->is_plugin() ) {
 					// If the component is a plugin then it can't be anything else,
 					// so short-circuit and return early.
 					$this->component = $component;
@@ -226,7 +226,7 @@ class QM_Backtrace {
 		}
 
 		$file_dirs = QM_Util::get_file_dirs();
-		$file_dirs['dropin'] = WP_CONTENT_DIR;
+		$file_dirs[ QM_Component::TYPE_DROPIN ] = WP_CONTENT_DIR;
 
 		foreach ( $file_dirs as $type => $dir ) {
 			if ( isset( $components[ $type ] ) ) {
@@ -235,12 +235,7 @@ class QM_Backtrace {
 			}
 		}
 
-		$component = new QM_Component();
-		$component->type = 'unknown';
-		$component->name = __( 'Unknown', 'query-monitor' );
-		$component->context = 'unknown';
-
-		return $component;
+		return QM_Component::from( QM_Component::TYPE_UNKNOWN, 'unknown' );
 	}
 
 	/**

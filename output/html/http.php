@@ -43,7 +43,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
-			usort( $components, 'strcasecmp' );
+			// usort( $components, 'strcasecmp' );
 
 			$status_output = array();
 			$hosts = array_unique( array_column( $data->http, 'host' ) );
@@ -73,7 +73,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+
+			$values = wp_list_pluck( $components, 'name' );
+
+			echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';

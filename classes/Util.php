@@ -117,26 +117,26 @@ class QM_Util {
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
-			self::$file_dirs['plugin'] = WP_PLUGIN_DIR;
-			self::$file_dirs['mu-vendor'] = WPMU_PLUGIN_DIR . '/vendor';
-			self::$file_dirs['go-plugin'] = WPMU_PLUGIN_DIR . '/shared-plugins';
-			self::$file_dirs['mu-plugin'] = WPMU_PLUGIN_DIR;
-			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
+			self::$file_dirs[ QM_Component::TYPE_PLUGIN ] = WP_PLUGIN_DIR;
+			self::$file_dirs[ QM_Component::TYPE_MU_VENDOR ] = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs[ QM_Component::TYPE_GO_PLUGIN ] = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs[ QM_Component::TYPE_MU_PLUGIN ] = WPMU_PLUGIN_DIR;
+			self::$file_dirs[ QM_Component::TYPE_VIP_PLUGIN ] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
-				self::$file_dirs['vip-client-mu-plugin'] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
+				self::$file_dirs[ QM_Component::TYPE_VIP_CLIENT_MU_PLUGIN ] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
 			}
 
 			if ( defined( '\Altis\ROOT_DIR' ) ) {
-				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
+				self::$file_dirs[ QM_Component::TYPE_ALTIS_VENDOR ] = \Altis\ROOT_DIR . '/vendor';
 			}
 
-			self::$file_dirs['theme'] = null;
-			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
-			self::$file_dirs['template'] = get_template_directory();
-			self::$file_dirs['other'] = WP_CONTENT_DIR;
-			self::$file_dirs['core'] = ABSPATH;
-			self::$file_dirs['unknown'] = null;
+			self::$file_dirs[ QM_Component::TYPE_THEME ] = null;
+			self::$file_dirs[ QM_Component::TYPE_STYLESHEET ] = get_stylesheet_directory();
+			self::$file_dirs[ QM_Component::TYPE_TEMPLATE ] = get_template_directory();
+			self::$file_dirs[ QM_Component::TYPE_OTHER ] = WP_CONTENT_DIR;
+			self::$file_dirs[ QM_Component::TYPE_CORE ] = ABSPATH;
+			self::$file_dirs[ QM_Component::TYPE_UNKNOWN ] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
 				if ( null === $dir ) {
@@ -174,16 +174,15 @@ class QM_Util {
 		$context = $type;
 
 		switch ( $type ) {
-			case 'altis-vendor':
+			case QM_Component::TYPE_ALTIS_VENDOR:
 				$plug = str_replace( \Altis\ROOT_DIR . '/vendor/', '', $file );
 				$plug = explode( '/', $plug, 3 );
 				$plug = $plug[0] . '/' . $plug[1];
-				/* translators: %s: Dependency name */
-				$name = sprintf( __( 'Dependency: %s', 'query-monitor' ), $plug );
+				$context = $plug;
 				break;
-			case 'plugin':
-			case 'mu-plugin':
-			case 'mu-vendor':
+			case QM_Component::TYPE_PLUGIN:
+			case QM_Component::TYPE_MU_PLUGIN:
+			case QM_Component::TYPE_MU_VENDOR:
 				$plug = str_replace( '/vendor/', '/', $file );
 				$plug = plugin_basename( $plug );
 				if ( strpos( $plug, '/' ) ) {
@@ -192,18 +191,11 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'plugin' !== $type ) {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
-				} else {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
-				}
 				$context = $plug;
 				break;
-			case 'go-plugin':
-			case 'vip-plugin':
-			case 'vip-client-mu-plugin':
+			case QM_Component::TYPE_GO_PLUGIN:
+			case QM_Component::TYPE_VIP_PLUGIN:
+			case QM_Component::TYPE_VIP_CLIENT_MU_PLUGIN:
 				$plug = str_replace( self::$file_dirs[ $type ], '', $file );
 				$plug = trim( $plug, '/' );
 				if ( strpos( $plug, '/' ) ) {
@@ -212,28 +204,15 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'vip-client-mu-plugin' === $type ) {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'VIP Client MU Plugin: %s', 'query-monitor' ), $plug );
-				} else {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
-				}
 				$context = $plug;
 				break;
-			case 'stylesheet':
-				if ( is_child_theme() ) {
-					$name = __( 'Child Theme', 'query-monitor' );
-				} else {
-					$name = __( 'Theme', 'query-monitor' );
-				}
-				$type = 'theme';
+			case QM_Component::TYPE_STYLESHEET:
+				// Nothing
 				break;
-			case 'template':
-				$name = __( 'Parent Theme', 'query-monitor' );
-				$type = 'theme';
+			case QM_Component::TYPE_TEMPLATE:
+				// Nothing.
 				break;
-			case 'other':
+			case QM_Component::TYPE_OTHER:
 				// Anything else that's within the content directory should appear as
 				// `wp-content/{dir}` or `wp-content/{file}`
 				$name = self::standard_dir( $file );
@@ -242,13 +221,11 @@ class QM_Util {
 				$name = $parts[0] . '/' . $parts[1];
 				$context = $file;
 				break;
-			case 'core':
-				$name = __( 'WordPress Core', 'query-monitor' );
+			case QM_Component::TYPE_CORE:
+				// Nothing.
 				break;
-			case 'unknown':
+			case QM_Component::TYPE_UNKNOWN:
 			default:
-				$name = __( 'Unknown', 'query-monitor' );
-
 				/**
 				 * Filters the type of a custom or unknown component.
 				 *
@@ -309,7 +286,7 @@ class QM_Util {
 				break;
 		}
 
-		if ( 'other' === $type ) {
+		if ( QM_Component::TYPE_OTHER === $type ) {
 			if ( ! function_exists( '_get_dropins' ) ) {
 				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
 			}
@@ -324,18 +301,12 @@ class QM_Util {
 					continue;
 				}
 
-				$type = 'dropin';
-				/* translators: %s: Drop-in plugin file name */
-				$name = sprintf( __( 'Drop-in: %s', 'query-monitor' ), pathinfo( $dropin, PATHINFO_BASENAME ) );
+				$type = QM_Component::TYPE_DROPIN; // !
+				$context = pathinfo( $dropin, PATHINFO_BASENAME );
 			}
 		}
 
-		$component = new QM_Component();
-		$component->type = $type;
-		$component->name = $name;
-		$component->context = $context;
-
-		self::$file_components[ $file ] = $component;
+		self::$file_components[ $file ] = QM_Component::from( $type, $context );
 
 		return self::$file_components[ $file ];
 	}
@@ -432,10 +403,7 @@ class QM_Util {
 			if ( ! empty( $callback['file'] ) ) {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
-				$callback['component'] = new QM_Component();
-				$callback['component']->type = 'php';
-				$callback['component']->name = 'PHP';
-				$callback['component']->context = '';
+				$callback['component'] = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
 			}
 		} catch ( ReflectionException $e ) {
 

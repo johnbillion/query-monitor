@@ -72,7 +72,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data->components, __( 'Component', 'query-monitor' ), array(
+		$values = wp_list_pluck( $data->components, 'name' );
+		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ), array(
 			'highlight' => 'subject',
 		) ); // WPCS: XSS ok.
 		echo '</th>';
@@ -97,10 +98,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		foreach ( $hooks as $hook ) {
 			$row_attr = array();
 			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
-			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
+			$row_attr['data-qm-component'] = implode( ' ', wp_list_pluck( $hook['components'], 'name' ) );
 			$row_attr['data-qm-type'] = $hook['type'];
 
-			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
+			if ( QM_Component::has_non_core( $hook['components'] ) ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 

@@ -52,7 +52,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		$components = $data->components;
 		$count = 0;
 
-		usort( $components, 'strcasecmp' );
+		// usort( $components, 'strcasecmp' );
 
 		$this->before_tabular_output();
 
@@ -65,7 +65,8 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		$values = wp_list_pluck( $components, 'name' );
+		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
@@ -91,7 +92,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$component = $error['component'];
 						$row_attr['data-qm-component'] = $component->name;
 
-						if ( 'core' !== $component->context ) {
+						if ( ! $component->is_core() ) {
 							$row_attr['data-qm-component'] .= ' non-core';
 						}
 					}

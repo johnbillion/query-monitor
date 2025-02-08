@@ -21,7 +21,7 @@
  */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
-	 * @var array<string, string>
+	 * @var array<string, QM_Component>
 	 */
 	public $components;
 
