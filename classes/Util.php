@@ -207,9 +207,8 @@ class QM_Util {
 				$context = $plug;
 				break;
 			case QM_Component::TYPE_STYLESHEET:
-				// Nothing
-				break;
 			case QM_Component::TYPE_TEMPLATE:
+			case QM_Component::TYPE_CORE:
 				// Nothing.
 				break;
 			case QM_Component::TYPE_OTHER:
@@ -219,9 +218,6 @@ class QM_Util {
 				$name = str_replace( dirname( self::$file_dirs[ QM_Component::TYPE_OTHER ] ), '', $name );
 				$parts = explode( '/', trim( $name, '/' ) );
 				$context = $parts[0] . '/' . $parts[1];
-				break;
-			case QM_Component::TYPE_CORE:
-				// Nothing.
 				break;
 			case QM_Component::TYPE_UNKNOWN:
 			default:
