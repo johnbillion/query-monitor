@@ -216,10 +216,9 @@ class QM_Util {
 				// Anything else that's within the content directory should appear as
 				// `wp-content/{dir}` or `wp-content/{file}`
 				$name = self::standard_dir( $file );
-				$name = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$name = str_replace( dirname( self::$file_dirs[ QM_Component::TYPE_OTHER ] ), '', $name );
 				$parts = explode( '/', trim( $name, '/' ) );
-				$name = $parts[0] . '/' . $parts[1];
-				$context = $file;
+				$context = $parts[0] . '/' . $parts[1];
 				break;
 			case QM_Component::TYPE_CORE:
 				// Nothing.
