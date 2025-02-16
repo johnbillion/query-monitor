@@ -652,7 +652,7 @@ class QM_Util {
 		return add_query_arg(
 			array(
 				'postType' => $type,
-				'postId' => urlencode( $template ),
+				'postId' => rawurlencode( $template ),
 				'canvas' => 'edit',
 			),
 			admin_url( 'site-editor.php' )

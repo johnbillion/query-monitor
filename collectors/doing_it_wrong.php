@@ -50,8 +50,6 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 * @return void
 	 */
 	public function tear_down() {
-		parent::tear_down();
-
 		remove_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ) );
 		remove_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ) );
 		remove_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ) );
@@ -65,6 +63,8 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		remove_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ) );
 		remove_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ) );
 		remove_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_doing_it_wrong_error' ), 999 );
+
+		parent::tear_down();
 	}
 
 	/**
