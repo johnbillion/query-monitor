@@ -108,6 +108,7 @@ class QM_Util {
 			 *
 			 * See also the corresponding filters:
 			 *
+			 *  - `qm/component_type/{$type}`
 			 *  - `qm/component_context/{$type}`
 			 *  - `qm/component_name/{$type}`
 			 *

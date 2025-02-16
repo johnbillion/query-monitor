@@ -251,6 +251,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
 
 ### WordPress Plugins
 
+ * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)
  * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
