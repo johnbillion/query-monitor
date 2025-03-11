@@ -267,9 +267,15 @@ Query Monitor also has [several add-on plugins](https://querymonitor.com/help/ad
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
-### Other tools
+### WordPress tools
 
  * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
+ * [Hook Order](https://hookorder.com/)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
+
+### Other tools
+
  * [Buggregator](https://buggregator.dev/)
  * [Clockwork](https://underground.works/clockwork/)
  * [Meminfo](https://github.com/BitOne/php-meminfo)
@@ -282,8 +288,6 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [Tinkerwell](https://tinkerwell.app/)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
- * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Hosted services
 
