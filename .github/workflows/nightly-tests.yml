@@ -47,6 +47,7 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false
 
   integration:
     name: Nightly ${{ matrix.label }}
@@ -66,3 +67,4 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false
