@@ -318,6 +318,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 							)
 						);
 						echo '</p>';
+						break;
 					}
 				} else {
 					echo '<p>';
