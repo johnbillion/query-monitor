@@ -169,13 +169,13 @@ In addition to this, you can set an authentication cookie which allows you to vi
 
 <p align="center">The time that I spend maintaining this plugin and others is in part sponsored by:</p>
 
-<p align="center"><a href="https://automattic.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/assets/sponsors/automattic.svg" alt="Automattic" width="50%"></a></p>
+<p align="center"><a href="https://automattic.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/automattic.svg" alt="Automattic" width="50%"></a></p>
 
-<p align="center"><a href="https://servmask.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/assets/sponsors/servmask.svg" alt="ServMask" width="25%"></a></p>
+<p align="center"><a href="https://servmask.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/servmask.svg" alt="ServMask" width="25%"></a></p>
 
 <p align="center">Plus all my kind sponsors on GitHub:</p>
 
-<p align="center"><a href="https://github.com/sponsors/johnbillion"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/sponsors.svg" alt="Sponsors"></p>
+<p align="center"><a href="https://github.com/sponsors/johnbillion"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/sponsors.svg" alt="Sponsors"></p>
 
 <p align="center"><a href="https://github.com/sponsors/johnbillion">Click here to find out about supporting my open source tools and plugins</a>.</p>
 
