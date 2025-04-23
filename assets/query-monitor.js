@@ -378,7 +378,7 @@ if ( window.jQuery ) {
 
 		$( document ).ajaxSuccess( function( event, response, options ) {
 
-			var errors = response.getResponseHeader( 'X-QM-php_errors-error-count' );
+			var errors = response.getResponseHeader( 'X-QM-php-errors-count' );
 
 			if ( ! errors ) {
 				return event;
@@ -392,7 +392,7 @@ if ( window.jQuery ) {
 
 			for ( var key = 1; key <= errors; key++ ) {
 
-				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
+				error = JSON.parse( response.getResponseHeader( 'X-QM-php-errors-error-' + key ) );
 
 				if ( window.console ) {
 					switch ( error.type ) {
