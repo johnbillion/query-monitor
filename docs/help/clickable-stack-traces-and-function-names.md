@@ -23,11 +23,15 @@ If you're debugging a remote site or using Docker or a virtual machine, you'll n
 
 Here are examples for various local development environments:
 
-### Altis
+### Altis local server
 
 No need to do anything, the path mapping is handled automatically.
 
-### WordPress core
+### WordPress core development environment
+
+No need to do anything, the path mapping is handled automatically.
+
+### WordPress VIP on Lando
 
 No need to do anything, the path mapping is handled automatically.
 
