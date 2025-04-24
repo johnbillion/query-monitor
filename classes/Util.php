@@ -95,6 +95,8 @@ class QM_Util {
 	}
 
 	/**
+	 * @TODO all this logic could move into a QM_Components collection
+	 *
 	 * @return array<string, string|null>
 	 */
 	public static function get_file_dirs() {

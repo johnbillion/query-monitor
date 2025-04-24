@@ -264,6 +264,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Snitch](https://wordpress.org/plugins/snitch/)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
+ * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)
 
 Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
