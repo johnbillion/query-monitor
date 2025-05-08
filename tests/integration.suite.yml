@@ -5,9 +5,7 @@
 actor: WpunitTester
 modules:
   enabled:
-    - lucatume\WPBrowser\Module\WPLoader
-  config:
-    lucatume\WPBrowser\Module\WPLoader:
+    - lucatume\WPBrowser\Module\WPLoader:
       wpRootFolder: /var/www/html
       dbName: plugindb
       dbHost: database
