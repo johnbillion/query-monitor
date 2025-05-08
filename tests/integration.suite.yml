@@ -5,9 +5,7 @@
 actor: WpunitTester
 modules:
   enabled:
-    - WPLoader
-  config:
-    WPLoader:
+    - WPLoader:
       wpRootFolder: /var/www/html
       dbName: plugindb
       dbHost: database
@@ -21,10 +19,10 @@ env:
   singlesite:
     modules:
       config:
-        WPLoader:
+        lucatume\WPBrowser\Module\WPLoader:
           multisite: false
   multisite:
     modules:
       config:
-        WPLoader:
+        lucatume\WPBrowser\Module\WPLoader:
           multisite: true
