@@ -110,7 +110,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$class = '';
 					}
 
-					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+					echo '<tr ' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
 					echo '<td class="qm-nowrap">';
 
 					if ( $is_warning ) {
