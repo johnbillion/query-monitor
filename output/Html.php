@@ -273,7 +273,6 @@ abstract class QM_Output_Html extends QM_Output {
 				echo nl2br( esc_html( $value ) );
 				echo '</td>';
 			}
-			echo '</td>';
 			echo '</tr>';
 		}
 		echo '</table>';
