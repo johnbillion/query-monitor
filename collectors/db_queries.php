@@ -203,7 +203,15 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$this->log_component( $component, $ltime, $type );
 			}
 
-			$is_main_query = ( $request === $sql && ( false !== strpos( $stack, ' WP->main,' ) ) );
+			$is_main_query = false;
+
+			if ( false !== strpos( $stack, ' WP->main,' ) ) {
+				// Ignore comments that are appended to queries by some web hosts.
+				$match_sql = preg_replace( '#/\*.*?\*/\s*$#s', '', $sql );
+
+				$is_main_query = ( $request === $match_sql );
+			}
+
 			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {

@@ -81,6 +81,8 @@ class QM_Backtrace {
 		'current_user_can' => 3,
 		'user_can' => 4,
 		'current_user_can_for_blog' => 4,
+		'user_can_for_site' => 5,
+		'current_user_can_for_site' => 4,
 		'author_can' => 4,
 	);
 

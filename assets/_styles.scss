@@ -66,10 +66,6 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 		}
 	}
 
-	.qm-alert {
-		background-color: $qm-menu-alert-bg;
-	}
-
 	#wp-admin-bar-query-monitor-doing_it_wrong a,
 	#wp-admin-bar-query-monitor-stricts a,
 	#wp-admin-bar-query-monitor-deprecateds a,
@@ -93,6 +89,10 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 		&:hover {
 			background-color: $qm-menu-expensive-bg-hover;
 		}
+	}
+
+	.qm-alert {
+		background-color: $qm-menu-alert-bg;
 	}
 
 	#wp-admin-bar-query-monitor-logger-warning a,

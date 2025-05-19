@@ -167,15 +167,17 @@ In addition to this, you can set an authentication cookie which allows you to vi
 
 ## Sponsors
 
-The time that I spend maintaining this plugin and others is in part sponsored by:
+<p align="center">The time that I spend maintaining this plugin and others is in part sponsored by:</p>
 
-[![Automattic](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/assets/sponsors/automattic.png)](https://automattic.com)
+<p align="center"><a href="https://automattic.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/automattic.svg" alt="Automattic" width="50%"></a></p>
 
-Plus all my kind sponsors on GitHub:
+<p align="center"><a href="https://servmask.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/servmask.svg" alt="ServMask" width="25%"></a></p>
 
-[![Sponsors](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/sponsors.svg)](https://github.com/sponsors/johnbillion)
+<p align="center">Plus all my kind sponsors on GitHub:</p>
 
-[Click here to find out about supporting this plugin and my other WordPress development tools and plugins](https://github.com/sponsors/johnbillion).
+<p align="center"><a href="https://github.com/sponsors/johnbillion"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/sponsors.svg" alt="Sponsors"></p>
+
+<p align="center"><a href="https://github.com/sponsors/johnbillion">Click here to find out about supporting my open source tools and plugins</a>.</p>
 
 ## Notes
 
@@ -251,6 +253,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
 
 ### WordPress Plugins
 
+ * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)
  * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
@@ -261,14 +264,21 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Snitch](https://wordpress.org/plugins/snitch/)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
+ * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)
 
 Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
 See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
 
-### Other tools
+### WordPress tools
 
  * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
+ * [Hook Order](https://hookorder.com/)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
+
+### Other tools
+
  * [Buggregator](https://buggregator.dev/)
  * [Clockwork](https://underground.works/clockwork/)
  * [Meminfo](https://github.com/BitOne/php-meminfo)
@@ -281,8 +291,6 @@ See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wor
  * [Tinkerwell](https://tinkerwell.app/)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
- * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Hosted services
 

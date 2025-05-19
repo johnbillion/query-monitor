@@ -95,6 +95,8 @@ class QM_Util {
 	}
 
 	/**
+	 * @TODO all this logic could move into a QM_Components collection
+	 *
 	 * @return array<string, string|null>
 	 */
 	public static function get_file_dirs() {
@@ -108,6 +110,7 @@ class QM_Util {
 			 *
 			 * See also the corresponding filters:
 			 *
+			 *  - `qm/component_type/{$type}`
 			 *  - `qm/component_context/{$type}`
 			 *  - `qm/component_name/{$type}`
 			 *
@@ -597,7 +600,7 @@ class QM_Util {
 		return add_query_arg(
 			array(
 				'postType' => $type,
-				'postId' => urlencode( $template ),
+				'postId' => rawurlencode( $template ),
 				'canvas' => 'edit',
 			),
 			admin_url( 'site-editor.php' )
@@ -614,25 +617,17 @@ class QM_Util {
 	}
 
 	/**
-	 * @param mixed[] $array
-	 * @param string  $field
-	 * @return void
+	 * @param array<array-key, array<string, mixed>> $array
 	 */
-	public static function sort( array &$array, $field ) {
-		usort( $array, function( array $a, array $b ) use ( $field ): int {
-			return $a[ $field ] <=> $b[ $field ];
-		} );
+	public static function sort( array &$array, string $field ): void {
+		usort( $array, fn( array $a, array $b ): int => ( $a[ $field ] <=> $b[ $field ] ) );
 	}
 
 	/**
-	 * @param mixed[] $array
-	 * @param string  $field
-	 * @return void
+	 * @param array<array-key, array<string, mixed>> $array
 	 */
-	public static function rsort( array &$array, $field ) {
-		usort( $array, function( array $a, array $b ) use ( $field ): int {
-			return $b[ $field ] <=> $a[ $field ];
-		} );
+	public static function rsort( array &$array, string $field ): void {
+		usort( $array, fn( array $a, array $b ): int => ( $b[ $field ] <=> $a[ $field ] ) );
 	}
 }
 }
