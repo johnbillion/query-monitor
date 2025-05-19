@@ -56,7 +56,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsCoreFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -66,7 +66,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsThemeFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		// self::assertSame( 'other', $component->context );
@@ -76,7 +76,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsAnotherPluginFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'bar', $component->context );
@@ -86,7 +86,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsEmptyFilePathIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -106,7 +106,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo', $component->context );
@@ -116,7 +116,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsThemeFileIsInTheme(): void {
 		$component = \QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'theme', 'stylesheet'
+			$component, \QM_Component::TYPE_STYLESHEET, 'stylesheet'
 		);
 
 		self::assertSame( 'stylesheet', $component->context );
@@ -126,7 +126,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsCoreFileIsInCore(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'core', 'core'
+			$component, \QM_Component::TYPE_CORE, 'core'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -136,7 +136,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsFolderlessPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo.php'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo.php'
 		);
 
 		self::assertSame( 'foo.php', $component->context );
@@ -146,7 +146,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsInternalPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo', $component->context );
@@ -156,7 +156,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsPluginExtensionFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo-extension', $component->context );
@@ -204,7 +204,7 @@ class CollectorPhpErrorsTest extends Test {
 
 	function testItWillFilterNoticesFromPlugin(): void {
 		add_filter( 'qm/collect/php_error_levels', function( $table ) {
-			$table['plugin']['foo'] = E_ALL & ~E_NOTICE;
+			$table[ \QM_Component::TYPE_PLUGIN ]['foo'] = E_ALL & ~E_NOTICE;
 			return $table;
 		} );
 
