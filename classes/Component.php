@@ -147,4 +147,8 @@ class QM_Component implements JsonSerializable {
 	public function jsonSerialize(): array {
 		return $this->toArray();
 	}
+
+	public static function sort( QM_Component $a, QM_Component $b ): int {
+		return strcasecmp( $a->get_name(), $b->get_name() );
+	}
 }

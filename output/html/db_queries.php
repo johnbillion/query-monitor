@@ -246,7 +246,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( $data->has_trace ) {
 			$components = array_column( $data->component_times, 'component' );
 
-			// usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
 
 			$values = wp_list_pluck( $components, 'name' );
 

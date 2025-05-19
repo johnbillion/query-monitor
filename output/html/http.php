@@ -43,7 +43,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
-			// usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
 
 			$status_output = array();
 			$hosts = array_unique( array_column( $data->http, 'host' ) );

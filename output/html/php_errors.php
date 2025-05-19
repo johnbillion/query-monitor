@@ -52,7 +52,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		$components = $data->components;
 		$count = 0;
 
-		// usort( $components, 'strcasecmp' );
+		usort( $components, '\QM_Component::sort' );
 
 		$this->before_tabular_output();
 

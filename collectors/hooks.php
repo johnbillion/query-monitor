@@ -79,7 +79,7 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		$this->data->components = $components;
 
 		usort( $this->data->parts, 'strcasecmp' );
-		// usort( $this->data->components, 'strcasecmp' );
+		usort( $this->data->components, '\QM_Component::sort' );
 	}
 
 }

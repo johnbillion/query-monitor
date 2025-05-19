@@ -71,7 +71,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$components = $data->components;
 
 			usort( $parts, 'strcasecmp' );
-			// usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
 
 			echo '<thead>';
 			echo '<tr>';
