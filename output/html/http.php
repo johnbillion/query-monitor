@@ -75,7 +75,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Response Size', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
 			echo '</tr>';
@@ -173,7 +173,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						QueryMonitor::icon( 'warning' ),
 						sprintf(
 							/* translators: %s: The name of a filter that short-circuited an HTTP API request */
-							esc_html__( 'This HTTP request was not sent as it was short-circuited by the %s filter', 'query-monitor' ),
+							esc_html__( 'This HTTP request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
 							'<code>pre_http_request</code>'
 						)
 					) . $url;
@@ -184,7 +184,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
 						QueryMonitor::icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
-						__( 'Redirected to:', 'query-monitor' ),
+						esc_html__( 'This HTTP request was redirected to:', 'query-monitor' ),
 						self::format_url( $row['redirected_to'] )
 					);
 				}
