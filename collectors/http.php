@@ -184,7 +184,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		if ( isset( $args['_qm_key'], $this->http_requests[ $args['_qm_key'] ] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
-			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
+			// (eg. WordPress Beta Tester and FAIR do this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
 			$start = $this->http_requests[ $args['_qm_key'] ]['start'];
 		} else {
@@ -205,9 +205,8 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 	/**
 	 * Log the HTTP request's response if it's being short-circuited by another plugin.
-	 * This is necessary due to https://core.trac.wordpress.org/ticket/25747
 	 *
-	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
+	 * `$response` should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
 	 * @param false|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
