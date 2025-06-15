@@ -311,6 +311,10 @@ abstract class QM_Collector {
 		return self::$hide_qm;
 	}
 
+	public static function get_host(): string {
+		return strval( isset( $_SERVER['HTTP_HOST'] ) ? wp_unslash( $_SERVER['HTTP_HOST'] ) : get_option( 'home' ) );
+	}
+
 	/**
 	 * @param array<string, mixed> $item
 	 * @phpstan-param array{
