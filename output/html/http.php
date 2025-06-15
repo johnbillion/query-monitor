@@ -116,18 +116,16 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$url = self::format_url( $row['url'] );
 				$info = '';
 
-				$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
+				if ( ! $row['local'] ) {
+					$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
 
-				if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) ) {
-					if ( empty( $row['args']['sslverify'] ) && ! $row['local'] ) {
+					if ( 'https' === parse_url( $row['url'], PHP_URL_SCHEME ) && empty( $row['args']['sslverify'] ) ) {
 						$info .= '<span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( sprintf(
 							/* translators: An HTTP API request has disabled certificate verification. 1: Relevant argument name */
 							__( 'Certificate verification disabled (%s)', 'query-monitor' ),
 							'sslverify=false'
 						) ) . '</span><br>';
 						$url = preg_replace( '|^https:|', '<span class="qm-warn">https</span>:', $url );
-					} elseif ( ! $is_error && $row['args']['blocking'] ) {
-						$url = preg_replace( '|^https:|', '<span class="qm-true">https</span>:', $url );
 					}
 				}
 
