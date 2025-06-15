@@ -142,8 +142,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-type'] = $row['type'];
-				$row_attr['data-qm-time'] = $row['ltime'];
 				$row_attr['data-qm-host'] = $row['host'];
+
+				if ( ! $row['intercepted'] ) {
+					$row_attr['data-qm-time'] = $row['ltime'];
+				}
 
 				if ( 'core' !== $component->context ) {
 					$row_attr['data-qm-component'] .= ' non-core';
@@ -164,6 +167,18 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					esc_html( $row['args']['method'] )
 				);
 
+				if ( $row['intercepted'] ) {
+					$url = sprintf(
+						'<span class="qm-warn">%1$s%2$s</span><br>',
+						QueryMonitor::icon( 'warning' ),
+						sprintf(
+							/* translators: %s: The name of a filter that short-circuited an HTTP API request */
+							esc_html__( 'This HTTP request was not sent as it was short-circuited by the %s filter', 'query-monitor' ),
+							'<code>pre_http_request</code>'
+						)
+					) . $url;
+				}
+
 				if ( ! empty( $row['redirected_to'] ) ) {
 					$url .= sprintf(
 						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
@@ -180,58 +195,82 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$url
 				);
 
-				$show_toggle = ! empty( $row['info'] );
+				$size = '';
+				$timeout = $row['args']['timeout'];
 
-				echo '<td class="qm-has-toggle qm-col-status">';
-				if ( $is_error ) {
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo QueryMonitor::icon( 'warning' );
-				}
-				echo esc_html( $response );
-
-				if ( $show_toggle ) {
-					echo self::build_toggler(); // WPCS: XSS ok;
-					echo '<ul class="qm-toggled">';
-				}
-
-				if ( ! empty( $row['info'] ) ) {
-					$time_fields = array(
-						'namelookup_time' => __( 'DNS Resolution Time', 'query-monitor' ),
-						'connect_time' => __( 'Connection Time', 'query-monitor' ),
-						'starttransfer_time' => __( 'Transfer Start Time (TTFB)', 'query-monitor' ),
+				if ( isset( $row['info']['size_download'] ) ) {
+					$size = sprintf(
+						/* translators: %s: Memory used in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						number_format_i18n( $row['info']['size_download'] / 1024, 1 )
 					);
-					foreach ( $time_fields as $key => $value ) {
-						if ( ! isset( $row['info'][ $key ] ) ) {
-							continue;
-						}
-						printf(
-							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
-							esc_html( $value ),
-							esc_html( number_format_i18n( $row['info'][ $key ], 4 ) )
-						);
+				} elseif ( $row['intercepted'] ) {
+					$ltime = 0;
+					$timeout = '';
+				} elseif ( is_array( $row['response'] ) && isset( $row['response']['body'] ) ) {
+					$size = sprintf(
+						/* translators: %s: Memory used in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						number_format_i18n( strlen( $row['response']['body'] ) / 1024, 1 )
+					);
+				}
+
+				if ( $row['intercepted'] && ! $is_error ) {
+					echo '<td class="qm-col-status"></td>';
+				} else {
+					$show_toggle = ! empty( $row['info'] );
+
+					echo '<td class="qm-has-toggle qm-col-status">';
+					if ( $is_error ) {
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo QueryMonitor::icon( 'warning' );
+					}
+					echo esc_html( $response );
+
+					if ( $show_toggle ) {
+						echo self::build_toggler(); // WPCS: XSS ok;
+						echo '<ul class="qm-toggled">';
 					}
 
-					$other_fields = array(
-						'content_type' => __( 'Response Content Type', 'query-monitor' ),
-						'primary_ip' => __( 'IP Address', 'query-monitor' ),
-					);
-					foreach ( $other_fields as $key => $value ) {
-						if ( ! isset( $row['info'][ $key ] ) ) {
-							continue;
-						}
-						printf(
-							'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
-							esc_html( $value ),
-							esc_html( $row['info'][ $key ] )
+					if ( ! empty( $row['info'] ) ) {
+						$time_fields = array(
+							'namelookup_time' => __( 'DNS Resolution Time', 'query-monitor' ),
+							'connect_time' => __( 'Connection Time', 'query-monitor' ),
+							'starttransfer_time' => __( 'Transfer Start Time (TTFB)', 'query-monitor' ),
 						);
+						foreach ( $time_fields as $key => $value ) {
+							if ( ! isset( $row['info'][ $key ] ) ) {
+								continue;
+							}
+							printf(
+								'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
+								esc_html( $value ),
+								esc_html( number_format_i18n( $row['info'][ $key ], 4 ) )
+							);
+						}
+
+						$other_fields = array(
+							'content_type' => __( 'Response Content Type', 'query-monitor' ),
+							'primary_ip' => __( 'IP Address', 'query-monitor' ),
+						);
+						foreach ( $other_fields as $key => $value ) {
+							if ( ! isset( $row['info'][ $key ] ) ) {
+								continue;
+							}
+							printf(
+								'<li><span class="qm-info qm-supplemental">%1$s: %2$s</span></li>',
+								esc_html( $value ),
+								esc_html( $row['info'][ $key ] )
+							);
+						}
 					}
-				}
 
-				if ( $show_toggle ) {
-					echo '</ul>';
-				}
+					if ( $show_toggle ) {
+						echo '</ul>';
+					}
 
-				echo '</td>';
+					echo '</td>';
+				}
 
 				$caller = array_shift( $stack );
 
@@ -256,16 +295,6 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					esc_html( $component->name )
 				);
 
-				$size = '';
-
-				if ( isset( $row['info']['size_download'] ) ) {
-					$size = sprintf(
-						/* translators: %s: Memory used in kilobytes */
-						__( '%s kB', 'query-monitor' ),
-						number_format_i18n( $row['info']['size_download'] / 1024, 1 )
-					);
-				}
-
 				printf(
 					'<td class="qm-nowrap qm-num">%s</td>',
 					esc_html( $size )
@@ -273,7 +302,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 
 				printf(
 					'<td class="qm-num">%s</td>',
-					esc_html( $row['args']['timeout'] )
+					esc_html( $timeout )
 				);
 
 				if ( empty( $ltime ) ) {

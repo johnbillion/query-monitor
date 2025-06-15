@@ -43,6 +43,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   args: array<string, mixed>,
 	 *   response: mixed[]|WP_Error,
 	 *   info: array<string, mixed>|null,
+	 *   intercepted: bool,
 	 * }>
 	 */
 	private $http_responses = array();
@@ -222,7 +223,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		}
 
 		// Something's filtering the response, so we'll log it
-		$this->log_http_response( $response, $args, $url );
+		$this->log_http_response( $response, $args, $url, true );
 
 		return $response;
 	}
@@ -274,12 +275,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log an HTTP response.
 	 *
-	 * @param mixed[]|WP_Error     $response The HTTP response.
-	 * @param array<string, mixed> $args     HTTP request arguments.
-	 * @param string               $url      The request URL.
+	 * @param mixed[]|WP_Error     $response    The HTTP response.
+	 * @param array<string, mixed> $args        HTTP request arguments.
+	 * @param string               $url         The request URL.
+	 * @param bool                 $intercepted Whether the request was intercepted and short-circuited by a filter.
 	 * @return void
 	 */
-	public function log_http_response( $response, array $args, $url ) {
+	public function log_http_response( $response, array $args, $url, bool $intercepted = false ) {
 		/** @var string */
 		$key = $args['_qm_key'];
 
@@ -288,6 +290,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			'response' => $response,
 			'args' => $args,
 			'info' => $this->info,
+			'intercepted' => $intercepted,
 		);
 
 		if ( isset( $args['_qm_original_key'] ) ) {
@@ -367,7 +370,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				}
 			}
 
-			$this->data->ltime += $ltime;
+			if ( ! $response['intercepted'] ) {
+				$this->data->ltime += $ltime;
+			}
 
 			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
 			$local = ( $host === $home_host );
@@ -386,6 +391,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				'response' => $response['response'],
 				'type' => $type,
 				'url' => $request['url'],
+				'intercepted' => $response['intercepted'],
 			);
 		}
 
