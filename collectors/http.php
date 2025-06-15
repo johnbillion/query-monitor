@@ -239,19 +239,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
-		switch ( $action ) {
-
-			case 'response':
-				$this->log_http_response( $response, $args, $url );
-
-				break;
-
-			case 'transports_list':
-				# Nothing
-				break;
-
+		if ( $action === 'response' ) {
+			$this->log_http_response( $response, $args, $url );
 		}
-
 	}
 
 	/**
