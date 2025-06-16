@@ -65,6 +65,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 */
 	private static $unexpected_error = null;
 
+	/**
+	 * @var int
+	 */
+	private const NON_SILENT_ERROR_TYPES = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_PHP_Errors();
 	}
@@ -225,7 +230,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		$error_group = 'errors';
 
-		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
+		if ( $this->is_error_suppressed() && 0 !== $this->error_reporting ) {
 			// This is most likely an @-suppressed error
 			$error_group = 'suppressed';
 		}
@@ -286,7 +291,17 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		 * @param bool $return_value Error handler return value. Default false.
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
+	}
 
+	private function is_error_suppressed(): bool {
+		$current_level = error_reporting();
+
+		if ( PHP_MAJOR_VERSION > 7 ) {
+			// https://www.php.net/manual/en/language.operators.errorcontrol.php
+			return $current_level === self::NON_SILENT_ERROR_TYPES;
+		}
+
+		return 0 === $current_level;
 	}
 
 	/**
