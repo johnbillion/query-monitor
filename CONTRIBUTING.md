@@ -22,7 +22,7 @@ This project is released with <a href="https://github.com/johnbillion/query-moni
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
+You can clone this repo and activate it like a normal plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
 
 ### Prerequisites
 

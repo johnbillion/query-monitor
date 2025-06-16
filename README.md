@@ -1,13 +1,13 @@
 <img src=".wordpress-org/icon-256x256.png" align="right" width="100" height="100" alt="">
 
-[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
+[![Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![Build Status](https://img.shields.io/badge/tests-passing-brightgreen.svg?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
 # Query Monitor
 
-Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
+Query Monitor is the developer tools panel for WordPress and WooCommerce. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
 It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
@@ -229,7 +229,7 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress or WooCommerce, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
@@ -251,7 +251,7 @@ If you've experienced or identified another accessibility issue in Query Monitor
 
 Debugging is rarely done with just one tool. Along with Query Monitor you should be aware of other plugins and tools for debugging and profiling your website. Here are some recommendations:
 
-### WordPress Plugins
+### Plugins for WordPress
 
  * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)
  * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
@@ -268,9 +268,9 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
 
 Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
-See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
+See also my list of [Plugins for WordPress Developers](https://johnblackbourn.com/wordpress-developer-plugins).
 
-### WordPress tools
+### Tools for WordPress developers
 
  * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
  * [Hook Order](https://hookorder.com/)

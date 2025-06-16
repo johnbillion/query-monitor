@@ -7,11 +7,11 @@ Stable tag: 3.17.2
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
-Query Monitor is the developer tools panel for WordPress.
+Query Monitor is the developer tools panel for WordPress and WooCommerce.
 
 ## Description
 
-Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
+Query Monitor is the developer tools panel for WordPress and WooCommerce. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
 It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
@@ -115,7 +115,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 ### Is Query Monitor already included with my hosting?
 
-Some WordPress hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
+Some web hosts bundle Query Monitor as part of their WordPress hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
 
 * [Altis Cloud](https://www.altis-dxp.com/resources/developer-docs/dev-tools/).
 * [WordPress VIP](https://wpvip.com/), although users need to be granted the `view_query_monitor` capability even if they're an Administrator. [See the WordPress VIP documentation for details](https://docs.wpvip.com/performance/query-monitor/enable/).
