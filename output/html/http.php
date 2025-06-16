@@ -196,15 +196,15 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$size = '';
 				$timeout = $row['args']['timeout'];
 
-				if ( isset( $row['info']['size_download'] ) ) {
+				if ( $row['intercepted'] ) {
+					$ltime = 0;
+					$timeout = '';
+				} elseif ( isset( $row['info']['size_download'] ) ) {
 					$size = sprintf(
 						/* translators: %s: Memory used in kilobytes */
 						__( '%s kB', 'query-monitor' ),
 						number_format_i18n( $row['info']['size_download'] / 1024, 1 )
 					);
-				} elseif ( $row['intercepted'] ) {
-					$ltime = 0;
-					$timeout = '';
 				} elseif ( is_array( $row['response'] ) && isset( $row['response']['body'] ) ) {
 					$size = sprintf(
 						/* translators: %s: Memory used in kilobytes */
