@@ -115,7 +115,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 ### Is Query Monitor already included with my hosting?
 
-Some web hosts bundle Query Monitor as part of their WordPress hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
+Some web hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
 
 * [Altis Cloud](https://www.altis-dxp.com/resources/developer-docs/dev-tools/).
 * [WordPress VIP](https://wpvip.com/), although users need to be granted the `view_query_monitor` capability even if they're an Administrator. [See the WordPress VIP documentation for details](https://docs.wpvip.com/performance/query-monitor/enable/).
