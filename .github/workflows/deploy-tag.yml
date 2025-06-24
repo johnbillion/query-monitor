@@ -18,7 +18,7 @@ permissions: {}
 jobs:
   deploy:
     name: Deploy Tag
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
+    uses: szepeviktor/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@ee219e0c2c7b41b54aed9058551347abbe777ed4
     permissions:
       contents: read
       issues: write
