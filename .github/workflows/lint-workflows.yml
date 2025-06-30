@@ -23,4 +23,4 @@ jobs:
       security-events: write
       actions: read
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@6b14da786e6c2ad210cd1ff894d6b1b91cd0d125
