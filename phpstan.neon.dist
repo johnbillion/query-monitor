@@ -36,3 +36,10 @@ parameters:
 		# Passing ints and floats to these functions is fine
 		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, int\|string given#'
 		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, float\|int\|string given#'
+		# ...
+		-
+			identifier: phpstanWP.wpConstant.fetch
+		# ...
+		-
+			path: collectors/languages.php
+			identifier: WPCompat.filterNotAvailable.loadtranslationfile

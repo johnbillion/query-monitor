@@ -56,7 +56,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 			'E_RECOVERABLE_ERROR' => 4096,
 			'E_DEPRECATED' => 8192,
 			'E_USER_DEPRECATED' => 16384,
-			'E_ALL' => 30719,
+			'E_ALL' => E_ALL,
 		);
 
 		$levels = array_fill_keys( array_keys( $constants ), false );
@@ -84,9 +84,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 			'key_buffer_size' => true,  # Key cache size limit
 			'max_allowed_packet' => false, # Individual query size limit
 			'max_connections' => false, # Max number of client connections
-			'query_cache_limit' => true,  # Individual query cache size limit
-			'query_cache_size' => true,  # Total cache size limit
-			'query_cache_type' => 'ON',  # Query cache on or off
 			'innodb_buffer_pool_size' => false, # The amount of memory allocated to the InnoDB buffer pool
 		);
 
@@ -94,13 +91,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
-			if ( method_exists( $dbq->wpdb, 'db_version' ) ) {
-				$server = $dbq->wpdb->db_version();
-				// query_cache_* deprecated since MySQL 5.7.20
-				if ( version_compare( $server, '5.7.20', '>=' ) ) {
-					unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
-				}
-			}
+			$server = $dbq->wpdb->db_version();
 
 			// phpcs:disable
 			/** @var array<int, stdClass>|null */
@@ -131,10 +122,8 @@ class QM_Collector_Environment extends QM_DataCollector {
 				$client_version = null;
 			}
 
-			$server_version = self::get_server_version( $dbq->wpdb );
-
 			$info = array(
-				'server-version' => $server_version,
+				'server-version' => $dbq->wpdb->db_server_info(),
 				'extension' => $extension,
 				'client-version' => $client_version,
 				'user' => $dbq->wpdb->dbuser,
@@ -257,28 +246,6 @@ class QM_Collector_Environment extends QM_DataCollector {
 				$version = $part;
 				break;
 			}
-		}
-
-		return $version;
-	}
-
-	/**
-	 * @param wpdb $db
-	 * @return string
-	 */
-	protected static function get_server_version( wpdb $db ) {
-		$version = null;
-
-		if ( method_exists( $db, 'db_server_info' ) ) {
-			$version = $db->db_server_info();
-		}
-
-		if ( ! $version ) {
-			$version = $db->get_var( 'SELECT VERSION()' );
-		}
-
-		if ( ! $version ) {
-			$version = __( 'Unknown', 'query-monitor' );
 		}
 
 		return $version;

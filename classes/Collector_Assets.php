@@ -257,8 +257,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * Undocumented function
-	 *
 	 * @return array<string, array>|null
 	 * @phpstan-return array<string, array{
 	 *   id: string,
@@ -275,11 +273,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		}
 
 		$modules = wp_script_modules();
-
-		if ( ! ( $modules instanceof \WP_Script_Modules ) ) {
-			return null;
-		}
-
 		$reflector = new ReflectionClass( $modules );
 
 		$get_marked_for_enqueue = $reflector->getMethod( 'get_marked_for_enqueue' );

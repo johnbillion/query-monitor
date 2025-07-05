@@ -298,11 +298,11 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string Markup for the table filter controls.
 	 */
 	protected function build_filter( $name, $values, $label, $args = array() ) {
-
-		if ( empty( $values ) || ! is_array( $values ) ) {
+		if ( empty( $values ) ) {
 			return esc_html( $label ); // Return label text, without being marked up as a label element.
 		}
 
+		// @phpstan-ignore function.alreadyNarrowedType (some plugins may still pass a string here for highlighting)
 		if ( ! is_array( $args ) ) {
 			$args = array(
 				'highlight' => $args,

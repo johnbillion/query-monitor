@@ -86,14 +86,10 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$row_attr['data-qm-type'] = ucfirst( $type );
 					$row_attr['data-qm-key'] = $error_key;
 					$row_attr['data-qm-count'] = $error['calls'];
+					$row_attr['data-qm-component'] = $error['component']->name;
 
-					if ( $error['component'] ) {
-						$component = $error['component'];
-						$row_attr['data-qm-component'] = $component->name;
-
-						if ( 'core' !== $component->context ) {
-							$row_attr['data-qm-component'] .= ' non-core';
-						}
+					if ( 'core' !== $error['component']->context ) {
+						$row_attr['data-qm-component'] .= ' non-core';
 					}
 
 					$attr = '';
@@ -163,13 +159,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 					echo '</ol></td>';
 					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
-
-					if ( ! empty( $component ) ) {
-						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
-					} else {
-						echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
-					}
-
+					echo '<td class="qm-nowrap">' . esc_html( $error['component']->name ) . '</td>';
 					echo '</tr>';
 				}
 			}

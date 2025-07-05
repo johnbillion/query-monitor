@@ -30,6 +30,8 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 		$this->go_to( $url );
 
 		ob_start();
+
+		// @phpstan-ignore require.fileNotFound
 		require ABSPATH . WPINC . '/template-loader.php';
 		return (string) ob_get_clean();
 	}
