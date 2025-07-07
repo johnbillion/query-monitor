@@ -267,21 +267,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 	 * @return string
 	 */
 	protected static function get_server_version( wpdb $db ) {
-		$version = null;
-
-		if ( method_exists( $db, 'db_server_info' ) ) {
-			$version = $db->db_server_info();
-		}
-
-		if ( ! $version ) {
-			$version = $db->get_var( 'SELECT VERSION()' );
-		}
-
-		if ( ! $version ) {
-			$version = __( 'Unknown', 'query-monitor' );
-		}
-
-		return $version;
+		return $db->db_server_info();
 	}
 
 	/**
