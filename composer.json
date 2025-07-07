@@ -83,7 +83,7 @@
 			"tests-stop"
 		],
 		"test:acceptance": [
-			"npm run build",
+			"npm run build #",
 			"acceptance-tests"
 		],
 		"test:integration": [

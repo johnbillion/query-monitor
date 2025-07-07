@@ -20,6 +20,7 @@ class QM_Data_HTTP extends QM_Data {
 	 *   response: mixed[]|WP_Error,
 	 *   type: string,
 	 *   url: string,
+	 *   intercepted: bool,
 	 * }>
 	 */
 	public $http;

@@ -54,7 +54,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 			'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
 			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
 			'scheme' => is_ssl() ? 'https' : 'http',
-			'host' => wp_unslash( $_SERVER['HTTP_HOST'] ),
+			'host' => self::get_host(),
 			'path' => wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ),
 			'query' => wp_unslash( $_SERVER['QUERY_STRING'] ?? '' ),
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),

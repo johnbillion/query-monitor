@@ -43,6 +43,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   args: array<string, mixed>,
 	 *   response: mixed[]|WP_Error,
 	 *   info: array<string, mixed>|null,
+	 *   intercepted: bool,
 	 * }>
 	 */
 	private $http_responses = array();
@@ -184,7 +185,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		if ( isset( $args['_qm_key'], $this->http_requests[ $args['_qm_key'] ] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
-			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
+			// (eg. WordPress Beta Tester and FAIR do this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
 			$start = $this->http_requests[ $args['_qm_key'] ]['start'];
 		} else {
@@ -205,9 +206,8 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 	/**
 	 * Log the HTTP request's response if it's being short-circuited by another plugin.
-	 * This is necessary due to https://core.trac.wordpress.org/ticket/25747
 	 *
-	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
+	 * `$response` should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
 	 * @param false|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
@@ -223,7 +223,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		}
 
 		// Something's filtering the response, so we'll log it
-		$this->log_http_response( $response, $args, $url );
+		$this->log_http_response( $response, $args, $url, true );
 
 		return $response;
 	}
@@ -239,19 +239,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
-		switch ( $action ) {
-
-			case 'response':
-				$this->log_http_response( $response, $args, $url );
-
-				break;
-
-			case 'transports_list':
-				# Nothing
-				break;
-
+		if ( $action === 'response' ) {
+			$this->log_http_response( $response, $args, $url );
 		}
-
 	}
 
 	/**
@@ -275,12 +265,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log an HTTP response.
 	 *
-	 * @param mixed[]|WP_Error     $response The HTTP response.
-	 * @param array<string, mixed> $args     HTTP request arguments.
-	 * @param string               $url      The request URL.
+	 * @param mixed[]|WP_Error     $response    The HTTP response.
+	 * @param array<string, mixed> $args        HTTP request arguments.
+	 * @param string               $url         The request URL.
+	 * @param bool                 $intercepted Whether the request was intercepted and short-circuited by a filter.
 	 * @return void
 	 */
-	public function log_http_response( $response, array $args, $url ) {
+	public function log_http_response( $response, array $args, $url, bool $intercepted = false ) {
 		/** @var string */
 		$key = $args['_qm_key'];
 
@@ -289,6 +280,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			'response' => $response,
 			'args' => $args,
 			'info' => $this->info,
+			'intercepted' => $intercepted,
 		);
 
 		if ( isset( $args['_qm_original_key'] ) ) {
@@ -368,7 +360,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				}
 			}
 
-			$this->data->ltime += $ltime;
+			if ( ! $response['intercepted'] ) {
+				$this->data->ltime += $ltime;
+			}
 
 			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
 			$local = ( $host === $home_host );
@@ -387,6 +381,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				'response' => $response['response'],
 				'type' => $type,
 				'url' => $request['url'],
+				'intercepted' => $response['intercepted'],
 			);
 		}
 
