@@ -192,14 +192,11 @@ class CollectorPhpErrorsTest extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'notice', $actual->errors );
 		self::assertSame( 2, count( $actual->errors['notice'] ) );
 
 		// silenced errors:
-		self::assertTrue( property_exists( $actual, 'silenced' ) );
-		// @phpstan-ignore-next-line
-		self::assertFalse( isset( $actual->silenced ) );
+		self::assertSame( [], $actual->silenced );
 	}
 
 	function testItWillFilterNoticesFromPlugin(): void {
@@ -237,13 +234,11 @@ class CollectorPhpErrorsTest extends Test {
 		$actual = $this->collector->get_data();
 
 		// errors:
-		self::assertTrue( property_exists( $actual, 'errors' ) );
 		self::assertArrayHasKey( 'warning', $actual->errors );
 		self::assertArrayNotHasKey( 'notice', $actual->errors );
 		self::assertSame( 1, count( $actual->errors['warning'] ) );
 
 		// silenced errors:
-		self::assertTrue( property_exists( $actual, 'silenced' ) );
 		self::assertArrayHasKey( 'notice', $actual->silenced );
 		self::assertArrayNotHasKey( 'warning', $actual->silenced );
 		self::assertSame( 1, count( $actual->silenced['notice'] ) );
