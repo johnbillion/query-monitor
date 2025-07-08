@@ -303,9 +303,12 @@ class QM_Backtrace {
 	/**
 	 * @return array<int, array<string, mixed>>
 	 * @phpstan-return list<array{
+	 *   id: string,
+	 *   display: string,
+	 *   calling_file: string,
+	 *   calling_line: int,
 	 *   file: string,
 	 *   line: int,
-	 *   display: string,
 	 * }>
 	 */
 	public function get_filtered_trace() {
