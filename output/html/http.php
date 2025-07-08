@@ -95,7 +95,24 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$css = '';
 
 				if ( $row['response'] instanceof WP_Error ) {
-					$response = $row['response']->get_error_message();
+					// These are both fallback errors that handle particularly broken scenarios.
+					switch ( $row['response']->get_error_code() ) {
+						case 'http_request_not_executed':
+							$response = sprintf(
+								/* translators: An HTTP API request was not executed. %s: Hook name */
+								__( 'Request not executed due to a filter on %s', 'query-monitor' ),
+								'pre_http_request'
+							);
+							break;
+						case 'http_request_timed_out':
+							/* translators: An HTTP API request timed out */
+							$response = __( 'Request timed out', 'query-monitor' );
+							break;
+						default:
+							$response = $row['response']->get_error_message();
+							break;
+					}
+
 					$is_error = true;
 				} elseif ( ! $row['args']['blocking'] ) {
 					/* translators: A non-blocking HTTP API request */

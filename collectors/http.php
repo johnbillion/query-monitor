@@ -287,11 +287,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			/** @var string */
 			$original_key = $args['_qm_original_key'];
 			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
-			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
-				/* translators: %s: Hook name */
-				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
-				'pre_http_request'
-			) );
+			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed' );
 		}
 
 		$this->http_responses[ $key ] = $http_response;
@@ -328,7 +324,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 			if ( empty( $response['response'] ) ) {
 				// Timed out
-				$response['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
+				$response['response'] = new WP_Error( 'http_request_timed_out' );
 				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
 			}
 
