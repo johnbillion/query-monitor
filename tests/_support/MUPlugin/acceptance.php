@@ -39,6 +39,12 @@ add_action( 'init', function() {
 				case 'notice':
 					trigger_error( 'This is a test notice', E_USER_NOTICE );
 					break;
+				case 'suppressed-warning':
+					@trigger_error( 'This is a test suppressed warning', E_USER_WARNING );
+					break;
+				case 'suppressed-notice':
+					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

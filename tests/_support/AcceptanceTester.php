@@ -28,6 +28,10 @@ class AcceptanceTester extends \Codeception\Actor {
 		$this->amOnPage( "/?_qm_acceptance_group=php_errors&_qm_acceptance_test={$test}" );
 	}
 
+	public function amOnAPageThatTriggersSuppressedPhpError( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-{$test}" );
+	}
+
 	public function openQMPanel( string $panel ): void {
 		$this->click( '#wp-admin-bar-query-monitor' );
 		$this->click( $panel, '#qm-panel-menu' );

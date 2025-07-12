@@ -17,4 +17,16 @@ class PhpErrorsCest {
 		$I->amOnAPageThatTriggersPhpError( 'notice' );
 		$I->seeInQMPanel( 'PHP Errors (1)', 'This is a test notice' );
 	}
+
+	public function SuppressedWarningShouldBeHandled( AcceptanceTester $I ): void {
+		$I->amOnAPageThatTriggersSuppressedPhpError( 'warning' );
+		$I->seeInQMPanel( 'PHP Errors (1)', 'Warning (Suppressed)' );
+		$I->seeInQMPanel( 'PHP Errors (1)', 'This is a test suppressed warning' );
+	}
+
+	public function SuppressedNoticeShouldBeHandled( AcceptanceTester $I ): void {
+		$I->amOnAPageThatTriggersSuppressedPhpError( 'notice' );
+		$I->seeInQMPanel( 'PHP Errors (1)', 'Notice (Suppressed)' );
+		$I->seeInQMPanel( 'PHP Errors (1)', 'This is a test suppressed notice' );
+	}
 }
