@@ -5,8 +5,7 @@
 
 class DoingItWrongCest {
 	public function _before( AcceptanceTester $I ): void {
-		$I->haveUserInDatabase( 'administrator', 'administrator' );
-		$I->loginAs( 'administrator', 'administrator' );
+		$I->loginAsAdmin();
 	}
 
 	public function DeprecatedArgumentShouldBeHandled( AcceptanceTester $I ): void {
