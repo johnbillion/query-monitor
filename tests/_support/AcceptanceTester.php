@@ -20,4 +20,39 @@
 class AcceptanceTester extends \Codeception\Actor {
 	use _generated\AcceptanceTesterActions;
 
+	public function amOnAPageThatIsDoingItWrong( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test={$test}" );
+	}
+
+	public function amOnAPageThatTriggersPhpError( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=php_errors&_qm_acceptance_test={$test}" );
+	}
+
+	public function amOnAPageThatTriggersSuppressedPhpError( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-{$test}" );
+	}
+
+	public function seeQMMenuWithWarning(): void {
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-warning' );
+	}
+
+	public function seeQMMenuWithNotice(): void {
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-notice' );
+	}
+
+	public function seeQMMenu(): void {
+		$this->seeElement( '#wp-admin-bar-query-monitor' );
+		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-warning' );
+		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-notice' );
+	}
+
+	public function openQMPanel( string $panel ): void {
+		$this->click( '#wp-admin-bar-query-monitor' );
+		$this->click( $panel, '#qm-panel-menu' );
+	}
+
+	public function seeInQMPanel( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '.qm-panel-show' );
+	}
 }

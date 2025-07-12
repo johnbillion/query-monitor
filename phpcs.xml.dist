@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
-
 	<config name="testVersion" value="7.4-"/>
 	<arg name="extensions" value="php"/>
+	<arg name="cache" value="tests/cache/phpcs.json"/>
 
 	<!--
 	Prevent deprecated errors caused by WordPress Coding Standards not supporting PHP 8.0+.

@@ -68,6 +68,10 @@ To run tests individually, run one of:
 	composer test:integration
 	composer test:acceptance
 
+To run individual tests:
+
+	composer test:acceptance -- --codecept-args="tests/acceptance/DoingItWrongCest.php"
+
 The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 
 	composer exec tests-start
