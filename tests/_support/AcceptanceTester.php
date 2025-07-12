@@ -31,6 +31,6 @@ class AcceptanceTester extends \Codeception\Actor {
 
 	public function seeInQMPanel( string $panel, string $text ): void {
 		$this->openQMPanel( $panel );
-		$this->see( $text, '#query-monitor-main' );
+		$this->see( $text, '.qm-panel-show' );
 	}
 }
