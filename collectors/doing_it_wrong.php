@@ -37,6 +37,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		add_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ), 10, 4 );
 		add_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ), 10, 3 );
 		add_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ), 10, 4 );
+		add_action( 'deprecated_class_run', array( $this, 'action_deprecated_class_run' ), 10, 3 );
 
 		add_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
@@ -44,6 +45,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		add_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_class_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 	}
 
 	/**
@@ -56,6 +58,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		remove_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ) );
 		remove_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ) );
 		remove_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ) );
+		remove_action( 'deprecated_class_run', array( $this, 'action_deprecated_class_run' ) );
 
 		remove_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		remove_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
@@ -63,6 +66,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		remove_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		remove_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		remove_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_class_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 
 		parent::tear_down();
 	}
@@ -299,6 +303,36 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$this->collecting = false;
 	}
 
+	/**
+	 * @param string $class_name
+	 * @param string $replacement
+	 * @param string $version
+	 * @return void
+	 */
+	public function action_deprecated_class_run( $class_name, $replacement, $version ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_action() => true,
+			),
+		) );
+
+		$this->data->actions[] = new QM_Deprecated_Class_Run(
+			$trace,
+			[
+				'class_name'  => $class_name,
+				'replacement' => $replacement,
+				'version'     => $version,
+			]
+		);
+
+		$this->collecting = false;
+	}
 }
 
 # Load early to catch early actions

@@ -23,7 +23,7 @@ final class QM_Deprecated_Class_Run extends QM_Wrong {
 		if ( $replacement ) {
 			return sprintf(
 				/* translators: 1: PHP class name, 2: Version number, 3: Alternative class or function name. */
-				__( 'Class %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'query-monitor' ),
+				__( 'Class %1$s is deprecated since version %2$s! Use %3$s instead.', 'query-monitor' ),
 				$class_name,
 				$version,
 				$replacement
@@ -32,7 +32,7 @@ final class QM_Deprecated_Class_Run extends QM_Wrong {
 
 		return sprintf(
 			/* translators: 1: PHP class name, 2: Version number. */
-			__( 'Class %1$s is <strong>deprecated</strong> since version %2$s with no alternative available.', 'query-monitor' ),
+			__( 'Class %1$s is deprecated since version %2$s with no alternative available.', 'query-monitor' ),
 			$class_name,
 			$version
 		);
