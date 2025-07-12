@@ -31,6 +31,19 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'php_errors':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'warning':
+					trigger_error( 'This is a test warning', E_USER_WARNING );
+					break;
+				case 'notice':
+					trigger_error( 'This is a test notice', E_USER_NOTICE );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		default:
 			throw new \InvalidArgumentException( 'Unknown group: ' . $_GET['_qm_acceptance_group'] );
 			break;
