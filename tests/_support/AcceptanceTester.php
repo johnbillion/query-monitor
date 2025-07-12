@@ -20,4 +20,17 @@
 class AcceptanceTester extends \Codeception\Actor {
 	use _generated\AcceptanceTesterActions;
 
+	public function amDoingItWrong( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test={$test}" );
+	}
+
+	public function openQMPanel( string $panel ): void {
+		$this->click( '#wp-admin-bar-query-monitor' );
+		$this->click( $panel, '#qm-panel-menu' );
+	}
+
+	public function seeInQMPanel( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '#query-monitor-main' );
+	}
 }

@@ -1,0 +1,4 @@
+services:
+  php:
+    volumes:
+      - ./tests/_support/MUPlugin/acceptance.php:/var/www/html/wp-content/mu-plugins/acceptance.php
