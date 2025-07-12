@@ -13,6 +13,11 @@ class DoingItWrongCest {
 		$I->seeInQMPanel( 'Doing it Wrong (1)', 'Function my_function was called with an argument that is deprecated since version 2.0.0' );
 	}
 
+	public function DeprecatedClassShouldBeHandled( AcceptanceTester $I ): void {
+		$I->amOnAPageThatIsDoingItWrong( 'class' );
+		$I->seeInQMPanel( 'Doing it Wrong (1)', 'My_Class is deprecated since version 2.0.0' );
+	}
+
 	public function DeprecatedConstructorShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'constructor' );
 		$I->seeInQMPanel( 'Doing it Wrong (1)', 'The called constructor method for My_Class class is deprecated since version 2.0.0' );
