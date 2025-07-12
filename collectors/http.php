@@ -387,6 +387,143 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 	}
 
+	/**
+	 * Log a Guzzle HTTP request.
+	 *
+	 * @param object $request    The Guzzle request object.
+	 * @param object|null $response The Guzzle response object, or null if an exception occurred.
+	 * @param \Exception|null $exception The exception thrown, or null if the request was successful.
+	 * @param string $url        The request URL.
+	 * @param float $start_time  The request start time.
+	 * @param QM_Backtrace $trace The backtrace object.
+	 * @param array<string, mixed> $options Guzzle request options.
+	 * @return void
+	 */
+	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ) {
+		$end_time = microtime( true );
+		$ltime = $end_time - $start_time;
+		$key = $start_time . $url;
+
+		$args = array(
+			'method' => $request->getMethod(),
+			'timeout' => $options['timeout'] ?? 30,
+			'redirection' => $options['allow_redirects']['max'] ?? 5,
+			'httpversion' => $options['version'] ?? '1.1',
+			'user-agent' => $request->getHeaderLine('User-Agent') ?: 'GuzzleHttp',
+			'blocking' => true,
+			'headers' => array(),
+			'cookies' => array(),
+			'body' => (string) $request->getBody(),
+			'compress' => false,
+			'decompress' => true,
+			'sslverify' => $options['verify'] ?? true,
+			'sslcertificates' => $options['cert'] ?? '',
+			'stream' => false,
+			'filename' => null,
+			'_qm_guzzle' => true,
+		);
+
+		foreach ( $request->getHeaders() as $name => $values ) {
+			$args['headers'][ $name ] = implode( ', ', $values );
+		}
+
+		if ( $exception ) {
+			$wp_error = new WP_Error( 'guzzle_request_failed', $exception->getMessage() );
+			$type = 'error';
+			$response_data = $wp_error;
+		} else {
+			$response_data = array(
+				'headers' => array(),
+				'body' => (string) $response->getBody(),
+				'response' => array(
+					'code' => $response->getStatusCode(),
+					'message' => $response->getReasonPhrase(),
+				),
+				'cookies' => array(),
+				'filename' => null,
+			);
+
+			foreach ( $response->getHeaders() as $name => $values ) {
+				$response_data['headers'][ $name ] = implode( ', ', $values );
+			}
+
+			$code = $response->getStatusCode();
+			$type = "http:{$code}";
+		}
+
+		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
+		$host = (string) parse_url( $url, PHP_URL_HOST );
+		$local = ( $host === $home_host );
+
+		$this->log_type( $type );
+		$this->log_component( $trace->get_component(), $ltime, $type );
+
+		$this->data->http[ $key ] = array(
+			'args' => $args,
+			'component' => $trace->get_component(),
+			'filtered_trace' => $trace->get_filtered_trace(),
+			'host' => $host,
+			'info' => null,
+			'local' => $local,
+			'ltime' => $ltime,
+			'redirected_to' => null,
+			'response' => $response_data,
+			'type' => $type,
+			'url' => $url,
+			'intercepted' => false,
+		);
+
+		$this->data->ltime += $ltime;
+
+		if ( $exception || ( $response && $response->getStatusCode() >= 400 ) ) {
+			$this->data->errors['warning'][] = $key;
+		}
+	}
+
+	/**
+	 * Creates a Guzzle middleware for logging HTTP requests to Query Monitor.
+	 *
+	 * Usage:
+	 *   $stack = HandlerStack::create();
+	 *   $stack->push(QM_Collector_HTTP::guzzle_middleware());
+	 *   $client = new Client(['handler' => $stack]);
+	 *
+	 * @return callable Guzzle middleware callable.
+	 */
+	public static function guzzle_middleware(): callable {
+		return function ( callable $handler ) {
+			return function ( $request, array $options ) use ( $handler ) {
+				$collector = QM_Collectors::get( 'http' );
+
+				if ( ! $collector instanceof QM_Collector_HTTP ) {
+					return $handler( $request, $options );
+				}
+
+				$url = (string) $request->getUri();
+				$start_time = microtime( true );
+
+				$trace = new QM_Backtrace( array(
+					'ignore_namespace' => array(
+						'GuzzleHttp' => true,
+					),
+				) );
+
+				$promise = $handler( $request, $options );
+
+				return $promise->then(
+					function ( $response ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+						$collector->log_guzzle_request( $request, $response, null, $url, $start_time, $trace, $options );
+						return $response;
+					},
+					function ( $exception ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+						$collector->log_guzzle_request( $request, null, $exception, $url, $start_time, $trace, $options );
+						throw $exception;
+					}
+				);
+			};
+		};
+	}
+
 }
 
 # Load early in case a plugin is doing an HTTP request when it initialises instead of after the `plugins_loaded` hook
