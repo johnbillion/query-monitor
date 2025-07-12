@@ -90,7 +90,7 @@
 			"integration-tests"
 		],
 		"test:phpcs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' ."
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath='./' ."
 		],
 		"test:phpstan": [
 			"codecept build",
