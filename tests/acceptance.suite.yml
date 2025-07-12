@@ -8,7 +8,6 @@ modules:
   enabled:
     - WPWebDriver
     - WPDb
-    - \Helper\Acceptance
   config:
     WPDb:
       dsn: 'mysql:host=localhost:%TEST_SITE_DATABASE_PORT%;dbname=plugindb'
