@@ -26,7 +26,13 @@ add_action( 'init', function() {
 				case 'hook':
 					_deprecated_hook( 'my_hook', '2.0.0' );
 					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
 			}
+			break;
+		default:
+			throw new \InvalidArgumentException( 'Unknown group: ' . $_GET['_qm_acceptance_group'] );
 			break;
 	}
 } );
