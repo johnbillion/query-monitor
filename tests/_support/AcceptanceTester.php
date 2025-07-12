@@ -20,7 +20,7 @@
 class AcceptanceTester extends \Codeception\Actor {
 	use _generated\AcceptanceTesterActions;
 
-	public function amDoingItWrong( string $test ): void {
+	public function amOnAPageThatIsDoingItWrong( string $test ): void {
 		$this->amOnPage( "/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test={$test}" );
 	}
 
