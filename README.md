@@ -1,7 +1,7 @@
 <img src=".wordpress-org/icon-256x256.png" align="right" width="100" height="100" alt="">
 
 [![Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
-[![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
+[![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](https://opensource.org/license/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![Build Status](https://img.shields.io/badge/tests-passing-brightgreen.svg?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
@@ -304,7 +304,7 @@ See also my list of [Plugins for WordPress Developers](https://johnblackbourn.co
  * [Meminfo](https://github.com/BitOne/php-meminfo)
  * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
  * [phpspy](https://github.com/adsr/phpspy)
- * [Psysh](http://psysh.org/)
+ * [Psysh](https://psysh.org/)
  * [Ray](https://myray.app/)
  * [Reli](https://github.com/reliforp/reli-prof)
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)

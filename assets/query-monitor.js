@@ -6,7 +6,7 @@
 
 var QM_i18n = {
 
-	// http://core.trac.wordpress.org/ticket/20491
+	// https://core.trac.wordpress.org/ticket/20491
 
 	number_format : function( number, decimals ) {
 
