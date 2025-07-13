@@ -391,6 +391,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * Log a Guzzle HTTP request.
 	 *
 	 * @since 3.18.1
+	 *
 	 * @param \Psr\Http\Message\RequestInterface $request    The Guzzle request object.
 	 * @param \Psr\Http\Message\ResponseInterface|null $response The Guzzle response object, or null if an exception occurred.
 	 * @param \Exception|null $exception The exception thrown, or null if the request was successful.
@@ -398,9 +399,8 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param float $start_time  The request start time.
 	 * @param QM_Backtrace $trace The backtrace object.
 	 * @param array<string, mixed> $options Guzzle request options.
-	 * @return void
 	 */
-	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ) {
+	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ) : void {
 		$end_time = microtime( true );
 		$ltime = $end_time - $start_time;
 		$key = $start_time . $url;
@@ -485,11 +485,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * Creates a Guzzle middleware for logging HTTP requests to Query Monitor.
 	 *
 	 * Usage:
+	 *
 	 *   $stack = HandlerStack::create();
-	 *   $stack->push(QM_Collector_HTTP::guzzle_middleware());
-	 *   $client = new Client(['handler' => $stack]);
+	 *   $stack->push( QM_Collector_HTTP::guzzle_middleware() );
+	 *   $client = new Client( [ 'handler' => $stack ] );
 	 *
 	 * @since 3.18.1
+	 *
 	 * @return callable Guzzle middleware callable.
 	 */
 	public static function guzzle_middleware(): callable {
