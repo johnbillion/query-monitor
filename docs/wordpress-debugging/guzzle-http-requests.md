@@ -118,40 +118,7 @@ try {
 }
 ```
 
-## Troubleshooting
-
-### Middleware Not Working
-
-If Guzzle requests aren't appearing in Query Monitor:
-
-1. **Check Query Monitor is active** - The middleware automatically disables if QM isn't loaded
-2. **Verify middleware order** - QM middleware should be one of the last in your stack
-3. **Check Guzzle version** - Requires Guzzle 7.x (compatible with PHP 7.2+)
-
-### Missing Stack Traces
-
-If stack traces aren't showing your code:
-
-- The middleware automatically ignores Guzzle internal classes
-- Your calling code should appear at the top of the trace
-- If you have custom HTTP abstraction layers, they may need to be added to ignore lists
-
-### Large Response Bodies
-
-Query Monitor captures response bodies for debugging. For very large responses:
-
-- Consider using Guzzle's `stream` option for large downloads
-- The middleware respects Guzzle's streaming settings
-- Response body display in QM may be truncated for readability
-
-## Requirements
-
-- **PHP 7.2+** - Required by Guzzle 7.x
-- **Guzzle 7.x** - The middleware is designed for Guzzle 7
-- **Query Monitor** - Obviously required for logging functionality
-
 ## Related Documentation
 
-- [HTTP API Requests Panel](https://querymonitor.com/wordpress-debugging/rest-api-requests/)
 - [Profiling and Logging](https://querymonitor.com/wordpress-debugging/profiling-and-logging/)
 - [Guzzle HTTP Documentation](https://docs.guzzlephp.org/)
