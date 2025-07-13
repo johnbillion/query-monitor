@@ -1,5 +1,9 @@
 # Debugging Guzzle HTTP Requests
 
+::: tip New
+This feature is new in Query Monitor 3.18.1
+:::
+
 Query Monitor can log HTTP requests made with the [Guzzle HTTP client library](https://docs.guzzlephp.org/), a popular PHP HTTP client used by many WordPress plugins and applications. Since Guzzle bypasses WordPress's HTTP API, these requests don't normally appear in Query Monitor's HTTP panel. The Guzzle middleware solves this problem.
 
 ## Basic Usage

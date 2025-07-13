@@ -390,6 +390,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log a Guzzle HTTP request.
 	 *
+	 * @since 3.18.1
 	 * @param \Psr\Http\Message\RequestInterface $request    The Guzzle request object.
 	 * @param \Psr\Http\Message\ResponseInterface|null $response The Guzzle response object, or null if an exception occurred.
 	 * @param \Exception|null $exception The exception thrown, or null if the request was successful.
@@ -488,6 +489,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   $stack->push(QM_Collector_HTTP::guzzle_middleware());
 	 *   $client = new Client(['handler' => $stack]);
 	 *
+	 * @since 3.18.1
 	 * @return callable Guzzle middleware callable.
 	 */
 	public static function guzzle_middleware(): callable {
