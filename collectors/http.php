@@ -341,7 +341,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				$type = 'non-blocking';
 			} else {
 				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
-				$type = "http:{$code}";
+				$type = "HTTP {$code}";
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
 				}
@@ -404,29 +404,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$end_time = microtime( true );
 		$ltime = $end_time - $start_time;
 		$key = $start_time . $url;
-
 		$args = array(
 			'method' => $request->getMethod(),
 			'timeout' => $options['timeout'] ?? 30,
-			'redirection' => $options['allow_redirects']['max'] ?? 5,
-			'httpversion' => $options['version'] ?? '1.1',
-			'user-agent' => $request->getHeaderLine('User-Agent') ?: 'GuzzleHttp',
 			'blocking' => true,
-			'headers' => array(),
-			'cookies' => array(),
-			'body' => (string) $request->getBody(),
-			'compress' => false,
-			'decompress' => true,
 			'sslverify' => $options['verify'] ?? true,
-			'sslcertificates' => $options['cert'] ?? '',
-			'stream' => false,
-			'filename' => null,
 			'_qm_guzzle' => true,
 		);
-
-		foreach ( $request->getHeaders() as $name => $values ) {
-			$args['headers'][ $name ] = implode( ', ', $values );
-		}
 
 		if ( $exception ) {
 			$wp_error = new WP_Error( 'guzzle_request_failed', $exception->getMessage() );
@@ -449,7 +433,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			}
 
 			$code = $response->getStatusCode();
-			$type = "http:{$code}";
+			$type = "HTTP {$code}";
 		}
 
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
@@ -499,7 +483,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			return function ( \Psr\Http\Message\RequestInterface $request, array $options ) use ( $handler ) {
 				$collector = QM_Collectors::get( 'http' );
 
-				if ( ! $collector instanceof QM_Collector_HTTP ) {
+				if ( ! ( $collector instanceof QM_Collector_HTTP ) ) {
 					return $handler( $request, $options );
 				}
 
