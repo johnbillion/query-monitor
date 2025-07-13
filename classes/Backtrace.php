@@ -538,12 +538,12 @@ class QM_Backtrace {
 						break;
 					}
 				}
-				
+
 				if ( $namespace_ignored ) {
 					$return = null;
 				}
 			}
-			
+
 			if ( $return && isset( $show_args[ $frame['function'] ] ) ) {
 				$show = $show_args[ $frame['function'] ];
 

@@ -390,8 +390,8 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log a Guzzle HTTP request.
 	 *
-	 * @param object $request    The Guzzle request object.
-	 * @param object|null $response The Guzzle response object, or null if an exception occurred.
+	 * @param \Psr\Http\Message\RequestInterface $request    The Guzzle request object.
+	 * @param \Psr\Http\Message\ResponseInterface|null $response The Guzzle response object, or null if an exception occurred.
 	 * @param \Exception|null $exception The exception thrown, or null if the request was successful.
 	 * @param string $url        The request URL.
 	 * @param float $start_time  The request start time.
@@ -492,7 +492,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 */
 	public static function guzzle_middleware(): callable {
 		return function ( callable $handler ) {
-			return function ( $request, array $options ) use ( $handler ) {
+			return function ( \Psr\Http\Message\RequestInterface $request, array $options ) use ( $handler ) {
 				$collector = QM_Collectors::get( 'http' );
 
 				if ( ! $collector instanceof QM_Collector_HTTP ) {
@@ -511,11 +511,11 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				$promise = $handler( $request, $options );
 
 				return $promise->then(
-					function ( $response ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+					function ( \Psr\Http\Message\ResponseInterface $response ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
 						$collector->log_guzzle_request( $request, $response, null, $url, $start_time, $trace, $options );
 						return $response;
 					},
-					function ( $exception ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+					function ( \Exception $exception ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
 						$collector->log_guzzle_request( $request, null, $exception, $url, $start_time, $trace, $options );
 						throw $exception;
 					}
