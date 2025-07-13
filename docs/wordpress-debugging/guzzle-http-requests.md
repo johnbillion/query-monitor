@@ -1,6 +1,6 @@
 # Debugging Guzzle HTTP Requests
 
-Query Monitor can log HTTP requests made with the [Guzzle HTTP client library](https://docs.guzzlephp.org/), a popular PHP HTTP client that's used by many WordPress plugins and applications. This enables comprehensive debugging of HTTP requests that bypass WordPress's built-in HTTP API. Since Guzzle bypasses WordPress's HTTP API, these requests don't normally appear in Query Monitor's HTTP panel. The Guzzle middleware solves this problem.
+Query Monitor can log HTTP requests made with the [Guzzle HTTP client library](https://docs.guzzlephp.org/), a popular PHP HTTP client used by many WordPress plugins and applications. Since Guzzle bypasses WordPress's HTTP API, these requests don't normally appear in Query Monitor's HTTP panel. The Guzzle middleware solves this problem.
 
 ## Basic Usage
 
@@ -49,7 +49,7 @@ class MyPlugin {
         $stack = HandlerStack::create();
         
         // Add Query Monitor middleware if available
-        if (class_exists('QM_Collector_HTTP')) {
+        if (method_exists('QM_Collector_HTTP', 'guzzle_middleware')) {
             $stack->push(QM_Collector_HTTP::guzzle_middleware());
         }
         
@@ -62,24 +62,6 @@ class MyPlugin {
 }
 ```
 
-### Temporary Debugging
-
-For temporary debugging of existing Guzzle usage, you can wrap your existing client:
-
-```php
-// Existing Guzzle client
-$existingClient = new Client(['base_uri' => 'https://api.example.com/']);
-
-// Wrap with QM middleware for debugging
-$stack = HandlerStack::create();
-$stack->push(QM_Collector_HTTP::guzzle_middleware());
-$debugClient = new Client([
-    'handler' => $stack,
-    'base_uri' => 'https://api.example.com/'
-]);
-
-// Use debugClient instead of existingClient temporarily
-```
 
 ## What Information is Captured
 
