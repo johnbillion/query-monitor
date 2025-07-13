@@ -1,17 +1,6 @@
 # Debugging Guzzle HTTP Requests
 
-Query Monitor can log HTTP requests made with the [Guzzle HTTP client library](https://docs.guzzlephp.org/), a popular PHP HTTP client that's used by many WordPress plugins and applications. This enables comprehensive debugging of HTTP requests that bypass WordPress's built-in HTTP API.
-
-## Why Use Guzzle Middleware?
-
-Many modern WordPress plugins and applications use Guzzle for HTTP requests because it offers:
-
-- Advanced features like connection pooling and concurrent requests
-- Better error handling and retry mechanisms  
-- Support for modern HTTP features
-- PSR-7 compliant request/response objects
-
-However, since Guzzle bypasses WordPress's HTTP API, these requests don't normally appear in Query Monitor's HTTP panel. The Guzzle middleware solves this problem.
+Query Monitor can log HTTP requests made with the [Guzzle HTTP client library](https://docs.guzzlephp.org/), a popular PHP HTTP client that's used by many WordPress plugins and applications. This enables comprehensive debugging of HTTP requests that bypass WordPress's built-in HTTP API. Since Guzzle bypasses WordPress's HTTP API, these requests don't normally appear in Query Monitor's HTTP panel. The Guzzle middleware solves this problem.
 
 ## Basic Usage
 
@@ -128,26 +117,6 @@ try {
     // Shows as "guzzle_request_failed" with exception message
 }
 ```
-
-## Filtering and Organization
-
-Guzzle requests appear alongside WordPress HTTP API requests in the HTTP panel and can be:
-
-- **Filtered by component** - See which plugin made which requests
-- **Filtered by status** - Find failed requests or specific response codes  
-- **Filtered by host** - Group requests by destination
-- **Sorted by time** - Find slow requests
-
-The stack trace filtering automatically ignores Guzzle internal classes using the new `ignore_namespace` feature, so you see clean traces showing your actual calling code.
-
-## Performance Considerations
-
-The Query Monitor middleware has minimal performance impact:
-
-- Only collects data when Query Monitor is active
-- Uses efficient promise-based handling
-- Doesn't modify request/response content
-- Automatically disabled in production if QM is disabled
 
 ## Troubleshooting
 
