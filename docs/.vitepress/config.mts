@@ -87,6 +87,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/rest-api-requests/',
 					},
 					{
+						text: 'Guzzle HTTP requests',
+						link: '/wordpress-debugging/guzzle-http-requests/',
+					},
+					{
 						text: 'Related hooks',
 						link: '/wordpress-debugging/related-hooks/',
 					},
