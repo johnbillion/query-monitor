@@ -561,16 +561,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-fatal-wrap">';
 
-		if ( QM_Output_Html::has_clickable_links() ) {
-			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
-		} else {
-			$file = esc_html( $e['file'] );
-		}
-
 		printf(
 			'<p>%1$s<br>in <b>%2$s</b> on line <b>%3$d</b></p>',
 			nl2br( esc_html( $e['message'] ), false ),
-			$file,
+			esc_html( $e['file'] ),
 			intval( $e['line'] )
 		); // WPCS: XSS ok.
 
