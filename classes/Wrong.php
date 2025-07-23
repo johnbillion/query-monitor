@@ -31,9 +31,12 @@ abstract class QM_Wrong implements JsonSerializable {
 	}
 
 	/**
-	 * @return array<string, mixed>
+	 * @return array{trace: QM_Backtrace, message: string}
 	 */
 	public function jsonSerialize(): array {
-		return [];
+		return [
+			'trace' => $this->backtrace,
+			'message' => $this->get_message(),
+		];
 	}
 }

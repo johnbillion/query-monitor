@@ -10,8 +10,10 @@
 	"properties": {
 		"actions": {
 			"type": "array",
+			"phpType": "array<int, QM_Wrong>",
 			"items": {
 				"type": "object",
+				"phpType": "QM_Wrong",
 				"required": [
 					"trace",
 					"message"
