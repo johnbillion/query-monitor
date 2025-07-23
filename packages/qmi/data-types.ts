@@ -352,6 +352,7 @@ export interface HTTP {
 			| WP_Error;
 		type: string;
 		url: string;
+		intercepted: boolean;
 	}[];
 	ltime: number;
 	errors: {

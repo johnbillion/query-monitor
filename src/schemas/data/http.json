@@ -142,6 +142,9 @@
 					},
 					"url": {
 						"type": "string"
+					},
+					"intercepted": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -149,6 +152,7 @@
 					"trace",
 					"host",
 					"info",
+					"intercepted",
 					"local",
 					"ltime",
 					"redirected_to",
