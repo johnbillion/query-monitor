@@ -32,6 +32,10 @@ class AcceptanceTester extends \Codeception\Actor {
 		$this->amOnPage( "/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-{$test}" );
 	}
 
+	public function amOnAPageThatMakesGuzzleRequest( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test={$test}" );
+	}
+
 	public function seeQMMenuWithWarning(): void {
 		$this->seeElement( '#wp-admin-bar-query-monitor.qm-warning' );
 	}

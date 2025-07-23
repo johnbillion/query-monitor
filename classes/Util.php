@@ -38,7 +38,7 @@ class QM_Util {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
 		# loaded in the admin area, so we'll use our own version.
-		# See also http://core.trac.wordpress.org/ticket/17725
+		# See also https://core.trac.wordpress.org/ticket/17725
 
 		$bytes = (float) $size;
 

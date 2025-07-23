@@ -33,7 +33,7 @@ class QM_Hook {
 
 		if ( isset( $wp_filter[ $name ] ) ) {
 
-			# http://core.trac.wordpress.org/ticket/17817
+			# https://core.trac.wordpress.org/ticket/17817
 			$action = $wp_filter[ $name ];
 
 			foreach ( $action as $priority => $callbacks ) {

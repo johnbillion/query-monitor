@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.18.0
+ * Version:      3.19.0
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.18.0' );
+define( 'QM_VERSION', '3.19.0' );
 
 // This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 require_once __DIR__ . '/classes/PHP.php';
