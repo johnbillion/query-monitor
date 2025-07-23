@@ -50,6 +50,33 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'guzzle_requests':
+			if ( ! class_exists( 'GuzzleHttp\Client' ) ) {
+				throw new \Exception( 'Guzzle not available' );
+			}
+
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'successful_request':
+					$stack = \GuzzleHttp\HandlerStack::create();
+					$stack->push( QM_Collector_HTTP::guzzle_middleware() );
+					$client = new \GuzzleHttp\Client( [ 'handler' => $stack ] );
+					$client->get( 'https://httpbin.org/json' );
+					break;
+				case 'error_request':
+					$stack = \GuzzleHttp\HandlerStack::create();
+					$stack->push( QM_Collector_HTTP::guzzle_middleware() );
+					$client = new \GuzzleHttp\Client( [ 'handler' => $stack ] );
+					try {
+						$client->get( 'https://httpbin.org/status/404' );
+					} catch ( \GuzzleHttp\Exception\ClientException $e ) {
+						// Expected 404 error
+					}
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		default:
 			throw new \InvalidArgumentException( 'Unknown group: ' . $_GET['_qm_acceptance_group'] );
 			break;

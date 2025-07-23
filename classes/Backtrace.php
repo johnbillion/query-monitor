@@ -30,6 +30,11 @@ class QM_Backtrace {
 	);
 
 	/**
+	 * @var array<string, bool>
+	 */
+	protected static $ignore_namespace = array();
+
+	/**
 	 * @var array<string, array<string, bool>>
 	 */
 	protected static $ignore_method = array();
@@ -140,6 +145,7 @@ class QM_Backtrace {
 
 		$this->args = array_merge( array(
 			'ignore_class' => array(),
+			'ignore_namespace' => array(),
 			'ignore_method' => array(),
 			'ignore_func' => array(),
 			'ignore_hook' => array(),
@@ -419,6 +425,16 @@ class QM_Backtrace {
 			self::$ignore_class = apply_filters( 'qm/trace/ignore_class', self::$ignore_class );
 
 			/**
+			 * Filters which namespaces to ignore when constructing user-facing call stacks.
+			 *
+			 * @since 3.18.1
+			 *
+			 * @param array<string, bool> $ignore_namespace Array of namespace names to ignore. The array keys are namespace names to ignore,
+			 *                                              the array values are whether to ignore the namespace (usually true).
+			 */
+			self::$ignore_namespace = apply_filters( 'qm/trace/ignore_namespace', self::$ignore_namespace );
+
+			/**
 			 * Filters which class methods to ignore when constructing user-facing call stacks.
 			 *
 			 * @since 2.7.0
@@ -467,6 +483,7 @@ class QM_Backtrace {
 
 		$return = $frame;
 		$ignore_class = array_filter( array_merge( self::$ignore_class, $this->args['ignore_class'] ) );
+		$ignore_namespace = array_filter( array_merge( self::$ignore_namespace, $this->args['ignore_namespace'] ) );
 		$ignore_method = array_filter( array_merge( self::$ignore_method, $this->args['ignore_method'] ) );
 		$ignore_func = array_filter( array_merge( self::$ignore_func, $this->args['ignore_func'] ) );
 		$ignore_hook = array_filter( array_merge( self::$ignore_hook, $this->args['ignore_hook'] ) );
@@ -493,13 +510,41 @@ class QM_Backtrace {
 			} elseif ( 0 === strpos( $frame['class'], 'QM' ) ) {
 				$return = null;
 			} else {
-				$return['id'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
+				// Check if the class belongs to an ignored namespace
+				$namespace_ignored = false;
+				foreach ( array_keys( $ignore_namespace ) as $namespace ) {
+					if ( 0 === strpos( $frame['class'], $namespace . '\\' ) ) {
+						$namespace_ignored = true;
+						break;
+					}
+				}
+
+				if ( $namespace_ignored ) {
+					$return = null;
+				} else {
+					$return['id'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
+					$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
+				}
 			}
 		} else {
 			if ( isset( $ignore_func[ $frame['function'] ] ) ) {
 				$return = null;
-			} elseif ( isset( $show_args[ $frame['function'] ] ) ) {
+			} else {
+				// Check if the function belongs to an ignored namespace
+				$namespace_ignored = false;
+				foreach ( array_keys( $ignore_namespace ) as $namespace ) {
+					if ( 0 === strpos( $frame['function'], $namespace . '\\' ) ) {
+						$namespace_ignored = true;
+						break;
+					}
+				}
+
+				if ( $namespace_ignored ) {
+					$return = null;
+				}
+			}
+
+			if ( $return && isset( $show_args[ $frame['function'] ] ) ) {
 				$show = $show_args[ $frame['function'] ];
 
 				if ( 'dir' === $show ) {
@@ -526,7 +571,7 @@ class QM_Backtrace {
 						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
 					}
 				}
-			} else {
+			} elseif ( $return ) {
 				$return['id'] = $frame['function'] . '()';
 				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
 			}
