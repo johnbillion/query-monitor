@@ -71,7 +71,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			$components = $data->components;
 
 			usort( $parts, 'strcasecmp' );
-			usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
 
 			echo '<thead>';
 			echo '<tr>';
@@ -92,7 +92,8 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+			$values = wp_list_pluck( $components, 'name' );
+			echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '</tr>';
 			echo '</thead>';
@@ -108,7 +109,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				$row_attr['data-qm-component'] = $component->name;
 				$row_attr['data-qm-result'] = ( $row['result'] ) ? 'true' : 'false';
 
-				if ( 'core' !== $component->context ) {
+				if ( ! $component->is_core() ) {
 					$row_attr['data-qm-component'] .= ' non-core';
 				}
 

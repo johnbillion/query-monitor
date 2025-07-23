@@ -15,12 +15,6 @@ if ( ! defined( 'QM_ERROR_FATALS' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
- * @phpstan-type errorLabels array{
- *   warning: string,
- *   notice: string,
- *   strict: string,
- *   deprecated: string,
- * }
  * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
@@ -29,16 +23,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @var string
 	 */
 	public $id = 'php_errors';
-
-	/**
-	 * @var array<string, array<string, string>>
-	 * @phpstan-var array{
-	 *   errors: errorLabels,
-	 *   suppressed: errorLabels,
-	 *   silenced: errorLabels,
-	 * }
-	 */
-	public $types;
 
 	/**
 	 * @var int|null
@@ -361,26 +345,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		$this->types = array(
-			'errors' => array(
-				'warning' => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
-			),
-			'suppressed' => array(
-				'warning' => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			),
-			'silenced' => array(
-				'warning' => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			),
-		);
 		$components = array();
 
 		if ( ! empty( $this->data->errors ) ) {
@@ -426,17 +390,19 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
 
-			foreach ( $this->types as $error_group => $error_types ) {
-				foreach ( $error_types as $type => $title ) {
-					if ( isset( $this->data->{$error_group}[ $type ] ) ) {
-						/**
-						 * @var array<string, mixed> $error
-						 * @phpstan-var errorObject $error
-						 */
-						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
-							$components[ $error['component']->name ] = $error['component']->name;
-						}
-					}
+			foreach ( $this->data->errors as $errors ) {
+				foreach ( $errors as $error ) {
+					$components[ $error['component']->get_id() ] = $error['component'];
+				}
+			}
+			foreach ( $this->data->suppressed as $errors ) {
+				foreach ( $errors as $error ) {
+					$components[ $error['component']->get_id() ] = $error['component'];
+				}
+			}
+			foreach ( $this->data->silenced as $errors ) {
+				foreach ( $errors as $error ) {
+					$components[ $error['component']->get_id() ] = $error['component'];
 				}
 			}
 		}

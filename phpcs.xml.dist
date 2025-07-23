@@ -48,6 +48,7 @@
 		<!-- We have the means -->
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
 
 		<!-- QM looks at several superglobals -->
 		<exclude name="WordPress.Security.NonceVerification.Missing" />

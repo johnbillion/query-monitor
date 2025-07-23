@@ -43,7 +43,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			$components = array_column( $data->component_times, 'component' );
 
 			usort( $statuses, 'strcasecmp' );
-			usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
 
 			$status_output = array();
 			$hosts = array_unique( array_column( $data->http, 'host' ) );
@@ -73,7 +73,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			echo '</th>';
 			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+
+			$values = wp_list_pluck( $components, 'name' );
+
+			echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Response Size', 'query-monitor' ) . '</th>';
 			echo '<th scope="col" class="qm-num">' . esc_html__( 'Timeout', 'query-monitor' ) . '</th>';
@@ -92,7 +95,24 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				$css = '';
 
 				if ( $row['response'] instanceof WP_Error ) {
-					$response = $row['response']->get_error_message();
+					// These are both fallback errors that handle particularly broken scenarios.
+					switch ( $row['response']->get_error_code() ) {
+						case 'http_request_not_executed':
+							$response = sprintf(
+								/* translators: An HTTP API request was not executed. %s: Hook name */
+								__( 'Request not executed due to a filter on %s', 'query-monitor' ),
+								'pre_http_request'
+							);
+							break;
+						case 'http_request_timed_out':
+							/* translators: An HTTP API request timed out */
+							$response = __( 'Request timed out', 'query-monitor' );
+							break;
+						default:
+							$response = $row['response']->get_error_message();
+							break;
+					}
+
 					$is_error = true;
 				} elseif ( ! $row['args']['blocking'] ) {
 					/* translators: A non-blocking HTTP API request */

@@ -298,7 +298,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 
 		foreach ( $this->data->logs as $row ) {
 			$component = $row['component'];
-			$components[ $component->name ] = $component->name;
+			$components[ $component->get_id() ] = $component;
 		}
 
 		$this->data->components = $components;

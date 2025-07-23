@@ -259,7 +259,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 			$all_parts = array_merge( $all_parts, $parts );
 			$all_users[] = (int) $user_id;
-			$components[ $component->name ] = $component->name;
+			$components[ $component->get_id() ] = $component;
 		}
 
 		$this->data->parts = array_values( array_unique( array_filter( $all_parts ) ) );

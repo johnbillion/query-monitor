@@ -12,7 +12,12 @@ add_action( 'init', function() {
 					_deprecated_argument( 'my_function', '2.0.0' );
 					break;
 				case 'class':
-					_deprecated_class( 'My_Class', '2.0.0' );
+					if ( function_exists( '_deprecated_class' ) ) {
+						_deprecated_class( 'My_Class', '2.0.0' );
+					} else {
+						// Fallback for WordPress < 6.4.0
+						_doing_it_wrong( 'My_Class', 'My_Class is deprecated since version 2.0.0', '2.0.0' );
+					}
 					break;
 				case 'constructor':
 					_deprecated_constructor( 'My_Class', '2.0.0' );
@@ -71,6 +76,57 @@ add_action( 'init', function() {
 					} catch ( \GuzzleHttp\Exception\ClientException $e ) {
 						// Expected 404 error
 					}
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
+		case 'callback_types':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'function':
+					// Regular function callback
+					add_action( 'qm_test_hook', '__return_true' );
+					do_action( 'qm_test_hook' );
+					break;
+				case 'method':
+					// Object method callback
+					$obj = new class {
+						public function test_method() {
+							return true;
+						}
+					};
+					add_action( 'qm_test_hook', [ $obj, 'test_method' ] );
+					do_action( 'qm_test_hook' );
+					break;
+				case 'static_method':
+					// Static method callback - create our own test class
+					if ( ! class_exists( 'QM_Test_Static_Class' ) ) {
+						class QM_Test_Static_Class {
+							public static function test_static_method() {
+								return 'static test result';
+							}
+						}
+					}
+					add_action( 'qm_test_hook', [ 'QM_Test_Static_Class', 'test_static_method' ] );
+					do_action( 'qm_test_hook' );
+					break;
+				case 'closure':
+					// Closure callback
+					add_action( 'qm_test_hook', function() {
+						// Test closure for acceptance testing
+						return 'test closure result';
+					} );
+					do_action( 'qm_test_hook' );
+					break;
+				case 'invokable':
+					// Invokable object callback
+					add_action( 'qm_test_hook', new class {
+						public function __invoke() {
+							return 'invokable result';
+						}
+					} );
+					do_action( 'qm_test_hook' );
 					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
