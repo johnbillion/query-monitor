@@ -6,7 +6,6 @@ on:
     branches:
       - 'develop'
       - 'trunk'
-      - 'master'
     paths:
       - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
@@ -34,31 +33,32 @@ on:
       - 'package.json'
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   test:
     name: WP ${{ matrix.wp }}
+    permissions:
+      contents: read
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
         wp:
           # Three most recent versions of WordPress
+          - '6.8'
           - '6.7'
           - '6.6'
-          - '6.5'
         php:
           # Most recent version of PHP supported by all of the above, plus 7.4
           - '8.3'
           - '7.4'
         include:
           # Latest WordPress on PHP 8.4
-          - wp: '6.7'
+          - wp: '6.8'
             php: '8.4'
           # Oldest supported WordPress
-          - wp: '5.9'
+          - wp: '6.0'
             php: '7.4'
       fail-fast: false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk

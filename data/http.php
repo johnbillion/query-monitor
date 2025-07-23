@@ -41,6 +41,7 @@ class QM_Data_HTTP extends QM_Data {
 	 *   }|WP_Error,
 	 *   type: string,
 	 *   url: string,
+	 *   intercepted: bool,
 	 * }>
 	 */
 	public $http;

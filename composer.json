@@ -27,11 +27,13 @@
 		"composer/installers": "^1.0 || ^2.0"
 	},
 	"require-dev": {
+		"behat/gherkin": "< 4.13.0",
 		"codeception/module-asserts": "^1.0",
 		"codeception/module-db": "^1.0",
 		"codeception/module-webdriver": "^1.0",
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
+		"guzzlehttp/guzzle": "^7.0",
 		"johnbillion/plugin-infrastructure": "dev-trunk",
 		"johnbillion/wp-compat": "0.3.1",
 		"lucatume/wp-browser": "3.2.3",
@@ -80,34 +82,24 @@
 			"npm run build-schemas",
 			"@test:phpstan",
 			"@test:phpcs",
-			"@test:start",
+			"tests-start",
 			"@test:integration",
 			"@test:acceptance",
-			"@test:stop"
+			"tests-stop"
 		],
 		"test:acceptance": [
-			"npm run build",
+			"npm run build #",
 			"acceptance-tests"
-		],
-		"test:destroy": [
-			"tests-destroy"
 		],
 		"test:integration": [
 			"integration-tests"
 		],
 		"test:phpcs": [
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs56.json --basepath='./' --standard=phpcs56.xml",
-			"phpcs -nps --colors --report-code --report-summary --report-width=80 --cache=tests/cache/phpcs.json --basepath='./' ."
+			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath='./' ."
 		],
 		"test:phpstan": [
 			"codecept build",
 			"phpstan analyze -v --memory-limit=1024M"
-		],
-		"test:start": [
-			"tests-start"
-		],
-		"test:stop": [
-			"tests-stop"
 		]
 	}
 }

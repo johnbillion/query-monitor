@@ -54,10 +54,11 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 		foreach ( $hooks as $hook ) {
 			$row_attr = array();
-			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
+			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
+			$row_attr['data-qm-component'] = implode( ' ', wp_list_pluck( $hook['components'], 'name' ) );
 			$row_attr['data-qm-type'] = $hook['type'];
 
-			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
+			if ( QM_Component::has_non_core( $hook['components'] ) ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 
@@ -148,7 +149,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						echo '</ol></td>';
 					} else {
 						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
+						echo '<code>' . esc_html( QM_Util::get_callback_name( $action['callback'] ) ) . '</code>';
 
 						if ( isset( $action['callback']['error'] ) ) {
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

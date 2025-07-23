@@ -22,7 +22,7 @@ This project is released with <a href="https://github.com/johnbillion/query-moni
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal WordPress plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
+You can clone this repo and activate it like a normal plugin, but you'll need to install the developer dependencies in order to build the assets and you'll need to have Docker Desktop installed to run the tests.
 
 ### Prerequisites
 
@@ -68,10 +68,14 @@ To run tests individually, run one of:
 	composer test:integration
 	composer test:acceptance
 
+To run individual tests:
+
+	composer test:acceptance -- --codecept-args="tests/acceptance/DoingItWrongCest.php"
+
 The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 
-	composer test:start
-	composer test:stop
+	composer exec tests-start
+	composer exec tests-stop
 
 ## Releasing a New Version
 
@@ -95,12 +99,12 @@ These are the steps to take to release a new version of Query Monitor (for contr
    - `npm run bump:patch` for a patch release (1.2.3 => 1.2.4)
    - `npm run bump:minor` for a minor release (1.2.3 => 1.3.0)
    - `npm run bump:major` for a major release (1.2.3 => 2.0.0)
-1. `git push origin develop`
 1. `git push origin develop:release`
+1. `git push origin develop`
 1. Wait for [the Build action](https://github.com/johnbillion/query-monitor/actions/workflows/build.yml) to complete
 1. Enter the changelog into [the release on GitHub](https://github.com/johnbillion/query-monitor/releases) and publish it
 1. Approve the release on [the WordPress.org release management dashboard](https://wordpress.org/plugins/developers/releases/)
-1. `git push origin develop:master`
+1. `git push origin develop:trunk`
 
 ### Post Release
 
@@ -117,4 +121,4 @@ New milestones are automatically created for the next major, minor, and patch re
 
 Assets such as screenshots and banners are stored in the `.wordpress-org` directory. These get deployed as part of the automated release process too.
 
-In order to deploy only changes to assets, push the change to the `deploy` branch and they will be deployed if they're the only changes in the branch since the last release. This allows for the "Tested up to" value to be bumped as well as assets to be updated in between releases.
+In order to deploy only changes to assets and the readme file, push the change to the `deploy` branch. This allows for the "Tested up to" value to be bumped as well as assets to be updated in between releases. Changes to files other than assets and the readme file will be ignored.

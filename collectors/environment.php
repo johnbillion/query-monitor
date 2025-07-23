@@ -40,28 +40,30 @@ class QM_Collector_Environment extends QM_DataCollector {
 	 * @return array<string, bool>
 	 */
 	protected static function get_error_levels( $error_reporting ) {
-		$levels = array(
-			'E_ERROR' => false,
-			'E_WARNING' => false,
-			'E_PARSE' => false,
-			'E_NOTICE' => false,
-			'E_CORE_ERROR' => false,
-			'E_CORE_WARNING' => false,
-			'E_COMPILE_ERROR' => false,
-			'E_COMPILE_WARNING' => false,
-			'E_USER_ERROR' => false,
-			'E_USER_WARNING' => false,
-			'E_USER_NOTICE' => false,
-			'E_STRICT' => false,
-			'E_RECOVERABLE_ERROR' => false,
-			'E_DEPRECATED' => false,
-			'E_USER_DEPRECATED' => false,
-			'E_ALL' => false,
+		$constants = array(
+			'E_ERROR' => 1,
+			'E_WARNING' => 2,
+			'E_PARSE' => 4,
+			'E_NOTICE' => 8,
+			'E_CORE_ERROR' => 16,
+			'E_CORE_WARNING' => 32,
+			'E_COMPILE_ERROR' => 64,
+			'E_COMPILE_WARNING' => 128,
+			'E_USER_ERROR' => 256,
+			'E_USER_WARNING' => 512,
+			'E_USER_NOTICE' => 1024,
+			'E_STRICT' => 2048,
+			'E_RECOVERABLE_ERROR' => 4096,
+			'E_DEPRECATED' => 8192,
+			'E_USER_DEPRECATED' => 16384,
+			'E_ALL' => 30719,
 		);
+
+		$levels = array_fill_keys( array_keys( $constants ), false );
 
 		foreach ( $levels as $level => $reported ) {
 			if ( defined( $level ) ) {
-				$c = constant( $level );
+				$c = $constants[ $level ];
 				if ( $error_reporting & $c ) {
 					$levels[ $level ] = true;
 				}
@@ -155,7 +157,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$php_data['user'] = self::get_current_user();
 
 		// https://www.php.net/supported-versions.php
-		$php_data['old'] = version_compare( $php_data['version'], '8.1', '<' );
+		$php_data['old'] = version_compare( $php_data['version'], '8.3', '<' );
 
 		foreach ( $this->php_vars as $setting ) {
 			$php_data['variables'][ $setting ] = ini_get( $setting ) ?: null;
@@ -264,21 +266,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 	 * @return string
 	 */
 	protected static function get_server_version( wpdb $db ) {
-		$version = null;
-
-		if ( method_exists( $db, 'db_server_info' ) ) {
-			$version = $db->db_server_info();
-		}
-
-		if ( ! $version ) {
-			$version = $db->get_var( 'SELECT VERSION()' );
-		}
-
-		if ( ! $version ) {
-			$version = __( 'Unknown', 'query-monitor' );
-		}
-
-		return $version;
+		return $db->db_server_info();
 	}
 
 	/**

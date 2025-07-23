@@ -19,10 +19,13 @@ abstract class QM_Output_Headers extends QM_Output {
 				$value = json_encode( $value );
 			}
 
-			# Remove illegal characters (Header may not contain NUL bytes)
+			# Remove illegal characters (Header value may not contain NUL bytes)
 			if ( is_string( $value ) ) {
 				$value = str_replace( chr( 0 ), '', $value );
 			}
+
+			# Remove illegal characters (Header name may not contain underscores)
+			$key = str_replace( '_', '-', $key );
 
 			header( sprintf( 'X-QM-%s-%s: %s', $id, $key, $value ) );
 		}

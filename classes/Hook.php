@@ -39,7 +39,7 @@ class QM_Hook {
 
 		if ( isset( $wp_filter[ $name ] ) ) {
 
-			# http://core.trac.wordpress.org/ticket/17817
+			# https://core.trac.wordpress.org/ticket/17817
 			$action = $wp_filter[ $name ];
 
 			foreach ( $action as $priority => $callbacks ) {
@@ -56,7 +56,7 @@ class QM_Hook {
 							continue;
 						}
 
-						$components[ $callback['component']->name ] = $callback['component']->name;
+						$components[ $callback['component']->get_id() ] = $callback['component'];
 					}
 
 					$actions[] = array(

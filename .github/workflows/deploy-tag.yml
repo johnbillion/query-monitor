@@ -22,27 +22,13 @@ jobs:
     permissions:
       contents: read
       issues: write
+      attestations: write
+      id-token: write
     with:
       deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
       readme: readme.txt
       version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
+      username: johnbillion
     secrets:
-      WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
-
-  attest:
-    name: Generate attestation
-    runs-on: ubuntu-latest
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-    timeout-minutes: 70
-    needs: deploy
-    steps:
-      - name: Attest
-        uses: johnbillion/action-wordpress-plugin-attestation@0.6.0
-        with:
-          version: ${{ needs.deploy.outputs.version }}
-          zip-path: ${{ needs.deploy.outputs.zip-path }}

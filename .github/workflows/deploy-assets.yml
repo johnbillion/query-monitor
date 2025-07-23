@@ -6,18 +6,17 @@ on:
     branches:
       - deploy
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   wordpress:
     name: WordPress.org
+    permissions:
+      contents: read
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-assets.yml@trunk
     with:
-      node: true
       plugin: query-monitor
       readme: readme.txt
-      vendor: true
+      username: johnbillion
     secrets:
-      WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

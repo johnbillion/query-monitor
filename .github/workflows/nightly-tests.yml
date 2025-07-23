@@ -19,14 +19,20 @@ on:
       - 'develop'
     paths:
       - '.github/workflows/nightly-tests.yml'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/nightly-tests.yml'
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   acceptance:
     name: Nightly ${{ matrix.label }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         label:
@@ -41,9 +47,12 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false
 
   integration:
     name: Nightly ${{ matrix.label }}
+    permissions:
+      contents: read
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
     strategy:
       matrix:
@@ -58,3 +67,4 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false

@@ -1,17 +1,18 @@
 {
 	"name": "query-monitor",
-	"version": "3.17.0",
+	"version": "3.19.0",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
 	"author": "John Blackbourn",
 	"repository": "johnbillion/query-monitor",
 	"engines": {
-		"node": "20"
+		"node": ">=20"
 	},
 	"main": "src/index.tsx",
 	"type": "module",
 	"devDependencies": {
+		"@jsdevtools/version-bump-prompt": "^6.1.0",
 		"@kucrut/vite-for-wp": "0.7.1",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
@@ -24,7 +25,6 @@
 		"json-schema-to-typescript": "^12",
 		"sharp-cli": "^4.1.1",
 		"typescript": "^4.5.0",
-		"version-bump-prompt": "^6.1.0",
 		"vite": "^4.5.0",
 		"vitepress-plugin-rss": "^0.2.0",
 		"vitepress": "1.0.0-rc.25",
@@ -36,7 +36,7 @@
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
-		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/assets/logo.png -f png --palette resize 256 256",
+		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/public/logo.png -f png --palette resize 256 256",
 		"watch": "npm run build-schemas && vite",
 		"build": "npm run build-schemas && vite build",
 		"version": "npm install # See https://github.com/JS-DevTools/version-bump-prompt/issues/42",

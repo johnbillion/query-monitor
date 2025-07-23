@@ -16,7 +16,7 @@ abstract class QM_Data implements \ArrayAccess {
 	/**
 	 * @var array<string, array<string, mixed>>
 	 * @phpstan-var array<string, array{
-	 *   component: string,
+	 *   component: QM_Component,
 	 *   ltime: float,
 	 *   types: array<array-key, int>,
 	 * }>
