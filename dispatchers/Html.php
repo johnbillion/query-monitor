@@ -305,7 +305,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<!-- Begin Query Monitor output -->' . "\n\n";
 			wp_print_inline_script_tag(
 				sprintf(
-					'var qm = %s;',
+					'var QueryMonitorData = %s;',
 					wp_json_encode( $json )
 				),
 				array(
@@ -414,7 +414,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		wp_print_inline_script_tag(
 			sprintf(
-				'var qm = %s;',
+				'var QueryMonitorData = %s;',
 				wp_json_encode( $json )
 			),
 			array(
