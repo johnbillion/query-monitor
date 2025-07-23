@@ -427,7 +427,7 @@ class QM_Backtrace {
 			/**
 			 * Filters which namespaces to ignore when constructing user-facing call stacks.
 			 *
-			 * @since 3.18.1
+			 * @since 3.19.0
 			 *
 			 * @param array<string, bool> $ignore_namespace Array of namespace names to ignore. The array keys are namespace names to ignore,
 			 *                                              the array values are whether to ignore the namespace (usually true).
