@@ -269,7 +269,7 @@ export interface Environment {
 	};
 	wp: {
 		version: string;
-		environment_type?: string;
+		environment_type: string;
 		development_mode?: string;
 		constants: {
 			[k: string]: string;
@@ -282,6 +282,7 @@ export interface Environment {
 		host: string | null;
 		OS: string | null;
 		arch: string | null;
+		basicauth: "true" | "false";
 	};
 }
 /**

@@ -150,6 +150,7 @@
 			},
 			"required": [
 				"version",
+				"environment_type",
 				"constants"
 			],
 			"additionalProperties": false
@@ -189,6 +190,10 @@
 						"string",
 						"null"
 					]
+				},
+				"basicauth": {
+					"type": "string",
+					"enum": ["true", "false"]
 				}
 			},
 			"required": [
@@ -197,7 +202,8 @@
 				"address",
 				"host",
 				"OS",
-				"arch"
+				"arch",
+				"basicauth"
 			],
 			"additionalProperties": false
 		}

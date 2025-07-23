@@ -14,11 +14,12 @@ export default ( { server }: Props ) => {
 	const info = {
 		name: __( 'Software', 'query-monitor' ),
 		version: __( 'Version', 'query-monitor' ),
-		address: __( 'Address', 'query-monitor' ),
+		address: __( 'IP Address', 'query-monitor' ),
 		host: __( 'Host', 'query-monitor' ),
 		/* translators: OS stands for Operating System */
 		OS: __( 'OS', 'query-monitor' ),
 		arch: __( 'Architecture', 'query-monitor' ),
+		basicauth: __( 'Basic Auth', 'query-monitor' ),
 	};
 
 	return (

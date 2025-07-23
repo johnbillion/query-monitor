@@ -24,6 +24,30 @@ export default ( { wordpress }: Props ) => (
 						{ wordpress.version }
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						{ __( 'Environment Type', 'query-monitor' ) }
+					</th>
+					<td>
+						{ wordpress.environment_type }
+						&nbsp;(<a className="qm-external-link" href="https://make.wordpress.org/core/2020/07/24/new-wp_get_environment_type-function-in-wordpress-5-5/">
+							{ __( 'Help', 'query-monitor' ) }
+						</a>)
+					</td>
+				</tr>
+				{ wordpress.development_mode && (
+					<tr>
+						<th scope="row">
+							{ __( 'Development Mode', 'query-monitor' ) }
+						</th>
+						<td>
+							{ wordpress.development_mode }
+							&nbsp;(<a className="qm-external-link" href="https://make.wordpress.org/core/2023/07/14/configuring-development-mode-in-6-3/">
+								{ __( 'Help', 'query-monitor' ) }
+							</a>)
+						</td>
+					</tr>
+				) }
 				{ Object.entries( wordpress.constants ).map( ( [ key, value ] ) => (
 					<tr key={ key }>
 						<th scope="row">
