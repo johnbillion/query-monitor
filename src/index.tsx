@@ -46,7 +46,7 @@ type iQM = {
 }
 
 // what is this?
-declare const qm: iQM;
+declare const QueryMonitorData: iQM;
 
 registerPanel( 'admin', {
 	render: ( data, enabled ) => <Admin data={ data } enabled={ enabled } />,
@@ -203,9 +203,9 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		<QM
 			active={ active }
 			adminMenuElement={ adminMenuElement }
-			menu={ qm.menu }
-			panel_menu={ qm.panel_menu }
-			data={ qm.data }
+			menu={ QueryMonitorData.menu }
+			panel_menu={ QueryMonitorData.panel_menu }
+			data={ QueryMonitorData.data }
 			side={ side }
 			theme={ theme }
 			editor={ editor }
