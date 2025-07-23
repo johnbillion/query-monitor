@@ -33,7 +33,7 @@ type iBlockData = Omit<DataTypes['block_editor'], 'post_blocks'> & {
 }
 
 export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
-	if ( ! data.block_editor_enabled || ! data.post_blocks ) {
+	if ( ! data.post_blocks ) {
 		return null;
 	}
 
