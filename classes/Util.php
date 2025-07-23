@@ -300,6 +300,9 @@ class QM_Util {
 	 *   line?: string|false,
 	 *   error?: WP_Error,
 	 *   component?: QM_Component,
+	 *   callback_type: string,
+	 *   start_line?: int,
+	 *   display_file?: string,
 	 * }
 	 */
 	public static function populate_callback( array $callback ) {
@@ -321,9 +324,11 @@ class QM_Util {
 				if ( is_object( $callback['function'][0] ) ) {
 					$class = get_class( $callback['function'][0] );
 					$access = '->';
+					$callback['callback_type'] = 'method';
 				} else {
 					$class = $callback['function'][0];
 					$access = '::';
+					$callback['callback_type'] = 'static_method';
 				}
 
 				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
@@ -338,46 +343,35 @@ class QM_Util {
 						if ( 0 === strpos( $file, '/' ) ) {
 							$file = basename( $filename );
 						}
-						$callback['name'] = sprintf(
-							/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
-							__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-							$ref->getStartLine(),
-							$file
-						);
+						$callback['callback_type'] = 'closure';
+						$callback['start_line'] = $ref->getStartLine();
+						$callback['display_file'] = $file;
 					} else {
-						/* translators: A closure is an anonymous PHP function */
-						$callback['name'] = __( 'Unknown closure', 'query-monitor' );
+						$callback['callback_type'] = 'unknown_closure';
 					}
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
 					$callback['name'] = self::shorten_fqn( $class ) . '->__invoke()';
+					$callback['callback_type'] = 'invokable';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
 				$callback['name'] = self::shorten_fqn( $callback['function'] ) . '()';
+				$callback['callback_type'] = 'function';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
 
 			$callback['file'] = $ref->getFileName();
 			$callback['line'] = $ref->getStartLine();
 
-			// https://github.com/facebook/hhvm/issues/5856
+			// Handle legacy create_function() lambdas (PHP 7.4 only, removed in PHP 8.0)
 			$name = trim( $ref->getName() );
-
-			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
-				if ( $callback['file'] && preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
-					$callback['file'] = $matches['file'];
-					$callback['line'] = $matches['line'];
-					$file = trim( self::standard_dir( $callback['file'], '' ), '/' );
-					/* translators: 1: Line number, 2: File name */
-					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );
-				} else {
-					// https://github.com/facebook/hhvm/issues/5807
-					unset( $callback['line'], $callback['file'] );
-					$callback['name'] = $name . '()';
-					$callback['error'] = new WP_Error( 'unknown_lambda', __( 'Unable to determine source of lambda function', 'query-monitor' ) );
-				}
+			if ( 0 === strpos( $name, 'lambda_' ) ) {
+				// Just use the lambda name as-is, these are from deprecated create_function()
+				$callback['name'] = $name . '()';
+				$callback['callback_type'] = 'lambda';
+				unset( $callback['file'], $callback['line'] );
 			}
 
 			if ( ! empty( $callback['file'] ) ) {
@@ -388,6 +382,7 @@ class QM_Util {
 		} catch ( ReflectionException $e ) {
 
 			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
+			$callback['callback_type'] = 'unknown';
 
 		}
 
@@ -395,6 +390,45 @@ class QM_Util {
 
 		return $callback;
 
+	}
+
+	/**
+	 * Generate the translated callback name from callback properties.
+	 *
+	 * @param array<string, mixed> $callback Callback data array.
+	 * @return string Translated callback name.
+	 */
+	public static function get_callback_name( array $callback ) {
+		if ( isset( $callback['name'] ) ) {
+			return $callback['name'];
+		}
+
+		if ( ! isset( $callback['callback_type'] ) ) {
+			return '';
+		}
+
+		switch ( $callback['callback_type'] ) {
+			case 'closure':
+				return sprintf(
+					/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
+					__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
+					$callback['start_line'],
+					$callback['display_file']
+				);
+
+			case 'unknown_closure':
+				/* translators: A closure is an anonymous PHP function */
+				return __( 'Unknown closure', 'query-monitor' );
+
+			case 'function':
+			case 'method':
+			case 'static_method':
+			case 'invokable':
+			case 'lambda':
+			case 'unknown':
+			default:
+				return $callback['name'] ?? '';
+		}
 	}
 
 	/**

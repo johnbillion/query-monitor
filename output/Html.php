@@ -646,4 +646,5 @@ abstract class QM_Output_Html extends QM_Output {
 		return ( false !== self::get_file_link_format() );
 	}
 
+
 }
