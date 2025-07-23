@@ -16,7 +16,7 @@ add_action( 'init', function() {
 						_deprecated_class( 'My_Class', '2.0.0' );
 					} else {
 						// Fallback for WordPress < 6.4.0
-						_doing_it_wrong( 'My_Class', 'Class is deprecated since version 2.0.0', '2.0.0' );
+						_doing_it_wrong( 'My_Class', 'My_Class is deprecated since version 2.0.0', '2.0.0' );
 					}
 					break;
 				case 'constructor':
