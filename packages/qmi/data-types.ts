@@ -394,6 +394,9 @@ export interface Logger {
 		message: string;
 		trace: Backtrace;
 		level: string;
+		context: {
+			[k: string]: unknown;
+		};
 	}[];
 	warning_levels: string[];
 }

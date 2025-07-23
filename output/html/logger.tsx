@@ -11,10 +11,10 @@ import {
 } from 'qmi/data-types';
 import * as React from 'react';
 
-import { __ } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
-	if ( ! data.logs.length ) {
+	if ( ! data.logs || ! data.logs.length ) {
 		return (
 			<EmptyPanel>
 				<p>
@@ -83,6 +83,22 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			message: {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => row.message,
+			},
+			context: {
+				heading: __( 'Context', 'query-monitor' ),
+				render: ( row ) => {
+					if ( ! row.context || Object.keys( row.context ).length === 0 ) {
+						return '';
+					}
+					return (
+						<details>
+							<summary>{ sprintf( _n( '%d item', '%d items', Object.keys( row.context ).length, 'query-monitor' ), Object.keys( row.context ).length ) }</summary>
+							<pre style={{ fontSize: '11px', marginTop: '4px' }}>
+								{ JSON.stringify( row.context, null, 2 ) }
+							</pre>
+						</details>
+					);
+				},
 			},
 			caller: getCallerCol( data.logs ),
 			component: getComponentCol( data.logs, data.component_times ),

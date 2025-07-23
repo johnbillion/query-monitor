@@ -18,12 +18,13 @@ class QM_Data_Logger extends QM_Data {
 	 *   message: string,
 	 *   trace: QM_Backtrace,
 	 *   level: QM_Collector_Logger::*,
+	 *   context: array<string, mixed>,
 	 * }>
 	 */
 	public $logs;
 
 	/**
-	 * @var array<string, QM_Component>
+	 * @var array<int, string>
 	 */
 	public $warning_levels;
 }

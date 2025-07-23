@@ -29,12 +29,17 @@
 					"level": {
 						"type": "string",
 						"phpType": "QM_Collector_Logger::*"
+					},
+					"context": {
+						"type": "object",
+						"additionalProperties": true
 					}
 				},
 				"required": [
 					"message",
 					"trace",
-					"level"
+					"level",
+					"context"
 				],
 				"additionalProperties": false
 			}
