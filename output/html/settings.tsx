@@ -137,7 +137,7 @@ export const Settings = ( props: Props ) => {
 										className="qm-theme-toggle qm-radio"
 										name="qm-theme"
 										value={ key }
-										defaultChecked={ theme === key }
+										defaultChecked={ (theme || 'auto') === key }
 										onChange={ ( e ) => {
 											setTheme( e.target.value );
 										} }

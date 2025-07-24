@@ -90,7 +90,12 @@ export const Panels = ( props: Props ) => {
 		// what is panelData?
 		const panelData = props.data[ panel.data ] ?? null;
 		// what is output?
-		output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+		if ( props.active === 'settings' ) {
+			// Settings panel doesn't need backend data
+			output = panel.render( null, true );
+		} else {
+			output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+		}
 	}
 
 	return (

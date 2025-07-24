@@ -30,6 +30,7 @@ import { Multisite } from '../output/html/multisite';
 import { PHPErrors } from '../output/html/php_errors';
 import { Request } from '../output/html/request';
 import { Headers } from '../output/html/headers';
+import { Settings } from '../output/html/settings';
 import { Scripts } from '../output/html/assets_scripts';
 import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
@@ -152,6 +153,10 @@ registerPanel( 'timing', {
 registerPanel( 'transients', {
 	render: ( data, enabled ) => <Transients data={ data } enabled={ enabled } />,
 	data: 'transients',
+} );
+registerPanel( 'settings', {
+	render: ( data, enabled ) => <Settings verified={ QueryMonitorData.settings.verified } />,
+	data: 'overview',
 } );
 
 document.addEventListener( 'DOMContentLoaded', function () {
