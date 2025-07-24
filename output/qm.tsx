@@ -247,6 +247,8 @@ interface iAdminMenuProps {
 
 const AdminMenu = ( props: iAdminMenuProps ) => {
 	React.useMemo(() => {
+		// Clear any existing content in the element
+		props.element.innerHTML = '';
 		props.element.classList.add( 'menupop' );
 		return true;
 	}, []);

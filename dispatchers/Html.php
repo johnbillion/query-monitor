@@ -122,8 +122,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		$title = __( 'Query Monitor', 'query-monitor' );
+
 		$wp_admin_bar->add_node( array(
 			'id' => 'query-monitor',
+			'title' => esc_html( $title ),
+			'href' => '#qm-overview',
+		) );
+
+		$wp_admin_bar->add_node( array(
+			'parent' => 'query-monitor',
+			'id' => 'query-monitor-placeholder',
+			'title' => esc_html( $title ),
+			'href' => '#qm-overview',
 		) );
 	}
 
