@@ -174,7 +174,6 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 *   innerContent: array<int, string|null>,
 	 *   dynamic: bool,
 	 *   callback: array{name: string, type: string}|null,
-	 *   size: int,
 	 *   context: mixed[]|null,
 	 *   timing: float,
 	 * }
@@ -203,12 +202,12 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			) );
 		}
 
-		$timing = array_shift( $this->block_timing );
+		// Strip multiple consecutive line breaks that end up in parsed block content.
+		$inner_html = preg_replace( '/(\r?\n){2,}/', "\n", trim( $block['innerHTML'] ) );
 
 		$block['dynamic'] = $dynamic;
 		$block['callback'] = $callback;
-		$block['innerHTML'] = trim( $block['innerHTML'] );
-		$block['size'] = strlen( $block['innerHTML'] );
+		$block['innerHTML'] = $inner_html;
 		$block['context'] = $context;
 		$block['timing'] = $timing->get_time();
 

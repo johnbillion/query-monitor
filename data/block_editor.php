@@ -20,7 +20,6 @@
  *   dynamic: bool,
  *   callback: array|null,
  *   innerHTML: string,
- *   size: int,
  *   context?: array|null,
  *   timing: float,
  *   innerBlocks: array<int, PostBlock>,

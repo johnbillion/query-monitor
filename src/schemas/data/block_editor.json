@@ -15,7 +15,6 @@
 				"dynamic",
 				"callback",
 				"innerHTML",
-				"size",
 				"timing"
 			],
 			"properties": {
@@ -47,9 +46,6 @@
 				},
 				"innerHTML": {
 					"type": "string"
-				},
-				"size": {
-					"type": "integer"
 				},
 				"context": {
 					"type": ["array", "null"],

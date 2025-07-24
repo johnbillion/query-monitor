@@ -130,7 +130,6 @@ export interface PostBlock {
 		[k: string]: unknown;
 	} | null;
 	innerHTML: string;
-	size: number;
 	context?:
 		| {
 				[k: string]: unknown;

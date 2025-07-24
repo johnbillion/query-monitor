@@ -23,7 +23,6 @@ interface iBlock {
 	callback?: {
 		name: string;
 	};
-	size: number;
 	timing: number;
 	index?: string;
 }
