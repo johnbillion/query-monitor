@@ -5,10 +5,11 @@ import {
 	Utils,
 	Warning,
 	getComponentCol,
-	getTimeCol,
 	getCallerCol,
 	ApproximateSize,
 	Time,
+	TotalTime,
+	PanelFooter,
 } from 'qmi';
 import {
 	DataTypes,
@@ -81,7 +82,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			url: {
 				heading: __( 'URL', 'query-monitor' ),
 				render: ( row ) => (
-					<div>
+					<>
 						{ hasInterceptedWarning( row ) && (
 							<div>
 								<Warning>
@@ -118,7 +119,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								</Warning>
 							</div>
 						) }
-					</div>
+					</>
 				),
 				filters: {
 					options: [
@@ -191,5 +192,16 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 		} }
 		data={ data.http }
 		rowHasError={ ( row ) => Utils.isWPError( row.response ) }
+		footer={ ( { cols, count, total, data: filteredData } ) => (
+			<PanelFooter
+				cols={ cols - 1 }
+				count={ count }
+				total={ total }
+			>
+				<td className="qm-num">
+					<TotalTime rows={ filteredData.filter( row => !row.intercepted ) }/>
+				</td>
+			</PanelFooter>
+		) }
 	/>
 };
