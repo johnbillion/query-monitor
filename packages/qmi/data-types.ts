@@ -113,9 +113,32 @@ export interface Asset {
  */
 export interface Block_Editor {
 	all_dynamic_blocks: string[];
-	post_blocks: unknown[];
+	post_blocks: PostBlock[];
 	post_has_blocks: boolean;
 	total_blocks: number;
+}
+export interface PostBlock {
+	blockName?: string | null;
+	attrs?: {
+		[k: string]: unknown;
+	};
+	innerContent?: (string | null)[];
+	dynamic: boolean;
+	callback: {
+		name?: string;
+		type?: string;
+		[k: string]: unknown;
+	} | null;
+	innerHTML: string;
+	size: number;
+	context?:
+		| {
+				[k: string]: unknown;
+		  }[]
+		| null;
+	timing: number;
+	innerBlocks?: PostBlock[];
+	[k: string]: unknown;
 }
 /**
  * Cache data transfer object.

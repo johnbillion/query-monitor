@@ -149,20 +149,39 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		}
 
 		$this->data->post_has_blocks = has_blocks( $content );
-		$this->data->post_blocks = array_values( parse_blocks( $content ) );
 		$this->data->all_dynamic_blocks = get_dynamic_block_names();
 		$this->data->total_blocks = 0;
 
 		if ( $this->data->post_has_blocks ) {
-			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data->post_blocks ) ) );
+			$blocks = array_values( parse_blocks( $content ) );
+			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $blocks ) ) );
 		}
 	}
 
 	/**
+	 * @phpstan-param array{
+	 *   blockName?: string|null,
+	 *   attrs?: mixed[],
+	 *   innerBlocks?: mixed[],
+	 *   innerHTML?: string,
+	 *   innerContent?: array<int, string|null>,
+	 * } $block
+	 * @phpstan-return null|array{
+	 *   blockName?: string|null,
+	 *   attrs?: mixed[],
+	 *   innerBlocks?: array<int, array<string, mixed>>,
+	 *   innerHTML: string,
+	 *   innerContent?: array<int, string|null>,
+	 *   dynamic: bool,
+	 *   callback: array{name: string, type: string}|null,
+	 *   size: int,
+	 *   context: mixed[]|null,
+	 *   timing: float,
+	 * }
 	 * @param mixed[] $block
 	 * @return mixed[]|null
 	 */
-	protected function process_block( array $block ) {
+	protected function process_block( array $block ) : ?array {
 		$context = array_shift( $this->block_context );
 		$timing = array_shift( $this->block_timing );
 

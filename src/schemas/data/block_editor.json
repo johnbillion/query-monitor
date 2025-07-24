@@ -4,6 +4,67 @@
 	"title": "Block_Editor",
 	"description": "Block editor data transfer object.",
 	"type": "object",
+	"definitions": {
+		"PostBlock": {
+			"type": "object",
+			"required": [
+				"dynamic",
+				"callback",
+				"innerHTML",
+				"size",
+				"timing"
+			],
+			"properties": {
+				"blockName": {
+					"type": ["string", "null"]
+				},
+				"attrs": {
+					"type": "object"
+				},
+				"innerContent": {
+					"type": "array",
+					"items": {
+						"type": ["string", "null"]
+					}
+				},
+				"dynamic": {
+					"type": "boolean"
+				},
+				"callback": {
+					"type": ["object", "null"],
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						}
+					}
+				},
+				"innerHTML": {
+					"type": "string"
+				},
+				"size": {
+					"type": "integer"
+				},
+				"context": {
+					"type": ["array", "null"],
+					"items": {
+						"type": "object"
+					}
+				},
+				"timing": {
+					"type": "number"
+				},
+				"innerBlocks": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PostBlock"
+					}
+				}
+			}
+		}
+	},
 	"required": [
 		"all_dynamic_blocks",
 		"post_blocks",
@@ -18,7 +79,15 @@
 			}
 		},
 		"post_blocks": {
-			"type": "array"
+			"phpStanType": "array<int, PostBlock>",
+			"type": "array",
+			"items": {
+				"allOf": [
+					{
+						"$ref": "#/definitions/PostBlock"
+					}
+				]
+			}
 		},
 		"post_has_blocks": {
 			"type": "boolean"
