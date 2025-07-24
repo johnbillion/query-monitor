@@ -94,8 +94,6 @@ abstract class QM_Output_Html extends QM_Output {
 	protected function after_tabular_output() {
 		echo '</table>';
 		echo '</div>';
-
-		$this->output_concerns();
 	}
 
 	/**
@@ -133,70 +131,6 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected function after_non_tabular_output() {
 		echo '</div>';
-		echo '</div>';
-
-		$this->output_concerns();
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function output_concerns() {
-		$concerns = array(
-			'concerned_actions' => array(
-				__( 'Related Hooks with Actions Attached', 'query-monitor' ),
-				__( 'Action', 'query-monitor' ),
-			),
-			'concerned_filters' => array(
-				__( 'Related Hooks with Filters Attached', 'query-monitor' ),
-				__( 'Filter', 'query-monitor' ),
-			),
-		);
-
-		if ( empty( $this->collector->concerned_actions ) && empty( $this->collector->concerned_filters ) ) {
-			return;
-		}
-
-		printf(
-			'<div class="qm qm-concerns" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
-			esc_attr( $this->current_id . '-concerned_hooks' )
-		);
-
-		echo '<table>';
-
-		printf(
-			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>',
-			esc_attr( $this->current_id . '-concerned_hooks' ),
-			sprintf(
-				/* translators: %s: Panel name */
-				esc_html__( '%s: Related Hooks with Filters or Actions Attached', 'query-monitor' ),
-				esc_html( $this->name() )
-			)
-		);
-
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-
-		foreach ( $concerns as $key => $labels ) {
-			if ( empty( $this->collector->$key ) ) {
-				continue;
-			}
-
-			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key, true );
-		}
-
-		echo '</tbody>';
-		echo '</table>';
-
 		echo '</div>';
 	}
 
@@ -286,6 +220,8 @@ abstract class QM_Output_Html extends QM_Output {
 
 	/**
 	 * Returns the table filter controls. Safe for output.
+	 *
+	 * @deprecated Use a React component instead.
 	 *
 	 * @param  string         $name   The name for the `data-` attributes that get filtered by this control.
 	 * @param  (string|int)[] $values Option values for this control.

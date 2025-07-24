@@ -55,6 +55,16 @@ export interface AbstractData {
 			};
 		};
 	};
+	concerned_filters:
+		| {
+				[k: string]: unknown;
+		  }[]
+		| null;
+	concerned_actions:
+		| {
+				[k: string]: unknown;
+		  }[]
+		| null;
 }
 /**
  * Class representing a component.

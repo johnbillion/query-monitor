@@ -24,6 +24,16 @@ abstract class QM_Data implements \ArrayAccess {
 	public $component_times = array();
 
 	/**
+	 * @var ?array<mixed>
+	 */
+	public $concerned_filters = null;
+
+	/**
+	 * @var ?array<mixed>
+	 */
+	public $concerned_actions = null;
+
+	/**
 	 * @param mixed $offset
 	 * @param mixed $value
 	 * @return void

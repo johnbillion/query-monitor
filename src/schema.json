@@ -34,7 +34,9 @@
 			"type": "object",
 			"required": [
 				"types",
-				"component_times"
+				"component_times",
+				"concerned_filters",
+				"concerned_actions"
 			],
 			"properties": {
 				"types": {
@@ -73,6 +75,18 @@
 							}
 						},
 						"additionalProperties": false
+					}
+				},
+				"concerned_filters": {
+					"type": ["array", "null"],
+					"items": {
+						"type": "object"
+					}
+				},
+				"concerned_actions": {
+					"type": ["array", "null"],
+					"items": {
+						"type": "object"
 					}
 				}
 			},

@@ -336,16 +336,28 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$collector = $output->get_collector();
 
 			if ( $output::$client_side_rendered ) {
+				$collector_data = $collector->get_data();
+
+				// Add concerned actions and filters data if they exist
+				if ( ! empty( $collector->concerned_filters ) ) {
+					$collector_data->concerned_filters = $collector->concerned_filters;
+				}
+
+				if ( ! empty( $collector->concerned_actions ) ) {
+					$collector_data->concerned_actions = $collector->concerned_actions;
+				}
+
 				$data[ $collector->id ] = array(
 					'enabled' => $collector::enabled(),
-					'data'    => $collector->get_data(),
+					'data'    => $collector_data,
 				);
 			}
 
 			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $output_id ] ) ) {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
 				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
-					'href' => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
+					'id' => $collector->id() . '-concerned_hooks',
+					'panel' => $collector->id() . '-concerned_hooks',
 					'title' => sprintf(
 						/* translators: %s: Number of hooks */
 						__( 'Hooks in Use (%s)', 'query-monitor' ),

@@ -31,6 +31,7 @@ import { PHPErrors } from '../output/html/php_errors';
 import { Request } from '../output/html/request';
 import { Headers } from '../output/html/headers';
 import { Settings } from '../output/html/settings';
+import { ConcernedHooks } from '../output/html/concerned_hooks';
 import { Scripts } from '../output/html/assets_scripts';
 import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
@@ -157,6 +158,28 @@ registerPanel( 'transients', {
 registerPanel( 'settings', {
 	render: ( data, enabled ) => <Settings verified={ QueryMonitorData.settings.verified } />,
 	data: 'overview',
+} );
+
+// Register concerned hooks panels for each collector that has them
+const panelNamesMap: { [key: string]: string } = {
+	'admin': 'Admin',
+	'assets_scripts': 'Scripts',
+	'assets_styles': 'Styles',
+	'block_editor': 'Block Editor',
+	'caps': 'Capability Checks',
+	'doing_it_wrong': 'Doing It Wrong',
+	'http': 'HTTP API Calls',
+	'languages': 'Languages',
+	'request': 'Request',
+	'response': 'Template',
+};
+
+Object.keys( panelNamesMap ).forEach( ( collectorId ) => {
+	const panelName = panelNamesMap[ collectorId ];
+	registerPanel( `${collectorId}-concerned_hooks`, {
+		render: ( data, enabled ) => <ConcernedHooks data={ data } />,
+		data: collectorId,
+	} );
 } );
 
 document.addEventListener( 'DOMContentLoaded', function () {
