@@ -98,7 +98,9 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 												{ action.callback.name }
 											</code>
 										</td>
-										<Component component={ action.callback.component } />
+										<td>
+											<Component component={ action.callback.component } />
+										</td>
 									</tr>
 								) ) }
 							</React.Fragment>
