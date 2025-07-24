@@ -8,6 +8,8 @@
 /docs export-ignore
 /node_modules export-ignore
 /tests export-ignore
+/packages export-ignore
+/src/schemas export-ignore
 
 # Files
 /.gitattributes export-ignore
@@ -29,3 +31,7 @@
 /SECURITY.md export-ignore
 /tsconfig.json export-ignore
 /vite.config.js export-ignore
+*.ts export-ignore
+*.tsx export-ignore
+*.mjs export-ignore
+/src/schema.json export-ignore
