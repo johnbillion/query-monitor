@@ -52,10 +52,10 @@ registerPanel( 'admin', {
 	render: ( data, enabled ) => <Admin data={ data } enabled={ enabled } />,
 	data: 'admin',
 } );
-// registerPanel( 'block_editor', {
-// 	render: ( data, enabled ) => <BlockEditor data={ data } enabled={ enabled } />,
-// 	data: 'block_editor',
-// } );
+registerPanel( 'block_editor', {
+	render: ( data, enabled ) => <BlockEditor data={ data } enabled={ enabled } />,
+	data: 'block_editor',
+} );
 registerPanel( 'caps', {
 	render: ( data, enabled ) => <Caps data={ data } enabled={ enabled } />,
 	data: 'caps',

@@ -113,8 +113,6 @@ export interface Asset {
  */
 export interface Block_Editor {
 	all_dynamic_blocks: string[];
-	has_block_context: boolean;
-	has_block_timing: boolean;
 	post_blocks: unknown[];
 	post_has_blocks: boolean;
 	total_blocks: number;

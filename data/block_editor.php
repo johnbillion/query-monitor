@@ -19,16 +19,6 @@ class QM_Data_Block_Editor extends QM_Data {
 	public $all_dynamic_blocks;
 
 	/**
-	 * @var bool
-	 */
-	public $has_block_context;
-
-	/**
-	 * @var bool
-	 */
-	public $has_block_timing;
-
-	/**
 	 * @var array<int, mixed>
 	 */
 	public $post_blocks;

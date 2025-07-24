@@ -6,8 +6,6 @@
 	"type": "object",
 	"required": [
 		"all_dynamic_blocks",
-		"has_block_context",
-		"has_block_timing",
 		"post_blocks",
 		"post_has_blocks",
 		"total_blocks"
@@ -18,12 +16,6 @@
 			"items": {
 				"type": "string"
 			}
-		},
-		"has_block_context": {
-			"type": "boolean"
-		},
-		"has_block_timing": {
-			"type": "boolean"
 		},
 		"post_blocks": {
 			"type": "array"

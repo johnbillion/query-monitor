@@ -1,8 +1,7 @@
 import {
 	PanelProps,
 	EmptyPanel,
-	PanelFooter,
-	Panel,
+	TabularPanel,
 	Time,
 } from 'qmi';
 import {
@@ -26,11 +25,28 @@ interface iBlock {
 	};
 	size: number;
 	timing: number;
+	index?: string;
 }
 
 type iBlockData = Omit<DataTypes['block_editor'], 'post_blocks'> & {
 	post_blocks: iBlock[];
 }
+
+// Flatten nested blocks with proper indexing
+const flattenBlocks = (blocks: iBlock[], prefix = ''): iBlock[] => {
+	const result: iBlock[] = [];
+
+	blocks.forEach((block, i) => {
+		const index = prefix ? `${prefix}.${i + 1}` : (i + 1).toString();
+		result.push({ ...block, index });
+
+		if (block.innerBlocks && block.innerBlocks.length > 0) {
+			result.push(...flattenBlocks(block.innerBlocks, index));
+		}
+	});
+
+	return result;
+};
 
 export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 	if ( ! data.post_blocks ) {
@@ -45,135 +61,74 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 		);
 	}
 
-	let colspan = 5;
+	const flatBlocks = flattenBlocks(data.post_blocks);
+	const show_attrs = (block: iBlock) => (!Array.isArray(block.attrs) || block.attrs.length > 0);
 
-	data.has_block_context && colspan++;
-	data.has_block_timing && colspan++;
+	const cols: any = {
+		index: {
+			heading: '#',
+			className: 'qm-cell-num qm-num',
+			render: (row: iBlock) => row.index,
+		},
+		blockName: {
+			heading: __('Block Name', 'query-monitor'),
+			className: 'qm-ltr qm-wrap',
+			render: (row: iBlock) => row.blockName,
+			wrap: true,
+		},
+		attrs: {
+			heading: __('Attributes', 'query-monitor'),
+			className: 'qm-cell-block-attrs',
+			render: (row: iBlock) => show_attrs(row) && (
+				<pre className="qm-pre-wrap">
+					<code>
+						{JSON.stringify(row.attrs, null, 2)}
+					</code>
+				</pre>
+			),
+		},
+	};
+
+	cols.context = {
+		heading: __('Context', 'query-monitor'),
+		className: 'qm-cell-block-context',
+		render: (row: iBlock) => row.context && show_attrs(row) && (
+			<pre className="qm-pre-wrap">
+				<code>
+					{JSON.stringify(row.context, null, 2)}
+				</code>
+			</pre>
+		),
+	};
+
+	cols.callback = {
+		heading: __('Render Callback', 'query-monitor'),
+		render: (row: iBlock) => row.dynamic && row.callback?.name,
+	};
+
+	cols.timing = {
+		heading: __('Render Time', 'query-monitor'),
+		render: (row: iBlock) => row.dynamic ? <Time value={row.timing} /> : null,
+	};
+
+	cols.innerHTML = {
+		heading: __('Inner HTML', 'query-monitor'),
+		className: 'qm-cell-block-html',
+		render: (row: iBlock) => (
+			<pre className="qm-pre-wrap">
+				<code>
+					{row.innerHTML}
+				</code>
+			</pre>
+		),
+	};
 
 	return (
-		<Panel>
-			<table>
-				<caption>
-					<h2 id="qm-panel-title">
-						{ __( 'Blocks', 'query-monitor' ) }
-					</h2>
-				</caption>
-				<thead>
-					<tr>
-						<th scope="col">
-							#
-						</th>
-						<th scope="col">
-							{ __( 'Block Name', 'query-monitor' ) }
-						</th>
-						<th scope="col">
-							{ __( 'Attributes', 'query-monitor' ) }
-						</th>
-						{ data.has_block_context && (
-							<th scope="col">
-								{ __( 'Context', 'query-monitor' ) }
-							</th>
-						) }
-						<th scope="col">
-							{ __( 'Render Callback', 'query-monitor' ) }
-						</th>
-						{ data.has_block_timing && (
-							<th scope="col">
-								{ __( 'Render Time', 'query-monitor' ) }
-							</th>
-						) }
-						<th scope="col">
-							{ __( 'Inner HTML', 'query-monitor' ) }
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ data.post_blocks.map( ( block, i ) => (
-						<RenderBlock
-							key={ i }
-							block={ block }
-							data={ data }
-							i={ ( i + 1 ).toString() }
-						/>
-					) ) }
-				</tbody>
-				<PanelFooter
-					cols={ colspan }
-					count={ data.post_blocks.length }
-					total={ data.post_blocks.length }
-				/>
-			</table>
-		</Panel>
+		<TabularPanel
+			title={__('Blocks', 'query-monitor')}
+			cols={cols}
+			data={flatBlocks}
+		/>
 	);
 }
 
-interface iBlockProps {
-	block: iBlock;
-	data: iBlockData;
-	i: string;
-}
-
-const RenderBlock = ( { block, data, i }: iBlockProps ) => {
-	const show_attrs = ( ! Array.isArray( block.attrs ) || block.attrs.length > 0 );
-
-	return (
-		<React.Fragment key={ i }>
-			<tr>
-				<th className="qm-cell-num qm-num" scope="row">
-					{ i }
-				</th>
-				<td className="qm-ltr qm-wrap">
-					{/* @todo sticky */}
-					{ block.blockName }
-				</td>
-				<td className="qm-cell-block-attrs">
-					{ show_attrs && (
-						<pre className="qm-pre-wrap">
-							<code>
-								{ JSON.stringify( block.attrs, null, 2 ) }
-							</code>
-						</pre>
-					) }
-				</td>
-				{ data.has_block_context && (
-					<td className="qm-cell-block-context">
-						{ block.context && show_attrs && (
-							<pre className="qm-pre-wrap">
-								<code>
-									{ JSON.stringify( block.context, null, 2 ) }
-								</code>
-							</pre>
-						) }
-					</td>
-				) }
-				<td>
-					{ block.dynamic && block.callback?.name }
-				</td>
-				{ data.has_block_timing && (
-					block.dynamic ? (
-						<td>
-							<Time value={ block.timing } />
-						</td>
-					) : (
-						<td></td>
-					)
-				) }
-				<td className="qm-cell-block-html">
-					<pre className="qm-pre-wrap">
-						<code>
-							{ block.innerHTML }
-						</code>
-					</pre>
-				</td>
-			</tr>
-			{ block.innerBlocks.map( ( innerBlock, j ) => (
-				<RenderBlock
-					key={ j }
-					block={ innerBlock }
-					data={ data }
-					i={ `${i}.${j + 1}` }
-				/>
-			) ) }
-		</React.Fragment>
-	);
-};

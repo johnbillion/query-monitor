@@ -152,8 +152,6 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$this->data->post_blocks = array_values( parse_blocks( $content ) );
 		$this->data->all_dynamic_blocks = get_dynamic_block_names();
 		$this->data->total_blocks = 0;
-		$this->data->has_block_context = false;
-		$this->data->has_block_timing = false;
 
 		if ( $this->data->post_has_blocks ) {
 			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data->post_blocks ) ) );
@@ -192,16 +190,8 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$block['callback'] = $callback;
 		$block['innerHTML'] = trim( $block['innerHTML'] );
 		$block['size'] = strlen( $block['innerHTML'] );
-
-		if ( $context ) {
-			$block['context'] = $context;
-			$this->data->has_block_context = true;
-		}
-
-		if ( $timing ) {
-			$block['timing'] = $timing->get_time();
-			$this->data->has_block_timing = true;
-		}
+		$block['context'] = $context;
+		$block['timing'] = $timing->get_time();
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			$block['innerBlocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
