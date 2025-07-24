@@ -3,6 +3,7 @@ import {
 	TabularPanel,
 	getTimeCol,
 	TotalTime,
+	Component,
 } from 'qmi';
 import {
 	DataTypes,
@@ -38,7 +39,7 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) =>
 		cols={{
 			component: {
 				heading: __( 'Component', 'query-monitor' ),
-				render: ( row ) => row.component,
+				render: ( row ) => <Component component={ row.component } />,
 			},
 			...getTypeCols(),
 			time: getTimeCol( tableData ),
