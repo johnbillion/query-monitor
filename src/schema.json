@@ -24,7 +24,7 @@
 		"raw_request",
 		"redirect",
 		"request",
-		"theme",
+		"response",
 		"timing",
 		"transients"
 	],
@@ -280,7 +280,7 @@
 				}
 			]
 		},
-		"theme": {
+		"response": {
 			"allOf": [
 				{
 					"$ref": "#/definitions/data"

@@ -40,7 +40,7 @@ export type iPanelData = {
 	multisite?: QMPanelData<'multisite'>;
 	php_errors?: QMPanelData<'php_errors'>;
 	request?: QMPanelData<'request'>;
-	theme?: QMPanelData<'theme'>;
+	response?: QMPanelData<'response'>;
 	timing?: QMPanelData<'timing'>;
 	transients: QMPanelData<'transients'>;
 };

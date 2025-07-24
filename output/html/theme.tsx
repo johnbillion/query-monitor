@@ -17,7 +17,7 @@ interface iParts {
 	[key: string]: string;
 }
 
-export const Theme = ( { data }: PanelProps<DataTypes['theme']> ) => {
+export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 	let parts: iParts = null;
 
 	if ( data.template_parts ) {

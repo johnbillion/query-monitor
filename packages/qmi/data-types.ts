@@ -38,7 +38,7 @@ export interface DataTypes {
 	raw_request: AbstractData & Raw_Request;
 	redirect: AbstractData & Redirect;
 	request: AbstractData & Request;
-	theme: AbstractData & Theme;
+	response: AbstractData & Theme;
 	timing: AbstractData & Timing;
 	transients: AbstractData & Transients;
 }

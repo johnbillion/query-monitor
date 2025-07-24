@@ -132,9 +132,9 @@ registerPanel( 'assets_styles', {
 	render: ( data, enabled ) => <Styles data={ data } enabled={ enabled } />,
 	data: 'assets_styles',
 } );
-registerPanel( 'theme', {
+registerPanel( 'response', {
 	render: ( data, enabled ) => <Theme data={ data } enabled={ enabled } />,
-	data: 'theme',
+	data: 'response',
 } );
 registerPanel( 'timing', {
 	render: ( data, enabled ) => <Timing data={ data } enabled={ enabled } />,
