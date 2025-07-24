@@ -48,13 +48,21 @@ export interface AbstractData {
 	};
 	component_times: {
 		[k: string]: {
-			component: string;
+			component: Component;
 			ltime: number;
 			types: {
 				[k: string]: number;
 			};
 		};
 	};
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Admin screen data transfer object.
@@ -147,14 +155,6 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	frames: FrameItem[];
-}
-/**
- * Class representing a component.
- */
-export interface Component {
-	type: string;
-	name: string;
-	context: string;
 }
 /**
  * Stack trace frame.

@@ -54,7 +54,13 @@
 						],
 						"properties": {
 							"component": {
-								"type": "string"
+								"phpType": "QM_Component",
+								"type": "object",
+								"allOf": [
+									{
+										"$ref": "src/schemas/component.json"
+									}
+								]
 							},
 							"ltime": {
 								"type": "number"

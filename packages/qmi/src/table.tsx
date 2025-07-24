@@ -80,7 +80,7 @@ export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], componen
 			options: ( () => {
 				const filters = Object.keys( component_times ).map( ( component ) => ( {
 					key: component,
-					label: component,
+					label: component_times[component].component.name,
 				} ) );
 
 				filters.sort( sortFilters );
@@ -99,7 +99,7 @@ export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], componen
 					return ( row.trace.component.context !== 'core' );
 				}
 
-				return ( row.trace.component.name === value );
+				return ( `${row.trace.component.type}-${row.trace.component.context}` === value );
 			},
 		},
 	};
