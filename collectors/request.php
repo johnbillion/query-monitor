@@ -213,7 +213,7 @@ class QM_Collector_Request extends QM_DataCollector {
 		$query_vars = array();
 
 		foreach ( $qvars as $k => $v ) {
-			if ( '' !== $v ) {
+			if ( ! empty( $v ) ) {
 				$query_vars[ $k ] = $v;
 			}
 		}
