@@ -29,6 +29,7 @@ import { Logger } from '../output/html/logger';
 import { Multisite } from '../output/html/multisite';
 import { PHPErrors } from '../output/html/php_errors';
 import { Request } from '../output/html/request';
+import { Headers } from '../output/html/headers';
 import { Scripts } from '../output/html/assets_scripts';
 import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
@@ -123,6 +124,14 @@ registerPanel( 'php_errors', {
 registerPanel( 'request', {
 	render: ( data, enabled ) => <Request data={ data } enabled={ enabled } />,
 	data: 'request',
+} );
+registerPanel( 'raw_request', {
+	render: ( data, enabled ) => <Headers data={ data } enabled={ enabled } type="request" />,
+	data: 'raw_request',
+} );
+registerPanel( 'raw_request-response', {
+	render: ( data, enabled ) => <Headers data={ data } enabled={ enabled } type="response" />,
+	data: 'raw_request',
 } );
 registerPanel( 'assets_scripts', {
 	render: ( data, enabled ) => <Scripts data={ data } enabled={ enabled } />,
