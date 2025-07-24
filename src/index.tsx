@@ -146,7 +146,7 @@ registerPanel( 'transients', {
 } );
 
 document.addEventListener( 'DOMContentLoaded', function () {
-	const fatalElement = document.getElementById( 'qm-fatal-component' );
+	const fatalElement = document.getElementById( 'qm-fatal' );
 	const containerElement = document.getElementById( 'query-monitor-container' );
 	const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
 

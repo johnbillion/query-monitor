@@ -13,14 +13,14 @@ export const Fatal = ( props: Props ) => {
 	}
 
 	return (
-		<AdminMenu element={ adminMenuElement }>
+		<FatalAdminMenu element={ adminMenuElement }>
 			<a
 				className="ab-item"
 				href="#qm-fatal"
 			>
 				PHP Fatal Error
 			</a>
-		</AdminMenu>
+		</FatalAdminMenu>
 	);
 };
 
@@ -29,8 +29,10 @@ interface iAdminMenuProps {
 	children: React.ReactNode;
 }
 
-const AdminMenu = ( props: iAdminMenuProps ) => {
+const FatalAdminMenu = ( props: iAdminMenuProps ) => {
 	React.useMemo(() => {
+		// Clear any existing content in the element
+		props.element.innerHTML = '';
 		props.element.classList.add( 'qm-error' );
 		return true;
 	}, []);
