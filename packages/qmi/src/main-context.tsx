@@ -16,6 +16,7 @@ export type MainContextType = {
 	setTheme: ( theme: string ) => void;
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
+	switchToPanel?: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {

@@ -21,6 +21,7 @@ export { ErrorPanel } from './src/error-panel';
 export { Panel } from './src/panel';
 export { PanelFooter } from './src/panel-footer';
 export { Component } from './src/component';
+export { FilterLink } from './src/filter-link';
 export { TabularPanel } from './src/tabular-panel';
 export { Time } from './src/time';
 export { TotalTime } from './src/total-time';

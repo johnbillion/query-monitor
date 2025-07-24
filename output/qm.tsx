@@ -88,6 +88,17 @@ export const QM = ( props: Props ) => {
 			props.onFiltersChange( filters );
 			setFilters( filters );
 		},
+		switchToPanel: ( panelId: string, panelFilters?: MainContextType['filters'][string] ) => {
+			setActivePanel( panelId );
+			if ( panelFilters ) {
+				const newFilters = {
+					...filters,
+					[panelId]: panelFilters,
+				};
+				props.onFiltersChange( newFilters );
+				setFilters( newFilters );
+			}
+		},
 	};
 
 	const handleWindowResize = () => {

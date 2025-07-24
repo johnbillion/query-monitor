@@ -39,7 +39,12 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) =>
 		cols={{
 			component: {
 				heading: __( 'Component', 'query-monitor' ),
-				render: ( row ) => <Component component={ row.component } />,
+				render: ( row ) => (
+					<Component
+						component={ row.component }
+						targetPanel="db_queries"
+					/>
+				),
 			},
 			...getTypeCols(),
 			time: getTimeCol( tableData ),
