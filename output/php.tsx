@@ -68,24 +68,27 @@ export default ( { php }: Props ) => (
 						{ __( 'Error Reporting', 'query-monitor' ) }
 					</th>
 					<td className="qm-has-toggle qm-ltr">
-						{ php.error_reporting }
-
-						<ul>
-							{ Object.keys( php.error_levels ).map( ( key ) => (
-								<li key={ key }>
-									{ php.error_levels[ key ] ? (
-										<>
-											{ key }
-											&nbsp;&#x2713;
-										</>
-									):(
-										<span className="qm-false">
-											{ key }
-										</span>
-									) }
-								</li>
-							) ) }
-						</ul>
+						<details>
+							<summary>
+								{ php.error_reporting }
+							</summary>
+							<ul>
+								{ Object.keys( php.error_levels ).map( ( key ) => (
+									<li key={ key }>
+										{ php.error_levels[ key ] ? (
+											<>
+												{ key }
+												&nbsp;&#x2713;
+											</>
+										):(
+											<span className="qm-false">
+												{ key }
+											</span>
+										) }
+									</li>
+								) ) }
+							</ul>
+						</details>
 					</td>
 				</tr>
 				{ php.extensions && (
@@ -94,13 +97,18 @@ export default ( { php }: Props ) => (
 							{ __( 'Extensions', 'query-monitor' ) }
 						</th>
 						<td className="qm-has-toggle qm-ltr">
-							<ul>
-								{ Object.keys( php.extensions ).map( key => (
-									<li key={ key }>
-										{ key } { php.extensions[ key ] || '' }
-									</li>
-								) ) }
-							</ul>
+							<details>
+								<summary>
+									{ Object.keys( php.extensions ).length } { __( 'extensions', 'query-monitor' ) }
+								</summary>
+								<ul>
+									{ Object.keys( php.extensions ).map( key => (
+										<li key={ key }>
+											{ key } { php.extensions[ key ] || '' }
+										</li>
+									) ) }
+								</ul>
+							</details>
 						</td>
 					</tr>
 				) }
