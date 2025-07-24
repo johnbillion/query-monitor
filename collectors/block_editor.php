@@ -160,18 +160,18 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 
 	/**
 	 * @phpstan-param array{
-	 *   blockName?: string|null,
-	 *   attrs?: mixed[],
-	 *   innerBlocks?: mixed[],
-	 *   innerHTML?: string,
-	 *   innerContent?: array<int, string|null>,
+	 *   blockName: string|null,
+	 *   attrs: mixed[],
+	 *   innerBlocks: mixed[],
+	 *   innerHTML: string,
+	 *   innerContent: array<int, string|null>,
 	 * } $block
 	 * @phpstan-return null|array{
-	 *   blockName?: string|null,
-	 *   attrs?: mixed[],
-	 *   innerBlocks?: array<int, array<string, mixed>>,
+	 *   blockName: string|null,
+	 *   attrs: mixed[],
+	 *   innerBlocks: array<int, array<string, mixed>>,
 	 *   innerHTML: string,
-	 *   innerContent?: array<int, string|null>,
+	 *   innerContent: array<int, string|null>,
 	 *   dynamic: bool,
 	 *   callback: array{name: string, type: string}|null,
 	 *   size: int,

@@ -14,16 +14,16 @@
 
 /**
  * @phpstan-type PostBlock array{
- *   blockName?: string|null,
- *   attrs?: array<string, mixed>,
- *   innerContent?: array<int, string|null>,
+ *   blockName: string|null,
+ *   attrs: array<string, mixed>,
+ *   innerContent: array<int, string|null>,
  *   dynamic: bool,
  *   callback: array|null,
  *   innerHTML: string,
  *   size: int,
  *   context?: array|null,
  *   timing: float,
- *   innerBlocks?: array<int, PostBlock>,
+ *   innerBlocks: array<int, PostBlock>,
  * }
  */
 class QM_Data_Block_Editor extends QM_Data {

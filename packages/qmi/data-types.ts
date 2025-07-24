@@ -118,11 +118,11 @@ export interface Block_Editor {
 	total_blocks: number;
 }
 export interface PostBlock {
-	blockName?: string | null;
-	attrs?: {
+	blockName: string | null;
+	attrs: {
 		[k: string]: unknown;
 	};
-	innerContent?: (string | null)[];
+	innerContent: (string | null)[];
 	dynamic: boolean;
 	callback: {
 		name?: string;
@@ -137,7 +137,7 @@ export interface PostBlock {
 		  }[]
 		| null;
 	timing: number;
-	innerBlocks?: PostBlock[];
+	innerBlocks: PostBlock[];
 	[k: string]: unknown;
 }
 /**

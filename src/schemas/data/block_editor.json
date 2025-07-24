@@ -8,6 +8,10 @@
 		"PostBlock": {
 			"type": "object",
 			"required": [
+				"blockName",
+				"attrs",
+				"innerContent",
+				"innerBlocks",
 				"dynamic",
 				"callback",
 				"innerHTML",
