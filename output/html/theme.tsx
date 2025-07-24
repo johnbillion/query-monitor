@@ -37,6 +37,11 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 				<p>
 					{ data.stylesheet }
 				</p>
+				{ data.stylesheet_theme_json && (
+					<p className="qm-ltr">
+						<code>{ data.stylesheet_theme_json }</code>
+					</p>
+				) }
 				{ data.is_child_theme && (
 					<>
 						<h3>
@@ -45,24 +50,60 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						<p>
 							{ data.template }
 						</p>
+						{ data.template_theme_json && (
+							<p className="qm-ltr">
+								<code>{ data.template_theme_json }</code>
+							</p>
+						) }
 					</>
 				) }
 			</section>
 
 			<section>
-				<h3>
-					{ __( 'Template File', 'query-monitor' ) }
-				</h3>
-				{ data.template_path ? (
-					<p className="qm-ltr">
-						{ data.is_child_theme ? data.theme_template_file : data.template_file }
-					</p>
+				{ data.block_template ? (
+					<>
+						<h3>
+							{ __( 'Block Template', 'query-monitor' ) }
+						</h3>
+						<p className="qm-ltr">
+							<code>{ data.block_template.id }</code>
+						</p>
+						{ data.block_template.source && (
+							<p>
+								{ sprintf(
+									/* translators: %s: Template source */
+									__( 'Source: %s', 'query-monitor' ),
+									data.block_template.source
+								) }
+							</p>
+						) }
+						{ data.block_template.type && (
+							<p>
+								{ sprintf(
+									/* translators: %s: Template type */
+									__( 'Type: %s', 'query-monitor' ),
+									data.block_template.type
+								) }
+							</p>
+						) }
+					</>
 				) : (
-					<p>
-						<em>
-							{ __( 'Unknown', 'query-monitor' ) }
-						</em>
-					</p>
+					<>
+						<h3>
+							{ __( 'Template File', 'query-monitor' ) }
+						</h3>
+						{ data.template_path ? (
+							<p className="qm-ltr">
+								{ data.is_child_theme ? data.theme_template_file : data.template_file }
+							</p>
+						) : (
+							<p>
+								<em>
+									{ __( 'Unknown', 'query-monitor' ) }
+								</em>
+							</p>
+						) }
+					</>
 				) }
 
 				{ data.template_hierarchy && (
