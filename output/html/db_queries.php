@@ -121,8 +121,13 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$id = $this->collector->id();
 		$menu[ $id ] = $this->menu( array(
-			'title' => esc_html__( 'Database Queries', 'query-monitor' ),
-			// 'href' => esc_attr( sprintf( '#%s', $this->collector->id() ) ),
+			'title' => esc_html(
+				sprintf(
+					/* translators: %s: Number of database queries */
+					__( 'Database Queries (%s)', 'query-monitor' ),
+					number_format_i18n( $data->total_qs ?? 0 )
+				)
+			),
 		) );
 
 		if ( $errors ) {
