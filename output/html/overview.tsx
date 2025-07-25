@@ -174,7 +174,7 @@ export const Overview = ( { data }: OverviewProps ) => {
 										<React.Fragment key={ typeName }>
 											<FilterLink
 												targetPanel="db_queries"
-												filterName="type"
+												filterName="sql"
 												filterValue={ typeName }
 											>
 												{ sprintf( '%1$s: %2$s', typeName, Utils.numberFormat( typeCount ) ) }
