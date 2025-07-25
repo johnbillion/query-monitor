@@ -7,6 +7,8 @@ import {
 	getComponentCol,
 	getTimeCol,
 	getCallerCol,
+	PanelFooter,
+	TotalTime,
 } from 'qmi';
 import {
 	DataTypes,
@@ -89,5 +91,16 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		} }
 		data={ data.rows }
 		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
+		footer={ ( { cols, count, total, data: filteredData } ) => (
+			<PanelFooter
+				cols={ cols - 1 }
+				count={ count }
+				total={ total }
+			>
+				<td className="qm-num">
+					<TotalTime rows={ filteredData }/>
+				</td>
+			</PanelFooter>
+		) }
 	/>
 };
