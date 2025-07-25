@@ -26,4 +26,5 @@ export const MainContext = createContext<MainContextType>( {
 	setTheme: ( theme ) => {},
 	filters: {},
 	setFilters: ( filters ) => {},
+	switchToPanel: ( panelId, panelFilters ) => {},
 } );
