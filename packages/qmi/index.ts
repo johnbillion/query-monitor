@@ -37,10 +37,3 @@ export type PanelProps<T> = {
 	data: T;
 	enabled: boolean;
 }
-
-export type iQM_i18n = {
-	number_format: (
-		number: number,
-		decimals?: number,
-	) => string;
-}
