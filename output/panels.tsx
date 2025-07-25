@@ -22,10 +22,12 @@ interface QMPanelData<TDataKey extends keyof DataTypes> {
 
 // @todo this comes from QueryMonitorData / iQM
 export type iPanelData = {
+	overview?: QMPanelData<'overview'>;
 	admin?: QMPanelData<'admin'>;
 	assets_scripts: QMPanelData<'assets_scripts'>;
 	assets_styles: QMPanelData<'assets_styles'>;
 	block_editor: QMPanelData<'block_editor'>;
+	cache?: QMPanelData<'cache'>;
 	caps: QMPanelData<'caps'>;
 	conditionals: QMPanelData<'conditionals'>;
 	db_callers: QMPanelData<'db_queries'>;
@@ -41,6 +43,7 @@ export type iPanelData = {
 	logger?: QMPanelData<'logger'>;
 	multisite?: QMPanelData<'multisite'>;
 	php_errors?: QMPanelData<'php_errors'>;
+	raw_request?: QMPanelData<'raw_request'>;
 	request?: QMPanelData<'request'>;
 	response?: QMPanelData<'response'>;
 	timing?: QMPanelData<'timing'>;

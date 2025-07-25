@@ -270,6 +270,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
+		// @todo scrap this
 		foreach ( $this->outputters as $id => $output ) {
 			if ( ! $output::$client_side_rendered ) {
 				printf(
@@ -366,6 +367,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 			}
 		}
+
+		$data['overview'] = array(
+			'enabled' => true,
+			'data' => QM_Collectors::get( 'overview' )->get_data(),
+		);
 
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
