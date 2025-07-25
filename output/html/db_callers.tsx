@@ -46,7 +46,7 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 							filterName="caller"
 							filterValue={ row.caller }
 						>
-							{ row.caller }
+							<code>{ row.caller }</code>
 						</FilterLink>
 					)
 				},

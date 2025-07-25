@@ -1,4 +1,5 @@
 import {
+	FilterLink,
 	PanelProps,
 	TabularPanel,
 	Time,
@@ -45,7 +46,13 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				render: ( row ) => (
 					Object.entries( row.callers ).map( ( [ caller, calls ] ) => (
 						<>
-							<code>{ caller }</code>
+							<FilterLink
+								targetPanel="db_queries"
+								filterName="caller"
+								filterValue={ caller }
+							>
+								<code>{ caller }</code>
+							</FilterLink>
 							<br/>
 							<span className="qm-info qm-supplemental">
 								{ sprintf(
