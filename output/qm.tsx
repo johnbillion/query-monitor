@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom';
 import { __ } from '@wordpress/i18n';
 
 import { Nav, iNavMenu, NavSelect } from './nav';
-import { Panels, iPanelData } from './panels';
+import { Panels, iPanelData, iSettings } from './panels';
 
 type Props = {
 	active: string;
@@ -32,6 +32,7 @@ type Props = {
 		}
 	};
 	data: iPanelData;
+	settings: iSettings;
 	panel_menu: iNavMenu;
 	side: boolean;
 	theme: string;
@@ -209,7 +210,7 @@ export const QM = ( props: Props ) => {
 						{ ! side && (
 							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
 						) }
-						<Panels data={ props.data } active={ active }/>
+						<Panels data={ props.data } active={ active } settings={ props.settings } />
 					</div>
 				</div>
 			) }

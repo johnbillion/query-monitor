@@ -4,6 +4,8 @@ import {
 	PanelContextType,
 	MainContext,
 	getPanel,
+	isOverviewPanel,
+	isSettingsPanel,
 	ErrorPanel,
 	Warning,
 } from 'qmi';
@@ -18,7 +20,7 @@ interface QMPanelData<TDataKey extends keyof DataTypes> {
 	enabled: boolean;
 }
 
-// what is this?
+// @todo this comes from QueryMonitorData / iQM
 export type iPanelData = {
 	admin?: QMPanelData<'admin'>;
 	assets_scripts: QMPanelData<'assets_scripts'>;
@@ -45,9 +47,15 @@ export type iPanelData = {
 	transients: QMPanelData<'transients'>;
 };
 
+// @todo this comes from QueryMonitorData / iQM
+export type iSettings = {
+	verified: boolean;
+};
+
 // what is this?
 type Props = {
 	data: iPanelData;
+	settings: iSettings;
 	active?: string;
 }
 
@@ -87,14 +95,23 @@ export const Panels = ( props: Props ) => {
 	let output = null;
 
 	if ( panel ) {
-		// what is panelData?
-		const panelData = props.data[ panel.data ] ?? null;
-		// what is output?
-		if ( props.active === 'settings' ) {
-			// Settings panel doesn't need backend data
-			output = panel.render( null, true );
+		if ( isOverviewPanel( panel ) ) {
+			// Overview panel receives the entire data object
+			output = panel.render( props.data );
+		} else if ( isSettingsPanel( panel ) ) {
+			console.log({props} );
+			// Settings panel receives the settings object
+			output = panel.render( props.settings );
 		} else {
-			output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+			// what is panelData?
+			const panelData = props.data[ panel.data ] ?? null;
+			// what is output?
+			if ( props.active === 'settings' ) {
+				// Settings panel doesn't need backend data
+				output = panel.render( null, true );
+			} else {
+				output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+			}
 		}
 	}
 

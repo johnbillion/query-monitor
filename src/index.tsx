@@ -4,10 +4,12 @@ import { createRoot } from 'react-dom/client';
 import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
 import { iNavMenu } from '../output/nav';
-import { iPanelData } from '../output/panels';
+import { iPanelData, iSettings } from '../output/panels';
 import {
 	MainContextType,
 	registerPanel,
+	registerOverview,
+	registerSettings,
 } from 'qmi';
 
 import { Admin } from '../output/html/admin';
@@ -27,6 +29,7 @@ import { HTTP } from '../output/html/http';
 import { Languages } from '../output/html/languages';
 import { Logger } from '../output/html/logger';
 import { Multisite } from '../output/html/multisite';
+import { Overview } from '../output/html/overview';
 import { PHPErrors } from '../output/html/php_errors';
 import { Request } from '../output/html/request';
 import { Headers } from '../output/html/headers';
@@ -41,16 +44,19 @@ import { Transients } from '../output/html/transients';
 // what is this?
 type iQM = {
 	menu: any;
-	settings: {
-		verified: boolean;
-	};
+	settings: iSettings
 	panel_menu: iNavMenu;
 	data: iPanelData;
 }
 
-// what is this?
 declare const QueryMonitorData: iQM;
 
+// Register the Overview panel that receives all data
+registerOverview( {
+	render: ( data ) => <Overview data={ data } />,
+} );
+
+// Register all the panels
 registerPanel( 'admin', {
 	render: ( data, enabled ) => <Admin data={ data } enabled={ enabled } />,
 	data: 'admin',
@@ -155,9 +161,10 @@ registerPanel( 'transients', {
 	render: ( data, enabled ) => <Transients data={ data } enabled={ enabled } />,
 	data: 'transients',
 } );
-registerPanel( 'settings', {
-	render: ( data, enabled ) => <Settings verified={ QueryMonitorData.settings.verified } />,
-	data: 'overview',
+
+// Register the Settings panel that receives the settings data
+registerSettings( {
+	render: ( settings ) => <Settings settings={ settings } />,
 } );
 
 // Register concerned hooks panels for each collector that has them
@@ -243,6 +250,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			menu={ QueryMonitorData.menu }
 			panel_menu={ QueryMonitorData.panel_menu }
 			data={ QueryMonitorData.data }
+			settings={ QueryMonitorData.settings }
 			side={ side }
 			theme={ theme }
 			editor={ editor }

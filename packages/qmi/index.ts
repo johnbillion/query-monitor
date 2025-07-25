@@ -30,7 +30,11 @@ export * as Utils from './src/utils';
 export * as Data from './data-types';
 export {
 	registerPanel,
+	registerOverview,
+	registerSettings,
 	getPanel,
+	isOverviewPanel,
+	isSettingsPanel,
 } from './src/panel-registry';
 
 export type PanelProps<T> = {

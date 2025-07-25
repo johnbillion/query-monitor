@@ -111,8 +111,5 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 				) }
 			</React.Fragment>
 		) ) }
-		<option key="settings" value="settings">
-			{ __( 'Settings', 'query-monitor' ) }
-		</option>
 	</select>
 );

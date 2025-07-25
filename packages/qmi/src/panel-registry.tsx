@@ -3,14 +3,26 @@ import * as React from 'react';
 import {
 	DataTypes,
 } from '../data-types';
+import { iPanelData, iSettings } from '../../../output/panels';
 
 interface Panels<TDataKey extends keyof DataTypes> {
-	[ id: string ]: Panel<TDataKey>;
+	[ id: string ]: Panel<TDataKey> | OverviewPanel | SettingsPanel;
 }
 
 interface Panel<TDataKey extends keyof DataTypes> {
 	render: ( data: DataTypes[ TDataKey ], enabled: boolean ) => React.ReactNode;
 	data: TDataKey;
+	type?: 'standard';
+}
+
+interface OverviewPanel {
+	render: ( data: iPanelData ) => React.ReactNode;
+	type: 'overview';
+}
+
+interface SettingsPanel {
+	render: ( settings: iSettings ) => React.ReactNode;
+	type: 'settings';
 }
 
 const panels: Panels<keyof DataTypes> = {};
@@ -23,9 +35,36 @@ export const registerPanel = <
 ) => {
 	panels[ id ] = {
 		...args,
+		type: 'standard',
+	};
+}
+
+export const registerOverview = (
+	args: Omit<OverviewPanel, 'type'>,
+) => {
+	panels['overview'] = {
+		...args,
+		type: 'overview',
+	};
+}
+
+export const registerSettings = (
+	args: Omit<SettingsPanel, 'type'>,
+) => {
+	panels['settings'] = {
+		...args,
+		type: 'settings',
 	};
 }
 
 export const getPanel = ( id: string ) => {
 	return panels[ id ] ?? null;
+}
+
+export const isOverviewPanel = ( panel: any ): panel is OverviewPanel => {
+	return panel?.type === 'overview';
+}
+
+export const isSettingsPanel = ( panel: any ): panel is SettingsPanel => {
+	return panel?.type === 'settings';
 }

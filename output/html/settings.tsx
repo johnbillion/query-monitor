@@ -10,19 +10,10 @@ import {
 	__,
 	_x,
 } from '@wordpress/i18n';
+import { iSettings } from '../panels';
 
-import { iNavMenu } from '../nav';
-import { iPanelsProps } from '../panels';
-
-interface Props {
-	verified: boolean;
-}
-
-export type iQMConfig = {
-	menu: any;
-	settings: Props;
-	panel_menu: iNavMenu;
-	data: iPanelsProps;
+interface SettingsProps {
+	settings: iSettings;
 }
 
 declare const qm_l10n: {
@@ -33,8 +24,8 @@ declare const qm_l10n: {
 	}
 };
 
-export const Settings = ( props: Props ) => {
-	const [ verified, setVerified ] = React.useState( props.verified );
+export const Settings = ( {settings}: SettingsProps ) => {
+	const [ verified, setVerified ] = React.useState( settings.verified );
 	const {
 		editor,
 		setEditor,
@@ -47,9 +38,9 @@ export const Settings = ( props: Props ) => {
 		const formData = new FormData();
 
 		formData.append( 'action', `qm_auth_${ action }` );
-		formData.append( 'nonce', qm_l10n.auth_nonce[ action ] );
+		formData.append( 'nonce', qm_l10n.auth_nonce[ action ] ); // @todo pass this in via props
 
-		window.fetch( qm_l10n.ajaxurl, {
+		window.fetch( qm_l10n.ajaxurl, { // @todo pass this in via props
 			method: 'POST',
 			body: formData,
 			credentials: 'same-origin',
