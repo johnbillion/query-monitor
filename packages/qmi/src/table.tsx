@@ -126,11 +126,36 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[], 
 	return column;
 }
 
-export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+interface callerTimes {
+	[ k: string ]: {
+		caller: string;
+	};
+}
+
+export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[], caller_times?: callerTimes ) => {
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
 		render: ( row ) => <Caller trace={ row.trace } />,
 		className: 'qm-has-toggle',
+		filters: caller_times ? {
+			options: ( () => {
+				const filters = Object.keys( caller_times ).map( ( caller ) => ( {
+					key: caller,
+					label: caller,
+				} ) );
+
+				filters.sort( sortFilters );
+
+				return filters;
+			} )(),
+			callback: ( row, value: string ) => {
+				// Get the top frame (caller) from the trace
+				if ( row.trace.frames.length === 0 ) {
+					return false;
+				}
+				return row.trace.frames[0].id === value;
+			},
+		} : undefined,
 	};
 
 	return column;

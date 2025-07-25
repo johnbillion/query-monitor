@@ -3,6 +3,7 @@ import {
 	TabularPanel,
 	getTimeCol,
 	TotalTime,
+	FilterLink,
 } from 'qmi';
 import {
 	DataTypes,
@@ -39,7 +40,15 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			cols={{
 				caller: {
 					heading: __( 'Caller', 'query-monitor' ),
-					render: ( row ) => row.caller,
+					render: ( row ) => (
+						<FilterLink
+							targetPanel="db_queries"
+							filterName="caller"
+							filterValue={ row.caller }
+						>
+							{ row.caller }
+						</FilterLink>
+					)
 				},
 				...getTypeCols(),
 				time: getTimeCol( tableData ),
