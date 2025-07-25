@@ -1,6 +1,7 @@
 import {
 	Utils,
 	MainContext,
+	Icon,
 } from 'qmi';
 import * as React from 'react';
 
@@ -58,7 +59,14 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 		linkLine
 	);
 
-	return ( isFileName )
-		? <a href={ output }>{ text }</a>
-		: <a href={ output }><code>{ text }</code></a>;
+	return (
+		<a className="qm-edit-link" href={ output }>
+			{ isFileName ?
+				<> { text } </>
+				:
+				<code>{ text }</code>
+			}
+			<Icon name="edit"/>
+		</a>
+	);
 };
