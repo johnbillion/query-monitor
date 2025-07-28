@@ -34,7 +34,7 @@
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "dev-trunk",
+		"johnbillion/plugin-infrastructure": "dev-dependabot/github_actions/github-actions-f7a21a3753",
 		"johnbillion/wp-compat": "0.3.1",
 		"lucatume/wp-browser": "3.2.3",
 		"phpcompatibility/phpcompatibility-wp": "2.1.5",
