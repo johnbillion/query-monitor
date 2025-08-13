@@ -132,6 +132,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'after_switch_theme',
 			'template_redirect',
 		);
 	}
