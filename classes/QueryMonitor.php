@@ -71,7 +71,10 @@ class QueryMonitor extends QM_Plugin {
 	 * @return array<int, string> Updated array of the plugin's metadata.
 	 */
 	public function filter_plugin_row_meta( array $plugin_meta, $plugin_file ) {
-		if ( 'query-monitor/query-monitor.php' !== $plugin_file ) {
+		$is_qm = ( 'query-monitor/query-monitor.php' === $plugin_file );
+		$is_db = ( 'db.php' === $plugin_file && class_exists( 'QM_DB', false ) );
+
+		if ( ! $is_qm && ! $is_db ) {
 			return $plugin_meta;
 		}
 
