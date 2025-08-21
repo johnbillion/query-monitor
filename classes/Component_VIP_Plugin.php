@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Class representing a VIP plugin component.
+ * Class representing a WordPress VIP plugin component.
  *
  * @package query-monitor
  */

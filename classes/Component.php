@@ -17,7 +17,6 @@ class QM_Component implements JsonSerializable {
 	public const TYPE_ALTIS_VENDOR = 'altis-vendor';
 	public const TYPE_CORE = 'core';
 	public const TYPE_DROPIN = 'dropin';
-	public const TYPE_GO_PLUGIN = 'go-plugin';
 	public const TYPE_MU_PLUGIN = 'mu-plugin';
 	public const TYPE_MU_VENDOR = 'mu-vendor';
 	public const TYPE_OTHER = 'other';
@@ -29,6 +28,7 @@ class QM_Component implements JsonSerializable {
 	public const TYPE_UNKNOWN = 'unknown';
 	public const TYPE_VIP_CLIENT_MU_PLUGIN = 'vip-client-mu-plugin';
 	public const TYPE_VIP_PLUGIN = 'vip-plugin';
+	public const TYPE_VIP_SHARED_PLUGIN = 'vip-shared-plugin';
 
 	/**
 	 * @var string
@@ -97,8 +97,8 @@ class QM_Component implements JsonSerializable {
 				return new QM_Component_MU_Plugin( $context, $file, $type );
 			case self::TYPE_MU_VENDOR:
 				return new QM_Component_MU_Vendor( $context, $file, $type );
-			case self::TYPE_GO_PLUGIN:
-				return new QM_Component_Go_Plugin( $context, $file, $type );
+			case self::TYPE_VIP_SHARED_PLUGIN:
+				return new QM_Component_VIP_Shared_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_PLUGIN:
 				return new QM_Component_VIP_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_CLIENT_MU_PLUGIN:

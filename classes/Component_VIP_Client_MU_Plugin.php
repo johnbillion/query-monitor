@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 /**
- * Class representing a VIP client mu-plugin component.
+ * Class representing a WordPress VIP client mu-plugin component.
  *
  * @package query-monitor
  */

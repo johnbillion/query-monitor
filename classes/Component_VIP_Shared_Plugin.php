@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 /**
- * Class representing a VIP Go mu-plugins/shared-plugins component.
+ * Class representing a WordPress VIP shared plugin component.
  *
  * @package query-monitor
  */
 
-class QM_Component_Go_Plugin extends QM_Component {
+class QM_Component_VIP_Shared_Plugin extends QM_Component {
 	public function get_name(): string {
 		return sprintf(
 			/* translators: %s: Plugin name */

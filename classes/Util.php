@@ -122,7 +122,7 @@ class QM_Util {
 
 			self::$file_dirs[ QM_Component::TYPE_PLUGIN ] = WP_PLUGIN_DIR;
 			self::$file_dirs[ QM_Component::TYPE_MU_VENDOR ] = WPMU_PLUGIN_DIR . '/vendor';
-			self::$file_dirs[ QM_Component::TYPE_GO_PLUGIN ] = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs[ QM_Component::TYPE_VIP_SHARED_PLUGIN ] = WPMU_PLUGIN_DIR . '/shared-plugins';
 			self::$file_dirs[ QM_Component::TYPE_MU_PLUGIN ] = WPMU_PLUGIN_DIR;
 			self::$file_dirs[ QM_Component::TYPE_VIP_PLUGIN ] = get_theme_root() . '/vip/plugins';
 
@@ -196,7 +196,7 @@ class QM_Util {
 				}
 				$context = $plug;
 				break;
-			case QM_Component::TYPE_GO_PLUGIN:
+			case QM_Component::TYPE_VIP_SHARED_PLUGIN:
 			case QM_Component::TYPE_VIP_PLUGIN:
 			case QM_Component::TYPE_VIP_CLIENT_MU_PLUGIN:
 				$plug = str_replace( self::$file_dirs[ $type ], '', $file );
