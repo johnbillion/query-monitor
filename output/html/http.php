@@ -213,6 +213,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$url
 				);
 
+				// @TODO move all this logic to the collector.
 				$size = '';
 				$timeout = $row['args']['timeout'];
 
@@ -231,6 +232,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						__( '%s kB', 'query-monitor' ),
 						number_format_i18n( strlen( $row['response']['body'] ) / 1024, 1 )
 					);
+				}
+
+				if ( ! $row['args']['blocking'] ) {
+					$size = '';
 				}
 
 				if ( $row['intercepted'] && ! $is_error ) {
