@@ -124,7 +124,14 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
+			'http_allowed_safe_ports',
+			'http_headers_useragent',
 			'http_request_args',
+			'http_request_host_is_external',
+			'http_request_redirection_count',
+			'http_request_reject_unsafe_urls',
+			'http_request_timeout',
+			'http_request_version',
 			'http_response',
 			'https_local_ssl_verify',
 			'https_ssl_verify',
