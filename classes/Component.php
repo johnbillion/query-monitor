@@ -98,11 +98,9 @@ class QM_Component implements JsonSerializable {
 			case self::TYPE_MU_VENDOR:
 				return new QM_Component_MU_Vendor( $context, $file, $type );
 			case self::TYPE_VIP_SHARED_PLUGIN:
-				return new QM_Component_VIP_Shared_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_PLUGIN:
-				return new QM_Component_VIP_Plugin( $context, $file, $type );
 			case self::TYPE_VIP_CLIENT_MU_PLUGIN:
-				return new QM_Component_VIP_Client_MU_Plugin( $context, $file, $type );
+				return new QM_Component_VIP_Plugin( $context, $file, $type );
 			case self::TYPE_STYLESHEET:
 				return new QM_Component_Stylesheet( $context, $file, $type );
 			case self::TYPE_TEMPLATE:
