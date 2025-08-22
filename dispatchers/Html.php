@@ -73,7 +73,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return bool Should the authentication cookie be secure?
 	 */
 	public static function secure_cookie() {
-		return ( is_ssl() && ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) ) );
+		return ( is_ssl() && ( 'https' === wp_parse_url( home_url(), PHP_URL_SCHEME ) ) );
 	}
 
 	/**
