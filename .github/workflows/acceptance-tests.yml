@@ -54,9 +54,6 @@ jobs:
           - '8.3'
           - '7.4'
         include:
-          # Latest WordPress on PHP 8.5
-          - wp: '6.8'
-            php: '8.5'
           # Latest WordPress on PHP 8.4
           - wp: '6.8'
             php: '8.4'
