@@ -133,20 +133,19 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					$css = 'qm-warn';
 				}
 
-				$url          = self::format_url( $row['url'] );
-				$query        = parse_url( $row['url'], PHP_URL_QUERY );
-				$query_output = '';
-				$info         = '';
+				$url = self::format_url( $row['url'] );
+				$query = parse_url( $row['url'], PHP_URL_QUERY );
+				$info = '';
 
 				if ( ! empty( $query ) ) {
 					$query = '?' . $query;
 					$url   = str_replace( $query, '', $row['url'] );
 					$url   = self::format_url( $url );
 
-					$query_output = sprintf(
-						'%s<ul class="qm-toggled"><li><span class="qm-info qm-supplemental">%s</span></li></ul>',
+					$url .= sprintf(
+						'%s<ul class="qm-toggled"><li>%s</li></ul>',
 						self::build_toggler(),
-						str_replace( array( '?', '&amp;' ), array( '?', '</span></li><li><span class="qm-info qm-supplemental">&amp;' ), esc_html( $query ) )
+						str_replace( array( '?', '&amp;' ), array( '?', '</li><li>&amp;' ), esc_html( $query ) )
 					);
 				}
 
@@ -211,12 +210,22 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					) . $url;
 				}
 
-				if ( ! empty( $row['redirected_to'] ) ) {
-					$query         = parse_url( $row['redirected_to'], PHP_URL_QUERY );
-					$redirected_to = $row['redirected_to'];
+				$redirect_query = '';
 
-					if ( ! empty( $query ) ) {
-						$redirected_to = str_replace( '?' . $query, '', $redirected_to );
+				if ( ! empty( $row['redirected_to'] ) ) {
+					$redirect_query = parse_url( $row['redirected_to'], PHP_URL_QUERY );
+					$redirected_to = self::format_url( $row['redirected_to'] );
+
+					if ( ! empty( $redirect_query ) ) {
+						$redirect_query = '?' . $redirect_query;
+						$redirected_to   = str_replace( $redirect_query, '', $row['redirected_to'] );
+						$redirected_to   = self::format_url( $redirected_to );
+
+						$redirected_to .= sprintf(
+							'%s<ul class="qm-toggled"><li>%s</li></ul>',
+							self::build_toggler(),
+							str_replace( array( '?', '&amp;' ), array( '?', '</li><li>&amp;' ), esc_html( $redirect_query ) )
+						);
 					}
 
 					$url .= sprintf(
@@ -224,22 +233,21 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 						QueryMonitor::icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
 						esc_html__( 'This HTTP request was redirected to:', 'query-monitor' ),
-						self::format_url( $row['redirected_to'] )
+						$redirected_to
 					);
 				}
 
 				$classes = 'qm-url qm-ltr qm-wrap';
 
-				if ( ! empty( $query_output ) ) {
+				if ( ! empty( $query ) || ! empty( $redirect_query ) ) {
 					$classes .= ' qm-has-toggle';
 				}
 
 				printf( // WPCS: XSS ok.
-					'<td class="%s">%s%s%s</td>',
+					'<td class="%s">%s%s</td>',
 					$classes,
 					$info,
 					$url,
-					$query_output
 				);
 
 				// @TODO move all this logic to the collector.
