@@ -70,7 +70,9 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 		$raw_headers = headers_list();
 		foreach ( $raw_headers as $row ) {
 			list( $key, $value ) = explode( ':', $row, 2 );
-			if ( null !== $key && null !== $value ) {
+			// This is needed when a header is sent without a value, for example: header('X-Hello');
+			// See https://github.com/phpstan/phpstan/issues/10854
+			if ( null !== $value ) {
 				$headers[ trim( $key ) ] = trim( $value );
 			}
 		}
