@@ -77,7 +77,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 		foreach ( $data->actions as $row ) {
 			$stack = array();
 
-			foreach ( $row['filtered_trace'] as $frame ) {
+			foreach ( $row->get_trace()->get_filtered_trace() as $frame ) {
 				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
 			}
 
@@ -85,7 +85,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 			echo '<tr>';
 
-			printf( '<td>%s</td>', esc_html( wp_strip_all_tags( $row['message'] ) ) );
+			printf( '<td>%s</td>', esc_html( wp_strip_all_tags( $row->get_message() ) ) );
 
 			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
 
@@ -103,7 +103,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 			echo '</ol></td>';
 
-			echo '<td class="qm-nowrap">' . esc_html( $row['component']->name ) . '</td>';
+			echo '<td class="qm-nowrap">' . esc_html( $row->get_trace()->get_component()->get_name() ) . '</td>';
 
 			echo '</tr>';
 		}

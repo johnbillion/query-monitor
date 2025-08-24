@@ -252,20 +252,20 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			if ( isset( $block['callback']['file'] ) ) {
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
-					echo self::output_filename( $block['callback']['name'], $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
+					echo self::output_filename( QM_Util::get_callback_name( $block['callback'] ), $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
 					echo '</td>';
 				} else {
 					echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 					echo self::build_toggler(); // WPCS: XSS ok;
 					echo '<ol>';
 					echo '<li>';
-					echo self::output_filename( $block['callback']['name'], $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
+					echo self::output_filename( QM_Util::get_callback_name( $block['callback'] ), $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
 					echo '</li>';
 					echo '</ol></td>';
 				}
 			} else {
 				echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-				echo '<code>' . esc_html( $block['callback']['name'] ) . '</code>';
+				echo '<code>' . esc_html( QM_Util::get_callback_name( $block['callback'] ) ) . '</code>';
 
 				if ( isset( $block['callback']['error'] ) ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -331,7 +331,7 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		/** @var QM_Data_Block_Editor */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data->block_editor_enabled ) || empty( $data->post_blocks ) ) {
+		if ( empty( $data->post_blocks ) ) {
 			return $menu;
 		}
 

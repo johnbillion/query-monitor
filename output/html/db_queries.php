@@ -246,10 +246,12 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( $data->has_trace ) {
 			$components = array_column( $data->component_times, 'component' );
 
-			usort( $components, 'strcasecmp' );
+			usort( $components, '\QM_Component::sort' );
+
+			$values = wp_list_pluck( $components, 'name' );
 
 			echo '<th scope="col" class="qm-filterable-column">';
-			echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+			echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 			echo '</th>';
 		}
 
@@ -366,7 +368,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		if ( isset( $cols['component'] ) && $row['component'] ) {
 			$row_attr['data-qm-component'] = $row['component']->name;
 
-			if ( 'core' !== $row['component']->context ) {
+			if ( ! $row['component']->is_core() ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 		}
@@ -435,7 +437,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		if ( isset( $cols['component'] ) ) {
 			if ( $row['component'] ) {
-			echo "<td class='qm-row-component qm-nowrap'>" . esc_html( $row['component']->name ) . "</td>\n";
+				echo "<td class='qm-row-component qm-nowrap'>" . esc_html( $row['component']->name ) . "</td>\n";
 			} else {
 				echo "<td class='qm-row-component qm-nowrap'>" . esc_html__( 'Unknown', 'query-monitor' ) . "</td>\n";
 			}

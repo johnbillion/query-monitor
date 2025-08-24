@@ -78,6 +78,31 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	}
 
+	/**
+	 * @param string $message
+	 * @param mixed[] $e
+	 * @phpstan-param array{
+	 *   message: string,
+	 *   file: string,
+	 *   line: int,
+	 *   type?: int,
+	 *   trace?: mixed|null,
+	 * } $e
+	 */
+	public function output_fatal( $message, array $e ): void {
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+		}
+
+		echo wp_json_encode(
+			array(
+				'code' => 'qm_fatal',
+				'message' => $message,
+				'data' => $e,
+			),
+			JSON_UNESCAPED_SLASHES
+		);
+	}
 }
 
 /**

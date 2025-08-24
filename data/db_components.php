@@ -11,7 +11,7 @@ class QM_Data_DB_Components extends QM_Data {
 	 * @phpstan-var array<string, array{
 	 *   ltime: float,
 	 *   types: array<string, int>,
-	 *   component: string,
+	 *   component: QM_Component,
 	 * }>
 	 */
 	public $times;

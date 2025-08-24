@@ -6,7 +6,7 @@
 
 var QM_i18n = {
 
-	// http://core.trac.wordpress.org/ticket/20491
+	// https://core.trac.wordpress.org/ticket/20491
 
 	number_format : function( number, decimals ) {
 
@@ -181,14 +181,14 @@ if ( window.jQuery ) {
 
 			var admin_bar_menu_container = document.createDocumentFragment();
 
-			if ( window.qm && window.qm.menu ) {
+			if ( window.QueryMonitorData && window.QueryMonitorData.menu ) {
 				$('#wp-admin-bar-query-monitor')
-					.addClass(qm.menu.top.classname)
+					.addClass(QueryMonitorData.menu.top.classname)
 					.attr('dir','ltr')
 					.find('a').eq(0)
-					.html(qm.menu.top.title);
+					.html(QueryMonitorData.menu.top.title);
 
-				$.each( qm.menu.sub, function( i, el ) {
+				$.each( QueryMonitorData.menu.sub, function( i, el ) {
 
 					var new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 						.clone()
@@ -378,7 +378,7 @@ if ( window.jQuery ) {
 
 		$( document ).ajaxSuccess( function( event, response, options ) {
 
-			var errors = response.getResponseHeader( 'X-QM-php_errors-error-count' );
+			var errors = response.getResponseHeader( 'X-QM-php-errors-count' );
 
 			if ( ! errors ) {
 				return event;
@@ -392,7 +392,7 @@ if ( window.jQuery ) {
 
 			for ( var key = 1; key <= errors; key++ ) {
 
-				error = JSON.parse( response.getResponseHeader( 'X-QM-php_errors-error-' + key ) );
+				error = JSON.parse( response.getResponseHeader( 'X-QM-php-errors-error-' + key ) );
 
 				if ( window.console ) {
 					switch ( error.type ) {
@@ -410,14 +410,14 @@ if ( window.jQuery ) {
 				}
 
 				if ( $('#wp-admin-bar-query-monitor').length ) {
-					if ( ! qm.ajax_errors[error.type] ) {
+					if ( ! QueryMonitorData.ajax_errors[error.type] ) {
 						$('#wp-admin-bar-query-monitor')
 							.addClass('qm-' + error.type)
 							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>');
 					}
 				}
 
-				qm.ajax_errors[error.type] = true;
+				QueryMonitorData.ajax_errors[error.type] = true;
 
 			}
 

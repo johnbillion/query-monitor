@@ -38,7 +38,7 @@ class QM_Util {
 
 		# Annoyingly, wp_convert_hr_to_bytes() is defined in a file that's only
 		# loaded in the admin area, so we'll use our own version.
-		# See also http://core.trac.wordpress.org/ticket/17725
+		# See also https://core.trac.wordpress.org/ticket/17725
 
 		$bytes = (float) $size;
 
@@ -95,6 +95,8 @@ class QM_Util {
 	}
 
 	/**
+	 * @TODO all this logic could move into a QM_Components collection
+	 *
 	 * @return array<string, string|null>
 	 */
 	public static function get_file_dirs() {
@@ -108,6 +110,7 @@ class QM_Util {
 			 *
 			 * See also the corresponding filters:
 			 *
+			 *  - `qm/component_type/{$type}`
 			 *  - `qm/component_context/{$type}`
 			 *  - `qm/component_name/{$type}`
 			 *
@@ -117,26 +120,26 @@ class QM_Util {
 			 */
 			self::$file_dirs = apply_filters( 'qm/component_dirs', self::$file_dirs );
 
-			self::$file_dirs['plugin'] = WP_PLUGIN_DIR;
-			self::$file_dirs['mu-vendor'] = WPMU_PLUGIN_DIR . '/vendor';
-			self::$file_dirs['go-plugin'] = WPMU_PLUGIN_DIR . '/shared-plugins';
-			self::$file_dirs['mu-plugin'] = WPMU_PLUGIN_DIR;
-			self::$file_dirs['vip-plugin'] = get_theme_root() . '/vip/plugins';
+			self::$file_dirs[ QM_Component::TYPE_PLUGIN ] = WP_PLUGIN_DIR;
+			self::$file_dirs[ QM_Component::TYPE_MU_VENDOR ] = WPMU_PLUGIN_DIR . '/vendor';
+			self::$file_dirs[ QM_Component::TYPE_VIP_SHARED_PLUGIN ] = WPMU_PLUGIN_DIR . '/shared-plugins';
+			self::$file_dirs[ QM_Component::TYPE_MU_PLUGIN ] = WPMU_PLUGIN_DIR;
+			self::$file_dirs[ QM_Component::TYPE_VIP_PLUGIN ] = get_theme_root() . '/vip/plugins';
 
 			if ( defined( 'WPCOM_VIP_CLIENT_MU_PLUGIN_DIR' ) ) {
-				self::$file_dirs['vip-client-mu-plugin'] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
+				self::$file_dirs[ QM_Component::TYPE_VIP_CLIENT_MU_PLUGIN ] = WPCOM_VIP_CLIENT_MU_PLUGIN_DIR;
 			}
 
 			if ( defined( '\Altis\ROOT_DIR' ) ) {
-				self::$file_dirs['altis-vendor'] = \Altis\ROOT_DIR . '/vendor';
+				self::$file_dirs[ QM_Component::TYPE_ALTIS_VENDOR ] = \Altis\ROOT_DIR . '/vendor';
 			}
 
-			self::$file_dirs['theme'] = null;
-			self::$file_dirs['stylesheet'] = get_stylesheet_directory();
-			self::$file_dirs['template'] = get_template_directory();
-			self::$file_dirs['other'] = WP_CONTENT_DIR;
-			self::$file_dirs['core'] = ABSPATH;
-			self::$file_dirs['unknown'] = null;
+			self::$file_dirs[ QM_Component::TYPE_THEME ] = null;
+			self::$file_dirs[ QM_Component::TYPE_STYLESHEET ] = get_stylesheet_directory();
+			self::$file_dirs[ QM_Component::TYPE_TEMPLATE ] = get_template_directory();
+			self::$file_dirs[ QM_Component::TYPE_OTHER ] = WP_CONTENT_DIR;
+			self::$file_dirs[ QM_Component::TYPE_CORE ] = ABSPATH;
+			self::$file_dirs[ QM_Component::TYPE_UNKNOWN ] = null;
 
 			foreach ( self::$file_dirs as $type => $dir ) {
 				if ( null === $dir ) {
@@ -174,16 +177,15 @@ class QM_Util {
 		$context = $type;
 
 		switch ( $type ) {
-			case 'altis-vendor':
+			case QM_Component::TYPE_ALTIS_VENDOR:
 				$plug = str_replace( \Altis\ROOT_DIR . '/vendor/', '', $file );
 				$plug = explode( '/', $plug, 3 );
 				$plug = $plug[0] . '/' . $plug[1];
-				/* translators: %s: Dependency name */
-				$name = sprintf( __( 'Dependency: %s', 'query-monitor' ), $plug );
+				$context = $plug;
 				break;
-			case 'plugin':
-			case 'mu-plugin':
-			case 'mu-vendor':
+			case QM_Component::TYPE_PLUGIN:
+			case QM_Component::TYPE_MU_PLUGIN:
+			case QM_Component::TYPE_MU_VENDOR:
 				$plug = str_replace( '/vendor/', '/', $file );
 				$plug = plugin_basename( $plug );
 				if ( strpos( $plug, '/' ) ) {
@@ -192,18 +194,11 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'plugin' !== $type ) {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'MU Plugin: %s', 'query-monitor' ), $plug );
-				} else {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'Plugin: %s', 'query-monitor' ), $plug );
-				}
 				$context = $plug;
 				break;
-			case 'go-plugin':
-			case 'vip-plugin':
-			case 'vip-client-mu-plugin':
+			case QM_Component::TYPE_VIP_SHARED_PLUGIN:
+			case QM_Component::TYPE_VIP_PLUGIN:
+			case QM_Component::TYPE_VIP_CLIENT_MU_PLUGIN:
 				$plug = str_replace( self::$file_dirs[ $type ], '', $file );
 				$plug = trim( $plug, '/' );
 				if ( strpos( $plug, '/' ) ) {
@@ -212,43 +207,43 @@ class QM_Util {
 				} else {
 					$plug = basename( $plug );
 				}
-				if ( 'vip-client-mu-plugin' === $type ) {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'VIP Client MU Plugin: %s', 'query-monitor' ), $plug );
-				} else {
-					/* translators: %s: Plugin name */
-					$name = sprintf( __( 'VIP Plugin: %s', 'query-monitor' ), $plug );
-				}
 				$context = $plug;
 				break;
-			case 'stylesheet':
-				if ( is_child_theme() ) {
-					$name = __( 'Child Theme', 'query-monitor' );
-				} else {
-					$name = __( 'Theme', 'query-monitor' );
-				}
-				$type = 'theme';
+			case QM_Component::TYPE_STYLESHEET:
+			case QM_Component::TYPE_TEMPLATE:
+			case QM_Component::TYPE_CORE:
+				// Nothing.
 				break;
-			case 'template':
-				$name = __( 'Parent Theme', 'query-monitor' );
-				$type = 'theme';
-				break;
-			case 'other':
+			case QM_Component::TYPE_OTHER:
 				// Anything else that's within the content directory should appear as
 				// `wp-content/{dir}` or `wp-content/{file}`
 				$name = self::standard_dir( $file );
-				$name = str_replace( dirname( self::$file_dirs['other'] ), '', $name );
+				$name = str_replace( dirname( self::$file_dirs[ QM_Component::TYPE_OTHER ] ), '', $name );
 				$parts = explode( '/', trim( $name, '/' ) );
-				$name = $parts[0] . '/' . $parts[1];
-				$context = $file;
-				break;
-			case 'core':
-				$name = __( 'WordPress Core', 'query-monitor' );
-				break;
-			case 'unknown':
-			default:
-				$name = __( 'Unknown', 'query-monitor' );
+				$context = $parts[0] . '/' . $parts[1];
 
+				// Now detect specific drop-in plugins:
+				if ( ! function_exists( '_get_dropins' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+
+				/** @var array<int, string> $dropins */
+				$dropins = array_keys( _get_dropins() );
+
+				foreach ( $dropins as $dropin ) {
+					$dropin_path = WP_CONTENT_DIR . $dropin;
+
+					if ( $file !== $dropin_path ) {
+						continue;
+					}
+
+					$type = QM_Component::TYPE_DROPIN;
+					$context = pathinfo( $dropin, PATHINFO_BASENAME );
+				}
+
+				break;
+			case QM_Component::TYPE_UNKNOWN:
+			default:
 				/**
 				 * Filters the type of a custom or unknown component.
 				 *
@@ -267,29 +262,11 @@ class QM_Util {
 				 * @param string $name    The component name.
 				 * @param string $context The context for the component.
 				 */
-				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $name, $context );
-
-				/**
-				 * Filters the name of a custom or unknown component.
-				 *
-				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
-				 *
-				 * See also the corresponding filters:
-				 *
-				 *  - `qm/component_dirs`
-				 *  - `qm/component_type/{$type}`
-				 *  - `qm/component_context/{$type}`
-				 *
-				 * @since 3.6.0
-				 *
-				 * @param string $name The component name.
-				 * @param string $file The full file path for the file within the component.
-				 */
-				$name = apply_filters( "qm/component_name/{$type}", $name, $file );
+				$type = apply_filters( "qm/component_type/{$type}", $type, $file, $file, $context );
 
 				/**
 				 * Filters the context for a custom or unknown component. The context is usually a
-				 * representation of its type more specific to the individual component.
+				 * representation specific to the individual component, for example the file base name.
 				 *
 				 * The dynamic portion of the hook name, `$type`, refers to the component identifier.
 				 *
@@ -305,37 +282,11 @@ class QM_Util {
 				 * @param string $file    The full file path for the file within the component.
 				 * @param string $name    The component name.
 				 */
-				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $name );
+				$context = apply_filters( "qm/component_context/{$type}", $context, $file, $file );
 				break;
 		}
 
-		if ( 'other' === $type ) {
-			if ( ! function_exists( '_get_dropins' ) ) {
-				require_once trailingslashit( constant( 'ABSPATH' ) ) . 'wp-admin/includes/plugin.php';
-			}
-
-			/** @var array<int, string> $dropins */
-			$dropins = array_keys( _get_dropins() );
-
-			foreach ( $dropins as $dropin ) {
-				$dropin_path = trailingslashit( constant( 'WP_CONTENT_DIR' ) ) . $dropin;
-
-				if ( $file !== $dropin_path ) {
-					continue;
-				}
-
-				$type = 'dropin';
-				/* translators: %s: Drop-in plugin file name */
-				$name = sprintf( __( 'Drop-in: %s', 'query-monitor' ), pathinfo( $dropin, PATHINFO_BASENAME ) );
-			}
-		}
-
-		$component = new QM_Component();
-		$component->type = $type;
-		$component->name = $name;
-		$component->context = $context;
-
-		self::$file_components[ $file ] = $component;
+		self::$file_components[ $file ] = QM_Component::from( $type, $context, $file );
 
 		return self::$file_components[ $file ];
 	}
@@ -349,6 +300,9 @@ class QM_Util {
 	 *   line?: string|false,
 	 *   error?: WP_Error,
 	 *   component?: QM_Component,
+	 *   callback_type: string,
+	 *   start_line?: int,
+	 *   display_file?: string,
 	 * }
 	 */
 	public static function populate_callback( array $callback ) {
@@ -370,9 +324,11 @@ class QM_Util {
 				if ( is_object( $callback['function'][0] ) ) {
 					$class = get_class( $callback['function'][0] );
 					$access = '->';
+					$callback['callback_type'] = 'method';
 				} else {
 					$class = $callback['function'][0];
 					$access = '::';
+					$callback['callback_type'] = 'static_method';
 				}
 
 				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
@@ -387,59 +343,46 @@ class QM_Util {
 						if ( 0 === strpos( $file, '/' ) ) {
 							$file = basename( $filename );
 						}
-						$callback['name'] = sprintf(
-							/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
-							__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-							$ref->getStartLine(),
-							$file
-						);
+						$callback['callback_type'] = 'closure';
+						$callback['start_line'] = $ref->getStartLine();
+						$callback['display_file'] = $file;
 					} else {
-						/* translators: A closure is an anonymous PHP function */
-						$callback['name'] = __( 'Unknown closure', 'query-monitor' );
+						$callback['callback_type'] = 'unknown_closure';
 					}
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
 					$callback['name'] = self::shorten_fqn( $class ) . '->__invoke()';
+					$callback['callback_type'] = 'invokable';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
 				$callback['name'] = self::shorten_fqn( $callback['function'] ) . '()';
+				$callback['callback_type'] = 'function';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
 
 			$callback['file'] = $ref->getFileName();
 			$callback['line'] = $ref->getStartLine();
 
-			// https://github.com/facebook/hhvm/issues/5856
+			// Handle legacy create_function() lambdas (PHP 7.4 only, removed in PHP 8.0)
 			$name = trim( $ref->getName() );
-
-			if ( '__lambda_func' === $name || 0 === strpos( $name, 'lambda_' ) ) {
-				if ( $callback['file'] && preg_match( '|(?P<file>.*)\((?P<line>[0-9]+)\)|', $callback['file'], $matches ) ) {
-					$callback['file'] = $matches['file'];
-					$callback['line'] = $matches['line'];
-					$file = trim( self::standard_dir( $callback['file'], '' ), '/' );
-					/* translators: 1: Line number, 2: File name */
-					$callback['name'] = sprintf( __( 'Anonymous function on line %1$d of %2$s', 'query-monitor' ), $callback['line'], $file );
-				} else {
-					// https://github.com/facebook/hhvm/issues/5807
-					unset( $callback['line'], $callback['file'] );
-					$callback['name'] = $name . '()';
-					$callback['error'] = new WP_Error( 'unknown_lambda', __( 'Unable to determine source of lambda function', 'query-monitor' ) );
-				}
+			if ( 0 === strpos( $name, 'lambda_' ) ) {
+				// Just use the lambda name as-is, these are from deprecated create_function()
+				$callback['name'] = $name . '()';
+				$callback['callback_type'] = 'lambda';
+				unset( $callback['file'], $callback['line'] );
 			}
 
 			if ( ! empty( $callback['file'] ) ) {
 				$callback['component'] = self::get_file_component( $callback['file'] );
 			} else {
-				$callback['component'] = new QM_Component();
-				$callback['component']->type = 'php';
-				$callback['component']->name = 'PHP';
-				$callback['component']->context = '';
+				$callback['component'] = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
 			}
 		} catch ( ReflectionException $e ) {
 
 			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
+			$callback['callback_type'] = 'unknown';
 
 		}
 
@@ -447,6 +390,45 @@ class QM_Util {
 
 		return $callback;
 
+	}
+
+	/**
+	 * Generate the translated callback name from callback properties.
+	 *
+	 * @param array<string, mixed> $callback Callback data array.
+	 * @return string Translated callback name.
+	 */
+	public static function get_callback_name( array $callback ) {
+		if ( isset( $callback['name'] ) ) {
+			return $callback['name'];
+		}
+
+		if ( ! isset( $callback['callback_type'] ) ) {
+			return '';
+		}
+
+		switch ( $callback['callback_type'] ) {
+			case 'closure':
+				return sprintf(
+					/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
+					__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
+					$callback['start_line'],
+					$callback['display_file']
+				);
+
+			case 'unknown_closure':
+				/* translators: A closure is an anonymous PHP function */
+				return __( 'Unknown closure', 'query-monitor' );
+
+			case 'function':
+			case 'method':
+			case 'static_method':
+			case 'invokable':
+			case 'lambda':
+			case 'unknown':
+			default:
+				return $callback['name'] ?? '';
+		}
 	}
 
 	/**
@@ -652,7 +634,7 @@ class QM_Util {
 		return add_query_arg(
 			array(
 				'postType' => $type,
-				'postId' => urlencode( $template ),
+				'postId' => rawurlencode( $template ),
 				'canvas' => 'edit',
 			),
 			admin_url( 'site-editor.php' )
@@ -669,25 +651,17 @@ class QM_Util {
 	}
 
 	/**
-	 * @param mixed[] $array
-	 * @param string  $field
-	 * @return void
+	 * @param array<array-key, array<string, mixed>> $array
 	 */
-	public static function sort( array &$array, $field ) {
-		usort( $array, function( array $a, array $b ) use ( $field ): int {
-			return $a[ $field ] <=> $b[ $field ];
-		} );
+	public static function sort( array &$array, string $field ): void {
+		usort( $array, fn( array $a, array $b ): int => ( $a[ $field ] <=> $b[ $field ] ) );
 	}
 
 	/**
-	 * @param mixed[] $array
-	 * @param string  $field
-	 * @return void
+	 * @param array<array-key, array<string, mixed>> $array
 	 */
-	public static function rsort( array &$array, $field ) {
-		usort( $array, function( array $a, array $b ) use ( $field ): int {
-			return $b[ $field ] <=> $a[ $field ];
-		} );
+	public static function rsort( array &$array, string $field ): void {
+		usort( $array, fn( array $a, array $b ): int => ( $b[ $field ] <=> $a[ $field ] ) );
 	}
 }
 }

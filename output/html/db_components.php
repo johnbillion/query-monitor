@@ -70,7 +70,7 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 			echo '<tr>';
 			echo '<td class="qm-row-component">';
-			echo self::build_filter_trigger( 'db_queries', 'component', $row['component'], esc_html( $row['component'] ) ); // WPCS: XSS ok;
+			echo self::build_filter_trigger( 'db_queries', 'component', $row['component']->name, esc_html( $row['component']->name ) ); // WPCS: XSS ok;
 
 			foreach ( $data->types as $type_name => $type_count ) {
 				if ( isset( $row['types'][ $type_name ] ) ) {

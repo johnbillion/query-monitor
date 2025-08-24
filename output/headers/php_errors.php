@@ -62,7 +62,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 		return array_merge(
 			array(
-				'error-count' => $count,
+				'count' => $count,
 			),
 			$headers
 		);

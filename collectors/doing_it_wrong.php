@@ -37,6 +37,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		add_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ), 10, 4 );
 		add_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ), 10, 3 );
 		add_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ), 10, 4 );
+		add_action( 'deprecated_class_run', array( $this, 'action_deprecated_class_run' ), 10, 3 );
 
 		add_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
@@ -44,27 +45,30 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		add_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 		add_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		add_filter( 'deprecated_class_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
 	}
 
 	/**
 	 * @return void
 	 */
 	public function tear_down() {
-		parent::tear_down();
-
 		remove_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ) );
 		remove_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ) );
 		remove_action( 'deprecated_constructor_run', array( $this, 'action_deprecated_constructor_run' ) );
 		remove_action( 'deprecated_file_included', array( $this, 'action_deprecated_file_included' ) );
 		remove_action( 'deprecated_argument_run', array( $this, 'action_deprecated_argument_run' ) );
 		remove_action( 'deprecated_hook_run', array( $this, 'action_deprecated_hook_run' ) );
+		remove_action( 'deprecated_class_run', array( $this, 'action_deprecated_class_run' ) );
 
-		remove_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ) );
-		remove_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ) );
-		remove_filter( 'deprecated_file_trigger_error', array( $this, 'maybe_prevent_error' ) );
-		remove_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ) );
-		remove_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ) );
-		remove_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ) );
+		remove_filter( 'deprecated_function_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_constructor_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_file_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_argument_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_hook_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'doing_it_wrong_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+		remove_filter( 'deprecated_class_trigger_error', array( $this, 'maybe_prevent_error' ), 999 );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -129,22 +133,13 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		if ( $version ) {
-			/* translators: %s: Version number. */
-			$version = sprintf( __( '(This message was added in version %s.)', 'query-monitor' ), $version );
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'doing_it_wrong_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => sprintf(
-				/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: WordPress version number. */
-				__( 'Function %1$s was called incorrectly. %2$s %3$s', 'query-monitor' ),
-				$function_name,
-				$message,
-				$version
-			),
+		$this->data->actions[] = new QM_Doing_It_Wrong_Run(
+			$trace,
+			[
+				'function_name' => $function_name,
+				'message'       => $message,
+				'version'       => $version,
+			]
 		);
 
 		$this->collecting = false;
@@ -169,28 +164,13 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		$message = sprintf(
-			/* translators: 1: PHP function name, 2: Version number. */
-			__( 'Function %1$s is deprecated since version %2$s with no alternative available.', 'query-monitor' ),
-			$function_name,
-			$version
-		);
-
-		if ( $replacement ) {
-			$message = sprintf(
-				/* translators: 1: PHP function name, 2: Version number, 3: Alternative function name. */
-				__( 'Function %1$s is deprecated since version %2$s! Use %3$s instead.', 'query-monitor' ),
-				$function_name,
-				$version,
-				$replacement
-			);
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'deprecated_function_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+		$this->data->actions[] = new QM_Deprecated_Function_Run(
+			$trace,
+			[
+				'function_name' => $function_name,
+				'replacement'   => $replacement,
+				'version'       => $version,
+			]
 		);
 
 		$this->collecting = false;
@@ -215,30 +195,13 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		$message = sprintf(
-			/* translators: 1: PHP class name, 2: Version number, 3: __construct() method. */
-			__( 'The called constructor method for %1$s class is deprecated since version %2$s! Use %3$s instead.', 'query-monitor' ),
-			$class_name,
-			$version,
-			'<code>__construct()</code>'
-		);
-
-		if ( $parent_class ) {
-			$message = sprintf(
-				/* translators: 1: PHP class name, 2: PHP parent class name, 3: Version number, 4: __construct() method. */
-				__( 'The called constructor method for %1$s class in %2$s is deprecated since version %3$s! Use %4$s instead.', 'query-monitor' ),
-				$class_name,
-				$parent_class,
-				$version,
-				'<code>__construct()</code>'
-			);
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'deprecated_constructor_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+		$this->data->actions[] = new QM_Deprecated_Constructor_Run(
+			$trace,
+			[
+				'class_name'   => $class_name,
+				'parent_class' => $parent_class,
+				'version'      => $version,
+			]
 		);
 
 		$this->collecting = false;
@@ -264,30 +227,14 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		if ( $replacement ) {
-			$message = sprintf(
-				/* translators: 1: PHP file name, 2: Version number, 3: Alternative file name, 4: Optional message regarding the change. */
-				__( 'File %1$s is deprecated since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
-				$file,
-				$version,
-				$replacement,
-				$message
-			);
-		} else {
-			$message = sprintf(
-				/* translators: 1: PHP file name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'File %1$s is deprecated since version %2$s with no alternative available. %3$s', 'query-monitor' ),
-				$file,
-				$version,
-				$message
-			);
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'deprecated_file_included',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+		$this->data->actions[] = new QM_Deprecated_File_Included(
+			$trace,
+			[
+				'file'        => $file,
+				'replacement' => $replacement,
+				'version'     => $version,
+				'message'     => $message,
+			]
 		);
 
 		$this->collecting = false;
@@ -312,30 +259,14 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		if ( $message ) {
-			$message = sprintf(
-				/* translators: 1: PHP function name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'Function %1$s was called with an argument that is deprecated since version %2$s! %3$s', 'query-monitor' ),
-				$function_name,
-				$version,
-				$message
-			);
-		} else {
-			$message = sprintf(
-				/* translators: 1: PHP function name, 2: Version number. */
-				__( 'Function %1$s was called with an argument that is deprecated since version %2$s with no alternative available.', 'query-monitor' ),
-				$function_name,
-				$version
-			);
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'deprecated_argument_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+		$this->data->actions[] = new QM_Deprecated_Argument_Run(
+			$trace,
+			[
+				'function_name' => $function_name,
+				'message'       => $message,
+				'version'       => $version,
+			]
 		);
-
 		$this->collecting = false;
 	}
 
@@ -359,35 +290,49 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			),
 		) );
 
-		if ( $replacement ) {
-			$message = sprintf(
-				/* translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name, 4: Optional message regarding the change. */
-				__( 'Hook %1$s is deprecated since version %2$s! Use %3$s instead. %4$s', 'query-monitor' ),
-				$hook,
-				$version,
-				$replacement,
-				$message
-			);
-		} else {
-			$message = sprintf(
-				/* translators: 1: WordPress hook name, 2: Version number, 3: Optional message regarding the change. */
-				__( 'Hook %1$s is deprecated since version %2$s with no alternative available. %3$s', 'query-monitor' ),
-				$hook,
-				$version,
-				$message
-			);
-		}
-
-		$this->data->actions[] = array(
-			'hook'           => 'deprecated_hook_run',
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component'      => $trace->get_component(),
-			'message'        => $message,
+		$this->data->actions[] = new QM_Deprecated_Hook_Run(
+			$trace,
+			[
+				'hook'        => $hook,
+				'replacement' => $replacement,
+				'version'     => $version,
+				'message'     => $message,
+			]
 		);
 
 		$this->collecting = false;
 	}
 
+	/**
+	 * @param string $class_name
+	 * @param string $replacement
+	 * @param string $version
+	 * @return void
+	 */
+	public function action_deprecated_class_run( $class_name, $replacement, $version ) {
+		if ( $this->collecting ) {
+			return;
+		}
+
+		$this->collecting = true;
+
+		$trace = new QM_Backtrace( array(
+			'ignore_hook' => array(
+				current_action() => true,
+			),
+		) );
+
+		$this->data->actions[] = new QM_Deprecated_Class_Run(
+			$trace,
+			[
+				'class_name'  => $class_name,
+				'replacement' => $replacement,
+				'version'     => $version,
+			]
+		);
+
+		$this->collecting = false;
+	}
 }
 
 # Load early to catch early actions

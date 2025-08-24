@@ -43,36 +43,52 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return;
 		}
 
-		$levels = array(
-			'Warning',
-			'Notice',
-			'Strict',
-			'Deprecated',
-		);
+		$labels = [
+			'errors' => array(
+				'warning' => _x( 'Warning', 'PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice', 'PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict', 'PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
+			),
+			'suppressed' => array(
+				'warning' => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
+			),
+			'silenced' => array(
+				'warning' => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'notice' => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'strict' => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
+			),
+		];
+
 		$components = $data->components;
 		$count = 0;
 
-		usort( $components, 'strcasecmp' );
+		usort( $components, '\QM_Component::sort' );
 
 		$this->before_tabular_output();
 
 		echo '<thead>';
 		echo '<tr>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
+		echo $this->build_filter( 'type', $labels['errors'], __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $components, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
+		$values = wp_list_pluck( $components, 'name' );
+		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
 		echo '</th>';
 		echo '</tr>';
 		echo '</thead>';
 
 		echo '<tbody>';
 
-		foreach ( $this->collector->types as $error_group => $error_types ) {
+		foreach ( $labels as $error_group => $error_types ) {
 			foreach ( $error_types as $type => $title ) {
 
 				if ( ! isset( $data->{$error_group}[ $type ] ) ) {
@@ -83,7 +99,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					$count += $error['calls'];
 
 					$row_attr = array();
-					$row_attr['data-qm-type'] = ucfirst( $type );
+					$row_attr['data-qm-type'] = $type;
 					$row_attr['data-qm-key'] = $error_key;
 					$row_attr['data-qm-count'] = $error['calls'];
 
@@ -91,7 +107,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$component = $error['component'];
 						$row_attr['data-qm-component'] = $component->name;
 
-						if ( 'core' !== $component->context ) {
+						if ( ! $component->is_core() ) {
 							$row_attr['data-qm-component'] .= ' non-core';
 						}
 					}
@@ -110,7 +126,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$class = '';
 					}
 
-					echo '<tr ' . $attr . 'class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+					echo '<tr ' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
 					echo '<td class="qm-nowrap">';
 
 					if ( $is_warning ) {

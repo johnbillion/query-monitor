@@ -83,20 +83,22 @@ abstract class QM_Collector {
 	 * @return void
 	 */
 	protected function log_component( $component, $ltime, $type ) {
-		if ( ! isset( $this->data->component_times[ $component->name ] ) ) {
-			$this->data->component_times[ $component->name ] = array(
-				'component' => $component->name,
+		$key = $component->get_id();
+
+		if ( ! isset( $this->data->component_times[ $key ] ) ) {
+			$this->data->component_times[ $key ] = array(
+				'component' => $component,
 				'ltime' => 0,
 				'types' => array(),
 			);
 		}
 
-		$this->data->component_times[ $component->name ]['ltime'] += $ltime;
+		$this->data->component_times[ $key ]['ltime'] += $ltime;
 
-		if ( isset( $this->data->component_times[ $component->name ]['types'][ $type ] ) ) {
-			$this->data->component_times[ $component->name ]['types'][ $type ]++;
+		if ( isset( $this->data->component_times[ $key ]['types'][ $type ] ) ) {
+			$this->data->component_times[ $key ]['types'][ $type ]++;
 		} else {
-			$this->data->component_times[ $component->name ]['types'][ $type ] = 1;
+			$this->data->component_times[ $key ]['types'][ $type ] = 1;
 		}
 
 	}
@@ -309,6 +311,10 @@ abstract class QM_Collector {
 		}
 
 		return self::$hide_qm;
+	}
+
+	public static function get_host(): string {
+		return strval( isset( $_SERVER['HTTP_HOST'] ) ? wp_unslash( $_SERVER['HTTP_HOST'] ) : get_option( 'home' ) );
 	}
 
 	/**

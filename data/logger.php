@@ -24,7 +24,7 @@ class QM_Data_Logger extends QM_Data {
 	public $logs;
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string, QM_Component>
 	 */
 	public $components;
 }

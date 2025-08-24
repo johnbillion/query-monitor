@@ -19,6 +19,11 @@ on:
       - 'develop'
     paths:
       - '.github/workflows/nightly-tests.yml'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/nightly-tests.yml'
   workflow_dispatch:
 
 permissions: {}
@@ -37,17 +42,18 @@ jobs:
           - '8.4'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@3141ee7813718d59c2d4df6d3d94f69a1becc951 # 1.1.0
     with:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false
 
   integration:
     name: Nightly ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@3141ee7813718d59c2d4df6d3d94f69a1becc951 # 1.1.0
     strategy:
       matrix:
         label:
@@ -61,3 +67,4 @@ jobs:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false

@@ -72,7 +72,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>';
 		echo '<th scope="col">' . esc_html( $callback_label ) . '</th>';
 		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'component', $data->components, __( 'Component', 'query-monitor' ), array(
+		$values = wp_list_pluck( $data->components, 'name' );
+		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ), array(
 			'highlight' => 'subject',
 		) ); // WPCS: XSS ok.
 		echo '</th>';
@@ -97,10 +98,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 		foreach ( $hooks as $hook ) {
 			$row_attr = array();
 			$row_attr['data-qm-name'] = implode( ' ', $hook['parts'] );
-			$row_attr['data-qm-component'] = implode( ' ', $hook['components'] );
+			$row_attr['data-qm-component'] = implode( ' ', wp_list_pluck( $hook['components'], 'name' ) );
 			$row_attr['data-qm-type'] = $hook['type'];
 
-			if ( ! empty( $row_attr['data-qm-component'] ) && $core !== $row_attr['data-qm-component'] ) {
+			if ( QM_Component::has_non_core( $hook['components'] ) ) {
 				$row_attr['data-qm-component'] .= ' non-core';
 			}
 
@@ -184,20 +185,20 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					if ( isset( $action['callback']['file'] ) ) {
 						if ( self::has_clickable_links() ) {
 							echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
-							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+							echo self::output_filename( QM_Util::get_callback_name( $action['callback'] ), $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</td>';
 						} else {
 							echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
 							echo self::build_toggler(); // WPCS: XSS ok;
 							echo '<ol>';
 							echo '<li>';
-							echo self::output_filename( $action['callback']['name'], $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
+							echo self::output_filename( QM_Util::get_callback_name( $action['callback'] ), $action['callback']['file'], $action['callback']['line'] ); // WPCS: XSS ok.
 							echo '</li>';
 							echo '</ol></td>';
 						}
 					} else {
 						echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-						echo '<code>' . esc_html( $action['callback']['name'] ) . '</code>';
+						echo '<code>' . esc_html( QM_Util::get_callback_name( $action['callback'] ) ) . '</code>';
 
 						if ( isset( $action['callback']['error'] ) ) {
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

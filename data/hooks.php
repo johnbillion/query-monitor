@@ -15,7 +15,7 @@ class QM_Data_Hooks extends QM_Data {
 	 *     callback: array<string, mixed>,
 	 *   }>,
 	 *   parts: list<string>,
-	 *   components: array<string, string>,
+	 *   components: array<string, QM_Component>,
 	 * }>
 	 */
 	public $hooks;
@@ -26,7 +26,7 @@ class QM_Data_Hooks extends QM_Data {
 	public $parts;
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string, QM_Component>
 	 */
 	public $components;
 

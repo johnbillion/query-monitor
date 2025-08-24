@@ -45,7 +45,7 @@ class QM_DB extends wpdb {
 			$this->queries[ $i ][3] = $this->time_start;
 		}
 
-		if ( $this->last_error ) {
+		if ( $this->last_error && ! $this->suppress_errors ) {
 			$code = 'qmdb';
 
 			// This needs to remain in place to account for a user still on PHP 5. Don't want to kill their site.
@@ -55,7 +55,7 @@ class QM_DB extends wpdb {
 
 			$this->queries[ $i ]['result'] = new WP_Error( $code, $this->last_error );
 		} else {
-			$this->queries[ $i ]['result'] = $result;
+			$this->queries[ $i ]['result'] = (int) $result;
 		}
 
 		return $result;

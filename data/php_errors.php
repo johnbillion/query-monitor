@@ -21,7 +21,7 @@
  */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
-	 * @var array<string, string>
+	 * @var array<string, QM_Component>
 	 */
 	public $components;
 
@@ -29,17 +29,17 @@ class QM_Data_PHP_Errors extends QM_Data {
 	 * @var array<string, array<string, array<string, mixed>>>
 	 * @phpstan-var errorObjects
 	 */
-	public $errors;
+	public $errors = [];
 
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
 	 * @phpstan-var errorObjects
 	 */
-	public $suppressed;
+	public $suppressed = [];
 
 	/**
 	 * @var array<string, array<string, array<string, mixed>>>
 	 * @phpstan-var errorObjects
 	 */
-	public $silenced;
+	public $silenced = [];
 }

@@ -66,10 +66,6 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 		}
 	}
 
-	.qm-alert {
-		background-color: $qm-menu-alert-bg;
-	}
-
 	#wp-admin-bar-query-monitor-doing_it_wrong a,
 	#wp-admin-bar-query-monitor-stricts a,
 	#wp-admin-bar-query-monitor-deprecateds a,
@@ -93,6 +89,10 @@ $qm-menu-true-fg-hover: darken( $qm-menu-true-fg, 20% ) !default;
 		&:hover {
 			background-color: $qm-menu-expensive-bg-hover;
 		}
+	}
+
+	.qm-alert {
+		background-color: $qm-menu-alert-bg;
 	}
 
 	#wp-admin-bar-query-monitor-logger-warning a,
@@ -1186,6 +1186,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	}
 
 	.qm-title-heading select,
+	.qm select.qm-select,
 	.qm select.qm-filter {
 		-webkit-appearance: menulist !important;
 		-moz-appearance: menulist !important;
@@ -1209,8 +1210,16 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		max-width: unset !important;
 	}
 
+	.qm select.qm-select:hover,
 	.qm select.qm-filter:hover {
 		background: var( --qm-cell-bg-hover ) !important;
+	}
+
+	.qm select.qm-select {
+		margin: 0 !important;
+		padding: 4px 10px 4px 4px !important;
+		border-radius: 2px !important;
+		max-width: none !important;
 	}
 
 	.qm-hide,

@@ -305,7 +305,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<!-- Begin Query Monitor output -->' . "\n\n";
 			wp_print_inline_script_tag(
 				sprintf(
-					'var qm = %s;',
+					'var QueryMonitorData = %s;',
 					wp_json_encode( $json )
 				),
 				array(
@@ -414,7 +414,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 		wp_print_inline_script_tag(
 			sprintf(
-				'var qm = %s;',
+				'var QueryMonitorData = %s;',
 				wp_json_encode( $json )
 			),
 			array(
@@ -577,11 +577,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
 
 			echo '<p>';
-			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-filter">';
+			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-select">';
+
+			$xdebug_format = ini_get( 'xdebug.file_link_format' );
+			$default_label = ! empty( $xdebug_format ) ? 'Xdebug format' : 'None';
 
 			$editors = array(
-				'Default/Xdebug' => '',
-				'Atom' => 'atom',
+				$default_label => '',
 				'Netbeans' => 'netbeans',
 				'Nova' => 'nova',
 				'PhpStorm' => 'phpstorm',
@@ -931,6 +933,104 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		return true;
 
+	}
+
+	/**
+	 * @param string $error
+	 * @param mixed[] $e
+	 * @phpstan-param array{
+	 *   message: string,
+	 *   file: string,
+	 *   line: int,
+	 *   type?: int,
+	 *   trace?: mixed|null,
+	 * } $e
+	 */
+	public function output_fatal( $error, array $e ): void {
+		// This hides the subsequent message from the fatal error handler in core. It cannot be
+		// disabled by a plugin so we'll just hide its output.
+		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
+
+		printf(
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ),
+			esc_attr( QM_VERSION )
+		);
+
+		// This unused wrapper with an attribute serves to help the #qm-fatal div break out of an
+		// attribute if a fatal has occurred within one.
+		echo '<div data-qm="qm">';
+
+		printf(
+			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
+			esc_attr( $e['message'] ),
+			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
+			intval( $e['line'] )
+		);
+
+		echo '<div class="qm-fatal-wrap">';
+
+		if ( QM_Output_Html::has_clickable_links() ) {
+			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
+		} else {
+			$file = esc_html( $e['file'] );
+		}
+
+		printf(
+			'<p>%1$s<br>in <b>%2$s</b> on line <b>%3$d</b></p>',
+			nl2br( esc_html( $e['message'] ), false ),
+			$file,
+			intval( $e['line'] )
+		); // WPCS: XSS ok.
+
+		if ( ! empty( $e['trace'] ) ) {
+			echo '<p>Call stack:</p>';
+			echo '<ol>';
+			foreach ( $e['trace'] as $frame ) {
+				$callback = QM_Util::populate_callback( $frame );
+
+				if ( ! isset( $callback['name'] ) ) {
+					continue;
+				}
+
+				$args = array_map( function( $value ) {
+					$type = gettype( $value );
+
+					switch ( $type ) {
+						case 'object':
+							return get_class( $value );
+						case 'boolean':
+							return $value ? 'true' : 'false';
+						case 'integer':
+						case 'double':
+							return $value;
+						case 'string':
+							if ( strlen( $value ) > 50 ) {
+								return "'" . substr( $value, 0, 20 ) . '...' . substr( $value, -20 ) . "'";
+							}
+							return "'" . $value . "'";
+					}
+
+					return $type;
+				}, $frame['args'] ?? array() );
+
+				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback['name'] );
+
+				printf(
+					'<li>%s</li>',
+					QM_Output_Html::output_filename( $name, $frame['file'], $frame['line'] )
+				); // WPCS: XSS ok.
+			}
+			echo '</ol>';
+		}
+
+		echo '</div>';
+
+		echo '<h2>Query Monitor</h2>';
+
+		echo '</div>';
+		echo '</div>';
 	}
 
 	/**
