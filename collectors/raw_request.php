@@ -70,7 +70,9 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 		$raw_headers = headers_list();
 		foreach ( $raw_headers as $row ) {
 			list( $key, $value ) = explode( ':', $row, 2 );
-			$headers[ trim( $key ) ] = trim( $value );
+			if ( null !== $key && null !== $value ) {
+				$headers[ trim( $key ) ] = trim( $value );
+			}
 		}
 
 		ksort( $headers );
