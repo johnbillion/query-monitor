@@ -35,7 +35,7 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 			) );
 		}
 
-		if( isset( $this->data->cache_extensions['APC'] ) && $this->data->cache_extensions['APC'] ) {
+		if ( isset( $this->data->cache_extensions['APC'] ) && $this->data->cache_extensions['APC'] ) {
 			$enabled = ini_get( 'apc.enabled' );
 			$enabled = $enabled === '1' || $enabled === 'On';
 
@@ -50,8 +50,7 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 						$this->data->stats['cache_misses'] = (int) $this->data->stats['num_misses'];
 					}
 				}
-				
-			}
+}
 		} else {
 			$enabled = ini_get( 'opcache.enable' );
 			$enabled = $enabled === '1' || $enabled === 'On';
@@ -64,8 +63,8 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 					$api_available = false;
 				}
 			}
-			
-			if( $enabled && $api_available && function_exists( 'opcache_get_status' ) ) {
+
+			if ( $enabled && $api_available && function_exists( 'opcache_get_status' ) ) {
 				$full_status = opcache_get_status( true );
 
 				if ( is_array( $full_status ) ) {
@@ -112,15 +111,15 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 					// According to the documentation: The actual value used will be the first number in the set of prime numbers below which is greater than the specified value.
 					// https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.max-accelerated-files
 					$real_max_files = array( 223, 463, 983, 1979, 3907, 7963, 16229, 32531, 65407, 130987, 262237, 524521, 1048793 );
-					foreach( $real_max_files as $v ) {
-						if( $max_files <= $v ) {
+					foreach ( $real_max_files as $v ) {
+						if ( $max_files <= $v ) {
 							$real_max_files = $v;
 							break;
 						}
 					}
 					$cached_files = isset( $full_status['opcache_statistics']['num_cached_scripts'] ) ? (int) $full_status['opcache_statistics']['num_cached_scripts'] : 0;
-					
-					if( $cached_files ) {
+
+					if ( $cached_files ) {
 						$this->data->usage_meters['cached-scripts'] = array(
 							'type' => 'count',
 							'used' => $cached_files,
@@ -144,7 +143,6 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 			$this->data->cache_hit_percentage = ( 100 / $total ) * $this->data->stats['cache_hits'];
 		}
 	}
-
 }
 
 /**

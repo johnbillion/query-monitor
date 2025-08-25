@@ -360,7 +360,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
 					echo '<p>';
 					echo '<strong>' . esc_html( $meter['label'] ) . '</strong><br>';
-					switch( $meter['type'] ) {
+					switch ( $meter['type'] ) {
 						case 'bytes':
 							if ( $meter['used'] >= 0 ) {
 								echo esc_html( sprintf(
@@ -487,7 +487,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		return $title;
 	}
-
 }
 
 /**
