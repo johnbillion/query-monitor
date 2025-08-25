@@ -52,10 +52,10 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		/** @var QM_Collector_Raw_Request|null $raw_request */
 		$raw_request = QM_Collectors::get( 'raw_request' );
 
-		/** @var QM_Collector_Object_Cache|null $cache */
+		/** @var QM_Collector_Object_Cache|null $object_cache */
 		$object_cache = QM_Collectors::get( 'object-cache' );
 
-		/** @var QM_Collector_Opcode_Cache|null $cache */
+		/** @var QM_Collector_Opcode_Cache|null $opcode_cache */
 		$opcode_cache = QM_Collectors::get( 'opcode-cache' );
 
 		/** @var QM_Collector_HTTP|null $http */

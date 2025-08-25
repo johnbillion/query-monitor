@@ -37,7 +37,7 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 
 		if( isset( $this->data->cache_extensions['APC'] ) && $this->data->cache_extensions['APC'] ) {
 			$enabled = ini_get( 'apc.enabled' );
-			$enabled = $enabled === '1' || $enabled === 'On' || $enabled === true;
+			$enabled = $enabled === '1' || $enabled === 'On';
 
 			if ( function_exists( 'apc_cache_info' ) ) {
 				$stats = apc_cache_info();
@@ -54,7 +54,7 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 			}
 		} else {
 			$enabled = ini_get( 'opcache.enable' );
-			$enabled = $enabled === '1' || $enabled === 'On' || $enabled === true;
+			$enabled = $enabled === '1' || $enabled === 'On';
 
 			$restrict_api = ini_get( 'opcache.restrict_api' );
 			$api_available = true;
