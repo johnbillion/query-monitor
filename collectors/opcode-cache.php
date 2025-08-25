@@ -68,20 +68,21 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 			if( $enabled && $api_available && function_exists( 'opcache_get_status' ) ) {
 				$full_status = opcache_get_status( true );
 
-				if ( is_array( $full_status ) && isset( $full_status['opcache_statistics'] ) ) {
-					$this->data->stats = $full_status['opcache_statistics'];
+				if ( is_array( $full_status ) ) {
+					if ( isset( $full_status['opcache_statistics'] ) ) {
+						$this->data->stats = $full_status['opcache_statistics'];
 
-					// Opcache stats are reflecting the hits/misses since the web server started.
-					// We would need to correlate with the included files to get a more accurate hit/miss count.
-					if( function_exists( 'get_included_files' ) ) {
-						$files_included = get_included_files();
-						$files_hit = count( array_intersect_key( $full_status['scripts'], array_flip( $files_included ) ) );
-						$files_missed = count( $files_included ) - $files_hit;
+						// Opcache stats are reflecting the hits/misses since the web server started.
+						// We would need to correlate with the included files to get a more accurate hit/miss count.
+						if ( function_exists( 'get_included_files' ) ) {
+							$files_included = get_included_files();
+							$files_hit = count( array_intersect_key( $full_status['scripts'], array_flip( $files_included ) ) );
+							$files_missed = count( $files_included ) - $files_hit;
 
-						$this->data->stats['cache_hits'] = $files_hit;
-						$this->data->stats['cache_misses'] = $files_missed;
+							$this->data->stats['cache_hits'] = $files_hit;
+							$this->data->stats['cache_misses'] = $files_missed;
+						}
 					}
-				}
 			}
 		}
 
