@@ -83,6 +83,52 @@ class QM_Collector_Opcode_Cache extends QM_DataCollector {
 							$this->data->stats['cache_misses'] = $files_missed;
 						}
 					}
+
+					$memory_used  = -1;
+					$memory_limit = QM_Util::convert_hr_to_bytes( ini_get( 'opcache.memory_consumption' ) . 'M' ); // memory_consumption is in MB
+					if ( isset( $full_status['memory_usage'] ) ) {
+						$memory_used = (int) $full_status['memory_usage']['used_memory'] + (int) $full_status['memory_usage']['wasted_memory'];
+						$memory_free = (int) $full_status['memory_usage']['free_memory'];
+						$memory_limit = $memory_used + $memory_free;
+					}
+
+					$this->data->usage_meters['opcode-memory'] = array(
+						'type' => 'bytes',
+						'used' => $memory_used,
+						'limit' => $memory_limit,
+						'label' => __( 'Memory', 'query-monitor' ),
+					);
+
+					if ( isset( $full_status['interned_strings_usage'] ) ) {
+						$this->data->usage_meters['strings-memory'] = array(
+							'type' => 'bytes',
+							'used' => $full_status['interned_strings_usage']['used_memory'],
+							'limit' => $full_status['interned_strings_usage']['buffer_size'],
+							'label' => __( 'Interned strings', 'query-monitor' ),
+						);
+					}
+
+					$max_files = ini_get( 'opcache.max_accelerated_files' );
+					// According to the documentation: The actual value used will be the first number in the set of prime numbers below which is greater than the specified value.
+					// https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.max-accelerated-files
+					$real_max_files = array( 223, 463, 983, 1979, 3907, 7963, 16229, 32531, 65407, 130987, 262237, 524521, 1048793 );
+					foreach( $real_max_files as $v ) {
+						if( $max_files <= $v ) {
+							$real_max_files = $v;
+							break;
+						}
+					}
+					$cached_files = isset( $full_status['opcache_statistics']['num_cached_scripts'] ) ? (int) $full_status['opcache_statistics']['num_cached_scripts'] : 0;
+					
+					if( $cached_files ) {
+						$this->data->usage_meters['cached-scripts'] = array(
+							'type' => 'count',
+							'used' => $cached_files,
+							'limit' => $real_max_files,
+							'label' => __( 'Cached scripts', 'query-monitor' ),
+						);
+					}
+				}
 			}
 		}
 

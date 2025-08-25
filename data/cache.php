@@ -31,4 +31,9 @@ class QM_Data_Cache extends QM_Data {
 	 */
 	public $cache_extensions;
 
+	/**
+	 * @var array<string, array>
+	 */
+	public $usage_meters = array();
+
 }

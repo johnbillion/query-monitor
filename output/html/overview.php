@@ -368,6 +368,54 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					) );
 					echo '</p>';
 				}
+
+				foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
+					echo '<p>';
+					echo '<strong>' . esc_html( $meter['label'] ) . '</strong><br>';
+					switch( $meter['type'] ) {
+						case 'bytes':
+							if ( $meter['used'] >= 0 ) {
+								echo esc_html( sprintf(
+									/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
+									__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
+									number_format_i18n( $meter['used'] ),
+									number_format_i18n( ( $meter['used'] / 1024 / 1024 ), 1 )
+								) );
+							} else {
+								esc_html_e( '?? bytes (?? MB)', 'query-monitor' );
+							}
+
+							if ( $meter['limit'] >= 0 ) {
+								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
+								echo '<br><span class="qm-info">';
+								echo esc_html( sprintf(
+									/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes, 2: label for meter */
+									__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
+									number_format_i18n( $usage_percentage, 1 ),
+									number_format_i18n( $meter['limit'] / 1024 / 1024 )
+								) );
+								echo '</span>';
+							}
+							break;
+						case 'count':
+							echo esc_html( $meter['used'] >= 0 ? number_format_i18n( $meter['used'] ) : '??' );
+
+							if ( $meter['limit'] >= 0 ) {
+								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
+								echo '<br><span class="qm-info">';
+								echo esc_html( sprintf(
+									/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes, 2: label for meter */
+									__( '%1$s%% of %2$s server limit', 'query-monitor' ),
+									number_format_i18n( $usage_percentage, 1 ),
+									number_format_i18n( $meter['limit'] )
+								) );
+								echo '</span>';
+							}
+							break;
+					}
+					echo '</p>';
+				}
+
 			} else {
 				echo '<p><span class="qm-warn">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
