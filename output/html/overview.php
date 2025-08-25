@@ -337,12 +337,26 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '</section>';
 
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
+
 		if ( $opcode_cache ) {
 			/** @var QM_Data_Cache $cache_data */
 			$cache_data = $opcode_cache->get_data();
 
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
+			if ( ! empty( $cache_data->stats ) && ! empty( $cache_data->cache_hit_percentage ) ) {
+				$cache_hit_percentage = $cache_data->cache_hit_percentage;
+
+				echo '<p>';
+				echo esc_html( sprintf(
+					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
+					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
+					number_format_i18n( $cache_hit_percentage, 1 ),
+					number_format_i18n( $cache_data->stats['cache_hits'], 0 ),
+					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
+				) );
+				echo '</p>';
+			}
 
 			if ( $cache_data->has ) {
 				foreach ( array_filter( $cache_data->cache_extensions ) as $opcache_name => $opcache_state ) {
@@ -360,13 +374,35 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo QueryMonitor::icon( 'warning' );
 				echo esc_html__( 'Opcode cache not in use', 'query-monitor' );
 				echo '</span></p>';
-				echo '<p>';
-				echo esc_html__( 'Speak to your web host about enabling an opcode cache such as OPcache.', 'query-monitor' );
-				echo '</p>';
+
+				$potentials = array_filter( $cache_data->cache_extensions );
+
+				if ( ! empty( $potentials ) ) {
+					foreach ( $potentials as $name => $value ) {
+						echo '<p>';
+						echo esc_html(
+							sprintf(
+								/* translators: 1: PHP extension name */
+								__( 'The %1$s opcode extension for PHP is installed but is not enabled. Speak to your web host about enabling it.', 'query-monitor' ),
+								esc_html( $name )
+							)
+						);
+						echo '</p>';
+						break;
+					}
+				} else {
+					echo '<p>';
+					echo esc_html__( 'Speak to your web host about installing and enabling an opcode cache such as OPcache.', 'query-monitor' );
+					echo '</p>';
+				}
+			}
+		} else {
+			echo '<p>';
+			echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
+			echo '</p>';
 		}
 
-			echo '</section>';
-		}
+		echo '</section>';
 
 		$this->after_non_tabular_output();
 	}
