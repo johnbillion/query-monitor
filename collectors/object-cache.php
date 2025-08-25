@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @extends QM_DataCollector<QM_Data_Cache>
  */
-class QM_Collector_Cache extends QM_DataCollector {
+class QM_Collector_Object_Cache extends QM_DataCollector {
 
-	public $id = 'cache';
+	public $id = 'object-cache';
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_Cache();
@@ -26,8 +26,9 @@ class QM_Collector_Cache extends QM_DataCollector {
 	public function process() {
 		global $wp_object_cache;
 
-		$this->data->has_object_cache = (bool) wp_using_ext_object_cache();
+		$this->data->has = (bool) wp_using_ext_object_cache();
 		$this->data->cache_hit_percentage = 0;
+		$this->data->cache_extensions = array();
 
 		if ( is_object( $wp_object_cache ) ) {
 			$object_vars = get_object_vars( $wp_object_cache );
@@ -95,7 +96,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 		$this->data->display_hit_rate_warning = ( 100 === $this->data->cache_hit_percentage );
 
 		if ( function_exists( 'extension_loaded' ) ) {
-			$this->data->object_cache_extensions = array_map( 'extension_loaded', array(
+			$this->data->cache_extensions = array_map( 'extension_loaded', array(
 				'Afterburner' => 'afterburner',
 				'Relay' => 'relay',
 				'Redis' => 'redis',
@@ -103,16 +104,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 				'Memcache' => 'memcache',
 				'APCu' => 'apcu',
 			) );
-			$this->data->opcode_cache_extensions = array_map( 'extension_loaded', array(
-				'APC' => 'APC',
-				'Zend OPcache' => 'Zend OPcache',
-			) );
-		} else {
-			$this->data->object_cache_extensions = array();
-			$this->data->opcode_cache_extensions = array();
 		}
-
-		$this->data->has_opcode_cache = array_filter( $this->data->opcode_cache_extensions ) ? true : false;
 	}
 
 }
@@ -122,9 +114,9 @@ class QM_Collector_Cache extends QM_DataCollector {
  * @param QueryMonitor $qm
  * @return array<string, QM_Collector>
  */
-function register_qm_collector_cache( array $collectors, QueryMonitor $qm ) {
-	$collectors['cache'] = new QM_Collector_Cache();
+function register_qm_collector_object_cache( array $collectors, QueryMonitor $qm ) {
+	$collectors['object-cache'] = new QM_Collector_Object_Cache();
 	return $collectors;
 }
 
-add_filter( 'qm/collectors', 'register_qm_collector_cache', 20, 2 );
+add_filter( 'qm/collectors', 'register_qm_collector_object_cache', 20, 2 );

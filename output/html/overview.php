@@ -52,8 +52,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		/** @var QM_Collector_Raw_Request|null $raw_request */
 		$raw_request = QM_Collectors::get( 'raw_request' );
 
-		/** @var QM_Collector_Cache|null $cache */
-		$cache = QM_Collectors::get( 'cache' );
+		/** @var QM_Collector_Object_Cache|null $cache */
+		$object_cache = QM_Collectors::get( 'object-cache' );
+
+		/** @var QM_Collector_Opcode_Cache|null $cache */
+		$opcode_cache = QM_Collectors::get( 'opcode-cache' );
 
 		/** @var QM_Collector_HTTP|null $http */
 		$http = QM_Collectors::get( 'http' );
@@ -260,9 +263,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
-		if ( $cache ) {
+		if ( $object_cache ) {
 			/** @var QM_Data_Cache $cache_data */
-			$cache_data = $cache->get_data();
+			$cache_data = $object_cache->get_data();
 
 			if ( ! empty( $cache_data->stats ) && ! empty( $cache_data->cache_hit_percentage ) ) {
 				$cache_hit_percentage = $cache_data->cache_hit_percentage;
@@ -278,7 +281,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo '</p>';
 			}
 
-			if ( $cache_data->has_object_cache ) {
+			if ( $cache_data->has ) {
 				echo '<p><span class="qm-info">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo self::build_link(
@@ -293,7 +296,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
 				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data->object_cache_extensions );
+				$potentials = array_filter( $cache_data->cache_extensions );
 
 				if ( ! empty( $potentials ) ) {
 					foreach ( $potentials as $name => $value ) {
@@ -334,15 +337,15 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '</section>';
 
-		if ( $cache ) {
+		if ( $opcode_cache ) {
 			/** @var QM_Data_Cache $cache_data */
-			$cache_data = $cache->get_data();
+			$cache_data = $opcode_cache->get_data();
 
 			echo '<section>';
 			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
 
-			if ( $cache_data->has_opcode_cache ) {
-				foreach ( array_filter( $cache_data->opcode_cache_extensions ) as $opcache_name => $opcache_state ) {
+			if ( $cache_data->has ) {
+				foreach ( array_filter( $cache_data->cache_extensions ) as $opcache_name => $opcache_state ) {
 					echo '<p>';
 					echo esc_html( sprintf(
 						/* translators: %s: Name of cache driver */

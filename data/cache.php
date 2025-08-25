@@ -9,17 +9,12 @@ class QM_Data_Cache extends QM_Data {
 	/**
 	 * @var bool
 	 */
-	public $has_object_cache;
+	public $has;
 
 	/**
 	 * @var bool
 	 */
 	public $display_hit_rate_warning;
-
-	/**
-	 * @var bool
-	 */
-	public $has_opcode_cache;
 
 	/**
 	 * @var int
@@ -34,11 +29,6 @@ class QM_Data_Cache extends QM_Data {
 	/**
 	 * @var array<string, bool>
 	 */
-	public $object_cache_extensions;
-
-	/**
-	 * @var array<string, bool>
-	 */
-	public $opcode_cache_extensions;
+	public $cache_extensions;
 
 }
