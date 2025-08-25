@@ -356,18 +356,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
 				) );
 				echo '</p>';
-			}
-
-			if ( $cache_data->has ) {
-				foreach ( array_filter( $cache_data->cache_extensions ) as $opcache_name => $opcache_state ) {
-					echo '<p>';
-					echo esc_html( sprintf(
-						/* translators: %s: Name of cache driver */
-						__( 'Opcode cache in use: %s', 'query-monitor' ),
-						$opcache_name
-					) );
-					echo '</p>';
-				}
 
 				foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
 					echo '<p>';
@@ -415,7 +403,24 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					}
 					echo '</p>';
 				}
+			} else {
+				echo '<p><span class="qm-warn">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::icon( 'warning' );
+				echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
+				echo '</span></p>';
+			}
 
+			if ( $cache_data->has ) {
+				foreach ( array_filter( $cache_data->cache_extensions ) as $opcache_name => $opcache_state ) {
+					echo '<p>';
+					echo esc_html( sprintf(
+						/* translators: %s: Name of cache driver */
+						__( 'Opcode cache in use: %s', 'query-monitor' ),
+						$opcache_name
+					) );
+					echo '</p>';
+				}
 			} else {
 				echo '<p><span class="qm-warn">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
