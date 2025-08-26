@@ -62,17 +62,50 @@ add_action( 'init', function() {
 
 			switch ( $_GET['_qm_acceptance_test'] ) {
 				case 'successful_request':
-					$stack = \GuzzleHttp\HandlerStack::create();
+					// Create mock handler with a successful JSON response
+					$mock = new \GuzzleHttp\Handler\MockHandler(
+						[
+							new \GuzzleHttp\Psr7\Response(
+								200,
+								[
+									'Content-Type' => 'application/json',
+								],
+								json_encode(
+									[
+										'foo' => 'bar',
+									]
+								)
+							),
+						]
+					);
+
+					$stack = \GuzzleHttp\HandlerStack::create( $mock );
 					$stack->push( QM_Collector_HTTP::guzzle_middleware() );
 					$client = new \GuzzleHttp\Client( [ 'handler' => $stack ] );
-					$client->get( 'https://httpbin.org/json' );
+					$client->get( 'https://example.org/json' );
 					break;
 				case 'error_request':
-					$stack = \GuzzleHttp\HandlerStack::create();
+					// Create mock handler with a 404 response
+					$mock = new \GuzzleHttp\Handler\MockHandler(
+						[
+							new \GuzzleHttp\Psr7\Response(
+								404,
+								[
+									'Content-Type' => 'text/html',
+								],
+								'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+									<title>404 Not Found</title>
+									<h1>Not Found</h1>
+									<p>The requested URL was not found on the server.</p>'
+							),
+						]
+					);
+
+					$stack = \GuzzleHttp\HandlerStack::create( $mock );
 					$stack->push( QM_Collector_HTTP::guzzle_middleware() );
 					$client = new \GuzzleHttp\Client( [ 'handler' => $stack ] );
 					try {
-						$client->get( 'https://httpbin.org/status/404' );
+						$client->get( 'https://example.org/status/404' );
 					} catch ( \GuzzleHttp\Exception\ClientException $e ) {
 						// Expected 404 error
 					}
