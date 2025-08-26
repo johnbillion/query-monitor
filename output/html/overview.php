@@ -380,7 +380,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
 								echo '<br><span class="qm-info">';
 								echo esc_html( sprintf(
-									/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes, 2: label for meter */
+									/* translators: 1: Percentage of limit used, 2: Bytes meter server limit in megabytes */
 									__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
 									number_format_i18n( $usage_percentage, 1 ),
 									number_format_i18n( $meter['limit'] / 1024 / 1024 )
@@ -405,7 +405,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
 								echo '<br><span class="qm-info">';
 								echo esc_html( sprintf(
-									/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes, 2: label for meter */
+									/* translators: 1: Percentage of limit used, 2: Counter meter server limit */
 									__( '%1$s%% of %2$s server limit', 'query-monitor' ),
 									number_format_i18n( $usage_percentage, 1 ),
 									number_format_i18n( $meter['limit'] )
