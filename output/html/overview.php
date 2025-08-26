@@ -356,23 +356,26 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
 				) );
 				echo '</p>';
+			} else {
+				echo '<p><span class="qm-warn">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::icon( 'warning' );
+				echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
+				echo '</span></p>';
+			}
 
-				foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
-					echo '<p>';
-					echo '<strong>' . esc_html( $meter['label'] ) . '</strong><br>';
-					switch ( $meter['type'] ) {
-						case 'bytes':
-							if ( $meter['used'] >= 0 ) {
-								echo esc_html( sprintf(
-									/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
-									__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
-									number_format_i18n( $meter['used'] ),
-									number_format_i18n( ( $meter['used'] / 1024 / 1024 ), 1 )
-								) );
-							} else {
-								esc_html_e( '?? bytes (?? MB)', 'query-monitor' );
-							}
-
+			foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
+				echo '<p>';
+				echo '<strong>' . esc_html( $meter['label'] ) . '</strong><br>';
+				switch ( $meter['type'] ) {
+					case 'bytes':
+						if ( $meter['used'] >= 0 ) {
+							echo esc_html( sprintf(
+								/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
+								__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
+								number_format_i18n( $meter['used'] ),
+								number_format_i18n( ( $meter['used'] / 1024 / 1024 ), 1 )
+							) );
 							if ( $meter['limit'] >= 0 ) {
 								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
 								echo '<br><span class="qm-info">';
@@ -384,9 +387,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 								) );
 								echo '</span>';
 							}
-							break;
-						case 'count':
-							echo esc_html( $meter['used'] >= 0 ? number_format_i18n( $meter['used'] ) : '??' );
+						} elseif ( $meter['limit'] >= 0 ) {
+							echo '<span class="qm-info">';
+							echo esc_html( sprintf(
+								/* translators: 1: Bytes meter server limit in megabytes */
+								__( '%1$s MB server limit', 'query-monitor' ),
+								number_format_i18n( $meter['limit'] / 1024 / 1024 )
+							) );
+							echo '</span>';
+						}
+						break;
+					case 'count':
+						if ( $meter['used'] >= 0 ) {
+							echo esc_html( number_format_i18n( $meter['used'] ) );
 
 							if ( $meter['limit'] >= 0 ) {
 								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
@@ -399,16 +412,18 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 								) );
 								echo '</span>';
 							}
-							break;
-					}
-					echo '</p>';
+						} elseif ( $meter['limit'] >= 0 ) {
+							echo '<span class="qm-info">';
+							echo esc_html( sprintf(
+								/* translators: 1: Counter meter server limit */
+								__( '%1$s server limit', 'query-monitor' ),
+								number_format_i18n( $meter['limit'] )
+							) );
+							echo '</span>';
+						}
+						break;
 				}
-			} else {
-				echo '<p><span class="qm-warn">';
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::icon( 'warning' );
-				echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
-				echo '</span></p>';
+				echo '</p>';
 			}
 
 			if ( $cache_data->has ) {
