@@ -356,7 +356,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
 				) );
 				echo '</p>';
-			} else {
+			} elseif ( $cache_data->has ) {
 				echo '<p><span class="qm-warn">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo QueryMonitor::icon( 'warning' );
