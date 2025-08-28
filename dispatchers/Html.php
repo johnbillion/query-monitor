@@ -176,7 +176,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
 			add_action( 'admin_notices', array( $this, 'build_warning' ) );
-			return;
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );

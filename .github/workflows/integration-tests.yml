@@ -63,6 +63,5 @@ jobs:
             php: '7.4'
       fail-fast: false
     with:
-      node: true
       php: ${{ matrix.php }}
       wp: ${{ matrix.wp }}
