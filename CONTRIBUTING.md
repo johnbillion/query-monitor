@@ -74,8 +74,8 @@ To run individual tests:
 
 The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 
-	composer exec tests-start
-	composer exec tests-stop
+	composer test:start
+	composer test:stop
 
 ## Releasing a New Version
 
