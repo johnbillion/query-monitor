@@ -34,7 +34,7 @@
 		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "dev-trunk",
+		"johnbillion/plugin-infrastructure": "1.2.1",
 		"johnbillion/wp-compat": "0.3.1",
 		"lucatume/wp-browser": "3.2.3",
 		"phpcompatibility/phpcompatibility-wp": "2.1.5",
@@ -82,10 +82,10 @@
 			"npm run build-schemas",
 			"@test:phpstan",
 			"@test:phpcs",
-			"tests-start",
+			"@test:start",
 			"@test:integration",
 			"@test:acceptance",
-			"tests-stop"
+			"@test:stop"
 		],
 		"test:acceptance": [
 			"npm run build #",
@@ -100,6 +100,12 @@
 		"test:phpstan": [
 			"codecept build",
 			"phpstan analyze -v --memory-limit=1024M"
+		],
+		"test:start": [
+			"tests-start"
+		],
+		"test:stop": [
+			"tests-stop"
 		]
 	}
 }

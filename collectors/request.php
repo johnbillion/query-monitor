@@ -36,6 +36,7 @@ class QM_Collector_Request extends QM_DataCollector {
 			'send_headers',
 			'the_post',
 			'wp',
+			'after_switch_theme',
 		);
 	}
 

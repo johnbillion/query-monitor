@@ -444,6 +444,16 @@ abstract class QM_Output_Html extends QM_Output {
 		if ( $line ) {
 			$fallback .= ':' . $line;
 		}
+
+		if ( 0 === strpos( $text, '{closure:/' ) ) {
+			$text = sprintf(
+				/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
+				__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
+				$line,
+				QM_Util::standard_dir( $file, '' )
+			);
+		}
+
 		if ( $is_filename ) {
 			$return = esc_html( $text );
 		} else {

@@ -69,8 +69,11 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 		$headers = array();
 		$raw_headers = headers_list();
 		foreach ( $raw_headers as $row ) {
-			list( $key, $value ) = explode( ':', $row, 2 );
-			$headers[ trim( $key ) ] = trim( $value );
+			$parts = explode( ':', $row, 2 );
+			$key = trim( $parts[0] );
+			// This is needed when a header is sent without a value, for example: header('X-Hello');
+			$value = isset( $parts[1] ) ? trim( $parts[1] ) : '';
+			$headers[ $key ] = $value;
 		}
 
 		ksort( $headers );
