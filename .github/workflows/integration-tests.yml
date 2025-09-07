@@ -58,6 +58,9 @@ jobs:
           # Latest WordPress on PHP 8.4
           - wp: '6.8'
             php: '8.4'
+          # Latest WordPress on PHP 8.5
+          - wp: '6.8'
+            php: '8.5'
           # Oldest supported WordPress
           - wp: '6.0'
             php: '7.4'
