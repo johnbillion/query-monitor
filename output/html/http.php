@@ -134,7 +134,20 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 				}
 
 				$url = self::format_url( $row['url'] );
+				$query = parse_url( $row['url'], PHP_URL_QUERY );
 				$info = '';
+
+				if ( ! empty( $query ) ) {
+					$query = '?' . $query;
+					$url   = str_replace( $query, '', $row['url'] );
+					$url   = self::format_url( $url );
+
+					$url .= sprintf(
+						'%s<ul class="qm-toggled"><li>%s</li></ul>',
+						self::build_toggler(),
+						str_replace( array( '?', '&amp;' ), array( '?', '</li><li>&amp;' ), esc_html( $query ) )
+					);
+				}
 
 				if ( ! $row['local'] ) {
 					$url = preg_replace( '|^http:|', '<span class="qm-warn">http</span>:', $url );
@@ -197,20 +210,44 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					) . $url;
 				}
 
+				$redirect_query = '';
+
 				if ( ! empty( $row['redirected_to'] ) ) {
+					$redirect_query = parse_url( $row['redirected_to'], PHP_URL_QUERY );
+					$redirected_to = self::format_url( $row['redirected_to'] );
+
+					if ( ! empty( $redirect_query ) ) {
+						$redirect_query = '?' . $redirect_query;
+						$redirected_to   = str_replace( $redirect_query, '', $row['redirected_to'] );
+						$redirected_to   = self::format_url( $redirected_to );
+
+						$redirected_to .= sprintf(
+							'%s<ul class="qm-toggled"><li>%s</li></ul>',
+							self::build_toggler(),
+							str_replace( array( '?', '&amp;' ), array( '?', '</li><li>&amp;' ), esc_html( $redirect_query ) )
+						);
+					}
+
 					$url .= sprintf(
 						'<br><span class="qm-warn">%1$s%2$s</span><br>%3$s',
 						QueryMonitor::icon( 'warning' ),
 						/* translators: An HTTP API request redirected to another URL */
 						esc_html__( 'This HTTP request was redirected to:', 'query-monitor' ),
-						self::format_url( $row['redirected_to'] )
+						$redirected_to
 					);
 				}
 
+				$classes = 'qm-url qm-ltr qm-wrap';
+
+				if ( ! empty( $query ) || ! empty( $redirect_query ) ) {
+					$classes .= ' qm-has-toggle';
+				}
+
 				printf( // WPCS: XSS ok.
-					'<td class="qm-url qm-ltr qm-wrap">%s%s</td>',
+					'<td class="%s">%s%s</td>',
+					$classes,
 					$info,
-					$url
+					$url,
 				);
 
 				// @TODO move all this logic to the collector.
