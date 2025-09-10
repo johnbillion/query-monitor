@@ -75,4 +75,9 @@ class QM_Data_Assets extends QM_Data {
 	 * @var string
 	 */
 	public $port;
+
+	/**
+	 * @var array<int, string>
+	 */
+	public $registered;
 }
