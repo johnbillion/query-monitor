@@ -36,6 +36,10 @@ class AcceptanceTester extends \Codeception\Actor {
 		$this->amOnPage( "/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test={$test}" );
 	}
 
+	public function amOnAPageThatMakesHttpRequest( string $test ): void {
+		$this->amOnPage( "/?_qm_acceptance_group=http_requests&_qm_acceptance_test={$test}" );
+	}
+
 	public function amOnAPageThatTriggersCallbackType( string $test ): void {
 		$this->amOnPage( "/?_qm_acceptance_group=callback_types&_qm_acceptance_test={$test}" );
 	}
