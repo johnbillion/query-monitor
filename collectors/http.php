@@ -346,7 +346,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
 				$type = "HTTP {$code}";
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
-					$this->data->errors['warning'][] = $key;
+					$this->data->errors['alert'][] = $key;
 				}
 			}
 
@@ -464,7 +464,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$this->data->ltime += $ltime;
 
 		if ( $exception || ( $response && $response->getStatusCode() >= 400 ) ) {
-			$this->data->errors['warning'][] = $key;
+			$this->data->errors['alert'][] = $key;
 		}
 	}
 
