@@ -82,6 +82,19 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'http_requests':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'successful_request':
+					wp_remote_get( 'http://httpbin/status/200' );
+					break;
+				case '404_request':
+					wp_remote_get( 'http://httpbin/status/404' );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		case 'callback_types':
 			switch ( $_GET['_qm_acceptance_test'] ) {
 				case 'function':
