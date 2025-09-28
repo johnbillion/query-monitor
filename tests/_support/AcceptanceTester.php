@@ -48,13 +48,15 @@ class AcceptanceTester extends \Codeception\Actor {
 		$this->seeElement( '#wp-admin-bar-query-monitor.qm-notice' );
 	}
 
-	public function seeQMMenu(): void {
+	protected function seeQMMenu(): void {
 		$this->seeElement( '#wp-admin-bar-query-monitor' );
+		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-error' );
+		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-alert' );
 		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-warning' );
 		$this->dontSeeElement( '#wp-admin-bar-query-monitor.qm-notice' );
 	}
 
-	public function openQMPanel( string $panel ): void {
+	protected function openQMPanel( string $panel ): void {
 		$this->click( '#wp-admin-bar-query-monitor' );
 		$this->click( $panel, '#qm-panel-menu' );
 	}
@@ -62,5 +64,29 @@ class AcceptanceTester extends \Codeception\Actor {
 	public function seeInQMPanel( string $panel, string $text ): void {
 		$this->openQMPanel( $panel );
 		$this->see( $text, '.qm-panel-show' );
+		$this->seeQMMenu();
+	}
+
+	public function seeInQMPanelWithError( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '.qm-panel-show' );
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-error' );
+	}
+
+	public function seeInQMPanelWithAlert( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '.qm-panel-show' );
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-alert' );
+	}
+	public function seeInQMPanelWithWarning( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '.qm-panel-show' );
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-warning' );
+	}
+
+	public function seeInQMPanelWithNotice( string $panel, string $text ): void {
+		$this->openQMPanel( $panel );
+		$this->see( $text, '.qm-panel-show' );
+		$this->seeElement( '#wp-admin-bar-query-monitor.qm-notice' );
 	}
 }
