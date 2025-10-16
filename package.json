@@ -10,11 +10,12 @@
 		"node": ">=20"
 	},
 	"devDependencies": {
+		"@johnbillion/plugin-infrastructure": "2.1.1",
 		"@jsdevtools/version-bump-prompt": "^6.1.0",
 		"sass": "^1",
 		"sharp-cli": "^5.1.0",
-		"vitepress-plugin-rss": "^0.2.0",
-		"vitepress": "1.0.0-rc.25"
+		"vitepress": "1.0.0-rc.25",
+		"vitepress-plugin-rss": "^0.2.0"
 	},
 	"scripts": {
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
