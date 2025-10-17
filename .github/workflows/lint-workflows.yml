@@ -5,10 +5,16 @@ on:
   pull_request:
     branches:
       - '**'
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
   push:
     branches:
       - develop
       - trunk
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
 
 permissions: {}
 
