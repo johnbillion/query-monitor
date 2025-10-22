@@ -356,7 +356,12 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				foreach ( $all_modules as $dep_id => $dep ) {
 
-					if ( ! is_array( $dep ) || empty( $dep['dependencies'] ) || ! is_array( $dep['dependencies'] ) ) {
+					// Ensure $dep is an array.
+					if ( ! is_array( $dep ) ) {
+						continue;
+					}
+
+					if ( ! isset( $dep['dependencies'] ) || ! is_array( $dep['dependencies'] ) ) {
 						continue;
 					}
 
@@ -370,7 +375,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				$sources[ $id ] = array(
 					'id' => $id,
 					'src' => $src,
-					'version' => $module['version'],
+					'version' => $module['version'] ?? '',
 					'dependencies' => $dependencies,
 					'dependents' => $dependents,
 				);
