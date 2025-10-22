@@ -336,42 +336,45 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		 */
 		$sources = array();
 
-		foreach ( $all_modules as $id => $module ) {
+		if ( is_array( $all_modules ) && ! empty( $all_modules ) ) {
+			foreach ( $all_modules as $id => $module ) {
 
-			if ( ! is_array( $module ) ) {
-                continue; // skip invalid module.
-            }
+				// Skip invalid module.
+				if ( ! is_array( $module ) ) {
+					continue;
+				}
 
-			/** @var string $src */
-			$src = $get_src->invoke( $modules, $id );
+				/** @var string $src */
+				$src = $get_src->invoke( $modules, $id );
 
-			/**
-			 * @var array<string, array<string, mixed>> $script_dependencies
-			 */
-			$script_dependencies = $get_dependencies->invoke( $modules, array( $id ) );
-			$dependencies = array_keys( $script_dependencies );
-			$dependents = array();
+				/**
+				 * @var array<string, array<string, mixed>> $script_dependencies
+				 */
+				$script_dependencies = $get_dependencies->invoke( $modules, array( $id ) );
+				$dependencies = array_keys( $script_dependencies );
+				$dependents = array();
 
-			foreach ( $all_modules as $dep_id => $dep ) {
+				foreach ( $all_modules as $dep_id => $dep ) {
 
-				if ( ! is_array( $dep ) || empty( $dep['dependencies'] ) || ! is_array( $dep['dependencies'] ) ) {
-                    continue;
-                }
+					if ( ! is_array( $dep ) || empty( $dep['dependencies'] ) || ! is_array( $dep['dependencies'] ) ) {
+						continue;
+					}
 
-				foreach ( $dep['dependencies'] as $dependency ) {
-					if ( $dependency['id'] === $id ) {
-						$dependents[] = $dep_id;
+					foreach ( $dep['dependencies'] as $dependency ) {
+						if ( $dependency['id'] === $id ) {
+							$dependents[] = $dep_id;
+						}
 					}
 				}
-			}
 
-			$sources[ $id ] = array(
-				'id' => $id,
-				'src' => $src,
-				'version' => $module['version'],
-				'dependencies' => $dependencies,
-				'dependents' => $dependents,
-			);
+				$sources[ $id ] = array(
+					'id' => $id,
+					'src' => $src,
+					'version' => $module['version'],
+					'dependencies' => $dependencies,
+					'dependents' => $dependents,
+				);
+			}
 		}
 
 		// @todo check isPrivate before changing visibility back
