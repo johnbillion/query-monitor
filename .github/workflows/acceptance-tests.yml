@@ -46,6 +46,7 @@ jobs:
       matrix:
         wp:
           # Three most recent versions of WordPress
+          - '6.9-beta1'
           - '6.8'
           - '6.7'
           - '6.6'
