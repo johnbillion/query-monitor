@@ -370,7 +370,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		WP_Script_Modules $modules,
 		ReflectionProperty $registered_property,
 		ReflectionMethod $get_dependencies,
-		array $ids,
+		array $ids
 	): array {
 		/**
 		 * Prior to WP 6.9 this returned an array of dependency arrays keyed by their ID.
