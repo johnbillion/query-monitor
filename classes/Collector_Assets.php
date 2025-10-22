@@ -273,7 +273,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * Undocumented function
+	 * Returns the script modules registered in WP_Script_Modules.
 	 *
 	 * @return array<string, array>|null
 	 * @phpstan-return array<string, QMScriptModule>|null
@@ -305,6 +305,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		( \PHP_VERSION_ID < 80100 ) && $registered_property->setAccessible( true );
 
 		/**
+		 * Script modules marked for enqueue, keyed by script module ID.
+		 *
 		 * @var array<string, array<string, mixed>> $enqueued
 		 * @phpstan-var array<string, WPScriptModule> $enqueued
 		 */
@@ -525,6 +527,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
+	 * Returns data about the module source.
+	 *
 	 * @param string $src
 	 * @return mixed[]
 	 * @phpstan-return array{
