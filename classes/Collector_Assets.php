@@ -10,6 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * @phpstan-type WPScriptModule array{
+ *   src: string,
+ *   version: string|false|null,
+ *   enqueue: bool,
+ *   dependencies: list<array{
+ *     id: string,
+ *     import: 'static'|'dynamic',
+ *   }>,
+ * }
+ * @phpstan-type QMScriptModule array{
+ *   id: string,
+ *   src: string,
+ *   version: string|false|null,
+ *   dependencies: list<string>,
+ *   dependents: list<string>,
+ * }
  * @extends QM_DataCollector<QM_Data_Assets>
  */
 abstract class QM_Collector_Assets extends QM_DataCollector {
@@ -260,13 +276,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * Undocumented function
 	 *
 	 * @return array<string, array>|null
-	 * @phpstan-return array<string, array{
-	 *   id: string,
-	 *   src: string,
-	 *   version: string|false|null,
-	 *   dependencies: list<string>,
-	 *   dependents: list<string>,
-	 * }>|null
+	 * @phpstan-return array<string, QMScriptModule>|null
 	 */
 	protected static function get_script_modules(): ?array {
 		// WP 6.5
@@ -293,15 +303,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		/**
 		 * @var array<string, array<string, mixed>> $enqueued
-		 * @phpstan-var array<string, array{
-		 *   src: string,
-		 *   version: string|false|null,
-		 *   enqueue: bool,
-		 *   dependencies: list<array{
-		 *     id: string,
-		 *     import: 'static'|'dynamic',
-		 *   }>,
-		 * }> $enqueued
+		 * @phpstan-var array<string, WPScriptModule> $enqueued
 		 */
 		$enqueued = $get_marked_for_enqueue->invoke( $modules );
 
@@ -325,14 +327,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		);
 
 		/**
-		 * @var array<string, array<string, mixed>> $sources
-		 * @phpstan-var array<string, array{
-		 *   id: string,
-		 *   src: string,
-		 *   version: string|false|null,
-		 *   dependencies: list<string>,
-		 *   dependents: list<string>,
-		 * }> $sources
+		 * @var array<string, array<string, array<mixed>>> $sources
+		 * @phpstan-var array<string, QMScriptModule> $sources
 		 */
 		$sources = array();
 
