@@ -325,47 +325,29 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		 */
 		$sources = array();
 
-		if ( is_array( $all_modules ) && ! empty( $all_modules ) ) {
-			foreach ( $all_modules as $id => $module ) {
+		foreach ( $all_modules as $id => $module ) {
+			/** @var string $src */
+			$src = $get_src->invoke( $modules, $id );
 
-				// Skip invalid module.
-				if ( ! is_array( $module ) ) {
-					continue;
-				}
+			$script_dependencies = self::get_module_dependencies( $modules, $registered_property, $get_dependencies, array( $id ) );
+			$dependencies = array_keys( $script_dependencies );
+			$dependents = array();
 
-				/** @var string $src */
-				$src = $get_src->invoke( $modules, $id );
-
-				$script_dependencies = self::get_module_dependencies( $modules, $registered_property, $get_dependencies, array( $id ) );
-				$dependencies = array_keys( $script_dependencies );
-				$dependents = array();
-
-				foreach ( $all_modules as $dep_id => $dep ) {
-
-					// Ensure $dep is an array.
-					if ( ! is_array( $dep ) ) {
-						continue;
-					}
-
-					if ( ! isset( $dep['dependencies'] ) || ! is_array( $dep['dependencies'] ) ) {
-						continue;
-					}
-
-					foreach ( $dep['dependencies'] as $dependency ) {
-						if ( $dependency['id'] === $id ) {
-							$dependents[] = $dep_id;
-						}
+			foreach ( $all_modules as $dep_id => $dep ) {
+				foreach ( $dep['dependencies'] as $dependency ) {
+					if ( $dependency['id'] === $id ) {
+						$dependents[] = $dep_id;
 					}
 				}
-
-				$sources[ $id ] = array(
-					'id' => $id,
-					'src' => $src,
-					'version' => $module['version'] ?? '',
-					'dependencies' => $dependencies,
-					'dependents' => $dependents,
-				);
 			}
+
+			$sources[ $id ] = array(
+				'id' => $id,
+				'src' => $src,
+				'version' => $module['version'] ?? '',
+				'dependencies' => $dependencies,
+				'dependents' => $dependents,
+			);
 		}
 
 		// @todo check isPrivate before changing visibility back
