@@ -10,6 +10,14 @@ class EnqueuedScriptsCest {
 
 	public function ScriptModuleDependenciesShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageWithEnqueuedScripts( 'script-modules' );
+
+		// Skip if we see "Uncaught DomainException" as it indicates an unsupported WP version
+		try {
+			$I->dontSee( 'Uncaught DomainException' );
+		} catch ( Exception $e ) {
+			return;
+		}
+
 		$I->seeTableRowInQMPanel( 'Scripts', [
 			'Position' => 'Module',
 			'Handle'   => 'qm-test-top',

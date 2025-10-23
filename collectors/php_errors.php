@@ -130,7 +130,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$error = 'Uncaught Error';
 
 		if ( $e instanceof Exception ) {
-			$error = 'Uncaught Exception';
+			$error = sprintf(
+				'Uncaught %s',
+				get_class( $e )
+			);
 		}
 
 		$this->output_fatal( 'Fatal error', array(

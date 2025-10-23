@@ -169,6 +169,10 @@ add_action( 'init', function() {
 		case 'enqueued_scripts':
 			switch ( $_GET['_qm_acceptance_test'] ) {
 				case 'script-modules':
+					if ( ! function_exists( 'wp_register_script_module' ) ) {
+						throw new \DomainException( 'Script modules are not supported in this version of WordPress' );
+					}
+
 					wp_register_script_module( 'qm-test-bottom', home_url( 'qm-test-bottom.js' ), [], '3', [ 'type' => 'module' ] );
 					wp_register_script_module( 'qm-test-middle', home_url( 'qm-test-middle.js' ), ['qm-test-bottom'], '2', [ 'type' => 'module' ] );
 					wp_enqueue_script_module( 'qm-test-top', home_url( 'qm-test-module.js' ), ['qm-test-middle'], '1', [ 'type' => 'module' ] );
