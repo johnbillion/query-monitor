@@ -329,8 +329,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			/** @var string $src */
 			$src = $get_src->invoke( $modules, $id );
 
-			$script_dependencies = self::get_module_dependencies( $modules, $registered_property, $get_dependencies, array( $id ) );
-			$dependencies = array_keys( $script_dependencies );
+			$dependencies = wp_list_pluck( $all_modules[ $id ]['dependencies'], 'id' );
 			$dependents = array();
 
 			foreach ( $all_modules as $dep_id => $dep ) {
