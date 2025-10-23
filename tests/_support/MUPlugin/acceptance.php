@@ -166,6 +166,18 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'enqueued_scripts':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'script-modules':
+					wp_register_script_module( 'qm-test-bottom', home_url( 'qm-test-bottom.js' ), [], '3', [ 'type' => 'module' ] );
+					wp_register_script_module( 'qm-test-middle', home_url( 'qm-test-middle.js' ), ['qm-test-bottom'], '2', [ 'type' => 'module' ] );
+					wp_enqueue_script_module( 'qm-test-top', home_url( 'qm-test-module.js' ), ['qm-test-middle'], '1', [ 'type' => 'module' ] );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		default:
 			throw new \InvalidArgumentException( 'Unknown group: ' . $_GET['_qm_acceptance_group'] );
 			break;
