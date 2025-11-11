@@ -77,32 +77,32 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 * @return void
 	 */
 	protected function output_header_table( array $headers, $title ) {
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th>';
-		echo esc_html( $title );
-		echo '</th><th>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th>' . "\n";
+		echo esc_html( $title ) . "\n";
+		echo '</th><th>' . "\n";
 		esc_html_e( 'Value', 'query-monitor' );
-		echo '</th></tr>';
-		echo '<tbody>';
+		echo '</th></tr>' . "\n";
+		echo '<tbody>' . "\n";
 
 		foreach ( $headers as $name => $value ) {
-			echo '<tr>';
+			echo '<tr>' . "\n";
 			$formatted = str_replace( ' ', '-', ucwords( strtolower( str_replace( array( '-', '_' ), ' ', $name ) ) ) );
 			printf( '<th scope="row"><code>%s</code></th>', esc_html( $formatted ) );
 			printf( '<td><pre class="qm-pre-wrap"><code>%s</code></pre></td>', esc_html( $value ) );
-			echo '</tr>';
+			echo '</tr>' . "\n";
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
-		echo '<tfoot>';
-		echo '<tr>';
+		echo '<tfoot>' . "\n";
+		echo '<tr>' . "\n";
 		echo '<td colspan="2">';
 		esc_html_e( 'Note that header names are not case-sensitive.', 'query-monitor' );
-		echo '</td>';
-		echo '</tr>';
-		echo '</tfoot>';
+		echo '</td>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</tfoot>' . "\n";
 	}
 
 	/**

@@ -44,22 +44,22 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
+		echo '<thead>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>' . "\n";
 		if ( ! empty( $data->dupe_components ) ) {
-			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>' . "\n";
 		}
-		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
-		echo '</tr>';
+		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
 
-		echo '</thead>';
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		/* translators: %s: Number of calls to a PHP function */
 		$call_text = _n_noop( '%s call', '%s calls', 'query-monitor' );
@@ -75,16 +75,16 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";
 			}
 
-			echo '<tr>';
+			echo '<tr>' . "\n";
 			echo '<td class="qm-row-sql qm-ltr qm-wrap">';
 			echo $sql_out; // WPCS: XSS ok;
-			echo '</td>';
+			echo '</td>' . "\n";
 			echo '<td class="qm-num">';
 			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
-			echo '</td>';
+			echo '</td>' . "\n";
 			echo '<td class="qm-num">';
 			echo esc_html( number_format_i18n( $time, 4 ) );
-			echo '</td>';
+			echo '</td>' . "\n";
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data->dupe_callers[ $sql ] as $caller => $calls ) {
 				echo self::build_filter_trigger( 'db_queries', 'caller', $caller, '<code>' . esc_html( $caller ) . '</code>' ); // WPCS: XSS ok;
@@ -96,7 +96,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 					) )
 				);
 			}
-			echo '</td>';
+			echo '</td>' . "\n";
 			if ( isset( $data->dupe_components[ $sql ] ) ) {
 				echo '<td class="qm-row-component qm-nowrap">';
 				foreach ( $data->dupe_components[ $sql ] as $component => $calls ) {
@@ -109,7 +109,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 						) )
 					);
 				}
-				echo '</td>';
+				echo '</td>' . "\n";
 			}
 			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
 			foreach ( $data->dupe_sources[ $sql ] as $source => $calls ) {
@@ -122,10 +122,10 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 					) )
 				);
 			}
-			echo '</td>';
-			echo '</tr>';
+			echo '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
 		$this->after_tabular_output();
 	}

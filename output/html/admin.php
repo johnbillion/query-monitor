@@ -44,39 +44,39 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<section>';
-		echo '<h3>get_current_screen()</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>get_current_screen()</h3>' . "\n";
 
-		echo '<table>';
-		echo '<thead class="qm-screen-reader-text">';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		echo '<table>' . "\n";
+		echo '<thead class="qm-screen-reader-text">' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Property', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
+		echo '<tbody>' . "\n";
 
 		foreach ( get_object_vars( $data->current_screen ) as $key => $value ) {
-			echo '<tr>';
-			echo '<th scope="row">' . esc_html( $key ) . '</th>';
-			echo '<td>' . esc_html( $value ) . '</td>';
-			echo '</tr>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">' . esc_html( $key ) . '</th>' . "\n";
+			echo '<td>' . esc_html( $value ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
 
-		echo '</tbody>';
-		echo '</table>';
-		echo '</section>';
+		echo '</tbody>' . "\n";
+		echo '</table>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Globals', 'query-monitor' ) . '</h3>';
-		echo '<table>';
-		echo '<thead class="qm-screen-reader-text">';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Global Variable', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
-		echo '<tbody>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Globals', 'query-monitor' ) . '</h3>' . "\n";
+		echo '<table>' . "\n";
+		echo '<thead class="qm-screen-reader-text">' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Global Variable', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Value', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
+		echo '<tbody>' . "\n";
 
 		$admin_globals = array(
 			'pagenow',
@@ -86,32 +86,32 @@ class QM_Output_Html_Admin extends QM_Output_Html {
 		);
 
 		foreach ( $admin_globals as $key ) {
-			echo '<tr>';
-			echo '<th scope="row">$' . esc_html( $key ) . '</th>';
-			echo '<td>' . esc_html( $data->{$key} ) . '</td>';
-			echo '</tr>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">$' . esc_html( $key ) . '</th>' . "\n";
+			echo '<td>' . esc_html( $data->{$key} ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
 
-		echo '</tbody>';
-		echo '</table>';
-		echo '</section>';
+		echo '</tbody>' . "\n";
+		echo '</table>' . "\n";
+		echo '</section>' . "\n";
 
 		if ( ! empty( $data->list_table ) ) {
 
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'List Table', 'query-monitor' ) . '</h3>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'List Table', 'query-monitor' ) . '</h3>' . "\n";
 
 			if ( ! empty( $data->list_table['class_name'] ) ) {
-				echo '<h4>' . esc_html__( 'Class:', 'query-monitor' ) . '</h4>';
-				echo '<p><code>' . esc_html( $data->list_table['class_name'] ) . '</code></p>';
+				echo '<h4>' . esc_html__( 'Class:', 'query-monitor' ) . '</h4>' . "\n";
+				echo '<p><code>' . esc_html( $data->list_table['class_name'] ) . '</code></p>' . "\n";
 			}
 
-			echo '<h4>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data->list_table['columns_filter'] ) . '</code></p>';
-			echo '<p><code>' . esc_html( $data->list_table['sortables_filter'] ) . '</code></p>';
-			echo '<h4>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h4>';
-			echo '<p><code>' . esc_html( $data->list_table['column_action'] ) . '</code></p>';
-			echo '</section>';
+			echo '<h4>' . esc_html__( 'Column Filters:', 'query-monitor' ) . '</h4>' . "\n";
+			echo '<p><code>' . esc_html( $data->list_table['columns_filter'] ) . '</code></p>' . "\n";
+			echo '<p><code>' . esc_html( $data->list_table['sortables_filter'] ) . '</code></p>' . "\n";
+			echo '<h4>' . esc_html__( 'Column Action:', 'query-monitor' ) . '</h4>' . "\n";
+			echo '<p><code>' . esc_html( $data->list_table['column_action'] ) . '</code></p>' . "\n";
+			echo '</section>' . "\n";
 
 		}
 

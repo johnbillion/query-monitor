@@ -63,30 +63,30 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-filterable-column">';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Position', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Handle', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-filterable-column">' . "\n";
 		$args = array(
 			'prepend' => array(
 				'local' => $data->full_host,
 			),
 		);
 		echo $this->build_filter( $type . '-host', $hosts, __( 'Host', 'query-monitor' ), $args ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-filterable-column">';
+		echo '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Source', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-filterable-column">' . "\n";
 		echo $this->build_filter( $type . '-dependencies', $data->dependencies, __( 'Dependencies', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col" class="qm-filterable-column">';
+		echo '</th>' . "\n";
+		echo '<th scope="col" class="qm-filterable-column">' . "\n";
 		echo $this->build_filter( $type . '-dependents', $data->dependents, __( 'Dependents', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Version', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		foreach ( $position_labels as $position => $label ) {
 			if ( ! empty( $data->assets[ $position ] ) ) {
@@ -96,20 +96,20 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			}
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
-		echo '<tfoot>';
+		echo '<tfoot>' . "\n";
 
-		echo '<tr>';
+		echo '<tr>' . "\n";
 		printf(
-			'<td colspan="7">%1$s</td>',
+			'<td colspan="7">%1$s</td>' . "\n",
 			sprintf(
 				esc_html( $type_label['total'] ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->counts['total'] ) ) . '</span>'
 			)
 		);
-		echo '</tr>';
-		echo '</tfoot>';
+		echo '</tr>' . "\n";
+		echo '</tfoot>' . "\n";
 
 		$this->after_tabular_output();
 	}
@@ -160,7 +160,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 
 		$type = $this->collector->get_dependency_type();
 
-		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">';
+		echo '<tr data-qm-subject="' . esc_attr( $type . '-' . $handle ) . '" data-qm-' . esc_attr( $type ) . '-host="' . esc_attr( $qm_host ) . '" data-qm-' . esc_attr( $type ) . '-dependents="' . esc_attr( $dependents_list ) . '" data-qm-' . esc_attr( $type ) . '-dependencies="' . esc_attr( $dependencies_list ) . '" class="' . esc_attr( $class ) . '">' . "\n";
 		echo '<td class="qm-nowrap">';
 
 		$warning = QueryMonitor::icon( 'warning' );
@@ -171,7 +171,7 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		}
 
 		echo esc_html( $label );
-		echo '</td>';
+		echo '</td>' . "\n";
 
 		$host = $asset['host'];
 		$parts = explode( '.', $host );
@@ -188,9 +188,9 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			$host = "{$host}:{$asset['port']}";
 		}
 
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>';
-		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>';
-		echo '<td class="qm-ltr">';
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $handle ) . '</td>' . "\n";
+		echo '<td class="qm-nowrap qm-ltr">' . esc_html( $host ) . '</td>' . "\n";
+		echo '<td class="qm-ltr">' . "\n";
 		if ( $asset['source'] instanceof WP_Error ) {
 			$error_data = $asset['source']->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
@@ -214,17 +214,17 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo self::build_link( $asset['source'], esc_html( $asset['display'] ) );
 		}
-		echo '</td>';
+		echo '</td>' . "\n";
 		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_deps ) ) . '">';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo implode( ', ', $dependency_output );
 
-		echo '</td>';
-		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependents'] ) ) . '</td>';
-		echo '<td class="qm-ltr">' . esc_html( $asset['ver'] ) . '</td>';
+		echo '</td>' . "\n";
+		echo '<td class="qm-ltr qm-highlighter" data-qm-highlight="' . esc_attr( implode( ' ', $highlight_dependents ) ) . '">' . implode( ', ', array_map( 'esc_html', $asset['dependents'] ) ) . '</td>' . "\n";
+		echo '<td class="qm-ltr">' . esc_html( $asset['ver'] ) . '</td>' . "\n";
 
-		echo '</tr>';
+		echo '</tr>' . "\n";
 	}
 
 	/**

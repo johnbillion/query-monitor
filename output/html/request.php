@@ -65,146 +65,146 @@ class QM_Output_Html_Request extends QM_Output_Html {
 				$value = '<em>' . esc_html__( 'none', 'query-monitor' ) . '</em>';
 			}
 
-			echo '<section>';
-			echo '<h3>' . esc_html( $name ) . '</h3>';
-			echo '<p class="qm-ltr"><code>' . $value . '</code></p>'; // WPCS: XSS ok.
-			echo '</section>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html( $name ) . '</h3>' . "\n";
+			echo '<p class="qm-ltr"><code>' . $value . '</code></p>'; // WPCS: XSS ok . "\n".
+			echo '</section>' . "\n";
 		}
 
-		echo '</div>';
+		echo '</div>' . "\n";
 
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-boxed">' . "\n";
 
 		if ( ! empty( $data->matching_rewrites ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</h3>';
-			echo '<table>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'All Matching Rewrite Rules', 'query-monitor' ) . '</h3>' . "\n";
+			echo '<table>' . "\n";
 
 			foreach ( $data->matching_rewrites as $rule => $query ) {
 				$query = str_replace( 'index.php?', '', $query );
 
-				echo '<tr>';
-				echo '<td class="qm-ltr"><code>' . esc_html( $rule ) . '</code></td>';
+				echo '<tr>' . "\n";
+				echo '<td class="qm-ltr"><code>' . esc_html( $rule ) . '</code></td>' . "\n";
 				echo '<td class="qm-ltr"><code>';
 				echo self::format_url( $query ); // WPCS: XSS ok.
-				echo '</code></td>';
-				echo '</tr>';
+				echo '</code></td>' . "\n";
+				echo '</tr>' . "\n";
 			}
 
-			echo '</table>';
-			echo '</section>';
+			echo '</table>' . "\n";
+			echo '</section>' . "\n";
 		}
 
-		echo '<section>';
+		echo '<section>' . "\n";
 		echo '<h3>';
 		esc_html_e( 'Query Vars', 'query-monitor' );
-		echo '</h3>';
+		echo '</h3>' . "\n";
 
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
 			if ( $db_queries_data->has_main_query ) {
 				echo '<p>';
 				echo self::build_filter_trigger( 'db_queries', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
-				echo '</p>';
+				echo '</p>' . "\n";
 			}
 		}
 
 		if ( ! empty( $data->qvars ) ) {
 
-			echo '<table>';
+			echo '<table>' . "\n";
 
 			foreach ( $data->qvars as $var => $value ) {
 
-				echo '<tr>';
+				echo '<tr>' . "\n";
 
 				if ( isset( $data->plugin_qvars[ $var ] ) ) {
-					echo '<th scope="row" class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></th>';
+					echo '<th scope="row" class="qm-ltr"><span class="qm-current">' . esc_html( $var ) . '</span></th>' . "\n";
 				} else {
-					echo '<th scope="row" class="qm-ltr">' . esc_html( $var ) . '</th>';
+					echo '<th scope="row" class="qm-ltr">' . esc_html( $var ) . '</th>' . "\n";
 				}
 
 				if ( is_array( $value ) || is_object( $value ) ) {
 					echo '<td class="qm-ltr"><pre>';
 					echo esc_html( print_r( $value, true ) );
-					echo '</pre></td>';
+					echo '</pre></td>' . "\n";
 				} else {
-					echo '<td class="qm-ltr qm-wrap">' . esc_html( $value ) . '</td>';
+					echo '<td class="qm-ltr qm-wrap">' . esc_html( $value ) . '</td>' . "\n";
 				}
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 
 			}
-			echo '</table>';
+			echo '</table>' . "\n";
 
 		} else {
 
-			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>' . "\n";
 
 		}
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Response', 'query-monitor' ) . '</h3>';
-		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Response', 'query-monitor' ) . '</h3>' . "\n";
+		echo '<h4>' . esc_html__( 'Queried Object', 'query-monitor' ) . '</h4>' . "\n";
 
 		if ( ! empty( $data->queried_object ) ) {
 			$class = get_class( $data->queried_object['data'] );
 			$class = $class ?: __( 'Unknown', 'query-monitor' );
 			printf(
-				'<p>%1$s (%2$s)</p>',
+				'<p>%1$s (%2$s)</p>' . "\n",
 				esc_html( $data->queried_object['title'] ),
 				esc_html( $class )
 			);
 		} else {
-			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>' . "\n";
 		}
 
-		echo '<h4>' . esc_html__( 'Current User', 'query-monitor' ) . '</h4>';
+		echo '<h4>' . esc_html__( 'Current User', 'query-monitor' ) . '</h4>' . "\n";
 
 		if ( ! empty( $data->user['data'] ) ) {
 			printf( // WPCS: XSS ok.
-				'<p>%s</p>',
+				'<p>%s</p>' . "\n",
 				esc_html( $data->user['title'] )
 			);
 		} else {
-			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>';
+			echo '<p><em>' . esc_html__( 'none', 'query-monitor' ) . '</em></p>' . "\n";
 		}
 
 		if ( ! empty( $data->multisite ) ) {
-			echo '<h4>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h4>';
+			echo '<h4>' . esc_html__( 'Multisite', 'query-monitor' ) . '</h4>' . "\n";
 
 			foreach ( $data->multisite as $var => $value ) {
 				printf( // WPCS: XSS ok.
-					'<p>%s</p>',
+					'<p>%s</p>' . "\n",
 					esc_html( $value['title'] )
 				);
 			}
 		}
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		if ( ! empty( $raw_request ) ) {
 			/** @var QM_Data_Raw_Request $raw_data */
 			$raw_data = $raw_request->get_data();
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>';
-			echo '<table>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'Request Data', 'query-monitor' ) . '</h3>' . "\n";
+			echo '<table>' . "\n";
 
 			foreach ( array(
 				'ip' => __( 'Remote IP', 'query-monitor' ),
 				'method' => __( 'HTTP method', 'query-monitor' ),
 				'url' => __( 'Requested URL', 'query-monitor' ),
 			) as $item => $name ) {
-				echo '<tr>';
-				echo '<th scope="row">' . esc_html( $name ) . '</th>';
-				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data->request[ $item ] ) . '</td>';
-				echo '</tr>';
+				echo '<tr>' . "\n";
+				echo '<th scope="row">' . esc_html( $name ) . '</th>' . "\n";
+				echo '<td class="qm-ltr qm-wrap">' . esc_html( $raw_data->request[ $item ] ) . '</td>' . "\n";
+				echo '</tr>' . "\n";
 			}
 
-			echo '</table>';
+			echo '</table>' . "\n";
 
-			echo '</section>';
+			echo '</section>' . "\n";
 		}
 
 		$this->after_non_tabular_output();

@@ -71,22 +71,22 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
-		echo '<tr>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'type', $labels['errors'], __( 'Level', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
+		echo '</th>' . "\n";
+		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Location', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>' . "\n";
 		echo '<th scope="col" class="qm-filterable-column">';
 		$values = wp_list_pluck( $components, 'name' );
 		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		foreach ( $labels as $error_group => $error_types ) {
 			foreach ( $error_types as $type => $title ) {
@@ -126,7 +126,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						$class = '';
 					}
 
-					echo '<tr ' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
+					echo '<tr ' . $attr . ' class="' . esc_attr( $class ) . '">' . "\n"; // WPCS: XSS ok.
 					echo '<td class="qm-nowrap">';
 
 					if ( $is_warning ) {
@@ -138,9 +138,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 					}
 
 					echo esc_html( $title );
-					echo '</td>';
+					echo '</td>' . "\n";
 
-					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>';
+					echo '<td class="qm-ltr">' . esc_html( $error['message'] ) . '</td>' . "\n";
 
 					$stack = array();
 
@@ -168,42 +168,42 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 						echo self::build_toggler(); // WPCS: XSS ok;
 					}
 
-					echo '<ol>';
-					echo '<li>';
+					echo '<ol>' . "\n";
+					echo '<li>' . "\n";
 					echo self::output_filename( $error['filename'] . ':' . $error['line'], $error['file'], $error['line'], true ); // WPCS: XSS ok.
-					echo '</li>';
+					echo '</li>' . "\n";
 
 					if ( ! empty( $stack ) ) {
-						echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+						echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
 					}
 
-					echo '</ol></td>';
-					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>';
+					echo '</ol></td>' . "\n";
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $error['calls'] ) ) . '</td>' . "\n";
 
 					if ( ! empty( $component ) ) {
-						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>';
+						echo '<td class="qm-nowrap">' . esc_html( $component->name ) . '</td>' . "\n";
 					} else {
-						echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+						echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>' . "\n";
 					}
 
-					echo '</tr>';
+					echo '</tr>' . "\n";
 				}
 			}
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
-		echo '<tfoot>';
-		echo '<tr>';
+		echo '<tfoot>' . "\n";
+		echo '<tr>' . "\n";
 		echo '<td colspan="5">';
 		printf(
 			/* translators: %s: Number of PHP errors */
 			esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'PHP error count', 'query-monitor' ) ),
 			'<span class="qm-items-number">' . esc_html( number_format_i18n( $count ) ) . '</span>'
 		);
-		echo '</td>';
-		echo '</tr>';
-		echo '</tfoot>';
+		echo '</td>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</tfoot>' . "\n";
 
 		$this->after_tabular_output();
 	}

@@ -54,18 +54,18 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Tracked Function', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Started', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Stopped', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Memory', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Tracked Function', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Started', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Stopped', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col" class="qm-num">' . esc_html__( 'Memory', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		if ( ! empty( $data->timing ) ) {
 			foreach ( $data->timing as $row ) {
@@ -79,29 +79,29 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-ltr">';
 					echo $file; // WPCS: XSS ok.
-					echo '</td>';
+					echo '</td>' . "\n";
 				} else {
 					echo '<td class="qm-ltr qm-has-toggle">';
 					echo self::build_toggler(); // WPCS: XSS ok;
-					echo '<ol>';
-					echo '<li>';
+					echo '<ol>' . "\n";
+					echo '<li>' . "\n";
 					echo $file; // WPCS: XSS ok.
-					echo '</li>';
-					echo '</ol></td>';
+					echo '</li>' . "\n";
+					echo '</ol></td>' . "\n";
 				}
 
 				printf(
-					'<td class="qm-num">%s</td>',
+					'<td class="qm-num">%s</td>' . "\n",
 					esc_html( number_format_i18n( $row['start_time'], 4 ) )
 				);
 
 				printf(
-					'<td class="qm-num">%s</td>',
+					'<td class="qm-num">%s</td>' . "\n",
 					esc_html( number_format_i18n( $row['end_time'], 4 ) )
 				);
 
 				printf(
-					'<td class="qm-num">%s</td>',
+					'<td class="qm-num">%s</td>' . "\n",
 					esc_html( number_format_i18n( $row['function_time'], 4 ) )
 				);
 
@@ -111,29 +111,29 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 					number_format_i18n( $row['function_memory'] / 1024 )
 				);
 				printf(
-					'<td class="qm-num">%s</td>',
+					'<td class="qm-num">%s</td>' . "\n",
 					esc_html( $mem )
 				);
 				printf(
-					'<td class="qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>' . "\n",
 					esc_html( $component->name )
 				);
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 
 				if ( ! empty( $row['laps'] ) ) {
 					foreach ( $row['laps'] as $lap_id => $lap ) {
-						echo '<tr>';
+						echo '<tr>' . "\n";
 
 						echo '<td class="qm-ltr"><code>&mdash;&nbsp;';
 						echo esc_html( $row['function'] . ': ' . $lap_id );
-						echo '</code></td>';
+						echo '</code></td>' . "\n";
 
-						echo '<td class="qm-num"></td>';
-						echo '<td class="qm-num"></td>';
+						echo '<td class="qm-num"></td>' . "\n";
+						echo '<td class="qm-num"></td>' . "\n";
 
 						printf(
-							'<td class="qm-num">%s</td>',
+							'<td class="qm-num">%s</td>' . "\n",
 							esc_html( number_format_i18n( $lap['time_used'], 4 ) )
 						);
 
@@ -143,12 +143,12 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 							number_format_i18n( $lap['memory_used'] / 1024 )
 						);
 						printf(
-							'<td class="qm-num">%s</td>',
+							'<td class="qm-num">%s</td>' . "\n",
 							esc_html( $mem )
 						);
-						echo '<td class="qm-nowrap"></td>';
+						echo '<td class="qm-nowrap"></td>' . "\n";
 
-						echo '</tr>';
+						echo '</tr>' . "\n";
 					}
 				}
 			}
@@ -160,36 +160,36 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 				$trace = $row['filtered_trace'];
 				$file = self::output_filename( $row['function'], $trace[0]['file'], $trace[0]['line'] );
 
-				echo '<tr class="qm-warn">';
+				echo '<tr class="qm-warn">' . "\n";
 				if ( self::has_clickable_links() ) {
 					echo '<td class="qm-ltr">';
 					echo $file; // WPCS: XSS ok.
-					echo '</td>';
+					echo '</td>' . "\n";
 				} else {
 					echo '<td class="qm-ltr qm-has-toggle">';
 					echo self::build_toggler(); // WPCS: XSS ok;
-					echo '<ol>';
-					echo '<li>';
+					echo '<ol>' . "\n";
+					echo '<li>' . "\n";
 					echo $file; // WPCS: XSS ok.
-					echo '</li>';
-					echo '</ol></td>';
+					echo '</li>' . "\n";
+					echo '</ol></td>' . "\n";
 				}
 
 				printf(
-					'<td colspan="4">%1$s%2$s</td>',
+					'<td colspan="4">%1$s%2$s</td>' . "\n",
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					QueryMonitor::icon( 'warning' ),
 					esc_html( $row['message'] )
 				);
 
 				printf(
-					'<td class="qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>' . "\n",
 					esc_html( $component->name )
 				);
 			}
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
 		$this->after_tabular_output();
 	}

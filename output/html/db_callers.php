@@ -46,70 +46,70 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		if ( ! empty( $data->times ) ) {
 			$this->before_tabular_output();
 
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+			echo '<thead>' . "\n";
+			echo '<tr>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
 
 			foreach ( array_keys( $data->types ) as $type_name ) {
 				echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column" role="columnheader">';
 				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
-				echo '</th>';
+				echo '</th>' . "\n";
 			}
 
 			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column" role="columnheader" aria-sort="descending">';
 			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
-			echo '</th>';
-			echo '</tr>';
-			echo '</thead>';
+			echo '</th>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</thead>' . "\n";
 
-			echo '<tbody>';
+			echo '<tbody>' . "\n";
 
 			foreach ( $data->times as $row ) {
 				$total_time += $row['ltime'];
 				$stime = number_format_i18n( $row['ltime'], 4 );
 
-				echo '<tr>';
+				echo '<tr>' . "\n";
 				echo '<td class="qm-ltr">';
 				echo self::build_filter_trigger( 'db_queries', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
-				echo '</td>';
+				echo '</td>' . "\n";
 
 				foreach ( array_keys( $data->types ) as $type_name ) {
 					if ( isset( $row['types'][ $type_name ] ) ) {
-						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
+						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>' . "\n";
 					} else {
-						echo "<td class='qm-num'></td>";
+						echo "<td class='qm-num'></td>\n";
 					}
 				}
 
-				echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( (string) $row['ltime'] ) . '">' . esc_html( $stime ) . '</td>';
-				echo '</tr>';
+				echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( (string) $row['ltime'] ) . '">' . esc_html( $stime ) . '</td>' . "\n";
+				echo '</tr>' . "\n";
 
 			}
 
-			echo '</tbody>';
-			echo '<tfoot>';
+			echo '</tbody>' . "\n";
+			echo '<tfoot>' . "\n";
 
 			$total_stime = number_format_i18n( $total_time, 4 );
 
-			echo '<tr>';
-			echo '<td></td>';
+			echo '<tr>' . "\n";
+			echo '<td></td>' . "\n";
 
 			foreach ( $data->types as $type_name => $type_count ) {
-				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
+				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>' . "\n";
 			}
 
-			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
-			echo '</tr>';
+			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 
-			echo '</tfoot>';
+			echo '</tfoot>' . "\n";
 
 			$this->after_tabular_output();
 		} else {
 			$this->before_non_tabular_output();
 
-			echo '<div class="qm-none">';
-			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>';
-			echo '</div>';
+			echo '<div class="qm-none">' . "\n";
+			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>' . "\n";
+			echo '</div>' . "\n";
 
 			$this->after_non_tabular_output();
 		}

@@ -421,7 +421,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		echo '<svg id="qm-icon-container">';
+		echo '<svg id="qm-icon-container">' . "\n";
 		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
 			if ( ! $icon ) {
 				continue;
@@ -440,31 +440,31 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$contents
 			);
 		}
-		echo '</svg>';
+		echo '</svg>' . "\n";
 
-		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">';
-		echo '<div id="qm-side-resizer" class="qm-resizer"></div>';
-		echo '<div id="qm-title" class="qm-resizer">';
-		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>';
-		echo '<div class="qm-title-heading">';
-		echo '<select id="qm-title-heading-select">';
+		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">' . "\n";
+		echo '<div id="qm-side-resizer" class="qm-resizer"></div>' . "\n";
+		echo '<div id="qm-title" class="qm-resizer">' . "\n";
+		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>' . "\n";
+		echo '<div class="qm-title-heading">' . "\n";
+		echo '<select id="qm-title-heading-select">' . "\n";
 
 		printf(
-			'<option value="%1$s">%2$s</option>',
+			'<option value="%1$s">%2$s</option>' . "\n",
 			'#qm-overview',
 			esc_html__( 'Overview', 'query-monitor' )
 		);
 
 		foreach ( $this->panel_menu as $menu ) {
 			printf(
-				'<option value="%1$s">%2$s</option>',
+				'<option value="%1$s">%2$s</option>' . "\n",
 				esc_attr( $menu['href'] ),
 				esc_html( $menu['title'] )
 			);
 			if ( ! empty( $menu['children'] ) ) {
 				foreach ( $menu['children'] as $child ) {
 					printf(
-						'<option value="%1$s">└ %2$s</option>',
+						'<option value="%1$s">└ %2$s</option>' . "\n",
 						esc_attr( $child['href'] ),
 						esc_html( $child['title'] )
 					);
@@ -473,33 +473,33 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		printf(
-			'<option value="%1$s">%2$s</option>',
+			'<option value="%1$s">%2$s</option>' . "\n",
 			'#qm-settings',
 			esc_html__( 'Settings', 'query-monitor' )
 		);
 
-		echo '</select>';
+		echo '</select>' . "\n";
 
 		$settings = QueryMonitor::icon( 'admin-generic' );
 		$toggle = QueryMonitor::icon( 'image-rotate-left' );
 		$close = QueryMonitor::icon( 'no-alt' );
 
-		echo '</div>';
+		echo '</div>' . "\n";
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '">' . $settings . '</button>';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '">' . $toggle . '</button>';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '">' . $close . '</button>';
-		echo '</div>'; // #qm-title
+		echo '</div>' . "\n"; // #qm-title
 
-		echo '<div id="qm-wrapper">';
-		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">';
-		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>';
-		echo '<ul role="tablist">';
+		echo '<div id="qm-wrapper">' . "\n";
+		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">' . "\n";
+		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>' . "\n";
+		echo '<ul role="tablist">' . "\n";
 
 		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>' . "\n",
 			'#qm-overview',
 			esc_html__( 'Overview', 'query-monitor' )
 		);
@@ -508,10 +508,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$this->do_panel_menu_item( $id, $menu );
 		}
 
-		echo '</ul>';
-		echo '</nav>'; // #qm-panel-menu
+		echo '</ul>' . "\n";
+		echo '</nav>' . "\n"; // #qm-panel-menu
 
-		echo '<div id="qm-panels">';
+		echo '<div id="qm-panels">' . "\n";
 
 	}
 
@@ -522,20 +522,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	protected function do_panel_menu_item( $id, array $menu ) {
 		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>',
+			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>' . "\n",
 			esc_attr( $menu['href'] ),
 			esc_html( $menu['title'] )
 		);
 
 		if ( ! empty( $menu['children'] ) ) {
-			echo '<ul role="presentation">';
+			echo '<ul role="presentation">' . "\n";
 			foreach ( $menu['children'] as $child_id => $child ) {
 				$this->do_panel_menu_item( $child_id, $child );
 			}
-			echo '</ul>';
+			echo '</ul>' . "\n";
 		}
 
-		echo '</li>';
+		echo '</li>' . "\n";
 	}
 
 	/**
@@ -550,33 +550,33 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'off' => __( 'Set authentication cookie', 'query-monitor' ),
 		);
 
-		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">';
-		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>';
+		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">' . "\n";
+		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>' . "\n";
 
-		echo '<div class="qm-grid">';
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>';
+		echo '<div class="qm-grid">' . "\n";
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>' . "\n";
 
-		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>';
+		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>' . "\n";
 
-		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>';
+		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>' . "\n";
 
 		$yes = QueryMonitor::icon( 'yes-alt' );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>';
+		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>' . "\n";
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
-		echo '<section>';
+		echo '<section>' . "\n";
 
-		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>';
+		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>' . "\n";
 
 		if ( ! has_filter( 'qm/output/file_link_format' ) ) {
-			echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>';
+			echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>' . "\n";
 
 			echo '<p>';
-			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-select">';
+			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-select">' . "\n";
 
 			$xdebug_format = ini_get( 'xdebug.file_link_format' );
 			$default_label = ! empty( $xdebug_format ) ? 'Xdebug format' : 'None';
@@ -592,41 +592,41 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			);
 
 			foreach ( $editors as $name => $value ) {
-				echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>';
+				echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>' . "\n";
 			}
 
-			echo '</select>';
-			echo '</p><p>';
+			echo '</select>' . "\n";
+			echo '</p><p>' . "\n";
 			echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
-			echo '</p>';
+			echo '</p>' . "\n";
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>';
+			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>' . "\n";
 		} else {
 			printf(
 				/* translators: %s: Name of WordPress filter */
 				esc_html__( 'The file link format for your editor is set by the %s filter.', 'query-monitor' ),
 				'<code>qm/output/file_link_format</code>'
 			);
-			echo '</p>';
+			echo '</p>' . "\n";
 		}
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Appearance', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Appearance', 'query-monitor' ) . '</h3>' . "\n";
 
-		echo '<p>' . esc_html__( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) . '</p>';
+		echo '<p>' . esc_html__( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) . '</p>' . "\n";
 
-		echo '<ul>';
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="auto" checked/>' . esc_html_x( 'Auto', 'colour scheme', 'query-monitor' ) . '</label></li>';
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>';
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>';
-		echo '</ul>';
-		echo '</section>';
-		echo '</div>';
+		echo '<ul>' . "\n";
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="auto" checked/>' . esc_html_x( 'Auto', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
+		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
+		echo '</ul>' . "\n";
+		echo '</section>' . "\n";
+		echo '</div>' . "\n";
 
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-boxed">' . "\n";
 		$constants = array(
 			'QM_DB_EXPENSIVE' => array(
 				'label' => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
@@ -679,20 +679,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$constants = apply_filters( 'qm/constants', $constants );
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>' . "\n";
 		echo '<p>';
 		printf(
 			/* translators: %s: Name of the config file */
 			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behavior of Query Monitor:', 'query-monitor' ),
 			'<code>wp-config.php</code>'
 		);
-		echo '</p>';
+		echo '</p>' . "\n";
 
-		echo '<dl>';
+		echo '<dl>' . "\n";
 
 		foreach ( $constants as $name => $constant ) {
-			echo '<dt><code>' . esc_html( $name ) . '</code></dt>';
+			echo '<dt><code>' . esc_html( $name ) . '</code></dt>' . "\n";
 			echo '<dd>';
 			echo esc_html( $constant['label'] );
 
@@ -723,15 +723,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 				echo '</span>';
 			}
-			echo '</dd>';
+			echo '</dd>' . "\n";
 		}
 
-		echo '</dl>';
-		echo '</section>';
+		echo '</dl>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '</div>';
+		echo '</div>' . "\n";
 
-		echo '</div>'; // #qm-settings
+		echo '</div>' . "\n"; // #qm-settings
 
 		/**
 		 * Fires after settings but before the panel closing tag.
@@ -743,10 +743,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		do_action( 'qm/output/after', $this, $this->outputters );
 
-		echo '</div>'; // #qm-panels
-		echo '</div>'; // #qm-wrapper
-		echo '</div>'; // #query-monitor-main
-		echo "\n\n";
+		echo '</div>' . "\n"; // #qm-panels
+		echo '</div>' . "\n"; // #qm-wrapper
+		echo '</div>' . "\n"; // #query-monitor-main
+		echo "\n";
 
 		wp_print_inline_script_tag( <<<JS
 		window.addEventListener('load', function() {

@@ -45,61 +45,62 @@ class QM_Output_Html_DB_Components extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
+		echo '<thead>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
+		echo '<tr>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>' . "\n";
 
 		foreach ( $data->types as $type_name => $type_count ) {
 			echo '<th scope="col" class="qm-num qm-sortable-column" role="columnheader">';
 			echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
-			echo '</th>';
+			echo '</th>' . "\n";
 		}
 
 		echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column" role="columnheader" aria-sort="descending">';
 		echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
-		echo '</th>';
-		echo '</tr>';
+		echo '</th>' . "\n";
+		echo '</tr>' . "\n";
 
-		echo '</thead>';
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		foreach ( $data->times as $row ) {
 			$total_time += $row['ltime'];
 
-			echo '<tr>';
+			echo '<tr>' . "\n";
 			echo '<td class="qm-row-component">';
 			echo self::build_filter_trigger( 'db_queries', 'component', $row['component']->name, esc_html( $row['component']->name ) ); // WPCS: XSS ok;
+			// @TODO missing </td> ?
 
 			foreach ( $data->types as $type_name => $type_count ) {
 				if ( isset( $row['types'][ $type_name ] ) ) {
-					echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>';
+					echo '<td class="qm-num">' . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>' . "\n";
 				} else {
-					echo '<td class="qm-num">&nbsp;</td>';
+					echo '<td class="qm-num">&nbsp;</td>' . "\n";
 				}
 			}
 
-			echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( (string) $row['ltime'] ) . '">' . esc_html( number_format_i18n( $row['ltime'], 4 ) ) . '</td>';
-			echo '</tr>';
+			echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( (string) $row['ltime'] ) . '">' . esc_html( number_format_i18n( $row['ltime'], 4 ) ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 
 		}
 
-		echo '</tbody>';
-		echo '<tfoot>';
+		echo '</tbody>' . "\n";
+		echo '<tfoot>' . "\n";
 
 		$total_stime = number_format_i18n( $total_time, 4 );
 
-		echo '<tr>';
-		echo '<td>&nbsp;</td>';
+		echo '<tr>' . "\n";
+		echo '<td>&nbsp;</td>' . "\n";
 
 		foreach ( $data->types as $type_name => $type_count ) {
-			echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>';
+			echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>' . "\n";
 		}
 
-		echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>';
-		echo '</tr>';
-		echo '</tfoot>';
+		echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</tfoot>' . "\n";
 
 		$this->after_tabular_output();
 	}

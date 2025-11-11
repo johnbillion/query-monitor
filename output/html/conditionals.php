@@ -40,29 +40,29 @@ class QM_Output_Html_Conditionals extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'True Conditionals', 'query-monitor' ) . '</h3>' . "\n";
 
-		echo '<ul>';
+		echo '<ul>' . "\n";
 		foreach ( $data->conds['true'] as $cond ) {
-			echo '<li class="qm-ltr qm-true"><code>' . esc_html( $cond ) . '() </code></li>';
+			echo '<li class="qm-ltr qm-true"><code>' . esc_html( $cond ) . '() </code></li>' . "\n";
 		}
-		echo '</ul>';
+		echo '</ul>' . "\n";
 
-		echo '</section>';
-		echo '</div>';
+		echo '</section>' . "\n";
+		echo '</div>' . "\n";
 
-		echo '<div class="qm-boxed">';
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>';
+		echo '<div class="qm-boxed">' . "\n";
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'False Conditionals', 'query-monitor' ) . '</h3>' . "\n";
 
-		echo '<ul>';
+		echo '<ul>' . "\n";
 		foreach ( $data->conds['false'] as $cond ) {
-			echo '<li class="qm-ltr qm-false"><code>' . esc_html( $cond ) . '() </code></li>';
+			echo '<li class="qm-ltr qm-false"><code>' . esc_html( $cond ) . '() </code></li>' . "\n";
 		}
-		echo '</ul>';
+		echo '</ul>' . "\n";
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		$this->after_non_tabular_output();
 	}

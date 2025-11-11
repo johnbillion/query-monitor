@@ -73,11 +73,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 			usort( $parts, 'strcasecmp' );
 			usort( $components, '\QM_Component::sort' );
 
-			echo '<thead>';
-			echo '<tr>';
+			echo '<thead>' . "\n";
+			echo '<tr>' . "\n";
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'name', $parts, __( 'Capability Check', 'query-monitor' ) ); // WPCS: XSS ok;
-			echo '</th>';
+			echo '</th>' . "\n";
 
 			$users = $data->users;
 
@@ -85,20 +85,20 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 			echo '<th scope="col" class="qm-filterable-column qm-num">';
 			echo $this->build_filter( 'user', $users, __( 'User', 'query-monitor' ) ); // WPCS: XSS ok;
-			echo '</th>';
+			echo '</th>' . "\n";
 
 			echo '<th scope="col" class="qm-filterable-column">';
 			echo $this->build_filter( 'result', $results, __( 'Result', 'query-monitor' ) ); // WPCS: XSS ok;
-			echo '</th>';
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+			echo '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
 			echo '<th scope="col" class="qm-filterable-column">';
 			$values = wp_list_pluck( $components, 'name' );
 			echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
-			echo '</th>';
-			echo '</tr>';
-			echo '</thead>';
+			echo '</th>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</thead>' . "\n";
 
-			echo '<tbody>';
+			echo '<tbody>' . "\n";
 
 			foreach ( $data->caps as $row ) {
 				$component = $row['component'];
@@ -124,7 +124,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				}
 
 				printf( // WPCS: XSS ok.
-					'<tr %s>',
+					'<tr %s>' . "\n",
 					$attr
 				);
 
@@ -137,7 +137,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 				}
 
 				printf( // WPCS: XSS ok.
-					'<td class="qm-ltr qm-nowrap"><code>%s</code></td>',
+					'<td class="qm-ltr qm-nowrap"><code>%s</code></td>' . "\n",
 					$name
 				);
 
@@ -148,7 +148,7 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 
 				$result = ( $row['result'] ) ? '<span class="qm-true">true&nbsp;&#x2713;</span>' : 'false';
 				printf( // WPCS: XSS ok.
-					'<td class="qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>' . "\n",
 					$result
 				);
 
@@ -166,41 +166,41 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 					echo self::build_toggler(); // WPCS: XSS ok;
 				}
 
-				echo '<ol>';
+				echo '<ol>' . "\n";
 
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+				echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
-					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
 				}
 
-				echo '</ol></td>';
+				echo '</ol></td>' . "\n";
 
 				printf(
-					'<td class="qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>' . "\n",
 					esc_html( $component->name )
 				);
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 
 			}
 
-			echo '</tbody>';
+			echo '</tbody>' . "\n";
 
-			echo '<tfoot>';
+			echo '<tfoot>' . "\n";
 
 			$count = count( $data->caps );
 
-			echo '<tr>';
+			echo '<tr>' . "\n";
 			echo '<td colspan="5">';
 			printf(
 				/* translators: %s: Number of user capability checks */
 				esc_html( _nx( 'Total: %s', 'Total: %s', $count, 'User capability checks', 'query-monitor' ) ),
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $count ) ) . '</span>'
 			);
-			echo '</td>';
-			echo '</tr>';
-			echo '</tfoot>';
+			echo '</td>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</tfoot>' . "\n";
 
 			$this->after_tabular_output();
 		} else {
