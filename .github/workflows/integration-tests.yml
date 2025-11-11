@@ -54,7 +54,6 @@ jobs:
           - '6.9-beta1'
           - '6.8'
           - '6.7'
-          - '6.6'
         php:
           # Most recent version of PHP supported by all of the above, plus 7.4
           - '8.3'
@@ -64,7 +63,7 @@ jobs:
           - wp: '6.8'
             php: '8.4'
           # Oldest supported WordPress
-          - wp: '6.0'
+          - wp: '6.1'
             php: '7.4'
       fail-fast: false
     with:
