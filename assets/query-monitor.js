@@ -80,7 +80,8 @@ if ( window.jQuery ) {
 				$('#wp-admin-bar-query-monitor')
 					.addClass('qm-error')
 					.find('a').eq(0)
-					.text(qm_l10n.fatal_error);
+					.text(qm_l10n.fatal_error)
+					.attr('href','#qm-fatal');
 
 				var fatal_container = document.createDocumentFragment();
 

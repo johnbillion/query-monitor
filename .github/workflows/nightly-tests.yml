@@ -28,6 +28,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
+
 jobs:
   acceptance:
     name: Nightly ${{ matrix.label }}
@@ -42,7 +46,7 @@ jobs:
           - '8.5'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@bfe334f89bb5c443ad7433a3ad0570be4ab756bb # 1.2.0
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@33705f771525b0d691ee821c90e0c10b18e02871 # 1.2.1
     with:
       node: true
       php: ${{ matrix.php }}
@@ -53,7 +57,7 @@ jobs:
     name: Nightly ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@bfe334f89bb5c443ad7433a3ad0570be4ab756bb # 1.2.0
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@33705f771525b0d691ee821c90e0c10b18e02871 # 1.2.1
     strategy:
       matrix:
         label:
