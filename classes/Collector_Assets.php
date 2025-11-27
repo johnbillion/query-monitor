@@ -219,6 +219,12 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					}
 				}
 
+				$extra = array();
+
+				foreach ( $dependency->extra as $key => $value ) {
+					$extra[ $key ] = is_array( $value ) ? count( $value ) : true;
+				}
+
 				$this->data->assets[ $position ][ $handle ] = array(
 					'host' => $host,
 					'port' => $port,
@@ -229,6 +235,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'display' => $display,
 					'dependents' => $dependents,
 					'dependencies' => $dependencies,
+					'extra' => $extra,
 				);
 
 				$this->data->counts[ $position ]++;
