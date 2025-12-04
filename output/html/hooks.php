@@ -220,7 +220,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					$first = false;
 				}
 			} else {
-				echo "<tr{$attr}>" . "\n"; // WPCS: XSS ok.
+				echo "<tr{$attr}>\n"; // WPCS: XSS ok.
 				echo '<th scope="row" class="qm-ltr">';
 				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 				echo '</th>' . "\n";
