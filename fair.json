@@ -1,0 +1,29 @@
+{
+  "@context": "https://fair.pm/ns/metadata/v1",
+  "id": "did:plc:q2afge25l63iz553aumeqi3w",
+  "type": "wp-plugin",
+  "name": "Query Monitor",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "John Blackbourn",
+      "url": "https://querymonitor.com/"
+    }
+  ],
+  "security": [
+    {
+      "url": "https://querymonitor.com/security/"
+    }
+  ],
+  "releases": [
+  ],
+  "slug": "query-monitor",
+  "description": "The developer tools panel for WordPress.",
+  "keywords": [
+    "debug",
+    "debug-bar",
+    "development",
+    "performance",
+    "query monitor"
+  ]
+}

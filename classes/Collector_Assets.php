@@ -301,9 +301,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$get_src = $reflector->getMethod( 'get_src' );
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( true );
 
-		$registered_property = $reflector->getProperty( 'registered' );
-		( \PHP_VERSION_ID < 80100 ) && $registered_property->setAccessible( true );
-
 		/**
 		 * Script modules marked for enqueue, keyed by script module ID.
 		 *
@@ -312,7 +309,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		 */
 		$enqueued = $get_marked_for_enqueue->invoke( $modules );
 
-		$deps = self::get_module_dependencies( $modules, $registered_property, $get_dependencies, array_keys( $enqueued ) );
+		$deps = self::get_module_dependencies( $modules, $get_dependencies, array_keys( $enqueued ) );
 
 		$all_modules = array_merge(
 			$enqueued,
@@ -367,30 +364,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	private static function get_module_dependencies(
 		WP_Script_Modules $modules,
-		ReflectionProperty $registered_property,
 		ReflectionMethod $get_dependencies,
 		array $ids
 	): array {
-		/**
-		 * Prior to WP 6.9 this returned an array of dependency arrays keyed by their ID.
-		 * In WP 6.9+ it returns a list of IDs.
-		 *
-		 * @phpstan-var list<string>|array<string, WPScriptModule> $deps
-		 */
-		$deps = $get_dependencies->invoke( $modules, $ids );
-
-		/** @phpstan-var array<string, WPScriptModule> $return */
-		$return = array();
-
-		foreach ( $deps as $key => $value ) {
-			if ( is_string( $value ) ) {
-				$return[ $value ] = $registered_property->getValue( $modules )[ $value ];
-			} else {
-				$return[ $key ] = $value;
-			}
-		}
-
-		return $return;
+		return $get_dependencies->invoke( $modules, $ids );
 	}
 
 	/**

@@ -12,11 +12,12 @@
  * Description:  The developer tools panel for WordPress.
  * Version:      3.20.0
  * Plugin URI:   https://querymonitor.com/
+ * Plugin ID:    did:plc:q2afge25l63iz553aumeqi3w
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
- * Requires at least: 6.0
+ * Requires at least: 6.1
  * Requires PHP: 7.4
  * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * License:      GPL v2 or later
