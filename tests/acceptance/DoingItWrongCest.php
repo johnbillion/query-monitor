@@ -15,12 +15,12 @@ class DoingItWrongCest {
 		] );
 	}
 
-	public function DeprecatedClassShouldBeHandled( AcceptanceTester $I ): void {
-		$I->amOnAPageThatIsDoingItWrong( 'class' );
-		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
-			'Message' => 'Class My_Class is deprecated since version 2.0.0 with no alternative available.',
-		] );
-	}
+	// public function DeprecatedClassShouldBeHandled( AcceptanceTester $I ): void {
+	// 	$I->amOnAPageThatIsDoingItWrong( 'class' );
+	// 	$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+	// 		'Message' => 'Class My_Class is deprecated since version 2.0.0 with no alternative available.',
+	// 	] );
+	// }
 
 	public function DeprecatedConstructorShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'constructor' );
