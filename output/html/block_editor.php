@@ -54,36 +54,36 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col">#</th>';
-		echo '<th scope="col">' . esc_html__( 'Block Name', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col">#</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Block Name', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Attributes', 'query-monitor' ) . '</th>' . "\n";
 
 		if ( $data->has_block_context ) {
-			echo '<th scope="col">' . esc_html__( 'Context', 'query-monitor' ) . '</th>';
+			echo '<th scope="col">' . esc_html__( 'Context', 'query-monitor' ) . '</th>' . "\n";
 		}
 
-		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Render Callback', 'query-monitor' ) . '</th>' . "\n";
 
 		if ( $data->has_block_timing ) {
-			echo '<th scope="col" class="qm-num">' . esc_html__( 'Render Time', 'query-monitor' ) . '</th>';
+			echo '<th scope="col" class="qm-num">' . esc_html__( 'Render Time', 'query-monitor' ) . '</th>' . "\n";
 		}
 
-		echo '<th scope="col">' . esc_html__( 'Inner HTML', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '<th scope="col">' . esc_html__( 'Inner HTML', 'query-monitor' ) . '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		foreach ( $data->post_blocks as $i => $block ) {
 			self::render_block( ++$i, $block, $data );
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
-		echo '<tfoot>';
-		echo '<tr>';
+		echo '<tfoot>' . "\n";
+		echo '<tr>' . "\n";
 
 		$colspan = 5;
 
@@ -104,8 +104,8 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 				'<span class="qm-items-number">' . esc_html( number_format_i18n( $data->total_blocks ) ) . '</span>'
 			)
 		);
-		echo '</tr>';
-		echo '</tfoot>';
+		echo '</tr>' . "\n";
+		echo '</tfoot>' . "\n";
 
 		$this->after_tabular_output();
 	}
@@ -194,16 +194,16 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			$row_class = 'qm-warn';
 		}
 
-		echo '<tr class="' . esc_attr( $row_class ) . '">';
+		echo '<tr class="' . esc_attr( $row_class ) . '">' . "\n";
 
-		echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . esc_html( $i ) . '</span></th>';
+		echo '<th scope="row" class="qm-row-num qm-num"><span class="qm-sticky">' . esc_html( $i ) . '</span></th>' . "\n";
 
-		echo '<td class="qm-row-block-name"><span class="qm-sticky">';
+		echo '<td class="qm-row-block-name"><span class="qm-sticky">' . "\n";
 
 		if ( $block['blockName'] ) {
 			echo esc_html( $block['blockName'] );
 		} else {
-			echo '<em>' . esc_html__( 'None (Classic block)', 'query-monitor' ) . '</em>';
+			echo '<em>' . esc_html__( 'None (Classic block)', 'query-monitor' ) . '</em>' . "\n";
 		}
 
 		if ( $error_message ) {
@@ -226,20 +226,20 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 			echo self::build_link( QM_Util::get_site_editor_url( $referenced_template_part ), esc_html( $referenced_pto->labels->edit_item ) );
 		}
 
-		echo '</span></td>';
+		echo '</span></td>' . "\n";
 
-		echo '<td class="qm-row-block-attrs">';
+		echo '<td class="qm-row-block-attrs">' . "\n";
 		if ( $block['attrs'] && is_array( $block['attrs'] ) ) {
-			echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['attrs'] ) ) . '</code></pre>';
+			echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['attrs'] ) ) . '</code></pre>' . "\n";
 		}
-		echo '</td>';
+		echo '</td>' . "\n";
 
 		if ( $data->has_block_context ) {
-			echo '<td class="qm-row-block-context">';
+			echo '<td class="qm-row-block-context">' . "\n";
 			if ( isset( $block['context'] ) ) {
-				echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['context'] ) ) . '</code></pre>';
+				echo '<pre class="qm-pre-wrap"><code>' . esc_html( QM_Util::json_format( $block['context'] ) ) . '</code></pre>' . "\n";
 			}
-			echo '</td>';
+			echo '</td>' . "\n";
 		}
 
 		if ( isset( $block['callback']['error'] ) ) {
@@ -251,21 +251,21 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 		if ( $block['dynamic'] ) {
 			if ( isset( $block['callback']['file'] ) ) {
 				if ( self::has_clickable_links() ) {
-					echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">';
+					echo '<td class="qm-nowrap qm-ltr' . esc_attr( $class ) . '">' . "\n";
 					echo self::output_filename( QM_Util::get_callback_name( $block['callback'] ), $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
-					echo '</td>';
+					echo '</td>' . "\n";
 				} else {
-					echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
+					echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">' . "\n";
 					echo self::build_toggler(); // WPCS: XSS ok;
-					echo '<ol>';
-					echo '<li>';
+					echo '<ol>' . "\n";
+					echo '<li>' . "\n";
 					echo self::output_filename( QM_Util::get_callback_name( $block['callback'] ), $block['callback']['file'], $block['callback']['line'] ); // WPCS: XSS ok.
-					echo '</li>';
-					echo '</ol></td>';
+					echo '</li>' . "\n";
+					echo '</ol></td>' . "\n";
 				}
 			} else {
-				echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">';
-				echo '<code>' . esc_html( QM_Util::get_callback_name( $block['callback'] ) ) . '</code>';
+				echo '<td class="qm-ltr qm-nowrap' . esc_attr( $class ) . '">' . "\n";
+				echo '<code>' . esc_html( QM_Util::get_callback_name( $block['callback'] ) ) . '</code>' . "\n";
 
 				if ( isset( $block['callback']['error'] ) ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -277,40 +277,40 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 					) );
 				}
 
-				echo '</td>';
+				echo '</td>' . "\n";
 			}
 
 			if ( $data->has_block_timing ) {
-				echo '<td class="qm-num">';
+				echo '<td class="qm-num">' . "\n";
 				if ( isset( $block['timing'] ) ) {
 					echo esc_html( number_format_i18n( $block['timing'], 4 ) );
 				}
-				echo '</td>';
+				echo '</td>' . "\n";
 			}
 		} else {
-			echo '<td></td>';
+			echo '<td></td>' . "\n";
 
 			if ( $data->has_block_timing ) {
-				echo '<td></td>';
+				echo '<td></td>' . "\n";
 			}
 		}
 
 		$inner_html = $block['innerHTML'];
 
 		if ( $block['size'] > 300 ) {
-			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html">';
-			echo self::build_toggler(); // WPCS: XSS ok;
-			echo '<div class="qm-inverse-toggled"><pre class="qm-pre-wrap"><code>';
-			echo esc_html( substr( $inner_html, 0, 200 ) ) . '&nbsp;&hellip;';
-			echo '</code></pre></div>';
-			echo '<div class="qm-toggled"><pre class="qm-pre-wrap"><code>';
-			echo esc_html( $inner_html );
-			echo '</code></pre></div>';
-			echo '</td>';
+			echo '<td class="qm-ltr qm-has-toggle qm-row-block-html">' . "\n";
+			echo self::build_toggler(); // WPCS: XSS ok . "\n";
+			echo '<div class="qm-inverse-toggled"><pre class="qm-pre-wrap"><code>' . "\n";
+			echo esc_html( substr( $inner_html, 0, 200 ) ) . '&nbsp;&hellip;' . "\n";
+			echo '</code></pre></div>' . "\n";
+			echo '<div class="qm-toggled"><pre class="qm-pre-wrap"><code>' . "\n";
+			echo esc_html( $inner_html ) . "\n";
+			echo '</code></pre></div>' . "\n";
+			echo '</td>' . "\n";
 		} else {
-			echo '<td class="qm-row-block-html"><pre class="qm-pre-wrap"><code>';
-			echo esc_html( $inner_html );
-			echo '</code></pre></td>';
+			echo '<td class="qm-row-block-html"><pre class="qm-pre-wrap"><code>' . "\n";
+			echo esc_html( $inner_html ) . "\n";
+			echo '</code></pre></td>' . "\n";
 		}
 
 		echo '</tr>';

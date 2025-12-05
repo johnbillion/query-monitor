@@ -77,21 +77,21 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			),
 		);
 
-		echo '<thead>';
-		echo '<tr>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
 		echo '<th scope="col" class="qm-filterable-column">';
 		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ), $level_args ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '</th>' . "\n";
+		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
 		echo '<th scope="col" class="qm-filterable-column">';
 		$values = wp_list_pluck( $data->components, 'name' );
 		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		foreach ( $data->logs as $row ) {
 			$component = $row['component'];
@@ -127,7 +127,7 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			}
 
 			echo esc_html( ucfirst( $row['level'] ) );
-			echo '</td>';
+			echo '</td>' . "\n";
 
 			printf(
 				'<td><pre>%s</pre></td>',
@@ -149,26 +149,26 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 				echo self::build_toggler(); // WPCS: XSS ok;
 			}
 
-			echo '<ol>';
+			echo '<ol>' . "\n";
 
-			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+			echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
-				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+				echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
 			}
 
-			echo '</ol></td>';
+			echo '</ol></td>' . "\n";
 
 			printf(
-				'<td class="qm-nowrap">%s</td>',
+				'<td class="qm-nowrap">%s</td>' . "\n",
 				esc_html( $component->name )
 			);
 
-			echo '</tr>';
+			echo '</tr>' . "\n";
 
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
 		$this->after_tabular_output();
 	}

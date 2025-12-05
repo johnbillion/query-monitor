@@ -41,51 +41,51 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 			$this->before_tabular_output();
 
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>';
+			echo '<thead>' . "\n";
+			echo '<tr>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Updated Transient', 'query-monitor' ) . '</th>' . "\n";
 			if ( $data->has_type ) {
-				echo '<th scope="col">' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>';
+				echo '<th scope="col">' . esc_html_x( 'Type', 'transient type', 'query-monitor' ) . '</th>' . "\n";
 			}
-			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
+			echo '<th scope="col">' . esc_html__( 'Expiration', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html_x( 'Size', 'size of transient value', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</thead>' . "\n";
 
-			echo '<tbody>';
+			echo '<tbody>' . "\n";
 
 			foreach ( $data->trans as $row ) {
 				$component = $row['component'];
 
-				echo '<tr>';
+				echo '<tr>' . "\n";
 				printf(
-					'<td class="qm-ltr"><code>%s</code></td>',
+					'<td class="qm-ltr"><code>%s</code></td>' . "\n",
 					esc_html( $row['name'] )
 				);
 				if ( $data->has_type ) {
 					printf(
-						'<td class="qm-ltr qm-nowrap">%s</td>',
+						'<td class="qm-ltr qm-nowrap">%s</td>' . "\n",
 						esc_html( $row['type'] )
 					);
 				}
 
 				if ( 0 === $row['expiration'] ) {
 					printf(
-						'<td class="qm-nowrap"><em>%s</em></td>',
+						'<td class="qm-nowrap"><em>%s</em></td>' . "\n",
 						esc_html__( 'none', 'query-monitor' )
 					);
 				} else {
 					printf(
-						'<td class="qm-nowrap">%s <span class="qm-info">(~%s)</span></td>',
+						'<td class="qm-nowrap">%s <span class="qm-info">(~%s)</span></td>' . "\n",
 						esc_html( (string) $row['expiration'] ),
 						esc_html( $row['exp_diff'] )
 					);
 				}
 
 				printf(
-					'<td class="qm-nowrap">~%s</td>',
+					'<td class="qm-nowrap">~%s</td>' . "\n",
 					esc_html( $row['size_formatted'] )
 				);
 
@@ -97,28 +97,28 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 
 				$caller = array_shift( $stack );
 
-				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
+				echo '<td class="qm-has-toggle qm-nowrap qm-ltr">' . "\n";
 
 				if ( ! empty( $stack ) ) {
 					echo self::build_toggler(); // WPCS: XSS ok;
 				}
 
-				echo '<ol>';
+				echo '<ol>' . "\n";
 
-				echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+				echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
 
 				if ( ! empty( $stack ) ) {
-					echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+					echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
 				}
 
-				echo '</ol></td>';
+				echo '</ol></td>' . "\n";
 
 				printf(
-					'<td class="qm-nowrap">%s</td>',
+					'<td class="qm-nowrap">%s</td>' . "\n",
 					esc_html( $component->name )
 				);
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 
 			}
 

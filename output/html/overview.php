@@ -66,12 +66,12 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section id="qm-broken">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( $qm_broken ) . '</p>';
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		echo '<section id="qm-ajax-errors">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<p class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html( $ajax_errors ) . '</p>';
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		if ( $raw_request ) {
 			echo '<section id="qm-overview-raw-request">';
@@ -90,14 +90,14 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				esc_html( $raw_data->request['url'] ),
 				esc_html( $status )
 			);
-			echo '</section>';
+			echo '</section>' . "\n";
 		}
 
-		echo '</div>';
-		echo '<div class="qm-grid">';
+		echo '</div>' . "\n";
+		echo '<div class="qm-grid">' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Page Generation Time', 'query-monitor' ) . '</h3>' . "\n";
 		echo '<p>';
 		echo esc_html(
 			sprintf(
@@ -132,11 +132,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			);
 			echo '</span>';
 		}
-		echo '</p>';
-		echo '</section>';
+		echo '</p>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Peak Memory Usage', 'query-monitor' ) . '</h3>' . "\n";
 		echo '<p>';
 
 		if ( empty( $data->memory ) ) {
@@ -176,11 +176,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			}
 		}
 
-		echo '</p>';
-		echo '</section>';
+		echo '</p>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Database Queries', 'query-monitor' ) . '</h3>' . "\n";
 
 		if ( isset( $db_query_num, $db_queries_data ) ) {
 			echo '<p>';
@@ -191,7 +191,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $db_queries_data->total_time, 4 )
 				)
 			);
-			echo '</p>';
+			echo '</p>' . "\n";
 
 			echo '<p>';
 
@@ -214,19 +214,19 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			);
 			echo self::build_filter_trigger( 'db_queries', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 
-			echo '</p>';
+			echo '</p>' . "\n";
 		} else {
 			printf(
-				'<p><em>%s</em></p>',
+				'<p><em>%s</em></p>' . "\n",
 				esc_html__( 'None', 'query-monitor' )
 			);
 		}
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		if ( $http ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</h3>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'HTTP API Calls', 'query-monitor' ) . '</h3>' . "\n";
 
 			$http_data = $http->get_data();
 
@@ -239,7 +239,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 						number_format_i18n( $http_data->ltime, 4 )
 					)
 				);
-				echo '</p>';
+				echo '</p>' . "\n";
 
 				$label = sprintf(
 					'%1$s: %2$s',
@@ -249,16 +249,16 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo self::build_filter_trigger( 'http', 'type', '', esc_html( $label ) ); // WPCS: XSS ok;
 			} else {
 				printf(
-					'<p><em>%s</em></p>',
+					'<p><em>%s</em></p>' . "\n",
 					esc_html__( 'None', 'query-monitor' )
 				);
 			}
 
-			echo '</section>';
+			echo '</section>' . "\n";
 		}
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>' . "\n";
 
 		if ( $cache ) {
 			/** @var QM_Data_Cache $cache_data */
@@ -275,7 +275,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					number_format_i18n( $cache_data->stats['cache_hits'], 0 ),
 					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
 				) );
-				echo '</p>';
+				echo '</p>' . "\n";
 			}
 
 			if ( $cache_data->has_object_cache ) {
@@ -285,13 +285,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 					network_admin_url( 'plugins.php?plugin_status=dropins' ),
 					esc_html__( 'Persistent object cache plugin in use', 'query-monitor' )
 				);
-				echo '</span></p>';
+				echo '</span></p>' . "\n";
 			} else {
 				echo '<p><span class="qm-warn">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo QueryMonitor::icon( 'warning' );
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
-				echo '</span></p>';
+				echo '</span></p>' . "\n";
 
 				$potentials = array_filter( $cache_data->object_cache_extensions );
 
@@ -323,23 +323,23 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				} else {
 					echo '<p>';
 					echo esc_html__( 'Speak to your web host about enabling an object cache extension such as Redis or Memcached.', 'query-monitor' );
-					echo '</p>';
+					echo '</p>' . "\n";
 				}
 			}
 		} else {
 			echo '<p>';
 			echo esc_html__( 'Object cache statistics are not available', 'query-monitor' );
-			echo '</p>';
+			echo '</p>' . "\n";
 		}
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		if ( $cache ) {
 			/** @var QM_Data_Cache $cache_data */
 			$cache_data = $cache->get_data();
 
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>' . "\n";
 
 			if ( $cache_data->has_opcode_cache ) {
 				foreach ( array_filter( $cache_data->opcode_cache_extensions ) as $opcache_name => $opcache_state ) {
@@ -356,13 +356,13 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo QueryMonitor::icon( 'warning' );
 				echo esc_html__( 'Opcode cache not in use', 'query-monitor' );
-				echo '</span></p>';
+				echo '</span></p>' . "\n";
 				echo '<p>';
 				echo esc_html__( 'Speak to your web host about enabling an opcode cache such as OPcache.', 'query-monitor' );
-				echo '</p>';
+				echo '</p>' . "\n";
 		}
 
-			echo '</section>';
+			echo '</section>' . "\n";
 		}
 
 		$this->after_non_tabular_output();

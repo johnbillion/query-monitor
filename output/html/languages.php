@@ -39,74 +39,74 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<section>';
-		echo '<h3><code>get_locale()</code></h3>';
-		echo '<p>' . esc_html( $data->locale ) . '</p>';
-		echo '</section>';
+		echo '<section>' . "\n";
+		echo '<h3><code>get_locale()</code></h3>' . "\n";
+		echo '<p>' . esc_html( $data->locale ) . '</p>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3><code>get_user_locale()</code></h3>';
-		echo '<p>' . esc_html( $data->user_locale ) . '</p>';
-		echo '</section>';
+		echo '<section>' . "\n";
+		echo '<h3><code>get_user_locale()</code></h3>' . "\n";
+		echo '<p>' . esc_html( $data->user_locale ) . '</p>' . "\n";
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3><code>determine_locale()</code></h3>';
-		echo '<p>' . esc_html( $data->determined_locale ) . '</p>';
-		echo '</section>';
+		echo '<section>' . "\n";
+		echo '<h3><code>determine_locale()</code></h3>' . "\n";
+		echo '<p>' . esc_html( $data->determined_locale ) . '</p>' . "\n";
+		echo '</section>' . "\n";
 
 		if ( isset( $data->mlp_language ) ) {
-			echo '<section>';
+			echo '<section>' . "\n";
 			echo '<h3>';
 			printf(
 				/* translators: %s: Name of a multilingual plugin */
 				esc_html__( '%s Language', 'query-monitor' ),
 				'MultilingualPress'
 			);
-			echo '</h3>';
-			echo '<p>' . esc_html( $data->mlp_language ) . '</p>';
-			echo '</section>';
+			echo '</h3>' . "\n";
+			echo '<p>' . esc_html( $data->mlp_language ) . '</p>' . "\n";
+			echo '</section>' . "\n";
 		}
 
 		if ( isset( $data->pll_language ) ) {
-			echo '<section>';
+			echo '<section>' . "\n";
 			echo '<h3>';
 			printf(
 				/* translators: %s: Name of a multilingual plugin */
 				esc_html__( '%s Language', 'query-monitor' ),
 				'Polylang'
 			);
-			echo '</h3>';
-			echo '<p>' . esc_html( $data->pll_language ) . '</p>';
-			echo '</section>';
+			echo '</h3>' . "\n";
+			echo '<p>' . esc_html( $data->pll_language ) . '</p>' . "\n";
+			echo '</section>' . "\n";
 		}
 
-		echo '<section>';
-		echo '<h3><code>get_language_attributes()</code></h3>';
-		echo '<p><code>' . esc_html( $data->language_attributes ) . '</code></p>';
-		echo '</section>';
+		echo '<section>' . "\n";
+		echo '<h3><code>get_language_attributes()</code></h3>' . "\n";
+		echo '<p><code>' . esc_html( $data->language_attributes ) . '</code></p>' . "\n";
+		echo '</section>' . "\n";
 
 		if ( ! empty( $data->languages ) ) {
-			echo '<table class="qm-full-width">';
-			echo '<thead>';
-			echo '<tr>';
-			echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Translation File', 'query-monitor' ) . '</th>';
-			echo '<th scope="col">' . esc_html__( 'Size', 'query-monitor' ) . '</th>';
-			echo '</tr>';
-			echo '</thead>';
+			echo '<table class="qm-full-width">' . "\n";
+			echo '<thead>' . "\n";
+			echo '<tr>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Text Domain', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Translation File', 'query-monitor' ) . '</th>' . "\n";
+			echo '<th scope="col">' . esc_html__( 'Size', 'query-monitor' ) . '</th>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</thead>' . "\n";
 
-			echo '<tbody>';
+			echo '<tbody>' . "\n";
 
 			foreach ( $data->languages as $textdomain => $mofiles ) {
 				foreach ( $mofiles as $mofile ) {
 					echo '<tr>';
 
 					if ( $mofile['handle'] ) {
-						echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . ' (' . esc_html( $mofile['handle'] ) . ')</td>';
+						echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . ' (' . esc_html( $mofile['handle'] ) . ')</td>' . "\n";
 					} else {
-						echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>';
+						echo '<td class="qm-ltr">' . esc_html( $mofile['domain'] ) . '</td>' . "\n";
 					}
 
 					echo '<td>' . esc_html( $mofile['type'] ) . '</td>';
@@ -114,16 +114,16 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					if ( self::has_clickable_links() ) {
 						echo '<td class="qm-nowrap qm-ltr">';
 						echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
-						echo '</td>';
+						echo '</td>' . "\n";
 					} else {
 						echo '<td class="qm-nowrap qm-ltr qm-has-toggle">';
 						echo self::build_toggler(); // WPCS: XSS ok;
-						echo '<ol>';
-						echo '<li>';
+						echo '<ol>' . "\n";
+						echo '<li>' . "\n";
 						// undefined:
 						echo self::output_filename( $mofile['caller']['display'], $mofile['caller']['file'], $mofile['caller']['line'] ); // WPCS: XSS ok.
-						echo '</li>';
-						echo '</ol></td>';
+						echo '</li>' . "\n";
+						echo '</ol></td>' . "\n";
 					}
 
 					echo '<td class="qm-ltr">';
@@ -136,7 +136,7 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 					} else {
 						echo '<em>' . esc_html__( 'None', 'query-monitor' ) . '</em>';
 					}
-					echo '</td>';
+					echo '</td>' . "\n";
 
 					if ( $mofile['found'] ) {
 						echo '<td class="qm-nowrap qm-num">';
@@ -145,22 +145,22 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 							__( '%s kB', 'query-monitor' ),
 							number_format_i18n( $mofile['found'] / 1024, 1 )
 						) );
-						echo '</td>';
+						echo '</td>' . "\n";
 					} else {
 						echo '<td class="qm-nowrap">';
 						echo esc_html__( 'Not Found', 'query-monitor' );
-						echo '</td>';
+						echo '</td>' . "\n";
 					}
 
-					echo '</tr>';
+					echo '</tr>' . "\n";
 				}
 			}
 
 			echo '</tbody>';
 
-			echo '<tfoot>';
-			echo '<tr>';
-			echo '<td colspan="4">&nbsp;</td>';
+			echo '<tfoot>' . "\n";
+			echo '<tr>' . "\n";
+			echo '<td colspan="4">&nbsp;</td>' . "\n";
 			echo '<td class="qm-num">';
 
 			echo esc_html( sprintf(
@@ -169,11 +169,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 				number_format_i18n( $data->total_size / 1024, 1 )
 			) );
 
-			echo '</td>';
-			echo '</tr>';
-			echo '</tfoot>';
+			echo '</td>' . "\n";
+			echo '</tr>' . "\n";
+			echo '</tfoot>' . "\n";
 
-			echo '</table>';
+			echo '</table>' . "\n";
 		}
 
 		$this->after_non_tabular_output();

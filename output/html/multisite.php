@@ -45,20 +45,20 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 
 		$this->before_tabular_output();
 
-		echo '<thead>';
-		echo '<tr>';
-		echo '<th scope="col" class="qm-num">#</th>';
-		echo '<th scope="col">' . esc_html__( 'Function', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Site Switch', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>';
+		echo '<thead>' . "\n";
+		echo '<tr>' . "\n";
+		echo '<th scope="col" class="qm-num">#</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Function', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Site Switch', 'query-monitor' ) . '</th>' . "\n";
+		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
 		echo '<th scope="col" class="qm-filterable-column">';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->build_filter( 'component', array(), __( 'Component', 'query-monitor' ) );
-		echo '</th>';
-		echo '</tr>';
-		echo '</thead>';
+		echo '</th>' . "\n";
+		echo '</tr>' . "\n";
+		echo '</thead>' . "\n";
 
-		echo '<tbody>';
+		echo '<tbody>' . "\n";
 
 		$i = 0;
 
@@ -75,13 +75,13 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 			}
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<tr' . $attr . '>';
+			echo '<tr' . $attr . '>' . "\n";
 
 			echo '<td class="qm-num">';
 			if ( $row['to'] ) {
 				echo intval( ++$i );
 			}
-			echo '</td>';
+			echo '</td>' . "\n";
 
 			echo '<td class="qm-nowrap"><code>';
 			if ( $row['to'] ) {
@@ -92,7 +92,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 			} else {
 				echo 'restore_current_blog()';
 			}
-			echo '</code></td>';
+			echo '</code></td>' . "\n";
 
 			echo '<td class="qm-nowrap">';
 			if ( $row['to'] ) {
@@ -108,7 +108,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 					$row['prev']
 				) );
 			}
-			echo '</td>';
+			echo '</td>' . "\n";
 
 			$stack          = array();
 			$filtered_trace = $row['trace']->get_display_trace();
@@ -125,26 +125,26 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 				echo self::build_toggler(); // WPCS: XSS ok;
 			}
 
-			echo '<ol>';
+			echo '<ol>' . "\n";
 
-			echo "<li>{$caller}</li>"; // WPCS: XSS ok.
+			echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
 
 			if ( ! empty( $stack ) ) {
-				echo '<div class="qm-toggled"><li>' . implode( '</li><li>', $stack ) . '</li></div>'; // WPCS: XSS ok.
+				echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
 			}
 
-			echo '</ol></td>';
+			echo '</ol></td>' . "\n";
 
 			printf(
-				'<td class="qm-nowrap">%s</td>',
+				'<td class="qm-nowrap">%s</td>' . "\n",
 				esc_html( $component->name )
 			);
 
-			echo '</tr>';
+			echo '</tr>' . "\n";
 
 		}
 
-		echo '</tbody>';
+		echo '</tbody>' . "\n";
 
 		$this->after_tabular_output();
 	}

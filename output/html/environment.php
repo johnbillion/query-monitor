@@ -39,11 +39,11 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		$this->before_non_tabular_output();
 
-		echo '<section>';
-		echo '<h3>PHP</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>PHP</h3>' . "\n";
 
-		echo '<table>';
-		echo '<tbody>';
+		echo '<table>' . "\n";
+		echo '<tbody>' . "\n";
 
 		$append = '';
 		$class = '';
@@ -58,8 +58,8 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			$class = 'qm-warn';
 		}
 
-		echo '<tr class="' . esc_attr( $class ) . '">';
-		echo '<th scope="row">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
+		echo '<tr class="' . esc_attr( $class ) . '">' . "\n";
+		echo '<th scope="row">' . esc_html__( 'Version', 'query-monitor' ) . '</th>' . "\n";
 		echo '<td>';
 
 		if ( $php_warning ) {
@@ -69,30 +69,30 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 		echo esc_html( $data->php['version'] ?: esc_html__( 'Unknown', 'query-monitor' ) );
 		echo $append; // WPCS: XSS ok.
-		echo '</td>';
-		echo '</tr>';
+		echo '</td>' . "\n";
+		echo '</tr>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="row">SAPI</th>';
-		echo '<td>' . esc_html( $data->php['sapi'] ?: esc_html__( 'Unknown', 'query-monitor' ) ) . '</td>';
-		echo '</tr>';
+		echo '<tr>' . "\n";
+		echo '<th scope="row">SAPI</th>' . "\n";
+		echo '<td>' . esc_html( $data->php['sapi'] ?: esc_html__( 'Unknown', 'query-monitor' ) ) . '</td>' . "\n";
+		echo '</tr>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'User', 'query-monitor' ) . '</th>';
+		echo '<tr>' . "\n";
+		echo '<th scope="row">' . esc_html__( 'User', 'query-monitor' ) . '</th>' . "\n";
 		if ( ! empty( $data->php['user'] ) ) {
-			echo '<td>' . esc_html( $data->php['user'] ) . '</td>';
+			echo '<td>' . esc_html( $data->php['user'] ) . '</td>' . "\n";
 		} else {
-			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+			echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>' . "\n";
 		}
-		echo '</tr>';
+		echo '</tr>' . "\n";
 
 		foreach ( $data->php['variables'] as $key => $val ) {
-			echo '<tr>';
-			echo '<th scope="row">' . esc_html( $key ) . '</th>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">' . esc_html( $key ) . '</th>' . "\n";
 			echo '<td>';
 			echo esc_html( $val );
-			echo '</td>';
-			echo '</tr>';
+			echo '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
 
 		$out = array();
@@ -105,25 +105,25 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			}
 		}
 
-		$error_levels = implode( '</li><li>', $out );
+		$error_levels = implode( "</li>\n<li>", $out );
 
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'Error Reporting', 'query-monitor' ) . '</th>';
+		echo '<tr>' . "\n";
+		echo '<th scope="row">' . esc_html__( 'Error Reporting', 'query-monitor' ) . '</th>' . "\n";
 		echo '<td class="qm-has-toggle qm-ltr">';
 
 		echo esc_html( (string) $data->php['error_reporting'] );
 		echo self::build_toggler(); // WPCS: XSS ok;
 
-		echo '<div class="qm-toggled">';
-		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>"; // WPCS: XSS ok.
+		echo '<div class="qm-toggled">' . "\n";
+		echo "<ul class='qm-supplemental'><li>{$error_levels}</li></ul>\n"; // WPCS: XSS ok.
 		echo '</div>';
 
-		echo '</td>';
-		echo '</tr>';
+		echo '</td>' . "\n";
+		echo '</tr>' . "\n";
 
 		if ( ! empty( $data->php['extensions'] ) ) {
-			echo '<tr>';
-			echo '<th scope="row">' . esc_html__( 'Extensions', 'query-monitor' ) . '</th>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">' . esc_html__( 'Extensions', 'query-monitor' ) . '</th>' . "\n";
 			echo '<td class="qm-has-inner qm-has-toggle qm-ltr">';
 
 			printf( // WPCS: XSS ok.
@@ -134,23 +134,23 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			echo '<div class="qm-toggled">';
 			self::output_inner( $data->php['extensions'] );
-			echo '</div>';
+			echo '</div>' . "\n";
 
-			echo '</td>';
-			echo '</tr>';
+			echo '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
 
-		echo '</tbody>';
-		echo '</table>';
+		echo '</tbody>' . "\n";
+		echo '</table>' . "\n";
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
 		if ( isset( $data->db ) ) {
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Database', 'query-monitor' ) . '</h3>';
+			echo '<section>' . "\n";
+			echo '<h3>' . esc_html__( 'Database', 'query-monitor' ) . '</h3>' . "\n";
 
-			echo '<table>';
-			echo '<tbody>';
+			echo '<table>' . "\n";
+			echo '<tbody>' . "\n";
 
 			$info = array(
 				'server-version' => __( 'Server Version', 'query-monitor' ),
@@ -163,17 +163,17 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 
 			foreach ( $info as $field => $label ) {
 
-				echo '<tr>';
-				echo '<th scope="row">' . esc_html( $label ) . '</th>';
+				echo '<tr>' . "\n";
+				echo '<th scope="row">' . esc_html( $label ) . '</th>' . "\n";
 
 				if ( ! isset( $data->db['info'][ $field ] ) ) {
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo '<td><span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>';
+					echo '<td><span class="qm-warn">' . QueryMonitor::icon( 'warning' ) . esc_html__( 'Unknown', 'query-monitor' ) . '</span></td>' . "\n";
 				} else {
-					echo '<td>' . esc_html( $data->db['info'][ $field ] ) . '</td>';
+					echo '<td>' . esc_html( $data->db['info'][ $field ] ) . '</td>' . "\n";
 				}
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 
 			}
 
@@ -193,45 +193,45 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 					);
 				}
 
-				echo '<tr>';
+				echo '<tr>' . "\n";
 
-				echo '<th scope="row">' . esc_html( $key ) . '</th>';
+				echo '<th scope="row">' . esc_html( $key ) . '</th>' . "\n";
 				echo '<td>';
 				echo esc_html( $val );
 				echo $append; // WPCS: XSS ok.
-				echo '</td>';
+				echo '</td>' . "\n";
 
-				echo '</tr>';
+				echo '</tr>' . "\n";
 			}
 
-			echo '</tbody>';
-			echo '</table>';
+			echo '</tbody>' . "\n";
+			echo '</table>' . "\n";
 
-			echo '</section>';
+			echo '</section>' . "\n";
 		}
 
-		echo '<section>';
-		echo '<h3>WordPress</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>WordPress</h3>' . "\n";
 
-		echo '<table>';
-		echo '<tbody>';
+		echo '<table>' . "\n";
+		echo '<tbody>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="row">' . esc_html__( 'Version', 'query-monitor' ) . '</th>';
-		echo '<td>' . esc_html( $data->wp['version'] ) . '</td>';
-		echo '</tr>';
+		echo '<tr>' . "\n";
+		echo '<th scope="row">' . esc_html__( 'Version', 'query-monitor' ) . '</th>' . "\n";
+		echo '<td>' . esc_html( $data->wp['version'] ) . '</td>' . "\n";
+		echo '</tr>' . "\n";
 
-		echo '<tr>';
-		echo '<th scope="row">';
+		echo '<tr>' . "\n";
+		echo '<th scope="row">' . "\n";
 		esc_html_e( 'Environment Type', 'query-monitor' );
 		printf(
 			'&nbsp;<span class="qm-info">(<a href="%s" target="_blank" class="qm-external-link">%s</a>)</span>',
 			'https://make.wordpress.org/core/2020/07/24/new-wp_get_environment_type-function-in-wordpress-5-5/',
 			esc_html__( 'Help', 'query-monitor' )
 		);
-		echo '</th>';
-		echo '<td>' . esc_html( $data->wp['environment_type'] ) . '</td>';
-		echo '</tr>';
+		echo '</th>' . "\n";
+		echo '<td>' . esc_html( $data->wp['environment_type'] ) . '</td>' . "\n";
+		echo '</tr>' . "\n";
 
 		if ( isset( $data->wp['development_mode'] ) ) {
 			$mode = $data->wp['development_mode'];
@@ -240,7 +240,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				$mode = __( 'empty string', 'query-monitor' );
 			}
 
-			echo '<tr>';
+			echo '<tr>' . "\n";
 			echo '<th scope="row">';
 			esc_html_e( 'Development Mode', 'query-monitor' );
 			printf(
@@ -248,27 +248,27 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 				'https://core.trac.wordpress.org/changeset/56042',
 				esc_html__( 'Help', 'query-monitor' )
 			);
-			echo '</th>';
-			echo '<td>' . esc_html( $mode ) . '</td>';
-			echo '</tr>';
+			echo '</th>' . "\n";
+			echo '<td>' . esc_html( $mode ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 		}
 
 		foreach ( $data->wp['constants'] as $key => $val ) {
 
-			echo '<tr>';
-			echo '<th scope="row">' . esc_html( $key ) . '</th>';
-			echo '<td>' . esc_html( $val ) . '</td>';
-			echo '</tr>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">' . esc_html( $key ) . '</th>' . "\n";
+			echo '<td>' . esc_html( $val ) . '</td>' . "\n";
+			echo '</tr>' . "\n";
 
 		}
 
-		echo '</tbody>';
-		echo '</table>';
+		echo '</tbody>' . "\n";
+		echo '</table>' . "\n";
 
-		echo '</section>';
+		echo '</section>' . "\n";
 
-		echo '<section>';
-		echo '<h3>' . esc_html__( 'Server', 'query-monitor' ) . '</h3>';
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Server', 'query-monitor' ) . '</h3>' . "\n";
 
 		$server = array(
 			'name' => __( 'Software', 'query-monitor' ),
@@ -281,23 +281,23 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 			'basicauth' => __( 'Basic Auth', 'query-monitor' ),
 		);
 
-		echo '<table>';
-		echo '<tbody>';
+		echo '<table>' . "\n";
+		echo '<tbody>' . "\n";
 
 		foreach ( $server as $field => $label ) {
-			echo '<tr>';
-			echo '<th scope="row">' . esc_html( $label ) . '</th>';
+			echo '<tr>' . "\n";
+			echo '<th scope="row">' . esc_html( $label ) . '</th>' . "\n";
 			if ( ! empty( $data->server[ $field ] ) ) {
-				echo '<td>' . esc_html( $data->server[ $field ] ) . '</td>';
+				echo '<td>' . esc_html( $data->server[ $field ] ) . '</td>' . "\n";
 			} else {
-				echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>';
+				echo '<td><em>' . esc_html__( 'Unknown', 'query-monitor' ) . '</em></td>' . "\n";
 			}
-			echo '</tr>';
+			echo '</tr>' . "\n";
 		}
 
-		echo '</tbody>';
-		echo '</table>';
-		echo '</section>';
+		echo '</tbody>' . "\n";
+		echo '</table>' . "\n";
+		echo '</section>' . "\n";
 
 		$this->after_non_tabular_output();
 	}
