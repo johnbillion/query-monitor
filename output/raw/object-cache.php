@@ -5,12 +5,12 @@
  * @package query-monitor
  */
 
-class QM_Output_Raw_Cache extends QM_Output_Raw {
+class QM_Output_Raw_Object_Cache extends QM_Output_Raw {
 
 	/**
 	 * Collector instance.
 	 *
-	 * @var QM_Collector_Cache Collector.
+	 * @var QM_Collector_Object_Cache Collector.
 	 */
 	protected $collector;
 
@@ -49,12 +49,12 @@ class QM_Output_Raw_Cache extends QM_Output_Raw {
  * @param QM_Collectors $collectors
  * @return array<string, QM_Output>
  */
-function register_qm_output_raw_cache( array $output, QM_Collectors $collectors ) {
-	$collector = QM_Collectors::get( 'cache' );
+function register_qm_output_raw_object_cache( array $output, QM_Collectors $collectors ) {
+	$collector = QM_Collectors::get( 'object-cache' );
 	if ( $collector ) {
-		$output['cache'] = new QM_Output_Raw_Cache( $collector );
+		$output['object-cache'] = new QM_Output_Raw_Object_Cache( $collector );
 	}
 	return $output;
 }
 
-add_filter( 'qm/outputter/raw', 'register_qm_output_raw_cache', 30, 2 );
+add_filter( 'qm/outputter/raw', 'register_qm_output_raw_object_cache', 30, 2 );

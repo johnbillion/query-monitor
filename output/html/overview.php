@@ -52,8 +52,11 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		/** @var QM_Collector_Raw_Request|null $raw_request */
 		$raw_request = QM_Collectors::get( 'raw_request' );
 
-		/** @var QM_Collector_Cache|null $cache */
-		$cache = QM_Collectors::get( 'cache' );
+		/** @var QM_Collector_Object_Cache|null $object_cache */
+		$object_cache = QM_Collectors::get( 'object-cache' );
+
+		/** @var QM_Collector_Opcode_Cache|null $opcode_cache */
+		$opcode_cache = QM_Collectors::get( 'opcode-cache' );
 
 		/** @var QM_Collector_HTTP|null $http */
 		$http = QM_Collectors::get( 'http' );
@@ -260,9 +263,9 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 		echo '<section>';
 		echo '<h3>' . esc_html__( 'Object Cache', 'query-monitor' ) . '</h3>';
 
-		if ( $cache ) {
+		if ( $object_cache ) {
 			/** @var QM_Data_Cache $cache_data */
-			$cache_data = $cache->get_data();
+			$cache_data = $object_cache->get_data();
 
 			if ( ! empty( $cache_data->stats ) && ! empty( $cache_data->cache_hit_percentage ) ) {
 				$cache_hit_percentage = $cache_data->cache_hit_percentage;
@@ -278,7 +281,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo '</p>';
 			}
 
-			if ( $cache_data->has_object_cache ) {
+			if ( $cache_data->has ) {
 				echo '<p><span class="qm-info">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo self::build_link(
@@ -293,7 +296,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo esc_html__( 'Persistent object cache plugin not in use', 'query-monitor' );
 				echo '</span></p>';
 
-				$potentials = array_filter( $cache_data->object_cache_extensions );
+				$potentials = array_filter( $cache_data->cache_extensions );
 
 				if ( ! empty( $potentials ) ) {
 					foreach ( $potentials as $name => $value ) {
@@ -334,15 +337,97 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		echo '</section>';
 
-		if ( $cache ) {
+		echo '<section>';
+		echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
+
+		if ( $opcode_cache ) {
 			/** @var QM_Data_Cache $cache_data */
-			$cache_data = $cache->get_data();
+			$cache_data = $opcode_cache->get_data();
 
-			echo '<section>';
-			echo '<h3>' . esc_html__( 'Opcode Cache', 'query-monitor' ) . '</h3>';
+			if ( ! empty( $cache_data->stats ) && ! empty( $cache_data->cache_hit_percentage ) ) {
+				$cache_hit_percentage = $cache_data->cache_hit_percentage;
 
-			if ( $cache_data->has_opcode_cache ) {
-				foreach ( array_filter( $cache_data->opcode_cache_extensions ) as $opcache_name => $opcache_state ) {
+				echo '<p>';
+				echo esc_html( sprintf(
+					/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
+					__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
+					number_format_i18n( $cache_hit_percentage, 1 ),
+					number_format_i18n( $cache_data->stats['cache_hits'], 0 ),
+					number_format_i18n( $cache_data->stats['cache_misses'], 0 )
+				) );
+				echo '</p>';
+			} elseif ( $cache_data->has ) {
+				echo '<p><span class="qm-warn">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo QueryMonitor::icon( 'warning' );
+				echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
+				echo '</span></p>';
+			}
+
+			foreach ( $cache_data->usage_meters as $meter_name => $meter ) {
+				echo '<p>';
+				echo '<strong>' . esc_html( $meter['label'] ) . '</strong><br>';
+				switch ( $meter['type'] ) {
+					case 'bytes':
+						if ( $meter['used'] >= 0 ) {
+							echo esc_html( sprintf(
+								/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
+								__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
+								number_format_i18n( $meter['used'] ),
+								number_format_i18n( ( $meter['used'] / 1024 / 1024 ), 1 )
+							) );
+							if ( $meter['limit'] >= 0 ) {
+								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
+								echo '<br><span class="qm-info">';
+								echo esc_html( sprintf(
+									/* translators: 1: Percentage of limit used, 2: Bytes meter server limit in megabytes */
+									__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
+									number_format_i18n( $usage_percentage, 1 ),
+									number_format_i18n( $meter['limit'] / 1024 / 1024 )
+								) );
+								echo '</span>';
+							}
+						} elseif ( $meter['limit'] >= 0 ) {
+							echo '<span class="qm-info">';
+							echo esc_html( sprintf(
+								/* translators: 1: Bytes meter server limit in megabytes */
+								__( '%1$s MB server limit', 'query-monitor' ),
+								number_format_i18n( $meter['limit'] / 1024 / 1024 )
+							) );
+							echo '</span>';
+						}
+						break;
+					case 'count':
+						if ( $meter['used'] >= 0 ) {
+							echo esc_html( number_format_i18n( $meter['used'] ) );
+
+							if ( $meter['limit'] >= 0 ) {
+								$usage_percentage = ( $meter['used'] / $meter['limit'] ) * 100;
+								echo '<br><span class="qm-info">';
+								echo esc_html( sprintf(
+									/* translators: 1: Percentage of limit used, 2: Counter meter server limit */
+									__( '%1$s%% of %2$s server limit', 'query-monitor' ),
+									number_format_i18n( $usage_percentage, 1 ),
+									number_format_i18n( $meter['limit'] )
+								) );
+								echo '</span>';
+							}
+						} elseif ( $meter['limit'] >= 0 ) {
+							echo '<span class="qm-info">';
+							echo esc_html( sprintf(
+								/* translators: 1: Counter meter server limit */
+								__( '%1$s server limit', 'query-monitor' ),
+								number_format_i18n( $meter['limit'] )
+							) );
+							echo '</span>';
+						}
+						break;
+				}
+				echo '</p>';
+			}
+
+			if ( $cache_data->has ) {
+				foreach ( array_filter( $cache_data->cache_extensions ) as $opcache_name => $opcache_state ) {
 					echo '<p>';
 					echo esc_html( sprintf(
 						/* translators: %s: Name of cache driver */
@@ -357,13 +442,35 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 				echo QueryMonitor::icon( 'warning' );
 				echo esc_html__( 'Opcode cache not in use', 'query-monitor' );
 				echo '</span></p>';
-				echo '<p>';
-				echo esc_html__( 'Speak to your web host about enabling an opcode cache such as OPcache.', 'query-monitor' );
-				echo '</p>';
+
+				$potentials = array_filter( $cache_data->cache_extensions );
+
+				if ( ! empty( $potentials ) ) {
+					foreach ( $potentials as $name => $value ) {
+						echo '<p>';
+						echo esc_html(
+							sprintf(
+								/* translators: 1: PHP extension name */
+								__( 'The %1$s opcode extension for PHP is installed but is not enabled. Speak to your web host about enabling it.', 'query-monitor' ),
+								esc_html( $name )
+							)
+						);
+						echo '</p>';
+						break;
+					}
+				} else {
+					echo '<p>';
+					echo esc_html__( 'Speak to your web host about installing and enabling an opcode cache such as OPcache.', 'query-monitor' );
+					echo '</p>';
+				}
+			}
+		} else {
+			echo '<p>';
+			echo esc_html__( 'Opcode cache statistics are not available', 'query-monitor' );
+			echo '</p>';
 		}
 
-			echo '</section>';
-		}
+		echo '</section>';
 
 		$this->after_non_tabular_output();
 	}
@@ -395,7 +502,6 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 
 		return $title;
 	}
-
 }
 
 /**
