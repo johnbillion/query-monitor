@@ -23,6 +23,7 @@
           {
             "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.1.zip",
             "checksum": "sha256:f7ae4ff670b4f544acf0dcf1901e26e1a7a908aa81bf1f317d88ca22c758e68e",
+            "content-type": "application/zip",
             "signature": "d2CTAHmISVQ29RO_HYuF_NuATfZC20P-XdHFlMpystkADMaQiqT6hfgr3azmiLheJWSKesgt1HPHc5wwDH0pCA"
           }
         ]
