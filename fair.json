@@ -31,7 +31,8 @@
       "requires": {
         "env:wp": ">=6.1",
         "env:php": ">=7.4"
-      }
+      },
+      "suggests": {}
     }
   ],
   "slug": "query-monitor",
