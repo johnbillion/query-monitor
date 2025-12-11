@@ -35,6 +35,7 @@
       "suggests": {}
     }
   ],
+  "sections": {},
   "slug": "query-monitor",
   "filename": "query-monitor/query-monitor.php",
   "description": "The developer tools panel for WordPress.",
