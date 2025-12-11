@@ -17,6 +17,24 @@
   ],
   "releases": [
     {
+      "version": "3.20.2",
+      "artifacts": {
+        "package": [
+          {
+            "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.2.zip",
+            "checksum": "sha256:22f583caf0828b56d7d4166711ccdc66ed69041d4683b54d23de9babf74224a7",
+            "content-type": "application/zip",
+            "signature": "KrPyjumw1q_KWP22NhF_9n1mHiUpyLPkYIYLlxsdbNzWJHUBWCXqqLRPdjAMfid39cNRP_pcQbz_7NS9dQlNBw"
+          }
+        ]
+      },
+      "requires": {
+        "env:wp": ">=6.1",
+        "env:php": ">=7.4"
+      },
+      "suggests": {}
+    },
+    {
       "version": "3.20.1",
       "artifacts": {
         "package": [
