@@ -3,18 +3,29 @@
   "id": "did:plc:q2afge25l63iz553aumeqi3w",
   "type": "wp-plugin",
   "name": "Query Monitor",
-  "license": "GPL-2.0-or-later",
+  "slug": "query-monitor",
+  "filename": "query-monitor/query-monitor.php",
+  "description": "The developer tools panel for WordPress.",
   "authors": [
     {
       "name": "John Blackbourn",
       "url": "https://querymonitor.com/"
     }
   ],
+  "license": "GPL-2.0-or-later",
   "security": [
     {
       "url": "https://querymonitor.com/security/"
     }
   ],
+  "keywords": [
+    "debug",
+    "debug-bar",
+    "development",
+    "performance",
+    "query monitor"
+  ],
+  "sections": {},
   "releases": [
     {
       "version": "3.20.2",
@@ -52,16 +63,5 @@
       },
       "suggests": {}
     }
-  ],
-  "sections": {},
-  "slug": "query-monitor",
-  "filename": "query-monitor/query-monitor.php",
-  "description": "The developer tools panel for WordPress.",
-  "keywords": [
-    "debug",
-    "debug-bar",
-    "development",
-    "performance",
-    "query monitor"
   ]
 }
