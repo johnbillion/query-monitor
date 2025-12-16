@@ -68,6 +68,50 @@
             "width": 256
           }
         ],
+        "screenshot": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-1.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-2.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-3.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-4.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-5.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-6.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2278
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-7.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          }
+        ],
         "package": [
           {
             "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.2.zip",
