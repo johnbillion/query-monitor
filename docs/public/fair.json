@@ -34,6 +34,40 @@
     {
       "version": "3.20.2",
       "artifacts": {
+        "banner": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/banner-772x250.png",
+            "content-type": "image/png",
+            "height": 250,
+            "width": 772
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/banner-1544x500.png",
+            "content-type": "image/png",
+            "height": 500,
+            "width": 1544
+          }
+        ],
+        "icon": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon.svg",
+            "content-type": "image/svg+xml",
+            "height": null,
+            "width": null
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon-128x128.png",
+            "content-type": "image/png",
+            "height": 128,
+            "width": 128
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon-256x256.png",
+            "content-type": "image/png",
+            "height": 256,
+            "width": 256
+          }
+        ],
         "package": [
           {
             "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.2.zip",
@@ -43,12 +77,12 @@
           }
         ]
       },
+      "suggests": {
+        "env:wp": ">=6.9"
+      },
       "requires": {
         "env:wp": ">=6.1",
         "env:php": ">=7.4"
-      },
-      "suggests": {
-        "env:wp": ">=6.9"
       }
     },
     {
