@@ -339,7 +339,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		position: fixed;
 		right: 0 !important;
 		text-align: left !important;
-		z-index: 99998 !important;
+		/* One below the z-index of wp-admin menu flyouts */
+		z-index: 9989 !important;
 	}
 
 	::selection {
@@ -366,6 +367,19 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	&:not(.qm-show-right) {
 		width: 100% !important;
+
+		/* Make space for the admin menu in the wp-admin area */
+		body.wp-admin & {
+			left: unset !important;
+			width: calc( 100% - 160px ) !important;
+		}
+		html[dir="rtl"] body.wp-admin & {
+			left: 0 !important;
+			right: unset !important;
+		}
+		body.wp-admin.folded & {
+			width: calc( 100% - 36px ) !important;
+		}
 	}
 
 	&.qm-show-right {
