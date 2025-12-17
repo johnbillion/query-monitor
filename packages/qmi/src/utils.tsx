@@ -153,6 +153,33 @@ export function getEditorFormat( name: string ): string {
 	return '';
 }
 
+/**
+ * Shortens a fully qualified name to reduce the length of long namespaced symbols.
+ *
+ * This initialises portions that do not form the first or last portion of the name. For example:
+ *
+ *     Inpsyde\Wonolog\HookListener\HookListenersRegistry->hook_callback()
+ *
+ * becomes:
+ *
+ *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
+ *
+ * @param fqn A fully qualified name.
+ * @return A shortened version of the name.
+ */
+export function shortenFqn( fqn: string ): string {
+	const backslashCount = ( fqn.match( /\\/g ) || [] ).length;
+
+	if ( backslashCount < 3 ) {
+		return fqn;
+	}
+
+	return fqn.replace( /\\[a-zA-Z0-9_\\]{4,}\\/g, ( match ) => {
+		const initials = match.match( /\\([a-zA-Z0-9_])/g ) || [];
+		return initials.join( '' ) + '\\';
+	} );
+}
+
 export function numberFormat( number: number, decimals: number = 0 ): string {
 	if ( isNaN( number ) ) {
 		return '';

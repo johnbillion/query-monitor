@@ -22,10 +22,12 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 		editor,
 	} = React.useContext( MainContext );
 
+	const displayText = isFileName ? text : Utils.shortenFqn( text );
+
 	if ( ! file ) {
 		return ( isFileName )
-			? <> { text } </>
-			: <code>{ text }</code>;
+			? <>{ displayText }</>
+			: <code>{ displayText }</code>;
 	}
 
 	const linkLine = line || 1;
@@ -33,13 +35,13 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 
 	if ( ! format ) {
 		if ( isFileName ) {
-			return <> { text } </>;
+			return <>{ displayText }</>;
 		}
 
 		return (
 			<>
 				<code>
-					{ text }
+					{ displayText }
 				</code>
 				{ expanded && (
 					<>
@@ -62,9 +64,9 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 	return (
 		<a className="qm-edit-link" href={ output }>
 			{ isFileName ?
-				<> { text } </>
+				<>{ displayText }</>
 				:
-				<code>{ text }</code>
+				<code>{ displayText }</code>
 			}
 			<Icon name="edit"/>
 		</a>

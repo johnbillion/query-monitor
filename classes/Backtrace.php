@@ -521,7 +521,7 @@ class QM_Backtrace implements JsonSerializable {
 					$return = null;
 				} else {
 					$return['id'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
-					$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
+					$return['display'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
 				}
 			}
 		} else {
@@ -566,12 +566,12 @@ class QM_Backtrace implements JsonSerializable {
 							}
 						}
 						$return['id'] = $frame['function'] . '()';
-						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
+						$return['display'] = $frame['function'] . '(' . implode( ',', $args ) . ')';
 					}
 				}
 			} elseif ( $return ) {
 				$return['id'] = $frame['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
+				$return['display'] = $frame['function'] . '()';
 			}
 		}
 

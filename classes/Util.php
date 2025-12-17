@@ -591,7 +591,7 @@ class QM_Util {
 	 *
 	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
 	 *
-	 * @deprecated This should happen client-side now.
+	 * @deprecated Use the shortenFqn() method in the JavaScript Utils module instead.
 	 * @param string $fqn A fully qualified name.
 	 * @return string A shortened version of the name.
 	 */
