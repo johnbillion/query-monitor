@@ -15,8 +15,6 @@ import * as React from 'react';
 
 import {
 	__,
-	_n,
-	sprintf,
 } from '@wordpress/i18n';
 
 export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {

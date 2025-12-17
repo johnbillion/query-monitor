@@ -21,10 +21,10 @@ export type MainContextType = {
 
 export const MainContext = createContext<MainContextType>( {
 	editor: '',
-	setEditor: ( editor ) => {},
+	setEditor: ( _editor ) => {},
 	theme: 'auto',
-	setTheme: ( theme ) => {},
+	setTheme: ( _theme ) => {},
 	filters: {},
-	setFilters: ( filters ) => {},
-	switchToPanel: ( panelId, panelFilters ) => {},
+	setFilters: ( _filters ) => {},
+	switchToPanel: ( _panelId, _panelFilters ) => {},
 } );

@@ -150,7 +150,7 @@ export const QM = ( props: Props ) => {
 			qmMain.style.height = `${ newHeight }px`;
 		}
 
-		const end = (event: PointerEvent) => {
+		const end = (_event: PointerEvent) => {
 			dragging = false;
 		}
 
@@ -258,12 +258,13 @@ interface iAdminMenuProps {
 }
 
 const AdminMenu = ( props: iAdminMenuProps ) => {
-	React.useMemo(() => {
-		// Clear any existing content in the element
-		props.element.innerHTML = '';
-		props.element.classList.add( 'menupop' );
-		return true;
-	}, []);
+	const { element, children } = props;
 
-	return ReactDOM.createPortal( props.children, props.element );
+	React.useLayoutEffect(() => {
+		// Clear any existing content in the element
+		element.innerHTML = '';
+		element.classList.add( 'menupop' );
+	}, [element]);
+
+	return ReactDOM.createPortal( children, element );
 }

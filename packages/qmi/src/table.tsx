@@ -177,7 +177,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 		setFilter,
 	} = React.useContext( PanelContext );
 	const total = countData( data );
-	const nonEmptyCols = Object.entries( cols ).filter( ( [ key, value ] ) => ( value ? true : false ) );
+	const nonEmptyCols = Object.entries( cols ).filter( ( [ _key, value ] ) => ( value ? true : false ) );
 
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
 		if ( ! ( filterName in cols ) ) {
@@ -196,7 +196,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 	}
 
 	const count = countData( data );
-	const [ sorting, setSorting ] = React.useState( {
+	const [ sorting, _setSorting ] = React.useState( {
 		orderby,
 		order,
 	} );

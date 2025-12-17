@@ -13,5 +13,5 @@ export type PanelContextType = {
 export const PanelContext = createContext<PanelContextType>( {
 	id: '',
 	filters: {},
-	setFilter: ( filterName, filterValue ) => {},
+	setFilter: ( _filterName, _filterValue ) => {},
 } );

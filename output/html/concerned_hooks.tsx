@@ -24,14 +24,14 @@ interface HookRow {
 	trace?: any;
 }
 
-export const ConcernedHooks = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
+export const ConcernedHooks = ( { data }: PanelProps<DataTypes['caps']> ) => {
 	const concernedActions = data.concerned_actions;
 	const concernedFilters = data.concerned_filters;
 
 	// Combine both actions and filters into a single array
 	const allHooks: HookRow[] = [];
 
-	concernedActions && Object.keys( concernedActions ).forEach( ( hookName: string ) => {
+	if ( concernedActions ) Object.keys( concernedActions ).forEach( ( hookName: string ) => {
 		allHooks.push( {
 			name: hookName,
 			type: 'action',
@@ -42,7 +42,7 @@ export const ConcernedHooks = ( { enabled, data }: PanelProps<DataTypes['caps']>
 		} );
 	} );
 
-	concernedFilters && Object.keys( concernedFilters ).forEach( ( hookName: string ) => {
+	if ( concernedFilters ) Object.keys( concernedFilters ).forEach( ( hookName: string ) => {
 		allHooks.push( {
 			name: hookName,
 			type: 'filter',
@@ -79,15 +79,15 @@ export const ConcernedHooks = ( { enabled, data }: PanelProps<DataTypes['caps']>
 				},
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),
-					render: ( row ) => 'TBD',
+					render: () => 'TBD',
 				},
 				callback: {
 					heading: __( 'Callback', 'query-monitor' ),
-					render: ( row ) => 'TBD',
+					render: () => 'TBD',
 				},
 				component: {
 					heading: __( 'Component', 'query-monitor' ),
-					render: ( row ) => 'TBD',
+					render: () => 'TBD',
 				},
 			} }
 			data={ allHooks }

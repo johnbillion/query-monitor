@@ -183,7 +183,7 @@ const panelNamesMap: { [key: string]: string } = {
 
 Object.keys( panelNamesMap ).forEach( ( collectorId ) => {
 	registerPanel( `${collectorId}-concerned_hooks`, {
-		render: ( data, enabled ) => <ConcernedHooks data={ data } />,
+		render: ( data, _enabled ) => <ConcernedHooks data={ data } />,
 		data: collectorId,
 	} );
 } );

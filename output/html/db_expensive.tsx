@@ -1,6 +1,5 @@
 import {
 	PanelProps,
-	EmptyPanel,
 	TabularPanel,
 	Utils,
 	Warning,

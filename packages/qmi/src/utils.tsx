@@ -6,11 +6,11 @@ declare const qm_number_format: {
 	decimal_point: string;
 };
 
-export function formatSQL( sql: string ): JSX.Element[] {
+export function formatSQL( sql: string ): React.JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
 	const lines = formatted.split( new RegExp( lineRegex ) );
-	const collection: JSX.Element[] = [];
+	const collection: React.JSX.Element[] = [];
 	let index = 0;
 
 	formatted.replace( new RegExp( lineRegex, 'g' ), ( match, keyword ) => {
@@ -32,10 +32,10 @@ export function formatSQL( sql: string ): JSX.Element[] {
 	return collection;
 }
 
-export function formatURL( url: string ): JSX.Element[] {
+export function formatURL( url: string ): React.JSX.Element[] {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
-	const collection: JSX.Element[] = [
+	const collection: React.JSX.Element[] = [
 		<>
 			{ parts[0] }
 		</>,
