@@ -82,7 +82,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			},
 			message: {
 				heading: __( 'Message', 'query-monitor' ),
-				render: ( row ) => row.message,
+				render: ( row ) => <pre>{ row.message }</pre>,
 			},
 			context: {
 				heading: __( 'Context', 'query-monitor' ),

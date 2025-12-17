@@ -128,7 +128,7 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 
 			<section>
 				<h3><code>get_language_attributes()</code></h3>
-				<p>{ data.language_attributes }</p>
+				<p><code>{ data.language_attributes }</code></p>
 			</section>
 		</TabularPanel>
 	);

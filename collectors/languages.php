@@ -249,7 +249,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file' => $file,
+			'file' => is_string( $file ) ? QM_Util::standard_dir( $file, '' ) : $file,
 			'found' => $found,
 			'handle' => null,
 			'type' => $type,
@@ -288,7 +288,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file' => $file,
+			'file' => $file ? QM_Util::standard_dir( $file, '' ) : $file,
 			'found' => $found,
 			'handle' => $handle,
 			'type' => 'jed',

@@ -137,7 +137,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			$trace,
 			[
 				'function_name' => $function_name,
-				'message'       => $message,
+				'message'       => wp_strip_all_tags( $message ),
 				'version'       => $version,
 			]
 		);
@@ -233,7 +233,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				'file'        => $file,
 				'replacement' => $replacement,
 				'version'     => $version,
-				'message'     => $message,
+				'message'     => wp_strip_all_tags( $message ),
 			]
 		);
 
@@ -263,7 +263,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			$trace,
 			[
 				'function_name' => $function_name,
-				'message'       => $message,
+				'message'       => wp_strip_all_tags( $message ),
 				'version'       => $version,
 			]
 		);
@@ -296,7 +296,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				'hook'        => $hook,
 				'replacement' => $replacement,
 				'version'     => $version,
-				'message'     => $message,
+				'message'     => wp_strip_all_tags( $message ),
 			]
 		);
 
