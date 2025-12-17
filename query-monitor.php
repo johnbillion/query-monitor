@@ -10,13 +10,14 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress.
- * Version:      3.20.0
+ * Version:      3.20.2
  * Plugin URI:   https://querymonitor.com/
+ * Plugin ID:    did:plc:q2afge25l63iz553aumeqi3w
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
- * Requires at least: 6.0
+ * Requires at least: 6.1
  * Requires PHP: 7.4
  * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * License:      GPL v2 or later
@@ -36,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '3.20.0' );
+define( 'QM_VERSION', '3.20.2' );
 
 // This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 require_once __DIR__ . '/classes/PHP.php';

@@ -139,6 +139,8 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			return;
 		}
 
+		$this->data->rows = array();
+
 		$types = array();
 		$total_time = 0;
 		$has_result = false;

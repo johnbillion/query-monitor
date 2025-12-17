@@ -5,15 +5,21 @@ on:
   pull_request:
     branches:
       - '**'
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
   push:
     branches:
       - develop
       - trunk
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
 
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:

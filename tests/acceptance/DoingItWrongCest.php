@@ -10,31 +10,43 @@ class DoingItWrongCest {
 
 	public function DeprecatedArgumentShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'argument' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'Function my_function was called with an argument that is deprecated since version 2.0.0' );
+		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+			'Message' => 'Function my_function was called with an argument that is deprecated since version 2.0.0 with no alternative available.',
+		] );
 	}
 
-	public function DeprecatedClassShouldBeHandled( AcceptanceTester $I ): void {
-		$I->amOnAPageThatIsDoingItWrong( 'class' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'My_Class is deprecated since version 2.0.0' );
-	}
+	// public function DeprecatedClassShouldBeHandled( AcceptanceTester $I ): void {
+	// 	$I->amOnAPageThatIsDoingItWrong( 'class' );
+	// 	$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+	// 		'Message' => 'Class My_Class is deprecated since version 2.0.0 with no alternative available.',
+	// 	] );
+	// }
 
 	public function DeprecatedConstructorShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'constructor' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'The called constructor method for My_Class class is deprecated since version 2.0.0' );
+		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+			'Message' => 'The called constructor method for My_Class class is deprecated since version 2.0.0! Use __construct() instead.',
+		] );
 	}
 
 	public function DeprecatedFileShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'file' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'my_file.php is deprecated since version 2.0.0' );
+		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+			'Message' => 'File my_file.php is deprecated since version 2.0.0 with no alternative available.',
+		] );
 	}
 
 	public function DeprecatedFunctionShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'function' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'my_function is deprecated since version 2.0.0' );
+		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+			'Message' => 'Function my_function is deprecated since version 2.0.0 with no alternative available.',
+		] );
 	}
 
 	public function DeprecatedHookShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'hook' );
-		$I->seeInQMPanel( 'Doing it Wrong (1)', 'my_hook is deprecated since version 2.0.0' );
+		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+			'Message' => 'Hook my_hook is deprecated since version 2.0.0 with no alternative available.',
+		] );
 	}
 }

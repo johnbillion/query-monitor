@@ -1,0 +1,152 @@
+{
+  "@context": "https://fair.pm/ns/metadata/v1",
+  "id": "did:plc:q2afge25l63iz553aumeqi3w",
+  "type": "wp-plugin",
+  "name": "Query Monitor",
+  "slug": "query-monitor",
+  "filename": "query-monitor/query-monitor.php",
+  "description": "The developer tools panel for WordPress.",
+  "authors": [
+    {
+      "name": "John Blackbourn",
+      "url": "https://querymonitor.com/"
+    }
+  ],
+  "license": "GPL-2.0-or-later",
+  "security": [
+    {
+      "url": "https://querymonitor.com/security/"
+    }
+  ],
+  "keywords": [
+    "debug",
+    "debug-bar",
+    "development",
+    "performance",
+    "query monitor"
+  ],
+  "sections": {
+    "description": "<p>Query Monitor is the developer tools panel for WordPress and WooCommerce. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.</p>\n<p>It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.</p>\n<p>Query Monitor focuses heavily on presenting its information in a useful manner, for example by showing aggregate database queries grouped by the plugins, themes, or functions that are responsible for them. It adds an admin toolbar menu showing an overview of the current page, with complete debugging information shown in panels once you select a menu item.</p>\n<p>Query Monitor supports versions of WordPress up to three years old, and PHP version 7.4 or higher.</p>\n<p>For complete information, please see <a href=\"https://querymonitor.com/\">the Query Monitor website</a>.</p>\n<p>Here&#39;s an overview of what&#39;s shown for each page load:</p>\n<ul>\n<li>Database queries, including notifications for slow, duplicate, or erroneous queries. Allows filtering by query type (<code>SELECT</code>, <code>UPDATE</code>, <code>DELETE</code>, etc), responsible component (plugin, theme, WordPress core), and calling function, and provides separate aggregate views for each.</li>\n<li>The template filename, the complete template hierarchy, and names of all template parts that were loaded or not loaded (for block themes and classic themes).</li>\n<li>PHP errors presented nicely along with their responsible component and call stack, and a visible warning in the admin toolbar.</li>\n<li>Usage of &quot;Doing it Wrong&quot; or &quot;Deprecated&quot; functionality in the code on your site.</li>\n<li>Blocks and associated properties within post content and within full site editing (FSE).</li>\n<li>Matched rewrite rules, associated query strings, and query vars.</li>\n<li>Enqueued scripts and stylesheets, along with their dependencies, dependents, and alerts for broken dependencies.</li>\n<li>Language settings and loaded translation files (MO files and JSON files) for each text domain.</li>\n<li>HTTP API requests, with response code, responsible component, and time taken, with alerts for failed or erroneous requests.</li>\n<li>User capability checks, along with the result and any parameters passed to the capability check.</li>\n<li>Environment information, including detailed information about PHP, the database, WordPress, and the web server.</li>\n<li>The values of all WordPress conditional functions such as <code>is_single()</code>, <code>is_home()</code>, etc.</li>\n<li>Transients that were updated.</li>\n<li>Usage of <code>switch_to_blog()</code> and <code>restore_current_blog()</code> on Multisite installations.</li>\n</ul>\n<p>In addition:</p>\n<ul>\n<li>Whenever a redirect occurs, Query Monitor adds an HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to trace what triggered the redirect.</li>\n<li>The response from any jQuery-initiated Ajax request on the page will contain various debugging information in its headers. PHP errors also get output to the browser&#39;s developer console.</li>\n<li>The response from an authenticated WordPress REST API request will contain an overview of performance information and PHP errors in its headers, as long as the authenticated user has permission to view Query Monitor&#39;s output. An <a href=\"https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/#_envelope\">an enveloped REST API request</a> will include even more debugging information in the <code>qm</code> property of the response.</li>\n</ul>\n<p>By default, Query Monitor&#39;s output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.</p>\n<p>In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you&#39;re not logged in (or if you&#39;re logged in as a non-Administrator). See the Settings panel for details.</p>\n<h3>Other Plugins</h3>\n<p>I maintain several other plugins for developers. Check them out:</p>\n<ul>\n<li><a href=\"https://wordpress.org/plugins/user-switching/\">User Switching</a> provides instant switching between user accounts in WordPress.</li>\n<li><a href=\"https://wordpress.org/plugins/wp-crontrol/\">WP Crontrol</a> lets you view and control what&#39;s happening in the WP-Cron system</li>\n</ul>\n<h3>Privacy Statement</h3>\n<p>Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources. <a href=\"https://querymonitor.com/privacy/\">Query Monitor&#39;s full privacy statement can be found here</a>.</p>\n<h3>Accessibility Statement</h3>\n<p>Query Monitor aims to be fully accessible to all of its users. <a href=\"https://querymonitor.com/accessibility/\">Query Monitor&#39;s full accessibility statement can be found here</a>.</p>\n",
+    "changelog": "<h3>3.20.2 (11 December 2025)</h3>\n<ul>\n<li>Prevents a PHP error being triggered under certain conditions and when no database queries are performed.</li>\n</ul>\n<h3>3.20.1 (8 December 2025)</h3>\n<ul>\n<li>Confirms support for WordPress 6.9.</li>\n<li>Removes calls to deprecated <code>jQuery.focus()</code> method.</li>\n<li>Add line breaks to HTML output to keep your browser happy when viewing the page source.</li>\n</ul>\n<h3>3.20.0 (7 September 2025)</h3>\n<ul>\n<li>Defers loading of translation files as late as possible to minimise the chance of triggering the <code>Translation loading for the query-monitor domain was triggered too early</code> error</li>\n<li>Implements some initial compatibility tweaks for the upcoming PHP 8.5</li>\n</ul>\n<h3>3.19.0 (23 July 2025)</h3>\n<ul>\n<li>Adds Guzzle middleware support for logging HTTP client requests.</li>\n<li>Fixes plugin conflicts caused by the global <code>qm</code> JavaScript variable by renaming it to <code>QueryMonitorData</code>.</li>\n<li>Corrects invalid HTML markup where <code>&lt;th&gt;</code> elements were closed with <code>&lt;/td&gt;</code> tags.</li>\n</ul>\n<h3>3.18.0 (16 June 2025)</h3>\n<ul>\n<li>Adds more comprehensive handling of HTTP API requests which were overridden by the <code>pre_http_request</code> filter.</li>\n<li>Corrects the handling of suppressed PHP errors on both PHP 7 and PHP 8.</li>\n<li>Confirms support for WordPress 6.8.</li>\n</ul>\n<h3>3.17.2 (4 February 2025)</h3>\n<ul>\n<li>Reinstates the &quot;Blocks&quot; panel</li>\n</ul>\n<h3>3.17.1 (2 February 2025)</h3>\n<ul>\n<li>Prevents use of the deprecated <code>E_STRICT</code> constant in PHP 8.4.</li>\n<li>Avoids use of the deprecated <code>setted_transient</code> and <code>setted_site_transient</code> actions in WordPress 6.8.</li>\n<li>Skips showing the <code>_load_textdomain_just_in_time</code> notices when they&#39;re caused by Query Monitor itself.</li>\n<li>Uses more appropriate formatting for a fatal error in REST API and Ajax contexts.</li>\n</ul>\n<h3>3.17.0 (27 November 2024)</h3>\n<ul>\n<li>Support for WordPress 6.7.</li>\n<li>Support for PHP 8.4.</li>\n<li>Inline scripts are now output using <code>wp_print_inline_script_tag()</code> so a Content Security Policy can be fully implemented.</li>\n<li>Various improvements and fixes.</li>\n</ul>\n<h3>3.16.4 (25 July 2024)</h3>\n<ul>\n<li>Confirms support for WordPress 6.6.</li>\n</ul>\n<h3>3.16.3 (22 May 2024)</h3>\n<ul>\n<li>Prevents an infinite loop when logging doing it wrong calls and deprecated calls.</li>\n<li>Removes a global from query-monitor.php</li>\n</ul>\n<h3>Earlier versions</h3>\n<p>For the changelog of earlier versions, <a href=\"https://github.com/johnbillion/query-monitor/releases\">refer to the releases page on GitHub</a>.</p>\n",
+    "faq": "<h3>Does this plugin work with PHP 8?</h3>\n<p>Yes, it&#39;s actively tested and working up to PHP 8.4.</p>\n<h3>Who can see Query Monitor&#39;s output?</h3>\n<p>By default, Query Monitor&#39;s output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.</p>\n<p>In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you&#39;re not logged in, or when you&#39;re logged in as a user who cannot usually see Query Monitor&#39;s output. See the Settings panel for details.</p>\n<h3>Does Query Monitor itself impact the page generation time or memory usage?</h3>\n<p>Short answer: Yes, but only a little.</p>\n<p>Long answer: Query Monitor has a small impact on page generation time because it hooks into a few places in WordPress in the same way that other plugins do. The impact is negligible.</p>\n<p>On pages that have an especially high number of database queries (in the hundreds), Query Monitor currently uses more memory than I would like it to. This is due to the amount of data that is captured in the stack trace for each query. I have been and will be working to continually reduce this.</p>\n<h3>Can I prevent Query Monitor from collecting data during long-running requests?</h3>\n<p>Yes, you can call <code>do_action( &#39;qm/cease&#39; )</code> to instruct Query Monitor to cease operating for the remainder of the page generation. It will detach itself from further data collection, discard any data it&#39;s collected so far, and skip the output of its information.</p>\n<p>This is useful for long-running operations that perform a very high number of database queries, consume a lot of memory, or otherwise are of no concern to Query Monitor, for example:</p>\n<ul>\n<li>Backing up or restoring your site</li>\n<li>Importing or exporting a large amount of data</li>\n<li>Running security scans</li>\n</ul>\n<h3>Are there any add-on plugins for Query Monitor?</h3>\n<p><a href=\"https://querymonitor.com/help/add-on-plugins/\">A list of add-on plugins for Query Monitor can be found here.</a></p>\n<p>In addition, Query Monitor transparently supports add-ons for the Debug Bar plugin. If you have any Debug Bar add-ons installed, deactivate Debug Bar and the add-ons will show up in Query Monitor&#39;s menu.</p>\n<h3>Where can I suggest a new feature or report a bug?</h3>\n<p>Please use <a href=\"https://github.com/johnbillion/query-monitor/issues\">the issue tracker on Query Monitor&#39;s GitHub repo</a> as it&#39;s easier to keep track of issues there, rather than on the wordpress.org support forums.</p>\n<h3>Is Query Monitor already included with my hosting?</h3>\n<p>Some web hosts bundle Query Monitor as part of their hosting platform, which means you don&#39;t need to install it yourself. Here are some that I&#39;m aware of:</p>\n<ul>\n<li><a href=\"https://www.altis-dxp.com/resources/developer-docs/dev-tools/\">Altis Cloud</a>.</li>\n<li><a href=\"https://wpvip.com/\">WordPress VIP</a>, although users need to be granted the <code>view_query_monitor</code> capability even if they&#39;re an Administrator. <a href=\"https://docs.wpvip.com/performance/query-monitor/enable/\">See the WordPress VIP documentation for details</a>.</li>\n</ul>\n<h3>Can I click on stack traces to open the file in my editor?</h3>\n<p>Yes. You can enable this on the Settings panel.</p>\n<h3>How can I report a security bug?</h3>\n<p><a href=\"https://patchstack.com/database/vdp/query-monitor\">You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack</a>. The Patchstack team helps validate, triage, and handle any security vulnerabilities.</p>\n<h3>Do you accept donations?</h3>\n<p><a href=\"https://github.com/sponsors/johnbillion\">I am accepting sponsorships via the GitHub Sponsors program</a>. If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.</p>\n<p>In addition, if you like the plugin then I&#39;d love for you to <a href=\"https://wordpress.org/support/view/plugin-reviews/query-monitor\">leave a review</a>. Tell all your friends about it too!</p>\n",
+    "screenshots": "<ol>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-1.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-1.png\" alt=\"Admin Toolbar Menu\"></a><p>Admin Toolbar Menu</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-2.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-2.png\" alt=\"Aggregate Database Queries by Component\"></a><p>Aggregate Database Queries by Component</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-3.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-3.png\" alt=\"Capability Checks\"></a><p>Capability Checks</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-4.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-4.png\" alt=\"Database Queries\"></a><p>Database Queries</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-5.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-5.png\" alt=\"Hooks and Actions\"></a><p>Hooks and Actions</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-6.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-6.png\" alt=\"HTTP API Requests\"></a><p>HTTP API Requests</p>\n</li>\n<li><a href=\"https://ps.w.org/query-monitor/assets/screenshot-7.png\"><img src=\"https://ps.w.org/query-monitor/assets/screenshot-7.png\" alt=\"Aggregate Database Queries by Calling Function\"></a><p>Aggregate Database Queries by Calling Function</p>\n</li>\n</ol>\n"
+  },
+  "releases": [
+    {
+      "version": "3.20.2",
+      "artifacts": {
+        "banner": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/banner-772x250.png",
+            "content-type": "image/png",
+            "height": 250,
+            "width": 772
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/banner-1544x500.png",
+            "content-type": "image/png",
+            "height": 500,
+            "width": 1544
+          }
+        ],
+        "icon": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon.svg",
+            "content-type": "image/svg+xml",
+            "height": null,
+            "width": null
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon-128x128.png",
+            "content-type": "image/png",
+            "height": 128,
+            "width": 128
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/icon-256x256.png",
+            "content-type": "image/png",
+            "height": 256,
+            "width": 256
+          }
+        ],
+        "screenshot": [
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-1.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-2.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-3.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-4.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-5.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-6.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2278
+          },
+          {
+            "url": "https://ps.w.org/query-monitor/assets/screenshot-7.png",
+            "content-type": "image/png",
+            "height": 1062,
+            "width": 2272
+          }
+        ],
+        "package": [
+          {
+            "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.2.zip",
+            "checksum": "sha256:22f583caf0828b56d7d4166711ccdc66ed69041d4683b54d23de9babf74224a7",
+            "content-type": "application/zip",
+            "signature": "KrPyjumw1q_KWP22NhF_9n1mHiUpyLPkYIYLlxsdbNzWJHUBWCXqqLRPdjAMfid39cNRP_pcQbz_7NS9dQlNBw"
+          }
+        ]
+      },
+      "suggests": {
+        "env:wp": ">=6.9"
+      },
+      "requires": {
+        "env:wp": ">=6.1",
+        "env:php": ">=7.4"
+      }
+    },
+    {
+      "version": "3.20.1",
+      "artifacts": {
+        "package": [
+          {
+            "url": "https://downloads.wordpress.org/plugin/query-monitor.3.20.1.zip",
+            "checksum": "sha256:f7ae4ff670b4f544acf0dcf1901e26e1a7a908aa81bf1f317d88ca22c758e68e",
+            "content-type": "application/zip",
+            "signature": "d2CTAHmISVQ29RO_HYuF_NuATfZC20P-XdHFlMpystkADMaQiqT6hfgr3azmiLheJWSKesgt1HPHc5wwDH0pCA"
+          }
+        ]
+      },
+      "requires": {
+        "env:wp": ">=6.1",
+        "env:php": ">=7.4"
+      },
+      "suggests": {}
+    }
+  ]
+}

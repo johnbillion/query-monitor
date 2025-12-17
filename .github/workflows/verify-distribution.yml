@@ -13,7 +13,7 @@ on:
     #        │  │  │  │  │
     #        │  │  │  │  │
     #        │  │  │  │  │
-    - cron: '0  *  *  *  *'
+    - cron: '40 *  *  *  *'
   push:
     branches:
       - 'develop'
@@ -31,8 +31,9 @@ permissions: {}
 jobs:
   verify:
     name: Verify Plugin Distribution
-    permissions: {}
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-verify-distribution.yml@33705f771525b0d691ee821c90e0c10b18e02871 # 1.2.1
+    permissions:
+      contents: read
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-verify-distribution.yml@9a6405c89f3357947cd8f608bdc72d68fe17f4ae # 2.1.2
     with:
       plugin: query-monitor
       owner: johnbillion

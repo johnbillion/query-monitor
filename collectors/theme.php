@@ -103,6 +103,11 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	public function action_get_position( $name ) {
 		$filter = current_filter();
+
+		if ( ! $filter ) {
+			return;
+		}
+
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				$filter => true,
@@ -134,6 +139,8 @@ class QM_Collector_Theme extends QM_DataCollector {
 		return array(
 			'after_switch_theme',
 			'template_redirect',
+			'wp_before_include_template',
+			'wp_template_enhancement_output_buffer_started',
 		);
 	}
 
@@ -147,6 +154,8 @@ class QM_Collector_Theme extends QM_DataCollector {
 			'template',
 			'template_directory',
 			'template_include',
+			'wp_should_output_buffer_template_for_enhancement',
+			'wp_template_enhancement_output_buffer',
 		);
 
 		foreach ( self::get_query_filter_names() as $filter ) {

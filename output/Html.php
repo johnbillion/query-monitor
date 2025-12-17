@@ -75,14 +75,14 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">' . "\n",
 			esc_attr( $id )
 		);
 
 		echo '<table>';
 
 		printf(
-			'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>',
+			'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>' . "\n",
 			esc_attr( $id ),
 			esc_html( $name )
 		);
@@ -113,14 +113,14 @@ abstract class QM_Output_Html extends QM_Output {
 		$this->current_name = $name;
 
 		printf(
-			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-non-tabular" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">' . "\n",
 			esc_attr( $id )
 		);
 
-		echo '<div class="qm-boxed">';
+		echo '<div class="qm-boxed">' . "\n";
 
 		printf(
-			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
+			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>' . "\n",
 			esc_attr( $id ),
 			esc_html( $name )
 		);
@@ -148,12 +148,12 @@ abstract class QM_Output_Html extends QM_Output {
 		}
 
 		printf(
-			'<div class="qm qm-debug-bar" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">',
+			'<div class="qm qm-debug-bar" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">' . "\n",
 			esc_attr( $id )
 		);
 
 		printf(
-			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>',
+			'<h2 class="qm-screen-reader-text" id="%1$s-caption">%2$s</h2>' . "\n",
 			esc_attr( $id ),
 			esc_html( $name )
 		);
@@ -163,7 +163,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return void
 	 */
 	protected function after_debug_bar_output() {
-		echo '</div>';
+		echo '</div>' . "\n";
 	}
 
 	/**
@@ -171,13 +171,13 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string
 	 */
 	protected function build_notice( $notice ) {
-		$return = '<section>';
-		$return .= '<div class="qm-notice">';
+		$return = '<section>' . "\n";
+		$return .= '<div class="qm-notice">' . "\n";
 		$return .= '<p>';
 		$return .= $notice;
-		$return .= '</p>';
-		$return .= '</div>';
-		$return .= '</section>';
+		$return .= '</p>' . "\n";
+		$return .= '</div>' . "\n";
+		$return .= '</section>' . "\n";
 
 		return $return;
 	}
@@ -188,33 +188,33 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	public static function output_inner( array $vars ) {
 
-		echo '<table>';
+		echo '<table>' . "\n";
 
 		foreach ( $vars as $key => $value ) {
-			echo '<tr>';
-			echo '<td>' . esc_html( $key ) . '</td>';
+			echo '<tr>' . "\n";
+			echo '<td>' . esc_html( $key ) . '</td>' . "\n";
 			if ( is_array( $value ) ) {
 				echo '<td>';
 				self::output_inner( $value );
-				echo '</td>';
+				echo '</td>' . "\n";
 			} elseif ( is_object( $value ) ) {
 				echo '<td>';
 				self::output_inner( get_object_vars( $value ) );
-				echo '</td>';
+				echo '</td>' . "\n";
 			} elseif ( is_bool( $value ) ) {
 				if ( $value ) {
-					echo '<td class="qm-true">true</td>';
+					echo '<td class="qm-true">true</td>' . "\n";
 				} else {
-					echo '<td class="qm-false">false</td>';
+					echo '<td class="qm-false">false</td>' . "\n";
 				}
 			} else {
 				echo '<td>';
 				echo nl2br( esc_html( $value ) );
-				echo '</td>';
+				echo '</td>' . "\n";
 			}
-			echo '</tr>';
+			echo '</tr>' . "\n";
 		}
-		echo '</table>';
+		echo '</table>' . "\n";
 
 	}
 
@@ -268,33 +268,33 @@ abstract class QM_Output_Html extends QM_Output {
 
 		$filter_id = 'qm-filter-' . $this->collector->id . '-' . $name;
 
-		$out = '<div class="qm-filter-container">';
+		$out = '<div class="qm-filter-container">' . "\n";
 		$out .= '<label for="' . esc_attr( $filter_id ) . '">' . esc_html( $label ) . '</label>';
-		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">';
-		$out .= '<option value="">' . esc_html( $args['all'] ) . '</option>';
+		$out .= '<select id="' . esc_attr( $filter_id ) . '" class="qm-filter" data-filter="' . esc_attr( $name ) . '" data-highlight="' . esc_attr( $args['highlight'] ) . '">' . "\n";
+		$out .= '<option value="">' . esc_html( $args['all'] ) . '</option>' . "\n";
 
 		if ( ! empty( $args['prepend'] ) ) {
 			foreach ( $args['prepend'] as $value => $label ) {
-				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>' . "\n";
 			}
 		}
 
 		foreach ( $values as $key => $value ) {
 			if ( is_int( $key ) && $key >= 0 ) {
-				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>';
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $value ) . '</option>' . "\n";
 			} else {
-				$out .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value ) . '</option>';
+				$out .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value ) . '</option>' . "\n";
 			}
 		}
 
 		if ( ! empty( $args['append'] ) ) {
 			foreach ( $args['append'] as $value => $label ) {
-				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
+				$out .= '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>' . "\n";
 			}
 		}
 
-		$out .= '</select>';
-		$out .= '</div>';
+		$out .= '</select>' . "\n";
+		$out .= '</div>' . "\n";
 
 		return $out;
 

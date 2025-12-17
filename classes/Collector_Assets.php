@@ -10,6 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * @phpstan-type WPScriptModule array{
+ *   src: string,
+ *   version: string|false|null,
+ *   enqueue: bool,
+ *   dependencies: list<array{
+ *     id: string,
+ *     import: 'static'|'dynamic',
+ *   }>,
+ * }
+ * @phpstan-type QMScriptModule array{
+ *   id: string,
+ *   src: string,
+ *   version: string|false|null,
+ *   dependencies: list<string>,
+ *   dependents: list<string>,
+ * }
  * @extends QM_DataCollector<QM_Data_Assets>
  */
 abstract class QM_Collector_Assets extends QM_DataCollector {
@@ -254,16 +270,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * Undocumented function
+	 * Returns the script modules registered in WP_Script_Modules.
 	 *
 	 * @return array<string, array>|null
-	 * @phpstan-return array<string, array{
-	 *   id: string,
-	 *   src: string,
-	 *   version: string|false|null,
-	 *   dependencies: list<string>,
-	 *   dependents: list<string>,
-	 * }>|null
+	 * @phpstan-return array<string, QMScriptModule>|null
 	 */
 	protected static function get_script_modules(): ?array {
 		// WP 6.5
@@ -289,32 +299,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( true );
 
 		/**
+		 * Script modules marked for enqueue, keyed by script module ID.
+		 *
 		 * @var array<string, array<string, mixed>> $enqueued
-		 * @phpstan-var array<string, array{
-		 *   src: string,
-		 *   version: string|false|null,
-		 *   enqueue: bool,
-		 *   dependencies: list<array{
-		 *     id: string,
-		 *     import: 'static'|'dynamic',
-		 *   }>,
-		 * }> $enqueued
+		 * @phpstan-var array<string, WPScriptModule> $enqueued
 		 */
 		$enqueued = $get_marked_for_enqueue->invoke( $modules );
 
-		/**
-		 * @var array<string, array<string, mixed>> $deps
-		 * @phpstan-var array<string, array{
-		 *   src: string,
-		 *   version: string|false|null,
-		 *   enqueue: bool,
-		 *   dependencies: list<array{
-		 *     id: string,
-		 *     import: 'static'|'dynamic',
-		 *   }>,
-		 * }> $deps
-		 */
-		$deps = $get_dependencies->invoke( $modules, array_keys( $enqueued ) );
+		$deps = self::get_module_dependencies( $modules, $get_dependencies, array_keys( $enqueued ) );
 
 		$all_modules = array_merge(
 			$enqueued,
@@ -322,14 +314,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		);
 
 		/**
-		 * @var array<string, array<string, mixed>> $sources
-		 * @phpstan-var array<string, array{
-		 *   id: string,
-		 *   src: string,
-		 *   version: string|false|null,
-		 *   dependencies: list<string>,
-		 *   dependents: list<string>,
-		 * }> $sources
+		 * @var array<string, array<string, array<mixed>>> $sources
+		 * @phpstan-var array<string, QMScriptModule> $sources
 		 */
 		$sources = array();
 
@@ -337,11 +323,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			/** @var string $src */
 			$src = $get_src->invoke( $modules, $id );
 
-			/**
-			 * @var array<string, array<string, mixed>> $script_dependencies
-			 */
-			$script_dependencies = $get_dependencies->invoke( $modules, array( $id ) );
-			$dependencies = array_keys( $script_dependencies );
+			$dependencies = wp_list_pluck( $all_modules[ $id ]['dependencies'], 'id' );
 			$dependents = array();
 
 			foreach ( $all_modules as $dep_id => $dep ) {
@@ -355,7 +337,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$sources[ $id ] = array(
 				'id' => $id,
 				'src' => $src,
-				'version' => $module['version'],
+				'version' => $module['version'] ?? '',
 				'dependencies' => $dependencies,
 				'dependents' => $dependents,
 			);
@@ -367,6 +349,22 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( false );
 
 		return $sources;
+	}
+
+	/**
+	 * Retrieves all the dependencies for the given script module identifiers.
+	 *
+	 * @param list<string> $ids
+	 *
+	 * @return array<string, array<string, mixed>> $deps
+	 * @phpstan-return array<string, WPScriptModule> $deps
+	 */
+	private static function get_module_dependencies(
+		WP_Script_Modules $modules,
+		ReflectionMethod $get_dependencies,
+		array $ids
+	): array {
+		return $get_dependencies->invoke( $modules, $ids );
 	}
 
 	/**
@@ -484,6 +482,8 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
+	 * Returns data about the module source.
+	 *
 	 * @param string $src
 	 * @return mixed[]
 	 * @phpstan-return array{

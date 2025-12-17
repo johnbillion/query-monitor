@@ -393,7 +393,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		echo '<svg id="qm-icon-container">';
+		echo '<svg id="qm-icon-container">' . "\n";
 		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
 			if ( ! $icon ) {
 				continue;
@@ -412,7 +412,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$contents
 			);
 		}
-		echo '</svg>';
+		echo '</svg>' . "\n";
 
 		echo '<div id="query-monitor-container">';
 	}
