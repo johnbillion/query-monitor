@@ -11,10 +11,11 @@ import {
 interface Props {
 	isFileList?: boolean;
 	trace: Backtrace;
+	defaultExpanded?: boolean;
 }
 
-export const Caller = ( { isFileList, trace }: Props ) => {
-	const [ expanded, setExpanded ] = React.useState( false );
+export const Caller = ( { isFileList, trace, defaultExpanded = false }: Props ) => {
+	const [ expanded, setExpanded ] = React.useState( defaultExpanded );
 
 	// This creates a copy of the frames array.
 	const frames = [ ...trace.frames ];
@@ -31,7 +32,7 @@ export const Caller = ( { isFileList, trace }: Props ) => {
 
 	return (
 		<>
-			{ frames.length > 0 && (
+			{ frames.length > 0 && ! defaultExpanded && (
 				<button
 					aria-expanded={ expanded ? 'false' : 'true' }
 					aria-label={ __( 'Toggle full call stack', 'query-monitor' ) }

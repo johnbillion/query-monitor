@@ -135,7 +135,7 @@ interface callerTimes {
 export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[], caller_times?: callerTimes ) => {
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
-		render: ( row ) => <Caller trace={ row.trace } />,
+		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: caller_times ? {
 			options: ( () => {
