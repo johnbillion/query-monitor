@@ -22,9 +22,4 @@ class QM_Data_Logger extends QM_Data {
 	 * }>
 	 */
 	public $logs;
-
-	/**
-	 * @var array<int, string>
-	 */
-	public $warning_levels;
 }

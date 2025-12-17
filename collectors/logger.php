@@ -287,17 +287,6 @@ class QM_Collector_Logger extends QM_DataCollector {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function process() {
-		if ( empty( $this->data->logs ) ) {
-			return;
-		}
-
-		$this->data->warning_levels = $this->get_warning_levels();
-	}
-
-	/**
 	 * @return array<int, string>
 	 * @phpstan-return list<self::*>
 	 */

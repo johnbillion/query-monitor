@@ -428,7 +428,6 @@ export interface Logger {
 			[k: string]: unknown;
 		};
 	}[];
-	warning_levels: string[];
 }
 /**
  * Multisite data transfer object.

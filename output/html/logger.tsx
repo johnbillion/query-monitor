@@ -13,6 +13,14 @@ import * as React from 'react';
 
 import { __, _n, sprintf } from '@wordpress/i18n';
 
+const warningLevels = [
+	'emergency',
+	'alert',
+	'critical',
+	'error',
+	'warning',
+];
+
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	if ( ! data.logs || ! data.logs.length ) {
 		return (
@@ -71,7 +79,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 				heading: __( 'Level', 'query-monitor' ),
 				render: ( row ) => (
 					<>
-						{ data.warning_levels.includes( row.level ) && ( <Warning /> ) }
+						{ warningLevels.includes( row.level ) && ( <Warning /> ) }
 						{ row.level }
 					</>
 				),
@@ -104,6 +112,6 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			component: getComponentCol( data.logs, data.component_times ),
 		} }
 		data={ data.logs }
-		rowHasError={ ( row ) => data.warning_levels.includes( row.level ) }
+		rowHasError={ ( row ) => warningLevels.includes( row.level ) }
 	/>
 };

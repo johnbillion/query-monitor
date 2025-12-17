@@ -5,8 +5,7 @@
 	"description": "Logger data transfer object.",
 	"type": "object",
 	"required": [
-		"logs",
-		"warning_levels"
+		"logs"
 	],
 	"properties": {
 		"logs": {
@@ -42,12 +41,6 @@
 					"context"
 				],
 				"additionalProperties": false
-			}
-		},
-		"warning_levels": {
-			"type": "array",
-			"items": {
-				"type": "string"
 			}
 		}
 	},
