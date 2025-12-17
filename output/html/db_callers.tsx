@@ -1,5 +1,6 @@
 import {
 	PanelProps,
+	EmptyPanel,
 	TabularPanel,
 	getTimeCol,
 	TotalTime,
@@ -13,8 +14,14 @@ import * as React from 'react';
 import { __ } from '@wordpress/i18n';
 
 export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	if ( ! data.times ) {
-		return null;
+	if ( ! data.times || ! Object.keys( data.times ).length ) {
+		return (
+			<EmptyPanel>
+				<p>
+					{ __( 'None', 'query-monitor' ) }
+				</p>
+			</EmptyPanel>
+		);
 	}
 
 	const tableData = Object.values( data.times ).map( row => ( {

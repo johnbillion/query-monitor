@@ -45,7 +45,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				heading: __( 'Callers', 'query-monitor' ),
 				render: ( row ) => (
 					Object.entries( row.callers ).map( ( [ caller, calls ] ) => (
-						<>
+						<React.Fragment key={ caller }>
 							<FilterLink
 								targetPanel="db_queries"
 								filterName="caller"
@@ -61,7 +61,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								) }
 							</span>
 							<br/>
-						</>
+						</React.Fragment>
 					) )
 				),
 			},
@@ -69,7 +69,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				heading: __( 'Components', 'query-monitor' ),
 				render: ( row ) => (
 					Object.entries( row.components ).map( ( [ component, calls ] ) => (
-						<>
+						<React.Fragment key={ component }>
 							{ component }
 							<br/>
 							<span className="qm-info qm-supplemental">
@@ -79,7 +79,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								) }
 							</span>
 							<br/>
-						</>
+						</React.Fragment>
 					) )
 				),
 			},
@@ -87,7 +87,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				heading: __( 'Potential Troublemakers', 'query-monitor' ),
 				render: ( row ) => (
 					Object.entries( row.sources ).map( ( [ source, calls ] ) => (
-						<>
+						<React.Fragment key={ source }>
 							<code>{ source }</code>
 							<br/>
 							<span className="qm-info qm-supplemental">
@@ -97,7 +97,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								) }
 							</span>
 							<br/>
-						</>
+						</React.Fragment>
 					) )
 				),
 			},

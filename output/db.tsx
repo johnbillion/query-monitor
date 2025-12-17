@@ -1,4 +1,4 @@
-import { Warning } from 'qmi';
+import { ApproximateSize, Warning } from 'qmi';
 import {
 	Environment as EnvironmentData,
 } from 'qmi/data-types';
@@ -7,6 +7,8 @@ import * as React from 'react';
 import {
 	__,
 } from '@wordpress/i18n';
+
+const ONE_MB = 1024 * 1024;
 
 interface Props {
 	db: EnvironmentData['db'];
@@ -43,16 +45,29 @@ export default ( { db }: Props) => {
 							</td>
 						</tr>
 					) ) }
-					{ db.variables.map( variable => (
-						<tr key={ variable.Variable_name }>
-							<th scope="row">
-								{ variable.Variable_name }
-							</th>
-							<td>
-								{ variable.Value }
-							</td>
-						</tr>
-					) ) }
+					{ db.variables.map( variable => {
+						const numValue = Number( variable.Value );
+						const showSize = ! isNaN( numValue ) && numValue >= ONE_MB;
+
+						return (
+							<tr key={ variable.Variable_name }>
+								<th scope="row">
+									{ variable.Variable_name }
+								</th>
+								<td>
+									{ variable.Value }
+									{ showSize && (
+										<>
+											&nbsp;
+											<span className="qm-info">
+												(<ApproximateSize value={ numValue } />)
+											</span>
+										</>
+									) }
+								</td>
+							</tr>
+						);
+					} ) }
 				</tbody>
 			</table>
 		</section>

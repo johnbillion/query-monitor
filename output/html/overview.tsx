@@ -2,12 +2,8 @@ import {
 	NonTabularPanel,
 	FilterLink,
 	Icon,
-	Warning,
 	Utils,
 } from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
 import { iPanelData } from '../panels';
 import * as React from 'react';
 
@@ -19,22 +15,6 @@ import {
 
 type OverviewProps = {
 	data: iPanelData;
-};
-
-// Parse memory limit string like "1024M" or "1G" to bytes
-const parseMemoryLimit = (limit: string): number => {
-	const match = limit.match(/^(\d+)([KMG])?$/i);
-	if (!match) return 0;
-
-	const value = parseInt(match[1], 10);
-	const unit = match[2]?.toUpperCase() || 'B';
-
-	switch (unit) {
-		case 'G': return value * 1024 * 1024 * 1024;
-		case 'M': return value * 1024 * 1024;
-		case 'K': return value * 1024;
-		default: return value;
-	}
 };
 
 export const Overview = ( { data }: OverviewProps ) => {

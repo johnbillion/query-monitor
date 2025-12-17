@@ -1,11 +1,9 @@
 import {
 	PanelProps,
-	EmptyPanel,
 	TabularPanel,
 	Utils,
 	Warning,
 	getComponentCol,
-	getTimeCol,
 	getCallerCol,
 } from 'qmi';
 import {

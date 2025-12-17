@@ -42,7 +42,7 @@ export default ( { php }: Props ) => (
 						SAPI
 					</th>
 					<td>
-						{ php.sapi }
+						{ php.sapi || __( 'Unknown', 'query-monitor' ) }
 					</td>
 				</tr>
 				<tr>

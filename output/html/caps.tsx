@@ -64,6 +64,17 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 			user: {
 				heading: __( 'User', 'query-monitor' ),
 				render: ( cap ) => ( cap.user ),
+				filters: {
+					options: ( () => {
+						const users = [ ...new Set( data.caps.map( ( cap ) => cap.user ) ) ];
+						users.sort();
+						return users.map( ( user ) => ( {
+							key: user,
+							label: user,
+						} ) );
+					} )(),
+					callback: ( row, value ) => row.user === value,
+				},
 			},
 			result: {
 				heading: __( 'Result', 'query-monitor' ),

@@ -27,24 +27,30 @@ export default ( { wordpress }: Props ) => (
 				<tr>
 					<th scope="row">
 						{ __( 'Environment Type', 'query-monitor' ) }
+						&nbsp;
+						<span className="qm-info">
+							(<a className="qm-external-link" href="https://make.wordpress.org/core/2020/07/24/new-wp_get_environment_type-function-in-wordpress-5-5/">
+								{ __( 'Help', 'query-monitor' ) }
+							</a>)
+						</span>
 					</th>
 					<td>
 						{ wordpress.environment_type }
-						&nbsp;(<a className="qm-external-link" href="https://make.wordpress.org/core/2020/07/24/new-wp_get_environment_type-function-in-wordpress-5-5/">
-							{ __( 'Help', 'query-monitor' ) }
-						</a>)
 					</td>
 				</tr>
-				{ wordpress.development_mode && (
+				{ wordpress.development_mode !== undefined && (
 					<tr>
 						<th scope="row">
 							{ __( 'Development Mode', 'query-monitor' ) }
+							&nbsp;
+							<span className="qm-info">
+								(<a className="qm-external-link" href="https://make.wordpress.org/core/2023/07/14/configuring-development-mode-in-6-3/">
+									{ __( 'Help', 'query-monitor' ) }
+								</a>)
+							</span>
 						</th>
 						<td>
-							{ wordpress.development_mode }
-							&nbsp;(<a className="qm-external-link" href="https://make.wordpress.org/core/2023/07/14/configuring-development-mode-in-6-3/">
-								{ __( 'Help', 'query-monitor' ) }
-							</a>)
+							{ wordpress.development_mode || __( 'empty string', 'query-monitor' ) }
 						</td>
 					</tr>
 				) }

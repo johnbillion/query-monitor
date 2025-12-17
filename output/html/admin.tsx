@@ -76,18 +76,18 @@ export const Admin = ( { data }: PanelProps<DataTypes['admin']> ) => {
 						</tr>
 						<tr>
 							<th scope="row">
-								$taxnow
-							</th>
-							<td>
-								{ data.taxnow }
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
 								$typenow
 							</th>
 							<td>
 								{ data.typenow }
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								$taxnow
+							</th>
+							<td>
+								{ data.taxnow }
 							</td>
 						</tr>
 						<tr>
