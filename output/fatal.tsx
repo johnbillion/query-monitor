@@ -30,13 +30,12 @@ interface iAdminMenuProps {
 }
 
 const FatalAdminMenu = ( props: iAdminMenuProps ) => {
-	const { element, children } = props;
-
-	React.useLayoutEffect(() => {
+	React.useMemo(() => {
 		// Clear any existing content in the element
-		element.innerHTML = '';
-		element.classList.add( 'qm-error' );
-	}, [element]);
+		props.element.innerHTML = '';
+		props.element.classList.add( 'qm-error' );
+		return true;
+	}, []);
 
-	return ReactDOM.createPortal( children, element );
+	return ReactDOM.createPortal( props.children, props.element );
 }

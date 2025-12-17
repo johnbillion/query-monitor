@@ -258,13 +258,12 @@ interface iAdminMenuProps {
 }
 
 const AdminMenu = ( props: iAdminMenuProps ) => {
-	const { element, children } = props;
-
-	React.useLayoutEffect(() => {
+	React.useMemo(() => {
 		// Clear any existing content in the element
-		element.innerHTML = '';
-		element.classList.add( 'menupop' );
-	}, [element]);
+		props.element.innerHTML = '';
+		props.element.classList.add( 'menupop' );
+		return true;
+	}, []);
 
-	return ReactDOM.createPortal( children, element );
+	return ReactDOM.createPortal( props.children, props.element );
 }
