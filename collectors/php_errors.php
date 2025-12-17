@@ -269,7 +269,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 			if ( $do_trace ) {
 				$error['trace'] = $trace;
-				$this->log_component( $trace->get_component(), 0, $level );
 			}
 
 			$this->data->errors[ $key ] = $error;

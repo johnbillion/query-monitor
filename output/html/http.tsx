@@ -229,7 +229,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 				},
 			},
 			caller: getCallerCol( data.http ),
-			component: getComponentCol( data.http, data.component_times ),
+			component: getComponentCol( data.http ),
 			size: {
 				heading: __( 'Response Size', 'query-monitor' ),
 				className: 'qm-num',

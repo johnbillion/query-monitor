@@ -81,7 +81,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				wrap: true
 			},
 			caller: getCallerCol( data.rows, data.times ),
-			component: getComponentCol( data.rows, data.component_times ),
+			component: getComponentCol( data.rows ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),

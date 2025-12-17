@@ -33,7 +33,7 @@ export const DoingItWrong = ( { data }: PanelProps<DataTypes['doing_it_wrong']> 
 				render: ( row ) => row.message,
 			},
 			caller: getCallerCol( data.actions ),
-			component: getComponentCol( data.actions, data.component_times ),
+			component: getComponentCol( data.actions ),
 		} }
 		data={ data.actions }
 	/>

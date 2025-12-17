@@ -374,7 +374,6 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
-			$this->log_component( $request['trace']->get_component(), $ltime, $type );
 			$this->data->http[] = array(
 				'args' => $response['args'],
 				'trace' => $request['trace'],
@@ -446,7 +445,6 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$local = ( $host === $home_host );
 
 		$this->log_type( $type );
-		$this->log_component( $trace->get_component(), $ltime, $type );
 
 		$this->data->http[ $key ] = array(
 			'args' => $args,

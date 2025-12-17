@@ -109,7 +109,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 				},
 			},
 			caller: getCallerCol( data.logs ),
-			component: getComponentCol( data.logs, data.component_times ),
+			component: getComponentCol( data.logs ),
 		} }
 		data={ data.logs }
 		rowHasError={ ( row ) => warningLevels.includes( row.level ) }

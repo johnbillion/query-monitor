@@ -212,10 +212,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$this->log_caller( $caller_name, $ltime, $type );
 			$this->maybe_log_dupe( $sql, $i );
 
-			if ( $component ) {
-				$this->log_component( $component, $ltime, $type );
-			}
-
 			$is_main_query = false;
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {

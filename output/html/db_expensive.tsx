@@ -44,7 +44,7 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 				),
 			},
 			caller: getCallerCol( data.rows ),
-			component: getComponentCol( data.rows, data.component_times ),
+			component: getComponentCol( data.rows ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),

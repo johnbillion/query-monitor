@@ -6,7 +6,6 @@ import {
 	PanelContext,
 } from 'qmi';
 import {
-	AbstractData,
 	Backtrace,
 } from 'qmi/data-types';
 import {
@@ -72,28 +71,35 @@ const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	return a.label.localeCompare(b.label);
 };
 
-export const getComponentCol = <TDataRow extends {}>( rows: TDataRow[], component_times: AbstractData['component_times'] ) => {
+export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+	// Derive unique component filters from rows
+	const seen = new Set<string>();
+	const filters: { key: string; label: string }[] = [];
+
+	for ( const row of rows ) {
+		if ( row.trace?.component ) {
+			const key = `${ row.trace.component.type }-${ row.trace.component.context }`;
+			if ( ! seen.has( key ) ) {
+				seen.add( key );
+				filters.push( { key, label: row.trace.component.name } );
+			}
+		}
+	}
+
+	filters.sort( sortFilters );
+
+	if ( filters.length > 1 ) {
+		filters.unshift( {
+			key: 'non-core',
+			label: __( 'Non-WordPress Core', 'query-monitor' ),
+		} );
+	}
+
 	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace.component } />,
 		filters: {
-			options: ( () => {
-				const filters = Object.keys( component_times ).map( ( component ) => ( {
-					key: component,
-					label: component_times[component].component.name,
-				} ) );
-
-				filters.sort( sortFilters );
-
-				if ( filters.length > 1 ) {
-					filters.unshift( {
-						key: 'non-core',
-						label: __( 'Non-WordPress Core', 'query-monitor' ),
-					} );
-				}
-
-				return filters;
-			} )(),
+			options: filters,
 			callback: ( row, value: string ) => {
 				if ( value === 'non-core' ) {
 					return ( row.trace.component.context !== 'core' );

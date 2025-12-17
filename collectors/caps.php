@@ -239,8 +239,6 @@ class QM_Collector_Caps extends QM_DataCollector {
 			$cap['user'] = $user_id;
 
 			$this->data->caps[] = $cap;
-
-			$this->log_component( $cap['trace']->get_component(), 0, $name );
 		}
 	}
 

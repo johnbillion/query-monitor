@@ -34,7 +34,6 @@
 			"type": "object",
 			"required": [
 				"types",
-				"component_times",
 				"concerned_filters",
 				"concerned_actions"
 			],
@@ -43,38 +42,6 @@
 					"type": "object",
 					"additionalProperties": {
 						"type": "integer"
-					}
-				},
-				"component_times": {
-					"type": "object",
-					"additionalProperties": {
-						"type": "object",
-						"required": [
-							"component",
-							"ltime",
-							"types"
-						],
-						"properties": {
-							"component": {
-								"phpType": "QM_Component",
-								"type": "object",
-								"allOf": [
-									{
-										"$ref": "src/schemas/component.json"
-									}
-								]
-							},
-							"ltime": {
-								"type": "number"
-							},
-							"types": {
-								"type": "object",
-								"additionalProperties": {
-									"type": "integer"
-								}
-							}
-						},
-						"additionalProperties": false
 					}
 				},
 				"concerned_filters": {

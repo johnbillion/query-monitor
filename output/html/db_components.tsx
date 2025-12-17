@@ -8,13 +8,45 @@ import {
 } from 'qmi';
 import {
 	DataTypes,
+	Component as ComponentData,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
+interface ComponentAggregate {
+	component: ComponentData;
+	ltime: number;
+	types: Record<string, number>;
+}
+
+const aggregateByComponent = ( rows: DataTypes['db_queries']['rows'] ): ComponentAggregate[] => {
+	const map: Record<string, ComponentAggregate> = {};
+
+	for ( const row of rows ) {
+		if ( ! row.trace?.component ) {
+			continue;
+		}
+
+		const key = `${ row.trace.component.type }-${ row.trace.component.context }`;
+
+		if ( ! map[ key ] ) {
+			map[ key ] = {
+				component: row.trace.component,
+				ltime: 0,
+				types: {},
+			};
+		}
+
+		map[ key ].ltime += row.ltime;
+		map[ key ].types[ row.type ] = ( map[ key ].types[ row.type ] || 0 ) + 1;
+	}
+
+	return Object.values( map );
+};
+
 export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	if ( ! data.component_times || ! Object.keys( data.component_times ).length ) {
+	if ( ! data.rows?.length ) {
 		return (
 			<EmptyPanel>
 				<p>
@@ -24,19 +56,13 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) =>
 		);
 	}
 
-	const tableData = Object.values( data.component_times ).map( row => ( {
-		...row,
-		types: Object.keys( data.types ).reduce( ( types, type ) => ( {
-			...types,
-			[ type ]: row.types[type] || '',
-		} ), {} ),
-	} ) );
+	const tableData = aggregateByComponent( data.rows );
 
 	const getTypeCols = () => Object.keys( data.types ).reduce( ( cols, type ) => ( {
 		...cols,
 		[ type ]: {
 			heading: type,
-			render: ( row: any ) => row.types[type],
+			render: ( row: ComponentAggregate ) => row.types[ type ] || '',
 			className: 'qm-num',
 		},
 	} ), {} );

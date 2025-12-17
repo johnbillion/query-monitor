@@ -52,8 +52,6 @@ class QM_Collector_Multisite extends QM_DataCollector {
 		) );
 		$to = ( 'switch' === $context );
 
-		$this->log_component( $trace->get_component(), 0, $context );
-
 		$this->data->switches[] = array(
 			'new' => $new_blog_id,
 			'prev' => $prev_blog_id,

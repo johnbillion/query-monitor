@@ -58,7 +58,7 @@ export const Multisite = ( { data }: PanelProps<DataTypes['multisite']> ) => {
 				),
 			},
 			caller: getCallerCol( data.switches ),
-			component: getComponentCol( data.switches, data.component_times ),
+			component: getComponentCol( data.switches ),
 		}}
 		data={ data.switches }
 	/>

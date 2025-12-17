@@ -72,7 +72,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 				heading: __( 'Count', 'query-monitor' ),
 				render: ( row ) => ( row.count ),
 			},
-			component: getComponentCol( Object.values( data.errors ), data.component_times ),
+			component: getComponentCol( Object.values( data.errors ) ),
 		}}
 		rowHasError={ ( row ) => ( row.level === 'warning' ) }
 		data={ Object.values( data.errors ) }

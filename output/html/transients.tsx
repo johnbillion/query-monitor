@@ -67,7 +67,7 @@ export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {
 				render: ( row ) => <ApproximateSize value={ row.size } />,
 			},
 			caller: getCallerCol( data.trans ),
-			component: getComponentCol( data.trans, data.component_times ),
+			component: getComponentCol( data.trans ),
 		} }
 		data={ data.trans }
 	/>

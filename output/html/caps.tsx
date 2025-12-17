@@ -81,7 +81,7 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 				render: ( cap ) => ( cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' ),
 			},
 			caller: getCallerCol( data.caps ),
-			component: getComponentCol( data.caps, data.component_times ),
+			component: getComponentCol( data.caps ),
 		} }
 		data={ data.caps }
 	/>

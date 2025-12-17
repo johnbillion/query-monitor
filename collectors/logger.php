@@ -242,7 +242,6 @@ class QM_Collector_Logger extends QM_DataCollector {
 			$message = '(Empty string)';
 		}
 
-		$this->log_component( $trace->get_component(), 1, $level );
 		$this->log_type( $level );
 
 		$this->data->logs[] = array(

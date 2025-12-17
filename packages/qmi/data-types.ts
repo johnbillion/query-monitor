@@ -46,15 +46,6 @@ export interface AbstractData {
 	types: {
 		[k: string]: number;
 	};
-	component_times: {
-		[k: string]: {
-			component: Component;
-			ltime: number;
-			types: {
-				[k: string]: number;
-			};
-		};
-	};
 	concerned_filters:
 		| {
 				[k: string]: unknown;
@@ -65,14 +56,6 @@ export interface AbstractData {
 				[k: string]: unknown;
 		  }[]
 		| null;
-}
-/**
- * Class representing a component.
- */
-export interface Component {
-	type: string;
-	name: string;
-	context: string;
 }
 /**
  * Admin screen data transfer object.
@@ -185,6 +168,14 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	frames: FrameItem[];
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Stack trace frame.

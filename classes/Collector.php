@@ -77,31 +77,14 @@ abstract class QM_Collector {
 	}
 
 	/**
+	 * @deprecated Component calculations are now handled client-side.
+	 *
 	 * @param QM_Component $component
 	 * @param float $ltime
 	 * @param string|int $type
 	 * @return void
 	 */
-	protected function log_component( $component, $ltime, $type ) {
-		$key = $component->get_id();
-
-		if ( ! isset( $this->data->component_times[ $key ] ) ) {
-			$this->data->component_times[ $key ] = array(
-				'component' => $component,
-				'ltime' => 0,
-				'types' => array(),
-			);
-		}
-
-		$this->data->component_times[ $key ]['ltime'] += $ltime;
-
-		if ( isset( $this->data->component_times[ $key ]['types'][ $type ] ) ) {
-			$this->data->component_times[ $key ]['types'][ $type ]++;
-		} else {
-			$this->data->component_times[ $key ]['types'][ $type ] = 1;
-		}
-
-	}
+	protected function log_component( $component, $ltime, $type ) {}
 
 	/**
 	 * @return float
