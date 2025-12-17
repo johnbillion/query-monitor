@@ -50,7 +50,7 @@ const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 };
 
 const hasSslVerifyWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return row.args.sslverify === false;
+	return row.url.startsWith( 'https://' ) && row.args.sslverify === false;
 };
 
 const hasRedirectWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
@@ -147,7 +147,66 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 							</Warning>
 						);
 					}
-					return row.args.blocking === false ? __( 'Non-blocking', 'query-monitor' ) : `${row.response.response.code} ${row.response.response.message}`;
+
+					const statusText = row.args.blocking === false
+						? __( 'Non-blocking', 'query-monitor' )
+						: `${row.response.response.code} ${row.response.response.message}`;
+
+					const info = row.info && typeof row.info === 'object' ? row.info : null;
+					const hasInfo = info && (
+						'namelookup_time' in info ||
+						'connect_time' in info ||
+						'starttransfer_time' in info ||
+						'content_type' in info ||
+						'primary_ip' in info
+					);
+
+					if ( ! hasInfo ) {
+						return statusText;
+					}
+
+					const timeFields: { key: string; label: string }[] = [
+						{ key: 'namelookup_time', label: __( 'DNS Resolution Time', 'query-monitor' ) },
+						{ key: 'connect_time', label: __( 'Connection Time', 'query-monitor' ) },
+						{ key: 'starttransfer_time', label: __( 'Transfer Start Time (TTFB)', 'query-monitor' ) },
+					];
+
+					const otherFields: { key: string; label: string }[] = [
+						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
+						{ key: 'primary_ip', label: __( 'IP Address', 'query-monitor' ) },
+					];
+
+					return (
+						<details>
+							<summary>{ statusText }</summary>
+							<ul className="qm-toggled">
+								{ timeFields.map( ( { key, label } ) => {
+									if ( ! ( key in info ) ) {
+										return null;
+									}
+									return (
+										<li key={ key }>
+											<span className="qm-info qm-supplemental">
+												{ label }: { Utils.numberFormat( info[key] as number, 4 ) }
+											</span>
+										</li>
+									);
+								} ) }
+								{ otherFields.map( ( { key, label } ) => {
+									if ( ! ( key in info ) ) {
+										return null;
+									}
+									return (
+										<li key={ key }>
+											<span className="qm-info qm-supplemental">
+												{ label }: { info[key] as string }
+											</span>
+										</li>
+									);
+								} ) }
+							</ul>
+						</details>
+					);
 				},
 				filters: {
 					options: Object.keys( data.types ).map( ( type ) => ( {
@@ -175,6 +234,9 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 				heading: __( 'Response Size', 'query-monitor' ),
 				className: 'qm-num',
 				render: ( row ) => {
+					if ( row.args.blocking === false ) {
+						return '';
+					}
 					const size = getResponseSize( row );
 					return size > 0 ? <ApproximateSize value={ size } /> : '';
 				},
@@ -191,7 +253,10 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 		} }
 		data={ data.http }
-		rowHasError={ ( row ) => Utils.isWPError( row.response ) }
+		rowHasError={ ( row ) =>
+			Utils.isWPError( row.response ) ||
+			( ! row.intercepted && row.response.response.code >= 400 )
+		}
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }
