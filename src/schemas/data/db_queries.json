@@ -109,32 +109,6 @@
 		"has_main_query": {
 			"type": "boolean"
 		},
-		"times": {
-			"type": "object",
-			"additionalProperties": {
-				"type": "object",
-				"properties": {
-					"caller": {
-						"type": "string"
-					},
-					"ltime": {
-						"type": "number"
-					},
-					"types": {
-						"type": "object",
-						"additionalProperties": {
-							"type": "integer"
-						}
-					}
-				},
-				"required": [
-					"caller",
-					"ltime",
-					"types"
-				],
-				"additionalProperties": false
-			}
-		},
 		"dupes": {
 			"type": "array",
 			"items": {

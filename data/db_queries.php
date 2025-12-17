@@ -60,15 +60,6 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $has_main_query;
 
 	/**
-	 * @phpstan-var ?array<string, array{
-	 *   caller: string,
-	 *   ltime: float,
-	 *   types: array<string, int>,
-	 * }>
-	 */
-	public $times;
-
-	/**
 	 * @phpstan-var array<int, array{
 	 *   query: string,
 	 *   count: int,

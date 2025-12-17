@@ -46,7 +46,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 		if ( $dbq ) {
 			/** @var QM_Data_DB_Queries $dbq_data */
 			$dbq_data = $dbq->get_data();
-			if ( ! empty( $dbq_data->times ) ) {
+			if ( ! empty( $dbq_data->rows ) ) {
 				$menu['db_queries']['children'][] = $this->menu( array(
 					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
 				) );

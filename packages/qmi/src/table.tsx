@@ -31,11 +31,13 @@ interface Cols<TDataRow> {
 	[ key: string ]: Col<TDataRow>;
 }
 
+export interface FilterOption {
+	key: string;
+	label: string;
+}
+
 interface ColFilters<TDataRow> {
-	options: {
-		key: string;
-		label: string;
-	}[];
+	options: FilterOption[];
 	callback: ( row: TDataRow, value: string ) => boolean;
 }
 
@@ -71,22 +73,35 @@ const sortFilters = ( a: { label: string }, b: { label: string } ) => {
 	return a.label.localeCompare(b.label);
 };
 
-export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
-	// Derive unique component filters from rows
+const deriveFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKeyLabel: ( row: TDataRow ) => FilterOption | null
+): FilterOption[] => {
 	const seen = new Set<string>();
-	const filters: { key: string; label: string }[] = [];
+	const filters: FilterOption[] = [];
 
 	for ( const row of rows ) {
-		if ( row.trace?.component ) {
-			const key = `${ row.trace.component.type }-${ row.trace.component.context }`;
-			if ( ! seen.has( key ) ) {
-				seen.add( key );
-				filters.push( { key, label: row.trace.component.name } );
-			}
+		const result = getKeyLabel( row );
+		if ( result && ! seen.has( result.key ) ) {
+			seen.add( result.key );
+			filters.push( result );
 		}
 	}
 
 	filters.sort( sortFilters );
+	return filters;
+};
+
+export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+	const filters = deriveFilters( rows, ( row ) => {
+		if ( ! row.trace?.component ) {
+			return null;
+		}
+		return {
+			key: `${ row.trace.component.type }-${ row.trace.component.context }`,
+			label: row.trace.component.name,
+		};
+	} );
 
 	if ( filters.length > 1 ) {
 		filters.unshift( {
@@ -117,7 +132,7 @@ interface isSlowCallback {
 	( row: DataRowWithTime, i: number ): boolean;
 }
 
-export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[], slow: isSlowCallback = () => false ) => {
+export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[], slow: isSlowCallback = () => false ) => {
 	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
@@ -132,31 +147,23 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( rows: TDataRow[], 
 	return column;
 }
 
-interface callerTimes {
-	[ k: string ]: {
-		caller: string;
-	};
-}
+export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+	const filters = deriveFilters( rows, ( row ) => {
+		if ( ! row.trace?.frames?.length ) {
+			return null;
+		}
+		const caller = row.trace.frames[0].id;
+		return { key: caller, label: caller };
+	} );
 
-export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[], caller_times?: callerTimes ) => {
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
 		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
-		filters: caller_times ? {
-			options: ( () => {
-				const filters = Object.keys( caller_times ).map( ( caller ) => ( {
-					key: caller,
-					label: caller,
-				} ) );
-
-				filters.sort( sortFilters );
-
-				return filters;
-			} )(),
+		filters: filters.length ? {
+			options: filters,
 			callback: ( row, value: string ) => {
-				// Get the top frame (caller) from the trace
-				if ( row.trace.frames.length === 0 ) {
+				if ( ! row.trace?.frames?.length ) {
 					return false;
 				}
 				return row.trace.frames[0].id === value;

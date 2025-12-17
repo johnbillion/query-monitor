@@ -211,15 +211,6 @@ export interface DB_Queries {
 	has_result: boolean;
 	has_trace: boolean;
 	has_main_query: boolean;
-	times?: {
-		[k: string]: {
-			caller: string;
-			ltime: number;
-			types: {
-				[k: string]: number;
-			};
-		};
-	};
 	dupes: {
 		query: string;
 		count: number;

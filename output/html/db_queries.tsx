@@ -80,7 +80,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				},
 				wrap: true
 			},
-			caller: getCallerCol( data.rows, data.times ),
+			caller: getCallerCol( data.rows ),
 			component: getComponentCol( data.rows ),
 			result: {
 				className: 'qm-num',

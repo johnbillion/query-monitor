@@ -95,30 +95,14 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
+	 * @deprecated Caller calculations are now handled client-side.
+	 *
 	 * @param string $caller
 	 * @param float $ltime
 	 * @param string $type
 	 * @return void
 	 */
-	protected function log_caller( $caller, $ltime, $type ) {
-
-		if ( ! isset( $this->data->times[ $caller ] ) ) {
-			$this->data->times[ $caller ] = array(
-				'caller' => $caller,
-				'ltime' => 0,
-				'types' => array(),
-			);
-		}
-
-		$this->data->times[ $caller ]['ltime'] += $ltime;
-
-		if ( isset( $this->data->times[ $caller ]['types'][ $type ] ) ) {
-			$this->data->times[ $caller ]['types'][ $type ]++;
-		} else {
-			$this->data->times[ $caller ]['types'][ $type ] = 1;
-		}
-
-	}
+	protected function log_caller( $caller, $ltime, $type ) {}
 
 	/**
 	 * @return void
@@ -209,7 +193,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$type = QM_Util::get_query_type( $sql );
 
 			$this->log_type( $type );
-			$this->log_caller( $caller_name, $ltime, $type );
 			$this->maybe_log_dupe( $sql, $i );
 
 			$is_main_query = false;

@@ -13,8 +13,39 @@ import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
+interface CallerAggregate {
+	caller: string;
+	ltime: number;
+	types: Record<string, number>;
+}
+
+const aggregateByCaller = ( rows: DataTypes['db_queries']['rows'] ): CallerAggregate[] => {
+	const map: Record<string, CallerAggregate> = {};
+
+	for ( const row of rows ) {
+		if ( ! row.trace?.frames?.length ) {
+			continue;
+		}
+
+		const caller = row.trace.frames[0].id;
+
+		if ( ! map[ caller ] ) {
+			map[ caller ] = {
+				caller,
+				ltime: 0,
+				types: {},
+			};
+		}
+
+		map[ caller ].ltime += row.ltime;
+		map[ caller ].types[ row.type ] = ( map[ caller ].types[ row.type ] || 0 ) + 1;
+	}
+
+	return Object.values( map );
+};
+
 export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	if ( ! data.times || ! Object.keys( data.times ).length ) {
+	if ( ! data.rows?.length ) {
 		return (
 			<EmptyPanel>
 				<p>
@@ -24,19 +55,13 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		);
 	}
 
-	const tableData = Object.values( data.times ).map( row => ( {
-		...row,
-		types: Object.keys( data.types ).reduce( ( types, type ) => ( {
-			...types,
-			[ type ]: row.types[type] || '',
-		} ), {} ),
-	} ) );
+	const tableData = aggregateByCaller( data.rows );
 
 	const getTypeCols = () => Object.keys( data.types ).reduce( ( cols, type ) => ( {
 		...cols,
 		[ type ]: {
 			heading: type,
-			render: ( row: any ) => row.types[type],
+			render: ( row: CallerAggregate ) => row.types[ type ] || '',
 			className: 'qm-num',
 		},
 	} ), {} );
