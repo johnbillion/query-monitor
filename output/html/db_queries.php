@@ -58,7 +58,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$title[] = sprintf(
 				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 				esc_html_x( '%ss', 'Time in seconds', 'query-monitor' ),
-				number_format_i18n( $data->total_time, 2 )
+				number_format_i18n( array_sum( array_column( $data->rows, 'ltime' ) ), 2 )
 			);
 
 			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */

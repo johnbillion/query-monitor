@@ -142,7 +142,7 @@ export const Overview = ( { data }: OverviewProps ) => {
 								{ sprintf(
 									/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
 									_x( '%ss', 'Time in seconds', 'query-monitor' ),
-									Utils.numberFormat( dbQueriesData.total_time, 4 )
+									Utils.numberFormat( dbQueriesData.rows.reduce( ( acc, row ) => acc + row.ltime, 0 ), 4 )
 								) }
 							</p>
 							<p>

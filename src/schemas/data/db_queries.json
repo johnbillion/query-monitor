@@ -67,7 +67,6 @@
 	},
 	"required": [
 		"total_qs",
-		"total_time",
 		"has_result",
 		"has_trace",
 		"has_main_query",
@@ -77,9 +76,6 @@
 	"properties": {
 		"total_qs": {
 			"type": "integer"
-		},
-		"total_time": {
-			"type": "number"
 		},
 		"errors": {
 			"type": "array",

@@ -214,7 +214,6 @@ export interface Conditionals {
  */
 export interface DB_Queries {
 	total_qs: number;
-	total_time: number;
 	errors: number[];
 	expensive?: number[];
 	rows?: QueryRow[];

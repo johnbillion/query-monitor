@@ -55,7 +55,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 
 		$output = array(
 			'total' => $data->total_qs,
-			'time' => round( $data->total_time, 4 ),
+			'time' => round( array_sum( array_column( $data->rows, 'ltime' ) ), 4 ),
 			'queries' => array_map( array( $this, 'output_query_row' ), $data->rows ),
 		);
 

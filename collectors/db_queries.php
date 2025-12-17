@@ -90,7 +90,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 */
 	public function process() {
 		$this->data->total_qs = 0;
-		$this->data->total_time = 0;
 		$this->data->errors = array();
 		$this->process_db_object();
 	}
@@ -142,7 +141,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$this->data->rows = array();
 
 		$types = array();
-		$total_time = 0;
 		$has_result = false;
 		$has_trace = false;
 		$i = 0;
@@ -188,8 +186,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			if ( false !== strpos( $stack, 'wp_admin_bar' ) && ! isset( $_REQUEST['qm_display_admin_bar'] ) ) {
 				continue;
 			}
-
-			$total_time += $ltime;
 
 			if ( isset( $trace ) ) {
 
@@ -258,7 +254,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		) );
 
 		$this->data->total_qs = count( $this->data->rows );
-		$this->data->total_time = $total_time;
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
 		$this->data->has_main_query = ! empty( $has_main_query );
