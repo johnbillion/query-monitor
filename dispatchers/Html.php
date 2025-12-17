@@ -393,27 +393,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			)
 		);
 
-		echo '<svg id="qm-icon-container">' . "\n";
-		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
-			if ( ! $icon ) {
-				continue;
-			}
-
-			$icon_name = basename( $icon, '.svg' );
-			$contents = (string) file_get_contents( $icon );
-
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo str_replace(
-				'<path ',
-				sprintf(
-					'<path id="qm-icon-%s" ',
-					$icon_name
-				),
-				$contents
-			);
-		}
-		echo '</svg>' . "\n";
-
 		echo '<div id="query-monitor-container">';
 	}
 

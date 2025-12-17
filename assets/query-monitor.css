@@ -219,10 +219,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 /** === Main QM Panel === */
 
-#qm-icon-container {
-	display: none !important;
-}
-
 #query-monitor-main {
 	/** === Fonts === */
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
