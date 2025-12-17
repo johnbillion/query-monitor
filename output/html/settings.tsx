@@ -111,6 +111,12 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							) ) }
 						</select>
 					</p>
+					{ editor && (
+						<p>
+							<Icon name="yes-alt"/>
+							{ __( 'Editor is set', 'query-monitor' ) }
+						</p>
+					) }
 				</section>
 				<section>
 					<h3>
