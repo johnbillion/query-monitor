@@ -16,11 +16,6 @@
 	"files": [
 		"build"
 	],
-	"scripts": {
-		"prepublishOnly": "npm run build",
-		"start": "webpack --config=webpack.config.dev.js",
-		"build": "webpack --config=webpack.config.prod.js"
-	},
 	"peerDependencies": {
 		"react": "^18"
 	},
