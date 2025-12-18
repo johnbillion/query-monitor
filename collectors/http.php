@@ -32,6 +32,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public $id = 'http';
 
 	/**
+	 * @TODO trim this down to only the data we need
 	 * @var mixed|null
 	 */
 	private $info = null;

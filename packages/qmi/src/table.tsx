@@ -152,8 +152,8 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 		if ( ! row.trace?.frames?.length ) {
 			return null;
 		}
-		const caller = row.trace.frames[0].id;
-		return { key: caller, label: caller };
+		const frame = row.trace.frames[0];
+		return { key: frame.id, label: frame.display };
 	} );
 
 	const column: Col<TDataRow> = {

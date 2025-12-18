@@ -109,9 +109,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			status: {
 				heading: __( 'Status', 'query-monitor' ),
 				render: ( row ) => {
-					if ( row.intercepted ) {
-						return '';
-					}
 					if ( Utils.isWPError( row.result ) ) {
 						return (
 							<Warning>
@@ -121,6 +118,10 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								) }
 							</Warning>
 						);
+					}
+
+					if ( row.intercepted ) {
+						return '';
 					}
 
 					const statusText = row.args.blocking === false
@@ -200,7 +201,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					);
 				},
 				filters: {
-					options: Object.keys( data.types ).map( ( type ) => ( {
+					options: Object.keys( data.types ).sort().map( ( type ) => ( {
 						key: type,
 						label: type,
 					} ) ),
