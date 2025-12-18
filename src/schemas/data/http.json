@@ -14,6 +14,8 @@
 			"type": "array",
 			"items": {
 				"type": "object",
+				"phpFile": "http_request",
+				"phpClass": "QM_Data_HTTP_Request",
 				"properties": {
 					"args": {
 						"type": "object",
@@ -70,58 +72,23 @@
 							"null"
 						]
 					},
-					"response": {
+					"result": {
 						"oneOf": [
 							{
 								"type": "object",
+								"phpFile": "http_response",
+								"phpClass": "QM_Data_HTTP_Response",
 								"properties": {
-									"headers": {
-										"type": "object"
+									"code": {
+										"type": "integer"
 									},
-									"body": {
+									"message": {
 										"type": "string"
-									},
-									"response": {
-										"type": "object",
-										"properties": {
-											"code": {
-												"type": "integer"
-											},
-											"message": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"code",
-											"message"
-										],
-										"additionalProperties": false
-									},
-									"cookies": {
-										"type": "array",
-										"items": {
-											"type": "object",
-											"phpType": "WP_HTTP_Cookie"
-										}
-									},
-									"filename": {
-										"type": [
-											"string",
-											"null"
-										]
-									},
-									"http_response": {
-										"type": "object",
-										"phpType": "WP_HTTP_Requests_Response"
 									}
 								},
 								"required": [
-									"headers",
-									"body",
-									"response",
-									"cookies",
-									"filename",
-									"http_response"
+									"code",
+									"message"
 								],
 								"additionalProperties": false
 							},
@@ -156,7 +123,7 @@
 					"local",
 					"ltime",
 					"redirected_to",
-					"response",
+					"result",
 					"type",
 					"url"
 				],

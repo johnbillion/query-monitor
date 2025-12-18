@@ -323,23 +323,10 @@ export interface HTTP {
 		local: boolean;
 		ltime: number;
 		redirected_to: string | null;
-		response:
+		result:
 			| {
-					headers: {
-						[k: string]: unknown;
-					};
-					body: string;
-					response: {
-						code: number;
-						message: string;
-					};
-					cookies: {
-						[k: string]: unknown;
-					}[];
-					filename: string | null;
-					http_response: {
-						[k: string]: unknown;
-					};
+					code: number;
+					message: string;
 			  }
 			| WP_Error;
 		type: string;

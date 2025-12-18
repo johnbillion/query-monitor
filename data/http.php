@@ -14,35 +14,7 @@
 
 class QM_Data_HTTP extends QM_Data {
 	/**
-	 * @phpstan-var array<int, array{
-	 *   args: array{
-	 *     method: string,
-	 *     timeout: float,
-	 *     redirection?: int,
-	 *     blocking?: bool,
-	 *     sslverify?: bool,
-	 *   },
-	 *   trace: QM_Backtrace,
-	 *   info: array<string, mixed>|null,
-	 *   host: string,
-	 *   local: bool,
-	 *   ltime: float,
-	 *   redirected_to: string|null,
-	 *   response: array{
-	 *     headers: array<string, mixed>,
-	 *     body: string,
-	 *     response: array{
-	 *       code: int,
-	 *       message: string,
-	 *     },
-	 *     cookies: array<int, WP_HTTP_Cookie>,
-	 *     filename: string|null,
-	 *     http_response: WP_HTTP_Requests_Response,
-	 *   }|WP_Error,
-	 *   type: string,
-	 *   url: string,
-	 *   intercepted: bool,
-	 * }>
+	 * @var array<int, QM_Data_HTTP_Request>
 	 */
 	public $http;
 

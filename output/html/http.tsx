@@ -6,7 +6,6 @@ import {
 	Warning,
 	getComponentCol,
 	getCallerCol,
-	ApproximateSize,
 	Time,
 	TotalTime,
 	PanelFooter,
@@ -20,30 +19,6 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
-
-const getResponseSize = ( row: DataTypes['http']['http'][0] ): number => {
-	// If request was intercepted, return 0 (no response)
-	if ( row.intercepted ) {
-		return 0;
-	}
-
-	// If response is an error, return 0
-	if ( Utils.isWPError( row.response ) ) {
-		return 0;
-	}
-
-	// For downloaded files, use size_download from info
-	if ( row.info && typeof row.info === 'object' && 'size_download' in row.info && typeof row.info.size_download === 'number' ) {
-		return row.info.size_download;
-	}
-
-	// For response bodies, use body length
-	if ( row.response && typeof row.response === 'object' && 'body' in row.response && typeof row.response.body === 'string' ) {
-		return row.response.body.length;
-	}
-
-	return 0;
-};
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return ! row.url.startsWith( 'https://' );
@@ -137,12 +112,12 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					if ( row.intercepted ) {
 						return '';
 					}
-					if ( Utils.isWPError( row.response ) ) {
+					if ( Utils.isWPError( row.result ) ) {
 						return (
 							<Warning>
 								{ sprintf(
 									__( 'Error: %s', 'query-monitor' ),
-									Utils.getErrorMessage( row.response )
+									Utils.getErrorMessage( row.result )
 								) }
 							</Warning>
 						);
@@ -150,13 +125,14 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 
 					const statusText = row.args.blocking === false
 						? __( 'Non-blocking', 'query-monitor' )
-						: `${row.response.response.code} ${row.response.response.message}`;
+						: `${row.result.code} ${row.result.message}`;
 
 					const info = row.info && typeof row.info === 'object' ? row.info : null;
 					const hasInfo = info && (
 						'namelookup_time' in info ||
 						'connect_time' in info ||
 						'starttransfer_time' in info ||
+						'size_download' in info ||
 						'content_type' in info ||
 						'primary_ip' in info
 					);
@@ -173,13 +149,21 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 
 					const otherFields: { key: string; label: string }[] = [
 						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
-						{ key: 'primary_ip', label: __( 'IP Address', 'query-monitor' ) },
 					];
+
+					const sizeDownload = 'size_download' in info ? info.size_download as number : null;
 
 					return (
 						<details>
 							<summary>{ statusText }</summary>
 							<ul className="qm-toggled">
+								{ 'primary_ip' in info && (
+									<li key="primary_ip">
+										<span className="qm-info qm-supplemental">
+											{ __( 'IP Address', 'query-monitor' ) }: { info.primary_ip as string }
+										</span>
+									</li>
+								) }
 								{ timeFields.map( ( { key, label } ) => {
 									if ( ! ( key in info ) ) {
 										return null;
@@ -192,6 +176,13 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										</li>
 									);
 								} ) }
+								{ sizeDownload !== null && (
+									<li key="size_download">
+										<span className="qm-info qm-supplemental">
+											{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
+										</span>
+									</li>
+								) }
 								{ otherFields.map( ( { key, label } ) => {
 									if ( ! ( key in info ) ) {
 										return null;
@@ -218,29 +209,18 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 							case 'non-blocking':
 								return row.args.blocking === false;
 							case 'error':
-								return Utils.isWPError( row.response );
+								return Utils.isWPError( row.result );
 							default:
-								if ( Utils.isWPError( row.response ) ) {
+								if ( Utils.isWPError( row.result ) ) {
 									return false;
 								}
-								return `HTTP ${row.response.response.code}` === value;
+								return `HTTP ${row.result.code}` === value;
 						}
 					},
 				},
 			},
 			caller: getCallerCol( data.http ),
 			component: getComponentCol( data.http ),
-			size: {
-				heading: __( 'Response Size', 'query-monitor' ),
-				className: 'qm-num',
-				render: ( row ) => {
-					if ( row.args.blocking === false ) {
-						return '';
-					}
-					const size = getResponseSize( row );
-					return size > 0 ? <ApproximateSize value={ size } /> : '';
-				},
-			},
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',
@@ -254,8 +234,8 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 		} }
 		data={ data.http }
 		rowHasError={ ( row ) =>
-			Utils.isWPError( row.response ) ||
-			( ! row.intercepted && row.response.response.code >= 400 )
+			Utils.isWPError( row.result ) ||
+			( ! row.intercepted && row.result.code >= 400 )
 		}
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter

@@ -187,7 +187,7 @@ function propToTypeNode( prop, required, schema, extractedClasses ) {
 
 	// Handle $ref to a definition with phpFile
 	if ( prop._isClassRef && prop.phpFile ) {
-		const className = prop.tsType;
+		const className = prop.phpClass;
 		const fileName = prop.phpFile;
 
 		// Ensure the class is extracted (it should already be from first pass, but handle nested refs)
@@ -260,7 +260,7 @@ function propToTypeNode( prop, required, schema, extractedClasses ) {
 		case 'object': {
 			// Check if this object should be extracted as a separate class
 			if ( prop.phpFile ) {
-				const className = prop.tsType;
+				const className = prop.phpClass;
 				const fileName = prop.phpFile;
 
 				// Build the class node if not already extracted
@@ -369,7 +369,7 @@ function hasComplexType( node ) {
  * @param {Map<string, PHPClassNode>} extractedClasses
  */
 function extractDefinitionAsClass( definition, schema, extractedClasses ) {
-	const className = definition.tsType;
+	const className = definition.phpClass;
 	const fileName = definition.phpFile;
 
 	if ( extractedClasses.has( className ) ) {

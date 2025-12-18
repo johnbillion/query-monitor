@@ -11,6 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_HTTP>
+ *
+ * @phpstan-type HTTP_API_Response_Shape array{
+ *   headers: \WpOrg\Requests\Utility\CaseInsensitiveDictionary,
+ *   body: string,
+ *   response: array{
+ *     code: int|false,
+ *     message: string|false,
+ *   },
+ *   cookies: array<int, \WP_Http_Cookie>,
+ *   filename: string|null,
+ *   http_response: \WP_HTTP_Requests_Response|null,
+ * }
  */
 class QM_Collector_HTTP extends QM_DataCollector {
 
@@ -40,7 +52,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @phpstan-var array<string, array{
 	 *   end: float,
 	 *   args: array<string, mixed>,
-	 *   response: array<string, mixed>|WP_Error,
+	 *   result: QM_Data_HTTP_Response|WP_Error,
 	 *   info: array<string, mixed>|null,
 	 *   intercepted: bool,
 	 * }>
@@ -218,17 +230,16 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param false|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
 	 * @param array<string, mixed>   $args     HTTP request arguments.
 	 * @param string                 $url      The request URL.
+	 *
+	 * @phpstan-param false|HTTP_API_Response_Shape|WP_Error $response
+	 *
 	 * @return false|mixed[]|WP_Error The preemptive HTTP response.
 	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
-
-		// All is well:
-		if ( false === $response ) {
-			return $response;
+		if ( is_array( $response ) || ( $response instanceof WP_Error ) ) {
+			// Something's filtering the response, so we'll log it
+			$this->log_http_response( $response, $args, $url, true );
 		}
-
-		// Something's filtering the response, so we'll log it
-		$this->log_http_response( $response, $args, $url, true );
 
 		return $response;
 	}
@@ -274,20 +285,26 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param array<string, mixed> $args        HTTP request arguments.
 	 * @param string               $url         The request URL.
 	 * @param bool                 $intercepted Whether the request was intercepted and short-circuited by a filter.
+	 *
+	 * @phpstan-param HTTP_API_Response_Shape|WP_Error $response
+	 *
 	 * @return void
 	 */
 	public function log_http_response( $response, array $args, $url, bool $intercepted = false ) {
 		/** @var string */
 		$key = $args['_qm_key'];
 
-		if ( is_array( $response ) && isset( $response['body'] ) ) {
-			// The response body can be huge, so kill it:
-			unset( $response['response']['body'] );
+		if ( $response instanceof WP_Error ) {
+			$response_data = $response;
+		} else {
+			$response_data = new QM_Data_HTTP_Response();
+			$response_data->code = (int) $response['response']['code'];
+			$response_data->message = (string) $response['response']['message'];
 		}
 
 		$http_response = array(
 			'end' => microtime( true ),
-			'response' => $response,
+			'result' => $response_data,
 			'args' => $args,
 			'info' => $this->info,
 			'intercepted' => $intercepted,
@@ -297,7 +314,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			/** @var string $original_key */
 			$original_key = $args['_qm_original_key'];
 			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
-			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed' );
+			$this->http_responses[ $original_key ]['result'] = new WP_Error( 'http_request_not_executed' );
 		}
 
 		$this->http_responses[ $key ] = $http_response;
@@ -330,23 +347,28 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
 
 		foreach ( $this->http_requests as $key => $request ) {
-			$response = $this->http_responses[ $key ];
-
-			if ( empty( $response['response'] ) ) {
+			if ( isset( $this->http_responses[ $key ] ) ) {
+				$response = $this->http_responses[ $key ];
+			} else {
 				// Timed out
-				$response['response'] = new WP_Error( 'http_request_timed_out' );
-				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
+				$response = array(
+					'end' => floatval( $request['start'] + $request['args']['timeout'] ),
+					'args' => $request['args'],
+					'result' => new WP_Error( 'http_request_timed_out' ),
+					'info' => null,
+					'intercepted' => false,
+				);
 			}
 
-			if ( $response['response'] instanceof WP_Error ) {
-				if ( ! in_array( $response['response']->get_error_code(), $silent, true ) ) {
+			if ( $response['result'] instanceof WP_Error ) {
+				if ( ! in_array( $response['result']->get_error_code(), $silent, true ) ) {
 					$this->data->errors['alert'][] = $key;
 				}
 				$type = 'error';
 			} elseif ( ! $response['args']['blocking'] ) {
 				$type = 'non-blocking';
 			} else {
-				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
+				$code = $response['result']->code;
 				$type = "HTTP {$code}";
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
@@ -356,7 +378,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$ltime = ( $response['end'] - $request['start'] );
 			$redirected_to = null;
 
-			if ( isset( $response['info'] ) && ! empty( $response['info']['url'] ) && is_string( $response['info']['url'] ) ) {
+			if ( ! empty( $response['info']['url'] ) && is_string( $response['info']['url'] ) ) {
 				// Ignore query variables when detecting a redirect.
 				$from = untrailingslashit( preg_replace( '#\?[^$]*$#', '', $request['url'] ) );
 				$to = untrailingslashit( preg_replace( '#\?[^$]*$#', '', $response['info']['url'] ) );
@@ -374,19 +396,33 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
-			$this->data->http[] = array(
-				'args' => $response['args'],
-				'trace' => $request['trace'],
-				'host' => $host,
-				'info' => $response['info'],
-				'local' => $local,
-				'ltime' => $ltime,
-				'redirected_to' => $redirected_to,
-				'response' => $response['response'],
-				'type' => $type,
-				'url' => $request['url'],
-				'intercepted' => $response['intercepted'],
+
+			$http_request = new QM_Data_HTTP_Request();
+			$http_request->args = array(
+				'method' => $response['args']['method'],
+				'timeout' => (float) $response['args']['timeout'],
 			);
+			if ( isset( $response['args']['redirection'] ) ) {
+				$http_request->args['redirection'] = (int) $response['args']['redirection'];
+			}
+			if ( isset( $response['args']['blocking'] ) ) {
+				$http_request->args['blocking'] = (bool) $response['args']['blocking'];
+			}
+			if ( isset( $response['args']['sslverify'] ) ) {
+				$http_request->args['sslverify'] = (bool) $response['args']['sslverify'];
+			}
+			$http_request->trace = $request['trace'];
+			$http_request->host = $host;
+			$http_request->info = $response['info'];
+			$http_request->local = $local;
+			$http_request->ltime = $ltime;
+			$http_request->redirected_to = $redirected_to;
+			$http_request->result = $response['result'];
+			$http_request->type = $type;
+			$http_request->url = $request['url'];
+			$http_request->intercepted = $response['intercepted'];
+
+			$this->data->http[] = $http_request;
 		}
 
 	}
@@ -417,24 +453,12 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		);
 
 		if ( $exception ) {
-			$wp_error = new WP_Error( 'guzzle_request_failed', $exception->getMessage() );
+			$response_data = new WP_Error( 'guzzle_request_failed', $exception->getMessage() );
 			$type = 'error';
-			$response_data = $wp_error;
 		} else {
-			$response_data = array(
-				'headers' => array(),
-				'body' => (string) $response->getBody(),
-				'response' => array(
-					'code' => $response->getStatusCode(),
-					'message' => $response->getReasonPhrase(),
-				),
-				'cookies' => array(),
-				'filename' => null,
-			);
-
-			foreach ( $response->getHeaders() as $name => $values ) {
-				$response_data['headers'][ $name ] = implode( ', ', $values );
-			}
+			$response_data = new QM_Data_HTTP_Response();
+			$response_data->code = $response->getStatusCode();
+			$response_data->message = $response->getReasonPhrase();
 
 			$code = $response->getStatusCode();
 			$type = "HTTP {$code}";
@@ -446,25 +470,27 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		$this->log_type( $type );
 
-		$this->data->http[ $key ] = array(
-			'args' => $args,
-			'component' => $trace->get_component(),
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'host' => $host,
-			'info' => null,
-			'local' => $local,
-			'ltime' => $ltime,
-			'redirected_to' => null,
-			'response' => $response_data,
-			'type' => $type,
-			'url' => $url,
-			'intercepted' => false,
-		);
+		$http_request = new QM_Data_HTTP_Request();
+		$http_request->args = $args;
+		$http_request->trace = $trace;
+		$http_request->host = $host;
+		$http_request->info = null;
+		$http_request->local = $local;
+		$http_request->ltime = $ltime;
+		$http_request->redirected_to = null;
+		$http_request->result = $response_data;
+		$http_request->type = $type;
+		$http_request->url = $url;
+		$http_request->intercepted = false;
+
+		$this->data->http[] = $http_request;
 
 		$this->data->ltime += $ltime;
 
 		if ( $exception || ( $response && $response->getStatusCode() >= 400 ) ) {
-			$this->data->errors['warning'][] = $key;
+			// This value isn't used, it's just a placeholder to indicate an error occurred.
+			// @TODO need a proper way to set error/warning state on a data instance.
+			$this->data->errors['warning'][] = $url;
 		}
 	}
 
