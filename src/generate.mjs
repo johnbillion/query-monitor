@@ -15,7 +15,8 @@ import fs from 'fs';
  * @typedef {Object} PHPClassNode
  * @property {'class'} kind
  * @property {string} name
- * @property {string} extends
+ * @property {string} fileName
+ * @property {string|null} extends
  * @property {string} description
  * @property {PHPTypeDefNode[]} typeDefs
  * @property {PHPPropertyNode[]} properties
@@ -38,7 +39,7 @@ import fs from 'fs';
  */
 
 /**
- * @typedef {SimpleTypeNode|UnionTypeNode|ArrayTypeNode|MapTypeNode|ObjectTypeNode} TypeNode
+ * @typedef {SimpleTypeNode|UnionTypeNode|ArrayTypeNode|MapTypeNode|ObjectTypeNode|ClassRefTypeNode} TypeNode
  */
 
 /**
@@ -79,10 +80,25 @@ import fs from 'fs';
  */
 
 /**
+ * @typedef {Object} ClassRefTypeNode
+ * @property {'class_ref'} kind
+ * @property {string} className
+ * @property {string} fileName
+ * @property {PHPClassNode} classNode
+ * @property {boolean} optional
+ */
+
+/**
  * @typedef {Object} ObjectPropertyNode
  * @property {string} name
  * @property {TypeNode} type
  * @property {boolean} required
+ */
+
+/**
+ * @typedef {Object} GeneratorOutput
+ * @property {PHPFileNode} main
+ * @property {Map<string, PHPClassNode>} extractedClasses
  */
 
 // =============================================================================
@@ -91,18 +107,36 @@ import fs from 'fs';
 
 /**
  * @param {object} schema
- * @returns {PHPFileNode}
+ * @returns {GeneratorOutput}
  */
 function schemaToAST( schema ) {
-	const typeDefs = [];
+	/** @type {Map<string, PHPClassNode>} */
+	const extractedClasses = new Map();
 
+	// First pass: extract classes from definitions that have phpFile
 	if ( schema.definitions ) {
 		for ( const key in schema.definitions ) {
 			const definition = schema.definitions[ key ];
+			if ( definition.phpFile ) {
+				extractDefinitionAsClass( definition, schema, extractedClasses );
+			}
+		}
+	}
+
+	const typeDefs = [];
+
+	// Second pass: build typeDefs for definitions that are NOT extracted as classes
+	if ( schema.definitions ) {
+		for ( const key in schema.definitions ) {
+			const definition = schema.definitions[ key ];
+			// Skip definitions that are extracted as classes
+			if ( definition.phpFile ) {
+				continue;
+			}
 			typeDefs.push( {
 				kind: 'type_def',
 				name: key,
-				type: propToTypeNode( definition, true, schema ),
+				type: propToTypeNode( definition, true, schema, extractedClasses ),
 			} );
 		}
 	}
@@ -112,7 +146,7 @@ function schemaToAST( schema ) {
 	for ( const key in schema.properties ) {
 		const required = schema.required?.includes( key ) ?? false;
 		const prop = resolveRef( schema.properties[ key ], schema );
-		const type = propToTypeNode( prop, required, schema );
+		const type = propToTypeNode( prop, required, schema, extractedClasses );
 
 		properties.push( {
 			kind: 'property',
@@ -124,16 +158,19 @@ function schemaToAST( schema ) {
 	}
 
 	return {
-		kind: 'php_file',
-		sourceSchema: schema.$id.replace( 'https://schemas.querymonitor.com/', '' ),
-		class: {
-			kind: 'class',
-			name: `QM_Data_${ schema.title }`,
-			extends: 'QM_Data',
-			description: schema.description,
-			typeDefs,
-			properties,
+		main: {
+			kind: 'php_file',
+			sourceSchema: schema.$id.replace( 'https://schemas.querymonitor.com/', '' ),
+			class: {
+				kind: 'class',
+				name: `QM_Data_${ schema.title }`,
+				extends: 'QM_Data',
+				description: schema.description,
+				typeDefs,
+				properties,
+			},
 		},
+		extractedClasses,
 	};
 }
 
@@ -141,11 +178,31 @@ function schemaToAST( schema ) {
  * @param {object} prop
  * @param {boolean} required
  * @param {object} schema
+ * @param {Map<string, PHPClassNode>} extractedClasses
  * @returns {TypeNode}
  */
-function propToTypeNode( prop, required, schema ) {
-	prop = resolveRef( prop, schema );
+function propToTypeNode( prop, required, schema, extractedClasses ) {
+	prop = resolveRef( prop, schema, extractedClasses );
 	const optional = ! required;
+
+	// Handle $ref to a definition with phpFile
+	if ( prop._isClassRef && prop.phpFile ) {
+		const className = prop.tsType;
+		const fileName = prop.phpFile;
+
+		// Ensure the class is extracted (it should already be from first pass, but handle nested refs)
+		if ( ! extractedClasses.has( className ) ) {
+			extractDefinitionAsClass( prop, schema, extractedClasses );
+		}
+
+		return {
+			kind: 'class_ref',
+			className,
+			fileName,
+			classNode: extractedClasses.get( className ),
+			optional,
+		};
+	}
 
 	if ( prop.phpStanType && prop.phpStanType !== 'object' ) {
 		return { kind: 'simple', name: prop.phpStanType, optional };
@@ -158,7 +215,7 @@ function propToTypeNode( prop, required, schema ) {
 	if ( prop.anyOf ) {
 		return {
 			kind: 'union',
-			types: prop.anyOf.map( ( one ) => propToTypeNode( one, true, schema ) ),
+			types: prop.anyOf.map( ( one ) => propToTypeNode( one, true, schema, extractedClasses ) ),
 			optional,
 		};
 	}
@@ -166,7 +223,7 @@ function propToTypeNode( prop, required, schema ) {
 	if ( prop.oneOf ) {
 		return {
 			kind: 'union',
-			types: prop.oneOf.map( ( one ) => propToTypeNode( one, true, schema ) ),
+			types: prop.oneOf.map( ( one ) => propToTypeNode( one, true, schema, extractedClasses ) ),
 			optional,
 		};
 	}
@@ -190,7 +247,7 @@ function propToTypeNode( prop, required, schema ) {
 			if ( prop.items ) {
 				return {
 					kind: 'array',
-					items: propToTypeNode( prop.items, true, schema ),
+					items: propToTypeNode( prop.items, true, schema, extractedClasses ),
 					optional,
 				};
 			}
@@ -201,6 +258,51 @@ function propToTypeNode( prop, required, schema ) {
 			};
 
 		case 'object': {
+			// Check if this object should be extracted as a separate class
+			if ( prop.phpFile ) {
+				const className = prop.tsType;
+				const fileName = prop.phpFile;
+
+				// Build the class node if not already extracted
+				if ( ! extractedClasses.has( className ) ) {
+					const classProps = [];
+
+					if ( prop.properties ) {
+						for ( const subKey in prop.properties ) {
+							const subRequired = prop.required?.includes( subKey ) ?? false;
+							const sub = prop.properties[ subKey ];
+							const subType = propToTypeNode( sub, subRequired, schema, extractedClasses );
+
+							classProps.push( {
+								kind: 'property',
+								name: subKey,
+								description: sub.description || null,
+								type: subType,
+								usePhpStanVar: hasComplexType( subType ) || !! sub.phpStanType,
+							} );
+						}
+					}
+
+					extractedClasses.set( className, {
+						kind: 'class',
+						name: className,
+						fileName,
+						extends: null,
+						description: prop.description || `${ className } data object.`,
+						typeDefs: [],
+						properties: classProps,
+					} );
+				}
+
+				return {
+					kind: 'class_ref',
+					className,
+					fileName,
+					classNode: extractedClasses.get( className ),
+					optional,
+				};
+			}
+
 			const baseType = prop.phpStanType === 'object' ? 'object' : 'array';
 
 			if ( prop.properties ) {
@@ -210,7 +312,7 @@ function propToTypeNode( prop, required, schema ) {
 					const sub = prop.properties[ subKey ];
 					objProps.push( {
 						name: subKey,
-						type: propToTypeNode( sub, true, schema ),
+						type: propToTypeNode( sub, true, schema, extractedClasses ),
 						required: subRequired,
 					} );
 				}
@@ -220,7 +322,7 @@ function propToTypeNode( prop, required, schema ) {
 			if ( prop.additionalProperties?.type ) {
 				return {
 					kind: 'map',
-					values: propToTypeNode( prop.additionalProperties, true, schema ),
+					values: propToTypeNode( prop.additionalProperties, true, schema, extractedClasses ),
 					baseType,
 					optional,
 				};
@@ -247,6 +349,7 @@ function propToTypeNode( prop, required, schema ) {
 function hasComplexType( node ) {
 	switch ( node.kind ) {
 		case 'simple':
+		case 'class_ref':
 			return false;
 		case 'union':
 			return node.types.some( hasComplexType );
@@ -260,19 +363,71 @@ function hasComplexType( node ) {
 }
 
 /**
+ * Extract a definition as a class and add it to extractedClasses.
+ * @param {object} definition
+ * @param {object} schema
+ * @param {Map<string, PHPClassNode>} extractedClasses
+ */
+function extractDefinitionAsClass( definition, schema, extractedClasses ) {
+	const className = definition.tsType;
+	const fileName = definition.phpFile;
+
+	if ( extractedClasses.has( className ) ) {
+		return;
+	}
+
+	// Create a placeholder entry first to handle self-referential types
+	const classNode = {
+		kind: 'class',
+		name: className,
+		fileName,
+		extends: null,
+		description: definition.description || `${ className } data object.`,
+		typeDefs: [],
+		properties: [],
+	};
+	extractedClasses.set( className, classNode );
+
+	// Now process properties (self-references will find the placeholder)
+	if ( definition.properties ) {
+		for ( const subKey in definition.properties ) {
+			const subRequired = definition.required?.includes( subKey ) ?? false;
+			const sub = definition.properties[ subKey ];
+			const subType = propToTypeNode( sub, subRequired, schema, extractedClasses );
+
+			classNode.properties.push( {
+				kind: 'property',
+				name: subKey,
+				description: sub.description || null,
+				type: subType,
+				usePhpStanVar: hasComplexType( subType ) || !! sub.phpStanType,
+			} );
+		}
+	}
+}
+
+/**
  * @param {object} prop
  * @param {object} schema
- * @returns {object}
+ * @param {Map<string, PHPClassNode>} extractedClasses
+ * @returns {object|null} Returns null if this ref should become a class_ref
  */
-function resolveRef( prop, schema ) {
+function resolveRef( prop, schema, extractedClasses = null ) {
 	if ( ! prop.$ref ) {
 		return prop;
 	}
 
 	if ( prop.$ref.startsWith( '#/definitions/' ) ) {
-		const definition = prop.$ref.replace( '#/definitions/', '' );
-		const refProp = schema.definitions[ definition ] || prop;
-		refProp.phpStanType = refProp.phpStanType || definition;
+		const definitionName = prop.$ref.replace( '#/definitions/', '' );
+		const refProp = schema.definitions[ definitionName ] || prop;
+
+		// If the definition has phpFile and we have extractedClasses, mark for class_ref handling
+		if ( refProp.phpFile && extractedClasses ) {
+			// Return the definition with a marker that propToTypeNode can detect
+			return { ...refProp, _isClassRef: true };
+		}
+
+		refProp.phpStanType = refProp.phpStanType || definitionName;
 		return refProp;
 	}
 
@@ -329,6 +484,41 @@ function printPHP( ast ) {
 }
 
 /**
+ * Print an extracted class (no extends, simpler header).
+ * @param {PHPClassNode} node
+ * @returns {string}
+ */
+function printExtractedClass( node ) {
+	const lines = [];
+
+	lines.push( '<?php declare(strict_types = 1);' );
+	lines.push( '/**' );
+	lines.push( ' * This file is generated by the generate.mjs script.' );
+	lines.push( ' * Do not edit it manually.' );
+	lines.push( ' */' );
+	lines.push( '' );
+
+	lines.push( '/**' );
+	lines.push( ` * ${ node.description }` );
+	lines.push( ' *' );
+	lines.push( ' * @package query-monitor' );
+	lines.push( ' */' );
+
+	lines.push( '' );
+
+	lines.push( `class ${ node.name } {` );
+
+	for ( let i = 0; i < node.properties.length; i++ ) {
+		const isLast = i === node.properties.length - 1;
+		lines.push( ...printProperty( node.properties[ i ], isLast ) );
+	}
+
+	lines.push( '}' );
+
+	return lines.join( '\n' ) + '\n';
+}
+
+/**
  * @param {PHPClassNode} node
  * @returns {string[]}
  */
@@ -353,7 +543,8 @@ function printClass( node ) {
 		lines.push( ' */' );
 	}
 
-	lines.push( `class ${ node.name } extends ${ node.extends } {` );
+	const extendsClause = node.extends ? ` extends ${ node.extends }` : '';
+	lines.push( `class ${ node.name }${ extendsClause } {` );
 
 	for ( let i = 0; i < node.properties.length; i++ ) {
 		const isLast = i === node.properties.length - 1;
@@ -407,6 +598,9 @@ function printType( node, level = 0, prefix = '\t' ) {
 		case 'simple':
 			return `${ optionalMarker }${ node.name }`;
 
+		case 'class_ref':
+			return `${ optionalMarker }${ node.className }`;
+
 		case 'union': {
 			const types = node.types.map( ( t ) => printType( t, level, prefix ) ).join( '|' );
 			return `${ optionalMarker }${ types }`;
@@ -450,8 +644,22 @@ for ( const file of files ) {
 
 	const path = `${ dir }/${ file }`;
 	const schema = JSON.parse( fs.readFileSync( path, 'utf8' ) );
-	const ast = schemaToAST( schema );
-	const output = printPHP( ast );
+	const { main, extractedClasses } = schemaToAST( schema );
+	const output = printPHP( main );
 
 	fs.writeFileSync( `./data/${ basename }.php`, output );
+
+	// Write extracted classes to subdirectory
+	if ( extractedClasses.size > 0 ) {
+		const subdir = `./data/${ basename }`;
+
+		if ( ! fs.existsSync( subdir ) ) {
+			fs.mkdirSync( subdir, { recursive: true } );
+		}
+
+		for ( const [ , classNode ] of extractedClasses ) {
+			const classOutput = printExtractedClass( classNode );
+			fs.writeFileSync( `${ subdir }/${ classNode.fileName }.php`, classOutput );
+		}
+	}
 }

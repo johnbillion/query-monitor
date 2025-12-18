@@ -12,19 +12,6 @@
  * @package query-monitor
  */
 
-/**
- * @phpstan-type PostBlock array{
- *   blockName: string|null,
- *   attrs: array<string, mixed>,
- *   innerContent: array<int, string|null>,
- *   dynamic: bool,
- *   callback: array|null,
- *   innerHTML: string,
- *   context?: array|null,
- *   timing: float,
- *   innerBlocks: array<int, PostBlock>,
- * }
- */
 class QM_Data_Block_Editor extends QM_Data {
 	/**
 	 * @var array<int, string>
@@ -32,7 +19,7 @@ class QM_Data_Block_Editor extends QM_Data {
 	public $all_dynamic_blocks;
 
 	/**
-	 * @phpstan-var array<int, PostBlock>
+	 * @var array<int, QM_Data_Post_Block>
 	 */
 	public $post_blocks;
 

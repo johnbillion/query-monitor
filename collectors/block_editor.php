@@ -166,21 +166,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 *   innerHTML: string,
 	 *   innerContent: array<int, string|null>,
 	 * } $block
-	 * @phpstan-return null|array{
-	 *   blockName: string|null,
-	 *   attrs: mixed[],
-	 *   innerBlocks: array<int, array<string, mixed>>,
-	 *   innerHTML: string,
-	 *   innerContent: array<int, string|null>,
-	 *   dynamic: bool,
-	 *   callback: array{name: string, type: string}|null,
-	 *   context: mixed[]|null,
-	 *   timing: float,
-	 * }
 	 * @param mixed[] $block
-	 * @return mixed[]|null
 	 */
-	protected function process_block( array $block ) : ?array {
+	protected function process_block( array $block ) : ?QM_Data_Post_Block {
 		$context = array_shift( $this->block_context );
 		$timing = array_shift( $this->block_timing );
 
@@ -205,17 +193,23 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		// Strip multiple consecutive line breaks that end up in parsed block content.
 		$inner_html = preg_replace( '/(\r?\n){2,}/', "\n", trim( $block['innerHTML'] ) );
 
-		$block['dynamic'] = $dynamic;
-		$block['callback'] = $callback;
-		$block['innerHTML'] = $inner_html;
-		$block['context'] = $context;
-		$block['timing'] = $timing->get_time();
+		$result = new QM_Data_Post_Block();
+		$result->blockName = $block['blockName'];
+		$result->attrs = $block['attrs'];
+		$result->innerContent = $block['innerContent'];
+		$result->dynamic = $dynamic;
+		$result->callback = $callback;
+		$result->innerHTML = $inner_html;
+		$result->context = $context;
+		$result->timing = $timing->get_time();
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
-			$block['innerBlocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
+			$result->innerBlocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
+		} else {
+			$result->innerBlocks = array();
 		}
 
-		return $block;
+		return $result;
 	}
 }
 

@@ -7,6 +7,8 @@
 	"definitions": {
 		"PostBlock": {
 			"type": "object",
+			"phpFile": "post_block",
+			"tsType": "QM_Data_Post_Block",
 			"required": [
 				"blockName",
 				"attrs",
@@ -79,14 +81,9 @@
 			}
 		},
 		"post_blocks": {
-			"phpStanType": "array<int, PostBlock>",
 			"type": "array",
 			"items": {
-				"allOf": [
-					{
-						"$ref": "#/definitions/PostBlock"
-					}
-				]
+				"$ref": "#/definitions/PostBlock"
 			}
 		},
 		"post_has_blocks": {
