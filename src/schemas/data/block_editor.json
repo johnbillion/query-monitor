@@ -8,7 +8,7 @@
 		"PostBlock": {
 			"type": "object",
 			"phpFile": "post_block",
-			"tsType": "QM_Data_Post_Block",
+			"phpClass": "QM_Data_Post_Block",
 			"required": [
 				"blockName",
 				"attrs",

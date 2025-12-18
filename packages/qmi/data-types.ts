@@ -17,8 +17,6 @@ import {
 	WP_User,
 } from 'wp-types';
 
-export type PostBlock = QM_Data_Post_Block;
-
 export interface DataTypes {
 	admin: AbstractData & Admin;
 	assets_scripts: AbstractData & Assets;
@@ -111,6 +109,28 @@ export interface Block_Editor {
 	post_blocks: PostBlock[];
 	post_has_blocks: boolean;
 	total_blocks: number;
+}
+export interface PostBlock {
+	blockName: string | null;
+	attrs: {
+		[k: string]: unknown;
+	};
+	innerContent: (string | null)[];
+	dynamic: boolean;
+	callback: {
+		name?: string;
+		type?: string;
+		[k: string]: unknown;
+	} | null;
+	innerHTML: string;
+	context?:
+		| {
+				[k: string]: unknown;
+		  }[]
+		| null;
+	timing: number;
+	innerBlocks: PostBlock[];
+	[k: string]: unknown;
 }
 /**
  * Cache data transfer object.
