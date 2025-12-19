@@ -18,7 +18,6 @@ class QM_Data_Transients extends QM_Data {
 	 *   name: string,
 	 *   trace: QM_Backtrace,
 	 *   type: 'blog'|'site',
-	 *   value: mixed,
 	 *   expiration: int,
 	 *   exp_diff: string,
 	 *   size: int,

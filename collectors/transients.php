@@ -99,7 +99,6 @@ class QM_Collector_Transients extends QM_DataCollector {
 			'name' => $name,
 			'trace' => $trace,
 			'type' => $type,
-			'value' => $value,
 			'expiration' => $expiration,
 			'exp_diff' => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
 			'size' => $size,

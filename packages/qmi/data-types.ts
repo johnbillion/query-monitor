@@ -595,7 +595,6 @@ export interface Transients {
 		name: string;
 		trace: Backtrace;
 		type: "blog" | "site";
-		value: unknown;
 		expiration: number;
 		exp_diff: string;
 		size: number;

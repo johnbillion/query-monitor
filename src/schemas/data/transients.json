@@ -33,7 +33,6 @@
 							"site"
 						]
 					},
-					"value": {},
 					"expiration": {
 						"type": "integer"
 					},
@@ -48,7 +47,6 @@
 					"name",
 					"trace",
 					"type",
-					"value",
 					"expiration",
 					"exp_diff",
 					"size"
