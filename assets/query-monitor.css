@@ -375,15 +375,15 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		width: 100% !important;
 
 		/* Make space for the admin menu in the wp-admin area */
-		body.wp-admin & {
+		:is(body).wp-admin & {
 			left: unset !important;
 			width: calc( 100% - 160px ) !important;
 		}
-		html[dir="rtl"] body.wp-admin & {
+		:is(html)[dir="rtl"] :is(body).wp-admin & {
 			left: 0 !important;
 			right: unset !important;
 		}
-		body.wp-admin.folded & {
+		:is(body).wp-admin.folded & {
 			width: calc( 100% - 36px ) !important;
 		}
 	}
