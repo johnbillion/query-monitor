@@ -27,7 +27,16 @@
 			"type": "integer"
 		},
 		"stats": {
-			"type": "object"
+			"type": "object",
+			"properties": {
+				"cache_hits": {
+					"type": "integer"
+				},
+				"cache_misses": {
+					"type": "integer"
+				}
+			},
+			"required": ["cache_hits", "cache_misses"]
 		},
 		"object_cache_extensions": {
 			"type": "object",

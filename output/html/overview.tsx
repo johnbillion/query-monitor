@@ -230,7 +230,7 @@ export const Overview = ( { data }: OverviewProps ) => {
 								<p>
 									<span className="qm-info">
 										<a
-											href="/wp-admin/network/plugins.php?plugin_status=dropins"
+											href={ `${ Utils.qm_l10n.admin_url }network/plugins.php?plugin_status=dropins` }
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -251,22 +251,9 @@ export const Overview = ( { data }: OverviewProps ) => {
 											<p key={ name }>
 												{ sprintf(
 													/* translators: 1: PHP extension name */
-													__( 'The %1$s object cache extension for PHP is installed but is not in use by WordPress. You should ', 'query-monitor' ),
+													__( 'The %1$s object cache extension for PHP is installed but is not in use by WordPress. You should install a %1$s plugin.', 'query-monitor' ),
 													name
 												) }
-												<a
-													href={ `https://wordpress.org/plugins/search/${ name.toLowerCase() }/` }
-													target="_blank"
-													rel="noopener noreferrer"
-													className="qm-external-link"
-												>
-													{ sprintf(
-														/* translators: %s: PHP extension name */
-														__( 'install a %s plugin', 'query-monitor' ),
-														name
-													) }
-												</a>
-												.
 											</p>
 										) )
 									) }

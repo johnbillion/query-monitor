@@ -141,6 +141,8 @@ export interface Cache {
 	has_opcode_cache: boolean;
 	cache_hit_percentage: number;
 	stats: {
+		cache_hits: number;
+		cache_misses: number;
 		[k: string]: unknown;
 	};
 	object_cache_extensions: {

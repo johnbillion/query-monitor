@@ -34,7 +34,10 @@ class QM_Data_Cache extends QM_Data {
 	public $cache_hit_percentage;
 
 	/**
-	 * @var array<string, mixed>
+	 * @phpstan-var array{
+	 *   cache_hits: int,
+	 *   cache_misses: int,
+	 * }
 	 */
 	public $stats;
 
