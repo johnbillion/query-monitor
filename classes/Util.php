@@ -609,11 +609,12 @@ class QM_Util {
 	/**
 	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
+	 * @deprecated Use json_encode() directly with the appropriate options instead.
+	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
 	 */
 	public static function json_format( $data ) {
-		// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
 		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
 		$json = json_encode( $data, $json_options );
