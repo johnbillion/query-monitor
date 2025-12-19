@@ -271,7 +271,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
-		// @todo scrap this
+		// Output non-client-side rendered panels outside the React container
+		echo '<div id="query-monitor-fallbacks">';
 		foreach ( $this->outputters as $id => $output ) {
 			if ( ! $output::$client_side_rendered ) {
 				printf(
@@ -292,6 +293,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 			}
 		}
+		echo '</div>' . "\n";
+
+		// Output the empty container for React to mount into
+		echo '<div id="query-monitor-container"></div>';
 
 		$this->after_output();
 
@@ -393,15 +398,12 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'id' => 'query-monitor-inline-data',
 			)
 		);
-
-		echo '<div id="query-monitor-container">';
 	}
 
 	/**
 	 * @return void
 	 */
 	protected function after_output() {
-		echo '</div>'; // #query-monitor-container
 		echo '<!-- End Query Monitor output -->' . "\n\n";
 	}
 

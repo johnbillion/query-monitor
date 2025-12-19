@@ -104,6 +104,10 @@
 	--qm-selection-bg: #B9D6FB;
 }
 
+#query-monitor-fallbacks {
+	display: none !important;
+}
+
 /** === Admin Toolbar === */
 
 #wpadminbar {

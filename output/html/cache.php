@@ -45,4 +45,4 @@ function register_qm_output_html_cache( array $output, QM_Collectors $collectors
 	return $output;
 }
 
-add_filter( 'qm/outputter/html', 'register_qm_output_html_cache', 15, 2 );
+add_filter( 'qm/outputter/html', 'register_qm_output_html_cache', 9, 2 );

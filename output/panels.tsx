@@ -62,6 +62,71 @@ type Props = {
 	active?: string;
 }
 
+/**
+ * Component that pulls in a PHP-rendered panel from the DOM when no React panel is registered.
+ * Moves the element back to its original location on cleanup to preserve it for future use.
+ */
+const PhpPanelFallback = ( { panelId }: { panelId: string } ) => {
+	const containerRef = React.useRef<HTMLDivElement>( null );
+	const originalParentRef = React.useRef<{ parent: ParentNode; nextSibling: ChildNode | null } | null>( null );
+	const [ phpPanelExists, setPhpPanelExists ] = React.useState<boolean | null>( null );
+
+	React.useEffect( () => {
+		const phpPanel = document.getElementById( `qm-${ panelId }-container` );
+
+		if ( ! phpPanel ) {
+			setPhpPanelExists( false );
+			return;
+		}
+
+		setPhpPanelExists( true );
+
+		if ( containerRef.current ) {
+			// Store original location before moving
+			if ( phpPanel.parentNode ) {
+				originalParentRef.current = {
+					parent: phpPanel.parentNode,
+					nextSibling: phpPanel.nextSibling,
+				};
+			}
+
+			// Move the PHP panel into our container
+			containerRef.current.appendChild( phpPanel );
+		}
+
+		// Cleanup: move the element back to its original location
+		return () => {
+			if ( phpPanel && originalParentRef.current ) {
+				const { parent, nextSibling } = originalParentRef.current;
+				if ( nextSibling ) {
+					parent.insertBefore( phpPanel, nextSibling );
+				} else {
+					parent.appendChild( phpPanel );
+				}
+			}
+		};
+	}, [ panelId ] );
+
+	if ( phpPanelExists === false ) {
+		return (
+			<ErrorPanel>
+				<p>
+					<Warning>
+						Panel not found: <code>{ panelId }</code>
+					</Warning>
+				</p>
+			</ErrorPanel>
+		);
+	}
+
+	return (
+		<div
+			ref={ containerRef }
+			className="qm-php-panel-container"
+		/>
+	);
+};
+
 export const Panels = ( props: Props ) => {
 	const {
 		filters,
@@ -133,13 +198,7 @@ export const Panels = ( props: Props ) => {
 							</ErrorPanel>
 						)
 					) : (
-						<ErrorPanel>
-							<p>
-								<Warning>
-									Panel not found: <code>{ props.active }</code>
-								</Warning>
-							</p>
-						</ErrorPanel>
+						<PhpPanelFallback panelId={ props.active } />
 					) }
 				</PanelContext.Provider>
 			</ErrorBoundary>
