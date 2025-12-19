@@ -2,56 +2,46 @@ import {
 	PanelProps,
 	TabularPanel,
 	EmptyPanel,
+	FileName,
 } from 'qmi';
 import {
-	DataTypes,
+	AbstractData,
+	ConcernedHook,
 } from 'qmi/data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';
 
-interface HookRow {
+type HookRow = ConcernedHook['actions'][number] & {
 	name: string;
 	type: 'action' | 'filter';
-	priority: number;
-	callback: {
-		name?: string;
-		file?: string | false;
-		line?: number | false;
-		component?: any;
-	};
-	component?: any;
-	trace?: any;
-}
+};
 
-export const ConcernedHooks = ( { data }: PanelProps<DataTypes['caps']> ) => {
+export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 	const concernedActions = data.concerned_actions;
 	const concernedFilters = data.concerned_filters;
 
-	// Combine both actions and filters into a single array
+	// Combine both actions and filters into a single array, flattening the actions
 	const allHooks: HookRow[] = [];
 
-	if ( concernedActions ) Object.keys( concernedActions ).forEach( ( hookName: string ) => {
-		allHooks.push( {
-			name: hookName,
-			type: 'action',
-			priority: 10, // Default priority since we don't have specific callback info
-			callback: {
-				name: __( 'Related to this panel', 'query-monitor' ),
-			},
-		} );
-	} );
+	const processHooks = ( hooks: typeof concernedActions ) => {
+		if ( ! hooks ) {
+			return;
+		}
 
-	if ( concernedFilters ) Object.keys( concernedFilters ).forEach( ( hookName: string ) => {
-		allHooks.push( {
-			name: hookName,
-			type: 'filter',
-			priority: 10, // Default priority since we don't have specific callback info
-			callback: {
-				name: __( 'Related to this panel', 'query-monitor' ),
-			},
+		Object.values( hooks ).forEach( ( hook ) => {
+			hook.actions.forEach( ( action ) => {
+				allHooks.push( {
+					...action,
+					name: hook.name,
+					type: hook.type,
+				} );
+			} );
 		} );
-	} );
+	};
+
+	processHooks( concernedActions );
+	processHooks( concernedFilters );
 
 	if ( allHooks.length === 0 ) {
 		return (
@@ -79,15 +69,27 @@ export const ConcernedHooks = ( { data }: PanelProps<DataTypes['caps']> ) => {
 				},
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),
-					render: () => 'TBD',
+					render: ( row ) => row.priority,
 				},
 				callback: {
 					heading: __( 'Callback', 'query-monitor' ),
-					render: () => 'TBD',
+					render: ( row ) => {
+						const text = row.callback.name || row.callback.display_file || '';
+						if ( ! text ) {
+							return '';
+						}
+						return (
+							<FileName
+								text={ text }
+								file={ row.callback.file || '' }
+								line={ row.callback.line || 0 }
+							/>
+						);
+					},
 				},
 				component: {
 					heading: __( 'Component', 'query-monitor' ),
-					render: () => 'TBD',
+					render: ( row ) => row.callback.component?.name || '',
 				},
 			} }
 			data={ allHooks }

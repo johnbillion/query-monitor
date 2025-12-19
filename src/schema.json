@@ -29,6 +29,81 @@
 		"transients"
 	],
 	"definitions": {
+		"concerned_hook": {
+			"title": "ConcernedHook",
+			"description": "A hook that is concerned with a particular panel.",
+			"type": "object",
+			"required": [
+				"name",
+				"type",
+				"actions",
+				"components"
+			],
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string",
+					"enum": ["action", "filter"]
+				},
+				"actions": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": ["priority", "callback"],
+						"properties": {
+							"priority": {
+								"type": "integer"
+							},
+							"callback": {
+								"type": "object",
+								"required": ["accepted_args"],
+								"properties": {
+									"accepted_args": {
+										"type": "integer"
+									},
+									"callback_type": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									},
+									"file": {
+										"type": ["string", "boolean"],
+										"tsType": "string | false",
+										"phpType": "string|false"
+									},
+									"line": {
+										"type": ["integer", "boolean"],
+										"tsType": "number | false",
+										"phpType": "int|false"
+									},
+									"start_line": {
+										"type": "integer"
+									},
+									"display_file": {
+										"type": "string"
+									},
+									"component": {
+										"$ref": "src/schemas/component.json"
+									}
+								},
+								"additionalProperties": false
+							}
+						},
+						"additionalProperties": false
+					}
+				},
+				"components": {
+					"type": "object",
+					"additionalProperties": {
+						"$ref": "src/schemas/component.json"
+					}
+				}
+			},
+			"additionalProperties": false
+		},
 		"data": {
 			"title": "AbstractData",
 			"type": "object",
@@ -45,15 +120,15 @@
 					}
 				},
 				"concerned_filters": {
-					"type": ["array", "null"],
-					"items": {
-						"type": "object"
+					"type": ["object", "null"],
+					"additionalProperties": {
+						"$ref": "#/definitions/concerned_hook"
 					}
 				},
 				"concerned_actions": {
-					"type": ["array", "null"],
-					"items": {
-						"type": "object"
+					"type": ["object", "null"],
+					"additionalProperties": {
+						"$ref": "#/definitions/concerned_hook"
 					}
 				}
 			},

@@ -46,16 +46,43 @@ export interface AbstractData {
 	types: {
 		[k: string]: number;
 	};
-	concerned_filters:
-		| {
-				[k: string]: unknown;
-		  }[]
-		| null;
-	concerned_actions:
-		| {
-				[k: string]: unknown;
-		  }[]
-		| null;
+	concerned_filters: {
+		[k: string]: ConcernedHook;
+	} | null;
+	concerned_actions: {
+		[k: string]: ConcernedHook;
+	} | null;
+}
+/**
+ * A hook that is concerned with a particular panel.
+ */
+export interface ConcernedHook {
+	name: string;
+	type: "action" | "filter";
+	actions: {
+		priority: number;
+		callback: {
+			accepted_args: number;
+			callback_type?: string;
+			name?: string;
+			file?: string | false;
+			line?: number | false;
+			start_line?: number;
+			display_file?: string;
+			component?: Component;
+		};
+	}[];
+	components: {
+		[k: string]: Component;
+	};
+}
+/**
+ * Class representing a component.
+ */
+export interface Component {
+	type: string;
+	name: string;
+	context: string;
 }
 /**
  * Admin screen data transfer object.
@@ -170,14 +197,6 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	frames: FrameItem[];
-}
-/**
- * Class representing a component.
- */
-export interface Component {
-	type: string;
-	name: string;
-	context: string;
 }
 /**
  * Stack trace frame.
