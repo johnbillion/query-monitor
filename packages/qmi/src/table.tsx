@@ -21,7 +21,7 @@ import {
 import * as React from 'react';
 
 export type Col<TDataRow> = {
-	className?: string;
+	className?: string | ( ( row: TDataRow, i: number ) => string );
 	heading: string;
 	render: ( row: TDataRow, i: number ) => ( React.ReactNode | string );
 	filters?: ColFilters<TDataRow>;
@@ -262,7 +262,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 						return (
 							<th
 								key={ key }
-								className={ clsx( `qm-col-${key}`, col.className, {
+								className={ clsx( `qm-col-${key}`, typeof col.className === 'string' ? col.className : undefined, {
 									'qm-filterable-column': colFilters.length,
 									'qm-filtered': filterValue !== '',
 								} ) }
@@ -309,7 +309,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 						{ nonEmptyCols.map( ( [ key, col ] ) => (
 							<td
 								key={ key }
-								className={ clsx( `qm-cell-${key}`, col.className, {
+								className={ clsx( `qm-cell-${key}`, typeof col.className === 'function' ? col.className( row, i ) : col.className, {
 									'qm-warn': col.cellHasError && col.cellHasError( row, i ),
 									'qm-wrap': col.wrap,
 								} ) }

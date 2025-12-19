@@ -37,6 +37,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				render: ( row, i ) => ( i + 1 ),
 			},
 			sql: {
+				className: ( row ) => row.type !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
 					<>
