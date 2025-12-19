@@ -433,20 +433,29 @@ export interface Overview {
  * PHP errors data transfer object.
  */
 export interface PHP_Errors {
-	errors?: {
-		[k: string]: ErrorObject;
+	errors: {
+		[k: string]: PHP_Error;
 	};
 }
-export interface ErrorObject {
+/**
+ * Individual PHP error data object.
+ */
+export interface PHP_Error {
 	errno: number;
 	level: "warning" | "notice" | "strict" | "deprecated";
 	suppressed: boolean;
 	message: string;
+	callsite: CallSite;
+	trace?: Backtrace | null;
+	count: number;
+}
+/**
+ * Code location where an error or event occurred.
+ */
+export interface CallSite {
 	file: string | null;
 	filename: string;
 	line: number | null;
-	trace?: Backtrace;
-	count: number;
 }
 /**
  * Raw request data transfer object.

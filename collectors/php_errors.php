@@ -15,7 +15,6 @@ if ( ! defined( 'QM_ERROR_FATALS' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
- * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
 
@@ -254,21 +253,23 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		if ( isset( $this->data->errors[ $key ] ) ) {
-			$this->data->errors[ $key ]['count']++;
+			$this->data->errors[ $key ]->count++;
 		} else {
-			$error = array(
-				'errno' => $errno,
-				'level' => $level,
-				'suppressed' => $suppressed,
-				'message' => wp_strip_all_tags( $message ),
-				'file' => $file,
-				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
-				'line' => $line,
-				'count' => 1,
-			);
+			$callsite = new QM_Data_CallSite();
+			$callsite->file = $file;
+			$callsite->filename = ( $file ? QM_Util::standard_dir( $file, '' ) : '' );
+			$callsite->line = $line;
+
+			$error = new QM_Data_PHP_Error();
+			$error->errno = $errno;
+			$error->level = $level;
+			$error->suppressed = $suppressed;
+			$error->message = wp_strip_all_tags( $message );
+			$error->callsite = $callsite;
+			$error->count = 1;
 
 			if ( $do_trace ) {
-				$error['trace'] = $trace;
+				$error->trace = $trace;
 			}
 
 			$this->data->errors[ $key ] = $error;
@@ -381,8 +382,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		$components = array();
-
 		if ( ! empty( $this->data->errors ) ) {
 			/**
 			 * Filters the levels used for reported PHP errors on a per-component basis.
@@ -420,27 +419,12 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param array<string,array<string,int>> $levels The error levels used for each component.
+			 * @param array<string,array<string,int>> $levels The error levels, keyed by component type (eg. 'plugin'),
+			 *                                                then by component context (eg. 'foo').
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
-
-			foreach ( $this->data->errors as $errors ) {
-				foreach ( $errors as $error ) {
-					$components[ $error['component']->get_id() ] = $error['component'];
-				}
-			}
-			foreach ( $this->data->suppressed as $errors ) {
-				foreach ( $errors as $error ) {
-					$components[ $error['component']->get_id() ] = $error['component'];
-				}
-			}
-			foreach ( $this->data->silenced as $errors ) {
-				foreach ( $errors as $error ) {
-					$components[ $error['component']->get_id() ] = $error['component'];
-				}
-			}
 		}
 	}
 
@@ -457,15 +441,15 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		foreach ( $components as $component_context => $allowed_level ) {
 			foreach ( $all_errors as $error_id => $error ) {
-				if ( ! isset( $error['trace'] ) ) {
+				if ( ! isset( $error->trace ) ) {
 					continue;
 				}
 
-				if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
+				if ( $this->is_reportable_error( $error->errno, $allowed_level ) ) {
 					continue;
 				}
 
-				if ( ! $this->is_affected_component( $error['trace']->get_component(), $component_type, $component_context ) ) {
+				if ( ! $this->is_affected_component( $error->trace->get_component(), $component_type, $component_context ) ) {
 					continue;
 				}
 
@@ -523,7 +507,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * For testing purposes only. Sets the errors property manually.
 	 * Needed to test the filter since the data property is protected.
 	 *
-	 * @param array<string, mixed> $errors The list of errors
+	 * @param array<string, QM_Data_PHP_Error> $errors The list of errors
 	 * @return void
 	 */
 	public function set_php_errors( $errors ) {

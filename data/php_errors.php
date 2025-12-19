@@ -12,40 +12,9 @@
  * @package query-monitor
  */
 
-/**
- * @phpstan-type errorObject array{
- *   errno: int,
- *   level: 'warning'|'notice'|'strict'|'deprecated',
- *   suppressed: bool,
- *   message: string,
- *   file: string|null,
- *   filename: string,
- *   line: int|null,
- *   trace?: QM_Backtrace,
- *   count: int,
- * }
- */
 class QM_Data_PHP_Errors extends QM_Data {
 	/**
-	 * @var array<string, QM_Component>
+	 * @var array<string, QM_Data_PHP_Error>
 	 */
-	public $components;
-
-	/**
-	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObjects
-	 */
-	public $errors = [];
-
-	/**
-	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObjects
-	 */
-	public $suppressed = [];
-
-	/**
-	 * @var array<string, array<string, array<string, mixed>>>
-	 * @phpstan-var errorObjects
-	 */
-	public $silenced = [];
+	public $errors;
 }

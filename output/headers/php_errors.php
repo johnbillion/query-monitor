@@ -35,14 +35,14 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 		foreach ( $data->errors as $error ) {
 			$count++;
 
-			$stack = isset( $error['trace'] ) ? $error['trace']->get_stack() : array();
-			$component = isset( $error['trace'] ) ? $error['trace']->get_component()->name : '';
+			$stack = isset( $error->trace ) ? $error->trace->get_stack() : array();
+			$component = isset( $error->trace ) ? $error->trace->get_component()->name : '';
 
 			$output_error = array(
-				'level' => $error['level'],
-				'message' => $error['message'],
-				'file' => QM_Util::standard_dir( $error['file'], '' ),
-				'line' => $error['line'],
+				'level' => $error->level,
+				'message' => $error->message,
+				'file' => QM_Util::standard_dir( $error->callsite->file, '' ),
+				'line' => $error->callsite->line,
 				'stack' => $stack,
 				'component' => $component,
 			);

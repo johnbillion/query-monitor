@@ -53,6 +53,25 @@ To start the file watcher which will watch for changes and automatically compile
 
 	npm run watch
 
+## Data Type Generation
+
+Query Monitor uses JSON Schema to define the structure of data passed between PHP collectors and React output panels. This ensures type safety across both languages.
+
+### How it works
+
+1. **JSON Schemas** (`src/schemas/data/*.json`) define the structure of data objects using JSON Schema format with custom extensions:
+   - `phpClass`: The PHP class name to generate
+   - `phpFile`: The file path (relative to `data/`) where the PHP class will be written
+   - `phpType`: Reference an existing PHP type instead of generating one
+
+2. **Build command** (`npm run build-schemas`) generates:
+   - **PHP classes** in `data/` from the schema definitions
+   - **TypeScript interfaces** in `packages/qmi/data-types.ts`
+
+3. **PHP collectors** (`collectors/*.php`) populate instances of the generated data classes
+
+4. **React panels** (`output/html/*.tsx`) consume the data with full TypeScript type checking
+
 ## Running the Tests
 
 The test suite includes acceptance tests which run in a Docker container. Ensure Docker Desktop is running before running the tests.

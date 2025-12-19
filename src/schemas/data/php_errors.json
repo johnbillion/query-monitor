@@ -4,75 +4,20 @@
 	"title": "PHP_Errors",
 	"description": "PHP errors data transfer object.",
 	"type": "object",
-	"definitions": {
-		"errorObject": {
-			"type": "object",
-			"properties": {
-				"errno": {
-					"type": "integer"
-				},
-				"level": {
-					"type": "string",
-					"enum": [
-						"warning",
-						"notice",
-						"strict",
-						"deprecated"
-					]
-				},
-				"suppressed": {
-					"type": "boolean"
-				},
-				"message": {
-					"type": "string"
-				},
-				"file": {
-					"type": [
-						"string",
-						"null"
-					]
-				},
-				"filename": {
-					"type": "string"
-				},
-				"line": {
-					"type": [
-						"integer",
-						"null"
-					]
-				},
-				"trace": {
-					"type": "object",
-					"phpType": "QM_Backtrace",
-					"allOf": [
-						{
-							"$ref": "../backtrace.json"
-						}
-					]
-				},
-				"count": {
-					"type": "integer"
-				}
-			},
-			"required": [
-				"errno",
-				"level",
-				"suppressed",
-				"message",
-				"file",
-				"filename",
-				"line",
-				"count"
-			],
-			"additionalProperties": false
-		}
-	},
+	"required": [
+		"errors"
+	],
 	"properties": {
 		"errors": {
 			"type": "object",
 			"additionalProperties": {
 				"type": "object",
-				"$ref": "#/definitions/errorObject"
+				"phpType": "QM_Data_PHP_Error",
+				"allOf": [
+					{
+						"$ref": "../php_error.json"
+					}
+				]
 			}
 		}
 	},

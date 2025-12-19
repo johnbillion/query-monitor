@@ -1,5 +1,6 @@
 export { ApproximateSize } from './src/approximate-size';
 export { Caller } from './src/caller';
+export type { CallSite } from './src/caller';
 export {
 	MainContext,
 } from './src/main-context';

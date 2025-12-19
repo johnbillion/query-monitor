@@ -21,6 +21,32 @@ class CollectorPhpErrorsTest extends Test {
 		parent::_after();
 	}
 
+	/**
+	 * Helper to create a QM_Data_PHP_Error instance.
+	 *
+	 * @param int $errno
+	 * @param 'warning'|'notice'|'strict'|'deprecated' $level
+	 * @param Supports\TestBacktrace $trace
+	 * @return \QM_Data_PHP_Error
+	 */
+	private function createError( int $errno, string $level, Supports\TestBacktrace $trace ): \QM_Data_PHP_Error {
+		$callsite = new \QM_Data_CallSite();
+		$callsite->file = WP_PLUGIN_DIR . '/foo/bar.php';
+		$callsite->filename = 'foo/bar.php';
+		$callsite->line = 1;
+
+		$error = new \QM_Data_PHP_Error();
+		$error->errno = $errno;
+		$error->level = $level;
+		$error->suppressed = false;
+		$error->message = 'Test error';
+		$error->callsite = $callsite;
+		$error->trace = $trace;
+		$error->count = 1;
+
+		return $error;
+	}
+
 	function testItKnowsNullFlagIsAlwaysReportable(): void {
 		$actual = $this->collector->is_reportable_error(
 			E_NOTICE, null
@@ -172,18 +198,8 @@ class CollectorPhpErrorsTest extends Test {
 		] );
 
 		$errors = array(
-			'notice' => array(
-				'abc' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-				'def' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
+			'abc' => $this->createError( E_NOTICE, 'notice', $trace ),
+			'def' => $this->createError( E_NOTICE, 'notice', $trace ),
 		);
 
 		$this->collector->set_php_errors( $errors );
@@ -191,12 +207,8 @@ class CollectorPhpErrorsTest extends Test {
 
 		$actual = $this->collector->get_data();
 
-		// errors:
-		self::assertArrayHasKey( 'notice', $actual->errors );
-		self::assertSame( 2, count( $actual->errors['notice'] ) );
-
-		// silenced errors:
-		self::assertSame( [], $actual->silenced );
+		// All errors should remain (no filtering by default):
+		self::assertSame( 2, count( $actual->errors ) );
 	}
 
 	function testItWillFilterNoticesFromPlugin(): void {
@@ -213,34 +225,17 @@ class CollectorPhpErrorsTest extends Test {
 		] );
 
 		$errors = array(
-			'warning' => array(
-				'abc' => array(
-					'errno' => E_WARNING,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
-			'notice' => array(
-				'abc' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
+			'warning_abc' => $this->createError( E_WARNING, 'warning', $trace ),
+			'notice_abc' => $this->createError( E_NOTICE, 'notice', $trace ),
 		);
 
 		$this->collector->set_php_errors( $errors );
 		$this->collector->process();
 		$actual = $this->collector->get_data();
 
-		// errors:
-		self::assertArrayHasKey( 'warning', $actual->errors );
-		self::assertArrayNotHasKey( 'notice', $actual->errors );
-		self::assertSame( 1, count( $actual->errors['warning'] ) );
-
-		// silenced errors:
-		self::assertArrayHasKey( 'notice', $actual->silenced );
-		self::assertArrayNotHasKey( 'warning', $actual->silenced );
-		self::assertSame( 1, count( $actual->silenced['notice'] ) );
+		// Only the warning should remain after filtering:
+		self::assertSame( 1, count( $actual->errors ) );
+		self::assertArrayHasKey( 'warning_abc', $actual->errors );
+		self::assertArrayNotHasKey( 'notice_abc', $actual->errors );
 	}
 }

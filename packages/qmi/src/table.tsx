@@ -6,6 +6,9 @@ import {
 	PanelContext,
 } from 'qmi';
 import {
+	CallSite,
+} from './caller';
+import {
 	Backtrace,
 } from 'qmi/data-types';
 import {
@@ -63,6 +66,7 @@ interface TableProps<TDataRow> extends TabularProps<TDataRow> {
 
 interface DataRowWithTrace {
 	trace?: Backtrace;
+	callsite?: CallSite;
 }
 
 interface DataRowWithTime {
@@ -149,6 +153,10 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 
 export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
 	const filters = deriveFilters( rows, ( row ) => {
+		// If callsite is present, use filename as the filter key/label
+		if ( row.callsite ) {
+			return { key: row.callsite.filename, label: row.callsite.filename };
+		}
 		if ( ! row.trace?.frames?.length ) {
 			return null;
 		}
@@ -158,11 +166,15 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
-		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
+		render: ( row ) => <Caller trace={ row.trace } callsite={ row.callsite } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
 			options: filters,
 			callback: ( row, value: string ) => {
+				// If callsite is present, filter by filename
+				if ( row.callsite ) {
+					return row.callsite.filename === value;
+				}
 				if ( ! row.trace?.frames?.length ) {
 					return false;
 				}
