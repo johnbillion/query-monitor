@@ -205,6 +205,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'qm_l10n',
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'admin_url' => admin_url(),
 				'auth_nonce' => array(
 					'on' => wp_create_nonce( 'qm-auth-on' ),
 					'off' => wp_create_nonce( 'qm-auth-off' ),

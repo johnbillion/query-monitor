@@ -16,14 +16,6 @@ interface SettingsProps {
 	settings: iSettings;
 }
 
-declare const qm_l10n: {
-	ajaxurl: string;
-	auth_nonce: {
-		on: string;
-		off: string;
-	}
-};
-
 export const Settings = ( {settings}: SettingsProps ) => {
 	const [ verified, setVerified ] = React.useState( settings.verified );
 	const {
@@ -38,9 +30,9 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		const formData = new FormData();
 
 		formData.append( 'action', `qm_auth_${ action }` );
-		formData.append( 'nonce', qm_l10n.auth_nonce[ action ] ); // @todo pass this in via props
+		formData.append( 'nonce', Utils.qm_l10n.auth_nonce[ action ] ); // @todo pass this in via props
 
-		window.fetch( qm_l10n.ajaxurl, { // @todo pass this in via props
+		window.fetch( Utils.qm_l10n.ajaxurl, { // @todo pass this in via props
 			method: 'POST',
 			body: formData,
 			credentials: 'same-origin',

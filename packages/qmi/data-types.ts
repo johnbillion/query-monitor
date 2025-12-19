@@ -550,7 +550,12 @@ export interface Theme {
 		[k: string]: number;
 	};
 	unsuccessful_template_parts: {
-		[k: string]: unknown;
+		slug: string;
+		name: string | null;
+		caller: {
+			file: string;
+			line: number;
+		};
 	}[];
 }
 /**

@@ -99,7 +99,14 @@ class QM_Data_Theme extends QM_Data {
 	public $count_template_parts;
 
 	/**
-	 * @var array<int, array<string, mixed>>
+	 * @phpstan-var array<int, array{
+	 *   slug: string,
+	 *   name: string|null,
+	 *   caller: array{
+	 *     file: string,
+	 *     line: int,
+	 *   },
+	 * }>
 	 */
 	public $unsuccessful_template_parts;
 }

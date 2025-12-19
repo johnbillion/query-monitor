@@ -1,6 +1,8 @@
 import {
 	PanelProps,
 	NonTabularPanel,
+	FileName,
+	Utils,
 } from 'qmi';
 import {
 	DataTypes,
@@ -37,9 +39,20 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 				<p>
 					{ data.stylesheet }
 				</p>
+				<p>
+					<FileName
+						text="style.css"
+						file={ `${ data.theme_dirs[ data.stylesheet ] }/style.css` }
+						isFileName
+					/>
+				</p>
 				{ data.stylesheet_theme_json && (
-					<p className="qm-ltr">
-						<code>{ data.stylesheet_theme_json }</code>
+					<p>
+						<FileName
+							text="theme.json"
+							file={ data.stylesheet_theme_json }
+							isFileName
+						/>
 					</p>
 				) }
 				{ data.is_child_theme && (
@@ -50,9 +63,20 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						<p>
 							{ data.template }
 						</p>
+						<p>
+							<FileName
+								text="style.css"
+								file={ `${ data.theme_dirs[ data.template ] }/style.css` }
+								isFileName
+							/>
+						</p>
 						{ data.template_theme_json && (
-							<p className="qm-ltr">
-								<code>{ data.template_theme_json }</code>
+							<p>
+								<FileName
+									text="theme.json"
+									file={ data.template_theme_json }
+									isFileName
+								/>
 							</p>
 						) }
 					</>
@@ -66,26 +90,18 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 							{ __( 'Block Template', 'query-monitor' ) }
 						</h3>
 						<p className="qm-ltr">
-							<code>{ data.block_template.id }</code>
+							{ data.block_template.wp_id ? (
+								<a href={ Utils.getSiteEditorUrl( data.block_template.id, 'wp_template' ) }>
+									{ data.block_template.id }
+								</a>
+							) : (
+								<FileName
+									text={ `${ data.theme_folders[ data.block_template.type ] }/${ data.block_template.slug }.html` }
+									file={ `${ data.theme_dirs[ data.block_template.theme ] }/${ data.theme_folders[ data.block_template.type ] }/${ data.block_template.slug }.html` }
+									isFileName
+								/>
+							) }
 						</p>
-						{ data.block_template.source && (
-							<p>
-								{ sprintf(
-									/* translators: %s: Template source */
-									__( 'Source: %s', 'query-monitor' ),
-									data.block_template.source
-								) }
-							</p>
-						) }
-						{ data.block_template.type && (
-							<p>
-								{ sprintf(
-									/* translators: %s: Template type */
-									__( 'Type: %s', 'query-monitor' ),
-									data.block_template.type
-								) }
-							</p>
-						) }
 					</>
 				) : (
 					<>
@@ -94,7 +110,11 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						</h3>
 						{ data.template_path ? (
 							<p className="qm-ltr">
-								{ data.is_child_theme ? data.theme_template_file : data.template_file }
+								<FileName
+									text={ data.is_child_theme ? data.theme_template_file : data.template_file }
+									file={ data.template_path }
+									isFileName
+								/>
 							</p>
 						) : (
 							<p>
@@ -130,14 +150,24 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 					<ul className="qm-ltr">
 						{ Object.keys( parts ).map( ( filename ) => (
 							<li key={ filename }>
-								{ parts[ filename ] }
+								{ typeof filename === 'number' ? (
+									<a href={ Utils.getSiteEditorUrl( parts[ filename ] ) }>
+										{ parts[ filename ] }
+									</a>
+								) : (
+									<FileName
+										text={ parts[ filename ] }
+										file={ filename }
+										isFileName
+									/>
+								) }
 								{ data.count_template_parts[ filename ] > 1 && (
 									<span className="qm-info qm-supplemental">
 										<br/>
 										{ sprintf(
 											/* translators: %s: The number of times that a template part file was included in the page */
 											_nx( 'Included %s time', 'Included %s times', data.count_template_parts[ filename ], 'template parts', 'query-monitor' ),
-											data.count_template_parts[ filename ]
+											Utils.numberFormat( data.count_template_parts[ filename ] )
 										) }
 									</span>
 								) }
@@ -152,31 +182,36 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 					</p>
 				) }
 
-				<h4>
-					{ __( 'Not Loaded', 'query-monitor' ) }
-				</h4>
-
-				{ data.unsuccessful_template_parts ? (
-					<ul>
-						{ data.unsuccessful_template_parts.map( ( requested ) => (
-							<>
-								{ requested.name && (
+				{ data.unsuccessful_template_parts && data.unsuccessful_template_parts.length > 0 && (
+					<>
+						<h4>
+							{ __( 'Not Loaded', 'query-monitor' ) }
+						</h4>
+						<ul>
+							{ data.unsuccessful_template_parts.map( ( requested, index ) => (
+								<React.Fragment key={ index }>
+									{ requested.name && (
+										<li>
+											<FileName
+												text={ `${ requested.slug }-${ requested.name }.php` }
+												file={ requested.caller?.file }
+												line={ requested.caller?.line }
+												isFileName
+											/>
+										</li>
+									) }
 									<li>
-										{ `${ requested.slug }-${ requested.name }.php` }
+										<FileName
+											text={ `${ requested.slug }.php` }
+											file={ requested.caller?.file }
+											line={ requested.caller?.line }
+											isFileName
+										/>
 									</li>
-								) }
-								<li>
-									{ `${ requested.slug }.php` }
-								</li>
-							</>
-						) ) }
-					</ul>
-				) : (
-					<p>
-						<em>
-							{ __( 'None', 'query-monitor' ) }
-						</em>
-					</p>
+								</React.Fragment>
+							) ) }
+						</ul>
+					</>
 				) }
 			</section>
 

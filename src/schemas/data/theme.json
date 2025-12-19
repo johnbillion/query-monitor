@@ -116,7 +116,30 @@
 		"unsuccessful_template_parts": {
 			"type": "array",
 			"items": {
-				"type": "object"
+				"type": "object",
+				"properties": {
+					"slug": {
+						"type": "string"
+					},
+					"name": {
+						"type": ["string", "null"]
+					},
+					"caller": {
+						"type": "object",
+						"properties": {
+							"file": {
+								"type": "string"
+							},
+							"line": {
+								"type": "integer"
+							}
+						},
+						"required": ["file", "line"],
+						"additionalProperties": false
+					}
+				},
+				"required": ["slug", "name", "caller"],
+				"additionalProperties": false
 			}
 		}
 	},

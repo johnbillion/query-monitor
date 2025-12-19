@@ -6,6 +6,17 @@ declare const qm_number_format: {
 	decimal_point: string;
 };
 
+declare const qm_l10n: {
+	admin_url: string;
+	ajaxurl: string;
+	auth_nonce: {
+		on: string;
+		off: string;
+	};
+};
+
+export { qm_l10n };
+
 export function formatSQL( sql: string ): React.JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
@@ -210,4 +221,21 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 	}
 
 	return o;
+}
+
+/**
+ * Generates a URL to the site editor for a given template or template part.
+ *
+ * @param template The template ID.
+ * @param type     The post type, either 'wp_template' or 'wp_template_part'.
+ * @return The site editor URL.
+ */
+export function getSiteEditorUrl( template: string, type: string = 'wp_template_part' ): string {
+	const params = new URLSearchParams( {
+		postType: type,
+		postId: template,
+		canvas: 'edit',
+	} );
+
+	return `${ qm_l10n.admin_url }site-editor.php?${ params.toString() }`;
 }
