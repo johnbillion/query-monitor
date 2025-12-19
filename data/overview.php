@@ -61,15 +61,5 @@ class QM_Data_Overview extends QM_Data {
 	/**
 	 * @var bool
 	 */
-	public $display_time_usage_warning;
-
-	/**
-	 * @var bool
-	 */
-	public $display_memory_usage_warning;
-
-	/**
-	 * @var bool
-	 */
 	public $is_admin;
 }

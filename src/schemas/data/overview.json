@@ -11,8 +11,6 @@
 		"memory",
 		"memory_limit",
 		"memory_usage",
-		"display_time_usage_warning",
-		"display_memory_usage_warning",
 		"is_admin"
 	],
 	"properties": {
@@ -48,12 +46,6 @@
 		},
 		"switched_user": {
 			"type": "object"
-		},
-		"display_time_usage_warning": {
-			"type": "boolean"
-		},
-		"display_memory_usage_warning": {
-			"type": "boolean"
 		},
 		"is_admin": {
 			"type": "boolean"

@@ -427,8 +427,6 @@ export interface Overview {
 	switched_user?: {
 		[k: string]: unknown;
 	};
-	display_time_usage_warning: boolean;
-	display_memory_usage_warning: boolean;
 	is_admin: boolean;
 }
 /**

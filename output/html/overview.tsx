@@ -31,8 +31,8 @@ export const Overview = ( { data }: OverviewProps ) => {
 	const memoryLimit = overviewData.memory_limit || 0;
 	const timeUsage = overviewData.time_usage || 0;
 	const memoryUsage = overviewData.memory_usage || 0;
-	const displayTimeUsageWarning = overviewData.display_time_usage_warning || false;
-	const displayMemoryUsageWarning = overviewData.display_memory_usage_warning || false;
+	const displayTimeUsageWarning = timeUsage >= 75;
+	const displayMemoryUsageWarning = memoryUsage >= 75;
 
 	return (
 		<NonTabularPanel>
