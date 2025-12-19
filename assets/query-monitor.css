@@ -42,9 +42,10 @@
 	--qm-title-button-fg-hover: #000;
 	--qm-title-button-bg-hover: #e6e6e6;
 	--qm-info-fg: #666;
-	--qm-warn-fg: #900;
+	--qm-warn-fg: #800;
 	--qm-warn-bg: #fff0f0;
-	--qm-warn-bg-dark: #ffe8e8;
+	--qm-warn-bg-dark: #ffecec;
+	--qm-warn-bg-hover: #ffe8e8;
 	--qm-warn-border: #ffd6d6;
 	--qm-nonselect-fg: #a0a;
 	--qm-selection-fg: #333;
@@ -96,6 +97,7 @@
 	--qm-warn-fg: #fff0f0;
 	--qm-warn-bg: #622;
 	--qm-warn-bg-dark: #6c2424;
+	--qm-warn-bg-hover: #7a2a2a;
 	--qm-warn-border: #ffd6d6;
 	--qm-nonselect-fg: #a6a;
 	--qm-selection-fg: #32373c;
@@ -1072,7 +1074,7 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 
 	.qm-non-tabular .qm-warn,
 	.qm thead tr .qm-warn,
-	.qm tbody tr .qm-warn {
+	.qm tbody tr:not(.qm-warn) .qm-warn {
 		background-color: var( --qm-warn-bg ) !important;
 		color: var( --qm-warn-fg ) !important;
 
@@ -1162,6 +1164,11 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm tbody tr:hover th,
 	.qm tbody tr:hover td {
 		background: var( --qm-cell-bg-hover ) !important;
+	}
+
+	.qm tbody tr.qm-warn:hover th,
+	.qm tbody tr.qm-warn:hover td {
+		background: var( --qm-warn-bg-hover ) !important;
 	}
 
 	.qm thead th.qm-filtered select.qm-filter {
