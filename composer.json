@@ -48,9 +48,6 @@
 		"wp-coding-standards/wpcs": "2.3.0"
 	},
 	"autoload": {
-		"files": [
-			"src/vite-for-wp.php"
-		],
 		"classmap": [
 			"classes",
 			"data",

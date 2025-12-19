@@ -38,6 +38,20 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	protected $panel_menu = array();
 
+	/**
+	 * Whether we're in development mode (Vite dev server running).
+	 *
+	 * @var bool
+	 */
+	private static bool $is_dev = false;
+
+	/**
+	 * Cached manifest data.
+	 *
+	 * @var array<string, mixed>|null|false Null if not yet checked, false if not found, array if found.
+	 */
+	private static $manifest = null;
+
 	public function __construct( QM_Plugin $qm ) {
 
 		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
@@ -147,6 +161,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		// Show admin notice if assets are not built
+		add_action( 'admin_notices', array( __CLASS__, 'admin_notice_missing_assets' ) );
+
 		if ( ! self::request_supported() ) {
 			return;
 		}
@@ -156,64 +173,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -9999 );
 
-		add_action( 'gp_head', array( $this, 'manually_print_assets' ), 11 );
-
 		parent::init();
 	}
 
 	/**
 	 * @return void
 	 */
-	public function manually_print_assets() {
-		wp_print_scripts( array(
-			'query-monitor',
-		) );
-		wp_print_styles( array(
-			'query-monitor',
-		) );
-	}
-
-	/**
-	 * @return void
-	 */
 	public function enqueue_assets() {
-		/** @var WP_Locale $wp_locale */
-		global $wp_locale;
-
-		\QM\Vite\enqueue_asset(
-			dirname( __DIR__ ) . '/build',
-			'assets/query-monitor.css',
-			array(
-				'handle' => 'query-monitor-css',
-			)
-		);
-		\QM\Vite\enqueue_asset(
-			dirname( __DIR__ ) . '/build',
-			'src/index.tsx',
-			array(
-				'handle' => 'query-monitor-js',
-				'css-dependencies' => array( 'query-monitor-css' ),
-			)
-		);
-		wp_localize_script(
-			'query-monitor-js',
-			'qm_number_format',
-			$wp_locale->number_format
-		);
-		wp_localize_script(
-			'query-monitor-js',
-			'qm_l10n',
-			array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'admin_url' => admin_url(),
-				'auth_nonce' => array(
-					'on' => wp_create_nonce( 'qm-auth-on' ),
-					'off' => wp_create_nonce( 'qm-auth-off' ),
-				),
-			)
-		);
-
-		wp_set_script_translations( 'query-monitor-js', 'query-monitor' );
+		// Assets are now output directly in before_output() via QM_Assets::output().
+		// This method is kept for back-compat in case plugins hook into the action below.
 
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
@@ -223,7 +191,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 * @param \QM_Dispatcher_Html $dispatcher The HTML dispatcher.
 		 */
 		do_action( 'qm/output/enqueued-assets', $this );
-
 	}
 
 	/**
@@ -379,6 +346,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'data' => QM_Collectors::get( 'overview' )->get_data(),
 		);
 
+		/** @var WP_Locale $wp_locale */
+		global $wp_locale;
+
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
 			'settings'    => array(
@@ -386,9 +356,21 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data'        => $data,
+			'l10n' => [
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'admin_url' => admin_url(),
+				'auth_nonce' => [
+					'on' => wp_create_nonce( 'qm-auth-on' ),
+					'off' => wp_create_nonce( 'qm-auth-off' ),
+				],
+			],
+			'number_format' => $wp_locale->number_format,
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
+
+		$this->output_assets();
+
 		wp_print_inline_script_tag(
 			sprintf(
 				'var QueryMonitorData = %s;',
@@ -635,6 +617,156 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	public function cease() {
 		$this->ceased = true;
+	}
+
+	/**
+	 * Get the manifest data, detecting dev vs production mode.
+	 *
+	 * @return array<string, mixed> The manifest data.
+	 * @throws Exception If no manifest is found.
+	 */
+	private static function get_manifest(): array {
+		if ( self::$manifest === null ) {
+			$build_dir = dirname( __DIR__ ) . '/build';
+
+			// Check for dev server manifest first (only exists when Vite dev server is running)
+			$dev_manifest = $build_dir . '/vite-dev-server.json';
+			if ( is_file( $dev_manifest ) && is_readable( $dev_manifest ) ) {
+				/** @var array{origin: string}|null $data */
+				$data = wp_json_file_decode( $dev_manifest, array( 'associative' => true ) );
+				if ( $data ) {
+					self::$is_dev = true;
+					self::$manifest = $data;
+				}
+			}
+
+			// Fall back to production manifest
+			if ( self::$manifest === null ) {
+				$prod_manifest = $build_dir . '/manifest.json';
+				if ( is_file( $prod_manifest ) && is_readable( $prod_manifest ) ) {
+					/** @var array<string, array{file: string}>|null $data */
+					$data = wp_json_file_decode( $prod_manifest, array( 'associative' => true ) );
+					if ( $data ) {
+						self::$manifest = $data;
+					}
+				}
+			}
+
+			// Mark as checked but not found
+			if ( self::$manifest === null ) {
+				self::$manifest = false;
+			}
+		}
+
+		if ( self::$manifest === false ) {
+			throw new Exception( 'Query Monitor assets not built. Run `npm run build` or `npm run watch`.' );
+		}
+
+		return self::$manifest;
+	}
+
+	/**
+	 * Admin notice for missing assets.
+	 */
+	public static function admin_notice_missing_assets(): void {
+		try {
+			self::get_manifest();
+		} catch ( Exception $e ) {
+			printf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				esc_html( $e->getMessage() )
+			);
+		}
+	}
+
+	/**
+	 * Output all assets (CSS, JS, and localized data).
+	 */
+	private function output_assets(): void {
+		try {
+			$manifest = self::get_manifest();
+		} catch ( Exception $e ) {
+			printf(
+				'<!-- QM Assets Error: %s -->' . "\n",
+				esc_html( $e->getMessage() )
+			);
+			return;
+		}
+
+		if ( self::$is_dev ) {
+			/** @var array{origin: string} $manifest */
+			$this->output_dev_assets( $manifest );
+		} else {
+			/** @var array<string, array{file: string}> $manifest */
+			$this->output_production_assets( $manifest );
+		}
+	}
+
+	/**
+	 * Output assets for development mode (Vite dev server).
+	 *
+	 * @param array{origin: string} $data Dev server manifest data.
+	 */
+	private function output_dev_assets( array $data ): void {
+		$origin = $data['origin'];
+
+		// CSS
+		printf(
+			'<link rel="stylesheet" href="%s">' . "\n",
+			esc_url( $origin . '/assets/query-monitor.css' )
+		);
+
+		// Vite client for HMR
+		wp_print_script_tag( [
+			'type' => 'module',
+			'src' => esc_url( $origin . '/@vite/client' ),
+		] );
+
+		// React refresh preamble
+		$react_refresh_src = esc_url( $origin . '/@react-refresh' );
+		wp_print_inline_script_tag(
+			implode( "\n", [
+				"import RefreshRuntime from \"{$react_refresh_src}\";",
+				'RefreshRuntime.injectIntoGlobalHook(window);',
+				'window.$RefreshReg$ = () => {};',
+				'window.$RefreshSig$ = () => (type) => type;',
+				'window.__vite_plugin_react_preamble_installed__ = true;',
+			] ),
+			[ 'type' => 'module' ]
+		);
+
+		// Main JS module
+		wp_print_script_tag( [
+			'type' => 'module',
+			'src' => esc_url( $origin . '/src/index.tsx' ),
+		] );
+	}
+
+	/**
+	 * Output assets for production mode (built files).
+	 *
+	 * @param array<string, array{file: string}> $data Production manifest data.
+	 */
+	private function output_production_assets( array $data ): void {
+		$base_url = $this->qm->plugin_url( 'build' );
+
+		// CSS
+		$css_file = $data['assets/query-monitor.css']['file'] ?? null;
+		if ( $css_file ) {
+			printf(
+				'<link rel="stylesheet" href="%s">' . "\n",
+				esc_url( $base_url . '/' . $css_file )
+			);
+		}
+
+		// JS
+		$js_file = $data['src/index.tsx']['file'] ?? null;
+		if ( $js_file ) {
+			wp_print_script_tag( [
+				'type' => 'module',
+				'src' => esc_url( $base_url . '/' . $js_file ),
+			] );
+		}
 	}
 }
 
