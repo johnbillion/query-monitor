@@ -61,7 +61,11 @@ abstract class QM_Data implements \ArrayAccess {
 	 * @return mixed
 	 */
 	#[ReturnTypeWillChange]
-	final public function offsetGet( $offset ) {
-		return ( is_string( $offset ) && isset( $this->$offset ) ) ? $this->$offset : null;
+	final public function &offsetGet( $offset ) {
+		if ( is_string( $offset ) ) {
+			return $this->$offset;
+		}
+		$null = null;
+		return $null;
 	}
 }
