@@ -199,10 +199,14 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
 
-				if ( empty( $dependency->ver ) || $dependency->ver === true ) {
+				// Widen this type because plugins can set ver to boolean true.
+				/** @var string|bool|null $dependency_ver */
+				$dependency_ver = $dependency->ver;
+
+				if ( empty( $dependency_ver ) || $dependency_ver === true ) {
 					$ver = '';
 				} else {
-					$ver = $dependency->ver;
+					$ver = $dependency_ver;
 				}
 
 				$warning = ! in_array( $handle, $raw->done, true );
