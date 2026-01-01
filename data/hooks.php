@@ -27,13 +27,13 @@ class QM_Data_Hooks extends QM_Data {
 	 *       component?: QM_Component,
 	 *     },
 	 *   }>,
-	 *   components: array<string, QM_Component>,
+	 *   components: array<string, string>,
 	 * }>
 	 */
 	public $hooks;
 
 	/**
-	 * @var array<string, QM_Component>
+	 * @var array<string, string>
 	 */
 	public $components;
 

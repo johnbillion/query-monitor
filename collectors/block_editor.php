@@ -201,7 +201,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$result->callback = $callback;
 		$result->innerHTML = $inner_html;
 		$result->context = $context;
-		$result->timing = $timing->get_time();
+		$result->timing = $timing ? $timing->get_time() : null;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			$result->innerBlocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );

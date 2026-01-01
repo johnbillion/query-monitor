@@ -29,15 +29,12 @@ class QM_Data_Cache extends QM_Data {
 	public $has_opcode_cache;
 
 	/**
-	 * @var int
+	 * @var ?int
 	 */
 	public $cache_hit_percentage;
 
 	/**
-	 * @phpstan-var array{
-	 *   cache_hits: int,
-	 *   cache_misses: int,
-	 * }
+	 * @var ?array<string, bool|int|float|string>
 	 */
 	public $stats;
 

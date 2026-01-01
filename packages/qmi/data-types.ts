@@ -166,11 +166,9 @@ export interface Cache {
 	has_object_cache: boolean;
 	display_hit_rate_warning: boolean;
 	has_opcode_cache: boolean;
-	cache_hit_percentage: number;
-	stats: {
-		cache_hits: number;
-		cache_misses: number;
-		[k: string]: unknown;
+	cache_hit_percentage?: number;
+	stats?: {
+		[k: string]: boolean | number | string;
 	};
 	object_cache_extensions: {
 		[k: string]: boolean;

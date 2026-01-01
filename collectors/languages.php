@@ -240,16 +240,17 @@ class QM_Collector_Languages extends QM_DataCollector {
 					$type = 'unknown';
 					break;
 			}
+			$file = QM_Util::standard_dir( $file, '' );
 		} else {
 			$type = 'unknown';
-			$file = $type;
+			$file = 'unknown';
 		}
 
 		$this->seen[ $domain ][ $mofile ] = true;
 		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file' => is_string( $file ) ? QM_Util::standard_dir( $file, '' ) : $file,
+			'file' => $file,
 			'found' => $found,
 			'handle' => null,
 			'type' => $type,
