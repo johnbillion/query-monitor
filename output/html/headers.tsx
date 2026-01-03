@@ -1,11 +1,7 @@
-import {
-	PanelProps,
-	TabularPanel,
-	EmptyPanel,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { TabularPanel } from '../panels/tabular-panel';
+import { EmptyPanel } from '../panels/empty-panel';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

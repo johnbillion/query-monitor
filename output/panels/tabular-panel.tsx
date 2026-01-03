@@ -1,8 +1,8 @@
-import { PanelContext } from './panel-context';
+import { PanelContext } from '../contexts/panel-context';
 import {
 	Table,
 	TabularProps,
-} from './table';
+} from '../table';
 
 import * as React from 'react';
 

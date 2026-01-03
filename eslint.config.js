@@ -16,7 +16,7 @@ export default [
 			'*.php',
 			'docs/**',
 			'src/bannerComment.ts', // Concatenated into data-types.ts during build
-			'packages/qmi/data-types.ts', // Generated file
+			'output/data-types.ts', // Generated file
 		],
 	},
 	{

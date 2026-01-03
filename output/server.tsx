@@ -1,7 +1,5 @@
-import { Warning } from 'qmi';
-import {
-	Environment as EnvironmentData,
-} from 'qmi/data-types';
+import { Warning } from './components/warning';
+import { Environment as EnvironmentData } from './data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

@@ -1,14 +1,9 @@
-import {
-	PanelProps,
-	TabularPanel,
-	Utils,
-	Warning,
-	getComponentCol,
-	getCallerCol,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { TabularPanel } from '../panels/tabular-panel';
+import * as Utils from '../utils';
+import { Warning } from '../components/warning';
+import { getCallerCol, getComponentCol } from '../table';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

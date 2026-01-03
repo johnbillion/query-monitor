@@ -1,16 +1,14 @@
-import {
-	Icon,
-	NonTabularPanel,
-	MainContext,
-	Utils,
-} from 'qmi';
+import { Icon } from '../components/icon';
+import { NonTabularPanel } from '../panels/non-tabular-panel';
+import { MainContext } from '../contexts/main-context';
+import * as Utils from '../utils';
 import * as React from 'react';
 
 import {
 	__,
 	_x,
 } from '@wordpress/i18n';
-import { iSettings } from '../panels';
+import { iSettings } from '../panels/panels';
 
 interface SettingsProps {
 	settings: iSettings;

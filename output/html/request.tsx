@@ -1,11 +1,7 @@
-import {
-	PanelProps,
-	NonTabularPanel,
-	Utils,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { NonTabularPanel } from '../panels/non-tabular-panel';
+import * as Utils from '../utils';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import { sprintf, __ } from '@wordpress/i18n';

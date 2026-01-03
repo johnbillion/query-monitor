@@ -1,4 +1,4 @@
-import { NonTabularPanel } from 'qmi';
+import { NonTabularPanel } from './non-tabular-panel';
 import * as React from 'react';
 
 interface Props {

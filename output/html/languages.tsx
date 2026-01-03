@@ -1,13 +1,9 @@
-import {
-	ApproximateSize,
-	Frame,
-	PanelFooter,
-	PanelProps,
-	TabularPanel,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { ApproximateSize } from '../components/approximate-size';
+import { Frame } from '../frame';
+import { PanelFooter } from '../panels/panel-footer';
+import { TabularPanel } from '../panels/tabular-panel';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

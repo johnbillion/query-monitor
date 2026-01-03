@@ -1,10 +1,6 @@
-import {
-	PanelProps,
-	NonTabularPanel,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { NonTabularPanel } from '../panels/non-tabular-panel';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

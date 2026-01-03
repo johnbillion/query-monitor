@@ -1,19 +1,17 @@
 import clsx from 'clsx';
 import {
 	Caller,
-	Component,
-	Time,
-	PanelContext,
-} from 'qmi';
-import {
 	CallSite,
 } from './caller';
+import { Component } from './component';
+import { Time } from './components/time';
+import { PanelContext } from './contexts/panel-context';
 import {
 	Backtrace,
-} from 'qmi/data-types';
+} from './data-types';
 import {
 	PanelFooter,
-} from './panel-footer';
+} from './panels/panel-footer';
 import {
 	__,
 } from '@wordpress/i18n';

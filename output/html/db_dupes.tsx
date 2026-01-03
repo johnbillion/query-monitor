@@ -1,13 +1,9 @@
-import {
-	FilterLink,
-	PanelProps,
-	TabularPanel,
-	Time,
-	Utils,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { FilterLink } from '../components/filter-link';
+import { TabularPanel } from '../panels/tabular-panel';
+import { Time } from '../components/time';
+import * as Utils from '../utils';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

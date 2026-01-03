@@ -1,13 +1,9 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	TabularPanel,
-	getCallerCol,
-	getComponentCol,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { TabularPanel } from '../panels/tabular-panel';
+import { Warning } from '../components/warning';
+import { getCallerCol, getComponentCol } from '../table';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {
@@ -69,8 +65,8 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 						const users = [ ...new Set( data.caps.map( ( cap ) => cap.user ) ) ];
 						users.sort();
 						return users.map( ( user ) => ( {
-							key: user,
-							label: user,
+							key: String( user ),
+							label: String( user ),
 						} ) );
 					} )(),
 					callback: ( row, value ) => row.user === value,

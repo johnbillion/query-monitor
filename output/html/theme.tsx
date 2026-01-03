@@ -1,12 +1,8 @@
-import {
-	PanelProps,
-	NonTabularPanel,
-	FileName,
-	Utils,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { NonTabularPanel } from '../panels/non-tabular-panel';
+import { FileName } from '../components/file-name';
+import * as Utils from '../utils';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

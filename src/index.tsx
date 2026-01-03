@@ -4,13 +4,9 @@ import { createRoot } from 'react-dom/client';
 import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
 import { iNavMenu } from '../output/nav';
-import { iPanelData, iSettings } from '../output/panels';
-import {
-	MainContextType,
-	registerPanel,
-	registerOverview,
-	registerSettings,
-} from 'qmi';
+import { iPanelData, iSettings } from '../output/panels/panels';
+import { MainContextType } from '../output/contexts/main-context';
+import { registerPanel, registerOverview, registerSettings } from '../output/panels/panel-registry';
 
 import { Admin } from '../output/html/admin';
 import { BlockEditor } from '../output/html/block_editor';

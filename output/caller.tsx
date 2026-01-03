@@ -1,15 +1,16 @@
-import { Frame, FileName } from 'qmi';
+import { Frame } from './frame';
+import { FileName } from './components/file-name';
 import {
 	Backtrace,
 	CallSite,
-} from 'qmi/data-types';
+} from './data-types';
 import * as React from 'react';
 
 import {
 	__,
 } from '@wordpress/i18n';
 
-export type { CallSite } from 'qmi/data-types';
+export type { CallSite } from './data-types';
 
 interface Props {
 	isFileList?: boolean;

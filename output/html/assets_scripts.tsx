@@ -1,9 +1,5 @@
-import {
-	PanelProps,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

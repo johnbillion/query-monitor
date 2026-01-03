@@ -1,14 +1,10 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	TabularPanel,
-	getTimeCol,
-	TotalTime,
-	FilterLink,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { TabularPanel } from '../panels/tabular-panel';
+import { getTimeCol } from '../table';
+import { TotalTime } from '../components/total-time';
+import { FilterLink } from '../components/filter-link';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

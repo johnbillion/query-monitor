@@ -3,7 +3,7 @@ import * as React from 'react';
 import {
 	DataTypes,
 } from '../data-types';
-import { iPanelData, iSettings } from '../../../output/panels';
+import { iPanelData, iSettings } from './panels';
 
 interface Panels<TDataKey extends keyof DataTypes> {
 	[ id: string ]: Panel<TDataKey> | OverviewPanel | SettingsPanel;

@@ -186,7 +186,7 @@ export interface Caps {
 		trace: Backtrace;
 		result: boolean;
 		name: string;
-		user: string;
+		user: number;
 	}[];
 }
 /**

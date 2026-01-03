@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ErrorPanel } from './error-panel';
-import { Warning } from './warning';
+import { Warning } from '../components/warning';
 
 interface Props {
 	children: React.ReactNode;

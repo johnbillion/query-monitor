@@ -1,14 +1,9 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	TabularPanel,
-	Utils,
-	Warning,
-} from 'qmi';
-import {
-	Asset as AssetDataType,
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from './panels/empty-panel';
+import { TabularPanel } from './panels/tabular-panel';
+import * as Utils from './utils';
+import { Warning } from './components/warning';
+import { Asset as AssetDataType, DataTypes } from './data-types';
+import { PanelProps } from './types';
 import * as React from 'react';
 
 import {

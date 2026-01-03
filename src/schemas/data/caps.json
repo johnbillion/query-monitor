@@ -39,7 +39,7 @@
 						"type": "string"
 					},
 					"user": {
-						"type": "string"
+						"type": "integer"
 					}
 				},
 				"additionalProperties": false

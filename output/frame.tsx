@@ -1,9 +1,9 @@
 import {
 	FrameItem,
-} from 'qmi/data-types';
+} from './data-types';
 import {
 	FileName,
-} from 'qmi';
+} from './components/file-name';
 import * as React from 'react';
 
 interface Props {

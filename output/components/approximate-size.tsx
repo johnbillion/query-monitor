@@ -1,6 +1,4 @@
-import {
-	Utils,
-} from 'qmi';
+import * as Utils from '../utils';
 import * as React from 'react';
 
 import {

@@ -1,13 +1,9 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	Component,
-	Panel,
-	Warning,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { Component } from '../component';
+import { Panel } from '../panels/panel';
+import { Warning } from '../components/warning';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

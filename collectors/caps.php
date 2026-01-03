@@ -236,7 +236,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 			}
 
 			$cap['name'] = $name;
-			$cap['user'] = $user_id;
+			$cap['user'] = (int) $user_id;
 
 			$this->data->caps[] = $cap;
 		}

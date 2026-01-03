@@ -1,16 +1,13 @@
 import clsx from 'clsx';
-import {
-	Icon,
-	MainContext,
-	MainContextType,
-} from 'qmi';
+import { Icon } from './components/icon';
+import { MainContext, MainContextType } from './contexts/main-context';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { __ } from '@wordpress/i18n';
 
 import { Nav, iNavMenu, NavSelect } from './nav';
-import { Panels, iPanelData, iSettings } from './panels';
+import { Panels, iPanelData, iSettings } from './panels/panels';
 
 type Props = {
 	active: string;

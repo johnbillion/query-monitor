@@ -19,7 +19,7 @@ class QM_Data_Caps extends QM_Data {
 	 *   trace: QM_Backtrace,
 	 *   result: bool,
 	 *   name: string,
-	 *   user: string,
+	 *   user: int,
 	 * }>
 	 */
 	public $caps;

@@ -66,7 +66,7 @@ Query Monitor uses JSON Schema to define the structure of data passed between PH
 
 2. **Build command** (`npm run build-schemas`) generates:
    - **PHP classes** in `data/` from the schema definitions
-   - **TypeScript interfaces** in `packages/qmi/data-types.ts`
+   - **TypeScript interfaces** in `output/data-types.ts`
 
 3. **PHP collectors** (`collectors/*.php`) populate instances of the generated data classes
 

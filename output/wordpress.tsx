@@ -1,6 +1,4 @@
-import {
-	Environment as EnvironmentData,
-} from 'qmi/data-types';
+import { Environment as EnvironmentData } from './data-types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

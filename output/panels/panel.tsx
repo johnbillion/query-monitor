@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PanelContext } from './panel-context';
+import { PanelContext } from '../contexts/panel-context';
 
 interface Props {
 	children: React.ReactNode;

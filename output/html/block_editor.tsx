@@ -1,12 +1,8 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	TabularPanel,
-	Time,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { TabularPanel } from '../panels/tabular-panel';
+import { Time } from '../components/time';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

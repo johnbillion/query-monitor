@@ -1,17 +1,10 @@
-import { ErrorBoundary } from 'qmi/src/error-boundary';
-import {
-	PanelContext,
-	PanelContextType,
-	MainContext,
-	getPanel,
-	isOverviewPanel,
-	isSettingsPanel,
-	ErrorPanel,
-	Warning,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { ErrorBoundary } from './error-boundary';
+import { PanelContext, PanelContextType } from '../contexts/panel-context';
+import { MainContext } from '../contexts/main-context';
+import { getPanel, isOverviewPanel, isSettingsPanel } from './panel-registry';
+import { ErrorPanel } from './error-panel';
+import { Warning } from '../components/warning';
+import { DataTypes } from '../data-types';
 import * as React from 'react';
 
 // what is this?

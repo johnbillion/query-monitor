@@ -1,14 +1,9 @@
-import {
-	EmptyPanel,
-	TabularPanel,
-	PanelProps,
-	getCallerCol,
-	getComponentCol,
-	ApproximateSize,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { TabularPanel } from '../panels/tabular-panel';
+import { getCallerCol, getComponentCol } from '../table';
+import { ApproximateSize } from '../components/approximate-size';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

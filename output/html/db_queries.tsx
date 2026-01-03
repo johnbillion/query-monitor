@@ -1,18 +1,12 @@
-import {
-	PanelProps,
-	EmptyPanel,
-	TabularPanel,
-	Utils,
-	Warning,
-	getComponentCol,
-	getTimeCol,
-	getCallerCol,
-	PanelFooter,
-	TotalTime,
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { EmptyPanel } from '../panels/empty-panel';
+import { TabularPanel } from '../panels/tabular-panel';
+import * as Utils from '../utils';
+import { Warning } from '../components/warning';
+import { getCallerCol, getComponentCol, getTimeCol } from '../table';
+import { PanelFooter } from '../panels/panel-footer';
+import { TotalTime } from '../components/total-time';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {

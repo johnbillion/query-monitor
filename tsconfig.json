@@ -1,9 +1,4 @@
 {
-	"references": [
-		{
-			"path": "packages/qmi"
-		}
-	],
 	"compilerOptions": {
 		"esModuleInterop": true,
 		"isolatedModules": true,

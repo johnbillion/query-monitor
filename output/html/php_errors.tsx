@@ -1,14 +1,9 @@
-import {
-	PanelProps,
-	TabularPanel,
-	Warning,
-	EmptyPanel,
-	getCallerCol,
-	getComponentCol
-} from 'qmi';
-import {
-	DataTypes,
-} from 'qmi/data-types';
+import { TabularPanel } from '../panels/tabular-panel';
+import { Warning } from '../components/warning';
+import { EmptyPanel } from '../panels/empty-panel';
+import { getCallerCol, getComponentCol } from '../table';
+import { DataTypes } from '../data-types';
+import { PanelProps } from '../types';
 import * as React from 'react';
 
 import { __ } from '@wordpress/i18n';

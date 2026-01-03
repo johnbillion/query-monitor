@@ -1,8 +1,6 @@
-import {
-	Utils,
-	MainContext,
-	Icon,
-} from 'qmi';
+import * as Utils from '../utils';
+import { MainContext } from '../contexts/main-context';
+import { Icon } from './icon';
 import * as React from 'react';
 
 import {

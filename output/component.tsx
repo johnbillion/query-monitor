@@ -1,8 +1,8 @@
 import {
 	Component as QM_Component,
-} from 'qmi/data-types';
+} from './data-types';
 import * as React from 'react';
-import { FilterLink } from './filter-link';
+import { FilterLink } from './components/filter-link';
 
 interface Props {
 	component: QM_Component;
