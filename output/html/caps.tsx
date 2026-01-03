@@ -59,7 +59,20 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 			},
 			user: {
 				heading: __( 'User', 'query-monitor' ),
-				render: ( cap ) => ( cap.user ),
+				render: ( cap ) => (
+					<>
+						{ cap.user }
+						{ cap.user === 0 && (
+							<>
+								<br/>
+								<br/>
+								<Warning>
+									{ __( 'Invalid user ID. WordPress silently converts this to 0 before the capability check runs.', 'query-monitor' ) }
+								</Warning>
+							</>
+						) }
+					</>
+				),
 				filters: {
 					options: ( () => {
 						const users = [ ...new Set( data.caps.map( ( cap ) => cap.user ) ) ];
