@@ -389,7 +389,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 *
 	 * @return string Markup for the column sorter controls.
 	 */
-	protected static function build_toggler( $context = '' ) {
+	protected static function build_toggler(string $context = '' ) {
 		$label = __( 'Toggle more information', 'query-monitor' );
 
 		if ( $context ) {
@@ -397,10 +397,9 @@ abstract class QM_Output_Html extends QM_Output {
 				/* translators: %s: Description of the information being toggled. */
 				__( 'Toggle more information about %s', 'query-monitor' ),
 				$context
-	);
-}
-
-
+	        );
+		}
+		
 		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr( $label ) . '"><span aria-hidden="true">+</span></button>';
 
 		return $out;
