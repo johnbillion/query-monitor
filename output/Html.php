@@ -394,10 +394,12 @@ abstract class QM_Output_Html extends QM_Output {
 
 		if ( $context ) {
 			$label = sprintf(
+				/* translators: %s: Description of the information being toggled. */
 				__( 'Toggle more information about %s', 'query-monitor' ),
 				$context
-			);
-		}
+	);
+}
+
 
 		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' . esc_attr( $label ) . '"><span aria-hidden="true">+</span></button>';
 
