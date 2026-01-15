@@ -70,7 +70,7 @@ export const QM = ( props: Props ) => {
 		'qm-show-right': side,
 	} );
 
-	const contextValue = {
+	const contextValue: MainContextType = {
 		theme: theme,
 		setTheme: ( theme: string ) => {
 			props.onThemeChange( theme );
@@ -96,6 +96,9 @@ export const QM = ( props: Props ) => {
 				props.onFiltersChange( newFilters );
 				setFilters( newFilters );
 			}
+		},
+		settings: {
+			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 		},
 	};
 

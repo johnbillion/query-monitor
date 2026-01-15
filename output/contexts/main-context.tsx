@@ -9,6 +9,10 @@ interface FiltersType {
 	[ panelName: string ]: PanelContextType['filters'];
 }
 
+export interface SettingsType {
+	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
+}
+
 export type MainContextType = {
 	editor: string;
 	setEditor: ( editor: string ) => void;
@@ -17,6 +21,7 @@ export type MainContextType = {
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
 	switchToPanel?: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
+	settings: SettingsType;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -27,4 +32,7 @@ export const MainContext = createContext<MainContextType>( {
 	filters: {},
 	setFilters: ( _filters ) => {},
 	switchToPanel: ( _panelId, _panelFilters ) => {},
+	settings: {
+		extended_query_prompt_reason: null,
+	},
 } );

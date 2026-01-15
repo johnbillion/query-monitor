@@ -5,6 +5,7 @@ import {
 } from './caller';
 import { Component } from './component';
 import { Time } from './components/time';
+import { Warning } from './components/warning';
 import { PanelContext } from './contexts/panel-context';
 import {
 	Backtrace,
@@ -55,6 +56,7 @@ export type TabularProps<TDataRow> = {
 	data: TDataRow[];
 	rowHasError?: ( row: TDataRow ) => boolean;
 	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
+	warning?: () => React.ReactNode;
 	orderby?: string; // @todo restrict this to a key of the cols
 	order?: 'asc'|'desc';
 	groupKey?: ( row: TDataRow ) => string;
@@ -244,7 +246,7 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, orderby = null, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, warning, orderby = null, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
@@ -357,6 +359,15 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 				</tr>
 			</thead>
 			<tbody>
+				{ warning && (
+					<tr className="qm-warn">
+						<td colSpan={ nonEmptyCols.length }>
+							<Warning>
+								{ warning() }
+							</Warning>
+						</td>
+					</tr>
+				) }
 				{ data.map( ( row, i ) => (
 					<tr
 						key={ i } // @todo nope

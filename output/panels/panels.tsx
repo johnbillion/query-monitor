@@ -46,6 +46,7 @@ export type iPanelData = {
 // @todo this comes from QueryMonitorData / iQM
 export type iSettings = {
 	verified: boolean;
+	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	ajaxurl: string;
 	admin_url: string;
 	auth_nonce: {
