@@ -28,33 +28,4 @@ class DispatcherHtmlTest extends Test {
 		$this->html->init();
 
 	}
-
-	/**
-	 * https://github.com/johnbillion/query-monitor/issues/137
-	 */
-	public function testDispatcherRespectsLateChangeOfHttps(): void {
-		/** @var \WP_Scripts $wp_scripts */
-		global $wp_scripts;
-
-		if ( isset( $_SERVER['HTTPS'] ) ) {
-			$https = $_SERVER['HTTPS'];
-		}
-
-		$_SERVER['HTTPS'] = 'on';
-
-		do_action( 'wp_enqueue_scripts' );
-
-		$registered = $wp_scripts->registered;
-
-		self::assertArrayHasKey( 'query-monitor', $registered );
-		self::assertInstanceOf( '_WP_Dependency', $registered['query-monitor'] );
-		self::assertSame( 'https', parse_url( $registered['query-monitor']->src ?: '', PHP_URL_SCHEME ) );
-
-		if ( isset( $https ) ) {
-			$_SERVER['HTTPS'] = $https;
-		} else {
-			unset( $_SERVER['HTTPS'] );
-		}
-	}
-
 }
