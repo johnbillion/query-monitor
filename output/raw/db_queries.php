@@ -41,7 +41,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 *   },
 	 *   dupes?: array{
 	 *     total: int,
-	 *     queries: array<string, array{query: string, count: int, ltime: float, callers: array<string, int>, components: array<string, int>, sources: array<string, int>}>,
+	 *     queries: array<int, array{query: string, count: int, ltime: float, callers: array<string, int>, components: array<string, int>, sources: array<string, int>}>,
 	 *   },
 	 * }|array{}
 	 */
