@@ -46,6 +46,12 @@ export type iPanelData = {
 // @todo this comes from QueryMonitorData / iQM
 export type iSettings = {
 	verified: boolean;
+	ajaxurl: string;
+	admin_url: string;
+	auth_nonce: {
+		on: string;
+		off: string;
+	};
 };
 
 // what is this?
@@ -157,10 +163,9 @@ export const Panels = ( props: Props ) => {
 
 	if ( panel ) {
 		if ( isOverviewPanel( panel ) ) {
-			// Overview panel receives the entire data object
-			output = panel.render( props.data );
+			// Overview panel receives the entire data object and settings
+			output = panel.render( props.data, props.settings );
 		} else if ( isSettingsPanel( panel ) ) {
-			console.log({props} );
 			// Settings panel receives the settings object
 			output = panel.render( props.settings );
 		} else {

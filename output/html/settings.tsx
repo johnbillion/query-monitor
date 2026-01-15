@@ -28,9 +28,9 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		const formData = new FormData();
 
 		formData.append( 'action', `qm_auth_${ action }` );
-		formData.append( 'nonce', Utils.qm_l10n.auth_nonce[ action ] ); // @todo pass this in via props
+		formData.append( 'nonce', settings.auth_nonce[ action ] );
 
-		window.fetch( Utils.qm_l10n.ajaxurl, { // @todo pass this in via props
+		window.fetch( settings.ajaxurl, {
 			method: 'POST',
 			body: formData,
 			credentials: 'same-origin',

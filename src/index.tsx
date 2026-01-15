@@ -40,16 +40,26 @@ import { Transients } from '../output/html/transients';
 // what is this?
 type iQM = {
 	menu: any;
-	settings: iSettings
+	settings: {
+		verified: boolean;
+	};
 	panel_menu: iNavMenu;
 	data: iPanelData;
+	l10n: {
+		ajaxurl: string;
+		admin_url: string;
+		auth_nonce: {
+			on: string;
+			off: string;
+		};
+	};
 }
 
 declare const QueryMonitorData: iQM;
 
 // Register the Overview panel that receives all data
 registerOverview( {
-	render: ( data ) => <Overview data={ data } />,
+	render: ( data, settings ) => <Overview data={ data } settings={ settings } />,
 } );
 
 // Register all the panels
@@ -238,6 +248,13 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 
+	const settings: iSettings = {
+		...QueryMonitorData.settings,
+		ajaxurl: QueryMonitorData.l10n.ajaxurl,
+		admin_url: QueryMonitorData.l10n.admin_url,
+		auth_nonce: QueryMonitorData.l10n.auth_nonce,
+	};
+
 	createRoot( containerElement ).render(
 		<QM
 			active={ active }
@@ -245,7 +262,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			menu={ QueryMonitorData.menu }
 			panel_menu={ QueryMonitorData.panel_menu }
 			data={ QueryMonitorData.data }
-			settings={ QueryMonitorData.settings }
+			settings={ settings }
 			side={ side }
 			theme={ theme }
 			editor={ editor }

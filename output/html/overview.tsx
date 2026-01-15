@@ -2,7 +2,7 @@ import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
 import * as Utils from '../utils';
-import { iPanelData } from '../panels/panels';
+import { iPanelData, iSettings } from '../panels/panels';
 import * as React from 'react';
 
 import {
@@ -13,9 +13,10 @@ import {
 
 type OverviewProps = {
 	data: iPanelData;
+	settings: iSettings;
 };
 
-export const Overview = ( { data }: OverviewProps ) => {
+export const Overview = ( { data, settings }: OverviewProps ) => {
 	// Get data from various collectors
 	const dbQueriesData = data.db_queries?.data;
 	const cacheData = data.cache?.data;
@@ -228,7 +229,7 @@ export const Overview = ( { data }: OverviewProps ) => {
 								<p>
 									<span className="qm-info">
 										<a
-											href={ `${ Utils.qm_l10n.admin_url }network/plugins.php?plugin_status=dropins` }
+											href={ `${ settings.admin_url }network/plugins.php?plugin_status=dropins` }
 											target="_blank"
 											rel="noopener noreferrer"
 										>

@@ -16,7 +16,7 @@ interface Panel<TDataKey extends keyof DataTypes> {
 }
 
 interface OverviewPanel {
-	render: ( data: iPanelData ) => React.ReactNode;
+	render: ( data: iPanelData, settings: iSettings ) => React.ReactNode;
 	type: 'overview';
 }
 

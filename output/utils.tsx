@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { WP_Error } from 'wp-types';
 
-declare const qm_number_format: {
-	thousands_sep: string;
-	decimal_point: string;
-};
-
-declare const qm_l10n: {
-	admin_url: string;
-	ajaxurl: string;
-	auth_nonce: {
-		on: string;
-		off: string;
+declare const QueryMonitorData: {
+	number_format: {
+		thousands_sep: string;
+		decimal_point: string;
+	};
+	l10n: {
+		admin_url: string;
+		ajaxurl: string;
+		auth_nonce: {
+			on: string;
+			off: string;
+		};
 	};
 };
 
-export { qm_l10n };
+export const qm_l10n = QueryMonitorData.l10n;
 
 export function formatSQL( sql: string ): React.JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
@@ -209,7 +210,7 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 	if ( num_str.length > 3 ) {
 		let i = 0;
 		for ( i = num_str.length; i > 3; i -= 3 ) {
-			o = qm_number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
+			o = QueryMonitorData.number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
 		}
 		o = num_str.slice( 0, i ) + o;
 	} else {
@@ -217,7 +218,7 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 	}
 
 	if ( decimals ) {
-		o = o + qm_number_format.decimal_point + fraction;
+		o = o + QueryMonitorData.number_format.decimal_point + fraction;
 	}
 
 	return o;
