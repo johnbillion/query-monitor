@@ -135,6 +135,12 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
+	 * @deprecated
+	 * @return void
+	 */
+	protected function output_concerns() {}
+
+	/**
 	 * @param string $id
 	 * @param string $name
 	 * @return void
