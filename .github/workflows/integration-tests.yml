@@ -6,6 +6,7 @@ on:
     branches:
       - 'develop'
       - 'trunk'
+      - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/integration-tests.yml'
       - 'tests/**'
