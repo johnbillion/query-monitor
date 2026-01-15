@@ -1,6 +1,7 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Time } from '../components/time';
+import { JsonOutput } from '../components/json-output';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { Cols } from '../table';
@@ -76,11 +77,7 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 			heading: __('Attributes', 'query-monitor'),
 			className: 'qm-cell-block-attrs',
 			render: (row: iBlock) => show_attrs(row) && (
-				<pre className="qm-pre-wrap">
-					<code>
-						{JSON.stringify(row.attrs, null, 2)}
-					</code>
-				</pre>
+				<JsonOutput data={ row.attrs } />
 			),
 		},
 	};
@@ -89,11 +86,7 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 		heading: __('Context', 'query-monitor'),
 		className: 'qm-cell-block-context',
 		render: (row: iBlock) => row.context && show_attrs(row) && (
-			<pre className="qm-pre-wrap">
-				<code>
-					{JSON.stringify(row.context, null, 2)}
-				</code>
-			</pre>
+			<JsonOutput data={ row.context } />
 		),
 	};
 

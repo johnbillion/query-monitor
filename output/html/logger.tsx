@@ -1,6 +1,7 @@
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
+import { JsonOutput } from '../components/json-output';
 import { getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
@@ -96,9 +97,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					return (
 						<details>
 							<summary>{ sprintf( _n( '%d item', '%d items', Object.keys( row.context ).length, 'query-monitor' ), Object.keys( row.context ).length ) }</summary>
-							<pre style={{ fontSize: '11px', marginTop: '4px' }}>
-								{ JSON.stringify( row.context, null, 2 ) }
-							</pre>
+							<JsonOutput data={ row.context } />
 						</details>
 					);
 				},

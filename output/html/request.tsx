@@ -1,4 +1,5 @@
 import { NonTabularPanel } from '../panels/non-tabular-panel';
+import { JsonOutput } from '../components/json-output';
 import * as Utils from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
@@ -94,7 +95,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 											{ typeof value === 'string' ? (
 												value
 											) : (
-												JSON.stringify( value )
+												<JsonOutput data={ value } />
 											) }
 										</td>
 									</tr>
