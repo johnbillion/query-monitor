@@ -386,6 +386,12 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		:is(body).wp-admin.folded & {
 			width: calc( 100% - 36px ) !important;
 		}
+
+		@media only screen and (max-width: 960px) {
+			:is(body).wp-admin.auto-fold & {
+				width: calc( 100% - 36px ) !important;
+			}
+		}
 	}
 
 	&.qm-show-right {
