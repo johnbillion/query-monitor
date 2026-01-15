@@ -29,13 +29,13 @@ export function formatSQL( sql: string ): React.JSX.Element[] {
 		index += 2;
 
 		collection.push(
-			<>
+			<React.Fragment key={ index }>
 				{ index > 2 && (
 					<br />
 				) }
 				<b>{ keyword }</b>
 				{ ` ${ lines[ index ] }` }
-			</>
+			</React.Fragment>
 		);
 
 		return '';
@@ -48,9 +48,9 @@ export function formatURL( url: string ): React.JSX.Element[] {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
 	const collection: React.JSX.Element[] = [
-		<>
+		<React.Fragment key={ 0 }>
 			{ parts[0] }
-		</>,
+		</React.Fragment>,
 	];
 	let index = 0;
 
@@ -58,10 +58,10 @@ export function formatURL( url: string ): React.JSX.Element[] {
 		index += 2;
 
 		collection.push(
-			<>
+			<React.Fragment key={ index }>
 				<br />
 				{ `${ keyword }${ parts[ index ] }` }
-			</>
+			</React.Fragment>
 		);
 
 		return '';
