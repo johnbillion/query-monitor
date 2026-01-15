@@ -315,6 +315,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *   calling_line: int,
 	 *   file: string,
 	 *   line: int,
+	 *   function?: string,
 	 * }>
 	 */
 	public function get_filtered_trace() {

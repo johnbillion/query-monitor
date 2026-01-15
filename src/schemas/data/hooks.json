@@ -86,8 +86,10 @@
 					},
 					"components": {
 						"type": "object",
+						"phpType": "array<string, QM_Component>",
 						"additionalProperties": {
-							"type": "string"
+							"phpType": "QM_Component",
+							"type": "object"
 						}
 					}
 				},
@@ -100,9 +102,14 @@
 			}
 		},
 		"components": {
-			"type": "object",
-			"additionalProperties": {
-				"type": "string"
+			"type": "array",
+			"phpStanType": "array<int, array<string, QM_Component>>",
+			"items": {
+				"type": "object",
+				"additionalProperties": {
+					"phpType": "QM_Component",
+					"type": "object"
+				}
 			}
 		},
 		"all_hooks": {

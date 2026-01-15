@@ -389,6 +389,7 @@ class QM_Util {
 
 		unset( $callback['function'], $callback['class'] );
 
+		/** @phpstan-ignore return.type */
 		return $callback;
 
 	}

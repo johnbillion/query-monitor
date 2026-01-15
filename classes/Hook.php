@@ -27,9 +27,12 @@ class QM_Hook {
 	 *       line?: int|false,
 	 *       error?: WP_Error,
 	 *       component?: QM_Component,
+	 *       callback_type: string,
+	 *       start_line?: int,
+	 *       display_file?: string,
 	 *     },
 	 *   }>,
-	 *   components: array<string, string>,
+	 *   components: array<string, QM_Component>,
 	 * }
 	 */
 	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {

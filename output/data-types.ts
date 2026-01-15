@@ -333,12 +333,16 @@ export interface Hooks {
 			};
 		}[];
 		components: {
-			[k: string]: string;
+			[k: string]: {
+				[k: string]: unknown;
+			};
 		};
 	}[];
 	components: {
-		[k: string]: string;
-	};
+		[k: string]: {
+			[k: string]: unknown;
+		};
+	}[];
 	all_hooks: boolean;
 }
 /**
