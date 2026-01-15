@@ -6,6 +6,7 @@ on:
     branches:
       - 'develop'
       - 'trunk'
+      - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
@@ -67,7 +68,7 @@ jobs:
           - wp: '6.1'
             php: '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@33705f771525b0d691ee821c90e0c10b18e02871 # 1.2.1
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
     with:
       node: true
       php: ${{ matrix.php }}
