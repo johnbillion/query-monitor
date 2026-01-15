@@ -27,6 +27,7 @@ export type Col<TDataRow> = {
 	sorting?: ColSorting<TDataRow>;
 	cellHasError?: ( row: TDataRow, i: number ) => boolean;
 	wrap?: boolean;
+	rowSpan?: ( row: TDataRow, i: number, data: TDataRow[] ) => number;
 }
 
 export interface Cols<TDataRow> {
@@ -55,6 +56,7 @@ export type TabularProps<TDataRow> = {
 	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
 	orderby?: string; // @todo restrict this to a key of the cols
 	order?: 'asc'|'desc';
+	groupKey?: ( row: TDataRow ) => string;
 }
 
 interface TableProps<TDataRow> extends TabularProps<TDataRow> {
@@ -211,7 +213,7 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, orderby = null, order = 'desc', children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, orderby = null, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
@@ -232,7 +234,18 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 			continue;
 		}
 
-		data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
+		if ( groupKey ) {
+			// When groupKey is provided, keep all rows in a group if any row matches
+			const matchingGroups = new Set<string>();
+			for ( const row of data ) {
+				if ( cols[ filterName ].filters.callback( row, filterValue ) ) {
+					matchingGroups.add( groupKey( row ) );
+				}
+			}
+			data = data.filter( ( row ) => matchingGroups.has( groupKey( row ) ) );
+		} else {
+			data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
+		}
 	}
 
 	const count = countData( data );
@@ -317,21 +330,30 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 					<tr
 						key={ i } // @todo nope
 						className={ clsx( {
-							// @todo remove this in favour of using a warning or error property on row objects
 							'qm-warn': rowHasError && rowHasError( row ),
 						} ) }
 					>
-						{ nonEmptyCols.map( ( [ key, col ] ) => (
-							<td
-								key={ key }
-								className={ clsx( `qm-cell-${key}`, typeof col.className === 'function' ? col.className( row, i ) : col.className, {
-									'qm-warn': col.cellHasError && col.cellHasError( row, i ),
-									'qm-wrap': col.wrap,
-								} ) }
-							>
-								{ col.render( row, i ) }
-							</td>
-						) ) }
+						{ nonEmptyCols.map( ( [ key, col ] ) => {
+							const span = col.rowSpan ? col.rowSpan( row, i, data ) : 1;
+
+							// Skip this cell if a previous row is spanning into it
+							if ( span === 0 ) {
+								return null;
+							}
+
+							return (
+								<td
+									key={ key }
+									className={ clsx( `qm-cell-${key}`, typeof col.className === 'function' ? col.className( row, i ) : col.className, {
+										'qm-warn': col.cellHasError && col.cellHasError( row, i ),
+										'qm-wrap': col.wrap,
+									} ) }
+									rowSpan={ span > 1 ? span : undefined }
+								>
+									{ col.render( row, i ) }
+								</td>
+							);
+						} ) }
 					</tr>
 				) ) }
 			</tbody>
