@@ -19,11 +19,17 @@ const aggregateByCaller = ( rows: DataTypes['db_queries']['rows'] ): CallerAggre
 	const map: Record<string, CallerAggregate> = {};
 
 	for ( const row of rows ) {
-		if ( ! row.trace?.frames?.length ) {
-			continue;
+		let caller: string | undefined;
+
+		if ( row.trace?.frames?.length ) {
+			caller = row.trace.frames[0].id;
+		} else if ( row.stack?.length ) {
+			caller = row.stack[0];
 		}
 
-		const caller = row.trace.frames[0].id;
+		if ( ! caller ) {
+			continue;
+		}
 
 		if ( ! map[ caller ] ) {
 			map[ caller ] = {

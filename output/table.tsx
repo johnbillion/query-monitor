@@ -209,10 +209,26 @@ interface DataRowWithStack {
 }
 
 export const getStackCol = <TDataRow extends DataRowWithStack>( rows: TDataRow[] ) => {
+	const filters = deriveFilters( rows, ( row ) => {
+		if ( ! row.stack?.length ) {
+			return null;
+		}
+		return { key: row.stack[0], label: row.stack[0] };
+	} );
+
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
 		render: ( row ) => <StackCaller stack={ row.stack } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
+		filters: filters.length ? {
+			options: filters,
+			callback: ( row, value: string ) => {
+				if ( ! row.stack?.length ) {
+					return false;
+				}
+				return row.stack[0] === value;
+			},
+		} : undefined,
 	};
 
 	return column;
