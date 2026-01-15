@@ -99,6 +99,19 @@ export const QM = ( props: Props ) => {
 		},
 	};
 
+	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
+	React.useEffect( () => {
+		if ( adminMenuElement && props.menu.top.classname ) {
+			// Split the classname string and add each class
+			const classes = props.menu.top.classname.split( ' ' ).filter( Boolean );
+			classes.forEach( ( cls ) => adminMenuElement.classList.add( cls ) );
+
+			return () => {
+				classes.forEach( ( cls ) => adminMenuElement.classList.remove( cls ) );
+			};
+		}
+	}, [ adminMenuElement, props.menu.top.classname ] );
+
 	/**
 	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
 	 * a comprehensive explanantion of modern pointer event handling.
@@ -206,7 +219,7 @@ export const QM = ( props: Props ) => {
 			{ adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>
 					<a
-						className={ clsx( 'ab-item', props.menu.top.classname ) }
+						className="ab-item"
 						href="#qm-overview"
 						onClick={ ( e ) => {
 							setActivePanel( 'overview' );
