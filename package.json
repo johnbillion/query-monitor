@@ -5,7 +5,10 @@
 	"license": "GPL-2.0-or-later",
 	"private": true,
 	"author": "John Blackbourn",
-	"repository": "johnbillion/query-monitor",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/johnbillion/query-monitor.git"
+	},
 	"engines": {
 		"node": ">=20"
 	},
