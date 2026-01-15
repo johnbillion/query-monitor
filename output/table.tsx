@@ -13,6 +13,7 @@ import {
 import {
 	PanelFooter,
 } from './panels/panel-footer';
+import { StackCaller } from './stack-caller';
 import {
 	__,
 } from '@wordpress/i18n';
@@ -203,6 +204,20 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 	return column;
 }
 
+interface DataRowWithStack {
+	stack?: string[];
+}
+
+export const getStackCol = <TDataRow extends DataRowWithStack>( rows: TDataRow[] ) => {
+	const column: Col<TDataRow> = {
+		heading: __( 'Caller', 'query-monitor' ),
+		render: ( row ) => <StackCaller stack={ row.stack } defaultExpanded={ rows.length === 1 } />,
+		className: 'qm-has-toggle',
+	};
+
+	return column;
+}
+
 const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	return data.reduce( ( total, row ) => {
 		if ( 'count' in row ) {
@@ -358,7 +373,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 				) ) }
 			</tbody>
 			{ footerFunc( {
-				cols: Object.keys( cols ).length,
+				cols: nonEmptyCols.length,
 				count: count,
 				total: total,
 				data: data,

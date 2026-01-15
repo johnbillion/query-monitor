@@ -2,7 +2,7 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Warning } from '../components/warning';
-import { getCallerCol, getComponentCol, getTimeCol } from '../table';
+import { getCallerCol, getComponentCol, getStackCol, getTimeCol } from '../table';
 import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes } from '../data-types';
@@ -75,13 +75,13 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				},
 				wrap: true
 			},
-			caller: getCallerCol( data.rows ),
-			component: getComponentCol( data.rows ),
-			result: {
+			caller: data.has_trace ? getCallerCol( data.rows ) : getStackCol( data.rows ),
+			component: data.has_trace ? getComponentCol( data.rows ) : null,
+			result: data.has_result ? {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
 				render: ( row ) => ( ! Utils.isWPError( row.result ) && row.result ),
-			},
+			} : null,
 			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ),
 		} }
 		data={ data.rows }
