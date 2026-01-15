@@ -8,6 +8,7 @@ import { Time } from './components/time';
 import { PanelContext } from './contexts/panel-context';
 import {
 	Backtrace,
+	Component as ComponentType,
 } from './data-types';
 import {
 	PanelFooter,
@@ -94,14 +95,30 @@ const deriveFilters = <TDataRow,>(
 	return filters;
 };
 
-export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+export const componentFilterCallback = ( component: ComponentType | null | undefined, value: string ): boolean => {
+	if ( ! component ) {
+		return false;
+	}
+
+	if ( value === 'non-core' ) {
+		return component.context !== 'core';
+	}
+
+	return `${ component.type }-${ component.context }` === value;
+};
+
+export const deriveComponentFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getComponent: ( row: TDataRow ) => ComponentType | null | undefined
+): FilterOption[] => {
 	const filters = deriveFilters( rows, ( row ) => {
-		if ( ! row.trace?.component ) {
+		const component = getComponent( row );
+		if ( ! component ) {
 			return null;
 		}
 		return {
-			key: `${ row.trace.component.type }-${ row.trace.component.context }`,
-			label: row.trace.component.name,
+			key: `${ component.type }-${ component.context }`,
+			label: component.name,
 		};
 	} );
 
@@ -112,18 +129,18 @@ export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataR
 		} );
 	}
 
+	return filters;
+};
+
+export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+	const filters = deriveComponentFilters( rows, ( row ) => row.trace?.component );
+
 	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace.component } />,
 		filters: {
 			options: filters,
-			callback: ( row, value: string ) => {
-				if ( value === 'non-core' ) {
-					return ( row.trace.component.context !== 'core' );
-				}
-
-				return ( `${row.trace.component.type}-${row.trace.component.context}` === value );
-			},
+			callback: ( row, value: string ) => componentFilterCallback( row.trace.component, value ),
 		},
 	};
 
