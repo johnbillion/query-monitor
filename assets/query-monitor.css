@@ -1212,6 +1212,8 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	.qm a.qm-link,
 	.qm a.qm-edit-link,
 	.qm button.qm-filter-trigger {
+		white-space: nowrap !important;
+
 		& svg {
 			fill: var( --qm-link-fg-hover ) !important;
 			width: 16px;
