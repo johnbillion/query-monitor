@@ -194,18 +194,23 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		$inner_html = preg_replace( '/(\r?\n){2,}/', "\n", trim( $block['innerHTML'] ) );
 
 		$result = new QM_Data_Post_Block();
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
 		$result->blockName = $block['blockName'];
 		$result->attrs = $block['attrs'];
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
 		$result->innerContent = $block['innerContent'];
 		$result->dynamic = $dynamic;
 		$result->callback = $callback;
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
 		$result->innerHTML = $inner_html;
 		$result->context = $context;
 		$result->timing = $timing ? $timing->get_time() : null;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
 			$result->innerBlocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
 		} else {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
 			$result->innerBlocks = array();
 		}
 
