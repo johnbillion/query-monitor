@@ -39,7 +39,7 @@ import { Transients } from '../output/html/transients';
 
 // what is this?
 type iQM = {
-	menu: any;
+	menu: iNavMenu;
 	settings: {
 		verified: boolean;
 	};

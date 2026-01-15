@@ -28,7 +28,7 @@ export type Col<TDataRow> = {
 	wrap?: boolean;
 }
 
-interface Cols<TDataRow> {
+export interface Cols<TDataRow> {
 	[ key: string ]: Col<TDataRow>;
 }
 

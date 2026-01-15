@@ -70,38 +70,54 @@ export function formatURL( url: string ): React.JSX.Element[] {
 	return collection;
 }
 
-export function isWPError( data: any ): data is WP_Error {
-	return ( ( typeof data === 'object' ) && 'errors' in data );
+export function isWPError( data: unknown ): data is WP_Error {
+	return ( ( typeof data === 'object' ) && data !== null && 'errors' in data );
 }
 
-export function getErrorData( data: any ): any {
-	if ( ! ( ( typeof data === 'object' ) && 'error_data' in data ) ) {
+interface ErrorDataContainer {
+	error_data?: Record<string, unknown>;
+}
+
+export function getErrorData( data: unknown ): unknown {
+	if ( ! ( ( typeof data === 'object' ) && data !== null && 'error_data' in data ) ) {
 		return null;
 	}
 
-	if ( Array.isArray( data.error_data ) ) {
+	const container = data as ErrorDataContainer;
+
+	if ( Array.isArray( container.error_data ) ) {
 		return null;
 	}
 
-	for ( const key in data.error_data ) {
-		return data.error_data[key];
+	if ( container.error_data ) {
+		for ( const key in container.error_data ) {
+			return container.error_data[key];
+		}
 	}
 
 	return null;
 }
 
-export function getErrorMessage( data: any ): string|null {
-	if ( ! ( ( typeof data === 'object' ) && 'errors' in data ) ) {
+interface ErrorMessageContainer {
+	errors?: Record<string, string[]>;
+}
+
+export function getErrorMessage( data: unknown ): string|null {
+	if ( ! ( ( typeof data === 'object' ) && data !== null && 'errors' in data ) ) {
 		return null;
 	}
 
-	if ( Array.isArray( data.errors ) ) {
+	const container = data as ErrorMessageContainer;
+
+	if ( Array.isArray( container.errors ) ) {
 		return null;
 	}
 
-	for ( const key in data.errors ) {
-		for ( const message_key in data.errors[key] ) {
-			return data.errors[key][message_key];
+	if ( container.errors ) {
+		for ( const key in container.errors ) {
+			for ( const message_key in container.errors[key] ) {
+				return container.errors[key][message_key];
+			}
 		}
 	}
 

@@ -35,7 +35,7 @@ const FatalAdminMenu = ( props: iAdminMenuProps ) => {
 		props.element.innerHTML = '';
 		props.element.classList.add( 'qm-error' );
 		return true;
-	}, []);
+	}, [ props.element ]);
 
 	return ReactDOM.createPortal( props.children, props.element );
 }

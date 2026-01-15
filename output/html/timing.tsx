@@ -4,13 +4,42 @@ import { ApproximateSize } from '../components/approximate-size';
 import { EmptyPanel } from '../panels/empty-panel';
 import { getCallerCol, getComponentCol } from '../table';
 import { Warning } from '../components/warning';
-import { DataTypes } from '../data-types';
+import { DataTypes, Backtrace } from '../data-types';
 import { PanelProps } from '../types';
 import * as React from 'react';
 
 import {
 	__,
 } from '@wordpress/i18n';
+
+interface LapData {
+	time: number;
+	time_used: number;
+	memory: number;
+	memory_used: number;
+	data: unknown;
+}
+
+interface TimingRow {
+	function: string;
+	function_time: number;
+	function_memory: number;
+	laps: Record<string, LapData>;
+	trace: Backtrace;
+	start_time: number;
+	end_time: number;
+	isLap?: boolean;
+	lapName?: string;
+	lapData?: LapData;
+}
+
+interface WarningRow {
+	function: string;
+	message: string;
+	trace: Backtrace;
+}
+
+type FlattenedRow = TimingRow | WarningRow;
 
 export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 	if ( ( ! data.timing || data.timing.length === 0 ) && ( ! data.warning || data.warning.length === 0 ) ) {
@@ -27,7 +56,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 	}
 
 	// Flatten timing data to include laps as separate rows
-	const flattenedData: any[] = [];
+	const flattenedData: FlattenedRow[] = [];
 	
 	if ( data.timing ) {
 		data.timing.forEach( row => {

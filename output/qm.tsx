@@ -99,14 +99,6 @@ export const QM = ( props: Props ) => {
 		},
 	};
 
-	const handleWindowResize = () => {
-		// @todo
-	}
-
-	const handleContainerResize = () => {
-		// @todo
-	}
-
 	/**
 	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
 	 * a comprehensive explanantion of modern pointer event handling.
@@ -156,7 +148,7 @@ export const QM = ( props: Props ) => {
 		el.addEventListener( 'pointerup', end );
 		el.addEventListener( 'pointercancel', end );
 		el.addEventListener( 'touchstart', (e) => e.preventDefault() );
-	}, [ handleWindowResize, handleContainerResize, active ] );
+	}, [ active ] );
 
 	return (
 		<MainContext.Provider value={ contextValue }>

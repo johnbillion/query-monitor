@@ -61,10 +61,12 @@ export const getPanel = ( id: string ) => {
 	return panels[ id ] ?? null;
 }
 
-export const isOverviewPanel = ( panel: any ): panel is OverviewPanel => {
+type AnyPanel = Panel<keyof DataTypes> | OverviewPanel | SettingsPanel | null;
+
+export const isOverviewPanel = ( panel: AnyPanel ): panel is OverviewPanel => {
 	return panel?.type === 'overview';
 }
 
-export const isSettingsPanel = ( panel: any ): panel is SettingsPanel => {
+export const isSettingsPanel = ( panel: AnyPanel ): panel is SettingsPanel => {
 	return panel?.type === 'settings';
 }

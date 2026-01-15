@@ -3,6 +3,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import { Time } from '../components/time';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { Cols } from '../table';
 import * as React from 'react';
 
 import {
@@ -59,7 +60,7 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 	const flatBlocks = flattenBlocks(data.post_blocks);
 	const show_attrs = (block: iBlock) => (!Array.isArray(block.attrs) || block.attrs.length > 0);
 
-	const cols: any = {
+	const cols: Cols<iBlock> = {
 		index: {
 			heading: '#',
 			className: 'qm-cell-num qm-num',
