@@ -2,6 +2,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
 import { getCallerCol, getComponentCol } from '../table';
+import { getFilterLabel } from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import * as React from 'react';
@@ -17,21 +18,27 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		</EmptyPanel>
 	}
 
+	const errors = Object.values( data.errors );
+	const counts = errors.reduce( ( acc, error ) => {
+		acc[ error.level ] = ( acc[ error.level ] || 0 ) + 1;
+		return acc;
+	}, {} as Record<string, number> );
+
 	const filterOptions = [
 		{
-			label: 'Warning',
+			label: getFilterLabel( 'Warning', counts.warning ),
 			key: 'warning',
 		},
 		{
-			label: 'Notice',
+			label: getFilterLabel( 'Notice', counts.notice ),
 			key: 'notice',
 		},
 		{
-			label: 'Strict',
+			label: getFilterLabel( 'Strict', counts.strict ),
 			key: 'strict',
 		},
 		{
-			label: 'Deprecated',
+			label: getFilterLabel( 'Deprecated', counts.deprecated ),
 			key: 'deprecated',
 		},
 	];
@@ -61,15 +68,15 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => ( row.message ),
 			},
-			caller: getCallerCol( Object.values( data.errors ) ),
+			caller: getCallerCol( errors ),
 			count: {
 				className: 'qm-num',
 				heading: __( 'Count', 'query-monitor' ),
 				render: ( row ) => ( row.count ),
 			},
-			component: getComponentCol( Object.values( data.errors ) ),
+			component: getComponentCol( errors ),
 		}}
 		rowHasError={ ( row ) => ( row.level === 'warning' ) }
-		data={ Object.values( data.errors ) }
+		data={ errors }
 	/>;
 };

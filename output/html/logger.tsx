@@ -3,6 +3,7 @@ import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
 import { JsonOutput } from '../components/json-output';
 import { getCallerCol, getComponentCol } from '../table';
+import { getFilterLabel } from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import * as React from 'react';
@@ -33,37 +34,42 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 		);
 	}
 
+	const counts = data.logs.reduce( ( acc, log ) => {
+		acc[ log.level ] = ( acc[ log.level ] || 0 ) + 1;
+		return acc;
+	}, {} as Record<string, number> );
+
 	const filterOptions = [
 		{
-			label: 'Emergency',
+			label: getFilterLabel( 'Emergency', counts.emergency ),
 			key: 'emergency',
 		},
 		{
-			label: 'Alert',
+			label: getFilterLabel( 'Alert', counts.alert ),
 			key: 'alert',
 		},
 		{
-			label: 'Critical',
+			label: getFilterLabel( 'Critical', counts.critical ),
 			key: 'critical',
 		},
 		{
-			label: 'Error',
+			label: getFilterLabel( 'Error', counts.error ),
 			key: 'error',
 		},
 		{
-			label: 'Warning',
+			label: getFilterLabel( 'Warning', counts.warning ),
 			key: 'warning',
 		},
 		{
-			label: 'Notice',
+			label: getFilterLabel( 'Notice', counts.notice ),
 			key: 'notice',
 		},
 		{
-			label: 'Info',
+			label: getFilterLabel( 'Info', counts.info ),
 			key: 'info',
 		},
 		{
-			label: 'Debug',
+			label: getFilterLabel( 'Debug', counts.debug ),
 			key: 'debug',
 		},
 	];

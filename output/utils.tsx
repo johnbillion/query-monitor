@@ -241,6 +241,17 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 }
 
 /**
+ * Returns a filter label with an optional count suffix.
+ *
+ * @param label The base label.
+ * @param count The count to append, or undefined/0 to omit.
+ * @return The label, optionally with count in parentheses.
+ */
+export function getFilterLabel( label: string, count?: number ): string {
+	return count ? `${ label } (${ count })` : label;
+}
+
+/**
  * Generates a URL to the site editor for a given template or template part.
  *
  * @param template The template ID.
