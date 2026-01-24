@@ -449,7 +449,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		align-items: center !important;
 		background: var( --qm-container-bg ) !important;
 		border-bottom: 1px solid var( --qm-panel-border ) !important;
-		cursor: ns-resize !important;
 		display: flex !important;
 		flex-shrink: 0 !important;
 		height: 27px !important;
@@ -460,7 +459,10 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 		user-select: none !important;
 
 		.qm-title-heading {
+			align-content: center !important;
+			align-self: stretch !important;
 			border-right: 1px solid #bbb !important;
+			cursor: ns-resize !important;
 			flex-grow: 1 !important;
 			margin-right: 6px !important;
 		}

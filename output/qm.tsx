@@ -128,15 +128,16 @@ export const QM = ( props: Props ) => {
 
 		const el = document.getElementsByClassName( 'qm-resizer' )[0];
 		const qmMain = document.getElementById( 'query-monitor-main' );
-		let windowHeight = window.innerHeight;
-		let offset = 0;
+		let startY = 0;
+		let startHeight = 0;
 
 		const start = (event: PointerEvent) => {
 			if ( event.button !== 0 ) {
 				return;
 			}
 
-			offset = event.clientY - el.getBoundingClientRect().top;
+			startY = event.clientY;
+			startHeight = qmMain.getBoundingClientRect().height;
 
 			dragging = true;
 			el.setPointerCapture(event.pointerId);
@@ -147,7 +148,8 @@ export const QM = ( props: Props ) => {
 				return;
 			}
 
-			let newHeight = windowHeight - event.clientY + offset;
+			const windowHeight = window.innerHeight;
+			let newHeight = startHeight - ( event.clientY - startY );
 
 			newHeight = Math.max( 27, newHeight );
 			newHeight = Math.min( windowHeight - 32, newHeight );
@@ -159,11 +161,21 @@ export const QM = ( props: Props ) => {
 			dragging = false;
 		}
 
+		const preventTouch = (e: TouchEvent) => e.preventDefault();
+
 		el.addEventListener( 'pointerdown', start );
 		el.addEventListener( 'pointermove', move );
 		el.addEventListener( 'pointerup', end );
 		el.addEventListener( 'pointercancel', end );
-		el.addEventListener( 'touchstart', (e) => e.preventDefault() );
+		el.addEventListener( 'touchstart', preventTouch, { passive: false } );
+
+		return () => {
+			el.removeEventListener( 'pointerdown', start );
+			el.removeEventListener( 'pointermove', move );
+			el.removeEventListener( 'pointerup', end );
+			el.removeEventListener( 'pointercancel', end );
+			el.removeEventListener( 'touchstart', preventTouch );
+		};
 	}, [ active ] );
 
 	return (
