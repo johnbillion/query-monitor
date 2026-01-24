@@ -7,7 +7,7 @@ interface Props {
 	wordpress: EnvironmentData['wp'];
 }
 
-export default ( { wordpress }: Props ) => (
+const WordPress = ( { wordpress }: Props ) => (
 	<section>
 		<h3>
 			WordPress
@@ -66,3 +66,5 @@ export default ( { wordpress }: Props ) => (
 		</table>
 	</section>
 );
+
+export default WordPress;

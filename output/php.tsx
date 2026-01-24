@@ -9,7 +9,7 @@ interface Props {
 	php: EnvironmentData['php'];
 }
 
-export default ( { php }: Props ) => (
+const PHP = ( { php }: Props ) => (
 	<section>
 		<h3>
 			PHP
@@ -114,3 +114,5 @@ export default ( { php }: Props ) => (
 		</table>
 	</section>
 );
+
+export default PHP;

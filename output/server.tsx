@@ -8,7 +8,7 @@ interface Props {
 	server: EnvironmentData['server'];
 }
 
-export default ( { server }: Props ) => {
+const Server = ( { server }: Props ) => {
 	const info = {
 		name: __( 'Software', 'query-monitor' ),
 		version: __( 'Version', 'query-monitor' ),
@@ -46,3 +46,5 @@ export default ( { server }: Props ) => {
 		</section>
 	);
 };
+
+export default Server;

@@ -13,7 +13,7 @@ interface Props {
 	db: EnvironmentData['db'];
 }
 
-export default ( { db }: Props) => {
+const DB = ( { db }: Props) => {
 	const infoLabels = {
 		'server-version': __( 'Server Version', 'query-monitor' ),
 		'extension': __( 'Extension', 'query-monitor' ),
@@ -72,3 +72,5 @@ export default ( { db }: Props) => {
 		</section>
 	);
 };
+
+export default DB;
