@@ -16,10 +16,8 @@
  * @phpstan-type Asset array{
  *   handle: string,
  *   position: 'missing'|'broken'|'modules'|'header'|'footer',
- *   host: string,
- *   port: string,
+ *   url: mixed,
  *   source: string|WP_Error,
- *   local: bool,
  *   ver: string,
  *   warning: bool,
  *   display: string,
@@ -39,27 +37,12 @@ class QM_Data_Assets extends QM_Data {
 	public $default_version;
 
 	/**
-	 * @var string
+	 * @var mixed
 	 */
-	public $full_host;
-
-	/**
-	 * @var string
-	 */
-	public $host;
-
-	/**
-	 * @var bool
-	 */
-	public $is_ssl;
+	public $url;
 
 	/**
 	 * @var array<string, true>
 	 */
 	public $missing_dependencies;
-
-	/**
-	 * @var string
-	 */
-	public $port;
 }

@@ -106,27 +106,34 @@ export interface Admin {
 export interface Assets {
 	assets?: Asset[];
 	default_version: string;
-	full_host: string;
-	host: string;
-	is_ssl: boolean;
+	url: URL;
 	missing_dependencies: {
 		[k: string]: true;
 	};
-	port: string;
 }
 export interface Asset {
 	handle: string;
 	position: "missing" | "broken" | "modules" | "header" | "footer";
-	host: string;
-	port: string;
+	url: URL;
 	source: string | WP_Error;
-	local: boolean;
 	ver: string;
 	warning: boolean;
 	display: string;
 	dependents: string[];
 	dependencies: string[];
 	[k: string]: unknown;
+}
+/**
+ * Parsed URL data object.
+ */
+export interface URL {
+	origin: string;
+	scheme: string;
+	hostname: string;
+	host: string;
+	insecure: boolean;
+	local: boolean;
+	absolute: string;
 }
 /**
  * Block editor data transfer object.

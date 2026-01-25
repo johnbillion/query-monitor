@@ -298,7 +298,16 @@ abstract class QM_Collector {
 	}
 
 	public static function get_host(): string {
-		return strval( isset( $_SERVER['HTTP_HOST'] ) ? wp_unslash( $_SERVER['HTTP_HOST'] ) : get_option( 'home' ) );
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+			return strval( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+		}
+
+		return (string) parse_url( get_option( 'home' ), PHP_URL_HOST );
+	}
+
+	public static function get_origin(): string {
+		$scheme = is_ssl() ? 'https' : 'http';
+		return $scheme . '://' . self::get_host();
 	}
 
 	/**

@@ -58,9 +58,9 @@ const Assets = ( { data, labels }: myProps ) => {
 	const position_labels: iPositionLabels = {
 		missing: __( 'Missing', 'query-monitor' ),
 		broken: __( 'Missing Dependencies', 'query-monitor' ),
+		modules: __( 'Module', 'query-monitor' ),
 		header: __( 'Header', 'query-monitor' ),
 		footer: __( 'Footer', 'query-monitor' ),
-		modules: __( 'Module', 'query-monitor' ),
 	};
 
 	if ( ! data.assets ) {
@@ -90,27 +90,21 @@ const Assets = ( { data, labels }: myProps ) => {
 					heading: __( 'Handle', 'query-monitor' ),
 					render: ( row ) => row.handle,
 				},
-				host: {
+				hostname: {
 					heading: __( 'Host', 'query-monitor' ),
-					render: ( row ) => ( row.host && row.port ? `${ row.host }:${ row.port }` : row.host ),
+					render: ( row ) => ( row.url.host ),
 					filters: {
 						options: [
 							{
 								key: 'local',
-								label: data.full_host,
+								label: data.url.hostname,
 							},
 							{
 								key: 'other',
 								label: __( 'Other', 'query-monitor' ),
 							},
 						],
-						callback: ( row, value ) => {
-							if ( value === 'local' ) {
-								return ( row.local );
-							}
-
-							return ( ! row.local );
-						},
+						callback: ( row, value ) => value === 'local' ? row.url.local : ! row.url.local,
 					},
 				},
 				source: {

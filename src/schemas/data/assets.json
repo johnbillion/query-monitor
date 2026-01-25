@@ -21,11 +21,8 @@
 						"footer"
 					]
 				},
-				"host": {
-					"type": "string"
-				},
-				"port": {
-					"type": "string"
+				"url": {
+					"$ref": "../url.json"
 				},
 				"source": {
 					"oneOf": [
@@ -43,9 +40,6 @@
 							]
 						}
 					]
-				},
-				"local": {
-					"type": "boolean"
 				},
 				"ver": {
 					"type": "string"
@@ -72,10 +66,8 @@
 			"required": [
 				"handle",
 				"position",
-				"host",
-				"port",
+				"url",
 				"source",
-				"local",
 				"ver",
 				"warning",
 				"display",
@@ -86,11 +78,8 @@
 	},
 	"required": [
 		"default_version",
-		"full_host",
-		"host",
-		"is_ssl",
-		"missing_dependencies",
-		"port"
+		"url",
+		"missing_dependencies"
 	],
 	"properties": {
 		"assets": {
@@ -102,14 +91,8 @@
 		"default_version": {
 			"type": "string"
 		},
-		"full_host": {
-			"type": "string"
-		},
-		"host": {
-			"type": "string"
-		},
-		"is_ssl": {
-			"type": "boolean"
+		"url": {
+			"$ref": "../url.json"
 		},
 		"missing_dependencies": {
 			"type": "object",
@@ -118,9 +101,6 @@
 				"phpType": "true",
 				"tsType": "true"
 			}
-		},
-		"port": {
-			"type": "string"
 		}
 	},
 	"additionalProperties": false

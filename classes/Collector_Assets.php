@@ -128,11 +128,18 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->is_ssl = is_ssl();
-		$this->data->full_host = self::get_host();
-		$this->data->host = (string) parse_url( $this->data->full_host, PHP_URL_HOST );
 		$this->data->default_version = get_bloginfo( 'version' );
-		$this->data->port = (string) parse_url( $this->data->full_host, PHP_URL_PORT );
+
+		$url = new QM_Data_URL();
+		$url->origin = self::get_origin();
+		$url->scheme = is_ssl() ? 'https' : 'http';
+		$url->hostname = (string) parse_url( $url->origin, PHP_URL_HOST );
+		$port = (string) parse_url( $url->origin, PHP_URL_PORT );
+		$url->host = $port ? "{$url->hostname}:{$port}" : $url->hostname;
+		$url->insecure = false;
+		$url->local = true;
+		$url->absolute = $url->origin;
+		$this->data->url = $url;
 
 		$positions = array(
 			'missing',
@@ -181,6 +188,29 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$asset_data = array();
 		$missing_dependencies = array();
 
+		if ( is_array( $modules ) ) {
+			foreach ( $modules as $id => $module ) {
+				$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $module['src'] );
+
+				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->origin, '#' ) . '#', '', remove_query_arg( 'ver', $module['src'] ) ), '/' );
+				$position = 'modules';
+
+				$asset_data[] = array(
+					'handle' => $id,
+					'position' => $position,
+					'url' => $url,
+					'source' => $module['src'],
+					'ver' => $module['version'] ?: '',
+					'warning' => false,
+					'display' => $display,
+					'dependents' => $module['dependents'],
+					'dependencies' => $module['dependencies'],
+				);
+
+				$this->log_type( $position );
+			}
+		}
+
 		foreach ( $positions as $position ) {
 			if ( empty( $this->{$position} ) ) {
 				continue;
@@ -197,7 +227,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$dependents = $this->get_dependents( $dependency, $raw );
 
-				list( $host, $source, $local, $port ) = $this->get_dependency_data( $dependency );
+				list( $url, $source ) = $this->get_dependency_data( $dependency );
 
 				// Widen this type because plugins can set ver to boolean true.
 				/** @var string|bool|null $dependency_ver */
@@ -214,7 +244,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( $source instanceof WP_Error ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->origin, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -229,40 +259,13 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				$asset_data[] = array(
 					'handle' => $handle,
 					'position' => $position,
-					'host' => $host,
-					'port' => $port,
+					'url' => $url,
 					'source' => $source,
-					'local' => $local,
 					'ver' => $ver,
 					'warning' => $warning,
 					'display' => $display,
 					'dependents' => $dependents,
 					'dependencies' => $dependencies,
-				);
-
-				$this->log_type( $position );
-			}
-		}
-
-		if ( is_array( $modules ) ) {
-			foreach ( $modules as $id => $module ) {
-				list( $host, $source, $local, $port ) = $this->get_module_data( $module['src'] );
-
-				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->full_host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
-				$position = 'modules';
-
-				$asset_data[] = array(
-					'handle' => $id,
-					'position' => $position,
-					'host' => $host,
-					'port' => $port,
-					'source' => $source,
-					'local' => $local,
-					'ver' => $module['version'] ?: '',
-					'warning' => false,
-					'display' => $display,
-					'dependents' => $module['dependents'],
-					'dependencies' => $module['dependencies'],
 				);
 
 				$this->log_type( $position );
@@ -416,23 +419,15 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 	/**
 	 * @param _WP_Dependency $dependency
-	 * @return mixed[]
-	 * @phpstan-return array{
-	 *   0: string,
+	 * @return array{
+	 *   0: QM_Data_URL,
 	 *   1: string|WP_Error,
-	 *   2: bool,
-	 *   3: string,
 	 * }
 	 */
 	public function get_dependency_data( _WP_Dependency $dependency ) {
-		/** @var QM_Data_Assets $data */
-		$data = $this->get_data();
 		$loader = rtrim( $this->get_dependency_type(), 's' );
 		$src = $dependency->src;
-		$host = '';
-		$full_host = '';
-		$scheme = '';
-		$port = '';
+		$url = new QM_Data_URL();
 
 		if ( null === $dependency->ver ) {
 			$ver = '';
@@ -448,23 +443,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
 		if ( is_string( $source ) ) {
-			$host = (string) parse_url( $source, PHP_URL_HOST );
-			$scheme = (string) parse_url( $source, PHP_URL_SCHEME );
-			$port = (string) parse_url( $source, PHP_URL_PORT );
-			$full_host = $host;
-
-			if ( ! empty( $port ) ) {
-				$full_host .= ':' . $port;
-			}
+			// @TODO this still needs to normalise to absolute URL.
+			$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $source );
 		}
 
-		if ( empty( $host ) ) {
-			$full_host = $data->full_host;
-			$host = $data->host;
-			$port = $data->port;
-		}
-
-		if ( $scheme && $data->is_ssl && ( 'https' !== $scheme ) && ( 'localhost' !== $host ) ) {
+		if ( $url->insecure ) {
 			$source = new WP_Error( 'qm_insecure_content', __( 'Insecure content', 'query-monitor' ), array(
 				'src' => $source,
 			) );
@@ -473,51 +456,43 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( $source instanceof WP_Error ) {
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
-				$host = (string) parse_url( $error_data['src'], PHP_URL_HOST );
+				$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $error_data['src'] );
 			}
 		} elseif ( empty( $source ) ) {
 			$source = '';
-			$host = '';
 		}
 
-		$local = ( $data->full_host === $full_host );
-
-		return array( $host, $source, $local, $port );
+		return array( $url, $source );
 	}
 
 	/**
-	 * Returns data about the module source.
+	 * Accepts an absolute URL, relative URL, or root-relative URL and returns its normalised information.
 	 *
-	 * @param string $src
-	 * @return mixed[]
-	 * @phpstan-return array{
-	 *   0: string,
-	 *   1: string,
-	 *   2: bool,
-	 *   3: string,
-	 * }
+	 * This is primarily so relative URLs are correctly handled in the same way as local absolute URLs.
 	 */
-	protected function get_module_data( string $src ): array {
-		/** @var QM_Data_Assets */
-		$data = $this->get_data();
+	protected function hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( string $url ): QM_Data_URL {
+		$parsed_url = new QM_Data_URL();
+		$parsed_url->hostname = (string) parse_url( $url, PHP_URL_HOST );
+		$parsed_url->scheme = (string) parse_url( $url, PHP_URL_SCHEME );
+		$port = (string) parse_url( $url, PHP_URL_PORT );
 
-		$host = (string) parse_url( $src, PHP_URL_HOST );
-		$port = (string) parse_url( $src, PHP_URL_PORT );
-		$full_host = $host;
-
-		if ( ! empty( $port ) ) {
-			$full_host .= ':' . $port;
+		if ( empty( $parsed_url->hostname ) ) {
+			// Relative URL - prepend the origin
+			$parsed_url->origin = $this->data->url->origin;
+			$parsed_url->hostname = $this->data->url->hostname;
+			$parsed_url->scheme = $this->data->url->scheme;
+			$parsed_url->absolute = $this->data->url->origin . $url;
+			$port = (string) parse_url( $this->data->url->origin, PHP_URL_PORT );
+		} else {
+			// Absolute URL
+			$parsed_url->origin = $parsed_url->scheme . '://' . $parsed_url->hostname . ( $port ? ':' . $port : '' );
+			$parsed_url->absolute = $url;
 		}
 
-		if ( empty( $host ) ) {
-			$full_host = $data->full_host;
-			$host = $data->host;
-			$port = $data->port;
-		}
+		$parsed_url->insecure = ( 'https' === $this->data->url->scheme && 'https' !== $parsed_url->scheme && 'localhost' !== $parsed_url->hostname );
+		$parsed_url->host = $port ? "{$parsed_url->hostname}:{$port}" : $parsed_url->hostname;
+		$parsed_url->local = ( $this->data->url->origin === $parsed_url->origin );
 
-		$source = $src;
-		$local = ( $data->full_host === $full_host );
-
-		return array( $host, $source, $local, $port );
+		return $parsed_url;
 	}
 }
