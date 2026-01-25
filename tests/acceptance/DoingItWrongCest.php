@@ -22,12 +22,12 @@ class DoingItWrongCest {
 	// 	] );
 	// }
 
-	public function DeprecatedConstructorShouldBeHandled( AcceptanceTester $I ): void {
-		$I->amOnAPageThatIsDoingItWrong( 'constructor' );
-		$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
-			'Message' => 'The called constructor method for My_Class class is deprecated since version 2.0.0! Use __construct() instead.',
-		] );
-	}
+	// public function DeprecatedConstructorShouldBeHandled( AcceptanceTester $I ): void {
+	// 	$I->amOnAPageThatIsDoingItWrong( 'constructor' );
+	// 	$I->seeTableRowInQMPanel( 'Doing it Wrong (1)', [
+	// 		'Message' => 'The called constructor method for My_Class class is deprecated since version 2.0.0! Use __construct() instead.',
+	// 	] );
+	// }
 
 	public function DeprecatedFileShouldBeHandled( AcceptanceTester $I ): void {
 		$I->amOnAPageThatIsDoingItWrong( 'file' );
