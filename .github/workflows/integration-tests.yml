@@ -14,7 +14,7 @@ on:
       - '**.scss'
       - '**.js'
       - '**.php'
-      - 'codeception.dist.yml'
+      - 'phpunit.xml.dist'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
@@ -28,7 +28,7 @@ on:
       - '**.scss'
       - '**.js'
       - '**.php'
-      - 'codeception.dist.yml'
+      - 'phpunit.xml.dist'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
@@ -45,7 +45,7 @@ jobs:
     name: WP ${{ matrix.wp }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@5242abb4d3b77fda386b078a4a2d398ca17a0a63 # 2.7.0
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
@@ -70,6 +70,5 @@ jobs:
             php: '7.4'
       fail-fast: false
     with:
-      node: false
       php: ${{ matrix.php }}
       wp: ${{ matrix.wp }}

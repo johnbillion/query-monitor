@@ -16,10 +16,10 @@ parameters:
 		- tests/integration/
 		- wp-content/
 	scanDirectories:
-		- tests/_support/
+		- vendor/wp-phpunit/wp-phpunit/includes/
 	excludePaths:
-		analyse:
-			- tests/integration/Supports/
+		analyseAndScan:
+			- vendor/yoast/wp-test-utils/src/BrainMonkey/bootstrap.php
 	bootstrapFiles:
 		- tests/phpstan/stubs.php
 	universalObjectCratesClasses:
@@ -29,9 +29,5 @@ parameters:
 		- '#^Access to protected property wpdb::#'
 		# Properties in QM_Data* classes are nullable
 		- '#^Property QM_Data_.+ is not nullable\.$#'
-		# Data providers for acceptance tests
-		-
-			path: tests/acceptance/*
-			message: '#^Method \S+::data[a-zA-Z]+\(\) is unused\.$#'
 		# Passing ints and floats to these functions is fine
 		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, int\|string given#'
