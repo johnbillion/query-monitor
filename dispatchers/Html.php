@@ -747,19 +747,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'src' => esc_url( $origin . '/@vite/client' ),
 		] );
 
-		// React refresh preamble
-		$react_refresh_src = esc_url( $origin . '/@react-refresh' );
-		wp_print_inline_script_tag(
-			implode( "\n", [
-				"import RefreshRuntime from \"{$react_refresh_src}\";",
-				'RefreshRuntime.injectIntoGlobalHook(window);',
-				'window.$RefreshReg$ = () => {};',
-				'window.$RefreshSig$ = () => (type) => type;',
-				'window.__vite_plugin_react_preamble_installed__ = true;',
-			] ),
-			[ 'type' => 'module' ]
-		);
-
 		// Main JS module
 		wp_print_script_tag( [
 			'type' => 'module',

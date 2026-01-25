@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { v4wp } from '@kucrut/vite-for-wp';
-import react from '@vitejs/plugin-react';
+import preact from '@preact/preset-vite';
 
 export default defineConfig( {
 	plugins: [
