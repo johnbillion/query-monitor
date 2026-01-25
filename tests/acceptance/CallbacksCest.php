@@ -32,7 +32,7 @@ class CallbacksCest {
 	public function ClosureCallbackShouldBeDisplayed( AcceptanceTester $I ): void {
 		$I->amOnAPageThatTriggersCallbackType( 'closure' );
 		$I->seeQMMenu();
-		$I->seeInQMPanel( 'Hooks & Actions', 'Closure on line' );
+		$I->seeInQMPanel( 'Hooks & Actions', 'Closure: ' );
 		$I->seeInQMPanel( 'Hooks & Actions', 'acceptance.php' );
 		$I->seeInQMPanel( 'Hooks & Actions', 'qm_test_hook' );
 	}

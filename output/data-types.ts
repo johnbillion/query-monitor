@@ -326,6 +326,8 @@ export interface Hooks {
 			callback: {
 				accepted_args: number;
 				name?: string;
+				callback_type?: string;
+				display_file?: string;
 				file?: string | false;
 				line?: number | false;
 				error?: WP_Error;

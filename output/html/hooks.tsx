@@ -1,6 +1,7 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Component } from '../component';
+import { JsonOutput } from '../components/json-output';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { componentFilterCallback, deriveComponentFilters } from '../table';
@@ -23,7 +24,6 @@ interface FlattenedRow {
 	component: HookComponent | null;
 }
 
-
 const flattenHooks = ( hooks: DataTypes['hooks']['hooks'] ): FlattenedRow[] => {
 	const rows: FlattenedRow[] = [];
 
@@ -37,10 +37,11 @@ const flattenHooks = ( hooks: DataTypes['hooks']['hooks'] ): FlattenedRow[] => {
 			} );
 		} else {
 			for ( const action of hook.actions ) {
+				const cb = ( action.callback.callback_type === 'closure' ) ? `Closure: ${ action.callback.display_file }:${ action.callback.line }` : ( action.callback.name ?? null );
 				rows.push( {
 					hookName: hook.name,
 					priority: action.priority,
-					callback: action.callback.name ?? null,
+					callback: cb,
 					component: action.callback.component ?? null,
 				} );
 			}

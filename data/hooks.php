@@ -21,6 +21,8 @@ class QM_Data_Hooks extends QM_Data {
 	 *     callback: array{
 	 *       accepted_args: int,
 	 *       name?: string,
+	 *       callback_type?: string,
+	 *       display_file?: string,
 	 *       file?: string|false,
 	 *       line?: int|false,
 	 *       error?: WP_Error,
