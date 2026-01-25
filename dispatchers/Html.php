@@ -778,18 +778,28 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		// CSS
 		$css_file = $data['assets/query-monitor.css']['file'] ?? null;
 		if ( $css_file ) {
+			$url = add_query_arg(
+				'ver',
+				QM_VERSION,
+				$base_url . '/' . $css_file,
+			);
 			printf(
 				'<link rel="stylesheet" href="%s">' . "\n",
-				esc_url( $base_url . '/' . $css_file )
+				esc_url( $url )
 			);
 		}
 
 		// JS
 		$js_file = $data['src/index.tsx']['file'] ?? null;
 		if ( $js_file ) {
+			$url = add_query_arg(
+				'ver',
+				QM_VERSION,
+				$base_url . '/' . $js_file,
+			);
 			wp_print_script_tag( [
 				'type' => 'module',
-				'src' => esc_url( $base_url . '/' . $js_file ),
+				'src' => esc_url( $url ),
 			] );
 		}
 	}

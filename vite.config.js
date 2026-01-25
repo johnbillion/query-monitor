@@ -4,16 +4,22 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig( {
 	plugins: [
-		react(),
+		preact(),
 		v4wp( {
 			input: {
 				main: 'src/index.tsx',
-				css: 'assets/query-monitor.css',
+				'query-monitor': 'assets/query-monitor.css',
 			},
 			outDir: 'build',
 		} ),
 	],
 	build: {
 		target: 'chrome112',
+		rollupOptions: {
+			output: {
+				entryFileNames: 'assets/query-monitor.js',
+				assetFileNames: 'assets/[name][extname]',
+			},
+		},
 	},
 } );
