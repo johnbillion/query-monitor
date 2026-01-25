@@ -112,7 +112,7 @@ class AcceptanceTester extends \Codeception\Actor {
 			);
 
 			$conditions[] = sprintf(
-				'td[%d][normalize-space(text())="%s"]',
+				'td[%d][normalize-space(.)="%s"]',
 				$columnIndex,
 				$expectedValue
 			);
