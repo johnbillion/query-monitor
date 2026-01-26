@@ -9,16 +9,18 @@ class CollectorPhpErrorsTest extends Test {
 	 */
 	public $collector;
 
-	function _before(): void {
-		parent::_before();
+	#[\Override]
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->collector = new \QM_Collector_PHP_Errors();
 	}
 
-	function _after(): void {
+	#[\Override]
+	public function tear_down(): void {
 		$this->collector->tear_down();
 
-		parent::_after();
+		parent::tear_down();
 	}
 
 	/**

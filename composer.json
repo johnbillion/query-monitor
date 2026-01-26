@@ -28,7 +28,7 @@
 	},
 	"require-dev": {
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "2.7.0",
+		"johnbillion/plugin-infrastructure": "2.7.2",
 		"johnbillion/wp-compat": "1.4.0",
 		"php-stubs/wordpress-stubs": "6.9.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.8",

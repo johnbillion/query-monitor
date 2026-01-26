@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+	bootstrap="tests/bootstrap.php"
+	cacheResultFile="tests/cache/phpunit/.phpunit.result.cache"
+	backupGlobals="false"
+	colors="true"
+	beStrictAboutTestsThatDoNotTestAnything="true"
+	beStrictAboutOutputDuringTests="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	failOnRisky="true"
+	>
+	<testsuites>
+		<testsuite name="integration">
+			<directory suffix="Test.php">tests/integration</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<env name="WP_PHPUNIT__TESTS_CONFIG" value="vendor/johnbillion/plugin-infrastructure/config/wp-tests-config.php" />
+	</php>
+	<coverage>
+		<include>
+			<file>query-monitor.php</file>
+			<directory>classes</directory>
+			<directory>data</directory>
+			<directory>output</directory>
+		</include>
+	</coverage>
+</phpunit>
