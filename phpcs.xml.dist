@@ -69,15 +69,13 @@
 	<rule ref="WordPress-Docs" />
 
 	<!-- Custom rule properties -->
+	<config name="minimum_wp_version" value="6.1"/>
+
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="query-monitor" />
-		</properties>
-	</rule>
-
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="6.1" />
+			<property name="text_domain" type="array">
+				<element value="query-monitor"/>
+			</property>
 		</properties>
 	</rule>
 
