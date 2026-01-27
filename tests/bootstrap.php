@@ -1,5 +1,8 @@
 <?php declare(strict_types = 1);
 
+// Define QM_TESTS to allow the plugin to load during CLI tests
+define( 'QM_TESTS', true );
+
 $_tests_dir = dirname( __DIR__ ) . '/vendor/wp-phpunit/wp-phpunit/';
 
 // Get access to tests_add_filter() function
