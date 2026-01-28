@@ -31,6 +31,7 @@
 		"guzzlehttp/guzzle": "^7.0",
 		"johnbillion/plugin-infrastructure": "2.7.2",
 		"johnbillion/wp-compat": "0.3.1",
+		"php-stubs/wp-cli-stubs": "2.12.0",
 		"php-stubs/wordpress-stubs": "6.9.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.5",
 		"phpstan/phpstan": "1.12.11",
