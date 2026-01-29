@@ -10,6 +10,8 @@ import {
 	__,
 } from '@wordpress/i18n';
 
+import { Toggle } from './components/toggle';
+
 export type { CallSite } from './data-types';
 
 interface Props {
@@ -40,16 +42,11 @@ export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }
 	return (
 		<>
 			{ hasStack && ! defaultExpanded && (
-				<button
-					aria-expanded={ expanded ? 'false' : 'true' }
-					aria-label={ __( 'Toggle full call stack', 'query-monitor' ) }
-					className="qm-toggle"
-					onClick={ () => setExpanded( ! expanded ) }
-				>
-					<span aria-hidden="true">
-						{ expanded ? '-' : '+' }
-					</span>
-				</button>
+				<Toggle
+					expanded={ expanded }
+					onToggle={ () => setExpanded( ! expanded ) }
+					context={ caller?.display }
+				/>
 			) }
 			<ol>
 				{ callsite && (
