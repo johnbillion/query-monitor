@@ -10,7 +10,7 @@
 		"url": "git+https://github.com/johnbillion/query-monitor.git"
 	},
 	"engines": {
-		"node": ">=20"
+		"node": ">=24"
 	},
 	"main": "src/index.tsx",
 	"type": "module",
