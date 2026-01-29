@@ -391,25 +391,21 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return string Markup for the toggle control.
 	 */
 	protected static function build_toggler( string $context = '' ) {
-		$label = __( 'Toggle more information', 'query-monitor' );
-
-		if ( $context ) {
-			$label = sprintf(
-				/* translators: %s: Context for the toggle button. */
+		$label = $context
+			? sprintf(
+				/* translators: %s: Context for the toggle button, e.g. a function name. */
 				__( 'Toggle more information about %s', 'query-monitor' ),
 				$context
-			);
-		}
+			)
+			: __( 'Toggle more information', 'query-monitor' );
 
-		$out = '<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="' .
-			esc_attr( $label ) .
-			'"><span aria-hidden="true">+</span></button>';
+		$out = sprintf(
+			'<button class="qm-toggle" data-on="+" data-off="-" aria-expanded="false" aria-label="%s"><span aria-hidden="true">+</span></button>',
+			esc_attr( $label )
+		);
 
 		return $out;
 	}
-
-
-
 
 	/**
 	 * Returns a filter trigger.
