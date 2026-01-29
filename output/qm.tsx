@@ -280,7 +280,7 @@ const AdminMenu = ( props: iAdminMenuProps ) => {
 		props.element.innerHTML = '';
 		props.element.classList.add( 'menupop' );
 		return true;
-	}, []);
+	}, [props.element]);
 
 	return ReactDOM.createPortal( props.children, props.element );
 }

@@ -1,7 +1,6 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Component } from '../component';
-import { JsonOutput } from '../components/json-output';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { componentFilterCallback, deriveComponentFilters } from '../table';

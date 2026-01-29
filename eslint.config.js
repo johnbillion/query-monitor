@@ -15,6 +15,7 @@ export default [
 			'vendor/**',
 			'*.php',
 			'docs/**',
+			'tests/**',
 			'src/bannerComment.ts', // Concatenated into data-types.ts during build
 			'output/data-types.ts', // Generated file
 		],
@@ -65,18 +66,9 @@ export default [
 			...eslintConfigPrettier.rules,
 			'prettier/prettier': 'error',
 
-			// TypeScript-specific adjustments
 			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-			'@typescript-eslint/explicit-function-return-type': 'off',
-			'@typescript-eslint/explicit-module-boundary-types': 'off',
-			'@typescript-eslint/no-explicit-any': 'warn',
 			'@typescript-eslint/no-empty-object-type': 'off', // Allow {} in generic constraints
-
-			// React adjustments
-			'react/react-in-jsx-scope': 'off', // Not needed with React 17+
-			'react/prop-types': 'off', // Using TypeScript for prop validation
 			'react/no-unescaped-entities': 'off', // Allow apostrophes in i18n strings
-			'react/display-name': 'off', // Allow anonymous default exports
 		},
 	},
 ];
