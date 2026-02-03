@@ -44,6 +44,7 @@
 		"wp-types": "^3"
 	},
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"lint": "eslint '**/*.{ts,tsx}'",
 		"lint:fix": "eslint '**/*.{ts,tsx}' --fix",
 		"format": "prettier --write '**/*.tsx'",

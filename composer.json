@@ -74,6 +74,8 @@
 		"test": [
 			"@composer validate --strict --no-check-lock",
 			"npm run build-schemas",
+			"npm run typecheck",
+			"npm run lint",
 			"@test:phpstan",
 			"@test:phpcs",
 			"@test:start",

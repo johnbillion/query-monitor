@@ -57,12 +57,12 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 
 	// Flatten timing data to include laps as separate rows
 	const flattenedData: FlattenedRow[] = [];
-	
+
 	if ( data.timing ) {
 		data.timing.forEach( row => {
 			// Add the main timing row
 			flattenedData.push( row );
-			
+
 			// Add lap rows if they exist
 			if ( row.laps && Object.keys( row.laps ).length > 0 ) {
 				Object.entries( row.laps ).forEach( ( [ lapName, lap ] ) => {
@@ -77,7 +77,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 			}
 		} );
 	}
-	
+
 	// Add warning data
 	if ( data.warning ) {
 		flattenedData.push( ...data.warning );
@@ -118,7 +118,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				heading: __( 'Started', 'query-monitor' ),
 				render: ( row ) => {
 					// Lap rows don't show start time
-					if ( row.isLap ) {
+					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
 					return 'start_time' in row ? <Time value={ row.start_time } /> : '';
@@ -129,7 +129,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				heading: __( 'Stopped', 'query-monitor' ),
 				render: ( row ) => {
 					// Lap rows don't show end time
-					if ( row.isLap ) {
+					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
 					return 'end_time' in row ? <Time value={ row.end_time } /> : '';
@@ -140,7 +140,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				heading: __( 'Time', 'query-monitor' ),
 				render: ( row ) => {
 					// For lap rows, show lap-specific time
-					if ( row.isLap && row.lapData ) {
+					if ( 'isLap' in row && row.isLap && row.lapData ) {
 						return <Time value={ row.lapData.time_used } />;
 					}
 					return 'function_time' in row ? <Time value={ row.function_time } /> : '';
@@ -151,7 +151,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				heading: __( 'Memory', 'query-monitor' ),
 				render: ( row ) => {
 					// For lap rows, show lap-specific memory
-					if ( row.isLap && row.lapData ) {
+					if ( 'isLap' in row && row.isLap && row.lapData ) {
 						return <ApproximateSize value={ row.lapData.memory_used } />;
 					}
 					return 'function_memory' in row ? <ApproximateSize value={ row.function_memory } /> : '';
@@ -159,22 +159,22 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 			},
 			caller: {
 				...getCallerCol( flattenedData ),
-				render: ( row ) => {
+				render: ( row, i ) => {
 					// Don't show caller for lap rows
-					if ( row.isLap ) {
+					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
-					return getCallerCol( flattenedData ).render( row );
+					return getCallerCol( flattenedData ).render( row, i );
 				},
 			},
 			component: {
-				...getComponentCol( flattenedData, data.component_times ),
-				render: ( row ) => {
+				...getComponentCol( flattenedData ),
+				render: ( row, i ) => {
 					// Don't show component for lap rows
-					if ( row.isLap ) {
+					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
-					return getComponentCol( flattenedData, data.component_times ).render( row );
+					return getComponentCol( flattenedData ).render( row, i );
 				},
 			},
 		} }

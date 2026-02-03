@@ -5,6 +5,7 @@ import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
 import { iNavMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
+import { DataTypes } from '../output/data-types';
 import { MainContextType } from '../output/contexts/main-context';
 import { registerPanel, registerOverview, registerSettings } from '../output/panels/panel-registry';
 
@@ -39,9 +40,25 @@ import { Transients } from '../output/html/transients';
 
 // what is this?
 type iQM = {
-	menu: iNavMenu;
+	menu: {
+		top: {
+			title: string[];
+			classname: string;
+		};
+		sub: {
+			[k: string]: {
+				id: string;
+				panel: string;
+				title: string;
+				meta?: {
+					classname: string;
+				}
+			}
+		}
+	};
 	settings: {
 		verified: boolean;
+		extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	};
 	panel_menu: iNavMenu;
 	data: iPanelData;
@@ -190,8 +207,8 @@ const panelNamesMap: { [key: string]: string } = {
 
 Object.keys( panelNamesMap ).forEach( ( collectorId ) => {
 	registerPanel( `${collectorId}-concerned_hooks`, {
-		render: ( data, _enabled ) => <ConcernedHooks data={ data } />,
-		data: collectorId,
+		render: ( data, enabled ) => <ConcernedHooks data={ data } enabled={ enabled } />,
+		data: collectorId as keyof DataTypes,
 	} );
 } );
 

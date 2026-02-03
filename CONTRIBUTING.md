@@ -83,6 +83,8 @@ To run the whole test suite:
 
 To run tests individually, run one of:
 
+	npm run typecheck
+	npm run lint
 	composer test:phpcs
 	composer test:phpstan
 	composer test:integration

@@ -178,7 +178,7 @@ export const Panels = ( props: Props ) => {
 				// Settings panel doesn't need backend data
 				output = panel.render( null, true );
 			} else {
-				output = panelData ? panel.render( panelData.data, panelData.enabled ) : null;
+				output = panelData ? panel.render( panelData.data as DataTypes[keyof DataTypes], panelData.enabled ) : null;
 			}
 		}
 	}
