@@ -89,7 +89,7 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 	<select
 		value={ active }
 		onChange={ ( e ) => {
-			onSwitch( e.target.value );
+			onSwitch( e.currentTarget.value );
 		} }
 	>
 		<option key="overview" value="overview">

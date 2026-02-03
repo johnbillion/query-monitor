@@ -29,12 +29,12 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	const errorData = Utils.getErrorData( asset.source );
 	const errorMessage = Utils.getErrorMessage( asset.source );
 
-	if ( errorData?.src ) {
+	if ( typeof errorData === 'object' && errorData !== null && 'src' in errorData ) {
 		return (
 			<Warning>
 				{ errorMessage }
 				<br/>
-				{ errorData.src }
+				{ ( errorData as Record<string, unknown> ).src as string }
 			</Warning>
 		);
 	}

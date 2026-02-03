@@ -220,8 +220,8 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 										/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
 										__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
 										Utils.numberFormat( cacheData.cache_hit_percentage, 1 ),
-										Utils.numberFormat( cacheData.stats.cache_hits, 0 ),
-										Utils.numberFormat( cacheData.stats.cache_misses, 0 )
+										Utils.numberFormat( cacheData.stats.cache_hits as number, 0 ),
+										Utils.numberFormat( cacheData.stats.cache_misses as number, 0 )
 									) }
 								</p>
 							) }

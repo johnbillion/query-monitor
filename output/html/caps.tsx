@@ -82,7 +82,7 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 							label: String( user ),
 						} ) );
 					} )(),
-					callback: ( row, value ) => row.user === value,
+					callback: ( row, value ) => row.user === Number( value ),
 				},
 			},
 			result: {

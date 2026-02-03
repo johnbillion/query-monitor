@@ -14,13 +14,15 @@ import {
 interface iBlock {
 	attrs?: object;
 	context?: object;
-	blockName: string;
+	blockName: string | null;
 	innerHTML: string;
 	innerBlocks: iBlock[];
 	dynamic: boolean;
 	callback?: {
-		name: string;
-	};
+		name?: string;
+		type?: string;
+		[k: string]: unknown;
+	} | null;
 	timing: number;
 	index?: string;
 }

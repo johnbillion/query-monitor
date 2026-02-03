@@ -88,7 +88,7 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							name="qm-editor-select"
 							value={ editor ?? '' }
 							onChange={ ( e ) => {
-								setEditor( e.target.value );
+								setEditor( e.currentTarget.value );
 							} }
 						>
 							{ Utils.getEditors().map( ( { label, name } ) => (
@@ -126,7 +126,7 @@ export const Settings = ( {settings}: SettingsProps ) => {
 										value={ key }
 										defaultChecked={ (theme || 'auto') === key }
 										onChange={ ( e ) => {
-											setTheme( e.target.value );
+											setTheme( e.currentTarget.value );
 										} }
 									/>
 									{ value }

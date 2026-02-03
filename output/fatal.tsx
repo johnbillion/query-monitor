@@ -37,5 +37,5 @@ const FatalAdminMenu = ( props: iAdminMenuProps ) => {
 		return true;
 	}, [ props.element ]);
 
-	return ReactDOM.createPortal( props.children, props.element );
+	return ReactDOM.createPortal( <>{ props.children }</>, props.element );
 }
