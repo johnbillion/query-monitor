@@ -185,6 +185,10 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
+## Reviews
+
+If you enjoy using Query Monitor I would greatly appreciate it <a href="https://wordpress.org/support/plugin/query-monitor/reviews/?filter=5">if you left a positive review on the WordPress.org Plugin Directory</a>.
+
 ## Sponsors
 
 <p align="center">The time that I spend maintaining this plugin and others is in part sponsored by:</p>
