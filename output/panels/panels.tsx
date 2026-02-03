@@ -53,6 +53,7 @@ export type iSettings = {
 		on: string;
 		off: string;
 	};
+	file_path_map: Record<string, string>;
 };
 
 // what is this?

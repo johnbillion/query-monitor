@@ -11,6 +11,7 @@ interface FiltersType {
 
 export interface SettingsType {
 	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
+	file_path_map: Record<string, string>;
 }
 
 export type MainContextType = {
@@ -34,5 +35,6 @@ export const MainContext = createContext<MainContextType>( {
 	switchToPanel: ( _panelId, _panelFilters ) => {},
 	settings: {
 		extended_query_prompt_reason: null,
+		file_path_map: {},
 	},
 } );

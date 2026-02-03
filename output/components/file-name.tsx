@@ -18,6 +18,7 @@ interface Props {
 export const FileName = ( { text, file, line = 0, isFileName = false, expanded = false }: Props ) => {
 	const {
 		editor,
+		settings,
 	} = React.useContext( MainContext );
 
 	const displayText = isFileName ? text : Utils.shortenFqn( text );
@@ -26,6 +27,15 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 		return ( isFileName )
 			? <>{ displayText }</>
 			: <code>{ displayText }</code>;
+	}
+
+	let mappedFile = file;
+
+	for ( const [ source, replacement ] of Object.entries( settings.file_path_map ) ) {
+		if ( mappedFile.startsWith( source ) ) {
+			mappedFile = replacement + mappedFile.slice( source.length );
+			break;
+		}
 	}
 
 	const linkLine = line || 1;
@@ -45,7 +55,7 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 					<>
 						<br/>
 						<span className="qm-info qm-supplemental">
-							{ `${file}:${line}` }
+							{ `${mappedFile}:${line}` }
 						</span>
 					</>
 				) }
@@ -55,7 +65,7 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 
 	const output = sprintf(
 		format,
-		file, // @todo rawurlencode
+		mappedFile, // @todo rawurlencode
 		linkLine
 	);
 

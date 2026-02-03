@@ -388,6 +388,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'on' => wp_create_nonce( 'qm-auth-on' ),
 					'off' => wp_create_nonce( 'qm-auth-off' ),
 				],
+				'file_path_map' => QM_Output_Html::get_file_path_map(),
 			],
 			'number_format' => $wp_locale->number_format,
 		);

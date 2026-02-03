@@ -52,6 +52,7 @@ type iQM = {
 			on: string;
 			off: string;
 		};
+		file_path_map: Record<string, string>;
 	};
 }
 
@@ -247,12 +248,12 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const theme = localStorage.getItem( themeKey );
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
-
 	const settings: iSettings = {
 		...QueryMonitorData.settings,
 		ajaxurl: QueryMonitorData.l10n.ajaxurl,
 		admin_url: QueryMonitorData.l10n.admin_url,
 		auth_nonce: QueryMonitorData.l10n.auth_nonce,
+		file_path_map: QueryMonitorData.l10n.file_path_map,
 	};
 
 	createRoot( containerElement ).render(
