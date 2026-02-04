@@ -100,7 +100,11 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					}
 					return (
 						<details>
-							<summary>{ sprintf( _n( '%d item', '%d items', Object.keys( row.context ).length, 'query-monitor' ), Object.keys( row.context ).length ) }</summary>
+							<summary>{ sprintf(
+							/* translators: %d: Number of items */
+							_n( '%d item', '%d items', Object.keys( row.context ).length, 'query-monitor' ),
+							Object.keys( row.context ).length
+						) }</summary>
 							<JsonOutput data={ row.context } />
 						</details>
 					);

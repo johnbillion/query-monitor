@@ -52,6 +52,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 							<br/>
 							<span className="qm-info qm-supplemental">
 								{ sprintf(
+									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
 									calls
 								) }
@@ -70,6 +71,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 							<br/>
 							<span className="qm-info qm-supplemental">
 								{ sprintf(
+									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
 									calls
 								) }
@@ -88,6 +90,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 							<br/>
 							<span className="qm-info qm-supplemental">
 								{ sprintf(
+									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
 									calls
 								) }

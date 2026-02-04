@@ -55,6 +55,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 							<div>
 								<Warning>
 									{ sprintf(
+										/* translators: %s: WordPress filter name */
 										__( 'This HTTP request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
 										'pre_http_request'
 									) }
@@ -83,7 +84,11 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						{ hasRedirectWarning( row ) && (
 							<div>
 								<Warning>
-									{ sprintf( __( 'Redirected to: %s', 'query-monitor' ), row.redirected_to ) }
+									{ sprintf(
+										/* translators: %s: Redirect target URL */
+										__( 'Redirected to: %s', 'query-monitor' ),
+										row.redirected_to
+									) }
 								</Warning>
 							</div>
 						) }
