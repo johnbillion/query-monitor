@@ -24,6 +24,7 @@ export default defineConfig( {
 		},
 	],
 	build: {
+		sourcemap: false,
 		target: 'chrome112',
 		rollupOptions: {
 			output: {
