@@ -72,7 +72,7 @@ The test suite consists of:
 
 * Acceptance tests using Playwright
 * Integration tests using PHPUnit
-* Linting using PHPCS
+* Linting using PHPCS and ESLint
 * Static analysis using PHPStan
 
 The acceptance and integration tests run in a container. Ensure Docker Desktop is running before running the tests.
