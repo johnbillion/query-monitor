@@ -220,7 +220,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	if ( fatalElement ) {
 		createRoot( fatalElement ).render(
 			<Fatal
-				adminMenuElement={ adminMenuElement }
+				adminMenuElement={ adminMenuElement ?? undefined }
 			/>
 		);
 		return;
@@ -259,10 +259,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( containerWidthKey, width.toString() );
 	}
 
-	const active = localStorage.getItem( panelKey );
+	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
-	const editor = localStorage.getItem( editorKey );
-	const theme = localStorage.getItem( themeKey );
+	const editor = localStorage.getItem( editorKey ) ?? '';
+	const theme = localStorage.getItem( themeKey ) ?? 'auto';
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const settings: iSettings = {
@@ -273,10 +273,14 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		file_path_map: QueryMonitorData.l10n.file_path_map,
 	};
 
+	if ( ! containerElement ) {
+		return;
+	}
+
 	createRoot( containerElement ).render(
 		<QM
 			active={ active }
-			adminMenuElement={ adminMenuElement }
+			adminMenuElement={ adminMenuElement ?? undefined }
 			menu={ QueryMonitorData.menu }
 			panel_menu={ QueryMonitorData.panel_menu }
 			data={ QueryMonitorData.data }

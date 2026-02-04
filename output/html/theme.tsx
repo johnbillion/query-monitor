@@ -16,7 +16,7 @@ interface iParts {
 }
 
 export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
-	let parts: iParts = null;
+	let parts: iParts | null = null;
 
 	if ( data.template_parts ) {
 		if ( data.is_child_theme ) {
@@ -107,7 +107,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						{ data.template_path ? (
 							<p className="qm-ltr">
 								<FileName
-									text={ data.is_child_theme ? data.theme_template_file : data.template_file }
+									text={ ( data.is_child_theme ? data.theme_template_file : data.template_file ) ?? '' }
 									file={ data.template_path }
 									isFileName
 								/>
@@ -142,7 +142,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 				<h3>
 					{ __( 'Template Parts', 'query-monitor' ) }
 				</h3>
-				{ data.template_parts ? (
+				{ parts ? (
 					<ul className="qm-ltr">
 						{ Object.keys( parts ).map( ( filename ) => (
 							<li key={ filename }>

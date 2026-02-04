@@ -15,7 +15,7 @@ interface CallerAggregate {
 	types: Record<string, number>;
 }
 
-const aggregateByCaller = ( rows: DataTypes['db_queries']['rows'] ): CallerAggregate[] => {
+const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> ): CallerAggregate[] => {
 	const map: Record<string, CallerAggregate> = {};
 
 	for ( const row of rows ) {

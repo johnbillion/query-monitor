@@ -11,9 +11,12 @@ import {
 } from '@wordpress/i18n';
 
 export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	if ( ! data.expensive?.length ) {
+	if ( ! data.expensive?.length || ! data.rows ) {
 		return null;
 	}
+
+	const rows = data.rows;
+	const expensive = data.expensive;
 
 	return <TabularPanel
 		title={ __( 'Slow Database Queries', 'query-monitor' ) }
@@ -37,8 +40,8 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 					</>
 				),
 			},
-			caller: getCallerCol( data.rows ),
-			component: getComponentCol( data.rows ),
+			caller: getCallerCol( rows ),
+			component: getComponentCol( rows ),
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
@@ -50,9 +53,9 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 					</>
 				),
 			},
-			time: getTimeCol( data.rows, () => true ),
+			time: getTimeCol( rows, () => true ),
 		} }
-		data={ data.rows.filter( ( row, i ) => data.expensive.includes( i ) ) }
+		data={ rows.filter( ( row, i ) => expensive.includes( i ) ) }
 		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };

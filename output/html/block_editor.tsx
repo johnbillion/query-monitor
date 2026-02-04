@@ -13,7 +13,7 @@ import {
 
 interface iBlock {
 	attrs?: object;
-	context?: object;
+	context?: object | null;
 	blockName: string | null;
 	innerHTML: string;
 	innerBlocks: iBlock[];

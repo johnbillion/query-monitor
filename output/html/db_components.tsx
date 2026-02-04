@@ -15,7 +15,7 @@ interface ComponentAggregate {
 	types: Record<string, number>;
 }
 
-const aggregateByComponent = ( rows: DataTypes['db_queries']['rows'] ): ComponentAggregate[] => {
+const aggregateByComponent = ( rows: NonNullable<DataTypes['db_queries']['rows']> ): ComponentAggregate[] => {
 	const map: Record<string, ComponentAggregate> = {};
 
 	for ( const row of rows ) {

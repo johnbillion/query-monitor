@@ -5,11 +5,15 @@ import * as React from 'react';
 import { FilterLink } from './components/filter-link';
 
 interface Props {
-	component: QM_Component;
+	component?: QM_Component;
 	targetPanel?: string;
 }
 
 export const Component = ( { component, targetPanel }: Props ) => {
+	if ( ! component ) {
+		return null;
+	}
+
 	if ( targetPanel ) {
 		return (
 			<FilterLink

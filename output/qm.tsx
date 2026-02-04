@@ -129,6 +129,11 @@ export const QM = ( props: Props ) => {
 
 		const el = document.getElementsByClassName( 'qm-resizer' )[0];
 		const qmMain = document.getElementById( 'query-monitor-main' );
+
+		if ( ! qmMain ) {
+			return;
+		}
+
 		let startY = 0;
 		let startHeight = 0;
 

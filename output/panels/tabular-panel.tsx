@@ -11,7 +11,7 @@ interface Props<TDataRow> extends TabularProps<TDataRow> {
 	children?: React.ReactNode;
 }
 
-export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning, orderby = null, order = 'desc', rowHasError, title, groupKey, children }: Props<TDataRow> ) => {
+export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning, orderby, order = 'desc', rowHasError, title, groupKey, children }: Props<TDataRow> ) => {
 	const {
 		id,
 	} = React.useContext( PanelContext );

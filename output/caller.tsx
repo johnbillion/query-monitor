@@ -16,7 +16,7 @@ export type { CallSite } from './data-types';
 
 interface Props {
 	isFileList?: boolean;
-	trace?: Backtrace;
+	trace?: Backtrace | null;
 	callsite?: CallSite;
 	defaultExpanded?: boolean;
 }

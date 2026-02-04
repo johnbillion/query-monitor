@@ -33,7 +33,7 @@ export type Col<TDataRow> = {
 }
 
 export interface Cols<TDataRow> {
-	[ key: string ]: Col<TDataRow>;
+	[ key: string ]: Col<TDataRow> | null | false;
 }
 
 export interface FilterOption {
@@ -69,7 +69,7 @@ interface TableProps<TDataRow> extends TabularProps<TDataRow> {
 }
 
 interface DataRowWithTrace {
-	trace?: Backtrace;
+	trace?: Backtrace | null;
 	callsite?: CallSite;
 }
 
@@ -142,10 +142,10 @@ export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataR
 
 	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
-		render: ( row ) => <Component component={ row.trace.component } />,
+		render: ( row ) => <Component component={ row.trace?.component } />,
 		filters: {
 			options: filters,
-			callback: ( row, value: string ) => componentFilterCallback( row.trace.component, value ),
+			callback: ( row, value: string ) => componentFilterCallback( row.trace?.component, value ),
 		},
 	};
 
@@ -160,7 +160,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
-		render: ( row ) => <Time value={ row.ltime } />,
+		render: ( row ) => <Time value={ row.ltime ?? 0 } />,
 		cellHasError: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
@@ -246,24 +246,27 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, warning, orderby = null, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
 	const {
 		filters,
 		setFilter,
 	} = React.useContext( PanelContext );
 	const total = countData( data );
-	const nonEmptyCols = Object.entries( cols ).filter( ( [ _key, value ] ) => ( value ? true : false ) );
+	const nonEmptyCols = Object.entries( cols ).filter( ( entry ): entry is [string, Col<TDataRow>] => ( entry[1] ? true : false ) );
 
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
 		if ( ! ( filterName in cols ) ) {
 			continue;
 		}
 
-		if ( ! cols[ filterName ].filters ) {
+		const col = cols[ filterName ];
+		if ( ! col || ! col.filters ) {
 			continue;
 		}
 
-		if ( ! cols[ filterName ].filters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
+		const colFilters = col.filters;
+
+		if ( ! colFilters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
 			continue;
 		}
 
@@ -271,13 +274,13 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 			// When groupKey is provided, keep all rows in a group if any row matches
 			const matchingGroups = new Set<string>();
 			for ( const row of data ) {
-				if ( cols[ filterName ].filters.callback( row, filterValue ) ) {
+				if ( colFilters.callback( row, filterValue ) ) {
 					matchingGroups.add( groupKey( row ) );
 				}
 			}
 			data = data.filter( ( row ) => matchingGroups.has( groupKey( row ) ) );
 		} else {
-			data = data.filter( ( row ) => cols[ filterName ].filters.callback( row, filterValue ) );
+			data = data.filter( ( row ) => colFilters.callback( row, filterValue ) );
 		}
 	}
 
@@ -288,7 +291,8 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 	} );
 
 	if ( sorting.orderby ) {
-		const sortField = cols[ sorting.orderby ].sorting?.field;
+		const sortCol = cols[ sorting.orderby ];
+		const sortField = sortCol && sortCol.sorting?.field;
 
 		if ( sortField ) {
 			data.sort( ( a, b ) => {

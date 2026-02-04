@@ -134,33 +134,35 @@ export const Panels = ( props: Props ) => {
 		setFilters,
 	} = React.useContext( MainContext );
 
+	const active = props.active ?? '';
+
 	const panelContextValue: PanelContextType = {
-		id: props.active,
-		filters: filters[ props.active ] || {},
+		id: active,
+		filters: filters[ active ] || {},
 		setFilter: ( filterName, filterValue ) => {
 			const newFilters = {
 				...filters,
 			};
 
-			if ( ! ( props.active in newFilters ) ) {
-				newFilters[ props.active ] = {};
+			if ( ! ( active in newFilters ) ) {
+				newFilters[ active ] = {};
 			}
 
 			if ( filterValue === '' ) {
-				delete newFilters[ props.active ][ filterName ];
+				delete newFilters[ active ][ filterName ];
 			} else {
-				newFilters[ props.active ][ filterName ] = filterValue;
+				newFilters[ active ][ filterName ] = filterValue;
 			}
 
-			if ( Object.keys( newFilters[ props.active ] ).length === 0 ) {
-				delete newFilters[ props.active ];
+			if ( Object.keys( newFilters[ active ] ).length === 0 ) {
+				delete newFilters[ active ];
 			}
 
 			setFilters( newFilters );
 		},
 	};
 
-	const panel = getPanel( props.active );
+	const panel = getPanel( active );
 	let output = null;
 
 	if ( panel ) {
@@ -173,32 +175,26 @@ export const Panels = ( props: Props ) => {
 		} else {
 			// what is panelData?
 			const panelData = ( props.data as Record<string, { data: unknown; enabled: boolean } | undefined> )[ panel.data ] ?? null;
-			// what is output?
-			if ( props.active === 'settings' ) {
-				// Settings panel doesn't need backend data
-				output = panel.render( null, true );
-			} else {
-				output = panelData ? panel.render( panelData.data as DataTypes[keyof DataTypes], panelData.enabled ) : null;
-			}
+			output = panelData ? panel.render( panelData.data as DataTypes[keyof DataTypes], panelData.enabled ) : null;
 		}
 	}
 
 	return (
 		<div id="qm-panels">
-			<ErrorBoundary key={ props.active }>
+			<ErrorBoundary key={ active }>
 				<PanelContext.Provider value={ panelContextValue }>
 					{ panel ? (
 						output ?? (
 							<ErrorPanel>
 								<p>
 									<Warning>
-										Data not found for panel: <code>{ props.active }</code>
+										Data not found for panel: <code>{ active }</code>
 									</Warning>
 								</p>
 							</ErrorPanel>
 						)
 					) : (
-						<PhpPanelFallback panelId={ props.active } />
+						<PhpPanelFallback panelId={ active } />
 					) }
 				</PanelContext.Provider>
 			</ErrorBoundary>

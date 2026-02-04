@@ -121,7 +121,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				heading: __( 'Rows', 'query-monitor' ),
 				render: ( row ) => ( ! Utils.isWPError( row.result ) && row.result ),
 			} : null,
-			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ),
+			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ?? false ),
 		} }
 		data={ data.rows }
 		rowHasError={ ( row ) => Utils.isWPError( row.result ) }

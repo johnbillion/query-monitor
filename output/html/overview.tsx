@@ -22,6 +22,11 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 	const cacheData = data.cache?.data;
 	const httpData = data.http?.data;
 	const rawRequestData = data.raw_request?.data;
+
+	if ( ! data.overview ) {
+		return null;
+	}
+
 	const overviewData = data.overview.data;
 
 	const timeTaken = overviewData.time_taken || 0;
@@ -36,7 +41,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 	return (
 		<NonTabularPanel>
 			<div className="qm-boxed">
-				{ rawRequestData && rawRequestData.response?.status && (
+				{ rawRequestData && rawRequestData.response?.status != null && (
 					<section id="qm-overview-raw-request">
 						<h3>
 							{ sprintf(
