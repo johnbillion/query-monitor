@@ -37,6 +37,10 @@ export default defineConfig( {
 				// function arguments, which makes them unextractable.
 				conditionals: false,
 			},
+			format: {
+				// Preserve translators comments for wp i18n string extraction.
+				comments: /translators:/i,
+			},
 		},
 		rollupOptions: {
 			output: {
