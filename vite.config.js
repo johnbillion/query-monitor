@@ -26,6 +26,12 @@ export default defineConfig( {
 	build: {
 		sourcemap: false,
 		target: 'chrome112',
+		minify: 'terser',
+		terserOptions: {
+			mangle: {
+				reserved: [ '__', '_x', '_n', '_nx', 'sprintf' ],
+			},
+		},
 		rollupOptions: {
 			output: {
 				entryFileNames: 'query-monitor.js',
