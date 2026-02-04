@@ -563,7 +563,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ),
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/query-monitor.css' ) ),
 			esc_attr( QM_VERSION )
 		);
 
@@ -653,7 +653,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	private static function get_manifest(): array {
 		if ( self::$manifest === null ) {
-			$build_dir = dirname( __DIR__ ) . '/build';
+			$build_dir = dirname( __DIR__ ) . '/assets/build';
 
 			// Check for dev server manifest first (only exists when Vite dev server is running)
 			$dev_manifest = $build_dir . '/vite-dev-server.json';
@@ -668,13 +668,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 			// Fall back to production assets
 			if ( self::$manifest === null ) {
-				if ( is_file( $build_dir . '/assets/query-monitor.js' ) ) {
+				if ( is_file( $build_dir . '/query-monitor.js' ) ) {
 					self::$manifest = array(
 						'assets/query-monitor.css' => array(
-							'file' => 'assets/query-monitor.css',
+							'file' => 'query-monitor.css',
 						),
 						'src/index.tsx' => array(
-							'file' => 'assets/query-monitor.js',
+							'file' => 'query-monitor.js',
 						),
 					);
 				}
@@ -763,7 +763,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @param array<string, array{file: string}> $data Production manifest data.
 	 */
 	private function output_production_assets( array $data ): void {
-		$base_url = $this->qm->plugin_url( 'build' );
+		$base_url = $this->qm->plugin_url( 'assets/build' );
 
 		// CSS
 		$css_file = $data['assets/query-monitor.css']['file'] ?? null;

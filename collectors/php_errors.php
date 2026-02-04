@@ -342,7 +342,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ), // @todo
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/query-monitor.css' ) ),
 			esc_attr( QM_VERSION )
 		);
 

@@ -10,15 +10,25 @@ export default defineConfig( {
 				main: 'src/index.tsx',
 				'query-monitor': 'assets/query-monitor.css',
 			},
-			outDir: 'build',
+			outDir: 'assets/build',
 		} ),
+		{
+			name: 'no-manifest',
+			config() {
+				return {
+					build: {
+						manifest: false,
+					},
+				};
+			},
+		},
 	],
 	build: {
 		target: 'chrome112',
 		rollupOptions: {
 			output: {
-				entryFileNames: 'assets/query-monitor.js',
-				assetFileNames: 'assets/[name][extname]',
+				entryFileNames: 'query-monitor.js',
+				assetFileNames: '[name][extname]',
 			},
 		},
 	},

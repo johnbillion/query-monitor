@@ -3,7 +3,7 @@
 /docs/.vitepress/dist
 /vendor
 /node_modules
-/build
+/assets/build
 /tests/_output/
 /tests/_support/_generated
 /tests/cache
