@@ -666,15 +666,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				}
 			}
 
-			// Fall back to production manifest
+			// Fall back to production assets
 			if ( self::$manifest === null ) {
-				$prod_manifest = $build_dir . '/manifest.json';
-				if ( is_file( $prod_manifest ) && is_readable( $prod_manifest ) ) {
-					/** @var array<string, array{file: string}>|null $data */
-					$data = wp_json_file_decode( $prod_manifest, array( 'associative' => true ) );
-					if ( $data ) {
-						self::$manifest = $data;
-					}
+				if ( is_file( $build_dir . '/assets/query-monitor.js' ) ) {
+					self::$manifest = array(
+						'assets/query-monitor.css' => array(
+							'file' => 'assets/query-monitor.css',
+						),
+						'src/index.tsx' => array(
+							'file' => 'assets/query-monitor.js',
+						),
+					);
 				}
 			}
 
