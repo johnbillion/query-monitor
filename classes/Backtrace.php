@@ -117,16 +117,6 @@ class QM_Backtrace implements JsonSerializable {
 	protected $filtered_trace = null;
 
 	/**
-	 * @var int
-	 */
-	protected $calling_line = 0;
-
-	/**
-	 * @var string
-	 */
-	protected $calling_file = '';
-
-	/**
 	 * @var QM_Component|null
 	 */
 	protected $component = null;
@@ -311,8 +301,6 @@ class QM_Backtrace implements JsonSerializable {
 	 * @phpstan-return list<array{
 	 *   id: string,
 	 *   display: string,
-	 *   calling_file: string,
-	 *   calling_line: int,
 	 *   file: string,
 	 *   line: int,
 	 *   function?: string,
@@ -328,8 +316,6 @@ class QM_Backtrace implements JsonSerializable {
 			if ( empty( $trace ) && ! empty( $this->trace ) ) {
 				$lowest = $this->trace[0];
 				$file = QM_Util::standard_dir( $lowest['file'], '' );
-				$lowest['calling_file'] = $lowest['file'];
-				$lowest['calling_line'] = $lowest['line'];
 				$lowest['function'] = $file;
 				$lowest['display'] = $file;
 				$lowest['id'] = $file;
@@ -577,24 +563,12 @@ class QM_Backtrace implements JsonSerializable {
 		}
 
 		if ( $return ) {
-
-			$return['calling_file'] = $this->calling_file;
-			$return['calling_line'] = $this->calling_line;
-
 			if ( ! isset( $return['file'] ) ) {
-				$return['file'] = $this->calling_file;
+				$return['file'] = null;
 			}
-
 			if ( ! isset( $return['line'] ) ) {
-				$return['line'] = $this->calling_line;
+				$return['line'] = null;
 			}
-		}
-
-		if ( isset( $frame['line'] ) ) {
-			$this->calling_line = $frame['line'];
-		}
-		if ( isset( $frame['file'] ) ) {
-			$this->calling_file = $frame['file'];
 		}
 
 		return $return;

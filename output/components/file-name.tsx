@@ -9,8 +9,8 @@ import {
 
 interface Props {
 	text: string,
-	file: string,
-	line?: number,
+	file: string | null,
+	line?: number | null,
 	isFileName?: boolean,
 	expanded?: boolean,
 }
@@ -21,7 +21,7 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 		settings,
 	} = React.useContext( MainContext );
 
-	const displayText = isFileName ? text : Utils.shortenFqn( text );
+	const displayText = ( isFileName || expanded ) ? text : Utils.shortenFqn( text );
 
 	if ( ! file ) {
 		return ( isFileName )

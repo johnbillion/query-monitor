@@ -209,12 +209,10 @@ export interface Backtrace {
 export interface FrameItem {
 	display: string;
 	args: string[];
-	calling_file: string;
-	calling_line: number;
-	file: string;
+	file: string | null;
 	function: string;
 	id: string;
-	line: number;
+	line: number | null;
 }
 /**
  * Conditionals data transfer object.

@@ -7,8 +7,6 @@
 	"required": [
 		"display",
 		"args",
-		"calling_file",
-		"calling_line",
 		"file",
 		"function",
 		"id",
@@ -24,14 +22,11 @@
 				"type": "string"
 			}
 		},
-		"calling_file": {
-			"type": "string"
-		},
-		"calling_line": {
-			"type": "integer"
-		},
 		"file": {
-			"type": "string"
+			"type": [
+				"string",
+				"null"
+			]
 		},
 		"function": {
 			"type": "string"
@@ -40,7 +35,10 @@
 			"type": "string"
 		},
 		"line": {
-			"type": "integer"
+			"type": [
+				"integer",
+				"null"
+			]
 		}
 	},
 	"additionalProperties": false
