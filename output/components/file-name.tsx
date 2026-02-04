@@ -1,7 +1,7 @@
 import * as Utils from '../utils';
 import { MainContext } from '../contexts/main-context';
 import { Icon } from './icon';
-import * as React from 'react';
+import { useContext } from 'preact/hooks';
 
 import {
 	sprintf,
@@ -19,7 +19,7 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 	const {
 		editor,
 		settings,
-	} = React.useContext( MainContext );
+	} = useContext( MainContext );
 
 	const displayText = ( isFileName || expanded ) ? text : Utils.shortenFqn( text );
 

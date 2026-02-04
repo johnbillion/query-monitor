@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { Component, type ComponentChildren } from 'preact';
 
 import { ErrorPanel } from './error-panel';
 import { Warning } from '../components/warning';
 
 interface Props {
-	children: React.ReactNode;
+	children: ComponentChildren;
 }
 
 interface State {
@@ -12,7 +12,7 @@ interface State {
 	copied: boolean;
 }
 
-export class ErrorBoundary extends React.Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
 	constructor( props: Props ) {
 		super( props );
 		this.state = { hasError: false, copied: false };

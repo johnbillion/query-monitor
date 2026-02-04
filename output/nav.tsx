@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import * as React from 'react';
+import { Fragment } from 'preact';
 
 import { __ } from '@wordpress/i18n';
 
@@ -101,7 +101,7 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 		{ Object.entries( menu ).map( ( [ key, item ] ) => {
 			const children = item.children;
 			return (
-				<React.Fragment key={ key }>
+				<Fragment key={ key }>
 					<option value={ item.panel }>
 						{ item.title }
 					</option>
@@ -114,7 +114,7 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 							) ) }
 						</>
 					) }
-				</React.Fragment>
+				</Fragment>
 			);
 		} ) }
 	</select>

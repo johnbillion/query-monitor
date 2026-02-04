@@ -1,8 +1,8 @@
 import { NonTabularPanel } from './non-tabular-panel';
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
 
 interface Props {
-	children: React.ReactNode;
+	children: ComponentChildren;
 }
 
 export const EmptyPanel = ( { children }: Props ) => (

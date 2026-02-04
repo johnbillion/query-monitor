@@ -3,7 +3,7 @@ import { FileName } from '../components/file-name';
 import * as Utils from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
+import { Fragment } from 'preact';
 
 import {
 	__,
@@ -185,7 +185,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						</h4>
 						<ul>
 							{ data.unsuccessful_template_parts.map( ( requested, index ) => (
-								<React.Fragment key={ index }>
+								<Fragment key={ index }>
 									{ requested.name && (
 										<li>
 											<FileName
@@ -204,7 +204,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 											isFileName
 										/>
 									</li>
-								</React.Fragment>
+								</Fragment>
 							) ) }
 						</ul>
 					</>

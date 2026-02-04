@@ -3,7 +3,7 @@ import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
 import * as Utils from '../utils';
 import { iPanelData, iSettings } from '../panels/panels';
-import * as React from 'react';
+import { Fragment } from 'preact';
 
 import {
 	__,
@@ -155,7 +155,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 										return null;
 									}
 									return (
-										<React.Fragment key={ typeName }>
+										<Fragment key={ typeName }>
 											<FilterLink
 												targetPanel="db_queries"
 												filterName="sql"
@@ -164,7 +164,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 												{ sprintf( '%1$s: %2$s', typeName, Utils.numberFormat( typeCount ) ) }
 											</FilterLink>
 											<br />
-										</React.Fragment>
+										</Fragment>
 									);
 								} ) }
 								<FilterLink

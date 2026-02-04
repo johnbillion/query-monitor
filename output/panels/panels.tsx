@@ -5,7 +5,7 @@ import { getPanel, isOverviewPanel, isSettingsPanel } from './panel-registry';
 import { ErrorPanel } from './error-panel';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
-import * as React from 'react';
+import { useRef, useState, useEffect, useContext } from 'preact/hooks';
 
 // what is this?
 interface QMPanelData<TDataKey extends keyof DataTypes> {
@@ -68,11 +68,11 @@ type Props = {
  * Moves the element back to its original location on cleanup to preserve it for future use.
  */
 const PhpPanelFallback = ( { panelId }: { panelId: string } ) => {
-	const containerRef = React.useRef<HTMLDivElement>( null );
-	const originalParentRef = React.useRef<{ parent: ParentNode; nextSibling: ChildNode | null } | null>( null );
-	const [ phpPanelExists, setPhpPanelExists ] = React.useState<boolean | null>( null );
+	const containerRef = useRef<HTMLDivElement>( null );
+	const originalParentRef = useRef<{ parent: ParentNode; nextSibling: ChildNode | null } | null>( null );
+	const [ phpPanelExists, setPhpPanelExists ] = useState<boolean | null>( null );
 
-	React.useEffect( () => {
+	useEffect( () => {
 		const phpPanel = document.getElementById( `qm-${ panelId }-container` );
 
 		if ( ! phpPanel ) {
@@ -132,7 +132,7 @@ export const Panels = ( props: Props ) => {
 	const {
 		filters,
 		setFilters,
-	} = React.useContext( MainContext );
+	} = useContext( MainContext );
 
 	const active = props.active ?? '';
 

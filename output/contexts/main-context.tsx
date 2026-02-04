@@ -1,6 +1,6 @@
 import {
 	createContext,
-} from 'react';
+} from 'preact';
 import {
 	PanelContextType,
 } from './panel-context';

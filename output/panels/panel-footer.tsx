@@ -1,11 +1,11 @@
 import * as Utils from '../utils';
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
 
 interface Props {
 	cols: number;
 	count: number;
 	total: number;
-	children?: React.ReactNode;
+	children?: ComponentChildren;
 }
 
 import {

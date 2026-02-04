@@ -4,7 +4,7 @@ import {
 	Backtrace,
 	CallSite,
 } from './data-types';
-import * as React from 'react';
+import { useState } from 'preact/hooks';
 
 import {
 	__,
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }: Props ) => {
-	const [ expanded, setExpanded ] = React.useState( defaultExpanded );
+	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	// This creates a copy of the frames array.
 	const frames = trace?.frames ? [ ...trace.frames ] : [];

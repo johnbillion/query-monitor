@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Icon } from './components/icon';
 import { MainContext, MainContextType } from './contexts/main-context';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { type ComponentChildren, render } from 'preact';
+import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'preact/hooks';
 
 import { __ } from '@wordpress/i18n';
 
@@ -45,11 +45,11 @@ type Props = {
 }
 
 export const QM = ( props: Props ) => {
-	const [ active, setActive ] = React.useState( props.active );
-	const [ side, setSide ] = React.useState( props.side );
-	const [ theme, setTheme ] = React.useState( props.theme );
-	const [ editor, setEditor ] = React.useState( props.editor );
-	const [ filters, setFilters ] = React.useState( props.filters );
+	const [ active, setActive ] = useState( props.active );
+	const [ side, setSide ] = useState( props.side );
+	const [ theme, setTheme ] = useState( props.theme );
+	const [ editor, setEditor ] = useState( props.editor );
+	const [ filters, setFilters ] = useState( props.filters );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
@@ -105,7 +105,7 @@ export const QM = ( props: Props ) => {
 	};
 
 	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
-	React.useEffect( () => {
+	useEffect( () => {
 		if ( adminMenuElement && props.menu.top.classname ) {
 			// Split the classname string and add each class
 			const classes = props.menu.top.classname.split( ' ' ).filter( Boolean );
@@ -118,13 +118,13 @@ export const QM = ( props: Props ) => {
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
 	const { onContainerResize, containerHeight } = props;
-	const initialHeightApplied = React.useRef( false );
+	const initialHeightApplied = useRef( false );
 
 	/**
 	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
 	 * a comprehensive explanantion of modern pointer event handling.
 	 */
-	React.useEffect( () => {
+	useEffect( () => {
 		if ( ! active ) {
 			return;
 		}
@@ -291,16 +291,21 @@ export const QM = ( props: Props ) => {
 
 interface iAdminMenuProps {
 	element: HTMLElement;
-	children: React.ReactNode;
+	children: ComponentChildren;
 }
 
 const AdminMenu = ( props: iAdminMenuProps ) => {
-	React.useMemo(() => {
+	useMemo(() => {
 		// Clear any existing content in the element
 		props.element.innerHTML = '';
 		props.element.classList.add( 'menupop' );
 		return true;
 	}, [props.element]);
 
-	return ReactDOM.createPortal( <>{ props.children }</>, props.element );
+	useLayoutEffect(() => {
+		render( <>{ props.children }</>, props.element );
+		return () => render( null, props.element );
+	});
+
+	return null;
 }

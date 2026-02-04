@@ -8,7 +8,7 @@ import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
+import { useContext } from 'preact/hooks';
 
 import {
 	__,
@@ -40,7 +40,7 @@ const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'faile
 };
 
 export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	const { settings } = React.useContext( MainContext );
+	const { settings } = useContext( MainContext );
 
 	if ( ! data.rows?.length ) {
 		return <EmptyPanel>

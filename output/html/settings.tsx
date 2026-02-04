@@ -2,7 +2,7 @@ import { Icon } from '../components/icon';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { MainContext } from '../contexts/main-context';
 import * as Utils from '../utils';
-import * as React from 'react';
+import { useState, useContext } from 'preact/hooks';
 
 import {
 	__,
@@ -15,13 +15,13 @@ interface SettingsProps {
 }
 
 export const Settings = ( {settings}: SettingsProps ) => {
-	const [ verified, setVerified ] = React.useState( settings.verified );
+	const [ verified, setVerified ] = useState( settings.verified );
 	const {
 		editor,
 		setEditor,
 		theme,
 		setTheme,
-	} = React.useContext( MainContext );
+	} = useContext( MainContext );
 
 	const setVerify = () => {
 		const action = ( verified ? 'off' : 'on' );

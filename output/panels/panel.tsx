@@ -1,14 +1,15 @@
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
+import { useContext } from 'preact/hooks';
 import { PanelContext } from '../contexts/panel-context';
 
 interface Props {
-	children: React.ReactNode;
+	children: ComponentChildren;
 }
 
 export const Panel = ( { children }: Props ) => {
 	const {
 		id,
-	} = React.useContext( PanelContext );
+	} = useContext( PanelContext );
 
 	return (
 		<div

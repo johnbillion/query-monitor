@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
 
 import { Icon } from './icon';
 
 interface Props {
-	children?: React.ReactNode;
+	children?: ComponentChildren;
 }
 
 export const Warning = ( { children }: Props ) => (

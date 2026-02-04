@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+import { render } from 'preact';
 
 import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
@@ -217,10 +217,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
 
 	if ( fatalElement ) {
-		createRoot( fatalElement ).render(
+		render(
 			<Fatal
 				adminMenuElement={ adminMenuElement ?? undefined }
-			/>
+			/>,
+			fatalElement
 		);
 		return;
 	}
@@ -278,7 +279,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		return;
 	}
 
-	createRoot( containerElement ).render(
+	render(
 		<QM
 			active={ active }
 			adminMenuElement={ adminMenuElement ?? undefined }
@@ -297,7 +298,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			onThemeChange={ onThemeChange }
 			onEditorChange={ onEditorChange }
 			onFiltersChange={ onFiltersChange }
-		/>
+		/>,
+		containerElement
 	);
 } );
 

@@ -3,7 +3,7 @@ import { JsonOutput } from '../components/json-output';
 import * as Utils from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
+import { Fragment } from 'preact';
 
 import { sprintf, __ } from '@wordpress/i18n';
 
@@ -29,7 +29,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 				const url = urls[ key ];
 
 				return (
-					<React.Fragment key={ key }>
+					<Fragment key={ key }>
 						<section>
 							<h3>{ name }</h3>
 							{ value ? (
@@ -44,7 +44,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 								</p>
 							) }
 						</section>
-					</React.Fragment>
+					</Fragment>
 				);
 			} ) }
 

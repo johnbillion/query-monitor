@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, type JSX } from 'preact';
 import { WP_Error } from 'wp-types';
 
 declare const QueryMonitorData: {
@@ -18,24 +18,24 @@ declare const QueryMonitorData: {
 
 export const qm_l10n = QueryMonitorData.l10n;
 
-export function formatSQL( sql: string ): React.JSX.Element[] {
+export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
 	const lines = formatted.split( new RegExp( lineRegex ) );
-	const collection: React.JSX.Element[] = [];
+	const collection: JSX.Element[] = [];
 	let index = 0;
 
 	formatted.replace( new RegExp( lineRegex, 'g' ), ( match, keyword ) => {
 		index += 2;
 
 		collection.push(
-			<React.Fragment key={ index }>
+			<Fragment key={ index }>
 				{ index > 2 && (
 					<br />
 				) }
 				<b>{ keyword }</b>
 				{ ` ${ lines[ index ] }` }
-			</React.Fragment>
+			</Fragment>
 		);
 
 		return '';
@@ -44,13 +44,13 @@ export function formatSQL( sql: string ): React.JSX.Element[] {
 	return collection;
 }
 
-export function formatURL( url: string ): React.JSX.Element[] {
+export function formatURL( url: string ): JSX.Element[] {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
-	const collection: React.JSX.Element[] = [
-		<React.Fragment key={ 0 }>
+	const collection: JSX.Element[] = [
+		<Fragment key={ 0 }>
 			{ parts[0] }
-		</React.Fragment>,
+		</Fragment>,
 	];
 	let index = 0;
 
@@ -58,10 +58,10 @@ export function formatURL( url: string ): React.JSX.Element[] {
 		index += 2;
 
 		collection.push(
-			<React.Fragment key={ index }>
+			<Fragment key={ index }>
 				<br />
 				{ `${ keyword }${ parts[ index ] }` }
-			</React.Fragment>
+			</Fragment>
 		);
 
 		return '';

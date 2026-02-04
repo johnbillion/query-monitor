@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'preact/hooks';
 
 import {
 	__,
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const StackCaller = ( { stack, defaultExpanded = false }: Props ) => {
-	const [ expanded, setExpanded ] = React.useState( defaultExpanded );
+	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	if ( ! stack?.length ) {
 		return (

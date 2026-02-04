@@ -1,15 +1,16 @@
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
+import { useContext } from 'preact/hooks';
 import { PanelContext } from '../contexts/panel-context';
 
 interface Props {
 	title?: string;
-	children: React.ReactNode;
+	children: ComponentChildren;
 }
 
 export const NonTabularPanel = ( { title, children }: Props ) => {
 	const {
 		id,
-	} = React.useContext( PanelContext );
+	} = useContext( PanelContext );
 
 	return (
 		<div

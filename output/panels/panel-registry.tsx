@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
 
 import {
 	DataTypes,
@@ -10,18 +10,18 @@ interface Panels<TDataKey extends keyof DataTypes> {
 }
 
 interface Panel<TDataKey extends keyof DataTypes> {
-	render: ( data: DataTypes[ TDataKey ], enabled: boolean ) => React.ReactNode;
+	render: ( data: DataTypes[ TDataKey ], enabled: boolean ) => ComponentChildren;
 	data: TDataKey;
 	type?: 'standard';
 }
 
 interface OverviewPanel {
-	render: ( data: iPanelData, settings: iSettings ) => React.ReactNode;
+	render: ( data: iPanelData, settings: iSettings ) => ComponentChildren;
 	type: 'overview';
 }
 
 interface SettingsPanel {
-	render: ( settings: iSettings ) => React.ReactNode;
+	render: ( settings: iSettings ) => ComponentChildren;
 	type: 'settings';
 }
 

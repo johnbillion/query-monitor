@@ -1,6 +1,6 @@
 import {
 	createContext,
-} from 'react';
+} from 'preact';
 
 export type PanelContextType = {
 	id: string;

@@ -19,12 +19,13 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-import * as React from 'react';
+import { type ComponentChildren } from 'preact';
+import { useContext, useState } from 'preact/hooks';
 
 export type Col<TDataRow> = {
 	className?: string | ( ( row: TDataRow, i: number ) => string );
 	heading: string;
-	render: ( row: TDataRow, i: number ) => ( React.ReactNode | string );
+	render: ( row: TDataRow, i: number ) => ( ComponentChildren | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
 	cellHasError?: ( row: TDataRow, i: number ) => boolean;
@@ -55,8 +56,8 @@ export type TabularProps<TDataRow> = {
 	cols: Cols<TDataRow>;
 	data: TDataRow[];
 	rowHasError?: ( row: TDataRow ) => boolean;
-	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => React.ReactNode;
-	warning?: () => React.ReactNode;
+	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => ComponentChildren;
+	warning?: () => ComponentChildren;
 	orderby?: string; // @todo restrict this to a key of the cols
 	order?: 'asc'|'desc';
 	groupKey?: ( row: TDataRow ) => string;
@@ -65,7 +66,7 @@ export type TabularProps<TDataRow> = {
 interface TableProps<TDataRow> extends TabularProps<TDataRow> {
 	id: string;
 	title: string;
-	children?: React.ReactNode;
+	children?: ComponentChildren;
 }
 
 interface DataRowWithTrace {
@@ -250,7 +251,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 	const {
 		filters,
 		setFilter,
-	} = React.useContext( PanelContext );
+	} = useContext( PanelContext );
 	const total = countData( data );
 	const nonEmptyCols = Object.entries( cols ).filter( ( entry ): entry is [string, Col<TDataRow>] => ( entry[1] ? true : false ) );
 
@@ -285,7 +286,7 @@ export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id
 	}
 
 	const count = countData( data );
-	const [ sorting, _setSorting ] = React.useState( {
+	const [ sorting, _setSorting ] = useState( {
 		orderby,
 		order,
 	} );
