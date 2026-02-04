@@ -35,6 +35,7 @@ type Props = {
 	theme: string;
 	editor: string;
 	filters: MainContextType['filters'];
+	containerHeight: number | null;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number, width: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -116,6 +117,9 @@ export const QM = ( props: Props ) => {
 		}
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
+	const { onContainerResize, containerHeight } = props;
+	const initialHeightApplied = React.useRef( false );
+
 	/**
 	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
 	 * a comprehensive explanantion of modern pointer event handling.
@@ -132,6 +136,11 @@ export const QM = ( props: Props ) => {
 
 		if ( ! qmMain ) {
 			return;
+		}
+
+		if ( containerHeight && ! initialHeightApplied.current ) {
+			qmMain.style.height = `${ containerHeight }px`;
+			initialHeightApplied.current = true;
 		}
 
 		let startY = 0;
@@ -164,6 +173,11 @@ export const QM = ( props: Props ) => {
 		}
 
 		const end = (_event: PointerEvent) => {
+			if ( dragging ) {
+				const rect = qmMain.getBoundingClientRect();
+				onContainerResize( rect.height, rect.width );
+			}
+
 			dragging = false;
 		}
 
@@ -182,7 +196,7 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'pointercancel', end );
 			el.removeEventListener( 'touchstart', preventTouch );
 		};
-	}, [ active ] );
+	}, [ active, containerHeight, onContainerResize ] );
 
 	return (
 		<MainContext.Provider value={ contextValue }>

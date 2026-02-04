@@ -265,6 +265,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const theme = localStorage.getItem( themeKey ) ?? 'auto';
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
+	const rawContainerHeight = localStorage.getItem( containerHeightKey );
+	const containerHeight = rawContainerHeight ? parseFloat( rawContainerHeight ) : null;
 	const settings: iSettings = {
 		...QueryMonitorData.settings,
 		ajaxurl: QueryMonitorData.l10n.ajaxurl,
@@ -289,6 +291,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			theme={ theme }
 			editor={ editor }
 			filters={ filters }
+			containerHeight={ containerHeight }
 			onPanelChange={ onPanelChange }
 			onContainerResize={ onContainerResize }
 			onSideChange={ onSideChange }
