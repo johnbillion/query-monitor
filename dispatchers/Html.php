@@ -363,7 +363,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		// Determine the reason for the extended query prompt
 		$extended_query_prompt_reason = null;
-		if ( $show_extended_query_prompt ) {
+		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
 			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 				$extended_query_prompt_reason = 'conflict';
 			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {

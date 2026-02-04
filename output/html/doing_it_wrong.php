@@ -69,8 +69,6 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 		$args = array(
 			'title' => esc_html( $label ),
-			'id'    => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href'  => esc_attr( '#' . $this->collector->id() ),
 		);
 
 		if ( ! empty( $data->actions ) ) {
