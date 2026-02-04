@@ -1,4 +1,5 @@
 import { render } from 'preact';
+import { setLocaleData } from '@wordpress/i18n';
 
 import { QM } from '../output/qm';
 import { Fatal } from '../output/fatal';
@@ -70,9 +71,15 @@ type iQM = {
 		};
 		file_path_map: Record<string, string>;
 	};
+	locale_data?: Record<string, unknown> | null;
 }
 
 declare const QueryMonitorData: iQM;
+
+// Load script translations if available.
+if ( QueryMonitorData.locale_data ) {
+	setLocaleData( QueryMonitorData.locale_data, 'query-monitor' );
+}
 
 // Register the Overview panel that receives all data
 registerOverview( {

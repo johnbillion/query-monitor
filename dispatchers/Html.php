@@ -391,6 +391,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'file_path_map' => QM_Output_Html::get_file_path_map(),
 			],
 			'number_format' => $wp_locale->number_format,
+			'locale_data' => self::get_script_locale_data(),
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
@@ -755,6 +756,50 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'type' => 'module',
 			'src' => esc_url( $origin . '/src/index.tsx' ),
 		] );
+	}
+
+	/**
+	 * Loads the script locale data for the bundled JS translations.
+	 *
+	 * This replicates what wp_set_script_translations() does, but without
+	 * requiring a registered script handle.
+	 *
+	 * @return array<string, mixed>|null The locale data for the text domain, or null.
+	 */
+	private static function get_script_locale_data(): ?array {
+		$locale = determine_locale();
+
+		if ( 'en_US' === $locale ) {
+			return null;
+		}
+
+		$relative  = 'assets/build/query-monitor.js';
+		$file_base = 'query-monitor-' . $locale;
+		$md5_file  = $file_base . '-' . md5( $relative ) . '.json';
+
+		$locations = array(
+			dirname( __DIR__ ) . '/languages/' . $md5_file,
+			WP_LANG_DIR . '/plugins/' . $md5_file,
+		);
+
+		foreach ( $locations as $file ) {
+			$json = load_script_translations( $file, 'query-monitor', 'query-monitor' );
+
+			if ( $json ) {
+				/** @var array{locale_data?: array<string, mixed>} */
+				$translations = json_decode( $json, true );
+				$locale_data  = $translations['locale_data']['query-monitor']
+							?? $translations['locale_data']['messages']
+							?? null;
+
+				if ( $locale_data ) {
+					$locale_data['']['domain'] = 'query-monitor';
+					return $locale_data;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
