@@ -5,8 +5,6 @@ import { JsonOutput } from '../components/json-output';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { Cols } from '../table';
-import * as React from 'react';
-
 import {
 	__,
 } from '@wordpress/i18n';

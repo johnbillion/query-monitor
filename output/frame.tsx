@@ -4,8 +4,6 @@ import {
 import {
 	FileName,
 } from './components/file-name';
-import * as React from 'react';
-
 interface Props {
 	frame: FrameItem;
 	expanded?: boolean;

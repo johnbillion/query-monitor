@@ -4,8 +4,6 @@ import * as Utils from './utils';
 import { Warning } from './components/warning';
 import { Asset as AssetDataType, DataTypes } from './data-types';
 import { PanelProps } from './types';
-import * as React from 'react';
-
 import {
 	__,
 	sprintf,

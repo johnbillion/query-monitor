@@ -4,8 +4,6 @@ import { PanelFooter } from '../panels/panel-footer';
 import { TabularPanel } from '../panels/tabular-panel';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import {
 	__,
 	sprintf,

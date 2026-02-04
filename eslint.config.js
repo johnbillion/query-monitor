@@ -68,6 +68,7 @@ export default [
 
 			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 			'@typescript-eslint/no-empty-object-type': 'off', // Allow {} in generic constraints
+			'react/react-in-jsx-scope': 'off', // Using automatic JSX transform
 			'react/no-unescaped-entities': 'off', // Allow apostrophes in i18n strings
 		},
 	},

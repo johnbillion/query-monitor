@@ -1,6 +1,4 @@
 import * as Utils from '../utils';
-import * as React from 'react';
-
 import {
 	sprintf,
 } from '@wordpress/i18n';

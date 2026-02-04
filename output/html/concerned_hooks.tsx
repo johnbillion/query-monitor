@@ -3,8 +3,6 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { FileName } from '../components/file-name';
 import { AbstractData, ConcernedHook } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import { __ } from '@wordpress/i18n';
 
 type HookRow = ConcernedHook['actions'][number] & {

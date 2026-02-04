@@ -5,8 +5,6 @@ import { TotalTime } from '../components/total-time';
 import { Component } from '../component';
 import { DataTypes, Component as ComponentData } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import { __ } from '@wordpress/i18n';
 
 interface ComponentAggregate {

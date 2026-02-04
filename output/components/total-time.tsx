@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Time } from './time';
 
 interface Props {

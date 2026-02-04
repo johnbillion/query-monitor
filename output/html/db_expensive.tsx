@@ -4,8 +4,6 @@ import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol, getTimeCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import {
 	__,
 } from '@wordpress/i18n';

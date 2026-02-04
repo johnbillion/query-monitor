@@ -5,8 +5,6 @@ import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { componentFilterCallback, deriveComponentFilters } from '../table';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import {
 	__,
 	sprintf,

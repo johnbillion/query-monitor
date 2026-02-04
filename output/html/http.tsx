@@ -8,8 +8,6 @@ import { TotalTime } from '../components/total-time';
 import { PanelFooter } from '../panels/panel-footer';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import * as React from 'react';
-
 import {
 	__,
 	sprintf,
