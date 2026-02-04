@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "3.20.2",
+	"version": "4.0.0-alpha.1",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
@@ -53,6 +53,7 @@
 		"bump:patch": "bump patch --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php",
+		"bump": "f() { bump \"$1\" --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php; }; f",
 		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/public/logo.png -f png --palette resize 256 256",
 		"watch": "npm run build-schemas && vite",
 		"build": "npm run build-schemas && vite build",
