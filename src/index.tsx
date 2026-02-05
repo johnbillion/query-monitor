@@ -243,6 +243,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
+
+		// Legacy key names:
+		localStorage.removeItem( 'qm-admin-container-pinned' );
+		localStorage.removeItem( 'qm-front-container-pinned' );
 	}
 
 	const onSideChange = ( side: boolean ) => {
