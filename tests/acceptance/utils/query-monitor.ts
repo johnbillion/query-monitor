@@ -141,7 +141,13 @@ export class QueryMonitorUtils {
 	 * Open a specific QM panel by its name
 	 */
 	async openQMPanel( panel: string ) {
-		await this.page.locator( '#wp-admin-bar-query-monitor' ).click();
+		// Only click the admin bar menu if QM is not already open
+		const isOpen = await this.page.evaluate( () => {
+			return document.getElementById( 'query-monitor-main' )?.classList.contains( 'qm-show' ) ?? false;
+		} );
+		if ( ! isOpen ) {
+			await this.page.locator( '#wp-admin-bar-query-monitor' ).click();
+		}
 		// Find a button where the text starts with the panel name
 		const buttonLocator = this.page.locator( '#qm-panel-menu button' ).filter( {
 			hasText: new RegExp( `^${panel.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' )}` )
