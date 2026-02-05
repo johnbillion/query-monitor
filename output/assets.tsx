@@ -46,9 +46,9 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	}
 
 	return (
-		<>
+		<a href={ asset.url.absolute }>
 			{ asset.display }
-		</>
+		</a>
 	);
 };
 
