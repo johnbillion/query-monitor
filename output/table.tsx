@@ -375,7 +375,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 				) }
 				{ data.map( ( row, i ) => (
 					<tr
-						key={ i } // @todo nope
+						key={ i }
 						className={ clsx( {
 							'qm-warn': rowHasError && rowHasError( row ),
 						} ) }

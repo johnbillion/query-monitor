@@ -131,7 +131,6 @@
 			}
 		},
 		"ltime": {
-			"@todo": "remove",
 			"type": "number"
 		},
 		"errors": {

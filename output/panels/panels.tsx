@@ -7,13 +7,11 @@ import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { useRef, useState, useEffect, useContext } from 'preact/hooks';
 
-// what is this?
 interface QMPanelData<TDataKey extends keyof DataTypes> {
 	data: DataTypes[ TDataKey ];
 	enabled: boolean;
 }
 
-// @todo this comes from QueryMonitorData / iQM
 export type iPanelData = {
 	overview?: QMPanelData<'overview'>;
 	admin?: QMPanelData<'admin'>;
