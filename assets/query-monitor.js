@@ -111,6 +111,12 @@ if ( window.jQuery ) {
 			}
 		}
 
+		var close_container = function(){
+			container.removeClass('qm-show').height('').width('');
+			body.css( 'margin-bottom', '' );
+			localStorage.removeItem( container_pinned_key );
+		};
+
 		var link_click = function(e){
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
 
@@ -118,8 +124,13 @@ if ( window.jQuery ) {
 				return;
 			}
 
-			show_panel( href );
-			$(href).trigger('focus');
+			if ( '#qm-overview' === href && container.hasClass( 'qm-show' ) ) {
+				close_container();
+			} else {
+				show_panel( href );
+				$(href).trigger('focus');
+			}
+
 			$('#wp-admin-bar-query-monitor').removeClass('hover');
 			e.preventDefault();
 		};
@@ -591,11 +602,8 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('.qm-button-container-close').on('click',function(){
-			container.removeClass('qm-show').height('').width('');
-			body.css( 'margin-bottom', '' );
-			localStorage.removeItem( container_pinned_key );
-		});
+		$('#qm-title').on('dblclick',close_container);
+		$('.qm-button-container-close').on('click',close_container);
 
 		$('.qm-button-container-settings,a[href="#qm-settings"]').on('click',function(){
 			show_panel( '#qm-settings' );
