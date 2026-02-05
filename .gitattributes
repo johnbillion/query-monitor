@@ -8,6 +8,9 @@
 /docs export-ignore
 /node_modules export-ignore
 /tests export-ignore
+/output/components export-ignore
+/output/contexts export-ignore
+/output/panels export-ignore
 /packages export-ignore
 /src export-ignore
 
@@ -17,6 +20,9 @@
 /.gitignore export-ignore
 /.npmrc export-ignore
 /.nvmrc export-ignore
+/.prettierignore export-ignore
+/.prettierrc export-ignore
+/assets/query-monitor.css export-ignore
 /AGENTS.md export-ignore
 /composer.lock export-ignore
 /CLAUDE.md export-ignore
@@ -30,6 +36,7 @@
 /package.json export-ignore
 /phpcs.xml.dist export-ignore
 /phpstan.neon.dist export-ignore
+/phpunit.xml.dist export-ignore
 /README.md export-ignore
 /RELEASING.md export-ignore
 /SECURITY.md export-ignore
