@@ -10,8 +10,6 @@ on:
     paths:
       - '.github/workflows/integration-tests.yml'
       - 'tests/**'
-      - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
       - 'phpunit.xml.dist'
@@ -24,8 +22,6 @@ on:
     paths:
       - '.github/workflows/integration-tests.yml'
       - 'tests/**'
-      - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
       - 'phpunit.xml.dist'

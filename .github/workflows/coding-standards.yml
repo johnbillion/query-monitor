@@ -10,7 +10,6 @@ on:
     paths:
       - '.github/workflows/coding-standards.yml'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.ts'
       - '**.tsx'
@@ -19,13 +18,16 @@ on:
       - 'package.json'
       - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
+      - 'eslint.config.js'
+      - '.npmrc'
+      - '.nvmrc'
+      - '.tsconfig.json'
   pull_request:
     branches:
       - '**'
     paths:
       - '.github/workflows/coding-standards.yml'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.ts'
       - '**.tsx'
@@ -34,6 +36,10 @@ on:
       - 'package.json'
       - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
+      - 'eslint.config.js'
+      - '.npmrc'
+      - '.nvmrc'
+      - '.tsconfig.json'
   workflow_dispatch:
 
 permissions: {}

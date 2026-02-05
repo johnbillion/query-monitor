@@ -9,29 +9,31 @@ on:
       - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/acceptance-tests.yml'
-      - 'tests/acceptance/**'
+      - 'tests/**'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
+      - '**.tsx'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
       - 'tsconfig.json'
+      - 'vite.config.js'
   pull_request:
     branches:
       - '**'
     paths:
       - '.github/workflows/acceptance-tests.yml'
-      - 'tests/acceptance/**'
+      - 'tests/**'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
+      - '**.tsx'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
       - 'tsconfig.json'
+      - 'vite.config.js'
   workflow_dispatch:
 
 permissions: {}
