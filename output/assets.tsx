@@ -117,9 +117,7 @@ const Assets = ( { data, labels }: myProps ) => {
 								i > 0 && ', ',
 								<span
 									key={ dep }
-									style={ {
-										whiteSpace: 'nowrap',
-									} }
+									className="qm-nowrap"
 								>
 									{ data.missing_dependencies[ dep ] ? (
 										<Warning>
@@ -138,7 +136,19 @@ const Assets = ( { data, labels }: myProps ) => {
 				},
 				dependents: {
 					heading: __( 'Dependents', 'query-monitor' ),
-					render: ( row ) => row.dependents.join( ', ' ),
+					render: ( row ) => (
+						<>
+							{ row.dependents.map( ( dep, i ) => [
+								i > 0 && ', ',
+								<span
+									key={ dep }
+									className="qm-nowrap"
+								>
+									{ dep }
+								</span>,
+							] ) }
+						</>
+					),
 				},
 				version: {
 					heading: __( 'Version', 'query-monitor' ),
