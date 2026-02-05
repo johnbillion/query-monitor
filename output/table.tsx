@@ -52,18 +52,18 @@ interface ColSorting<TDataRow> {
 	default?: 'asc'|'desc';
 }
 
-export type TabularProps<TDataRow> = {
-	cols: Cols<TDataRow>;
+export type TabularProps<TDataRow, TCols extends Cols<TDataRow> = Cols<TDataRow>> = {
+	cols: TCols;
 	data: TDataRow[];
 	rowHasError?: ( row: TDataRow ) => boolean;
 	footer?: ( args: { cols: number, count: number, total: number, data: TDataRow[] } ) => ComponentChildren;
 	warning?: () => ComponentChildren;
-	orderby?: string; // @todo restrict this to a key of the cols
+	orderby?: keyof TCols & string;
 	order?: 'asc'|'desc';
 	groupKey?: ( row: TDataRow ) => string;
 }
 
-interface TableProps<TDataRow> extends TabularProps<TDataRow> {
+interface TableProps<TDataRow, TCols extends Cols<TDataRow> = Cols<TDataRow>> extends TabularProps<TDataRow, TCols> {
 	id: string;
 	title: string;
 	children?: ComponentChildren;
@@ -247,7 +247,7 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, children }: TableProps<TDataRow> ) => {
+export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<TDataRow>>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, children }: TableProps<TDataRow, TCols> ) => {
 	const {
 		filters,
 		setFilter,
