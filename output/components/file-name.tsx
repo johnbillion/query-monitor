@@ -65,7 +65,7 @@ export const FileName = ( { text, file, line = 0, isFileName = false, expanded =
 
 	const output = sprintf(
 		format,
-		mappedFile, // @todo rawurlencode
+		encodeURIComponent( mappedFile ),
 		linkLine
 	);
 
