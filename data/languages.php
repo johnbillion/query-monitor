@@ -18,6 +18,7 @@ class QM_Data_Languages extends QM_Data {
 	 *   caller: array<string, mixed>|false,
 	 *   domain: string,
 	 *   file: string|false,
+	 *   display: string,
 	 *   found: int|false,
 	 *   handle: string|null,
 	 *   type: 'gettext'|'jed'|'php'|'unknown',

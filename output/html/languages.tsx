@@ -1,4 +1,5 @@
 import { ApproximateSize } from '../components/approximate-size';
+import { FileName } from '../components/file-name';
 import { Frame } from '../frame';
 import { PanelFooter } from '../panels/panel-footer';
 import { TabularPanel } from '../panels/tabular-panel';
@@ -45,7 +46,15 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					heading: __( 'Translation File', 'query-monitor' ),
 					render: ( row ) => (
 						row.file ? (
-							row.file
+							row.found ? (
+								<FileName
+									text={ row.display }
+									file={ row.file }
+									isFileName
+								/>
+							) : (
+								row.display
+							)
 						) : (
 							__( 'None', 'query-monitor' )
 						)

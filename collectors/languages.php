@@ -243,7 +243,6 @@ class QM_Collector_Languages extends QM_DataCollector {
 					$type = 'unknown';
 					break;
 			}
-			$file = QM_Util::standard_dir( $file, '' );
 		} else {
 			$type = 'unknown';
 			$file = 'unknown';
@@ -254,6 +253,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,
+			'display' => $file ? QM_Util::standard_dir( $file, '' ) : 'unknown',
 			'found' => $found,
 			'handle' => null,
 			'type' => $type,
@@ -292,7 +292,8 @@ class QM_Collector_Languages extends QM_DataCollector {
 		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
-			'file' => $file ? QM_Util::standard_dir( $file, '' ) : $file,
+			'file' => $file,
+			'display' => $file ? QM_Util::standard_dir( $file, '' ) : 'unknown',
 			'found' => $found,
 			'handle' => $handle,
 			'type' => 'jed',
