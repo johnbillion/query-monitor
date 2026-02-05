@@ -43,7 +43,10 @@ export type iPanelData = {
 	transients: QMPanelData<'transients'>;
 };
 
-// @todo this comes from QueryMonitorData / iQM
+/**
+ * Combined settings for use in the app.
+ * Merges QueryMonitorData.settings with QueryMonitorData.l10n.
+ */
 export type iSettings = {
 	verified: boolean;
 	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
@@ -56,7 +59,6 @@ export type iSettings = {
 	file_path_map: Record<string, string>;
 };
 
-// what is this?
 type Props = {
 	data: iPanelData;
 	settings: iSettings;

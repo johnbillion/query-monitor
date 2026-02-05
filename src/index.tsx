@@ -38,39 +38,48 @@ import { Theme } from '../output/html/theme';
 import { Timing } from '../output/html/timing';
 import { Transients } from '../output/html/transients';
 
-// what is this?
+/**
+ * Raw settings from PHP, before merging with l10n values.
+ */
+type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason'>;
+
+/**
+ * Localization data from PHP.
+ */
+type iQML10n = Pick<iSettings, 'ajaxurl' | 'admin_url' | 'auth_nonce' | 'file_path_map'>;
+
+/**
+ * Menu item in the admin bar submenu.
+ */
+type iQMMenuItem = {
+	id: string;
+	panel: string;
+	title: string;
+	meta?: {
+		classname: string;
+	};
+};
+
+/**
+ * Admin bar menu structure.
+ */
+type iQMMenu = {
+	top: {
+		title: string[];
+		classname: string;
+	};
+	sub: Record<string, iQMMenuItem>;
+};
+
+/**
+ * The global QueryMonitorData object injected by PHP.
+ */
 type iQM = {
-	menu: {
-		top: {
-			title: string[];
-			classname: string;
-		};
-		sub: {
-			[k: string]: {
-				id: string;
-				panel: string;
-				title: string;
-				meta?: {
-					classname: string;
-				}
-			}
-		}
-	};
-	settings: {
-		verified: boolean;
-		extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
-	};
+	menu: iQMMenu;
+	settings: iQMSettings;
 	panel_menu: iNavMenu;
 	data: iPanelData;
-	l10n: {
-		ajaxurl: string;
-		admin_url: string;
-		auth_nonce: {
-			on: string;
-			off: string;
-		};
-		file_path_map: Record<string, string>;
-	};
+	l10n: iQML10n;
 	locale_data?: Record<string, unknown> | null;
 }
 
