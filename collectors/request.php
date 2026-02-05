@@ -34,9 +34,10 @@ class QM_Collector_Request extends QM_DataCollector {
 			'parse_tax_query',
 			'pre_get_posts',
 			'send_headers',
+			'set_404',
+			'template_redirect',
 			'the_post',
 			'wp',
-			'after_switch_theme',
 		);
 	}
 
@@ -119,10 +120,15 @@ class QM_Collector_Request extends QM_DataCollector {
 	 */
 	public function get_concerned_options() {
 		return array(
+			'category_base',
 			'home',
+			'page_for_posts',
+			'page_on_front',
 			'permalink_structure',
 			'rewrite_rules',
+			'show_on_front',
 			'siteurl',
+			'tag_base',
 		);
 	}
 

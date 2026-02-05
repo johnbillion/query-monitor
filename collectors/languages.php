@@ -74,7 +74,10 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'change_locale',
 			'load_textdomain',
+			'restore_previous_locale',
+			'switch_locale',
 			'unload_textdomain',
 		);
 	}

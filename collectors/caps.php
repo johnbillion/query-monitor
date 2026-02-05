@@ -67,6 +67,9 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'add_user_role',
+			'remove_user_role',
+			'set_user_role',
 			'wp_roles_init',
 		);
 	}
@@ -76,6 +79,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	public function get_concerned_filters() {
 		return array(
+			'editable_roles',
 			'map_meta_cap',
 			'role_has_cap',
 			'user_has_cap',
@@ -89,6 +93,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
 		return array(
+			'default_role',
 			"{$blog_prefix}user_roles",
 		);
 	}
@@ -100,6 +105,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
 			'DISALLOW_FILE_EDIT',
+			'DISALLOW_FILE_MODS',
 			'DISALLOW_UNFILTERED_HTML',
 		);
 	}

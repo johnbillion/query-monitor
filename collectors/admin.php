@@ -26,8 +26,11 @@ class QM_Collector_Admin extends QM_DataCollector {
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
+			'admin_init',
+			'admin_menu',
 			'admin_notices',
 			'all_admin_notices',
+			'in_admin_header',
 			'network_admin_notices',
 			'user_admin_notices',
 		);
@@ -43,7 +46,9 @@ class QM_Collector_Admin extends QM_DataCollector {
 	 * @return array<int, string>
 	 */
 	public function get_concerned_filters() {
-		$filters = array();
+		$filters = array(
+			'admin_body_class',
+		);
 
 		if ( ! empty( $this->data->list_table ) ) {
 			$filters[] = $this->data->list_table['columns_filter'];

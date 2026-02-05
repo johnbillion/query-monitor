@@ -93,6 +93,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		return array(
 			'doing_it_wrong_run',
 			'deprecated_function_run',
+			'deprecated_class_run',
 			'deprecated_constructor_run',
 			'deprecated_file_included',
 			'deprecated_argument_run',
@@ -106,6 +107,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	public function get_concerned_filters() {
 		return array(
 			'deprecated_function_trigger_error',
+			'deprecated_class_trigger_error',
 			'deprecated_constructor_trigger_error',
 			'deprecated_file_trigger_error',
 			'deprecated_argument_trigger_error',

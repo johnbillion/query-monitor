@@ -62,10 +62,21 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	public function get_concerned_actions() {
+		return array(
+			'enqueue_block_assets',
+			'enqueue_block_editor_assets',
+		);
+	}
+
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
 			'allowed_block_types_all',
+			'block_categories_all',
 			'block_editor_settings_all',
 			'block_type_metadata',
 			'block_type_metadata_settings',
@@ -75,6 +86,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			'render_block_context',
 			'render_block_data',
 			'render_block',
+			'should_load_separate_core_block_assets',
+			'use_block_editor_for_post',
+			'use_block_editor_for_post_type',
 			'use_widgets_block_editor',
 		);
 	}
