@@ -257,7 +257,7 @@ export const QM = ( props: Props ) => {
 						className="ab-item"
 						href="#qm-overview"
 						onClick={ ( e ) => {
-							setActivePanel( 'overview' );
+							setActivePanel( active ? '' : 'overview' );
 							adminMenuElement.classList.remove( 'hover' );
 							e.preventDefault();
 						} }
