@@ -59,7 +59,11 @@ class AcceptanceTester extends \Codeception\Actor {
 	}
 
 	public function openQMPanel( string $panel ): void {
-		$this->click( '#wp-admin-bar-query-monitor' );
+		// Only click the admin bar menu if QM is not already open
+		$isOpen = $this->executeJS( 'return document.getElementById("query-monitor-main")?.classList.contains("qm-show") ?? false;' );
+		if ( ! $isOpen ) {
+			$this->click( '#wp-admin-bar-query-monitor' );
+		}
 		// Find a button where the value starts with the text
 		$buttonXPath = sprintf(
 			'//*[@id="qm-panel-menu"]//button[starts-with(normalize-space(text()), "%s")]',
