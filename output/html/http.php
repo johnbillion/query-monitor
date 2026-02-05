@@ -185,6 +185,10 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 					esc_html( $row['args']['method'] )
 				);
 
+				if ( $is_error && 'GET' === $row['args']['method'] ) {
+					$url .= sprintf( ' <a href="%s">%s</a>', esc_url( $row['url'] ), QueryMonitor::icon( 'external' ) );
+				}
+
 				if ( $row['intercepted'] ) {
 					$url = sprintf(
 						'<span class="qm-warn">%1$s%2$s</span><br>',
