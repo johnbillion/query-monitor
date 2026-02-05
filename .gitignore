@@ -4,6 +4,5 @@
 /vendor
 /node_modules
 /assets/build
-/tests/_output/
-/tests/_support/_generated
+/tests/test-results
 /tests/cache

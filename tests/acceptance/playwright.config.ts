@@ -7,7 +7,7 @@ if ( ! baseURL ) {
 
 export default defineConfig({
 	testDir: '.',
-	outputDir: '../_output',
+	outputDir: '../test-results',
 	fullyParallel: false,
 	forbidOnly: !!process.env.CI,
 	workers: 1,
