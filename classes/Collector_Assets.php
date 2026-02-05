@@ -350,7 +350,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			);
 		}
 
-		// @todo check isPrivate before changing visibility back
 		( \PHP_VERSION_ID < 80100 ) && $get_marked_for_enqueue->setAccessible( false );
 		( \PHP_VERSION_ID < 80100 ) && $get_dependencies->setAccessible( false );
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( false );
