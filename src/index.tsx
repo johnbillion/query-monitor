@@ -310,7 +310,3 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	);
 } );
 
-// Enable HMR for panel components
-if ( import.meta.hot ) {
-	import.meta.hot.accept();
-}
