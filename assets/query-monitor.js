@@ -837,6 +837,8 @@ if ( window.jQuery ) {
 							// Different URL or no previous queries - show waiting message
 							var $content = $('#qm-query-diff').find('.qm-query-diff-content');
 							$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+							// Clear stored data to start fresh for the new URL
+							sessionStorage.removeItem(queryDiffKey);
 						}
 					} catch (e) {
 						// Ignore parse errors
