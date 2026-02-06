@@ -262,6 +262,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
 				),
 				'fatal_error' => __( 'PHP Fatal Error', 'query-monitor' ),
+				'query_diff' => array(
+					'no_changes' => __( 'No query changes detected between page loads.', 'query-monitor' ),
+					'previous' => __( 'Previous', 'query-monitor' ),
+					'current' => __( 'Current', 'query-monitor' ),
+					'queries' => __( 'queries', 'query-monitor' ),
+					'added' => __( 'Added', 'query-monitor' ),
+					'removed' => __( 'Removed', 'query-monitor' ),
+					'disabled' => __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare queries between page loads.', 'query-monitor' ),
+					'waiting' => __( 'Refresh this page to compare queries.', 'query-monitor' ),
+				),
 			)
 		);
 
@@ -623,6 +633,17 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
 		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
 		echo '</ul>' . "\n";
+		echo '</section>' . "\n";
+
+		echo '<section>' . "\n";
+		echo '<h3>' . esc_html__( 'Query Diff', 'query-monitor' ) . '</h3>' . "\n";
+
+		echo '<p>' . esc_html__( 'Track database queries between page loads to see which queries were added or removed.', 'query-monitor' ) . '</p>' . "\n";
+
+		echo '<p><label><input type="checkbox" class="qm-query-diff-toggle qm-checkbox" id="qm-query-diff-toggle"/>' . esc_html__( 'Enable query diff tracking', 'query-monitor' ) . '</label></p>' . "\n";
+
+		echo '<p id="qm-query-diff-status" style="display:none;">' . esc_html__( 'Query diff is active. Refresh the page to see changes.', 'query-monitor' ) . '</p>' . "\n";
+
 		echo '</section>' . "\n";
 		echo '</div>' . "\n";
 

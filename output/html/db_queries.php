@@ -383,6 +383,11 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			$row_attr['data-qm-time'] = $row['ltime'];
 		}
 
+		// Add SQL and caller for query diff feature
+		if ( isset( $cols['sql'] ) ) {
+			$row_attr['data-qm-sql'] = $row['sql'];
+		}
+
 		$attr = '';
 
 		foreach ( $row_attr as $a => $v ) {

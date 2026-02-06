@@ -640,6 +640,255 @@ if ( window.jQuery ) {
 			$($(this).val()).trigger('focus');
 		});
 
+		// === Query Diff Feature ===
+
+		var queryDiffKey = 'qm-query-diff-data';
+		var queryDiffEnabledKey = 'qm-query-diff-enabled';
+
+		/**
+		 * Get current page queries from the DOM.
+		 *
+		 * @return {Array} Array of query objects with sql and caller properties.
+		 */
+		function getQueriesFromDOM() {
+			var queries = [];
+			$('#qm-db_queries tbody tr[data-qm-sql]').each(function() {
+				var $row = $(this);
+				queries.push({
+					sql: $row.attr('data-qm-sql'),
+					caller: $row.attr('data-qm-caller') || '',
+					type: $row.attr('data-qm-type') || '',
+					time: parseFloat($row.attr('data-qm-time')) || 0
+				});
+			});
+			return queries;
+		}
+
+		/**
+		 * Create a fingerprint for a query to enable comparison.
+		 *
+		 * @param {Object} query Query object with sql and caller.
+		 * @return {string} Fingerprint string.
+		 */
+		function getQueryFingerprint(query) {
+			return query.sql + '||' + query.caller;
+		}
+
+		/**
+		 * Compute the diff between two query sets.
+		 *
+		 * @param {Array} previous Previous queries.
+		 * @param {Array} current Current queries.
+		 * @return {Object} Diff result with added and removed queries.
+		 */
+		function computeQueryDiff(previous, current) {
+			var prevFingerprints = {};
+			var currFingerprints = {};
+
+			previous.forEach(function(q) {
+				var fp = getQueryFingerprint(q);
+				prevFingerprints[fp] = prevFingerprints[fp] || [];
+				prevFingerprints[fp].push(q);
+			});
+
+			current.forEach(function(q) {
+				var fp = getQueryFingerprint(q);
+				currFingerprints[fp] = currFingerprints[fp] || [];
+				currFingerprints[fp].push(q);
+			});
+
+			var added = [];
+			var removed = [];
+
+			// Find added queries (in current but not in previous, or more occurrences)
+			Object.keys(currFingerprints).forEach(function(fp) {
+				var currCount = currFingerprints[fp].length;
+				var prevCount = prevFingerprints[fp] ? prevFingerprints[fp].length : 0;
+				var diff = currCount - prevCount;
+				if (diff > 0) {
+					for (var i = 0; i < diff; i++) {
+						added.push(currFingerprints[fp][currCount - 1 - i]);
+					}
+				}
+			});
+
+			// Find removed queries (in previous but not in current, or fewer occurrences)
+			Object.keys(prevFingerprints).forEach(function(fp) {
+				var prevCount = prevFingerprints[fp].length;
+				var currCount = currFingerprints[fp] ? currFingerprints[fp].length : 0;
+				var diff = prevCount - currCount;
+				if (diff > 0) {
+					for (var i = 0; i < diff; i++) {
+						removed.push(prevFingerprints[fp][prevCount - 1 - i]);
+					}
+				}
+			});
+
+			return {
+				added: added,
+				removed: removed,
+				previousCount: previous.length,
+				currentCount: current.length
+			};
+		}
+
+		/**
+		 * Render the diff results in the UI.
+		 *
+		 * @param {Object} diff The diff result object.
+		 */
+		function renderQueryDiff(diff) {
+			console.log('Query Diff:', diff);
+			var $diffPanel = $('#qm-query-diff');
+
+			if (!$diffPanel.length) {
+				return;
+			}
+
+			var $content = $diffPanel.find('.qm-query-diff-content');
+			$content.empty();
+
+			if (diff.added.length === 0 && diff.removed.length === 0) {
+				$content.append('<p class="qm-query-diff-no-changes">' + (qm_l10n.query_diff.no_changes || 'No query changes detected between page loads.') + '</p>');
+			} else {
+				var summary = '<p class="qm-query-diff-summary">';
+				summary += (qm_l10n.query_diff.previous || 'Previous') + ': <strong>' + diff.previousCount + '</strong> ';
+				summary += (qm_l10n.query_diff.queries || 'queries') + ' &rarr; ';
+				summary += (qm_l10n.query_diff.current || 'Current') + ': <strong>' + diff.currentCount + '</strong> ';
+				summary += (qm_l10n.query_diff.queries || 'queries');
+				summary += '</p>';
+				$content.append(summary);
+
+				if (diff.added.length > 0) {
+					var $addedSection = $('<div class="qm-query-diff-section qm-query-diff-added"></div>');
+					$addedSection.append('<h4>' + (qm_l10n.query_diff.added || 'Added') + ' (' + diff.added.length + ')</h4>');
+					var $addedList = $('<ul></ul>');
+					diff.added.forEach(function(q) {
+						$addedList.append('<li><code class="qm-query-diff-sql">' + escapeHtml(q.sql) + '</code><span class="qm-query-diff-caller">' + escapeHtml(q.caller) + '</span></li>');
+					});
+					$addedSection.append($addedList);
+					$content.append($addedSection);
+				}
+
+				if (diff.removed.length > 0) {
+					var $removedSection = $('<div class="qm-query-diff-section qm-query-diff-removed"></div>');
+					$removedSection.append('<h4>' + (qm_l10n.query_diff.removed || 'Removed') + ' (' + diff.removed.length + ')</h4>');
+					var $removedList = $('<ul></ul>');
+					diff.removed.forEach(function(q) {
+						$removedList.append('<li><code class="qm-query-diff-sql">' + escapeHtml(q.sql) + '</code><span class="qm-query-diff-caller">' + escapeHtml(q.caller) + '</span></li>');
+					});
+					$removedSection.append($removedList);
+					$content.append($removedSection);
+				}
+			}
+		}
+
+		/**
+		 * Show the disabled message in the query diff panel.
+		 */
+		function showQueryDiffDisabled() {
+			var $diffPanel = $('#qm-query-diff');
+			if (!$diffPanel.length) {
+				return;
+			}
+
+			var $content = $diffPanel.find('.qm-query-diff-content');
+			$content.html('<p class="qm-query-diff-disabled">' + (qm_l10n.query_diff.disabled || 'Query diff tracking is disabled. Enable it in the Settings panel to compare queries between page loads.') + '</p>');
+		}
+
+		/**
+		 * Escape HTML special characters.
+		 *
+		 * @param {string} text Text to escape.
+		 * @return {string} Escaped text.
+		 */
+		function escapeHtml(text) {
+			if (!text) return '';
+			var div = document.createElement('div');
+			div.textContent = text;
+			return div.innerHTML;
+		}
+
+		/**
+		 * Initialize the query diff feature.
+		 */
+		function initQueryDiff() {
+			var isEnabled = localStorage.getItem(queryDiffEnabledKey) === 'true';
+
+			// Set toggle state
+			$('#qm-query-diff-toggle').prop('checked', isEnabled);
+
+			if (isEnabled) {
+				$('#qm-query-diff-status').show();
+
+				var currentQueries = getQueriesFromDOM();
+				var currentUrl = window.location.pathname + window.location.search;
+				var storedData = sessionStorage.getItem(queryDiffKey);
+
+				if (storedData) {
+					try {
+						var parsed = JSON.parse(storedData);
+
+						// Only compare if same URL
+						if (parsed.url === currentUrl && parsed.queries) {
+							var diff = computeQueryDiff(parsed.queries, currentQueries);
+							renderQueryDiff(diff);
+						} else {
+							// Different URL or no previous queries - show waiting message
+							var $content = $('#qm-query-diff').find('.qm-query-diff-content');
+							$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+						}
+					} catch (e) {
+						// Ignore parse errors
+					}
+				} else {
+					// No stored data yet - show waiting message
+					var $content = $('#qm-query-diff').find('.qm-query-diff-content');
+					$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+				}
+
+				// Store current queries for next page load
+				sessionStorage.setItem(queryDiffKey, JSON.stringify({
+					url: currentUrl,
+					queries: currentQueries,
+					timestamp: Date.now()
+				}));
+			} else {
+				// Show disabled message
+				showQueryDiffDisabled();
+				// Clear stored data when disabled
+				sessionStorage.removeItem(queryDiffKey);
+			}
+		}
+
+		// Handle toggle change
+		$('.qm-query-diff-toggle').on('change', function() {
+			var isEnabled = $(this).prop('checked');
+			localStorage.setItem(queryDiffEnabledKey, isEnabled ? 'true' : 'false');
+
+			if (isEnabled) {
+				$('#qm-query-diff-status').show();
+				// Store current queries immediately
+				var currentQueries = getQueriesFromDOM();
+				var currentUrl = window.location.pathname + window.location.search;
+				sessionStorage.setItem(queryDiffKey, JSON.stringify({
+					url: currentUrl,
+					queries: currentQueries,
+					timestamp: Date.now()
+				}));
+				// Show waiting message
+				var $content = $('#qm-query-diff').find('.qm-query-diff-content');
+				$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+			} else {
+				$('#qm-query-diff-status').hide();
+				showQueryDiffDisabled();
+				sessionStorage.removeItem(queryDiffKey);
+			}
+		});
+
+		// Initialize query diff on page load
+		initQueryDiff();
+
 	} );
 
 	/**

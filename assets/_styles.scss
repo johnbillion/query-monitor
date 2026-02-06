@@ -1535,3 +1535,150 @@ body#error-page {
 #qm-logger tr pre {
 	user-select: all;
 }
+
+// === Query Diff Panel ===
+
+.qm-query-diff-panel {
+	padding: 1em !important;
+
+	h3 {
+		font-size: 14px !important;
+		font-weight: 600 !important;
+		margin: 0 0 1em 0 !important;
+		color: var( --qm-panel-fg ) !important;
+	}
+}
+
+.qm-query-diff-content {
+	font-size: $qm-font-default-size !important;
+	line-height: $qm-font-default-line-height !important;
+}
+
+.qm-query-diff-no-changes {
+	color: var( --qm-info-fg ) !important;
+	font-style: italic !important;
+	padding: 0.5em 0 !important;
+}
+
+.qm-query-diff-summary {
+	margin-bottom: 1.5em !important;
+	padding: 0.75em 1em !important;
+	background: var( --qm-cell-bg-stripe ) !important;
+	border-radius: 3px !important;
+}
+
+.qm-query-diff-section {
+	margin-bottom: 1.5em !important;
+
+	h4 {
+		font-size: 13px !important;
+		font-weight: 600 !important;
+		margin: 0 0 0.75em 0 !important;
+		padding: 0.5em 0.75em !important;
+		border-radius: 3px !important;
+	}
+
+	ul {
+		list-style: none !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	li {
+		padding: 0.5em 0.75em !important;
+		margin: 0 0 0.5em 0 !important;
+		border-radius: 3px !important;
+		border-left: 3px solid !important;
+	}
+}
+
+.qm-query-diff-added {
+	h4 {
+		background: rgba(40, 167, 69, 0.15) !important;
+		color: #155724 !important;
+	}
+
+	li {
+		background: rgba(40, 167, 69, 0.08) !important;
+		border-left-color: #28a745 !important;
+	}
+}
+
+.qm-query-diff-removed {
+	h4 {
+		background: rgba(220, 53, 69, 0.15) !important;
+		color: #721c24 !important;
+	}
+
+	li {
+		background: rgba(220, 53, 69, 0.08) !important;
+		border-left-color: #dc3545 !important;
+	}
+}
+
+.qm-query-diff-sql {
+	display: block !important;
+	font-family: $qm-font-code-face !important;
+	font-size: $qm-font-code-size !important;
+	line-height: $qm-font-code-line-height !important;
+	word-break: break-word !important;
+	white-space: pre-wrap !important;
+	margin-bottom: 0.25em !important;
+}
+
+.qm-query-diff-caller {
+	display: block !important;
+	font-size: 10px !important;
+	color: var( --qm-info-fg ) !important;
+}
+
+// Dark mode adjustments for query diff
+#query-monitor-main[data-theme="dark"] {
+	.qm-query-diff-added {
+		h4 {
+			background: rgba(40, 167, 69, 0.25) !important;
+			color: #8fd19e !important;
+		}
+
+		li {
+			background: rgba(40, 167, 69, 0.12) !important;
+		}
+	}
+
+	.qm-query-diff-removed {
+		h4 {
+			background: rgba(220, 53, 69, 0.25) !important;
+			color: #f1aeb5 !important;
+		}
+
+		li {
+			background: rgba(220, 53, 69, 0.12) !important;
+		}
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	#query-monitor-main[data-theme="auto"] {
+		.qm-query-diff-added {
+			h4 {
+				background: rgba(40, 167, 69, 0.25) !important;
+				color: #8fd19e !important;
+			}
+
+			li {
+				background: rgba(40, 167, 69, 0.12) !important;
+			}
+		}
+
+		.qm-query-diff-removed {
+			h4 {
+				background: rgba(220, 53, 69, 0.25) !important;
+				color: #f1aeb5 !important;
+			}
+
+			li {
+				background: rgba(220, 53, 69, 0.12) !important;
+			}
+		}
+	}
+}
