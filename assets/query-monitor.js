@@ -656,9 +656,7 @@ if ( window.jQuery ) {
 				var $row = $(this);
 				queries.push({
 					sql: $row.attr('data-qm-sql'),
-					caller: $row.attr('data-qm-caller') || '',
-					type: $row.attr('data-qm-type') || '',
-					time: parseFloat($row.attr('data-qm-time')) || 0
+					caller: $row.attr('data-qm-caller') || ''
 				});
 			});
 			return queries;
@@ -738,7 +736,6 @@ if ( window.jQuery ) {
 		 * @param {Object} diff The diff result object.
 		 */
 		function renderQueryDiff(diff) {
-			console.log('Query Diff:', diff);
 			var $diffPanel = $('#qm-query-diff');
 
 			if (!$diffPanel.length) {
@@ -749,19 +746,19 @@ if ( window.jQuery ) {
 			$content.empty();
 
 			if (diff.added.length === 0 && diff.removed.length === 0) {
-				$content.append('<p class="qm-query-diff-no-changes">' + (qm_l10n.query_diff.no_changes || 'No query changes detected between page loads.') + '</p>');
+				$content.append('<p class="qm-query-diff-no-changes">' + qm_l10n.query_diff.no_changes + '</p>');
 			} else {
 				var summary = '<p class="qm-query-diff-summary">';
-				summary += (qm_l10n.query_diff.previous || 'Previous') + ': <strong>' + diff.previousCount + '</strong> ';
-				summary += (qm_l10n.query_diff.queries || 'queries') + ' &rarr; ';
-				summary += (qm_l10n.query_diff.current || 'Current') + ': <strong>' + diff.currentCount + '</strong> ';
-				summary += (qm_l10n.query_diff.queries || 'queries');
+				summary += qm_l10n.query_diff.previous + ': <strong>' + diff.previousCount + '</strong> ';
+				summary += qm_l10n.query_diff.queries + ' &rarr; ';
+				summary += qm_l10n.query_diff.current + ': <strong>' + diff.currentCount + '</strong> ';
+				summary += qm_l10n.query_diff.queries;
 				summary += '</p>';
 				$content.append(summary);
 
 				if (diff.added.length > 0) {
 					var $addedSection = $('<div class="qm-query-diff-section qm-query-diff-added"></div>');
-					$addedSection.append('<h4>' + (qm_l10n.query_diff.added || 'Added') + ' (' + diff.added.length + ')</h4>');
+					$addedSection.append('<h4>' + qm_l10n.query_diff.added + ' (' + diff.added.length + ')</h4>');
 					var $addedList = $('<ul></ul>');
 					diff.added.forEach(function(q) {
 						$addedList.append('<li><code class="qm-query-diff-sql">' + escapeHtml(q.sql) + '</code><span class="qm-query-diff-caller">' + escapeHtml(q.caller) + '</span></li>');
@@ -772,7 +769,7 @@ if ( window.jQuery ) {
 
 				if (diff.removed.length > 0) {
 					var $removedSection = $('<div class="qm-query-diff-section qm-query-diff-removed"></div>');
-					$removedSection.append('<h4>' + (qm_l10n.query_diff.removed || 'Removed') + ' (' + diff.removed.length + ')</h4>');
+					$removedSection.append('<h4>' + qm_l10n.query_diff.removed + ' (' + diff.removed.length + ')</h4>');
 					var $removedList = $('<ul></ul>');
 					diff.removed.forEach(function(q) {
 						$removedList.append('<li><code class="qm-query-diff-sql">' + escapeHtml(q.sql) + '</code><span class="qm-query-diff-caller">' + escapeHtml(q.caller) + '</span></li>');
@@ -793,7 +790,7 @@ if ( window.jQuery ) {
 			}
 
 			var $content = $diffPanel.find('.qm-query-diff-content');
-			$content.html('<p class="qm-query-diff-disabled">' + (qm_l10n.query_diff.disabled || 'Query diff tracking is disabled. Enable it in the Settings panel to compare queries between page loads.') + '</p>');
+			$content.html('<p class="qm-query-diff-disabled">' + qm_l10n.query_diff.disabled + '</p>');
 		}
 
 		/**
@@ -803,6 +800,7 @@ if ( window.jQuery ) {
 		 * @return {string} Escaped text.
 		 */
 		function escapeHtml(text) {
+			// @TODO: Consider using a more robust escaping method if needed, especially since the SQL or caller data can contain special characters.
 			if (!text) return '';
 			var div = document.createElement('div');
 			div.textContent = text;
@@ -836,7 +834,7 @@ if ( window.jQuery ) {
 						} else {
 							// Different URL or no previous queries - show waiting message
 							var $content = $('#qm-query-diff').find('.qm-query-diff-content');
-							$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+							$content.html('<p class="qm-query-diff-waiting">' + qm_l10n.query_diff.waiting + '</p>');
 							// Clear stored data to start fresh for the new URL
 							sessionStorage.removeItem(queryDiffKey);
 						}
@@ -846,7 +844,7 @@ if ( window.jQuery ) {
 				} else {
 					// No stored data yet - show waiting message
 					var $content = $('#qm-query-diff').find('.qm-query-diff-content');
-					$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+					$content.html('<p class="qm-query-diff-waiting">' + qm_l10n.query_diff.waiting + '</p>');
 				}
 
 				// Store current queries for next page load
@@ -880,7 +878,7 @@ if ( window.jQuery ) {
 				}));
 				// Show waiting message
 				var $content = $('#qm-query-diff').find('.qm-query-diff-content');
-				$content.html('<p class="qm-query-diff-waiting">' + (qm_l10n.query_diff.waiting || 'Refresh this page to compare queries.') + '</p>');
+				$content.html('<p class="qm-query-diff-waiting">' + qm_l10n.query_diff.waiting + '</p>');
 			} else {
 				$('#qm-query-diff-status').hide();
 				showQueryDiffDisabled();
