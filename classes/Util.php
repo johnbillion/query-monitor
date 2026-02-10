@@ -630,6 +630,8 @@ class QM_Util {
 	/**
 	 * Returns the site editor URL for a given template or template part name.
 	 *
+	 * @deprecated No longer used.
+	 *
 	 * @param string $template The site template name, for example `twentytwentytwo//header-small-dark`.
 	 * @param string $type     The template type, either 'wp_template_part' or 'wp_template'.
 	 * @return string The admin URL for editing the site template.
@@ -646,7 +648,8 @@ class QM_Util {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated No longer used.
+	 *
 	 * @param mixed $data
 	 * @return bool
 	 */
