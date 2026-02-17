@@ -72,7 +72,8 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$prior_error = error_get_last();
 
 		// Non-fatal error handler:
-		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ), ( E_ALL ^ QM_ERROR_FATALS ) );
+		// To support error handler chaining, we need to set our error handler with E_ALL error_levels.
+		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ) );
 
 		// Fatal error and uncaught exception handler:
 		$this->previous_exception_handler = set_exception_handler( array( $this, 'exception_handler' ) );
@@ -168,6 +169,12 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return bool
 	 */
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
+		if ( $errno & QM_ERROR_FATALS ) {
+			// Do not proceed with fatal errors.
+			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
+			return $this->fallback_error_handler( func_get_args() );
+		}
+
 		$type = null;
 
 		/**
@@ -208,11 +215,13 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		if ( null === $type ) {
-			return false;
+			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
+			return $this->fallback_error_handler( func_get_args() );
 		}
 
 		if ( ! class_exists( 'QM_Backtrace' ) ) {
-			return false;
+			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
+			return $this->fallback_error_handler( func_get_args() );
 		}
 
 		$error_group = 'errors';
@@ -237,7 +246,14 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		// Intentionally skip reporting these core warnings. They're a distraction when developing offline.
 		// The failed HTTP request will still appear in QM's output so it's not a big problem hiding these warnings.
 		if ( false !== strpos( $message, self::$unexpected_error ) ) {
-			return false;
+			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
+			return $this->fallback_error_handler( func_get_args() );
+		}
+
+		// If the fallback error handler returns true, the error was suppressed.
+		// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
+		if ( $this->fallback_error_handler( func_get_args() ) ) {
+			return true;
 		}
 
 		$trace = new QM_Backtrace();
@@ -289,6 +305,21 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		return 0 === $current_level;
+	}
+
+	/**
+	 * Fallback error handler.
+	 *
+	 * @param mixed[] $args Arguments.
+	 *
+	 * @return bool
+	 * @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection
+	 */
+	private function fallback_error_handler( array $args ): bool {
+		return null === $this->previous_error_handler ?
+			// Use standard error handler.
+			false :
+			(bool) call_user_func_array( $this->previous_error_handler, $args );
 	}
 
 	/**
