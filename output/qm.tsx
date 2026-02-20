@@ -129,6 +129,7 @@ export const QM = ( props: Props ) => {
 			return;
 		}
 
+		const adminToolbarHeight = 32;
 		let dragging = false;
 
 		const el = document.getElementsByClassName( 'qm-resizer' )[0];
@@ -167,7 +168,7 @@ export const QM = ( props: Props ) => {
 			let newHeight = startHeight - ( event.clientY - startY );
 
 			newHeight = Math.max( 27, newHeight );
-			newHeight = Math.min( windowHeight - 32, newHeight );
+			newHeight = Math.min( windowHeight - adminToolbarHeight, newHeight );
 
 			qmMain.style.height = `${ newHeight }px`;
 		}
@@ -183,11 +184,19 @@ export const QM = ( props: Props ) => {
 
 		const preventTouch = (e: TouchEvent) => e.preventDefault();
 
+		const onWindowResize = () => {
+			const maxHeight = window.innerHeight - adminToolbarHeight;
+			if ( qmMain.getBoundingClientRect().height > maxHeight ) {
+				qmMain.style.height = `${ maxHeight }px`;
+			}
+		};
+
 		el.addEventListener( 'pointerdown', start );
 		el.addEventListener( 'pointermove', move );
 		el.addEventListener( 'pointerup', end );
 		el.addEventListener( 'pointercancel', end );
 		el.addEventListener( 'touchstart', preventTouch, { passive: false } );
+		window.addEventListener( 'resize', onWindowResize );
 
 		return () => {
 			el.removeEventListener( 'pointerdown', start );
@@ -195,6 +204,7 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'pointerup', end );
 			el.removeEventListener( 'pointercancel', end );
 			el.removeEventListener( 'touchstart', preventTouch );
+			window.removeEventListener( 'resize', onWindowResize );
 		};
 	}, [ active, containerHeight, onContainerResize ] );
 
