@@ -15,7 +15,7 @@
 class QM_Data_Languages extends QM_Data {
 	/**
 	 * @phpstan-var array<int, array{
-	 *   caller: QM_Data_Frame|false,
+	 *   caller: QM_Stack_Frame|false,
 	 *   domain: string,
 	 *   file: string|false,
 	 *   display: string,

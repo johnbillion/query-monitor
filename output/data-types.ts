@@ -210,12 +210,12 @@ export interface Caps {
  */
 export interface Backtrace {
 	component: Component;
-	frames: FrameItem[];
+	frames: StackFrame[];
 }
 /**
  * Stack trace frame.
  */
-export interface FrameItem {
+export interface StackFrame {
 	id: string;
 	display: string;
 	file: string | null;
@@ -395,7 +395,7 @@ export interface HTTP {
  */
 export interface Languages {
 	languages: {
-		caller: FrameItem | false;
+		caller: StackFrame | false;
 		domain: string;
 		file: string | false;
 		display: string;

@@ -24,7 +24,7 @@
 				"type": "object",
 				"allOf": [
 					{
-						"$ref": "./frameitem.json"
+						"$ref": "./stack-frame.json"
 					}
 				]
 			}

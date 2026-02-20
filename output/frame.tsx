@@ -1,11 +1,11 @@
 import {
-	FrameItem,
+	StackFrame,
 } from './data-types';
 import {
 	FileName,
 } from './components/file-name';
 interface Props {
-	frame: FrameItem;
+	frame: StackFrame;
 	expanded?: boolean;
 	isFileName?: boolean;
 }
