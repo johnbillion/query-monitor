@@ -2,27 +2,16 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Time } from '../components/time';
 import { JsonOutput } from '../components/json-output';
-import { DataTypes } from '../data-types';
+import { DataTypes, PostBlock } from '../data-types';
 import { PanelProps } from '../types';
 import { Cols } from '../table';
 import {
 	__,
 } from '@wordpress/i18n';
 
-interface iBlock {
-	attrs?: object;
-	context?: object | null;
-	blockName: string | null;
-	innerHTML: string;
-	innerBlocks: iBlock[];
-	dynamic: boolean;
-	callback?: {
-		name?: string;
-		type?: string;
-		[k: string]: unknown;
-	} | null;
-	timing: number;
+interface iBlock extends PostBlock {
 	index?: string;
+	innerBlocks: iBlock[];
 }
 
 type iBlockData = Omit<DataTypes['block_editor'], 'post_blocks'> & {
