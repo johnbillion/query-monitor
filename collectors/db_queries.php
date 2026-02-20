@@ -152,7 +152,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$stack = $query[2];
 
 				// Query Monitor db.php drop-in.
-				if ( isset( $query['trace'] ) ) {
+				if ( isset( $query['trace'] ) && ( $query['trace'] instanceof QM_Backtrace ) ) {
 					$has_trace = true;
 					$trace = $query['trace'];
 				}
