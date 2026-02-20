@@ -18,16 +18,7 @@ class QM_Data_Hooks extends QM_Data {
 	 *   name: string,
 	 *   actions: array<int, array{
 	 *     priority: int,
-	 *     callback: array{
-	 *       accepted_args: int,
-	 *       name?: string,
-	 *       callback_type?: string,
-	 *       display_file?: string,
-	 *       file?: string|false,
-	 *       line?: int|false,
-	 *       error?: WP_Error,
-	 *       component?: QM_Component,
-	 *     },
+	 *     callback: QM_Data_Callback,
 	 *   }>,
 	 *   components: array<string, QM_Component>,
 	 * }>

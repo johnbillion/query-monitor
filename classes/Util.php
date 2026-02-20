@@ -293,50 +293,42 @@ class QM_Util {
 
 	/**
 	 * @param array<string, mixed> $callback
-	 * @return array<string, mixed>
-	 * @phpstan-return array{
-	 *   accepted_args: int,
-	 *   name?: string,
-	 *   file?: string|false,
-	 *   line?: int|false,
-	 *   error?: WP_Error,
-	 *   component?: QM_Component,
-	 *   callback_type: string,
-	 *   start_line?: int,
-	 *   display_file?: string,
-	 * }
 	 */
-	public static function populate_callback( array $callback ) {
+	public static function populate_callback( array $callback ): QM_Data_Callback {
+		$result = new QM_Data_Callback();
+		$result->accepted_args = $callback['accepted_args'] ?? null;
 
-		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
-			$callback['function'] = explode( '::', $callback['function'] );
+		$function = $callback['function'];
+
+		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) ) {
+			$function = explode( '::', $function );
 		}
 
 		if ( isset( $callback['class'] ) ) {
-			$callback['function'] = array(
+			$function = array(
 				$callback['class'],
-				$callback['function'],
+				$function,
 			);
 		}
 
 		try {
 
-			if ( is_array( $callback['function'] ) ) {
-				if ( is_object( $callback['function'][0] ) ) {
-					$class = get_class( $callback['function'][0] );
+			if ( is_array( $function ) ) {
+				if ( is_object( $function[0] ) ) {
+					$class = get_class( $function[0] );
 					$access = '->';
-					$callback['callback_type'] = 'method';
+					$result->callback_type = 'method';
 				} else {
-					$class = $callback['function'][0];
+					$class = $function[0];
 					$access = '::';
-					$callback['callback_type'] = 'static_method';
+					$result->callback_type = 'static_method';
 				}
 
-				$callback['name'] = $class . $access . $callback['function'][1] . '()';
-				$ref = new ReflectionMethod( $class, $callback['function'][1] );
-			} elseif ( is_object( $callback['function'] ) ) {
-				if ( $callback['function'] instanceof Closure ) {
-					$ref = new ReflectionFunction( $callback['function'] );
+				$result->name = $class . $access . $function[1] . '()';
+				$ref = new ReflectionMethod( $class, $function[1] );
+			} elseif ( is_object( $function ) ) {
+				if ( $function instanceof Closure ) {
+					$ref = new ReflectionFunction( $function );
 					$filename = $ref->getFileName();
 
 					if ( $filename ) {
@@ -344,93 +336,52 @@ class QM_Util {
 						if ( 0 === strpos( $file, '/' ) ) {
 							$file = basename( $filename );
 						}
-						$callback['callback_type'] = 'closure';
-						$callback['start_line'] = $ref->getStartLine();
-						$callback['display_file'] = $file;
+						$result->callback_type = 'closure';
+						$result->start_line = $ref->getStartLine() ?: null;
+						$result->display_file = $file;
 					} else {
-						$callback['callback_type'] = 'unknown_closure';
+						$result->callback_type = 'unknown_closure';
 					}
 				} else {
 					// the object should have a __invoke() method
-					$class = get_class( $callback['function'] );
-					$callback['name'] = $class . '->__invoke()';
-					$callback['callback_type'] = 'invokable';
+					$class = get_class( $function );
+					$result->name = $class . '->__invoke()';
+					$result->callback_type = 'invokable';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
-				$callback['name'] = $callback['function'] . '()';
-				$callback['callback_type'] = 'function';
-				$ref = new ReflectionFunction( $callback['function'] );
+				$result->name = $function . '()';
+				$result->callback_type = 'function';
+				$ref = new ReflectionFunction( $function );
 			}
 
-			$callback['file'] = $ref->getFileName();
-			$callback['line'] = $ref->getStartLine();
+			$result->file = $ref->getFileName();
+			$result->line = $ref->getStartLine();
 
 			// Handle legacy create_function() lambdas (PHP 7.4 only, removed in PHP 8.0)
 			$name = trim( $ref->getName() );
 			if ( 0 === strpos( $name, 'lambda_' ) ) {
 				// Just use the lambda name as-is, these are from deprecated create_function()
-				$callback['name'] = $name . '()';
-				$callback['callback_type'] = 'lambda';
-				unset( $callback['file'], $callback['line'] );
+				$result->name = $name . '()';
+				$result->callback_type = 'lambda';
+				$result->file = null;
+				$result->line = null;
 			}
 
-			if ( ! empty( $callback['file'] ) ) {
-				$callback['component'] = self::get_file_component( $callback['file'] );
+			if ( ! empty( $result->file ) ) {
+				$result->component = self::get_file_component( $result->file );
 			} else {
-				$callback['component'] = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
+				$result->component = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
 			}
 		} catch ( ReflectionException $e ) {
 
-			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
-			$callback['callback_type'] = 'unknown';
+			$result->error = new WP_Error( 'reflection_exception', $e->getMessage() );
+			$result->callback_type = 'unknown';
 
 		}
 
-		unset( $callback['function'], $callback['class'] );
+		return $result;
 
-		/** @phpstan-ignore return.type */
-		return $callback;
-
-	}
-
-	/**
-	 * Generate the translated callback name from callback properties.
-	 *
-	 * @param array<string, mixed> $callback Callback data array.
-	 * @return string Translated callback name.
-	 */
-	public static function get_callback_name( array $callback ) {
-		if ( isset( $callback['name'] ) ) {
-			return $callback['name'];
-		}
-
-		if ( ! isset( $callback['callback_type'] ) ) {
-			return '';
-		}
-
-		switch ( $callback['callback_type'] ) {
-			case 'closure':
-				return sprintf(
-					/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
-					__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-					$callback['start_line'],
-					$callback['display_file']
-				);
-
-			case 'unknown_closure':
-				/* translators: A closure is an anonymous PHP function */
-				return __( 'Unknown closure', 'query-monitor' );
-
-			case 'function':
-			case 'method':
-			case 'static_method':
-			case 'invokable':
-			case 'lambda':
-			case 'unknown':
-			default:
-				return $callback['name'] ?? '';
-		}
 	}
 
 	/**

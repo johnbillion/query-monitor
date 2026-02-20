@@ -32,7 +32,7 @@ class QM_Data_Post_Block {
 	public $dynamic;
 
 	/**
-	 * @var array|null
+	 * @var ?QM_Data_Callback
 	 */
 	public $callback;
 

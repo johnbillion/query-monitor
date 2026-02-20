@@ -594,7 +594,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			foreach ( $e['trace'] as $frame ) {
 				$callback = QM_Util::populate_callback( $frame );
 
-				if ( ! isset( $callback['name'] ) ) {
+				if ( ! isset( $callback->name ) ) {
 					continue;
 				}
 
@@ -619,7 +619,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					return $type;
 				}, $frame['args'] ?? array() );
 
-				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback['name'] );
+				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback->name );
 
 				printf(
 					'<li>%s</li>',

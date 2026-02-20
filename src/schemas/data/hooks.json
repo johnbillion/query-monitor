@@ -27,60 +27,13 @@
 									"type": "integer"
 								},
 								"callback": {
+									"phpType": "QM_Data_Callback",
 									"type": "object",
-									"properties": {
-										"accepted_args": {
-											"type": "integer"
-										},
-										"name": {
-											"type": "string"
-										},
-										"callback_type": {
-											"type": "string"
-										},
-										"display_file": {
-											"type": "string"
-										},
-										"file": {
-											"phpType": "string|false",
-											"tsType": "string|false",
-											"type": [
-												"string",
-												"boolean"
-											]
-										},
-										"line": {
-											"phpType": "int|false",
-											"tsType": "number|false",
-											"type": [
-												"number",
-												"boolean"
-											]
-										},
-										"error": {
-											"type": "object",
-											"tsType": "WP_Error",
-											"phpType": "WP_Error",
-											"allOf": [
-												{
-													"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
-												}
-											]
-										},
-										"component": {
-											"phpType": "QM_Component",
-											"type": "object",
-											"allOf": [
-												{
-													"$ref": "../component.json"
-												}
-											]
+									"allOf": [
+										{
+											"$ref": "../callback.json"
 										}
-									},
-									"required": [
-										"accepted_args"
-									],
-									"additionalProperties": false
+									]
 								}
 							},
 							"required": [

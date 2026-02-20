@@ -61,20 +61,33 @@ export interface ConcernedHook {
 	type: "action" | "filter";
 	actions: {
 		priority: number;
-		callback: {
-			accepted_args: number;
-			callback_type?: string;
-			name?: string;
-			file?: string | false;
-			line?: number | false;
-			start_line?: number;
-			display_file?: string;
-			component?: Component;
-		};
+		callback: Callback;
 	}[];
 	components: {
 		[k: string]: Component;
 	};
+}
+/**
+ * Callback registered on a hook or block.
+ */
+export interface Callback {
+	accepted_args?: number;
+	callback_type:
+		| "function"
+		| "method"
+		| "static_method"
+		| "closure"
+		| "invokable"
+		| "lambda"
+		| "unknown"
+		| "unknown_closure";
+	name?: string;
+	file?: string | false;
+	line?: number | false;
+	start_line?: number;
+	display_file?: string;
+	error?: WP_Error;
+	component?: Component;
 }
 /**
  * Class representing a component.
@@ -151,11 +164,7 @@ export interface PostBlock {
 	};
 	innerContent: (string | null)[];
 	dynamic: boolean;
-	callback: {
-		name?: string;
-		type?: string;
-		[k: string]: unknown;
-	} | null;
+	callback: Callback | null;
 	innerHTML: string;
 	context?:
 		| {
@@ -328,16 +337,7 @@ export interface Hooks {
 		name: string;
 		actions: {
 			priority: number;
-			callback: {
-				accepted_args: number;
-				name?: string;
-				callback_type?: string;
-				display_file?: string;
-				file?: string | false;
-				line?: number | false;
-				error?: WP_Error;
-				component?: Component;
-			};
+			callback: Callback;
 		}[];
 		components: {
 			[k: string]: {

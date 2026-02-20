@@ -57,39 +57,7 @@
 								"type": "integer"
 							},
 							"callback": {
-								"type": "object",
-								"required": ["accepted_args"],
-								"properties": {
-									"accepted_args": {
-										"type": "integer"
-									},
-									"callback_type": {
-										"type": "string"
-									},
-									"name": {
-										"type": "string"
-									},
-									"file": {
-										"type": ["string", "boolean"],
-										"tsType": "string | false",
-										"phpType": "string|false"
-									},
-									"line": {
-										"type": ["integer", "boolean"],
-										"tsType": "number | false",
-										"phpType": "int|false"
-									},
-									"start_line": {
-										"type": "integer"
-									},
-									"display_file": {
-										"type": "string"
-									},
-									"component": {
-										"$ref": "src/schemas/component.json"
-									}
-								},
-								"additionalProperties": false
+								"$ref": "src/schemas/callback.json"
 							}
 						},
 						"additionalProperties": false
