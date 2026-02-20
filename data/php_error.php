@@ -5,7 +5,7 @@
  */
 
 /**
- * QM_Data_PHP_Error data object.
+ * Individual PHP error data object.
  *
  * @package query-monitor
  */

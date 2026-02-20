@@ -5,8 +5,6 @@
  */
 
 /**
- * QM_Data_CallSite data object.
- *
  * Code location where an error or event occurred.
  *
  * @package query-monitor

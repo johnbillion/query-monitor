@@ -629,20 +629,62 @@ function printType( node, level = 0, prefix = '\t' ) {
 }
 
 // =============================================================================
+// Standalone Schema to AST Transformation
+// =============================================================================
+
+/**
+ * Process a standalone schema (not a data schema) that has phpFile/phpClass.
+ * These generate classes without extending QM_Data.
+ *
+ * @param {object} schema
+ * @returns {PHPClassNode}
+ */
+function standaloneSchemaToClassNode( schema ) {
+	const classNode = {
+		kind: 'class',
+		name: schema.phpClass,
+		fileName: schema.phpFile,
+		extends: null,
+		description: schema.description || `${ schema.phpClass } data object.`,
+		typeDefs: [],
+		properties: [],
+	};
+
+	if ( schema.properties ) {
+		for ( const key in schema.properties ) {
+			const required = schema.required?.includes( key ) ?? false;
+			const prop = schema.properties[ key ];
+			const type = propToTypeNode( prop, required, schema, new Map() );
+
+			classNode.properties.push( {
+				kind: 'property',
+				name: key,
+				description: prop.description || null,
+				type,
+				usePhpStanVar: hasComplexType( type ) || !! prop.phpStanType,
+			} );
+		}
+	}
+
+	return classNode;
+}
+
+// =============================================================================
 // Main
 // =============================================================================
 
-const dir = './src/schemas/data';
-const files = fs.readdirSync( dir );
+// Process data schemas (generate QM_Data_* classes that extend QM_Data)
+const dataDir = './src/schemas/data';
+const dataFiles = fs.readdirSync( dataDir );
 
-for ( const file of files ) {
+for ( const file of dataFiles ) {
 	const [ basename, ext ] = file.split( '.' );
 
 	if ( ext !== 'json' ) {
 		continue;
 	}
 
-	const path = `${ dir }/${ file }`;
+	const path = `${ dataDir }/${ file }`;
 	const schema = JSON.parse( fs.readFileSync( path, 'utf8' ) );
 	const { main, extractedClasses } = schemaToAST( schema );
 	const output = printPHP( main );
@@ -662,4 +704,27 @@ for ( const file of files ) {
 			fs.writeFileSync( `${ subdir }/${ classNode.fileName }.php`, classOutput );
 		}
 	}
+}
+
+// Process standalone schemas (generate classes without extending QM_Data)
+const standaloneDir = './src/schemas';
+const standaloneFiles = fs.readdirSync( standaloneDir );
+
+for ( const file of standaloneFiles ) {
+	const [ , ext ] = file.split( '.' );
+
+	if ( ext !== 'json' ) {
+		continue;
+	}
+
+	const path = `${ standaloneDir }/${ file }`;
+	const schema = JSON.parse( fs.readFileSync( path, 'utf8' ) );
+
+	if ( ! schema.phpFile || ! schema.phpClass ) {
+		continue;
+	}
+
+	const classNode = standaloneSchemaToClassNode( schema );
+	const classOutput = printExtractedClass( classNode );
+	fs.writeFileSync( `./data/${ classNode.fileName }.php`, classOutput );
 }
