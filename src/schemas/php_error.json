@@ -35,7 +35,7 @@
 			]
 		},
 		"trace": {
-			"phpType": "?QM_Backtrace",
+			"phpType": "QM_Backtrace",
 			"oneOf": [
 				{
 					"$ref": "backtrace.json"

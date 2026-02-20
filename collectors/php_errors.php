@@ -247,7 +247,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$caller = $trace->get_caller();
 
 		if ( $caller ) {
-			$key = md5( $message . $file . $line . $caller['id'] );
+			$key = md5( $message . $file . $line . $caller->id );
 		} else {
 			$key = md5( $message . $file . $line );
 		}

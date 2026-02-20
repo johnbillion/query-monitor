@@ -216,12 +216,13 @@ export interface Backtrace {
  * Stack trace frame.
  */
 export interface FrameItem {
-	display: string;
-	args: string[];
-	file: string | null;
-	function: string;
 	id: string;
+	display: string;
+	file: string | null;
 	line: number | null;
+	function?: string;
+	class?: string;
+	args?: string[];
 }
 /**
  * Conditionals data transfer object.

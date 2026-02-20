@@ -4,23 +4,20 @@
 	"title": "FrameItem",
 	"description": "Stack trace frame.",
 	"type": "object",
+	"phpFile": "frame",
+	"phpClass": "QM_Data_Frame",
 	"required": [
 		"display",
-		"args",
 		"file",
-		"function",
 		"id",
 		"line"
 	],
 	"properties": {
-		"display": {
+		"id": {
 			"type": "string"
 		},
-		"args": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
+		"display": {
+			"type": "string"
 		},
 		"file": {
 			"type": [
@@ -28,17 +25,23 @@
 				"null"
 			]
 		},
-		"function": {
-			"type": "string"
-		},
-		"id": {
-			"type": "string"
-		},
 		"line": {
 			"type": [
 				"integer",
 				"null"
 			]
+		},
+		"function": {
+			"type": "string"
+		},
+		"class": {
+			"type": "string"
+		},
+		"args": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		}
 	},
 	"additionalProperties": false

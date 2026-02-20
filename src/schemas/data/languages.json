@@ -20,7 +20,7 @@
 				"type": "object",
 				"properties": {
 					"caller": {
-						"phpType": "array<string, mixed>|false",
+						"phpType": "QM_Data_Frame|false",
 						"oneOf": [
 							{
 								"$ref": "../frameitem.json"

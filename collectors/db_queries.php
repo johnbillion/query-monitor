@@ -138,8 +138,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		 * @phpstan-var QueryStandard|QueryVIP $query
 		 */
 		foreach ( $wpdb->queries as $query ) {
-			$callers = array();
-
 			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
 				// WordPress.com VIP.
 				$sql = $query['query'];
@@ -171,24 +169,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				continue;
 			}
 
-			if ( isset( $trace ) ) {
-
-				$component = $trace->get_component();
-				$caller = $trace->get_caller();
-				$caller_name = $caller['display'] ?? 'Unknown';
-				$caller = $caller['display'] ?? 'Unknown';
-
-			} else {
-
-				$component = null;
-				$callers = array_reverse( explode( ',', $stack ) );
-				$callers = array_map( 'trim', $callers );
-				$callers = QM_Backtrace::get_filtered_stack( $callers );
-				$caller = reset( $callers ) ?: 'Unknown';
-				$caller_name = $caller;
-
-			}
-
 			$sql = trim( $sql );
 			$type = QM_Util::get_query_type( $sql );
 
@@ -207,7 +187,9 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$row = compact( 'sql', 'ltime', 'type', 'is_main_query' );
 
 			if ( ! isset( $trace ) ) {
-				$row['stack'] = $callers;
+				$callers = array_reverse( explode( ',', $stack ) );
+				$callers = array_map( 'trim', $callers );
+				$row['stack'] = QM_Backtrace::get_filtered_stack( $callers );
 			} else {
 				$row['trace'] = $trace;
 			}
