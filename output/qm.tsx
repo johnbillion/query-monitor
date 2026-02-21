@@ -42,6 +42,8 @@ type Props = {
 	onThemeChange: ( theme: string ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
+	queryDiffEnabled: boolean;
+	onQueryDiffEnabledChange: ( enabled: boolean ) => void;
 }
 
 export const QM = ( props: Props ) => {
@@ -50,6 +52,7 @@ export const QM = ( props: Props ) => {
 	const [ theme, setTheme ] = useState( props.theme );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
+	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
@@ -101,6 +104,11 @@ export const QM = ( props: Props ) => {
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,
+		},
+		queryDiffEnabled: queryDiffEnabled,
+		setQueryDiffEnabled: ( enabled: boolean ) => {
+			props.onQueryDiffEnabledChange( enabled );
+			setQueryDiffEnabled( enabled );
 		},
 	};
 

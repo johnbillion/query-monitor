@@ -19,6 +19,7 @@ import { DBDupes } from '../output/html/db_dupes';
 import { DBErrors } from '../output/html/db_errors';
 import { DBExpensive } from '../output/html/db_expensive';
 import { DBQueries } from '../output/html/db_queries';
+import { DBQueriesDiff } from '../output/html/db_queries_diff';
 import { DoingItWrong } from '../output/html/doing_it_wrong';
 import { Environment } from '../output/html/environment';
 import { Hooks } from '../output/html/hooks';
@@ -37,6 +38,7 @@ import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
 import { Timing } from '../output/html/timing';
 import { Transients } from '../output/html/transients';
+import { clearQuerySnapshot } from './query-diff';
 
 /**
  * Raw settings from PHP, before merging with l10n values.
@@ -134,6 +136,10 @@ registerPanel( 'db_expensive', {
 } );
 registerPanel( 'db_queries', {
 	render: ( data, enabled ) => <DBQueries data={ data } enabled={ enabled } />,
+	data: 'db_queries',
+} );
+registerPanel( 'db_queries_diff', {
+	render: ( data, enabled ) => <DBQueriesDiff data={ data } enabled={ enabled } />,
 	data: 'db_queries',
 } );
 registerPanel( 'doing_it_wrong', {
@@ -249,6 +255,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
 	const containerWidthKey = 'qm-container-width';
+	const queryDiffEnabledKey = 'qm-query-diff-enabled';
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -279,6 +286,13 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( containerWidthKey, width.toString() );
 	}
 
+	const onQueryDiffEnabledChange = ( enabled: boolean ) => {
+		localStorage.setItem( queryDiffEnabledKey, enabled ? 'true' : 'false' );
+		if ( ! enabled ) {
+			clearQuerySnapshot();
+		}
+	}
+
 	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
@@ -287,6 +301,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const rawContainerHeight = localStorage.getItem( containerHeightKey );
 	const containerHeight = rawContainerHeight ? parseFloat( rawContainerHeight ) : null;
+	const queryDiffEnabled = localStorage.getItem( queryDiffEnabledKey ) === 'true';
 	const settings: iSettings = {
 		...QueryMonitorData.settings,
 		ajaxurl: QueryMonitorData.l10n.ajaxurl,
@@ -318,6 +333,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			onThemeChange={ onThemeChange }
 			onEditorChange={ onEditorChange }
 			onFiltersChange={ onFiltersChange }
+			queryDiffEnabled={ queryDiffEnabled }
+			onQueryDiffEnabledChange={ onQueryDiffEnabledChange }
 		/>,
 		containerElement
 	);
