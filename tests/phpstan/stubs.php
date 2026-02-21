@@ -4,8 +4,11 @@
 
 define( 'QM_COOKIE', '' );
 define( 'QM_DB_EXPENSIVE', 1 );
-define( 'QM_EDITOR_COOKIE', '' );
 define( 'QM_ERROR_FATALS', 1 );
+
+// WP core constants:
+
+define( 'COOKIE_DOMAIN', '' );
 
 // Third party constants:
 

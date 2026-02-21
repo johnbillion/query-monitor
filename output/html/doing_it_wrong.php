@@ -18,6 +18,8 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	public static $client_side_rendered = true;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
@@ -32,105 +34,11 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	}
 
 	/**
-	 * @return array<string, string>
-	 */
-	public function get_type_labels() {
-		return array(
-			/* translators: %s: Total number of Doing it Wrong occurrences */
-			'total' => _x( 'Total: %s', 'Doing it Wrong', 'query-monitor' ),
-			'plural' => __( 'Doing it Wrong occurrences', 'query-monitor' ),
-			/* translators: %s: Total number of Doing it Wrong occurrences */
-			'count' => _x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
-		);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_Doing_It_Wrong $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->actions ) ) {
-			$this->before_non_tabular_output();
-
-			$notice = __( 'No occurrences.', 'query-monitor' );
-			echo $this->build_notice( $notice ); // WPCS: XSS ok.
-
-			$this->after_non_tabular_output();
-
-			return;
-		}
-
-		$this->before_tabular_output();
-
-		echo '<thead>' . "\n";
-		echo '<tr>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Message', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>' . "\n";
-		echo '</tr>' . "\n";
-		echo '</thead>' . "\n";
-
-		echo '<tbody>' . "\n";
-
-		foreach ( $data->actions as $row ) {
-			$stack = array();
-
-			foreach ( $row->get_trace()->get_filtered_trace() as $frame ) {
-				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
-			}
-
-			$caller = array_shift( $stack );
-
-			echo '<tr>' . "\n";
-
-			printf( '<td>%s</td>', esc_html( wp_strip_all_tags( $row->get_message() ) ) );
-
-			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">' . "\n";
-
-			if ( ! empty( $stack ) ) {
-				echo self::build_toggler() . "\n"; // WPCS: XSS ok;
-			}
-
-			echo '<ol>' . "\n";
-
-			echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
-
-			if ( ! empty( $stack ) ) {
-				echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
-			}
-
-			echo '</ol></td>' . "\n";
-
-			echo '<td class="qm-nowrap">' . esc_html( $row->get_trace()->get_component()->get_name() ) . '</td>' . "\n";
-
-			echo '</tr>' . "\n";
-		}
-
-		echo '</tbody>' . "\n";
-
-		echo '<tfoot>' . "\n";
-		printf(
-			'<tr><td colspan="3">%s</td></tr>' . "\n",
-			sprintf(
-				/* translators: %s: Total number of Doing it Wrong occurrences */
-				esc_html_x( 'Total: %s', 'Total Doing it Wrong occurrences', 'query-monitor' ),
-				'<span class="qm-items-number">' . esc_html( number_format_i18n( count( $data->actions ) ) ) . '</span>'
-			)
-		);
-		echo '</tfoot>' . "\n";
-
-		$this->after_tabular_output();
-
-	}
-
-	/**
 	 * @param array<int, string> $class
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-		/** @var QM_Data_Doing_It_Wrong */
+		/** @var QM_Data_Doing_It_Wrong $data */
 		$data = $this->collector->get_data();
 
 		if ( ! empty( $data->actions ) ) {
@@ -146,23 +54,21 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Doing_It_Wrong */
+		/** @var QM_Data_Doing_It_Wrong $data */
 		$data = $this->collector->get_data();
 
 		if ( empty( $data->actions ) ) {
 			return $menu;
 		}
 
-		$type_label = $this->get_type_labels();
 		$label = sprintf(
-			$type_label['count'],
+			/* translators: %s: Total number of Doing it Wrong occurrences */
+			_x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
 			number_format_i18n( count( $data->actions ) )
 		);
 
 		$args = array(
 			'title' => esc_html( $label ),
-			'id'    => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href'  => esc_attr( '#' . $this->collector->id() ),
 		);
 
 		if ( ! empty( $data->actions ) ) {

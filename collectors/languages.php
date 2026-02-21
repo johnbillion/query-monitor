@@ -16,6 +16,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 
 	public $id = 'languages';
 
+	/**
+	 * @var array<string, array<string, bool>>
+	 */
+	public $seen = array();
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Languages();
 	}
@@ -69,7 +74,10 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'change_locale',
 			'load_textdomain',
+			'restore_previous_locale',
+			'switch_locale',
 			'unload_textdomain',
 		);
 	}
@@ -130,17 +138,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->total_size = 0;
-
 		ksort( $this->data->languages );
-
-		foreach ( $this->data->languages as & $mofiles ) {
-			foreach ( $mofiles as & $mofile ) {
-				if ( $mofile['found'] ) {
-					$this->data->total_size += $mofile['found'];
-				}
-			}
-		}
 	}
 
 	/**
@@ -208,7 +206,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return $mofile;
 		}
 
-		if ( is_string( $mofile ) && isset( $this->data->languages[ $domain ][ $mofile ] ) ) {
+		if ( is_string( $mofile ) && isset( $this->seen[ $domain ][ $mofile ] ) ) {
 			return $mofile;
 		}
 
@@ -247,13 +245,15 @@ class QM_Collector_Languages extends QM_DataCollector {
 			}
 		} else {
 			$type = 'unknown';
-			$file = $type;
+			$file = 'unknown';
 		}
 
-		$this->data->languages[ $domain ][ $mofile ] = array(
+		$this->seen[ $domain ][ $mofile ] = true;
+		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,
+			'display' => $file ? QM_Util::standard_dir( $file, '' ) : 'unknown',
 			'found' => $found,
 			'handle' => null,
 			'type' => $type,
@@ -280,12 +280,20 @@ class QM_Collector_Languages extends QM_DataCollector {
 		) );
 
 		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
-		$key = $file ?: uniqid();
 
-		$this->data->languages[ $domain ][ $key ] = array(
+		if ( $file ) {
+			if ( isset( $this->seen[ $domain ][ $file ] ) ) {
+				return $file;
+			}
+
+			$this->seen[ $domain ][ $file ] = true;
+		}
+
+		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,
+			'display' => $file ? QM_Util::standard_dir( $file, '' ) : 'unknown',
 			'found' => $found,
 			'handle' => $handle,
 			'type' => 'jed',

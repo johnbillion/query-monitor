@@ -27,22 +27,16 @@
 		"composer/installers": "^1.0 || ^2.0"
 	},
 	"require-dev": {
-		"behat/gherkin": "< 4.13.0",
-		"codeception/module-asserts": "^1.0",
-		"codeception/module-db": "^1.0",
-		"codeception/module-webdriver": "^1.0",
-		"codeception/util-universalframework": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "1.2.2",
+		"johnbillion/plugin-infrastructure": "2.7.3",
 		"johnbillion/wp-compat": "0.3.1",
-		"lucatume/wp-browser": "3.2.3",
+		"php-stubs/wp-cli-stubs": "2.12.0",
+		"php-stubs/wordpress-stubs": "6.9.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.5",
 		"phpstan/phpstan": "1.12.11",
 		"phpstan/phpstan-deprecation-rules": "1.2.1",
 		"phpstan/phpstan-phpunit": "1.4.1",
-		"roots/wordpress-core-installer": "1.100.0",
-		"roots/wordpress-full": "*",
 		"squizlabs/php_codesniffer": "3.11.1",
 		"szepeviktor/phpstan-wordpress": "1.3.5",
 		"wp-coding-standards/wpcs": "2.3.0"
@@ -74,8 +68,14 @@
 		"wordpress-install-dir": "vendor/wordpress/wordpress"
 	},
 	"scripts": {
+		"build-vendor": [
+			"build-vendor"
+		],
 		"test": [
 			"@composer validate --strict --no-check-lock",
+			"npm run build-schemas",
+			"npm run typecheck",
+			"npm run lint",
 			"@test:phpstan",
 			"@test:phpcs",
 			"@test:start",
@@ -94,7 +94,6 @@
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath='./' ."
 		],
 		"test:phpstan": [
-			"codecept build",
 			"phpstan analyze -v --memory-limit=1024M"
 		],
 		"test:start": [
@@ -102,6 +101,9 @@
 		],
 		"test:stop": [
 			"tests-stop"
+		],
+		"test:destroy": [
+			"tests-destroy"
 		]
 	}
 }

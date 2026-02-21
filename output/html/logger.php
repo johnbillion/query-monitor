@@ -18,6 +18,11 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	/**
+	 * @var bool
+	 */
+	public static $client_side_rendered = true;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 47 );
@@ -29,148 +34,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	 */
 	public function name() {
 		return __( 'Logger', 'query-monitor' );
-	}
-
-	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_Logger $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->logs ) ) {
-			$this->before_non_tabular_output();
-
-			$notice = sprintf(
-				/* translators: %s: Link to help article */
-				__( 'No data logged. <a href="%s">Read about logging variables in Query Monitor</a>.', 'query-monitor' ),
-				'https://querymonitor.com/wordpress-debugging/profiling-and-logging/'
-			);
-			echo $this->build_notice( $notice ); // WPCS: XSS ok.
-
-			$this->after_non_tabular_output();
-
-			return;
-		}
-
-		$levels = array();
-
-		foreach ( $this->collector->get_levels() as $level ) {
-			if ( $data->counts[ $level ] ) {
-				$levels[ $level ] = sprintf(
-					'%s (%d)',
-					ucfirst( $level ),
-					$data->counts[ $level ]
-				);
-			} else {
-				$levels[ $level ] = ucfirst( $level );
-			}
-		}
-
-		$this->before_tabular_output();
-
-		$level_args = array(
-			'all' => sprintf(
-				/* translators: %s: Total number of items in a list */
-				__( 'All (%d)', 'query-monitor' ),
-				count( $data->logs )
-			),
-		);
-
-		echo '<thead>' . "\n";
-		echo '<tr>' . "\n";
-		echo '<th scope="col" class="qm-filterable-column">';
-		echo $this->build_filter( 'type', $levels, __( 'Level', 'query-monitor' ), $level_args ); // WPCS: XSS ok.
-		echo '</th>' . "\n";
-		echo '<th scope="col" class="qm-col-message">' . esc_html__( 'Message', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col" class="qm-filterable-column">';
-		$values = wp_list_pluck( $data->components, 'name' );
-		echo $this->build_filter( 'component', $values, __( 'Component', 'query-monitor' ) ); // WPCS: XSS ok.
-		echo '</th>' . "\n";
-		echo '</tr>' . "\n";
-		echo '</thead>' . "\n";
-
-		echo '<tbody>' . "\n";
-
-		foreach ( $data->logs as $row ) {
-			$component = $row['component'];
-
-			$row_attr = array();
-			$row_attr['data-qm-component'] = $component->name;
-			$row_attr['data-qm-type'] = $row['level'];
-
-			$attr = '';
-
-			foreach ( $row_attr as $a => $v ) {
-				$attr .= ' ' . $a . '="' . esc_attr( $v ) . '"';
-			}
-
-			$is_warning = in_array( $row['level'], $this->collector->get_warning_levels(), true );
-
-			if ( $is_warning ) {
-				$class = 'qm-warn';
-			} else {
-				$class = '';
-			}
-
-			echo '<tr' . $attr . ' class="' . esc_attr( $class ) . '">'; // WPCS: XSS ok.
-
-			echo '<td class="qm-nowrap">';
-
-			if ( $is_warning ) {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::icon( 'warning' );
-			} else {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo QueryMonitor::icon( 'blank' );
-			}
-
-			echo esc_html( ucfirst( $row['level'] ) );
-			echo '</td>' . "\n";
-
-			printf(
-				'<td><pre>%s</pre></td>',
-				esc_html( $row['message'] )
-			);
-
-			$stack = array();
-			$filtered_trace = $row['filtered_trace'];
-
-			foreach ( $filtered_trace as $frame ) {
-				$stack[] = self::output_filename( $frame['display'], $frame['calling_file'], $frame['calling_line'] );
-			}
-
-			$caller = array_shift( $stack );
-
-			echo '<td class="qm-has-toggle qm-nowrap qm-ltr">';
-
-			if ( ! empty( $stack ) ) {
-				echo self::build_toggler( $caller ); // WPCS: XSS ok;
-			}
-
-			echo '<ol>' . "\n";
-
-			echo "<li>{$caller}</li>\n"; // WPCS: XSS ok.
-
-			if ( ! empty( $stack ) ) {
-				echo '<div class="qm-toggled"><li>' . implode( "</li>\n<li>", $stack ) . '</li></div>' . "\n"; // WPCS: XSS ok.
-			}
-
-			echo '</ol></td>' . "\n";
-
-			printf(
-				'<td class="qm-nowrap">%s</td>' . "\n",
-				esc_html( $component->name )
-			);
-
-			echo '</tr>' . "\n";
-
-		}
-
-		echo '</tbody>' . "\n";
-
-		$this->after_tabular_output();
 	}
 
 	/**
@@ -206,13 +69,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		$count = 0;
 
 		if ( ! empty( $data->logs ) ) {
-			foreach ( $data->logs as $log ) {
-				if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
-					$key = 'warning';
-					break;
-				}
-			}
-
 			$count = count( $data->logs );
 
 			/* translators: %s: Number of logs that are available */
@@ -222,7 +78,6 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'id' => "query-monitor-logger-{$key}",
 			'title' => esc_html( sprintf(
 				$label,
 				number_format_i18n( $count )

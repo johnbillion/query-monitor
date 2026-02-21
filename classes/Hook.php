@@ -20,9 +20,18 @@ class QM_Hook {
 	 *   type: 'action'|'filter',
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array<string, mixed>,
+	 *     callback: array{
+	 *       accepted_args: int,
+	 *       name?: string,
+	 *       file?: string|false,
+	 *       line?: int|false,
+	 *       error?: WP_Error,
+	 *       component?: QM_Component,
+	 *       callback_type: string,
+	 *       start_line?: int,
+	 *       display_file?: string,
+	 *     },
 	 *   }>,
-	 *   parts: list<string>,
 	 *   components: array<string, QM_Component>,
 	 * }
 	 */
@@ -62,13 +71,10 @@ class QM_Hook {
 			}
 		}
 
-		$parts = array_values( array_filter( (array) preg_split( '#[_/.-]#', $name ) ) );
-
 		return array(
 			'name' => $name,
 			'type' => $type,
 			'actions' => $actions,
-			'parts' => $parts,
 			'components' => $components,
 		);
 

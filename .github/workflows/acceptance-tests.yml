@@ -11,13 +11,14 @@ on:
       - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
-      - 'codeception.dist.yml'
+      - '**.tsx'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
+      - 'tsconfig.json'
+      - 'vite.config.js'
   pull_request:
     branches:
       - '**'
@@ -25,13 +26,14 @@ on:
       - '.github/workflows/acceptance-tests.yml'
       - 'tests/**'
       - '**.css'
-      - '**.scss'
       - '**.js'
       - '**.php'
-      - 'codeception.dist.yml'
+      - '**.tsx'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
+      - 'tsconfig.json'
+      - 'vite.config.js'
   workflow_dispatch:
 
 permissions: {}
@@ -68,7 +70,7 @@ jobs:
           - wp: '6.1'
             php: '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@8d8ccc89b04d85ae8d064774d63d8725799f4224 # 2.7.3
     with:
       node: true
       php: ${{ matrix.php }}

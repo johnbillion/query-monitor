@@ -63,7 +63,7 @@ final class QM_Collector_Debug_Bar extends QM_Collector {
  * @return void
  */
 function register_qm_collectors_debug_bar() {
-
+	/** @var ?Debug_Bar $debug_bar */
 	global $debug_bar;
 
 	$debug_bar_exists = isset( $GLOBALS['debug_bar'] ) && ( $GLOBALS['debug_bar'] instanceof Debug_Bar );

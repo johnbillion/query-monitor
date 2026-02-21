@@ -295,9 +295,10 @@ class QM_Util {
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
 	 * @phpstan-return array{
+	 *   accepted_args: int,
 	 *   name?: string,
 	 *   file?: string|false,
-	 *   line?: string|false,
+	 *   line?: int|false,
 	 *   error?: WP_Error,
 	 *   component?: QM_Component,
 	 *   callback_type: string,
@@ -331,7 +332,7 @@ class QM_Util {
 					$callback['callback_type'] = 'static_method';
 				}
 
-				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
+				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( $callback['function'] instanceof Closure ) {
@@ -352,12 +353,12 @@ class QM_Util {
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
-					$callback['name'] = self::shorten_fqn( $class ) . '->__invoke()';
+					$callback['name'] = $class . '->__invoke()';
 					$callback['callback_type'] = 'invokable';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
-				$callback['name'] = self::shorten_fqn( $callback['function'] ) . '()';
+				$callback['name'] = $callback['function'] . '()';
 				$callback['callback_type'] = 'function';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
@@ -388,6 +389,7 @@ class QM_Util {
 
 		unset( $callback['function'], $callback['class'] );
 
+		/** @phpstan-ignore return.type */
 		return $callback;
 
 	}
@@ -590,6 +592,7 @@ class QM_Util {
 	 *
 	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
 	 *
+	 * @deprecated Use the shortenFqn() method in the JavaScript Utils module instead.
 	 * @param string $fqn A fully qualified name.
 	 * @return string A shortened version of the name.
 	 */
@@ -607,11 +610,12 @@ class QM_Util {
 	/**
 	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
+	 * @deprecated Use json_encode() directly with the appropriate options instead.
+	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
 	 */
 	public static function json_format( $data ) {
-		// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
 		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
 		$json = json_encode( $data, $json_options );
@@ -625,6 +629,8 @@ class QM_Util {
 
 	/**
 	 * Returns the site editor URL for a given template or template part name.
+	 *
+	 * @deprecated No longer used.
 	 *
 	 * @param string $template The site template name, for example `twentytwentytwo//header-small-dark`.
 	 * @param string $type     The template type, either 'wp_template_part' or 'wp_template'.
@@ -642,7 +648,8 @@ class QM_Util {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated No longer used.
+	 *
 	 * @param mixed $data
 	 * @return bool
 	 */

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'QM_Backtrace' ) ) {
-class QM_Backtrace {
+class QM_Backtrace implements JsonSerializable {
 
 	/**
 	 * @var array<string, bool>
@@ -115,16 +115,6 @@ class QM_Backtrace {
 	 * @var mixed[]|null
 	 */
 	protected $filtered_trace = null;
-
-	/**
-	 * @var int
-	 */
-	protected $calling_line = 0;
-
-	/**
-	 * @var string
-	 */
-	protected $calling_file = '';
 
 	/**
 	 * @var QM_Component|null
@@ -311,10 +301,9 @@ class QM_Backtrace {
 	 * @phpstan-return list<array{
 	 *   id: string,
 	 *   display: string,
-	 *   calling_file: string,
-	 *   calling_line: int,
 	 *   file: string,
 	 *   line: int,
+	 *   function?: string,
 	 * }>
 	 */
 	public function get_filtered_trace() {
@@ -327,8 +316,6 @@ class QM_Backtrace {
 			if ( empty( $trace ) && ! empty( $this->trace ) ) {
 				$lowest = $this->trace[0];
 				$file = QM_Util::standard_dir( $lowest['file'], '' );
-				$lowest['calling_file'] = $lowest['file'];
-				$lowest['calling_line'] = $lowest['line'];
 				$lowest['function'] = $file;
 				$lowest['display'] = $file;
 				$lowest['id'] = $file;
@@ -521,7 +508,7 @@ class QM_Backtrace {
 					$return = null;
 				} else {
 					$return['id'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
-					$return['display'] = QM_Util::shorten_fqn( $frame['class'] . $frame['type'] . $frame['function'] ) . '()';
+					$return['display'] = $frame['class'] . $frame['type'] . $frame['function'] . '()';
 				}
 			}
 		} else {
@@ -549,7 +536,7 @@ class QM_Backtrace {
 					if ( isset( $frame['args'][0] ) ) {
 						$arg = QM_Util::standard_dir( $frame['args'][0], '' );
 						$return['id'] = $frame['function'] . '()';
-						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . "('{$arg}')";
+						$return['display'] = $frame['function'] . "('{$arg}')";
 					}
 				} else {
 					if ( isset( $hook_functions[ $frame['function'] ], $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
@@ -566,40 +553,40 @@ class QM_Backtrace {
 							}
 						}
 						$return['id'] = $frame['function'] . '()';
-						$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '(' . implode( ',', $args ) . ')';
+						$return['display'] = $frame['function'] . '(' . implode( ',', $args ) . ')';
 					}
 				}
 			} elseif ( $return ) {
 				$return['id'] = $frame['function'] . '()';
-				$return['display'] = QM_Util::shorten_fqn( $frame['function'] ) . '()';
+				$return['display'] = $frame['function'] . '()';
 			}
 		}
 
 		if ( $return ) {
-
-			$return['calling_file'] = $this->calling_file;
-			$return['calling_line'] = $this->calling_line;
-
 			if ( ! isset( $return['file'] ) ) {
-				$return['file'] = $this->calling_file;
+				$return['file'] = null;
 			}
-
 			if ( ! isset( $return['line'] ) ) {
-				$return['line'] = $this->calling_line;
+				$return['line'] = null;
 			}
-		}
-
-		if ( isset( $frame['line'] ) ) {
-			$this->calling_line = $frame['line'];
-		}
-		if ( isset( $frame['file'] ) ) {
-			$this->calling_file = $frame['file'];
 		}
 
 		return $return;
 
 	}
 
+	/**
+	 * @phpstan-return array{
+	 *   component: QM_Component,
+	 *   frames: array<int, mixed>,
+	 * }
+	 */
+	public function jsonSerialize(): array {
+		return array(
+			'component' => $this->get_component(),
+			'frames' => $this->get_filtered_trace(),
+		);
+	}
 }
 } else {
 

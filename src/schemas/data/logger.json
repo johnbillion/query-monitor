@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/logger.json",
+	"title": "Logger",
+	"description": "Logger data transfer object.",
+	"type": "object",
+	"required": [
+		"logs"
+	],
+	"properties": {
+		"logs": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace",
+						"allOf": [
+							{
+								"$ref": "../backtrace.json"
+							}
+						]
+					},
+					"level": {
+						"type": "string",
+						"phpType": "QM_Collector_Logger::*"
+					},
+					"context": {
+						"type": "object",
+						"additionalProperties": true
+					}
+				},
+				"required": [
+					"message",
+					"trace",
+					"level",
+					"context"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

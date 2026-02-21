@@ -54,7 +54,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 			'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
 			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
 			'scheme' => is_ssl() ? 'https' : 'http',
-			'host' => self::get_host(),
+			'host' => self::get_origin(),
 			'path' => wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ),
 			'query' => wp_unslash( $_SERVER['QUERY_STRING'] ?? '' ),
 			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
@@ -62,7 +62,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 
 		ksort( $request['headers'] );
 
-		$request['url'] = sprintf( '%s://%s%s', $request['scheme'], $request['host'], $request['path'] );
+		$request['url'] = sprintf( '%s%s', $request['host'], $request['path'] );
 
 		$this->data->request = $request;
 

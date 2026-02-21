@@ -14,14 +14,14 @@ abstract class QM_Data implements \ArrayAccess {
 	public $types = array();
 
 	/**
-	 * @var array<string, array<string, mixed>>
-	 * @phpstan-var array<string, array{
-	 *   component: QM_Component,
-	 *   ltime: float,
-	 *   types: array<array-key, int>,
-	 * }>
+	 * @var ?array<mixed>
 	 */
-	public $component_times = array();
+	public $concerned_filters = null;
+
+	/**
+	 * @var ?array<mixed>
+	 */
+	public $concerned_actions = null;
 
 	/**
 	 * @param mixed $offset
@@ -61,7 +61,11 @@ abstract class QM_Data implements \ArrayAccess {
 	 * @return mixed
 	 */
 	#[ReturnTypeWillChange]
-	final public function offsetGet( $offset ) {
-		return ( is_string( $offset ) && isset( $this->$offset ) ) ? $this->$offset : null;
+	final public function &offsetGet( $offset ) {
+		if ( is_string( $offset ) ) {
+			return $this->$offset;
+		}
+		$null = null;
+		return $null;
 	}
 }

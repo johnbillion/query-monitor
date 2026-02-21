@@ -1,10 +1,8 @@
-/assets/*.css
-/assets/*.map
 /composer.lock
 /docs/.vitepress/cache
 /docs/.vitepress/dist
 /vendor
 /node_modules
-/tests/_output/
-/tests/_support/_generated
+/assets/build
+/tests/test-results
 /tests/cache

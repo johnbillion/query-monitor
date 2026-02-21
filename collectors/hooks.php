@@ -42,8 +42,6 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		self::$hide_core = ( defined( 'QM_HIDE_CORE_ACTIONS' ) && QM_HIDE_CORE_ACTIONS );
 
 		$hooks = array();
-		$all_parts = array();
-		$components = array();
 
 		if ( has_action( 'all' ) ) {
 			$hooks[] = QM_Hook::process( 'all', 'action', $wp_filter, self::$hide_qm, self::$hide_core );
@@ -69,17 +67,10 @@ class QM_Collector_Hooks extends QM_DataCollector {
 			$hook = QM_Hook::process( $name, $type, $wp_filter, self::$hide_qm, self::$hide_core );
 			$hooks[] = $hook;
 
-			$all_parts = array_merge( $all_parts, $hook['parts'] );
-			$components = array_merge( $components, $hook['components'] );
-
+			$this->data->components[] = $hook['components'];
 		}
 
 		$this->data->hooks = $hooks;
-		$this->data->parts = array_unique( array_filter( $all_parts ) );
-		$this->data->components = $components;
-
-		usort( $this->data->parts, 'strcasecmp' );
-		usort( $this->data->components, '\QM_Component::sort' );
 	}
 
 }

@@ -20,6 +20,21 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 	/**
 	 * @return array<int, string>
 	 */
+	public function get_concerned_actions() {
+		if ( is_admin() ) {
+			return array(
+				'admin_print_styles',
+			);
+		} else {
+			return array(
+				'wp_print_styles',
+			);
+		}
+	}
+
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'print_styles_array',

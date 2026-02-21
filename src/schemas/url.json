@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/url.json",
+	"title": "URL",
+	"description": "Parsed URL data object.",
+	"type": "object",
+	"phpFile": "url",
+	"phpClass": "QM_Data_URL",
+	"properties": {
+		"origin": {
+			"type": "string"
+		},
+		"scheme": {
+			"type": "string"
+		},
+		"hostname": {
+			"type": "string"
+		},
+		"host": {
+			"type": "string"
+		},
+		"insecure": {
+			"type": "boolean"
+		},
+		"local": {
+			"type": "boolean"
+		},
+		"absolute": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"origin",
+		"scheme",
+		"hostname",
+		"host",
+		"insecure",
+		"local",
+		"absolute"
+	],
+	"additionalProperties": false
+}

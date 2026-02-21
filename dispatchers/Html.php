@@ -38,12 +38,25 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	protected $panel_menu = array();
 
+	/**
+	 * Whether we're in development mode (Vite dev server running).
+	 *
+	 * @var bool
+	 */
+	private static bool $is_dev = false;
+
+	/**
+	 * Cached manifest data.
+	 *
+	 * @var array<string, mixed>|null|false Null if not yet checked, false if not found, array if found.
+	 */
+	private static $manifest = null;
+
 	public function __construct( QM_Plugin $qm ) {
 
 		add_action( 'admin_bar_menu', array( $this, 'action_admin_bar_menu' ), 999 );
 		add_action( 'wp_ajax_qm_auth_on', array( $this, 'ajax_on' ) );
 		add_action( 'wp_ajax_qm_auth_off', array( $this, 'ajax_off' ) );
-		add_action( 'wp_ajax_qm_editor_set', array( $this, 'ajax_editor_set' ) );
 		add_action( 'wp_ajax_nopriv_qm_auth_off', array( $this, 'ajax_off' ) );
 
 		// 9 is a magic number, it's the latest we can realistically use due to plugins
@@ -115,31 +128,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function ajax_editor_set() {
-
-		if ( ! current_user_can( 'view_query_monitor' ) || ! check_ajax_referer( 'qm-editor-set', 'nonce', false ) ) {
-			wp_send_json_error();
-		}
-
-		$expiration = time() + ( 2 * YEAR_IN_SECONDS );
-		$secure = self::secure_cookie();
-		$editor = wp_unslash( $_POST['editor'] );
-		$domain = COOKIE_DOMAIN ?: '';
-
-		setcookie( QM_EDITOR_COOKIE, $editor, $expiration, COOKIEPATH, $domain, $secure, false );
-
-		wp_send_json_success( $editor );
-
-	}
-
-	/**
 	 * @param WP_Admin_Bar $wp_admin_bar
 	 * @return void
 	 */
 	public function action_admin_bar_menu( WP_Admin_Bar $wp_admin_bar ) {
-
 		if ( ! self::user_can_view() ) {
 			return;
 		}
@@ -158,7 +150,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'title' => esc_html( $title ),
 			'href' => '#qm-overview',
 		) );
-
 	}
 
 	/**
@@ -170,12 +161,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return;
 		}
 
+		// Show admin notice if assets are not built
+		add_action( 'admin_notices', array( __CLASS__, 'admin_notice_missing_assets' ) );
+
 		if ( ! self::request_supported() ) {
 			return;
-		}
-
-		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
-			add_action( 'admin_notices', array( $this, 'build_warning' ) );
 		}
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
@@ -183,97 +173,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_assets' ), -9999 );
 		add_action( 'enqueue_embed_scripts', array( $this, 'enqueue_assets' ), -9999 );
 
-		add_action( 'gp_head', array( $this, 'manually_print_assets' ), 11 );
-
 		parent::init();
 	}
 
 	/**
 	 * @return void
 	 */
-	public function manually_print_assets() {
-		wp_print_scripts( array(
-			'query-monitor',
-		) );
-		wp_print_styles( array(
-			'query-monitor',
-		) );
-	}
-
-	/**
-	 * @return void
-	 */
-	public function build_warning() {
-		printf(
-			'<div id="qm-built-nope" class="notice notice-error"><p>%s</p></div>',
-			sprintf(
-				/* translators: 1: CLI command to run, 2: plugin directory name */
-				esc_html__( 'Asset files for Query Monitor need to be built. Run %1$s from the %2$s directory.', 'query-monitor' ),
-				'<code>npm i && npm run build</code>',
-				sprintf(
-					'<code>%s</code>',
-					esc_html( QM_Util::standard_dir( untrailingslashit( $this->qm->plugin_path() ), '' ) )
-				)
-			)
-		);
-	}
-
-	/**
-	 * @return void
-	 */
 	public function enqueue_assets() {
-		global $wp_locale;
-
-		$deps = array(
-			'jquery',
-		);
-
-		if ( defined( 'QM_NO_JQUERY' ) && QM_NO_JQUERY ) {
-			$deps = array();
-		}
-
-		wp_enqueue_style(
-			'query-monitor',
-			$this->qm->plugin_url( 'assets/query-monitor.css' ),
-			array(),
-			QM_VERSION
-		);
-		wp_enqueue_script(
-			'query-monitor',
-			$this->qm->plugin_url( 'assets/query-monitor.js' ),
-			$deps,
-			QM_VERSION,
-			false
-		);
-		wp_localize_script(
-			'query-monitor',
-			'qm_number_format',
-			$wp_locale->number_format
-		);
-		wp_localize_script(
-			'query-monitor',
-			'qm_l10n',
-			array(
-				'ajax_error' => __( 'PHP Errors in Ajax Response', 'query-monitor' ),
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'auth_nonce' => array(
-					'on' => wp_create_nonce( 'qm-auth-on' ),
-					'off' => wp_create_nonce( 'qm-auth-off' ),
-					'editor-set' => wp_create_nonce( 'qm-editor-set' ),
-				),
-				'fatal_error' => __( 'PHP Fatal Error', 'query-monitor' ),
-				'query_diff' => array(
-					'no_changes' => __( 'No query changes detected between page loads.', 'query-monitor' ),
-					'previous' => __( 'Previous', 'query-monitor' ),
-					'current' => __( 'Current', 'query-monitor' ),
-					'queries' => __( 'queries', 'query-monitor' ),
-					'added' => __( 'Added', 'query-monitor' ),
-					'removed' => __( 'Removed', 'query-monitor' ),
-					'disabled' => __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare queries between page loads.', 'query-monitor' ),
-					'waiting' => __( 'Refresh this page to compare queries.', 'query-monitor' ),
-				),
-			)
-		);
+		// Assets are now output directly in before_output() via QM_Assets::output().
+		// This method is kept for back-compat in case plugins hook into the action below.
 
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
@@ -315,7 +223,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			wp_print_inline_script_tag(
 				sprintf(
 					'var QueryMonitorData = %s;',
-					wp_json_encode( $json )
+					json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
 				),
 				array(
 					'id' => 'query-monitor-inline-data',
@@ -330,22 +238,32 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
+		// Output non-client-side rendered panels outside the React container
+		echo '<div id="query-monitor-fallbacks">';
 		foreach ( $this->outputters as $id => $output ) {
-			$timer = new QM_Timer();
-			$timer->start();
+			if ( ! $output::$client_side_rendered ) {
+				printf(
+					"\n" . '<!-- Begin %1$s output -->' . "\n",
+					esc_html( $id )
+				);
 
-			printf(
-				"\n" . '<!-- Begin %1$s output -->' . "\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
-				esc_html( $id )
-			);
-			$output->output();
-			printf(
-				"\n" . '</div>' . "\n" . '<!-- End %s output -->' . "\n",
-				esc_html( $id )
-			);
+				printf(
+					"\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
+					esc_html( $id )
+				);
+				$output->output();
+				echo "\n" . '</div>' . "\n";
 
-			$output->set_timer( $timer->stop() );
+				printf(
+					"\n" . '<!-- End %s output -->' . "\n",
+					esc_html( $id )
+				);
+			}
 		}
+		echo '</div>' . "\n";
+
+		// Output the empty container for React to mount into
+		echo '<div id="query-monitor-container"></div>';
 
 		$this->after_output();
 
@@ -386,13 +304,34 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
+		$data = array();
+
 		foreach ( $this->outputters as $output_id => $output ) {
 			$collector = $output->get_collector();
 
-			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ 'qm-' . $output_id ] ) ) {
+			if ( $output::$client_side_rendered ) {
+				$collector_data = $collector->get_data();
+
+				// Add concerned actions and filters data if they exist
+				if ( ! empty( $collector->concerned_filters ) ) {
+					$collector_data->concerned_filters = $collector->concerned_filters;
+				}
+
+				if ( ! empty( $collector->concerned_actions ) ) {
+					$collector_data->concerned_actions = $collector->concerned_actions;
+				}
+
+				$data[ $collector->id ] = array(
+					'enabled' => $collector::enabled(),
+					'data'    => $collector_data,
+				);
+			}
+
+			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $output_id ] ) ) {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
-				$this->panel_menu[ 'qm-' . $output_id ]['children'][ 'qm-' . $output_id . '-concerned_hooks' ] = array(
-					'href' => esc_attr( '#' . $collector->id() . '-concerned_hooks' ),
+				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
+					'id' => $collector->id() . '-concerned_hooks',
+					'panel' => $collector->id() . '-concerned_hooks',
 					'title' => sprintf(
 						/* translators: %s: Number of hooks */
 						__( 'Hooks in Use (%s)', 'query-monitor' ),
@@ -402,417 +341,79 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
-		$class = array(
-			'qm-no-js',
+		$data['overview'] = array(
+			'enabled' => true,
+			'data' => QM_Collectors::get( 'overview' )->get_data(),
 		);
 
-		if ( did_action( 'wp_head' ) ) {
-			$class[] = sprintf( 'qm-theme-%s', get_template() );
-			$class[] = sprintf( 'qm-theme-%s', get_stylesheet() );
-		}
+		/** @var WP_Locale $wp_locale */
+		global $wp_locale;
 
-		if ( ! is_admin_bar_showing() ) {
-			$class[] = 'qm-peek';
+		/**
+		 * Filter whether to show the QM extended query information prompt.
+		 *
+		 * By default QM shows a prompt to install the QM db.php drop-in,
+		 * this filter allows a dev to choose not to show the prompt.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param bool $show_prompt Whether to show the prompt.
+		 */
+		$show_extended_query_prompt = apply_filters( 'qm/show_extended_query_prompt', true );
+
+		// Determine the reason for the extended query prompt
+		$extended_query_prompt_reason = null;
+		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+				$extended_query_prompt_reason = 'conflict';
+			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+				$extended_query_prompt_reason = 'disabled';
+			} else {
+				$extended_query_prompt_reason = 'failed';
+			}
 		}
 
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
-			'ajax_errors' => array(), # @TODO move this into the php_errors collector
+			'settings'    => array(
+				'verified' => self::user_verified(),
+				'extended_query_prompt_reason' => $extended_query_prompt_reason,
+			),
+			'panel_menu'  => $this->panel_menu,
+			'data'        => $data,
+			'l10n' => [
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'admin_url' => admin_url(),
+				'auth_nonce' => [
+					'on' => wp_create_nonce( 'qm-auth-on' ),
+					'off' => wp_create_nonce( 'qm-auth-off' ),
+				],
+				'file_path_map' => QM_Output_Html::get_file_path_map(),
+			],
+			'number_format' => $wp_locale->number_format,
+			'locale_data' => self::get_script_locale_data(),
 		);
 
 		echo '<!-- Begin Query Monitor output -->' . "\n\n";
+
+		$this->output_assets();
+
 		wp_print_inline_script_tag(
 			sprintf(
 				'var QueryMonitorData = %s;',
-				wp_json_encode( $json )
+				json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
 			),
 			array(
 				'id' => 'query-monitor-inline-data',
 			)
 		);
-
-		echo '<svg id="qm-icon-container">' . "\n";
-		foreach ( (array) glob( $this->qm->plugin_path( 'assets/icons/*.svg' ) ) as $icon ) {
-			if ( ! $icon ) {
-				continue;
-			}
-
-			$icon_name = basename( $icon, '.svg' );
-			$contents = (string) file_get_contents( $icon );
-
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo str_replace(
-				'<path ',
-				sprintf(
-					'<path id="qm-icon-%s" ',
-					$icon_name
-				),
-				$contents
-			);
-		}
-		echo '</svg>' . "\n";
-
-		echo '<div id="query-monitor-main" data-theme="auto" class="' . implode( ' ', array_map( 'esc_attr', $class ) ) . '" dir="ltr">' . "\n";
-		echo '<div id="qm-side-resizer" class="qm-resizer"></div>' . "\n";
-		echo '<div id="qm-title" class="qm-resizer">' . "\n";
-		echo '<h1 class="qm-title-heading">' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h1>' . "\n";
-		echo '<div class="qm-title-heading">' . "\n";
-		echo '<select id="qm-title-heading-select">' . "\n";
-
-		printf(
-			'<option value="%1$s">%2$s</option>' . "\n",
-			'#qm-overview',
-			esc_html__( 'Overview', 'query-monitor' )
-		);
-
-		foreach ( $this->panel_menu as $menu ) {
-			printf(
-				'<option value="%1$s">%2$s</option>' . "\n",
-				esc_attr( $menu['href'] ),
-				esc_html( $menu['title'] )
-			);
-			if ( ! empty( $menu['children'] ) ) {
-				foreach ( $menu['children'] as $child ) {
-					printf(
-						'<option value="%1$s">└ %2$s</option>' . "\n",
-						esc_attr( $child['href'] ),
-						esc_html( $child['title'] )
-					);
-				}
-			}
-		}
-
-		printf(
-			'<option value="%1$s">%2$s</option>' . "\n",
-			'#qm-settings',
-			esc_html__( 'Settings', 'query-monitor' )
-		);
-
-		echo '</select>' . "\n";
-
-		$settings = QueryMonitor::icon( 'admin-generic' );
-		$toggle = QueryMonitor::icon( 'image-rotate-left' );
-		$close = QueryMonitor::icon( 'no-alt' );
-
-		echo '</div>' . "\n";
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<button class="qm-title-button qm-button-container-settings" aria-label="' . esc_attr__( 'Settings', 'query-monitor' ) . '">' . $settings . '</button>';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<button class="qm-title-button qm-button-container-position" aria-label="' . esc_html__( 'Toggle panel position', 'query-monitor' ) . '">' . $toggle . '</button>';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<button class="qm-title-button qm-button-container-close" aria-label="' . esc_attr__( 'Close Panel', 'query-monitor' ) . '">' . $close . '</button>';
-		echo '</div>' . "\n"; // #qm-title
-
-		echo '<div id="qm-wrapper">' . "\n";
-		echo '<nav id="qm-panel-menu" aria-labelledby="qm-panel-menu-caption">' . "\n";
-		echo '<h2 class="qm-screen-reader-text" id="qm-panel-menu-caption">' . esc_html__( 'Query Monitor Menu', 'query-monitor' ) . '</h2>' . "\n";
-		echo '<ul role="tablist">' . "\n";
-
-		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button></li>' . "\n",
-			'#qm-overview',
-			esc_html__( 'Overview', 'query-monitor' )
-		);
-
-		foreach ( $this->panel_menu as $id => $menu ) {
-			$this->do_panel_menu_item( $id, $menu );
-		}
-
-		echo '</ul>' . "\n";
-		echo '</nav>' . "\n"; // #qm-panel-menu
-
-		echo '<div id="qm-panels">' . "\n";
-
-	}
-
-	/**
-	 * @param string $id
-	 * @param mixed[] $menu
-	 * @return void
-	 */
-	protected function do_panel_menu_item( $id, array $menu ) {
-		printf(
-			'<li role="presentation"><button role="tab" data-qm-href="%1$s">%2$s</button>' . "\n",
-			esc_attr( $menu['href'] ),
-			esc_html( $menu['title'] )
-		);
-
-		if ( ! empty( $menu['children'] ) ) {
-			echo '<ul role="presentation">' . "\n";
-			foreach ( $menu['children'] as $child_id => $child ) {
-				$this->do_panel_menu_item( $child_id, $child );
-			}
-			echo '</ul>' . "\n";
-		}
-
-		echo '</li>' . "\n";
 	}
 
 	/**
 	 * @return void
 	 */
 	protected function after_output() {
-
-		$state = self::user_verified() ? 'on' : 'off';
-		$editor = self::editor_cookie();
-		$text = array(
-			'on' => __( 'Clear authentication cookie', 'query-monitor' ),
-			'off' => __( 'Set authentication cookie', 'query-monitor' ),
-		);
-
-		echo '<div class="qm qm-non-tabular" id="qm-settings" data-qm-state="' . esc_attr( $state ) . '">' . "\n";
-		echo '<h2 class="qm-screen-reader-text">' . esc_html__( 'Settings', 'query-monitor' ) . '</h2>' . "\n";
-
-		echo '<div class="qm-grid">' . "\n";
-		echo '<section>' . "\n";
-		echo '<h3>' . esc_html__( 'Authentication', 'query-monitor' ) . '</h3>' . "\n";
-
-		echo '<p>' . esc_html__( 'You can set an authentication cookie which allows you to view Query Monitor output when you&rsquo;re not logged in, or when you&rsquo;re logged in as a different user.', 'query-monitor' ) . '</p>' . "\n";
-
-		echo '<p><button class="qm-auth qm-button" data-qm-text-on="' . esc_attr( $text['on'] ) . '" data-qm-text-off="' . esc_attr( $text['off'] ) . '">' . esc_html( $text[ $state ] ) . '</button></p>' . "\n";
-
-		$yes = QueryMonitor::icon( 'yes-alt' );
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<p data-qm-state-visibility="on">' . $yes . ' ' . esc_html__( 'Authentication cookie is set', 'query-monitor' ) . '</p>' . "\n";
-
-		echo '</section>' . "\n";
-
-		echo '<section>' . "\n";
-
-		echo '<h3>' . esc_html__( 'Editor', 'query-monitor' ) . '</h3>' . "\n";
-
-		if ( ! has_filter( 'qm/output/file_link_format' ) ) {
-			echo '<p>' . esc_html__( 'You can set your editor here, so that when you click on stack trace links the file opens in your editor.', 'query-monitor' ) . '</p>' . "\n";
-
-			echo '<p>';
-			echo '<select id="qm-editor-select" name="qm-editor-select" class="qm-select">' . "\n";
-
-			$xdebug_format = ini_get( 'xdebug.file_link_format' );
-			$default_label = ! empty( $xdebug_format ) ? 'Xdebug format' : 'None';
-
-			$editors = array(
-				$default_label => '',
-				'Netbeans' => 'netbeans',
-				'Nova' => 'nova',
-				'PhpStorm' => 'phpstorm',
-				'Sublime Text' => 'sublime',
-				'TextMate' => 'textmate',
-				'Visual Studio Code' => 'vscode',
-			);
-
-			foreach ( $editors as $name => $value ) {
-				echo '<option value="' . esc_attr( $value ) . '" ' . selected( $value, $editor, false ) . '>' . esc_html( $name ) . '</option>' . "\n";
-			}
-
-			echo '</select>' . "\n";
-			echo '</p><p>' . "\n";
-			echo '<button class="qm-editor-button qm-button">' . esc_html__( 'Set editor cookie', 'query-monitor' ) . '</button>';
-			echo '</p>' . "\n";
-
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<p id="qm-editor-save-status">' . $yes . ' ' . esc_html__( 'Saved! Reload to apply changes.', 'query-monitor' ) . '</p>' . "\n";
-		} else {
-			printf(
-				/* translators: %s: Name of WordPress filter */
-				esc_html__( 'The file link format for your editor is set by the %s filter.', 'query-monitor' ),
-				'<code>qm/output/file_link_format</code>'
-			);
-			echo '</p>' . "\n";
-		}
-
-		echo '</section>' . "\n";
-
-		echo '<section>' . "\n";
-		echo '<h3>' . esc_html__( 'Appearance', 'query-monitor' ) . '</h3>' . "\n";
-
-		echo '<p>' . esc_html__( 'Your browser color scheme is respected by default. You can override it here.', 'query-monitor' ) . '</p>' . "\n";
-
-		echo '<ul>' . "\n";
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="auto" checked/>' . esc_html_x( 'Auto', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="light"/>' . esc_html_x( 'Light', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
-		echo '<li><label><input type="radio" class="qm-theme-toggle qm-radio" name="qm-theme" value="dark"/>' . esc_html_x( 'Dark', 'colour scheme', 'query-monitor' ) . '</label></li>' . "\n";
-		echo '</ul>' . "\n";
-		echo '</section>' . "\n";
-
-		echo '<section>' . "\n";
-		echo '<h3>' . esc_html__( 'Query Diff', 'query-monitor' ) . '</h3>' . "\n";
-
-		echo '<p>' . esc_html__( 'Track database queries between page loads to see which queries were added or removed.', 'query-monitor' ) . '</p>' . "\n";
-
-		echo '<p><label><input type="checkbox" class="qm-query-diff-toggle qm-checkbox" id="qm-query-diff-toggle"/>' . esc_html__( 'Enable query diff tracking', 'query-monitor' ) . '</label></p>' . "\n";
-
-		echo '<p id="qm-query-diff-status" style="display:none;">' . esc_html__( 'Query diff is active. Refresh the page to see changes.', 'query-monitor' ) . '</p>' . "\n";
-
-		echo '</section>' . "\n";
-		echo '</div>' . "\n";
-
-		echo '<div class="qm-boxed">' . "\n";
-		$constants = array(
-			'QM_DB_EXPENSIVE' => array(
-				'label' => __( 'If an individual database query takes longer than this time to execute, it\'s considered "slow" and triggers a warning.', 'query-monitor' ),
-				'default' => 0.05,
-			),
-			'QM_DISABLED' => array(
-				'label' => __( 'Disable Query Monitor entirely.', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_DISABLE_ERROR_HANDLER' => array(
-				'label' => __( 'Disable the handling of PHP errors.', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_ENABLE_CAPS_PANEL' => array(
-				'label' => __( 'Enable the Capability Checks panel.', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_HIDE_CORE_ACTIONS' => array(
-				'label' => __( 'Hide WordPress core on the Hooks & Actions panel.', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_HIDE_SELF' => array(
-				'label' => __( 'Hide Query Monitor itself from various panels. Set to false if you want to see how Query Monitor hooks into WordPress.', 'query-monitor' ),
-				'default' => true,
-			),
-			'QM_NO_JQUERY' => array(
-				'label' => __( 'Don\'t specify jQuery as a dependency of Query Monitor. If jQuery isn\'t enqueued then Query Monitor will still operate, but with some reduced functionality.', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_SHOW_ALL_HOOKS' => array(
-				'label' => __( 'In the Hooks & Actions panel, show every hook that has an action or filter attached (instead of every action hook that fired during the request).', 'query-monitor' ),
-				'default' => false,
-			),
-			'QM_DB_SYMLINK' => array(
-				'label' => __( 'Allow the wp-content/db.php file symlink to be put into place during activation. Set to false to prevent the symlink creation.', 'query-monitor' ),
-				'default' => true,
-			),
-		);
-
-		/**
-		 * Filters which PHP constants for configuring Query Monitor are displayed on its settings panel.
-		 *
-		 * @since 3.12.0
-		 *
-		 * @param array $constants The displayed settings constants.
-		 * @phpstan-param array<string, array{
-		 *   label: string,
-		 *   default: mixed,
-		 * }> $constants
-		 */
-		$constants = apply_filters( 'qm/constants', $constants );
-
-		echo '<section>' . "\n";
-		echo '<h3>' . esc_html__( 'Configuration', 'query-monitor' ) . '</h3>' . "\n";
-		echo '<p>';
-		printf(
-			/* translators: %s: Name of the config file */
-			esc_html__( 'The following PHP constants can be defined in your %s file in order to control the behavior of Query Monitor:', 'query-monitor' ),
-			'<code>wp-config.php</code>'
-		);
-		echo '</p>' . "\n";
-
-		echo '<dl>' . "\n";
-
-		foreach ( $constants as $name => $constant ) {
-			echo '<dt><code>' . esc_html( $name ) . '</code></dt>' . "\n";
-			echo '<dd>';
-			echo esc_html( $constant['label'] );
-
-			$default_value = $constant['default'];
-			if ( is_bool( $default_value ) ) {
-				$default_value = ( $default_value ? 'true' : 'false' );
-			}
-
-			echo '<br><span class="qm-info">';
-			printf(
-				/* translators: %s: Default value for a PHP constant */
-				esc_html__( 'Default value: %s', 'query-monitor' ),
-				'<code>' . esc_html( (string) $default_value ) . '</code>'
-			);
-			echo '</span>';
-
-			if ( defined( $name ) && ( constant( $name ) !== $constant['default'] ) ) {
-				$current_value = constant( $name );
-				if ( is_bool( $current_value ) ) {
-					$current_value = QM_Collector::format_bool_constant( $name );
-				}
-
-				echo '<br><span class="qm-info">';
-				printf(
-					/* translators: %s: Current value for a PHP constant */
-					esc_html__( 'Current value: %s', 'query-monitor' ),
-					'<code>' . esc_html( $current_value ) . '</code>'
-				);
-				echo '</span>';
-			}
-			echo '</dd>' . "\n";
-		}
-
-		echo '</dl>' . "\n";
-		echo '</section>' . "\n";
-
-		echo '</div>' . "\n";
-
-		echo '</div>' . "\n"; // #qm-settings
-
-		/**
-		 * Fires after settings but before the panel closing tag.
-		 *
-		 * @since  3.1.0
-		 *
-		 * @param QM_Dispatcher_Html            $dispatcher The HTML dispatcher instance.
-		 * @param array<string, QM_Output_Html> $outputters Array of outputters.
-		 */
-		do_action( 'qm/output/after', $this, $this->outputters );
-
-		echo '</div>' . "\n"; // #qm-panels
-		echo '</div>' . "\n"; // #qm-wrapper
-		echo '</div>' . "\n"; // #query-monitor-main
-		echo "\n";
-
-		wp_print_inline_script_tag( <<<JS
-		window.addEventListener('load', function() {
-			var main = document.getElementById( 'query-monitor-main' );
-			var broken = document.getElementById( 'qm-broken' );
-			var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
-			var admin_bar = document.getElementById( 'wpadminbar' );
-
-			if ( ( 'undefined' === typeof QM_i18n ) && ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) ) {
-				/* Fallback for worst case scenario */
-
-				if ( 'undefined' === typeof QM_i18n ) {
-					console.error( 'QM error from page: undefined QM_i18n' );
-				}
-
-				if ( main ) {
-					main.className += ' qm-broken';
-				}
-
-				if ( broken ) {
-					console.error( broken.textContent );
-				}
-
-				if ( 'undefined' === typeof jQuery ) {
-					console.error( 'QM error from page: undefined jQuery' );
-				} else if ( ! window.jQuery ) {
-					console.error( 'QM error from page: no jQuery' );
-				}
-
-				if ( menu_item && main ) {
-					menu_item.addEventListener( 'click', function() {
-						main.className += ' qm-show';
-					} );
-				}
-			} else if ( main && ! admin_bar ) {
-				main.className += ' qm-peek';
-			}
-		} );
-		JS,
-			array(
-				'id' => 'query-monitor-inline-worst-case',
-			)
-		);
 		echo '<!-- End Query Monitor output -->' . "\n\n";
-
 	}
 
 	/**
@@ -856,18 +457,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 *
 		 * @param array $output_title List of titles.
 		 */
-		$title = implode( '&nbsp;&nbsp;', apply_filters( 'qm/output/title', array() ) );
-
-		if ( empty( $title ) ) {
-			$title = esc_html__( 'Query Monitor', 'query-monitor' );
-		}
+		$title = apply_filters( 'qm/output/title', array() );
 
 		$admin_bar_menu = array(
 			'top' => array(
-				'title' => sprintf(
-					'<span class="ab-icon">QM</span><span class="ab-label">%s</span>',
-					$title
-				),
+				'title'     => $title,
 				'classname' => $class,
 			),
 			'sub' => array(),
@@ -947,10 +541,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		if ( ! file_exists( $this->qm->plugin_path( 'assets/query-monitor.css' ) ) ) {
-			return false;
-		}
-
 		return true;
 
 	}
@@ -974,7 +564,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ),
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/query-monitor.css' ) ),
 			esc_attr( QM_VERSION )
 		);
 
@@ -991,16 +581,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		echo '<div class="qm-fatal-wrap">';
 
-		if ( QM_Output_Html::has_clickable_links() ) {
-			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
-		} else {
-			$file = esc_html( $e['file'] );
-		}
-
 		printf(
 			'<p>%1$s<br>in <b>%2$s</b> on line <b>%3$d</b></p>',
 			nl2br( esc_html( $e['message'] ), false ),
-			$file,
+			esc_html( $e['file'] ),
 			intval( $e['line'] )
 		); // WPCS: XSS ok.
 
@@ -1060,6 +644,199 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	public function cease() {
 		$this->ceased = true;
+	}
+
+	/**
+	 * Get the manifest data, detecting dev vs production mode.
+	 *
+	 * @return array<string, mixed> The manifest data.
+	 * @throws Exception If no manifest is found.
+	 */
+	private static function get_manifest(): array {
+		if ( self::$manifest === null ) {
+			$build_dir = dirname( __DIR__ ) . '/assets/build';
+
+			// Check for dev server manifest first (only exists when Vite dev server is running)
+			$dev_manifest = $build_dir . '/vite-dev-server.json';
+			if ( is_file( $dev_manifest ) && is_readable( $dev_manifest ) ) {
+				/** @var array{origin: string}|null $data */
+				$data = wp_json_file_decode( $dev_manifest, array( 'associative' => true ) );
+				if ( $data ) {
+					self::$is_dev = true;
+					self::$manifest = $data;
+				}
+			}
+
+			// Fall back to production assets
+			if ( self::$manifest === null ) {
+				if ( is_file( $build_dir . '/query-monitor.js' ) ) {
+					self::$manifest = array(
+						'assets/query-monitor.css' => array(
+							'file' => 'query-monitor.css',
+						),
+						'src/index.tsx' => array(
+							'file' => 'query-monitor.js',
+						),
+					);
+				}
+			}
+
+			// Mark as checked but not found
+			if ( self::$manifest === null ) {
+				self::$manifest = false;
+			}
+		}
+
+		if ( self::$manifest === false ) {
+			throw new Exception( 'Query Monitor assets not built. Run `npm run build` or `npm run watch`.' );
+		}
+
+		return self::$manifest;
+	}
+
+	/**
+	 * Admin notice for missing assets.
+	 */
+	public static function admin_notice_missing_assets(): void {
+		try {
+			self::get_manifest();
+		} catch ( Exception $e ) {
+			printf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				esc_html( $e->getMessage() )
+			);
+		}
+	}
+
+	/**
+	 * Output all assets (CSS, JS, and localized data).
+	 */
+	private function output_assets(): void {
+		try {
+			$manifest = self::get_manifest();
+		} catch ( Exception $e ) {
+			printf(
+				'<!-- QM Assets Error: %s -->' . "\n",
+				esc_html( $e->getMessage() )
+			);
+			return;
+		}
+
+		if ( self::$is_dev ) {
+			/** @var array{origin: string} $manifest */
+			$this->output_dev_assets( $manifest );
+		} else {
+			/** @var array<string, array{file: string}> $manifest */
+			$this->output_production_assets( $manifest );
+		}
+	}
+
+	/**
+	 * Output assets for development mode (Vite dev server).
+	 *
+	 * @param array{origin: string} $data Dev server manifest data.
+	 */
+	private function output_dev_assets( array $data ): void {
+		$origin = $data['origin'];
+
+		// CSS
+		printf(
+			'<link rel="stylesheet" href="%s">' . "\n",
+			esc_url( $origin . '/assets/query-monitor.css' )
+		);
+
+		// Vite client for HMR
+		wp_print_script_tag( [
+			'type' => 'module',
+			'src' => esc_url( $origin . '/@vite/client' ),
+		] );
+
+		// Main JS module
+		wp_print_script_tag( [
+			'type' => 'module',
+			'src' => esc_url( $origin . '/src/index.tsx' ),
+		] );
+	}
+
+	/**
+	 * Loads the script locale data for the bundled JS translations.
+	 *
+	 * This replicates what wp_set_script_translations() does, but without
+	 * requiring a registered script handle.
+	 *
+	 * @return array<string, mixed>|null The locale data for the text domain, or null.
+	 */
+	private static function get_script_locale_data(): ?array {
+		$locale = determine_locale();
+
+		if ( 'en_US' === $locale ) {
+			return null;
+		}
+
+		$relative  = 'assets/build/query-monitor.js';
+		$file_base = 'query-monitor-' . $locale;
+		$md5_file  = $file_base . '-' . md5( $relative ) . '.json';
+
+		$locations = array(
+			dirname( __DIR__ ) . '/languages/' . $md5_file,
+			WP_LANG_DIR . '/plugins/' . $md5_file,
+		);
+
+		foreach ( $locations as $file ) {
+			$json = load_script_translations( $file, 'query-monitor', 'query-monitor' );
+
+			if ( $json ) {
+				/** @var array{locale_data?: array<string, mixed>} */
+				$translations = json_decode( $json, true );
+				$locale_data  = $translations['locale_data']['query-monitor']
+							?? $translations['locale_data']['messages']
+							?? null;
+
+				if ( $locale_data ) {
+					$locale_data['']['domain'] = 'query-monitor';
+					return $locale_data;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Output assets for production mode (built files).
+	 *
+	 * @param array<string, array{file: string}> $data Production manifest data.
+	 */
+	private function output_production_assets( array $data ): void {
+		$base_url = $this->qm->plugin_url( 'assets/build' );
+
+		// CSS
+		$css_file = $data['assets/query-monitor.css']['file'] ?? null;
+		if ( $css_file ) {
+			$url = add_query_arg(
+				'ver',
+				QM_VERSION,
+				$base_url . '/' . $css_file,
+			);
+			printf(
+				'<link rel="stylesheet" href="%s">' . "\n",
+				esc_url( $url )
+			);
+		}
+
+		// JS
+		$js_file = $data['src/index.tsx']['file'] ?? null;
+		if ( $js_file ) {
+			$url = add_query_arg(
+				'ver',
+				QM_VERSION,
+				$base_url . '/' . $js_file,
+			);
+			wp_print_script_tag( [
+				'type' => 'module',
+				'src' => esc_url( $url ),
+			] );
+		}
 	}
 }
 

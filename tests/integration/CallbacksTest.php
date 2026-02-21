@@ -48,7 +48,7 @@ class CallbacksTest extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( 'QM\T\S\TestObject->hello()', $actual['name'] );
+		self::assertSame( 'QM\Tests\Supports\TestObject->hello()', $actual['name'] );
 		self::assertSame( $ref->getFileName(),       $actual['file'] );
 		self::assertSame( $ref->getStartLine(),      $actual['line'] );
 
@@ -61,7 +61,7 @@ class CallbacksTest extends Test {
 
 		$ref = new \ReflectionMethod( $function, '__invoke' );
 		$actual = \QM_Util::populate_callback( $callback );
-		$name = 'QM\T\S\TestInvokable->__invoke()';
+		$name = 'QM\Tests\Supports\TestInvokable->__invoke()';
 
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
@@ -83,7 +83,7 @@ class CallbacksTest extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( '\Q\T\S\TestObject::hello()', $actual['name'] );
+		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual['name'] );
 		self::assertSame( $ref->getFileName(),       $actual['file'] );
 		self::assertSame( $ref->getStartLine(),      $actual['line'] );
 
@@ -100,7 +100,7 @@ class CallbacksTest extends Test {
 		self::assertArrayHasKey( 'name', $actual );
 		self::assertArrayHasKey( 'file', $actual );
 		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( '\Q\T\S\TestObject::hello()',          $actual['name'] );
+		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual['name'] );
 		self::assertSame( $ref->getFileName(),                $actual['file'] );
 		self::assertSame( $ref->getStartLine(),               $actual['line'] );
 

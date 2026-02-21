@@ -15,9 +15,21 @@
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
+	<!-- Generated files that use WordPress block parser property names (blockName, innerBlocks, etc) -->
+	<rule ref="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase">
+		<exclude-pattern>/data/block_editor/post_block\.php$</exclude-pattern>
+	</rule>
+
+	<!-- HTML dispatcher outputs inline assets intentionally for isolated loading -->
+	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet">
+		<exclude-pattern>/dispatchers/Html\.php$</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
 
 		<!-- Exclude short description sniff so short `@var` notation can be used -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>

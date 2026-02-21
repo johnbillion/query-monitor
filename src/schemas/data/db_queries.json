@@ -1,0 +1,158 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/db_queries.json",
+	"title": "DB_Queries",
+	"description": "Database queries data transfer object.",
+	"type": "object",
+	"definitions": {
+		"QueryRow": {
+			"type": "object",
+			"required": [
+				"sql",
+				"ltime",
+				"type",
+				"is_main_query"
+			],
+			"properties": {
+				"stack": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sql": {
+					"type": "string"
+				},
+				"ltime": {
+					"type": "number"
+				},
+				"result": {
+					"oneOf": [
+						{
+							"type": "integer"
+						},
+						{
+							"type": "boolean"
+						},
+						{
+							"type": "object",
+							"tsType": "WP_Error",
+							"phpType": "WP_Error",
+							"allOf": [
+								{
+									"$ref": "../../../node_modules/wp-json-schemas/schemas/error.json"
+								}
+							]
+						}
+					]
+				},
+				"type": {
+					"type": "string"
+				},
+				"trace": {
+					"type": "object",
+					"phpType": "QM_Backtrace",
+					"allOf": [
+						{
+							"$ref": "../backtrace.json"
+						}
+					]
+				},
+				"is_main_query": {
+					"type": "boolean"
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"required": [
+		"total_qs",
+		"has_result",
+		"has_trace",
+		"has_main_query",
+		"dupes",
+		"errors"
+	],
+	"properties": {
+		"total_qs": {
+			"type": "integer"
+		},
+		"errors": {
+			"type": "array",
+			"items": {
+				"type": "integer"
+			}
+		},
+		"expensive": {
+			"type": "array",
+			"items": {
+				"type": "integer"
+			}
+		},
+		"rows": {
+			"phpStanType": "array<int, QueryRow>",
+			"type": "array",
+			"items": {
+				"allOf": [
+					{
+						"$ref": "#/definitions/QueryRow"
+					}
+				]
+			}
+		},
+		"has_result": {
+			"type": "boolean"
+		},
+		"has_trace": {
+			"type": "boolean"
+		},
+		"has_main_query": {
+			"type": "boolean"
+		},
+		"dupes": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"query": {
+						"type": "string"
+					},
+					"count": {
+						"type": "integer"
+					},
+					"ltime": {
+						"type": "number"
+					},
+					"callers": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "integer"
+						}
+					},
+					"components": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "integer"
+						}
+					},
+					"sources": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "integer"
+						}
+					}
+				},
+				"required": [
+					"query",
+					"count",
+					"ltime",
+					"callers",
+					"components",
+					"sources"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

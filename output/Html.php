@@ -8,6 +8,11 @@
 abstract class QM_Output_Html extends QM_Output {
 
 	/**
+	 * @var bool
+	 */
+	public static $client_side_rendered = false;
+
+	/**
 	 * @var string|false|null
 	 */
 	protected static $file_link_format = null;
@@ -36,7 +41,7 @@ abstract class QM_Output_Html extends QM_Output {
 	public function admin_menu( array $menu ) {
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( $this->name() ),
+			'title' => $this->name(),
 		) );
 		return $menu;
 
@@ -74,7 +79,7 @@ abstract class QM_Output_Html extends QM_Output {
 			esc_attr( $id )
 		);
 
-		echo '<table class="qm-sortable">';
+		echo '<table>';
 
 		printf(
 			'<caption class="qm-screen-reader-text"><h2 id="%1$s-caption">%2$s</h2></caption>' . "\n",
@@ -89,8 +94,6 @@ abstract class QM_Output_Html extends QM_Output {
 	protected function after_tabular_output() {
 		echo '</table>';
 		echo '</div>';
-
-		$this->output_concerns();
 	}
 
 	/**
@@ -127,73 +130,15 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return void
 	 */
 	protected function after_non_tabular_output() {
-		echo '</div>' . "\n";
-		echo '</div>' . "\n";
-
-		$this->output_concerns();
+		echo '</div>';
+		echo '</div>';
 	}
 
 	/**
+	 * @deprecated
 	 * @return void
 	 */
-	protected function output_concerns() {
-		$concerns = array(
-			'concerned_actions' => array(
-				__( 'Related Hooks with Actions Attached', 'query-monitor' ),
-				__( 'Action', 'query-monitor' ),
-			),
-			'concerned_filters' => array(
-				__( 'Related Hooks with Filters Attached', 'query-monitor' ),
-				__( 'Filter', 'query-monitor' ),
-			),
-		);
-
-		if ( empty( $this->collector->concerned_actions ) && empty( $this->collector->concerned_filters ) ) {
-			return;
-		}
-
-		printf(
-			'<div class="qm qm-concerns" id="%1$s" role="tabpanel" aria-labelledby="%1$s-caption" tabindex="-1">' . "\n",
-			esc_attr( $this->current_id . '-concerned_hooks' )
-		);
-
-		echo '<table>';
-
-		printf(
-			'<caption><h2 id="%1$s-caption">%2$s</h2></caption>' . "\n",
-			esc_attr( $this->current_id . '-concerned_hooks' ),
-			sprintf(
-				/* translators: %s: Panel name */
-				esc_html__( '%s: Related Hooks with Filters or Actions Attached', 'query-monitor' ),
-				esc_html( $this->name() )
-			)
-		);
-
-		echo '<thead>' . "\n";
-		echo '<tr>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Hook', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Type', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Priority', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Callback', 'query-monitor' ) . '</th>' . "\n";
-		echo '<th scope="col">' . esc_html__( 'Component', 'query-monitor' ) . '</th>' . "\n";
-		echo '</tr>' . "\n";
-		echo '</thead>' . "\n";
-
-		echo '<tbody>' . "\n";
-
-		foreach ( $concerns as $key => $labels ) {
-			if ( empty( $this->collector->$key ) ) {
-				continue;
-			}
-
-			QM_Output_Html_Hooks::output_hook_table( $this->collector->$key, true );
-		}
-
-		echo '</tbody>' . "\n";
-		echo '</table>' . "\n";
-
-		echo '</div>' . "\n";
-	}
+	protected function output_concerns() {}
 
 	/**
 	 * @param string $id
@@ -281,6 +226,8 @@ abstract class QM_Output_Html extends QM_Output {
 
 	/**
 	 * Returns the table filter controls. Safe for output.
+	 *
+	 * @deprecated Use a React component instead.
 	 *
 	 * @param  string         $name   The name for the `data-` attributes that get filtered by this control.
 	 * @param  (string|int)[] $values Option values for this control.
@@ -448,12 +395,10 @@ abstract class QM_Output_Html extends QM_Output {
 	 * @return array<string, mixed>
 	 */
 	protected function menu( array $args ) {
-
 		return array_merge( array(
-			'id' => esc_attr( "query-monitor-{$this->collector->id}" ),
-			'href' => esc_attr( '#' . $this->collector->id() ),
+			'id' => $this->collector->id,
+			'panel' => $this->collector->id,
 		), $args );
-
 	}
 
 	/**
@@ -513,7 +458,11 @@ abstract class QM_Output_Html extends QM_Output {
 			}
 		}
 
-		$link_line = $line ?: 1;
+		$fallback = QM_Util::standard_dir( $file, '' );
+
+		if ( $line ) {
+			$fallback .= ':' . $line;
+		}
 
 		if ( 0 === strpos( $text, '{closure:/' ) ) {
 			$text = sprintf(
@@ -524,105 +473,38 @@ abstract class QM_Output_Html extends QM_Output {
 			);
 		}
 
-		if ( ! self::has_clickable_links() ) {
-			$fallback = QM_Util::standard_dir( $file, '' );
-			if ( $line ) {
-				$fallback .= ':' . $line;
-			}
-			if ( $is_filename ) {
-				$return = esc_html( $text );
-			} else {
-				$return = '<code>' . esc_html( $text ) . '</code>';
-			}
-			if ( $fallback !== $text ) {
-				$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
-			}
-			return $return;
-		}
-
-		$map = self::get_file_path_map();
-
-		if ( ! empty( $map ) ) {
-			foreach ( $map as $from => $to ) {
-				$file = str_replace( $from, $to, $file );
-			}
-		}
-
-		/** @var string */
-		$link_format = self::get_file_link_format();
-		$link = sprintf( $link_format, rawurlencode( $file ), intval( $link_line ) );
-
 		if ( $is_filename ) {
-			$format = '<a href="%1$s" class="qm-edit-link">%2$s%3$s</a>';
+			$return = esc_html( $text );
 		} else {
-			$format = '<a href="%1$s" class="qm-edit-link"><code>%2$s</code>%3$s</a>';
+			$return = '<code>' . esc_html( $text ) . '</code>';
+		}
+		if ( $fallback !== $text ) {
+			$return .= '<br><span class="qm-info qm-supplemental">' . esc_html( $fallback ) . '</span>';
 		}
 
-		return sprintf(
-			$format,
-			esc_attr( $link ),
-			esc_html( $text ),
-			QueryMonitor::icon( 'edit' )
-		);
+		return $return;
 	}
 
 	/**
 	 * Provides a protocol URL for edit links in QM stack traces for various editors.
+	 *
+	 * @deprecated
 	 *
 	 * @param string       $editor         The chosen code editor.
 	 * @param string|false $default_format A format to use if no editor is found.
 	 * @return string|false A protocol URL format or boolean false.
 	 */
 	public static function get_editor_file_link_format( $editor, $default_format ) {
-		switch ( $editor ) {
-			case 'phpstorm':
-				return 'phpstorm://open?file=%f&line=%l';
-			case 'vscode':
-				return 'vscode://file/%f:%l';
-			case 'sublime':
-				return 'subl://open/?url=file://%f&line=%l';
-			case 'textmate':
-				return 'txmt://open/?url=file://%f&line=%l';
-			case 'netbeans':
-				return 'nbopen://%f:%l';
-			case 'nova':
-				return 'nova://open?path=%f&line=%l';
-			default:
-				return $default_format;
-		}
+		return $default_format;
 	}
 
 	/**
-	 * @return string|false
+	 * @deprecated
+	 *
+	 * @return false
 	 */
 	public static function get_file_link_format() {
-		if ( ! isset( self::$file_link_format ) ) {
-			$format = ini_get( 'xdebug.file_link_format' );
-
-			if ( defined( 'QM_EDITOR_COOKIE' ) && isset( $_COOKIE[ QM_EDITOR_COOKIE ] ) ) {
-				$format = self::get_editor_file_link_format(
-					$_COOKIE[ QM_EDITOR_COOKIE ],
-					$format
-				);
-			}
-
-			/**
-			 * Filters the clickable file link format.
-			 *
-			 * @link https://querymonitor.com/help/clickable-stack-traces-and-function-names/
-			 * @since 3.0.0
-			 *
-			 * @param string|false $format The format of the clickable file link, or false if there is none.
-			 */
-			$format = apply_filters( 'qm/output/file_link_format', $format );
-			if ( empty( $format ) ) {
-				self::$file_link_format = false;
-			} else {
-				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
-			}
-		}
-
-		return self::$file_link_format;
+		return false;
 	}
 
 	/**
@@ -662,10 +544,12 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * @return bool
+	 * @deprecated
+	 *
+	 * @return false
 	 */
 	public static function has_clickable_links() {
-		return ( false !== self::get_file_link_format() );
+		return false;
 	}
 
 

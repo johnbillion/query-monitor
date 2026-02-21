@@ -1,0 +1,55 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/overview.json",
+	"title": "Overview",
+	"description": "Overview data transfer object.",
+	"type": "object",
+	"required": [
+		"time_limit",
+		"time_start",
+		"time_usage",
+		"memory",
+		"memory_limit",
+		"memory_usage",
+		"is_admin"
+	],
+	"properties": {
+		"time_taken": {
+			"type": "number"
+		},
+		"time_limit": {
+			"type": "integer"
+		},
+		"time_start": {
+			"type": "number"
+		},
+		"time_usage": {
+			"type": [
+				"integer",
+				"number"
+			]
+		},
+		"memory": {
+			"type": "integer"
+		},
+		"memory_limit": {
+			"type": "number"
+		},
+		"memory_usage": {
+			"type": [
+				"integer",
+				"number"
+			]
+		},
+		"current_user": {
+			"type": "object"
+		},
+		"switched_user": {
+			"type": "object"
+		},
+		"is_admin": {
+			"type": "boolean"
+		}
+	},
+	"additionalProperties": false
+}

@@ -1,0 +1,61 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/php_error.json",
+	"title": "PHP_Error",
+	"description": "Individual PHP error data object.",
+	"type": "object",
+	"phpFile": "php_error",
+	"phpClass": "QM_Data_PHP_Error",
+	"properties": {
+		"errno": {
+			"type": "integer"
+		},
+		"level": {
+			"type": "string",
+			"enum": [
+				"warning",
+				"notice",
+				"strict",
+				"deprecated"
+			]
+		},
+		"suppressed": {
+			"type": "boolean"
+		},
+		"message": {
+			"type": "string"
+		},
+		"callsite": {
+			"type": "object",
+			"phpType": "QM_Data_CallSite",
+			"allOf": [
+				{
+					"$ref": "callsite.json"
+				}
+			]
+		},
+		"trace": {
+			"phpType": "?QM_Backtrace",
+			"oneOf": [
+				{
+					"$ref": "backtrace.json"
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"count": {
+			"type": "integer"
+		}
+	},
+	"required": [
+		"errno",
+		"level",
+		"suppressed",
+		"message",
+		"callsite",
+		"count"
+	],
+	"additionalProperties": false
+}

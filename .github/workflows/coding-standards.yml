@@ -10,26 +10,36 @@ on:
     paths:
       - '.github/workflows/coding-standards.yml'
       - '**.css'
-      - '**.scss'
       - '**.js'
+      - '**.ts'
+      - '**.tsx'
       - '**.php'
       - 'composer.json'
       - 'package.json'
       - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
+      - 'eslint.config.js'
+      - '.npmrc'
+      - '.nvmrc'
+      - '.tsconfig.json'
   pull_request:
     branches:
       - '**'
     paths:
       - '.github/workflows/coding-standards.yml'
       - '**.css'
-      - '**.scss'
       - '**.js'
+      - '**.ts'
+      - '**.tsx'
       - '**.php'
       - 'composer.json'
       - 'package.json'
       - 'phpcs.xml.dist'
       - 'phpstan.neon.dist'
+      - 'eslint.config.js'
+      - '.npmrc'
+      - '.nvmrc'
+      - '.tsconfig.json'
   workflow_dispatch:
 
 permissions: {}
@@ -43,7 +53,7 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@8d8ccc89b04d85ae8d064774d63d8725799f4224 # 2.7.3
     strategy:
       matrix:
         label:
@@ -53,3 +63,29 @@ jobs:
       fail-fast: false
     with:
       php: ${{ matrix.php }}
+
+  typescript:
+    name: TypeScript
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
