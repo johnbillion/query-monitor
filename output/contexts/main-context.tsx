@@ -23,6 +23,8 @@ export type MainContextType = {
 	setFilters: ( filters: FiltersType ) => void;
 	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
 	settings: SettingsType;
+	queryDiffEnabled: boolean;
+	setQueryDiffEnabled: ( enabled: boolean ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -37,4 +39,6 @@ export const MainContext = createContext<MainContextType>( {
 		extended_query_prompt_reason: null,
 		file_path_map: {},
 	},
+	queryDiffEnabled: false,
+	setQueryDiffEnabled: ( _enabled ) => {},
 } );
