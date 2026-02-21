@@ -327,7 +327,21 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
 
 		foreach ( $this->http_requests as $key => $request ) {
-			$response = $this->http_responses[ $key ];
+			if ( ! isset( $this->http_responses[ $key ] ) ) {
+				// The response was never logged. This can happen when a `pre_http_request` filter
+				// callback intercepts the request at a priority higher than QM's hook (9999), so
+				// QM's `filter_pre_http_request` already ran (saw no interception) and WordPress
+				// then short-circuits the request, meaning `http_api_debug` never fires either.
+				$response = array(
+					'response'    => new WP_Error( 'http_request_not_executed' ),
+					'end'         => $request['start'],
+					'args'        => $request['args'],
+					'info'        => null,
+					'intercepted' => false,
+				);
+			} else {
+				$response = $this->http_responses[ $key ];
+			}
 
 			if ( empty( $response['response'] ) ) {
 				// Timed out
