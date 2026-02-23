@@ -22,7 +22,6 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 			return null;
 		}
 
-		// @TODO: Avoid calculating the diff in every render if the queries haven't changed. This could be done by memoizing the result based on the queries, or by storing the previous queries in a ref and only recalculating when they change.
 		return getQueryDiffResult( extractQueries( data.rows ) );
 	}, [ queryDiffEnabled, data.rows ] );
 

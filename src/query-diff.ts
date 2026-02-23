@@ -22,6 +22,12 @@ interface StoredSnapshot {
 const STORAGE_KEY = 'qm-query-diff-data';
 
 /**
+ * Cached diff result. Since queries don't change once the page is loaded,
+ * we only need to compute the diff once.
+ */
+let cachedDiffResult: QueryDiffResult | null = null;
+
+/**
  * Extracts simplified query snapshots from the full query rows.
  */
 export function extractQueries( rows?: QueryRow[] ): QuerySnapshot[] {
@@ -31,6 +37,7 @@ export function extractQueries( rows?: QueryRow[] ): QuerySnapshot[] {
 
 	return rows.map( ( row ) => ( {
 		sql: row.sql,
+		// @TODO: The caller extraction logic is duplicated from db_callers.tsx. Consider centralizing this in a utility function.
 		caller: row.trace?.frames?.[ 0 ]?.display ?? row.stack?.[ 0 ] ?? '',
 	} ) );
 }
@@ -142,6 +149,10 @@ export function clearQuerySnapshot(): void {
  * the "waiting" state message or the settings toggle description).
  */
 export function getQueryDiffResult( currentQueries: QuerySnapshot[] ): QueryDiffResult {
+	if ( cachedDiffResult ) {
+		return cachedDiffResult;
+	}
+
 	let result: QueryDiffResult | null = null;
 
 	try {
@@ -166,11 +177,13 @@ export function getQueryDiffResult( currentQueries: QuerySnapshot[] ): QueryDiff
 		// Ignore storage errors (e.g. private browsing, quota exceeded).
 	}
 
-	return result ?? {
+	cachedDiffResult = result ?? {
 		status: 'waiting',
 		added: [],
 		removed: [],
 		previousCount: 0,
 		currentCount: currentQueries.length,
 	};
+
+	return cachedDiffResult;
 }
