@@ -239,10 +239,13 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		$trace = new QM_Backtrace();
-		$trace->push_frame( array(
-			'file' => $file,
-			'line' => $line,
+		$callsite = new QM_Data_CallSite();
+		$callsite->file = $file;
+		$callsite->filename = ( $file ? QM_Util::standard_dir( $file, '' ) : '' );
+		$callsite->line = $line;
+
+		$trace = new QM_Backtrace( array(
+			'callsite' => $callsite,
 		) );
 		$caller = $trace->get_caller();
 
@@ -255,17 +258,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		if ( isset( $this->data->errors[ $key ] ) ) {
 			$this->data->errors[ $key ]->count++;
 		} else {
-			$callsite = new QM_Data_CallSite();
-			$callsite->file = $file;
-			$callsite->filename = ( $file ? QM_Util::standard_dir( $file, '' ) : '' );
-			$callsite->line = $line;
-
 			$error = new QM_Data_PHP_Error();
 			$error->errno = $errno;
 			$error->level = $level;
 			$error->suppressed = $suppressed;
 			$error->message = wp_strip_all_tags( $message );
-			$error->callsite = $callsite;
 			$error->count = 1;
 
 			if ( $do_trace ) {

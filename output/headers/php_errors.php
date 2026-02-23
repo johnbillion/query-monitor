@@ -37,12 +37,13 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 
 			$stack = isset( $error->trace ) ? $error->trace->get_stack() : array();
 			$component = isset( $error->trace ) ? $error->trace->get_component()->name : '';
+			$callsite = isset( $error->trace ) ? $error->trace->get_callsite() : null;
 
 			$output_error = array(
 				'level' => $error->level,
 				'message' => $error->message,
-				'file' => QM_Util::standard_dir( $error->callsite->file, '' ),
-				'line' => $error->callsite->line,
+				'file' => $callsite ? QM_Util::standard_dir( $callsite->file, '' ) : '',
+				'line' => $callsite->line ?? null,
 				'stack' => $stack,
 				'component' => $component,
 			);

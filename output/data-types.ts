@@ -210,7 +210,16 @@ export interface Caps {
  */
 export interface Backtrace {
 	component: Component;
+	callsite?: CallSite | null;
 	frames: StackFrame[];
+}
+/**
+ * Code location where an error or event occurred.
+ */
+export interface CallSite {
+	file: string | null;
+	filename: string;
+	line: number | null;
 }
 /**
  * Stack trace frame.
@@ -475,17 +484,8 @@ export interface PHP_Error {
 	level: "warning" | "notice" | "strict" | "deprecated";
 	suppressed: boolean;
 	message: string;
-	callsite: CallSite;
 	trace?: Backtrace | null;
 	count: number;
-}
-/**
- * Code location where an error or event occurred.
- */
-export interface CallSite {
-	file: string | null;
-	filename: string;
-	line: number | null;
 }
 /**
  * Raw request data transfer object.

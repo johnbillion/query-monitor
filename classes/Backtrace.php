@@ -122,17 +122,31 @@ class QM_Backtrace implements JsonSerializable {
 	protected $component = null;
 
 	/**
-	 * @var ?QM_Stack_Frame
+	 * @var ?QM_Data_CallSite
 	 */
-	protected $top_frame = null;
+	protected $callsite = null;
 
 	/**
-	 * @param array<string, mixed[]> $args
+	 * @param array{
+	 *   ignore_class?: mixed[],
+	 *   ignore_namespace?: mixed[],
+	 *   ignore_method?: mixed[],
+	 *   ignore_func?: mixed[],
+	 *   ignore_hook?: mixed[],
+	 *   show_args?: mixed[],
+	 *   callsite?: QM_Data_CallSite,
+	 * } $args
 	 * @param mixed[] $trace
 	 */
 	public function __construct( array $args = array(), ?array $trace = null ) {
 		$this->trace = $trace ?? debug_backtrace( 0 );
 
+		if ( isset( $args['callsite'] ) ) {
+			$this->callsite = $args['callsite'];
+			unset( $args['callsite'] );
+		}
+
+		/** @var array<string, mixed[]> $args */
 		$this->args = array_merge( array(
 			'ignore_class' => array(),
 			'ignore_namespace' => array(),
@@ -163,16 +177,24 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
+	 * @deprecated Use the `callsite` argument instead.
+	 *
 	 * @param mixed[] $frame
 	 * @return void
 	 */
 	public function push_frame( array $frame ) {
-		$top = new QM_Stack_Frame();
-		$top->id = QM_Util::standard_dir( $frame['file'], '' );
-		$top->display = $top->id . ':' . $frame['line'];
-		$top->file = $frame['file'] ?? null;
-		$top->line = $frame['line'] ?? null;
-		$this->top_frame = $top;
+		$callsite = new QM_Data_CallSite();
+		$callsite->file = $frame['file'] ?? null;
+		$callsite->filename = isset( $frame['file'] ) ? QM_Util::standard_dir( $frame['file'], '' ) : '';
+		$callsite->line = $frame['line'] ?? null;
+		$this->callsite = $callsite;
+	}
+
+	/**
+	 * @return ?QM_Data_CallSite
+	 */
+	public function get_callsite() {
+		return $this->callsite;
 	}
 
 	/**
@@ -213,8 +235,15 @@ class QM_Backtrace implements JsonSerializable {
 		$components = array();
 		$frames = $this->get_filtered_trace();
 
-		if ( $this->top_frame ) {
-			array_unshift( $frames, $this->top_frame );
+		if ( $this->callsite && $this->callsite->file ) {
+			$component = QM_Util::get_file_component( $this->callsite->file );
+
+			if ( $component->is_plugin() ) {
+				$this->component = $component;
+				return $this->component;
+			}
+
+			$components[ $component->type ] = $component;
 		}
 
 		foreach ( $frames as $frame ) {
@@ -567,6 +596,7 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * @phpstan-return array{
 	 *   component: QM_Component,
+	 *   callsite: ?QM_Data_CallSite,
 	 *   frames: list<array{id: string, display: string, file: string|null, line: int|null}>,
 	 * }
 	 */
@@ -582,6 +612,7 @@ class QM_Backtrace implements JsonSerializable {
 
 		return array(
 			'component' => $this->get_component(),
+			'callsite' => $this->callsite,
 			'frames' => $frames,
 		);
 	}

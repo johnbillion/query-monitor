@@ -32,11 +32,6 @@ class QM_Data_PHP_Error {
 	public $message;
 
 	/**
-	 * @var QM_Data_CallSite
-	 */
-	public $callsite;
-
-	/**
 	 * @var ?QM_Backtrace
 	 */
 	public $trace;

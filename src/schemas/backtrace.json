@@ -18,6 +18,17 @@
 				}
 			]
 		},
+		"callsite": {
+			"phpType": "QM_Data_CallSite",
+			"oneOf": [
+				{
+					"$ref": "./callsite.json"
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
 		"frames": {
 			"type": "array",
 			"items": {

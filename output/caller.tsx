@@ -2,7 +2,6 @@ import { FileName } from './components/file-name';
 import { SourceLocation } from './components/source-location';
 import {
 	Backtrace,
-	CallSite,
 } from './data-types';
 import { useState } from 'preact/hooks';
 
@@ -14,11 +13,11 @@ import { Toggle } from './components/toggle';
 
 interface Props {
 	trace?: Backtrace | null;
-	callsite?: CallSite;
 	defaultExpanded?: boolean;
 }
 
-export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }: Props ) => {
+export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
+	const callsite = trace?.callsite;
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	// This creates a copy of the frames array.
@@ -42,7 +41,7 @@ export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }
 				<Toggle
 					expanded={ expanded }
 					onToggle={ () => setExpanded( ! expanded ) }
-					context={ caller?.display }
+					context={ callsite?.filename ?? caller?.display }
 				/>
 			) }
 			<ol>

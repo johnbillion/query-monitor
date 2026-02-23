@@ -25,15 +25,6 @@
 		"message": {
 			"type": "string"
 		},
-		"callsite": {
-			"type": "object",
-			"phpType": "QM_Data_CallSite",
-			"allOf": [
-				{
-					"$ref": "callsite.json"
-				}
-			]
-		},
 		"trace": {
 			"phpType": "QM_Backtrace",
 			"oneOf": [
@@ -54,7 +45,6 @@
 		"level",
 		"suppressed",
 		"message",
-		"callsite",
 		"count"
 	],
 	"additionalProperties": false
