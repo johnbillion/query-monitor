@@ -10,7 +10,7 @@ class QM_Hook {
 	/**
 	 * @param string $name
 	 * @param string $type
-	 * @param array<string, WP_Hook> $wp_filter
+	 * @param ?WP_Hook $hook
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
 	 * @phpstan-param 'action'|'filter' $type
@@ -24,17 +24,13 @@ class QM_Hook {
 	 *   components: array<string, QM_Component>,
 	 * }
 	 */
-	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {
+	public static function process( $name, string $type, ?WP_Hook $hook, $hide_qm = false, $hide_core = false ) {
 
 		$actions = array();
 		$components = array();
 
-		if ( isset( $wp_filter[ $name ] ) ) {
-
-			# https://core.trac.wordpress.org/ticket/17817
-			$action = $wp_filter[ $name ];
-
-			foreach ( $action as $priority => $callbacks ) {
+		if ( $hook ) {
+			foreach ( $hook as $priority => $callbacks ) {
 
 				foreach ( $callbacks as $cb ) {
 
