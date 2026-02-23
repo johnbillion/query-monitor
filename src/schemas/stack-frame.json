@@ -5,7 +5,7 @@
 	"description": "Stack trace frame.",
 	"type": "object",
 	"phpFile": "frame",
-	"phpClass": "QM_Stack_Frame",
+	"phpClass": "QM_Data_Stack_Frame",
 	"required": [
 		"display",
 		"file",

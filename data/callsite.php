@@ -10,7 +10,7 @@
  * @package query-monitor
  */
 
-class QM_Data_CallSite {
+class QM_Data_Callsite {
 	/**
 	 * @var string|null
 	 */

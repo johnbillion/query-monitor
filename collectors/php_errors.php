@@ -239,7 +239,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		$callsite = new QM_Data_CallSite();
+		$callsite = new QM_Data_Callsite();
 		$callsite->file = $file;
 		$callsite->filename = ( $file ? QM_Util::standard_dir( $file, '' ) : '' );
 		$callsite->line = $line;

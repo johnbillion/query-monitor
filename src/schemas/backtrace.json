@@ -19,7 +19,7 @@
 			]
 		},
 		"callsite": {
-			"phpType": "QM_Data_CallSite",
+			"phpType": "QM_Data_Callsite",
 			"oneOf": [
 				{
 					"$ref": "./callsite.json"

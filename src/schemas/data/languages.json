@@ -20,7 +20,7 @@
 				"type": "object",
 				"properties": {
 					"caller": {
-						"phpType": "QM_Stack_Frame|false",
+						"phpType": "QM_Data_Stack_Frame|false",
 						"oneOf": [
 							{
 								"$ref": "../stack-frame.json"

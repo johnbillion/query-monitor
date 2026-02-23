@@ -10,7 +10,7 @@
  * @package query-monitor
  */
 
-class QM_Stack_Frame {
+class QM_Data_Stack_Frame {
 	/**
 	 * @var string
 	 */

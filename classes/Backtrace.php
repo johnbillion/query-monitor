@@ -112,7 +112,7 @@ class QM_Backtrace implements JsonSerializable {
 	protected $trace;
 
 	/**
-	 * @var QM_Stack_Frame[]|null
+	 * @var QM_Data_Stack_Frame[]|null
 	 */
 	protected $filtered_trace = null;
 
@@ -122,7 +122,7 @@ class QM_Backtrace implements JsonSerializable {
 	protected $component = null;
 
 	/**
-	 * @var ?QM_Data_CallSite
+	 * @var ?QM_Data_Callsite
 	 */
 	protected $callsite = null;
 
@@ -134,7 +134,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *   ignore_func?: mixed[],
 	 *   ignore_hook?: mixed[],
 	 *   show_args?: mixed[],
-	 *   callsite?: QM_Data_CallSite,
+	 *   callsite?: QM_Data_Callsite,
 	 * } $args
 	 * @param mixed[] $trace
 	 */
@@ -183,7 +183,7 @@ class QM_Backtrace implements JsonSerializable {
 	 * @return void
 	 */
 	public function push_frame( array $frame ) {
-		$callsite = new QM_Data_CallSite();
+		$callsite = new QM_Data_Callsite();
 		$callsite->file = $frame['file'] ?? null;
 		$callsite->filename = isset( $frame['file'] ) ? QM_Util::standard_dir( $frame['file'], '' ) : '';
 		$callsite->line = $frame['line'] ?? null;
@@ -191,7 +191,7 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * @return ?QM_Data_CallSite
+	 * @return ?QM_Data_Callsite
 	 */
 	public function get_callsite() {
 		return $this->callsite;
@@ -212,7 +212,7 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * Returns the meaningful caller frame from the filtered trace.
 	 *
-	 * @return QM_Stack_Frame|false
+	 * @return QM_Data_Stack_Frame|false
 	 */
 	public function get_caller() {
 
@@ -277,7 +277,7 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * Attempts to determine the component responsible for a given frame.
 	 */
-	public static function get_frame_component( QM_Stack_Frame $frame ) :? QM_Component {
+	public static function get_frame_component( QM_Data_Stack_Frame $frame ) :? QM_Component {
 		try {
 
 			if ( isset( $frame->class, $frame->function ) ) {
@@ -319,14 +319,14 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * @deprecated Use the `::get_filtered_trace()` method instead.
 	 *
-	 * @return QM_Stack_Frame[]
+	 * @return QM_Data_Stack_Frame[]
 	 */
 	public function get_display_trace() {
 		return $this->get_filtered_trace();
 	}
 
 	/**
-	 * @return QM_Stack_Frame[]
+	 * @return QM_Data_Stack_Frame[]
 	 */
 	public function get_filtered_trace() {
 
@@ -342,7 +342,7 @@ class QM_Backtrace implements JsonSerializable {
 				// When a PHP error is triggered which doesn't have a stack trace, for example a
 				// deprecated error, QM will blame itself due to its error handler. This prevents that.
 				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
-					$fallback = new QM_Stack_Frame();
+					$fallback = new QM_Data_Stack_Frame();
 					$fallback->id = $file;
 					$fallback->display = $file;
 					$fallback->file = $lowest['file'] ?? null;
@@ -419,7 +419,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @param mixed[] $frame
 	 */
-	public function filter_trace( array $frame ) :? QM_Stack_Frame {
+	public function filter_trace( array $frame ) :? QM_Data_Stack_Frame {
 
 		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
 
@@ -578,7 +578,7 @@ class QM_Backtrace implements JsonSerializable {
 			}
 		}
 
-		$result = new QM_Stack_Frame();
+		$result = new QM_Data_Stack_Frame();
 		$result->id = $id;
 		$result->display = $display;
 		$result->file = $frame['file'] ?? null;
@@ -596,12 +596,12 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * @phpstan-return array{
 	 *   component: QM_Component,
-	 *   callsite: ?QM_Data_CallSite,
+	 *   callsite: ?QM_Data_Callsite,
 	 *   frames: list<array{id: string, display: string, file: string|null, line: int|null}>,
 	 * }
 	 */
 	public function jsonSerialize(): array {
-		$frames = array_map( static function ( QM_Stack_Frame $frame ): array {
+		$frames = array_map( static function ( QM_Data_Stack_Frame $frame ): array {
 			return array(
 				'id' => $frame->id,
 				'display' => $frame->display,
