@@ -39,7 +39,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 					<FileName
 						text="style.css"
 						file={ `${ data.theme_dirs[ data.stylesheet ] }/style.css` }
-						isFileName
 					/>
 				</p>
 				{ data.stylesheet_theme_json && (
@@ -47,7 +46,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 						<FileName
 							text="theme.json"
 							file={ data.stylesheet_theme_json }
-							isFileName
 						/>
 					</p>
 				) }
@@ -63,7 +61,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 							<FileName
 								text="style.css"
 								file={ `${ data.theme_dirs[ data.template ] }/style.css` }
-								isFileName
 							/>
 						</p>
 						{ data.template_theme_json && (
@@ -71,7 +68,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 								<FileName
 									text="theme.json"
 									file={ data.template_theme_json }
-									isFileName
 								/>
 							</p>
 						) }
@@ -94,7 +90,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 								<FileName
 									text={ `${ data.theme_folders[ data.block_template.type ] }/${ data.block_template.slug }.html` }
 									file={ `${ data.theme_dirs[ data.block_template.theme ] }/${ data.theme_folders[ data.block_template.type ] }/${ data.block_template.slug }.html` }
-									isFileName
 								/>
 							) }
 						</p>
@@ -109,7 +104,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 								<FileName
 									text={ ( data.is_child_theme ? data.theme_template_file : data.template_file ) ?? '' }
 									file={ data.template_path }
-									isFileName
 								/>
 							</p>
 						) : (
@@ -154,7 +148,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 									<FileName
 										text={ parts[ filename ] }
 										file={ filename }
-										isFileName
 									/>
 								) }
 								{ data.count_template_parts[ filename ] > 1 && (
@@ -192,7 +185,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 												text={ `${ requested.slug }-${ requested.name }.php` }
 												file={ requested.caller?.file }
 												line={ requested.caller?.line }
-												isFileName
 											/>
 										</li>
 									) }
@@ -201,7 +193,6 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 											text={ `${ requested.slug }.php` }
 											file={ requested.caller?.file }
 											line={ requested.caller?.line }
-											isFileName
 										/>
 									</li>
 								</Fragment>
