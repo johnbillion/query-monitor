@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { v4wp } from '@kucrut/vite-for-wp';
 import preact from '@preact/preset-vite';
+import browserslistToEsbuild from 'browserslist-to-esbuild';
 
 export default defineConfig( {
 	plugins: [
@@ -25,7 +26,7 @@ export default defineConfig( {
 	],
 	build: {
 		sourcemap: false,
-		target: 'chrome112',
+		target: browserslistToEsbuild(),
 		// Terser is used instead of esbuild for minification in order to preserve
 		// wp i18n function names so translate.wordpress.org can extract them.
 		minify: 'terser',
