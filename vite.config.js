@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { v4wp } from '@kucrut/vite-for-wp';
+import { rmSync } from 'node:fs';
 import preact from '@preact/preset-vite';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 
@@ -14,6 +15,12 @@ export default defineConfig( {
 			},
 			outDir: 'assets/build',
 		} ),
+		{
+			name: 'clean-build-dir',
+			configureServer() {
+				rmSync( 'assets/build', { recursive: true, force: true } );
+			},
+		},
 		{
 			name: 'no-manifest',
 			config() {
