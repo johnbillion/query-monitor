@@ -140,15 +140,17 @@ export const QM = ( props: Props ) => {
 		const adminToolbarHeight = 32;
 		let dragging = false;
 
-		const el = document.getElementsByClassName( 'qm-resizer' )[0];
-		const qmMain = document.getElementById( 'query-monitor-main' );
+		const qmMain = mainRef.current;
 
 		if ( ! qmMain ) {
 			return;
 		}
 
+		const el = qmMain.getElementsByClassName( 'qm-resizer' )[0];
+
 		if ( containerHeight && ! initialHeightApplied.current ) {
-			qmMain.style.height = `${ containerHeight }px`;
+			const maxHeight = window.innerHeight - adminToolbarHeight;
+			qmMain.style.height = `${ Math.min( containerHeight, maxHeight ) }px`;
 			initialHeightApplied.current = true;
 		}
 
