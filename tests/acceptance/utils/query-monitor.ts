@@ -143,7 +143,8 @@ export class QueryMonitorUtils {
 	async openQMPanel( panel: string ) {
 		// Only click the admin bar menu if QM is not already open
 		const isOpen = await this.page.evaluate( () => {
-			return document.getElementById( 'query-monitor-main' )?.classList.contains( 'qm-show' ) ?? false;
+			const shadow = document.getElementById( 'query-monitor-container' )?.shadowRoot;
+			return shadow?.querySelector( '#query-monitor-main' )?.classList.contains( 'qm-show' ) ?? false;
 		} );
 		if ( ! isOpen ) {
 			await this.page.locator( '#wp-admin-bar-query-monitor' ).click();

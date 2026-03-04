@@ -10,6 +10,7 @@ export default defineConfig( {
 			input: {
 				main: 'src/index.tsx',
 				'query-monitor': 'assets/query-monitor.css',
+				'toolbar': 'assets/toolbar.css',
 			},
 			outDir: 'assets/build',
 		} ),

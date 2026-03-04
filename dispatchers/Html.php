@@ -39,6 +39,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	protected $panel_menu = array();
 
 	/**
+	 * URL for the panel CSS file, to be loaded inside the shadow DOM.
+	 */
+	private string $panel_css_url = '';
+
+	/**
 	 * Whether we're in development mode (Vite dev server running).
 	 *
 	 * @var bool
@@ -262,8 +267,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 		echo '</div>' . "\n";
 
-		// Output the empty container for React to mount into
-		echo '<div id="query-monitor-container"></div>';
+		// Output the empty container for React to mount into (shadow DOM host)
+		printf(
+			'<div id="query-monitor-container" data-css-url="%s"></div>',
+			esc_url( $this->panel_css_url )
+		);
 
 		$this->after_output();
 
@@ -564,7 +572,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		printf(
 			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/query-monitor.css' ) ),
+			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/toolbar.css' ) ),
 			esc_attr( QM_VERSION )
 		);
 
@@ -671,6 +679,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( self::$manifest === null ) {
 				if ( is_file( $build_dir . '/query-monitor.js' ) ) {
 					self::$manifest = array(
+						'assets/toolbar.css' => array(
+							'file' => 'toolbar.css',
+						),
 						'assets/query-monitor.css' => array(
 							'file' => 'query-monitor.css',
 						),
@@ -739,11 +750,14 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	private function output_dev_assets( array $data ): void {
 		$origin = $data['origin'];
 
-		// CSS
+		// Toolbar CSS (loaded on the page, outside shadow DOM)
 		printf(
 			'<link rel="stylesheet" href="%s">' . "\n",
-			esc_url( $origin . '/assets/query-monitor.css' )
+			esc_url( $origin . '/assets/toolbar.css' )
 		);
+
+		// Panel CSS URL (passed to JS via data attribute, loaded inside shadow DOM)
+		$this->panel_css_url = $origin . '/assets/query-monitor.css';
 
 		// Vite client for HMR
 		wp_print_script_tag( [
@@ -810,17 +824,27 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	private function output_production_assets( array $data ): void {
 		$base_url = $this->qm->plugin_url( 'assets/build' );
 
-		// CSS
-		$css_file = $data['assets/query-monitor.css']['file'] ?? null;
-		if ( $css_file ) {
+		// Toolbar CSS (loaded on the page, outside shadow DOM)
+		$toolbar_file = $data['assets/toolbar.css']['file'] ?? null;
+		if ( $toolbar_file ) {
 			$url = add_query_arg(
 				'ver',
 				QM_VERSION,
-				$base_url . '/' . $css_file,
+				$base_url . '/' . $toolbar_file,
 			);
 			printf(
 				'<link rel="stylesheet" href="%s">' . "\n",
 				esc_url( $url )
+			);
+		}
+
+		// Panel CSS URL (passed to JS via data attribute, loaded inside shadow DOM)
+		$css_file = $data['assets/query-monitor.css']['file'] ?? null;
+		if ( $css_file ) {
+			$this->panel_css_url = add_query_arg(
+				'ver',
+				QM_VERSION,
+				$base_url . '/' . $css_file,
 			);
 		}
 

@@ -9,9 +9,12 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
+import devCss from '../assets/query-monitor.css?inline';
+
 type Props = {
 	active: string;
 	adminMenuElement?: HTMLElement;
+	cssUrl: string;
 	menu: {
 		top: {
 			title: string[];
@@ -36,6 +39,10 @@ type Props = {
 	editor: string;
 	filters: MainContextType['filters'];
 	containerHeight: number | null;
+	isWpAdmin: boolean;
+	isFolded: boolean;
+	isAutoFold: boolean;
+	isRtl: boolean;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number, width: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -69,6 +76,10 @@ export const QM = ( props: Props ) => {
 
 	const mainClass = clsx( 'qm-show', {
 		'qm-show-right': side,
+		'wp-admin': props.isWpAdmin,
+		'folded': props.isFolded,
+		'auto-fold': props.isAutoFold,
+		'rtl': props.isRtl,
 	} );
 
 	const contextValue: MainContextType = {
@@ -117,13 +128,10 @@ export const QM = ( props: Props ) => {
 		}
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
+	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, containerHeight } = props;
 	const initialHeightApplied = useRef( false );
 
-	/**
-	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
-	 * a comprehensive explanantion of modern pointer event handling.
-	 */
 	useEffect( () => {
 		if ( ! active ) {
 			return;
@@ -210,8 +218,12 @@ export const QM = ( props: Props ) => {
 
 	return (
 		<MainContext.Provider value={ contextValue }>
+			{ import.meta.env.DEV
+				? <style>{ devCss }</style>
+				: <link rel="stylesheet" href={ props.cssUrl } />
+			}
 			{ active && (
-				<div className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
+				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
 					{ side && (
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 					) }
