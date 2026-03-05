@@ -344,93 +344,93 @@ i {
 		ul {
 			display: none;
 		}
-	}
-
-	li button {
-		background: var( --qm-panel-menu-bg );
-		border-right: 1px solid var( --qm-panel-border );
-		color: var( --qm-panel-menu-fg );
-		cursor: pointer;
-		display: block;
-		padding: 6px 32px 6px 10px;
-		position: relative;
-		text-decoration: none;
-		text-align: start;
-		width: 100%;
-	}
-
-	li button:focus,
-	li button:hover {
-		background: var( --qm-panel-menu-bg-hover );
-		color: var( --qm-panel-menu-fg-hover );
-	}
-
-	li button:focus-visible {
-		text-decoration: underline;
-	}
-
-	li button:active {
-		text-decoration: none;
-		background: var( --qm-panel-menu-bg-selected );
-		color: var( --qm-panel-menu-fg-selected );
-	}
-
-	li.qm-current-menu {
-		ul {
-			display: block;
-		}
 
 		button {
-			background: var( --qm-panel-menu-bg-current );
-			color: var( --qm-panel-menu-fg-current );
+			background: var( --qm-panel-menu-bg );
+			border-right: 1px solid var( --qm-panel-border );
+			color: var( --qm-panel-menu-fg );
+			cursor: pointer;
+			display: block;
+			padding: 6px 32px 6px 10px;
+			position: relative;
+			text-decoration: none;
+			text-align: start;
+			width: 100%;
 
-			&:focus {
-				background: var( --qm-panel-menu-bg-current-focus );
-				color: var( --qm-panel-menu-fg-current );
-			}
-
+			&:focus,
 			&:hover {
 				background: var( --qm-panel-menu-bg-hover );
 				color: var( --qm-panel-menu-fg-hover );
 			}
-		}
-	}
 
-	li li button {
-		&::before {
-			content: "\2514";
-			display: inline-block;
-			margin-right: 5px;
-		}
-	}
+			&:focus-visible {
+				text-decoration: underline;
+			}
 
-	li button[aria-selected="true"] {
-		background: var( --qm-panel-menu-bg-selected );
-		color: var( --qm-panel-menu-fg-selected );
-		text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow );
-
-		&:focus {
-			background: var( --qm-panel-menu-bg-selected-focus );
-			color: var( --qm-panel-menu-fg-selected );
+			&:active {
+				text-decoration: none;
+				background: var( --qm-panel-menu-bg-selected );
+				color: var( --qm-panel-menu-fg-selected );
+			}
 		}
 
-		&:hover {
+		&.qm-current-menu {
+			ul {
+				display: block;
+			}
+
+			button {
+				background: var( --qm-panel-menu-bg-current );
+				color: var( --qm-panel-menu-fg-current );
+
+				&:focus {
+					background: var( --qm-panel-menu-bg-current-focus );
+					color: var( --qm-panel-menu-fg-current );
+				}
+
+				&:hover {
+					background: var( --qm-panel-menu-bg-hover );
+					color: var( --qm-panel-menu-fg-hover );
+				}
+			}
+		}
+
+		li button {
+			&::before {
+				content: "\2514";
+				display: inline-block;
+				margin-right: 5px;
+			}
+		}
+
+		button[aria-selected="true"] {
 			background: var( --qm-panel-menu-bg-selected );
 			color: var( --qm-panel-menu-fg-selected );
-		}
+			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow );
 
-		&:after {
-			border: solid 8px transparent;
-			border-right-color: var( --qm-panel-bg );
-			content: " ";
-			display: inline-block;
-			height: 0;
-			margin-top: -8px;
-			pointer-events: none;
-			position: absolute;
-			right: -1px;
-			top: 50%;
-			width: 0;
+			&:focus {
+				background: var( --qm-panel-menu-bg-selected-focus );
+				color: var( --qm-panel-menu-fg-selected );
+			}
+
+			&:hover {
+				background: var( --qm-panel-menu-bg-selected );
+				color: var( --qm-panel-menu-fg-selected );
+			}
+
+			&:after {
+				border: solid 8px transparent;
+				border-right-color: var( --qm-panel-bg );
+				content: " ";
+				display: inline-block;
+				height: 0;
+				margin-top: -8px;
+				pointer-events: none;
+				position: absolute;
+				right: -1px;
+				top: 50%;
+				width: 0;
+			}
 		}
 	}
 }
@@ -696,172 +696,176 @@ i {
 	margin: 0 20px 5px 0;
 }
 
-.qm ol,
-.qm ul {
-	list-style: none;
-}
+/* .qm */
 
-.qm li {
-	display: list-item;
-	list-style: none;
-	line-height: 20px;
-
-	&::before {
-		content: '';
+.qm {
+	ol,
+	ul {
+		list-style: none;
 	}
-}
 
-.qm code,
-.qm pre {
-	font-family: var( --qm-font-code-face );
-	font-size: var( --qm-font-code-size );
-	line-height: var( --qm-font-code-line-height );
-}
+	li {
+		display: list-item;
+		list-style: none;
+		line-height: 20px;
 
-.qm pre {
-	background: transparent;
-	height: auto;
-	margin: 0;
-	padding: 0;
-	width: auto;
-}
-
-.qm .qm-true code,
-.qm p.qm-true,
-.qm span.qm-true,
-.qm td.qm-true {
-	/* @TODO */
-	color: #282;
-}
-
-.qm .qm-false code,
-.qm span.qm-false,
-.qm td.qm-false {
-	/* @TODO */
-	color: #767676;
-}
-
-.qm .qm-num,
-.qm code,
-.qm .qm-nowrap {
-	white-space: nowrap;
-}
-
-.qm .qm-wrap code,
-.qm .qm-wrap {
-	white-space: normal;
-	word-break: break-all;
-	word-wrap: break-word;
-}
-
-.qm .qm-pre-wrap code {
-	white-space: pre-wrap;
-	word-break: break-all;
-	word-wrap: break-word;
-}
-
-.qm .qm-sticky {
-	position: sticky;
-	top: 36px;
-}
-
-.qm .qm-current,
-.qm td.qm-has-toggle p,
-.qm .qm-nonselectsql code,
-.qm .qm-nonselectsql {
-	color: var( --qm-nonselect-fg );
-}
-
-.qm .qm-info {
-	color: var( --qm-info-fg );
-}
-
-.qm .qm-supplemental {
-	margin-left: 0.75em;
-	margin-right: 0.75em;
-}
-
-.qm button.qm-button,
-.qm .qm-toggle {
-	background: var( --qm-button-bg );
-	border: 1px solid var( --qm-button-bg );
-	border-radius: 3px;
-	color: var( --qm-button-fg );
-	cursor: pointer;
-	font-weight: normal;
-	text-shadow: none;
-}
-
-.qm .qm-toggle {
-	bottom: auto;
-	font-family: var( --qm-font-code-face );
-	height: 18px;
-	left: auto;
-	line-height: 16px;
-	padding: 0;
-	position: absolute;
-	right: 5px;
-	text-align: center;
-	top: 5px;
-	user-select: none;
-	width: 18px;
-}
-
-.qm button {
-	cursor: pointer;
-}
-
-.qm button.qm-button {
-	padding: 4px 10px;
-}
-
-.qm .qm-has-inner .qm-toggle {
-	right: 5px;
-	top: 5px;
-}
-
-.qm button.qm-button:hover,
-.qm .qm-toggle:hover {
-	background: var( --qm-button-bg-hover );
-	border-color: var( --qm-button-bg-hover );
-	color: var( --qm-button-fg-hover );
-	text-decoration: none;
-}
-
-.qm button.qm-button:focus,
-.qm .qm-toggle:focus {
-	background: var( --qm-button-bg-hover );
-	border-color: var( --qm-button-bg-hover );
-	color: var( --qm-button-fg-hover );
-	box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover );
-}
-
-.qm button.qm-button:active,
-.qm .qm-toggle:active {
-	background: var( --qm-button-bg-active );
-	border-color: var( --qm-button-bg-active );
-	color: var( --qm-button-fg-active );
-	box-shadow: none;
-}
-
-.qm input[type="radio"].qm-radio,
-.qm input[type="radio"].qm-radio:checked,
-.qm input[type="radio"].qm-radio:focus,
-.qm input[type="radio"].qm-radio:checked:focus,
-.qm input[type="radio"].qm-radio:hover,
-.qm input[type="radio"].qm-radio:checked:hover {
-	all: revert;
-	accent-color: var( --qm-button-bg );
-
-	&::before,
-	&::after {
-		display: none;
+		&::before {
+			content: '';
+		}
 	}
-}
 
-.qm tbody tr:nth-child(odd) td,
-.qm tbody tr:nth-child(odd) th {
-	background: var( --qm-cell-bg-stripe );
+	code,
+	pre {
+		font-family: var( --qm-font-code-face );
+		font-size: var( --qm-font-code-size );
+		line-height: var( --qm-font-code-line-height );
+	}
+
+	pre {
+		background: transparent;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		width: auto;
+	}
+
+	.qm-true code,
+	p.qm-true,
+	span.qm-true,
+	td.qm-true {
+		/* @TODO */
+		color: #282;
+	}
+
+	.qm-false code,
+	span.qm-false,
+	td.qm-false {
+		/* @TODO */
+		color: #767676;
+	}
+
+	.qm-num,
+	code,
+	.qm-nowrap {
+		white-space: nowrap;
+	}
+
+	.qm-wrap code,
+	.qm-wrap {
+		white-space: normal;
+		word-break: break-all;
+		word-wrap: break-word;
+	}
+
+	.qm-pre-wrap code {
+		white-space: pre-wrap;
+		word-break: break-all;
+		word-wrap: break-word;
+	}
+
+	.qm-sticky {
+		position: sticky;
+		top: 36px;
+	}
+
+	.qm-current,
+	td.qm-has-toggle p,
+	.qm-nonselectsql code,
+	.qm-nonselectsql {
+		color: var( --qm-nonselect-fg );
+	}
+
+	.qm-info {
+		color: var( --qm-info-fg );
+	}
+
+	.qm-supplemental {
+		margin-left: 0.75em;
+		margin-right: 0.75em;
+	}
+
+	button.qm-button,
+	.qm-toggle {
+		background: var( --qm-button-bg );
+		border: 1px solid var( --qm-button-bg );
+		border-radius: 3px;
+		color: var( --qm-button-fg );
+		cursor: pointer;
+		font-weight: normal;
+		text-shadow: none;
+	}
+
+	.qm-toggle {
+		bottom: auto;
+		font-family: var( --qm-font-code-face );
+		height: 18px;
+		left: auto;
+		line-height: 16px;
+		padding: 0;
+		position: absolute;
+		right: 5px;
+		text-align: center;
+		top: 5px;
+		user-select: none;
+		width: 18px;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	button.qm-button {
+		padding: 4px 10px;
+	}
+
+	.qm-has-inner .qm-toggle {
+		right: 5px;
+		top: 5px;
+	}
+
+	button.qm-button:hover,
+	.qm-toggle:hover {
+		background: var( --qm-button-bg-hover );
+		border-color: var( --qm-button-bg-hover );
+		color: var( --qm-button-fg-hover );
+		text-decoration: none;
+	}
+
+	button.qm-button:focus,
+	.qm-toggle:focus {
+		background: var( --qm-button-bg-hover );
+		border-color: var( --qm-button-bg-hover );
+		color: var( --qm-button-fg-hover );
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover );
+	}
+
+	button.qm-button:active,
+	.qm-toggle:active {
+		background: var( --qm-button-bg-active );
+		border-color: var( --qm-button-bg-active );
+		color: var( --qm-button-fg-active );
+		box-shadow: none;
+	}
+
+	input[type="radio"].qm-radio,
+	input[type="radio"].qm-radio:checked,
+	input[type="radio"].qm-radio:focus,
+	input[type="radio"].qm-radio:checked:focus,
+	input[type="radio"].qm-radio:hover,
+	input[type="radio"].qm-radio:checked:hover {
+		all: revert;
+		accent-color: var( --qm-button-bg );
+
+		&::before,
+		&::after {
+			display: none;
+		}
+	}
+
+	tbody tr:nth-child(odd) td,
+	tbody tr:nth-child(odd) th {
+		background: var( --qm-cell-bg-stripe );
+	}
 }
 
 .qm-non-tabular .qm-warn,
@@ -875,24 +879,26 @@ i {
 	}
 }
 
-.qm tbody tr th.qm-warn,
-.qm tbody tr td.qm-warn,
-.qm tbody tr.qm-warn td,
-.qm tbody tr.qm-warn th {
-	background-color: var( --qm-warn-bg );
-	color: var( --qm-warn-fg );
+.qm {
+	tbody tr th.qm-warn,
+	tbody tr td.qm-warn,
+	tbody tr.qm-warn td,
+	tbody tr.qm-warn th {
+		background-color: var( --qm-warn-bg );
+		color: var( --qm-warn-fg );
 
-	.qm-icon {
-		fill: var( --qm-warn-fg );
+		.qm-icon {
+			fill: var( --qm-warn-fg );
+		}
 	}
-}
 
-.qm tbody tr:nth-child(odd) .qm-warn,
-.qm tbody tr:nth-child(odd) th.qm-warn,
-.qm tbody tr:nth-child(odd) td.qm-warn,
-.qm tbody tr:nth-child(odd).qm-warn td,
-.qm tbody tr:nth-child(odd).qm-warn th {
-	background-color: var( --qm-warn-bg-dark );
+	tbody tr:nth-child(odd) .qm-warn,
+	tbody tr:nth-child(odd) th.qm-warn,
+	tbody tr:nth-child(odd) td.qm-warn,
+	tbody tr:nth-child(odd).qm-warn td,
+	tbody tr:nth-child(odd).qm-warn th {
+		background-color: var( --qm-warn-bg-dark );
+	}
 }
 
 .qm-non-tabular .qm-warn code,
@@ -907,114 +913,116 @@ i {
 	}
 }
 
-.qm .qm-notice {
-	background: var( --qm-panel-menu-bg-current );
-	border: 1px solid var( --qm-panel-menu-bg-hover );
-	margin: 0 0 10px 0;
-	max-width: 40em;
-	padding: 10px 20px 0;
-}
-
-.qm .qm-error {
-	background: #fee;
-	border: 1px solid #f44;
-	margin: 0 0 10px 0;
-	padding: 10px 20px;
-}
-
-.qm .qm-icon {
-	margin-right: 0.3em;
-	display: inline-block;
-	height: 16px;
-	width: 16px;
-	fill: var( --qm-container-fg );
-	vertical-align: top;
-}
-
-.qm .qm-icon-yes-alt {
-	fill: #0a0;
-}
-
-.qm tbody tr td.qm-highlight,
-.qm tbody tr.qm-highlight th,
-.qm tbody tr.qm-highlight td {
-	background-color: var( --qm-cell-bg-highlight );
-	color: var( --qm-cell-fg-highlight );
-}
-
-.qm tbody tr:nth-child(odd) td.qm-highlight,
-.qm tbody tr:nth-child(odd).qm-highlight th,
-.qm tbody tr:nth-child(odd).qm-highlight td {
-	background-color: #ffffc9;
-	color: var( --qm-cell-fg-highlight );
-}
-
-.qm tbody tr:nth-child(odd):hover th,
-.qm tbody tr:nth-child(odd):hover td,
-.qm tbody tr:hover th,
-.qm tbody tr:hover td {
-	background: var( --qm-cell-bg-hover );
-}
-
-.qm tbody tr.qm-warn:hover th,
-.qm tbody tr.qm-warn:hover td {
-	background: var( --qm-warn-bg-hover );
-}
-
-.qm thead th.qm-filtered select.qm-filter {
-	background-color: var( --qm-cell-bg-highlight );
-	color: var( --qm-cell-fg-highlight );
-}
-
-.qm button.qm-filter-trigger,
-.qm button.qm-filter-trigger code,
-.qm tbody .qm-warn a code,
-.qm a code,
-.qm a {
-	color: var( --qm-link-fg );
-	cursor: pointer;
-	text-decoration: none;
-
-	&:after,
-	&:focus,
-	&:hover {
-		color: var( --qm-link-fg-hover );
-		text-decoration: underline;
+.qm {
+	.qm-notice {
+		background: var( --qm-panel-menu-bg-current );
+		border: 1px solid var( --qm-panel-menu-bg-hover );
+		margin: 0 0 10px 0;
+		max-width: 40em;
+		padding: 10px 20px 0;
 	}
 
-	&:active {
-		color: var( --qm-link-fg-active );
-		text-decoration: underline;
+	.qm-error {
+		background: #fee;
+		border: 1px solid #f44;
+		margin: 0 0 10px 0;
+		padding: 10px 20px;
 	}
-}
 
-.qm a.qm-external-link,
-.qm a.qm-link,
-.qm a.qm-edit-link,
-.qm button.qm-filter-trigger {
-	white-space: nowrap;
-
-	svg {
-		fill: var( --qm-link-fg-hover );
-		width: 16px;
+	.qm-icon {
+		margin-right: 0.3em;
+		display: inline-block;
 		height: 16px;
-		left: 2px;
-		position: relative;
-		text-decoration: none;
-		top: 2px;
-		visibility: hidden;
+		width: 16px;
+		fill: var( --qm-container-fg );
+		vertical-align: top;
 	}
-}
 
-.qm a.qm-external-link,
-.qm a.qm-link:hover,
-.qm a.qm-link:focus,
-.qm a.qm-edit-link:hover,
-.qm a.qm-edit-link:focus,
-.qm button.qm-filter-trigger:hover,
-.qm button.qm-filter-trigger:focus {
-	svg {
-		visibility: visible;
+	.qm-icon-yes-alt {
+		fill: #0a0;
+	}
+
+	tbody tr td.qm-highlight,
+	tbody tr.qm-highlight th,
+	tbody tr.qm-highlight td {
+		background-color: var( --qm-cell-bg-highlight );
+		color: var( --qm-cell-fg-highlight );
+	}
+
+	tbody tr:nth-child(odd) td.qm-highlight,
+	tbody tr:nth-child(odd).qm-highlight th,
+	tbody tr:nth-child(odd).qm-highlight td {
+		background-color: #ffffc9;
+		color: var( --qm-cell-fg-highlight );
+	}
+
+	tbody tr:nth-child(odd):hover th,
+	tbody tr:nth-child(odd):hover td,
+	tbody tr:hover th,
+	tbody tr:hover td {
+		background: var( --qm-cell-bg-hover );
+	}
+
+	tbody tr.qm-warn:hover th,
+	tbody tr.qm-warn:hover td {
+		background: var( --qm-warn-bg-hover );
+	}
+
+	thead th.qm-filtered select.qm-filter {
+		background-color: var( --qm-cell-bg-highlight );
+		color: var( --qm-cell-fg-highlight );
+	}
+
+	button.qm-filter-trigger,
+	button.qm-filter-trigger code,
+	tbody .qm-warn a code,
+	a code,
+	a {
+		color: var( --qm-link-fg );
+		cursor: pointer;
+		text-decoration: none;
+
+		&:after,
+		&:focus,
+		&:hover {
+			color: var( --qm-link-fg-hover );
+			text-decoration: underline;
+		}
+
+		&:active {
+			color: var( --qm-link-fg-active );
+			text-decoration: underline;
+		}
+	}
+
+	a.qm-external-link,
+	a.qm-link,
+	a.qm-edit-link,
+	button.qm-filter-trigger {
+		white-space: nowrap;
+
+		svg {
+			fill: var( --qm-link-fg-hover );
+			width: 16px;
+			height: 16px;
+			left: 2px;
+			position: relative;
+			text-decoration: none;
+			top: 2px;
+			visibility: hidden;
+		}
+	}
+
+	a.qm-external-link,
+	a.qm-link:hover,
+	a.qm-link:focus,
+	a.qm-edit-link:hover,
+	a.qm-edit-link:focus,
+	button.qm-filter-trigger:hover,
+	button.qm-filter-trigger:focus {
+		svg {
+			visibility: visible;
+		}
 	}
 }
 
@@ -1029,31 +1037,33 @@ select {
 	width: auto;
 }
 
-.qm label {
-	color: var( --qm-panel-fg );
-	cursor: pointer;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: normal;
-	margin: 0;
-}
+.qm {
+	label {
+		color: var( --qm-panel-fg );
+		cursor: pointer;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: normal;
+		margin: 0;
+	}
 
-.qm thead label {
-	flex-grow: 1;
-}
+	thead label {
+		flex-grow: 1;
+	}
 
-.qm .qm-filter-container {
-	display: flex;
-}
+	.qm-filter-container {
+		display: flex;
+	}
 
-.qm .qm-filter-container label {
-	cursor: default;
-	white-space: nowrap;
-}
+	.qm-filter-container label {
+		cursor: default;
+		white-space: nowrap;
+	}
 
-.qm .qm-filter-container div {
-	/* Some themes use Select2 etc on all selects. This hides that. */
-	display: none;
+	.qm-filter-container div {
+		/* Some themes use Select2 etc on all selects. This hides that. */
+		display: none;
+	}
 }
 
 .qm-title-heading select,
@@ -1079,62 +1089,64 @@ select {
 	max-width: unset;
 }
 
-.qm select.qm-select:hover,
-.qm select.qm-filter:hover {
-	background: var( --qm-cell-bg-hover );
-}
-
-/** Sorters */
-
-.qm thead th.qm-sortable-column {
-	cursor: pointer;
-
-	&:hover {
-		background: var( --qm-container-bg );
+.qm {
+	select.qm-select:hover,
+	select.qm-filter:hover {
+		background: var( --qm-cell-bg-hover );
 	}
-}
 
-.qm .qm-sort-heading {
-	flex-grow: 1;
-}
+	/** Sorters */
 
-.qm .qm-sort-controls {
-	flex-shrink: 0;
-	text-align: right;
+	thead th.qm-sortable-column {
+		cursor: pointer;
 
-	.qm-icon {
-		margin-right: 0;
-		fill: #ccc;
+		&:hover {
+			background: var( --qm-container-bg );
+		}
 	}
-}
 
-.qm .qm-sorted-desc .qm-sort-controls,
-.qm .qm-sorted-asc .qm-sort-controls {
-	svg {
-		fill: var( --qm-container-fg );
+	.qm-sort-heading {
+		flex-grow: 1;
 	}
-}
 
-.qm thead th.qm-sortable-column:hover .qm-sort-controls {
-	svg {
-		fill: var( --qm-panel-menu-bg-selected );
+	.qm-sort-controls {
+		flex-shrink: 0;
+		text-align: right;
+
+		.qm-icon {
+			margin-right: 0;
+			fill: #ccc;
+		}
 	}
-}
 
-.qm .qm-sortable-column.qm-sorted-asc .qm-sort-controls {
-	transform: scaleY(-1);
-}
+	.qm-sorted-desc .qm-sort-controls,
+	.qm-sorted-asc .qm-sort-controls {
+		svg {
+			fill: var( --qm-container-fg );
+		}
+	}
 
-.qm button:focus,
-.qm a:focus,
-.qm select:focus {
-	box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover );
-}
+	thead th.qm-sortable-column:hover .qm-sort-controls {
+		svg {
+			fill: var( --qm-panel-menu-bg-selected );
+		}
+	}
 
-.qm button:active,
-.qm a:active,
-.qm select:active {
-	box-shadow: none;
+	.qm-sortable-column.qm-sorted-asc .qm-sort-controls {
+		transform: scaleY(-1);
+	}
+
+	button:focus,
+	a:focus,
+	select:focus {
+		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover );
+	}
+
+	button:active,
+	a:active,
+	select:active {
+		box-shadow: none;
+	}
 }
 
 .qm-screen-reader-text,
