@@ -215,7 +215,7 @@ i {
 #qm-wrapper {
 	display: flex;
 	flex-grow: 1;
-	/* Fix nested scrolling in Firefox. See https://bugzilla.mozilla.org/show_bug.cgi?id=1043520: */
+	/* Allow this flex item to shrink below its content size for nested scrolling: */
 	min-height: 0;
 }
 
@@ -406,7 +406,11 @@ i {
 		button[aria-selected="true"] {
 			background: var( --qm-panel-menu-bg-selected );
 			color: var( --qm-panel-menu-fg-selected );
-			text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow );
+			text-shadow:
+				0 -1px 1px var( --qm-panel-menu-shadow ),
+				1px 0 1px var( --qm-panel-menu-shadow ),
+				0 1px 1px var( --qm-panel-menu-shadow ),
+				-1px 0 1px var( --qm-panel-menu-shadow );
 
 			&:focus {
 				background: var( --qm-panel-menu-bg-selected-focus );
@@ -439,10 +443,6 @@ i {
 	flex-grow: 1;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
-}
-
-.qm:focus {
-	outline: 0; /* @TODO might not need this any more */
 }
 
 .qm-boxed {
