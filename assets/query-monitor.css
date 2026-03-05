@@ -238,11 +238,11 @@ i {
 		margin-right: 6px;
 	}
 
-	& div.qm-title-heading {
+	div.qm-title-heading {
 		display: none;
 	}
 
-	& button {
+	button {
 		flex-shrink: 0;
 	}
 
@@ -287,7 +287,7 @@ i {
 		}
 	}
 
-	& button {
+	button {
 		background: var( --qm-title-button-bg );
 		cursor: pointer;
 		display: inline-block;
@@ -296,19 +296,19 @@ i {
 		padding: 0 5px;
 	}
 
-	& button:focus *,
-	& button:hover *,
-	& button:focus,
-	& button:hover {
+	button:focus *,
+	button:hover *,
+	button:focus,
+	button:hover {
 		background: var( --qm-title-button-bg-hover );
 
-		& svg {
+		svg {
 			fill: var( --qm-title-button-fg-hover );
 		}
 	}
 
-	& button:active *,
-	& button:active {
+	button:active *,
+	button:active {
 		background: #ccc;
 	}
 }
@@ -326,7 +326,7 @@ i {
 	height: auto;
 	min-width: 160px;
 
-	& ul {
+	ul {
 		display: block;
 		list-style: none;
 		margin: 0;
@@ -335,18 +335,18 @@ i {
 		height: auto;
 	}
 
-	& li {
+	li {
 		display: list-item;
 		margin: 0;
 		padding: 0;
 		height: auto;
 
-		& ul {
+		ul {
 			display: none;
 		}
 	}
 
-	& li button {
+	li button {
 		background: var( --qm-panel-menu-bg );
 		border-right: 1px solid var( --qm-panel-border );
 		color: var( --qm-panel-menu-fg );
@@ -359,28 +359,28 @@ i {
 		width: 100%;
 	}
 
-	& li button:focus,
-	& li button:hover {
+	li button:focus,
+	li button:hover {
 		background: var( --qm-panel-menu-bg-hover );
 		color: var( --qm-panel-menu-fg-hover );
 	}
 
-	& li button:focus-visible {
+	li button:focus-visible {
 		text-decoration: underline;
 	}
 
-	& li button:active {
+	li button:active {
 		text-decoration: none;
 		background: var( --qm-panel-menu-bg-selected );
 		color: var( --qm-panel-menu-fg-selected );
 	}
 
-	& li.qm-current-menu {
-		& ul {
+	li.qm-current-menu {
+		ul {
 			display: block;
 		}
 
-		& button {
+		button {
 			background: var( --qm-panel-menu-bg-current );
 			color: var( --qm-panel-menu-fg-current );
 
@@ -396,7 +396,7 @@ i {
 		}
 	}
 
-	& li li button {
+	li li button {
 		&::before {
 			content: "\2514";
 			display: inline-block;
@@ -404,7 +404,7 @@ i {
 		}
 	}
 
-	& li button[aria-selected="true"] {
+	li button[aria-selected="true"] {
 		background: var( --qm-panel-menu-bg-selected );
 		color: var( --qm-panel-menu-fg-selected );
 		text-shadow: 0 -1px 1px var( --qm-panel-menu-shadow ), 1px 0 1px var( --qm-panel-menu-shadow ), 0 1px 1px var( --qm-panel-menu-shadow ), -1px 0 1px var( --qm-panel-menu-shadow );
@@ -460,7 +460,7 @@ i {
 	display: flex;
 	flex-wrap: wrap;
 
-	& section {
+	section {
 		width: 22em;
 	}
 }
@@ -475,7 +475,7 @@ i {
 		text-align: center;
 	}
 
-	& table {
+	table {
 		border: none;
 		border-collapse: collapse;
 		box-shadow: 0 1px 0 0 var( --qm-panel-border );
@@ -485,39 +485,39 @@ i {
 		width: 100%;
 	}
 
-	& table + table {
+	table + table {
 		border-top: 1px solid var( --qm-cell-border );
 		margin-top: 5px;
 	}
 
-	& thead,
-	& tbody,
-	& tfoot {
+	thead,
+	tbody,
+	tfoot {
 		border: none;
 		background-color: inherit;
 	}
 
-	& tr {
+	tr {
 		border: none;
 		background-color: inherit;
 	}
 
-	& tbody th,
-	& tbody td,
-	& tfoot th,
-	& tfoot td {
+	tbody th,
+	tbody td,
+	tfoot th,
+	tfoot td {
 		border: 1px solid var( --qm-cell-border );
 		padding: 6px 6px 5px 6px;
 		vertical-align: top;
 	}
 
-	& tbody th,
-	& tbody td {
+	tbody th,
+	tbody td {
 		border-bottom: none;
 		border-top: none;
 	}
 
-	& thead th {
+	thead th {
 		background: var( --qm-table-header-bg );
 		border: 1px solid var( --qm-cell-border );
 		border-top: none;
@@ -528,17 +528,17 @@ i {
 		z-index: 1;
 	}
 
-	& thead th,
-	& thead td {
+	thead th,
+	thead td {
 		vertical-align: top;
 	}
 
-	& thead .qm-th {
+	thead .qm-th {
 		display: flex;
 	}
 
-	& tfoot tr td,
-	& tfoot tr th {
+	tfoot tr td,
+	tfoot tr th {
 		background: var( --qm-table-footer-bg );
 		border: none;
 		bottom: 0;
@@ -546,55 +546,55 @@ i {
 		position: sticky;
 	}
 
-	& th:first-child,
-	& td:first-child {
+	th:first-child,
+	td:first-child {
 		border-left: none;
 	}
 
-	& th:last-child,
-	& td:last-child {
+	th:last-child,
+	td:last-child {
 		border-right: none;
 	}
 
-	& tfoot td.qm-num,
-	& tfoot th.qm-num,
-	& thead td.qm-num,
-	& thead th.qm-num {
+	tfoot td.qm-num,
+	tfoot th.qm-num,
+	thead td.qm-num,
+	thead th.qm-num {
 		width: 5.5em;
 	}
 
-	& th.qm-num,
-	& td.qm-num {
+	th.qm-num,
+	td.qm-num {
 		text-align: right;
 	}
 
-	& td.qm-num {
+	td.qm-num {
 		font-family: var( --qm-font-code-face );
 		font-size: var( --qm-font-code-size );
 		line-height: var( --qm-font-code-line-height );
 	}
 
-	& th.qm-col-sql {
+	th.qm-col-sql {
 		min-width: 25em;
 	}
 
-	& th.qm-col-block-attrs,
-	& th.qm-col-block-context,
-	& th.qm-col-block-html {
+	th.qm-col-block-attrs,
+	th.qm-col-block-context,
+	th.qm-col-block-html {
 		max-width: 40em;
 	}
 
-	& th.qm-col-block-attrs,
-	& th.qm-col-block-context,
-	& th.qm-col-block-html,
-	& tr.qm-warn td.qm-cell-status,
-	& th.qm-col-url,
-	& th.qm-col-message,
-	& th.qm-col-component {
+	th.qm-col-block-attrs,
+	th.qm-col-block-context,
+	th.qm-col-block-html,
+	tr.qm-warn td.qm-cell-status,
+	th.qm-col-url,
+	th.qm-col-message,
+	th.qm-col-component {
 		min-width: 15em;
 	}
 
-	& td.qm-has-toggle {
+	td.qm-has-toggle {
 		padding-right: 28px;
 		position: relative;
 	}
@@ -608,12 +608,12 @@ i {
 		border-top: 1px solid var( --qm-cell-border );
 	}
 
-	& td.qm-has-inner .qm-toggler,
-	& td.qm-has-inner {
+	td.qm-has-inner .qm-toggler,
+	td.qm-has-inner {
 		padding: 0;
 	}
 
-	& caption h2 {
+	caption h2 {
 		font-size: 14px;
 		margin: 20px;
 	}
@@ -628,40 +628,40 @@ i {
 .qm-non-tabular {
 	padding: 10px 20px;
 
-	& h3 {
+	h3 {
 		font-size: 14px;
 		margin: 0 0 15px 0;
 	}
 
-	& h4 {
+	h4 {
 		font-size: 12px;
 		margin: 20px 0 10px;
 	}
 
-	& p {
+	p {
 		margin-bottom: 10px;
 	}
 
-	& dl {
+	dl {
 		display: flex;
 		flex-wrap: wrap;
 		max-width: 60em;
 	}
 
-	& dt {
+	dt {
 		border-top: 1px solid var( --qm-panel-separator );
 		flex-grow: 0;
 		flex: 1 0 16em;
 		padding: 10px 10px 10px 0;
 	}
 
-	& dd {
+	dd {
 		border-top: 1px solid var( --qm-panel-separator );
 		flex: 1 0 calc(100% - 10px - 16em);
 		padding: 10px 0;
 	}
 
-	& section,
+	section,
 	.qm-section {
 		margin: 0 0 30px 0;
 	}
@@ -679,7 +679,7 @@ i {
 		}
 	}
 
-	& table {
+	table {
 		border-bottom-color: var( --qm-cell-border );
 	}
 
@@ -994,7 +994,7 @@ i {
 .qm button.qm-filter-trigger {
 	white-space: nowrap;
 
-	& svg {
+	svg {
 		fill: var( --qm-link-fg-hover );
 		width: 16px;
 		height: 16px;
@@ -1013,7 +1013,7 @@ i {
 .qm a.qm-edit-link:focus,
 .qm button.qm-filter-trigger:hover,
 .qm button.qm-filter-trigger:focus {
-	& svg {
+	svg {
 		visibility: visible;
 	}
 }
@@ -1110,13 +1110,13 @@ select {
 
 .qm .qm-sorted-desc .qm-sort-controls,
 .qm .qm-sorted-asc .qm-sort-controls {
-	& svg {
+	svg {
 		fill: var( --qm-container-fg );
 	}
 }
 
 .qm thead th.qm-sortable-column:hover .qm-sort-controls {
-	& svg {
+	svg {
 		fill: var( --qm-panel-menu-bg-selected );
 	}
 }
@@ -1163,14 +1163,14 @@ select {
 /** Debug bar add-ons */
 
 .qm.qm-debug-bar {
-	& textarea,
-	& pre {
+	textarea,
+	pre {
 		border: 1px solid var( --qm-panel-separator );
 		margin: 4px 0;
 		padding: 10px;
 	}
 
-	& textarea {
+	textarea {
 		resize: vertical;
 	}
 
@@ -1182,12 +1182,12 @@ select {
 		float: right;
 	}
 
-	& h2 {
+	h2 {
 		font-size: 14px;
 		margin: 4px 6px 15px;
 	}
 
-	& h3 {
+	h3 {
 		border-left: 1px solid var( --qm-panel-separator );
 		clear: none;
 		float: left;
@@ -1201,18 +1201,18 @@ select {
 			border-left: none;
 		}
 
-		& small {
+		small {
 			font-size: 14px;
 		}
 
-		& span {
+		span {
 			display: block;
 			margin-bottom: 8px;
 			white-space: nowrap;
 		}
 	}
 
-	& h4 {
+	h4 {
 		font-size: 13px;
 		margin: 15px 6px 5px;
 	}
@@ -1220,7 +1220,7 @@ select {
 	.qm-debug-bar-output {
 		position: relative;
 
-		& table {
+		table {
 			margin-bottom: 4px;
 			margin-top: 4px;
 		}
@@ -1247,7 +1247,7 @@ select {
 }
 
 #debug-menu-target-EP_Debug_Bar_ElasticPress {
-	& li {
+	li {
 		border-top: 1px solid var( --qm-panel-separator );
 		line-height: 20px;
 		padding: 20px 0;
