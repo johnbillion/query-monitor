@@ -36,15 +36,15 @@
 					"type": "boolean"
 				},
 				"callback": {
-					"type": ["object", "null"],
-					"properties": {
-						"name": {
-							"type": "string"
+					"phpType": "?QM_Data_Callback",
+					"oneOf": [
+						{
+							"$ref": "../callback.json"
 						},
-						"type": {
-							"type": "string"
+						{
+							"type": "null"
 						}
-					}
+					]
 				},
 				"innerHTML": {
 					"type": "string"

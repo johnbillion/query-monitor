@@ -9,9 +9,12 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
+import devCss from '../assets/query-monitor.css?inline';
+
 type Props = {
 	active: string;
 	adminMenuElement?: HTMLElement;
+	cssUrl: string;
 	menu: {
 		top: {
 			title: string[];
@@ -36,6 +39,10 @@ type Props = {
 	editor: string;
 	filters: MainContextType['filters'];
 	containerHeight: number | null;
+	isWpAdmin: boolean;
+	isFolded: boolean;
+	isAutoFold: boolean;
+	isRtl: boolean;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number, width: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -72,6 +79,10 @@ export const QM = ( props: Props ) => {
 
 	const mainClass = clsx( 'qm-show', {
 		'qm-show-right': side,
+		'wp-admin': props.isWpAdmin,
+		'folded': props.isFolded,
+		'auto-fold': props.isAutoFold,
+		'rtl': props.isRtl,
 	} );
 
 	const contextValue: MainContextType = {
@@ -125,29 +136,29 @@ export const QM = ( props: Props ) => {
 		}
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
+	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, containerHeight } = props;
 	const initialHeightApplied = useRef( false );
 
-	/**
-	 * Many thanks to https://www.redblobgames.com/making-of/draggable/ for
-	 * a comprehensive explanantion of modern pointer event handling.
-	 */
 	useEffect( () => {
 		if ( ! active ) {
 			return;
 		}
 
+		const adminToolbarHeight = 32;
 		let dragging = false;
 
-		const el = document.getElementsByClassName( 'qm-resizer' )[0];
-		const qmMain = document.getElementById( 'query-monitor-main' );
+		const qmMain = mainRef.current;
 
 		if ( ! qmMain ) {
 			return;
 		}
 
+		const el = qmMain.getElementsByClassName( 'qm-resizer' )[0];
+
 		if ( containerHeight && ! initialHeightApplied.current ) {
-			qmMain.style.height = `${ containerHeight }px`;
+			const maxHeight = window.innerHeight - adminToolbarHeight;
+			qmMain.style.height = `${ Math.min( containerHeight, maxHeight ) }px`;
 			initialHeightApplied.current = true;
 		}
 
@@ -175,7 +186,7 @@ export const QM = ( props: Props ) => {
 			let newHeight = startHeight - ( event.clientY - startY );
 
 			newHeight = Math.max( 27, newHeight );
-			newHeight = Math.min( windowHeight - 32, newHeight );
+			newHeight = Math.min( windowHeight - adminToolbarHeight, newHeight );
 
 			qmMain.style.height = `${ newHeight }px`;
 		}
@@ -191,11 +202,19 @@ export const QM = ( props: Props ) => {
 
 		const preventTouch = (e: TouchEvent) => e.preventDefault();
 
+		const onWindowResize = () => {
+			const maxHeight = window.innerHeight - adminToolbarHeight;
+			if ( qmMain.getBoundingClientRect().height > maxHeight ) {
+				qmMain.style.height = `${ maxHeight }px`;
+			}
+		};
+
 		el.addEventListener( 'pointerdown', start );
 		el.addEventListener( 'pointermove', move );
 		el.addEventListener( 'pointerup', end );
 		el.addEventListener( 'pointercancel', end );
 		el.addEventListener( 'touchstart', preventTouch, { passive: false } );
+		window.addEventListener( 'resize', onWindowResize );
 
 		return () => {
 			el.removeEventListener( 'pointerdown', start );
@@ -203,13 +222,18 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'pointerup', end );
 			el.removeEventListener( 'pointercancel', end );
 			el.removeEventListener( 'touchstart', preventTouch );
+			window.removeEventListener( 'resize', onWindowResize );
 		};
 	}, [ active, containerHeight, onContainerResize ] );
 
 	return (
 		<MainContext.Provider value={ contextValue }>
+			{ import.meta.env.DEV
+				? <style>{ devCss }</style>
+				: <link rel="stylesheet" href={ props.cssUrl } />
+			}
 			{ active && (
-				<div className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
+				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
 					{ side && (
 						<div className="qm-resizer" id="qm-side-resizer"></div>
 					) }

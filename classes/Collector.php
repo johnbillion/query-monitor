@@ -203,14 +203,14 @@ abstract class QM_Collector {
 
 		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
-				$this->concerned_actions[ $action ] = QM_Hook::process( $action, 'action', $wp_filter, true, false );
+				$this->concerned_actions[ $action ] = QM_Hook::process( $action, 'action', $wp_filter[ $action ] ?? null, true, false );
 			}
 			$tracked[] = $action;
 		}
 
 		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
-				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
+				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter[ $filter ] ?? null, true, false );
 			}
 			$tracked[] = $filter;
 		}
@@ -232,7 +232,7 @@ abstract class QM_Collector {
 					$option
 				);
 				if ( has_filter( $filter ) ) {
-					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
+					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter[ $filter ] ?? null, true, false );
 				}
 				$tracked[] = $filter;
 			}

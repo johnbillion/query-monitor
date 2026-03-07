@@ -32,17 +32,11 @@ class CollectorPhpErrorsTest extends Test {
 	 * @return \QM_Data_PHP_Error
 	 */
 	private function createError( int $errno, string $level, Supports\TestBacktrace $trace ): \QM_Data_PHP_Error {
-		$callsite = new \QM_Data_CallSite();
-		$callsite->file = WP_PLUGIN_DIR . '/foo/bar.php';
-		$callsite->filename = 'foo/bar.php';
-		$callsite->line = 1;
-
 		$error = new \QM_Data_PHP_Error();
 		$error->errno = $errno;
 		$error->level = $level;
 		$error->suppressed = false;
 		$error->message = 'Test error';
-		$error->callsite = $callsite;
 		$error->trace = $trace;
 		$error->count = 1;
 

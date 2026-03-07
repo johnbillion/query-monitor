@@ -30,7 +30,7 @@
 /CONTRIBUTING.md export-ignore
 /docker-compose.yml export-ignore
 /eslint.config.js export-ignore
-/fair.json export-ignore
+/docs/static/fair.json export-ignore
 /netlify.toml export-ignore
 /package-lock.json export-ignore
 /package.json export-ignore

@@ -1,6 +1,5 @@
 import { ApproximateSize } from '../components/approximate-size';
 import { FileName } from '../components/file-name';
-import { Frame } from '../frame';
 import { PanelFooter } from '../panels/panel-footer';
 import { TabularPanel } from '../panels/tabular-panel';
 import { DataTypes } from '../data-types';
@@ -33,9 +32,10 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					heading: __( 'Caller', 'query-monitor' ),
 					render: ( row ) => (
 						row.caller ? (
-							<Frame
-								frame={ row.caller }
-								isFileName
+							<FileName
+								text={ row.caller.display }
+								file={ row.caller.file }
+								line={ row.caller.line }
 							/>
 						) : (
 							__( 'Unknown', 'query-monitor' )
@@ -50,7 +50,6 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 								<FileName
 									text={ row.display }
 									file={ row.file }
-									isFileName
 								/>
 							) : (
 								row.display

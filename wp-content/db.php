@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Query Monitor Database Class (Drop-in)
- * Description: Database drop-in for Query Monitor, the developer tools panel for WordPress.
+ * Description: Database drop-in for Query Monitor, the developer tools panel for WordPress and WooCommerce.
  * Version:     4.0.0-alpha.2
  * Plugin URI:  https://querymonitor.com/
  * Author:      John Blackbourn

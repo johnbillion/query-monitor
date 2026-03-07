@@ -5,14 +5,12 @@
  */
 
 /**
- * QM_Data_CallSite data object.
- *
  * Code location where an error or event occurred.
  *
  * @package query-monitor
  */
 
-class QM_Data_CallSite {
+class QM_Data_Callsite {
 	/**
 	 * @var string|null
 	 */

@@ -266,10 +266,10 @@ class QM_Collector_Caps extends QM_DataCollector {
 		);
 
 		foreach ( $trace as $item ) {
-			if ( in_array( $item['file'], $exclude_files, true ) ) {
+			if ( in_array( $item->file, $exclude_files, true ) ) {
 				return false;
 			}
-			if ( isset( $item['function'] ) && in_array( $item['function'], $exclude_functions, true ) ) {
+			if ( isset( $item->function ) && in_array( $item->function, $exclude_functions, true ) ) {
 				return false;
 			}
 		}

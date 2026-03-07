@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import {
 	Caller,
-	CallSite,
 } from './caller';
 import { Component } from './component';
 import { Time } from './components/time';
@@ -71,7 +70,6 @@ interface TableProps<TDataRow, TCols extends Cols<TDataRow> = Cols<TDataRow>> ex
 
 interface DataRowWithTrace {
 	trace?: Backtrace | null;
-	callsite?: CallSite;
 }
 
 interface DataRowWithTime {
@@ -174,9 +172,8 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 
 export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
 	const filters = deriveFilters( rows, ( row ) => {
-		// If callsite is present, use filename as the filter key/label
-		if ( row.callsite ) {
-			return { key: row.callsite.filename, label: row.callsite.filename };
+		if ( row.trace?.callsite ) {
+			return { key: row.trace.callsite.filename, label: row.trace.callsite.filename };
 		}
 		if ( ! row.trace?.frames?.length ) {
 			return null;
@@ -187,14 +184,13 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 
 	const column: Col<TDataRow> = {
 		heading: __( 'Caller', 'query-monitor' ),
-		render: ( row ) => <Caller trace={ row.trace } callsite={ row.callsite } defaultExpanded={ rows.length === 1 } />,
+		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
 			options: filters,
 			callback: ( row, value: string ) => {
-				// If callsite is present, filter by filename
-				if ( row.callsite ) {
-					return row.callsite.filename === value;
+				if ( row.trace?.callsite ) {
+					return row.trace.callsite.filename === value;
 				}
 				if ( ! row.trace?.frames?.length ) {
 					return false;

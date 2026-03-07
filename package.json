@@ -12,6 +12,18 @@
 	"engines": {
 		"node": ">=24"
 	},
+	"browserslist": [
+		"> 1%",
+		"last 1 Android versions",
+		"last 1 ChromeAndroid versions",
+		"last 2 Chrome versions",
+		"last 2 Firefox versions",
+		"last 2 Safari versions",
+		"last 2 iOS versions",
+		"last 2 Edge versions",
+		"last 2 Opera versions",
+		"not chrome < 120"
+	],
 	"main": "src/index.tsx",
 	"type": "module",
 	"devDependencies": {
@@ -25,6 +37,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.50.0",
 		"@typescript-eslint/parser": "^8.50.0",
 		"@wordpress/i18n": "^3.12.0",
+		"browserslist-to-esbuild": "^2.1.1",
 		"clsx": "^2.1",
 		"eslint": "^9.39.2",
 		"eslint-config-prettier": "^10.1.8",

@@ -1,26 +1,23 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schemas.querymonitor.com/src/schemas/frameitem.json",
-	"title": "FrameItem",
+	"$id": "https://schemas.querymonitor.com/src/schemas/stack-frame.json",
+	"title": "StackFrame",
 	"description": "Stack trace frame.",
 	"type": "object",
+	"phpFile": "frame",
+	"phpClass": "QM_Data_Stack_Frame",
 	"required": [
 		"display",
-		"args",
 		"file",
-		"function",
 		"id",
 		"line"
 	],
 	"properties": {
-		"display": {
+		"id": {
 			"type": "string"
 		},
-		"args": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
+		"display": {
+			"type": "string"
 		},
 		"file": {
 			"type": [
@@ -28,17 +25,23 @@
 				"null"
 			]
 		},
-		"function": {
-			"type": "string"
-		},
-		"id": {
-			"type": "string"
-		},
 		"line": {
 			"type": [
 				"integer",
 				"null"
 			]
+		},
+		"function": {
+			"type": "string"
+		},
+		"class": {
+			"type": "string"
+		},
+		"args": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
 		}
 	},
 	"additionalProperties": false

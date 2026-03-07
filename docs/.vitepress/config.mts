@@ -10,13 +10,13 @@ const RSS: RSSOptions = {
 	title: 'Query Monitor',
 	baseUrl: siteURL,
 	copyright: `Copyright (c) 2009-${year}, John Blackbourn`,
-	description: 'The developer tools panel for WordPress',
+	description: 'The developer tools panel for WordPress and WooCommerce',
 	filename: 'feed',
 }
 
 export default defineConfig({
 	title: 'Query Monitor',
-	description: 'The developer tools panel for WordPress',
+	description: 'The developer tools panel for WordPress and WooCommerce',
 	rewrites: {
 		'help/:page.md': 'help/:page/index.md',
 		'wordpress-debugging/:page.md': 'wordpress-debugging/:page/index.md',

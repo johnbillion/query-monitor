@@ -1,8 +1,7 @@
-import { Frame } from './frame';
 import { FileName } from './components/file-name';
+import { SourceLocation } from './components/source-location';
 import {
 	Backtrace,
-	CallSite,
 } from './data-types';
 import { useState } from 'preact/hooks';
 
@@ -12,23 +11,23 @@ import {
 
 import { Toggle } from './components/toggle';
 
-export type { CallSite } from './data-types';
-
 interface Props {
-	isFileList?: boolean;
 	trace?: Backtrace | null;
-	callsite?: CallSite;
 	defaultExpanded?: boolean;
 }
 
-export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }: Props ) => {
+export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
+	const callsite = trace?.callsite;
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	// This creates a copy of the frames array.
 	const frames = trace?.frames ? [ ...trace.frames ] : [];
 
-	// If we have a callsite but no frames, show just the callsite
-	if ( frames.length === 0 && ! callsite ) {
+	// When a call site is present it serves as the caller, so don't shift from the stack.
+	const caller = callsite ? null : frames.shift();
+	const hasStack = frames.length > 0;
+
+	if ( ! callsite && ! caller ) {
 		return (
 			<>
 				{ __( 'Unknown', 'query-monitor' ) }
@@ -36,16 +35,13 @@ export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }
 		);
 	}
 
-	const caller = frames.shift();
-	const hasStack = frames.length > 0;
-
 	return (
 		<>
 			{ hasStack && ! defaultExpanded && (
 				<Toggle
 					expanded={ expanded }
 					onToggle={ () => setExpanded( ! expanded ) }
-					context={ caller?.display }
+					context={ callsite?.filename ?? caller?.display }
 				/>
 			) }
 			<ol>
@@ -55,27 +51,28 @@ export const Caller = ( { isFileList, trace, callsite, defaultExpanded = false }
 							text={ callsite.filename }
 							file={ callsite.file }
 							line={ callsite.line }
-							isFileName={ isFileList }
 							expanded={ expanded || ! hasStack }
 						/>
 					</li>
 				) }
 				{ caller && (
 					<li>
-						<Frame
+						<SourceLocation
+							text={ caller.display }
+							file={ caller.file }
+							line={ caller.line }
 							expanded={ expanded || ! hasStack }
-							frame={ caller }
-							isFileName={ isFileList }
 						/>
 					</li>
 				) }
 				{ hasStack && expanded && (
 					frames.map( frame => (
 						<li key={ frame.display }>
-							<Frame
+							<SourceLocation
+								text={ frame.display }
+								file={ frame.file }
+								line={ frame.line }
 								expanded
-								frame={ frame }
-								isFileName={ isFileList }
 							/>
 						</li>
 					) )

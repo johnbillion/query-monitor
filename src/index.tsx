@@ -248,7 +248,9 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		return;
 	}
 
-	const panelKey = `qm-${ document.body.classList.contains( 'wp-admin' ) ? 'admin' : 'front' }-panel`;
+	const isWpAdmin = document.body.classList.contains( 'wp-admin' );
+	const isRtl = document.documentElement.dir === 'rtl';
+	const panelKey = `qm-${ isWpAdmin ? 'admin' : 'front' }-panel`;
 	const positionKey = 'qm-container-position';
 	const themeKey = 'qm-theme';
 	const editorKey = 'qm-editor';
@@ -314,29 +316,53 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		return;
 	}
 
-	render(
-		<QM
-			active={ active }
-			adminMenuElement={ adminMenuElement ?? undefined }
-			menu={ QueryMonitorData.menu }
-			panel_menu={ QueryMonitorData.panel_menu }
-			data={ QueryMonitorData.data }
-			settings={ settings }
-			side={ side }
-			theme={ theme }
-			editor={ editor }
-			filters={ filters }
-			containerHeight={ containerHeight }
-			onPanelChange={ onPanelChange }
-			onContainerResize={ onContainerResize }
-			onSideChange={ onSideChange }
-			onThemeChange={ onThemeChange }
-			onEditorChange={ onEditorChange }
-			onFiltersChange={ onFiltersChange }
-			queryDiffEnabled={ queryDiffEnabled }
-			onQueryDiffEnabledChange={ onQueryDiffEnabledChange }
-		/>,
-		containerElement
-	);
+	// Attach shadow root for CSS isolation
+	const shadow = containerElement.attachShadow( { mode: 'open' } );
+
+	// Create a mount point inside the shadow DOM
+	const mountPoint = document.createElement( 'div' );
+	shadow.appendChild( mountPoint );
+
+	const getBodyClasses = () => ( {
+		isFolded: document.body.classList.contains( 'folded' ),
+		isAutoFold: document.body.classList.contains( 'auto-fold' ),
+	} );
+
+	const renderQM = () => {
+		render(
+			<QM
+				isWpAdmin={ isWpAdmin }
+				isRtl={ isRtl }
+				active={ active }
+				adminMenuElement={ adminMenuElement ?? undefined }
+				cssUrl={ containerElement.dataset.cssUrl! }
+				menu={ QueryMonitorData.menu }
+				panel_menu={ QueryMonitorData.panel_menu }
+				data={ QueryMonitorData.data }
+				settings={ settings }
+				side={ side }
+				theme={ theme }
+				editor={ editor }
+				filters={ filters }
+				containerHeight={ containerHeight }
+				onPanelChange={ onPanelChange }
+				onContainerResize={ onContainerResize }
+				onSideChange={ onSideChange }
+				onThemeChange={ onThemeChange }
+				onEditorChange={ onEditorChange }
+				onFiltersChange={ onFiltersChange }
+				queryDiffEnabled={ queryDiffEnabled }
+				onQueryDiffEnabledChange={ onQueryDiffEnabledChange }
+				{ ...getBodyClasses() }
+			/>,
+			mountPoint
+		);
+	};
+
+	renderQM();
+
+	// Watch for body class changes (admin menu fold/unfold) and re-render
+	const bodyObserver = new MutationObserver( renderQM );
+	bodyObserver.observe( document.body, { attributes: true, attributeFilter: [ 'class' ] } );
 } );
 

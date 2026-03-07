@@ -10,56 +10,41 @@ class QM_Hook {
 	/**
 	 * @param string $name
 	 * @param string $type
-	 * @param array<string, WP_Hook> $wp_filter
+	 * @param ?WP_Hook $hook
 	 * @param bool $hide_qm
 	 * @param bool $hide_core
-	 * @return array<int, array<string, mixed>>
 	 * @phpstan-param 'action'|'filter' $type
-	 * @phpstan-return array{
+	 * @return array{
 	 *   name: string,
 	 *   type: 'action'|'filter',
 	 *   actions: list<array{
 	 *     priority: int,
-	 *     callback: array{
-	 *       accepted_args: int,
-	 *       name?: string,
-	 *       file?: string|false,
-	 *       line?: int|false,
-	 *       error?: WP_Error,
-	 *       component?: QM_Component,
-	 *       callback_type: string,
-	 *       start_line?: int,
-	 *       display_file?: string,
-	 *     },
+	 *     callback: QM_Data_Callback,
 	 *   }>,
 	 *   components: array<string, QM_Component>,
 	 * }
 	 */
-	public static function process( $name, string $type, array $wp_filter, $hide_qm = false, $hide_core = false ) {
+	public static function process( $name, string $type, ?WP_Hook $hook, $hide_qm = false, $hide_core = false ) {
 
 		$actions = array();
 		$components = array();
 
-		if ( isset( $wp_filter[ $name ] ) ) {
-
-			# https://core.trac.wordpress.org/ticket/17817
-			$action = $wp_filter[ $name ];
-
-			foreach ( $action as $priority => $callbacks ) {
+		if ( $hook ) {
+			foreach ( $hook as $priority => $callbacks ) {
 
 				foreach ( $callbacks as $cb ) {
 
 					$callback = QM_Util::populate_callback( $cb );
 
-					if ( isset( $callback['component'] ) ) {
+					if ( isset( $callback->component ) ) {
 						if (
-							( $hide_qm && 'query-monitor' === $callback['component']->context )
-							|| ( $hide_core && 'core' === $callback['component']->context )
+							( $hide_qm && 'query-monitor' === $callback->component->context )
+							|| ( $hide_core && 'core' === $callback->component->context )
 						) {
 							continue;
 						}
 
-						$components[ $callback['component']->get_id() ] = $callback['component'];
+						$components[ $callback->component->get_id() ] = $callback->component;
 					}
 
 					$actions[] = array(

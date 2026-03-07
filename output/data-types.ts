@@ -61,20 +61,33 @@ export interface ConcernedHook {
 	type: "action" | "filter";
 	actions: {
 		priority: number;
-		callback: {
-			accepted_args: number;
-			callback_type?: string;
-			name?: string;
-			file?: string | false;
-			line?: number | false;
-			start_line?: number;
-			display_file?: string;
-			component?: Component;
-		};
+		callback: Callback;
 	}[];
 	components: {
 		[k: string]: Component;
 	};
+}
+/**
+ * Callback registered on a hook or block.
+ */
+export interface Callback {
+	accepted_args?: number;
+	callback_type:
+		| "function"
+		| "method"
+		| "static_method"
+		| "closure"
+		| "invokable"
+		| "lambda"
+		| "unknown"
+		| "unknown_closure";
+	name?: string;
+	file?: string | false;
+	line?: number | false;
+	start_line?: number;
+	display_file?: string;
+	error?: WP_Error;
+	component?: Component;
 }
 /**
  * Class representing a component.
@@ -151,11 +164,7 @@ export interface PostBlock {
 	};
 	innerContent: (string | null)[];
 	dynamic: boolean;
-	callback: {
-		name?: string;
-		type?: string;
-		[k: string]: unknown;
-	} | null;
+	callback: Callback | null;
 	innerHTML: string;
 	context?:
 		| {
@@ -201,18 +210,28 @@ export interface Caps {
  */
 export interface Backtrace {
 	component: Component;
-	frames: FrameItem[];
+	callsite?: CallSite | null;
+	frames: StackFrame[];
+}
+/**
+ * Code location where an error or event occurred.
+ */
+export interface CallSite {
+	file: string | null;
+	filename: string;
+	line: number | null;
 }
 /**
  * Stack trace frame.
  */
-export interface FrameItem {
-	display: string;
-	args: string[];
-	file: string | null;
-	function: string;
+export interface StackFrame {
 	id: string;
+	display: string;
+	file: string | null;
 	line: number | null;
+	function?: string;
+	class?: string;
+	args?: string[];
 }
 /**
  * Conditionals data transfer object.
@@ -328,16 +347,7 @@ export interface Hooks {
 		name: string;
 		actions: {
 			priority: number;
-			callback: {
-				accepted_args: number;
-				name?: string;
-				callback_type?: string;
-				display_file?: string;
-				file?: string | false;
-				line?: number | false;
-				error?: WP_Error;
-				component?: Component;
-			};
+			callback: Callback;
 		}[];
 		components: {
 			[k: string]: {
@@ -394,7 +404,7 @@ export interface HTTP {
  */
 export interface Languages {
 	languages: {
-		caller: FrameItem | false;
+		caller: StackFrame | false;
 		domain: string;
 		file: string | false;
 		display: string;
@@ -474,17 +484,8 @@ export interface PHP_Error {
 	level: "warning" | "notice" | "strict" | "deprecated";
 	suppressed: boolean;
 	message: string;
-	callsite: CallSite;
 	trace?: Backtrace | null;
 	count: number;
-}
-/**
- * Code location where an error or event occurred.
- */
-export interface CallSite {
-	file: string | null;
-	filename: string;
-	line: number | null;
 }
 /**
  * Raw request data transfer object.

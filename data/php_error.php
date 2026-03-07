@@ -5,7 +5,7 @@
  */
 
 /**
- * QM_Data_PHP_Error data object.
+ * Individual PHP error data object.
  *
  * @package query-monitor
  */
@@ -30,11 +30,6 @@ class QM_Data_PHP_Error {
 	 * @var string
 	 */
 	public $message;
-
-	/**
-	 * @var QM_Data_CallSite
-	 */
-	public $callsite;
 
 	/**
 	 * @var ?QM_Backtrace

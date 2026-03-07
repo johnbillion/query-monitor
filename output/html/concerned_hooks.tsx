@@ -1,6 +1,6 @@
 import { TabularPanel } from '../panels/tabular-panel';
 import { EmptyPanel } from '../panels/empty-panel';
-import { FileName } from '../components/file-name';
+import { SourceLocation } from '../components/source-location';
 import { AbstractData, ConcernedHook } from '../data-types';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
@@ -72,7 +72,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 							return '';
 						}
 						return (
-							<FileName
+							<SourceLocation
 								text={ text }
 								file={ row.callback.file || '' }
 								line={ row.callback.line || 0 }
