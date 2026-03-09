@@ -48,6 +48,7 @@
 	--qm-warn-bg-hover:                light-dark( #f5d6d8, #7a2a2a );
 	--qm-warn-border:                  light-dark( #facfd2, #ffd6d6 );
 	--qm-nonselect-fg:                 light-dark( #a0a,    #a6a );
+	--qm-title-bg:                     light-dark( #ececec, #3e444a );
 	--qm-selection-fg:                 light-dark( #1e1e1e, #32373c );
 	--qm-selection-bg:                 light-dark( #B9D6FB, #B9D6FB );
 	--qm-badge-fg:                     light-dark( #50575e, #c3c4c7 );
@@ -235,7 +236,7 @@ i {
 
 #qm-title {
 	align-items: center;
-	background: #ececec;
+	background: var( --qm-title-bg );
 	border-bottom: 1px solid var( --qm-panel-border );
 	display: flex;
 	flex-shrink: 0;
