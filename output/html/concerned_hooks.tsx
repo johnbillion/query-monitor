@@ -48,6 +48,17 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 
 	const title = __( 'Related Hooks with Filters or Actions Attached', 'query-monitor' );
 
+	const rowSpanByName = ( row: HookRow, i: number, rows: HookRow[] ): number => {
+		if ( i > 0 && rows[ i - 1 ].name === row.name ) {
+			return 0;
+		}
+		let count = 1;
+		while ( i + count < rows.length && rows[ i + count ].name === row.name ) {
+			count++;
+		}
+		return count;
+	};
+
 	return (
 		<TabularPanel
 			title={ title }
@@ -55,10 +66,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 				hook: {
 					heading: __( 'Hook', 'query-monitor' ),
 					render: ( row ) => <code>{ row.name }</code>,
-				},
-				type: {
-					heading: __( 'Type', 'query-monitor' ),
-					render: ( row ) => row.type,
+					rowSpan: rowSpanByName,
 				},
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),
@@ -86,6 +94,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 				},
 			} }
 			data={ allHooks }
+			groupKey={ ( row ) => row.name }
 		/>
 	);
 };
