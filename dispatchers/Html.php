@@ -224,7 +224,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'menu' => $admin_bar_menu,
 			);
 
-			echo '<!-- Begin Query Monitor output -->' . "\n\n";
 			wp_print_inline_script_tag(
 				sprintf(
 					'var QueryMonitorData = %s;',
@@ -235,7 +234,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				)
 			);
 			echo '<div id="query-monitor-ceased"></div>';
-			echo '<!-- End Query Monitor output -->' . "\n\n";
 			return;
 		}
 
@@ -399,8 +397,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'locale_data' => self::get_script_locale_data(),
 		);
 
-		echo '<!-- Begin Query Monitor output -->' . "\n\n";
-
 		$this->output_assets();
 
 		wp_print_inline_script_tag(
@@ -418,7 +414,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function after_output() {
-		echo '<!-- End Query Monitor output -->' . "\n\n";
 	}
 
 	/**
