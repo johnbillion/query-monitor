@@ -12,26 +12,26 @@ test.describe( 'PHP Errors', () => {
 	test( 'Warning should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersPhpError( 'warning' );
 		await QueryMonitor.seeQMMenuWithWarning();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'This is a test warning' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test warning' );
 	} );
 
 	test( 'Notice should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersPhpError( 'notice' );
 		await QueryMonitor.seeQMMenuWithNotice();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'This is a test notice' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test notice' );
 	} );
 
 	test( 'Suppressed warning should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersSuppressedPhpError( 'warning' );
 		await QueryMonitor.seeQMMenu();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'warning (suppressed)' );
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'This is a test suppressed warning' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'warning (suppressed)' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test suppressed warning' );
 	} );
 
 	test( 'Suppressed notice should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersSuppressedPhpError( 'notice' );
 		await QueryMonitor.seeQMMenu();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'notice (suppressed)' );
-		await QueryMonitor.seeInQMPanel( 'PHP Errors (1)', 'This is a test suppressed notice' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'notice (suppressed)' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test suppressed notice' );
 	} );
 } );
