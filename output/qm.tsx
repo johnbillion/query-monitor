@@ -9,7 +9,9 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
-import devCss from '../assets/query-monitor.css?inline';
+const devCssUrl = import.meta.env.DEV
+	? new URL( '../assets/query-monitor.css', import.meta.url ).href
+	: '';
 
 type Props = {
 	active: string;
@@ -218,12 +220,23 @@ export const QM = ( props: Props ) => {
 		};
 	}, [ active, containerHeight, onContainerResize ] );
 
+	const [ cssVersion, setCssVersion ] = useState( 0 );
+
+	useEffect( () => {
+		if ( import.meta.hot ) {
+			const onUpdate = () => setCssVersion( ( v ) => v + 1 );
+			import.meta.hot.on( 'qm:css-update', onUpdate );
+			return () => import.meta.hot!.off( 'qm:css-update', onUpdate );
+		}
+	}, [] );
+
+	const cssUrl = import.meta.env.DEV
+		? `${ devCssUrl }?t=${ cssVersion }`
+		: props.cssUrl;
+
 	return (
 		<MainContext.Provider value={ contextValue }>
-			{ import.meta.env.DEV
-				? <style>{ devCss }</style>
-				: <link rel="stylesheet" href={ props.cssUrl } />
-			}
+			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
 					{ side && (
