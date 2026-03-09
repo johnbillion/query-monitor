@@ -339,7 +339,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 										<select
 											id={ `qm-filter-${ key }` }
 											className="qm-filter"
-											defaultValue={ filterValue }
+											value={ filterValue }
 											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 										>
 											<option value="">All</option>
