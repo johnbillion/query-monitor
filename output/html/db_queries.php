@@ -121,40 +121,27 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 
 		$id = $this->collector->id();
 		$menu[ $id ] = $this->menu( array(
-			'title' => esc_html(
-				sprintf(
-					/* translators: %s: Number of database queries */
-					__( 'Database Queries (%s)', 'query-monitor' ),
-					number_format_i18n( $data->total_qs ?? 0 )
-				)
-			),
+			'title' => esc_html__( 'Database Queries', 'query-monitor' ),
+			'count' => $data->total_qs ?? 0,
 		) );
 
 		if ( $errors ) {
 			$id = 'db_errors';
-			$count = count( $errors );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => $id,
 				'panel' => $id,
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of database errors */
-					__( 'Database Errors (%s)', 'query-monitor' ),
-					number_format_i18n( $count )
-				) ),
+				'title' => esc_html__( 'Database Errors', 'query-monitor' ),
+				'warning_count' => count( $errors ),
 			) );
 		}
 
 		if ( $expensive ) {
 			$id = 'db_expensive';
-			$count = count( $expensive );
 			$menu[ $id ] = $this->menu( array(
 				'id'    => $id,
 				'panel' => $id,
-				'title' => esc_html( sprintf(
-					/* translators: %s: Number of slow database queries */
-					__( 'Slow Queries (%s)', 'query-monitor' ),
-					number_format_i18n( $count )
-				) ),
+				'title' => esc_html__( 'Slow Queries', 'query-monitor' ),
+				'warning_count' => count( $expensive ),
 			) );
 		}
 

@@ -18,6 +18,16 @@ declare const QueryMonitorData: {
 
 export const qm_l10n = QueryMonitorData.l10n;
 
+function highlightStrings( text: string ): ( string | JSX.Element )[] {
+	const parts = text.split( /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/ );
+
+	return parts.map( ( part, i ) =>
+		i % 2 === 1
+			? <span key={ i } className="qm-sql-value">{ part }</span>
+			: part
+	);
+}
+
 export function formatSQL( sql: string ): JSX.Element[] {
 	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP|HAVING|INNER|INSERT|INTERSECT|LEFT|LIMIT|ON|OR|ORDER|OUTER|RENAME|REPLACE|RIGHT|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
@@ -34,7 +44,8 @@ export function formatSQL( sql: string ): JSX.Element[] {
 					<br />
 				) }
 				<b>{ keyword }</b>
-				{ ` ${ lines[ index ] }` }
+				{ ' ' }
+				{ highlightStrings( lines[ index ] ) }
 			</Fragment>
 		);
 

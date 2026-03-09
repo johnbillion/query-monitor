@@ -340,11 +340,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
 					'id' => $collector->id() . '-concerned_hooks',
 					'panel' => $collector->id() . '-concerned_hooks',
-					'title' => sprintf(
-						/* translators: %s: Number of hooks */
-						__( 'Hooks in Use (%s)', 'query-monitor' ),
-						number_format_i18n( $count )
-					),
+					'title' => __( 'Hooks in Use', 'query-monitor' ),
+					'count' => $count,
 				);
 			}
 		}

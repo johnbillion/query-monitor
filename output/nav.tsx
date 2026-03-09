@@ -18,10 +18,86 @@ export type iNavMenu = {
 interface iNavMenuItem {
 	panel: string;
 	title: string;
+	count?: number | null;
+	warning_count?: number | null;
 	children?: iNavMenu;
 }
 
-export const Nav = ( { menu, onSwitch, active }: Props ) => (
+/**
+ * Normalises a menu item that uses a legacy "Title (n)" format by extracting
+ * the count into the dedicated `count` property. This provides backwards
+ * compatibility with third-party plugins that haven't adopted the new format.
+ */
+function normaliseMenuItem( item: iNavMenuItem ): iNavMenuItem {
+	if ( item.count != null ) {
+		return item;
+	}
+
+	const match = item.title.match( /^(.+)\s\((\d+)\)$/ );
+
+	if ( ! match ) {
+		return item;
+	}
+
+	return {
+		...item,
+		title: match[1],
+		count: parseInt( match[2], 10 ) || null,
+	};
+}
+
+function normaliseMenu( menu: iNavMenu ): iNavMenu {
+	const result: iNavMenu = {};
+
+	for ( const [ key, item ] of Object.entries( menu ) ) {
+		const normalised = normaliseMenuItem( item );
+
+		result[ key ] = normalised.children
+			? { ...normalised, children: normaliseMenu( normalised.children ) }
+			: normalised;
+	}
+
+	return result;
+}
+
+const Badges = ( { item }: { item: iNavMenuItem } ) => (
+	<>
+		{ !! item.count && item.count !== item.warning_count && (
+			<span className="qm-menu-badge">
+				{ item.count }
+			</span>
+		) }
+		{ !! item.warning_count && (
+			<span className="qm-menu-badge qm-menu-badge-warning">
+				{ item.warning_count }
+			</span>
+		) }
+	</>
+);
+
+function selectLabel( item: iNavMenuItem ): string {
+	const parts = [ item.title ];
+
+	if ( item.count || item.warning_count ) {
+		const counts = [];
+
+		if ( item.warning_count ) {
+			counts.push( `${ item.warning_count }!` );
+		}
+		if ( item.count && item.count !== item.warning_count ) {
+			counts.push( `${ item.count }` );
+		}
+
+		parts.push( `(${ counts.join( ', ' ) })` );
+	}
+
+	return parts.join( ' ' );
+}
+
+export const Nav = ( { menu: rawMenu, onSwitch, active }: Props ) => {
+	const menu = normaliseMenu( rawMenu );
+
+	return (
 	<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
 		<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
 			{ __( 'Query Monitor Menu', 'query-monitor' ) }
@@ -63,6 +139,7 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 							} }
 						>
 							{ item.title }
+							<Badges item={ item } />
 						</button>
 						{ children && (
 							<ul role="presentation">
@@ -76,6 +153,7 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 											} }
 										>
 											{ children[ k ].title }
+											<Badges item={ children[ k ] } />
 										</button>
 									</li>
 								) ) }
@@ -86,9 +164,13 @@ export const Nav = ( { menu, onSwitch, active }: Props ) => (
 			} ) }
 		</ul>
 	</nav>
-);
+	);
+};
 
-export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
+export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
+	const menu = normaliseMenu( rawMenu );
+
+	return (
 	<select
 		value={ active }
 		onChange={ ( e ) => {
@@ -103,13 +185,13 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 			return (
 				<Fragment key={ key }>
 					<option value={ item.panel }>
-						{ item.title }
+						{ selectLabel( item ) }
 					</option>
 					{ children && (
 						<>
 							{ Object.keys( children ).map( k => (
 								<option key={ `${ key }-${ k }` } value={ children[ k ].panel }>
-									{ `└ ${ children[ k ].title }` }
+									{ `└ ${ selectLabel( children[ k ] ) }` }
 								</option>
 							) ) }
 						</>
@@ -118,4 +200,5 @@ export const NavSelect = ( { active, menu, onSwitch }: Props ) => (
 			);
 		} ) }
 	</select>
-);
+	);
+};

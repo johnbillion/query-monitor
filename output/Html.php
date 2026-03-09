@@ -391,6 +391,8 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * Returns the given SQL string in a nicely presented format. Safe for output.
 	 *
+	 * @deprecated Use formatSQL in a React component instead.
+	 *
 	 * @param  string $sql An SQL query string.
 	 * @return string      The SQL formatted with markup.
 	 */

@@ -64,17 +64,12 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$count = ! empty( $data->http ) ? count( $data->http ) : 0;
-
-		$title = ( empty( $count ) )
-			? __( 'HTTP API Calls', 'query-monitor' )
-			/* translators: %s: Number of calls to the HTTP API */
-			: __( 'HTTP API Calls (%s)', 'query-monitor' );
+		$error_count = isset( $data->errors['alert'] ) ? count( $data->errors['alert'] ) : 0;
 
 		$args = array(
-			'title' => sprintf(
-				$title,
-				number_format_i18n( $count )
-			),
+			'title' => __( 'HTTP API Calls', 'query-monitor' ),
+			'count' => $count ?: null,
+			'warning_count' => $error_count ?: null,
 		);
 
 		if ( isset( $data->errors['alert'] ) ) {
