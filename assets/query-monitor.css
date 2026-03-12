@@ -1,4 +1,6 @@
-#query-monitor-main {
+/** === Encapsulation: variables, typography, theme === */
+
+.qm-container {
 	color-scheme: light dark;
 
 	--qm-container-fg:                 light-dark( #1e1e1e, #eaeef2 );
@@ -67,24 +69,16 @@
 	--qm-admin-toolbar-height: 32px;
 
 	background: var( --qm-panel-bg );
-	border-top: 1px solid var( --qm-panel-border );
-	bottom: 0;
 	box-sizing: border-box;
 	color: var( --qm-container-fg );
-	contain: layout paint;
 	direction: ltr;
 	font-family: var( --qm-font-default-face );
 	font-size: var( --qm-font-default-size );
 	font-style: normal;
 	font-weight: normal;
-	left: 0;
 	letter-spacing: -0.1px;
 	line-height: var( --qm-font-default-line-height );
-	position: fixed;
-	right: 0;
 	text-align: left;
-	/* One below the z-index of wp-admin menu flyouts */
-	z-index: 9989;
 
 	&[data-theme="light"] {
 		color-scheme: light;
@@ -93,6 +87,19 @@
 	&[data-theme="dark"] {
 		color-scheme: dark;
 	}
+}
+
+/** === Layout: fixed positioning within WordPress === */
+
+#query-monitor-main {
+	border-top: 1px solid var( --qm-panel-border );
+	bottom: 0;
+	contain: layout paint;
+	left: 0;
+	position: fixed;
+	right: 0;
+	/* One below the z-index of wp-admin menu flyouts */
+	z-index: 9989;
 
 	&:not(.qm-show-right) {
 		width: 100% !important;

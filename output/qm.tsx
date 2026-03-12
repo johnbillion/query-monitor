@@ -76,7 +76,7 @@ export const QM = ( props: Props ) => {
 			: 'light';
 	}
 
-	const mainClass = clsx( 'qm-show', {
+	const mainClass = clsx( 'qm-container', 'qm-show', {
 		'qm-show-right': side,
 		'wp-admin': props.isWpAdmin,
 		'folded': props.isFolded,
