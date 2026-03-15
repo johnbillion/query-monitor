@@ -406,12 +406,35 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * @deprecated
+	 * Returns the fallback file link format from xdebug configuration.
 	 *
-	 * @return false
+	 * Uses `%1$s` for file and `%2$d` for line, matching the sprintf format
+	 * used by the editor formats in JavaScript.
+	 *
+	 * @return string|false
 	 */
 	public static function get_file_link_format() {
-		return false;
+		if ( ! isset( self::$file_link_format ) ) {
+			$format = ini_get( 'xdebug.file_link_format' );
+
+			/**
+			 * Filters the clickable file link format.
+			 *
+			 * @link https://querymonitor.com/help/clickable-stack-traces-and-function-names/
+			 * @since 3.0.0
+			 *
+			 * @param string|false $format The format of the clickable file link, or false if there is none.
+			 */
+			$format = apply_filters( 'qm/output/file_link_format', $format );
+
+			if ( empty( $format ) ) {
+				self::$file_link_format = false;
+			} else {
+				self::$file_link_format = str_replace( array( '%f', '%l' ), array( '%1$s', '%2$d' ), $format );
+			}
+		}
+
+		return self::$file_link_format;
 	}
 
 	/**

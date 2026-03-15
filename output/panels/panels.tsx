@@ -55,6 +55,7 @@ export type iSettings = {
 		off: string;
 	};
 	file_path_map: Record<string, string>;
+	file_link_format: string | false;
 };
 
 type Props = {

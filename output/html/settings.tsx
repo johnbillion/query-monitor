@@ -96,7 +96,10 @@ export const Settings = ( {settings}: SettingsProps ) => {
 									key={ label }
 									value={ name }
 								>
-									{ label }
+									{ ( name === '' && settings.file_link_format )
+										? _x( 'Default', 'editor option', 'query-monitor' )
+										: label
+									}
 								</option>
 							) ) }
 						</select>

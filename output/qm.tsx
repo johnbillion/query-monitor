@@ -114,6 +114,7 @@ export const QM = ( props: Props ) => {
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,
+			file_link_format: props.settings.file_link_format,
 		},
 	};
 

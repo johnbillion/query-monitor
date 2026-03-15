@@ -39,7 +39,7 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 	}
 
 	const linkLine = line || 1;
-	const format = Utils.getEditorFormat( editor );
+	const format = Utils.getEditorFormat( editor ) || ( settings.file_link_format || '' );
 
 	if ( ! format ) {
 		if ( isFileName ) {
