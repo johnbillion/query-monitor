@@ -229,9 +229,6 @@ export interface StackFrame {
 	display: string;
 	file: string | null;
 	line: number | null;
-	function?: string;
-	class?: string;
-	args?: string[];
 }
 /**
  * Conditionals data transfer object.

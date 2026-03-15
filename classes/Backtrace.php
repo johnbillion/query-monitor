@@ -112,7 +112,7 @@ class QM_Backtrace implements JsonSerializable {
 	protected $trace;
 
 	/**
-	 * @var QM_Data_Stack_Frame[]|null
+	 * @var QM_Trace_Frame[]|null
 	 */
 	protected $filtered_trace = null;
 
@@ -217,8 +217,13 @@ class QM_Backtrace implements JsonSerializable {
 	public function get_caller() {
 
 		$trace = $this->get_filtered_trace();
+		$frame = reset( $trace );
 
-		return reset( $trace );
+		if ( ! $frame ) {
+			return false;
+		}
+
+		return $frame->to_data();
 
 	}
 
@@ -277,7 +282,7 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * Attempts to determine the component responsible for a given frame.
 	 */
-	public static function get_frame_component( QM_Data_Stack_Frame $frame ) :? QM_Component {
+	public static function get_frame_component( QM_Trace_Frame $frame ) :? QM_Component {
 		try {
 
 			if ( isset( $frame->class, $frame->function ) ) {
@@ -319,14 +324,14 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * @deprecated Use the `::get_filtered_trace()` method instead.
 	 *
-	 * @return QM_Data_Stack_Frame[]
+	 * @return QM_Trace_Frame[]
 	 */
 	public function get_display_trace() {
 		return $this->get_filtered_trace();
 	}
 
 	/**
-	 * @return QM_Data_Stack_Frame[]
+	 * @return QM_Trace_Frame[]
 	 */
 	public function get_filtered_trace() {
 
@@ -342,7 +347,7 @@ class QM_Backtrace implements JsonSerializable {
 				// When a PHP error is triggered which doesn't have a stack trace, for example a
 				// deprecated error, QM will blame itself due to its error handler. This prevents that.
 				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
-					$fallback = new QM_Data_Stack_Frame();
+					$fallback = new QM_Trace_Frame();
 					$fallback->id = $file;
 					$fallback->display = $file;
 					$fallback->file = $lowest['file'] ?? null;
@@ -419,7 +424,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @param mixed[] $frame
 	 */
-	public function filter_trace( array $frame ) :? QM_Data_Stack_Frame {
+	public function filter_trace( array $frame ) :? QM_Trace_Frame {
 
 		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
 
@@ -578,7 +583,7 @@ class QM_Backtrace implements JsonSerializable {
 			}
 		}
 
-		$result = new QM_Data_Stack_Frame();
+		$result = new QM_Trace_Frame();
 		$result->id = $id;
 		$result->display = $display;
 		$result->file = $frame['file'] ?? null;
@@ -597,17 +602,12 @@ class QM_Backtrace implements JsonSerializable {
 	 * @phpstan-return array{
 	 *   component: QM_Component,
 	 *   callsite: ?QM_Data_Callsite,
-	 *   frames: list<array{id: string, display: string, file: string|null, line: int|null}>,
+	 *   frames: list<QM_Data_Stack_Frame>,
 	 * }
 	 */
 	public function jsonSerialize(): array {
-		$frames = array_map( static function ( QM_Data_Stack_Frame $frame ): array {
-			return array(
-				'id' => $frame->id,
-				'display' => $frame->display,
-				'file' => $frame->file,
-				'line' => $frame->line,
-			);
+		$frames = array_map( static function ( QM_Trace_Frame $frame ): QM_Data_Stack_Frame {
+			return $frame->to_data();
 		}, $this->get_filtered_trace() );
 
 		return array(
