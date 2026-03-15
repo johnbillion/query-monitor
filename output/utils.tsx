@@ -148,6 +148,11 @@ export function getEditors(): { label: string, name: string; format: string; }[]
 			format: 'atom://open/?url=file://%1$s&line=%2$s',
 		},
 		{
+			label: 'Cursor',
+			name: 'cursor',
+			format: 'cursor://file/%1$s:%2$s',
+		},
+		{
 			label: 'Netbeans',
 			name: 'netbeans',
 			format: 'nbopen://%1$s:%2$s',
@@ -176,6 +181,11 @@ export function getEditors(): { label: string, name: string; format: string; }[]
 			label: 'Visual Studio Code',
 			name: 'vscode',
 			format: 'vscode://file/%1$s:%2$s',
+		},
+		{
+			label: 'Zed',
+			name: 'zed',
+			format: 'zed://file/%1$s:%2$s',
 		},
 	];
 }
