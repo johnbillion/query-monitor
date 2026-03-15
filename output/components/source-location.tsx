@@ -43,7 +43,7 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 
 	if ( ! format ) {
 		if ( isFileName ) {
-			return <>{ displayText }</>;
+			return <>{ line ? `${displayText}:${line}` : displayText }</>;
 		}
 
 		return (
