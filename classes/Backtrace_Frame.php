@@ -5,7 +5,7 @@
  * @package query-monitor
  */
 
-class QM_Trace_Frame {
+class QM_Backtrace_Frame {
 	/**
 	 * @var string
 	 */
