@@ -186,7 +186,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	public function enqueue_assets() {
 		// Assets are now output directly in before_output() via QM_Assets::output().
-		// This method is kept for back-compat in case plugins hook into the action below.
+		// This method is kept for back-compat in case plugins hook into the action
+		// or depend on the `query-monitor` script or style.
+
+		wp_register_script( 'query-monitor', false, [], QM_VERSION, false );
+		wp_register_style( 'query-monitor', false, [], QM_VERSION );
 
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
