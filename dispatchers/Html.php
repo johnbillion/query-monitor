@@ -310,6 +310,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
+		// Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
+		self::apply_panel_menu_back_compat( $this->panel_menu );
+
 		$data = array();
 
 		foreach ( $this->outputters as $output_id => $output ) {
@@ -409,6 +412,36 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'id' => 'query-monitor-inline-data',
 			)
 		);
+	}
+
+	/**
+	 * Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
+	 *
+	 * Third-party plugins may register panel menu items with only an 'href'
+	 * property. This method derives the 'id' and 'panel' values from the
+	 * array key and 'href' respectively.
+	 *
+	 * @param array<string, mixed[]> $panel_menu
+	 * @return void
+	 */
+	protected static function apply_panel_menu_back_compat( array &$panel_menu ): void {
+		foreach ( $panel_menu as $id => &$item ) {
+			if ( empty( $item['id'] ) ) {
+				$item['id'] = $id;
+			}
+			if ( empty( $item['panel'] ) && ! empty( $item['href'] ) ) {
+				$item['panel'] = preg_replace( '/^#qm-/', '', $item['href'] );
+			}
+			if ( ! empty( $item['children'] ) ) {
+				foreach ( $item['children'] as &$child ) {
+					if ( empty( $child['panel'] ) && ! empty( $child['href'] ) ) {
+						$child['panel'] = preg_replace( '/^#qm-/', '', $child['href'] );
+					}
+				}
+				unset( $child );
+			}
+		}
+		unset( $item );
 	}
 
 	/**
