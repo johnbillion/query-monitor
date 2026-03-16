@@ -62,7 +62,6 @@ export const QM = ( props: Props ) => {
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
-		props.onPanelChange( active );
 		// @TODO focus the panel for a11y
 	};
 
@@ -132,8 +131,13 @@ export const QM = ( props: Props ) => {
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
 	const mainRef = useRef<HTMLDivElement>( null );
-	const { onContainerResize, containerHeight } = props;
+	const { onContainerResize, onPanelChange, containerHeight } = props;
 	const initialHeightApplied = useRef( false );
+
+	useEffect( () => {
+		onPanelChange( active );
+		mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+	}, [ active, onPanelChange ] );
 
 	useEffect( () => {
 		if ( ! active ) {
