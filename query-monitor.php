@@ -12,7 +12,6 @@
  * Description:  The developer tools panel for WordPress and WooCommerce.
  * Version:      4.0.0-beta.1
  * Plugin URI:   https://querymonitor.com/
- * Plugin ID:    did:plc:q2afge25l63iz553aumeqi3w
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
