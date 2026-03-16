@@ -43,6 +43,7 @@
 	--qm-title-button-bg:              light-dark( transparent, transparent );
 	--qm-title-button-fg-hover:        light-dark( #1e1e1e, #32373c );
 	--qm-title-button-bg-hover:        light-dark( #dcdcde, #bbc8d4 );
+	--qm-title-button-bg-active:       light-dark( #c8c8ca, #a3b0bc );
 	--qm-info-fg:                      light-dark( #50575e, #aaa );
 	--qm-warn-fg:                      light-dark( #8a2424, #fff0f0 );
 	--qm-warn-bg:                      light-dark( #fcf0f1, #622 );
@@ -274,11 +275,10 @@ i {
 	}
 
 	.qm-button-container-position {
-		transform: scaleX(-1) rotate(90deg);
-
 		.qm-icon {
 			width: 12px;
 			height: 12px;
+			transform: scaleX(-1) rotate(90deg);
 		}
 	}
 
@@ -320,12 +320,13 @@ i {
 
 	button:active *,
 	button:active {
-		background: green;
+		background: var( --qm-title-button-bg-active );
 	}
+
 }
 
 .qm-show-right #qm-title .qm-button-container-position .qm-icon {
-	margin: 4px 1px 0 1px;
+	margin: 1px 1px 0 1px;
 	transform: none;
 }
 
@@ -953,6 +954,10 @@ i {
 	tbody tr:nth-child(odd).qm-warn td,
 	tbody tr:nth-child(odd).qm-warn th {
 		background-color: var( --qm-warn-bg-dark );
+	}
+
+	tbody tr.qm-warn .qm-warn {
+		background-color: transparent;
 	}
 }
 
