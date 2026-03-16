@@ -1,6 +1,7 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Component } from '../component';
+import { SourceLocation } from '../components/source-location';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { componentFilterCallback, deriveComponentFilters } from '../table';
@@ -17,7 +18,7 @@ type HookComponent = NonNullable<HookCallback['component']>;
 interface FlattenedRow {
 	hookName: string;
 	priority: number | null;
-	callback: string | null;
+	callback: HookCallback | null;
 	component: HookComponent | null;
 }
 
@@ -34,11 +35,10 @@ const flattenHooks = ( hooks: DataTypes['hooks']['hooks'] ): FlattenedRow[] => {
 			} );
 		} else {
 			for ( const action of hook.actions ) {
-				const cb = ( action.callback.callback_type === 'closure' ) ? `Closure: ${ action.callback.display_file }:${ action.callback.line }` : ( action.callback.name ?? null );
 				rows.push( {
 					hookName: hook.name,
 					priority: action.priority,
-					callback: cb,
+					callback: action.callback,
 					component: action.callback.component ?? null,
 				} );
 			}
@@ -109,7 +109,22 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 				callback: {
 					heading: __( 'Action', 'query-monitor' ),
 					className: 'qm-nowrap',
-					render: ( row ) => row.callback ? <code>{ row.callback }</code> : '',
+					render: ( row ) => {
+						if ( ! row.callback ) {
+							return '';
+						}
+						const text = row.callback.name || row.callback.display_file || '';
+						if ( ! text ) {
+							return '';
+						}
+						return (
+							<SourceLocation
+								text={ text }
+								file={ row.callback.file || null }
+								line={ row.callback.line || 0 }
+							/>
+						);
+					},
 				},
 				component: {
 					heading: __( 'Component', 'query-monitor' ),
