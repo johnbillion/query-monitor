@@ -336,7 +336,7 @@ i {
 	overflow-y: scroll;
 	overscroll-behavior: contain;
 	height: auto;
-	min-width: 160px;
+	min-width: 180px;
 
 	ul {
 		display: block;
