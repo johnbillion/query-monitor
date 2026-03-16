@@ -1,4 +1,5 @@
 import { TabularPanel } from '../panels/tabular-panel';
+import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
 import { JsonOutput } from '../components/json-output';
@@ -94,19 +95,19 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			},
 			context: {
 				heading: __( 'Context', 'query-monitor' ),
+				className: 'qm-has-toggle',
 				render: ( row ) => {
 					if ( ! row.context || Object.keys( row.context ).length === 0 ) {
 						return '';
 					}
 					return (
-						<details>
-							<summary>{ sprintf(
+						<Toggler summary={ sprintf(
 							/* translators: %d: Number of items */
 							_n( '%d item', '%d items', Object.keys( row.context ).length, 'query-monitor' ),
 							Object.keys( row.context ).length
-						) }</summary>
+						) }>
 							<JsonOutput data={ row.context } />
-						</details>
+						</Toggler>
 					);
 				},
 			},

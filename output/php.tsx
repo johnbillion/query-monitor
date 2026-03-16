@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Toggler } from './components/toggler';
 import { Warning } from './components/warning';
 import { Environment as EnvironmentData } from './data-types';
 import { __ } from '@wordpress/i18n';
@@ -64,10 +65,7 @@ const PHP = ( { php }: Props ) => (
 						{ __( 'Error Reporting', 'query-monitor' ) }
 					</th>
 					<td className="qm-has-toggle qm-ltr">
-						<details>
-							<summary>
-								{ php.error_reporting }
-							</summary>
+						<Toggler summary={ php.error_reporting }>
 							<ul>
 								{ Object.keys( php.error_levels ).map( ( key ) => (
 									<li key={ key }>
@@ -84,7 +82,7 @@ const PHP = ( { php }: Props ) => (
 									</li>
 								) ) }
 							</ul>
-						</details>
+						</Toggler>
 					</td>
 				</tr>
 				{ php.extensions && (
@@ -93,10 +91,7 @@ const PHP = ( { php }: Props ) => (
 							{ __( 'Extensions', 'query-monitor' ) }
 						</th>
 						<td className="qm-has-toggle qm-ltr">
-							<details>
-								<summary>
-									{ Object.keys( php.extensions ).length } { __( 'extensions', 'query-monitor' ) }
-								</summary>
+							<Toggler summary={ <>{ Object.keys( php.extensions ).length } { __( 'extensions', 'query-monitor' ) }</> }>
 								<ul>
 									{ Object.keys( php.extensions ).map( key => (
 										<li key={ key }>
@@ -104,7 +99,7 @@ const PHP = ( { php }: Props ) => (
 										</li>
 									) ) }
 								</ul>
-							</details>
+							</Toggler>
 						</td>
 					</tr>
 				) }
