@@ -371,7 +371,13 @@ abstract class QM_Output_Html extends QM_Output {
 			$fallback .= ':' . $line;
 		}
 
-		if ( 0 === strpos( $text, '{closure:/' ) ) {
+		/*
+		 * A closure in PHP looks like:
+		 *
+		 * - `{closure}` in PHP < 8.3
+		 * - {closure:/<file>:<line>}` in PHP >= 8.4
+		 */
+		if ( 0 === strpos( $text, '{closure' ) ) {
 			$text = sprintf(
 				/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
 				__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
