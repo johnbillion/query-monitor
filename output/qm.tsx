@@ -46,7 +46,7 @@ type Props = {
 	isAutoFold: boolean;
 	isRtl: boolean;
 	onPanelChange: ( active: string ) => void;
-	onContainerResize: ( height: number, width: number ) => void;
+	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
 	onThemeChange: ( theme: string ) => void;
 	onEditorChange: ( editor: string ) => void;
@@ -189,7 +189,7 @@ export const QM = ( props: Props ) => {
 		const end = (_event: PointerEvent) => {
 			if ( dragging ) {
 				const rect = qmMain.getBoundingClientRect();
-				onContainerResize( rect.height, rect.width );
+				onContainerResize( rect.height );
 			}
 
 			dragging = false;
@@ -240,9 +240,6 @@ export const QM = ( props: Props ) => {
 			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
-					{ side && (
-						<div className="qm-resizer" id="qm-side-resizer"></div>
-					) }
 					<div id="qm-title">
 						<h1 className="qm-title-heading qm-resizer">
 							{ __( 'Query Monitor', 'query-monitor' ) }

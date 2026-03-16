@@ -152,17 +152,6 @@
 			display: block;
 			cursor: default;
 		}
-
-		#qm-side-resizer {
-			background: transparent;
-			cursor: ew-resize;
-			height: 100%;
-			position: absolute;
-			left: -2px;
-			top: 0;
-			width: 4px;
-			z-index: 2;
-		}
 	}
 }
 

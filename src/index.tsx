@@ -250,7 +250,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
-	const containerWidthKey = 'qm-container-width';
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -276,9 +275,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		sessionStorage.setItem( filtersKey, JSON.stringify( filters ) );
 	}
 
-	const onContainerResize = ( height: number, width: number ) => {
+	const onContainerResize = ( height: number ) => {
 		localStorage.setItem( containerHeightKey, height.toString() );
-		localStorage.setItem( containerWidthKey, width.toString() );
 	}
 
 	const active = localStorage.getItem( panelKey ) ?? '';
