@@ -41,6 +41,15 @@ class QM_Backtrace_Frame {
 	 */
 	public $args;
 
+	/**
+	 * Whether this frame should keep its original file/line
+	 * instead of being shifted during serialization.
+	 *
+	 * @var bool
+	 */
+	public $keep_file_line = false;
+
+
 	public function to_data(): QM_Data_Stack_Frame {
 		$data = new QM_Data_Stack_Frame();
 		$data->id = $this->id;

@@ -5,6 +5,9 @@
  * @package query-monitor
  */
 
+/**
+ * @phpstan-import-type BacktraceArgs from QM_Backtrace
+ */
 class QM_Timer {
 
 	/**
@@ -44,10 +47,11 @@ class QM_Timer {
 
 	/**
 	 * @param mixed[] $data
+	 * @phpstan-param BacktraceArgs $backtrace_args
 	 * @return self
 	 */
-	public function start( ?array $data = null ) {
-		$this->trace = new QM_Backtrace();
+	public function start( ?array $data = null, array $backtrace_args = array() ) {
+		$this->trace = new QM_Backtrace( $backtrace_args );
 		$this->start = array(
 			'time' => microtime( true ),
 			'memory' => memory_get_usage(),

@@ -5,7 +5,7 @@
  */
 
 /**
- * Serialized stack trace frame.
+ * Stack trace frame.
  *
  * @package query-monitor
  */

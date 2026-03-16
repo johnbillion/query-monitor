@@ -23,8 +23,9 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 	// This creates a copy of the frames array.
 	const frames = trace?.frames ? [ ...trace.frames ] : [];
 
-	// When a call site is present it serves as the caller, so don't shift from the stack.
-	const caller = callsite ? null : frames.shift();
+	// Frame 0 is always removed from the stack. It either becomes the
+	// caller display, or is redundant with the call site.
+	const caller = frames.shift() ?? null;
 	const hasStack = frames.length > 0;
 
 	if ( ! callsite && ! caller ) {
@@ -55,7 +56,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 						/>
 					</li>
 				) }
-				{ caller && (
+				{ ! callsite && caller && (
 					<li>
 						<SourceLocation
 							text={ caller.display }
