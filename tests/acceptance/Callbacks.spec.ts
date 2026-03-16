@@ -33,7 +33,7 @@ test.describe( 'Callback Types in Hooks & Actions', () => {
 	test( 'Closure callback should be displayed', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersCallbackType( 'closure' );
 		await QueryMonitor.seeQMMenu();
-		await QueryMonitor.seeInQMPanel( 'Hooks & Actions', 'Closure: ' );
+		await QueryMonitor.seeInQMPanel( 'Hooks & Actions', 'Closure on line' );
 		await QueryMonitor.seeInQMPanel( 'Hooks & Actions', 'acceptance.php' );
 		await QueryMonitor.seeInQMPanel( 'Hooks & Actions', 'qm_test_hook' );
 	} );
