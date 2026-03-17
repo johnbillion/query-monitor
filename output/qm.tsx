@@ -46,6 +46,7 @@ type Props = {
 	isFolded: boolean;
 	isAutoFold: boolean;
 	isRtl: boolean;
+	isFullscreenMode: boolean;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -83,6 +84,7 @@ export const QM = ( props: Props ) => {
 		'wp-admin': props.isWpAdmin,
 		'folded': props.isFolded,
 		'auto-fold': props.isAutoFold,
+		'fullscreen-mode': props.isFullscreenMode,
 		'rtl': props.isRtl,
 	} );
 

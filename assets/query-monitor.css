@@ -160,6 +160,12 @@
 				width: 100% !important;
 			}
 		}
+
+		/* Revert to full width when the editor is in fullscreen mode */
+		&.wp-admin.fullscreen-mode {
+			left: 0;
+			width: 100% !important;
+		}
 	}
 
 	&.qm-show-right {

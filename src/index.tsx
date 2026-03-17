@@ -320,6 +320,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const getBodyClasses = () => ( {
 		isFolded: document.body.classList.contains( 'folded' ),
 		isAutoFold: document.body.classList.contains( 'auto-fold' ),
+		isFullscreenMode: document.body.classList.contains( 'is-fullscreen-mode' ),
 	} );
 
 	const renderQM = () => {
