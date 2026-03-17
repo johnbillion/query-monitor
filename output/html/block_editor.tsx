@@ -2,6 +2,7 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Time } from '../components/time';
 import { JsonOutput } from '../components/json-output';
+import { SourceLocation } from '../components/source-location';
 import { DataTypes, PostBlock } from '../data-types';
 import { PanelProps } from '../types';
 import { Cols } from '../table';
@@ -53,7 +54,6 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 	const cols: Cols<iBlock> = {
 		index: {
 			heading: '#',
-			className: 'qm-cell-num qm-num',
 			render: (row: iBlock) => row.index,
 		},
 		blockName: {
@@ -81,11 +81,18 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 
 	cols.callback = {
 		heading: __('Render Callback', 'query-monitor'),
-		render: (row: iBlock) => row.dynamic && row.callback?.name,
+		render: (row: iBlock) => row.dynamic && row.callback?.name && (
+			<SourceLocation
+				text={ row.callback.name }
+				file={ row.callback.file || null }
+				line={ row.callback.line || null }
+			/>
+		),
 	};
 
 	cols.timing = {
 		heading: __('Render Time', 'query-monitor'),
+		className: 'qm-cell-num qm-num',
 		render: (row: iBlock) => row.dynamic ? <Time value={row.timing} /> : null,
 	};
 
