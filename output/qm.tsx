@@ -10,7 +10,7 @@ import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
 const devCssUrl = import.meta.env.DEV
-	? `${ import.meta.env.BASE_URL }assets/query-monitor.css`
+	? new URL( import.meta.url ).origin + '/assets/query-monitor.css'
 	: '';
 
 type Props = {
