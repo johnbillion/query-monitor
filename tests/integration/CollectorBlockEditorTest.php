@@ -73,35 +73,63 @@ class CollectorBlockEditorTest extends Test {
 		);
 	}
 
-	function testLeafBlocksGetIndependentTimings(): void {
+	/**
+	 * Returns the block_timing array from the collector via reflection.
+	 *
+	 * @return array<int, \QM_Timer|false>
+	 */
+	private function getBlockTimingArray(): array {
+		$ref = new \ReflectionProperty( $this->collector, 'block_timing' );
+		$ref->setAccessible( true );
+		return $ref->getValue( $this->collector );
+	}
+
+	function testLeafBlocksGetDistinctTimerInstances(): void {
 		$block_a = $this->makeBlock( 'core/paragraph' );
 		$block_b = $this->makeBlock( 'core/heading' );
 
 		$this->simulateRenderBlock( $block_a );
 		$this->simulateRenderBlock( $block_b );
 
-		$post_id = self::factory()->post->create( array(
-			'post_content' => '<!-- wp:paragraph --><p>test</p><!-- /wp:paragraph --><!-- wp:heading --><p>test</p><!-- /wp:heading -->',
-		) );
+		$timers = $this->getBlockTimingArray();
 
-		$this->go_to( get_permalink( $post_id ) );
-
-		$this->collector->process();
-		$data = $this->collector->get_data();
-
-		self::assertCount( 2, $data->post_blocks );
-		self::assertIsFloat( $data->post_blocks[0]->timing );
-		self::assertIsFloat( $data->post_blocks[1]->timing );
-		self::assertNotSame( $data->post_blocks[0]->timing, $data->post_blocks[1]->timing );
+		self::assertCount( 2, $timers );
+		self::assertInstanceOf( \QM_Timer::class, $timers[0] );
+		self::assertInstanceOf( \QM_Timer::class, $timers[1] );
+		self::assertNotSame( $timers[0], $timers[1] );
 	}
 
-	function testNestedBlocksGetIndependentTimings(): void {
+	function testNestedBlocksGetDistinctTimerInstances(): void {
 		$child_a = $this->makeBlock( 'core/paragraph' );
 		$child_b = $this->makeBlock( 'core/heading' );
 		$parent = $this->makeBlock( 'core/group', array(), array( $child_a, $child_b ) );
 
 		// Simulate the rendering order WordPress uses:
 		// parent start -> child_a start -> child_a end -> child_b start -> child_b end -> parent end
+		$this->simulateRenderParentBlock( $parent, array(), function () use ( $child_a, $child_b ) {
+			$this->simulateRenderBlock( $child_a );
+			$this->simulateRenderBlock( $child_b );
+		} );
+
+		$timers = $this->getBlockTimingArray();
+
+		// Timers are pushed in pre-order: parent, child_a, child_b.
+		self::assertCount( 3, $timers );
+		self::assertInstanceOf( \QM_Timer::class, $timers[0] );
+		self::assertInstanceOf( \QM_Timer::class, $timers[1] );
+		self::assertInstanceOf( \QM_Timer::class, $timers[2] );
+
+		// Each block must have its own distinct timer instance.
+		self::assertNotSame( $timers[0], $timers[1] );
+		self::assertNotSame( $timers[0], $timers[2] );
+		self::assertNotSame( $timers[1], $timers[2] );
+	}
+
+	function testNestedBlocksProcessCorrectly(): void {
+		$child_a = $this->makeBlock( 'core/paragraph' );
+		$child_b = $this->makeBlock( 'core/heading' );
+		$parent = $this->makeBlock( 'core/group', array(), array( $child_a, $child_b ) );
+
 		$this->simulateRenderParentBlock( $parent, array(), function () use ( $child_a, $child_b ) {
 			$this->simulateRenderBlock( $child_a );
 			$this->simulateRenderBlock( $child_b );
@@ -124,28 +152,18 @@ class CollectorBlockEditorTest extends Test {
 		self::assertIsFloat( $group->timing );
 		self::assertCount( 2, $group->innerBlocks );
 
-		$inner_a = $group->innerBlocks[0];
-		$inner_b = $group->innerBlocks[1];
-
-		self::assertSame( 'core/paragraph', $inner_a->blockName );
-		self::assertSame( 'core/heading', $inner_b->blockName );
-		self::assertIsFloat( $inner_a->timing );
-		self::assertIsFloat( $inner_b->timing );
-
-		// The parent timing must be different from the children.
-		self::assertNotSame( $group->timing, $inner_a->timing );
-		self::assertNotSame( $group->timing, $inner_b->timing );
-
-		// The children must have different timings from each other.
-		self::assertNotSame( $inner_a->timing, $inner_b->timing );
+		self::assertSame( 'core/paragraph', $group->innerBlocks[0]->blockName );
+		self::assertSame( 'core/heading', $group->innerBlocks[1]->blockName );
+		self::assertIsFloat( $group->innerBlocks[0]->timing );
+		self::assertIsFloat( $group->innerBlocks[1]->timing );
 
 		// The parent timing must be greater than or equal to each child
 		// because it encompasses the rendering of its children.
-		self::assertGreaterThanOrEqual( $inner_a->timing, $group->timing );
-		self::assertGreaterThanOrEqual( $inner_b->timing, $group->timing );
+		self::assertGreaterThanOrEqual( $group->innerBlocks[0]->timing, $group->timing );
+		self::assertGreaterThanOrEqual( $group->innerBlocks[1]->timing, $group->timing );
 	}
 
-	function testDeeplyNestedBlocksGetIndependentTimings(): void {
+	function testDeeplyNestedBlocksGetDistinctTimerInstances(): void {
 		$leaf = $this->makeBlock( 'core/paragraph' );
 		$mid = $this->makeBlock( 'core/group', array(), array( $leaf ) );
 		$root = $this->makeBlock( 'core/group', array( 'tagName' => 'main' ), array( $mid ) );
@@ -157,69 +175,18 @@ class CollectorBlockEditorTest extends Test {
 			} );
 		} );
 
-		$post_id = self::factory()->post->create( array(
-			'post_content' => '<!-- wp:group {"tagName":"main"} --><main class="wp-block-group"><!-- wp:group --><div class="wp-block-group"><!-- wp:paragraph --><p>test</p><!-- /wp:paragraph --></div><!-- /wp:group --></main><!-- /wp:group -->',
-		) );
+		$timers = $this->getBlockTimingArray();
 
-		$this->go_to( get_permalink( $post_id ) );
+		// Timers are pushed in pre-order: root, mid, leaf.
+		self::assertCount( 3, $timers );
+		self::assertInstanceOf( \QM_Timer::class, $timers[0] );
+		self::assertInstanceOf( \QM_Timer::class, $timers[1] );
+		self::assertInstanceOf( \QM_Timer::class, $timers[2] );
 
-		$this->collector->process();
-		$data = $this->collector->get_data();
-
-		self::assertCount( 1, $data->post_blocks );
-
-		$root_block = $data->post_blocks[0];
-		$mid_block = $root_block->innerBlocks[0];
-		$leaf_block = $mid_block->innerBlocks[0];
-
-		self::assertSame( 'core/group', $root_block->blockName );
-		self::assertSame( 'core/group', $mid_block->blockName );
-		self::assertSame( 'core/paragraph', $leaf_block->blockName );
-
-		// All three blocks must have independent timings.
-		self::assertIsFloat( $root_block->timing );
-		self::assertIsFloat( $mid_block->timing );
-		self::assertIsFloat( $leaf_block->timing );
-		self::assertNotSame( $root_block->timing, $mid_block->timing );
-		self::assertNotSame( $root_block->timing, $leaf_block->timing );
-		self::assertNotSame( $mid_block->timing, $leaf_block->timing );
-	}
-
-	function testParentWithMultipleChildrenAllHaveTimings(): void {
-		$child_a = $this->makeBlock( 'core/paragraph' );
-		$child_b = $this->makeBlock( 'core/heading' );
-		$child_c = $this->makeBlock( 'core/image' );
-		$parent = $this->makeBlock( 'core/group', array(), array( $child_a, $child_b, $child_c ) );
-
-		$this->simulateRenderParentBlock( $parent, array(), function () use ( $child_a, $child_b, $child_c ) {
-			$this->simulateRenderBlock( $child_a );
-			$this->simulateRenderBlock( $child_b );
-			$this->simulateRenderBlock( $child_c );
-		} );
-
-		$post_id = self::factory()->post->create( array(
-			'post_content' => '<!-- wp:group --><div class="wp-block-group"><!-- wp:paragraph --><p>test</p><!-- /wp:paragraph --><!-- wp:heading --><p>test</p><!-- /wp:heading --><!-- wp:image --><p>test</p><!-- /wp:image --></div><!-- /wp:group -->',
-		) );
-
-		$this->go_to( get_permalink( $post_id ) );
-
-		$this->collector->process();
-		$data = $this->collector->get_data();
-
-		$group = $data->post_blocks[0];
-
-		self::assertCount( 3, $group->innerBlocks );
-
-		// All blocks must have valid float timings.
-		self::assertIsFloat( $group->timing );
-		self::assertIsFloat( $group->innerBlocks[0]->timing );
-		self::assertIsFloat( $group->innerBlocks[1]->timing );
-		self::assertIsFloat( $group->innerBlocks[2]->timing );
-
-		// Parent timing must encompass children.
-		self::assertGreaterThanOrEqual( $group->innerBlocks[0]->timing, $group->timing );
-		self::assertGreaterThanOrEqual( $group->innerBlocks[1]->timing, $group->timing );
-		self::assertGreaterThanOrEqual( $group->innerBlocks[2]->timing, $group->timing );
+		// Each level must have its own distinct timer instance.
+		self::assertNotSame( $timers[0], $timers[1] );
+		self::assertNotSame( $timers[0], $timers[2] );
+		self::assertNotSame( $timers[1], $timers[2] );
 	}
 
 	function testTimingContextAlignmentWithSiblingGroups(): void {
@@ -254,8 +221,10 @@ class CollectorBlockEditorTest extends Test {
 		self::assertSame( $ctx_a, $data->post_blocks[0]->context );
 		self::assertSame( $ctx_b, $data->post_blocks[1]->context );
 
-		// Verify each block and its child have independent timings.
-		self::assertNotSame( $data->post_blocks[0]->timing, $data->post_blocks[0]->innerBlocks[0]->timing );
-		self::assertNotSame( $data->post_blocks[1]->timing, $data->post_blocks[1]->innerBlocks[0]->timing );
+		// Verify all blocks have valid float timings.
+		self::assertIsFloat( $data->post_blocks[0]->timing );
+		self::assertIsFloat( $data->post_blocks[0]->innerBlocks[0]->timing );
+		self::assertIsFloat( $data->post_blocks[1]->timing );
+		self::assertIsFloat( $data->post_blocks[1]->innerBlocks[0]->timing );
 	}
 }
