@@ -67,6 +67,14 @@ export default defineConfig({
 						link: '/wordpress-debugging/how-to-use/',
 					},
 					{
+						text: 'Database queries',
+						link: '/wordpress-debugging/database-queries/',
+					},
+					{
+						text: 'Hooks',
+						link: '/wordpress-debugging/hooks/',
+					},
+					{
 						text: 'Template parts',
 						link: '/wordpress-debugging/template-part-loading/',
 					},
@@ -79,8 +87,36 @@ export default defineConfig({
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
 					{
+						text: 'PHP errors',
+						link: '/wordpress-debugging/php-errors/',
+					},
+					{
+						text: 'Doing it Wrong',
+						link: '/wordpress-debugging/doing-it-wrong/',
+					},
+					{
+						text: 'HTTP headers',
+						link: '/wordpress-debugging/headers/',
+					},
+					{
 						text: 'User capabilities',
 						link: '/wordpress-debugging/user-capabilities/',
+					},
+					{
+						text: 'Conditionals',
+						link: '/wordpress-debugging/conditionals/',
+					},
+					{
+						text: 'Environment',
+						link: '/wordpress-debugging/environment/',
+					},
+					{
+						text: 'Admin screen',
+						link: '/wordpress-debugging/admin-screen/',
+					},
+					{
+						text: 'Multisite',
+						link: '/wordpress-debugging/multisite/',
 					},
 					{
 						text: 'REST API requests',
