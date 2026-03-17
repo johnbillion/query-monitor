@@ -199,7 +199,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 
 		if ( $block_type && $block_type->is_dynamic() ) {
 			$dynamic = true;
-			$callback = QM_Util::populate_callback( array(
+			$callback = QM_Util::determine_callback( array(
 				'function' => $block_type->render_callback,
 			) );
 		}

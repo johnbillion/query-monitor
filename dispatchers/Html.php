@@ -630,7 +630,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<p>Call stack:</p>';
 			echo '<ol>';
 			foreach ( $e['trace'] as $frame ) {
-				$callback = QM_Util::populate_callback( $frame );
+				$callback = QM_Util::determine_callback( $frame );
 
 				if ( ! isset( $callback->name ) ) {
 					continue;
