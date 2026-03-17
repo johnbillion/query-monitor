@@ -128,6 +128,8 @@ Yes. You can enable this on the Settings panel.
 
 You can submit a private security vulnerability report to Query Monitor via [the Security tab on the GitHub repo](https://github.com/johnbillion/query-monitor/security). The GitHub Security Advisory process facilitates private collaboration on security issues. You'll receive credit for a valid report and a CVE if necessary.
 
+Do not report security issues on the WordPress.org support forums or via email. Thank you.
+
 ### Do you accept donations?
 
 [I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
