@@ -959,6 +959,8 @@ i {
 	input[type="checkbox"].qm-checkbox:checked:hover {
 		all: revert;
 		accent-color: var( --qm-button-bg );
+		vertical-align: -2px;
+		margin-right: 5px;
 
 		&::before,
 		&::after {
