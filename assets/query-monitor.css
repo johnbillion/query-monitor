@@ -1134,11 +1134,11 @@ i {
 
 	a.qm-external-link,
 	a.qm-link:hover,
-	a.qm-link:focus,
+	a.qm-link:focus-visible,
 	a.qm-edit-link:hover,
-	a.qm-edit-link:focus,
+	a.qm-edit-link:focus-visible,
 	button.qm-filter-trigger:hover,
-	button.qm-filter-trigger:focus {
+	button.qm-filter-trigger:focus-visible {
 		svg {
 			visibility: visible;
 		}
