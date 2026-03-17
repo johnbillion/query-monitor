@@ -331,7 +331,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 								role="columnheader"
 								scope="col"
 							>
-								{ colFilters.length ? (
+								{ colFilters.length && total > 1 ? (
 									<div className="qm-filter-container">
 										<label htmlFor={ `qm-filter-${ key }` }>
 											{ col.heading }
