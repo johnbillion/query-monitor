@@ -139,7 +139,7 @@ class CollectorBlockEditorTest extends Test {
 			'post_content' => '<!-- wp:group --><div class="wp-block-group"><!-- wp:paragraph --><p>test</p><!-- /wp:paragraph --><!-- wp:heading --><p>test</p><!-- /wp:heading --></div><!-- /wp:group -->',
 		) );
 
-		$this->go_to( get_permalink( $post_id ) );
+		$this->go_to( (string) get_permalink( $post_id ) );
 
 		$this->collector->process();
 		$data = $this->collector->get_data();
@@ -210,7 +210,7 @@ class CollectorBlockEditorTest extends Test {
 			'post_content' => '<!-- wp:group --><div class="wp-block-group"><!-- wp:paragraph --><p>test</p><!-- /wp:paragraph --></div><!-- /wp:group --><!-- wp:group --><div class="wp-block-group"><!-- wp:heading --><p>test</p><!-- /wp:heading --></div><!-- /wp:group -->',
 		) );
 
-		$this->go_to( get_permalink( $post_id ) );
+		$this->go_to( (string) get_permalink( $post_id ) );
 
 		$this->collector->process();
 		$data = $this->collector->get_data();
