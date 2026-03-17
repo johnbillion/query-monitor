@@ -247,6 +247,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const panelKey = `qm-${ isWpAdmin ? 'admin' : 'front' }-panel`;
 	const positionKey = 'qm-container-position';
 	const themeKey = 'qm-theme';
+	const fabulousKey = 'qm-fabulous';
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
@@ -267,6 +268,14 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( themeKey, theme );
 	}
 
+	const onFabulousChange = ( fabulous: boolean ) => {
+		if ( fabulous ) {
+			localStorage.setItem( fabulousKey, '1' );
+		} else {
+			localStorage.removeItem( fabulousKey );
+		}
+	}
+
 	const onEditorChange = ( editor: string ) => {
 		localStorage.setItem( editorKey, editor );
 	}
@@ -283,6 +292,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
 	const theme = localStorage.getItem( themeKey ) ?? 'auto';
+	const fabulous = !! localStorage.getItem( fabulousKey );
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const rawContainerHeight = localStorage.getItem( containerHeightKey );
@@ -326,6 +336,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				settings={ settings }
 				side={ side }
 				theme={ theme }
+				fabulous={ fabulous }
 				editor={ editor }
 				filters={ filters }
 				containerHeight={ containerHeight }
@@ -333,6 +344,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onContainerResize={ onContainerResize }
 				onSideChange={ onSideChange }
 				onThemeChange={ onThemeChange }
+				onFabulousChange={ onFabulousChange }
 				onEditorChange={ onEditorChange }
 				onFiltersChange={ onFiltersChange }
 				{ ...getBodyClasses() }

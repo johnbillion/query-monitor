@@ -38,6 +38,7 @@ type Props = {
 	panel_menu: iNavMenu;
 	side: boolean;
 	theme: string;
+	fabulous: boolean;
 	editor: string;
 	filters: MainContextType['filters'];
 	containerHeight: number | null;
@@ -49,6 +50,7 @@ type Props = {
 	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
 	onThemeChange: ( theme: string ) => void;
+	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
 }
@@ -57,6 +59,7 @@ export const QM = ( props: Props ) => {
 	const [ active, setActive ] = useState( props.active );
 	const [ side, setSide ] = useState( props.side );
 	const [ theme, setTheme ] = useState( props.theme );
+	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
 
@@ -88,6 +91,11 @@ export const QM = ( props: Props ) => {
 		setTheme: ( theme: string ) => {
 			props.onThemeChange( theme );
 			setTheme( theme );
+		},
+		fabulous: fabulous,
+		setFabulous: ( fabulous: boolean ) => {
+			props.onFabulousChange( fabulous );
+			setFabulous( fabulous );
 		},
 		editor: editor,
 		setEditor: ( editor: string ) => {
@@ -244,9 +252,11 @@ export const QM = ( props: Props ) => {
 			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
-					<div id="qm-title">
+					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
 						<h1 className="qm-title-heading qm-resizer">
-							{ __( 'Query Monitor', 'query-monitor' ) }
+							<span>
+								{ __( 'Query Monitor', 'query-monitor' ) }
+							</span>
 						</h1>
 						{ side && (
 							<div className="qm-title-heading">

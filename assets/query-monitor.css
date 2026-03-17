@@ -68,6 +68,31 @@
 	--qm-font-code-size: 11px;
 	--qm-font-code-line-height: 20px;
 	--qm-admin-toolbar-height: 32px;
+	--qm-fabulous-gradient: repeating-linear-gradient(
+		135deg,
+		#FFFFFF 0px,
+		#FFFFFF 20px,
+		#F5A9B8 20px,
+		#F5A9B8 40px,
+		#5BCEFA 40px,
+		#5BCEFA 60px,
+		#613915 60px,
+		#613915 80px,
+		#000000 80px,
+		#000000 100px,
+		#E40303 100px,
+		#E40303 120px,
+		#FF8D00 120px,
+		#FF8D00 140px,
+		#FFED00 140px,
+		#FFED00 160px,
+		#008026 160px,
+		#008026 180px,
+		#004DFF 180px,
+		#004DFF 200px,
+		#750787 200px,
+		#750787 220px
+	);
 
 	background: var( --qm-panel-bg );
 	box-sizing: border-box;
@@ -248,6 +273,22 @@ i {
 		flex-grow: 1;
 		margin-right: 6px;
 		font-size: 11px;
+	}
+
+	&.qm-fabulous .qm-title-heading {
+		&::before {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 8px;
+			clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+			animation: qm-fabulous-swipe 0.5s ease-out;
+			background: var( --qm-fabulous-gradient );
+		}
+
+		span {
+			display: none;
+		}
 	}
 
 	div.qm-title-heading {
@@ -903,7 +944,13 @@ i {
 	input[type="radio"].qm-radio:focus-visible,
 	input[type="radio"].qm-radio:checked:focus-visible,
 	input[type="radio"].qm-radio:hover,
-	input[type="radio"].qm-radio:checked:hover {
+	input[type="radio"].qm-radio:checked:hover,
+	input[type="checkbox"].qm-checkbox,
+	input[type="checkbox"].qm-checkbox:checked,
+	input[type="checkbox"].qm-checkbox:focus-visible,
+	input[type="checkbox"].qm-checkbox:checked:focus-visible,
+	input[type="checkbox"].qm-checkbox:hover,
+	input[type="checkbox"].qm-checkbox:checked:hover {
 		all: revert;
 		accent-color: var( --qm-button-bg );
 
@@ -911,6 +958,10 @@ i {
 		&::after {
 			display: none;
 		}
+	}
+
+	.qm-fabulous-toggle {
+		margin-top: 10px;
 	}
 
 	tbody tr td,
@@ -1329,4 +1380,15 @@ select {
 
 #qm-logger tr pre {
 	user-select: all;
+}
+
+/** === Animations === */
+
+@keyframes qm-fabulous-swipe {
+	from {
+		clip-path: polygon(6px 0, 6px 0, 0 100%, 0 100%);
+	}
+	to {
+		clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+	}
 }

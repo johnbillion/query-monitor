@@ -21,6 +21,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setEditor,
 		theme,
 		setTheme,
+		fabulous,
+		setFabulous,
 	} = useContext( MainContext );
 
 	const setVerify = () => {
@@ -137,6 +139,20 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							</li>
 						) ) }
 					</ul>
+					<p className="qm-fabulous-toggle">
+						<label>
+							<input
+								type="checkbox"
+								className="qm-checkbox"
+								name="qm-fabulous"
+								defaultChecked={ fabulous }
+								onChange={ ( e ) => {
+									setFabulous( e.currentTarget.checked );
+								} }
+							/>
+							{ __( 'Fabulous', 'query-monitor' ) }
+						</label>
+					</p>
 				</section>
 			</div>
 		</NonTabularPanel>
