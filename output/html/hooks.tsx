@@ -138,6 +138,7 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 								text={ text }
 								file={ row.callback.file || null }
 								line={ row.callback.line || 0 }
+								expanded
 							/>
 						);
 					},

@@ -400,6 +400,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				],
 				'file_path_map' => QM_Output_Html::get_file_path_map(),
 				'file_link_format' => QM_Output_Html::get_file_link_format(),
+				'abspath' => QM_Util::normalize_path( ABSPATH ),
+				'contentpath' => QM_Util::normalize_path( dirname( WP_CONTENT_DIR ) . '/' ),
 			],
 			'number_format' => $wp_locale->number_format,
 			'locale_data' => self::get_script_locale_data(),

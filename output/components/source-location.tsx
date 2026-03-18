@@ -55,7 +55,7 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 					<>
 						<br/>
 						<span className="qm-info qm-supplemental">
-							{ `${mappedFile}:${line}` }
+							{ `${Utils.stripAbspath( file, settings )}:${line}` }
 						</span>
 					</>
 				) }

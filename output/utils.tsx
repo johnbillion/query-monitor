@@ -229,6 +229,22 @@ export function shortenFqn( fqn: string ): string {
 	} );
 }
 
+/**
+ * Strips ABSPATH or the content directory parent from the front of a file path,
+ * equivalent to the PHP QM_Util::standard_dir() method.
+ */
+export function stripAbspath( file: string, settings: { abspath: string; contentpath: string } ): string {
+	if ( settings.abspath && file.startsWith( settings.abspath ) ) {
+		return file.slice( settings.abspath.length );
+	}
+
+	if ( settings.contentpath && file.startsWith( settings.contentpath ) ) {
+		return file.slice( settings.contentpath.length );
+	}
+
+	return file;
+}
+
 export function numberFormat( number: number, decimals: number = 0 ): string {
 	if ( isNaN( number ) ) {
 		return '';

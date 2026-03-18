@@ -86,6 +86,7 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 				text={ row.callback.name }
 				file={ row.callback.file || null }
 				line={ row.callback.line || null }
+				expanded
 			/>
 		),
 	};

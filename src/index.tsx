@@ -46,7 +46,7 @@ type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason'>;
 /**
  * Localization data from PHP.
  */
-type iQML10n = Pick<iSettings, 'ajaxurl' | 'admin_url' | 'auth_nonce' | 'file_path_map' | 'file_link_format'>;
+type iQML10n = Pick<iSettings, 'ajaxurl' | 'admin_url' | 'auth_nonce' | 'file_path_map' | 'file_link_format' | 'abspath' | 'contentpath'>;
 
 /**
  * Menu item in the admin bar submenu.
@@ -304,6 +304,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		auth_nonce: QueryMonitorData.l10n.auth_nonce,
 		file_path_map: QueryMonitorData.l10n.file_path_map,
 		file_link_format: QueryMonitorData.l10n.file_link_format,
+		abspath: QueryMonitorData.l10n.abspath,
+		contentpath: QueryMonitorData.l10n.contentpath,
 	};
 
 	if ( ! containerElement ) {

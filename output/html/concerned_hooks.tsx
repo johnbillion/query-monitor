@@ -84,6 +84,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 								text={ text }
 								file={ row.callback.file || '' }
 								line={ row.callback.line || 0 }
+								expanded
 							/>
 						);
 					},
