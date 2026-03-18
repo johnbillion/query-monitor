@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Fragment } from 'preact';
+import * as Utils from './utils';
 
 import { __ } from '@wordpress/i18n';
 
@@ -64,12 +65,12 @@ const Badges = ( { item }: { item: iNavMenuItem } ) => (
 	<>
 		{ !! item.count && item.count !== item.warning_count && (
 			<span className="qm-menu-badge">
-				{ item.count }
+				{ Utils.numberFormat( item.count ) }
 			</span>
 		) }
 		{ !! item.warning_count && (
 			<span className="qm-menu-badge qm-menu-badge-warning">
-				{ item.warning_count }
+				{ Utils.numberFormat( item.warning_count ) }
 			</span>
 		) }
 	</>
