@@ -20,7 +20,7 @@
  *   result?: int|bool|WP_Error,
  *   type: string,
  *   trace?: QM_Backtrace,
- *   is_main_query: bool,
+ *   is_main_query?: bool,
  * }
  */
 class QM_Data_DB_Queries extends QM_Data {

@@ -273,7 +273,7 @@ export interface QueryRow {
 	result?: number | boolean | WP_Error;
 	type: string;
 	trace?: Backtrace;
-	is_main_query: boolean;
+	is_main_query?: boolean;
 }
 /**
  * Doing it Wrong data transfer object.
