@@ -83,6 +83,14 @@ export default defineConfig({
 						link: '/wordpress-debugging/blocks/',
 					},
 					{
+						text: 'Request',
+						link: '/wordpress-debugging/request/',
+					},
+					{
+						text: 'Scripts and styles',
+						link: '/wordpress-debugging/scripts-and-styles/',
+					},
+					{
 						text: 'Translation files',
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
@@ -109,6 +117,10 @@ export default defineConfig({
 					{
 						text: 'Environment',
 						link: '/wordpress-debugging/environment/',
+					},
+					{
+						text: 'Transients',
+						link: '/wordpress-debugging/transients/',
 					},
 					{
 						text: 'Admin screen',
