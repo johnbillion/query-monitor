@@ -522,27 +522,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			return false;
 		}
 
-		// Don't dispatch during a Customizer preview request:
-		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
-			return false;
-		}
-
-		// Don't dispatch during an iframed request, eg the plugin info modal, an upgrader action, or the Customizer:
-		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
-			return false;
-		}
-
-		// Don't dispatch inside the Site Editor:
-		if ( isset( $_SERVER['SCRIPT_NAME'] ) && '/wp-admin/site-editor.php' === $_SERVER['SCRIPT_NAME'] ) {
-			return false;
-		}
-
-		// Don't dispatch on the interim login screen:
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! empty( $_GET['interim-login'] ) ) {
-			return false;
-		}
-
 		return true;
 	}
 
