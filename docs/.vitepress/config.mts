@@ -238,7 +238,7 @@ export default defineConfig({
 			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>. WordPress® is a registered trademark of the WordPress Foundation. WooCommerce® is a registered trademark of WooCommerce, Inc. Query Monitor is not affiliated with the WordPress Foundation or WooCommerce, Inc.`,
 		},
 	},
-	lastUpdated: true,
+	lastUpdated: false,
 	sitemap: {
 		hostname: siteURL,
 	},

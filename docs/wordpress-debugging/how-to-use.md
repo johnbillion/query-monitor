@@ -6,7 +6,11 @@ title: How to use Query Monitor
 
 ## Installation
 
-Install and activate Query Monitor as you would any other plugin for WordPress. [You can download it here on WordPress.org](https://wordpress.org/plugins/query-monitor/).
+Install and activate Query Monitor as you would any other plugin for WordPress.
+
+<VPButton href="https://wordpress.org/plugins/query-monitor/" text="Download Query Monitor from WordPress.org" theme="brand" />
+
+Alternatively, [download from GitHub](https://github.com/johnbillion/query-monitor/releases) or [install via Composer](https://packagist.org/packages/johnbillion/query-monitor).
 
 ## Usage
 
