@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.9
-Stable tag: 3.20.3
+Stable tag: 3.20.4
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
