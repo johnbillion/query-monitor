@@ -487,7 +487,7 @@ abstract class QM_Output_Html extends QM_Output {
 	public static function format_url( $url ) {
 		// If there's no query string or only a single query parameter, return the URL as is.
 		if ( ! str_contains( $url, '&' ) ) {
-			return $url;
+			return esc_html( $url );
 		}
 
 		return str_replace( array( '?', '&amp;' ), array( '<br>?', '<br>&amp;' ), esc_html( $url ) );
