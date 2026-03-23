@@ -161,6 +161,10 @@ export default defineConfig({
 				collapsed: false,
 				items: [
 					{
+						text: 'Query Monitor 4',
+						link: '/help/query-monitor-4/',
+					},
+					{
 						text: 'Clickable stack traces',
 						link: '/help/clickable-stack-traces-and-function-names/',
 					},
