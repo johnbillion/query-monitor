@@ -211,33 +211,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		if ( $this->ceased ) {
-			$admin_bar_menu = array(
-				'top' => array(
-					'title' => 'Query Monitor',
-				),
-				'sub' => array(
-					'ceased' => array(
-						'title' => esc_html__( 'Data collection ceased', 'query-monitor' ),
-						'id' => 'query-monitor-ceased',
-						'href' => '#',
-					),
-				),
-			);
-
-			$json = array(
-				'menu' => $admin_bar_menu,
-			);
-
 			wp_print_inline_script_tag(
-				sprintf(
-					'var QueryMonitorData = %s;',
-					json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
-				),
+				<<<'JS'
+				console.log( 'QM: collection and output was ceased' );
+
+				const qmCeasedLink = document.querySelector( '#wp-admin-bar-query-monitor-placeholder a' );
+				if ( qmCeasedLink ) {
+					qmCeasedLink.innerText = 'Data collection ceased';
+				}
+				JS,
 				array(
-					'id' => 'query-monitor-inline-data',
+					'id' => 'query-monitor-ceased',
 				)
 			);
-			echo '<div id="query-monitor-ceased"></div>';
 			return;
 		}
 
