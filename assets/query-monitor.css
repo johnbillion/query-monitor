@@ -326,6 +326,17 @@ i {
 	font-style: italic;
 }
 
+.qm-cell-sql ol {
+	padding-left: 2em;
+
+	li {
+		list-style: decimal;
+		font-family: var( --qm-font-code-face );
+		font-size: var( --qm-font-code-size );
+		line-height: var( --qm-font-code-line-height );
+	}
+}
+
 .qm-cell-sql b {
 	color: var( --qm-sql-keyword-fg );
 }

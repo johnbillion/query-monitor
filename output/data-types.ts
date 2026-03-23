@@ -234,6 +234,7 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
+	has_sqlite: boolean;
 	dupes: {
 		query: string;
 		count: number;
@@ -256,6 +257,13 @@ export interface QueryRow {
 	result?: number | boolean | WP_Error;
 	trace?: Backtrace;
 	is_main_query?: boolean;
+	sqlite_queries?: SQLiteQuery[];
+}
+export interface SQLiteQuery {
+	sql: string;
+	params?: {
+		[k: string]: string | number;
+	};
 }
 /**
  * Doing it Wrong data transfer object.
