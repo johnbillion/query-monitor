@@ -1,3 +1,8 @@
+---
+nav_exclude: true
+publish: false
+---
+
 # Query Monitor 4
 
 Query Monitor is the developer tools panel for WordPress and WooCommerce.
