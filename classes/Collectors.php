@@ -104,6 +104,12 @@ class QM_Collectors implements IteratorAggregate {
 			return false;
 		}
 
+		// Don't collect in the Elementor preview iframe
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET['elementor-preview'] ) ) {
+			return false;
+		}
+
 		return true;
 	}
 
