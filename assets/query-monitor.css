@@ -4,19 +4,18 @@
 	color-scheme: light dark;
 
 	--qm-container-fg:                 light-dark( #1e1e1e, #eaeef2 );
-	--qm-container-bg:                 light-dark( #f0f0f1, #32373c );
-	--qm-container-overflow:           light-dark( #f0f0f1, #23282d );
-	--qm-panel-border:                 light-dark( #dcdcde, #50626f );
+	--qm-container-bg:                 light-dark( #f0f0f0, #32373c );
+	--qm-container-overflow:           light-dark( #ececec, #3e444a );
+	--qm-panel-border:                 light-dark( #c3c4c7, #50626f );
 	--qm-panel-fg:                     light-dark( #1e1e1e, #eaeef2 );
 	--qm-panel-bg:                     light-dark( #fff,    #23282d );
 	--qm-panel-separator:              light-dark( #dcdcde, #50626f );
-	--qm-panel-menu-border:            light-dark( #dcdcde, #32373c );
 	--qm-panel-menu-fg:                light-dark( #3c434a, #eaeef2 );
-	--qm-panel-menu-bg:                light-dark( #f0f0f1, #23282d );
-	--qm-panel-menu-fg-hover:          light-dark( #1e1e1e, #bbc8d4 );
-	--qm-panel-menu-bg-hover:          light-dark( #e2e4e7, #3e444a );
+	--qm-panel-menu-bg:                light-dark( #ececec, #3e444a );
+	--qm-panel-menu-fg-hover:          light-dark( #fff,    #fff );
+	--qm-panel-menu-bg-hover:          light-dark( #2271b1, #2271b1 );
 	--qm-panel-menu-fg-current:        light-dark( #1e1e1e, #eaeef2 );
-	--qm-panel-menu-bg-current:        light-dark( #e9ecf0, #32373c );
+	--qm-panel-menu-bg-current:        light-dark( #e2e4e7, #32373c );
 	--qm-panel-menu-bg-current-focus:  light-dark( #f0f3f7, #3e444a );
 	--qm-panel-menu-fg-selected:       light-dark( #fff,    #fff );
 	--qm-panel-menu-bg-selected:       light-dark( #2271b1, #2271b1 );
@@ -28,7 +27,7 @@
 	--qm-cell-bg-highlight:            light-dark( #ffd,    #57572a );
 	--qm-cell-bg-highlight-dark:       light-dark( #ffffaa, #353519 );
 	--qm-cell-bg-stripe:               light-dark( #f9f9f9, #32373c );
-	--qm-table-header-bg:              light-dark( #f6f7f7, #32373c );
+	--qm-table-header-bg:              light-dark( #ececec, #3e444a );
 	--qm-table-footer-bg:              light-dark( #f6f7f7, #32373c );
 	--qm-link-fg:                      light-dark( #2271b1, #30ceff );
 	--qm-link-fg-hover:                light-dark( #135e96, #4092d2 );
@@ -279,6 +278,7 @@ i {
 		flex-grow: 1;
 		margin-right: 6px;
 		font-size: 11px;
+		font-weight: 500;
 	}
 
 	&.qm-fabulous .qm-title-heading {
@@ -351,7 +351,7 @@ i {
 		justify-content: center;
 		margin: 0;
 		padding: 0;
-		width: 30px;
+		width: 26px;
 	}
 
 	button:focus *,
@@ -407,7 +407,6 @@ i {
 		button {
 			align-items: center;
 			background: var( --qm-panel-menu-bg );
-			border-right: 1px solid var( --qm-panel-border );
 			color: var( --qm-panel-menu-fg );
 			cursor: pointer;
 			display: flex;
@@ -617,8 +616,6 @@ i {
 
 	thead th {
 		background: var( --qm-table-header-bg );
-		border: 1px solid var( --qm-cell-border );
-		border-top: none;
 		box-shadow: 0 2px 0 var( --qm-cell-border );
 		padding: 5px 5px 5px 6px;
 		position: sticky;
