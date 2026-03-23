@@ -222,11 +222,6 @@ export default defineConfig({
 				link: ghURL,
 				ariaLabel: 'Query Monitor on GitHub',
 			},
-			{
-				icon: 'twitter',
-				link: 'https://twitter.com/johnbillion',
-				ariaLabel: 'Query Monitor\'s author on Twitter',
-			},
 		],
 
 		editLink: {
