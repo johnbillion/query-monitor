@@ -13,6 +13,10 @@
  */
 
 /**
+ * @phpstan-type SQLiteQuery array{
+ *   sql: string,
+ *   params?: array<string, mixed>,
+ * }
  * @phpstan-type QueryRow array{
  *   stack?: array<int, string>,
  *   sql: string,
@@ -21,6 +25,7 @@
  *   type: string,
  *   trace?: QM_Backtrace,
  *   is_main_query?: bool,
+ *   sqlite_queries?: array<int, SQLiteQuery>,
  * }
  */
 class QM_Data_DB_Queries extends QM_Data {
@@ -53,6 +58,11 @@ class QM_Data_DB_Queries extends QM_Data {
 	 * @var bool
 	 */
 	public $has_trace;
+
+	/**
+	 * @var bool
+	 */
+	public $has_sqlite;
 
 	/**
 	 * @var bool

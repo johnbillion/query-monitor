@@ -250,6 +250,7 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
+	has_sqlite: boolean;
 	has_main_query: boolean;
 	dupes: {
 		query: string;
@@ -274,6 +275,13 @@ export interface QueryRow {
 	type: string;
 	trace?: Backtrace;
 	is_main_query?: boolean;
+	sqlite_queries?: SQLiteQuery[];
+}
+export interface SQLiteQuery {
+	sql: string;
+	params?: {
+		[k: string]: string | number;
+	};
 }
 /**
  * Doing it Wrong data transfer object.

@@ -72,22 +72,38 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			sql: {
 				className: ( row ) => row.type !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
-				render: ( row ) => (
-					<>
+				render: ( row ) => {
+					const sql = row.sqlite_queries?.length ? (
+						<ol>
+							{ row.sqlite_queries.map( ( q, j ) => (
+								<li>
+									<code key={ j }>
+										{ Utils.formatSQL( q.sql ) }
+									</code>
+								</li>
+							) ) }
+						</ol>
+					) : (
 						<code>
 							{ Utils.formatSQL( row.sql ) }
 						</code>
-						{ Utils.isWPError( row.result ) && (
-							<>
-								<br />
-								<br />
-								<Warning>
-									{ Utils.getErrorMessage( row.result ) }
-								</Warning>
-							</>
-						) }
-					</>
-				),
+					);
+
+					return (
+						<>
+							{ sql }
+							{ Utils.isWPError( row.result ) && (
+								<>
+									<br />
+									<br />
+									<Warning>
+										{ Utils.getErrorMessage( row.result ) }
+									</Warning>
+								</>
+							) }
+						</>
+					);
+				},
 				filters: {
 					options: ( () => {
 						const filters = Object.keys( data.types ).map( ( type ) => ( {
