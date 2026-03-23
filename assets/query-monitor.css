@@ -803,10 +803,6 @@ i {
 		display: list-item;
 		list-style: none;
 		line-height: 20px;
-
-		&::before {
-			content: '';
-		}
 	}
 
 	code,
