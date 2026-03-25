@@ -93,15 +93,23 @@ export const Settings = ( {settings}: SettingsProps ) => {
 								setEditor( e.currentTarget.value );
 							} }
 						>
+							<option
+								key=""
+								value=""
+							>
+								{ ( settings.file_link_format )
+									? _x( 'Default', 'editor option', 'query-monitor' )
+									: _x( 'None', 'editor option', 'query-monitor' )
+								}
+							</option>
+							<hr/>
+
 							{ Utils.getEditors().map( ( { label, name } ) => (
 								<option
 									key={ label }
 									value={ name }
 								>
-									{ ( name === '' && settings.file_link_format )
-										? _x( 'Default', 'editor option', 'query-monitor' )
-										: label
-									}
+									{ label }
 								</option>
 							) ) }
 						</select>

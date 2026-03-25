@@ -138,11 +138,6 @@ export function getErrorMessage( data: unknown ): string|null {
 export function getEditors(): { label: string, name: string; format: string; }[] {
 	return [
 		{
-			label: 'None',
-			name: '',
-			format: '',
-		},
-		{
 			label: 'Atom',
 			name: 'atom',
 			format: 'atom://open/?url=file://%1$s&line=%2$s',

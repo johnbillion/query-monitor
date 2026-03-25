@@ -352,6 +352,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 										>
 											<option value="">All</option>
+											<hr/>
 											{ colFilters.map( ( filter ) => (
 												<option
 													key={ filter.key }
