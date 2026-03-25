@@ -13,7 +13,11 @@ Version 4 of Query Monitor switches from rendering its panels server-side in PHP
 - Future enhancements are facilitated, such as displaying client-side metrics, lazy-loading debugging data, showing data from different requests, and remixing data into different views. A timeline view is in the works.
 - The raw data collected by Query Monitor is exposed to the page in a JSON blob. If you want to play around with it, take a look at the `QueryMonitorData` object in your browser console. You might be surprised at the size of the data, but don't worry, it's still much more performant than generating a huge number of HTML table rows server-side and rendering them in the browser.
 
-Very little has changed visually in Query Monitor 4 beyond a lightly refreshed appearance.
+## New timeline view
+
+A new Timeline panel provides a visual overview of the events that occur during a page load. Database queries, HTTP API requests, PHP errors, timings, logs, and notable actions are all plotted on a horizontal timeline so you can see when they occurred and how long they took relative to the total page load time. You can filter by component and toggle individual categories on and off.
+
+![The Timeline panel in Query Monitor](/timeline.png)
 
 ## Installation
 
