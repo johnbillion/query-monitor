@@ -101,7 +101,6 @@
 	font-size: var( --qm-font-default-size );
 	font-style: normal;
 	font-weight: normal;
-	letter-spacing: -0.1px;
 	line-height: var( --qm-font-default-line-height );
 	text-align: left;
 
@@ -188,7 +187,9 @@
 
 /** === Reset === */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
 }
 
@@ -197,7 +198,8 @@
 	padding: 0;
 }
 
-button, select {
+button,
+select {
 	background: transparent;
 	border: none;
 	border-radius: 0;
@@ -207,20 +209,26 @@ button, select {
 
 a {
 	color: inherit;
-	text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-size: inherit;
 	font-weight: inherit;
 }
 
-th, caption {
+th,
+caption {
 	font-weight: inherit;
 	text-align: inherit;
 }
 
-td, th {
+td,
+th {
 	vertical-align: baseline;
 }
 
@@ -251,10 +259,13 @@ i {
 	display: flex;
 	flex-direction: column;
 	height: 60%;
+}
+
+.qm-show-right.qm-show {
 	width: 40%;
 }
 
-#qm-wrapper {
+#qm-panels-wrapper {
 	display: flex;
 	flex-grow: 1;
 	/* Allow this flex item to shrink below its content size for nested scrolling: */
@@ -268,7 +279,7 @@ i {
 	display: flex;
 	flex-shrink: 0;
 	height: 25px;
-	padding: 0 0 0 10px;
+	padding-left: 10px;
 	user-select: none;
 
 	.qm-title-heading {
@@ -299,10 +310,6 @@ i {
 
 	div.qm-title-heading {
 		display: none;
-	}
-
-	button {
-		flex-shrink: 0;
 	}
 
 	.qm-icon {
@@ -343,6 +350,7 @@ i {
 	}
 
 	button {
+		flex-shrink: 0;
 		align-self: stretch;
 		background: transparent;
 		cursor: pointer;
@@ -352,24 +360,23 @@ i {
 		margin: 0;
 		padding: 0;
 		width: 26px;
-	}
 
-	button:focus *,
-	button:hover *,
-	button:focus,
-	button:hover {
-		background: var( --qm-title-button-bg-hover );
+		&:focus *,
+		&:hover *,
+		&:focus,
+		&:hover {
+			background: var( --qm-title-button-bg-hover );
 
-		.qm-icon {
-			fill: var( --qm-title-button-fg-hover );
+			.qm-icon {
+				fill: var( --qm-title-button-fg-hover );
+			}
+		}
+
+		&:active *,
+		&:active {
+			background: var( --qm-title-button-bg-active );
 		}
 	}
-
-	button:active *,
-	button:active {
-		background: var( --qm-title-button-bg-active );
-	}
-
 }
 
 .qm-show-right #qm-title .qm-button-container-position .qm-icon {
@@ -382,7 +389,6 @@ i {
 	flex-shrink: 0;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
-	height: auto;
 	min-width: 180px;
 
 	ul {
@@ -390,15 +396,12 @@ i {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		width: auto;
-		height: auto;
 	}
 
 	li {
 		display: list-item;
 		margin: 0;
 		padding: 0;
-		height: auto;
 
 		ul {
 			display: none;
@@ -413,7 +416,6 @@ i {
 			gap: 4px;
 			padding: 6px 10px;
 			position: relative;
-			text-decoration: none;
 			text-align: start;
 			width: 100%;
 
@@ -475,11 +477,6 @@ i {
 
 			&:focus {
 				background: var( --qm-panel-menu-bg-selected-focus );
-				color: var( --qm-panel-menu-fg-selected );
-			}
-
-			&:hover {
-				background: var( --qm-panel-menu-bg-selected );
 				color: var( --qm-panel-menu-fg-selected );
 			}
 
@@ -761,19 +758,6 @@ i {
 		margin: 0 0 30px 0;
 	}
 
-	.qm-grid section,
-	.qm-boxed section,
-	.qm-boxed .qm-section {
-		border-right: 1px solid var( --qm-panel-separator );
-		margin: 0 20px 10px 0;
-		padding: 10px 20px 10px 0;
-
-		&:last-child {
-			border-right: none;
-			margin-right: 0;
-		}
-	}
-
 	table {
 		border-bottom-color: var( --qm-cell-border );
 	}
@@ -783,6 +767,19 @@ i {
 		margin-right: -20px;
 		margin-left: -20px;
 		width: calc( 100% + 40px );
+	}
+}
+
+.qm-grid section,
+.qm-boxed section,
+.qm-boxed .qm-section {
+	border-right: 1px solid var( --qm-panel-separator );
+	margin: 0 20px 10px 0;
+	padding: 10px 20px 10px 0;
+
+	&:last-child {
+		border-right: none;
+		margin-right: 0;
 	}
 }
 
@@ -1092,18 +1089,15 @@ i {
 	a {
 		color: var( --qm-link-fg );
 		cursor: pointer;
-		text-decoration: none;
 
 		&:after,
 		&:focus-visible,
 		&:hover {
 			color: var( --qm-link-fg-hover );
-			text-decoration: underline;
 		}
 
 		&:active {
 			color: var( --qm-link-fg-active );
-			text-decoration: underline;
 		}
 	}
 
@@ -1112,6 +1106,7 @@ i {
 	a.qm-edit-link,
 	button.qm-filter-trigger {
 		white-space: nowrap;
+		text-decoration: none;
 
 		.qm-icon {
 			fill: var( --qm-link-fg-hover ) !important;
@@ -1144,9 +1139,6 @@ button,
 select {
 	background: none;
 	cursor: pointer;
-	height: auto;
-	margin: 0;
-	width: auto;
 }
 
 .qm {
@@ -1154,9 +1146,6 @@ select {
 		color: var( --qm-panel-fg );
 		cursor: pointer;
 		font-size: 12px;
-		font-style: normal;
-		font-weight: normal;
-		margin: 0;
 	}
 
 	.qm-filter-container {
@@ -1165,19 +1154,13 @@ select {
 
 	.qm-filter-container label {
 		cursor: default;
-		font-size: inherit;
 		white-space: nowrap;
-	}
-
-	.qm-filter-container div {
-		/* Some themes use Select2 etc on all selects. This hides that. */
-		display: none;
 	}
 }
 
 .qm-title-heading select,
-.qm select.qm-select,
-.qm select.qm-filter {
+.qm-select,
+.qm-filter {
 	appearance: menulist;
 	background: var( --qm-panel-bg );
 	border: none;
@@ -1185,25 +1168,22 @@ select {
 	color: var( --qm-panel-fg );
 	cursor: pointer;
 	display: block;
-	height: auto;
-	letter-spacing: -0.1px;
 	margin: 0 0 0 5px;
-	max-width: 12em;
 	outline: 1px solid var( --qm-panel-border );
 	padding: 0;
-	width: auto;
 }
 
-.qm-title-heading select {
-	max-width: unset;
+.qm-select,
+.qm-filter {
+	max-width: 12em;
+}
+
+.qm-select:hover,
+.qm-filter:hover {
+	background: var( --qm-cell-bg-hover );
 }
 
 .qm {
-	select.qm-select:hover,
-	select.qm-filter:hover {
-		background: var( --qm-cell-bg-hover );
-	}
-
 	/** Sorters */
 
 	thead th.qm-sortable-column {
