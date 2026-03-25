@@ -37,6 +37,7 @@ import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
 import { Timing } from '../output/html/timing';
 import { Transients } from '../output/html/transients';
+import { Timeline } from '../output/html/timeline';
 
 /**
  * Raw settings from PHP, before merging with l10n values.
@@ -93,6 +94,9 @@ if ( QueryMonitorData.locale_data ) {
 // Register overview panels that receive all data
 registerOverview( 'overview', {
 	render: ( data, settings ) => <Overview data={ data } settings={ settings } />,
+} );
+registerOverview( 'timeline', {
+	render: ( data, settings ) => <Timeline data={ data } settings={ settings } />,
 } );
 
 // Register all the panels

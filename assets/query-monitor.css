@@ -1368,6 +1368,157 @@ select {
 	user-select: all;
 }
 
+/** === Timeline === */
+
+#qm-timeline table {
+	width: 100%;
+}
+
+#qm-timeline .qm-col-timeline {
+	width: 100%;
+}
+
+#qm-timeline tbody tr {
+	height: 24px;
+}
+
+#qm-timeline .qm-cell-timeline {
+	position: relative;
+	padding: 0;
+}
+
+#qm-timeline tbody tr:hover {
+	background: var( --qm-cell-bg-hover );
+}
+
+.qm-timeline-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 0 8px;
+	padding: 10px 20px 0;
+}
+
+.qm-timeline-header h3 {
+	margin: 0;
+}
+
+.qm-timeline-filters {
+	display: flex;
+	gap: 12px;
+}
+
+.qm-timeline-filter {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 12px;
+	cursor: pointer;
+	color: var( --qm-container-fg );
+}
+
+.qm-timeline-filter input {
+	margin: 0;
+}
+
+.qm-timeline-axis {
+	position: relative;
+	height: 18px;
+	pointer-events: none;
+}
+
+.qm-timeline-tick {
+	position: absolute;
+	bottom: 0;
+	transform: translateX(-50%);
+	font-size: 10px;
+	color: var( --qm-container-fg );
+	opacity: 0.5;
+	padding: 4px 4px;
+	line-height: 1;
+}
+
+.qm-timeline-tick:first-child {
+	transform: none;
+}
+
+.qm-timeline-tick:last-child {
+	transform: translateX(-100%);
+}
+
+.qm-timeline-tick::after {
+	display: none;
+}
+
+.qm-timeline-segments {
+	position: relative;
+	display: flex;
+	height: 22px;
+	border-bottom: 1px solid var( --qm-panel-separator );
+}
+
+.qm-timeline-segment {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	border-left: 2px solid var( --qm-panel-separator );
+}
+
+.qm-timeline-segment:first-child {
+	border-left: none;
+}
+
+.qm-timeline-segment-label {
+	font-size: 11px;
+	line-height: 22px;
+	color: var( --qm-container-fg );
+	white-space: nowrap;
+	font-weight: 600;
+	padding: 0 6px;
+}
+
+.qm-timeline-bar {
+	position: absolute;
+	top: 2px;
+	height: 16px;
+	border-radius: 2px;
+	min-width: 2px;
+	cursor: default;
+}
+
+.qm-timeline-point {
+	width: 3px !important;
+	border-radius: 1px;
+}
+
+.qm-timeline-bar-label {
+	position: absolute;
+	top: 1px;
+	padding: 0 4px;
+	font-size: 12px;
+	line-height: 18px;
+	color: var( --qm-container-fg );
+	white-space: nowrap;
+	right: 0;
+	max-width: 30%;
+	opacity: 0.8;
+	display: flex;
+	gap: 4px;
+}
+
+.qm-timeline-bar-label-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.qm-timeline-bar-label-time {
+	flex-shrink: 0;
+}
+
+#qm-timeline tbody tr:hover .qm-timeline-bar-label {
+	opacity: 1;
+}
+
 /** === Animations === */
 
 @keyframes qm-fabulous-swipe {

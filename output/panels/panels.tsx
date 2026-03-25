@@ -14,6 +14,7 @@ interface QMPanelData<TDataKey extends keyof DataTypes> {
 
 export type iPanelData = {
 	overview?: QMPanelData<'overview'>;
+	timeline?: QMPanelData<'timeline'>;
 	admin?: QMPanelData<'admin'>;
 	assets_scripts: QMPanelData<'assets_scripts'>;
 	assets_styles: QMPanelData<'assets_styles'>;

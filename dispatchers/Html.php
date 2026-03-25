@@ -341,6 +341,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'enabled' => true,
 			'data' => QM_Collectors::get( 'overview' )->get_data(),
 		);
+		$data['timeline'] = array(
+			'enabled' => true,
+			'data' => null,
+		);
 
 		/** @var WP_Locale $wp_locale */
 		global $wp_locale;
