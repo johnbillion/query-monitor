@@ -170,7 +170,7 @@ export const Panels = ( props: Props ) => {
 
 	if ( panel ) {
 		if ( isOverviewPanel( panel ) ) {
-			// Overview panel receives the entire data object and settings
+			// Overview panels receive the entire data object and settings
 			output = panel.render( props.data, props.settings );
 		} else if ( isSettingsPanel( panel ) ) {
 			// Settings panel receives the settings object

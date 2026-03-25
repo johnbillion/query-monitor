@@ -40,9 +40,10 @@ export const registerPanel = <
 }
 
 export const registerOverview = (
+	id: string,
 	args: Omit<OverviewPanel, 'type'>,
 ) => {
-	panels['overview'] = {
+	panels[ id ] = {
 		...args,
 		type: 'overview',
 	};

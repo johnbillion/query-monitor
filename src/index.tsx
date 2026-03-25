@@ -90,8 +90,8 @@ if ( QueryMonitorData.locale_data ) {
 	setLocaleData( QueryMonitorData.locale_data, 'query-monitor' );
 }
 
-// Register the Overview panel that receives all data
-registerOverview( {
+// Register overview panels that receive all data
+registerOverview( 'overview', {
 	render: ( data, settings ) => <Overview data={ data } settings={ settings } />,
 } );
 
