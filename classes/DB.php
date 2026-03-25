@@ -39,7 +39,9 @@ class QM_DB extends wpdb {
 			return $result;
 		}
 
-		$this->queries[ $i ]['trace'] = new QM_Backtrace();
+		$this->queries[ $i ]['trace'] = new QM_Backtrace( array(
+			'time' => $this->time_start,
+		) );
 
 		if ( ! isset( $this->queries[ $i ][3] ) ) {
 			$this->queries[ $i ][3] = $this->time_start;

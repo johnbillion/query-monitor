@@ -51,9 +51,11 @@ class QM_Timer {
 	 * @return self
 	 */
 	public function start( ?array $data = null, array $backtrace_args = array() ) {
+		$time = microtime( true );
+		$backtrace_args['time'] = $time;
 		$this->trace = new QM_Backtrace( $backtrace_args );
 		$this->start = array(
-			'time' => microtime( true ),
+			'time' => $time,
 			'memory' => memory_get_usage(),
 			'data' => $data,
 		);

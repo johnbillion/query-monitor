@@ -6,7 +6,8 @@
 	"type": "object",
 	"required": [
 		"component",
-		"frames"
+		"frames",
+		"time"
 	],
 	"properties": {
 		"component": {
@@ -39,6 +40,10 @@
 					}
 				]
 			}
+		},
+		"time": {
+			"description": "Time in milliseconds relative to the start of the request.",
+			"type": "number"
 		}
 	},
 	"additionalProperties": false

@@ -19,6 +19,7 @@ if ( ! class_exists( 'QM_Backtrace' ) ) {
  *   ignore_hook?: mixed[],
  *   show_args?: mixed[],
  *   callsite?: QM_Data_Callsite,
+ *   time?: float,
  * }
  */
 class QM_Backtrace implements JsonSerializable {
@@ -142,16 +143,26 @@ class QM_Backtrace implements JsonSerializable {
 	protected $callsite = null;
 
 	/**
+	 * Absolute timestamp from microtime( true ) when this backtrace was captured.
+	 *
+	 * @var float
+	 */
+	protected $time;
+
+	/**
 	 * @phpstan-param BacktraceArgs $args
 	 * @param mixed[] $trace
 	 */
 	public function __construct( array $args = array(), ?array $trace = null ) {
 		$this->trace = $trace ?? debug_backtrace( 0 );
+		$this->time = $args['time'] ?? microtime( true );
 
 		if ( isset( $args['callsite'] ) ) {
 			$this->callsite = $args['callsite'];
 			unset( $args['callsite'] );
 		}
+
+		unset( $args['time'] );
 
 		/** @var array<string, mixed[]> $args */
 		$this->args = array_merge( array(
@@ -202,6 +213,21 @@ class QM_Backtrace implements JsonSerializable {
 	 */
 	public function get_callsite() {
 		return $this->callsite;
+	}
+
+	/**
+	 * @return float Absolute timestamp from microtime( true ).
+	 */
+	public function get_time() {
+		return $this->time;
+	}
+
+	/**
+	 * @param float $time Absolute timestamp from microtime( true ).
+	 * @return void
+	 */
+	public function set_time( float $time ) {
+		$this->time = $time;
 	}
 
 	/**
@@ -692,6 +718,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *   component: QM_Component,
 	 *   callsite: ?QM_Data_Callsite,
 	 *   frames: list<QM_Data_Stack_Frame>,
+	 *   time: float,
 	 * }
 	 */
 	public function jsonSerialize(): array {
@@ -729,6 +756,7 @@ class QM_Backtrace implements JsonSerializable {
 			'component' => $this->get_component(),
 			'callsite' => $this->callsite,
 			'frames' => $frames,
+			'time' => ( $this->time - $_SERVER['REQUEST_TIME_FLOAT'] ) * 1000,
 		);
 	}
 }

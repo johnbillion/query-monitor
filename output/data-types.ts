@@ -212,6 +212,10 @@ export interface Backtrace {
 	component: Component;
 	callsite?: CallSite | null;
 	frames: StackFrame[];
+	/**
+	 * Time in milliseconds relative to the start of the request.
+	 */
+	time: number;
 }
 /**
  * Code location where an error or event occurred.
