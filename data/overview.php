@@ -62,4 +62,23 @@ class QM_Data_Overview extends QM_Data {
 	 * @var bool
 	 */
 	public $is_admin;
+
+	/**
+	 * @phpstan-var ?array<string, array<int, array{
+	 *   start: float,
+	 *   end?: float,
+	 * }>>
+	 */
+	public $actions;
+
+	/**
+	 * @phpstan-var ?array{
+	 *   init: float,
+	 *   request?: float,
+	 *   query?: float,
+	 *   template?: float,
+	 *   shutdown?: float,
+	 * }
+	 */
+	public $segments;
 }

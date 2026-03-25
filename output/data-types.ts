@@ -468,6 +468,19 @@ export interface Overview {
 		[k: string]: unknown;
 	};
 	is_admin: boolean;
+	actions?: {
+		[k: string]: {
+			start: number;
+			end?: number;
+		}[];
+	};
+	segments?: {
+		init: number;
+		request?: number;
+		query?: number;
+		template?: number;
+		shutdown?: number;
+	};
 }
 /**
  * PHP errors data transfer object.

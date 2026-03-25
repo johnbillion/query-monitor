@@ -49,6 +49,49 @@
 		},
 		"is_admin": {
 			"type": "boolean"
+		},
+		"actions": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"start": {
+							"type": "number"
+						},
+						"end": {
+							"type": "number"
+						}
+					},
+					"required": ["start"],
+					"additionalProperties": false
+				}
+			}
+		},
+		"segments": {
+			"type": "object",
+			"properties": {
+				"init": {
+					"type": "number"
+				},
+				"request": {
+					"type": "number"
+				},
+				"query": {
+					"type": "number"
+				},
+				"template": {
+					"type": "number"
+				},
+				"shutdown": {
+					"type": "number"
+				}
+			},
+			"required": [
+				"init"
+			],
+			"additionalProperties": false
 		}
 	},
 	"additionalProperties": false
