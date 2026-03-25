@@ -58,6 +58,13 @@ export function formatSQL( sql: string ): JSX.Element[] {
 export function formatURL( url: string ): JSX.Element[] {
 	const paramRegex = '(\\?|&)';
 	const parts = url.split( new RegExp( paramRegex ) );
+
+	// Don't split if there are fewer than two query parameters.
+	// parts: [path] or [path, '?', 'key=val']
+	if ( parts.length <= 3 ) {
+		return [ <>{ url }</> ];
+	}
+
 	const collection: JSX.Element[] = [
 		<Fragment key={ 0 }>
 			{ parts[0] }
