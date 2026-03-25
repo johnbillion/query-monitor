@@ -60,6 +60,7 @@ export type TabularProps<TDataRow, TCols extends Cols<TDataRow> = Cols<TDataRow>
 	orderby?: keyof TCols & string;
 	order?: 'asc'|'desc';
 	groupKey?: ( row: TDataRow ) => string;
+	header?: ComponentChildren;
 }
 
 interface TableProps<TDataRow, TCols extends Cols<TDataRow> = Cols<TDataRow>> extends TabularProps<TDataRow, TCols> {
@@ -243,7 +244,7 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 	}, 0 );
 };
 
-export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<TDataRow>>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, children }: TableProps<TDataRow, TCols> ) => {
+export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<TDataRow>>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, header, children }: TableProps<TDataRow, TCols> ) => {
 	const {
 		filters,
 		setFilter,
@@ -325,49 +326,57 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 				</h2>
 			</caption>
 			<thead>
-				<tr>
-					{ nonEmptyCols.map( ( [ key, col ] ) => {
-						const colFilters = col.filters ? col.filters.options : [];
-						const filterValue = ( key in filters ) ? filters[ key ] : '';
+				{ header ? (
+					<tr className="qm-table-header">
+						<th colSpan={ nonEmptyCols.length }>
+							{ header }
+						</th>
+					</tr>
+				) : (
+					<tr>
+						{ nonEmptyCols.map( ( [ key, col ] ) => {
+							const colFilters = col.filters ? col.filters.options : [];
+							const filterValue = ( key in filters ) ? filters[ key ] : '';
 
-						return (
-							<th
-								key={ key }
-								className={ clsx( `qm-col-${key}`, typeof col.className === 'string' ? col.className : undefined, {
-									'qm-filterable-column': colFilters.length,
-									'qm-filtered': filterValue !== '',
-								} ) }
-								role="columnheader"
-								scope="col"
-							>
-								{ colFilters.length && total > 1 ? (
-									<div className="qm-filter-container">
-										<label htmlFor={ `qm-filter-${ key }` }>
-											{ col.heading }
-										</label>
-										<select
-											id={ `qm-filter-${ key }` }
-											className="qm-filter"
-											value={ filterValue }
-											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
-										>
-											<option value="">All</option>
-											<hr/>
-											{ colFilters.map( ( filter ) => (
-												<option
-													key={ filter.key }
-													value={ filter.key }
-												>{ filter.label }</option>
-											) ) }
-										</select>
-									</div>
-								) : (
-									col.heading
-								) }
-							</th>
-						);
-					} ) }
-				</tr>
+							return (
+								<th
+									key={ key }
+									className={ clsx( `qm-col-${key}`, typeof col.className === 'string' ? col.className : undefined, {
+										'qm-filterable-column': colFilters.length,
+										'qm-filtered': filterValue !== '',
+									} ) }
+									role="columnheader"
+									scope="col"
+								>
+									{ colFilters.length && total > 1 ? (
+										<div className="qm-filter-container">
+											<label htmlFor={ `qm-filter-${ key }` }>
+												{ col.heading }
+											</label>
+											<select
+												id={ `qm-filter-${ key }` }
+												className="qm-filter"
+												value={ filterValue }
+												onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
+											>
+												<option value="">All</option>
+												<hr/>
+												{ colFilters.map( ( filter ) => (
+													<option
+														key={ filter.key }
+														value={ filter.key }
+													>{ filter.label }</option>
+												) ) }
+											</select>
+										</div>
+									) : (
+										col.heading
+									) }
+								</th>
+							);
+						} ) }
+					</tr>
+				) }
 			</thead>
 			<tbody>
 				{ warning && (

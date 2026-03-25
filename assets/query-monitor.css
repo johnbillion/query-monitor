@@ -620,6 +620,11 @@ i {
 		z-index: 1;
 	}
 
+	.qm-table-header th {
+		padding: 0;
+		box-shadow: none;
+	}
+
 	thead th,
 	thead td {
 		vertical-align: top;

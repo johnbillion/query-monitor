@@ -12,7 +12,7 @@ interface Props<TDataRow> extends TabularProps<TDataRow> {
 	children?: ComponentChildren;
 }
 
-export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning, orderby, order = 'desc', rowHasError, title, groupKey, children }: Props<TDataRow> ) => {
+export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning, orderby, order = 'desc', rowHasError, title, groupKey, header, children }: Props<TDataRow> ) => {
 	const {
 		id,
 	} = useContext( PanelContext );
@@ -36,6 +36,7 @@ export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning
 				orderby={ orderby }
 				order={ order }
 				groupKey={ groupKey }
+				header={ header }
 			>
 				{ children }
 			</Table>
