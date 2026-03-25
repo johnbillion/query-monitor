@@ -296,7 +296,7 @@ export const QM = ( props: Props ) => {
 							<Icon name="no-alt"/>
 						</button>
 					</div>
-					<div id="qm-wrapper">
+					<div id="qm-panels-wrapper">
 						{ ! side && (
 							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
 						) }
