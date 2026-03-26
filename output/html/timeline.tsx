@@ -10,7 +10,6 @@ import { PanelContext } from '../contexts/panel-context';
 
 import {
 	__,
-	sprintf,
 	_x,
 } from '@wordpress/i18n';
 
