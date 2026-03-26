@@ -1,4 +1,4 @@
-import { Time } from './time';
+import { Duration } from './duration';
 
 interface Props {
 	rows: {
@@ -7,5 +7,5 @@ interface Props {
 }
 
 export const TotalTime = ( { rows }: Props ) => (
-	<Time value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
+	<Duration value={ rows.reduce( ( a, b ) => a + b.ltime, 0 ) }/>
 );

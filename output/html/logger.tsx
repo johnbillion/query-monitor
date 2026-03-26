@@ -85,7 +85,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					</>
 				),
 				filters: {
-					options: filterOptions,
+					options: [ filterOptions ],
 					callback: ( row, filter ) => row.level === filter,
 				},
 			},

@@ -23,6 +23,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setTheme,
 		fabulous,
 		setFabulous,
+		durationUnit,
+		setDurationUnit,
 	} = useContext( MainContext );
 
 	const setVerify = () => {
@@ -161,6 +163,39 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							{ __( 'Fabulous', 'query-monitor' ) }
 						</label>
 					</p>
+				</section>
+				<section>
+					<h3>
+						{ __( 'Duration units', 'query-monitor' ) }
+					</h3>
+					<ul>
+						<li>
+							<label>
+								<input
+									type="radio"
+									className="qm-radio"
+									name="qm-duration-unit"
+									value="seconds"
+									checked={ durationUnit === 's' }
+									onChange={ () => setDurationUnit( 's' ) }
+								/>
+								{ __( 'Seconds', 'query-monitor' ) }
+							</label>
+						</li>
+						<li>
+							<label>
+								<input
+									type="radio"
+									className="qm-radio"
+									name="qm-duration-unit"
+									value="ms"
+									checked={ durationUnit === 'ms' }
+									onChange={ () => setDurationUnit( 'ms' ) }
+								/>
+								{ __( 'Milliseconds', 'query-monitor' ) }
+							</label>
+						</li>
+					</ul>
 				</section>
 			</div>
 		</NonTabularPanel>

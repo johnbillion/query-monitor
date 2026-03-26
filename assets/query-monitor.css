@@ -25,6 +25,7 @@
 	--qm-cell-bg-hover:                light-dark( #f0f6fc, #373c42 );
 	--qm-cell-fg-highlight:            light-dark( #1e1e1e, #eaeef2 );
 	--qm-cell-bg-highlight:            light-dark( #ffd,    #57572a );
+	--qm-cell-bg-highlight-alt:        light-dark( #ffffc9, #4a4a24 );
 	--qm-cell-bg-highlight-dark:       light-dark( #ffffaa, #353519 );
 	--qm-cell-bg-stripe:               light-dark( #f9f9f9, #32373c );
 	--qm-table-header-bg:              light-dark( #ececec, #3e444a );
@@ -59,6 +60,12 @@
 	--qm-badge-warn-bg:                light-dark( #facfd2, #6c2424 );
 	--qm-sql-keyword-fg:               light-dark( #2271b1, #30ceff );
 	--qm-sql-value-fg:                 light-dark( #a44, #ce9178 );
+	--qm-timeline-db:                  #3858e9;
+	--qm-timeline-http:                #888888;
+	--qm-timeline-php-error:           #d63638;
+	--qm-timeline-timing:              #2e7d32;
+	--qm-timeline-action:              #9c27b0;
+	--qm-timeline-log:                 #ff9800;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	--qm-font-default-size: 12px;
@@ -509,12 +516,12 @@ i {
 			background: var( --qm-badge-bg );
 			border-radius: 10px;
 			color: var( --qm-badge-fg );
-			font-size: 10px;
+			font-size: 11px;
 			font-weight: 600;
 			line-height: 1;
 			margin-left: auto;
 			min-width: 18px;
-			padding: 2px 6px;
+			padding: 3px 6px;
 			text-align: center;
 			text-shadow: none;
 		}
@@ -523,6 +530,11 @@ i {
 			background: var( --qm-badge-warn-bg );
 			color: var( --qm-badge-warn-fg );
 			margin-left: auto;
+		}
+
+		.qm-menu-badge-new {
+			background: var( --qm-panel-menu-bg-hover );
+			color: var( --qm-panel-menu-fg-hover );
 		}
 
 		.qm-menu-badge + .qm-menu-badge-warning {
@@ -1066,7 +1078,7 @@ i {
 	tbody tr:nth-child(odd) td.qm-highlight,
 	tbody tr:nth-child(odd).qm-highlight th,
 	tbody tr:nth-child(odd).qm-highlight td {
-		background-color: #ffffc9;
+		background-color: var( --qm-cell-bg-highlight-alt );
 		color: var( --qm-cell-fg-highlight );
 	}
 
@@ -1080,6 +1092,11 @@ i {
 	tbody tr.qm-warn:hover th,
 	tbody tr.qm-warn:hover td {
 		background: var( --qm-warn-bg-hover );
+	}
+
+	tbody tr.qm-highlight:hover th,
+	tbody tr.qm-highlight:hover td {
+		background: var( --qm-cell-bg-highlight-dark );
 	}
 
 	thead th.qm-filtered select.qm-filter {
@@ -1123,6 +1140,10 @@ i {
 			top: 2px;
 			visibility: hidden;
 		}
+	}
+
+	a.qm-external-link {
+		text-decoration: underline;
 	}
 
 	a.qm-external-link,
@@ -1366,6 +1387,126 @@ select {
 
 #qm-logger tr pre {
 	user-select: all;
+}
+
+/** === Timeline === */
+
+#qm-timeline table {
+	width: 100%;
+
+	td {
+		background: var(--qm-panel-bg);
+		padding: 0;
+	}
+
+	tr:hover td {
+		background: var( --qm-cell-bg-hover );
+	}
+}
+
+.timeline-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0;
+	padding: 10px 20px;
+	border-bottom: 5px solid var( --qm-panel-bg );
+}
+
+.timeline-header h3 {
+	margin: 0;
+}
+
+.timeline-filters {
+	display: flex;
+	gap: 12px;
+}
+
+.timeline-filter {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 12px;
+	cursor: pointer;
+	color: var( --qm-container-fg );
+}
+
+.timeline-filter input {
+	margin: 0;
+}
+
+.timeline-axis {
+	position: relative;
+	height: 17px;
+	pointer-events: none;
+	background-color: var( --qm-button-bg );
+	color: var( --qm-button-fg );
+	border-radius: 3px;
+}
+
+.timeline-tick {
+	position: absolute;
+	bottom: 0;
+	transform: translateX(-50%);
+	font-size: 11px;
+	padding: 3px 3px;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.timeline-tick:first-child {
+	transform: none;
+}
+
+.timeline-tick:last-child {
+	transform: translateX(-100%);
+}
+
+.qm-cell-timeline {
+	height: 28px;
+	position: relative;
+	padding: 0;
+}
+
+.timeline-bar {
+	position: absolute;
+	top: 6px;
+	height: 16px;
+	border-radius: 3px;
+	min-width: 2px;
+	cursor: default;
+}
+
+.timeline-point {
+	width: 3px !important;
+	border-radius: 3px;
+}
+
+.timeline-bar-label {
+	position: absolute;
+	top: 5px;
+	padding: 0 5px;
+	white-space: nowrap;
+	right: 0;
+	max-width: 30%;
+	display: flex;
+	gap: 4px;
+}
+
+.timeline-bar-label-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.timeline-bar-label-text .qm-filter-trigger {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.timeline-bar-label-time {
+	flex-shrink: 0;
 }
 
 /** === Animations === */

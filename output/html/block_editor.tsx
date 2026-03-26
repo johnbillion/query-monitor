@@ -1,6 +1,6 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
-import { Time } from '../components/time';
+import { Duration } from '../components/duration';
 import { JsonOutput } from '../components/json-output';
 import { SourceLocation } from '../components/source-location';
 import { DataTypes, PostBlock } from '../data-types';
@@ -94,7 +94,7 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 	cols.timing = {
 		heading: __('Render Time', 'query-monitor'),
 		className: 'qm-cell-num qm-num',
-		render: (row: iBlock) => row.dynamic ? <Time value={row.timing} /> : null,
+		render: (row: iBlock) => row.dynamic ? <Duration value={row.timing} /> : null,
 	};
 
 	cols.innerHTML = {

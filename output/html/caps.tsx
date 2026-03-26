@@ -72,14 +72,14 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 					</>
 				),
 				filters: {
-					options: ( () => {
+					options: [ ( () => {
 						const users = [ ...new Set( data.caps.map( ( cap ) => cap.user ) ) ];
 						users.sort();
 						return users.map( ( user ) => ( {
 							key: String( user ),
 							label: String( user ),
 						} ) );
-					} )(),
+					} )() ],
 					callback: ( row, value ) => row.user === Number( value ),
 				},
 			},

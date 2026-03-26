@@ -6,7 +6,7 @@ import { Fatal } from '../output/fatal';
 import { iNavMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
 import { DataTypes } from '../output/data-types';
-import { MainContextType } from '../output/contexts/main-context';
+import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 import { registerPanel, registerOverview, registerSettings } from '../output/panels/panel-registry';
 
 import { Admin } from '../output/html/admin';
@@ -37,6 +37,7 @@ import { Styles } from '../output/html/assets_styles';
 import { Theme } from '../output/html/theme';
 import { Timing } from '../output/html/timing';
 import { Transients } from '../output/html/transients';
+import { Timeline } from '../output/html/timeline';
 
 /**
  * Raw settings from PHP, before merging with l10n values.
@@ -93,6 +94,9 @@ if ( QueryMonitorData.locale_data ) {
 // Register overview panels that receive all data
 registerOverview( 'overview', {
 	render: ( data, settings ) => <Overview data={ data } settings={ settings } />,
+} );
+registerOverview( 'timeline', {
+	render: ( data, settings ) => <Timeline data={ data } settings={ settings } />,
 } );
 
 // Register all the panels
@@ -251,6 +255,9 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
+	const seenKey = 'qm-seen';
+	const timelineHiddenKey = 'qm-timeline-hidden';
+	const durationUnitKey = 'qm-duration-unit';
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -288,6 +295,18 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( containerHeightKey, height.toString() );
 	}
 
+	const onSeenChange = ( panel: string ) => {
+		localStorage.setItem( seenKey, panel );
+	}
+
+	const onTimelineHiddenChange = ( categories: string[] ) => {
+		sessionStorage.setItem( timelineHiddenKey, JSON.stringify( categories ) );
+	}
+
+	const onDurationUnitChange = ( unit: string ) => {
+		localStorage.setItem( durationUnitKey, unit );
+	}
+
 	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
@@ -297,6 +316,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const rawContainerHeight = localStorage.getItem( containerHeightKey );
 	const containerHeight = rawContainerHeight ? parseFloat( rawContainerHeight ) : null;
+	const seen = localStorage.getItem( seenKey ) ?? '';
+	const rawTimelineHidden = sessionStorage.getItem( timelineHiddenKey );
+	const timelineHiddenCategories: string[] = rawTimelineHidden ? JSON.parse( rawTimelineHidden ) : [];
+	const durationUnit = ( localStorage.getItem( durationUnitKey ) ?? 's' ) as DurationUnit;
 	const settings: iSettings = {
 		...QueryMonitorData.settings,
 		ajaxurl: QueryMonitorData.l10n.ajaxurl,
@@ -350,6 +373,12 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onFabulousChange={ onFabulousChange }
 				onEditorChange={ onEditorChange }
 				onFiltersChange={ onFiltersChange }
+				seen={ seen }
+				onSeenChange={ onSeenChange }
+				timelineHiddenCategories={ timelineHiddenCategories }
+				onTimelineHiddenChange={ onTimelineHiddenChange }
+				durationUnit={ durationUnit }
+				onDurationUnitChange={ onDurationUnitChange }
 				{ ...getBodyClasses() }
 			/>,
 			mountPoint

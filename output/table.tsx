@@ -3,7 +3,7 @@ import {
 	Caller,
 } from './caller';
 import { Component } from './component';
-import { Time } from './components/time';
+import { Duration } from './components/duration';
 import { Warning } from './components/warning';
 import { PanelContext } from './contexts/panel-context';
 import {
@@ -19,7 +19,8 @@ import {
 } from '@wordpress/i18n';
 
 import { type ComponentChildren } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import { useContext, useEffect, useRef, useState } from 'preact/hooks';
+import { MainContext } from './contexts/main-context';
 
 export type Col<TDataRow> = {
 	className?: string | ( ( row: TDataRow, i: number ) => string );
@@ -42,7 +43,7 @@ export interface FilterOption {
 }
 
 interface ColFilters<TDataRow> {
-	options: FilterOption[];
+	options: FilterOption[][];
 	callback: ( row: TDataRow, value: string ) => boolean;
 }
 
@@ -115,26 +116,46 @@ export const componentFilterCallback = ( component: ComponentType | null | undef
 export const deriveComponentFilters = <TDataRow,>(
 	rows: TDataRow[],
 	getComponent: ( row: TDataRow ) => ComponentType | null | undefined
-): FilterOption[] => {
+): FilterOption[][] => {
+	let hasCore = false;
 	const filters = deriveFilters( rows, ( row ) => {
 		const component = getComponent( row );
 		if ( ! component ) {
 			return null;
 		}
+
+		if ( component.context === 'core' ) {
+			hasCore = true;
+			return null;
+		}
+
 		return {
 			key: `${ component.type }-${ component.context }`,
 			label: component.name,
 		};
 	} );
+	const groups = [];
 
 	if ( filters.length > 1 ) {
-		filters.unshift( {
-			key: 'non-core',
-			label: __( 'Non-WordPress Core', 'query-monitor' ),
-		} );
+		groups.push( filters );
+
+		if ( hasCore ) {
+			groups.push(
+				[
+					{
+						key: 'non-core',
+						label: __( 'Non-WordPress Core', 'query-monitor' ),
+					},
+					{
+						key: 'core',
+						label: __( 'WordPress Core', 'query-monitor' ),
+					},
+				],
+			);
+		}
 	}
 
-	return filters;
+	return groups;
 };
 
 export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
@@ -143,10 +164,10 @@ export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataR
 	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace?.component } />,
-		filters: {
+		filters: filters.length ? {
 			options: filters,
 			callback: ( row, value: string ) => componentFilterCallback( row.trace?.component, value ),
-		},
+		} : undefined,
 	};
 
 	return column;
@@ -160,7 +181,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
-		render: ( row ) => <Time value={ row.ltime ?? 0 } />,
+		render: ( row ) => <Duration value={ row.ltime ?? 0 } />,
 		cellHasError: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
@@ -188,7 +209,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
-			options: filters,
+			options: [ filters ],
 			callback: ( row, value: string ) => {
 				if ( row.trace?.callsite ) {
 					return row.trace.callsite.filename === value;
@@ -221,7 +242,7 @@ export const getStackCol = <TDataRow extends DataRowWithStack>( rows: TDataRow[]
 		render: ( row ) => <StackCaller stack={ row.stack } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
-			options: filters,
+			options: [ filters ],
 			callback: ( row, value: string ) => {
 				if ( ! row.stack?.length ) {
 					return false;
@@ -246,9 +267,14 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 
 export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<TDataRow>>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, header, children }: TableProps<TDataRow, TCols> ) => {
 	const {
+		id: panelId,
 		filters,
 		setFilter,
 	} = useContext( PanelContext );
+	const {
+		jumpToRow,
+	} = useContext( MainContext );
+	const tbodyRef = useRef<HTMLTableSectionElement>( null );
 	const total = countData( data );
 	const nonEmptyCols = Object.entries( cols ).filter( ( entry ): entry is [string, Col<TDataRow>] => ( entry[1] ? true : false ) );
 
@@ -266,7 +292,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 
 		const colFilters = col.filters;
 
-		if ( ! colFilters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
+		if ( ! colFilters.options.flat().filter( ( option ) => ( option.key === filterValue ) ).length ) {
 			continue;
 		}
 
@@ -291,6 +317,11 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 		}
 	}
 
+	const isJumpTarget = jumpToRow !== null && jumpToRow.panel === panelId;
+
+	// Map each row to its original (pre-sort) index for jump highlighting.
+	const originalIndices = data.map( ( _, i ) => i );
+
 	const count = countData( data );
 	const [ sorting, _setSorting ] = useState( {
 		orderby,
@@ -302,19 +333,46 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 		const sortField = sortCol && sortCol.sorting?.field;
 
 		if ( sortField ) {
-			data.sort( ( a, b ) => {
-				if ( a[ sortField ] < b[ sortField ] ) {
+			// Build paired array so original indices follow rows through the sort.
+			const paired = data.map( ( row, i ) => ( { row, idx: originalIndices[ i ] } ) );
+			paired.sort( ( a, b ) => {
+				if ( a.row[ sortField ] < b.row[ sortField ] ) {
 					return sorting.order === 'asc' ? -1 : 1;
 				}
 
-				if ( a[ sortField ] > b[ sortField ] ) {
+				if ( a.row[ sortField ] > b.row[ sortField ] ) {
 					return sorting.order === 'asc' ? 1 : -1;
 				}
 
 				return 0;
 			} );
+			for ( let i = 0; i < paired.length; i++ ) {
+				data[ i ] = paired[ i ].row;
+				originalIndices[ i ] = paired[ i ].idx;
+			}
 		}
 	}
+
+	useEffect( () => {
+		if ( ! isJumpTarget || ! tbodyRef.current ) {
+			return;
+		}
+
+		// Find the rendered position of the target row after sorting.
+		const renderedIndex = originalIndices.indexOf( jumpToRow.row );
+
+		if ( renderedIndex === -1 ) {
+			return;
+		}
+
+		// Account for the warning row that may precede data rows.
+		const offset = warning ? 1 : 0;
+		const row = tbodyRef.current.rows[ renderedIndex + offset ];
+
+		if ( row ) {
+			row.scrollIntoView( { block: 'center' } );
+		}
+	}, [ isJumpTarget, jumpToRow, originalIndices, warning ] );
 
 	const footerFunc = footer || PanelFooter;
 
@@ -360,12 +418,16 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 												onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 											>
 												<option value="">All</option>
-												<hr/>
-												{ colFilters.map( ( filter ) => (
-													<option
-														key={ filter.key }
-														value={ filter.key }
-													>{ filter.label }</option>
+												{ colFilters.map( ( group, gi ) => (
+													<>
+														<hr/>
+														{ group.map( ( filter ) => (
+															<option
+																key={ `${ gi }-${ filter.key }` }
+																value={ filter.key }
+															>{ filter.label }</option>
+														) ) }
+													</>
 												) ) }
 											</select>
 										</div>
@@ -378,7 +440,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 					</tr>
 				) }
 			</thead>
-			<tbody>
+			<tbody ref={ tbodyRef }>
 				{ warning && (
 					<tr className="qm-warn">
 						<td colSpan={ nonEmptyCols.length }>
@@ -393,7 +455,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 						key={ i }
 						className={ clsx( {
 							'qm-warn': rowHasError && rowHasError( row ),
-							'qm-highlight': highlightedRows.has( i ),
+							'qm-highlight': highlightedRows.has( i ) || ( isJumpTarget && originalIndices[ i ] === jumpToRow.row ),
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => {

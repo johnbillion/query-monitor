@@ -1,6 +1,6 @@
 import { FilterLink } from '../components/filter-link';
 import { TabularPanel } from '../panels/tabular-panel';
-import { Time } from '../components/time';
+import { Duration } from '../components/duration';
 import * as Utils from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
@@ -35,7 +35,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			time: {
 				className: 'qm-num',
 				heading: __( 'Time', 'query-monitor' ),
-				render: ( row ) => <Time value={ row.ltime } />,
+				render: ( row ) => <Duration value={ row.ltime } />,
 			},
 			callers: {
 				heading: __( 'Callers', 'query-monitor' ),

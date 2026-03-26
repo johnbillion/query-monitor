@@ -17,6 +17,8 @@ export interface SettingsType {
 	contentpath: string;
 }
 
+export type DurationUnit = 's' | 'ms';
+
 export type MainContextType = {
 	editor: string;
 	setEditor: ( editor: string ) => void;
@@ -26,8 +28,13 @@ export type MainContextType = {
 	setFabulous: ( fabulous: boolean ) => void;
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
-	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
+	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'], rowIndex?: number ) => void;
+	jumpToRow: { panel: string; row: number } | null;
+	timelineHiddenCategories: string[];
+	setTimelineHiddenCategories: ( categories: string[] ) => void;
 	settings: SettingsType;
+	durationUnit: DurationUnit;
+	setDurationUnit: ( unit: DurationUnit ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -39,7 +46,12 @@ export const MainContext = createContext<MainContextType>( {
 	setFabulous: ( _fabulous ) => {},
 	filters: {},
 	setFilters: ( _filters ) => {},
-	switchToPanel: ( _panelId, _panelFilters ) => {},
+	switchToPanel: ( _panelId, _panelFilters, _rowIndex ) => {},
+	jumpToRow: null,
+	timelineHiddenCategories: [],
+	setTimelineHiddenCategories: ( _categories ) => {},
+	durationUnit: 's',
+	setDurationUnit: ( _unit ) => {},
 	settings: {
 		extended_query_prompt_reason: null,
 		file_path_map: {},

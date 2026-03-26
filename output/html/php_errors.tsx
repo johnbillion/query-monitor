@@ -58,7 +58,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 					</>
 				),
 				filters: {
-					options: filterOptions,
+					options: [ filterOptions ],
 					callback: ( row, filter ) => row.level === filter,
 				},
 			},

@@ -148,10 +148,10 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 					render: ( row ) => row.component
 						? <Component component={ row.component } />
 						: null,
-					filters: {
+					filters: componentFilters.length ? {
 						options: componentFilters,
 						callback: ( row, value: string ) => componentFilterCallback( row.component, value ),
-					},
+					} : undefined,
 				},
 			} }
 			data={ rows }

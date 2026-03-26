@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Icon } from './components/icon';
-import { MainContext, MainContextType } from './contexts/main-context';
+import { MainContext, MainContextType, DurationUnit } from './contexts/main-context';
 import { type ComponentChildren, render } from 'preact';
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'preact/hooks';
 
@@ -41,6 +41,7 @@ type Props = {
 	fabulous: boolean;
 	editor: string;
 	filters: MainContextType['filters'];
+	seen: string;
 	containerHeight: number | null;
 	isWpAdmin: boolean;
 	isFolded: boolean;
@@ -54,6 +55,11 @@ type Props = {
 	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
+	onSeenChange: ( panel: string ) => void;
+	timelineHiddenCategories: string[];
+	onTimelineHiddenChange: ( categories: string[] ) => void;
+	durationUnit: DurationUnit;
+	onDurationUnitChange: ( unit: DurationUnit ) => void;
 }
 
 export const QM = ( props: Props ) => {
@@ -63,9 +69,44 @@ export const QM = ( props: Props ) => {
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
+	const [ seen, setSeen ] = useState( props.seen );
+	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
+	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
+	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
+	const jumpToRowRef = useRef( jumpToRow );
+	jumpToRowRef.current = jumpToRow;
+
+	const handleSeenChange = ( panel: string ) => {
+		props.onSeenChange( panel );
+		setSeen( panel );
+	};
+
+	const handleTimelineHiddenChange = ( categories: string[] ) => {
+		props.onTimelineHiddenChange( categories );
+		setTimelineHiddenCategories( categories );
+	};
+
+	const newPanels = useMemo( () => {
+		const panels = new Set<string>();
+		const collect = ( menu: iNavMenu ) => {
+			for ( const item of Object.values( menu ) ) {
+				if ( item.new ) {
+					panels.add( item.panel );
+				}
+				if ( item.children ) {
+					collect( item.children );
+				}
+			}
+		};
+		collect( props.panel_menu );
+		return panels;
+	}, [ props.panel_menu ] );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
+		if ( newPanels.has( active ) && active !== seen ) {
+			handleSeenChange( active );
+		}
 		// @TODO focus the panel for a11y
 	};
 
@@ -109,16 +150,27 @@ export const QM = ( props: Props ) => {
 			props.onFiltersChange( filters );
 			setFilters( filters );
 		},
-		switchToPanel: ( panelId: string, panelFilters?: MainContextType['filters'][string] ) => {
+		switchToPanel: ( panelId: string, panelFilters?: MainContextType['filters'][string], rowIndex?: number ) => {
 			setActivePanel( panelId );
-			if ( panelFilters ) {
-				const newFilters = {
-					...filters,
-					[panelId]: panelFilters,
-				};
+			setFilters( ( prev ) => {
+				const newFilters = { ...prev };
+				if ( panelFilters && Object.keys( panelFilters ).length > 0 ) {
+					newFilters[ panelId ] = panelFilters;
+				} else {
+					delete newFilters[ panelId ];
+				}
 				props.onFiltersChange( newFilters );
-				setFilters( newFilters );
-			}
+				return newFilters;
+			} );
+			setJumpToRow( rowIndex !== undefined ? { panel: panelId, row: rowIndex } : null );
+		},
+		jumpToRow,
+		timelineHiddenCategories: timelineHiddenCategories,
+		setTimelineHiddenCategories: handleTimelineHiddenChange,
+		durationUnit: durationUnit,
+		setDurationUnit: ( unit: DurationUnit ) => {
+			props.onDurationUnitChange( unit );
+			setDurationUnit( unit );
 		},
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
@@ -148,7 +200,9 @@ export const QM = ( props: Props ) => {
 
 	useEffect( () => {
 		onPanelChange( active );
-		mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+		if ( jumpToRowRef.current === null ) {
+			mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+		}
 	}, [ active, onPanelChange ] );
 
 	useEffect( () => {
@@ -298,7 +352,7 @@ export const QM = ( props: Props ) => {
 					</div>
 					<div id="qm-panels-wrapper">
 						{ ! side && (
-							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } seen={ seen } />
 						) }
 						<Panels data={ props.data } active={ active } settings={ props.settings } />
 					</div>
