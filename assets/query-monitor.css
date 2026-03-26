@@ -1396,7 +1396,7 @@ select {
 	background: var( --qm-cell-bg-hover );
 }
 
-.qm-timeline-header {
+.timeline-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -1404,16 +1404,16 @@ select {
 	padding: 10px 20px 0;
 }
 
-.qm-timeline-header h3 {
+.timeline-header h3 {
 	margin: 0;
 }
 
-.qm-timeline-filters {
+.timeline-filters {
 	display: flex;
 	gap: 12px;
 }
 
-.qm-timeline-filter {
+.timeline-filter {
 	display: flex;
 	align-items: center;
 	gap: 4px;
@@ -1422,17 +1422,17 @@ select {
 	color: var( --qm-container-fg );
 }
 
-.qm-timeline-filter input {
+.timeline-filter input {
 	margin: 0;
 }
 
-.qm-timeline-axis {
+.timeline-axis {
 	position: relative;
 	height: 18px;
 	pointer-events: none;
 }
 
-.qm-timeline-tick {
+.timeline-tick {
 	position: absolute;
 	bottom: 0;
 	transform: translateX(-50%);
@@ -1443,37 +1443,37 @@ select {
 	line-height: 1;
 }
 
-.qm-timeline-tick:first-child {
+.timeline-tick:first-child {
 	transform: none;
 }
 
-.qm-timeline-tick:last-child {
+.timeline-tick:last-child {
 	transform: translateX(-100%);
 }
 
-.qm-timeline-tick::after {
+.timeline-tick::after {
 	display: none;
 }
 
-.qm-timeline-segments {
+.timeline-segments {
 	position: relative;
 	display: flex;
 	height: 22px;
 	border-bottom: 1px solid var( --qm-panel-separator );
 }
 
-.qm-timeline-segment {
+.timeline-segment {
 	position: absolute;
 	top: 0;
 	height: 100%;
 	border-left: 2px solid var( --qm-panel-separator );
 }
 
-.qm-timeline-segment:first-child {
+.timeline-segment:first-child {
 	border-left: none;
 }
 
-.qm-timeline-segment-label {
+.timeline-segment-label {
 	font-size: 11px;
 	line-height: 22px;
 	color: var( --qm-container-fg );
@@ -1482,7 +1482,7 @@ select {
 	padding: 0 6px;
 }
 
-.qm-timeline-bar {
+.timeline-bar {
 	position: absolute;
 	top: 2px;
 	height: 16px;
@@ -1491,12 +1491,12 @@ select {
 	cursor: default;
 }
 
-.qm-timeline-point {
+.timeline-point {
 	width: 3px !important;
 	border-radius: 1px;
 }
 
-.qm-timeline-bar-label {
+.timeline-bar-label {
 	position: absolute;
 	top: 1px;
 	padding: 0 4px;
@@ -1511,16 +1511,16 @@ select {
 	gap: 4px;
 }
 
-.qm-timeline-bar-label-text {
+.timeline-bar-label-text {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.qm-timeline-bar-label-time {
+.timeline-bar-label-time {
 	flex-shrink: 0;
 }
 
-#qm-timeline tbody tr:hover .qm-timeline-bar-label {
+#qm-timeline tbody tr:hover .timeline-bar-label {
 	opacity: 1;
 }
 

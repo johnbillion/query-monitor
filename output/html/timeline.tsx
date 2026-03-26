@@ -248,7 +248,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 				return (
 					<>
 						<span
-							className={ `qm-timeline-bar ${ isPoint ? 'qm-timeline-point' : '' }` }
+							className={ `timeline-bar ${ isPoint ? 'timeline-point' : '' }` }
 							style={ {
 								left: `${ leftPct }%`,
 								width: isPoint ? undefined : `${ Math.max( widthPct, 0.3 ) }%`,
@@ -256,17 +256,17 @@ export const Timeline = ( { data }: TimelineProps ) => {
 							} }
 						/>
 						<span
-							className="qm-timeline-bar-label"
+							className="timeline-bar-label"
 							style={ leftPct > 60
 								? { right: `${ 100 - leftPct }%`, textAlign: 'right' }
 								: { left: `${ leftPct + ( isPoint ? 0.3 : Math.max( widthPct, 0.3 ) ) }%` }
 							}
 						>
-							<span className="qm-timeline-bar-label-text">
+							<span className="timeline-bar-label-text">
 								{ item.label }
 							</span>
 							{ item.duration !== null && (
-								<span className="qm-timeline-bar-label-time">
+								<span className="timeline-bar-label-time">
 									{ formatDuration( durationMs ) }
 								</span>
 							) }
@@ -279,8 +279,8 @@ export const Timeline = ( { data }: TimelineProps ) => {
 
 	const header = (
 		<>
-			<div className="qm-timeline-header">
-				<div className="qm-timeline-filters">
+			<div className="timeline-header">
+				<div className="timeline-filters">
 					{ componentFilters.length > 0 && (
 						<div className="qm-filter-container">
 							<label htmlFor="qm-filter-timeline-component" className="qm-screen-reader-text">
@@ -304,7 +304,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 						</div>
 					) }
 					{ presentCategories.map( ( category ) => (
-						<label key={ category } className="qm-timeline-filter">
+						<label key={ category } className="timeline-filter">
 							<input
 								type="checkbox"
 								checked={ ! hiddenCategories.has( category ) }
@@ -317,7 +317,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 				</div>
 			</div>
 			{ segmentBoundaries.length > 0 && (
-				<div className="qm-timeline-segments">
+				<div className="timeline-segments">
 					{ segmentBoundaries.map( ( seg, i ) => {
 						const nextTime = i < segmentBoundaries.length - 1
 							? segmentBoundaries[ i + 1 ].time
@@ -328,13 +328,13 @@ export const Timeline = ( { data }: TimelineProps ) => {
 						return (
 							<div
 								key={ i }
-								className="qm-timeline-segment"
+								className="timeline-segment"
 								style={ {
 									left: `${ leftPct }%`,
 									width: `${ widthPct }%`,
 								} }
 							>
-								<span className="qm-timeline-segment-label">
+								<span className="timeline-segment-label">
 									{ seg.label }
 								</span>
 							</div>
@@ -342,11 +342,11 @@ export const Timeline = ( { data }: TimelineProps ) => {
 					} ) }
 				</div>
 			) }
-			<div className="qm-timeline-axis">
+			<div className="timeline-axis">
 				{ ticks.map( ( tick, i ) => (
 					<span
 						key={ i }
-						className="qm-timeline-tick"
+						className="timeline-tick"
 						style={ { left: `${ ( tick / totalTimeMs ) * 100 }%` } }
 					>
 						{ Utils.numberFormat( tick / 1000, 4 ) }
