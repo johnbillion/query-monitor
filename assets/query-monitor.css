@@ -59,6 +59,12 @@
 	--qm-badge-warn-bg:                light-dark( #facfd2, #6c2424 );
 	--qm-sql-keyword-fg:               light-dark( #2271b1, #30ceff );
 	--qm-sql-value-fg:                 light-dark( #a44, #ce9178 );
+	--qm-timeline-db:                  #3858e9;
+	--qm-timeline-http:                #888888;
+	--qm-timeline-php-error:           #d63638;
+	--qm-timeline-timing:              #2e7d32;
+	--qm-timeline-action:              #9c27b0;
+	--qm-timeline-log:                 #ff9800;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	--qm-font-default-size: 12px;
@@ -1128,6 +1134,10 @@ i {
 			top: 2px;
 			visibility: hidden;
 		}
+	}
+
+	a.qm-external-link {
+		text-decoration: underline;
 	}
 
 	a.qm-external-link,

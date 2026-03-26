@@ -29,12 +29,12 @@ type TimelineProps = {
 };
 
 const categoryColors: Record<TimelineItem['category'], string> = {
-	'db': 'var(--qm-timeline-db, #3858e9)',
-	'http': 'var(--qm-timeline-http, #888)',
-	'php-error': 'var(--qm-timeline-php-error, #d63638)',
-	'timing': 'var(--qm-timeline-timing, #2e7d32)',
-	'action': 'var(--qm-timeline-action, #9c27b0)',
-	'log': 'var(--qm-timeline-log, #ff9800)',
+	'db': 'var(--qm-timeline-db)',
+	'http': 'var(--qm-timeline-http)',
+	'php-error': 'var(--qm-timeline-php-error)',
+	'timing': 'var(--qm-timeline-timing)',
+	'action': 'var(--qm-timeline-action)',
+	'log': 'var(--qm-timeline-log)',
 };
 
 const categoryLabels: Record<TimelineItem['category'], string> = {
