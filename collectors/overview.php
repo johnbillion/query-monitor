@@ -64,8 +64,10 @@ class QM_Collector_Overview extends QM_DataCollector {
 		parent::set_up();
 
 		foreach ( self::$notable_actions as $action ) {
-			add_action( $action, array( $this, 'track_action_start' ), -9999 );
-			add_action( $action, array( $this, 'track_action_end' ), 9999 );
+			add_action( $action, array( $this, 'track_action_start' ), PHP_INT_MIN );
+			// For shutdown, end must be tracked before QM dispatches (HTML dispatcher runs at priority 9).
+			$end_priority = ( 'shutdown' === $action ) ? 8 : PHP_INT_MAX;
+			add_action( $action, array( $this, 'track_action_end' ), $end_priority );
 		}
 
 		add_action( 'wp', array( $this, 'segment_request' ), 0 );
@@ -80,8 +82,9 @@ class QM_Collector_Overview extends QM_DataCollector {
 	 */
 	public function tear_down() {
 		foreach ( self::$notable_actions as $action ) {
-			remove_action( $action, array( $this, 'track_action_start' ), -9999 );
-			remove_action( $action, array( $this, 'track_action_end' ), 9999 );
+			remove_action( $action, array( $this, 'track_action_start' ), PHP_INT_MIN );
+			$end_priority = ( 'shutdown' === $action ) ? 8 : PHP_INT_MAX;
+			remove_action( $action, array( $this, 'track_action_end' ), $end_priority );
 		}
 
 		remove_action( 'wp', array( $this, 'segment_request' ), 0 );
