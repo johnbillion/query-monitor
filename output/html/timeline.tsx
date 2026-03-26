@@ -5,6 +5,7 @@ import { Backtrace, Component } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
 import * as Utils from '../utils';
 import { iPanelData, iSettings } from '../panels/panels';
+import { JumpLink } from '../components/jump-link';
 import { MainContext } from '../contexts/main-context';
 import { PanelContext } from '../contexts/panel-context';
 
@@ -19,6 +20,7 @@ interface TimelineItem {
 	duration: number | null;
 	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log';
 	panel: string;
+	rowIndex?: number;
 	component?: Component;
 }
 
@@ -67,7 +69,9 @@ const buildTimelineItems = (
 	const items: TimelineItem[] = [];
 
 	if ( dbRows ) {
-		for ( const row of dbRows ) {
+		for ( let i = 0; i < dbRows.length; i++ ) {
+			const row = dbRows[ i ];
+
 			if ( ! row.trace ) {
 				continue;
 			}
@@ -78,27 +82,33 @@ const buildTimelineItems = (
 				duration: row.ltime,
 				category: 'db',
 				panel: 'db_queries',
+				rowIndex: i,
 				component: row.trace.component,
 			} );
 		}
 	}
 
 	if ( httpRequests ) {
-		for ( const req of httpRequests ) {
+		for ( let i = 0; i < httpRequests.length; i++ ) {
+			const req = httpRequests[ i ];
+
 			items.push( {
 				label: req.url,
 				time: req.trace.time,
 				duration: req.ltime,
 				category: 'http',
 				panel: 'http',
+				rowIndex: i,
 				component: req.trace.component,
 			} );
 		}
 	}
 
 	if ( phpErrors ) {
+		let i = 0;
 		for ( const error of Object.values( phpErrors ) ) {
 			if ( ! error.trace ) {
+				i++;
 				continue;
 			}
 
@@ -108,32 +118,40 @@ const buildTimelineItems = (
 				duration: null,
 				category: 'php-error',
 				panel: 'php_errors',
+				rowIndex: i,
 				component: error.trace.component,
 			} );
+			i++;
 		}
 	}
 
 	if ( timings ) {
-		for ( const timing of timings ) {
+		for ( let i = 0; i < timings.length; i++ ) {
+			const timing = timings[ i ];
+
 			items.push( {
 				label: timing.function,
 				time: timing.start_time * 1000,
 				duration: timing.function_time,
 				category: 'timing',
 				panel: 'timing',
+				rowIndex: i,
 				component: timing.trace.component,
 			} );
 		}
 	}
 
 	if ( logs ) {
-		for ( const log of logs ) {
+		for ( let i = 0; i < logs.length; i++ ) {
+			const log = logs[ i ];
+
 			items.push( {
 				label: `[${ log.level }] ${ log.message }`,
 				time: log.trace.time,
 				duration: null,
 				category: 'log',
 				panel: 'logger',
+				rowIndex: i,
 				component: log.trace.component,
 			} );
 		}
@@ -262,7 +280,13 @@ export const Timeline = ( { data }: TimelineProps ) => {
 							}
 						>
 							<span className="timeline-bar-label-text">
-								{ item.label }
+								{ item.rowIndex !== undefined ? (
+									<JumpLink targetPanel={ item.panel } rowIndex={ item.rowIndex }>
+										{ item.label }
+									</JumpLink>
+								) : (
+									item.label
+								) }
 							</span>
 							{ item.duration !== null && (
 								<span className="timeline-bar-label-time">

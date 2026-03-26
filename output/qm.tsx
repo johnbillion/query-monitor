@@ -69,6 +69,9 @@ export const QM = ( props: Props ) => {
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
+	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
+	const jumpToRowRef = useRef( jumpToRow );
+	jumpToRowRef.current = jumpToRow;
 
 	const handleSeenChange = ( panel: string ) => {
 		props.onSeenChange( panel );
@@ -144,17 +147,21 @@ export const QM = ( props: Props ) => {
 			props.onFiltersChange( filters );
 			setFilters( filters );
 		},
-		switchToPanel: ( panelId: string, panelFilters?: MainContextType['filters'][string] ) => {
+		switchToPanel: ( panelId: string, panelFilters?: MainContextType['filters'][string], rowIndex?: number ) => {
 			setActivePanel( panelId );
-			if ( panelFilters ) {
-				const newFilters = {
-					...filters,
-					[panelId]: panelFilters,
-				};
+			setFilters( ( prev ) => {
+				const newFilters = { ...prev };
+				if ( panelFilters && Object.keys( panelFilters ).length > 0 ) {
+					newFilters[ panelId ] = panelFilters;
+				} else {
+					delete newFilters[ panelId ];
+				}
 				props.onFiltersChange( newFilters );
-				setFilters( newFilters );
-			}
+				return newFilters;
+			} );
+			setJumpToRow( rowIndex !== undefined ? { panel: panelId, row: rowIndex } : null );
 		},
+		jumpToRow,
 		timelineHiddenCategories: timelineHiddenCategories,
 		setTimelineHiddenCategories: handleTimelineHiddenChange,
 		settings: {
@@ -185,7 +192,9 @@ export const QM = ( props: Props ) => {
 
 	useEffect( () => {
 		onPanelChange( active );
-		mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+		if ( jumpToRowRef.current === null ) {
+			mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+		}
 	}, [ active, onPanelChange ] );
 
 	useEffect( () => {

@@ -26,7 +26,8 @@ export type MainContextType = {
 	setFabulous: ( fabulous: boolean ) => void;
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
-	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
+	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'], rowIndex?: number ) => void;
+	jumpToRow: { panel: string; row: number } | null;
 	timelineHiddenCategories: string[];
 	setTimelineHiddenCategories: ( categories: string[] ) => void;
 	settings: SettingsType;
@@ -41,7 +42,8 @@ export const MainContext = createContext<MainContextType>( {
 	setFabulous: ( _fabulous ) => {},
 	filters: {},
 	setFilters: ( _filters ) => {},
-	switchToPanel: ( _panelId, _panelFilters ) => {},
+	switchToPanel: ( _panelId, _panelFilters, _rowIndex ) => {},
+	jumpToRow: null,
 	timelineHiddenCategories: [],
 	setTimelineHiddenCategories: ( _categories ) => {},
 	settings: {

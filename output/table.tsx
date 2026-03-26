@@ -19,7 +19,8 @@ import {
 } from '@wordpress/i18n';
 
 import { type ComponentChildren } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import { useContext, useEffect, useRef, useState } from 'preact/hooks';
+import { MainContext } from './contexts/main-context';
 
 export type Col<TDataRow> = {
 	className?: string | ( ( row: TDataRow, i: number ) => string );
@@ -246,9 +247,14 @@ const countData = <TDataRow extends {}>( data: TDataRow[] ) => {
 
 export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<TDataRow>>( { title, cols, data, rowHasError, id, footer, warning, orderby, order = 'desc', groupKey, header, children }: TableProps<TDataRow, TCols> ) => {
 	const {
+		id: panelId,
 		filters,
 		setFilter,
 	} = useContext( PanelContext );
+	const {
+		jumpToRow,
+	} = useContext( MainContext );
+	const tbodyRef = useRef<HTMLTableSectionElement>( null );
 	const total = countData( data );
 	const nonEmptyCols = Object.entries( cols ).filter( ( entry ): entry is [string, Col<TDataRow>] => ( entry[1] ? true : false ) );
 
@@ -291,6 +297,11 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 		}
 	}
 
+	const isJumpTarget = jumpToRow !== null && jumpToRow.panel === panelId;
+
+	// Map each row to its original (pre-sort) index for jump highlighting.
+	const originalIndices = data.map( ( _, i ) => i );
+
 	const count = countData( data );
 	const [ sorting, _setSorting ] = useState( {
 		orderby,
@@ -302,19 +313,46 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 		const sortField = sortCol && sortCol.sorting?.field;
 
 		if ( sortField ) {
-			data.sort( ( a, b ) => {
-				if ( a[ sortField ] < b[ sortField ] ) {
+			// Build paired array so original indices follow rows through the sort.
+			const paired = data.map( ( row, i ) => ( { row, idx: originalIndices[ i ] } ) );
+			paired.sort( ( a, b ) => {
+				if ( a.row[ sortField ] < b.row[ sortField ] ) {
 					return sorting.order === 'asc' ? -1 : 1;
 				}
 
-				if ( a[ sortField ] > b[ sortField ] ) {
+				if ( a.row[ sortField ] > b.row[ sortField ] ) {
 					return sorting.order === 'asc' ? 1 : -1;
 				}
 
 				return 0;
 			} );
+			for ( let i = 0; i < paired.length; i++ ) {
+				data[ i ] = paired[ i ].row;
+				originalIndices[ i ] = paired[ i ].idx;
+			}
 		}
 	}
+
+	useEffect( () => {
+		if ( ! isJumpTarget || ! tbodyRef.current ) {
+			return;
+		}
+
+		// Find the rendered position of the target row after sorting.
+		const renderedIndex = originalIndices.indexOf( jumpToRow.row );
+
+		if ( renderedIndex === -1 ) {
+			return;
+		}
+
+		// Account for the warning row that may precede data rows.
+		const offset = warning ? 1 : 0;
+		const row = tbodyRef.current.rows[ renderedIndex + offset ];
+
+		if ( row ) {
+			row.scrollIntoView( { block: 'center' } );
+		}
+	}, [ isJumpTarget, jumpToRow, originalIndices, warning ] );
 
 	const footerFunc = footer || PanelFooter;
 
@@ -378,7 +416,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 					</tr>
 				) }
 			</thead>
-			<tbody>
+			<tbody ref={ tbodyRef }>
 				{ warning && (
 					<tr className="qm-warn">
 						<td colSpan={ nonEmptyCols.length }>
@@ -393,7 +431,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 						key={ i }
 						className={ clsx( {
 							'qm-warn': rowHasError && rowHasError( row ),
-							'qm-highlight': highlightedRows.has( i ),
+							'qm-highlight': highlightedRows.has( i ) || ( isJumpTarget && originalIndices[ i ] === jumpToRow.row ),
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => {
