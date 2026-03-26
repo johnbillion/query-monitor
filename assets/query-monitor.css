@@ -1389,23 +1389,6 @@ select {
 	width: 100%;
 }
 
-#qm-timeline .qm-col-timeline {
-	width: 100%;
-}
-
-#qm-timeline tbody tr {
-	height: 24px;
-}
-
-#qm-timeline .qm-cell-timeline {
-	position: relative;
-	padding: 0;
-}
-
-#qm-timeline tbody tr:hover {
-	background: var( --qm-cell-bg-hover );
-}
-
 .timeline-header {
 	display: flex;
 	align-items: center;
@@ -1492,9 +1475,15 @@ select {
 	padding: 0 6px;
 }
 
+.qm-cell-timeline {
+	height: 32px;
+	position: relative;
+	padding: 0;
+}
+
 .timeline-bar {
 	position: absolute;
-	top: 2px;
+	top: 8px;
 	height: 16px;
 	border-radius: 2px;
 	min-width: 2px;
@@ -1508,11 +1497,8 @@ select {
 
 .timeline-bar-label {
 	position: absolute;
-	top: 1px;
-	padding: 0 4px;
-	font-size: 12px;
-	line-height: 18px;
-	color: var( --qm-container-fg );
+	top: 7px;
+	padding: 0 5px;
 	white-space: nowrap;
 	right: 0;
 	max-width: 30%;
