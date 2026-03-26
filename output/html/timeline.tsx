@@ -3,9 +3,9 @@ import { useContext } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Backtrace, Component } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
-import * as Utils from '../utils';
 import { iPanelData, iSettings } from '../panels/panels';
 import { JumpLink } from '../components/jump-link';
+import { Duration } from '../components/duration';
 import { MainContext } from '../contexts/main-context';
 import { PanelContext } from '../contexts/panel-context';
 
@@ -45,10 +45,6 @@ const categoryLabels: Record<TimelineItem['category'], string> = {
 	'timing': __( 'Timings', 'query-monitor' ),
 	'action': __( 'Notable Actions', 'query-monitor' ),
 	'log': __( 'Logs', 'query-monitor' ),
-};
-
-const formatDuration = ( ms: number ): string => {
-	return Utils.numberFormat( ms / 1000, 4 );
 };
 
 const segmentLabels: Record<string, string> = {
@@ -293,7 +289,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 							</span>
 							{ item.duration !== null && (
 								<span className="timeline-bar-label-time">
-									{ formatDuration( durationMs ) }
+									<Duration value={ durationMs / 1000 } />
 								</span>
 							) }
 						</span>
@@ -379,7 +375,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 						className="timeline-tick"
 						style={ { left: `${ ( tick / totalTimeMs ) * 100 }%` } }
 					>
-						{ Utils.numberFormat( tick / 1000, 4 ) }
+						<Duration value={ tick / 1000 } />
 					</span>
 				) ) }
 			</div>

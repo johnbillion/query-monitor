@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Icon } from './components/icon';
-import { MainContext, MainContextType } from './contexts/main-context';
+import { MainContext, MainContextType, DurationUnit } from './contexts/main-context';
 import { type ComponentChildren, render } from 'preact';
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'preact/hooks';
 
@@ -58,6 +58,8 @@ type Props = {
 	onSeenChange: ( panel: string ) => void;
 	timelineHiddenCategories: string[];
 	onTimelineHiddenChange: ( categories: string[] ) => void;
+	durationUnit: DurationUnit;
+	onDurationUnitChange: ( unit: DurationUnit ) => void;
 }
 
 export const QM = ( props: Props ) => {
@@ -69,6 +71,7 @@ export const QM = ( props: Props ) => {
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
+	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
 	const jumpToRowRef = useRef( jumpToRow );
 	jumpToRowRef.current = jumpToRow;
@@ -164,6 +167,11 @@ export const QM = ( props: Props ) => {
 		jumpToRow,
 		timelineHiddenCategories: timelineHiddenCategories,
 		setTimelineHiddenCategories: handleTimelineHiddenChange,
+		durationUnit: durationUnit,
+		setDurationUnit: ( unit: DurationUnit ) => {
+			props.onDurationUnitChange( unit );
+			setDurationUnit( unit );
+		},
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,

@@ -5,7 +5,7 @@ import { Toggler } from '../components/toggler';
 import { Icon } from '../components/icon';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol } from '../table';
-import { Time } from '../components/time';
+import { Duration } from '../components/duration';
 import { TotalTime } from '../components/total-time';
 import { PanelFooter } from '../panels/panel-footer';
 import { DataTypes } from '../data-types';
@@ -177,7 +177,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 									return (
 										<li key={ key }>
 											<span className="qm-info qm-supplemental">
-												{ label }: { Utils.numberFormat( info[key] as number, 4 ) }
+												{ label }: <Duration value={ info[key] as number } />
 											</span>
 										</li>
 									);
@@ -235,7 +235,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			time: {
 				heading: __( 'Time', 'query-monitor' ),
 				className: 'qm-num',
-				render: ( row ) => row.intercepted ? '' : <Time value={ row.ltime } />,
+				render: ( row ) => row.intercepted ? '' : <Duration value={ row.ltime } />,
 			},
 		} }
 		data={ data.http }

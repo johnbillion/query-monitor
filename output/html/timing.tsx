@@ -1,5 +1,5 @@
 import { TabularPanel } from '../panels/tabular-panel';
-import { Time } from '../components/time';
+import { Duration } from '../components/duration';
 import { ApproximateSize } from '../components/approximate-size';
 import { EmptyPanel } from '../panels/empty-panel';
 import { getCallerCol, getComponentCol } from '../table';
@@ -119,7 +119,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
-					return 'start_time' in row ? <Time value={ row.start_time } /> : '';
+					return 'start_time' in row ? <Duration value={ row.start_time } /> : '';
 				},
 			},
 			end_time: {
@@ -130,7 +130,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
-					return 'end_time' in row ? <Time value={ row.end_time } /> : '';
+					return 'end_time' in row ? <Duration value={ row.end_time } /> : '';
 				},
 			},
 			function_time: {
@@ -139,9 +139,9 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				render: ( row ) => {
 					// For lap rows, show lap-specific time
 					if ( 'isLap' in row && row.isLap && row.lapData ) {
-						return <Time value={ row.lapData.time_used } />;
+						return <Duration value={ row.lapData.time_used } />;
 					}
-					return 'function_time' in row ? <Time value={ row.function_time } /> : '';
+					return 'function_time' in row ? <Duration value={ row.function_time } /> : '';
 				},
 			},
 			function_memory: {

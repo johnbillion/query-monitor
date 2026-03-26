@@ -247,6 +247,10 @@ export function stripAbspath( file: string, settings: { abspath: string; content
 	return file;
 }
 
+export function formatDuration( seconds: number ): string {
+	return numberFormat( seconds, 4 );
+}
+
 export function numberFormat( number: number, decimals: number = 0 ): string {
 	if ( isNaN( number ) ) {
 		return '';

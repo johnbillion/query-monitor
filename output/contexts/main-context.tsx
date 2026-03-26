@@ -17,6 +17,8 @@ export interface SettingsType {
 	contentpath: string;
 }
 
+export type DurationUnit = 's' | 'ms';
+
 export type MainContextType = {
 	editor: string;
 	setEditor: ( editor: string ) => void;
@@ -31,6 +33,8 @@ export type MainContextType = {
 	timelineHiddenCategories: string[];
 	setTimelineHiddenCategories: ( categories: string[] ) => void;
 	settings: SettingsType;
+	durationUnit: DurationUnit;
+	setDurationUnit: ( unit: DurationUnit ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -46,6 +50,8 @@ export const MainContext = createContext<MainContextType>( {
 	jumpToRow: null,
 	timelineHiddenCategories: [],
 	setTimelineHiddenCategories: ( _categories ) => {},
+	durationUnit: 's',
+	setDurationUnit: ( _unit ) => {},
 	settings: {
 		extended_query_prompt_reason: null,
 		file_path_map: {},

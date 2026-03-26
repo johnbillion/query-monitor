@@ -1451,6 +1451,7 @@ select {
 	font-size: 11px;
 	padding: 3px 3px;
 	line-height: 1;
+	white-space: nowrap;
 }
 
 .timeline-tick:first-child {

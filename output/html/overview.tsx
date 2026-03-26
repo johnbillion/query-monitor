@@ -2,6 +2,7 @@ import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
 import * as Utils from '../utils';
+import { Duration } from '../components/duration';
 import { iPanelData, iSettings } from '../panels/panels';
 import { Fragment } from 'preact';
 
@@ -58,11 +59,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 				<section>
 					<h3>{ __( 'Page Generation Time', 'query-monitor' ) }</h3>
 					<p>
-						{ sprintf(
-							/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
-							_x( '%ss', 'Time in seconds', 'query-monitor' ),
-							Utils.numberFormat( timeTaken, 4 )
-						) }
+						<Duration value={ timeTaken } secondsLabel />
 						{ timeLimit > 0 ? (
 							<>
 								<br />
@@ -143,11 +140,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 					{ dbQueriesData?.rows?.length ? (
 						<>
 							<p>
-								{ sprintf(
-									/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
-									_x( '%ss', 'Time in seconds', 'query-monitor' ),
-									Utils.numberFormat( dbQueriesData.rows.reduce( ( acc, row ) => acc + row.ltime, 0 ), 4 )
-								) }
+								<Duration value={ dbQueriesData.rows.reduce( ( acc, row ) => acc + row.ltime, 0 ) } secondsLabel />
 							</p>
 							<p>
 								{ Object.keys( dbQueriesData.types ).length > 1 && Object.entries( dbQueriesData.types ).map( ( [ typeName, typeCount ] ) => {
@@ -191,11 +184,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 						{ httpData.http?.length ? (
 							<>
 								<p>
-									{ sprintf(
-										/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
-										_x( '%ss', 'Time in seconds', 'query-monitor' ),
-										Utils.numberFormat( httpData.ltime, 4 )
-									) }
+									<Duration value={ httpData.ltime } secondsLabel />
 								</p>
 								<FilterLink
 									targetPanel="http"

@@ -3,7 +3,7 @@ import {
 	Caller,
 } from './caller';
 import { Component } from './component';
-import { Time } from './components/time';
+import { Duration } from './components/duration';
 import { Warning } from './components/warning';
 import { PanelContext } from './contexts/panel-context';
 import {
@@ -181,7 +181,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 	const column: Col<TDataRow> = {
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
-		render: ( row ) => <Time value={ row.ltime ?? 0 } />,
+		render: ( row ) => <Duration value={ row.ltime ?? 0 } />,
 		cellHasError: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
