@@ -255,6 +255,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
+	const timelineHiddenKey = 'qm-timeline-hidden';
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -292,6 +293,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( containerHeightKey, height.toString() );
 	}
 
+	const onTimelineHiddenChange = ( categories: string[] ) => {
+		sessionStorage.setItem( timelineHiddenKey, JSON.stringify( categories ) );
+	}
+
 	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
@@ -301,6 +306,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const rawContainerHeight = localStorage.getItem( containerHeightKey );
 	const containerHeight = rawContainerHeight ? parseFloat( rawContainerHeight ) : null;
+	const rawTimelineHidden = sessionStorage.getItem( timelineHiddenKey );
+	const timelineHiddenCategories: string[] = rawTimelineHidden ? JSON.parse( rawTimelineHidden ) : [];
 	const settings: iSettings = {
 		...QueryMonitorData.settings,
 		ajaxurl: QueryMonitorData.l10n.ajaxurl,
@@ -354,6 +361,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onFabulousChange={ onFabulousChange }
 				onEditorChange={ onEditorChange }
 				onFiltersChange={ onFiltersChange }
+				timelineHiddenCategories={ timelineHiddenCategories }
+				onTimelineHiddenChange={ onTimelineHiddenChange }
 				{ ...getBodyClasses() }
 			/>,
 			mountPoint

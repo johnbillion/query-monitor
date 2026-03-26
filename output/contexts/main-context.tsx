@@ -27,6 +27,8 @@ export type MainContextType = {
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
 	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
+	timelineHiddenCategories: string[];
+	setTimelineHiddenCategories: ( categories: string[] ) => void;
 	settings: SettingsType;
 }
 
@@ -40,6 +42,8 @@ export const MainContext = createContext<MainContextType>( {
 	filters: {},
 	setFilters: ( _filters ) => {},
 	switchToPanel: ( _panelId, _panelFilters ) => {},
+	timelineHiddenCategories: [],
+	setTimelineHiddenCategories: ( _categories ) => {},
 	settings: {
 		extended_query_prompt_reason: null,
 		file_path_map: {},

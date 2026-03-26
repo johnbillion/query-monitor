@@ -1,10 +1,12 @@
 import { type JSX } from 'preact';
-import { useState } from 'preact/hooks';
+import { useContext } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Backtrace, Component } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
 import * as Utils from '../utils';
 import { iPanelData, iSettings } from '../panels/panels';
+import { MainContext } from '../contexts/main-context';
+import { PanelContext } from '../contexts/panel-context';
 
 import {
 	__,
@@ -142,21 +144,10 @@ const buildTimelineItems = (
 };
 
 export const Timeline = ( { data }: TimelineProps ) => {
-	const [ componentFilter, setComponentFilter ] = useState( '' );
-
-	const storageKey = 'qm-timeline-hidden';
-
-	const [ hiddenCategories, setHiddenCategories ] = useState< Set<TimelineItem['category']> >( () => {
-		try {
-			const stored = sessionStorage.getItem( storageKey );
-			if ( stored ) {
-				return new Set( JSON.parse( stored ) as TimelineItem['category'][] );
-			}
-		} catch {
-			// Ignore.
-		}
-		return new Set< TimelineItem['category'] >();
-	} );
+	const { filters, setFilter } = useContext( PanelContext );
+	const componentFilter = filters['component'] ?? '';
+	const { timelineHiddenCategories, setTimelineHiddenCategories } = useContext( MainContext );
+	const hiddenCategories = new Set< TimelineItem['category'] >( timelineHiddenCategories as TimelineItem['category'][] );
 
 	const dbQueriesData = data.db_queries?.data;
 	const httpData = data.http?.data;
@@ -235,20 +226,13 @@ export const Timeline = ( { data }: TimelineProps ) => {
 	}
 
 	const toggleCategory = ( category: TimelineItem['category'] ) => {
-		setHiddenCategories( ( prev ) => {
-			const next = new Set( prev );
-			if ( next.has( category ) ) {
-				next.delete( category );
-			} else {
-				next.add( category );
-			}
-			try {
-				sessionStorage.setItem( storageKey, JSON.stringify( [ ...next ] ) );
-			} catch {
-				// Ignore.
-			}
-			return next;
-		} );
+		const next = new Set( hiddenCategories );
+		if ( next.has( category ) ) {
+			next.delete( category );
+		} else {
+			next.add( category );
+		}
+		setTimelineHiddenCategories( [ ...next ] );
 	};
 
 	const cols: Cols<TimelineItem> = {
@@ -306,7 +290,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 								id="qm-filter-timeline-component"
 								className="qm-filter"
 								value={ componentFilter }
-								onChange={ ( e ) => setComponentFilter( e.currentTarget.value ) }
+								onChange={ ( e ) => setFilter( 'component', e.currentTarget.value ) }
 							>
 								<option value="">{ __( 'All components', 'query-monitor' ) }</option>
 								<hr/>

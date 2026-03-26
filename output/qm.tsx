@@ -54,6 +54,8 @@ type Props = {
 	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
+	timelineHiddenCategories: string[];
+	onTimelineHiddenChange: ( categories: string[] ) => void;
 }
 
 export const QM = ( props: Props ) => {
@@ -63,6 +65,12 @@ export const QM = ( props: Props ) => {
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
+	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
+
+	const handleTimelineHiddenChange = ( categories: string[] ) => {
+		props.onTimelineHiddenChange( categories );
+		setTimelineHiddenCategories( categories );
+	};
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
@@ -120,6 +128,8 @@ export const QM = ( props: Props ) => {
 				setFilters( newFilters );
 			}
 		},
+		timelineHiddenCategories: timelineHiddenCategories,
+		setTimelineHiddenCategories: handleTimelineHiddenChange,
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,
