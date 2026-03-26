@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Fragment } from 'preact';
 import * as Utils from './utils';
 
-import { __ } from '@wordpress/i18n';
+import { __, _x } from '@wordpress/i18n';
 
 interface Props {
 	active: string;
@@ -10,6 +10,7 @@ interface Props {
 	onSwitch: {
 		( active: string ): void;
 	}
+	seen?: string;
 }
 
 export type iNavMenu = {
@@ -21,6 +22,7 @@ interface iNavMenuItem {
 	title: string;
 	count?: number | null;
 	warning_count?: number | null;
+	new: boolean;
 	children?: iNavMenu;
 }
 
@@ -61,8 +63,13 @@ function normaliseMenu( menu: iNavMenu ): iNavMenu {
 	return result;
 }
 
-const Badges = ( { item }: { item: iNavMenuItem } ) => (
+const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
 	<>
+		{ item.new && ! seen && (
+			<span className="qm-menu-badge qm-menu-badge-new">
+				{ _x( 'New', 'badge', 'query-monitor' ) }
+			</span>
+		) }
 		{ !! item.count && item.count !== item.warning_count && (
 			<span className="qm-menu-badge">
 				{ Utils.numberFormat( item.count ) }
@@ -95,7 +102,11 @@ function selectLabel( item: iNavMenuItem ): string {
 	return parts.join( ' ' );
 }
 
-export const Nav = ( { menu: rawMenu, onSwitch, active }: Props ) => {
+const isNewItemSeen = ( item: iNavMenuItem, seen: string ): boolean => {
+	return ! item.new || item.panel === seen;
+};
+
+export const Nav = ( { menu: rawMenu, onSwitch, active, seen = '' }: Props ) => {
 	const menu = normaliseMenu( rawMenu );
 
 	return (
@@ -140,7 +151,7 @@ export const Nav = ( { menu: rawMenu, onSwitch, active }: Props ) => {
 							} }
 						>
 							{ item.title }
-							<Badges item={ item } />
+							<Badges item={ item } seen={ isNewItemSeen( item, seen ) } />
 						</button>
 						{ children && (
 							<ul role="presentation">
@@ -154,7 +165,7 @@ export const Nav = ( { menu: rawMenu, onSwitch, active }: Props ) => {
 											} }
 										>
 											{ children[ k ].title }
-											<Badges item={ children[ k ] } />
+											<Badges item={ children[ k ] } seen={ isNewItemSeen( children[ k ], seen ) } />
 										</button>
 									</li>
 								) ) }

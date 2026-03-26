@@ -41,6 +41,7 @@ type Props = {
 	fabulous: boolean;
 	editor: string;
 	filters: MainContextType['filters'];
+	seen: string;
 	containerHeight: number | null;
 	isWpAdmin: boolean;
 	isFolded: boolean;
@@ -54,6 +55,7 @@ type Props = {
 	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
+	onSeenChange: ( panel: string ) => void;
 	timelineHiddenCategories: string[];
 	onTimelineHiddenChange: ( categories: string[] ) => void;
 }
@@ -65,15 +67,40 @@ export const QM = ( props: Props ) => {
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
+	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
+
+	const handleSeenChange = ( panel: string ) => {
+		props.onSeenChange( panel );
+		setSeen( panel );
+	};
 
 	const handleTimelineHiddenChange = ( categories: string[] ) => {
 		props.onTimelineHiddenChange( categories );
 		setTimelineHiddenCategories( categories );
 	};
 
+	const newPanels = useMemo( () => {
+		const panels = new Set<string>();
+		const collect = ( menu: iNavMenu ) => {
+			for ( const item of Object.values( menu ) ) {
+				if ( item.new ) {
+					panels.add( item.panel );
+				}
+				if ( item.children ) {
+					collect( item.children );
+				}
+			}
+		};
+		collect( props.panel_menu );
+		return panels;
+	}, [ props.panel_menu ] );
+
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
+		if ( newPanels.has( active ) && active !== seen ) {
+			handleSeenChange( active );
+		}
 		// @TODO focus the panel for a11y
 	};
 
@@ -308,7 +335,7 @@ export const QM = ( props: Props ) => {
 					</div>
 					<div id="qm-panels-wrapper">
 						{ ! side && (
-							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } seen={ seen } />
 						) }
 						<Panels data={ props.data } active={ active } settings={ props.settings } />
 					</div>

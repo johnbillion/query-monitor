@@ -73,6 +73,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			'title' => __( 'Timeline', 'query-monitor' ),
 			'id' => 'timeline',
 			'panel' => 'timeline',
+			'new' => true,
 		);
 
 		$menu[ $this->collector->id() ] = $this->menu( $args );

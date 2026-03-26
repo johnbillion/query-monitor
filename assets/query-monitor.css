@@ -509,12 +509,12 @@ i {
 			background: var( --qm-badge-bg );
 			border-radius: 10px;
 			color: var( --qm-badge-fg );
-			font-size: 10px;
+			font-size: 11px;
 			font-weight: 600;
 			line-height: 1;
 			margin-left: auto;
 			min-width: 18px;
-			padding: 2px 6px;
+			padding: 3px 6px;
 			text-align: center;
 			text-shadow: none;
 		}
@@ -523,6 +523,11 @@ i {
 			background: var( --qm-badge-warn-bg );
 			color: var( --qm-badge-warn-fg );
 			margin-left: auto;
+		}
+
+		.qm-menu-badge-new {
+			background: var( --qm-panel-menu-bg-hover );
+			color: var( --qm-panel-menu-fg-hover );
 		}
 
 		.qm-menu-badge + .qm-menu-badge-warning {
