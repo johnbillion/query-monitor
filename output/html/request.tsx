@@ -125,12 +125,12 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 
 			<section>
 				<h3>{ __( 'Current User', 'query-monitor' ) }</h3>
-				{ data.user.data ? (
+				{ data.user.id ? (
 					<p>
 						{ sprintf(
 							/* translators: %d: User ID */
 							__( 'Current User: #%d', 'query-monitor' ),
-							data.user.data.ID
+							data.user.id
 						) }
 					</p>
 				) : (

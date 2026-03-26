@@ -526,7 +526,7 @@ export interface Redirect {
 export interface Request {
 	user: {
 		title: string;
-		data: WP_User | false;
+		id: number | false;
 	};
 	multisite: {
 		current_site?: {

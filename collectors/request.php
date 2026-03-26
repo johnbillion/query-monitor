@@ -171,7 +171,7 @@ class QM_Collector_Request extends QM_DataCollector {
 
 		$this->data->user = array(
 			'title' => $user_title,
-			'data' => ( $user->exists() ? $user : false ),
+			'id' => ( $user->exists() ? $user->ID : false ),
 		);
 
 		if ( is_multisite() ) {

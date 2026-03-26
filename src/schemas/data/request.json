@@ -19,18 +19,18 @@
 				"title": {
 					"type": "string"
 				},
-				"data": {
+				"id": {
 					"type": [
-						"object",
+						"integer",
 						"boolean"
 					],
-					"tsType": "WP_User|false",
-					"phpType": "WP_User|false"
+					"tsType": "number|false",
+					"phpType": "int|false"
 				}
 			},
 			"required": [
 				"title",
-				"data"
+				"id"
 			],
 			"additionalProperties": false
 		},

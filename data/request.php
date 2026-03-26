@@ -16,7 +16,7 @@ class QM_Data_Request extends QM_Data {
 	/**
 	 * @phpstan-var array{
 	 *   title: string,
-	 *   data: WP_User|false,
+	 *   id: int|false,
 	 * }
 	 */
 	public $user;
