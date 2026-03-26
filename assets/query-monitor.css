@@ -25,6 +25,7 @@
 	--qm-cell-bg-hover:                light-dark( #f0f6fc, #373c42 );
 	--qm-cell-fg-highlight:            light-dark( #1e1e1e, #eaeef2 );
 	--qm-cell-bg-highlight:            light-dark( #ffd,    #57572a );
+	--qm-cell-bg-highlight-alt:        light-dark( #ffffc9, #4a4a24 );
 	--qm-cell-bg-highlight-dark:       light-dark( #ffffaa, #353519 );
 	--qm-cell-bg-stripe:               light-dark( #f9f9f9, #32373c );
 	--qm-table-header-bg:              light-dark( #ececec, #3e444a );
@@ -1077,7 +1078,7 @@ i {
 	tbody tr:nth-child(odd) td.qm-highlight,
 	tbody tr:nth-child(odd).qm-highlight th,
 	tbody tr:nth-child(odd).qm-highlight td {
-		background-color: #ffffc9;
+		background-color: var( --qm-cell-bg-highlight-alt );
 		color: var( --qm-cell-fg-highlight );
 	}
 
@@ -1091,6 +1092,11 @@ i {
 	tbody tr.qm-warn:hover th,
 	tbody tr.qm-warn:hover td {
 		background: var( --qm-warn-bg-hover );
+	}
+
+	tbody tr.qm-highlight:hover th,
+	tbody tr.qm-highlight:hover td {
+		background: var( --qm-cell-bg-highlight-dark );
 	}
 
 	thead th.qm-filtered select.qm-filter {
@@ -1421,7 +1427,7 @@ select {
 
 .timeline-axis {
 	position: relative;
-	height: 18px;
+	height: 22px;
 	pointer-events: none;
 }
 
@@ -1429,9 +1435,7 @@ select {
 	position: absolute;
 	bottom: 0;
 	transform: translateX(-50%);
-	font-size: 10px;
-	color: var( --qm-container-fg );
-	opacity: 0.5;
+	font-size: 11px;
 	padding: 4px 4px;
 	line-height: 1;
 }
@@ -1444,46 +1448,15 @@ select {
 	transform: translateX(-100%);
 }
 
-.timeline-tick::after {
-	display: none;
-}
-
-.timeline-segments {
-	position: relative;
-	display: flex;
-	height: 22px;
-	border-bottom: 1px solid var( --qm-panel-separator );
-}
-
-.timeline-segment {
-	position: absolute;
-	top: 0;
-	height: 100%;
-	border-left: 2px solid var( --qm-panel-separator );
-}
-
-.timeline-segment:first-child {
-	border-left: none;
-}
-
-.timeline-segment-label {
-	font-size: 11px;
-	line-height: 22px;
-	color: var( --qm-container-fg );
-	white-space: nowrap;
-	font-weight: 600;
-	padding: 0 6px;
-}
-
 .qm-cell-timeline {
-	height: 32px;
+	height: 30px;
 	position: relative;
 	padding: 0;
 }
 
 .timeline-bar {
 	position: absolute;
-	top: 8px;
+	top: 6px;
 	height: 16px;
 	border-radius: 2px;
 	min-width: 2px;
@@ -1497,17 +1470,23 @@ select {
 
 .timeline-bar-label {
 	position: absolute;
-	top: 7px;
+	top: 5px;
 	padding: 0 5px;
 	white-space: nowrap;
 	right: 0;
 	max-width: 30%;
-	opacity: 0.8;
 	display: flex;
 	gap: 4px;
 }
 
 .timeline-bar-label-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.timeline-bar-label-text .qm-filter-trigger {
+	max-width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
