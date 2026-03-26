@@ -94,15 +94,20 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 							key: type,
 							label: type,
 						} ) );
+						const groups = [];
 
 						if ( filters.length > 1 ) {
-							filters.unshift( {
-								key: 'non-select',
-								label: __( 'Non-SELECT', 'query-monitor' ),
-							} );
+							groups.push( filters );
+
+							groups.push ( [
+								{
+									key: 'non-select',
+									label: __( 'Non-SELECT', 'query-monitor' ),
+								},
+							] );
 						}
 
-						return filters;
+						return groups;
 					} )(),
 					callback: ( row, value ) => {
 						if ( value === 'non-select' ) {

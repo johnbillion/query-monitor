@@ -93,14 +93,16 @@ const Assets = ( { data, labels }: myProps ) => {
 					render: ( row ) => ( row.url.host ),
 					filters: {
 						options: [
-							{
-								key: 'local',
-								label: data.url.hostname,
-							},
-							{
-								key: 'other',
-								label: __( 'Other', 'query-monitor' ),
-							},
+							[
+								{
+									key: 'local',
+									label: data.url.hostname,
+								},
+								{
+									key: 'other',
+									label: __( 'Other', 'query-monitor' ),
+								},
+							],
 						],
 						callback: ( row, value ) => value === 'local' ? row.url.local : ! row.url.local,
 					},

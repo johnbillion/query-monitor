@@ -103,7 +103,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 				),
 				filters: {
 					options: [
-						...Array.from( new Set( data.http.map( row => row.host ) ) ).map( host => ({
+						Array.from( new Set( data.http.map( row => row.host ) ) ).map( host => ({
 							key: host,
 							label: host,
 						})),
@@ -206,10 +206,10 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					);
 				},
 				filters: {
-					options: Object.keys( data.types ).sort().map( ( type ) => ( {
+					options: [ Object.keys( data.types ).sort().map( ( type ) => ( {
 						key: type,
 						label: type,
-					} ) ),
+					} ) ) ],
 					callback: ( row, value ) => {
 						switch ( value ) {
 							case 'non-blocking':

@@ -319,12 +319,16 @@ export const Timeline = ( { data }: TimelineProps ) => {
 								onChange={ ( e ) => setFilter( 'component', e.currentTarget.value ) }
 							>
 								<option value="">{ __( 'All components', 'query-monitor' ) }</option>
-								<hr/>
-								{ componentFilters.map( ( filter ) => (
-									<option
-										key={ filter.key }
-										value={ filter.key }
-									>{ filter.label }</option>
+								{ componentFilters.map( ( group, gi ) => (
+									<>
+										<hr/>
+										{ group.map( ( filter ) => (
+											<option
+												key={ `${ gi }-${ filter.key }` }
+												value={ filter.key }
+											>{ filter.label }</option>
+										) ) }
+									</>
 								) ) }
 							</select>
 						</div>

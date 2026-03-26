@@ -43,7 +43,7 @@ export interface FilterOption {
 }
 
 interface ColFilters<TDataRow> {
-	options: FilterOption[];
+	options: FilterOption[][];
 	callback: ( row: TDataRow, value: string ) => boolean;
 }
 
@@ -116,26 +116,46 @@ export const componentFilterCallback = ( component: ComponentType | null | undef
 export const deriveComponentFilters = <TDataRow,>(
 	rows: TDataRow[],
 	getComponent: ( row: TDataRow ) => ComponentType | null | undefined
-): FilterOption[] => {
+): FilterOption[][] => {
+	let hasCore = false;
 	const filters = deriveFilters( rows, ( row ) => {
 		const component = getComponent( row );
 		if ( ! component ) {
 			return null;
 		}
+
+		if ( component.context === 'core' ) {
+			hasCore = true;
+			return null;
+		}
+
 		return {
 			key: `${ component.type }-${ component.context }`,
 			label: component.name,
 		};
 	} );
+	const groups = [];
 
 	if ( filters.length > 1 ) {
-		filters.unshift( {
-			key: 'non-core',
-			label: __( 'Non-WordPress Core', 'query-monitor' ),
-		} );
+		groups.push( filters );
+
+		if ( hasCore ) {
+			groups.push(
+				[
+					{
+						key: 'non-core',
+						label: __( 'Non-WordPress Core', 'query-monitor' ),
+					},
+					{
+						key: 'core',
+						label: __( 'WordPress Core', 'query-monitor' ),
+					},
+				],
+			);
+		}
 	}
 
-	return filters;
+	return groups;
 };
 
 export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
@@ -144,10 +164,10 @@ export const getComponentCol = <TDataRow extends DataRowWithTrace>( rows: TDataR
 	const column: Col<DataRowWithTrace & TDataRow> = {
 		heading: __( 'Component', 'query-monitor' ),
 		render: ( row ) => <Component component={ row.trace?.component } />,
-		filters: {
+		filters: filters.length ? {
 			options: filters,
 			callback: ( row, value: string ) => componentFilterCallback( row.trace?.component, value ),
-		},
+		} : undefined,
 	};
 
 	return column;
@@ -189,7 +209,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 		render: ( row ) => <Caller trace={ row.trace } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
-			options: filters,
+			options: [ filters ],
 			callback: ( row, value: string ) => {
 				if ( row.trace?.callsite ) {
 					return row.trace.callsite.filename === value;
@@ -222,7 +242,7 @@ export const getStackCol = <TDataRow extends DataRowWithStack>( rows: TDataRow[]
 		render: ( row ) => <StackCaller stack={ row.stack } defaultExpanded={ rows.length === 1 } />,
 		className: 'qm-has-toggle',
 		filters: filters.length ? {
-			options: filters,
+			options: [ filters ],
 			callback: ( row, value: string ) => {
 				if ( ! row.stack?.length ) {
 					return false;
@@ -272,7 +292,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 
 		const colFilters = col.filters;
 
-		if ( ! colFilters.options.filter( ( option ) => ( option.key === filterValue ) ).length ) {
+		if ( ! colFilters.options.flat().filter( ( option ) => ( option.key === filterValue ) ).length ) {
 			continue;
 		}
 
@@ -398,12 +418,16 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 												onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 											>
 												<option value="">All</option>
-												<hr/>
-												{ colFilters.map( ( filter ) => (
-													<option
-														key={ filter.key }
-														value={ filter.key }
-													>{ filter.label }</option>
+												{ colFilters.map( ( group, gi ) => (
+													<>
+														<hr/>
+														{ group.map( ( filter ) => (
+															<option
+																key={ `${ gi }-${ filter.key }` }
+																value={ filter.key }
+															>{ filter.label }</option>
+														) ) }
+													</>
 												) ) }
 											</select>
 										</div>
