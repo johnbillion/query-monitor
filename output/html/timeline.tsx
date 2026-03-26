@@ -256,11 +256,14 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		timeline: {
 			heading: __( 'Timeline', 'query-monitor' ),
 			render: ( item ) => {
-				const leftPct = ( item.time / totalTimeMs ) * 100;
+				// Using 99% as the upper left position to allow short events at the end of the timeline to remain visible.
+				const leftPct = ( item.time / totalTimeMs ) * 99;
 				const durationMs = ( item.duration ?? 0 ) * 1000;
 				const widthPct = ( durationMs / totalTimeMs ) * 100;
 				const isPoint = item.duration === null || widthPct < 0.3;
 				const color = categoryColors[ item.category ];
+				// Prefer right-aligned labels unless there's more space on the left.
+				const displayLabelLeft = leftPct > 60 || leftPct > ( 100 - leftPct - widthPct );
 
 				return (
 					<>
@@ -274,7 +277,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 						/>
 						<span
 							className="timeline-bar-label"
-							style={ leftPct > 60
+							style={ displayLabelLeft
 								? { right: `${ 100 - leftPct }%`, textAlign: 'right' }
 								: { left: `${ leftPct + ( isPoint ? 0.3 : Math.max( widthPct, 0.3 ) ) }%` }
 							}

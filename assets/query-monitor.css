@@ -1393,14 +1393,24 @@ select {
 
 #qm-timeline table {
 	width: 100%;
+
+	td {
+		background: var(--qm-panel-bg);
+		padding: 0;
+	}
+
+	tr:hover td {
+		background: var( --qm-cell-bg-hover );
+	}
 }
 
 .timeline-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin: 0 0 8px;
-	padding: 10px 20px 0;
+	margin: 0;
+	padding: 10px 20px;
+	border-bottom: 5px solid var( --qm-panel-bg );
 }
 
 .timeline-header h3 {
@@ -1427,8 +1437,11 @@ select {
 
 .timeline-axis {
 	position: relative;
-	height: 22px;
+	height: 17px;
 	pointer-events: none;
+	background-color: var( --qm-button-bg );
+	color: var( --qm-button-fg );
+	border-radius: 3px;
 }
 
 .timeline-tick {
@@ -1436,7 +1449,7 @@ select {
 	bottom: 0;
 	transform: translateX(-50%);
 	font-size: 11px;
-	padding: 4px 4px;
+	padding: 3px 3px;
 	line-height: 1;
 }
 
@@ -1449,7 +1462,7 @@ select {
 }
 
 .qm-cell-timeline {
-	height: 30px;
+	height: 28px;
 	position: relative;
 	padding: 0;
 }
@@ -1458,14 +1471,14 @@ select {
 	position: absolute;
 	top: 6px;
 	height: 16px;
-	border-radius: 2px;
+	border-radius: 3px;
 	min-width: 2px;
 	cursor: default;
 }
 
 .timeline-point {
 	width: 3px !important;
-	border-radius: 1px;
+	border-radius: 3px;
 }
 
 .timeline-bar-label {
@@ -1493,10 +1506,6 @@ select {
 
 .timeline-bar-label-time {
 	flex-shrink: 0;
-}
-
-#qm-timeline tbody tr:hover .timeline-bar-label {
-	opacity: 1;
 }
 
 /** === Animations === */
