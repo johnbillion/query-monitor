@@ -23,14 +23,14 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 
 	return (
 		<NonTabularPanel>
-			{ Object.keys( items ).map( ( key: keyof typeof items ) => {
-				const name = items[key];
-				const value = data.request[ key ];
-				const url = urls[ key ];
+			<section>
+				{ Object.keys( items ).map( ( key: keyof typeof items ) => {
+					const name = items[key];
+					const value = data.request[ key ];
+					const url = urls[ key ];
 
-				return (
-					<Fragment key={ key }>
-						<section>
+					return (
+						<Fragment key={ key }>
 							<h3>{ name }</h3>
 							{ value ? (
 								<p className="qm-ltr">
@@ -43,10 +43,10 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 									{ __( 'None', 'query-monitor' ) }
 								</p>
 							) }
-						</section>
-					</Fragment>
-				);
-			} ) }
+						</Fragment>
+					);
+				} ) }
+			</section>
 
 			{ data.matching_rewrites && Object.keys( data.matching_rewrites ).length > 0 && (
 				<section>
@@ -121,9 +121,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 						{ __( 'None', 'query-monitor' ) }
 					</p>
 				) }
-			</section>
 
-			<section>
 				<h3>{ __( 'Current User', 'query-monitor' ) }</h3>
 				{ data.user.id ? (
 					<p>
