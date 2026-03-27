@@ -4,7 +4,7 @@ title: Database Queries
 
 # Debugging database queries with Query Monitor
 
-The database query panels are where Query Monitor originally earnt its name. There are several sub-panels which help you understand and optimise the database queries that WordPress performs during a page load.
+The database query panels are where Query Monitor originally earned its name. There are several sub-panels which help you understand and optimise the database queries that WordPress performs during a page load.
 
 ## All Queries
 

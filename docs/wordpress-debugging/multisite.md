@@ -14,4 +14,4 @@ For each blog switch, the panel shows calls to `switch_to_blog()` and `restore_c
 
 Blog switching can be a source of subtle bugs on multisite installations. If a plugin switches to another blog and doesn't properly restore the original blog, it can cause data to be read from or written to the wrong site. This panel helps you spot those problems.
 
-It's also useful for performance debugging. Each `switch_to_blog()` call flushes parts of the object cache and reinitialises various parts of WordPress for the target site, which has a performance cost, although notably this cost is significantly less in newer verisons of WordPress than it was historically. If you see a large number of switches on a single page load, there may be an opportunity to optimise.
+It's also useful for performance debugging. Each `switch_to_blog()` call flushes parts of the object cache and reinitialises various parts of WordPress for the target site, which has a performance cost, although notably this cost is significantly less in newer versions of WordPress than it was historically. If you see a large number of switches on a single page load, there may be an opportunity to optimise.
