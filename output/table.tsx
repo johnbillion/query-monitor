@@ -455,7 +455,8 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 						key={ i }
 						className={ clsx( {
 							'qm-warn': rowHasError && rowHasError( row ),
-							'qm-highlight': highlightedRows.has( i ) || ( isJumpTarget && originalIndices[ i ] === jumpToRow.row ),
+							'qm-highlight': highlightedRows.has( i ),
+							'qm-jump-highlight': isJumpTarget && originalIndices[ i ] === jumpToRow.row,
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => {

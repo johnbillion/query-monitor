@@ -1099,6 +1099,11 @@ i {
 		background: var( --qm-cell-bg-highlight-dark );
 	}
 
+	tbody tr.qm-jump-highlight th,
+	tbody tr.qm-jump-highlight td {
+		animation: qm-jump-fade 4s ease-out;
+	}
+
 	thead th.qm-filtered select.qm-filter {
 		background-color: var( --qm-cell-bg-highlight );
 		color: var( --qm-cell-fg-highlight );
@@ -1510,6 +1515,12 @@ select {
 }
 
 /** === Animations === */
+
+@keyframes qm-jump-fade {
+	0%, 50% {
+		background: var( --qm-cell-bg-highlight-dark );
+	}
+}
 
 @keyframes qm-fabulous-swipe {
 	from {
