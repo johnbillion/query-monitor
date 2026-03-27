@@ -4,7 +4,7 @@ import { Component } from '../component';
 import { SourceLocation } from '../components/source-location';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
-import { componentFilterCallback, deriveComponentFilters } from '../table';
+import { FilterOption, componentFilterCallback, deriveComponentFilters } from '../table';
 import { PanelProps } from '../types';
 import {
 	__,
@@ -62,6 +62,20 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 	const rows = flattenHooks( data.hooks );
 	const componentFilters = deriveComponentFilters( rows, ( row ) => row.component );
 
+	const hookPartsSeen = new Set<string>();
+	const hookPartFilters: FilterOption[] = [];
+
+	for ( const row of rows ) {
+		for ( const part of row.hookName.split( /[-_/.]/ ) ) {
+			if ( part && ! hookPartsSeen.has( part ) ) {
+				hookPartsSeen.add( part );
+				hookPartFilters.push( { key: part, label: part } );
+			}
+		}
+	}
+
+	hookPartFilters.sort( ( a, b ) => a.label.localeCompare( b.label ) );
+
 	return (
 		<TabularPanel
 			title={ __( 'Hooks', 'query-monitor' ) }
@@ -100,6 +114,10 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 						}
 						return count;
 					},
+					filters: hookPartFilters.length ? {
+						options: [ hookPartFilters ],
+						callback: ( row, value: string ) => row.hookName.includes( value ),
+					} : undefined,
 				},
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),

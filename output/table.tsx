@@ -306,10 +306,12 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 			}
 			data = data.filter( ( row ) => matchingGroups.has( groupKey( row ) ) );
 
-			// Highlight individual rows within a group that match the filter
-			for ( let i = 0; i < data.length; i++ ) {
-				if ( colFilters.callback( data[ i ], filterValue ) ) {
-					highlightedRows.add( i );
+			// Highlight individual rows within a group that match the component filter
+			if ( filterName === 'component' ) {
+				for ( let i = 0; i < data.length; i++ ) {
+					if ( colFilters.callback( data[ i ], filterValue ) ) {
+						highlightedRows.add( i );
+					}
 				}
 			}
 		} else {

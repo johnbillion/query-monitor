@@ -1070,14 +1070,14 @@ i {
 
 	tbody tr td.qm-highlight,
 	tbody tr.qm-highlight th,
-	tbody tr.qm-highlight td {
+	tbody tr.qm-highlight td:not(.qm-cell-hook) {
 		background-color: var( --qm-cell-bg-highlight );
 		color: var( --qm-cell-fg-highlight );
 	}
 
 	tbody tr:nth-child(odd) td.qm-highlight,
 	tbody tr:nth-child(odd).qm-highlight th,
-	tbody tr:nth-child(odd).qm-highlight td {
+	tbody tr:nth-child(odd).qm-highlight td:not(.qm-cell-hook) {
 		background-color: var( --qm-cell-bg-highlight-alt );
 		color: var( --qm-cell-fg-highlight );
 	}
@@ -1095,7 +1095,7 @@ i {
 	}
 
 	tbody tr.qm-highlight:hover th,
-	tbody tr.qm-highlight:hover td {
+	tbody tr.qm-highlight:hover td:not(.qm-cell-hook) {
 		background: var( --qm-cell-bg-highlight-dark );
 	}
 
