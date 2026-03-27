@@ -190,7 +190,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		if ( is_array( $modules ) ) {
 			foreach ( $modules as $id => $module ) {
-				$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $module['src'] );
+				$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $module['src'] );
 
 				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->origin, '#' ) . '#', '', remove_query_arg( 'ver', $module['src'] ) ), '/' );
 				$position = 'modules';
@@ -443,7 +443,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		if ( is_string( $source ) ) {
 			// @TODO this still needs to normalise to absolute URL.
-			$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $source );
+			$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $source );
 		}
 
 		if ( $url->insecure ) {
@@ -455,7 +455,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( $source instanceof WP_Error ) {
 			$error_data = $source->get_error_data();
 			if ( $error_data && isset( $error_data['src'] ) ) {
-				$url = $this->hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( $error_data['src'] );
+				$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $error_data['src'] );
 			}
 		} elseif ( empty( $source ) ) {
 			$source = '';
@@ -469,7 +469,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 *
 	 * This is primarily so relative URLs are correctly handled in the same way as local absolute URLs.
 	 */
-	protected function hyper_determine_the_proto_characterisitics_of_a_pseudo_url_from_space( string $url ): QM_Data_URL {
+	protected function hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( string $url ): QM_Data_URL {
 		$parsed_url = new QM_Data_URL();
 		$parsed_url->hostname = (string) parse_url( $url, PHP_URL_HOST );
 		$parsed_url->scheme = (string) parse_url( $url, PHP_URL_SCHEME );
