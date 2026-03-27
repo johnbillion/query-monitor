@@ -28,11 +28,12 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	const errorMessage = Utils.getErrorMessage( asset.source );
 
 	if ( typeof errorData === 'object' && errorData !== null && 'src' in errorData ) {
+		const href = ( errorData as Record<string, unknown> ).src as string;
 		return (
 			<Warning>
 				{ errorMessage }
 				<br/>
-				{ ( errorData as Record<string, unknown> ).src as string }
+				<a href={ href }>{ href }</a>
 			</Warning>
 		);
 	}
@@ -77,6 +78,7 @@ const Assets = ( { data, labels }: myProps ) => {
 			cols={ {
 				position: {
 					heading: __( 'Position', 'query-monitor' ),
+					className: 'qm-nowrap',
 					render: ( row ) => (
 						<>
 							{ row.warning && ( <Warning/> ) }
@@ -97,7 +99,7 @@ const Assets = ( { data, labels }: myProps ) => {
 							[
 								{
 									key: 'local',
-									label: data.url.hostname,
+									label: data.url.host,
 								},
 								{
 									key: 'other',

@@ -136,7 +136,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$url->hostname = (string) parse_url( $url->origin, PHP_URL_HOST );
 		$port = (string) parse_url( $url->origin, PHP_URL_PORT );
 		$url->host = $port ? "{$url->hostname}:{$port}" : $url->hostname;
-		$url->insecure = false;
+		$url->insecure = ( 'https' !== $url->scheme ) && ( 'localhost' !== $url->hostname );
 		$url->local = true;
 		$url->absolute = $url->origin;
 		$this->data->url = $url;
@@ -192,7 +192,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			foreach ( $modules as $id => $module ) {
 				$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $module['src'] );
 
-				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->origin, '#' ) . '#', '', remove_query_arg( 'ver', $module['src'] ) ), '/' );
+				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->host, '#' ) . '#', '', remove_query_arg( 'ver', $module['src'] ) ), '/' );
 				$position = 'modules';
 
 				$asset_data[] = array(
@@ -244,7 +244,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				if ( $source instanceof WP_Error ) {
 					$display = $source->get_error_message();
 				} else {
-					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->origin, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
+					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
 				}
 
 				$dependencies = $dependency->deps;
@@ -488,7 +488,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$parsed_url->absolute = $url;
 		}
 
-		$parsed_url->insecure = ( 'https' === $this->data->url->scheme && 'https' !== $parsed_url->scheme && 'localhost' !== $parsed_url->hostname );
+		$parsed_url->insecure = ( 'https' !== $parsed_url->scheme ) && ( 'localhost' !== $parsed_url->hostname ) && ( ! $this->data->url->insecure );
 		$parsed_url->host = $port ? "{$parsed_url->hostname}:{$port}" : $parsed_url->hostname;
 		$parsed_url->local = ( $this->data->url->origin === $parsed_url->origin );
 
