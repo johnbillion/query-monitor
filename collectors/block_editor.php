@@ -168,8 +168,6 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		}
 
 		$this->data->post_has_blocks = has_blocks( $content );
-		$this->data->all_dynamic_blocks = get_dynamic_block_names();
-		$this->data->total_blocks = 0;
 
 		if ( $this->data->post_has_blocks ) {
 			$blocks = array_values( parse_blocks( $content ) );
@@ -195,8 +193,6 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		if ( ! $block['blockName'] && ! trim( $block['innerHTML'] ) ) {
 			return null;
 		}
-
-		$this->data->total_blocks++;
 
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
 		$dynamic = false;

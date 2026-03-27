@@ -14,11 +14,6 @@
 
 class QM_Data_Block_Editor extends QM_Data {
 	/**
-	 * @var array<int, string>
-	 */
-	public $all_dynamic_blocks;
-
-	/**
 	 * @var array<int, QM_Data_Post_Block>
 	 */
 	public $post_blocks;
@@ -27,9 +22,4 @@ class QM_Data_Block_Editor extends QM_Data {
 	 * @var bool
 	 */
 	public $post_has_blocks;
-
-	/**
-	 * @var int
-	 */
-	public $total_blocks;
 }

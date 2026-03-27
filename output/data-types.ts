@@ -118,7 +118,6 @@ export interface Admin {
  */
 export interface Assets {
 	assets?: Asset[];
-	default_version: string;
 	url: URL;
 	missing_dependencies: {
 		[k: string]: true;
@@ -152,10 +151,8 @@ export interface URL {
  * Block editor data transfer object.
  */
 export interface Block_Editor {
-	all_dynamic_blocks: string[];
 	post_blocks: PostBlock[];
 	post_has_blocks: boolean;
-	total_blocks: number;
 }
 export interface PostBlock {
 	blockName: string | null;
@@ -180,7 +177,6 @@ export interface PostBlock {
  */
 export interface Cache {
 	has_object_cache: boolean;
-	display_hit_rate_warning: boolean;
 	has_opcode_cache: boolean;
 	cache_hit_percentage?: number;
 	stats?: {
@@ -254,7 +250,6 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
-	has_main_query: boolean;
 	dupes: {
 		query: string;
 		count: number;
@@ -453,18 +448,10 @@ export interface Multisite {
 export interface Overview {
 	time_taken?: number;
 	time_limit: number;
-	time_start: number;
 	time_usage: number;
 	memory: number;
 	memory_limit: number;
 	memory_usage: number;
-	current_user?: {
-		[k: string]: unknown;
-	};
-	switched_user?: {
-		[k: string]: unknown;
-	};
-	is_admin: boolean;
 	actions?: {
 		[k: string]: {
 			start: number;
@@ -554,7 +541,6 @@ export interface Request {
 		data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
 		type?: "WP_Term" | "WP_Post_Type" | "WP_Post" | "WP_User";
 	};
-	request_method: string;
 	matching_rewrites: {
 		[k: string]: string;
 	};

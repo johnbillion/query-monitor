@@ -77,7 +77,6 @@
 		}
 	},
 	"required": [
-		"default_version",
 		"url",
 		"missing_dependencies"
 	],
@@ -87,9 +86,6 @@
 			"items": {
 				"$ref": "#/definitions/Asset"
 			}
-		},
-		"default_version": {
-			"type": "string"
 		},
 		"url": {
 			"$ref": "../url.json"

@@ -68,7 +68,6 @@
 		"total_qs",
 		"has_result",
 		"has_trace",
-		"has_main_query",
 		"dupes",
 		"errors"
 	],
@@ -103,9 +102,6 @@
 			"type": "boolean"
 		},
 		"has_trace": {
-			"type": "boolean"
-		},
-		"has_main_query": {
 			"type": "boolean"
 		},
 		"dupes": {

@@ -21,11 +21,6 @@ class QM_Data_Cache extends QM_Data {
 	/**
 	 * @var bool
 	 */
-	public $display_hit_rate_warning;
-
-	/**
-	 * @var bool
-	 */
 	public $has_opcode_cache;
 
 	/**

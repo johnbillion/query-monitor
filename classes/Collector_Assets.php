@@ -49,6 +49,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	protected $missing = array();
 
+	/**
+	 * @var string
+	 */
+	protected $default_version = '';
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Assets();
 	}
@@ -128,7 +133,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->default_version = get_bloginfo( 'version' );
+		$this->default_version = get_bloginfo( 'version' );
 
 		$url = new QM_Data_URL();
 		$url->origin = self::get_origin();
@@ -431,7 +436,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( null === $dependency->ver ) {
 			$ver = '';
 		} else {
-			$ver = $dependency->ver ?: $this->data->default_version;
+			$ver = $dependency->ver ?: $this->default_version;
 		}
 
 		if ( ! empty( $src ) && ! empty( $ver ) ) {

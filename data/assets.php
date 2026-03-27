@@ -32,11 +32,6 @@ class QM_Data_Assets extends QM_Data {
 	public $assets;
 
 	/**
-	 * @var string
-	 */
-	public $default_version;
-
-	/**
 	 * @var mixed
 	 */
 	public $url;
