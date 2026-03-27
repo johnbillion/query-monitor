@@ -362,6 +362,8 @@ export interface Hooks {
 		};
 	}[];
 	all_hooks: boolean;
+	php_int_max: number;
+	php_int_min: number;
 }
 /**
  * HTTP data transfer object.

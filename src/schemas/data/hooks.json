@@ -7,7 +7,9 @@
 	"required": [
 		"hooks",
 		"components",
-		"all_hooks"
+		"all_hooks",
+		"php_int_max",
+		"php_int_min"
 	],
 	"properties": {
 		"hooks": {
@@ -73,6 +75,12 @@
 		},
 		"all_hooks": {
 			"type": "boolean"
+		},
+		"php_int_max": {
+			"type": "integer"
+		},
+		"php_int_min": {
+			"type": "integer"
 		}
 	},
 	"additionalProperties": false

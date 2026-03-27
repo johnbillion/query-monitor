@@ -71,6 +71,8 @@ class QM_Collector_Hooks extends QM_DataCollector {
 		}
 
 		$this->data->hooks = $hooks;
+		$this->data->php_int_max = PHP_INT_MAX;
+		$this->data->php_int_min = PHP_INT_MIN;
 	}
 
 }

@@ -104,7 +104,33 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),
 					className: 'qm-num',
-					render: ( row ) => row.priority ?? '',
+					render: ( row ) => {
+						if ( row.priority === null ) {
+							return '';
+						}
+
+						let label: string | null = null;
+
+						if ( row.priority === data.php_int_max ) {
+							label = 'PHP_INT_MAX';
+						} else if ( row.priority === data.php_int_min ) {
+							label = 'PHP_INT_MIN';
+						} else if ( row.priority === -data.php_int_max ) {
+							label = '-PHP_INT_MAX';
+						}
+
+						return (
+							<>
+								{ row.priority }
+								{ label && (
+									<>
+										<br/>
+										<span className="qm-info">({ label })</span>
+									</>
+								) }
+							</>
+						);
+					},
 				},
 				callback: {
 					heading: __( 'Action', 'query-monitor' ),

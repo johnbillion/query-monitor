@@ -34,4 +34,14 @@ class QM_Data_Hooks extends QM_Data {
 	 * @var bool
 	 */
 	public $all_hooks;
+
+	/**
+	 * @var int
+	 */
+	public $php_int_max;
+
+	/**
+	 * @var int
+	 */
+	public $php_int_min;
 }
