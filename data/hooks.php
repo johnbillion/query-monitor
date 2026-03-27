@@ -26,11 +26,6 @@ class QM_Data_Hooks extends QM_Data {
 	public $hooks;
 
 	/**
-	 * @phpstan-var array<int, array<string, QM_Component>>
-	 */
-	public $components;
-
-	/**
 	 * @var bool
 	 */
 	public $all_hooks;

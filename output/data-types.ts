@@ -356,11 +356,6 @@ export interface Hooks {
 			};
 		};
 	}[];
-	components: {
-		[k: string]: {
-			[k: string]: unknown;
-		};
-	}[];
 	all_hooks: boolean;
 	php_int_max: number;
 	php_int_min: number;

@@ -6,7 +6,6 @@
 	"type": "object",
 	"required": [
 		"hooks",
-		"components",
 		"all_hooks",
 		"php_int_max",
 		"php_int_min"
@@ -60,17 +59,6 @@
 					"components"
 				],
 				"additionalProperties": false
-			}
-		},
-		"components": {
-			"type": "array",
-			"phpStanType": "array<int, array<string, QM_Component>>",
-			"items": {
-				"type": "object",
-				"additionalProperties": {
-					"phpType": "QM_Component",
-					"type": "object"
-				}
 			}
 		},
 		"all_hooks": {

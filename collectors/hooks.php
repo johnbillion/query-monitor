@@ -66,8 +66,6 @@ class QM_Collector_Hooks extends QM_DataCollector {
 
 			$hook = QM_Hook::process( $name, $type, $wp_filter[ $name ] ?? null, self::$hide_qm, self::$hide_core );
 			$hooks[] = $hook;
-
-			$this->data->components[] = $hook['components'];
 		}
 
 		$this->data->hooks = $hooks;
