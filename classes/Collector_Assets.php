@@ -40,12 +40,12 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	protected $footer = array();
 
 	/**
-	 * @var array<int, string>
+	 * @var list<string>
 	 */
 	protected $broken = array();
 
 	/**
-	 * @var array<int, string>
+	 * @var list<string>
 	 */
 	protected $missing = array();
 
@@ -169,13 +169,13 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			}
 
 			if ( ! empty( $broken ) ) {
-				$this->broken = array_unique( $broken );
+				$this->broken = array_values( array_unique( $broken ) );
 			}
 		}
 
 		// A missing asset is one which has been enqueued with dependencies that don't exist
 		if ( ! empty( $missing ) ) {
-			$this->missing = array_unique( $missing );
+			$this->missing = array_values( array_unique( $missing ) );
 			foreach ( $this->missing as $handle ) {
 				$raw->add( $handle, false );
 				$key = array_search( $handle, $raw->done, true );

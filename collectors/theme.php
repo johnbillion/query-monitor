@@ -439,7 +439,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 		$theme_directory = QM_Util::standard_dir( get_theme_root() );
 
 		if ( isset( $this->data->template_hierarchy ) ) {
-			$this->data->template_hierarchy = array_unique( $this->data->template_hierarchy );
+			$this->data->template_hierarchy = array_values( array_unique( $this->data->template_hierarchy ) );
 		}
 
 		if ( ! empty( $this->requested_template_parts ) ) {
