@@ -87,6 +87,7 @@ const Assets = ( { data, labels }: myProps ) => {
 				handle: {
 					heading: __( 'Handle', 'query-monitor' ),
 					render: ( row ) => row.handle,
+					className: 'qm-nowrap',
 				},
 				hostname: {
 					heading: __( 'Host', 'query-monitor' ),

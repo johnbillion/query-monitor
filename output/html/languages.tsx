@@ -17,6 +17,7 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 			cols={ {
 				domain: {
 					heading: __( 'Text Domain', 'query-monitor' ),
+					className: 'qm-nowrap',
 					render: ( row ) => (
 						row.handle ? (
 							`${ row.domain } (${ row.handle })`

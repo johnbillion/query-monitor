@@ -58,9 +58,8 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 		},
 		blockName: {
 			heading: __('Block Name', 'query-monitor'),
-			className: 'qm-ltr qm-wrap',
+			className: 'qm-nowrap',
 			render: (row: iBlock) => row.blockName,
-			wrap: true,
 		},
 		attrs: {
 			heading: __('Attributes', 'query-monitor'),
