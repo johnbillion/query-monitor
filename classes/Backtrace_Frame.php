@@ -12,9 +12,9 @@ class QM_Backtrace_Frame {
 	public $id;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
-	public $display;
+	public $args;
 
 	/**
 	 * @var string|null
@@ -37,11 +37,6 @@ class QM_Backtrace_Frame {
 	public $class;
 
 	/**
-	 * @var ?array<int, string>
-	 */
-	public $args;
-
-	/**
 	 * Whether this frame should keep its original file/line
 	 * instead of being shifted during serialization.
 	 *
@@ -53,7 +48,7 @@ class QM_Backtrace_Frame {
 	public function to_data(): QM_Data_Stack_Frame {
 		$data = new QM_Data_Stack_Frame();
 		$data->id = $this->id;
-		$data->display = $this->display;
+		$data->args = $this->args;
 		$data->file = $this->file;
 		$data->line = $this->line;
 

@@ -7,17 +7,18 @@
 	"phpFile": "frame",
 	"phpClass": "QM_Data_Stack_Frame",
 	"required": [
-		"display",
 		"file",
-		"id",
-		"line"
+		"id"
 	],
 	"properties": {
 		"id": {
 			"type": "string"
 		},
-		"display": {
-			"type": "string"
+		"args": {
+			"type": [
+				"string",
+				"null"
+			]
 		},
 		"file": {
 			"type": [

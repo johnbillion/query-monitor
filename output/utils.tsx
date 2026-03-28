@@ -1,4 +1,5 @@
 import { Fragment, type JSX } from 'preact';
+import { StackFrame } from './data-types';
 import { WP_Error } from 'wp-types';
 
 declare const QueryMonitorData: {
@@ -218,6 +219,10 @@ export function getEditorFormat( name: string ): string {
  * @param fqn A fully qualified name.
  * @return A shortened version of the name.
  */
+export function frameDisplay( frame: Pick<StackFrame, 'id' | 'args'> ): string {
+	return `${ frame.id }(${ frame.args ?? '' })`;
+}
+
 export function shortenFqn( fqn: string ): string {
 	const backslashCount = ( fqn.match( /\\/g ) || [] ).length;
 

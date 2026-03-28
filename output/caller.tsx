@@ -3,6 +3,7 @@ import { SourceLocation } from './components/source-location';
 import {
 	Backtrace,
 } from './data-types';
+import * as Utils from './utils';
 import { useState } from 'preact/hooks';
 
 import {
@@ -42,7 +43,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				<Toggle
 					expanded={ expanded }
 					onToggle={ () => setExpanded( ! expanded ) }
-					context={ callsite?.filename ?? caller?.display }
+					context={ callsite?.filename ?? ( caller ? Utils.frameDisplay( caller ) : undefined ) }
 				/>
 			) }
 			<ol>
@@ -59,7 +60,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				{ ! callsite && caller && (
 					<li>
 						<SourceLocation
-							text={ caller.display }
+							text={ Utils.frameDisplay( caller ) }
 							file={ caller.file }
 							line={ caller.line }
 							expanded={ expanded || ! hasStack }
@@ -68,9 +69,9 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				) }
 				{ hasStack && expanded && (
 					frames.map( frame => (
-						<li key={ frame.display }>
+						<li key={ frame.id }>
 							<SourceLocation
-								text={ frame.display }
+								text={ Utils.frameDisplay( frame ) }
 								file={ frame.file }
 								line={ frame.line }
 								expanded

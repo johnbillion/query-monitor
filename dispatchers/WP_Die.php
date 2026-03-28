@@ -57,7 +57,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		$component = $this->trace->get_component();
 
 		foreach ( $filtered_trace as $i => $item ) {
-			$stack[] = QM_Output_Html::output_filename( $item->display, $item->file, $item->line );
+			$stack[] = QM_Output_Html::output_filename(
+				$item->id . '(' . ( $item->args ?? '' ) . ')',
+				$item->file,
+				$item->line
+			);
 		}
 
 		?>

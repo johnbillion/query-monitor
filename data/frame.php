@@ -17,9 +17,9 @@ class QM_Data_Stack_Frame {
 	public $id;
 
 	/**
-	 * @var string
+	 * @var ?string|null
 	 */
-	public $display;
+	public $args;
 
 	/**
 	 * @var string|null
@@ -27,7 +27,7 @@ class QM_Data_Stack_Frame {
 	public $file;
 
 	/**
-	 * @var int|null
+	 * @var ?int|null
 	 */
 	public $line;
 }

@@ -222,15 +222,6 @@ export interface CallSite {
 	line: number | null;
 }
 /**
- * Stack trace frame.
- */
-export interface StackFrame {
-	id: string;
-	display: string;
-	file: string | null;
-	line: number | null;
-}
-/**
  * Conditionals data transfer object.
  */
 export interface Conditionals {
@@ -417,6 +408,15 @@ export interface Languages {
 	 * Polylang language.
 	 */
 	pll_language: string;
+}
+/**
+ * Stack trace frame.
+ */
+export interface StackFrame {
+	id: string;
+	args?: string | null;
+	file: string | null;
+	line?: number | null;
 }
 /**
  * Logger data transfer object.

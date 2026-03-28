@@ -394,7 +394,6 @@ class QM_Backtrace implements JsonSerializable {
 				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
 					$fallback = new QM_Backtrace_Frame();
 					$fallback->id = $file;
-					$fallback->display = $file;
 					$fallback->file = $lowest['file'] ?? null;
 					$fallback->line = $lowest['line'] ?? null;
 					$trace[0] = $fallback;
@@ -631,7 +630,7 @@ class QM_Backtrace implements JsonSerializable {
 		}
 
 		$id = '';
-		$display = '';
+		$frame_args = null;
 
 			if ( isset( $frame['class'] ) ) {
 			// WP_Hook methods are always filtered out. The do_action/apply_filters
@@ -651,7 +650,6 @@ class QM_Backtrace implements JsonSerializable {
 			}
 
 			$id = $frame['class'] . $frame['type'] . $frame['function'];
-			$display = $id . '()';
 		} else {
 			foreach ( array_keys( $ignore_namespace ) as $namespace ) {
 				if ( 0 === strpos( $frame['function'], $namespace . '\\' ) ) {
@@ -665,7 +663,7 @@ class QM_Backtrace implements JsonSerializable {
 				if ( 'dir' === $show ) {
 					if ( isset( $frame['args'][0] ) ) {
 						$id = $frame['function'];
-						$display = QM_Util::standard_dir( $frame['args'][0], '' );
+						$frame_args = QM_Util::standard_dir( $frame['args'][0], '' );
 					}
 				} else {
 					if ( isset( $hook_functions[ $frame['function'] ], $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
@@ -683,17 +681,16 @@ class QM_Backtrace implements JsonSerializable {
 						}
 					}
 					$id = $frame['function'];
-					$display = $frame['function'] . '(' . implode( ',', $args ) . ')';
+					$frame_args = implode( ',', $args );
 				}
 			} else {
 				$id = $frame['function'];
-				$display = $frame['function'] . '()';
 			}
 		}
 
 		$result = new QM_Backtrace_Frame();
 		$result->id = $id;
-		$result->display = $display;
+		$result->args = $frame_args;
 		$result->file = $frame['file'] ?? null;
 		$result->line = $frame['line'] ?? null;
 		$result->function = $frame['function'];

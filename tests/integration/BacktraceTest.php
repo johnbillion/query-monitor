@@ -37,24 +37,25 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// All 3 frames present. Frame 0 has no frame above and nothing
 		// was trimmed, so it gets null file/line.
-		self::assertCount( 3, $data['frames'] );
+		self::assertCount( 3, $frames );
 
-		self::assertSame( 'third_function', $data['frames'][0]->id );
-		self::assertNull( $data['frames'][0]->file );
-		self::assertNull( $data['frames'][0]->line );
+		self::assertSame( 'third_function', $frames[0]->id );
+		self::assertNull( $frames[0]->file );
+		self::assertNull( $frames[0]->line );
 
 		// second_function gets third_function's original file/line.
-		self::assertSame( 'second_function', $data['frames'][1]->id );
-		self::assertSame( '/app/second.php', $data['frames'][1]->file );
-		self::assertSame( 10, $data['frames'][1]->line );
+		self::assertSame( 'second_function', $frames[1]->id );
+		self::assertSame( '/app/second.php', $frames[1]->file );
+		self::assertSame( 10, $frames[1]->line );
 
 		// first_function gets second_function's original file/line.
-		self::assertSame( 'first_function', $data['frames'][2]->id );
-		self::assertSame( '/app/first.php', $data['frames'][2]->file );
-		self::assertSame( 20, $data['frames'][2]->line );
+		self::assertSame( 'first_function', $frames[2]->id );
+		self::assertSame( '/app/first.php', $frames[2]->file );
+		self::assertSame( 20, $frames[2]->line );
 	}
 
 	public function testIgnoreClassTrimsFromTop(): void {
@@ -80,19 +81,20 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// wpdb trimmed. my_function and bootstrap remain.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( 'bootstrap', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'bootstrap', $frames[1]->id );
 
 		// my_function gets the trimmed wpdb frame's file/line.
-		self::assertSame( '/app/caller.php', $data['frames'][0]->file );
-		self::assertSame( 5, $data['frames'][0]->line );
+		self::assertSame( '/app/caller.php', $frames[0]->file );
+		self::assertSame( 5, $frames[0]->line );
 
 		// bootstrap gets my_function's original file/line.
-		self::assertSame( '/app/entry.php', $data['frames'][1]->file );
-		self::assertSame( 15, $data['frames'][1]->line );
+		self::assertSame( '/app/entry.php', $frames[1]->file );
+		self::assertSame( 15, $frames[1]->line );
 	}
 
 	public function testPerInstanceIgnoreFuncTrimsFromTop(): void {
@@ -120,15 +122,16 @@ class BacktraceTest extends Test {
 			),
 		) );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// wp_remote_get trimmed. my_function and bootstrap remain.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( 'bootstrap', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'bootstrap', $frames[1]->id );
 
 		// my_function gets the trimmed frame's file/line.
-		self::assertSame( '/app/caller.php', $data['frames'][0]->file );
-		self::assertSame( 5, $data['frames'][0]->line );
+		self::assertSame( '/app/caller.php', $frames[0]->file );
+		self::assertSame( 5, $frames[0]->line );
 	}
 
 	public function testWpHookFilteredMidStack(): void {
@@ -155,11 +158,13 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// WP_Hook is always filtered out. my_function and do_action remain.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( "do_action('init')", $data['frames'][1]->display );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'do_action', $frames[1]->id );
+		self::assertSame( "'init'", $frames[1]->args );
 	}
 
 	public function testFullHttpStackTrimming(): void {
@@ -211,20 +216,21 @@ class BacktraceTest extends Test {
 			),
 		) );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// WP_Hook, WP_Http x2, wp_remote_get all trimmed.
 		// my_function and bootstrap remain.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( 'bootstrap', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'bootstrap', $frames[1]->id );
 
 		// my_function gets the last trimmed frame's file/line (wp_remote_get).
-		self::assertSame( '/app/caller.php', $data['frames'][0]->file );
-		self::assertSame( 20, $data['frames'][0]->line );
+		self::assertSame( '/app/caller.php', $frames[0]->file );
+		self::assertSame( 20, $frames[0]->line );
 
 		// bootstrap gets my_function's original file/line.
-		self::assertSame( '/app/entry.php', $data['frames'][1]->file );
-		self::assertSame( 30, $data['frames'][1]->line );
+		self::assertSame( '/app/entry.php', $frames[1]->file );
+		self::assertSame( 30, $frames[1]->line );
 	}
 
 	public function testGetCallerReturnsFirstFrameAfterTrimming(): void {
@@ -268,11 +274,12 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// get_caller and serialized frame 0 are the same function.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'my_function', $caller->id );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
+		self::assertSame( 'my_function', $frames[0]->id );
 	}
 
 	public function testGetCallerWithIgnoreClassTrimming(): void {
@@ -300,13 +307,14 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// get_caller returns my_function (first frame after wpdb trimmed).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'my_function', $caller->id );
 
 		// my_function is also the first serialized frame.
-		self::assertSame( 'my_function', $data['frames'][0]->id );
+		self::assertSame( 'my_function', $frames[0]->id );
 	}
 
 	public function testGetCallerReturnsFalseForEmptyTrace(): void {
@@ -337,11 +345,12 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// QM_Collector filtered out. my_function and bootstrap remain.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( 'bootstrap', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'bootstrap', $frames[1]->id );
 	}
 
 	public function testCallSiteWithStackTrace(): void {
@@ -372,18 +381,19 @@ class BacktraceTest extends Test {
 			'callsite' => $callsite,
 		) );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// All 3 frames present. Frame 0 gets the call site's file/line,
 		// since that's the location inside third_function where the error occurred.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( 'third_function', $data['frames'][0]->id );
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 70, $data['frames'][0]->line );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'third_function', $frames[0]->id );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 70, $frames[0]->line );
 
 		// second_function gets third_function's original file/line (shifted).
-		self::assertSame( 'second_function', $data['frames'][1]->id );
-		self::assertSame( '/app/second.php', $data['frames'][1]->file );
-		self::assertSame( 50, $data['frames'][1]->line );
+		self::assertSame( 'second_function', $frames[1]->id );
+		self::assertSame( '/app/second.php', $frames[1]->file );
+		self::assertSame( 50, $frames[1]->line );
 
 		// The call site is preserved separately.
 		self::assertNotNull( $data['callsite'] );
@@ -425,28 +435,29 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// get_caller returns third_function (first frame after trimming).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'third_function', $caller->id );
 
 		// All frames after trimming are visible.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( 'third_function', $data['frames'][0]->id );
-		self::assertSame( 'second_function', $data['frames'][1]->id );
-		self::assertSame( 'first_function', $data['frames'][2]->id );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'third_function', $frames[0]->id );
+		self::assertSame( 'second_function', $frames[1]->id );
+		self::assertSame( 'first_function', $frames[2]->id );
 
 		// third_function links to where it called set_transient.
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 68, $data['frames'][0]->line );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 68, $frames[0]->line );
 
 		// second_function links to where it calls third_function.
-		self::assertSame( '/app/second.php', $data['frames'][1]->file );
-		self::assertSame( 50, $data['frames'][1]->line );
+		self::assertSame( '/app/second.php', $frames[1]->file );
+		self::assertSame( 50, $frames[1]->line );
 
 		// first_function gets second_function's raw file/line.
-		self::assertSame( '/app/first.php', $data['frames'][2]->file );
-		self::assertSame( 46, $data['frames'][2]->line );
+		self::assertSame( '/app/first.php', $frames[2]->file );
+		self::assertSame( 46, $frames[2]->line );
 	}
 
 	public function testTransientStyleIgnoreFuncWithHookTrimming(): void {
@@ -490,18 +501,19 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// WP_Hook and set_transient trimmed. third_function is the caller.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'third_function', $caller->id );
 
 		// third_function, second_function, first_function remain.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( 'third_function', $data['frames'][0]->id );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'third_function', $frames[0]->id );
 
 		// third_function links to where it called set_transient.
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 68, $data['frames'][0]->line );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 68, $frames[0]->line );
 	}
 
 	public function testDoingItWrongIgnoreFunc(): void {
@@ -543,18 +555,19 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// _doing_it_wrong and WP_Hook trimmed. third_function is the caller.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'third_function', $caller->id );
 
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'third_function', $data['frames'][0]->id );
-		self::assertSame( 'second_function', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'third_function', $frames[0]->id );
+		self::assertSame( 'second_function', $frames[1]->id );
 
 		// third_function links to where it called _doing_it_wrong.
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 72, $data['frames'][0]->line );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 72, $frames[0]->line );
 	}
 
 	public function testDeprecatedFunctionIgnoreFunc(): void {
@@ -594,14 +607,15 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// old_function is the caller (first frame after trimming).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'old_function', $caller->id );
 
 		// old_function links to where it called _deprecated_function.
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 72, $data['frames'][0]->line );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 72, $frames[0]->line );
 	}
 
 	public function testIncludeRequireFramesTrimmedFromBottom(): void {
@@ -639,11 +653,12 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// The three require_once frames at the bottom should be trimmed.
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
-		self::assertSame( 'do_action', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
+		self::assertSame( 'do_action', $frames[1]->id );
 	}
 
 	public function testMidStackIncludeFramesArePreserved(): void {
@@ -668,11 +683,12 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// The require frame is mid-stack (load_template is below it
 		// and is not an include/require), so it's preserved.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( 'my_function', $data['frames'][0]->id );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'my_function', $frames[0]->id );
 	}
 
 	public function testWpHookMethodsFilteredAndDoActionKeepsFileLine(): void {
@@ -711,24 +727,26 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// WP_Hook methods are filtered out. do_action and user functions remain.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( "do_action('banana')", $data['frames'][0]->display );
-		self::assertSame( 'third_function', $data['frames'][1]->id );
-		self::assertSame( 'second_function', $data['frames'][2]->id );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'do_action', $frames[0]->id );
+		self::assertSame( "'banana'", $frames[0]->args );
+		self::assertSame( 'third_function', $frames[1]->id );
+		self::assertSame( 'second_function', $frames[2]->id );
 
 		// do_action keeps its original file/line (where third_function calls it).
-		self::assertSame( '/app/third.php', $data['frames'][0]->file );
-		self::assertSame( 62, $data['frames'][0]->line );
+		self::assertSame( '/app/third.php', $frames[0]->file );
+		self::assertSame( 62, $frames[0]->line );
 
 		// third_function also gets do_action's file/line (same call point).
-		self::assertSame( '/app/third.php', $data['frames'][1]->file );
-		self::assertSame( 62, $data['frames'][1]->line );
+		self::assertSame( '/app/third.php', $frames[1]->file );
+		self::assertSame( 62, $frames[1]->line );
 
 		// second_function gets third_function's file/line (shifted normally).
-		self::assertSame( '/app/second.php', $data['frames'][2]->file );
-		self::assertSame( 50, $data['frames'][2]->line );
+		self::assertSame( '/app/second.php', $frames[2]->file );
+		self::assertSame( 50, $frames[2]->line );
 	}
 
 	public function testNestedHooksHandledCorrectly(): void {
@@ -783,20 +801,23 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// All WP_Hook methods filtered. Both do_actions and my_function remain.
-		self::assertCount( 3, $data['frames'] );
-		self::assertSame( "do_action('banana')", $data['frames'][0]->display );
-		self::assertSame( 'my_function', $data['frames'][1]->id );
-		self::assertSame( "do_action('init')", $data['frames'][2]->display );
+		self::assertCount( 3, $frames );
+		self::assertSame( 'do_action', $frames[0]->id );
+		self::assertSame( "'banana'", $frames[0]->args );
+		self::assertSame( 'my_function', $frames[1]->id );
+		self::assertSame( 'do_action', $frames[2]->id );
+		self::assertSame( "'init'", $frames[2]->args );
 
 		// do_action('banana') keeps its original file/line.
-		self::assertSame( '/app/my-function.php', $data['frames'][0]->file );
-		self::assertSame( 62, $data['frames'][0]->line );
+		self::assertSame( '/app/my-function.php', $frames[0]->file );
+		self::assertSame( 62, $frames[0]->line );
 
 		// do_action('init') keeps its original file/line.
-		self::assertSame( '/app/settings.php', $data['frames'][2]->file );
-		self::assertSame( 775, $data['frames'][2]->line );
+		self::assertSame( '/app/settings.php', $frames[2]->file );
+		self::assertSame( 775, $frames[2]->line );
 	}
 
 	public function testIgnoreHookRemovesHookDispatchFrames(): void {
@@ -843,20 +864,21 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
+		$frames = $data['frames'];
 
 		// The qm/start hook dispatch (do_action + WP_Hook methods) is
 		// removed by ignore_hook. third_function is the caller.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
 		self::assertSame( 'third_function', $caller->id );
 
-		self::assertCount( 2, $data['frames'] );
-		self::assertSame( 'third_function', $data['frames'][0]->id );
-		self::assertSame( 'second_function', $data['frames'][1]->id );
+		self::assertCount( 2, $frames );
+		self::assertSame( 'third_function', $frames[0]->id );
+		self::assertSame( 'second_function', $frames[1]->id );
 
 		// third_function has null file/line because the ignored hook dispatch
 		// frame was removed by filter_trace (not trim_top_frames), so its
 		// file/line doesn't feed into top_frame_location.
-		self::assertNull( $data['frames'][0]->file );
-		self::assertNull( $data['frames'][0]->line );
+		self::assertNull( $frames[0]->file );
+		self::assertNull( $frames[0]->line );
 	}
 }
