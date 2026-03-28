@@ -1,14 +1,18 @@
+import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol, getTimeCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 } from '@wordpress/i18n';
 
 export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.expensive?.length || ! data.rows ) {
 		return null;
 	}
@@ -38,7 +42,7 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 					</>
 				),
 			},
-			caller: getCallerCol( rows ),
+			caller: getCallerCol( rows, settings ),
 			component: getComponentCol( rows ),
 			result: {
 				className: 'qm-num',

@@ -1,3 +1,4 @@
+import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
@@ -5,9 +6,12 @@ import { getCallerCol, getComponentCol } from '../table';
 import { getFilterLabel } from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import { __ } from '@wordpress/i18n';
 
 export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.errors ) {
 		return <EmptyPanel>
 			<p>
@@ -66,7 +70,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 				heading: __( 'Message', 'query-monitor' ),
 				render: ( row ) => ( row.message ),
 			},
-			caller: getCallerCol( errors ),
+			caller: getCallerCol( errors, settings ),
 			count: {
 				className: 'qm-num',
 				heading: __( 'Count', 'query-monitor' ),

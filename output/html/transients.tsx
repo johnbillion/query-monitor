@@ -1,15 +1,19 @@
+import { MainContext } from '../contexts/main-context';
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { getCallerCol, getComponentCol } from '../table';
 import { ApproximateSize } from '../components/approximate-size';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 	_x,
 } from '@wordpress/i18n';
 
 export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.trans?.length ) {
 		return (
 			<EmptyPanel>
@@ -59,7 +63,7 @@ export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {
 				heading: _x( 'Size', 'size of transient value', 'query-monitor' ),
 				render: ( row ) => <ApproximateSize value={ row.size } />,
 			},
-			caller: getCallerCol( data.trans ),
+			caller: getCallerCol( data.trans, settings ),
 			component: getComponentCol( data.trans ),
 		} }
 		data={ data.trans }

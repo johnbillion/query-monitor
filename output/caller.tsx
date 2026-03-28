@@ -4,7 +4,8 @@ import {
 	Backtrace,
 } from './data-types';
 import * as Utils from './utils';
-import { useState } from 'preact/hooks';
+import { MainContext } from './contexts/main-context';
+import { useContext, useState } from 'preact/hooks';
 
 import {
 	__,
@@ -19,6 +20,9 @@ interface Props {
 
 export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 	const callsite = trace?.callsite;
+	const {
+		settings,
+	} = useContext( MainContext );
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	// This creates a copy of the frames array.
@@ -43,14 +47,14 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				<Toggle
 					expanded={ expanded }
 					onToggle={ () => setExpanded( ! expanded ) }
-					context={ callsite?.filename ?? ( caller ? Utils.frameDisplay( caller ) : undefined ) }
+					context={ ( callsite?.file ? Utils.stripAbspath( callsite.file, settings ) : undefined ) ?? ( caller ? Utils.frameDisplay( caller ) : undefined ) }
 				/>
 			) }
 			<ol>
 				{ callsite && (
 					<li>
 						<FileName
-							text={ callsite.filename }
+							text={ callsite.file ? Utils.stripAbspath( callsite.file, settings ) : '' }
 							file={ callsite.file }
 							line={ callsite.line }
 							expanded={ expanded || ! hasStack }

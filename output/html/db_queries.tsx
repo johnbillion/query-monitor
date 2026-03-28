@@ -119,7 +119,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				},
 				wrap: true
 			},
-			caller: data.has_trace ? getCallerCol( data.rows ) : getStackCol( data.rows ),
+			caller: data.has_trace ? getCallerCol( data.rows, settings ) : getStackCol( data.rows ),
 			component: data.has_trace ? getComponentCol( data.rows ) : null,
 			result: data.has_result ? {
 				className: 'qm-num',

@@ -197,14 +197,16 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * @deprecated Use the `callsite` argument instead.
 	 *
-	 * @param mixed[] $frame
+	 * @param array{
+	 *   file: string,
+	 *   line: int,
+	 * } $frame
 	 * @return void
 	 */
 	public function push_frame( array $frame ) {
 		$callsite = new QM_Data_Callsite();
-		$callsite->file = $frame['file'] ?? null;
-		$callsite->filename = isset( $frame['file'] ) ? QM_Util::standard_dir( $frame['file'], '' ) : '';
-		$callsite->line = $frame['line'] ?? null;
+		$callsite->file = $frame['file'];
+		$callsite->line = $frame['line'];
 		$this->callsite = $callsite;
 	}
 

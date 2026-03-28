@@ -1,3 +1,4 @@
+import { MainContext } from '../contexts/main-context';
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
@@ -10,6 +11,7 @@ import { TotalTime } from '../components/total-time';
 import { PanelFooter } from '../panels/panel-footer';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 	sprintf,
@@ -32,6 +34,8 @@ const hasInterceptedWarning = ( row: DataTypes['http']['http'][0] ): boolean => 
 };
 
 export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.http ) {
 		return (
 			<EmptyPanel>
@@ -225,7 +229,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					},
 				},
 			},
-			caller: getCallerCol( data.http ),
+			caller: getCallerCol( data.http, settings ),
 			component: getComponentCol( data.http ),
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),

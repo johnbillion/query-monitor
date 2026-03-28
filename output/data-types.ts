@@ -217,9 +217,8 @@ export interface Backtrace {
  * Code location where an error or event occurred.
  */
 export interface CallSite {
-	file: string | null;
-	filename: string;
-	line: number | null;
+	file: string;
+	line: number;
 }
 /**
  * Conditionals data transfer object.

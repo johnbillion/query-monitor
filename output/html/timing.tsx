@@ -1,3 +1,4 @@
+import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Duration } from '../components/duration';
 import { ApproximateSize } from '../components/approximate-size';
@@ -6,6 +7,7 @@ import { getCallerCol, getComponentCol } from '../table';
 import { Warning } from '../components/warning';
 import { DataTypes, Backtrace } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 } from '@wordpress/i18n';
@@ -40,6 +42,8 @@ interface WarningRow {
 type FlattenedRow = TimingRow | WarningRow;
 
 export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ( ! data.timing || data.timing.length === 0 ) && ( ! data.warning || data.warning.length === 0 ) ) {
 		return <EmptyPanel>
 			<p>
@@ -156,13 +160,13 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				},
 			},
 			caller: {
-				...getCallerCol( flattenedData ),
+				...getCallerCol( flattenedData, settings ),
 				render: ( row, i ) => {
 					// Don't show caller for lap rows
 					if ( 'isLap' in row && row.isLap ) {
 						return '';
 					}
-					return getCallerCol( flattenedData ).render( row, i );
+					return getCallerCol( flattenedData, settings ).render( row, i );
 				},
 			},
 			component: {
