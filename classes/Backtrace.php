@@ -236,7 +236,15 @@ class QM_Backtrace implements JsonSerializable {
 	public function get_stack() {
 
 		$trace = $this->get_filtered_trace();
-		$stack = array_column( $trace, 'display' );
+		$stack = array();
+
+		foreach ( $trace as $frame ) {
+			if ( $frame->args !== null ) {
+				$stack[] = $frame->id . '(' . $frame->args . ')';
+			} else {
+				$stack[] = $frame->id . '()';
+			}
+		}
 
 		return $stack;
 
