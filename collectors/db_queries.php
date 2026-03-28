@@ -286,7 +286,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				}
 			}
 
-			// Wave a magic wand
+			// Count the occurrences of each primary caller across duplicate queries
 			$dupe_data['sources'] = array_count_values( array_column( $stacks[ $sql ], 0 ) );
 
 			$this->data->dupes[] = $dupe_data;
