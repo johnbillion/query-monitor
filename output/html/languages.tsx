@@ -63,6 +63,7 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 				},
 				found: {
 					heading: __( 'Size', 'query-monitor' ),
+					className: 'qm-nowrap',
 					render: ( row ) => (
 						row.found ? (
 							<ApproximateSize
