@@ -391,7 +391,6 @@ export interface Languages {
 		caller: StackFrame | false;
 		domain: string;
 		file: string | false;
-		display: string;
 		found: number | false;
 		handle: string | null;
 		type: "gettext" | "jed" | "php" | "unknown";
