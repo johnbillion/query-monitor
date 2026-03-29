@@ -234,10 +234,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 							) : (
 								<>
 									<p>
-										<span className="qm-warn">
-											<Icon name="warning" />
-											{ __( 'Persistent object cache plugin not in use', 'query-monitor' ) }
-										</span>
+										{ __( 'Persistent object cache plugin not in use', 'query-monitor' ) }
 									</p>
 									{ Object.entries( cacheData.object_cache_extensions ).some( ( [ , value ] ) => value ) && (
 										Object.entries( cacheData.object_cache_extensions ).filter( ( [ , value ] ) => value ).map( ( [ name ] ) => (
@@ -249,11 +246,6 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 												) }
 											</p>
 										) )
-									) }
-									{ ! Object.values( cacheData.object_cache_extensions ).some( value => value ) && (
-										<p>
-											{ __( 'Speak to your web host about enabling an object cache extension such as Redis or Memcached.', 'query-monitor' ) }
-										</p>
 									) }
 								</>
 							) }

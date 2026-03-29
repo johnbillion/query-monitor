@@ -80,8 +80,13 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 				heading: __( 'Level', 'query-monitor' ),
 				render: ( row ) => (
 					<>
-						{ warningLevels.includes( row.level ) && ( <Warning /> ) }
-						{ row.level }
+						{ warningLevels.includes( row.level ) ? (
+							<Warning>
+								{ row.level }
+							</Warning>
+						) : (
+							row.level
+						) }
 					</>
 				),
 				filters: {

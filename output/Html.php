@@ -178,7 +178,7 @@ abstract class QM_Output_Html extends QM_Output {
 	 */
 	protected function build_notice( $notice ) {
 		$return = '<section>' . "\n";
-		$return .= '<div class="qm-notice">' . "\n";
+		$return .= '<div class="qm-empty">' . "\n";
 		$return .= '<p>';
 		$return .= $notice;
 		$return .= '</p>' . "\n";

@@ -7,8 +7,10 @@ interface Props {
 }
 
 export const Warning = ( { children }: Props ) => (
-	<span className="qm-warn">
+	<span className="qm-warn qm-warning-wrapper">
 		<Icon name="warning"/>
-		{ children ?? null }
+		<div>
+			{ children ?? null }
+		</div>
 	</span>
 );

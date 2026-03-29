@@ -7,10 +7,8 @@ interface Props {
 
 export const EmptyPanel = ( { children }: Props ) => (
 	<NonTabularPanel>
-		<section>
-			<div className="qm-notice">
-				{ children }
-			</div>
+		<section className="qm-empty">
+			{ children }
 		</section>
 	</NonTabularPanel>
 );

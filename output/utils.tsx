@@ -52,6 +52,14 @@ export function formatSQL( sql: string ): JSX.Element[] {
 		return '';
 	} );
 
+	if ( collection.length === 0 ) {
+		collection.push(
+			<Fragment key={ 0 }>
+				<b>{ sql }</b>
+			</Fragment>
+		);
+	}
+
 	return collection;
 }
 

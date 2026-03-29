@@ -64,11 +64,12 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								</Warning>
 							</div>
 						) }
-						{ Utils.formatURL( row.url ) }
-						{ row.args.method === 'GET' && (
-							<a className="qm-external-link" href={ row.url } target="_blank" rel="noopener noreferrer" aria-label={ __( 'Open URL in new tab', 'query-monitor' ) }>
-								<Icon name="external"/>
+						{ row.args.method === 'GET' ? (
+							<a href={ row.url } target="_blank" rel="noreferrer">
+								{ Utils.formatURL( row.url ) }
 							</a>
+						) : (
+							Utils.formatURL( row.url )
 						) }
 						{ hasHttpsWarning( row ) && (
 							<div>
