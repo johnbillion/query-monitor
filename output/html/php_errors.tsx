@@ -52,11 +52,23 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 				heading: __( 'Level', 'query-monitor' ),
 				render: ( row ) => (
 					<>
-						{ row.level === 'warning' && ( <Warning /> ) }
-						{ row.level }
-						{ row.suppressed && (
+						{ row.level === 'warning' ? (
+							<Warning>
+								{ row.level }
+								{ row.suppressed && (
+									<>
+										&nbsp;({ __( 'suppressed', 'query-monitor' ) })
+									</>
+								) }
+							</Warning>
+						) : (
 							<>
-								&nbsp;({ __( 'suppressed', 'query-monitor' ) })
+								{ row.level }
+								{ row.suppressed && (
+									<>
+										&nbsp;({ __( 'suppressed', 'query-monitor' ) })
+									</>
+								) }
 							</>
 						) }
 					</>

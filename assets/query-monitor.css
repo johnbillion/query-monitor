@@ -3,6 +3,9 @@
 .qm-container {
 	color-scheme: light dark;
 
+	--qm-wp-fresh: #2271b1;
+	--qm-wp-modern: #3858e9;
+
 	--qm-container-fg:                 light-dark( #1e1e1e, #eaeef2 );
 	--qm-container-bg:                 light-dark( #f0f0f0, #32373c );
 	--qm-container-overflow:           light-dark( #ececec, #3e444a );
@@ -13,14 +16,13 @@
 	--qm-panel-menu-fg:                light-dark( #3c434a, #eaeef2 );
 	--qm-panel-menu-bg:                light-dark( #ececec, #3e444a );
 	--qm-panel-menu-fg-hover:          light-dark( #fff,    #fff );
-	--qm-panel-menu-bg-hover:          light-dark( #2271b1, #2271b1 );
+	--qm-panel-menu-bg-selected:       light-dark( var( --qm-wp-color ), var( --qm-wp-color ) );
+	--qm-panel-menu-bg-hover:          var( --qm-panel-menu-bg-selected );
+	--qm-panel-menu-shadow:            var( --qm-panel-menu-bg-selected );
 	--qm-panel-menu-fg-current:        light-dark( #1e1e1e, #eaeef2 );
 	--qm-panel-menu-bg-current:        light-dark( #e2e4e7, #32373c );
 	--qm-panel-menu-bg-current-focus:  light-dark( #f0f3f7, #3e444a );
 	--qm-panel-menu-fg-selected:       light-dark( #fff,    #fff );
-	--qm-panel-menu-bg-selected:       light-dark( #2271b1, #2271b1 );
-	--qm-panel-menu-bg-selected-focus: light-dark( #135e96, #135e96 );
-	--qm-panel-menu-shadow:            light-dark( #135e96, #135e96 );
 	--qm-cell-border:                  light-dark( #e9e9eb, #23282d );
 	--qm-cell-bg-hover:                light-dark( #f0f6fc, #373c42 );
 	--qm-cell-fg-highlight:            light-dark( #1e1e1e, #eaeef2 );
@@ -30,13 +32,13 @@
 	--qm-cell-bg-stripe:               light-dark( #f9f9f9, #32373c );
 	--qm-table-header-bg:              light-dark( #ececec, #3e444a );
 	--qm-table-footer-bg:              light-dark( #f6f7f7, #32373c );
-	--qm-link-fg:                      light-dark( #2271b1, #30ceff );
-	--qm-link-fg-hover:                light-dark( #135e96, #4092d2 );
+	--qm-link-fg:                      light-dark( var( --qm-wp-color ), #30ceff );
+	--qm-link-fg-hover:                oklch(from var( --qm-link-fg ) calc( l - 0.2 ) c h);
 	--qm-link-fg-active:               light-dark( #0a4b78, #69aadc );
 	--qm-button-fg:                    light-dark( #fff,    #fff );
-	--qm-button-bg:                    light-dark( #2271b1, #2271b1 );
-	--qm-button-fg-hover:              light-dark( #fff,    #fff );
-	--qm-button-bg-hover:              light-dark( #135e96, #135e96 );
+	--qm-button-bg:                    light-dark( var( --qm-wp-color ), var( --qm-wp-color ) );
+	--qm-button-fg-hover:              var( --qm-button-fg );
+	--qm-button-bg-hover:              oklch(from var( --qm-button-bg ) calc( l - 0.2 ) c h);
 	--qm-button-fg-active:             light-dark( #fff,    #fff );
 	--qm-button-bg-active:             light-dark( #0a4b78, #0a4b78 );
 	--qm-title-button-fg:              light-dark( #444, #bbc8d4 );
@@ -58,7 +60,7 @@
 	--qm-badge-bg:                     light-dark( #dcdcde, #50626f );
 	--qm-badge-warn-fg:                light-dark( #8a2424, #f0c0c0 );
 	--qm-badge-warn-bg:                light-dark( #facfd2, #6c2424 );
-	--qm-sql-keyword-fg:               light-dark( #2271b1, #30ceff );
+	--qm-sql-keyword-fg:               light-dark( var( --qm-wp-color ), #30ceff );
 	--qm-sql-value-fg:                 light-dark( #a44, #ce9178 );
 	--qm-timeline-db:                  #3858e9;
 	--qm-timeline-http:                #888888;
@@ -68,8 +70,8 @@
 	--qm-timeline-log:                 #ff9800;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	--qm-font-default-size: 12px;
-	--qm-font-default-line-height: 18px;
+	--qm-font-default-size: 12.5px;
+	--qm-font-default-line-height: 19px;
 	--qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 	--qm-font-code-size: 11px;
 	--qm-font-code-line-height: 20px;
@@ -111,6 +113,14 @@
 	line-height: var( --qm-font-default-line-height );
 	text-align: left;
 
+	&[data-color-scheme="fresh"] {
+		--qm-wp-color: var( --qm-wp-fresh );
+	}
+
+	&[data-color-scheme="modern"] {
+		--qm-wp-color: var( --qm-wp-modern );
+	}
+
 	&[data-theme="light"] {
 		color-scheme: light;
 	}
@@ -124,11 +134,13 @@
 
 #query-monitor-main {
 	border-top: 1px solid var( --qm-panel-border );
+	border-radius: 8px 8px 0 0;
 	bottom: 0;
 	contain: layout paint;
 	left: 0;
 	position: fixed;
 	right: 0;
+	box-shadow: 0 -4px 20px rgba( 0, 0, 0, 0.08 );
 	/* One below the z-index of wp-admin menu flyouts */
 	z-index: 9989;
 
@@ -285,8 +297,8 @@ i {
 	border-bottom: 1px solid var( --qm-panel-border );
 	display: flex;
 	flex-shrink: 0;
-	height: 25px;
-	padding-left: 10px;
+	height: 30px;
+	padding-left: 12px;
 	user-select: none;
 
 	.qm-title-heading {
@@ -366,7 +378,7 @@ i {
 		justify-content: center;
 		margin: 0;
 		padding: 0;
-		width: 26px;
+		width: 28px;
 
 		&:focus *,
 		&:hover *,
@@ -421,12 +433,12 @@ i {
 			cursor: pointer;
 			display: flex;
 			gap: 4px;
-			padding: 6px 10px;
+			padding: 7px 12px;
 			position: relative;
 			text-align: start;
 			width: 100%;
 
-			&:focus,
+			&:focus-visible,
 			&:hover {
 				background: var( --qm-panel-menu-bg-hover );
 				color: var( --qm-panel-menu-fg-hover );
@@ -452,7 +464,7 @@ i {
 				background: var( --qm-panel-menu-bg-current );
 				color: var( --qm-panel-menu-fg-current );
 
-				&:focus {
+				&:focus-visible {
 					background: var( --qm-panel-menu-bg-current-focus );
 					color: var( --qm-panel-menu-fg-current );
 				}
@@ -476,16 +488,12 @@ i {
 		button[aria-selected="true"] {
 			background: var( --qm-panel-menu-bg-selected );
 			color: var( --qm-panel-menu-fg-selected );
+			font-weight: 500;
 			text-shadow:
 				0 -1px 1px var( --qm-panel-menu-shadow ),
 				1px 0 1px var( --qm-panel-menu-shadow ),
 				0 1px 1px var( --qm-panel-menu-shadow ),
 				-1px 0 1px var( --qm-panel-menu-shadow );
-
-			&:focus {
-				background: var( --qm-panel-menu-bg-selected-focus );
-				color: var( --qm-panel-menu-fg-selected );
-			}
 
 			&:after {
 				border: solid 8px transparent;
@@ -514,14 +522,14 @@ i {
 
 		.qm-menu-badge {
 			background: var( --qm-badge-bg );
-			border-radius: 10px;
+			border-radius: 99px;
 			color: var( --qm-badge-fg );
-			font-size: 11px;
+			font-size: 10.5px;
 			font-weight: 600;
 			line-height: 1;
 			margin-left: auto;
 			min-width: 18px;
-			padding: 3px 6px;
+			padding: 3px 7px;
 			text-align: center;
 			text-shadow: none;
 		}
@@ -547,17 +555,17 @@ i {
 	flex-grow: 1;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
-	border: 5px solid var( --qm-panel-bg );
+	border: 6px solid var( --qm-panel-bg );
 	border-bottom: none;
 }
 
 .qm-boxed {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 10px;
 
 	& + .qm-grid,
 	& + .qm-boxed {
-		border-top: 1px solid var( --qm-panel-separator );
 		padding-top: 10px;
 	}
 }
@@ -565,6 +573,7 @@ i {
 .qm-grid {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 10px;
 
 	section {
 		width: 22em;
@@ -613,7 +622,7 @@ i {
 	tfoot th,
 	tfoot td {
 		border: 1px solid var( --qm-cell-border );
-		padding: 6px 6px 5px 6px;
+		padding: 7px 8px 6px 8px;
 		vertical-align: top;
 	}
 
@@ -625,8 +634,10 @@ i {
 
 	thead th {
 		background: var( --qm-table-header-bg );
-		box-shadow: 0 2px 0 var( --qm-cell-border );
-		padding: 5px 5px 5px 6px;
+		box-shadow: 0 2px 4px rgba( 0, 0, 0, 0.06 );
+		font-weight: 600;
+		letter-spacing: 0.01em;
+		padding: 7px 7px 7px 8px;
 		position: sticky;
 		top: 0;
 		z-index: 1;
@@ -687,15 +698,15 @@ i {
 		min-width: 25em;
 	}
 
-	th.qm-col-block-attrs,
-	th.qm-col-block-context,
-	th.qm-col-block-html {
+	th.qm-col-attrs,
+	th.qm-col-context,
+	th.qm-col-html {
 		max-width: 40em;
 	}
 
-	th.qm-col-block-attrs,
-	th.qm-col-block-context,
-	th.qm-col-block-html,
+	th.qm-col-attrs,
+	th.qm-col-context,
+	th.qm-col-html,
 	tr.qm-warn td.qm-cell-status,
 	th.qm-col-url,
 	th.qm-col-message,
@@ -735,7 +746,7 @@ i {
 
 .qm-table-children,
 .qm-non-tabular {
-	padding: 10px 20px;
+	padding: 10px;
 
 	h3 {
 		font-size: 14px;
@@ -776,28 +787,17 @@ i {
 	}
 
 	table {
-		border-bottom-color: var( --qm-cell-border );
-	}
-
-	.qm-full-width {
-		border-top: 1px solid var(--qm-cell-border);
-		margin-right: -20px;
-		margin-left: -20px;
-		width: calc( 100% + 40px );
+		box-shadow: none;
 	}
 }
 
 .qm-grid section,
 .qm-boxed section,
 .qm-boxed .qm-section {
-	border-right: 1px solid var( --qm-panel-separator );
-	margin: 0 20px 10px 0;
-	padding: 10px 20px 10px 0;
-
-	&:last-child {
-		border-right: none;
-		margin-right: 0;
-	}
+	border: 1px solid var( --qm-panel-separator );
+	border-radius: 6px;
+	padding: 14px 18px;
+	margin: 0;
 }
 
 #qm-conditionals li {
@@ -893,7 +893,7 @@ i {
 	.qm-toggle {
 		background: var( --qm-button-bg );
 		border: 1px solid var( --qm-button-bg );
-		border-radius: 3px;
+		border-radius: 4px;
 		color: var( --qm-button-fg );
 		cursor: pointer;
 		font-weight: normal;
@@ -908,9 +908,9 @@ i {
 		line-height: 16px;
 		padding: 0;
 		position: absolute;
-		right: 5px;
+		right: 7px;
 		text-align: center;
-		top: 5px;
+		top: 7px;
 		user-select: none;
 		width: 18px;
 	}
@@ -924,8 +924,8 @@ i {
 	}
 
 	.qm-has-inner .qm-toggle {
-		right: 5px;
-		top: 5px;
+		right: 7px;
+		top: 7px;
 	}
 
 	button.qm-button:hover,
@@ -990,6 +990,15 @@ i {
 	}
 }
 
+.qm-warning-wrapper {
+	display: flex;
+	align-items: start;
+
+	> .qm-icon {
+		flex-shrink: 0;
+	}
+}
+
 .qm-non-tabular .qm-warn,
 .qm thead tr .qm-warn,
 .qm tbody tr:not(.qm-warn) .qm-warn {
@@ -1040,12 +1049,12 @@ i {
 }
 
 .qm {
-	.qm-notice {
+	.qm-empty {
 		background: var( --qm-panel-menu-bg-current );
 		border: 1px solid var( --qm-panel-menu-bg-hover );
 		margin: 0 0 10px 0;
 		max-width: 40em;
-		padding: 10px 20px 0;
+		padding: 20px 30px 10px;
 	}
 
 	.qm-error {
@@ -1056,6 +1065,7 @@ i {
 	}
 
 	.qm-icon {
+		margin-top: 0.1em;
 		margin-right: 0.3em;
 		display: inline-block;
 		height: 16px;
@@ -1195,7 +1205,7 @@ select {
 	appearance: menulist;
 	background: var( --qm-panel-bg );
 	border: none;
-	border-radius: 2px;
+	border-radius: 4px;
 	color: var( --qm-panel-fg );
 	cursor: pointer;
 	display: block;
@@ -1442,11 +1452,11 @@ select {
 
 .timeline-axis {
 	position: relative;
-	height: 17px;
+	height: 18px;
 	pointer-events: none;
 	background-color: var( --qm-button-bg );
 	color: var( --qm-button-fg );
-	border-radius: 3px;
+	border-radius: 4px;
 }
 
 .timeline-tick {
@@ -1477,7 +1487,7 @@ select {
 	position: absolute;
 	top: 6px;
 	height: 16px;
-	border-radius: 3px;
+	border-radius: 4px;
 	min-width: 2px;
 	cursor: default;
 }

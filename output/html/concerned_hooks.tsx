@@ -65,7 +65,11 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 			cols={ {
 				hook: {
 					heading: __( 'Hook', 'query-monitor' ),
-					render: ( row ) => <code>{ row.name }</code>,
+					render: ( row ) => (
+						<span className="qm-sticky">
+							<code>{ row.name }</code>
+						</span>
+					),
 					rowSpan: rowSpanByName,
 				},
 				priority: {

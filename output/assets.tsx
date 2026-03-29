@@ -30,11 +30,15 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	if ( typeof errorData === 'object' && errorData !== null && 'src' in errorData ) {
 		const href = ( errorData as Record<string, unknown> ).src as string;
 		return (
-			<Warning>
-				{ errorMessage }
+			<>
+				<Warning>
+					{ errorMessage }
+				</Warning>
 				<br/>
-				<a href={ href }>{ href }</a>
-			</Warning>
+				<a href={ href } target="_blank" rel="noreferrer">
+					{ href }
+				</a>
+			</>
 		);
 	}
 
@@ -47,7 +51,7 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	}
 
 	return (
-		<a href={ asset.url.absolute }>
+		<a href={ asset.url.absolute } target="_blank" rel="noreferrer">
 			{ asset.display }
 		</a>
 	);
@@ -79,12 +83,7 @@ const Assets = ( { data, labels }: myProps ) => {
 				position: {
 					heading: __( 'Position', 'query-monitor' ),
 					className: 'qm-nowrap',
-					render: ( row ) => (
-						<>
-							{ row.warning && ( <Warning/> ) }
-							{ position_labels[ row.position ] }
-						</>
-					),
+					render: ( row ) => position_labels[ row.position ],
 				},
 				handle: {
 					heading: __( 'Handle', 'query-monitor' ),

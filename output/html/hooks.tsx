@@ -82,25 +82,19 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 			cols={ {
 				hook: {
 					heading: __( 'Hook', 'query-monitor' ),
-					className: 'qm-ltr qm-nowrap',
 					render: ( row ) => (
-						<>
-							<span className="qm-sticky">
-								<code>{ row.hookName }</code>
-							</span>
+						<span className="qm-sticky">
+							<code>{ row.hookName }</code>
 							{ row.hookName === 'all' && (
-								<>
-									<br/>
-									<Warning>
-										{ sprintf(
-											/* translators: %s: Action name */
-											__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
-											'all'
-										) }
-									</Warning>
-								</>
+								<Warning>
+									{ sprintf(
+										/* translators: %s: Action name */
+										__( 'Warning: The %s action is extremely resource intensive. Try to avoid using it.', 'query-monitor' ),
+										'all'
+									) }
+								</Warning>
 							) }
-						</>
+						</span>
 					),
 					rowSpan: ( row, i, data ) => {
 						// If previous row has same hookName, we're not first in this consecutive group

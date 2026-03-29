@@ -42,7 +42,7 @@ import { Timeline } from '../output/html/timeline';
 /**
  * Raw settings from PHP, before merging with l10n values.
  */
-type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason'>;
+type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason' | 'color_scheme'>;
 
 /**
  * Localization data from PHP.
@@ -361,6 +361,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				data={ QueryMonitorData.data }
 				settings={ settings }
 				side={ side }
+				colorScheme={ settings.color_scheme }
 				theme={ theme }
 				fabulous={ fabulous }
 				editor={ editor }
