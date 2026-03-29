@@ -174,7 +174,17 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 							</p>
 						</>
 					) : (
-						<p><em>{ __( 'None', 'query-monitor' ) }</em></p>
+						<p>
+							{ dbQueriesData?.total_qs ? (
+								sprintf(
+									'%1$s: %2$s',
+									_x( 'Total', 'database queries', 'query-monitor' ),
+									Utils.numberFormat( dbQueriesData.total_qs )
+								)
+							) : (
+								<em>{ __( 'None', 'query-monitor' ) }</em>
+							) }
+						</p>
 					) }
 				</section>
 

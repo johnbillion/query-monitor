@@ -42,10 +42,21 @@ const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'faile
 export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	const { settings } = useContext( MainContext );
 
-	if ( ! data.rows?.length ) {
+	if ( ! data.total_qs ) {
 		return <EmptyPanel>
 			<p>
 				{ __( 'No queries! Nice work.', 'query-monitor' ) }
+			</p>
+		</EmptyPanel>
+	}
+
+	if ( ! data.rows?.length ) {
+		return <EmptyPanel>
+			<p>
+				{ sprintf(
+					__( '%s database queries were performed, but none were logged.', 'query-monitor' ),
+					Utils.numberFormat( data.total_qs )
+				) }
 			</p>
 		</EmptyPanel>
 	}
