@@ -273,6 +273,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @return void
 	 */
 	protected function before_output() {
+		global $wp_version;
+
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/html/*.php' ) ) as $file ) {
 			require_once $file;
 		}
@@ -373,11 +375,18 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
+		$color_scheme = get_user_option( 'admin_color' );
+
+		if ( $color_scheme !== 'fresh' ) {
+			$color_scheme = version_compare( $wp_version, '7.0.0', '>=' ) ? 'modern' : 'fresh';
+		}
+
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
 			'settings'    => array(
 				'verified' => self::user_verified(),
 				'extended_query_prompt_reason' => $extended_query_prompt_reason,
+				'color_scheme' => $color_scheme,
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data'        => $data,

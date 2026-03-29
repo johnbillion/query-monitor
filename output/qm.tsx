@@ -37,6 +37,7 @@ type Props = {
 	settings: iSettings;
 	panel_menu: iNavMenu;
 	side: boolean;
+	colorScheme: 'fresh' | 'modern';
 	theme: string;
 	fabulous: boolean;
 	editor: string;
@@ -309,7 +310,7 @@ export const QM = ( props: Props ) => {
 		<MainContext.Provider value={ contextValue }>
 			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
-				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
+				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
 					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
 						<h1 className="qm-title-heading qm-resizer">
 							<span>

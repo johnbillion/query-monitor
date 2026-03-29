@@ -3,6 +3,9 @@
 .qm-container {
 	color-scheme: light dark;
 
+	--qm-wp-fresh: #2271b1;
+	--qm-wp-modern: #3858e9;
+
 	--qm-container-fg:                 light-dark( #1e1e1e, #eaeef2 );
 	--qm-container-bg:                 light-dark( #f0f0f0, #32373c );
 	--qm-container-overflow:           light-dark( #ececec, #3e444a );
@@ -13,14 +16,13 @@
 	--qm-panel-menu-fg:                light-dark( #3c434a, #eaeef2 );
 	--qm-panel-menu-bg:                light-dark( #ececec, #3e444a );
 	--qm-panel-menu-fg-hover:          light-dark( #fff,    #fff );
-	--qm-panel-menu-bg-hover:          light-dark( #2271b1, #2271b1 );
+	--qm-panel-menu-bg-selected:       light-dark( var( --qm-wp-color ), var( --qm-wp-color ) );
+	--qm-panel-menu-bg-hover:          var( --qm-panel-menu-bg-selected );
+	--qm-panel-menu-shadow:            var( --qm-panel-menu-bg-selected );
 	--qm-panel-menu-fg-current:        light-dark( #1e1e1e, #eaeef2 );
 	--qm-panel-menu-bg-current:        light-dark( #e2e4e7, #32373c );
 	--qm-panel-menu-bg-current-focus:  light-dark( #f0f3f7, #3e444a );
 	--qm-panel-menu-fg-selected:       light-dark( #fff,    #fff );
-	--qm-panel-menu-bg-selected:       light-dark( #2271b1, #2271b1 );
-	--qm-panel-menu-bg-selected-focus: light-dark( #135e96, #135e96 );
-	--qm-panel-menu-shadow:            light-dark( #135e96, #135e96 );
 	--qm-cell-border:                  light-dark( #e9e9eb, #23282d );
 	--qm-cell-bg-hover:                light-dark( #f0f6fc, #373c42 );
 	--qm-cell-fg-highlight:            light-dark( #1e1e1e, #eaeef2 );
@@ -30,13 +32,13 @@
 	--qm-cell-bg-stripe:               light-dark( #f9f9f9, #32373c );
 	--qm-table-header-bg:              light-dark( #ececec, #3e444a );
 	--qm-table-footer-bg:              light-dark( #f6f7f7, #32373c );
-	--qm-link-fg:                      light-dark( #2271b1, #30ceff );
-	--qm-link-fg-hover:                light-dark( #135e96, #4092d2 );
+	--qm-link-fg:                      light-dark( var( --qm-wp-color ), #30ceff );
+	--qm-link-fg-hover:                oklch(from var( --qm-link-fg ) calc( l - 0.2 ) c h);
 	--qm-link-fg-active:               light-dark( #0a4b78, #69aadc );
 	--qm-button-fg:                    light-dark( #fff,    #fff );
-	--qm-button-bg:                    light-dark( #2271b1, #2271b1 );
-	--qm-button-fg-hover:              light-dark( #fff,    #fff );
-	--qm-button-bg-hover:              light-dark( #135e96, #135e96 );
+	--qm-button-bg:                    light-dark( var( --qm-wp-color ), var( --qm-wp-color ) );
+	--qm-button-fg-hover:              var( --qm-button-fg );
+	--qm-button-bg-hover:              oklch(from var( --qm-button-bg ) calc( l - 0.2 ) c h);
 	--qm-button-fg-active:             light-dark( #fff,    #fff );
 	--qm-button-bg-active:             light-dark( #0a4b78, #0a4b78 );
 	--qm-title-button-fg:              light-dark( #444, #bbc8d4 );
@@ -58,7 +60,7 @@
 	--qm-badge-bg:                     light-dark( #dcdcde, #50626f );
 	--qm-badge-warn-fg:                light-dark( #8a2424, #f0c0c0 );
 	--qm-badge-warn-bg:                light-dark( #facfd2, #6c2424 );
-	--qm-sql-keyword-fg:               light-dark( #2271b1, #30ceff );
+	--qm-sql-keyword-fg:               light-dark( var( --qm-wp-color ), #30ceff );
 	--qm-sql-value-fg:                 light-dark( #a44, #ce9178 );
 	--qm-timeline-db:                  #3858e9;
 	--qm-timeline-http:                #888888;
@@ -110,6 +112,14 @@
 	font-weight: normal;
 	line-height: var( --qm-font-default-line-height );
 	text-align: left;
+
+	&[data-color-scheme="fresh"] {
+		--qm-wp-color: var( --qm-wp-fresh );
+	}
+
+	&[data-color-scheme="modern"] {
+		--qm-wp-color: var( --qm-wp-modern );
+	}
 
 	&[data-theme="light"] {
 		color-scheme: light;
