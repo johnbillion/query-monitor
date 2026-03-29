@@ -6,10 +6,10 @@ class TestBacktrace extends \QM_Backtrace {
 
 	/**
 	 * @param mixed[] $trace
-	 * @return void
+	 * @param array<string, mixed> $args
 	 */
-	public function set_trace( array $trace ) {
-		$this->trace = $trace;
+	public function __construct( array $trace = array(), array $args = array() ) {
+		parent::__construct( $args, $trace );
 	}
 
 }

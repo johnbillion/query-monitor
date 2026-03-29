@@ -7,13 +7,9 @@ class BacktraceTest extends Test {
 	/**
 	 * @param mixed[] $trace
 	 * @param array<string, mixed> $args
-	 * @return Supports\TestBacktrace
 	 */
-	private function create_backtrace( array $trace, array $args = array() ): Supports\TestBacktrace {
-		$bt = new Supports\TestBacktrace( $args );
-		$bt->set_trace( $trace );
-
-		return $bt;
+	private function create_backtrace( array $trace, array $args = array() ): \QM_Backtrace {
+		return new \QM_Backtrace( $args, $trace );
 	}
 
 	/**
