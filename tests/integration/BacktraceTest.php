@@ -16,6 +16,25 @@ class BacktraceTest extends Test {
 		return $bt;
 	}
 
+	/**
+	 * Resolves serialized frame tuples back to QM_Data_Stack_Frame objects
+	 * using the frame registry, for assertion convenience.
+	 *
+	 * @param array<string, mixed> $data
+	 * @return \QM_Data_Stack_Frame[]
+	 */
+	private function resolve_frames( array $data ): array {
+		$resolved = array();
+
+		foreach ( $data['frames'] as $tuple ) {
+			$frame = clone \QM_Frame_Registry::get_frame( $tuple[0] );
+			$frame->line = $tuple[1];
+			$resolved[] = $frame;
+		}
+
+		return $resolved;
+	}
+
 	public function testFrameFileLineIsShifted(): void {
 		$trace = array(
 			array(
@@ -37,7 +56,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// All 3 frames present. Frame 0 has no frame above and nothing
 		// was trimmed, so it gets null file/line.
@@ -81,7 +100,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// wpdb trimmed. my_function and bootstrap remain.
 		self::assertCount( 2, $frames );
@@ -122,7 +141,7 @@ class BacktraceTest extends Test {
 			),
 		) );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// wp_remote_get trimmed. my_function and bootstrap remain.
 		self::assertCount( 2, $frames );
@@ -158,7 +177,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// WP_Hook is always filtered out. my_function and do_action remain.
 		self::assertCount( 2, $frames );
@@ -216,7 +235,7 @@ class BacktraceTest extends Test {
 			),
 		) );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// WP_Hook, WP_Http x2, wp_remote_get all trimmed.
 		// my_function and bootstrap remain.
@@ -274,7 +293,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// get_caller and serialized frame 0 are the same function.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -307,7 +326,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// get_caller returns my_function (first frame after wpdb trimmed).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -345,7 +364,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// QM_Collector filtered out. my_function and bootstrap remain.
 		self::assertCount( 2, $frames );
@@ -356,7 +375,6 @@ class BacktraceTest extends Test {
 	public function testCallSiteWithStackTrace(): void {
 		$callsite = new \QM_Data_Callsite();
 		$callsite->file = '/app/third.php';
-		$callsite->filename = 'third.php';
 		$callsite->line = 70;
 
 		$trace = array(
@@ -381,7 +399,7 @@ class BacktraceTest extends Test {
 			'callsite' => $callsite,
 		) );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// All 3 frames present. Frame 0 gets the call site's file/line,
 		// since that's the location inside third_function where the error occurred.
@@ -435,7 +453,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// get_caller returns third_function (first frame after trimming).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -501,7 +519,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// WP_Hook and set_transient trimmed. third_function is the caller.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -555,7 +573,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// _doing_it_wrong and WP_Hook trimmed. third_function is the caller.
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -607,7 +625,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// old_function is the caller (first frame after trimming).
 		self::assertInstanceOf( \QM_Data_Stack_Frame::class, $caller );
@@ -653,7 +671,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// The three require_once frames at the bottom should be trimmed.
 		self::assertCount( 2, $frames );
@@ -683,7 +701,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// The require frame is mid-stack (load_template is below it
 		// and is not an include/require), so it's preserved.
@@ -727,7 +745,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// WP_Hook methods are filtered out. do_action and user functions remain.
 		self::assertCount( 3, $frames );
@@ -801,7 +819,7 @@ class BacktraceTest extends Test {
 
 		$bt = $this->create_backtrace( $trace );
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// All WP_Hook methods filtered. Both do_actions and my_function remain.
 		self::assertCount( 3, $frames );
@@ -864,7 +882,7 @@ class BacktraceTest extends Test {
 
 		$caller = $bt->get_caller();
 		$data = $bt->jsonSerialize();
-		$frames = $data['frames'];
+		$frames = $this->resolve_frames( $data );
 
 		// The qm/start hook dispatch (do_action + WP_Hook methods) is
 		// removed by ignore_hook. third_function is the caller.

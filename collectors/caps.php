@@ -269,7 +269,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 			if ( in_array( $item->file, $exclude_files, true ) ) {
 				return false;
 			}
-			if ( isset( $item->function ) && in_array( $item->function, $exclude_functions, true ) ) {
+			if ( in_array( $item->id, $exclude_functions, true ) ) {
 				return false;
 			}
 		}

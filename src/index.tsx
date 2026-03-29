@@ -6,6 +6,7 @@ import { Fatal } from '../output/fatal';
 import { iNavMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
 import { DataTypes } from '../output/data-types';
+import { FrameLookupEntry, setFrameLookup } from '../output/frame-lookup';
 import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 import { registerPanel, registerOverview, registerSettings } from '../output/panels/panel-registry';
 
@@ -80,11 +81,15 @@ type iQM = {
 	settings: iQMSettings;
 	panel_menu: iNavMenu;
 	data: iPanelData;
+	frames: FrameLookupEntry[];
 	l10n: iQML10n;
 	locale_data?: Record<string, unknown> | null;
 }
 
 declare const QueryMonitorData: iQM;
+
+// Initialise lookup tables before anything renders.
+setFrameLookup( QueryMonitorData.frames );
 
 // Load script translations if available.
 if ( QueryMonitorData.locale_data ) {

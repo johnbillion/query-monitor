@@ -207,7 +207,10 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	callsite?: CallSite | null;
-	frames: StackFrame[];
+	/**
+	 * Compact frame references as [frameIndex, lineNumber] tuples.
+	 */
+	frames: [number, number | null][];
 	/**
 	 * Time in milliseconds relative to the start of the request.
 	 */

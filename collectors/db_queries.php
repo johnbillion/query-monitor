@@ -238,7 +238,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			foreach ( $query_ids as $query_id ) {
 				if ( isset( $this->data->rows[ $query_id ]['trace'] ) ) {
 					$trace = $this->data->rows[ $query_id ]['trace'];
-					$stack = array_column( $trace->get_filtered_trace(), 'id' );
+					$stack = $trace->get_stack();
 					$component = $trace->get_component();
 
 					// Populate the component counts for this query

@@ -10,6 +10,7 @@ import {
 	Backtrace,
 	Component as ComponentType,
 } from './data-types';
+import { resolveFrame } from './frame-lookup';
 import * as Utils from './utils';
 import {
 	PanelFooter,
@@ -205,7 +206,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 		if ( ! row.trace?.frames?.length ) {
 			return null;
 		}
-		const frame = row.trace.frames[0];
+		const frame = resolveFrame( row.trace.frames[0] );
 		return { key: frame.id, label: `${ frame.id }()` };
 	} );
 
@@ -222,7 +223,7 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 				if ( ! row.trace?.frames?.length ) {
 					return false;
 				}
-				return row.trace.frames[0].id === value;
+				return resolveFrame( row.trace.frames[0] ).id === value;
 			},
 		} : undefined,
 	};
