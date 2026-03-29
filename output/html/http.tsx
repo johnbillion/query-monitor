@@ -3,7 +3,6 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
-import { Icon } from '../components/icon';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol } from '../table';
 import { Duration } from '../components/duration';
