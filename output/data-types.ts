@@ -71,7 +71,6 @@ export interface ConcernedHook {
  * Callback registered on a hook or block.
  */
 export interface Callback {
-	accepted_args?: number;
 	callback_type:
 		| "function"
 		| "method"
@@ -84,9 +83,6 @@ export interface Callback {
 	name?: string;
 	file?: string | false;
 	line?: number | false;
-	start_line?: number;
-	display_file?: string;
-	error?: WP_Error;
 	component?: Component;
 }
 /**

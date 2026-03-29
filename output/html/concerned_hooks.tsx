@@ -3,6 +3,9 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { SourceLocation } from '../components/source-location';
 import { AbstractData, ConcernedHook } from '../data-types';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
+import { MainContext } from '../contexts/main-context';
+import { useContext } from 'preact/hooks';
 import { __ } from '@wordpress/i18n';
 
 type HookRow = ConcernedHook['actions'][number] & {
@@ -11,6 +14,7 @@ type HookRow = ConcernedHook['actions'][number] & {
 };
 
 export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
+	const { settings } = useContext( MainContext );
 	const concernedActions = data.concerned_actions;
 	const concernedFilters = data.concerned_filters;
 
@@ -79,7 +83,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 				callback: {
 					heading: __( 'Callback', 'query-monitor' ),
 					render: ( row ) => {
-						const text = row.callback.name || row.callback.display_file || '';
+						const text = row.callback.name || ( row.callback.file ? Utils.stripAbspath( row.callback.file, settings ) : '' );
 						if ( ! text ) {
 							return '';
 						}

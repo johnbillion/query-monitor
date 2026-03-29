@@ -10,9 +10,6 @@
 		"callback_type"
 	],
 	"properties": {
-		"accepted_args": {
-			"type": "integer"
-		},
 		"callback_type": {
 			"type": "string",
 			"enum": [
@@ -43,22 +40,6 @@
 			"type": [
 				"number",
 				"boolean"
-			]
-		},
-		"start_line": {
-			"type": "integer"
-		},
-		"display_file": {
-			"type": "string"
-		},
-		"error": {
-			"type": "object",
-			"tsType": "WP_Error",
-			"phpType": "WP_Error",
-			"allOf": [
-				{
-					"$ref": "../../node_modules/wp-json-schemas/schemas/error.json"
-				}
 			]
 		},
 		"component": {

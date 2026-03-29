@@ -300,11 +300,8 @@ class QM_Util {
 	 *   name?: string,
 	 *   file?: string|false,
 	 *   line?: string|false,
-	 *   error?: WP_Error,
 	 *   component?: QM_Component,
 	 *   callback_type: string,
-	 *   start_line?: int,
-	 *   display_file?: string,
 	 * }
 	 */
 	public static function populate_callback( array $callback ) {
@@ -340,13 +337,7 @@ class QM_Util {
 					$filename = $ref->getFileName();
 
 					if ( $filename ) {
-						$file = self::standard_dir( $filename, '' );
-						if ( 0 === strpos( $file, '/' ) ) {
-							$file = basename( $filename );
-						}
 						$callback['callback_type'] = 'closure';
-						$callback['start_line'] = $ref->getStartLine();
-						$callback['display_file'] = $file;
 					} else {
 						$callback['callback_type'] = 'unknown_closure';
 					}
@@ -397,7 +388,6 @@ class QM_Util {
 	 */
 	public static function determine_callback( array $callback ): QM_Data_Callback {
 		$result = new QM_Data_Callback();
-		$result->accepted_args = $callback['accepted_args'] ?? null;
 
 		$function = $callback['function'];
 
@@ -433,13 +423,7 @@ class QM_Util {
 					$filename = $ref->getFileName();
 
 					if ( $filename ) {
-						$file = self::standard_dir( $filename, '' );
-						if ( 0 === strpos( $file, '/' ) ) {
-							$file = basename( $filename );
-						}
 						$result->callback_type = 'closure';
-						$result->start_line = $ref->getStartLine() ?: null;
-						$result->display_file = $file;
 					} else {
 						$result->callback_type = 'unknown_closure';
 					}
@@ -476,7 +460,6 @@ class QM_Util {
 			}
 		} catch ( ReflectionException $e ) {
 
-			$result->error = new WP_Error( 'reflection_exception', $e->getMessage() );
 			$result->callback_type = 'unknown';
 
 		}
