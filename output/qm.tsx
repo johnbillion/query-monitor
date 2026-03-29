@@ -203,6 +203,8 @@ export const QM = ( props: Props ) => {
 		onPanelChange( active );
 		if ( jumpToRowRef.current === null ) {
 			mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+		} else {
+			jumpToRowRef.current = null;
 		}
 	}, [ active, onPanelChange ] );
 

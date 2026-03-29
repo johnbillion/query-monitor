@@ -110,6 +110,10 @@ export const componentFilterCallback = ( component: ComponentType | null | undef
 		return component.context !== 'core';
 	}
 
+	if ( value === 'core' ) {
+		return component.context === 'core';
+	}
+
 	return `${ component.type }-${ component.context }` === value;
 };
 
