@@ -412,7 +412,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_print_inline_script_tag(
 			sprintf(
 				'var QueryMonitorData = %s;',
-				json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
+				json_encode( $json, JSON_UNESCAPED_SLASHES )
 			),
 			array(
 				'id' => 'query-monitor-inline-data',
