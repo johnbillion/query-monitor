@@ -29,18 +29,54 @@ function highlightStrings( text: string ): ( string | JSX.Element )[] {
 }
 
 export function formatSQL( sql: string ): JSX.Element[] {
-	const formatted = ' ' + sql.replace( /[\r\n\t]+/g, ' ' ).trim();
-	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP BY|GROUP|HAVING|INNER JOIN|INSERT|INTERSECT|LEFT JOIN|LIMIT|ON|OR|ORDER BY|ORDER|OUTER JOIN|RENAME|REPLACE|RIGHT JOIN|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
+	let trimmed = sql.replace( /[\r\n\t]+/g, ' ' ).trim();
+
+	// Extract leading and trailing SQL comments.
+	let leadingComment = '';
+	let trailingComment = '';
+
+	const leadingMatch = trimmed.match( /^(\/\*.*?\*\/)\s*/ );
+	if ( leadingMatch ) {
+		leadingComment = leadingMatch[1];
+		trimmed = trimmed.slice( leadingMatch[0].length );
+	}
+
+	const trailingMatch = trimmed.match( /\s*(\/\*.*?\*\/)$/ );
+	if ( trailingMatch ) {
+		trailingComment = trailingMatch[1];
+		trimmed = trimmed.slice( 0, -trailingMatch[0].length );
+	}
+
+	const formatted = ' ' + trimmed;
+	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|CASE|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP BY|GROUP|HAVING|INNER JOIN|INSERT|INTERSECT|JOIN|LEFT JOIN|LIMIT|ON|OR|ORDER BY|ORDER|OUTER JOIN|RENAME|REPLACE|RIGHT JOIN|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
 	const lines = formatted.split( new RegExp( lineRegex ) );
 	const collection: JSX.Element[] = [];
 	let index = 0;
+
+	if ( leadingComment ) {
+		collection.push(
+			<Fragment key="leading-comment">
+				{ leadingComment }
+			</Fragment>
+		);
+	}
+
+	// Render any content before the first recognised keyword.
+	if ( lines[0].trim() ) {
+		collection.push(
+			<Fragment key="preamble">
+				{ collection.length > 0 && <br /> }
+				{ highlightStrings( lines[0].trim() ) }
+			</Fragment>
+		);
+	}
 
 	formatted.replace( new RegExp( lineRegex, 'g' ), ( match, keyword ) => {
 		index += 2;
 
 		collection.push(
 			<Fragment key={ index }>
-				{ index > 2 && (
+				{ ( index > 2 || leadingComment || lines[0].trim() ) && (
 					<br />
 				) }
 				<b>{ keyword }</b>
@@ -56,6 +92,15 @@ export function formatSQL( sql: string ): JSX.Element[] {
 		collection.push(
 			<Fragment key={ 0 }>
 				<b>{ sql }</b>
+			</Fragment>
+		);
+	}
+
+	if ( trailingComment ) {
+		collection.push(
+			<Fragment key="trailing-comment">
+				<br />
+				{ trailingComment }
 			</Fragment>
 		);
 	}
