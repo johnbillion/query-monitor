@@ -30,19 +30,4 @@ class QM_Data_Stack_Frame {
 	 * @var int|null
 	 */
 	public $line;
-
-	/**
-	 * @var ?string
-	 */
-	public $function;
-
-	/**
-	 * @var ?string
-	 */
-	public $class;
-
-	/**
-	 * @var ?array<int, string>
-	 */
-	public $args;
 }

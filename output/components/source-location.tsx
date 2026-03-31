@@ -39,11 +39,11 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 	}
 
 	const linkLine = line || 1;
-	const format = Utils.getEditorFormat( editor );
+	const format = Utils.getEditorFormat( editor ) || ( settings.file_link_format || '' );
 
 	if ( ! format ) {
 		if ( isFileName ) {
-			return <>{ displayText }</>;
+			return <>{ line ? `${displayText}:${line}` : displayText }</>;
 		}
 
 		return (
@@ -55,7 +55,7 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 					<>
 						<br/>
 						<span className="qm-info qm-supplemental">
-							{ `${mappedFile}:${line}` }
+							{ `${Utils.stripAbspath( file, settings )}:${line}` }
 						</span>
 					</>
 				) }

@@ -49,11 +49,8 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 
 		if ( ! empty( $dbq_data->dupes ) ) {
 			$menu[ $this->collector->id() ] = $this->menu( array(
-				'title' => sprintf(
-					/* translators: %s: Number of duplicate database queries */
-					__( 'Duplicate Queries (%s)', 'query-monitor' ),
-					number_format_i18n( array_sum( array_column( $dbq_data->dupes, 'count' ) ) )
-				),
+				'title' => __( 'Duplicate Queries', 'query-monitor' ),
+				'warning_count' => array_sum( array_column( $dbq_data->dupes, 'count' ) ),
 			) );
 		}
 

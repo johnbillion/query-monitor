@@ -1,5 +1,6 @@
 import { ApproximateSize } from '../components/approximate-size';
 import { FileName } from '../components/file-name';
+import { SourceLocation } from '../components/source-location';
 import { PanelFooter } from '../panels/panel-footer';
 import { TabularPanel } from '../panels/tabular-panel';
 import { DataTypes } from '../data-types';
@@ -32,7 +33,7 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					heading: __( 'Caller', 'query-monitor' ),
 					render: ( row ) => (
 						row.caller ? (
-							<FileName
+							<SourceLocation
 								text={ row.caller.display }
 								file={ row.caller.file }
 								line={ row.caller.line }

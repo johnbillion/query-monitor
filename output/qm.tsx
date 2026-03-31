@@ -9,7 +9,9 @@ import { __ } from '@wordpress/i18n';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
-import devCss from '../assets/query-monitor.css?inline';
+const devCssUrl = import.meta.env.DEV
+	? new URL( import.meta.url ).origin + '/assets/query-monitor.css'
+	: '';
 
 type Props = {
 	active: string;
@@ -36,6 +38,7 @@ type Props = {
 	panel_menu: iNavMenu;
 	side: boolean;
 	theme: string;
+	fabulous: boolean;
 	editor: string;
 	filters: MainContextType['filters'];
 	containerHeight: number | null;
@@ -43,10 +46,12 @@ type Props = {
 	isFolded: boolean;
 	isAutoFold: boolean;
 	isRtl: boolean;
+	isFullscreenMode: boolean;
 	onPanelChange: ( active: string ) => void;
-	onContainerResize: ( height: number, width: number ) => void;
+	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
 	onThemeChange: ( theme: string ) => void;
+	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
 	queryDiffEnabled: boolean;
@@ -57,13 +62,13 @@ export const QM = ( props: Props ) => {
 	const [ active, setActive ] = useState( props.active );
 	const [ side, setSide ] = useState( props.side );
 	const [ theme, setTheme ] = useState( props.theme );
+	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled );
 
 	const setActivePanel = ( active: string ) => {
 		setActive( active );
-		props.onPanelChange( active );
 		// @TODO focus the panel for a11y
 	};
 
@@ -77,11 +82,12 @@ export const QM = ( props: Props ) => {
 			: 'light';
 	}
 
-	const mainClass = clsx( 'qm-show', {
+	const mainClass = clsx( 'qm-container', 'qm-show', {
 		'qm-show-right': side,
 		'wp-admin': props.isWpAdmin,
 		'folded': props.isFolded,
 		'auto-fold': props.isAutoFold,
+		'fullscreen-mode': props.isFullscreenMode,
 		'rtl': props.isRtl,
 	} );
 
@@ -90,6 +96,11 @@ export const QM = ( props: Props ) => {
 		setTheme: ( theme: string ) => {
 			props.onThemeChange( theme );
 			setTheme( theme );
+		},
+		fabulous: fabulous,
+		setFabulous: ( fabulous: boolean ) => {
+			props.onFabulousChange( fabulous );
+			setFabulous( fabulous );
 		},
 		editor: editor,
 		setEditor: ( editor: string ) => {
@@ -115,6 +126,9 @@ export const QM = ( props: Props ) => {
 		settings: {
 			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,
+			file_link_format: props.settings.file_link_format,
+			abspath: props.settings.abspath,
+			contentpath: props.settings.contentpath,
 		},
 		queryDiffEnabled: queryDiffEnabled,
 		setQueryDiffEnabled: ( enabled: boolean ) => {
@@ -137,8 +151,13 @@ export const QM = ( props: Props ) => {
 	}, [ adminMenuElement, props.menu.top.classname ] );
 
 	const mainRef = useRef<HTMLDivElement>( null );
-	const { onContainerResize, containerHeight } = props;
+	const { onContainerResize, onPanelChange, containerHeight } = props;
 	const initialHeightApplied = useRef( false );
+
+	useEffect( () => {
+		onPanelChange( active );
+		mainRef.current?.querySelector( '#qm-panels' )?.scrollTo( 0, 0 );
+	}, [ active, onPanelChange ] );
 
 	useEffect( () => {
 		if ( ! active ) {
@@ -194,7 +213,7 @@ export const QM = ( props: Props ) => {
 		const end = (_event: PointerEvent) => {
 			if ( dragging ) {
 				const rect = qmMain.getBoundingClientRect();
-				onContainerResize( rect.height, rect.width );
+				onContainerResize( rect.height );
 			}
 
 			dragging = false;
@@ -226,20 +245,30 @@ export const QM = ( props: Props ) => {
 		};
 	}, [ active, containerHeight, onContainerResize ] );
 
+	const [ cssVersion, setCssVersion ] = useState( 0 );
+
+	useEffect( () => {
+		if ( import.meta.hot ) {
+			const onUpdate = () => setCssVersion( ( v ) => v + 1 );
+			import.meta.hot.on( 'qm:css-update', onUpdate );
+			return () => import.meta.hot!.off( 'qm:css-update', onUpdate );
+		}
+	}, [] );
+
+	const cssUrl = import.meta.env.DEV
+		? `${ devCssUrl }?t=${ cssVersion }`
+		: props.cssUrl;
+
 	return (
 		<MainContext.Provider value={ contextValue }>
-			{ import.meta.env.DEV
-				? <style>{ devCss }</style>
-				: <link rel="stylesheet" href={ props.cssUrl } />
-			}
+			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } dir="ltr" id="query-monitor-main">
-					{ side && (
-						<div className="qm-resizer" id="qm-side-resizer"></div>
-					) }
-					<div id="qm-title">
+					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
 						<h1 className="qm-title-heading qm-resizer">
-							{ __( 'Query Monitor', 'query-monitor' ) }
+							<span>
+								{ __( 'Query Monitor', 'query-monitor' ) }
+							</span>
 						</h1>
 						{ side && (
 							<div className="qm-title-heading">

@@ -27,9 +27,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	protected $block_timing = array();
 
 	/**
-	 * @var QM_Timer|null
+	 * @var array<int, QM_Timer>
 	 */
-	protected $block_timer = null;
+	protected $block_timer_stack = array();
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_Block_Editor();
@@ -122,8 +122,11 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return mixed[]
 	 */
 	public function filter_render_block_data( array $block ) {
-		$this->block_timer = new QM_Timer();
-		$this->block_timer->start();
+		$timer = new QM_Timer();
+		$timer->start();
+
+		$this->block_timer_stack[] = $timer;
+		$this->block_timing[] = $timer;
 
 		return $block;
 	}
@@ -134,8 +137,10 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return string
 	 */
 	public function filter_render_block( $block_content, array $block ) {
-		if ( isset( $this->block_timer ) ) {
-			$this->block_timing[] = $this->block_timer->stop();
+		$timer = array_pop( $this->block_timer_stack );
+
+		if ( $timer instanceof QM_Timer ) {
+			$timer->stop();
 		}
 
 		return $block_content;
@@ -199,7 +204,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 
 		if ( $block_type && $block_type->is_dynamic() ) {
 			$dynamic = true;
-			$callback = QM_Util::populate_callback( array(
+			$callback = QM_Util::determine_callback( array(
 				'function' => $block_type->render_callback,
 			) );
 		}

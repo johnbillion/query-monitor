@@ -48,7 +48,7 @@ type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason'>;
 /**
  * Localization data from PHP.
  */
-type iQML10n = Pick<iSettings, 'ajaxurl' | 'admin_url' | 'auth_nonce' | 'file_path_map'>;
+type iQML10n = Pick<iSettings, 'ajaxurl' | 'admin_url' | 'auth_nonce' | 'file_path_map' | 'file_link_format' | 'abspath' | 'contentpath'>;
 
 /**
  * Menu item in the admin bar submenu.
@@ -253,10 +253,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const panelKey = `qm-${ isWpAdmin ? 'admin' : 'front' }-panel`;
 	const positionKey = 'qm-container-position';
 	const themeKey = 'qm-theme';
+	const fabulousKey = 'qm-fabulous';
 	const editorKey = 'qm-editor';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
-	const containerWidthKey = 'qm-container-width';
 	const queryDiffEnabledKey = 'qm-query-diff-enabled';
 
 	const onPanelChange = ( active: string ) => {
@@ -275,6 +275,14 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( themeKey, theme );
 	}
 
+	const onFabulousChange = ( fabulous: boolean ) => {
+		if ( fabulous ) {
+			localStorage.setItem( fabulousKey, '1' );
+		} else {
+			localStorage.removeItem( fabulousKey );
+		}
+	}
+
 	const onEditorChange = ( editor: string ) => {
 		localStorage.setItem( editorKey, editor );
 	}
@@ -283,9 +291,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		sessionStorage.setItem( filtersKey, JSON.stringify( filters ) );
 	}
 
-	const onContainerResize = ( height: number, width: number ) => {
+	const onContainerResize = ( height: number ) => {
 		localStorage.setItem( containerHeightKey, height.toString() );
-		localStorage.setItem( containerWidthKey, width.toString() );
 	}
 
 	const onQueryDiffEnabledChange = ( enabled: boolean ) => {
@@ -299,6 +306,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
 	const theme = localStorage.getItem( themeKey ) ?? 'auto';
+	const fabulous = !! localStorage.getItem( fabulousKey );
 	const rawFilters = sessionStorage.getItem( filtersKey );
 	const filters = rawFilters ? JSON.parse( rawFilters ) : {};
 	const rawContainerHeight = localStorage.getItem( containerHeightKey );
@@ -310,6 +318,9 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		admin_url: QueryMonitorData.l10n.admin_url,
 		auth_nonce: QueryMonitorData.l10n.auth_nonce,
 		file_path_map: QueryMonitorData.l10n.file_path_map,
+		file_link_format: QueryMonitorData.l10n.file_link_format,
+		abspath: QueryMonitorData.l10n.abspath,
+		contentpath: QueryMonitorData.l10n.contentpath,
 	};
 
 	if ( ! containerElement ) {
@@ -326,6 +337,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const getBodyClasses = () => ( {
 		isFolded: document.body.classList.contains( 'folded' ),
 		isAutoFold: document.body.classList.contains( 'auto-fold' ),
+		isFullscreenMode: document.body.classList.contains( 'is-fullscreen-mode' ),
 	} );
 
 	const renderQM = () => {
@@ -342,6 +354,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				settings={ settings }
 				side={ side }
 				theme={ theme }
+				fabulous={ fabulous }
 				editor={ editor }
 				filters={ filters }
 				containerHeight={ containerHeight }
@@ -349,6 +362,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onContainerResize={ onContainerResize }
 				onSideChange={ onSideChange }
 				onThemeChange={ onThemeChange }
+				onFabulousChange={ onFabulousChange }
 				onEditorChange={ onEditorChange }
 				onFiltersChange={ onFiltersChange }
 				queryDiffEnabled={ queryDiffEnabled }

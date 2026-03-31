@@ -30,18 +30,6 @@
 				"integer",
 				"null"
 			]
-		},
-		"function": {
-			"type": "string"
-		},
-		"class": {
-			"type": "string"
-		},
-		"args": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
 		}
 	},
 	"additionalProperties": false

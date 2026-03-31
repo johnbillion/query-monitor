@@ -3,7 +3,7 @@
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
 Tested up to: 6.9
-Stable tag: 4.0.0-alpha.2
+Stable tag: 4.0.0-beta.2
 License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
@@ -54,6 +54,15 @@ I maintain several other plugins for developers. Check them out:
 
 * [User Switching](https://wordpress.org/plugins/user-switching/) provides instant switching between user accounts in WordPress.
 * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) lets you view and control what's happening in the WP-Cron system
+
+### Thanks
+
+The time that I spend maintaining this plugin and others is in part sponsored by:
+
+* [Automattic](https://automattic.com/)
+* [ServMask](https://servmask.com/)
+* [WP Staging](https://wp-staging.com/)
+* [All my kind sponsors on GitHub](https://github.com/sponsors/johnbillion)
 
 ### Privacy Statement
 
@@ -126,7 +135,9 @@ Yes. You can enable this on the Settings panel.
 
 ### How can I report a security bug?
 
-[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
+You can submit a private security vulnerability report to Query Monitor via [the Security tab on the GitHub repo](https://github.com/johnbillion/query-monitor/security). The GitHub Security Advisory process facilitates private collaboration on security issues. You'll receive credit for a valid report and a CVE if necessary.
+
+Do not report security issues on the WordPress.org support forums or via email. Thank you.
 
 ### Do you accept donations?
 

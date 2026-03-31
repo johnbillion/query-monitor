@@ -1,6 +1,8 @@
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
+import { Toggler } from '../components/toggler';
+import { Icon } from '../components/icon';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol } from '../table';
 import { Time } from '../components/time';
@@ -63,6 +65,11 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 							</div>
 						) }
 						{ Utils.formatURL( row.url ) }
+						{ row.args.method === 'GET' && ! hasInterceptedWarning( row ) && (
+							<a className="qm-external-link" href={ row.url } target="_blank" rel="noopener noreferrer" aria-label={ __( 'Open URL in new tab', 'query-monitor' ) }>
+								<Icon name="external"/>
+							</a>
+						) }
 						{ hasHttpsWarning( row ) && (
 							<div>
 								<Warning>
@@ -106,6 +113,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 			status: {
 				heading: __( 'Status', 'query-monitor' ),
+				className: 'qm-has-toggle',
 				render: ( row ) => {
 					if ( Utils.isWPError( row.result ) ) {
 						return (
@@ -153,8 +161,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					const sizeDownload = 'size_download' in info ? info.size_download as number : null;
 
 					return (
-						<details>
-							<summary>{ statusText }</summary>
+						<Toggler summary={ statusText }>
 							<ul className="qm-toggled">
 								{ 'primary_ip' in info && (
 									<li key="primary_ip">
@@ -195,7 +202,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 									);
 								} ) }
 							</ul>
-						</details>
+						</Toggler>
 					);
 				},
 				filters: {

@@ -229,9 +229,6 @@ export interface StackFrame {
 	display: string;
 	file: string | null;
 	line: number | null;
-	function?: string;
-	class?: string;
-	args?: string[];
 }
 /**
  * Conditionals data transfer object.
@@ -276,7 +273,7 @@ export interface QueryRow {
 	result?: number | boolean | WP_Error;
 	type: string;
 	trace?: Backtrace;
-	is_main_query: boolean;
+	is_main_query?: boolean;
 }
 /**
  * Doing it Wrong data transfer object.

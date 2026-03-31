@@ -61,14 +61,9 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 			return $menu;
 		}
 
-		$label = sprintf(
-			/* translators: %s: Total number of Doing it Wrong occurrences */
-			_x( 'Doing it Wrong (%s)', 'Doing it Wrong', 'query-monitor' ),
-			number_format_i18n( count( $data->actions ) )
-		);
-
 		$args = array(
-			'title' => esc_html( $label ),
+			'title' => esc_html_x( 'Doing it Wrong', 'Doing it Wrong', 'query-monitor' ),
+			'warning_count' => count( $data->actions ),
 		);
 
 		if ( ! empty( $data->actions ) ) {

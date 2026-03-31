@@ -251,6 +251,8 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 	const total = countData( data );
 	const nonEmptyCols = Object.entries( cols ).filter( ( entry ): entry is [string, Col<TDataRow>] => ( entry[1] ? true : false ) );
 
+	const highlightedRows = new Set<number>();
+
 	for ( const [ filterName, filterValue ] of Object.entries( filters ) ) {
 		if ( ! ( filterName in cols ) ) {
 			continue;
@@ -276,6 +278,13 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 				}
 			}
 			data = data.filter( ( row ) => matchingGroups.has( groupKey( row ) ) );
+
+			// Highlight individual rows within a group that match the filter
+			for ( let i = 0; i < data.length; i++ ) {
+				if ( colFilters.callback( data[ i ], filterValue ) ) {
+					highlightedRows.add( i );
+				}
+			}
 		} else {
 			data = data.filter( ( row ) => colFilters.callback( row, filterValue ) );
 		}
@@ -331,7 +340,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 								role="columnheader"
 								scope="col"
 							>
-								{ colFilters.length ? (
+								{ colFilters.length && total > 1 ? (
 									<div className="qm-filter-container">
 										<label htmlFor={ `qm-filter-${ key }` }>
 											{ col.heading }
@@ -339,7 +348,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 										<select
 											id={ `qm-filter-${ key }` }
 											className="qm-filter"
-											defaultValue={ filterValue }
+											value={ filterValue }
 											onChange={ ( e ) => ( setFilter( key, e.currentTarget.value ) ) }
 										>
 											<option value="">All</option>
@@ -374,6 +383,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 						key={ i }
 						className={ clsx( {
 							'qm-warn': rowHasError && rowHasError( row ),
+							'qm-highlight': highlightedRows.has( i ),
 						} ) }
 					>
 						{ nonEmptyCols.map( ( [ key, col ] ) => {

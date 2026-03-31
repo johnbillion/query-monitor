@@ -22,6 +22,17 @@ export default defineConfig( {
 			},
 		},
 		{
+			name: 'shadow-dom-css-hmr',
+			handleHotUpdate( { file, server } ) {
+				if ( file.endsWith( '/assets/query-monitor.css' ) ) {
+					server.ws.send( {
+						type: 'custom',
+						event: 'qm:css-update',
+					} );
+				}
+			},
+		},
+		{
 			name: 'no-manifest',
 			config() {
 				return {

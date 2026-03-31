@@ -65,23 +65,22 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 		/** @var QM_Data_Logger $data */
 		$data = $this->collector->get_data();
-		$key = 'log';
-		$count = 0;
+		$count = ! empty( $data->logs ) ? count( $data->logs ) : 0;
+
+		$warning_count = 0;
 
 		if ( ! empty( $data->logs ) ) {
-			$count = count( $data->logs );
-
-			/* translators: %s: Number of logs that are available */
-			$label = __( 'Logs (%s)', 'query-monitor' );
-		} else {
-			$label = __( 'Logs', 'query-monitor' );
+			foreach ( $data->logs as $log ) {
+				if ( in_array( $log['level'], $this->collector->get_warning_levels(), true ) ) {
+					++$warning_count;
+				}
+			}
 		}
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html( sprintf(
-				$label,
-				number_format_i18n( $count )
-			) ),
+			'title' => esc_html__( 'Logs', 'query-monitor' ),
+			'count' => $count ?: null,
+			'warning_count' => $warning_count ?: null,
 		) );
 
 		return $menu;

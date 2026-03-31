@@ -36,8 +36,6 @@ parameters:
 		- '#^Access to protected property wpdb::#'
 		# Properties in QM_Data* classes are nullable
 		- '#^Property QM_Data_.+ is not nullable\.$#'
-		# Passing ints and floats to these functions is fine
-		- '#^Parameter \#1 \$text of function (esc_html|esc_attr) expects string, int\|string given#'
 		# Test factory methods return int|WP_Error but we know they succeed in tests
 		-
 			path: tests/integration/*

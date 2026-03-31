@@ -44,16 +44,9 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 		$data = $this->collector->get_data();
 		$count = count( $data->trans );
 
-		$title = ( empty( $count ) )
-			? __( 'Transient Updates', 'query-monitor' )
-			/* translators: %s: Number of transient values that were updated */
-			: __( 'Transient Updates (%s)', 'query-monitor' );
-
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => sprintf(
-				$title,
-				number_format_i18n( $count )
-			),
+			'title' => __( 'Transient Updates', 'query-monitor' ),
+			'count' => $count ?: null,
 		) );
 		return $menu;
 

@@ -5,14 +5,13 @@
  * @package   query-monitor
  * @link      https://github.com/johnbillion/query-monitor
  * @author    John Blackbourn
- * @copyright 2009-2025 John Blackbourn
+ * @copyright 2009-2026 John Blackbourn
  * @license   GPL v2 or later
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress and WooCommerce.
- * Version:      4.0.0-alpha.2
+ * Version:      4.0.0-beta.2
  * Plugin URI:   https://querymonitor.com/
- * Plugin ID:    did:plc:q2afge25l63iz553aumeqi3w
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
@@ -37,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '4.0.0-alpha.2' );
+define( 'QM_VERSION', '4.0.0-beta.2' );
 
 // This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
 require_once __DIR__ . '/classes/PHP.php';

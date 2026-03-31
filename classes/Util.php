@@ -292,9 +292,110 @@ class QM_Util {
 	}
 
 	/**
+	 * @deprecated Use the determine_callback() method instead.
+	 *
+	 * @param array<string, mixed> $callback
+	 * @return array<string, mixed>
+	 * @phpstan-return array{
+	 *   name?: string,
+	 *   file?: string|false,
+	 *   line?: string|false,
+	 *   error?: WP_Error,
+	 *   component?: QM_Component,
+	 *   callback_type: string,
+	 *   start_line?: int,
+	 *   display_file?: string,
+	 * }
+	 */
+	public static function populate_callback( array $callback ) {
+		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
+			$callback['function'] = explode( '::', $callback['function'] );
+		}
+
+		if ( isset( $callback['class'] ) ) {
+			$callback['function'] = array(
+				$callback['class'],
+				$callback['function'],
+			);
+		}
+
+		try {
+
+			if ( is_array( $callback['function'] ) ) {
+				if ( is_object( $callback['function'][0] ) ) {
+					$class = get_class( $callback['function'][0] );
+					$access = '->';
+					$callback['callback_type'] = 'method';
+				} else {
+					$class = $callback['function'][0];
+					$access = '::';
+					$callback['callback_type'] = 'static_method';
+				}
+
+				$callback['name'] = $class . $access . $callback['function'][1] . '()';
+				$ref = new ReflectionMethod( $class, $callback['function'][1] );
+			} elseif ( is_object( $callback['function'] ) ) {
+				if ( $callback['function'] instanceof Closure ) {
+					$ref = new ReflectionFunction( $callback['function'] );
+					$filename = $ref->getFileName();
+
+					if ( $filename ) {
+						$file = self::standard_dir( $filename, '' );
+						if ( 0 === strpos( $file, '/' ) ) {
+							$file = basename( $filename );
+						}
+						$callback['callback_type'] = 'closure';
+						$callback['start_line'] = $ref->getStartLine();
+						$callback['display_file'] = $file;
+					} else {
+						$callback['callback_type'] = 'unknown_closure';
+					}
+				} else {
+					// the object should have a __invoke() method
+					$class = get_class( $callback['function'] );
+					$callback['name'] = $class . '->__invoke()';
+					$callback['callback_type'] = 'invokable';
+					$ref = new ReflectionMethod( $class, '__invoke' );
+				}
+			} else {
+				$callback['name'] = $callback['function'] . '()';
+				$callback['callback_type'] = 'function';
+				$ref = new ReflectionFunction( $callback['function'] );
+			}
+
+			$callback['file'] = $ref->getFileName();
+			$callback['line'] = $ref->getStartLine();
+
+			// Handle legacy create_function() lambdas (PHP 7.4 only, removed in PHP 8.0)
+			$name = trim( $ref->getName() );
+			if ( 0 === strpos( $name, 'lambda_' ) ) {
+				// Just use the lambda name as-is, these are from deprecated create_function()
+				$callback['name'] = $name . '()';
+				$callback['callback_type'] = 'lambda';
+				unset( $callback['file'], $callback['line'] );
+			}
+
+			if ( ! empty( $callback['file'] ) ) {
+				$callback['component'] = self::get_file_component( $callback['file'] );
+			} else {
+				$callback['component'] = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
+			}
+		} catch ( ReflectionException $e ) {
+
+			$callback['error'] = new WP_Error( 'reflection_exception', $e->getMessage() );
+			$callback['callback_type'] = 'unknown';
+
+		}
+
+		unset( $callback['function'], $callback['class'] );
+
+		return $callback;
+	}
+
+	/**
 	 * @param array<string, mixed> $callback
 	 */
-	public static function populate_callback( array $callback ): QM_Data_Callback {
+	public static function determine_callback( array $callback ): QM_Data_Callback {
 		$result = new QM_Data_Callback();
 		$result->accepted_args = $callback['accepted_args'] ?? null;
 

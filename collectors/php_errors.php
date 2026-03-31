@@ -332,32 +332,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			status_header( 500 );
 		}
 
-		// This hides the subsequent message from the fatal error handler in core. It cannot be
-		// disabled by a plugin so we'll just hide its output.
-		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
-
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/build/query-monitor.css' ) ),
-			esc_attr( QM_VERSION )
-		);
-
-		// This unused wrapper with an attribute serves to help the #qm-fatal div break out of an
-		// attribute if a fatal has occurred within one.
-		echo '<div data-qm="qm">';
-
-		printf(
-			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
-			esc_attr( $e['message'] ),
-			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
-			intval( $e['line'] )
-		);
-
-		echo '<div class="qm-fatal-wrap">';
-
-		$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
-
 		$message = sprintf(
 			'%s in %s on line %d',
 			$e['message'],

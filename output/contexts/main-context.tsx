@@ -12,6 +12,9 @@ interface FiltersType {
 export interface SettingsType {
 	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	file_path_map: Record<string, string>;
+	file_link_format: string | false;
+	abspath: string;
+	contentpath: string;
 }
 
 export type MainContextType = {
@@ -19,6 +22,8 @@ export type MainContextType = {
 	setEditor: ( editor: string ) => void;
 	theme: string;
 	setTheme: ( theme: string ) => void;
+	fabulous: boolean;
+	setFabulous: ( fabulous: boolean ) => void;
 	filters: FiltersType;
 	setFilters: ( filters: FiltersType ) => void;
 	switchToPanel: ( panelId: string, panelFilters?: PanelContextType['filters'] ) => void;
@@ -32,12 +37,17 @@ export const MainContext = createContext<MainContextType>( {
 	setEditor: ( _editor ) => {},
 	theme: 'auto',
 	setTheme: ( _theme ) => {},
+	fabulous: false,
+	setFabulous: ( _fabulous ) => {},
 	filters: {},
 	setFilters: ( _filters ) => {},
 	switchToPanel: ( _panelId, _panelFilters ) => {},
 	settings: {
 		extended_query_prompt_reason: null,
 		file_path_map: {},
+		file_link_format: false,
+		abspath: '',
+		contentpath: '',
 	},
 	queryDiffEnabled: false,
 	setQueryDiffEnabled: ( _enabled ) => {},

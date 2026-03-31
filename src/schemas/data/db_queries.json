@@ -10,8 +10,7 @@
 			"required": [
 				"sql",
 				"ltime",
-				"type",
-				"is_main_query"
+				"type"
 			],
 			"properties": {
 				"stack": {

@@ -25,7 +25,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( '__return_false()',   $actual->name );
 		self::assertSame( $ref->getFileName(),  $actual->file );
@@ -40,7 +40,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( 'QM\Tests\Supports\TestObject->hello()', $actual->name );
 		self::assertSame( $ref->getFileName(),       $actual->file );
@@ -54,7 +54,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function, '__invoke' );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 		$name = 'QM\Tests\Supports\TestInvokable->__invoke()';
 
 		self::assertSame( $name,                $actual->name );
@@ -69,7 +69,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual->name );
 		self::assertSame( $ref->getFileName(),       $actual->file );
@@ -83,7 +83,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( '\QM\Tests\Supports\TestObject', 'hello' );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual->name );
 		self::assertSame( $ref->getFileName(),                $actual->file );
@@ -98,7 +98,7 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( 'closure', $actual->callback_type );
 		self::assertSame( $ref->getStartLine(), $actual->start_line );
@@ -113,7 +113,7 @@ class CallbacksTest extends Test {
 		$function = 'invalid_function';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -125,7 +125,7 @@ class CallbacksTest extends Test {
 		$function = array( $obj, 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -136,7 +136,7 @@ class CallbacksTest extends Test {
 		$function = new Supports\TestObject;
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -147,7 +147,7 @@ class CallbacksTest extends Test {
 		$function = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -158,7 +158,7 @@ class CallbacksTest extends Test {
 		$function = '\QM\Tests\Supports\TestObject::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -169,7 +169,7 @@ class CallbacksTest extends Test {
 		$function = array( 'Invalid_Class', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 
@@ -180,7 +180,7 @@ class CallbacksTest extends Test {
 		$function = 'Invalid_Class::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertInstanceOf( \WP_Error::class, $actual->error );
 

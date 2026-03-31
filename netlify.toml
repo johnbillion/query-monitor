@@ -37,3 +37,7 @@
 [[redirects]]
   from = "/blog/2019/07/debugging-wordpress-template-part-loading/"
   to = "/wordpress-debugging/template-part-loading/"
+
+[[redirects]]
+  from = "/4/"
+  to = "/help/query-monitor-4/"

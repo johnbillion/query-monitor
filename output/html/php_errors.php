@@ -107,19 +107,13 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $menu;
 		}
 
-		/* translators: %s: List of PHP error types */
-		$title = __( 'PHP Errors (%s)', 'query-monitor' );
-
-		/* translators: used between list items, there is a space after the comma */
-		$sep = __( ', ', 'query-monitor' );
-
-		$title = sprintf(
-			$title,
-			implode( $sep, array_reverse( $menu_label ) )
-		);
+		$count = array_sum( array_filter( array_map( function( $type ) use ( $data ) {
+			return $data->types[ $type ] ?? 0;
+		}, array_keys( $types ) ) ) );
 
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => $title,
+			'title' => esc_html__( 'PHP Errors', 'query-monitor' ),
+			'warning_count' => $count,
 		) );
 		return $menu;
 
@@ -135,13 +129,9 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 		}
 
 		$data = $this->collector->get_data();
-		$count = array_sum( $data->types );
 
-		$menu[ $this->collector->id() ]['title'] = esc_html( sprintf(
-			/* translators: %s: Number of errors */
-			__( 'PHP Errors (%s)', 'query-monitor' ),
-			number_format_i18n( $count )
-		) );
+		$menu[ $this->collector->id() ]['title'] = esc_html__( 'PHP Errors', 'query-monitor' );
+		$menu[ $this->collector->id() ]['warning_count'] = array_sum( $data->types );
 
 		return $menu;
 	}

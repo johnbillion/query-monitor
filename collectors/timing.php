@@ -66,7 +66,11 @@ class QM_Collector_Timing extends QM_DataCollector {
 	 */
 	public function action_function_time_start( $function ) {
 		$this->track_timer[ $function ] = new QM_Timer();
-		$this->start[ $function ] = $this->track_timer[ $function ]->start();
+		$this->start[ $function ] = $this->track_timer[ $function ]->start( null, array(
+			'ignore_hook' => array(
+				current_action() => true,
+			),
+		) );
 	}
 
 	/**
@@ -75,7 +79,11 @@ class QM_Collector_Timing extends QM_DataCollector {
 	 */
 	public function action_function_time_stop( $function ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
-			$trace = new QM_Backtrace();
+			$trace = new QM_Backtrace( array(
+				'ignore_hook' => array(
+					current_action() => true,
+				),
+			) );
 			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),
@@ -94,7 +102,11 @@ class QM_Collector_Timing extends QM_DataCollector {
 	 */
 	public function action_function_time_lap( $function, $name = null ) {
 		if ( ! isset( $this->track_timer[ $function ] ) ) {
-			$trace = new QM_Backtrace();
+			$trace = new QM_Backtrace( array(
+				'ignore_hook' => array(
+					current_action() => true,
+				),
+			) );
 			$this->data->warning[] = array(
 				'function' => $function,
 				'message' => __( 'Timer not started', 'query-monitor' ),

@@ -153,6 +153,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 								{ data.count_template_parts[ filename ] > 1 && (
 									<span className="qm-info qm-supplemental">
 										<br/>
+										&nbsp;-&nbsp;
 										{ sprintf(
 											/* translators: %s: The number of times that a template part file was included in the page */
 											_nx( 'Included %s time', 'Included %s times', data.count_template_parts[ filename ], 'template parts', 'query-monitor' ),

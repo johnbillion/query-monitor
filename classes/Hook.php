@@ -34,7 +34,7 @@ class QM_Hook {
 
 				foreach ( $callbacks as $cb ) {
 
-					$callback = QM_Util::populate_callback( $cb );
+					$callback = QM_Util::determine_callback( $cb );
 
 					if ( isset( $callback->component ) ) {
 						if (

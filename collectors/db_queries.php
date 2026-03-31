@@ -134,6 +134,8 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$request = $wpdb->remove_placeholder_escape( $request );
 		}
 
+		$has_main_query = false;
+
 		/**
 		 * @phpstan-var QueryStandard|QueryVIP $query
 		 */
@@ -175,16 +177,19 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$this->log_type( $type );
 			$this->maybe_log_dupe( $sql, $i );
 
-			$is_main_query = false;
+			$row = compact( 'sql', 'ltime', 'type' );
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {
 				// Ignore comments that are appended to queries by some web hosts.
 				$match_sql = preg_replace( '#/\*.*?\*/\s*$#s', '', $sql );
 
 				$is_main_query = ( $request === $match_sql );
-			}
 
-			$row = compact( 'sql', 'ltime', 'type', 'is_main_query' );
+				if ( $is_main_query ) {
+					$has_main_query = true;
+					$row['is_main_query'] = true;
+				}
+			}
 
 			if ( ! isset( $trace ) ) {
 				$callers = array_reverse( explode( ',', $stack ) );

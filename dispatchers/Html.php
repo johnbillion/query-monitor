@@ -186,7 +186,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 */
 	public function enqueue_assets() {
 		// Assets are now output directly in before_output() via QM_Assets::output().
-		// This method is kept for back-compat in case plugins hook into the action below.
+		// This method is kept for back-compat in case plugins hook into the action
+		// or depend on the `query-monitor` script or style.
+
+		wp_register_script( 'query-monitor', false, [], QM_VERSION, false );
+		wp_register_style( 'query-monitor', false, [], QM_VERSION );
 
 		/**
 		 * Fires when assets for QM's HTML have been enqueued.
@@ -207,35 +211,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		}
 
 		if ( $this->ceased ) {
-			$admin_bar_menu = array(
-				'top' => array(
-					'title' => 'Query Monitor',
-				),
-				'sub' => array(
-					'ceased' => array(
-						'title' => esc_html__( 'Data collection ceased', 'query-monitor' ),
-						'id' => 'query-monitor-ceased',
-						'href' => '#',
-					),
-				),
-			);
-
-			$json = array(
-				'menu' => $admin_bar_menu,
-			);
-
-			echo '<!-- Begin Query Monitor output -->' . "\n\n";
 			wp_print_inline_script_tag(
-				sprintf(
-					'var QueryMonitorData = %s;',
-					json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES )
-				),
+				<<<'JS'
+				console.log( 'QM: collection and output was ceased' );
+
+				const qmCeasedLink = document.querySelector( '#wp-admin-bar-query-monitor-placeholder a' );
+				if ( qmCeasedLink ) {
+					qmCeasedLink.innerText = 'Data collection ceased';
+				}
+				JS,
 				array(
-					'id' => 'query-monitor-inline-data',
+					'id' => 'query-monitor-ceased',
 				)
 			);
-			echo '<div id="query-monitor-ceased"></div>';
-			echo '<!-- End Query Monitor output -->' . "\n\n";
 			return;
 		}
 
@@ -312,6 +300,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
 
+		// Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
+		self::apply_panel_menu_back_compat( $this->panel_menu );
+
 		$data = array();
 
 		foreach ( $this->outputters as $output_id => $output ) {
@@ -340,11 +331,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
 					'id' => $collector->id() . '-concerned_hooks',
 					'panel' => $collector->id() . '-concerned_hooks',
-					'title' => sprintf(
-						/* translators: %s: Number of hooks */
-						__( 'Hooks in Use (%s)', 'query-monitor' ),
-						number_format_i18n( $count )
-					),
+					'title' => __( 'Hooks in Use', 'query-monitor' ),
+					'count' => $count,
 				);
 			}
 		}
@@ -397,12 +385,13 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'off' => wp_create_nonce( 'qm-auth-off' ),
 				],
 				'file_path_map' => QM_Output_Html::get_file_path_map(),
+				'file_link_format' => QM_Output_Html::get_file_link_format(),
+				'abspath' => QM_Util::normalize_path( ABSPATH ),
+				'contentpath' => QM_Util::normalize_path( dirname( WP_CONTENT_DIR ) . '/' ),
 			],
 			'number_format' => $wp_locale->number_format,
 			'locale_data' => self::get_script_locale_data(),
 		);
-
-		echo '<!-- Begin Query Monitor output -->' . "\n\n";
 
 		$this->output_assets();
 
@@ -418,10 +407,39 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	}
 
 	/**
+	 * Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
+	 *
+	 * Third-party plugins may register panel menu items with only an 'href'
+	 * property. This method derives the 'id' and 'panel' values from the
+	 * array key and 'href' respectively.
+	 *
+	 * @param array<string, mixed[]> $panel_menu
+	 * @return void
+	 */
+	protected static function apply_panel_menu_back_compat( array &$panel_menu ): void {
+		foreach ( $panel_menu as $id => &$item ) {
+			if ( empty( $item['id'] ) ) {
+				$item['id'] = $id;
+			}
+			if ( empty( $item['panel'] ) && ! empty( $item['href'] ) ) {
+				$item['panel'] = preg_replace( '/^#qm-/', '', $item['href'] );
+			}
+			if ( ! empty( $item['children'] ) ) {
+				foreach ( $item['children'] as &$child ) {
+					if ( empty( $child['panel'] ) && ! empty( $child['href'] ) ) {
+						$child['panel'] = preg_replace( '/^#qm-/', '', $child['href'] );
+					}
+				}
+				unset( $child );
+			}
+		}
+		unset( $item );
+	}
+
+	/**
 	 * @return void
 	 */
 	protected function after_output() {
-		echo '<!-- End Query Monitor output -->' . "\n\n";
 	}
 
 	/**
@@ -489,27 +507,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	public static function request_supported() {
 		// Don't dispatch if this is an async request:
 		if ( QM_Util::is_async() ) {
-			return false;
-		}
-
-		// Don't dispatch during a Customizer preview request:
-		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
-			return false;
-		}
-
-		// Don't dispatch during an iframed request, eg the plugin info modal, an upgrader action, or the Customizer:
-		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
-			return false;
-		}
-
-		// Don't dispatch inside the Site Editor:
-		if ( isset( $_SERVER['SCRIPT_NAME'] ) && '/wp-admin/site-editor.php' === $_SERVER['SCRIPT_NAME'] ) {
-			return false;
-		}
-
-		// Don't dispatch on the interim login screen:
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! empty( $_GET['interim-login'] ) ) {
 			return false;
 		}
 
@@ -600,7 +597,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			echo '<p>Call stack:</p>';
 			echo '<ol>';
 			foreach ( $e['trace'] as $frame ) {
-				$callback = QM_Util::populate_callback( $frame );
+				$callback = QM_Util::determine_callback( $frame );
 
 				if ( ! isset( $callback->name ) ) {
 					continue;

@@ -133,6 +133,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_doing_it_wrong' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Doing_It_Wrong_Run(
@@ -164,6 +167,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_function' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_Function_Run(
@@ -194,6 +200,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_constructor' => true,
 			),
 		) );
 
@@ -227,6 +236,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_file' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_File_Included(
@@ -259,6 +271,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_argument' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_Argument_Run(
@@ -289,6 +304,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_hook' => true,
 			),
 		) );
 
@@ -321,6 +339,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_class' => true,
 			),
 		) );
 

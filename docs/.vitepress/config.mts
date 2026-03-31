@@ -67,6 +67,14 @@ export default defineConfig({
 						link: '/wordpress-debugging/how-to-use/',
 					},
 					{
+						text: 'Database queries',
+						link: '/wordpress-debugging/database-queries/',
+					},
+					{
+						text: 'Hooks',
+						link: '/wordpress-debugging/hooks/',
+					},
+					{
 						text: 'Template parts',
 						link: '/wordpress-debugging/template-part-loading/',
 					},
@@ -75,12 +83,52 @@ export default defineConfig({
 						link: '/wordpress-debugging/blocks/',
 					},
 					{
+						text: 'Request',
+						link: '/wordpress-debugging/request/',
+					},
+					{
+						text: 'Scripts and styles',
+						link: '/wordpress-debugging/scripts-and-styles/',
+					},
+					{
 						text: 'Translation files',
 						link: '/wordpress-debugging/javascript-translation-files/',
 					},
 					{
+						text: 'PHP errors',
+						link: '/wordpress-debugging/php-errors/',
+					},
+					{
+						text: 'Doing it Wrong',
+						link: '/wordpress-debugging/doing-it-wrong/',
+					},
+					{
+						text: 'HTTP headers',
+						link: '/wordpress-debugging/headers/',
+					},
+					{
 						text: 'User capabilities',
 						link: '/wordpress-debugging/user-capabilities/',
+					},
+					{
+						text: 'Conditionals',
+						link: '/wordpress-debugging/conditionals/',
+					},
+					{
+						text: 'Environment',
+						link: '/wordpress-debugging/environment/',
+					},
+					{
+						text: 'Transients',
+						link: '/wordpress-debugging/transients/',
+					},
+					{
+						text: 'Admin screen',
+						link: '/wordpress-debugging/admin-screen/',
+					},
+					{
+						text: 'Multisite',
+						link: '/wordpress-debugging/multisite/',
 					},
 					{
 						text: 'REST API requests',
@@ -112,6 +160,10 @@ export default defineConfig({
 				text: 'Help',
 				collapsed: false,
 				items: [
+					{
+						text: 'Query Monitor 4',
+						link: '/help/query-monitor-4/',
+					},
 					{
 						text: 'Clickable stack traces',
 						link: '/help/clickable-stack-traces-and-function-names/',
@@ -190,7 +242,7 @@ export default defineConfig({
 			copyright: `© 2009-${year}, <a href="/about/">John Blackbourn</a>. WordPress® is a registered trademark of the WordPress Foundation. WooCommerce® is a registered trademark of WooCommerce, Inc. Query Monitor is not affiliated with the WordPress Foundation or WooCommerce, Inc.`,
 		},
 	},
-	lastUpdated: true,
+	lastUpdated: false,
 	sitemap: {
 		hostname: siteURL,
 	},

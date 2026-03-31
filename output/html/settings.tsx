@@ -23,6 +23,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setTheme,
 		queryDiffEnabled,
 		setQueryDiffEnabled,
+		fabulous,
+		setFabulous,
 	} = useContext( MainContext );
 
 	const setVerify = () => {
@@ -98,7 +100,10 @@ export const Settings = ( {settings}: SettingsProps ) => {
 									key={ label }
 									value={ name }
 								>
-									{ label }
+									{ ( name === '' && settings.file_link_format )
+										? _x( 'Default', 'editor option', 'query-monitor' )
+										: label
+									}
 								</option>
 							) ) }
 						</select>
@@ -136,6 +141,20 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							</li>
 						) ) }
 					</ul>
+					<p className="qm-fabulous-toggle">
+						<label>
+							<input
+								type="checkbox"
+								className="qm-checkbox"
+								name="qm-fabulous"
+								defaultChecked={ fabulous }
+								onChange={ ( e ) => {
+									setFabulous( e.currentTarget.checked );
+								} }
+							/>
+							{ __( 'Fabulous', 'query-monitor' ) }
+						</label>
+					</p>
 				</section>
 				<section>
 					<h3>

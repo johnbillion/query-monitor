@@ -19,7 +19,7 @@ jobs:
   deploy:
     name: Deploy Tag
     if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@8d8ccc89b04d85ae8d064774d63d8725799f4224 # 2.7.3
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@bb606d520dfe6131697c80bfe0f4eabc7b8a46a6 # 2.8.0
     permissions:
       contents: write
       issues: write
@@ -32,8 +32,5 @@ jobs:
       readme: readme.txt
       version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
       username: johnbillion
-      did: did:plc:q2afge25l63iz553aumeqi3w
-      fair-path: docs/static/fair.json
     secrets:
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
-      FAIR_VERIFICATION_KEY: ${{ secrets.FAIR_VERIFICATION_KEY }}
