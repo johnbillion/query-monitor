@@ -13,8 +13,8 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 		return null;
 	}
 
-	const rows = data.rows;
 	const expensive = data.expensive;
+	const rows = data.rows.filter( ( row, i ) => expensive.includes( i ) );
 
 	return <TabularPanel
 		title={ __( 'Slow Database Queries', 'query-monitor' ) }
@@ -53,7 +53,7 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 			},
 			time: getTimeCol( rows, () => true ),
 		} }
-		data={ rows.filter( ( row, i ) => expensive.includes( i ) ) }
+		data={ rows }
 		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
 	/>
 };

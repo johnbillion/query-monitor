@@ -140,7 +140,7 @@ export const deriveComponentFilters = <TDataRow,>(
 	} );
 	const groups = [];
 
-	if ( filters.length > 1 ) {
+	if ( filters.length > 0 ) {
 		groups.push( filters );
 
 		if ( hasCore ) {
