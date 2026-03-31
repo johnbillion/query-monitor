@@ -4,23 +4,10 @@
 	"title": "URL",
 	"description": "Parsed URL data object.",
 	"type": "object",
-	"phpFile": "url",
-	"phpClass": "QM_Data_URL",
+	"phpType": "QM_Data_URL",
 	"properties": {
-		"origin": {
-			"type": "string"
-		},
-		"scheme": {
-			"type": "string"
-		},
-		"hostname": {
-			"type": "string"
-		},
 		"host": {
 			"type": "string"
-		},
-		"insecure": {
-			"type": "boolean"
 		},
 		"local": {
 			"type": "boolean"
@@ -30,11 +17,7 @@
 		}
 	},
 	"required": [
-		"origin",
-		"scheme",
-		"hostname",
 		"host",
-		"insecure",
 		"local",
 		"absolute"
 	],

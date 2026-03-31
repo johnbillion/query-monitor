@@ -20,7 +20,6 @@
  *   source: string|WP_Error,
  *   ver: string,
  *   warning: bool,
- *   display: string,
  *   dependents: array<int, string>,
  *   dependencies: array<int, string>,
  * }

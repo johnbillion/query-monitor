@@ -47,9 +47,6 @@
 				"warning": {
 					"type": "boolean"
 				},
-				"display": {
-					"type": "string"
-				},
 				"dependents": {
 					"type": "array",
 					"items": {
@@ -70,7 +67,6 @@
 				"source",
 				"ver",
 				"warning",
-				"display",
 				"dependents",
 				"dependencies"
 			]

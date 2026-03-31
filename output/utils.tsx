@@ -1,5 +1,5 @@
 import { Fragment, type JSX } from 'preact';
-import { StackFrame } from './data-types';
+import { StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
 declare const QueryMonitorData: {
@@ -258,6 +258,16 @@ export function stripAbspath( file: string, settings: { abspath: string; content
 	}
 
 	return file;
+}
+
+export function getAssetDisplay( url: URL ): string {
+	try {
+		const parsed = new window.URL( url.absolute );
+		parsed.searchParams.delete( 'ver' );
+		return ( parsed.pathname + parsed.search ).replace( /^\//, '' );
+	} catch {
+		return url.absolute;
+	}
 }
 
 export function formatDuration( seconds: number ): string {

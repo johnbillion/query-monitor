@@ -126,7 +126,6 @@ export interface Asset {
 	source: string | WP_Error;
 	ver: string;
 	warning: boolean;
-	display: string;
 	dependents: string[];
 	dependencies: string[];
 	[k: string]: unknown;
@@ -135,11 +134,7 @@ export interface Asset {
  * Parsed URL data object.
  */
 export interface URL {
-	origin: string;
-	scheme: string;
-	hostname: string;
 	host: string;
-	insecure: boolean;
 	local: boolean;
 	absolute: string;
 }
