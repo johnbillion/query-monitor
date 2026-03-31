@@ -333,3 +333,32 @@ export function getSiteEditorUrl( template: string, type: string = 'wp_template_
 
 	return `${ qm_l10n.admin_url }site-editor.php?${ params.toString() }`;
 }
+
+/**
+ * Gets the query type (SELECT, INSERT, UPDATE, etc.) from a SQL string.
+ */
+export function getQueryType( sql: string ): string {
+	// Trim leading whitespace and brackets.
+	let trimmed = sql.replace( /^[\s(]+/, '' );
+
+	// Strip out leading comments such as /*NO_SELECT_FOUND_ROWS*/.
+	trimmed = trimmed.replace( /^\/\*[^*]*\*\/\s*/, '' );
+
+	const match = trimmed.match( /^(\w+)/ );
+
+	return match ? match[1].toUpperCase() : 'Unknown';
+}
+
+/**
+ * Computes a map of query type counts from an array of SQL query rows.
+ */
+export function getQueryTypes( rows: { sql: string }[] ): Record<string, number> {
+	const types: Record<string, number> = {};
+
+	for ( const row of rows ) {
+		const type = getQueryType( row.sql );
+		types[ type ] = ( types[ type ] || 0 ) + 1;
+	}
+
+	return types;
+}

@@ -3,6 +3,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import { getTimeCol } from '../table';
 import { TotalTime } from '../components/total-time';
 import { Component } from '../component';
+import { getQueryType, getQueryTypes } from '../utils';
 import { DataTypes, Component as ComponentData } from '../data-types';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
@@ -31,8 +32,10 @@ const aggregateByComponent = ( rows: NonNullable<DataTypes['db_queries']['rows']
 			};
 		}
 
+		const type = getQueryType( row.sql );
+
 		map[ key ].ltime += row.ltime;
-		map[ key ].types[ row.type ] = ( map[ key ].types[ row.type ] || 0 ) + 1;
+		map[ key ].types[ type ] = ( map[ key ].types[ type ] || 0 ) + 1;
 	}
 
 	return Object.values( map );
@@ -51,7 +54,9 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) =>
 
 	const tableData = aggregateByComponent( data.rows );
 
-	const getTypeCols = () => Object.keys( data.types ).reduce( ( cols, type ) => ( {
+	const types = getQueryTypes( data.rows );
+
+	const getTypeCols = () => Object.keys( types ).reduce( ( cols, type ) => ( {
 		...cols,
 		[ type ]: {
 			heading: type,
@@ -82,7 +87,7 @@ export const DBComponents = ( { data }: PanelProps<DataTypes['db_queries']> ) =>
 			<tfoot>
 				<tr>
 					<td></td>
-					{ Object.entries( data.types ).map( ( [ key, value ] ) => (
+					{ Object.entries( types ).map( ( [ key, value ] ) => (
 						<td key={ key } className="qm-num">
 							{ value }
 						</td>

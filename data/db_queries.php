@@ -18,7 +18,6 @@
  *   sql: string,
  *   ltime: float,
  *   result?: int|bool|WP_Error,
- *   type: string,
  *   trace?: QM_Backtrace,
  *   is_main_query?: bool,
  * }

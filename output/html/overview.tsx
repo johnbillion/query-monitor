@@ -20,6 +20,7 @@ type OverviewProps = {
 export const Overview = ( { data, settings }: OverviewProps ) => {
 	// Get data from various collectors
 	const dbQueriesData = data.db_queries?.data;
+	const dbQueryTypes = dbQueriesData?.rows ? Utils.getQueryTypes( dbQueriesData.rows ) : {};
 	const cacheData = data.cache?.data;
 	const httpData = data.http?.data;
 	const rawRequestData = data.raw_request?.data;
@@ -143,23 +144,18 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 								<Duration value={ dbQueriesData.rows.reduce( ( acc, row ) => acc + row.ltime, 0 ) } secondsLabel />
 							</p>
 							<p>
-								{ Object.keys( dbQueriesData.types ).length > 1 && Object.entries( dbQueriesData.types ).map( ( [ typeName, typeCount ] ) => {
-									if ( typeName === 'SELECT' && Object.keys( dbQueriesData.types ).length === 1 ) {
-										return null;
-									}
-									return (
-										<Fragment key={ typeName }>
-											<FilterLink
-												targetPanel="db_queries"
-												filterName="sql"
-												filterValue={ typeName }
-											>
-												{ sprintf( '%1$s: %2$s', typeName, Utils.numberFormat( typeCount ) ) }
-											</FilterLink>
-											<br />
-										</Fragment>
-									);
-								} ) }
+								{ Object.keys( dbQueryTypes ).length > 1 && Object.entries( dbQueryTypes ).map( ( [ typeName, typeCount ] ) => (
+									<Fragment key={ typeName }>
+										<FilterLink
+											targetPanel="db_queries"
+											filterName="sql"
+											filterValue={ typeName }
+										>
+											{ sprintf( '%1$s: %2$s', typeName, Utils.numberFormat( typeCount ) ) }
+										</FilterLink>
+										<br />
+									</Fragment>
+								) ) }
 								<FilterLink
 									targetPanel="db_queries"
 									filterName="type"

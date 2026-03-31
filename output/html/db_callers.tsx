@@ -3,6 +3,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import { getTimeCol } from '../table';
 import { TotalTime } from '../components/total-time';
 import { FilterLink } from '../components/filter-link';
+import { getQueryType, getQueryTypes } from '../utils';
 import { DataTypes } from '../data-types';
 import { resolveFrame } from '../frame-lookup';
 import { PanelProps } from '../types';
@@ -38,8 +39,10 @@ const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> )
 			};
 		}
 
+		const type = getQueryType( row.sql );
+
 		map[ caller ].ltime += row.ltime;
-		map[ caller ].types[ row.type ] = ( map[ caller ].types[ row.type ] || 0 ) + 1;
+		map[ caller ].types[ type ] = ( map[ caller ].types[ type ] || 0 ) + 1;
 	}
 
 	return Object.values( map );
@@ -58,7 +61,9 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 
 	const tableData = aggregateByCaller( data.rows );
 
-	const getTypeCols = () => Object.keys( data.types ).reduce( ( cols, type ) => ( {
+	const types = getQueryTypes( data.rows );
+
+	const getTypeCols = () => Object.keys( types ).reduce( ( cols, type ) => ( {
 		...cols,
 		[ type ]: {
 			heading: type,
@@ -93,7 +98,7 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				<tfoot>
 					<tr>
 						<td></td>
-						{ Object.entries( data.types ).map( ( [ key, value ] ) => (
+						{ Object.entries( types ).map( ( [ key, value ] ) => (
 							<td key={ key } className="qm-num">
 								{ value }
 							</td>

@@ -170,12 +170,10 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			$sql = trim( $sql );
-			$type = QM_Util::get_query_type( $sql );
 
-			$this->log_type( $type );
 			$this->maybe_log_dupe( $sql, $i );
 
-			$row = compact( 'sql', 'ltime', 'type' );
+			$row = compact( 'sql', 'ltime' );
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {
 				// Ignore comments that are appended to queries by some web hosts.

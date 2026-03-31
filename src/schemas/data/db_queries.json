@@ -9,8 +9,7 @@
 			"type": "object",
 			"required": [
 				"sql",
-				"ltime",
-				"type"
+				"ltime"
 			],
 			"properties": {
 				"stack": {
@@ -44,9 +43,6 @@
 							]
 						}
 					]
-				},
-				"type": {
-					"type": "string"
 				},
 				"trace": {
 					"type": "object",
