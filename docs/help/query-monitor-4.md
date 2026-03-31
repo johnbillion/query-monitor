@@ -11,7 +11,7 @@ Version 4 of Query Monitor switches from rendering its panels server-side in PHP
 
 - Rendering performance is greatly increased, particularly on sites where a large number of queries are performed, a large number of PHP errors are triggered, or a large amount of data is collected in one of the other panels. Your browser no longer has to process all the HTML that made up the tables in the Query Monitor panels, and it only renders the currently active panel at any one time.
 - Future enhancements are facilitated, such as displaying client-side metrics, lazy-loading debugging data, showing data from different requests, and remixing data into different views. A timeline view is in the works.
-- The raw data collected by Query Monitor is exposed to the page in a JSON blob. If you want to play around with it, take a look at the `QueryMonitorData` object in your browser console. You might be surprised at the size of the data, but don't worry, it's still much more performant than generating a huge number of HTML table rows server-side and rendering them in the browser.
+- The raw data collected by Query Monitor is exposed to the page in a JSON blob. If you want to play around with it, take a look at the `QueryMonitorData` object in your browser console. You might be surprised at the size of the data, but don't worry, it's still much smaller and more performant than generating a huge number of HTML table rows server-side and rendering them in the browser.
 
 ## New timeline view
 
