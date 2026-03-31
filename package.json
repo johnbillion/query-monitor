@@ -48,7 +48,7 @@
 		"json-schema-to-typescript": "^12",
 		"preact": "^10",
 		"prettier": "^3.7.4",
-		"sharp-cli": "^4.1.1",
+		"sharp-cli": "^5.2.0",
 		"terser": "^5.46.0",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.1",
