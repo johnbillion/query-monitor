@@ -18,7 +18,6 @@
  *   sql: string,
  *   ltime: float,
  *   result?: int|bool|WP_Error,
- *   type: string,
  *   trace?: QM_Backtrace,
  *   is_main_query?: bool,
  * }
@@ -53,11 +52,6 @@ class QM_Data_DB_Queries extends QM_Data {
 	 * @var bool
 	 */
 	public $has_trace;
-
-	/**
-	 * @var bool
-	 */
-	public $has_main_query;
 
 	/**
 	 * @phpstan-var array<int, array{

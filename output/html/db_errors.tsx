@@ -1,14 +1,18 @@
+import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 } from '@wordpress/i18n';
 
 export const DBErrors = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.errors?.length ) {
 		return null;
 	}
@@ -33,7 +37,7 @@ export const DBErrors = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 					</>
 				),
 			},
-			caller: getCallerCol( errors ),
+			caller: getCallerCol( errors, settings ),
 			component: getComponentCol( errors ),
 		} }
 		data={ errors }

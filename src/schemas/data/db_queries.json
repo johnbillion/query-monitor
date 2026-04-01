@@ -9,8 +9,7 @@
 			"type": "object",
 			"required": [
 				"sql",
-				"ltime",
-				"type"
+				"ltime"
 			],
 			"properties": {
 				"stack": {
@@ -45,9 +44,6 @@
 						}
 					]
 				},
-				"type": {
-					"type": "string"
-				},
 				"trace": {
 					"type": "object",
 					"phpType": "QM_Backtrace",
@@ -68,7 +64,6 @@
 		"total_qs",
 		"has_result",
 		"has_trace",
-		"has_main_query",
 		"dupes",
 		"errors"
 	],
@@ -103,9 +98,6 @@
 			"type": "boolean"
 		},
 		"has_trace": {
-			"type": "boolean"
-		},
-		"has_main_query": {
 			"type": "boolean"
 		},
 		"dupes": {

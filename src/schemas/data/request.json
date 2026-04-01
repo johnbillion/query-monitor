@@ -9,7 +9,6 @@
 		"multisite",
 		"request",
 		"qvars",
-		"request_method",
 		"matching_rewrites"
 	],
 	"properties": {
@@ -177,9 +176,6 @@
 				"title"
 			],
 			"additionalProperties": false
-		},
-		"request_method": {
-			"type": "string"
 		},
 		"matching_rewrites": {
 			"type": "object",

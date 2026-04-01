@@ -94,8 +94,6 @@ class QM_Collector_Cache extends QM_DataCollector {
 			$this->data->cache_hit_percentage = (int) ( ( 100 / $total ) * $hits );
 		}
 
-		$this->data->display_hit_rate_warning = ( 100 === $this->data->cache_hit_percentage );
-
 		if ( function_exists( 'extension_loaded' ) ) {
 			$this->data->object_cache_extensions = array_map( 'extension_loaded', array(
 				'Afterburner' => 'afterburner',

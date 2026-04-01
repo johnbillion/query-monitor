@@ -101,8 +101,7 @@ class CallbacksTest extends Test {
 		$actual = \QM_Util::determine_callback( $callback );
 
 		self::assertSame( 'closure', $actual->callback_type );
-		self::assertSame( $ref->getStartLine(), $actual->start_line );
-		self::assertSame( 'wp-content/plugins/query-monitor/tests/integration/includes/dummy-closures.php', $actual->display_file );
+		self::assertNotNull( $actual->file );
 		self::assertSame( $ref->getFileName(), $actual->file );
 		self::assertSame( $ref->getStartLine(), $actual->line );
 
@@ -115,7 +114,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -127,7 +126,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -138,7 +137,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -149,7 +148,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -160,7 +159,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -171,7 +170,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -182,7 +181,7 @@ class CallbacksTest extends Test {
 
 		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertInstanceOf( \WP_Error::class, $actual->error );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 

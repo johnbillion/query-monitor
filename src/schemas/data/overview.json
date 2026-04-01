@@ -6,12 +6,10 @@
 	"type": "object",
 	"required": [
 		"time_limit",
-		"time_start",
 		"time_usage",
 		"memory",
 		"memory_limit",
-		"memory_usage",
-		"is_admin"
+		"memory_usage"
 	],
 	"properties": {
 		"time_taken": {
@@ -19,9 +17,6 @@
 		},
 		"time_limit": {
 			"type": "integer"
-		},
-		"time_start": {
-			"type": "number"
 		},
 		"time_usage": {
 			"type": [
@@ -40,15 +35,6 @@
 				"integer",
 				"number"
 			]
-		},
-		"current_user": {
-			"type": "object"
-		},
-		"switched_user": {
-			"type": "object"
-		},
-		"is_admin": {
-			"type": "boolean"
 		},
 		"actions": {
 			"type": "object",

@@ -8,24 +8,14 @@
 	"phpClass": "QM_Data_Callsite",
 	"required": [
 		"file",
-		"filename",
 		"line"
 	],
 	"properties": {
 		"file": {
-			"type": [
-				"string",
-				"null"
-			]
-		},
-		"filename": {
 			"type": "string"
 		},
 		"line": {
-			"type": [
-				"integer",
-				"null"
-			]
+			"type": "integer"
 		}
 	},
 	"additionalProperties": false

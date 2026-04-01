@@ -28,10 +28,10 @@ class CollectorPhpErrorsTest extends Test {
 	 *
 	 * @param int $errno
 	 * @param 'warning'|'notice'|'strict'|'deprecated' $level
-	 * @param Supports\TestBacktrace $trace
+	 * @param \QM_Backtrace $trace
 	 * @return \QM_Data_PHP_Error
 	 */
-	private function createError( int $errno, string $level, Supports\TestBacktrace $trace ): \QM_Data_PHP_Error {
+	private function createError( int $errno, string $level, \QM_Backtrace $trace ): \QM_Data_PHP_Error {
 		$error = new \QM_Data_PHP_Error();
 		$error->errno = $errno;
 		$error->level = $level;
@@ -186,8 +186,7 @@ class CollectorPhpErrorsTest extends Test {
 	}
 
 	function testItWillNotFilterAnyErrorByDefault(): void {
-		$trace = new Supports\TestBacktrace;
-		$trace->set_trace( [
+		$trace = new Supports\TestBacktrace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
 			],
@@ -213,8 +212,7 @@ class CollectorPhpErrorsTest extends Test {
 			return $table;
 		} );
 
-		$trace = new Supports\TestBacktrace;
-		$trace->set_trace( [
+		$trace = new Supports\TestBacktrace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
 			],

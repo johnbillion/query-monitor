@@ -1,16 +1,24 @@
 import { ApproximateSize } from '../components/approximate-size';
 import { FileName } from '../components/file-name';
 import { SourceLocation } from '../components/source-location';
+import * as Utils from '../utils';
 import { PanelFooter } from '../panels/panel-footer';
 import { TabularPanel } from '../panels/tabular-panel';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { MainContext } from '../contexts/main-context';
+import { useContext } from 'preact/hooks';
+
 import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
 
 export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
+	const {
+		settings,
+	} = useContext( MainContext );
+
 	return (
 		<TabularPanel
 			title={ __( 'Languages', 'query-monitor' ) }
@@ -35,7 +43,7 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					render: ( row ) => (
 						row.caller ? (
 							<SourceLocation
-								text={ row.caller.display }
+								text={ Utils.frameDisplay( row.caller ) }
 								file={ row.caller.file }
 								line={ row.caller.line }
 							/>
@@ -50,11 +58,11 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 						row.file ? (
 							row.found ? (
 								<FileName
-									text={ row.display }
+									text={ Utils.stripAbspath( row.file, settings ) }
 									file={ row.file }
 								/>
 							) : (
-								row.display
+								Utils.stripAbspath( row.file, settings )
 							)
 						) : (
 							__( 'None', 'query-monitor' )

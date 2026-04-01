@@ -176,24 +176,10 @@ class QM_Collector_Overview extends QM_DataCollector {
 		}
 
 		$this->data->time_limit = (int) ini_get( 'max_execution_time' );
-		$this->data->time_start = $_SERVER['REQUEST_TIME_FLOAT'];
-
 		if ( ! empty( $this->data->time_limit ) ) {
 			$this->data->time_usage = ( 100 / $this->data->time_limit ) * $this->data->time_taken;
 		} else {
 			$this->data->time_usage = 0;
-		}
-
-		if ( is_user_logged_in() ) {
-			$this->data->current_user = self::format_user( wp_get_current_user() );
-		} else {
-			$this->data->current_user = null;
-		}
-
-		if ( function_exists( 'current_user_switched' ) && current_user_switched() ) {
-			$this->data->switched_user = self::format_user( current_user_switched() );
-		} else {
-			$this->data->switched_user = null;
 		}
 
 		$this->data->memory_limit = QM_Util::convert_hr_to_bytes( ini_get( 'memory_limit' ) ?: '0' );
@@ -203,8 +189,6 @@ class QM_Collector_Overview extends QM_DataCollector {
 		} else {
 			$this->data->memory_usage = 0;
 		}
-
-		$this->data->is_admin = is_admin();
 
 		/** @var array{init: float, request?: float, query?: float, template?: float, shutdown?: float} $segments */
 		$segments = array(

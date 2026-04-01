@@ -68,18 +68,10 @@
 		}
 	},
 	"required": [
-		"all_dynamic_blocks",
 		"post_blocks",
-		"post_has_blocks",
-		"total_blocks"
+		"post_has_blocks"
 	],
 	"properties": {
-		"all_dynamic_blocks": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		},
 		"post_blocks": {
 			"type": "array",
 			"items": {
@@ -88,9 +80,6 @@
 		},
 		"post_has_blocks": {
 			"type": "boolean"
-		},
-		"total_blocks": {
-			"type": "integer"
 		}
 	},
 	"additionalProperties": false

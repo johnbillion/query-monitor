@@ -31,14 +31,25 @@
 			]
 		},
 		"frames": {
+			"description": "Compact frame references as [frameIndex, lineNumber] tuples.",
 			"type": "array",
 			"items": {
-				"type": "object",
-				"allOf": [
+				"type": "array",
+				"items": [
 					{
-						"$ref": "./stack-frame.json"
+						"description": "Index into the top-level frames lookup.",
+						"type": "integer"
+					},
+					{
+						"description": "Line number.",
+						"type": [
+							"integer",
+							"null"
+						]
 					}
-				]
+				],
+				"minItems": 2,
+				"maxItems": 2
 			}
 		},
 		"time": {

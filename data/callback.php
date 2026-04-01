@@ -12,11 +12,6 @@
 
 class QM_Data_Callback {
 	/**
-	 * @var ?int
-	 */
-	public $accepted_args;
-
-	/**
 	 * @var 'function'|'method'|'static_method'|'closure'|'invokable'|'lambda'|'unknown'|'unknown_closure'
 	 */
 	public $callback_type;
@@ -35,21 +30,6 @@ class QM_Data_Callback {
 	 * @var ?int|false
 	 */
 	public $line;
-
-	/**
-	 * @var ?int
-	 */
-	public $start_line;
-
-	/**
-	 * @var ?string
-	 */
-	public $display_file;
-
-	/**
-	 * @var ?WP_Error
-	 */
-	public $error;
 
 	/**
 	 * @var ?QM_Component

@@ -134,8 +134,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$request = $wpdb->remove_placeholder_escape( $request );
 		}
 
-		$has_main_query = false;
-
 		/**
 		 * @phpstan-var QueryStandard|QueryVIP $query
 		 */
@@ -172,12 +170,10 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			}
 
 			$sql = trim( $sql );
-			$type = QM_Util::get_query_type( $sql );
 
-			$this->log_type( $type );
 			$this->maybe_log_dupe( $sql, $i );
 
-			$row = compact( 'sql', 'ltime', 'type' );
+			$row = compact( 'sql', 'ltime' );
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {
 				// Ignore comments that are appended to queries by some web hosts.
@@ -186,7 +182,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$is_main_query = ( $request === $match_sql );
 
 				if ( $is_main_query ) {
-					$has_main_query = true;
 					$row['is_main_query'] = true;
 				}
 			}
@@ -215,14 +210,9 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			$i++;
 		}
 
-		$has_main_query = wp_list_filter( $this->data->rows, array(
-			'is_main_query' => true,
-		) );
-
 		$this->data->total_qs = count( $this->data->rows );
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
-		$this->data->has_main_query = ! empty( $has_main_query );
 
 		// Filter out queries that do not have duplicates
 		$this->dupes = array_filter( $this->dupes, array( $this, 'filter_dupe_items' ) );
@@ -246,7 +236,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			foreach ( $query_ids as $query_id ) {
 				if ( isset( $this->data->rows[ $query_id ]['trace'] ) ) {
 					$trace = $this->data->rows[ $query_id ]['trace'];
-					$stack = array_column( $trace->get_filtered_trace(), 'id' );
+					$stack = $trace->get_stack();
 					$component = $trace->get_component();
 
 					// Populate the component counts for this query

@@ -11,6 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'QM_Backtrace' ) ) {
 /**
+ * @phpstan-type ComponentFrame array{
+ *   class: ?string,
+ *   function: ?string,
+ *   file: ?string,
+ * }
  * @phpstan-type BacktraceArgs array{
  *   ignore_class?: mixed[],
  *   ignore_namespace?: mixed[],
@@ -98,39 +103,46 @@ class QM_Backtrace implements JsonSerializable {
 	protected static $filtered = false;
 
 	/**
-	 * @var array<string, mixed[]>
+	 * Compact trace retained for lazy component detection.
+	 * Each entry holds only class, function, and file.
+	 * Cleared once the component has been computed.
+	 *
+	 * @var list<ComponentFrame>
 	 */
-	protected $args = array();
-
-	/**
-	 * @var mixed[]
-	 */
-	protected $trace;
-
-	/**
-	 * @var QM_Backtrace_Frame[]|null
-	 */
-	protected $filtered_trace = null;
+	protected $component_trace = array();
 
 	/**
 	 * The caller frame (first frame after filtering and trimming,
 	 * before the frame 0 drop). Used by get_caller() for attribution.
 	 *
-	 * @var QM_Backtrace_Frame|null
+	 * @var QM_Data_Stack_Frame|null
 	 */
 	protected $caller_frame = null;
 
 	/**
 	 * File/line from the innermost dropped frame. Seeded from frame 0
 	 * and overwritten by trim_top_frames as it removes additional frames.
-	 * Used during serialization to give the top visible frame a location.
+	 * Used during frame shifting to give the top visible frame a location.
 	 *
-	 * @var array{file: string|null, line: int|null}
+	 * @var array{
+	 *   file: string|null,
+	 *   line: int|null,
+	 * }
 	 */
 	protected $top_frame_location = array(
 		'file' => null,
 		'line' => null,
 	);
+
+	/**
+	 * Pre-computed frame tuples for JSON output: [registryIndex, lineNumber].
+	 *
+	 * @var list<array{
+	 *   int,
+	 *   int|null,
+	 * }>
+	 */
+	protected $output_frames = array();
 
 	/**
 	 * @var QM_Component|null
@@ -154,7 +166,7 @@ class QM_Backtrace implements JsonSerializable {
 	 * @param mixed[] $trace
 	 */
 	public function __construct( array $args = array(), ?array $trace = null ) {
-		$this->trace = $trace ?? debug_backtrace( 0 );
+		$trace ??= debug_backtrace( 0 );
 		$this->time = $args['time'] ?? microtime( true );
 
 		if ( isset( $args['callsite'] ) ) {
@@ -165,7 +177,7 @@ class QM_Backtrace implements JsonSerializable {
 		unset( $args['time'] );
 
 		/** @var array<string, mixed[]> $args */
-		$this->args = array_merge( array(
+		$args = array_merge( array(
 			'ignore_class' => array(),
 			'ignore_namespace' => array(),
 			'ignore_method' => array(),
@@ -174,7 +186,9 @@ class QM_Backtrace implements JsonSerializable {
 			'show_args' => array(),
 		), $args );
 
-		foreach ( $this->trace as & $frame ) {
+		self::ensure_filters_loaded();
+
+		foreach ( $trace as & $frame ) {
 			if ( ! isset( $frame['args'] ) ) {
 				continue;
 			}
@@ -192,19 +206,46 @@ class QM_Backtrace implements JsonSerializable {
 				unset( $frame['args'] );
 			}
 		}
+
+		$filtered_trace = $this->build_filtered_trace( $trace, $args );
+		$this->process_output_frames( $filtered_trace );
+
+		$component_trace = array();
+
+		foreach ( $filtered_trace as $frame ) {
+			$component_trace[] = array(
+				'class' => $frame->class,
+				'function' => $frame->function,
+				'file' => $frame->file,
+			);
+		}
+
+		if ( function_exists( 'did_action' ) && did_action( 'after_setup_theme' ) ) {
+			$this->get_component( $component_trace );
+		} else {
+			$this->component_trace = $component_trace;
+		}
+
+		// Free data that is only needed during construction.
+		$this->top_frame_location = array(
+			'file' => null,
+			'line' => null,
+		);
 	}
 
 	/**
 	 * @deprecated Use the `callsite` argument instead.
 	 *
-	 * @param mixed[] $frame
+	 * @param array{
+	 *   file: string,
+	 *   line: int,
+	 * } $frame
 	 * @return void
 	 */
 	public function push_frame( array $frame ) {
 		$callsite = new QM_Data_Callsite();
-		$callsite->file = $frame['file'] ?? null;
-		$callsite->filename = isset( $frame['file'] ) ? QM_Util::standard_dir( $frame['file'], '' ) : '';
-		$callsite->line = $frame['line'] ?? null;
+		$callsite->file = $frame['file'];
+		$callsite->line = $frame['line'];
 		$this->callsite = $callsite;
 	}
 
@@ -234,12 +275,19 @@ class QM_Backtrace implements JsonSerializable {
 	 * @return array<int, string>
 	 */
 	public function get_stack() {
+		$stack = array();
 
-		$trace = $this->get_filtered_trace();
-		$stack = array_column( $trace, 'display' );
+		foreach ( $this->output_frames as $tuple ) {
+			$frame = QM_Frame_Registry::get_frame( $tuple[0] );
+
+			if ( isset( $frame->args ) ) {
+				$stack[] = $frame->id . '(' . $frame->args . ')';
+			} else {
+				$stack[] = $frame->id . '()';
+			}
+		}
 
 		return $stack;
-
 	}
 
 	/**
@@ -248,43 +296,43 @@ class QM_Backtrace implements JsonSerializable {
 	 * @return QM_Data_Stack_Frame|false
 	 */
 	public function get_caller() {
-
-		// Ensure the trace has been processed.
-		$this->get_filtered_trace();
-
 		if ( ! $this->caller_frame ) {
 			return false;
 		}
 
-		return $this->caller_frame->to_data();
+		return $this->caller_frame;
 
 	}
 
 	/**
 	 * Determines the component responsible for this backtrace.
 	 *
-	 * @return QM_Component
+	 * @param list<ComponentFrame> $trace
 	 */
-	public function get_component() {
+	public function get_component( array $trace = array() ) : QM_Component {
 		if ( isset( $this->component ) ) {
 			return $this->component;
 		}
 
+		$trace = $trace ?: $this->component_trace;
+
 		$components = array();
-		$frames = $this->get_filtered_trace();
 
 		if ( $this->callsite && $this->callsite->file ) {
 			$component = QM_Util::get_file_component( $this->callsite->file );
 
 			if ( $component->is_plugin() ) {
+				// If the component is a plugin then it can't be anything else,
+				// so short-circuit and return early.
 				$this->component = $component;
+				$this->component_trace = array();
 				return $this->component;
 			}
 
 			$components[ $component->type ] = $component;
 		}
 
-		foreach ( $frames as $frame ) {
+		foreach ( $trace as $frame ) {
 			$component = self::get_frame_component( $frame );
 
 			if ( $component ) {
@@ -292,12 +340,15 @@ class QM_Backtrace implements JsonSerializable {
 					// If the component is a plugin then it can't be anything else,
 					// so short-circuit and return early.
 					$this->component = $component;
+					$this->component_trace = array();
 					return $this->component;
 				}
 
 				$components[ $component->type ] = $component;
 			}
 		}
+
+		$this->component_trace = array();
 
 		$file_dirs = QM_Util::get_file_dirs();
 		$file_dirs[ QM_Component::TYPE_DROPIN ] = WP_CONTENT_DIR;
@@ -314,24 +365,26 @@ class QM_Backtrace implements JsonSerializable {
 
 	/**
 	 * Attempts to determine the component responsible for a given frame.
+	 *
+	 * @param ComponentFrame $frame
 	 */
-	public static function get_frame_component( QM_Backtrace_Frame $frame ) :? QM_Component {
+	public static function get_frame_component( array $frame ) :? QM_Component {
 		try {
 
-			if ( isset( $frame->class, $frame->function ) ) {
-				if ( ! class_exists( $frame->class, false ) ) {
+			if ( isset( $frame['class'], $frame['function'] ) ) {
+				if ( ! class_exists( $frame['class'], false ) ) {
 					return null;
 				}
-				if ( ! method_exists( $frame->class, $frame->function ) ) {
+				if ( ! method_exists( $frame['class'], $frame['function'] ) ) {
 					return null;
 				}
-				$ref = new ReflectionMethod( $frame->class, $frame->function );
+				$ref = new ReflectionMethod( $frame['class'], $frame['function'] );
 				$file = $ref->getFileName();
-			} elseif ( isset( $frame->function ) && function_exists( $frame->function ) ) {
-				$ref = new ReflectionFunction( $frame->function );
+			} elseif ( isset( $frame['function'] ) && function_exists( $frame['function'] ) ) {
+				$ref = new ReflectionFunction( $frame['function'] );
 				$file = $ref->getFileName();
-			} elseif ( isset( $frame->file ) ) {
-				$file = $frame->file;
+			} elseif ( isset( $frame['file'] ) ) {
+				$file = $frame['file'];
 			} else {
 				return null;
 			}
@@ -348,78 +401,106 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * @return mixed[]
-	 */
-	public function get_trace() {
-		return $this->trace;
-	}
-
-	/**
 	 * @deprecated Use the `::get_filtered_trace()` method instead.
 	 *
-	 * @return QM_Backtrace_Frame[]
+	 * @return QM_Data_Stack_Frame[]
 	 */
-	public function get_display_trace() {
+	public function get_display_trace() : array {
 		return $this->get_filtered_trace();
 	}
 
 	/**
-	 * @return QM_Backtrace_Frame[]
+	 * Resolves frames from the registry into full QM_Data_Stack_Frame objects.
+	 *
+	 * @return QM_Data_Stack_Frame[]
 	 */
-	public function get_filtered_trace() {
+	public function get_filtered_trace() : array {
+		$frames = array();
 
-		if ( ! isset( $this->filtered_trace ) ) {
+		foreach ( $this->output_frames as [ $id, $line ] ) {
+			$entry = QM_Frame_Registry::get_frame( $id );
 
-			$trace = array_map( array( $this, 'filter_trace' ), $this->trace );
-			$trace = array_values( array_filter( $trace ) );
+			$frame = new QM_Data_Stack_Frame();
+			$frame->id = $entry->id;
+			$frame->file = $entry->file;
+			$frame->line = $line;
 
-			// Trim ignored classes and functions from the top of the stack.
-			$trace = $this->trim_top_frames( $trace );
-
-			// Trim include/require frames from the bottom of the stack
-			// (WordPress bootstrap noise).
-			$trace = $this->trim_bottom_frames( $trace );
-
-			// Store frame 0 as the caller for get_caller() attribution.
-			if ( ! empty( $trace ) ) {
-				$this->caller_frame = $trace[0];
+			if ( isset( $entry->args ) ) {
+				$frame->args = $entry->args;
 			}
 
-			if ( empty( $trace ) && ! empty( $this->trace ) ) {
-				$lowest = $this->trace[0];
-				$file = QM_Util::standard_dir( $lowest['file'], '' );
-
-				// When a PHP error is triggered which doesn't have a stack trace, for example a
-				// deprecated error, QM will blame itself due to its error handler. This prevents that.
-				if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
-					$fallback = new QM_Backtrace_Frame();
-					$fallback->id = $file;
-					$fallback->display = $file;
-					$fallback->file = $lowest['file'] ?? null;
-					$fallback->line = $lowest['line'] ?? null;
-					$trace[0] = $fallback;
-				}
-			}
-
-			$this->filtered_trace = $trace;
-
+			$frames[] = $frame;
 		}
 
-		return $this->filtered_trace;
+		return $frames;
+	}
 
+	/**
+	 * Builds the filtered trace from the raw backtrace.
+	 *
+	 * @param mixed[] $raw_trace Trace from debug_backtrace().
+	 * @param array<string, mixed[]> $args
+	 * @return QM_Backtrace_Frame[]
+	 */
+	protected function build_filtered_trace( array $raw_trace, array $args ): array {
+		$ignore_namespace = array_filter( array_merge( self::$ignore_namespace, $args['ignore_namespace'] ) );
+		$ignore_method    = array_filter( array_merge( self::$ignore_method, $args['ignore_method'] ) );
+		$ignore_hook      = array_filter( array_merge( self::$ignore_hook, $args['ignore_hook'] ) );
+		$show_args        = array_filter( array_merge( self::$show_args, $args['show_args'] ) );
+
+		$trace = array();
+
+		foreach ( $raw_trace as $frame ) {
+			$filtered = $this->filter_trace( $frame, $ignore_namespace, $ignore_method, $ignore_hook, $show_args );
+
+			if ( $filtered ) {
+				$trace[] = $filtered;
+			}
+		}
+
+		// Trim ignored classes and functions from the top of the stack.
+		$trace = $this->trim_top_frames( $trace, $args );
+
+		// Trim include/require frames from the bottom of the stack
+		// (WordPress bootstrap noise).
+		$trace = $this->trim_bottom_frames( $trace );
+
+		// Store frame 0 as the caller for get_caller() attribution.
+		if ( ! empty( $trace ) ) {
+			$this->caller_frame = $trace[0]->to_data();
+		}
+
+		if ( empty( $trace ) && ! empty( $raw_trace ) ) {
+			$lowest = $raw_trace[0];
+			$file = isset( $lowest['file'] ) ? QM_Util::standard_dir( $lowest['file'] ) : '';
+
+			// When a PHP error is triggered which doesn't have a stack trace, for example a
+			// deprecated error, QM will blame itself due to its error handler. This prevents that.
+			if ( false === strpos( $file, 'query-monitor/collectors/php_errors.php' ) ) {
+				$fallback = new QM_Backtrace_Frame();
+				$fallback->id = isset( $lowest['class'] )
+					? $lowest['class'] . $lowest['type'] . $lowest['function']
+					: $lowest['function'];
+				$fallback->function = $lowest['function'];
+				$fallback->file = $lowest['file'] ?? null;
+				$fallback->line = $lowest['line'] ?? null;
+				$trace[0] = $fallback;
+			}
+		}
+
+		return $trace;
 	}
 
 	/**
 	 * Trims ignored classes and functions from the top of the stack trace.
 	 *
 	 * @param QM_Backtrace_Frame[] $trace
+	 * @param array<string, mixed[]> $args
 	 * @return QM_Backtrace_Frame[]
 	 */
-	protected function trim_top_frames( array $trace ): array {
-		$this->ensure_filters_loaded();
-
-		$ignore_class = array_filter( array_merge( self::$ignore_class, $this->args['ignore_class'] ) );
-		$ignore_func = array_filter( $this->args['ignore_func'] );
+	protected function trim_top_frames( array $trace, array $args ): array {
+		$ignore_class = array_merge( self::$ignore_class, $args['ignore_class'] );
+		$ignore_func = $args['ignore_func'];
 
 		while ( ! empty( $trace ) ) {
 			$frame = $trace[0];
@@ -488,7 +569,13 @@ class QM_Backtrace implements JsonSerializable {
 	 * @return array<int, string>
 	 */
 	public static function get_filtered_stack( array $stack ) {
+		self::ensure_filters_loaded();
+
 		$trace = new self( array(), array() );
+		$ignore_namespace = self::$ignore_namespace;
+		$ignore_method = self::$ignore_method;
+		$ignore_hook = self::$ignore_hook;
+		$show_args = self::$show_args;
 		$return = array();
 
 		foreach ( $stack as $i => $item ) {
@@ -516,26 +603,12 @@ class QM_Backtrace implements JsonSerializable {
 
 			$frame['args'] = array();
 
-			if ( $trace->filter_trace( $frame ) ) {
+			if ( $trace->filter_trace( $frame, $ignore_namespace, $ignore_method, $ignore_hook, $show_args ) ) {
 				$return[] = $item;
 			}
 		}
 
 		return $return;
-	}
-
-	/**
-	 * @deprecated Use the `ignore_class`, `ignore_method`, `ignore_func`, and `ignore_hook` arguments instead.
-	 *
-	 * @param int $num
-	 * @return self
-	 */
-	public function ignore( $num ) {
-		for ( $i = 0; $i < $num; $i++ ) {
-			unset( $this->trace[ $i ] );
-		}
-		$this->trace = array_values( $this->trace );
-		return $this;
 	}
 
 	/**
@@ -554,7 +627,7 @@ class QM_Backtrace implements JsonSerializable {
 			 * @param array<string, bool> $ignore_class Array of class names to ignore. The array keys are class names to ignore,
 			 *                                          the array values are whether to ignore the class (usually true).
 			 */
-			self::$ignore_class = apply_filters( 'qm/trace/ignore_class', self::$ignore_class );
+			self::$ignore_class = array_filter( apply_filters( 'qm/trace/ignore_class', self::$ignore_class ) );
 
 			/**
 			 * Filters which namespaces to ignore when constructing user-facing call stacks.
@@ -564,7 +637,7 @@ class QM_Backtrace implements JsonSerializable {
 			 * @param array<string, bool> $ignore_namespace Array of namespace names to ignore. The array keys are namespace names to ignore,
 			 *                                              the array values are whether to ignore the namespace (usually true).
 			 */
-			self::$ignore_namespace = apply_filters( 'qm/trace/ignore_namespace', self::$ignore_namespace );
+			self::$ignore_namespace = array_filter( apply_filters( 'qm/trace/ignore_namespace', self::$ignore_namespace ) );
 
 			/**
 			 * Filters which class methods to ignore when constructing user-facing call stacks.
@@ -575,7 +648,7 @@ class QM_Backtrace implements JsonSerializable {
 			 *                                                          class names, the second level array keys are method names, and
 			 *                                                          the array values are whether to ignore the method (usually true).
 			 */
-			self::$ignore_method = apply_filters( 'qm/trace/ignore_method', self::$ignore_method );
+			self::$ignore_method = array_filter( apply_filters( 'qm/trace/ignore_method', self::$ignore_method ) );
 
 			/**
 			 * Filters which action and filter names to ignore when constructing user-facing call stacks.
@@ -585,7 +658,7 @@ class QM_Backtrace implements JsonSerializable {
 			 * @param array<string, bool> $ignore_hook Array of hook names to ignore. The array keys are hook names to ignore,
 			 *                                         the array values are whether to ignore the hook (usually true).
 			 */
-			self::$ignore_hook = apply_filters( 'qm/trace/ignore_hook', self::$ignore_hook );
+			self::$ignore_hook = array_filter( apply_filters( 'qm/trace/ignore_hook', self::$ignore_hook ) );
 
 			/**
 			 * Filters the number of argument values to show for the given function name when constructing user-facing
@@ -607,15 +680,13 @@ class QM_Backtrace implements JsonSerializable {
 	/**
 	 * Formats a single trace frame and determines whether it should be hidden.
 	 *
-	 * @param mixed[] $frame
+	 * @param mixed[] $frame A single frame from debug_backtrace().
+	 * @param array<string, bool> $ignore_namespace
+	 * @param array<string, array<string, bool>> $ignore_method
+	 * @param array<string, bool> $ignore_hook
+	 * @param array<string, int|string> $show_args
 	 */
-	public function filter_trace( array $frame ) :? QM_Backtrace_Frame {
-		self::ensure_filters_loaded();
-
-		$ignore_namespace = array_filter( array_merge( self::$ignore_namespace, $this->args['ignore_namespace'] ) );
-		$ignore_method = array_filter( array_merge( self::$ignore_method, $this->args['ignore_method'] ) );
-		$ignore_hook = array_filter( array_merge( self::$ignore_hook, $this->args['ignore_hook'] ) );
-		$show_args = array_merge( self::$show_args, $this->args['show_args'] );
+	public function filter_trace( array $frame, array $ignore_namespace, array $ignore_method, array $ignore_hook, array $show_args ) :? QM_Backtrace_Frame {
 
 		$hook_functions = array(
 			'apply_filters' => true,
@@ -631,7 +702,7 @@ class QM_Backtrace implements JsonSerializable {
 		}
 
 		$id = '';
-		$display = '';
+		$frame_args = null;
 
 			if ( isset( $frame['class'] ) ) {
 			// WP_Hook methods are always filtered out. The do_action/apply_filters
@@ -651,7 +722,6 @@ class QM_Backtrace implements JsonSerializable {
 			}
 
 			$id = $frame['class'] . $frame['type'] . $frame['function'];
-			$display = $id . '()';
 		} else {
 			foreach ( array_keys( $ignore_namespace ) as $namespace ) {
 				if ( 0 === strpos( $frame['function'], $namespace . '\\' ) ) {
@@ -665,7 +735,7 @@ class QM_Backtrace implements JsonSerializable {
 				if ( 'dir' === $show ) {
 					if ( isset( $frame['args'][0] ) ) {
 						$id = $frame['function'];
-						$display = QM_Util::standard_dir( $frame['args'][0], '' );
+						$frame_args = QM_Util::standard_dir( $frame['args'][0], '' );
 					}
 				} else {
 					if ( isset( $hook_functions[ $frame['function'] ], $frame['args'][0] ) && is_string( $frame['args'][0] ) && isset( $ignore_hook[ $frame['args'][0] ] ) ) {
@@ -683,17 +753,16 @@ class QM_Backtrace implements JsonSerializable {
 						}
 					}
 					$id = $frame['function'];
-					$display = $frame['function'] . '(' . implode( ',', $args ) . ')';
+					$frame_args = implode( ',', $args );
 				}
 			} else {
 				$id = $frame['function'];
-				$display = $frame['function'] . '()';
 			}
 		}
 
 		$result = new QM_Backtrace_Frame();
 		$result->id = $id;
-		$result->display = $display;
+		$result->args = $frame_args;
 		$result->file = $frame['file'] ?? null;
 		$result->line = $frame['line'] ?? null;
 		$result->function = $frame['function'];
@@ -714,17 +783,14 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * @phpstan-return array{
-	 *   component: QM_Component,
-	 *   callsite: ?QM_Data_Callsite,
-	 *   frames: list<QM_Data_Stack_Frame>,
-	 *   time: float,
-	 * }
+	 * Shifts file/line numbers and registers each frame with the frame
+	 * registry. Called eagerly from the constructor so the registry is
+	 * populated without needing a separate serialization pass.
+	 *
+	 * @param QM_Backtrace_Frame[] $trace
+	 * @return void
 	 */
-	public function jsonSerialize(): array {
-		$trace = $this->get_filtered_trace();
-		$frames = array();
-
+	protected function process_output_frames( array $trace ): void {
 		// Seed the shift from the innermost dropped/trimmed frame's location,
 		// or from the call site for PHP error traces.
 		$prev_file = $this->top_frame_location['file'] ?? ( $this->callsite ? $this->callsite->file : null );
@@ -749,13 +815,23 @@ class QM_Backtrace implements JsonSerializable {
 				$prev_line = $frame->line;
 			}
 
-			$frames[] = $data;
+			$this->output_frames[] = array( QM_Frame_Registry::register( $data ), $data->line );
 		}
+	}
 
+	/**
+	 * @phpstan-return array{
+	 *   component: QM_Component,
+	 *   callsite: ?QM_Data_Callsite,
+	 *   frames: list<array{int, int|null}>,
+	 *   time: float,
+	 * }
+	 */
+	public function jsonSerialize(): array {
 		return array(
 			'component' => $this->get_component(),
 			'callsite' => $this->callsite,
-			'frames' => $frames,
+			'frames' => $this->output_frames,
 			'time' => ( $this->time - $_SERVER['REQUEST_TIME_FLOAT'] ) * 1000,
 		);
 	}

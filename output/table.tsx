@@ -10,6 +10,8 @@ import {
 	Backtrace,
 	Component as ComponentType,
 } from './data-types';
+import { resolveFrame } from './frame-lookup';
+import * as Utils from './utils';
 import {
 	PanelFooter,
 } from './panels/panel-footer';
@@ -196,16 +198,16 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 	return column;
 }
 
-export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[] ) => {
+export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[], settings: { abspath: string; contentpath: string } ) => {
 	const filters = deriveFilters( rows, ( row ) => {
-		if ( row.trace?.callsite ) {
-			return { key: row.trace.callsite.filename, label: row.trace.callsite.filename };
+		if ( row.trace?.callsite?.file ) {
+			return { key: row.trace.callsite.file, label: Utils.stripAbspath( row.trace.callsite.file, settings ) };
 		}
 		if ( ! row.trace?.frames?.length ) {
 			return null;
 		}
-		const frame = row.trace.frames[0];
-		return { key: frame.id, label: frame.display };
+		const frame = resolveFrame( row.trace.frames[0] );
+		return { key: frame.id, label: `${ frame.id }()` };
 	} );
 
 	const column: Col<TDataRow> = {
@@ -215,13 +217,13 @@ export const getCallerCol = <TDataRow extends DataRowWithTrace>( rows: TDataRow[
 		filters: filters.length ? {
 			options: [ filters ],
 			callback: ( row, value: string ) => {
-				if ( row.trace?.callsite ) {
-					return row.trace.callsite.filename === value;
+				if ( row.trace?.callsite?.file ) {
+					return row.trace.callsite.file === value;
 				}
 				if ( ! row.trace?.frames?.length ) {
 					return false;
 				}
-				return row.trace.frames[0].id === value;
+				return resolveFrame( row.trace.frames[0] ).id === value;
 			},
 		} : undefined,
 	};

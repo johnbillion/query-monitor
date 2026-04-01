@@ -6,6 +6,9 @@ import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
 import { FilterOption, componentFilterCallback, deriveComponentFilters } from '../table';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
+import { MainContext } from '../contexts/main-context';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 	sprintf,
@@ -49,6 +52,8 @@ const flattenHooks = ( hooks: DataTypes['hooks']['hooks'] ): FlattenedRow[] => {
 };
 
 export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.hooks?.length ) {
 		return (
 			<EmptyPanel>
@@ -158,14 +163,14 @@ export const Hooks = ( { data }: PanelProps<DataTypes['hooks']> ) => {
 							text = sprintf(
 								/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
 								__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-								row.callback.start_line ?? 0,
-								row.callback.display_file ?? ''
+								row.callback.line || 0,
+								row.callback.file ? Utils.stripAbspath( row.callback.file, settings ) : ''
 							);
 						} else if ( 'unknown_closure' === row.callback.callback_type ) {
 							/* translators: A closure is an anonymous PHP function */
 							text = __( 'Unknown closure', 'query-monitor' );
 						} else {
-							text = row.callback.name || row.callback.display_file || '';
+							text = row.callback.name || '';
 						}
 
 						if ( ! text ) {

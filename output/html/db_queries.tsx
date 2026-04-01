@@ -61,6 +61,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		</EmptyPanel>
 	}
 
+	const types = Utils.getQueryTypes( data.rows );
 	const promptReason = ! data.has_trace ? settings.extended_query_prompt_reason : null;
 
 	return <TabularPanel
@@ -81,7 +82,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				render: ( row, i ) => ( i + 1 ),
 			},
 			sql: {
-				className: ( row ) => row.type !== 'SELECT' ? 'qm-nonselectsql' : '',
+				className: ( row ) => Utils.getQueryType( row.sql ) !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
 					<>
@@ -101,7 +102,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				),
 				filters: {
 					options: ( () => {
-						const filters = Object.keys( data.types ).map( ( type ) => ( {
+						const filters = Object.keys( types ).map( ( type ) => ( {
 							key: type,
 							label: type,
 						} ) );
@@ -121,16 +122,18 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 						return groups;
 					} )(),
 					callback: ( row, value ) => {
+						const type = Utils.getQueryType( row.sql );
+
 						if ( value === 'non-select' ) {
-							return ( row.type !== 'SELECT' );
+							return ( type !== 'SELECT' );
 						}
 
-						return ( row.type === value );
+						return ( type === value );
 					},
 				},
 				wrap: true
 			},
-			caller: data.has_trace ? getCallerCol( data.rows ) : getStackCol( data.rows ),
+			caller: data.has_trace ? getCallerCol( data.rows, settings ) : getStackCol( data.rows ),
 			component: data.has_trace ? getComponentCol( data.rows ) : null,
 			result: data.has_result ? {
 				className: 'qm-num',

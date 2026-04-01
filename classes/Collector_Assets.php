@@ -49,6 +49,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	protected $missing = array();
 
+	/**
+	 * @var string
+	 */
+	protected $default_version = '';
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Assets();
 	}
@@ -128,7 +133,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->default_version = get_bloginfo( 'version' );
+		$this->default_version = get_bloginfo( 'version' );
 
 		$url = new QM_Data_URL();
 		$url->origin = self::get_origin();
@@ -192,7 +197,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			foreach ( $modules as $id => $module ) {
 				$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $module['src'] );
 
-				$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->host, '#' ) . '#', '', remove_query_arg( 'ver', $module['src'] ) ), '/' );
 				$position = 'modules';
 
 				$asset_data[] = array(
@@ -202,7 +206,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'source' => $module['src'],
 					'ver' => $module['version'] ?: '',
 					'warning' => false,
-					'display' => $display,
 					'dependents' => $module['dependents'],
 					'dependencies' => $module['dependencies'],
 				);
@@ -241,12 +244,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$warning = ! in_array( $handle, $raw->done, true );
 
-				if ( $source instanceof WP_Error ) {
-					$display = $source->get_error_message();
-				} else {
-					$display = ltrim( preg_replace( '#https?://' . preg_quote( $this->data->url->host, '#' ) . '#', '', remove_query_arg( 'ver', $source ) ), '/' );
-				}
-
 				$dependencies = $dependency->deps;
 
 				foreach ( $dependencies as $dep ) {
@@ -263,7 +260,6 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 					'source' => $source,
 					'ver' => $ver,
 					'warning' => $warning,
-					'display' => $display,
 					'dependents' => $dependents,
 					'dependencies' => $dependencies,
 				);
@@ -431,7 +427,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		if ( null === $dependency->ver ) {
 			$ver = '';
 		} else {
-			$ver = $dependency->ver ?: $this->data->default_version;
+			$ver = $dependency->ver ?: $this->default_version;
 		}
 
 		if ( ! empty( $src ) && ! empty( $ver ) ) {

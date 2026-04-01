@@ -24,11 +24,6 @@ class QM_Data_Overview extends QM_Data {
 	public $time_limit;
 
 	/**
-	 * @var float
-	 */
-	public $time_start;
-
-	/**
 	 * @var int|float
 	 */
 	public $time_usage;
@@ -47,21 +42,6 @@ class QM_Data_Overview extends QM_Data {
 	 * @var int|float
 	 */
 	public $memory_usage;
-
-	/**
-	 * @var ?array<string, mixed>
-	 */
-	public $current_user;
-
-	/**
-	 * @var ?array<string, mixed>
-	 */
-	public $switched_user;
-
-	/**
-	 * @var bool
-	 */
-	public $is_admin;
 
 	/**
 	 * @phpstan-var ?array<string, array<int, array{

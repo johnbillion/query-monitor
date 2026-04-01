@@ -20,7 +20,6 @@
  *   source: string|WP_Error,
  *   ver: string,
  *   warning: bool,
- *   display: string,
  *   dependents: array<int, string>,
  *   dependencies: array<int, string>,
  * }
@@ -30,11 +29,6 @@ class QM_Data_Assets extends QM_Data {
 	 * @var ?array<int, Asset>
 	 */
 	public $assets;
-
-	/**
-	 * @var string
-	 */
-	public $default_version;
 
 	/**
 	 * @var mixed

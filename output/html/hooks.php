@@ -163,8 +163,8 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 							$cb_name = sprintf(
 								/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
 								__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-								$cb->start_line,
-								$cb->display_file
+								$cb->line,
+								$cb->file ? QM_Util::standard_dir( $cb->file, '' ) : ''
 							);
 						} elseif ( 'unknown_closure' === $cb->callback_type ) {
 							/* translators: A closure is an anonymous PHP function */

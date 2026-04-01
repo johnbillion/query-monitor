@@ -42,9 +42,6 @@
 						"phpType": "string|false",
 						"tsType": "string|false"
 					},
-					"display": {
-						"type": "string"
-					},
 					"found": {
 						"type": [
 							"integer",
@@ -73,7 +70,6 @@
 					"caller",
 					"domain",
 					"file",
-					"display",
 					"found",
 					"handle",
 					"type"

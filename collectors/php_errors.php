@@ -241,7 +241,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		$callsite = new QM_Data_Callsite();
 		$callsite->file = $file;
-		$callsite->filename = ( $file ? QM_Util::standard_dir( $file, '' ) : '' );
 		$callsite->line = $line;
 
 		$trace = new QM_Backtrace( array(

@@ -1,3 +1,4 @@
+import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
@@ -7,6 +8,7 @@ import { getCallerCol, getComponentCol } from '../table';
 import { getFilterLabel } from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
 const warningLevels = [
@@ -18,6 +20,8 @@ const warningLevels = [
 ];
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! data.logs || ! data.logs.length ) {
 		return (
 			<EmptyPanel>
@@ -116,7 +120,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					);
 				},
 			},
-			caller: getCallerCol( data.logs ),
+			caller: getCallerCol( data.logs, settings ),
 			component: getComponentCol( data.logs ),
 		} }
 		data={ data.logs }

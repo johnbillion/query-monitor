@@ -1,15 +1,19 @@
+import { MainContext } from '../contexts/main-context';
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { useContext } from 'preact/hooks';
 import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
 
 export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
+	const { settings } = useContext( MainContext );
+
 	if ( ! enabled ) {
 		return (
 			<EmptyPanel>
@@ -87,7 +91,7 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 				heading: __( 'Result', 'query-monitor' ),
 				render: ( cap ) => ( cap.result ? <span className="qm-true">true&nbsp;&#x2713;</span> : 'false' ),
 			},
-			caller: getCallerCol( data.caps ),
+			caller: getCallerCol( data.caps, settings ),
 			component: getComponentCol( data.caps ),
 		} }
 		data={ data.caps }

@@ -101,12 +101,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 		$output['time'] = round( $row['ltime'], 4 );
 
 		if ( isset( $row['trace'] ) ) {
-			$stack = array();
-			$filtered_trace = $row['trace']->get_filtered_trace();
-
-			foreach ( $filtered_trace as $item ) {
-				$stack[] = $item->display;
-			}
+			$stack = $row['trace']->get_stack();
 		} else {
 			$stack = $row['stack'] ?? array();
 		}

@@ -60,11 +60,6 @@ class QM_Data_Request extends QM_Data {
 	public $queried_object;
 
 	/**
-	 * @var string
-	 */
-	public $request_method;
-
-	/**
 	 * @var array<string, string>
 	 */
 	public $matching_rewrites;

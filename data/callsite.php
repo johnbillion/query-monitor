@@ -12,17 +12,12 @@
 
 class QM_Data_Callsite {
 	/**
-	 * @var string|null
+	 * @var string
 	 */
 	public $file;
 
 	/**
-	 * @var string
-	 */
-	public $filename;
-
-	/**
-	 * @var int|null
+	 * @var int
 	 */
 	public $line;
 }

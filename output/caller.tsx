@@ -3,7 +3,10 @@ import { SourceLocation } from './components/source-location';
 import {
 	Backtrace,
 } from './data-types';
-import { useState } from 'preact/hooks';
+import { resolveFrames } from './frame-lookup';
+import * as Utils from './utils';
+import { MainContext } from './contexts/main-context';
+import { useContext, useState } from 'preact/hooks';
 
 import {
 	__,
@@ -18,10 +21,12 @@ interface Props {
 
 export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 	const callsite = trace?.callsite;
+	const {
+		settings,
+	} = useContext( MainContext );
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
-	// This creates a copy of the frames array.
-	const frames = trace?.frames ? [ ...trace.frames ] : [];
+	const frames = trace?.frames ? resolveFrames( trace.frames ) : [];
 
 	// Frame 0 is always removed from the stack. It either becomes the
 	// caller display, or is redundant with the call site.
@@ -42,14 +47,14 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				<Toggle
 					expanded={ expanded }
 					onToggle={ () => setExpanded( ! expanded ) }
-					context={ callsite?.filename ?? caller?.display }
+					context={ ( callsite?.file ? Utils.stripAbspath( callsite.file, settings ) : undefined ) ?? ( caller ? Utils.frameDisplay( caller ) : undefined ) }
 				/>
 			) }
 			<ol>
 				{ callsite && (
 					<li>
 						<FileName
-							text={ callsite.filename }
+							text={ callsite.file ? Utils.stripAbspath( callsite.file, settings ) : '' }
 							file={ callsite.file }
 							line={ callsite.line }
 							expanded={ expanded || ! hasStack }
@@ -59,7 +64,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				{ ! callsite && caller && (
 					<li>
 						<SourceLocation
-							text={ caller.display }
+							text={ Utils.frameDisplay( caller ) }
 							file={ caller.file }
 							line={ caller.line }
 							expanded={ expanded || ! hasStack }
@@ -68,9 +73,9 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				) }
 				{ hasStack && expanded && (
 					frames.map( frame => (
-						<li key={ frame.display }>
+						<li key={ frame.id }>
 							<SourceLocation
-								text={ frame.display }
+								text={ Utils.frameDisplay( frame ) }
 								file={ frame.file }
 								line={ frame.line }
 								expanded

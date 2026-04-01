@@ -282,12 +282,6 @@ class QM_Collector_Request extends QM_DataCollector {
 			$this->data->queried_object = $queried_object;
 		}
 
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
-			$this->data->request_method = strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ); // phpcs:ignore
-		} else {
-			$this->data->request_method = '';
-		}
-
 		if ( is_admin() || QM_Util::is_async() || empty( $wp_rewrite->rules ) ) {
 			return;
 		}

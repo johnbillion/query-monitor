@@ -71,7 +71,6 @@ export interface ConcernedHook {
  * Callback registered on a hook or block.
  */
 export interface Callback {
-	accepted_args?: number;
 	callback_type:
 		| "function"
 		| "method"
@@ -84,9 +83,6 @@ export interface Callback {
 	name?: string;
 	file?: string | false;
 	line?: number | false;
-	start_line?: number;
-	display_file?: string;
-	error?: WP_Error;
 	component?: Component;
 }
 /**
@@ -118,7 +114,6 @@ export interface Admin {
  */
 export interface Assets {
 	assets?: Asset[];
-	default_version: string;
 	url: URL;
 	missing_dependencies: {
 		[k: string]: true;
@@ -131,7 +126,6 @@ export interface Asset {
 	source: string | WP_Error;
 	ver: string;
 	warning: boolean;
-	display: string;
 	dependents: string[];
 	dependencies: string[];
 	[k: string]: unknown;
@@ -140,11 +134,7 @@ export interface Asset {
  * Parsed URL data object.
  */
 export interface URL {
-	origin: string;
-	scheme: string;
-	hostname: string;
 	host: string;
-	insecure: boolean;
 	local: boolean;
 	absolute: string;
 }
@@ -152,10 +142,8 @@ export interface URL {
  * Block editor data transfer object.
  */
 export interface Block_Editor {
-	all_dynamic_blocks: string[];
 	post_blocks: PostBlock[];
 	post_has_blocks: boolean;
-	total_blocks: number;
 }
 export interface PostBlock {
 	blockName: string | null;
@@ -180,7 +168,6 @@ export interface PostBlock {
  */
 export interface Cache {
 	has_object_cache: boolean;
-	display_hit_rate_warning: boolean;
 	has_opcode_cache: boolean;
 	cache_hit_percentage?: number;
 	stats?: {
@@ -211,7 +198,10 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	callsite?: CallSite | null;
-	frames: StackFrame[];
+	/**
+	 * Compact frame references as [frameIndex, lineNumber] tuples.
+	 */
+	frames: [number, number | null][];
 	/**
 	 * Time in milliseconds relative to the start of the request.
 	 */
@@ -221,18 +211,8 @@ export interface Backtrace {
  * Code location where an error or event occurred.
  */
 export interface CallSite {
-	file: string | null;
-	filename: string;
-	line: number | null;
-}
-/**
- * Stack trace frame.
- */
-export interface StackFrame {
-	id: string;
-	display: string;
-	file: string | null;
-	line: number | null;
+	file: string;
+	line: number;
 }
 /**
  * Conditionals data transfer object.
@@ -254,7 +234,6 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
-	has_main_query: boolean;
 	dupes: {
 		query: string;
 		count: number;
@@ -275,7 +254,6 @@ export interface QueryRow {
 	sql: string;
 	ltime: number;
 	result?: number | boolean | WP_Error;
-	type: string;
 	trace?: Backtrace;
 	is_main_query?: boolean;
 }
@@ -356,11 +334,6 @@ export interface Hooks {
 			};
 		};
 	}[];
-	components: {
-		[k: string]: {
-			[k: string]: unknown;
-		};
-	}[];
 	all_hooks: boolean;
 	php_int_max: number;
 	php_int_min: number;
@@ -410,7 +383,6 @@ export interface Languages {
 		caller: StackFrame | false;
 		domain: string;
 		file: string | false;
-		display: string;
 		found: number | false;
 		handle: string | null;
 		type: "gettext" | "jed" | "php" | "unknown";
@@ -427,6 +399,15 @@ export interface Languages {
 	 * Polylang language.
 	 */
 	pll_language: string;
+}
+/**
+ * Stack trace frame.
+ */
+export interface StackFrame {
+	id: string;
+	args?: string | null;
+	file: string | null;
+	line?: number | null;
 }
 /**
  * Logger data transfer object.
@@ -458,18 +439,10 @@ export interface Multisite {
 export interface Overview {
 	time_taken?: number;
 	time_limit: number;
-	time_start: number;
 	time_usage: number;
 	memory: number;
 	memory_limit: number;
 	memory_usage: number;
-	current_user?: {
-		[k: string]: unknown;
-	};
-	switched_user?: {
-		[k: string]: unknown;
-	};
-	is_admin: boolean;
 	actions?: {
 		[k: string]: {
 			start: number;
@@ -559,7 +532,6 @@ export interface Request {
 		data?: WP_Term | WP_Post_Type | WP_Post | WP_User;
 		type?: "WP_Term" | "WP_Post_Type" | "WP_Post" | "WP_User";
 	};
-	request_method: string;
 	matching_rewrites: {
 		[k: string]: string;
 	};

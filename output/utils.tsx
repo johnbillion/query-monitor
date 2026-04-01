@@ -1,4 +1,5 @@
 import { Fragment, type JSX } from 'preact';
+import { StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
 declare const QueryMonitorData: {
@@ -271,6 +272,10 @@ export function getEditorFormat( name: string ): string {
  * @param fqn A fully qualified name.
  * @return A shortened version of the name.
  */
+export function frameDisplay( frame: Pick<StackFrame, 'id' | 'args'> ): string {
+	return `${ frame.id }(${ frame.args ?? '' })`;
+}
+
 export function shortenFqn( fqn: string ): string {
 	const backslashCount = ( fqn.match( /\\/g ) || [] ).length;
 
@@ -298,6 +303,16 @@ export function stripAbspath( file: string, settings: { abspath: string; content
 	}
 
 	return file;
+}
+
+export function getAssetDisplay( url: URL ): string {
+	try {
+		const parsed = new window.URL( url.absolute );
+		parsed.searchParams.delete( 'ver' );
+		return ( parsed.pathname + parsed.search ).replace( /^\//, '' );
+	} catch {
+		return url.absolute;
+	}
 }
 
 export function formatDuration( seconds: number ): string {
@@ -362,4 +377,33 @@ export function getSiteEditorUrl( template: string, type: string = 'wp_template_
 	} );
 
 	return `${ qm_l10n.admin_url }site-editor.php?${ params.toString() }`;
+}
+
+/**
+ * Gets the query type (SELECT, INSERT, UPDATE, etc.) from a SQL string.
+ */
+export function getQueryType( sql: string ): string {
+	// Trim leading whitespace and brackets.
+	let trimmed = sql.replace( /^[\s(]+/, '' );
+
+	// Strip out leading comments such as /*NO_SELECT_FOUND_ROWS*/.
+	trimmed = trimmed.replace( /^\/\*[^*]*\*\/\s*/, '' );
+
+	const match = trimmed.match( /^(\w+)/ );
+
+	return match ? match[1].toUpperCase() : 'Unknown';
+}
+
+/**
+ * Computes a map of query type counts from an array of SQL query rows.
+ */
+export function getQueryTypes( rows: { sql: string }[] ): Record<string, number> {
+	const types: Record<string, number> = {};
+
+	for ( const row of rows ) {
+		const type = getQueryType( row.sql );
+		types[ type ] = ( types[ type ] || 0 ) + 1;
+	}
+
+	return types;
 }
