@@ -15,6 +15,7 @@ export default defineConfig({
 	use: {
 		baseURL,
 		...devices['Desktop Chrome'],
+		/* This avoids the need to run `npx playwright install` in CI. */
 		channel: process.env.CI ? 'chrome' : undefined,
 		viewport: { width: 1440, height: 900 },
 		trace: 'on-first-retry',

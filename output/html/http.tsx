@@ -56,24 +56,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 				heading: __( 'URL', 'query-monitor' ),
 				render: ( row ) => (
 					<>
-						{ hasInterceptedWarning( row ) && (
-							<div>
-								<Warning>
-									{ sprintf(
-										/* translators: %s: WordPress filter name */
-										__( 'This HTTP request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
-										'pre_http_request'
-									) }
-								</Warning>
-							</div>
-						) }
-						{ row.args.method === 'GET' ? (
-							<a href={ row.url } target="_blank" rel="noreferrer">
-								{ Utils.formatURL( row.url ) }
-							</a>
-						) : (
-							Utils.formatURL( row.url )
-						) }
 						{ hasHttpsWarning( row ) && (
 							<div>
 								<Warning>
@@ -91,6 +73,24 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 									) }
 								</Warning>
 							</div>
+						) }
+						{ hasInterceptedWarning( row ) && (
+							<div>
+								<Warning>
+									{ sprintf(
+										/* translators: %s: WordPress filter name */
+										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
+										'pre_http_request'
+									) }
+								</Warning>
+							</div>
+						) }
+						{ row.args.method === 'GET' ? (
+							<a href={ row.url } target="_blank" rel="noreferrer">
+								{ Utils.formatURL( row.url ) }
+							</a>
+						) : (
+							Utils.formatURL( row.url )
 						) }
 						{ hasRedirectWarning( row ) && (
 							<div>
@@ -123,6 +123,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						return (
 							<Warning>
 								{ sprintf(
+									/* translators: %s: Error message text */
 									__( 'Error: %s', 'query-monitor' ),
 									Utils.getErrorMessage( row.result )
 								) }
@@ -168,10 +169,8 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						<Toggler summary={ statusText }>
 							<ul className="qm-toggled">
 								{ 'primary_ip' in info && (
-									<li key="primary_ip">
-										<span className="qm-info qm-supplemental">
-											{ __( 'IP Address', 'query-monitor' ) }: { info.primary_ip as string }
-										</span>
+									<li key="primary_ip" className="qm-info qm-supplemental">
+										{ __( 'IP Address', 'query-monitor' ) }: { info.primary_ip as string }
 									</li>
 								) }
 								{ timeFields.map( ( { key, label } ) => {
@@ -179,18 +178,14 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										return null;
 									}
 									return (
-										<li key={ key }>
-											<span className="qm-info qm-supplemental">
-												{ label }: <Duration value={ info[key] as number } />
-											</span>
+										<li key={ key } className="qm-info qm-supplemental">
+											{ label }: <Duration value={ info[key] as number } />
 										</li>
 									);
 								} ) }
 								{ sizeDownload !== null && (
-									<li key="size_download">
-										<span className="qm-info qm-supplemental">
-											{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
-										</span>
+									<li key="size_download" className="qm-info qm-supplemental">
+										{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
 									</li>
 								) }
 								{ otherFields.map( ( { key, label } ) => {
@@ -198,10 +193,8 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										return null;
 									}
 									return (
-										<li key={ key }>
-											<span className="qm-info qm-supplemental">
-												{ label }: { info[key] as string }
-											</span>
+										<li key={ key } className="qm-info qm-supplemental">
+											{ label }: { info[key] as string }
 										</li>
 									);
 								} ) }

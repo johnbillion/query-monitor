@@ -37,11 +37,11 @@ export const ErrorBoundary = ( { children }: Props ) => {
 							right: 0,
 						} }
 					>
-						{ copied ? 'Copied!' : 'Copy' }
+						{ copied ? __( 'Copied!', 'query-monitor' ) : __( 'Copy', 'query-monitor' ) }
 					</button>
 					<p>
 						<Warning>
-							An error occurred while rendering this panel:
+							{ __( 'An error occurred in this panel:', 'query-monitor' ) }
 						</Warning>
 					</p>
 					<pre>
@@ -51,7 +51,7 @@ export const ErrorBoundary = ( { children }: Props ) => {
 			) : (
 				<p>
 					<Warning>
-						An unknown error occurred while rendering this panel.
+						{ __( 'An unknown error occurred in this panel.', 'query-monitor' ) }
 					</Warning>
 				</p>
 			) }

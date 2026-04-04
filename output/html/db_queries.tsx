@@ -54,6 +54,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		return <EmptyPanel>
 			<p>
 				{ sprintf(
+					/* translators: %s: Number of database queries */
 					__( '%s database queries were performed, but none were logged.', 'query-monitor' ),
 					Utils.numberFormat( data.total_qs )
 				) }

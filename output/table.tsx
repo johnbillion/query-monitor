@@ -450,7 +450,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 			</thead>
 			<tbody ref={ tbodyRef }>
 				{ warning && (
-					<tr className="qm-warn">
+					<tr className="qm-warn qm-warn-notice">
 						<td colSpan={ nonEmptyCols.length }>
 							<Warning>
 								{ warning() }

@@ -149,9 +149,9 @@ export class QueryMonitorUtils {
 		if ( ! isOpen ) {
 			await this.page.locator( '#wp-admin-bar-query-monitor' ).click();
 		}
-		// Find a button where the text starts with the panel name
-		const buttonLocator = this.page.locator( '#qm-panel-menu button' ).filter( {
-			hasText: new RegExp( `^${panel.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' )}` )
+		// Find a visible button matching the panel name, ignoring trailing badge text
+		const buttonLocator = this.page.locator( '#qm-panel-menu button:visible' ).filter( {
+			hasText: new RegExp( `^${panel.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' )}(\\d|New|!)*$` )
 		} );
 		await buttonLocator.click();
 	}
