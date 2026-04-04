@@ -3,6 +3,7 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
@@ -41,6 +42,7 @@ export default [
 			'@typescript-eslint': tseslint,
 			react,
 			'react-hooks': reactHooks,
+			'jsx-a11y': jsxA11y,
 			prettier,
 		},
 		settings: {
@@ -61,6 +63,9 @@ export default [
 			// React Hooks
 			...reactHooks.configs.recommended.rules,
 			'react-hooks/immutability': 'off', // Allow DOM element manipulation in effects
+
+			// JSX Accessibility
+			...jsxA11y.configs.recommended.rules,
 
 			// Prettier - disables conflicting rules and shows prettier errors
 			...eslintConfigPrettier.rules,
