@@ -7,7 +7,7 @@ publish: false
 
 Query Monitor is the developer tools panel for WordPress and WooCommerce.
 
-Version 4 of Query Monitor adds a few new features and switches from rendering its panels server-side in PHP to efficiently rendering them client-side in Preact. This new approach provides several benefits:
+Version 4 of Query Monitor adds a new timeline view, and switches from rendering its panels server-side in PHP to efficiently rendering them client-side in Preact. This new approach provides several benefits:
 
 - Performance is greatly increased, particularly on sites where a large number of queries are performed, a large number of PHP errors are triggered, or a large amount of data is collected in one of the other panels.
 - Further future enhancements are facilitated, such as displaying client-side metrics, lazy-loading data, showing data from different requests, and more remixing of data into different views.
@@ -40,8 +40,6 @@ Alternatively, [download from GitHub](https://github.com/johnbillion/query-monit
 ## Backwards compatibility
 
 If you're using a plugin that adds its own panels to Query Monitor, these panels will continue to work. You shouldn't notice any difference.
-
-## Custom panels
 
 It's not yet possible for a third-party plugin to register its own client-side rendered panel in Query Monitor. This is a future enhancement, and server-side rendered panels will remain supported for as long as feasible.
 
