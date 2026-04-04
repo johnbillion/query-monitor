@@ -20,7 +20,7 @@ export const Toggle = ( { expanded, onToggle, context }: Props ) => {
 
 	return (
 		<button
-			aria-expanded={ expanded ? 'false' : 'true' }
+			aria-expanded={ expanded ? 'true' : 'false' }
 			aria-label={ label }
 			className="qm-toggle"
 			onClick={ onToggle }
