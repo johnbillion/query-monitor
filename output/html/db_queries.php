@@ -123,6 +123,7 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		$menu[ $id ] = $this->menu( array(
 			'title' => esc_html__( 'Database Queries', 'query-monitor' ),
 			'count' => $data->total_qs ?? 0,
+			'warning_count' => $errors ? count( $errors ) : 0,
 		) );
 
 		if ( $errors ) {
