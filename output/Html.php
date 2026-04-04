@@ -225,7 +225,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns the table filter controls. Safe for output.
+	 * Returns the table filter controls. No longer used. Safe for output.
 	 *
 	 * @param  string         $name   The name for the `data-` attributes that get filtered by this control.
 	 * @param  (string|int)[] $values Option values for this control.
@@ -247,7 +247,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns the column sorter controls. Safe for output.
+	 * Returns the column sorter controls. No longer used. Safe for output.
 	 *
 	 * @param string $heading Heading text for the column. Optional.
 	 * @return string Markup for the column sorter controls.
@@ -257,7 +257,7 @@ abstract class QM_Output_Html extends QM_Output {
 	}
 
 	/**
-	 * Returns a toggle control. Safe for output.
+	 * Returns a toggle control. No longer used. Safe for output.
 	 *
 	 * @param string $context Optional. Information to uniquely label the toggle button for screen readers.
 	 * @return string Markup for the toggle control.

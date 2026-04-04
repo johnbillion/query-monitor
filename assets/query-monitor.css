@@ -1224,61 +1224,6 @@ select {
 	background: var( --qm-cell-bg-hover );
 }
 
-.qm {
-	/** Sorters */
-
-	thead th.qm-sortable-column {
-		cursor: pointer;
-
-		&:hover {
-			background: var( --qm-container-bg );
-		}
-	}
-
-	.qm-sort-heading {
-		flex-grow: 1;
-	}
-
-	.qm-sort-controls {
-		flex-shrink: 0;
-		text-align: right;
-
-		.qm-icon {
-			margin-right: 0;
-			fill: #ccc;
-		}
-	}
-
-	.qm-sorted-desc .qm-sort-controls,
-	.qm-sorted-asc .qm-sort-controls {
-		.qm-icon {
-			fill: var( --qm-container-fg );
-		}
-	}
-
-	thead th.qm-sortable-column:hover .qm-sort-controls {
-		.qm-icon {
-			fill: var( --qm-panel-menu-bg-selected );
-		}
-	}
-
-	.qm-sortable-column.qm-sorted-asc .qm-sort-controls {
-		transform: scaleY(-1);
-	}
-
-	button:focus-visible,
-	a:focus-visible,
-	select:focus-visible {
-		box-shadow: 0 0 0 1px #fff, 0 0 0 3px var( --qm-button-bg-hover );
-	}
-
-	button:active,
-	a:active,
-	select:active {
-		box-shadow: none;
-	}
-}
-
 .qm-screen-reader-text,
 .screen-reader-text {
 	border: 0;
