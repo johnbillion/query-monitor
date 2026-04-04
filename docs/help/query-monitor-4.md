@@ -7,17 +7,27 @@ publish: false
 
 Query Monitor is the developer tools panel for WordPress and WooCommerce.
 
-Version 4 of Query Monitor switches from rendering its panels server-side in PHP to efficiently rendering them client-side in Preact. This provides several benefits:
+Version 4 of Query Monitor adds a few new features and switches from rendering its panels server-side in PHP to efficiently rendering them client-side in Preact. This new approach provides several benefits:
 
-- Rendering performance is greatly increased, particularly on sites where a large number of queries are performed, a large number of PHP errors are triggered, or a large amount of data is collected in one of the other panels. Your browser no longer has to process all the HTML that made up the tables in the Query Monitor panels, and it only renders the currently active panel at any one time.
-- Future enhancements are facilitated, such as displaying client-side metrics, lazy-loading debugging data, showing data from different requests, and remixing data into different views. A timeline view is in the works.
-- The raw data collected by Query Monitor is exposed to the page in a JSON blob. If you want to play around with it, take a look at the `QueryMonitorData` object in your browser console. You might be surprised at the size of the data, but don't worry, it's still much smaller and more performant than generating a huge number of HTML table rows server-side and rendering them in the browser.
+- Performance is greatly increased, particularly on sites where a large number of queries are performed, a large number of PHP errors are triggered, or a large amount of data is collected in one of the other panels.
+- Further future enhancements are facilitated, such as displaying client-side metrics, lazy-loading data, showing data from different requests, and more remixing of data into different views.
+- The raw data collected by Query Monitor has been reduced in total size and peak memory usage, and is now exposed to the page as a JSON blob. Take a look at the `QueryMonitorData` object in your browser console to play around with it.
 
 ## New timeline view
 
 A new Timeline panel provides a visual overview of the events that occur during a page load. Database queries, HTTP API requests, PHP errors, timings, logs, and notable actions are all plotted on a horizontal timeline so you can see when they occurred and how long they took relative to the total page load time. You can filter by component and toggle individual categories on and off.
 
 ![The Timeline panel in Query Monitor](/timeline.png)
+
+## Zero dependencies
+
+Query Monitor now ships with zero external dependencies. No more jQuery, no reliance on `wp` globals, and no enqueuing of assets, just a self-contained 100KB Preact-powered bundle.
+
+## Isn't Query Monitor redundant now we have AI?
+
+Query Monitor is more useful than ever in our new world of AI-driven development. Query Monitor gives agentic developers the observability that they need to produce high performing WordPress websites and WooCommerce stores, and because Query Monitor has been around a while, all the AI tools know how to use it.
+
+Query Monitor itself doesn't contain any AI-powered features yet, but perhaps it will in the future. I'll only ever add features that solve real problems for humans and agents.
 
 ## Installation
 
