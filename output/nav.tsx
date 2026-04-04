@@ -64,7 +64,7 @@ function normaliseMenu( menu: iNavMenu ): iNavMenu {
 }
 
 const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
-	<>
+	<span aria-hidden="true">
 		{ item.new && ! seen && (
 			<span className="qm-menu-badge qm-menu-badge-new">
 				{ _x( 'New', 'badge', 'query-monitor' ) }
@@ -80,7 +80,7 @@ const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
 				{ Utils.numberFormat( item.warning_count ) }
 			</span>
 		) }
-	</>
+	</span>
 );
 
 function selectLabel( item: iNavMenuItem ): string {
