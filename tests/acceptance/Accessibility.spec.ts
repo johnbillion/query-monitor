@@ -1,13 +1,12 @@
 import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import { test, expect } from './utils/test-setup';
 import type { AxeResults, Result } from 'axe-core';
 
-const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
+const require = createRequire( import.meta.url );
 
 const axeSource = fs.readFileSync(
-	path.resolve( __dirname, '../../node_modules/axe-core/axe.min.js' ),
+	require.resolve( 'axe-core/axe.min.js' ),
 	'utf8',
 );
 
