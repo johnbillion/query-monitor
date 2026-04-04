@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Icon } from './components/icon';
+import { Icon, IconDefs } from './components/icon';
 import { MainContext, MainContextType, DurationUnit } from './contexts/main-context';
 import { type ComponentChildren, render } from 'preact';
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'preact/hooks';
@@ -310,6 +310,7 @@ export const QM = ( props: Props ) => {
 
 	return (
 		<MainContext.Provider value={ contextValue }>
+			<IconDefs />
 			<link rel="stylesheet" href={ cssUrl } />
 			{ active && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
