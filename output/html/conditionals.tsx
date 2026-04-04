@@ -8,7 +8,7 @@ export const Conditionals = ( { data }: PanelProps<DataTypes['conditionals']> ) 
 	const falseConds = data.conds['false'];
 
 	return (
-		<NonTabularPanel>
+		<NonTabularPanel title={ __( 'Conditionals', 'query-monitor' ) }>
 			<div className="qm-boxed">
 				<section>
 					<h3>

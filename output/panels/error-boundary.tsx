@@ -1,5 +1,6 @@
 import { type ComponentChildren } from 'preact';
 import { useErrorBoundary, useState } from 'preact/hooks';
+import { __ } from '@wordpress/i18n';
 
 import { ErrorPanel } from './error-panel';
 import { Warning } from '../components/warning';
@@ -30,6 +31,7 @@ export const ErrorBoundary = ( { children }: Props ) => {
 			{ ( error instanceof Error ) ? (
 				<div style={ { position: 'relative' } }>
 					<button
+						aria-label={ __( 'Copy error to clipboard', 'query-monitor' ) }
 						onClick={ copyToClipboard }
 						style={ {
 							position: 'absolute',

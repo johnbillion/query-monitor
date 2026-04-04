@@ -184,6 +184,7 @@ export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
 
 	return (
 	<select
+		aria-label={ __( 'Select panel', 'query-monitor' ) }
 		value={ active }
 		onChange={ ( e ) => {
 			onSwitch( e.currentTarget.value );

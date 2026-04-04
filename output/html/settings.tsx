@@ -50,10 +50,7 @@ export const Settings = ( {settings}: SettingsProps ) => {
 	};
 
 	return (
-		<NonTabularPanel>
-			<h2 className="qm-screen-reader-text">
-				{ __( 'Settings', 'query-monitor' ) }
-			</h2>
+		<NonTabularPanel title={ __( 'Settings', 'query-monitor' ) }>
 			<div className="qm-grid">
 				<section>
 					<h3>

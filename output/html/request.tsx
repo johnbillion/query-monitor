@@ -22,7 +22,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 	};
 
 	return (
-		<NonTabularPanel>
+		<NonTabularPanel title={ __( 'Request', 'query-monitor' ) }>
 			<section>
 				{ Object.keys( items ).map( ( key: keyof typeof items ) => {
 					const name = items[key];

@@ -178,14 +178,15 @@ export const Panels = ( props: Props ) => {
 			// Settings panel receives the settings object
 			output = panel.render( props.settings );
 		} else {
-			// what is panelData?
 			const panelData = ( props.data as Record<string, { data: unknown; enabled: boolean } | undefined> )[ panel.data ] ?? null;
 			output = panelData ? panel.render( panelData.data as DataTypes[keyof DataTypes], panelData.enabled ) : null;
 		}
 	}
 
 	return (
-		<div id="qm-panels">
+		// Scrollable region must be keyboard-accessible.
+		// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+		<div id="qm-panels" tabIndex={ 0 }>
 			<ErrorBoundary key={ active }>
 				<PanelContext.Provider value={ panelContextValue }>
 					{ panel ? (

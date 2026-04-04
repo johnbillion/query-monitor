@@ -49,8 +49,8 @@
 	--qm-info-fg:                      light-dark( #50575e, #aaa );
 	--qm-warn-fg:                      light-dark( #8a2424, #fff0f0 );
 	--qm-warn-bg:                      light-dark( #fcf0f1, #622 );
-	--qm-warn-bg-dark:                 light-dark( #f8e3e4, #6c2424 );
-	--qm-warn-bg-hover:                light-dark( #f5d6d8, #7a2a2a );
+	--qm-warn-bg-dark:                 light-dark( #feeff1, #6c2424 );
+	--qm-warn-bg-hover:                light-dark( #fdeced, #7a2a2a );
 	--qm-warn-border:                  light-dark( #facfd2, #ffd6d6 );
 	--qm-nonselect-fg:                 light-dark( #a0a,    #a6a );
 	--qm-title-bg:                     light-dark( #ececec, #3e444a );
@@ -1050,7 +1050,7 @@ i {
 
 .qm {
 	.qm-empty {
-		background: var( --qm-panel-menu-bg-current );
+		background: var( --qm-panel-bg );
 		border: 1px solid var( --qm-panel-menu-bg-hover );
 		margin: 0 0 10px 0;
 		max-width: 40em;
@@ -1538,5 +1538,17 @@ select {
 	}
 	to {
 		clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.qm-fabulous .qm-title-heading::before {
+		animation: none;
+	}
+
+	tbody tr.qm-jump-highlight th,
+	tbody tr.qm-jump-highlight td {
+		animation: none;
+		background: var( --qm-cell-bg-highlight-dark );
 	}
 }

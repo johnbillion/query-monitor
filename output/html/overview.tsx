@@ -41,7 +41,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 	const displayMemoryUsageWarning = memoryUsage >= 75;
 
 	return (
-		<NonTabularPanel>
+		<NonTabularPanel title={ __( 'Overview', 'query-monitor' ) }>
 			<div className="qm-boxed">
 				{ rawRequestData && rawRequestData.response?.status != null && (
 					<section id="qm-overview-raw-request">

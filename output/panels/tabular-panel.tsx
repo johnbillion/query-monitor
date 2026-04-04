@@ -19,10 +19,11 @@ export const TabularPanel = <TDataRow extends {}>( { cols, data, footer, warning
 
 	return (
 		<div
-			aria-labelledby="qm-panel-title"
+			aria-labelledby="qm-panel-table"
 			className="qm qm-panel-show"
 			id={ `qm-${id}` }
 			role="tabpanel"
+			// Allows programmatic focus when switching tabs.
 			tabIndex={ -1 }
 		>
 			<Table

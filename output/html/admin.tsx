@@ -10,7 +10,7 @@ export const Admin = ( { data }: PanelProps<DataTypes['admin']> ) => {
 	}
 
 	return (
-		<NonTabularPanel>
+		<NonTabularPanel title={ __( 'Admin Screen', 'query-monitor' ) }>
 			<section>
 				<h3>
 					get_current_screen()

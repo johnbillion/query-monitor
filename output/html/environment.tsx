@@ -1,3 +1,4 @@
+import { __ } from '@wordpress/i18n';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
@@ -7,7 +8,7 @@ import Server from '../server';
 import WordPress from '../wordpress';
 
 export const Environment = ( { data }: PanelProps<DataTypes['environment']> ) => (
-	<NonTabularPanel>
+	<NonTabularPanel title={ __( 'Environment', 'query-monitor' ) }>
 		<PHP php={ data.php }/>
 		<DB db={ data.db }/>
 		<WordPress wordpress={ data.wp }/>

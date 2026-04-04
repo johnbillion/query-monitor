@@ -27,7 +27,7 @@ export const Theme = ( { data }: PanelProps<DataTypes['response']> ) => {
 	}
 
 	return (
-		<NonTabularPanel>
+		<NonTabularPanel title={ __( 'Template', 'query-monitor' ) }>
 			<section>
 				<h3>
 					{ __( 'Theme', 'query-monitor' ) }
