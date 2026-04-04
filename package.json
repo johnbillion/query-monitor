@@ -27,6 +27,7 @@
 	"main": "src/index.tsx",
 	"type": "module",
 	"devDependencies": {
+		"@axe-core/playwright": "^4.11.1",
 		"@eslint/js": "^9.39.2",
 		"@johnbillion/plugin-infrastructure": "2.8.0",
 		"@jsdevtools/version-bump-prompt": "^6.1.0",
