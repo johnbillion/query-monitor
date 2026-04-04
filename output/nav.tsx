@@ -64,23 +64,23 @@ function normaliseMenu( menu: iNavMenu ): iNavMenu {
 }
 
 const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
-	<span aria-hidden="true">
+	<>
 		{ item.new && ! seen && (
-			<span className="qm-menu-badge qm-menu-badge-new">
+			<span aria-hidden="true" className="qm-menu-badge qm-menu-badge-new">
 				{ _x( 'New', 'badge', 'query-monitor' ) }
 			</span>
 		) }
 		{ !! item.count && item.count !== item.warning_count && (
-			<span className="qm-menu-badge">
+			<span aria-hidden="true" className="qm-menu-badge">
 				{ Utils.numberFormat( item.count ) }
 			</span>
 		) }
 		{ !! item.warning_count && (
-			<span className="qm-menu-badge qm-menu-badge-warning">
+			<span aria-hidden="true" className="qm-menu-badge qm-menu-badge-warning">
 				{ Utils.numberFormat( item.warning_count ) }
 			</span>
 		) }
-	</span>
+	</>
 );
 
 function selectLabel( item: iNavMenuItem ): string {
