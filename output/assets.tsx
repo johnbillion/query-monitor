@@ -53,9 +53,13 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 	const display = Utils.getAssetDisplay( asset.url );
 
 	return (
-		<a href={ asset.url.absolute } target="_blank" rel="noreferrer">
-			{ display }
-		</a>
+		display ? (
+			<a href={ asset.url.absolute } target="_blank" rel="noreferrer">
+				{ display }
+			</a>
+		) : (
+			''
+		)
 	);
 };
 
