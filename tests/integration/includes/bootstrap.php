@@ -1,12 +1,7 @@
 <?php declare(strict_types = 1);
 
-// this is integration test bootstrap
-
-// exit(23);
-
 // Define QM_TESTS to allow the plugin to load during CLI tests
 define( 'QM_TESTS', true );
-
 
 $_tests_dir = dirname( __DIR__, 3 ) . '/vendor/wp-phpunit/wp-phpunit/';
 
