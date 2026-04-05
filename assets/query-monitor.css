@@ -1058,8 +1058,9 @@ i {
 	}
 
 	.qm-error {
-		background: #fee;
-		border: 1px solid #f44;
+		background: var( --qm-warn-bg );
+		border: 1px solid var( --qm-warn-border );
+		color: var( --qm-warn-fg );
 		margin: 0 0 10px 0;
 		padding: 10px 20px;
 	}
