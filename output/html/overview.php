@@ -76,7 +76,7 @@ class QM_Output_Html_Overview extends QM_Output_Html {
 			'new' => true,
 		);
 
-		$menu[ $this->collector->id() ] = $this->menu( $args );
+		$menu['timeline'] = $this->menu( $args );
 
 		return $menu;
 
