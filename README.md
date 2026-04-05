@@ -223,25 +223,17 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Screenshots
 
-### Admin Toolbar Menu
-
-![Admin Toolbar Menu](.wordpress-org/screenshot-1.png)
-
-### Database Queries
-
-![Database Queries](.wordpress-org/screenshot-4.png)
-
-### Capability Checks
-
-![Capability Checks](.wordpress-org/screenshot-3.png)
-
 ### Aggregate Database Queries by Component
 
 ![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
-### Aggregate Database Queries by Calling Function
+### Database Queries
 
-![Aggregate Database Queries by Calling Function](.wordpress-org/screenshot-7.png)
+![Database Queries](.wordpress-org/screenshot-3.png)
+
+### Timeline
+
+![Timeline](.wordpress-org/screenshot-4.png)
 
 ### Hooks and Actions
 
@@ -250,6 +242,10 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 ### HTTP API Requests
 
 ![HTTP API Requests](.wordpress-org/screenshot-6.png)
+
+### Logs
+
+![Logs](.wordpress-org/screenshot-7.png)
 
 ## Frequently Asked Questions
 

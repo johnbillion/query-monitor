@@ -76,11 +76,11 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 1. Admin Toolbar Menu
 2. Aggregate Database Queries by Component
-3. Capability Checks
-4. Database Queries
+3. Database Queries
+4. Timeline
 5. Hooks and Actions
 6. HTTP API Requests
-7. Aggregate Database Queries by Calling Function
+7. Logs
 
 ## Frequently Asked Questions
 
