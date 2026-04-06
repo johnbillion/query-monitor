@@ -11,11 +11,11 @@ Version 4 of Query Monitor adds a new timeline view, and switches from rendering
 
 - Performance is greatly increased, particularly on sites where a large number of queries are performed, a large number of PHP errors are triggered, or a large amount of data is collected in one of the other panels.
 - Further future enhancements are facilitated, such as displaying client-side metrics, lazy-loading data, showing data from different requests, and more remixing of data into different views.
-- The raw data collected by Query Monitor has been reduced in total size and peak memory usage, and is now exposed to the page as a JSON blob. Take a look at the `QueryMonitorData` object in your browser console to play around with it.
+- The raw data collected by Query Monitor has been reduced in size and memory usage, and is now exposed to the page as JSON. Take a look at the `QueryMonitorData` object in your browser console to play around with it.
 
 ## New timeline view
 
-A new Timeline panel provides a visual overview of the events that occur during a page load. Database queries, HTTP API requests, PHP errors, timings, logs, and notable actions are all plotted on a horizontal timeline so you can see when they occurred and how long they took relative to the total page load time. You can filter by component and toggle individual categories on and off.
+A brand new Timeline panel provides a useful visual overview of the events that occur during a page load. Database queries, HTTP API requests, PHP errors, timings, logs, and notable actions are all plotted on a horizontal timeline so you can see when they occurred and how long they took. You can filter by component and switch categories on and off.
 
 ![The Timeline panel in Query Monitor](/timeline.png)
 
@@ -37,31 +37,29 @@ Install and activate Query Monitor as you would any other plugin for WordPress.
 
 Alternatively, [download from GitHub](https://github.com/johnbillion/query-monitor/releases) or [install via Composer](https://packagist.org/packages/johnbillion/query-monitor).
 
-## Backwards compatibility
+## Sponsorship
 
-If you're using a plugin that adds its own panels to Query Monitor, these panels will continue to work. You shouldn't notice any difference.
+Without the support of sponsors, I would certainly not be able to continue maintaining Query Monitor.
 
-It's not yet possible for a third-party plugin to register its own client-side rendered panel in Query Monitor. This is a future enhancement, and server-side rendered panels will remain supported for as long as feasible.
+If you work at an agency or web host that develops with WordPress, ask your company to provide <a href="https://github.com/sponsors/johnbillion">sponsorship in order to invest in its supply chain</a>. The tools that I maintain probably save your company time and money. GitHub sponsorship can be done at the organisation level.
 
-## Thanks
-
-The time that I spend maintaining this plugin and others is in part sponsored by:
+Many thanks to the following companies and individuals that in part sponsor the time that I spend maintaining this plugin:
 
 <p align="center">
 	<a href="https://automattic.com">
-		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/automattic.svg" alt="Automattic" width="50%">
+		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/automattic.svg" alt="Automattic" style="max-height:40px">
 	</a>
 </p>
 
 <p align="center">
 	<a href="https://servmask.com">
-		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/servmask.svg" alt="ServMask" width="25%">
+		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/servmask.svg" alt="ServMask" style="max-height:40px">
 	</a>
 </p>
 
 <p align="center">
 	<a href="https://wp-staging.com">
-		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/wp-staging.png" alt="WP Staging" width="25%">
+		<img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/wp-staging.png" alt="WP Staging" style="max-height:40px">
 	</a>
 </p>
 
@@ -75,11 +73,11 @@ Plus all my kind sponsors on GitHub:
 
 <a href="https://github.com/sponsors/johnbillion">Click here to find out about supporting my open source tools and plugins</a>.
 
-Without the support of my sponsors, it's unlikely that I would be able to continue dedicating the time needed to maintain Query Monitor and my other plugins.
+## Backwards compatibility
 
-## Bugs
+If you're using a plugin that adds its own panels to Query Monitor, these panels will continue to work. You shouldn't notice any difference.
 
-Have you found a bug in Query Monitor 4? [You can report bugs via GitHub](https://github.com/johnbillion/query-monitor/issues) or [the WordPress.org support forums](https://wordpress.org/support/plugin/query-monitor/).
+It's not yet possible for a third-party plugin to register its own client-side rendered panel in Query Monitor. This is a future enhancement, and server-side rendered panels will remain supported for as long as feasible.
 
 ## Reviews
 
