@@ -244,7 +244,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$warning = ! in_array( $handle, $raw->done, true );
 
-				$dependencies = $dependency->deps;
+				$dependencies = array_values( $dependency->deps );
 
 				foreach ( $dependencies as $dep ) {
 					if ( ! $raw->query( $dep ) ) {
@@ -326,7 +326,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			/** @var string $src */
 			$src = $get_src->invoke( $modules, $id );
 
-			$dependencies = wp_list_pluck( $all_modules[ $id ]['dependencies'], 'id' );
+			$dependencies = array_values( wp_list_pluck( $all_modules[ $id ]['dependencies'], 'id' ) );
 			$dependents = array();
 
 			foreach ( $all_modules as $dep_id => $dep ) {
