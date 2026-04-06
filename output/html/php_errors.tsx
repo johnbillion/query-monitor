@@ -50,29 +50,14 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		cols={{
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
-				render: ( row ) => (
-					<>
-						{ row.level === 'warning' ? (
-							<Warning>
-								{ row.level }
-								{ row.suppressed && (
-									<>
-										&nbsp;({ __( 'suppressed', 'query-monitor' ) })
-									</>
-								) }
-							</Warning>
-						) : (
-							<>
-								{ row.level }
-								{ row.suppressed && (
-									<>
-										&nbsp;({ __( 'suppressed', 'query-monitor' ) })
-									</>
-								) }
-							</>
-						) }
-					</>
-				),
+				render: ( row ) => {
+					const label = row.suppressed
+						? `${ row.level } (${ __( 'suppressed', 'query-monitor' ) })`
+						: row.level;
+					return row.level === 'warning'
+						? <Warning>{ label }</Warning>
+						: label;
+				},
 				filters: {
 					options: [ filterOptions ],
 					callback: ( row, filter ) => row.level === filter,

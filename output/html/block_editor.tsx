@@ -63,7 +63,6 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 		},
 		attrs: {
 			heading: __('Attributes', 'query-monitor'),
-			className: 'qm-cell-block-attrs',
 			render: (row: iBlock) => show_attrs(row) && (
 				<JsonOutput data={ row.attrs } />
 			),
@@ -72,7 +71,6 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 
 	cols.context = {
 		heading: __('Context', 'query-monitor'),
-		className: 'qm-cell-block-context',
 		render: (row: iBlock) => row.context && show_attrs(row) && (
 			<JsonOutput data={ row.context } />
 		),
@@ -92,13 +90,12 @@ export const BlockEditor = ( { data }: PanelProps<iBlockData> ) => {
 
 	cols.timing = {
 		heading: __('Render Time', 'query-monitor'),
-		className: 'qm-cell-num qm-num',
+		className: 'qm-num',
 		render: (row: iBlock) => row.dynamic ? <Duration value={row.timing} /> : null,
 	};
 
 	cols.innerHTML = {
 		heading: __('Inner HTML', 'query-monitor'),
-		className: 'qm-cell-block-html',
 		render: (row: iBlock) => (
 			<pre className="qm-pre-wrap">
 				<code>

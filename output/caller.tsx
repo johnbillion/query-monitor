@@ -34,11 +34,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 	const hasStack = frames.length > 0;
 
 	if ( ! callsite && ! caller ) {
-		return (
-			<>
-				{ __( 'Unknown', 'query-monitor' ) }
-			</>
-		);
+		return __( 'Unknown', 'query-monitor' );
 	}
 
 	return (

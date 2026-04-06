@@ -15,11 +15,7 @@ export const StackCaller = ( { stack, defaultExpanded = false }: Props ) => {
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
 	if ( ! stack?.length ) {
-		return (
-			<>
-				{ __( 'Unknown', 'query-monitor' ) }
-			</>
-		);
+		return __( 'Unknown', 'query-monitor' );
 	}
 
 	const [ caller, ...frames ] = stack;

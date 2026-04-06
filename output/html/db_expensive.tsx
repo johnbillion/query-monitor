@@ -47,13 +47,7 @@ export const DBExpensive = ( { data }: PanelProps<DataTypes['db_queries']> ) => 
 			result: {
 				className: 'qm-num',
 				heading: __( 'Rows', 'query-monitor' ),
-				render: ( row ) => (
-					<>
-						{ ! Utils.isWPError( row.result ) && (
-							row.result
-						) }
-					</>
-				),
+				render: ( row ) => Utils.isWPError( row.result ) ? '' : row.result,
 			},
 			time: getTimeCol( rows, () => true ),
 		} }

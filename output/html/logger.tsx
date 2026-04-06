@@ -82,17 +82,9 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 		cols={ {
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
-				render: ( row ) => (
-					<>
-						{ warningLevels.includes( row.level ) ? (
-							<Warning>
-								{ row.level }
-							</Warning>
-						) : (
-							row.level
-						) }
-					</>
-				),
+				render: ( row ) => warningLevels.includes( row.level )
+					? <Warning>{ row.level }</Warning>
+					: row.level,
 				filters: {
 					options: [ filterOptions ],
 					callback: ( row, filter ) => row.level === filter,
