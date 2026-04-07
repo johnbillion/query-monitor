@@ -62,6 +62,7 @@ export default defineConfig( {
 			format: {
 				// Preserve translators comments for wp i18n string extraction.
 				comments: /translators:/i,
+				preamble: '/* This is the built version of the Preact app for Query Monitor. The source code is available here: https://github.com/johnbillion/query-monitor */',
 			},
 		},
 		rollupOptions: {
