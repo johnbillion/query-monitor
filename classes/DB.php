@@ -43,10 +43,6 @@ class QM_DB extends wpdb {
 			'time' => $this->time_start,
 		) );
 
-		if ( ! isset( $this->queries[ $i ][3] ) ) {
-			$this->queries[ $i ][3] = $this->time_start;
-		}
-
 		if ( $this->last_error && ! $this->suppress_errors ) {
 			$code = 'qmdb';
 

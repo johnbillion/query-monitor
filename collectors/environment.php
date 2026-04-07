@@ -94,12 +94,10 @@ class QM_Collector_Environment extends QM_DataCollector {
 		$dbq = QM_Collectors::get( 'db_queries' );
 
 		if ( $dbq ) {
-			if ( method_exists( $dbq->wpdb, 'db_version' ) ) {
-				$server = $dbq->wpdb->db_version();
-				// query_cache_* deprecated since MySQL 5.7.20
-				if ( version_compare( $server, '5.7.20', '>=' ) ) {
-					unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
-				}
+			$server = $dbq->wpdb->db_version();
+			// query_cache_* deprecated since MySQL 5.7.20
+			if ( version_compare( $server, '5.7.20', '>=' ) ) {
+				unset( $mysql_vars['query_cache_limit'], $mysql_vars['query_cache_size'], $mysql_vars['query_cache_type'] );
 			}
 
 			// phpcs:disable

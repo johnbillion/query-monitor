@@ -130,9 +130,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$i = 0;
 		$request = trim( $wp_the_query->request ?: '' );
 
-		if ( method_exists( $wpdb, 'remove_placeholder_escape' ) ) {
-			$request = $wpdb->remove_placeholder_escape( $request );
-		}
+		$request = $wpdb->remove_placeholder_escape( $request );
 
 		/**
 		 * @phpstan-var QueryStandard|QueryVIP $query
