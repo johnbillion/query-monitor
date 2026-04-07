@@ -149,13 +149,13 @@ class CollectorBlockEditorTest extends Test {
 		$group = $data->post_blocks[0];
 
 		self::assertSame( 'core/group', $group->blockName );
-		self::assertIsFloat( $group->timing );
+		self::assertGreaterThan( 0, $group->timing );
 		self::assertCount( 2, $group->innerBlocks );
 
 		self::assertSame( 'core/paragraph', $group->innerBlocks[0]->blockName );
 		self::assertSame( 'core/heading', $group->innerBlocks[1]->blockName );
-		self::assertIsFloat( $group->innerBlocks[0]->timing );
-		self::assertIsFloat( $group->innerBlocks[1]->timing );
+		self::assertGreaterThan( 0, $group->innerBlocks[0]->timing );
+		self::assertGreaterThan( 0, $group->innerBlocks[1]->timing );
 
 		// The parent timing must be greater than or equal to each child
 		// because it encompasses the rendering of its children.
@@ -222,9 +222,9 @@ class CollectorBlockEditorTest extends Test {
 		self::assertSame( $ctx_b, $data->post_blocks[1]->context );
 
 		// Verify all blocks have valid float timings.
-		self::assertIsFloat( $data->post_blocks[0]->timing );
-		self::assertIsFloat( $data->post_blocks[0]->innerBlocks[0]->timing );
-		self::assertIsFloat( $data->post_blocks[1]->timing );
-		self::assertIsFloat( $data->post_blocks[1]->innerBlocks[0]->timing );
+		self::assertGreaterThan( 0, $data->post_blocks[0]->timing );
+		self::assertGreaterThan( 0, $data->post_blocks[0]->innerBlocks[0]->timing );
+		self::assertGreaterThan( 0, $data->post_blocks[1]->timing );
+		self::assertGreaterThan( 0, $data->post_blocks[1]->innerBlocks[0]->timing );
 	}
 }
