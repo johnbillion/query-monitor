@@ -141,6 +141,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$sql = $query['query'];
 				$ltime = $query['elapsed'];
 				$stack = $query['debug'];
+			// @phpstan-ignore-next-line isset.offset
 			} elseif ( isset( $query[0], $query[1], $query[2] ) ) {
 				// Standard WP.
 				$sql = $query[0];
@@ -148,6 +149,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$stack = $query[2];
 
 				// Query Monitor db.php drop-in.
+				// @phpstan-ignore-next-line instanceof.alwaysTrue
 				if ( isset( $query['trace'] ) && ( $query['trace'] instanceof QM_Backtrace ) ) {
 					$has_trace = true;
 					$trace = $query['trace'];

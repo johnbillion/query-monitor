@@ -180,9 +180,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return $file;
 		}
 
+		// This method is hooked into a filter that only runs on WP 6.5+.
 		// @phpstan-ignore WPCompat.methodNotAvailable
 		$i18n_controller = \WP_Translation_Controller::get_instance();
 
+		// This method is hooked into a filter that only runs on WP 6.5+.
 		// @phpstan-ignore WPCompat.methodNotAvailable
 		$found = $i18n_controller->load_file( $file, $domain, $locale ?? determine_locale() );
 

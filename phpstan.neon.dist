@@ -40,3 +40,13 @@ parameters:
 		-
 			path: tests/integration/*
 			message: '#int\|WP_Error given#'
+		# WP constants are used intentionally in early-loading contexts
+		-
+			identifier: phpstanWP.wpConstant.fetch
+		# Forward compatibility with newer WP versions
+		-
+			identifier: WPCompat.actionNotAvailable.deprecatedclassrun
+		-
+			identifier: WPCompat.filterNotAvailable.deprecatedclasstriggererror
+		-
+			identifier: WPCompat.filterNotAvailable.loadtranslationfile
