@@ -6,7 +6,6 @@ on:
     branches:
       - 'develop'
       - 'trunk'
-      - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/coding-standards.yml'
       - '**.css'

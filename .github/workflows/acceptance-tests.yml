@@ -6,10 +6,9 @@ on:
     branches:
       - 'develop'
       - 'trunk'
-      - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/acceptance-tests.yml'
-      - 'tests/**'
+      - 'tests/acceptance/**'
       - '**.css'
       - '**.js'
       - '**.php'
@@ -24,7 +23,7 @@ on:
       - '**'
     paths:
       - '.github/workflows/acceptance-tests.yml'
-      - 'tests/**'
+      - 'tests/acceptance/**'
       - '**.css'
       - '**.js'
       - '**.php'
@@ -51,20 +50,23 @@ jobs:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
-        wp:
-          # Three most recent versions of WordPress
-          - '6.9'
-          - '6.8'
-          - '6.7'
-        php:
-          # Most recent version of PHP supported by all of the above, plus 7.4
-          - '8.4'
-          - '7.4'
         include:
-          # Latest WordPress on latest PHP
+          # Latest:
           - wp: '6.9'
             php: '8.5'
-          # Oldest supported WordPress on its newest supported PHP, plus 7.4:
+          - wp: '6.9'
+            php: '7.4'
+          # Latest -1:
+          - wp: '6.8'
+            php: '8.4'
+          - wp: '6.8'
+            php: '7.4'
+          # Latest -2:
+          - wp: '6.7'
+            php: '8.4'
+          - wp: '6.7'
+            php: '7.4'
+          # Oldest supported:
           - wp: '6.1'
             php: '8.2'
           - wp: '6.1'
