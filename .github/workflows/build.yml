@@ -14,7 +14,7 @@ jobs:
     name: Build
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@bb606d520dfe6131697c80bfe0f4eabc7b8a46a6 # 2.8.0
     permissions:
-      contents: write
+      contents: write # Required to push release branch and tags
     with:
       node: true
       tag: ${{ github.event_name != 'workflow_dispatch' }}

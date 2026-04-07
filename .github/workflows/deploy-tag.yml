@@ -11,7 +11,9 @@ on:
         type: string
         description: The version number of the release
 
-concurrency: WordPress.org
+concurrency:
+  group: WordPress.org
+  cancel-in-progress: false
 
 permissions: {}
 
@@ -21,11 +23,11 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
     uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@bb606d520dfe6131697c80bfe0f4eabc7b8a46a6 # 2.8.0
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      attestations: write
-      id-token: write
+      contents: write      # Required to push the new branch
+      issues: write        # Required for write access to milestones
+      pull-requests: write # Required to create the pull request
+      attestations: write  # Required to store the build provenance attestation
+      id-token: write      # Required for creating an OIDC token for build provenance attestation
     with:
       deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
