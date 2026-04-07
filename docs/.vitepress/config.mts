@@ -160,10 +160,10 @@ export default defineConfig({
 				text: 'Help',
 				collapsed: false,
 				items: [
-					// {
-					// 	text: 'Query Monitor 4',
-					// 	link: '/help/query-monitor-4/',
-					// },
+					{
+						text: 'Query Monitor 4',
+						link: '/help/query-monitor-4/',
+					},
 					{
 						text: 'Clickable stack traces',
 						link: '/help/clickable-stack-traces-and-function-names/',
