@@ -272,7 +272,7 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * @return array<int, string>
+	 * @return list<string>
 	 */
 	public function get_stack() {
 		$stack = array();

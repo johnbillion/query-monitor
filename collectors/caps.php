@@ -209,7 +209,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		array_unshift( $args, $cap );
 
 		$this->cap_checks[] = array(
-			'args' => $args,
+			'args' => array_values( $args ),
 			'trace' => $trace,
 			'result' => $result,
 		);

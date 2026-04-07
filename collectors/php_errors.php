@@ -427,7 +427,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			}
 		}
 
-		$this->data->errors = array_filter( $this->data->errors );
 	}
 
 	/**

@@ -314,8 +314,13 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		if ( isset( $args['_qm_original_key'] ) ) {
 			/** @var string $original_key */
 			$original_key = $args['_qm_original_key'];
-			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
-			$this->http_responses[ $original_key ]['result'] = new WP_Error( 'http_request_not_executed' );
+			$this->http_responses[ $original_key ] = array(
+				'end' => $this->http_requests[ $original_key ]['start'],
+				'result' => new WP_Error( 'http_request_not_executed' ),
+				'args' => $args,
+				'info' => null,
+				'intercepted' => false,
+			);
 		}
 
 		$this->http_responses[ $key ] = $http_response;
