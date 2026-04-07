@@ -6,3 +6,4 @@
 /assets/build
 /tests/test-results
 /tests/cache
+*.zip
