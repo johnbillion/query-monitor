@@ -288,12 +288,15 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		$reflector = new ReflectionClass( $modules );
 
 		$get_marked_for_enqueue = $reflector->getMethod( 'get_marked_for_enqueue' );
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_marked_for_enqueue->setAccessible( true );
 
 		$get_dependencies = $reflector->getMethod( 'get_dependencies' );
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_dependencies->setAccessible( true );
 
 		$get_src = $reflector->getMethod( 'get_src' );
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( true );
 
 		/**
@@ -341,8 +344,11 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			);
 		}
 
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_marked_for_enqueue->setAccessible( false );
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_dependencies->setAccessible( false );
+		// @phpstan-ignore-next-line method.deprecated
 		( \PHP_VERSION_ID < 80100 ) && $get_src->setAccessible( false );
 
 		return $sources;
