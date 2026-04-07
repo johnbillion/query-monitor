@@ -10,11 +10,12 @@ test.describe( 'Third-Party Panel Menus', () => {
 		await QueryMonitor.amOnAPageWithThirdPartyPanel();
 	} );
 
-	test( 'Third-party top-level menu appears in the panel menu', async ( { page, QueryMonitor } ) => {
-		await QueryMonitor.seeInQMPanel( 'Test Third Party', 'Test third-party parent panel content.' );
+	test( 'Third-party top-level menu appears and its panel content is accessible', async ( { page, QueryMonitor } ) => {
+		await QueryMonitor.openQMPanel( 'Test Third Party' );
+		await expect( page.locator( '#qm-panels' ) ).toContainText( 'Test third-party parent panel content.' );
 	} );
 
-	test( 'Third-party child menu appears as a sub-menu item', async ( { page, QueryMonitor } ) => {
+	test( 'Third-party child sub-menu appears and its panel content is accessible', async ( { page, QueryMonitor } ) => {
 		await QueryMonitor.openQMPanel( 'Test Third Party' );
 
 		// The child menu item should be visible as a nested item under the parent
@@ -22,9 +23,9 @@ test.describe( 'Third-Party Panel Menus', () => {
 			hasText: 'Test Child Panel',
 		} );
 		await expect( childButton ).toBeVisible();
-	} );
 
-	test( 'Third-party child panel content is accessible', async ( { page, QueryMonitor } ) => {
-		await QueryMonitor.seeInQMPanel( 'Test Child Panel', 'Test third-party child panel content.' );
+		// Click the child and verify its panel content
+		await childButton.click();
+		await expect( page.locator( '#qm-panels' ) ).toContainText( 'Test third-party child panel content.' );
 	} );
 } );
