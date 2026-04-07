@@ -328,11 +328,11 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				);
 			}
 
-			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $output_id ] ) ) {
+			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $collector->id() ] ) ) {
 				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
-				$this->panel_menu[ $output_id ]['children'][ $output_id . '-concerned_hooks' ] = array(
-					'id' => $collector->id() . '-concerned_hooks',
-					'panel' => $collector->id() . '-concerned_hooks',
+				$this->panel_menu[ $collector->id() ]['children'][ $collector->id . '-concerned_hooks' ] = array(
+					'id' => $collector->id . '-concerned_hooks',
+					'panel' => $collector->id . '-concerned_hooks',
 					'title' => __( 'Hooks in Use', 'query-monitor' ),
 					'count' => $count,
 				);

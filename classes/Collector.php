@@ -61,7 +61,7 @@ abstract class QM_Collector {
 	 * @return string
 	 */
 	final public function id() {
-		return $this->id;
+		return "qm-{$this->id}";
 	}
 
 	/**

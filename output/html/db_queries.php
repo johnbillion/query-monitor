@@ -127,20 +127,18 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 		) );
 
 		if ( $errors ) {
-			$id = 'db_errors';
-			$menu[ $id ] = $this->menu( array(
-				'id'    => $id,
-				'panel' => $id,
+			$menu['qm-db_errors'] = $this->menu( array(
+				'id'    => 'db_errors',
+				'panel' => 'db_errors',
 				'title' => esc_html__( 'Database Errors', 'query-monitor' ),
 				'warning_count' => count( $errors ),
 			) );
 		}
 
 		if ( $expensive ) {
-			$id = 'db_expensive';
-			$menu[ $id ] = $this->menu( array(
-				'id'    => $id,
-				'panel' => $id,
+			$menu['qm-db_expensive'] = $this->menu( array(
+				'id'    => 'db_expensive',
+				'panel' => 'db_expensive',
 				'title' => esc_html__( 'Slow Queries', 'query-monitor' ),
 				'warning_count' => count( $expensive ),
 			) );
@@ -156,9 +154,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 */
 	public function panel_menu( array $menu ) {
 		foreach ( array( 'errors', 'expensive' ) as $sub ) {
-			$id = 'db_' . $sub;
+			$id = 'qm-db_' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
-				$menu['db_queries']['children'][] = $menu[ $id ];
+				$menu['qm-db_queries']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
 			}
 		}

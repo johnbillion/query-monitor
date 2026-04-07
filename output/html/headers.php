@@ -44,16 +44,16 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function panel_menu( array $menu ) {
-		if ( ! isset( $menu['request'] ) ) {
+		if ( ! isset( $menu['qm-request'] ) ) {
 			return $menu;
 		}
 
 		$ids = array(
-			$this->collector->id() => __( 'Request Headers', 'query-monitor' ),
-			$this->collector->id() . '-response' => __( 'Response Headers', 'query-monitor' ),
+			$this->collector->id => __( 'Request Headers', 'query-monitor' ),
+			$this->collector->id . '-response' => __( 'Response Headers', 'query-monitor' ),
 		);
 		foreach ( $ids as $id => $title ) {
-			$menu['request']['children'][] = array(
+			$menu['qm-request']['children'][] = array(
 				'id' => $id,
 				'panel' => $id,
 				'title' => esc_html( $title ),
