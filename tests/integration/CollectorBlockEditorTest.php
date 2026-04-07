@@ -80,7 +80,10 @@ class CollectorBlockEditorTest extends Test {
 	 */
 	private function getBlockTimingArray(): array {
 		$ref = new \ReflectionProperty( $this->collector, 'block_timing' );
-		( \PHP_VERSION_ID < 80100 ) && $ref->setAccessible( true );
+
+		if ( \PHP_VERSION_ID < 80100 ) {
+			$ref->setAccessible( true );
+		}
 		return $ref->getValue( $this->collector );
 	}
 

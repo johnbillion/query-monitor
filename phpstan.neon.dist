@@ -50,3 +50,8 @@ parameters:
 			identifier: WPCompat.filterNotAvailable.deprecatedclasstriggererror
 		-
 			identifier: WPCompat.filterNotAvailable.loadtranslationfile
+		# setAccessible() is deprecated in PHP 8.4+ but needed for PHP < 8.1
+		-
+			identifier: method.deprecated
+			message: '#setAccessible#'
+			reportUnmatched: false
