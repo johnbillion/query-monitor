@@ -202,9 +202,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		// E_STRICT is deprecated in PHP 8.4 so it needs to be behind a version check.
-		// @phpstan-ignore-next-line constant.deprecated
-		if ( null === $level && version_compare( PHP_VERSION, '8.4', '<' ) && E_STRICT === $errno ) {
-			$level = 'strict';
+		if ( \PHP_VERSION_ID < 80400 ) {
+			if ( null === $level && E_STRICT === $errno ) {
+				$level = 'strict';
+			}
 		}
 
 		if ( null === $level ) {
