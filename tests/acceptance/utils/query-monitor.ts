@@ -115,6 +115,13 @@ export class QueryMonitorUtils {
 	}
 
 	/**
+	 * Navigate to a page that loads the third-party panel test plugin
+	 */
+	async amOnAPageWithThirdPartyPanel() {
+		await this.page.goto( '/?_qm_acceptance_group=third_party_panel' );
+	}
+
+	/**
 	 * Assert that the QM menu is visible with a warning indicator
 	 */
 	async seeQMMenuWithWarning() {
