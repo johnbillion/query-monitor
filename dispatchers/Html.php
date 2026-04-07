@@ -231,10 +231,15 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->before_output();
 
-		// Output non-client-side rendered panels outside the React container
+		// Output server-side rendered panels outside the React container.
+		// All outputters get a fallback container so that third-party plugins
+		// which extend a client-side rendered base class (e.g. QM_Output_Html_Logger)
+		// still have their PHP output available for the PhpPanelFallback component.
 		echo '<div id="query-monitor-fallbacks">';
 		foreach ( $this->outputters as $id => $output ) {
-			if ( ! $output::$client_side_rendered ) {
+			$html = $output->get_output();
+
+			if ( '' !== $html ) {
 				printf(
 					"\n" . '<!-- Begin %1$s output -->' . "\n",
 					esc_html( $id )
@@ -244,7 +249,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					"\n" . '<div class="qm-panel-container" id="qm-%1$s-container">' . "\n",
 					esc_html( $id )
 				);
-				$output->output();
+				echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo "\n" . '</div>' . "\n";
 
 				printf(
