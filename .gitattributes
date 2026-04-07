@@ -39,7 +39,6 @@
 /phpunit.xml.dist export-ignore
 /README.md export-ignore
 /RELEASING.md export-ignore
-/SECURITY.md export-ignore
 /tsconfig.json export-ignore
 /vite.config.js export-ignore
 *.ts export-ignore
