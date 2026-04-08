@@ -71,11 +71,12 @@ const PHP = ( { php }: Props ) => (
 									<li key={ key }>
 										{ php.error_levels[ key ] ? (
 											<>
+												&#x2713;&nbsp;
 												{ key }
-												&nbsp;&#x2713;
 											</>
 										):(
 											<span className="qm-false">
+												&#x2717;&nbsp;
 												{ key }
 											</span>
 										) }
