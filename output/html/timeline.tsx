@@ -1,7 +1,7 @@
 import { type JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
-import { Backtrace, Component } from '../data-types';
+import { Component, HTTP, Logger, PHP_Errors, QueryRow, Timing, Transients } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
 import { iPanelData, iSettings } from '../panels/panels';
 import { JumpLink } from '../components/jump-link';
@@ -18,7 +18,7 @@ interface TimelineItem {
 	label: string | JSX.Element[];
 	time: number;
 	duration: number | null;
-	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log';
+	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log' | 'transient';
 	panel: string;
 	rowIndex?: number;
 	component?: Component;
@@ -36,6 +36,7 @@ const categoryColors: Record<TimelineItem['category'], string> = {
 	'timing': 'var(--qm-timeline-timing)',
 	'action': 'var(--qm-timeline-action)',
 	'log': 'var(--qm-timeline-log)',
+	'transient': 'var(--qm-timeline-transient)',
 };
 
 const categoryLabels: Record<TimelineItem['category'], string> = {
@@ -45,6 +46,7 @@ const categoryLabels: Record<TimelineItem['category'], string> = {
 	'timing': __( 'Timings', 'query-monitor' ),
 	'action': __( 'Notable Actions', 'query-monitor' ),
 	'log': __( 'Logs', 'query-monitor' ),
+	'transient': __( 'Transient Updates', 'query-monitor' ),
 };
 
 const segmentLabels: Record<string, string> = {
@@ -56,11 +58,12 @@ const segmentLabels: Record<string, string> = {
 };
 
 const buildTimelineItems = (
-	dbRows?: { sql: string; ltime: number; trace?: Backtrace | null }[] | null,
-	httpRequests?: { url: string; ltime: number; trace: Backtrace; intercepted: boolean }[] | null,
-	phpErrors?: Record<string, { message: string; trace?: Backtrace | null }> | null,
-	timings?: { function: string; function_time: number; start_time: number; end_time: number; trace: Backtrace }[] | null,
-	logs?: { message: string; level: string; trace: Backtrace }[] | null,
+	dbRows?: QueryRow[] | null,
+	httpRequests?: HTTP['http'] | null,
+	phpErrors?: PHP_Errors['errors'] | null,
+	timings?: Timing['timing'] | null,
+	logs?: Logger['logs'] | null,
+	transients?: Transients['trans'] | null,
 ): TimelineItem[] => {
 	const items: TimelineItem[] = [];
 
@@ -153,6 +156,22 @@ const buildTimelineItems = (
 		}
 	}
 
+	if ( transients ) {
+		for ( let i = 0; i < transients.length; i++ ) {
+			const transient = transients[ i ];
+
+			items.push( {
+				label: transient.name,
+				time: transient.trace.time,
+				duration: null,
+				category: 'transient',
+				panel: 'transients',
+				rowIndex: i,
+				component: transient.trace.component,
+			} );
+		}
+	}
+
 	return items;
 };
 
@@ -167,6 +186,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 	const phpErrorsData = data.php_errors?.data;
 	const timingData = data.timing?.data;
 	const loggerData = data.logger?.data;
+	const transientsData = data.transients?.data;
 
 	if ( ! data.overview ) {
 		return null;
@@ -183,6 +203,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		phpErrorsData?.errors,
 		timingData?.timing,
 		loggerData?.logs,
+		transientsData?.trans,
 	);
 
 	// Merge action markers into items.
