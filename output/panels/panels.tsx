@@ -76,6 +76,12 @@ const PhpPanelFallback = ( { panelId }: { panelId: string } ) => {
 	const containerRef = useRef<HTMLDivElement>( null );
 	const originalParentRef = useRef<{ parent: ParentNode; nextSibling: ChildNode | null } | null>( null );
 	const [ phpPanelExists, setPhpPanelExists ] = useState<boolean | null>( null );
+	const { switchToPanel } = useContext( MainContext );
+	const switchToPanelRef = useRef( switchToPanel );
+
+	useEffect( () => {
+		switchToPanelRef.current = switchToPanel;
+	}, [ switchToPanel ] );
 
 	useEffect( () => {
 		const phpPanel = document.getElementById( `qm-${ panelId }-container` );
@@ -129,11 +135,28 @@ const PhpPanelFallback = ( { panelId }: { panelId: string } ) => {
 			}
 		};
 
+		const handleFilterTrigger = ( e: Event ) => {
+			const button = ( e.target as HTMLElement ).closest( '.qm-filter-trigger' ) as HTMLButtonElement | null;
+
+			if ( ! button ) {
+				return;
+			}
+
+			const target = button.dataset.qmTarget;
+
+			if ( target ) {
+				e.preventDefault();
+				switchToPanelRef.current( target );
+			}
+		};
+
 		phpPanel.addEventListener( 'click', handleToggle );
+		phpPanel.addEventListener( 'click', handleFilterTrigger );
 
 		// Cleanup: move the element back to its original location
 		return () => {
 			phpPanel.removeEventListener( 'click', handleToggle );
+			phpPanel.removeEventListener( 'click', handleFilterTrigger );
 
 			if ( phpPanel && originalParentRef.current ) {
 				const { parent, nextSibling } = originalParentRef.current;
