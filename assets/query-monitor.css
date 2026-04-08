@@ -406,7 +406,8 @@ i {
 #qm-panel-menu {
 	background: var( --qm-container-overflow );
 	flex-shrink: 0;
-	overflow-y: scroll;
+	overflow-x: hidden;
+	overflow-y: auto;
 	overscroll-behavior: contain;
 	min-width: 180px;
 
@@ -553,7 +554,8 @@ i {
 
 #qm-panels {
 	flex-grow: 1;
-	overflow-y: scroll;
+	overflow-x: auto;
+	overflow-y: auto;
 	overscroll-behavior: contain;
 	border: 6px solid var( --qm-panel-bg );
 	border-bottom: none;
