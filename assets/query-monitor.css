@@ -726,6 +726,10 @@ i {
 		padding: 4px 6px;
 	}
 
+	.qm-toggled {
+		display: none;
+	}
+
 	.qm-has-inner .qm-toggled > table {
 		border-bottom: none;
 		border-top: 1px solid var( --qm-cell-border );

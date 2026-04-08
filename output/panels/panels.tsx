@@ -100,8 +100,41 @@ const PhpPanelFallback = ( { panelId }: { panelId: string } ) => {
 			containerRef.current.appendChild( phpPanel );
 		}
 
+		const handleToggle = ( e: Event ) => {
+			const button = ( e.target as HTMLElement ).closest( '.qm-toggle' ) as HTMLButtonElement | null;
+
+			if ( ! button ) {
+				return;
+			}
+
+			const expanded = button.getAttribute( 'aria-expanded' ) === 'true';
+			const cell = button.closest( '.qm-has-toggle' );
+
+			if ( ! cell ) {
+				return;
+			}
+
+			const toggled = cell.querySelectorAll< HTMLElement >( '.qm-toggled' );
+
+			toggled.forEach( ( el ) => {
+				el.style.display = expanded ? 'none' : 'block';
+			} );
+
+			button.setAttribute( 'aria-expanded', expanded ? 'false' : 'true' );
+
+			const span = button.querySelector( 'span' );
+
+			if ( span ) {
+				span.textContent = expanded ? ( button.dataset.on ?? '+' ) : ( button.dataset.off ?? '-' );
+			}
+		};
+
+		phpPanel.addEventListener( 'click', handleToggle );
+
 		// Cleanup: move the element back to its original location
 		return () => {
+			phpPanel.removeEventListener( 'click', handleToggle );
+
 			if ( phpPanel && originalParentRef.current ) {
 				const { parent, nextSibling } = originalParentRef.current;
 				if ( nextSibling ) {
