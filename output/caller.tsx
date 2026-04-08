@@ -69,7 +69,7 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 				) }
 				{ hasStack && expanded && (
 					frames.map( frame => (
-						<li key={ frame.id }>
+						<li key={ Utils.frameDisplay( frame ) }>
 							<SourceLocation
 								text={ Utils.frameDisplay( frame ) }
 								file={ frame.file }
