@@ -647,7 +647,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 				printf(
 					'<li>%s</li>',
-					QM_Output_Html::output_filename( $name, $frame['file'], $frame['line'] )
+					QM_Output_Html::output_filename( $name, $frame['file'] ?? '', $frame['line'] ?? 0 )
 				); // WPCS: XSS ok.
 			}
 			echo '</ol>';
