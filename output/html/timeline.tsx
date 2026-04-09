@@ -1,7 +1,7 @@
 import { type JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
-import { Component, HTTP, Logger, PHP_Errors, QueryRow, Timing, Transients } from '../data-types';
+import { Component, Doing_It_Wrong, HTTP, Logger, PHP_Errors, QueryRow, Timing, Transients } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
 import { iPanelData, iSettings } from '../panels/panels';
 import { JumpLink } from '../components/jump-link';
@@ -18,7 +18,7 @@ interface TimelineItem {
 	label: string | JSX.Element[];
 	time: number;
 	duration: number | null;
-	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log' | 'transient';
+	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log' | 'transient' | 'doing-it-wrong';
 	panel: string;
 	rowIndex?: number;
 	component?: Component;
@@ -37,6 +37,7 @@ const categoryColors: Record<TimelineItem['category'], string> = {
 	'action': 'var(--qm-timeline-action)',
 	'log': 'var(--qm-timeline-log)',
 	'transient': 'var(--qm-timeline-transient)',
+	'doing-it-wrong': 'var(--qm-timeline-doing-it-wrong)',
 };
 
 const categoryLabels: Record<TimelineItem['category'], string> = {
@@ -47,6 +48,7 @@ const categoryLabels: Record<TimelineItem['category'], string> = {
 	'action': __( 'Notable Actions', 'query-monitor' ),
 	'log': __( 'Logs', 'query-monitor' ),
 	'transient': __( 'Transient Updates', 'query-monitor' ),
+	'doing-it-wrong': __( 'Doing It Wrong', 'query-monitor' ),
 };
 
 const segmentLabels: Record<string, string> = {
@@ -64,6 +66,7 @@ const buildTimelineItems = (
 	timings?: Timing['timing'] | null,
 	logs?: Logger['logs'] | null,
 	transients?: Transients['trans'] | null,
+	doingItWrong?: Doing_It_Wrong['actions'] | null,
 ): TimelineItem[] => {
 	const items: TimelineItem[] = [];
 
@@ -172,6 +175,22 @@ const buildTimelineItems = (
 		}
 	}
 
+	if ( doingItWrong ) {
+		for ( let i = 0; i < doingItWrong.length; i++ ) {
+			const action = doingItWrong[ i ];
+
+			items.push( {
+				label: action.message,
+				time: action.trace.time,
+				duration: null,
+				category: 'doing-it-wrong',
+				panel: 'doing_it_wrong',
+				rowIndex: i,
+				component: action.trace.component,
+			} );
+		}
+	}
+
 	return items;
 };
 
@@ -187,6 +206,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 	const timingData = data.timing?.data;
 	const loggerData = data.logger?.data;
 	const transientsData = data.transients?.data;
+	const doingItWrongData = data.doing_it_wrong?.data;
 
 	if ( ! data.overview ) {
 		return null;
@@ -204,6 +224,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		timingData?.timing,
 		loggerData?.logs,
 		transientsData?.trans,
+		doingItWrongData?.actions,
 	);
 
 	// Merge action markers into items.
