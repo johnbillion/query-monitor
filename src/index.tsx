@@ -86,7 +86,19 @@ type iQM = {
 	locale_data?: Record<string, unknown> | null;
 }
 
-declare const QueryMonitorData: iQM;
+declare const QueryMonitorData: iQM | false;
+
+if ( QueryMonitorData === false ) {
+	document.addEventListener( 'DOMContentLoaded', function () {
+		const adminMenuElement = document.getElementById( 'wp-admin-bar-query-monitor' );
+
+		if ( adminMenuElement ) {
+			adminMenuElement.classList.add( 'qm-error' );
+		}
+
+		console.error( 'Query Monitor: Failed to encode output data.' );
+	} );
+} else {
 
 // Initialise lookup tables before anything renders.
 setFrameLookup( QueryMonitorData.frames );
@@ -397,4 +409,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const bodyObserver = new MutationObserver( renderQM );
 	bodyObserver.observe( document.body, { attributes: true, attributeFilter: [ 'class' ] } );
 } );
+
+} // QueryMonitorData !== false
 
