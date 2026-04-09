@@ -9,7 +9,7 @@ hero:
   text: The developer tools panel for WordPress and WooCommerce.
   actions:
     - theme: brand
-      text: Get started
+      text: Documentation
       link: /wordpress-debugging/how-to-use/
     - theme: alt
       text: View on GitHub
