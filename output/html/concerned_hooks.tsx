@@ -83,7 +83,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 				callback: {
 					heading: __( 'Callback', 'query-monitor' ),
 					render: ( row ) => {
-						const text = row.callback.name || ( row.callback.file ? Utils.stripAbspath( row.callback.file, settings ) : '' );
+						const text = Utils.getCallbackName( row.callback, settings );
 						if ( ! text ) {
 							return '';
 						}

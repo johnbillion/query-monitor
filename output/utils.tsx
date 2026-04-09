@@ -1,5 +1,5 @@
 import { Fragment, type JSX } from 'preact';
-import { StackFrame, URL } from './data-types';
+import { Callback, StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
 declare const QueryMonitorData: {
@@ -287,6 +287,22 @@ export function shortenFqn( fqn: string ): string {
 		const initials = match.match( /\\([a-zA-Z0-9_])/g ) || [];
 		return initials.join( '' ) + '\\';
 	} );
+}
+
+export function getCallbackName( callback: Callback, settings: { abspath: string; contentpath: string } ): string {
+	if ( callback.name ) {
+		return callback.name;
+	}
+
+	if ( callback.file && callback.line ) {
+		return `${ stripAbspath( callback.file, settings ) }:${ callback.line }`;
+	}
+
+	if ( callback.file ) {
+		return stripAbspath( callback.file, settings );
+	}
+
+	return 'Closure';
 }
 
 /**
