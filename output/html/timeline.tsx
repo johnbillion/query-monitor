@@ -112,7 +112,7 @@ const buildTimelineItems = (
 			}
 
 			items.push( {
-				label: error.message,
+				label: `[${ error.level }] ${ error.message }`,
 				time: error.trace.time,
 				duration: null,
 				category: 'php-error',
@@ -252,11 +252,13 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		segmentBoundaries.sort( ( a, b ) => a.time - b.time );
 	}
 
-	// Calculate how many tick marks to show.
-	const tickCount = 5;
+	// Calculate tick marks at round intervals.
+	const maxTicks = 6;
+	const candidates = [ 1, 2, 5, 10, 20, 25, 50, 100, 200, 500, 1000, 2000 ];
+	const tickInterval = candidates.find( c => Math.floor( totalTimeMs / c ) <= maxTicks ) ?? 1000;
 	const ticks: number[] = [];
-	for ( let i = 0; i <= tickCount; i++ ) {
-		ticks.push( ( i / tickCount ) * totalTimeMs );
+	for ( let t = 0; t <= totalTimeMs; t += tickInterval ) {
+		ticks.push( t );
 	}
 
 	const toggleCategory = ( category: TimelineItem['category'] ) => {
@@ -279,8 +281,10 @@ export const Timeline = ( { data }: TimelineProps ) => {
 				const widthPct = ( durationMs / totalTimeMs ) * 100;
 				const isPoint = item.duration === null || widthPct < 0.3;
 				const color = categoryColors[ item.category ];
+				// If the bar is wide enough, overlay the label on top of it.
+				const isWide = widthPct > 30;
 				// Prefer right-aligned labels unless there's more space on the left.
-				const displayLabelLeft = leftPct > 60 || leftPct > ( 100 - leftPct - widthPct );
+				const displayLabelLeft = ! isWide && ( leftPct > 60 || leftPct > ( 100 - leftPct - widthPct ) );
 
 				return (
 					<>
@@ -293,10 +297,12 @@ export const Timeline = ( { data }: TimelineProps ) => {
 							} }
 						/>
 						<span
-							className="timeline-bar-label"
-							style={ displayLabelLeft
-								? { right: `${ 100 - leftPct }%`, textAlign: 'right' }
-								: { left: `${ leftPct + ( isPoint ? 0.3 : Math.max( widthPct, 0.3 ) ) }%` }
+							className={ `timeline-bar-label ${ isWide ? 'timeline-bar-label-overlay' : '' }` }
+							style={ isWide
+								? { left: `${ leftPct }%`, width: `${ widthPct }%` }
+								: displayLabelLeft
+									? { right: `${ 100 - leftPct }%`, textAlign: 'right' }
+									: { left: `${ leftPct + ( isPoint ? 0.3 : Math.max( widthPct, 0.3 ) ) }%` }
 							}
 						>
 							<span className="timeline-bar-label-text">
@@ -363,6 +369,17 @@ export const Timeline = ( { data }: TimelineProps ) => {
 					) ) }
 				</div>
 			</div>
+			<div className="timeline-axis">
+				{ ticks.map( ( tick, i ) => (
+					<span
+						key={ i }
+						className="timeline-tick"
+						style={ { left: `${ ( tick / totalTimeMs ) * 100 }%` } }
+					>
+						<Duration value={ tick / 1000 } />
+					</span>
+				) ) }
+			</div>
 			{ segmentBoundaries.length > 0 && (
 				<div className="timeline-segments">
 					{ segmentBoundaries.map( ( seg, i ) => {
@@ -389,17 +406,6 @@ export const Timeline = ( { data }: TimelineProps ) => {
 					} ) }
 				</div>
 			) }
-			<div className="timeline-axis">
-				{ ticks.map( ( tick, i ) => (
-					<span
-						key={ i }
-						className="timeline-tick"
-						style={ { left: `${ ( tick / totalTimeMs ) * 100 }%` } }
-					>
-						<Duration value={ tick / 1000 } />
-					</span>
-				) ) }
-			</div>
 		</>
 	);
 

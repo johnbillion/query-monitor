@@ -71,7 +71,7 @@
 	--qm-timeline-transient:           #00897b;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	--qm-font-default-size: 12.5px;
+	--qm-font-default-size: 12px;
 	--qm-font-default-line-height: 19px;
 	--qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 	--qm-font-code-size: 11px;
@@ -135,7 +135,6 @@
 
 #query-monitor-main {
 	border-top: 1px solid var( --qm-panel-border );
-	border-radius: 8px 8px 0 0;
 	bottom: 0;
 	contain: layout paint;
 	left: 0;
@@ -1180,6 +1179,18 @@ i {
 			visibility: visible;
 		}
 	}
+
+	.timeline-bar-label-overlay {
+		a,
+		button.qm-filter-trigger {
+			color: #fff;
+
+			&:hover,
+			&:focus-visible {
+				color: #ddd;
+			}
+		}
+	}
 }
 
 /** Filters */
@@ -1378,7 +1389,6 @@ select {
 	justify-content: space-between;
 	margin: 0;
 	padding: 10px 20px;
-	border-bottom: 5px solid var( --qm-panel-bg );
 }
 
 .timeline-header h3 {
@@ -1405,29 +1415,20 @@ select {
 
 .timeline-axis {
 	position: relative;
-	height: 18px;
+	height: 26px;
 	pointer-events: none;
-	background-color: var( --qm-button-bg );
-	color: var( --qm-button-fg );
-	border-radius: 4px;
+	background-color: var(--qm-panel-bg);
 }
 
 .timeline-tick {
 	position: absolute;
+	top: 0;
 	bottom: 0;
-	transform: translateX(-50%);
 	font-size: 11px;
-	padding: 3px 3px;
+	padding: 10px 3px 3px;
 	line-height: 1;
 	white-space: nowrap;
-}
-
-.timeline-tick:first-child {
-	transform: none;
-}
-
-.timeline-tick:last-child {
-	transform: translateX(-100%);
+	border-left: 1px solid var(--qm-panel-border);
 }
 
 .qm-cell-timeline {
@@ -1440,7 +1441,7 @@ select {
 	position: absolute;
 	top: 6px;
 	height: 16px;
-	border-radius: 4px;
+	border-radius: 3px;
 	min-width: 2px;
 	cursor: default;
 }
@@ -1459,6 +1460,14 @@ select {
 	max-width: 30%;
 	display: flex;
 	gap: 4px;
+}
+
+.timeline-bar-label-overlay {
+	max-width: none;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #fff;
 }
 
 .timeline-bar-label-text {
