@@ -10,7 +10,12 @@
  * @package query-monitor
  */
 
-class QM_Data_Callback {
+/**
+ * @implements \ArrayAccess<string,mixed>
+ */
+class QM_Data_Callback implements \ArrayAccess {
+	use QM_ArrayAccess;
+
 	/**
 	 * @var 'function'|'method'|'static_method'|'closure'|'invokable'|'lambda'|'unknown'|'unknown_closure'
 	 */

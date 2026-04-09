@@ -506,7 +506,15 @@ function printExtractedClass( node ) {
 
 	lines.push( '' );
 
-	lines.push( `class ${ node.name } {` );
+	lines.push( '/**' );
+	lines.push( ' * @implements \\ArrayAccess<string,mixed>' );
+	lines.push( ' */' );
+	lines.push( `class ${ node.name } implements \\ArrayAccess {` );
+	lines.push( '\tuse QM_ArrayAccess;' );
+
+	if ( node.properties.length > 0 ) {
+		lines.push( '' );
+	}
 
 	for ( let i = 0; i < node.properties.length; i++ ) {
 		const isLast = i === node.properties.length - 1;
