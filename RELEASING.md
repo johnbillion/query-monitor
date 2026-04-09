@@ -4,8 +4,8 @@ These are the steps to take to release a new version of Query Monitor (for contr
 
 ## Prior to Release
 
-1. Check [the milestone on GitHub](https://github.com/johnbillion/query-monitor/milestones) for open issues or PRs. Fix or reassign as necessary.
-1. If this is a non-patch release, reassign issues and PRs assigned to the patch or minor milestones that will get skipped.
+1. Check [the milestone on GitHub](https://github.com/johnbillion/query-monitor/milestones) for open issues or PRs. Fix or re-milestone as necessary.
+1. If this is a non-patch release, re-milestone issues and PRs in the patch or minor milestones that will get skipped.
 1. Ensure you're on the `develop` branch and all the changes for this release have been merged in.
 1. Ensure `README.md` and `readme.txt` contain up to date "Tested up to" versions, descriptions, FAQs, and screenshots.
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
