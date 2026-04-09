@@ -258,6 +258,10 @@ export function getEditorFormat( name: string ): string {
 	return '';
 }
 
+export function frameDisplay( frame: Pick<StackFrame, 'id' | 'args'> ): string {
+	return `${ frame.id }(${ frame.args ?? '' })`;
+}
+
 /**
  * Shortens a fully qualified name to reduce the length of long namespaced symbols.
  *
@@ -272,10 +276,6 @@ export function getEditorFormat( name: string ): string {
  * @param fqn A fully qualified name.
  * @return A shortened version of the name.
  */
-export function frameDisplay( frame: Pick<StackFrame, 'id' | 'args'> ): string {
-	return `${ frame.id }(${ frame.args ?? '' })`;
-}
-
 export function shortenFqn( fqn: string ): string {
 	const backslashCount = ( fqn.match( /\\/g ) || [] ).length;
 
