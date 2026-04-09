@@ -10,7 +10,12 @@
  * @package query-monitor
  */
 
-class QM_Data_HTTP_Response {
+/**
+ * @implements \ArrayAccess<string,mixed>
+ */
+class QM_Data_HTTP_Response implements \ArrayAccess {
+	use QM_ArrayAccess;
+
 	/**
 	 * @var int
 	 */

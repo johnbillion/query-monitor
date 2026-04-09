@@ -10,7 +10,12 @@
  * @package query-monitor
  */
 
-class QM_Data_HTTP_Request {
+/**
+ * @implements \ArrayAccess<string,mixed>
+ */
+class QM_Data_HTTP_Request implements \ArrayAccess {
+	use QM_ArrayAccess;
+
 	/**
 	 * @phpstan-var array{
 	 *   method: string,

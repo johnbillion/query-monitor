@@ -43,6 +43,9 @@ export default defineConfig( {
 			},
 		},
 	],
+	server: {
+		cors: true,
+	},
 	build: {
 		sourcemap: false,
 		target: browserslistToEsbuild(),

@@ -10,7 +10,12 @@
  * @package query-monitor
  */
 
-class QM_Data_Stack_Frame {
+/**
+ * @implements \ArrayAccess<string,mixed>
+ */
+class QM_Data_Stack_Frame implements \ArrayAccess {
+	use QM_ArrayAccess;
+
 	/**
 	 * @var string
 	 */

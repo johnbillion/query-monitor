@@ -25,6 +25,11 @@
 		<exclude-pattern>/dispatchers/Html\.php$</exclude-pattern>
 	</rule>
 
+	<!-- ArrayAccess method names are defined by the PHP interface -->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>/classes/ArrayAccess\.php$</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />

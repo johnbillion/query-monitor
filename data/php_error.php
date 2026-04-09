@@ -10,7 +10,12 @@
  * @package query-monitor
  */
 
-class QM_Data_PHP_Error {
+/**
+ * @implements \ArrayAccess<string,mixed>
+ */
+class QM_Data_PHP_Error implements \ArrayAccess {
+	use QM_ArrayAccess;
+
 	/**
 	 * @var int
 	 */
