@@ -94,7 +94,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		echo json_encode(
+		echo wp_json_encode(
 			array(
 				'code' => 'qm_fatal',
 				'message' => $message,

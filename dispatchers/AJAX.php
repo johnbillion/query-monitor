@@ -128,7 +128,6 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		// @TODO
 		echo wp_json_encode(
 			array(
 				'code' => 'qm_fatal',
