@@ -115,6 +115,13 @@ export class QueryMonitorUtils {
 	}
 
 	/**
+	 * Navigate to a page that triggers a database query scenario
+	 */
+	async amOnAPageThatTriggersDBQuery( test: string ) {
+		await this.page.goto( `/?_qm_acceptance_group=db_queries&_qm_acceptance_test=${test}` );
+	}
+
+	/**
 	 * Navigate to a page that loads the third-party panel test plugin
 	 */
 	async amOnAPageWithThirdPartyPanel() {

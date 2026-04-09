@@ -182,6 +182,37 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'db_queries':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'non_utf8':
+					global $wpdb;
+
+					// Insert binary IP address data which produces non-UTF8
+					// bytes in the logged SQL queries. This tests that QM can
+					// gracefully encode the query data as JSON.
+					$table = $wpdb->prefix . 'qm_binary_ip_test';
+
+					$wpdb->query(
+						"CREATE TABLE IF NOT EXISTS `{$table}` (
+							`ip` varbinary(16) NOT NULL
+						);"
+					);
+
+					$wpdb->insert(
+						$table,
+						array(
+							'ip' => inet_pton( '192.168.1.0' ),
+						),
+						array( '%s' )
+					);
+
+					$wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		default:
 			throw new \InvalidArgumentException( 'Unknown group: ' . $_GET['_qm_acceptance_group'] );
 			break;
