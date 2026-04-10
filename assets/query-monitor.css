@@ -636,10 +636,8 @@ i {
 
 	thead th {
 		background: var( --qm-table-header-bg );
-		box-shadow: 0 2px 4px rgba( 0, 0, 0, 0.06 );
 		font-weight: 600;
-		letter-spacing: 0.01em;
-		padding: 7px 7px 7px 8px;
+		padding: 5px 7px 5px 8px;
 		position: sticky;
 		top: 0;
 		z-index: 1;
