@@ -408,7 +408,10 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'abspath' => QM_Util::normalize_path( ABSPATH ),
 				'contentpath' => QM_Util::normalize_path( dirname( WP_CONTENT_DIR ) . '/' ),
 			],
-			'number_format' => $wp_locale->number_format,
+			'number_format' => array(
+				'thousands_sep' => html_entity_decode( $wp_locale->number_format['thousands_sep'] ),
+				'decimal_point' => html_entity_decode( $wp_locale->number_format['decimal_point'] ),
+			),
 			'locale_data' => self::get_script_locale_data(),
 		);
 
