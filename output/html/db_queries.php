@@ -132,6 +132,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'panel' => 'db_errors',
 				'title' => esc_html__( 'Database Errors', 'query-monitor' ),
 				'warning_count' => count( $errors ),
+				'meta' => [
+					'classname' => 'qm-warning',
+				],
 			) );
 		}
 
