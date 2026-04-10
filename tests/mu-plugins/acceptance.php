@@ -177,6 +177,11 @@ add_action( 'init', function() {
 					wp_register_script_module( 'qm-test-middle', home_url( 'qm-test-middle.js' ), ['qm-test-bottom'], '2', [ 'type' => 'module' ] );
 					wp_enqueue_script_module( 'qm-test-top', home_url( 'qm-test-module.js' ), ['qm-test-middle'], '1', [ 'type' => 'module' ] );
 					break;
+				case 'footer-only':
+					add_action( 'wp_enqueue_scripts', function() {
+						wp_enqueue_script( 'qm-test-footer', home_url( 'qm-test-footer.js' ), [], '1.0', true );
+					} );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

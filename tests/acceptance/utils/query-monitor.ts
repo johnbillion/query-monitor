@@ -196,6 +196,40 @@ export class QueryMonitorUtils {
 	 * } );
 	 * ```
 	 */
+	/**
+	 * Verifies that no table row in the visible QM panel has the given cell value in the specified column.
+	 */
+	async dontSeeColumnValueInQMPanel( panel: string, column: string, value: string ) {
+		await this.openQMPanel( panel );
+
+		const visiblePanel = this.page.locator( '.qm-panel-show' );
+
+		const columnIndex = await visiblePanel.evaluate( ( panelEl, headerText ) => {
+			const headers = panelEl.querySelectorAll( 'table thead th' );
+			for ( let i = 0; i < headers.length; i++ ) {
+				const th = headers[i];
+				const text = th.textContent?.trim() || '';
+				const labelText = th.querySelector( 'label' )?.textContent?.trim() || '';
+				if ( text === headerText || labelText === headerText ) {
+					return i + 1;
+				}
+			}
+			return 0;
+		}, column );
+
+		if ( columnIndex === 0 ) {
+			throw new Error( `Column header "${column}" not found in panel "${panel}"` );
+		}
+
+		const matchingRow = visiblePanel.locator( 'table tbody tr' ).filter( {
+			has: this.page.locator( `td:nth-child(${columnIndex})` ).filter( {
+				hasText: value
+			} )
+		} );
+
+		await expect( matchingRow ).toHaveCount( 0 );
+	}
+
 	async seeTableRowInQMPanel( panel: string, row: Record<string, string> ) {
 		await this.openQMPanel( panel );
 

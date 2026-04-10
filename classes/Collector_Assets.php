@@ -30,9 +30,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
-	 * @var array<int, string>
+	 * @var ?array<int, string>
 	 */
-	protected $header = array();
+	protected $header = null;
 
 	/**
 	 * @var array<int, string>
@@ -106,7 +106,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_print_footer_scripts() {
-		if ( empty( $this->header ) ) {
+		if ( null === $this->header ) {
 			return;
 		}
 
@@ -129,7 +129,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$modules = self::get_script_modules();
 		}
 
-		if ( empty( $this->header ) && empty( $this->footer ) && empty( $modules ) ) {
+		if ( null === $this->header && empty( $this->footer ) && empty( $modules ) ) {
 			return;
 		}
 

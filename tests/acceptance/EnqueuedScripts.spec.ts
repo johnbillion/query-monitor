@@ -9,6 +9,17 @@ test.describe( 'Enqueued Scripts', () => {
 		await QueryMonitor.loginViaPage( 'admin', 'password' );
 	} );
 
+	test( 'Footer-only scripts should be detected', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'footer-only' );
+
+		await QueryMonitor.seeTableRowInQMPanel( 'Scripts', {
+			'Position': 'Footer',
+			'Handle': 'qm-test-footer',
+		} );
+
+		await QueryMonitor.dontSeeColumnValueInQMPanel( 'Scripts', 'Position', 'Header' );
+	} );
+
 	test( 'Script module dependencies should be handled', async ( { page, QueryMonitor, globalUtils } ) => {
 		// Skip if WordPress doesn't support script modules (< 6.5)
 		if ( ! globalUtils.isWordPressVersionAtLeast( 6.5 ) ) {
