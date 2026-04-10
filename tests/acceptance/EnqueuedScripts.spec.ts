@@ -9,7 +9,13 @@ test.describe( 'Enqueued Scripts', () => {
 		await QueryMonitor.loginViaPage( 'admin', 'password' );
 	} );
 
-	test( 'Footer-only scripts should be detected', async ( { QueryMonitor } ) => {
+	test( 'Footer-only scripts should be detected', async ( { QueryMonitor, globalUtils } ) => {
+		// Skip on older WordPress versions which enqueue scripts in the header by default
+		if ( ! globalUtils.isWordPressVersionAtLeast( 6.7 ) ) {
+			test.skip();
+			return;
+		}
+
 		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'footer-only' );
 
 		await QueryMonitor.seeTableRowInQMPanel( 'Scripts', {
