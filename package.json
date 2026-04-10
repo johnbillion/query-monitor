@@ -1,6 +1,6 @@
 {
 	"name": "query-monitor",
-	"version": "4.0.4",
+	"version": "4.0.5",
 	"description": "The Developer Tools panel for WordPress.",
 	"license": "GPL-2.0-or-later",
 	"private": true,
