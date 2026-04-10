@@ -53,10 +53,6 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		/** @var QM_Data_Assets $data */
 		$data = $this->collector->get_data();
 
-		if ( empty( $data->assets ) ) {
-			return $menu;
-		}
-
 		$type_label = $this->get_type_labels();
 
 		$args = array(
