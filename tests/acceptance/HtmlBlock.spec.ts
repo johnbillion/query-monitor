@@ -2,7 +2,7 @@ import { test, expect } from './utils/test-setup';
 import { GlobalUtils } from './utils/global-utils';
 
 test.describe( 'HTML Block', () => {
-	let postUrl: string;
+	let postId: string;
 
 	test.beforeAll( async ( { globalUtils } ) => {
 		globalUtils.installWordPress();
@@ -11,14 +11,9 @@ test.describe( 'HTML Block', () => {
 		// The </script> closing tag within the block innerHTML ends up in
 		// the QM JSON data. Without proper encoding this breaks out of the
 		// inline script tag that delivers QueryMonitorData.
-		const postId = GlobalUtils.runWPCLICommand(
+		postId = GlobalUtils.runWPCLICommand(
 			'post create --post_status=publish --post_title="HTML Block Test" --post_content="<!-- wp:html -->\n<script src=\"https://player.vimeo.com/api/player.js\"></script>\n<!-- /wp:html -->" --porcelain'
-		);
-		postUrl = GlobalUtils.runWPCLICommand( `post url ${postId.trim()}` );
-
-		// Convert absolute URL to relative path
-		const url = new URL( postUrl );
-		postUrl = url.pathname;
+		).trim();
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
@@ -26,7 +21,7 @@ test.describe( 'HTML Block', () => {
 	} );
 
 	test( 'Post with HTML block containing script tag should not break QM output', async ( { page } ) => {
-		await page.goto( postUrl );
+		await page.goto( `/?p=${postId}` );
 
 		// The QueryMonitorData variable should be a valid object.
 		// If the </script> in the block innerHTML broke out of the
