@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import { Icon, IconDefs } from './components/icon';
 import { MainContext, MainContextType, DurationUnit } from './contexts/main-context';
-import { type ComponentChildren, render } from 'preact';
-import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'preact/hooks';
+import { type ComponentChildren } from 'preact';
+import { createPortal } from 'preact/compat';
+import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 
 import { __ } from '@wordpress/i18n';
 
@@ -413,10 +414,5 @@ const AdminMenu = ( props: iAdminMenuProps ) => {
 		return true;
 	}, [props.element]);
 
-	useLayoutEffect(() => {
-		render( <>{ props.children }</>, props.element );
-		return () => render( null, props.element );
-	});
-
-	return null;
+	return createPortal( <>{ props.children }</>, props.element );
 }
