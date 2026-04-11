@@ -167,7 +167,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 
 					return (
 						<Toggler summary={ statusText }>
-							<ul className="qm-toggled">
+							<ul>
 								{ 'primary_ip' in info && (
 									<li key="primary_ip" className="qm-info qm-supplemental">
 										{ __( 'IP Address', 'query-monitor' ) }: { info.primary_ip as string }
