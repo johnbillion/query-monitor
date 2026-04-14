@@ -214,7 +214,7 @@ export const QM = ( props: Props ) => {
 			return;
 		}
 
-		const adminToolbarHeight = 32;
+		const adminToolbarHeight = document.getElementById( 'wpadminbar' )?.offsetHeight ?? 0;
 		let dragging = false;
 
 		const qmMain = mainRef.current;

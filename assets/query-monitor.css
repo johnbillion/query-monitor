@@ -77,7 +77,7 @@
 	--qm-font-code-face: Menlo, Monaco, Consolas, monospace;
 	--qm-font-code-size: 11px;
 	--qm-font-code-line-height: 20px;
-	--qm-admin-toolbar-height: 32px;
+	--qm-admin-toolbar-height: var( --wp-admin--admin-bar--height, 32px );
 	--qm-fabulous-gradient: repeating-linear-gradient(
 		135deg,
 		#FFFFFF 0px,
