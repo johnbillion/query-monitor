@@ -421,7 +421,24 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		wp_print_inline_script_tag(
 			sprintf(
-				'var QueryMonitorData = %s;',
+				<<<'JS'
+				const QueryMonitorData = %s;
+
+				if ( QueryMonitorData !== false ) {
+					const data = { type: 'qm-data', data: QueryMonitorData };
+
+					window.postMessage( data, window.location.origin );
+
+					window.addEventListener( 'message', function( event ) {
+						if (
+							event.source === window &&
+							event.data?.type === 'qm-request-data'
+						) {
+							window.postMessage( data, window.location.origin );
+						}
+					} );
+				}
+				JS,
 				false !== $encoded ? $encoded : 'false'
 			),
 			array(

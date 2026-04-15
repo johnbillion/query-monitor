@@ -1,0 +1,22 @@
+{
+	"$schema": "https://json.schemastore.org/chrome-manifest.json",
+	"manifest_version": 3,
+	"name": "Query Monitor",
+	"version": "4.0.6",
+	"description": "The developer tools panel for WordPress and WooCommerce.",
+	"devtools_page": "devtools.html",
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"js": [
+				"content-script.js"
+			],
+			"run_at": "document_idle"
+		}
+	]
+}

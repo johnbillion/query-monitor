@@ -205,6 +205,17 @@
 	}
 }
 
+/** === Layout: browser extension === */
+
+#query-monitor-main.qm-extension {
+	position: static;
+	border-top: 0;
+	box-shadow: none;
+	height: 100vh !important;
+	width: 100% !important;
+	z-index: auto;
+}
+
 /** === Reset === */
 
 *,

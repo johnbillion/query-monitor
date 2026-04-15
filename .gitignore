@@ -4,6 +4,7 @@
 /vendor
 /node_modules
 /assets/build
+/extension/build
 /tests/test-results
 /tests/cache
 *.zip
