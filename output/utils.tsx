@@ -2,7 +2,7 @@ import { Fragment, type JSX } from 'preact';
 import { Callback, StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
-declare const QueryMonitorData: {
+interface QMGlobals {
 	number_format: {
 		thousands_sep: string;
 		decimal_point: string;
@@ -15,9 +15,39 @@ declare const QueryMonitorData: {
 			off: string;
 		};
 	};
+}
+
+let qmGlobals: QMGlobals = {
+	number_format: {
+		thousands_sep: ',',
+		decimal_point: '.',
+	},
+	l10n: {
+		admin_url: '',
+		ajaxurl: '',
+		auth_nonce: { on: '', off: '' },
+	},
 };
 
-export const qm_l10n = QueryMonitorData.l10n;
+/**
+ * Initialise the global data used by utility functions.
+ * Call once at startup before any component renders.
+ */
+export function setQMGlobals( globals: QMGlobals ): void {
+	qmGlobals = globals;
+}
+
+export const qm_l10n = {
+	get admin_url() {
+		return qmGlobals.l10n.admin_url;
+	},
+	get ajaxurl() {
+		return qmGlobals.l10n.ajaxurl;
+	},
+	get auth_nonce() {
+		return qmGlobals.l10n.auth_nonce;
+	},
+};
 
 function highlightStrings( text: string ): ( string | JSX.Element )[] {
 	const parts = text.split( /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/ );
@@ -353,7 +383,7 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 	if ( num_str.length > 3 ) {
 		let i = 0;
 		for ( i = num_str.length; i > 3; i -= 3 ) {
-			o = QueryMonitorData.number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
+			o = qmGlobals.number_format.thousands_sep + num_str.slice( i - 3, i ) + o;
 		}
 		o = num_str.slice( 0, i ) + o;
 	} else {
@@ -361,7 +391,7 @@ export function numberFormat( number: number, decimals: number = 0 ): string {
 	}
 
 	if ( decimals ) {
-		o = o + QueryMonitorData.number_format.decimal_point + fraction;
+		o = o + qmGlobals.number_format.decimal_point + fraction;
 	}
 
 	return o;
