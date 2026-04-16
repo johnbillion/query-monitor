@@ -422,7 +422,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		wp_print_inline_script_tag(
 			sprintf(
 				<<<'JS'
-				const QueryMonitorData = %s;
+				var QueryMonitorData = %s;
 
 				if ( QueryMonitorData !== false ) {
 					const data = { type: 'qm-data', data: QueryMonitorData };
