@@ -1,27 +1,17 @@
 /**
  * Content script for the Query Monitor browser extension.
  *
- * Bridges data between the page context (where QueryMonitorData lives)
- * and the extension's DevTools panel via chrome.runtime messaging.
+ * Listens for a "ready" signal from the page and relays it to the
+ * DevTools panel so it knows when to read the data.
  */
 
-// Announce that this content script is ready.
-chrome.runtime.sendMessage( { type: 'qm-content-script-ready' } );
-
-// Relay QM data from the page to the extension.
+// Notify the panel that QM data is available on this page.
 window.addEventListener( 'message', ( event ) => {
 	if ( event.source !== window ) {
 		return;
 	}
 
-	if ( event.data && event.data.type === 'qm-data' ) {
-		chrome.runtime.sendMessage( event.data );
-	}
-} );
-
-// Listen for requests from the DevTools panel to re-send data.
-chrome.runtime.onMessage.addListener( ( message ) => {
-	if ( message && message.type === 'qm-request-data' ) {
-		window.postMessage( { type: 'qm-request-data' }, window.location.origin );
+	if ( event.data && event.data.type === 'query-monitor-ready' ) {
+		chrome.runtime.sendMessage( { type: 'query-monitor-ready' } );
 	}
 } );

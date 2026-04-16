@@ -1,10 +1,10 @@
 import { render } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 
 import { QM } from '../../output/qm';
 import { DurationUnit } from '../../output/contexts/main-context';
 
-import { iQM, initializeQMData, mergeSettings, registerAllPanels } from '../../src/panels';
+import { iQM, type iQMData, initializeQMData, mergeSettings, registerAllPanels } from '../../src/panels';
 
 /**
  * Wrapper component that manages data fetching from the inspected page
@@ -13,33 +13,46 @@ import { iQM, initializeQMData, mergeSettings, registerAllPanels } from '../../s
 const ExtensionPanel = () => {
 	const [ qmData, setQmData ] = useState<iQM | null>( null );
 
+	const fetchData = useCallback( () => {
+		chrome.devtools.inspectedWindow.eval(
+			'window.QueryMonitorData',
+			( result: iQMData | undefined, exceptionInfo ) => {
+				if ( exceptionInfo || ! result ) {
+					return;
+				}
+
+				initializeQMData( result );
+				registerAllPanels();
+				setQmData( result );
+			},
+		);
+	}, [] );
+
 	useEffect( () => {
 		const tabId = chrome.devtools.inspectedWindow.tabId;
+		let port: ReturnType<typeof chrome.runtime.connect>;
 
-		// Connect to the background service worker via a long-lived port.
-		const port = chrome.runtime.connect( { name: 'qm-devtools' } );
-		port.postMessage( { type: 'qm-init', tabId } );
+		const connect = () => {
+			port = chrome.runtime.connect( { name: 'query-monitor-devtools' } );
+			port.postMessage( { type: 'query-monitor-init', tabId } );
 
-		const requestData = () => {
-			port.postMessage( { type: 'qm-request-data' } );
+			port.onMessage.addListener( ( message: { type?: string } ) => {
+				if ( message?.type === 'query-monitor-ready' ) {
+					fetchData();
+				}
+			} );
+
+			// Reconnect when the service worker goes idle.
+			port.onDisconnect.addListener( () => {
+				connect();
+			} );
 		};
 
-		port.onMessage.addListener( ( message: { type?: string; data?: iQM } ) => {
-			if ( message && message.type === 'qm-content-script-ready' ) {
-				// Content script on the new page is ready, request data.
-				requestData();
-			} else if ( message && message.type === 'qm-data' && message.data ) {
-				initializeQMData( message.data );
-				registerAllPanels();
-				setQmData( message.data );
-			}
-		} );
+		connect();
 
-		// Request data in case the page loaded before DevTools opened.
-		requestData();
+		// Fetch immediately in case the page already has data.
+		fetchData();
 
-		// Clear data when the inspected page navigates.
-		// The content script on the new page will announce itself when ready.
 		const onNavigated = () => {
 			setQmData( null );
 		};
@@ -50,7 +63,7 @@ const ExtensionPanel = () => {
 			port.disconnect();
 			chrome.devtools.network.onNavigated.removeListener( onNavigated );
 		};
-	}, [] );
+	}, [ fetchData ] );
 
 	if ( ! qmData ) {
 		return (

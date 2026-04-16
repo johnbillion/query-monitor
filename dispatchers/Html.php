@@ -423,21 +423,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			sprintf(
 				<<<'JS'
 				var QueryMonitorData = %s;
-
-				if ( QueryMonitorData !== false ) {
-					const data = { type: 'qm-data', data: QueryMonitorData };
-
-					window.postMessage( data, window.location.origin );
-
-					window.addEventListener( 'message', function( event ) {
-						if (
-							event.source === window &&
-							event.data?.type === 'qm-request-data'
-						) {
-							window.postMessage( data, window.location.origin );
-						}
-					} );
-				}
+				window.postMessage( { type: "query-monitor-ready" }, window.location.origin );
 				JS,
 				false !== $encoded ? $encoded : 'false'
 			),
