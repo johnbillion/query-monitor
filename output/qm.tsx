@@ -202,7 +202,7 @@ export const QM = ( props: Props ) => {
 				classes.forEach( ( cls ) => adminMenuElement.classList.remove( cls ) );
 			};
 		}
-	}, [ adminMenuElement, props.menu.top.classname ] );
+	}, [ isExtension, adminMenuElement, props.menu.top.classname ] );
 
 	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, onPanelChange, containerHeight } = props;
@@ -301,7 +301,7 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'touchstart', preventTouch );
 			window.removeEventListener( 'resize', onWindowResize );
 		};
-	}, [ active, containerHeight, onContainerResize ] );
+	}, [ active, isExtension, containerHeight, onContainerResize ] );
 
 	const [ cssVersion, setCssVersion ] = useState( 0 );
 
