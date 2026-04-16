@@ -22,6 +22,14 @@ export default [
 		],
 	},
 	{
+		files: ['extension/**/*.tsx', 'extension/**/*.ts'],
+		languageOptions: {
+			globals: {
+				...globals.webextensions,
+			},
+		},
+	},
+	{
 		files: ['**/*.tsx', '**/*.ts'],
 		languageOptions: {
 			parser: tsparser,
