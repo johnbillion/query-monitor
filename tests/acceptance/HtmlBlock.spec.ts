@@ -1,5 +1,4 @@
 import { test, expect } from './utils/test-setup';
-import { GlobalUtils } from './utils/global-utils';
 
 test.describe( 'HTML Block', () => {
 	let postId: string;
@@ -11,7 +10,7 @@ test.describe( 'HTML Block', () => {
 		// The </script> closing tag within the block innerHTML ends up in
 		// the QM JSON data. Without proper encoding this breaks out of the
 		// inline script tag that delivers QueryMonitorData.
-		postId = GlobalUtils.runWPCLICommand(
+		postId = globalUtils.runWPCLICommand(
 			'post create --post_status=publish --post_title="HTML Block Test" --post_content="<!-- wp:html -->\n<script src=\"https://player.vimeo.com/api/player.js\"></script>\n<!-- /wp:html -->" --porcelain'
 		).trim();
 	} );
