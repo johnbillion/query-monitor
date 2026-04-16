@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: Deploy Extension
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+concurrency:
+  group: chrome-web-store
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  deploy:
+    name: Deploy Extension
+    if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    environment: Chrome Web Store
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: '.nvmrc'
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build extension
+        run: npm run build:extension
+
+      - name: Zip extension
+        working-directory: extension/build
+        run: zip -r ../../extension.zip .
+
+      # The Chrome Web Store API is called directly with curl to avoid relying on
+      # third-party actions or npm packages. There are no official Google actions available.
+      - name: Publish to Chrome Web Store
+        run: bin/deploy-extension.sh
+        env:
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}

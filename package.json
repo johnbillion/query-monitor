@@ -75,6 +75,7 @@
 		"watch": "npm run build-schemas && vite",
 		"build": "npm run build-schemas && vite build",
 		"build:extension": "npm run build && vite build --config vite.extension.config.js",
+		"deploy:extension": "npm run build:extension && cd extension/build && zip -r ../../extension.zip . && cd ../.. && bin/deploy-extension.sh",
 		"version": "npm install # See https://github.com/JS-DevTools/version-bump-prompt/issues/42",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
