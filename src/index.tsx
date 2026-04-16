@@ -135,6 +135,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const renderQM = () => {
 		render(
 			<QM
+				inWP={ true }
 				isWpAdmin={ isWpAdmin }
 				isRtl={ isRtl }
 				active={ active }

@@ -205,9 +205,9 @@
 	}
 }
 
-/** === Layout: browser extension === */
+/** === Layout: standalone (ie. not within WordPress) === */
 
-#query-monitor-main.qm-extension {
+#query-monitor-main.qm-standalone {
 	position: static;
 	border-top: 0;
 	box-shadow: none;

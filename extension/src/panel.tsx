@@ -77,7 +77,6 @@ const ExtensionPanel = () => {
 
 	return (
 		<QM
-			isExtension={ true }
 			isWpAdmin={ false }
 			isRtl={ false }
 			active={ active }
@@ -86,7 +85,7 @@ const ExtensionPanel = () => {
 			panel_menu={ qmData.panel_menu }
 			data={ qmData.data }
 			settings={ settings }
-			side={ false }
+			side={ true }
 			colorScheme={ settings.color_scheme }
 			theme={ theme }
 			fabulous={ false }

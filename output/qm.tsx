@@ -50,7 +50,7 @@ type Props = {
 	isAutoFold: boolean;
 	isRtl: boolean;
 	isFullscreenMode: boolean;
-	isExtension?: boolean;
+	inWP?: boolean;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -123,11 +123,11 @@ export const QM = ( props: Props ) => {
 			: 'light';
 	}
 
-	const isExtension = props.isExtension ?? false;
+	const inWP = props.inWP ?? false;
 
 	const mainClass = clsx( 'qm-container', 'qm-show', {
 		'qm-show-right': side,
-		'qm-extension': isExtension,
+		'qm-standalone': ! inWP,
 		'wp-admin': props.isWpAdmin,
 		'folded': props.isFolded,
 		'auto-fold': props.isAutoFold,
@@ -189,7 +189,7 @@ export const QM = ( props: Props ) => {
 
 	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
 	useEffect( () => {
-		if ( isExtension ) {
+		if ( ! inWP ) {
 			return;
 		}
 
@@ -202,7 +202,7 @@ export const QM = ( props: Props ) => {
 				classes.forEach( ( cls ) => adminMenuElement.classList.remove( cls ) );
 			};
 		}
-	}, [ isExtension, adminMenuElement, props.menu.top.classname ] );
+	}, [ inWP, adminMenuElement, props.menu.top.classname ] );
 
 	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, onPanelChange, containerHeight } = props;
@@ -218,7 +218,7 @@ export const QM = ( props: Props ) => {
 	}, [ active, onPanelChange ] );
 
 	useEffect( () => {
-		if ( ! active || isExtension ) {
+		if ( ! active || ! inWP ) {
 			return;
 		}
 
@@ -301,7 +301,7 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'touchstart', preventTouch );
 			window.removeEventListener( 'resize', onWindowResize );
 		};
-	}, [ active, isExtension, containerHeight, onContainerResize ] );
+	}, [ active, inWP, containerHeight, onContainerResize ] );
 
 	const [ cssVersion, setCssVersion ] = useState( 0 );
 
@@ -318,18 +318,18 @@ export const QM = ( props: Props ) => {
 		: props.cssUrl;
 
 	// In extension mode, always show a panel (default to overview).
-	const effectiveActive = isExtension ? ( active || 'overview' ) : active;
+	const effectiveActive = inWP ? active : ( active || 'overview' );
 
 	return (
 		<MainContext.Provider value={ contextValue }>
 			<IconDefs />
-			{ ! isExtension && (
+			{ inWP && (
 				<link rel="stylesheet" href={ cssUrl } />
 			) }
 			{ effectiveActive && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
 					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
-						<h1 className={ clsx( 'qm-title-heading', { 'qm-resizer': ! isExtension } ) }>
+						<h1 className={ clsx( 'qm-title-heading', { 'qm-resizer': inWP } ) }>
 							<span>
 								{ __( 'Query Monitor', 'query-monitor' ) }
 							</span>
@@ -348,7 +348,7 @@ export const QM = ( props: Props ) => {
 						>
 							<Icon name="admin-generic"/>
 						</button>
-						{ ! isExtension && (
+						{ inWP && (
 							<button
 								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
 								className="qm-button-container-position"
@@ -360,7 +360,7 @@ export const QM = ( props: Props ) => {
 								<Icon name="image-rotate-left"/>
 							</button>
 						) }
-						{ ! isExtension && (
+						{ inWP && (
 							<button
 								aria-label={ __( 'Close Panel', 'query-monitor' ) }
 								className="qm-button-container-close"
@@ -380,7 +380,7 @@ export const QM = ( props: Props ) => {
 					</div>
 				</div>
 			) }
-			{ ! isExtension && adminMenuElement && (
+			{ inWP && adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>
 					<a
 						className="ab-item"
