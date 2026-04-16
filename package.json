@@ -71,7 +71,7 @@
 		"bump:minor": "bump minor --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php extension/manifest.json",
 		"bump:major": "bump major --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php extension/manifest.json",
 		"bump": "f() { bump \"$1\" --commit 'Version %s.' query-monitor.php package.json package-lock.json readme.txt wp-content/db.php; }; f",
-		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/public/logo.png -f png --palette resize 256 256",
+		"icons": "sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-128x128.png -f png --palette resize 128 128 && sharp -i .wordpress-org/icon.svg -o .wordpress-org/icon-256x256.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon-light.svg -o docs/public/logo.png -f png --palette resize 256 256 && sharp -i .wordpress-org/icon.svg -o extension/icons/icon-16.png -f png --palette resize 16 16 && sharp -i .wordpress-org/icon.svg -o extension/icons/icon-48.png -f png --palette resize 48 48 && sharp -i .wordpress-org/icon.svg -o extension/icons/icon-128.png -f png --palette resize 128 128",
 		"watch": "npm run build-schemas && vite",
 		"build": "npm run build-schemas && vite build",
 		"build:extension": "npm run build && vite build --config vite.extension.config.js",

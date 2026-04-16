@@ -4,6 +4,11 @@
 	"name": "Query Monitor",
 	"version": "4.0.6",
 	"description": "The developer tools panel for WordPress and WooCommerce.",
+	"icons": {
+		"16": "icons/icon-16.png",
+		"48": "icons/icon-48.png",
+		"128": "icons/icon-128.png"
+	},
 	"devtools_page": "devtools.html",
 	"background": {
 		"service_worker": "background.js"
