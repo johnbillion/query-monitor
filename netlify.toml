@@ -41,3 +41,7 @@
 [[redirects]]
   from = "/4/"
   to = "/help/query-monitor-4/"
+
+[[redirects]]
+  from = "/extension/"
+  to = "/wordpress-debugging/browser-extension/"

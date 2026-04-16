@@ -71,6 +71,8 @@ const ExtensionPanel = () => {
 				<p>Waiting for Query Monitor data&hellip;</p>
 				<p style={{ fontSize: '0.85em' }}>
 					Make sure Query Monitor is active on the page you are inspecting.
+					{ ' ' }
+					<a href="https://querymonitor.com/help/browser-extension/" target="_blank" rel="noreferrer noopener">Learn more</a>.
 				</p>
 			</div>
 		);

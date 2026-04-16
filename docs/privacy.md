@@ -15,6 +15,12 @@ Query Monitor stores some user preferences in the browser's Local Storage and Se
 
 Please note that in a future version of Query Monitor, opt-in features may be introduced which allow a user to choose to persistently store data and/or send data to a third party service. Such features will only ever be opt-in.
 
+## Query Monitor browser extension privacy statement
+
+The Query Monitor browser extension only reads Query Monitor data from pages you inspect with your browser's developer tools. It does not read any other data, all data remains in your browser, and no data is sent to any third party.
+
+The browser extension stores the same user preferences as the Query Monitor plugin in the browser's Local Storage, as described above.
+
 ## querymonitor.com website privacy statement
 
 The querymonitor.com website:
@@ -23,4 +29,4 @@ The querymonitor.com website:
 * Is operated by [John Blackbourn](/about/).
 * Is hosted on [Netlify](https://www.netlify.com/).
 
-This privacy statement is subject to change and was last updated on July 29, 2024.
+This privacy statement is subject to change and was last updated on April 16, 2026.

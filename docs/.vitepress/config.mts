@@ -154,6 +154,10 @@ export default defineConfig({
 						text: 'Assertions',
 						link: '/wordpress-debugging/assertions/',
 					},
+					{
+						text: 'Browser extension',
+						link: '/wordpress-debugging/browser-extension/',
+					},
 				],
 			},
 			{
@@ -163,6 +167,10 @@ export default defineConfig({
 					{
 						text: 'Query Monitor 4',
 						link: '/help/query-monitor-4/',
+					},
+					{
+						text: 'Browser extension',
+						link: '/help/browser-extension/',
 					},
 					{
 						text: 'Clickable stack traces',
