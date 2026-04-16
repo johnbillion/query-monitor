@@ -571,6 +571,10 @@ i {
 	overscroll-behavior: contain;
 	border: 6px solid var( --qm-panel-bg );
 	border-bottom: none;
+
+	.qm-show-right & {
+		border: none;
+	}
 }
 
 .qm-boxed {
