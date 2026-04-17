@@ -393,15 +393,8 @@ export const QM = ( props: Props ) => {
 										} }
 									>
 										{ menu.title }
-										{ !! menu.count && menu.count !== menu.warning_count && (
-											<span aria-hidden="true" className="qm-toolbar-badge">
-												{ numberFormat( menu.count ) }
-											</span>
-										) }
-										{ !! menu.warning_count && (
-											<span aria-hidden="true" className="qm-toolbar-badge qm-toolbar-badge-warning">
-												{ numberFormat( menu.warning_count ) }
-											</span>
+										{ !! menu.count && (
+											<small>{ numberFormat( menu.count ) }</small>
 										) }
 									</a>
 								</li>

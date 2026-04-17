@@ -77,11 +77,17 @@ class QM_Output_Html_Logger extends QM_Output_Html {
 			}
 		}
 
-		$menu[ $this->collector->id() ] = $this->menu( array(
+		$args = array(
 			'title' => esc_html__( 'Logs', 'query-monitor' ),
 			'count' => $count ?: null,
 			'warning_count' => $warning_count ?: null,
-		) );
+		);
+
+		if ( $warning_count ) {
+			$args['meta']['classname'] = 'qm-warning';
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( $args );
 
 		return $menu;
 	}
