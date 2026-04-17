@@ -54,6 +54,8 @@ export type iQMMenuItem = {
 	id: string;
 	panel: string;
 	title: string;
+	count?: number | null;
+	warning_count?: number | null;
 	meta?: {
 		classname: string;
 	};

@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 
 import { __ } from '@wordpress/i18n';
 
+import { numberFormat } from './utils';
 import { Nav, iNavMenu, NavSelect } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
@@ -28,6 +29,8 @@ type Props = {
 				id: string;
 				panel: string;
 				title: string;
+				count?: number | null;
+				warning_count?: number | null;
 				meta?: {
 					classname: string;
 				}
@@ -390,6 +393,16 @@ export const QM = ( props: Props ) => {
 										} }
 									>
 										{ menu.title }
+										{ !! menu.count && menu.count !== menu.warning_count && (
+											<span aria-hidden="true" className="qm-toolbar-badge">
+												{ numberFormat( menu.count ) }
+											</span>
+										) }
+										{ !! menu.warning_count && (
+											<span aria-hidden="true" className="qm-toolbar-badge qm-toolbar-badge-warning">
+												{ numberFormat( menu.warning_count ) }
+											</span>
+										) }
 									</a>
 								</li>
 							) ) }

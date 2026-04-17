@@ -119,6 +119,31 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	text-shadow: none !important;
 }
 
+#wp-admin-bar-query-monitor .ab-submenu .ab-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+#wp-admin-bar-query-monitor .qm-toolbar-badge {
+	background: rgba( 255, 255, 255, 0.2 );
+	border-radius: 99px;
+	color: #eee;
+	font-size: 10.5px;
+	font-weight: 600;
+	line-height: 1;
+	margin-left: auto;
+	min-width: 18px;
+	padding: 3px 7px;
+	text-align: center;
+	text-shadow: none;
+}
+
+#wp-admin-bar-query-monitor .qm-toolbar-badge-warning {
+	background: var( --qm-menu-warning-bg );
+	color: #fff;
+}
+
 /** === Fatal Error Panel === */
 
 #qm-fatal {
