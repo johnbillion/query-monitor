@@ -67,13 +67,23 @@ const ExtensionPanel = () => {
 
 	if ( ! qmData ) {
 		return (
-			<div style={{ padding: '2em', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', color: '#666' }}>
-				<p>Waiting for Query Monitor data&hellip;</p>
-				<p style={{ fontSize: '0.85em' }}>
-					Make sure Query Monitor is active on the page you are inspecting.
-					{ ' ' }
-					<a href="https://querymonitor.com/help/browser-extension/" target="_blank" rel="noreferrer noopener">Learn more</a>.
-				</p>
+			<div className="qm-waiting">
+				<div className="qm-waiting-card">
+					<p>Waiting for Query Monitor data&hellip;</p>
+					<p>
+						Make sure Query Monitor is active on the page you are inspecting.
+					</p>
+					<p>
+						<a
+							href="https://querymonitor.com/help/browser-extension/"
+							target="_blank"
+							rel="noreferrer noopener"
+							className="qm-waiting-button"
+						>
+							Learn more
+						</a>
+					</p>
+				</div>
 			</div>
 		);
 	}
