@@ -9,19 +9,5 @@
 		"48": "icons/icon-48.png",
 		"128": "icons/icon-128.png"
 	},
-	"devtools_page": "devtools.html",
-	"background": {
-		"service_worker": "background.js"
-	},
-	"content_scripts": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"js": [
-				"content-script.js"
-			],
-			"run_at": "document_idle"
-		}
-	]
+	"devtools_page": "devtools.html"
 }

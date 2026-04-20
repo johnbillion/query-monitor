@@ -421,10 +421,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		wp_print_inline_script_tag(
 			sprintf(
-				<<<'JS'
-				var QueryMonitorData = %s;
-				window.postMessage( { type: "query-monitor-ready" }, window.location.origin );
-				JS,
+				'var QueryMonitorData = %s;',
 				false !== $encoded ? $encoded : 'false'
 			),
 			array(

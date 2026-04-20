@@ -1,5 +1,5 @@
 import { render } from 'preact';
-import { useState, useEffect, useCallback } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
 import { QM } from '../../output/qm';
 import { DurationUnit } from '../../output/contexts/main-context';
@@ -13,57 +13,50 @@ import { iQM, type iQMData, initializeQMData, mergeSettings, registerAllPanels }
 const ExtensionPanel = () => {
 	const [ qmData, setQmData ] = useState<iQM | null>( null );
 
-	const fetchData = useCallback( () => {
-		chrome.devtools.inspectedWindow.eval(
-			'window.QueryMonitorData',
-			( result: iQMData | undefined, exceptionInfo ) => {
-				if ( exceptionInfo || ! result ) {
-					return;
-				}
-
-				initializeQMData( result );
-				registerAllPanels();
-				setQmData( result );
-			},
-		);
-	}, [] );
-
 	useEffect( () => {
-		const tabId = chrome.devtools.inspectedWindow.tabId;
-		let port: ReturnType<typeof chrome.runtime.connect>;
+		let cancelled = false;
+		let timer: ReturnType<typeof setTimeout> | null = null;
 
-		const connect = () => {
-			port = chrome.runtime.connect( { name: 'query-monitor-devtools' } );
-			port.postMessage( { type: 'query-monitor-init', tabId } );
+		const poll = () => {
+			chrome.devtools.inspectedWindow.eval(
+				'window.QueryMonitorData',
+				( result: iQMData | undefined, exceptionInfo ) => {
+					if ( cancelled ) {
+						return;
+					}
 
-			port.onMessage.addListener( ( message: { type?: string } ) => {
-				if ( message?.type === 'query-monitor-ready' ) {
-					fetchData();
-				}
-			} );
+					if ( exceptionInfo || ! result ) {
+						timer = setTimeout( poll, 500 );
+						return;
+					}
 
-			// Reconnect when the service worker goes idle.
-			port.onDisconnect.addListener( () => {
-				connect();
-			} );
+					initializeQMData( result );
+					registerAllPanels();
+					setQmData( result );
+				},
+			);
 		};
 
-		connect();
-
-		// Fetch immediately in case the page already has data.
-		fetchData();
+		poll();
 
 		const onNavigated = () => {
 			setQmData( null );
+			if ( timer ) {
+				clearTimeout( timer );
+			}
+			poll();
 		};
 
 		chrome.devtools.network.onNavigated.addListener( onNavigated );
 
 		return () => {
-			port.disconnect();
+			cancelled = true;
+			if ( timer ) {
+				clearTimeout( timer );
+			}
 			chrome.devtools.network.onNavigated.removeListener( onNavigated );
 		};
-	}, [ fetchData ] );
+	}, [] );
 
 	if ( ! qmData ) {
 		return (

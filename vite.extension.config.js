@@ -18,8 +18,6 @@ export default defineConfig( {
 					'manifest.json',
 					'devtools.html',
 					'devtools.js',
-					'background.js',
-					'content-script.js',
 					'panel.html',
 				];
 
