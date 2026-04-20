@@ -15,13 +15,17 @@ Using the browser extension has some advantages over the in-page panel:
 
 The browser extension is available for Chrome and other Chromium-based browsers. A Firefox version is in the works.
 
-<VPButton href="https://chromewebstore.google.com/detail/query-monitor/" text="Install from the Chrome Web Store" theme="brand" />
+<VPButton href="https://chromewebstore.google.com/detail/ohcllkgjhacaegbcdapjeeloikdgkcpo" text="Install from the Chrome Web Store" theme="brand" />
 
 The [Query Monitor plugin](https://wordpress.org/plugins/query-monitor/) also needs to be installed and active on the WordPress site you want to inspect.
 
 ## Usage
 
 Open your browser's developer tools on any page of your site and switch to the Query Monitor panel.
+
+The panel will probably appear in the right-most position by default:
+
+[![Query Monitor tab in dev tools](/extension-tab.png)](/extension-tab.png)
 
 Having trouble? See the [help page for the browser extension](/help/browser-extension/).
 
