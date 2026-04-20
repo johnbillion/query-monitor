@@ -205,6 +205,17 @@
 	}
 }
 
+/** === Layout: standalone (ie. not within WordPress) === */
+
+#query-monitor-main.qm-standalone {
+	position: static;
+	border-top: 0;
+	box-shadow: none;
+	height: 100vh !important;
+	width: 100% !important;
+	z-index: auto;
+}
+
 /** === Reset === */
 
 *,
@@ -560,6 +571,10 @@ i {
 	overscroll-behavior: contain;
 	border: 6px solid var( --qm-panel-bg );
 	border-bottom: none;
+
+	.qm-show-right & {
+		border: none;
+	}
 }
 
 .qm-boxed {

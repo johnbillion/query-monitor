@@ -99,6 +99,10 @@ The individual integration and acceptance tests require the Docker containers to
 	composer test:start
 	composer test:stop
 
+## Building the browser dev tools extension
+
+	npm run build:extension
+
 ## Releasing a New Version
 
 See [RELEASING.md](RELEASING.md).

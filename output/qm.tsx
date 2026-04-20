@@ -50,6 +50,7 @@ type Props = {
 	isAutoFold: boolean;
 	isRtl: boolean;
 	isFullscreenMode: boolean;
+	inWP?: boolean;
 	onPanelChange: ( active: string ) => void;
 	onContainerResize: ( height: number ) => void;
 	onSideChange: ( side: boolean ) => void;
@@ -122,8 +123,11 @@ export const QM = ( props: Props ) => {
 			: 'light';
 	}
 
+	const inWP = props.inWP ?? false;
+
 	const mainClass = clsx( 'qm-container', 'qm-show', {
 		'qm-show-right': side,
+		'qm-standalone': ! inWP,
 		'wp-admin': props.isWpAdmin,
 		'folded': props.isFolded,
 		'auto-fold': props.isAutoFold,
@@ -185,6 +189,10 @@ export const QM = ( props: Props ) => {
 
 	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
 	useEffect( () => {
+		if ( ! inWP ) {
+			return;
+		}
+
 		if ( adminMenuElement && props.menu.top.classname ) {
 			// Split the classname string and add each class
 			const classes = props.menu.top.classname.split( ' ' ).filter( Boolean );
@@ -194,7 +202,7 @@ export const QM = ( props: Props ) => {
 				classes.forEach( ( cls ) => adminMenuElement.classList.remove( cls ) );
 			};
 		}
-	}, [ adminMenuElement, props.menu.top.classname ] );
+	}, [ inWP, adminMenuElement, props.menu.top.classname ] );
 
 	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, onPanelChange, containerHeight } = props;
@@ -210,7 +218,7 @@ export const QM = ( props: Props ) => {
 	}, [ active, onPanelChange ] );
 
 	useEffect( () => {
-		if ( ! active ) {
+		if ( ! active || ! inWP ) {
 			return;
 		}
 
@@ -293,7 +301,7 @@ export const QM = ( props: Props ) => {
 			el.removeEventListener( 'touchstart', preventTouch );
 			window.removeEventListener( 'resize', onWindowResize );
 		};
-	}, [ active, containerHeight, onContainerResize ] );
+	}, [ active, inWP, containerHeight, onContainerResize ] );
 
 	const [ cssVersion, setCssVersion ] = useState( 0 );
 
@@ -309,21 +317,26 @@ export const QM = ( props: Props ) => {
 		? `${ devCssUrl }?t=${ cssVersion }`
 		: props.cssUrl;
 
+	// In extension mode, always show a panel (default to overview).
+	const effectiveActive = inWP ? active : ( active || 'overview' );
+
 	return (
 		<MainContext.Provider value={ contextValue }>
 			<IconDefs />
-			<link rel="stylesheet" href={ cssUrl } />
-			{ active && (
+			{ inWP && (
+				<link rel="stylesheet" href={ cssUrl } />
+			) }
+			{ effectiveActive && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
 					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
-						<h1 className="qm-title-heading qm-resizer">
+						<h1 className={ clsx( 'qm-title-heading', { 'qm-resizer': inWP } ) }>
 							<span>
 								{ __( 'Query Monitor', 'query-monitor' ) }
 							</span>
 						</h1>
 						{ side && (
 							<div className="qm-title-heading">
-								<NavSelect active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+								<NavSelect active={ effectiveActive } menu={ props.panel_menu } onSwitch={ setActivePanel } />
 							</div>
 						) }
 						<button
@@ -335,35 +348,39 @@ export const QM = ( props: Props ) => {
 						>
 							<Icon name="admin-generic"/>
 						</button>
-						<button
-							aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
-							className="qm-button-container-position"
-							onClick={ () => {
-								setSide( ! side );
-								props.onSideChange( ! side );
-							} }
-						>
-							<Icon name="image-rotate-left"/>
-						</button>
-						<button
-							aria-label={ __( 'Close Panel', 'query-monitor' ) }
-							className="qm-button-container-close"
-							onClick={ () => {
-								setActivePanel( '' );
-							} }
-						>
-							<Icon name="no-alt"/>
-						</button>
+						{ inWP && (
+							<button
+								aria-label={ __( 'Toggle panel position', 'query-monitor' ) }
+								className="qm-button-container-position"
+								onClick={ () => {
+									setSide( ! side );
+									props.onSideChange( ! side );
+								} }
+							>
+								<Icon name="image-rotate-left"/>
+							</button>
+						) }
+						{ inWP && (
+							<button
+								aria-label={ __( 'Close Panel', 'query-monitor' ) }
+								className="qm-button-container-close"
+								onClick={ () => {
+									setActivePanel( '' );
+								} }
+							>
+								<Icon name="no-alt"/>
+							</button>
+						) }
 					</div>
 					<div id="qm-panels-wrapper">
 						{ ! side && (
-							<Nav active={ active } menu={ props.panel_menu } onSwitch={ setActivePanel } seen={ seen } />
+							<Nav active={ effectiveActive } menu={ props.panel_menu } onSwitch={ setActivePanel } seen={ seen } />
 						) }
-						<Panels data={ props.data } active={ active } settings={ props.settings } />
+						<Panels data={ props.data } active={ effectiveActive } settings={ props.settings } />
 					</div>
 				</div>
 			) }
-			{ adminMenuElement && (
+			{ inWP && adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>
 					<a
 						className="ab-item"

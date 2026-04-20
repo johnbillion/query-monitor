@@ -5,7 +5,9 @@
 /.git export-ignore
 /.github export-ignore
 /.wordpress-org export-ignore
+/bin export-ignore
 /docs export-ignore
+/extension export-ignore
 /node_modules export-ignore
 /tests export-ignore
 /output/components export-ignore
@@ -41,5 +43,6 @@
 /RELEASING.md export-ignore
 /tsconfig.json export-ignore
 /vite.config.js export-ignore
+/vite.extension.config.js export-ignore
 *.ts export-ignore
 *.tsx export-ignore

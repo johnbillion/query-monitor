@@ -87,6 +87,8 @@ export type iQM = {
 	locale_data?: Record<string, unknown> | null;
 };
 
+export type iQMData = iQM | false;
+
 /**
  * Initialise lookup tables, globals, and translations from a QM data object.
  * Call once before rendering, and again when data changes (e.g. after navigation

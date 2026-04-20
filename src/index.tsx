@@ -5,9 +5,9 @@ import { Fatal } from '../output/fatal';
 import { iSettings } from '../output/panels/panels';
 import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 
-import { iQM, initializeQMData, mergeSettings, registerAllPanels } from './panels';
+import { iQMData, initializeQMData, mergeSettings, registerAllPanels } from './panels';
 
-declare const QueryMonitorData: iQM | false;
+declare const QueryMonitorData: iQMData;
 
 if ( QueryMonitorData === false ) {
 	document.addEventListener( 'DOMContentLoaded', function () {
@@ -135,6 +135,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const renderQM = () => {
 		render(
 			<QM
+				inWP={ true }
 				isWpAdmin={ isWpAdmin }
 				isRtl={ isRtl }
 				active={ active }
