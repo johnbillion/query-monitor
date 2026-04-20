@@ -11,7 +11,7 @@ window.addEventListener( 'message', ( event ) => {
 		return;
 	}
 
-	if ( event.data && event.data.type === 'query-monitor-ready' ) {
+	if ( event.data?.type === 'query-monitor-ready' ) {
 		chrome.runtime.sendMessage( { type: 'query-monitor-ready' } );
 	}
 } );

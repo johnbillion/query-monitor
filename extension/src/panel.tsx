@@ -70,8 +70,9 @@ const ExtensionPanel = () => {
 			<div className="qm-waiting">
 				<div className="qm-waiting-card">
 					<p>Waiting for Query Monitor data&hellip;</p>
+					<hr/>
 					<p>
-						Make sure Query Monitor is active on the page you are inspecting.
+						Make sure the Query Monitor plugin is active on the page you are inspecting, and you have permission to view its output.
 					</p>
 					<p>
 						<a
