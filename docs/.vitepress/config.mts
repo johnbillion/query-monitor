@@ -54,7 +54,7 @@ export default defineConfig({
 				link: wpURL,
 			},
 			{
-				text: 'Download Chrome extension',
+				text: 'Install Chrome extension',
 				link: chromeExtURL,
 			},
 		],
@@ -205,7 +205,7 @@ export default defineConfig({
 				link: wpURL,
 			},
 			{
-				text: 'Download Chrome extension',
+				text: 'Install Chrome extension',
 				link: chromeExtURL,
 			},
 			{

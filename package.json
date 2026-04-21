@@ -1,7 +1,7 @@
 {
 	"name": "query-monitor",
 	"version": "4.0.6",
-	"description": "The Developer Tools panel for WordPress.",
+	"description": "Query Monitor is the developer tools panel for WordPress and WooCommerce",
 	"license": "GPL-2.0-or-later",
 	"private": true,
 	"author": "John Blackbourn",

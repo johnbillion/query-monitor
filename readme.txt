@@ -48,6 +48,17 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-Administrator). See the Settings panel for details.
 
+### Browser extension
+
+Query Monitor is also available as an optional browser dev tools extension. This is an alternative to using the in-page panel that gets output into the admin toolbar.
+
+Using the browser extension has some advantages over the in-page panel:
+
+* The Query Monitor panel doesn't take up space within the page you are inspecting
+* The panel can be resized, undocked, and moved around like any other developer tools panel
+
+[Information about the Query Monitor browser extension can be found here](https://querymonitor.com/wordpress-debugging/browser-extension/).
+
 ### Other Plugins
 
 I maintain several other plugins for developers. Check them out:
