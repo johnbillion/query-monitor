@@ -1,9 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
+import { wpURL, ghURL, siteURL, chromeExtURL } from './urls'
 
-const wpURL = 'https://wordpress.org/plugins/query-monitor/';
-const ghURL = 'https://github.com/johnbillion/query-monitor';
-const siteURL = 'https://querymonitor.com';
 const year = new Date().getFullYear();
 
 const RSS: RSSOptions = {
@@ -52,8 +50,12 @@ export default defineConfig({
 				link: '/',
 			},
 			{
-				text: 'Download',
+				text: 'Download WordPress plugin',
 				link: wpURL,
+			},
+			{
+				text: 'Download Chrome extension',
+				link: chromeExtURL,
 			},
 		],
 
@@ -199,12 +201,16 @@ export default defineConfig({
 				],
 			},
 			{
-				text: 'GitHub Project',
-				link: ghURL,
+				text: 'Download WordPress plugin',
+				link: wpURL,
 			},
 			{
-				text: 'Download on WordPress.org',
-				link: wpURL,
+				text: 'Download Chrome extension',
+				link: chromeExtURL,
+			},
+			{
+				text: 'GitHub Project',
+				link: ghURL,
 			},
 			{
 				text: 'About the author',

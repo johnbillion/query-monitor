@@ -15,7 +15,7 @@ Using the browser extension has some advantages over the in-page panel:
 
 The browser extension is available for Chrome and other Chromium-based browsers. A Firefox version is in the works.
 
-<VPButton href="https://chromewebstore.google.com/detail/ohcllkgjhacaegbcdapjeeloikdgkcpo" text="Install from the Chrome Web Store" theme="brand" />
+<ChromeExtButton />
 
 The [Query Monitor plugin](https://wordpress.org/plugins/query-monitor/) also needs to be installed and active on the WordPress site you want to inspect.
 

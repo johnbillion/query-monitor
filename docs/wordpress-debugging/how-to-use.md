@@ -14,7 +14,9 @@ Alternatively, [download from GitHub](https://github.com/johnbillion/query-monit
 
 ## Browser dev tools extension
 
-Query Monitor is also available as a [browser dev tools extension](/wordpress-debugging/browser-extension/) that adds a Query Monitor panel to your browser's developer tools as an alternative to using the in-page panel.
+Query Monitor is also available as an optional [browser dev tools extension](/wordpress-debugging/browser-extension/) that adds Query Monitor to your browser's dev tools. You can use this as an alternative to the in-page panel.
+
+<ChromeExtButton />
 
 ## Usage
 
