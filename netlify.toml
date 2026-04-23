@@ -27,6 +27,10 @@
   to = "/wordpress-debugging/how-to-use/"
 
 [[redirects]]
+  from = "/docs/"
+  to = "/wordpress-debugging/how-to-use/"
+
+[[redirects]]
   from = "/blog/2019/02/new-features-in-query-monitor-3-3/"
   to = "/wordpress-debugging/related-hooks/"
 
