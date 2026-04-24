@@ -31,6 +31,12 @@
 				"integer",
 				"null"
 			]
+		},
+		"function": {
+			"type": [
+				"string",
+				"null"
+			]
 		}
 	},
 	"additionalProperties": false
