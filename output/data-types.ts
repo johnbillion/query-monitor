@@ -408,6 +408,7 @@ export interface StackFrame {
 	args?: string | null;
 	file: string | null;
 	line?: number | null;
+	function?: string | null;
 }
 /**
  * Logger data transfer object.
