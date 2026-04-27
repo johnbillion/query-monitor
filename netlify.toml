@@ -2,6 +2,11 @@
   command = "npm run docs:build"
   publish = "docs/.vitepress/dist"
 
+[[headers]]
+  for = "/feed"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=UTF-8"
+
 [[redirects]]
   from = "/docs/logging-variables/"
   to = "/wordpress-debugging/profiling-and-logging/"
