@@ -21,7 +21,7 @@ jobs:
   deploy:
     name: Deploy Tag
     if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@cc47e37177c694e00b901a5dc89fda5644bc550f # 2.9.1
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@933ecc3897404e0475cd19374752d8775379ad4c
     permissions:
       contents: write      # Required to push the new branch
       issues: write        # Required for write access to milestones
