@@ -1,20 +1,40 @@
 import { defineConfig } from 'vite';
-import { v4wp } from '@kucrut/vite-for-wp';
-import { rmSync } from 'node:fs';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import preact from '@preact/preset-vite';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 
+const projectDir = dirname( fileURLToPath( import.meta.url ) );
+
+function viteDevServerManifest() {
+	let manifestFile = '';
+	let manifest = {
+		origin: '',
+	};
+
+	return {
+		name: 'vite-dev-server-manifest',
+		apply: 'serve',
+		configResolved( config ) {
+			manifestFile = `${ projectDir }/${ config.build.outDir }/vite-dev-server.json`;
+			manifest.origin = config.server.origin;
+		},
+		buildStart() {
+			mkdirSync( dirname( manifestFile ), { recursive: true } );
+			writeFileSync( manifestFile, JSON.stringify( manifest ), 'utf8' );
+		},
+		buildEnd() {
+			rmSync( manifestFile, { force: true } );
+		},
+	};
+}
+
 export default defineConfig( {
+	base: './',
 	plugins: [
 		preact(),
-		v4wp( {
-			input: {
-				main: 'src/index.tsx',
-				'query-monitor': 'assets/query-monitor.css',
-				'toolbar': 'assets/toolbar.css',
-			},
-			outDir: 'assets/build',
-		} ),
+		viteDevServerManifest(),
 		{
 			name: 'clean-build-dir',
 			configureServer() {
@@ -44,9 +64,19 @@ export default defineConfig( {
 		},
 	],
 	server: {
+		host: 'localhost',
+		port: 5173,
+		strictPort: true,
+		origin: 'http://localhost:5173',
 		cors: true,
 	},
+	css: {
+		devSourcemap: true,
+	},
 	build: {
+		outDir: 'assets/build',
+		emptyOutDir: true,
+		modulePreload: false,
 		sourcemap: false,
 		target: browserslistToEsbuild(),
 		// Terser is used instead of esbuild for minification in order to preserve
@@ -68,7 +98,12 @@ export default defineConfig( {
 				preamble: '/* This is the built version of the Preact app for Query Monitor. The source code is available here: https://github.com/johnbillion/query-monitor */',
 			},
 		},
-		rollupOptions: {
+		rolldownOptions: {
+			input: {
+				main: 'src/index.tsx',
+				'query-monitor': 'assets/query-monitor.css',
+				'toolbar': 'assets/toolbar.css',
+			},
 			output: {
 				entryFileNames: 'query-monitor.js',
 				assetFileNames: '[name][extname]',
