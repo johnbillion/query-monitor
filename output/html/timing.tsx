@@ -50,7 +50,7 @@ export const Timing = ( { data }: PanelProps<DataTypes['timing']> ) => {
 				{ __( 'No data logged.', 'query-monitor' ) }
 			</p>
 			<p>
-				<a href="https://querymonitor.com/wordpress-debugging/profiling-and-logging/">
+				<a href="https://querymonitor.com/wordpress-debugging/profiling-and-logging/" target="_blank" rel="noopener noreferrer" className="qm-external-link">
 					{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
 				</a>
 			</p>
