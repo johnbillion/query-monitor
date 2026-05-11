@@ -71,22 +71,26 @@ const buildTimelineItems = (
 	const items: TimelineItem[] = [];
 
 	if ( dbRows ) {
+		// When queries have no trace (no db.php drop-in), we have no start times.
+		// Fall back to stacking them sequentially so they remain visible.
+		let accumulatedMs = 0;
 		for ( let i = 0; i < dbRows.length; i++ ) {
 			const row = dbRows[ i ];
-
-			if ( ! row.trace ) {
-				continue;
-			}
+			const time = row.trace ? row.trace.time : accumulatedMs;
 
 			items.push( {
 				label: row.sql,
-				time: row.trace.time,
+				time,
 				duration: row.ltime,
 				category: 'db',
 				panel: 'db_queries',
 				rowIndex: i,
-				component: row.trace.component,
+				component: row.trace?.component,
 			} );
+
+			if ( ! row.trace ) {
+				accumulatedMs += row.ltime * 1000;
+			}
 		}
 	}
 
