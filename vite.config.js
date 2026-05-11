@@ -9,20 +9,18 @@ const projectDir = dirname( fileURLToPath( import.meta.url ) );
 
 function viteDevServerManifest() {
 	let manifestFile = '';
-	let manifest = {
-		origin: '',
-	};
+	let origin = '';
 
 	return {
 		name: 'vite-dev-server-manifest',
 		apply: 'serve',
 		configResolved( config ) {
 			manifestFile = `${ projectDir }/${ config.build.outDir }/vite-dev-server.json`;
-			manifest.origin = config.server.origin;
+			origin = config.server.origin;
 		},
 		buildStart() {
 			mkdirSync( dirname( manifestFile ), { recursive: true } );
-			writeFileSync( manifestFile, JSON.stringify( manifest ), 'utf8' );
+			writeFileSync( manifestFile, JSON.stringify( { origin } ), 'utf8' );
 		},
 		buildEnd() {
 			rmSync( manifestFile, { force: true } );
