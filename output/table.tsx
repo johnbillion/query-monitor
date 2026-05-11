@@ -103,6 +103,34 @@ const deriveFilters = <TDataRow,>(
 	return filters;
 };
 
+export const derivePrimitiveFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string | number | null | undefined,
+): FilterOption[] => deriveFilters( rows, ( row ) => {
+	const value = getKey( row );
+	if ( value === null || value === undefined || value === '' ) {
+		return null;
+	}
+	const stringValue = String( value );
+	return { key: stringValue, label: stringValue };
+} );
+
+export const buildCountedFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string,
+	options: FilterOption[],
+): FilterOption[] => {
+	const counts: Record<string, number> = {};
+	for ( const row of rows ) {
+		const k = getKey( row );
+		counts[ k ] = ( counts[ k ] || 0 ) + 1;
+	}
+	return options.map( ( { key, label } ) => ( {
+		key,
+		label: Utils.getFilterLabel( label, counts[ key ] ),
+	} ) );
+};
+
 export const componentFilterCallback = ( component: ComponentType | null | undefined, value: string ): boolean => {
 	if ( ! component ) {
 		return false;

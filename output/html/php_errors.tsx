@@ -2,8 +2,7 @@ import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
-import { getCallerCol, getComponentCol } from '../table';
-import { getFilterLabel } from '../utils';
+import { buildCountedFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
@@ -21,29 +20,12 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	}
 
 	const errors = Object.values( data.errors );
-	const counts = errors.reduce( ( acc, error ) => {
-		acc[ error.level ] = ( acc[ error.level ] || 0 ) + 1;
-		return acc;
-	}, {} as Record<string, number> );
-
-	const filterOptions = [
-		{
-			label: getFilterLabel( 'Warning', counts.warning ),
-			key: 'warning',
-		},
-		{
-			label: getFilterLabel( 'Notice', counts.notice ),
-			key: 'notice',
-		},
-		{
-			label: getFilterLabel( 'Strict', counts.strict ),
-			key: 'strict',
-		},
-		{
-			label: getFilterLabel( 'Deprecated', counts.deprecated ),
-			key: 'deprecated',
-		},
-	];
+	const filterOptions = buildCountedFilters( errors, ( row ) => row.level, [
+		{ key: 'warning', label: 'Warning' },
+		{ key: 'notice', label: 'Notice' },
+		{ key: 'strict', label: 'Strict' },
+		{ key: 'deprecated', label: 'Deprecated' },
+	] );
 
 	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
