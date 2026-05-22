@@ -94,7 +94,7 @@
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath='./' ."
 		],
 		"test:phpstan": [
-			"phpstan analyze -v --memory-limit=1024M"
+			"phpstan analyze -v --memory-limit=2G"
 		],
 		"test:start": [
 			"tests-start"
