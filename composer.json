@@ -29,7 +29,7 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "2.9.3",
+		"johnbillion/plugin-infrastructure": "2.9.4",
 		"johnbillion/wp-compat": "1.5.0",
 		"php-stubs/wp-cli-stubs": "2.12.0",
 		"php-stubs/wordpress-stubs": "7.0.0 as 6.9.4",
