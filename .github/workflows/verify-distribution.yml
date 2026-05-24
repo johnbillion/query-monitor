@@ -33,7 +33,7 @@ jobs:
     name: Verify Plugin Distribution
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-verify-distribution.yml@cc47e37177c694e00b901a5dc89fda5644bc550f # 2.9.1
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-verify-distribution.yml@99fbf371962704dbaef452ebe7ea188d5cfb8069 # 2.9.4
     with:
       plugin: query-monitor
       owner: johnbillion
