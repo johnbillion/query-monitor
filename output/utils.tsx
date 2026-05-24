@@ -239,7 +239,7 @@ export function getEditors(): { label: string, name: string; format: string; }[]
 			format: 'cursor://file/%1$s:%2$s',
 		},
 		{
-			label: 'Netbeans',
+			label: 'NetBeans',
 			name: 'netbeans',
 			format: 'nbopen://%1$s:%2$s',
 		},
