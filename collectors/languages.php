@@ -16,6 +16,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 
 	public $id = 'languages';
 
+	/**
+	 * @var array<string, array<string, bool>>
+	 */
+	public $seen = array();
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Languages();
 	}
@@ -69,7 +74,10 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'change_locale',
 			'load_textdomain',
+			'restore_previous_locale',
+			'switch_locale',
 			'unload_textdomain',
 		);
 	}
@@ -130,17 +138,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->total_size = 0;
-
 		ksort( $this->data->languages );
-
-		foreach ( $this->data->languages as & $mofiles ) {
-			foreach ( $mofiles as & $mofile ) {
-				if ( $mofile['found'] ) {
-					$this->data->total_size += $mofile['found'];
-				}
-			}
-		}
 	}
 
 	/**
@@ -177,9 +175,16 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 * @phpstan-return T
 	 */
 	public function log_translation_file_load( $file, $domain, ?string $locale = null ) {
+		if ( ! is_string( $file ) ) {
+			// ¯\_(ツ)_/¯
+			return $file;
+		}
+
+		// This method is hooked into a filter that only runs on WP 6.5+.
 		// @phpstan-ignore WPCompat.methodNotAvailable
 		$i18n_controller = \WP_Translation_Controller::get_instance();
 
+		// This method is hooked into a filter that only runs on WP 6.5+.
 		// @phpstan-ignore WPCompat.methodNotAvailable
 		$found = $i18n_controller->load_file( $file, $domain, $locale ?? determine_locale() );
 
@@ -203,7 +208,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 			return $mofile;
 		}
 
-		if ( is_string( $mofile ) && isset( $this->data->languages[ $domain ][ $mofile ] ) ) {
+		if ( is_string( $mofile ) && isset( $this->seen[ $domain ][ $mofile ] ) ) {
 			return $mofile;
 		}
 
@@ -242,10 +247,11 @@ class QM_Collector_Languages extends QM_DataCollector {
 			}
 		} else {
 			$type = 'unknown';
-			$file = $type;
+			$file = 'unknown';
 		}
 
-		$this->data->languages[ $domain ][ $mofile ] = array(
+		$this->seen[ $domain ][ $mofile ] = true;
+		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,
@@ -275,9 +281,16 @@ class QM_Collector_Languages extends QM_DataCollector {
 		) );
 
 		$found = ( $file && file_exists( $file ) ) ? filesize( $file ) : false;
-		$key = $file ?: uniqid();
 
-		$this->data->languages[ $domain ][ $key ] = array(
+		if ( $file ) {
+			if ( isset( $this->seen[ $domain ][ $file ] ) ) {
+				return $file;
+			}
+
+			$this->seen[ $domain ][ $file ] = true;
+		}
+
+		$this->data->languages[] = array(
 			'caller' => $trace->get_caller(),
 			'domain' => $domain,
 			'file' => $file,

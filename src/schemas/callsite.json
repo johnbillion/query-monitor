@@ -1,0 +1,22 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/callsite.json",
+	"title": "CallSite",
+	"description": "Code location where an error or event occurred.",
+	"type": "object",
+	"phpFile": "callsite",
+	"phpClass": "QM_Data_Callsite",
+	"required": [
+		"file",
+		"line"
+	],
+	"properties": {
+		"file": {
+			"type": "string"
+		},
+		"line": {
+			"type": "integer"
+		}
+	},
+	"additionalProperties": false
+}

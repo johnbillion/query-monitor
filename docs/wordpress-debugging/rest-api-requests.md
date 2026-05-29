@@ -17,12 +17,12 @@ Just like requests to the front end or the admin area of your site, in order to 
 
 The following additional HTTP headers will be included in the response:
 
-* `x-qm-overview-time_taken` – Response generation time in seconds
-* `x-qm-overview-time_usage` – Response generation time as a percentage of PHP’s max execution time limit
+* `x-qm-overview-time-taken` – Response generation time in seconds
+* `x-qm-overview-time-usage` – Response generation time as a percentage of PHP’s max execution time limit
 * `x-qm-overview-memory` – Memory usage in kB
-* `x-qm-overview-memory_usage` – Memory usage as a percentage of PHP’s memory limit
-* `x-qm-php_errors-error-count` – Number of PHP errors that occurred (0 or more)
-* `x-qm-php_errors-error-{n}` – Details about each individual PHP error
+* `x-qm-overview-memory-usage` – Memory usage as a percentage of PHP’s memory limit
+* `x-qm-php-errors-count` – Number of PHP errors that occurred (0 or more)
+* `x-qm-php-errors-error-{n}` – Details about each individual PHP error
 
 ## Full performance and debugging information
 

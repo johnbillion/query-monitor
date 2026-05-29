@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/stack-frame.json",
+	"title": "StackFrame",
+	"description": "Stack trace frame.",
+	"type": "object",
+	"phpFile": "frame",
+	"phpClass": "QM_Data_Stack_Frame",
+	"required": [
+		"file",
+		"id"
+	],
+	"properties": {
+		"id": {
+			"type": "string"
+		},
+		"args": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"file": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"line": {
+			"type": [
+				"integer",
+				"null"
+			]
+		}
+	},
+	"additionalProperties": false
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="panel.css">
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+		.qm-waiting {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+			color: #666;
+		}
+		.qm-waiting-card {
+			padding: 2em;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			background: #f7f7f7;
+			text-align: center;
+			max-width: 28em;
+		}
+		.qm-waiting-card hr,
+		.qm-waiting-card p {
+			margin: 0 0 1em;
+		}
+		.qm-waiting-button {
+			display: inline-block;
+			padding: 0.5em 1em;
+			background: #2271b1;
+			color: #fff;
+			text-decoration: none;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+	<div id="query-monitor-panel"></div>
+	<script type="module" src="panel.js"></script>
+</body>
+</html>

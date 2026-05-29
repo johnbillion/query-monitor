@@ -1,0 +1,16 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"login": true,
+	"plugins": ["query-monitor"],
+	"steps": [
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/mu-plugins/query-monitor-helper.php",
+			"data": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/johnbillion/query-monitor/trunk/.wordpress-org/blueprints/query-monitor-helper.php"
+			}
+		}
+	]
+}

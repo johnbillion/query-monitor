@@ -1,17 +1,17 @@
-# Query Monitor - The developer tools panel for WordPress
+# Query Monitor
 
 Contributors: johnbillion
 Tags: debug, debug-bar, development, performance, query monitor
-Tested up to: 6.7
-Stable tag: 3.17.0
-License: GPLv2 or later
+Tested up to: 7.0
+Stable tag: 4.0.6
+License: GPL v2 or later
 Donate link: https://github.com/sponsors/johnbillion
 
-Query Monitor is the developer tools panel for WordPress.
+Query Monitor is the developer tools panel for WordPress and WooCommerce.
 
 ## Description
 
-Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
+Query Monitor is the developer tools panel for WordPress and WooCommerce. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
 It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
@@ -48,12 +48,32 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in (or if you're logged in as a non-Administrator). See the Settings panel for details.
 
+### Browser extension
+
+Query Monitor is also available as an optional browser dev tools extension. This is an alternative to using the in-page panel that gets output into the admin toolbar.
+
+Using the browser extension has some advantages over the in-page panel:
+
+* The Query Monitor panel doesn't take up space within the page you are inspecting
+* The panel can be resized, undocked, and moved around like any other developer tools panel
+
+[Information about the Query Monitor browser extension can be found here](https://querymonitor.com/wordpress-debugging/browser-extension/).
+
 ### Other Plugins
 
 I maintain several other plugins for developers. Check them out:
 
 * [User Switching](https://wordpress.org/plugins/user-switching/) provides instant switching between user accounts in WordPress.
 * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/) lets you view and control what's happening in the WP-Cron system
+
+### Thanks
+
+The time that I spend maintaining this plugin and others is in part sponsored by:
+
+* [Automattic](https://automattic.com/)
+* [ServMask](https://servmask.com/)
+* [WP Staging](https://wp-staging.com/)
+* [All my kind sponsors on GitHub](https://github.com/sponsors/johnbillion)
 
 ### Privacy Statement
 
@@ -67,17 +87,17 @@ Query Monitor aims to be fully accessible to all of its users. [Query Monitor's 
 
 1. Admin Toolbar Menu
 2. Aggregate Database Queries by Component
-3. Capability Checks
-4. Database Queries
+3. Database Queries
+4. Timeline
 5. Hooks and Actions
 6. HTTP API Requests
-7. Aggregate Database Queries by Calling Function
+7. Logs
 
 ## Frequently Asked Questions
 
 ### Does this plugin work with PHP 8?
 
-Yes, it's actively tested and working up to PHP 8.4.
+Yes, it's actively tested and working up to PHP 8.5.
 
 ### Who can see Query Monitor's output?
 
@@ -115,7 +135,7 @@ Please use [the issue tracker on Query Monitor's GitHub repo](https://github.com
 
 ### Is Query Monitor already included with my hosting?
 
-Some WordPress hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
+Some web hosts bundle Query Monitor as part of their hosting platform, which means you don't need to install it yourself. Here are some that I'm aware of:
 
 * [Altis Cloud](https://www.altis-dxp.com/resources/developer-docs/dev-tools/).
 * [WordPress VIP](https://wpvip.com/), although users need to be granted the `view_query_monitor` capability even if they're an Administrator. [See the WordPress VIP documentation for details](https://docs.wpvip.com/performance/query-monitor/enable/).
@@ -126,7 +146,9 @@ Yes. You can enable this on the Settings panel.
 
 ### How can I report a security bug?
 
-[You can report security bugs through the official Query Monitor Vulnerability Disclosure Program on Patchstack](https://patchstack.com/database/vdp/query-monitor). The Patchstack team helps validate, triage, and handle any security vulnerabilities.
+You can submit a private security vulnerability report to Query Monitor via [the Security tab on the GitHub repo](https://github.com/johnbillion/query-monitor/security). The GitHub Security Advisory process facilitates private collaboration on security issues. You'll receive credit for a valid report and a CVE if necessary.
+
+Do not report security issues on the WordPress.org support forums or via email. Thank you.
 
 ### Do you accept donations?
 

@@ -19,9 +19,18 @@ on:
       - 'develop'
     paths:
       - '.github/workflows/nightly-tests.yml'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/nightly-tests.yml'
   workflow_dispatch:
 
 permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+  cancel-in-progress: true
 
 jobs:
   acceptance:
@@ -34,30 +43,31 @@ jobs:
           - 'acceptance'
         php:
           # Newest and oldest supported versions of PHP
-          - '8.4'
+          - '8.5'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@99fbf371962704dbaef452ebe7ea188d5cfb8069 # 2.9.4
     with:
       node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false
 
   integration:
     name: Nightly ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@trunk
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@99fbf371962704dbaef452ebe7ea188d5cfb8069 # 2.9.4
     strategy:
       matrix:
         label:
           - 'integration'
         php:
           # Newest and oldest supported versions of PHP
-          - '8.4'
+          - '8.5'
           - '7.4'
       fail-fast: false
     with:
-      node: true
       php: ${{ matrix.php }}
       wp: 'nightly'
+      cache: false

@@ -32,31 +32,10 @@ Adds a panel for debugging Yoast SEO metadata and options
 Integrates with Query Monitor when using the Chargebee API
 * [Fluent Query Logger](https://wordpress.org/plugins/fluent-query-logger/)  
 Log Database Queries and analyze plugin database performance
+* [Pods][https://wordpress.org/plugins/pods/]  
+Shows configuration and debugging information relating to Pods
 * Any plugin that uses the Freemius SDK provides a Freemius panel in Query Monitor
 
 ## Debug Bar add-ons
 
-Query Monitor also supports all [Debug Bar](https://wordpress.org/plugins/debug-bar/) add-on plugins. You can deactivate the core Debug Bar plugin, and Query Monitor will take over the display of any add-ons you have installed. There are add-on plugins available for:
-
-* [Cache Lookup](https://wordpress.org/plugins/debug-bar-cache-lookup/)
-* [Constants](https://wordpress.org/plugins/debug-bar-constants/)
-* [Cron](https://wordpress.org/plugins/debug-bar-cron/)
-* [Debug Bar Extender](https://wordpress.org/plugins/debug-bar-extender/)
-* [ElasticPress](https://wordpress.org/plugins/debug-bar-elasticpress/)
-* [Elementor](https://github.com/pcfreak30/debug-bar-elementor)
-* [Jetpack (built-in)](https://jetpack.me/)
-* [Localization](https://wordpress.org/plugins/debug-bar-localization/)
-* [Log Viewer](https://wordpress.org/plugins/log-viewer/)
-* [Media](https://wordpress.org/plugins/debug-media/)
-* [Plugin Activation](https://wordpress.org/plugins/debug-bar-plugin-activation/)
-* [Post Meta](https://wordpress.org/plugins/tdd-debug-bar-post-meta/)
-* [Post Types](https://wordpress.org/plugins/debug-bar-post-types/)
-* [Roles and Capabilities](https://wordpress.org/plugins/debug-bar-roles-and-capabilities/)
-* [Shortcodes](https://wordpress.org/plugins/debug-bar-shortcodes/)
-* [Sidebars & Widgets](https://wordpress.org/plugins/debug-bar-sidebars-widgets/)
-* [Slow Actions](https://wordpress.org/plugins/debug-bar-slow-actions/)
-* [Superglobals](https://wordpress.org/plugins/debug-bar-super-globals/)
-* [Taxonomies](https://wordpress.org/plugins/debug-bar-taxonomies/)
-* [Widgets](https://wordpress.org/plugins/debug-bar-widgets/)
-* [Widget Context (built-in)](https://wordpress.org/plugins/widget-context/)
-* [WooCommerce](https://wordpress.org/plugins/woocommerce-debug-bar/)
+Query Monitor also supports all [Debug Bar](https://wordpress.org/plugins/debug-bar/) add-on plugins. You can deactivate the core Debug Bar plugin, and Query Monitor will take over the display of any add-ons you have installed.
