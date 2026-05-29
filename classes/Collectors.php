@@ -61,10 +61,56 @@ class QM_Collectors implements IteratorAggregate {
 
 		if ( ! $instance ) {
 			$instance = new QM_Collectors();
+			add_action( 'init', array( $instance, 'cease_if_unsupported' ), 0 );
 		}
 
 		return $instance;
 
+	}
+
+	/**
+	 * Ceases data collection if the current request is not one where QM will output.
+	 */
+	public function cease_if_unsupported() : void {
+		if ( self::request_supported() ) {
+			return;
+		}
+
+		do_action( 'qm/cease' );
+	}
+
+	/**
+	 * Determines whether the current request supports data collection.
+	 */
+	public static function request_supported() : bool {
+		// Don't collect during a Customizer preview request:
+		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
+			return false;
+		}
+
+		// Don't collect during an iframed request, eg. the plugin info modal, an upgrader action, or the Customizer:
+		if ( defined( 'IFRAME_REQUEST' ) && IFRAME_REQUEST ) {
+			return false;
+		}
+
+		// Don't collect inside the Site Editor:
+		if ( isset( $_SERVER['SCRIPT_NAME'] ) && '/wp-admin/site-editor.php' === $_SERVER['SCRIPT_NAME'] ) {
+			return false;
+		}
+
+		// Don't collect on the interim login screen:
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET['interim-login'] ) ) {
+			return false;
+		}
+
+		// Don't collect in the Elementor preview iframe
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET['elementor-preview'] ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

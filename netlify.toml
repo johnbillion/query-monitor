@@ -2,6 +2,11 @@
   command = "npm run docs:build"
   publish = "docs/.vitepress/dist"
 
+[[headers]]
+  for = "/feed"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=UTF-8"
+
 [[redirects]]
   from = "/docs/logging-variables/"
   to = "/wordpress-debugging/profiling-and-logging/"
@@ -27,6 +32,10 @@
   to = "/wordpress-debugging/how-to-use/"
 
 [[redirects]]
+  from = "/docs/"
+  to = "/wordpress-debugging/how-to-use/"
+
+[[redirects]]
   from = "/blog/2019/02/new-features-in-query-monitor-3-3/"
   to = "/wordpress-debugging/related-hooks/"
 
@@ -37,3 +46,11 @@
 [[redirects]]
   from = "/blog/2019/07/debugging-wordpress-template-part-loading/"
   to = "/wordpress-debugging/template-part-loading/"
+
+[[redirects]]
+  from = "/4/"
+  to = "/help/query-monitor-4/"
+
+[[redirects]]
+  from = "/extension/"
+  to = "/wordpress-debugging/browser-extension/"

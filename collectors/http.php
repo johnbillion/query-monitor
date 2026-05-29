@@ -11,6 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_HTTP>
+ *
+ * @phpstan-type HTTP_API_Response_Shape array{
+ *   headers: \WpOrg\Requests\Utility\CaseInsensitiveDictionary,
+ *   body: string,
+ *   response: array{
+ *     code: int|false,
+ *     message: string|false,
+ *   },
+ *   cookies: array<int, \WP_Http_Cookie>,
+ *   filename: string|null,
+ *   http_response: \WP_HTTP_Requests_Response|null,
+ * }
  */
 class QM_Collector_HTTP extends QM_DataCollector {
 
@@ -20,6 +32,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public $id = 'http';
 
 	/**
+	 * @TODO trim this down to only the data we need
 	 * @var mixed|null
 	 */
 	private $info = null;
@@ -30,8 +43,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 *   url: string,
 	 *   start: float,
 	 *   args: array<string, mixed>,
-	 *   filtered_trace: list<array<string, mixed>>,
-	 *   component: QM_Component,
+	 *   trace: QM_Backtrace,
 	 * }>
 	 */
 	private $http_requests = array();
@@ -41,8 +53,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @phpstan-var array<string, array{
 	 *   end: float,
 	 *   args: array<string, mixed>,
-	 *   response: mixed[]|WP_Error,
+	 *   result: QM_Data_HTTP_Response|WP_Error,
 	 *   info: array<string, mixed>|null,
+	 *   intercepted: bool,
 	 * }>
 	 */
 	private $http_responses = array();
@@ -123,7 +136,14 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
+			'http_allowed_safe_ports',
+			'http_headers_useragent',
 			'http_request_args',
+			'http_request_host_is_external',
+			'http_request_redirection_count',
+			'http_request_reject_unsafe_urls',
+			'http_request_timeout',
+			'http_request_version',
 			'http_response',
 			'https_local_ssl_verify',
 			'https_ssl_verify',
@@ -184,7 +204,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 		if ( isset( $args['_qm_key'], $this->http_requests[ $args['_qm_key'] ] ) ) {
 			// Something has triggered another HTTP request from within the `pre_http_request` filter
-			// (eg. WordPress Beta Tester does this). This allows for one level of nested queries.
+			// (eg. WordPress Beta Tester and FAIR do this). This allows for one level of nested queries.
 			$args['_qm_original_key'] = $args['_qm_key'];
 			$start = $this->http_requests[ $args['_qm_key'] ]['start'];
 		} else {
@@ -196,8 +216,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			'url' => $url,
 			'args' => $args,
 			'start' => $start,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 		);
 		$args['_qm_key'] = $key;
 		return $args;
@@ -205,25 +224,23 @@ class QM_Collector_HTTP extends QM_DataCollector {
 
 	/**
 	 * Log the HTTP request's response if it's being short-circuited by another plugin.
-	 * This is necessary due to https://core.trac.wordpress.org/ticket/25747
 	 *
-	 * $response should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
+	 * `$response` should be one of boolean false, an array, or a `WP_Error`, but be aware that plugins
 	 * which short-circuit the request using this filter may (incorrectly) return data of another type.
 	 *
 	 * @param false|mixed[]|WP_Error $response The preemptive HTTP response. Default false.
 	 * @param array<string, mixed>   $args     HTTP request arguments.
 	 * @param string                 $url      The request URL.
+	 *
+	 * @phpstan-param false|HTTP_API_Response_Shape|WP_Error $response
+	 *
 	 * @return false|mixed[]|WP_Error The preemptive HTTP response.
 	 */
 	public function filter_pre_http_request( $response, array $args, $url ) {
-
-		// All is well:
-		if ( false === $response ) {
-			return $response;
+		if ( is_array( $response ) || ( $response instanceof WP_Error ) ) {
+			// Something's filtering the response, so we'll log it
+			$this->log_http_response( $response, $args, $url, true );
 		}
-
-		// Something's filtering the response, so we'll log it
-		$this->log_http_response( $response, $args, $url );
 
 		return $response;
 	}
@@ -239,19 +256,9 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @return void
 	 */
 	public function action_http_api_debug( $response, $action, $class, $args, $url ) {
-		switch ( $action ) {
-
-			case 'response':
-				$this->log_http_response( $response, $args, $url );
-
-				break;
-
-			case 'transports_list':
-				# Nothing
-				break;
-
+		if ( $action === 'response' ) {
+			$this->log_http_response( $response, $args, $url );
 		}
-
 	}
 
 	/**
@@ -275,31 +282,45 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * Log an HTTP response.
 	 *
-	 * @param mixed[]|WP_Error     $response The HTTP response.
-	 * @param array<string, mixed> $args     HTTP request arguments.
-	 * @param string               $url      The request URL.
+	 * @param mixed[]|WP_Error     $response    The HTTP response.
+	 * @param array<string, mixed> $args        HTTP request arguments.
+	 * @param string               $url         The request URL.
+	 * @param bool                 $intercepted Whether the request was intercepted and short-circuited by a filter.
+	 *
+	 * @phpstan-param HTTP_API_Response_Shape|WP_Error $response
+	 *
 	 * @return void
 	 */
-	public function log_http_response( $response, array $args, $url ) {
+	public function log_http_response( $response, array $args, $url, bool $intercepted = false ) {
 		/** @var string */
 		$key = $args['_qm_key'];
 
+		if ( $response instanceof WP_Error ) {
+			$response_data = $response;
+		} else {
+			$response_data = new QM_Data_HTTP_Response();
+			$response_data->code = (int) $response['response']['code'];
+			$response_data->message = (string) $response['response']['message'];
+		}
+
 		$http_response = array(
 			'end' => microtime( true ),
-			'response' => $response,
+			'result' => $response_data,
 			'args' => $args,
 			'info' => $this->info,
+			'intercepted' => $intercepted,
 		);
 
 		if ( isset( $args['_qm_original_key'] ) ) {
-			/** @var string */
+			/** @var string $original_key */
 			$original_key = $args['_qm_original_key'];
-			$this->http_responses[ $original_key ]['end'] = $this->http_requests[ $original_key ]['start'];
-			$this->http_responses[ $original_key ]['response'] = new WP_Error( 'http_request_not_executed', sprintf(
-				/* translators: %s: Hook name */
-				__( 'Request not executed due to a filter on %s', 'query-monitor' ),
-				'pre_http_request'
-			) );
+			$this->http_responses[ $original_key ] = array(
+				'end' => $this->http_requests[ $original_key ]['start'],
+				'result' => new WP_Error( 'http_request_not_executed' ),
+				'args' => $args,
+				'info' => null,
+				'intercepted' => false,
+			);
 		}
 
 		$this->http_responses[ $key ] = $http_response;
@@ -332,24 +353,29 @@ class QM_Collector_HTTP extends QM_DataCollector {
 		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
 
 		foreach ( $this->http_requests as $key => $request ) {
-			$response = $this->http_responses[ $key ];
-
-			if ( empty( $response['response'] ) ) {
+			if ( isset( $this->http_responses[ $key ] ) ) {
+				$response = $this->http_responses[ $key ];
+			} else {
 				// Timed out
-				$response['response'] = new WP_Error( 'http_request_timed_out', __( 'Request timed out', 'query-monitor' ) );
-				$response['end'] = floatval( $request['start'] + $response['args']['timeout'] );
+				$response = array(
+					'end' => floatval( $request['start'] + $request['args']['timeout'] ),
+					'args' => $request['args'],
+					'result' => new WP_Error( 'http_request_timed_out' ),
+					'info' => null,
+					'intercepted' => false,
+				);
 			}
 
-			if ( $response['response'] instanceof WP_Error ) {
-				if ( ! in_array( $response['response']->get_error_code(), $silent, true ) ) {
+			if ( $response['result'] instanceof WP_Error ) {
+				if ( ! in_array( $response['result']->get_error_code(), $silent, true ) ) {
 					$this->data->errors['alert'][] = $key;
 				}
 				$type = 'error';
 			} elseif ( ! $response['args']['blocking'] ) {
 				$type = 'non-blocking';
 			} else {
-				$code = intval( wp_remote_retrieve_response_code( $response['response'] ) );
-				$type = "http:{$code}";
+				$code = $response['result']->code;
+				$type = "HTTP {$code}";
 				if ( ( $code >= 400 ) && ( 'HEAD' !== $request['args']['method'] ) ) {
 					$this->data->errors['warning'][] = $key;
 				}
@@ -358,7 +384,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$ltime = ( $response['end'] - $request['start'] );
 			$redirected_to = null;
 
-			if ( isset( $response['info'] ) && ! empty( $response['info']['url'] ) && is_string( $response['info']['url'] ) ) {
+			if ( ! empty( $response['info']['url'] ) && is_string( $response['info']['url'] ) ) {
 				// Ignore query variables when detecting a redirect.
 				$from = untrailingslashit( preg_replace( '#\?[^$]*$#', '', $request['url'] ) );
 				$to = untrailingslashit( preg_replace( '#\?[^$]*$#', '', $response['info']['url'] ) );
@@ -368,28 +394,157 @@ class QM_Collector_HTTP extends QM_DataCollector {
 				}
 			}
 
-			$this->data->ltime += $ltime;
+			if ( ! $response['intercepted'] ) {
+				$this->data->ltime += $ltime;
+			}
 
 			$host = (string) parse_url( $request['url'], PHP_URL_HOST );
 			$local = ( $host === $home_host );
 
 			$this->log_type( $type );
-			$this->log_component( $request['component'], $ltime, $type );
-			$this->data->http[ $key ] = array(
-				'args' => $response['args'],
-				'component' => $request['component'],
-				'filtered_trace' => $request['filtered_trace'],
-				'host' => $host,
-				'info' => $response['info'],
-				'local' => $local,
-				'ltime' => $ltime,
-				'redirected_to' => $redirected_to,
-				'response' => $response['response'],
-				'type' => $type,
-				'url' => $request['url'],
+
+			$http_request = new QM_Data_HTTP_Request();
+			$http_request->args = array(
+				'method' => $response['args']['method'],
+				'timeout' => (float) $response['args']['timeout'],
 			);
+			if ( isset( $response['args']['redirection'] ) ) {
+				$http_request->args['redirection'] = (int) $response['args']['redirection'];
+			}
+			if ( isset( $response['args']['blocking'] ) ) {
+				$http_request->args['blocking'] = (bool) $response['args']['blocking'];
+			}
+			if ( isset( $response['args']['sslverify'] ) ) {
+				$http_request->args['sslverify'] = (bool) $response['args']['sslverify'];
+			}
+			$http_request->trace = $request['trace'];
+			$http_request->host = $host;
+			$http_request->info = $response['info'];
+			$http_request->local = $local;
+			$http_request->ltime = $ltime;
+			$http_request->redirected_to = $redirected_to;
+			$http_request->result = $response['result'];
+			$http_request->type = $type;
+			$http_request->url = $request['url'];
+			$http_request->intercepted = $response['intercepted'];
+
+			$this->data->http[] = $http_request;
 		}
 
+	}
+
+	/**
+	 * Log a Guzzle HTTP request.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @param \Psr\Http\Message\RequestInterface $request    The Guzzle request object.
+	 * @param \Psr\Http\Message\ResponseInterface|null $response The Guzzle response object, or null if an exception occurred.
+	 * @param \Exception|null $exception The exception thrown, or null if the request was successful.
+	 * @param string $url        The request URL.
+	 * @param float $start_time  The request start time.
+	 * @param QM_Backtrace $trace The backtrace object.
+	 * @param array<string, mixed> $options Guzzle request options.
+	 */
+	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ) : void {
+		$end_time = microtime( true );
+		$ltime = $end_time - $start_time;
+		$key = $start_time . $url;
+		$args = array(
+			'method' => $request->getMethod(),
+			'timeout' => $options['timeout'] ?? 30,
+			'blocking' => true,
+			'sslverify' => $options['verify'] ?? true,
+			'_qm_guzzle' => true,
+		);
+
+		if ( $exception ) {
+			$response_data = new WP_Error( 'guzzle_request_failed', $exception->getMessage() );
+			$type = 'error';
+		} else {
+			$response_data = new QM_Data_HTTP_Response();
+			$response_data->code = $response->getStatusCode();
+			$response_data->message = $response->getReasonPhrase();
+
+			$code = $response->getStatusCode();
+			$type = "HTTP {$code}";
+		}
+
+		$home_host = (string) parse_url( home_url(), PHP_URL_HOST );
+		$host = (string) parse_url( $url, PHP_URL_HOST );
+		$local = ( $host === $home_host );
+
+		$this->log_type( $type );
+
+		$http_request = new QM_Data_HTTP_Request();
+		$http_request->args = $args;
+		$http_request->trace = $trace;
+		$http_request->host = $host;
+		$http_request->info = null;
+		$http_request->local = $local;
+		$http_request->ltime = $ltime;
+		$http_request->redirected_to = null;
+		$http_request->result = $response_data;
+		$http_request->type = $type;
+		$http_request->url = $url;
+		$http_request->intercepted = false;
+
+		$this->data->http[] = $http_request;
+
+		$this->data->ltime += $ltime;
+
+		if ( $exception || ( $response && $response->getStatusCode() >= 400 ) ) {
+			// This value isn't used, it's just a placeholder to indicate an error occurred.
+			// @TODO need a proper way to set error/warning state on a data instance.
+			$this->data->errors['warning'][] = $url;
+		}
+	}
+
+	/**
+	 * Creates a Guzzle middleware for logging HTTP requests to Query Monitor.
+	 *
+	 * Usage:
+	 *
+	 *   $stack = HandlerStack::create();
+	 *   $stack->push( QM_Collector_HTTP::guzzle_middleware() );
+	 *   $client = new Client( [ 'handler' => $stack ] );
+	 *
+	 * @since 3.19.0
+	 *
+	 * @return callable Guzzle middleware callable.
+	 */
+	public static function guzzle_middleware(): callable {
+		return function ( callable $handler ) {
+			return function ( \Psr\Http\Message\RequestInterface $request, array $options ) use ( $handler ) {
+				$collector = QM_Collectors::get( 'http' );
+
+				if ( ! ( $collector instanceof QM_Collector_HTTP ) ) {
+					return $handler( $request, $options );
+				}
+
+				$url = (string) $request->getUri();
+				$start_time = microtime( true );
+
+				$trace = new QM_Backtrace( array(
+					'ignore_namespace' => array(
+						'GuzzleHttp' => true,
+					),
+				) );
+
+				$promise = $handler( $request, $options );
+
+				return $promise->then(
+					function ( \Psr\Http\Message\ResponseInterface $response ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+						$collector->log_guzzle_request( $request, $response, null, $url, $start_time, $trace, $options );
+						return $response;
+					},
+					function ( \Exception $exception ) use ( $collector, $request, $options, $url, $start_time, $trace ) {
+						$collector->log_guzzle_request( $request, null, $exception, $url, $start_time, $trace, $options );
+						throw $exception;
+					}
+				);
+			};
+		};
 	}
 
 }

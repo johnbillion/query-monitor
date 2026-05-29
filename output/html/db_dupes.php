@@ -18,6 +18,11 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	 */
 	protected $collector;
 
+	/**
+	 * @var bool
+	 */
+	public static $client_side_rendered = true;
+
 	public function __construct( QM_Collector $collector ) {
 		parent::__construct( $collector );
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
@@ -32,133 +37,24 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_DB_Dupes $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->dupes ) ) {
-			return;
-		}
-
-		$this->before_tabular_output();
-
-		echo '<thead>';
-
-		echo '<tr>';
-		echo '<th scope="col">' . esc_html__( 'Query', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Count', 'query-monitor' ) . '</th>';
-		echo '<th scope="col" class="qm-num">' . esc_html__( 'Time', 'query-monitor' ) . '</th>';
-		echo '<th scope="col">' . esc_html__( 'Callers', 'query-monitor' ) . '</th>';
-		if ( ! empty( $data->dupe_components ) ) {
-			echo '<th scope="col">' . esc_html__( 'Components', 'query-monitor' ) . '</th>';
-		}
-		echo '<th scope="col">' . esc_html__( 'Potential Troublemakers', 'query-monitor' ) . '</th>';
-		echo '</tr>';
-
-		echo '</thead>';
-
-		echo '<tbody>';
-
-		/* translators: %s: Number of calls to a PHP function */
-		$call_text = _n_noop( '%s call', '%s calls', 'query-monitor' );
-
-		foreach ( $data->dupes as $sql => $queries ) {
-
-			// This should probably happen in the collector's processor
-			$type = QM_Util::get_query_type( $sql );
-			$sql_out = self::format_sql( $sql );
-			$time = $data->dupe_times[ $sql ];
-
-			if ( 'SELECT' !== $type ) {
-				$sql_out = "<span class='qm-nonselectsql'>{$sql_out}</span>";
-			}
-
-			echo '<tr>';
-			echo '<td class="qm-row-sql qm-ltr qm-wrap">';
-			echo $sql_out; // WPCS: XSS ok;
-			echo '</td>';
-			echo '<td class="qm-num">';
-			echo esc_html( number_format_i18n( count( $queries ), 0 ) );
-			echo '</td>';
-			echo '<td class="qm-num">';
-			echo esc_html( number_format_i18n( $time, 4 ) );
-			echo '</td>';
-			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
-			foreach ( $data->dupe_callers[ $sql ] as $caller => $calls ) {
-				echo self::build_filter_trigger( 'db_queries', 'caller', $caller, '<code>' . esc_html( $caller ) . '</code>' ); // WPCS: XSS ok;
-				printf(
-					'<br><span class="qm-info qm-supplemental">%s</span><br>',
-					esc_html( sprintf(
-						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
-						number_format_i18n( $calls )
-					) )
-				);
-			}
-			echo '</td>';
-			if ( isset( $data->dupe_components[ $sql ] ) ) {
-				echo '<td class="qm-row-component qm-nowrap">';
-				foreach ( $data->dupe_components[ $sql ] as $component => $calls ) {
-					printf(
-						'%s<br><span class="qm-info qm-supplemental">%s</span><br>',
-						esc_html( $component ),
-						esc_html( sprintf(
-							translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
-							number_format_i18n( $calls )
-						) )
-					);
-				}
-				echo '</td>';
-			}
-			echo '<td class="qm-row-caller qm-nowrap qm-ltr">';
-			foreach ( $data->dupe_sources[ $sql ] as $source => $calls ) {
-				printf(
-					'<code>%s</code><br><span class="qm-info qm-supplemental">%s</span><br>',
-					esc_html( $source ),
-					esc_html( sprintf(
-						translate_nooped_plural( $call_text, $calls, 'query-monitor' ),
-						number_format_i18n( $calls )
-					) )
-				);
-			}
-			echo '</td>';
-			echo '</tr>';
-		}
-		echo '</tbody>';
-
-		$this->after_tabular_output();
-	}
-
-	/**
 	 * @param array<string, mixed[]> $menu
 	 * @return array<string, mixed[]>
 	 */
 	public function admin_menu( array $menu ) {
-		/** @var QM_Collector_DB_Dupes|null $dbq */
-		$dbq = QM_Collectors::get( 'db_dupes' );
+		/** @var QM_Collector_DB_Queries|null $dbq */
+		$dbq = QM_Collectors::get( 'db_queries' );
 
-		if ( $dbq ) {
-			/** @var QM_Data_DB_Queries $dbq_data */
-			$dbq_data = $dbq->get_data();
-			if ( ! empty( $dbq_data->dupes ) ) {
-				$count = 0;
+		/** @var QM_Data_DB_Queries $dbq_data */
+		$dbq_data = $dbq->get_data();
 
-				foreach ( $dbq_data->dupes as $dupe ) {
-					$count += count( $dupe );
-				}
-
-				$menu[ $this->collector->id() ] = $this->menu( array(
-					'title' => esc_html( sprintf(
-						/* translators: %s: Number of duplicate database queries */
-						__( 'Duplicate Queries (%s)', 'query-monitor' ),
-						number_format_i18n( $count )
-					) ),
-				) );
-			}
+		if ( ! empty( $dbq_data->dupes ) ) {
+			$menu[ $this->collector->id() ] = $this->menu( array(
+				'title' => __( 'Duplicate Queries', 'query-monitor' ),
+				'warning_count' => array_sum( array_column( $dbq_data->dupes, 'count' ) ),
+			) );
 		}
-		return $menu;
 
+		return $menu;
 	}
 
 	/**

@@ -1,0 +1,40 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/doing_it_wrong.json",
+	"title": "Doing_It_Wrong",
+	"description": "Doing it Wrong data transfer object.",
+	"type": "object",
+	"required": [
+		"actions"
+	],
+	"properties": {
+		"actions": {
+			"type": "array",
+			"phpType": "array<int, QM_Wrong>",
+			"items": {
+				"type": "object",
+				"phpType": "QM_Wrong",
+				"required": [
+					"trace",
+					"message"
+				],
+				"properties": {
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace",
+						"allOf": [
+							{
+								"$ref": "../backtrace.json"
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

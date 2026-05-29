@@ -77,29 +77,14 @@ abstract class QM_Collector {
 	}
 
 	/**
+	 * @deprecated Component calculations are now handled client-side.
+	 *
 	 * @param QM_Component $component
 	 * @param float $ltime
 	 * @param string|int $type
 	 * @return void
 	 */
-	protected function log_component( $component, $ltime, $type ) {
-		if ( ! isset( $this->data->component_times[ $component->name ] ) ) {
-			$this->data->component_times[ $component->name ] = array(
-				'component' => $component->name,
-				'ltime' => 0,
-				'types' => array(),
-			);
-		}
-
-		$this->data->component_times[ $component->name ]['ltime'] += $ltime;
-
-		if ( isset( $this->data->component_times[ $component->name ]['types'][ $type ] ) ) {
-			$this->data->component_times[ $component->name ]['types'][ $type ]++;
-		} else {
-			$this->data->component_times[ $component->name ]['types'][ $type ] = 1;
-		}
-
-	}
+	protected function log_component( $component, $ltime, $type ) {}
 
 	/**
 	 * @return float
@@ -162,6 +147,7 @@ abstract class QM_Collector {
 	 * @return void
 	 */
 	final public function process_concerns() {
+		/** @var array<string, WP_Hook> $wp_filter */
 		global $wp_filter;
 
 		$tracked = array();
@@ -217,14 +203,14 @@ abstract class QM_Collector {
 
 		foreach ( $concerned_actions as $action ) {
 			if ( has_action( $action ) ) {
-				$this->concerned_actions[ $action ] = QM_Hook::process( $action, 'action', $wp_filter, true, false );
+				$this->concerned_actions[ $action ] = QM_Hook::process( $action, 'action', $wp_filter[ $action ] ?? null, true, false );
 			}
 			$tracked[] = $action;
 		}
 
 		foreach ( $concerned_filters as $filter ) {
 			if ( has_filter( $filter ) ) {
-				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
+				$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter[ $filter ] ?? null, true, false );
 			}
 			$tracked[] = $filter;
 		}
@@ -246,7 +232,7 @@ abstract class QM_Collector {
 					$option
 				);
 				if ( has_filter( $filter ) ) {
-					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter, true, false );
+					$this->concerned_filters[ $filter ] = QM_Hook::process( $filter, 'filter', $wp_filter[ $filter ] ?? null, true, false );
 				}
 				$tracked[] = $filter;
 			}
@@ -311,15 +297,37 @@ abstract class QM_Collector {
 		return self::$hide_qm;
 	}
 
+	public static function get_host(): string {
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+			return strval( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+		}
+
+		return (string) parse_url( get_option( 'home' ), PHP_URL_HOST );
+	}
+
+	public static function get_origin(): string {
+		$scheme = is_ssl() ? 'https' : 'http';
+		return $scheme . '://' . self::get_host();
+	}
+
 	/**
 	 * @param array<string, mixed> $item
 	 * @phpstan-param array{
-	 *   component: QM_Component,
+	 *   component?: QM_Component,
+	 *   trace?: QM_Backtrace,
 	 * } $item
 	 * @return bool
 	 */
 	public function filter_remove_qm( array $item ) {
-		return ( 'query-monitor' !== $item['component']->context );
+		if ( isset( $item['trace'] ) ) {
+			return ( 'query-monitor' !== $item['trace']->get_component()->context );
+		}
+
+		if ( isset( $item['component'] ) ) {
+			return ( 'query-monitor' !== $item['component']->context );
+		}
+
+		return true;
 	}
 
 	/**

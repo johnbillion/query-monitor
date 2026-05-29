@@ -57,7 +57,11 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		$component = $this->trace->get_component();
 
 		foreach ( $filtered_trace as $i => $item ) {
-			$stack[] = QM_Output_Html::output_filename( $item['display'], $item['file'], $item['line'] );
+			$stack[] = QM_Output_Html::output_filename(
+				$item->id . '(' . ( $item->args ?? '' ) . ')',
+				$item->file,
+				$item->line
+			);
 		}
 
 		?>
@@ -126,7 +130,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 
 		echo '<p>' . esc_html__( 'Call stack:', 'query-monitor' ) . '</p>';
 		echo '<ol>';
-		echo '<li>' . implode( '</li><li>', $stack ) . '</li>'; // WPCS: XSS ok.
+		echo '<li>' . implode( "</li>\n<li>", $stack ) . '</li>'; // WPCS: XSS ok.
 		echo '</ol>';
 
 		echo '<h2>' . esc_html__( 'Query Monitor', 'query-monitor' ) . '</h2>';
