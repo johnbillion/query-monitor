@@ -16,6 +16,14 @@ class QM_Collector_Transients extends QM_DataCollector {
 
 	public $id = 'transients';
 
+	private string $transient_hook_prefix = '';
+
+	public function __construct() {
+		$this->transient_hook_prefix = version_compare( $GLOBALS['wp_version'], '6.8-dev', '>' ) ? 'set' : 'setted';
+
+		parent::__construct();
+	}
+
 	public function get_storage(): QM_Data {
 		return new QM_Data_Transients();
 	}
@@ -26,16 +34,18 @@ class QM_Collector_Transients extends QM_DataCollector {
 	public function set_up() {
 		parent::set_up();
 
-		add_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10, 3 );
-		add_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10, 3 );
+		$this->data->trans = array();
+
+		add_action( "{$this->transient_hook_prefix}_site_transient", array( $this, 'action_setted_site_transient' ), 10, 3 );
+		add_action( "{$this->transient_hook_prefix}_transient", array( $this, 'action_setted_blog_transient' ), 10, 3 );
 	}
 
 	/**
 	 * @return void
 	 */
 	public function tear_down() {
-		remove_action( 'setted_site_transient', array( $this, 'action_setted_site_transient' ), 10 );
-		remove_action( 'setted_transient', array( $this, 'action_setted_blog_transient' ), 10 );
+		remove_action( "{$this->transient_hook_prefix}_site_transient", array( $this, 'action_setted_site_transient' ), 10 );
+		remove_action( "{$this->transient_hook_prefix}_transient", array( $this, 'action_setted_blog_transient' ), 10 );
 		parent::tear_down();
 	}
 
@@ -64,7 +74,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 	 * @param string $type
 	 * @param mixed $value
 	 * @param int $expiration
-	 * @phpstan-param 'site'|'blog' $value
+	 * @phpstan-param 'site'|'blog' $type
 	 * @return void
 	 */
 	public function setted_transient( $transient, $type, $value, $expiration ) {
@@ -87,14 +97,11 @@ class QM_Collector_Transients extends QM_DataCollector {
 
 		$this->data->trans[] = array(
 			'name' => $name,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'type' => $type,
-			'value' => $value,
 			'expiration' => $expiration,
 			'exp_diff' => ( $expiration ? human_time_diff( 0, $expiration ) : '' ),
 			'size' => $size,
-			'size_formatted' => (string) size_format( $size ),
 		);
 	}
 

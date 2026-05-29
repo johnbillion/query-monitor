@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/php_errors.json",
+	"title": "PHP_Errors",
+	"description": "PHP errors data transfer object.",
+	"type": "object",
+	"required": [
+		"errors"
+	],
+	"properties": {
+		"errors": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "object",
+				"phpType": "QM_Data_PHP_Error",
+				"allOf": [
+					{
+						"$ref": "../php_error.json"
+					}
+				]
+			}
+		}
+	},
+	"additionalProperties": false
+}

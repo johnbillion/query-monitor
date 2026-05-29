@@ -1,0 +1,176 @@
+import { EmptyPanel } from './panels/empty-panel';
+import { TabularPanel } from './panels/tabular-panel';
+import * as Utils from './utils';
+import { Warning } from './components/warning';
+import { Asset as AssetDataType, DataTypes } from './data-types';
+import { PanelProps } from './types';
+import {
+	__,
+	sprintf,
+} from '@wordpress/i18n';
+
+type myProps = PanelProps<DataTypes['assets_scripts'] | DataTypes['assets_styles']> & {
+	labels: {
+		none: string;
+	};
+};
+
+type iPositionLabels = {
+	[ key in AssetDataType['position'] ]: string;
+}
+
+interface iAssetSourceProps {
+	asset: AssetDataType;
+}
+
+const AssetSource = ( { asset }: iAssetSourceProps ) => {
+	const errorData = Utils.getErrorData( asset.source );
+	const errorMessage = Utils.getErrorMessage( asset.source );
+
+	if ( typeof errorData === 'object' && errorData !== null && 'src' in errorData ) {
+		const href = ( errorData as Record<string, unknown> ).src as string;
+		return (
+			<>
+				<Warning>
+					{ errorMessage }
+				</Warning>
+				<br/>
+				<a href={ href } target="_blank" rel="noreferrer">
+					{ href }
+				</a>
+			</>
+		);
+	}
+
+	if ( errorMessage ) {
+		return (
+			<Warning>
+				{ errorMessage }
+			</Warning>
+		);
+	}
+
+	const display = Utils.getAssetDisplay( asset.url );
+
+	return (
+		display ? (
+			<a href={ asset.url.absolute } target="_blank" rel="noreferrer">
+				{ display }
+			</a>
+		) : (
+			''
+		)
+	);
+};
+
+const Assets = ( { data, labels }: myProps ) => {
+	const position_labels: iPositionLabels = {
+		missing: __( 'Missing', 'query-monitor' ),
+		broken: __( 'Missing Dependencies', 'query-monitor' ),
+		modules: __( 'Module', 'query-monitor' ),
+		header: __( 'Header', 'query-monitor' ),
+		footer: __( 'Footer', 'query-monitor' ),
+	};
+
+	if ( ! data.assets ) {
+		return (
+			<EmptyPanel>
+				<p>
+					{ labels.none }
+				</p>
+			</EmptyPanel>
+		);
+	}
+
+	return (
+		<TabularPanel
+			title={ __( 'Assets', 'query-monitor' ) }
+			cols={ {
+				position: {
+					heading: __( 'Position', 'query-monitor' ),
+					className: 'qm-nowrap',
+					render: ( row ) => position_labels[ row.position ],
+				},
+				handle: {
+					heading: __( 'Handle', 'query-monitor' ),
+					render: ( row ) => row.handle,
+					className: 'qm-nowrap',
+				},
+				hostname: {
+					heading: __( 'Host', 'query-monitor' ),
+					render: ( row ) => ( row.url.host ),
+					filters: {
+						options: [
+							[
+								{
+									key: 'local',
+									label: data.url.host,
+								},
+								{
+									key: 'other',
+									label: __( 'Other', 'query-monitor' ),
+								},
+							],
+						],
+						callback: ( row, value ) => value === 'local' ? row.url.local : ! row.url.local,
+					},
+				},
+				source: {
+					heading: __( 'Source', 'query-monitor' ),
+					render: ( row ) => <AssetSource asset={ row } />,
+				},
+				dependencies: {
+					heading: __( 'Dependencies', 'query-monitor' ),
+					render: ( row ) => (
+						<>
+							{ row.dependencies.map( ( dep, i ) => [
+								i > 0 && ', ',
+								<span
+									key={ dep }
+									className="qm-nowrap"
+								>
+									{ data.missing_dependencies[ dep ] ? (
+										<Warning>
+											&nbsp;
+											{ sprintf(
+												/* translators: %s: Name of missing script or style dependency */
+												__( '%s (missing)', 'query-monitor' ),
+												dep
+											) }
+										</Warning>
+									) : dep }
+								</span>,
+							] ) }
+						</>
+					),
+				},
+				dependents: {
+					heading: __( 'Dependents', 'query-monitor' ),
+					render: ( row ) => (
+						<>
+							{ row.dependents.map( ( dep, i ) => [
+								i > 0 && ', ',
+								<span
+									key={ dep }
+									className="qm-nowrap"
+								>
+									{ dep }
+								</span>,
+							] ) }
+						</>
+					),
+				},
+				version: {
+					heading: __( 'Version', 'query-monitor' ),
+					render: ( row ) => row.ver,
+				},
+			}}
+			data={ data.assets }
+			rowHasError={ ( row ) => {
+				return row.warning;
+			} }
+		/>
+	);
+};
+
+export default Assets;

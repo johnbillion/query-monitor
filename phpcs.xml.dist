@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
-
 	<config name="testVersion" value="7.4-"/>
 	<arg name="extensions" value="php"/>
+	<arg name="cache" value="tests/cache/phpcs.json"/>
 
 	<!--
 	Prevent deprecated errors caused by WordPress Coding Standards not supporting PHP 8.0+.
@@ -15,9 +15,26 @@
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
+	<!-- Generated files that use WordPress block parser property names (blockName, innerBlocks, etc) -->
+	<rule ref="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase">
+		<exclude-pattern>/data/block_editor/post_block\.php$</exclude-pattern>
+	</rule>
+
+	<!-- HTML dispatcher outputs inline assets intentionally for isolated loading -->
+	<rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet">
+		<exclude-pattern>/dispatchers/Html\.php$</exclude-pattern>
+	</rule>
+
+	<!-- ArrayAccess method names are defined by the PHP interface -->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>/classes/ArrayAccess\.php$</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress-Extra">
 
 		<exclude name="WordPress.Files.FileName" />
+		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
 
 		<!-- Exclude short description sniff so short `@var` notation can be used -->
 		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
@@ -48,6 +65,7 @@
 		<!-- We have the means -->
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
 
 		<!-- QM looks at several superglobals -->
 		<exclude name="WordPress.Security.NonceVerification.Missing" />
@@ -64,7 +82,7 @@
 
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="5.9" />
+			<property name="minimum_supported_version" value="6.2" />
 		</properties>
 	</rule>
 

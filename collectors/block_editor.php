@@ -27,9 +27,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	protected $block_timing = array();
 
 	/**
-	 * @var QM_Timer|null
+	 * @var array<int, QM_Timer>
 	 */
-	protected $block_timer = null;
+	protected $block_timer_stack = array();
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_Block_Editor();
@@ -62,10 +62,21 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	public function get_concerned_actions() {
+		return array(
+			'enqueue_block_assets',
+			'enqueue_block_editor_assets',
+		);
+	}
+
+	/**
+	 * @return array<int, string>
+	 */
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
 			'allowed_block_types_all',
+			'block_categories_all',
 			'block_editor_settings_all',
 			'block_type_metadata',
 			'block_type_metadata_settings',
@@ -75,6 +86,9 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			'render_block_context',
 			'render_block_data',
 			'render_block',
+			'should_load_separate_core_block_assets',
+			'use_block_editor_for_post',
+			'use_block_editor_for_post_type',
 			'use_widgets_block_editor',
 		);
 	}
@@ -108,8 +122,11 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return mixed[]
 	 */
 	public function filter_render_block_data( array $block ) {
-		$this->block_timer = new QM_Timer();
-		$this->block_timer->start();
+		$timer = new QM_Timer();
+		$timer->start();
+
+		$this->block_timer_stack[] = $timer;
+		$this->block_timing[] = $timer;
 
 		return $block;
 	}
@@ -120,14 +137,17 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * @return string
 	 */
 	public function filter_render_block( $block_content, array $block ) {
-		if ( isset( $this->block_timer ) ) {
-			$this->block_timing[] = $this->block_timer->stop();
+		$timer = array_pop( $this->block_timer_stack );
+
+		if ( $timer instanceof QM_Timer ) {
+			$timer->stop();
 		}
 
 		return $block_content;
 	}
 
 	public function process() {
+		/** @var ?string $_wp_current_template_content */
 		global $_wp_current_template_content;
 
 		if ( ! empty( $_wp_current_template_content ) ) {
@@ -148,22 +168,24 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		}
 
 		$this->data->post_has_blocks = has_blocks( $content );
-		$this->data->post_blocks = array_values( parse_blocks( $content ) );
-		$this->data->all_dynamic_blocks = get_dynamic_block_names();
-		$this->data->total_blocks = 0;
-		$this->data->has_block_context = false;
-		$this->data->has_block_timing = false;
 
 		if ( $this->data->post_has_blocks ) {
-			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $this->data->post_blocks ) ) );
+			$blocks = array_values( parse_blocks( $content ) );
+			$this->data->post_blocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $blocks ) ) );
 		}
 	}
 
 	/**
+	 * @phpstan-param array{
+	 *   blockName: string|null,
+	 *   attrs: mixed[],
+	 *   innerBlocks: mixed[],
+	 *   innerHTML: string,
+	 *   innerContent: array<int, string|null>,
+	 * } $block
 	 * @param mixed[] $block
-	 * @return mixed[]|null
 	 */
-	protected function process_block( array $block ) {
+	protected function process_block( array $block ) : ?QM_Data_Post_Block {
 		$context = array_shift( $this->block_context );
 		$timing = array_shift( $this->block_timing );
 
@@ -172,41 +194,42 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 			return null;
 		}
 
-		$this->data->total_blocks++;
-
 		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( $block['blockName'] );
 		$dynamic = false;
 		$callback = null;
 
 		if ( $block_type && $block_type->is_dynamic() ) {
 			$dynamic = true;
-			$callback = QM_Util::populate_callback( array(
+			$callback = QM_Util::determine_callback( array(
 				'function' => $block_type->render_callback,
 			) );
 		}
 
-		$timing = array_shift( $this->block_timing );
+		// Strip multiple consecutive line breaks that end up in parsed block content.
+		$inner_html = preg_replace( '/(\r?\n){2,}/', "\n", trim( $block['innerHTML'] ) );
 
-		$block['dynamic'] = $dynamic;
-		$block['callback'] = $callback;
-		$block['innerHTML'] = trim( $block['innerHTML'] );
-		$block['size'] = strlen( $block['innerHTML'] );
-
-		if ( $context ) {
-			$block['context'] = $context;
-			$this->data->has_block_context = true;
-		}
-
-		if ( $timing ) {
-			$block['timing'] = $timing->get_time();
-			$this->data->has_block_timing = true;
-		}
+		$result = new QM_Data_Post_Block();
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
+		$result->blockName = $block['blockName'];
+		$result->attrs = $block['attrs'];
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
+		$result->innerContent = $block['innerContent'];
+		$result->dynamic = $dynamic;
+		$result->callback = $callback;
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
+		$result->innerHTML = $inner_html;
+		$result->context = $context;
+		$result->timing = $timing ? $timing->get_time() : null;
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
-			$block['innerBlocks'] = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
+			$result->innerBlocks = array_values( array_filter( array_map( array( $this, 'process_block' ), $block['innerBlocks'] ) ) );
+		} else {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- Matches WP block parser format.
+			$result->innerBlocks = array();
 		}
 
-		return $block;
+		return $result;
 	}
 }
 

@@ -9,16 +9,38 @@ class CollectorPhpErrorsTest extends Test {
 	 */
 	public $collector;
 
-	function _before(): void {
-		parent::_before();
+	#[\Override]
+	public function set_up(): void {
+		parent::set_up();
 
 		$this->collector = new \QM_Collector_PHP_Errors();
 	}
 
-	function _after(): void {
+	#[\Override]
+	public function tear_down(): void {
 		$this->collector->tear_down();
 
-		parent::_after();
+		parent::tear_down();
+	}
+
+	/**
+	 * Helper to create a QM_Data_PHP_Error instance.
+	 *
+	 * @param int $errno
+	 * @param 'warning'|'notice'|'strict'|'deprecated' $level
+	 * @param \QM_Backtrace $trace
+	 * @return \QM_Data_PHP_Error
+	 */
+	private function createError( int $errno, string $level, \QM_Backtrace $trace ): \QM_Data_PHP_Error {
+		$error = new \QM_Data_PHP_Error();
+		$error->errno = $errno;
+		$error->level = $level;
+		$error->suppressed = false;
+		$error->message = 'Test error';
+		$error->trace = $trace;
+		$error->count = 1;
+
+		return $error;
 	}
 
 	function testItKnowsNullFlagIsAlwaysReportable(): void {
@@ -56,7 +78,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsCoreFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -66,7 +88,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsThemeFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_CONTENT_DIR . '/themes/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		// self::assertSame( 'other', $component->context );
@@ -76,7 +98,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsAnotherPluginFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/bar/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'bar', $component->context );
@@ -86,7 +108,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsEmptyFilePathIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( ABSPATH );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -106,7 +128,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo', $component->context );
@@ -116,7 +138,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsThemeFileIsInTheme(): void {
 		$component = \QM_Util::get_file_component( get_stylesheet_directory() . '/taxonomy.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'theme', 'stylesheet'
+			$component, \QM_Component::TYPE_STYLESHEET, 'stylesheet'
 		);
 
 		self::assertSame( 'stylesheet', $component->context );
@@ -126,7 +148,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsCoreFileIsInCore(): void {
 		$component = \QM_Util::get_file_component( ABSPATH . 'wp-includes/plugin.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'core', 'core'
+			$component, \QM_Component::TYPE_CORE, 'core'
 		);
 
 		self::assertSame( 'core', $component->context );
@@ -136,7 +158,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsFolderlessPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo.php'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo.php'
 		);
 
 		self::assertSame( 'foo.php', $component->context );
@@ -146,7 +168,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsInternalPluginFileIsInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo/includes/A/B/foo.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo', $component->context );
@@ -156,7 +178,7 @@ class CollectorPhpErrorsTest extends Test {
 	function testItKnowsPluginExtensionFileIsNotInPlugin(): void {
 		$component = \QM_Util::get_file_component( WP_PLUGIN_DIR . '/foo-extension/foo-extension.php.php' );
 		$actual = $this->collector->is_affected_component(
-			$component, 'plugin', 'foo'
+			$component, \QM_Component::TYPE_PLUGIN, 'foo'
 		);
 
 		self::assertSame( 'foo-extension', $component->context );
@@ -164,26 +186,15 @@ class CollectorPhpErrorsTest extends Test {
 	}
 
 	function testItWillNotFilterAnyErrorByDefault(): void {
-		$trace = new Supports\TestBacktrace;
-		$trace->set_trace( [
+		$trace = new Supports\TestBacktrace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
 			],
 		] );
 
 		$errors = array(
-			'notice' => array(
-				'abc' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-				'def' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
+			'abc' => $this->createError( E_NOTICE, 'notice', $trace ),
+			'def' => $this->createError( E_NOTICE, 'notice', $trace ),
 		);
 
 		$this->collector->set_php_errors( $errors );
@@ -191,61 +202,34 @@ class CollectorPhpErrorsTest extends Test {
 
 		$actual = $this->collector->get_data();
 
-		// errors:
-		self::assertTrue( property_exists( $actual, 'errors' ) );
-		self::assertArrayHasKey( 'notice', $actual->errors );
-		self::assertSame( 2, count( $actual->errors['notice'] ) );
-
-		// silenced errors:
-		self::assertTrue( property_exists( $actual, 'silenced' ) );
-		// @phpstan-ignore-next-line
-		self::assertFalse( isset( $actual->silenced ) );
+		// All errors should remain (no filtering by default):
+		self::assertSame( 2, count( $actual->errors ) );
 	}
 
 	function testItWillFilterNoticesFromPlugin(): void {
 		add_filter( 'qm/collect/php_error_levels', function( $table ) {
-			$table['plugin']['foo'] = E_ALL & ~E_NOTICE;
+			$table[ \QM_Component::TYPE_PLUGIN ]['foo'] = E_ALL & ~E_NOTICE;
 			return $table;
 		} );
 
-		$trace = new Supports\TestBacktrace;
-		$trace->set_trace( [
+		$trace = new Supports\TestBacktrace( [
 			[
 				'file' => WP_PLUGIN_DIR . '/foo/bar.php',
 			],
 		] );
 
 		$errors = array(
-			'warning' => array(
-				'abc' => array(
-					'errno' => E_WARNING,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
-			'notice' => array(
-				'abc' => array(
-					'errno' => E_NOTICE,
-					'trace' => $trace,
-					'component' => $trace->get_component(),
-				),
-			),
+			'warning_abc' => $this->createError( E_WARNING, 'warning', $trace ),
+			'notice_abc' => $this->createError( E_NOTICE, 'notice', $trace ),
 		);
 
 		$this->collector->set_php_errors( $errors );
 		$this->collector->process();
 		$actual = $this->collector->get_data();
 
-		// errors:
-		self::assertTrue( property_exists( $actual, 'errors' ) );
-		self::assertArrayHasKey( 'warning', $actual->errors );
-		self::assertArrayNotHasKey( 'notice', $actual->errors );
-		self::assertSame( 1, count( $actual->errors['warning'] ) );
-
-		// silenced errors:
-		self::assertTrue( property_exists( $actual, 'silenced' ) );
-		self::assertArrayHasKey( 'notice', $actual->silenced );
-		self::assertArrayNotHasKey( 'warning', $actual->silenced );
-		self::assertSame( 1, count( $actual->silenced['notice'] ) );
+		// Only the warning should remain after filtering:
+		self::assertSame( 1, count( $actual->errors ) );
+		self::assertArrayHasKey( 'warning_abc', $actual->errors );
+		self::assertArrayNotHasKey( 'notice_abc', $actual->errors );
 	}
 }

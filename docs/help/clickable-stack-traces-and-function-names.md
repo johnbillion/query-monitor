@@ -12,26 +12,30 @@ You just need to open up the Settings panel in Query Monitor (click the cog next
 
 [![Screenshot of the Editor setting in Query Monitor](/editor-setting.png)](/editor-setting.png)
 
-If you use an editor other than VS Code or PhpStorm then you may first need to configure it so it opens when a certain URL scheme is encountered:
+If you use one of the following editors you may need to configure its URL scheme handler:
 
-* Atom: [Install the Atom Open package](https://atom.io/packages/open)
-* Sublime Text: [Install the subl-handler package](https://github.com/corysimmons/subl-handler)
-* Netbeans: [Follow these instructions by Simon Wheatley](https://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/)
+* Sublime Text: [Install the Sublime Text URL handler](https://github.com/inopinatus/sublime_url)
+* NetBeans: [Enable clickable stack traces with NetBeans](https://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/)
 
 ## Remote File Path Mapping
 
 If you're debugging a remote site or using Docker or a virtual machine, you'll need to map the path on the server to its path on your local machine so your editor doesn't try to load a non-existent file. You can do this using a filter on the `qm/output/file_path_map` hook which accepts an array of remote paths and the local path they map to.
 
-For example, if you use the Docker-based development environment that's built in to WordPress core, your path mapping needs to look like this:
+Here are examples for various local development environments:
 
-```php
-add_filter( 'qm/output/file_path_map', function( $map ) {
-	$map['/var/www/'] = '/path/to/wordpress/';
-	return $map;
-} );
-```
+### Altis local server
 
-If you use VVV your path mapping needs to look like this:
+No need to do anything, the path mapping is handled automatically.
+
+### WordPress core development environment
+
+No need to do anything, the path mapping is handled automatically.
+
+### WordPress VIP on Lando
+
+No need to do anything, the path mapping is handled automatically.
+
+### VVV
 
 ```php
 add_filter( 'qm/output/file_path_map', function( $map ) {
@@ -40,7 +44,7 @@ add_filter( 'qm/output/file_path_map', function( $map ) {
 } );
 ```
 
-If you use Chassis or another Vagrant-based VM, your path mapping needs to look like this:
+### Chassis or another Vagrant-based VM
 
 ```php
 add_filter( 'qm/output/file_path_map', function( $map ) {
@@ -57,6 +61,14 @@ add_filter( 'qm/output/file_path_map', function( $map ) {
 	return $map;
 } );
 ```
+
+## Xdebug
+
+Xdebug supports an `xdebug.file_link_format` configuration directive. Query Monitor will use this as the default value for the file link format if it's present.
+
+## Customisation
+
+You can use the `qm/output/file_link_format` filter to override the file link format. If this filter is in use then the editor selection control will be hidden.
 
 ## That's it!
 

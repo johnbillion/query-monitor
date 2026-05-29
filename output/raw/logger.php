@@ -40,7 +40,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 		foreach ( $data->logs as $log ) {
 			$output[ $log['level'] ][] = array(
 				'message' => $log['message'],
-				'stack' => array_column( $log['filtered_trace'], 'display' ),
+				'stack' => $log['trace']->get_stack(),
 			);
 		}
 

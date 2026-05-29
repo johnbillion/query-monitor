@@ -1,13 +1,13 @@
 <img src=".wordpress-org/icon-256x256.png" align="right" width="100" height="100" alt="">
 
-[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
-[![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
+[![Plugin Version](https://img.shields.io/wordpress/plugin/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
+[![License](https://img.shields.io/badge/license-GPL_v2%2B-blue.svg?style=flat-square)](https://opensource.org/license/GPL-2.0)
 [![WordPress Tested](https://img.shields.io/wordpress/v/query-monitor.svg?style=flat-square)](https://wordpress.org/plugins/query-monitor/)
 [![Build Status](https://img.shields.io/badge/tests-passing-brightgreen.svg?style=flat-square)](https://github.com/johnbillion/query-monitor/actions)
 
 # Query Monitor
 
-Query Monitor is the developer tools panel for WordPress. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
+Query Monitor is the developer tools panel for WordPress and WooCommerce. It enables debugging of database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, HTTP API calls, and more.
 
 It includes some advanced features such as debugging of Ajax calls, REST API calls, user capability checks, and full support for block themes and full site editing. It includes the ability to narrow down much of its output by plugin or theme, allowing you to quickly determine poorly performing plugins, themes, or functions.
 
@@ -76,6 +76,7 @@ Filtering queries by component or calling function makes it easy to see which pl
  * Shows all server-side HTTP requests (as long as they use the WordPress HTTP API)
  * Shows the response code, call stack, component, timeout, response size, time taken, and other meta data
  * Alerts you to erroneous responses, such as failed requests and anything without a `200` response code
+ * Supports Guzzle HTTP requests via an optional middleware for comprehensive HTTP debugging
 
 ### User Capability Checks
 
@@ -153,6 +154,25 @@ do_action( 'qm/stop', 'foo' );
 
 [Read more about profiling and logging in Query Monitor](https://querymonitor.com/wordpress-debugging/profiling-and-logging/).
 
+### Guzzle HTTP Client Support
+
+Query Monitor can log HTTP requests made with the popular Guzzle HTTP client library. This enables debugging of requests that bypass WordPress's HTTP API:
+
+```php
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Client;
+
+// Add Query Monitor middleware to your Guzzle client
+$stack = HandlerStack::create();
+$stack->push(QM_Collector_HTTP::guzzle_middleware());
+$client = new Client(['handler' => $stack]);
+
+// All requests will now appear in Query Monitor
+$response = $client->get('https://api.example.com/data');
+```
+
+Guzzle requests will appear alongside WordPress HTTP API requests in the HTTP API Requests panel with full debugging information including timing, response codes, and stack traces.
+
 ### Everything Else
 
  * Shows any transients that were set, along with their timeout, component, and call stack
@@ -165,17 +185,27 @@ By default, Query Monitor's output is only shown to Administrators on single-sit
 
 In addition to this, you can set an authentication cookie which allows you to view Query Monitor output when you're not logged in, or when you're logged in as a user who cannot usually see Query Monitor's output. See the Settings panel for details.
 
+## Reviews
+
+If you enjoy using Query Monitor I would greatly appreciate it <a href="https://wordpress.org/support/plugin/query-monitor/reviews/?filter=5">if you left a positive review on the WordPress.org Plugin Directory</a>.
+
 ## Sponsors
 
-The time that I spend maintaining this plugin and others is in part sponsored by:
+<p align="center">The time that I spend maintaining this plugin and others is in part sponsored by:</p>
 
-[![Automattic](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/assets/sponsors/automattic.png)](https://automattic.com)
+<p align="center"><a href="https://automattic.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/automattic.svg" alt="Automattic" width="50%"></a></p>
 
-Plus all my kind sponsors on GitHub:
+<p align="center">
+    <a href="https://servmask.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/servmask.svg" alt="ServMask" width="25%"></a>
+    &nbsp; &nbsp; &nbsp;
+    <a href="https://wp-staging.com"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/assets/sponsors/wp-staging.png" alt="WP Staging" width="25%"></a>
+</p>
 
-[![Sponsors](https://cdn.jsdelivr.net/gh/johnbillion/johnbillion/sponsors.svg)](https://github.com/sponsors/johnbillion)
+<p align="center">Plus all my kind sponsors on GitHub:</p>
 
-[Click here to find out about supporting this plugin and my other WordPress development tools and plugins](https://github.com/sponsors/johnbillion).
+<p align="center"><a href="https://github.com/sponsors/johnbillion"><img src="https://cdn.jsdelivr.net/gh/johnbillion/johnbillion@latest/sponsors.svg" alt="Sponsors"></a></p>
+
+<p align="center"><a href="https://github.com/sponsors/johnbillion">Click here to find out about supporting my open source tools and plugins</a>.</p>
 
 ## Notes
 
@@ -193,25 +223,17 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ## Screenshots
 
-### Admin Toolbar Menu
-
-![Admin Toolbar Menu](.wordpress-org/screenshot-1.png)
-
-### Database Queries
-
-![Database Queries](.wordpress-org/screenshot-4.png)
-
-### Capability Checks
-
-![Capability Checks](.wordpress-org/screenshot-3.png)
-
 ### Aggregate Database Queries by Component
 
 ![Aggregate Database Queries by Component](.wordpress-org/screenshot-2.png)
 
-### Aggregate Database Queries by Calling Function
+### Database Queries
 
-![Aggregate Database Queries by Calling Function](.wordpress-org/screenshot-7.png)
+![Database Queries](.wordpress-org/screenshot-3.png)
+
+### Timeline
+
+![Timeline](.wordpress-org/screenshot-4.png)
 
 ### Hooks and Actions
 
@@ -221,13 +243,17 @@ If your `WP_CONTENT_DIR` isn't writable and therefore the symlink for `db.php` c
 
 ![HTTP API Requests](.wordpress-org/screenshot-6.png)
 
+### Logs
+
+![Logs](.wordpress-org/screenshot-7.png)
+
 ## Frequently Asked Questions
 
 [See the FAQ on the WordPress.org plugin page for Query Monitor](https://wordpress.org/plugins/query-monitor/#faq).
 
 ## Do you accept donations?
 
-[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
+[I am accepting sponsorships via the GitHub Sponsors program](https://github.com/sponsors/johnbillion). If you work at an agency that develops with WordPress or WooCommerce, ask your company to provide sponsorship in order to invest in its supply chain. The tools that I maintain probably save your company time and money, and GitHub sponsorship can now be done at the organisation level.
 
 In addition, if you like the plugin then I'd love for you to [leave a review](https://wordpress.org/support/view/plugin-reviews/query-monitor). Tell all your friends about it too!
 
@@ -249,8 +275,9 @@ If you've experienced or identified another accessibility issue in Query Monitor
 
 Debugging is rarely done with just one tool. Along with Query Monitor you should be aware of other plugins and tools for debugging and profiling your website. Here are some recommendations:
 
-### WordPress Plugins
+### Plugins for WordPress
 
+ * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)
  * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
  * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
  * [Debug This](https://wordpress.org/plugins/debug-this/)
@@ -261,28 +288,33 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Snitch](https://wordpress.org/plugins/snitch/)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
+ * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)
 
 Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
-See also my list of [WordPress Developer Plugins](https://johnblackbourn.com/wordpress-developer-plugins).
+See also my list of [Plugins for WordPress Developers](https://johnblackbourn.com/wordpress-developer-plugins).
+
+### Tools for WordPress developers
+
+ * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
+ * [Hook Order](https://hookorder.com/)
+ * [Wonolog](https://github.com/inpsyde/Wonolog)
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Other tools
 
- * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
  * [Buggregator](https://buggregator.dev/)
  * [Clockwork](https://underground.works/clockwork/)
  * [Meminfo](https://github.com/BitOne/php-meminfo)
  * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
  * [phpspy](https://github.com/adsr/phpspy)
- * [Psysh](http://psysh.org/)
+ * [Psysh](https://psysh.org/)
  * [Ray](https://myray.app/)
  * [Reli](https://github.com/reliforp/reli-prof)
  * [SPX](https://github.com/NoiseByNorthwest/php-spx)
  * [Tinkerwell](https://tinkerwell.app/)
  * [Xdebug](https://xdebug.org/)
  * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
- * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
 
 ### Hosted services
 

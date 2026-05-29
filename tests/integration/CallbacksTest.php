@@ -25,14 +25,11 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( '__return_false()',   $actual['name'] );
-		self::assertSame( $ref->getFileName(),  $actual['file'] );
-		self::assertSame( $ref->getStartLine(), $actual['line'] );
+		self::assertSame( '__return_false()',   $actual->name );
+		self::assertSame( $ref->getFileName(),  $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 
 	}
 
@@ -43,14 +40,11 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( 'QM\T\S\TestObject->hello()', $actual['name'] );
-		self::assertSame( $ref->getFileName(),       $actual['file'] );
-		self::assertSame( $ref->getStartLine(),      $actual['line'] );
+		self::assertSame( 'QM\Tests\Supports\TestObject->hello()', $actual->name );
+		self::assertSame( $ref->getFileName(),       $actual->file );
+		self::assertSame( $ref->getStartLine(),      $actual->line );
 
 	}
 
@@ -60,15 +54,12 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function, '__invoke' );
-		$actual = \QM_Util::populate_callback( $callback );
-		$name = 'QM\T\S\TestInvokable->__invoke()';
+		$actual = \QM_Util::determine_callback( $callback );
+		$name = 'QM\Tests\Supports\TestInvokable->__invoke()';
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( $name,                $actual['name'] );
-		self::assertSame( $ref->getFileName(),  $actual['file'] );
-		self::assertSame( $ref->getStartLine(), $actual['line'] );
+		self::assertSame( $name,                $actual->name );
+		self::assertSame( $ref->getFileName(),  $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 
 	}
 
@@ -78,14 +69,11 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( $function[0], $function[1] );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( '\Q\T\S\TestObject::hello()', $actual['name'] );
-		self::assertSame( $ref->getFileName(),       $actual['file'] );
-		self::assertSame( $ref->getStartLine(),      $actual['line'] );
+		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual->name );
+		self::assertSame( $ref->getFileName(),       $actual->file );
+		self::assertSame( $ref->getStartLine(),      $actual->line );
 
 	}
 
@@ -95,14 +83,11 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionMethod( '\QM\Tests\Supports\TestObject', 'hello' );
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( '\Q\T\S\TestObject::hello()',          $actual['name'] );
-		self::assertSame( $ref->getFileName(),                $actual['file'] );
-		self::assertSame( $ref->getStartLine(),               $actual['line'] );
+		self::assertSame( '\QM\Tests\Supports\TestObject::hello()', $actual->name );
+		self::assertSame( $ref->getFileName(),                $actual->file );
+		self::assertSame( $ref->getStartLine(),               $actual->line );
 
 	}
 
@@ -113,19 +98,12 @@ class CallbacksTest extends Test {
 		$callback = self::get_callback( $function );
 
 		$ref = new \ReflectionFunction( $function );
-		$actual = \QM_Util::populate_callback( $callback );
-		$name = sprintf(
-			'Closure on line %1$d of %2$s',
-			$ref->getStartLine(),
-			'wp-content/plugins/query-monitor/tests/integration/includes/dummy-closures.php'
-		);
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'name', $actual );
-		self::assertArrayHasKey( 'file', $actual );
-		self::assertArrayHasKey( 'line', $actual );
-		self::assertSame( $name,                $actual['name'] );
-		self::assertSame( $ref->getFileName(),  $actual['file'] );
-		self::assertSame( $ref->getStartLine(), $actual['line'] );
+		self::assertSame( 'closure', $actual->callback_type );
+		self::assertNotNull( $actual->file );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
 
 	}
 
@@ -134,10 +112,9 @@ class CallbacksTest extends Test {
 		$function = 'invalid_function';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -147,10 +124,9 @@ class CallbacksTest extends Test {
 		$function = array( $obj, 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -159,10 +135,9 @@ class CallbacksTest extends Test {
 		$function = new Supports\TestObject;
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -171,10 +146,9 @@ class CallbacksTest extends Test {
 		$function = array( '\QM\Tests\Supports\TestObject', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -183,10 +157,9 @@ class CallbacksTest extends Test {
 		$function = '\QM\Tests\Supports\TestObject::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -195,10 +168,9 @@ class CallbacksTest extends Test {
 		$function = array( 'Invalid_Class', 'goodbye' );
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 
@@ -207,10 +179,9 @@ class CallbacksTest extends Test {
 		$function = 'Invalid_Class::goodbye';
 		$callback = self::get_callback( $function );
 
-		$actual = \QM_Util::populate_callback( $callback );
+		$actual = \QM_Util::determine_callback( $callback );
 
-		self::assertArrayHasKey( 'error', $actual );
-		$this->assertWPError( $actual['error'] );
+		self::assertSame( 'unknown', $actual->callback_type );
 
 	}
 

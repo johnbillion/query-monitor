@@ -11,22 +11,28 @@ on:
         type: string
         description: The version number of the release
 
-concurrency: WordPress.org
+concurrency:
+  group: WordPress.org
+  cancel-in-progress: false
 
 permissions: {}
 
 jobs:
   deploy:
     name: Deploy Tag
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@trunk
+    if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@99fbf371962704dbaef452ebe7ea188d5cfb8069 # 2.9.4
     permissions:
-      contents: read
-      issues: write
+      contents: write      # Required to push the new branch
+      issues: write        # Required for write access to milestones
+      pull-requests: write # Required to create the pull request
+      attestations: write  # Required to store the build provenance attestation
+      id-token: write      # Required for creating an OIDC token for build provenance attestation
     with:
       deploy: ${{ github.event_name != 'workflow_dispatch' }}
       plugin: query-monitor
       readme: readme.txt
       version: ${{ github.event_name != 'workflow_dispatch' && github.event.release.tag_name || github.event.inputs.version }}
+      username: johnbillion
     secrets:
-      WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
       WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}

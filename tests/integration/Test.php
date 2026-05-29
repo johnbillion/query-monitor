@@ -2,9 +2,12 @@
 
 namespace QM\Tests;
 
-abstract class Test extends \Codeception\TestCase\WPTestCase {
+abstract class Test extends \WP_UnitTestCase {
 
-	public function _before(): void {
+	#[\Override]
+	public function set_up(): void {
+		parent::set_up();
+
 		if ( ! defined( 'WP_USE_THEMES' ) ) {
 			define( 'WP_USE_THEMES', true );
 		}
@@ -13,8 +16,6 @@ abstract class Test extends \Codeception\TestCase\WPTestCase {
 			self::fail( 'WP_USE_THEMES should not be false' );
 		}
 	}
-
-	public function _after(): void {}
 
 	/**
 	 * @return string

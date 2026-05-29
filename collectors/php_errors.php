@@ -15,13 +15,6 @@ if ( ! defined( 'QM_ERROR_FATALS' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
- * @phpstan-type errorLabels array{
- *   warning: string,
- *   notice: string,
- *   strict: string,
- *   deprecated: string,
- * }
- * @phpstan-import-type errorObject from QM_Data_PHP_Errors
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
 
@@ -29,16 +22,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @var string
 	 */
 	public $id = 'php_errors';
-
-	/**
-	 * @var array<string, array<string, string>>
-	 * @phpstan-var array{
-	 *   errors: errorLabels,
-	 *   suppressed: errorLabels,
-	 *   silenced: errorLabels,
-	 * }
-	 */
-	public $types;
 
 	/**
 	 * @var int|null
@@ -64,6 +47,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @var string|null
 	 */
 	private static $unexpected_error = null;
+
+	/**
+	 * @var int
+	 */
+	private const NON_SILENT_ERROR_TYPES = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_PHP_Errors();
@@ -141,7 +129,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$error = 'Uncaught Error';
 
 		if ( $e instanceof Exception ) {
-			$error = 'Uncaught Exception';
+			$error = sprintf(
+				'Uncaught %s',
+				get_class( $e )
+			);
 		}
 
 		$this->output_fatal( 'Fatal error', array(
@@ -176,7 +167,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return bool
 	 */
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
-		$type = null;
+		$level = null;
 
 		/**
 		 * Fires before logging the PHP error in Query Monitor.
@@ -195,27 +186,29 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 			case E_WARNING:
 			case E_USER_WARNING:
-				$type = 'warning';
+				$level = 'warning';
 				break;
 
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$type = 'notice';
+				$level = 'notice';
 				break;
 
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				$type = 'deprecated';
+				$level = 'deprecated';
 				break;
 
 		}
 
 		// E_STRICT is deprecated in PHP 8.4 so it needs to be behind a version check.
-		if ( null === $type && version_compare( PHP_VERSION, '8.4', '<' ) && E_STRICT === $errno ) {
-			$type = 'strict';
+		if ( \PHP_VERSION_ID < 80400 ) {
+			if ( null === $level && E_STRICT === $errno ) {
+				$level = 'strict';
+			}
 		}
 
-		if ( null === $type ) {
+		if ( null === $level ) {
 			return false;
 		}
 
@@ -223,11 +216,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		$error_group = 'errors';
+		$suppressed = false;
 
-		if ( 0 === error_reporting() && 0 !== $this->error_reporting ) {
+		if ( $this->is_error_suppressed() && 0 !== $this->error_reporting ) {
 			// This is most likely an @-suppressed error
-			$error_group = 'suppressed';
+			$suppressed = true;
 		}
 
 		if ( ! isset( self::$unexpected_error ) ) {
@@ -248,34 +241,39 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return false;
 		}
 
-		$trace = new QM_Backtrace();
-		$trace->push_frame( array(
-			'file' => $file,
-			'line' => $line,
+		$callsite = new QM_Data_Callsite();
+		$callsite->file = $file;
+		$callsite->line = $line;
+
+		$trace = new QM_Backtrace( array(
+			'callsite' => $callsite,
 		) );
 		$caller = $trace->get_caller();
 
 		if ( $caller ) {
-			$key = md5( $message . $file . $line . $caller['id'] );
+			$key = md5( $message . $file . $line . $caller->id );
 		} else {
 			$key = md5( $message . $file . $line );
 		}
 
-		if ( isset( $this->data->{$error_group}[ $type ][ $key ] ) ) {
-			$this->data->{$error_group}[ $type ][ $key ]['calls']++;
+		if ( isset( $this->data->errors[ $key ] ) ) {
+			$this->data->errors[ $key ]->count++;
 		} else {
-			$this->data->{$error_group}[ $type ][ $key ] = array(
-				'errno' => $errno,
-				'type' => $type,
-				'message' => wp_strip_all_tags( $message ),
-				'file' => $file,
-				'filename' => ( $file ? QM_Util::standard_dir( $file, '' ) : '' ),
-				'line' => $line,
-				'filtered_trace' => ( $do_trace ? $trace->get_filtered_trace() : null ),
-				'component' => $trace->get_component(),
-				'calls' => 1,
-			);
+			$error = new QM_Data_PHP_Error();
+			$error->errno = $errno;
+			$error->level = $level;
+			$error->suppressed = $suppressed;
+			$error->message = wp_strip_all_tags( $message );
+			$error->count = 1;
+
+			if ( $do_trace ) {
+				$error->trace = $trace;
+			}
+
+			$this->data->errors[ $key ] = $error;
 		}
+
+		$this->log_type( $level );
 
 		/**
 		 * Filters the PHP error handler return value. This can be used to control whether or not the default error
@@ -286,7 +284,17 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		 * @param bool $return_value Error handler return value. Default false.
 		 */
 		return apply_filters( 'qm/collect/php_errors_return_value', false );
+	}
 
+	private function is_error_suppressed(): bool {
+		$current_level = error_reporting();
+
+		if ( PHP_MAJOR_VERSION > 7 ) {
+			// https://www.php.net/manual/en/language.operators.errorcontrol.php
+			return $current_level === self::NON_SILENT_ERROR_TYPES;
+		}
+
+		return 0 === $current_level;
 	}
 
 	/**
@@ -302,7 +310,16 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return void
 	 */
 	protected function output_fatal( $error, array $e ) {
-		$dispatcher = QM_Dispatchers::get( 'html' );
+		$is_rest_request = ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+		$is_ajax_request = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+		if ( $is_rest_request ) {
+			$dispatcher = QM_Dispatchers::get( 'rest' );
+		} elseif ( $is_ajax_request ) {
+			$dispatcher = QM_Dispatchers::get( 'ajax' );
+		} else {
+			$dispatcher = QM_Dispatchers::get( 'html' );
+		}
 
 		if ( empty( $dispatcher ) ) {
 			return;
@@ -312,91 +329,19 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			return;
 		}
 
-		// This hides the subsequent message from the fatal error handler in core. It cannot be
-		// disabled by a plugin so we'll just hide its output.
-		echo '<style type="text/css"> .wp-die-message { display: none; } </style>';
-
-		printf(
-			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			'<link rel="stylesheet" href="%1$s?ver=%2$s" media="all" />',
-			esc_url( QueryMonitor::init()->plugin_url( 'assets/query-monitor.css' ) ),
-			esc_attr( QM_VERSION )
-		);
-
-		// This unused wrapper with an attribute serves to help the #qm-fatal div break out of an
-		// attribute if a fatal has occurred within one.
-		echo '<div data-qm="qm">';
-
-		printf(
-			'<div id="qm-fatal" data-qm-message="%1$s" data-qm-file="%2$s" data-qm-line="%3$d">',
-			esc_attr( $e['message'] ),
-			esc_attr( QM_Util::standard_dir( $e['file'], '' ) ),
-			intval( $e['line'] )
-		);
-
-		echo '<div class="qm-fatal-wrap">';
-
-		if ( QM_Output_Html::has_clickable_links() ) {
-			$file = QM_Output_Html::output_filename( $e['file'], $e['file'], $e['line'], true );
-		} else {
-			$file = esc_html( $e['file'] );
+		if ( ! headers_sent() ) {
+			status_header( 500 );
 		}
 
-		printf(
-			'<p><b>%1$s</b>: %2$s<br>in <b>%3$s</b> on line <b>%4$d</b></p>',
-			esc_html( $error ),
-			nl2br( esc_html( $e['message'] ), false ),
-			$file,
-			intval( $e['line'] )
-		); // WPCS: XSS ok.
+		$message = sprintf(
+			'%s in %s on line %d',
+			$e['message'],
+			$e['file'],
+			$e['line']
+		);
 
-		if ( ! empty( $e['trace'] ) ) {
-			echo '<p>Call stack:</p>';
-			echo '<ol>';
-			foreach ( $e['trace'] as $frame ) {
-				$callback = QM_Util::populate_callback( $frame );
-
-				if ( ! isset( $callback['name'] ) ) {
-					continue;
-				}
-
-				$args = array_map( function( $value ) {
-					$type = gettype( $value );
-
-					switch ( $type ) {
-						case 'object':
-							return get_class( $value );
-						case 'boolean':
-							return $value ? 'true' : 'false';
-						case 'integer':
-						case 'double':
-							return $value;
-						case 'string':
-							if ( strlen( $value ) > 50 ) {
-								return "'" . substr( $value, 0, 20 ) . '...' . substr( $value, -20 ) . "'";
-							}
-							return "'" . $value . "'";
-					}
-
-					return $type;
-				}, $frame['args'] ?? array() );
-
-				$name = str_replace( '()', '(' . implode( ', ', $args ) . ')', $callback['name'] );
-
-				printf(
-					'<li>%s</li>',
-					QM_Output_Html::output_filename( $name, $frame['file'], $frame['line'] )
-				); // WPCS: XSS ok.
-			}
-			echo '</ol>';
-		}
-
-		echo '</div>';
-
-		echo '<h2>Query Monitor</h2>';
-
-		echo '</div>';
-		echo '</div>';
+		$dispatcher->output_fatal( $message, $e );
+		exit;
 	}
 
 	/**
@@ -409,28 +354,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		$this->types = array(
-			'errors' => array(
-				'warning' => _x( 'Warning', 'PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice', 'PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict', 'PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated', 'PHP error level', 'query-monitor' ),
-			),
-			'suppressed' => array(
-				'warning' => _x( 'Warning (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Suppressed)', 'Suppressed PHP error level', 'query-monitor' ),
-			),
-			'silenced' => array(
-				'warning' => _x( 'Warning (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'notice' => _x( 'Notice (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'strict' => _x( 'Strict (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-				'deprecated' => _x( 'Deprecated (Silenced)', 'Silenced PHP error level', 'query-monitor' ),
-			),
-		);
-		$components = array();
-
 		if ( ! empty( $this->data->errors ) ) {
 			/**
 			 * Filters the levels used for reported PHP errors on a per-component basis.
@@ -468,35 +391,20 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 			 *
 			 * @since 2.7.0
 			 *
-			 * @param array<string,array<string,int>> $levels The error levels used for each component.
+			 * @param array<string,array<string,int>> $levels The error levels, keyed by component type (eg. 'plugin'),
+			 *                                                then by component context (eg. 'foo').
 			 */
 			$levels = apply_filters( 'qm/collect/php_error_levels', array() );
 
 			array_map( array( $this, 'filter_reportable_errors' ), $levels, array_keys( $levels ) );
-
-			foreach ( $this->types as $error_group => $error_types ) {
-				foreach ( $error_types as $type => $title ) {
-					if ( isset( $this->data->{$error_group}[ $type ] ) ) {
-						/**
-						 * @var array<string, mixed> $error
-						 * @phpstan-var errorObject $error
-						 */
-						foreach ( $this->data->{$error_group}[ $type ] as $error ) {
-							$components[ $error['component']->name ] = $error['component']->name;
-						}
-					}
-				}
-			}
 		}
-
-		$this->data->components = $components;
 	}
 
 	/**
 	 * Filters the reportable PHP errors using the table specified. Users can customize the levels
 	 * using the `qm/collect/php_error_levels` filter.
 	 *
-	 * @param array<string, int> $components     The error levels keyed by component name.
+	 * @param array<string, int> $components     The error levels keyed by component context.
 	 * @param string             $component_type The component type, for example 'plugin' or 'theme'.
 	 * @return void
 	 */
@@ -504,24 +412,23 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$all_errors = $this->data->errors;
 
 		foreach ( $components as $component_context => $allowed_level ) {
-			foreach ( $all_errors as $error_level => $errors ) {
-				foreach ( $errors as $error_id => $error ) {
-					if ( $this->is_reportable_error( $error['errno'], $allowed_level ) ) {
-						continue;
-					}
-
-					if ( ! $this->is_affected_component( $error['component'], $component_type, $component_context ) ) {
-						continue;
-					}
-
-					unset( $this->data->errors[ $error_level ][ $error_id ] );
-
-					$this->data->silenced[ $error_level ][ $error_id ] = $error;
+			foreach ( $all_errors as $error_id => $error ) {
+				if ( ! isset( $error->trace ) ) {
+					continue;
 				}
+
+				if ( $this->is_reportable_error( $error->errno, $allowed_level ) ) {
+					continue;
+				}
+
+				if ( ! $this->is_affected_component( $error->trace->get_component(), $component_type, $component_context ) ) {
+					continue;
+				}
+
+				unset( $this->data->errors[ $error_id ] );
 			}
 		}
 
-		$this->data->errors = array_filter( $this->data->errors );
 	}
 
 	/**
@@ -571,7 +478,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 * For testing purposes only. Sets the errors property manually.
 	 * Needed to test the filter since the data property is protected.
 	 *
-	 * @param array<string, mixed> $errors The list of errors
+	 * @param array<string, QM_Data_PHP_Error> $errors The list of errors
 	 * @return void
 	 */
 	public function set_php_errors( $errors ) {

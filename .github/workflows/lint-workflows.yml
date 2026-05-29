@@ -5,22 +5,28 @@ on:
   pull_request:
     branches:
       - '**'
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
   push:
     branches:
       - develop
       - trunk
+    paths:
+      # Only run when changes are made to workflow files.
+      - '.github/workflows/**'
 
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
   lint:
     name: Lint
     permissions:
-      security-events: write
-      actions: read
-      contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@trunk
+      security-events: write # Required for codeql-action/upload-sarif to upload SARIF files.
+      actions: read          # Needed for codeql-action/upload-sarif to read workflow run info.
+      contents: read         # Needed to clone the repo.
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@99fbf371962704dbaef452ebe7ea188d5cfb8069 # 2.9.4
