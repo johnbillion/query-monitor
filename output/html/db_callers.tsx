@@ -3,8 +3,9 @@ import { TabularPanel } from '../panels/tabular-panel';
 import { getTimeCol } from '../table';
 import { TotalTime } from '../components/total-time';
 import { FilterLink } from '../components/filter-link';
+import { Component } from '../component';
 import { getQueryType, getQueryTypes } from '../utils';
-import { DataTypes } from '../data-types';
+import { Component as ComponentType, DataTypes } from '../data-types';
 import { resolveFrame } from '../frame-lookup';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
@@ -13,6 +14,7 @@ interface CallerAggregate {
 	caller: string;
 	ltime: number;
 	types: Record<string, number>;
+	components: Record<string, ComponentType>;
 }
 
 const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> ): CallerAggregate[] => {
@@ -36,6 +38,7 @@ const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> )
 				caller,
 				ltime: 0,
 				types: {},
+				components: {},
 			};
 		}
 
@@ -43,6 +46,11 @@ const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> )
 
 		map[ caller ].ltime += row.ltime;
 		map[ caller ].types[ type ] = ( map[ caller ].types[ type ] || 0 ) + 1;
+
+		const component = row.trace?.component;
+		if ( component ) {
+			map[ caller ].components[ `${ component.type }-${ component.context }` ] = component;
+		}
 	}
 
 	return Object.values( map );
@@ -88,6 +96,14 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 						</FilterLink>
 					)
 				},
+				component: {
+					heading: __( 'Components', 'query-monitor' ),
+					render: ( row ) => Object.values( row.components ).map( ( component ) => (
+						<div key={ `${ component.type }-${ component.context }` }>
+							<Component component={ component } />
+						</div>
+					) ),
+				},
 				...getTypeCols(),
 				time: getTimeCol( tableData ),
 			}}
@@ -97,6 +113,7 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			footer={ () => (
 				<tfoot>
 					<tr>
+						<td></td>
 						<td></td>
 						{ Object.entries( types ).map( ( [ key, value ] ) => (
 							<td key={ key } className="qm-num">
