@@ -144,7 +144,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ?? false ),
 		} }
 		data={ data.rows }
-		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
+		rowHasError={ Utils.queryRowHasError }
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }

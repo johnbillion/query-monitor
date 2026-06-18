@@ -6,6 +6,8 @@ import { Cols, componentFilterCallback, deriveComponentFilters } from '../table'
 import { iPanelData, iSettings } from '../panels/panels';
 import { JumpLink } from '../components/jump-link';
 import { Duration } from '../components/duration';
+import { Icon } from '../components/icon';
+import * as Utils from '../utils';
 import { MainContext } from '../contexts/main-context';
 import { PanelContext } from '../contexts/panel-context';
 
@@ -22,6 +24,7 @@ interface TimelineItem {
 	panel: string;
 	rowIndex?: number;
 	component?: Component;
+	hasError?: boolean;
 }
 
 type TimelineProps = {
@@ -61,6 +64,7 @@ const segmentLabels: Record<string, string> = {
 
 const buildTimelineItems = (
 	dbRows?: QueryRow[] | null,
+	expensiveDbRows?: number[] | null,
 	httpRequests?: HTTP['http'] | null,
 	phpErrors?: PHP_Errors['errors'] | null,
 	timings?: Timing['timing'] | null,
@@ -86,6 +90,7 @@ const buildTimelineItems = (
 				panel: 'db_queries',
 				rowIndex: i,
 				component: row.trace?.component,
+				hasError: Utils.queryRowHasError( row ) || !! expensiveDbRows?.includes( i ),
 			} );
 
 			if ( ! row.trace ) {
@@ -106,6 +111,7 @@ const buildTimelineItems = (
 				panel: 'http',
 				rowIndex: i,
 				component: req.trace.component,
+				hasError: Utils.httpRowHasError( req ),
 			} );
 		}
 	}
@@ -126,6 +132,7 @@ const buildTimelineItems = (
 				panel: 'php_errors',
 				rowIndex: i,
 				component: error.trace.component,
+				hasError: Utils.phpErrorHasError( error ),
 			} );
 			i++;
 		}
@@ -159,6 +166,7 @@ const buildTimelineItems = (
 				panel: 'logger',
 				rowIndex: i,
 				component: log.trace.component,
+				hasError: Utils.logRowHasError( log ),
 			} );
 		}
 	}
@@ -191,6 +199,7 @@ const buildTimelineItems = (
 				panel: 'doing_it_wrong',
 				rowIndex: i,
 				component: action.trace.component,
+				hasError: true,
 			} );
 		}
 	}
@@ -223,6 +232,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 
 	const items = buildTimelineItems(
 		dbQueriesData?.rows,
+		dbQueriesData?.expensive,
 		httpData?.http,
 		phpErrorsData?.errors,
 		timingData?.timing,
@@ -330,6 +340,11 @@ export const Timeline = ( { data }: TimelineProps ) => {
 									: { left: `${ leftPct + ( isPoint ? 0.3 : Math.max( widthPct, 0.3 ) ) }%` }
 							}
 						>
+							{ item.hasError && (
+								<span className="timeline-bar-label-warning">
+									<Icon name="warning"/>
+								</span>
+							) }
 							<span className="timeline-bar-label-text">
 								{ item.rowIndex !== undefined ? (
 									<JumpLink targetPanel={ item.panel } rowIndex={ item.rowIndex }>
@@ -342,6 +357,11 @@ export const Timeline = ( { data }: TimelineProps ) => {
 							{ item.duration !== null && (
 								<span className="timeline-bar-label-time">
 									<Duration value={ durationMs / 1000 } />
+								</span>
+							) }
+							{ item.component && (
+								<span className="timeline-bar-label-component">
+									{ item.component.name }
 								</span>
 							) }
 						</span>

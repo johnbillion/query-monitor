@@ -5,6 +5,7 @@ import { EmptyPanel } from '../panels/empty-panel';
 import { buildCountedFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 import { __ } from '@wordpress/i18n';
 import { Icon } from '../components/icon';
@@ -27,13 +28,14 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		{ key: 'strict', label: 'Strict' },
 		{ key: 'deprecated', label: 'Deprecated' },
 	] );
-	const showWarning = ( row: DataTypes['php_errors']['errors'][string] ) => ( row.level === 'warning' && ! row.suppressed );
+	const showWarning = Utils.phpErrorHasError;
 
 	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
 		cols={{
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
+				className: 'qm-nowrap',
 				render: ( row ) => {
 					const level = row.level.charAt( 0 ).toUpperCase() + row.level.slice( 1 );
 					const label = row.suppressed

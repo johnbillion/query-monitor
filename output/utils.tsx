@@ -1,5 +1,5 @@
 import { Fragment, type JSX } from 'preact';
-import { Callback, StackFrame, URL } from './data-types';
+import { Callback, HTTP, Logger, PHP_Error, QueryRow, StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
 interface QMGlobals {
@@ -174,6 +174,35 @@ export function formatURL( url: string ): JSX.Element[] {
 
 export function isWPError( data: unknown ): data is WP_Error {
 	return ( ( typeof data === 'object' ) && data !== null && 'errors' in data );
+}
+
+export function queryRowHasError( row: QueryRow ): boolean {
+	return isWPError( row.result );
+}
+
+export function httpRowHasError( row: HTTP['http'][number] ): boolean {
+	return isWPError( row.result ) || ( ! row.intercepted && row.result.code >= 400 );
+}
+
+export const logLevels: { key: string; label: string; isError: boolean }[] = [
+	{ key: 'emergency', label: 'Emergency', isError: true },
+	{ key: 'alert', label: 'Alert', isError: true },
+	{ key: 'critical', label: 'Critical', isError: true },
+	{ key: 'error', label: 'Error', isError: true },
+	{ key: 'warning', label: 'Warning', isError: true },
+	{ key: 'notice', label: 'Notice', isError: false },
+	{ key: 'info', label: 'Info', isError: false },
+	{ key: 'debug', label: 'Debug', isError: false },
+];
+
+const logErrorLevels = logLevels.filter( ( level ) => level.isError ).map( ( level ) => level.key );
+
+export function logRowHasError( row: Logger['logs'][number] ): boolean {
+	return logErrorLevels.includes( row.level );
+}
+
+export function phpErrorHasError( row: PHP_Error ): boolean {
+	return row.level === 'warning' && ! row.suppressed;
 }
 
 interface ErrorDataContainer {

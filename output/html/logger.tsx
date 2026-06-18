@@ -7,16 +7,9 @@ import { JsonOutput } from '../components/json-output';
 import { buildCountedFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 import { __, _n, sprintf } from '@wordpress/i18n';
-
-const warningLevels = [
-	'emergency',
-	'alert',
-	'critical',
-	'error',
-	'warning',
-];
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	const { settings } = useContext( MainContext );
@@ -36,23 +29,14 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 		);
 	}
 
-	const filterOptions = buildCountedFilters( data.logs, ( row ) => row.level, [
-		{ key: 'emergency', label: 'Emergency' },
-		{ key: 'alert', label: 'Alert' },
-		{ key: 'critical', label: 'Critical' },
-		{ key: 'error', label: 'Error' },
-		{ key: 'warning', label: 'Warning' },
-		{ key: 'notice', label: 'Notice' },
-		{ key: 'info', label: 'Info' },
-		{ key: 'debug', label: 'Debug' },
-	] );
+	const filterOptions = buildCountedFilters( data.logs, ( row ) => row.level, Utils.logLevels );
 
 	return <TabularPanel
 		title={ __( 'Logs', 'query-monitor' ) }
 		cols={ {
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
-				render: ( row ) => warningLevels.includes( row.level )
+				render: ( row ) => Utils.logRowHasError( row )
 					? <Warning>{ row.level }</Warning>
 					: row.level,
 				filters: {
@@ -86,6 +70,6 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			component: getComponentCol( data.logs ),
 		} }
 		data={ data.logs }
-		rowHasError={ ( row ) => warningLevels.includes( row.level ) }
+		rowHasError={ Utils.logRowHasError }
 	/>
 };

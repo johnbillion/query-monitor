@@ -232,10 +232,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 		} }
 		data={ data.http }
-		rowHasError={ ( row ) =>
-			Utils.isWPError( row.result ) ||
-			( ! row.intercepted && row.result.code >= 400 )
-		}
+		rowHasError={ Utils.httpRowHasError }
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }

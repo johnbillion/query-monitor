@@ -1501,6 +1501,25 @@ select {
 	flex-shrink: 0;
 }
 
+.timeline-bar-label-component {
+	flex-shrink: 0;
+	opacity: 0.6;
+}
+
+.timeline-bar-label-warning {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+}
+
+.timeline-bar-label-warning .qm-icon {
+	fill: var( --qm-warn-fg );
+}
+
+.timeline-bar-label-overlay .timeline-bar-label-warning .qm-icon {
+	fill: #fff;
+}
+
 /** === Animations === */
 
 @keyframes qm-jump-fade {
