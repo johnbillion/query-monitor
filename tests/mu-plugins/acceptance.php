@@ -50,6 +50,12 @@ add_action( 'init', function() {
 				case 'suppressed-notice':
 					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
 					break;
+				case 'buffet':
+					trigger_error( 'This is a test warning', E_USER_WARNING );
+					trigger_error( 'This is a test notice', E_USER_NOTICE );
+					@trigger_error( 'This is a test suppressed warning', E_USER_WARNING );
+					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

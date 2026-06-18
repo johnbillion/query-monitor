@@ -111,12 +111,21 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			return $data->types[ $type ] ?? 0;
 		}, array_keys( $types ) ) ) );
 
+		/* translators: used between list items, there is a space after the comma */
+		$sep = __( ', ', 'query-monitor' );
+
+		$title = sprintf(
+			/* translators: %s: List of PHP error types */
+			__( 'PHP Errors (%s)', 'query-monitor' ),
+			implode( $sep, array_reverse( $menu_label ) )
+		);
+
 		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html__( 'PHP Errors', 'query-monitor' ),
+			'title' => $title,
 			'warning_count' => $count,
 		) );
-		return $menu;
 
+		return $menu;
 	}
 
 	/**
