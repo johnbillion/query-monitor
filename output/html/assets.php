@@ -30,14 +30,30 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 	abstract public function get_type_labels();
 
 	/**
+	 * Returns the number of assets with a problem, namely those that are missing or
+	 * that have missing dependencies. This matches the rows flagged as errors in the panel.
+	 *
+	 * @return int
+	 */
+	protected function get_warning_count() {
+		/** @var QM_Data_Assets $data */
+		$data = $this->collector->get_data();
+
+		if ( empty( $data->assets ) ) {
+			return 0;
+		}
+
+		return count( array_filter( $data->assets, static function( array $asset ) {
+			return ! empty( $asset['warning'] );
+		} ) );
+	}
+
+	/**
 	 * @param array<int, string> $class
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-		/** @var QM_Data_Assets $data */
-		$data = $this->collector->get_data();
-
-		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
+		if ( $this->get_warning_count() > 0 ) {
 			$class[] = 'qm-error';
 		}
 
@@ -54,13 +70,15 @@ abstract class QM_Output_Html_Assets extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$type_label = $this->get_type_labels();
+		$warning_count = $this->get_warning_count();
 
 		$args = array(
 			'title' => $type_label['label'],
 			'count' => array_sum( $data->types ),
 		);
 
-		if ( ! empty( $data->broken ) || ! empty( $data->missing ) ) {
+		if ( $warning_count > 0 ) {
+			$args['warning_count'] = $warning_count;
 			$args['meta']['classname'] = 'qm-error';
 		}
 

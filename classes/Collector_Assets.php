@@ -244,6 +244,18 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$warning = ! in_array( $handle, $raw->done, true );
 
+				if ( $source instanceof WP_Error ) {
+					/** This filter is documented in collectors/http.php */
+					$silent = apply_filters( 'qm/collect/silent_http_errors', array(
+						'http_request_not_executed',
+						'airplane_mode_enabled',
+					) );
+
+					if ( ! in_array( $source->get_error_code(), $silent, true ) ) {
+						$warning = true;
+					}
+				}
+
 				$dependencies = array_values( $dependency->deps );
 
 				foreach ( $dependencies as $dep ) {
