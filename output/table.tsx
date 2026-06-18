@@ -20,7 +20,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-import { type ComponentChildren } from 'preact';
+import { Fragment, type ComponentChildren } from 'preact';
 import { useContext, useEffect, useRef, useState } from 'preact/hooks';
 import { MainContext } from './contexts/main-context';
 
@@ -455,7 +455,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 											>
 												<option value="">All</option>
 												{ colFilters.map( ( group, gi ) => (
-													<>
+													<Fragment key={ gi }>
 														<hr/>
 														{ group.map( ( filter ) => (
 															<option
@@ -463,7 +463,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 																value={ filter.key }
 															>{ filter.label }</option>
 														) ) }
-													</>
+													</Fragment>
 												) ) }
 											</select>
 										</div>

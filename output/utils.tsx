@@ -352,6 +352,10 @@ export function stripAbspath( file: string, settings: { abspath: string; content
 }
 
 export function getAssetDisplay( url: URL ): string {
+	if ( ! url.absolute ) {
+		return '';
+	}
+
 	try {
 		const parsed = new window.URL( url.absolute );
 		parsed.searchParams.delete( 'ver' );
