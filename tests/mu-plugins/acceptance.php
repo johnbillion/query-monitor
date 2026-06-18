@@ -51,7 +51,9 @@ add_action( 'init', function() {
 					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
 					break;
 				case 'buffet':
-					trigger_error( 'This is a test warning', E_USER_WARNING );
+					trigger_error( 'This is a single test warning', E_USER_WARNING );
+					_trigger_warning();
+					_trigger_warning();
 					trigger_error( 'This is a test notice', E_USER_NOTICE );
 					@trigger_error( 'This is a test suppressed warning', E_USER_WARNING );
 					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
@@ -229,3 +231,7 @@ add_action( 'init', function() {
 			break;
 	}
 } );
+
+function _trigger_warning() {
+	trigger_error( 'This is a repeated test warning', E_USER_WARNING );
+}

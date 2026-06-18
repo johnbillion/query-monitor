@@ -159,16 +159,6 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Assert that a submenu item in the admin bar dropdown is highlighted with the given class.
-	 */
-	async seeQMSubMenuItemHighlighted( title: string, className: string ) {
-		const item = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.${className}` ).filter( {
-			hasText: title,
-		} );
-		await expect( item ).toHaveCount( 1 );
-	}
-
-	/**
 	 * Assert that a submenu item in the admin bar dropdown with the given class contains the given text.
 	 */
 	async seeQMSubMenuItemWithText( className: string, text: string ) {

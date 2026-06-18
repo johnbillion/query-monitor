@@ -12,7 +12,6 @@ test.describe( 'PHP Errors', () => {
 	test( 'Warning should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersPhpError( 'warning' );
 		await QueryMonitor.seeQMMenuWithWarning();
-		await QueryMonitor.seeQMSubMenuItemHighlighted( 'PHP Errors', 'qm-warning' );
 		await QueryMonitor.seeQMSubMenuItemWithText( 'qm-warning', 'PHP Errors (1 Warning)' );
 		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test warning' );
 	} );
@@ -20,7 +19,6 @@ test.describe( 'PHP Errors', () => {
 	test( 'Notice should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersPhpError( 'notice' );
 		await QueryMonitor.seeQMMenuWithNotice();
-		await QueryMonitor.seeQMSubMenuItemHighlighted( 'PHP Errors', 'qm-notice' );
 		await QueryMonitor.seeQMSubMenuItemWithText( 'qm-notice', 'PHP Errors (1 Notice)' );
 		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test notice' );
 	} );
@@ -42,9 +40,9 @@ test.describe( 'PHP Errors', () => {
 	test( 'Assortment of errors should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersPhpError( 'buffet' );
 		await QueryMonitor.seeQMMenuWithWarning();
-		await QueryMonitor.seeQMSubMenuItemHighlighted( 'PHP Errors', 'qm-warning' );
-		await QueryMonitor.seeQMSubMenuItemWithText( 'qm-notice', 'PHP Errors (1 Warning, 1 Notice)' );
-		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test warning' );
+		await QueryMonitor.seeQMSubMenuItemWithText( 'qm-warning', 'PHP Errors (3 Warnings, 1 Notice)' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a single test warning' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a repeated test warning' );
 		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test notice' );
 	} );
 } );
