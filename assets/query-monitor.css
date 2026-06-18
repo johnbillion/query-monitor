@@ -823,6 +823,7 @@ i {
 #qm-conditionals li {
 	display: inline-block;
 	margin: 0 20px 5px 0;
+	width: 12em;
 }
 
 /* .qm */

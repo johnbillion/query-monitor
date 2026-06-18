@@ -7,6 +7,7 @@ import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import { __ } from '@wordpress/i18n';
+import { Icon } from '../components/icon';
 
 export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	const { settings } = useContext( MainContext );
@@ -26,6 +27,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		{ key: 'strict', label: 'Strict' },
 		{ key: 'deprecated', label: 'Deprecated' },
 	] );
+	const showWarning = ( row: DataTypes['php_errors']['errors'][string] ) => ( row.level === 'warning' && ! row.suppressed );
 
 	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
@@ -33,12 +35,21 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
 				render: ( row ) => {
+					const level = row.level.charAt( 0 ).toUpperCase() + row.level.slice( 1 );
 					const label = row.suppressed
-						? `${ row.level } (${ __( 'suppressed', 'query-monitor' ) })`
-						: row.level;
-					return row.level === 'warning'
-						? <Warning>{ label }</Warning>
-						: label;
+						? `${ level } (${ __( 'suppressed', 'query-monitor' ) })`
+						: level;
+
+					if ( showWarning( row ) ) {
+						return <Warning>{ label }</Warning>;
+					}
+
+					return (
+						<>
+							<Icon name="blank"/>
+							{ label }
+						</>
+					);
 				},
 				filters: {
 					options: [ filterOptions ],
@@ -57,7 +68,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 			},
 			component: getComponentCol( errors ),
 		}}
-		rowHasError={ ( row ) => ( row.level === 'warning' ) }
+		rowHasError={ showWarning }
 		data={ errors }
 	/>;
 };
