@@ -61,4 +61,65 @@ test.describe( 'Enqueued Scripts', () => {
 			'Dependents': 'qm-test-middle',
 		} );
 	} );
+
+	test( 'Protocol-relative source should be displayed as a path', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'protocol-relative' );
+
+		// The source should display the path only, not the full protocol-relative URL.
+		await QueryMonitor.seeTableRowInQMPanel( 'Scripts', {
+			'Handle': 'qm-test-protocol-relative',
+			'Source': 'qm-test-protocol-relative.js',
+		} );
+
+		// No source should be displayed as a protocol-relative or absolute URL.
+		await QueryMonitor.dontSeeColumnValueInQMPanel( 'Scripts', 'Source', '//' );
+	} );
+
+	test( 'A script with no source should display an empty source', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'no-src' );
+
+		await QueryMonitor.seeTableRowInQMPanel( 'Scripts', {
+			'Handle': 'qm-test-no-src',
+		} );
+
+		// The source should be empty, not a bogus path such as "wp-admin/null".
+		await QueryMonitor.dontSeeColumnValueInQMPanel( 'Scripts', 'Source', 'null' );
+	} );
+
+	test( 'Missing dependencies should be flagged', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'missing-dependency' );
+
+		// The toolbar menu shows an error indicator.
+		await QueryMonitor.seeQMMenuWithError();
+
+		// The Scripts panel menu entry shows a warning count bubble.
+		await QueryMonitor.seeWarningBubbleInQMPanelMenu( 'Scripts' );
+
+		// The asset is listed with its missing dependency flagged.
+		await QueryMonitor.openQMPanel( 'Scripts' );
+
+		const warningRow = QueryMonitor.getVisiblePanel().locator( 'tr.qm-warn' ).filter( {
+			hasText: 'qm-test-missing-dep',
+		} );
+
+		await expect( warningRow ).toBeVisible();
+		await expect( warningRow ).toContainText( 'qm-nonexistent-dependency' );
+	} );
+
+	test( 'Insecure content should be flagged as a warning', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'insecure-content' );
+
+		// The toolbar menu shows an error indicator, just like missing dependencies.
+		await QueryMonitor.seeQMMenuWithError();
+
+		// The whole row is flagged as a warning and shows the insecure content message.
+		await QueryMonitor.openQMPanel( 'Scripts' );
+
+		const warningRow = QueryMonitor.getVisiblePanel().locator( 'tr.qm-warn' ).filter( {
+			hasText: 'qm-test-insecure',
+		} );
+
+		await expect( warningRow ).toBeVisible();
+		await expect( warningRow ).toContainText( 'Insecure content' );
+	} );
 } );

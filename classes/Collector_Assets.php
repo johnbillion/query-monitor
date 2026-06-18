@@ -490,6 +490,10 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 			$port = (string) parse_url( $this->data->url->origin, PHP_URL_PORT );
 		} else {
 			// Absolute URL
+			if ( empty( $parsed_url->scheme ) ) {
+				// Protocol-relative URL - inherit the scheme from the current page
+				$parsed_url->scheme = $this->data->url->scheme;
+			}
 			$parsed_url->origin = $parsed_url->scheme . '://' . $parsed_url->hostname . ( $port ? ':' . $port : '' );
 			$parsed_url->absolute = $url;
 		}

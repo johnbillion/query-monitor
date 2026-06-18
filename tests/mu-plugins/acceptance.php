@@ -190,6 +190,34 @@ add_action( 'init', function() {
 						wp_enqueue_script( 'qm-test-footer', home_url( 'qm-test-footer.js' ), [], '1.0', true );
 					} );
 					break;
+				case 'protocol-relative':
+					add_action( 'wp_enqueue_scripts', function() {
+						// A protocol-relative URL on the current host so it's neither broken nor flagged as insecure.
+						$host = wp_parse_url( home_url(), PHP_URL_HOST );
+						$port = wp_parse_url( home_url(), PHP_URL_PORT );
+						$src = '//' . $host . ( $port ? ':' . $port : '' ) . '/qm-test-protocol-relative.js';
+						wp_enqueue_script( 'qm-test-protocol-relative', $src, [], '1.0' );
+					} );
+					break;
+				case 'no-src':
+					add_action( 'wp_enqueue_scripts', function() {
+						// A script registered with a boolean false src, used only to bundle dependencies (like jquery).
+						wp_register_script( 'qm-test-no-src-dep', home_url( 'qm-test-no-src-dep.js' ), [], '1.0' );
+						wp_register_script( 'qm-test-no-src', false, [ 'qm-test-no-src-dep' ], '1.0' );
+						wp_enqueue_script( 'qm-test-no-src' );
+					} );
+					break;
+				case 'insecure-content':
+					add_action( 'wp_enqueue_scripts', function() {
+						wp_enqueue_script( 'qm-test-insecure', 'http://example.com/qm-test-insecure.js', [], '1.0' );
+					} );
+					break;
+				case 'missing-dependency':
+					add_action( 'wp_enqueue_scripts', function() {
+						// Enqueue a script that depends on a handle that was never registered.
+						wp_enqueue_script( 'qm-test-missing-dep', home_url( 'qm-test-missing-dep.js' ), [ 'qm-nonexistent-dependency' ], '1.0' );
+					} );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;
