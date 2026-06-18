@@ -12,12 +12,6 @@ Install and activate Query Monitor as you would any other plugin for WordPress.
 
 Alternatively, [download from GitHub](https://github.com/johnbillion/query-monitor/releases) or [install via Composer](https://packagist.org/packages/johnbillion/query-monitor).
 
-## Browser dev tools extension
-
-Query Monitor is also available as an optional [browser dev tools extension](/wordpress-debugging/browser-extension/) that adds Query Monitor to your browser's dev tools. You can use this as an alternative to the in-page panel.
-
-<ChromeExtButton />
-
 ## Usage
 
 While you're logged in as an Administrator you'll see a new menu in the admin toolbar:
