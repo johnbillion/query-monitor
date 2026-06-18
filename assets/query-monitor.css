@@ -823,7 +823,7 @@ i {
 #qm-conditionals li {
 	display: inline-block;
 	margin: 0 20px 5px 0;
-	width: 12em;
+	min-width: 12em;
 }
 
 /* .qm */
@@ -1455,7 +1455,7 @@ select {
 .timeline-bar {
 	position: absolute;
 	top: 6px;
-	height: 16px;
+	height: 17px;
 	border-radius: 3px;
 	min-width: 2px;
 	cursor: default;
