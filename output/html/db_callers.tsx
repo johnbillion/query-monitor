@@ -98,7 +98,7 @@ export const DBCallers = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				},
 				component: {
 					heading: __( 'Components', 'query-monitor' ),
-					render: ( row ) => Object.values( row.components ).map( ( component ) => (
+					render: ( row ) => Object.values( row.components ).sort( ( a, b ) => a.name.localeCompare( b.name ) ).map( ( component ) => (
 						<div key={ `${ component.type }-${ component.context }` }>
 							<Component component={ component } />
 						</div>
