@@ -207,11 +207,6 @@ add_action( 'init', function() {
 						wp_enqueue_script( 'qm-test-no-src' );
 					} );
 					break;
-				case 'insecure-content':
-					add_action( 'wp_enqueue_scripts', function() {
-						wp_enqueue_script( 'qm-test-insecure', 'http://example.com/qm-test-insecure.js', [], '1.0' );
-					} );
-					break;
 				case 'missing-dependency':
 					add_action( 'wp_enqueue_scripts', function() {
 						// Enqueue a script that depends on a handle that was never registered.

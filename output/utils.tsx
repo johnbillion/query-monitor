@@ -386,7 +386,10 @@ export function getAssetDisplay( url: URL ): string {
 	}
 
 	try {
-		const parsed = new window.URL( url.absolute );
+		// Protocol-relative URLs need a scheme before URL() will parse them. The scheme is
+		// irrelevant here as only the path and query are used for display.
+		const absolute = url.absolute.startsWith( '//' ) ? `https:${ url.absolute }` : url.absolute;
+		const parsed = new window.URL( absolute );
 		parsed.searchParams.delete( 'ver' );
 		return ( parsed.pathname + parsed.search ).replace( /^\//, '' );
 	} catch {
