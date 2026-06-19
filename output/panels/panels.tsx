@@ -27,6 +27,7 @@ export type iPanelData = {
 	db_errors: QMPanelData<'db_queries'>;
 	db_dupes: QMPanelData<'db_queries'>;
 	db_queries: QMPanelData<'db_queries'>;
+	db_queries_diff: QMPanelData<'db_queries'>;
 	doing_it_wrong: QMPanelData<'doing_it_wrong'>;
 	environment: QMPanelData<'environment'>;
 	hooks: QMPanelData<'hooks'>;

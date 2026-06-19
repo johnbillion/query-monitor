@@ -17,6 +17,7 @@ import { DBDupes } from '../output/html/db_dupes';
 import { DBErrors } from '../output/html/db_errors';
 import { DBExpensive } from '../output/html/db_expensive';
 import { DBQueries } from '../output/html/db_queries';
+import { DBQueriesDiff } from '../output/html/db_queries_diff';
 import { DoingItWrong } from '../output/html/doing_it_wrong';
 import { Environment } from '../output/html/environment';
 import { Hooks } from '../output/html/hooks';
@@ -151,6 +152,7 @@ export function registerAllPanels(): void {
 	registerPanel( 'db_errors', { render: ( data, enabled ) => <DBErrors data={ data } enabled={ enabled } />, data: 'db_queries' } );
 	registerPanel( 'db_expensive', { render: ( data, enabled ) => <DBExpensive data={ data } enabled={ enabled } />, data: 'db_queries' } );
 	registerPanel( 'db_queries', { render: ( data, enabled ) => <DBQueries data={ data } enabled={ enabled } />, data: 'db_queries' } );
+	registerPanel( 'db_queries_diff', { render: ( data, enabled ) => <DBQueriesDiff data={ data } enabled={ enabled } />, data: 'db_queries' } );
 	registerPanel( 'doing_it_wrong', { render: ( data, enabled ) => <DoingItWrong data={ data } enabled={ enabled } />, data: 'doing_it_wrong' } );
 	registerPanel( 'environment', { render: ( data, enabled ) => <Environment data={ data } enabled={ enabled } />, data: 'environment' } );
 	registerPanel( 'hooks', { render: ( data, enabled ) => <Hooks data={ data } enabled={ enabled } />, data: 'hooks' } );
