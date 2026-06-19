@@ -63,6 +63,8 @@ type Props = {
 	onTimelineHiddenChange: ( categories: string[] ) => void;
 	durationUnit: DurationUnit;
 	onDurationUnitChange: ( unit: DurationUnit ) => void;
+	queryDiffEnabled: boolean;
+	onQueryDiffEnabledChange: ( enabled: boolean ) => void;
 }
 
 export const QM = ( props: Props ) => {
@@ -75,6 +77,7 @@ export const QM = ( props: Props ) => {
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
 	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
+	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
 	const jumpToRowRef = useRef( jumpToRow );
 	jumpToRowRef.current = jumpToRow;
@@ -184,6 +187,11 @@ export const QM = ( props: Props ) => {
 			file_link_format: props.settings.file_link_format,
 			abspath: props.settings.abspath,
 			contentpath: props.settings.contentpath,
+		},
+		queryDiffEnabled: queryDiffEnabled,
+		setQueryDiffEnabled: ( enabled: boolean ) => {
+			props.onQueryDiffEnabledChange( enabled );
+			setQueryDiffEnabled( enabled );
 		},
 	};
 

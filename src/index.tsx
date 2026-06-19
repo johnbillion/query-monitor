@@ -6,6 +6,7 @@ import { iSettings } from '../output/panels/panels';
 import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 
 import { iQMData, initializeQMData, mergeSettings, registerAllPanels } from './panels';
+import { clearQuerySnapshot } from './query-diff';
 
 declare const QueryMonitorData: iQMData;
 
@@ -51,6 +52,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const seenKey = 'qm-seen';
 	const timelineHiddenKey = 'qm-timeline-hidden';
 	const durationUnitKey = 'qm-duration-unit';
+	const queryDiffEnabledKey = 'qm-query-diff-enabled';
 
 	const onPanelChange = ( active: string ) => {
 		localStorage.setItem( panelKey, active );
@@ -100,6 +102,13 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( durationUnitKey, unit );
 	}
 
+	const onQueryDiffEnabledChange = ( enabled: boolean ) => {
+		localStorage.setItem( queryDiffEnabledKey, enabled ? 'true' : 'false' );
+		if ( ! enabled ) {
+			clearQuerySnapshot();
+		}
+	}
+
 	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
@@ -113,6 +122,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const rawTimelineHidden = sessionStorage.getItem( timelineHiddenKey );
 	const timelineHiddenCategories: string[] = rawTimelineHidden ? JSON.parse( rawTimelineHidden ) : [];
 	const durationUnit = ( localStorage.getItem( durationUnitKey ) ?? 's' ) as DurationUnit;
+	const queryDiffEnabled = localStorage.getItem( queryDiffEnabledKey ) === 'true';
 	const settings: iSettings = mergeSettings( QueryMonitorData );
 
 	if ( ! containerElement ) {
@@ -165,6 +175,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onTimelineHiddenChange={ onTimelineHiddenChange }
 				durationUnit={ durationUnit }
 				onDurationUnitChange={ onDurationUnitChange }
+				queryDiffEnabled={ queryDiffEnabled }
+				onQueryDiffEnabledChange={ onQueryDiffEnabledChange }
 				{ ...getBodyClasses() }
 			/>,
 			mountPoint

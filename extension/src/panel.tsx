@@ -124,6 +124,8 @@ const ExtensionPanel = () => {
 			onTimelineHiddenChange={ () => {} }
 			durationUnit={ durationUnit }
 			onDurationUnitChange={ ( unit ) => localStorage.setItem( durationUnitKey, unit ) }
+			queryDiffEnabled={ false }
+			onQueryDiffEnabledChange={ () => {} }
 			isFolded={ false }
 			isAutoFold={ false }
 			isFullscreenMode={ false }

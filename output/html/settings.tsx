@@ -21,6 +21,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setEditor,
 		theme,
 		setTheme,
+		queryDiffEnabled,
+		setQueryDiffEnabled,
 		fabulous,
 		setFabulous,
 		durationUnit,
@@ -193,6 +195,33 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							</label>
 						</li>
 					</ul>
+				</section>
+				<section>
+					<h3>
+						{ __( 'Query Diff', 'query-monitor' ) }
+					</h3>
+					<p>
+						{ __( 'Track database queries between page loads to see which queries were added or removed.', 'query-monitor' ) }
+					</p>
+					<p>
+						<label>
+							<input
+								type="checkbox"
+								className="qm-checkbox"
+								checked={ queryDiffEnabled }
+								onChange={ ( e ) => {
+									setQueryDiffEnabled( e.currentTarget.checked );
+								} }
+							/>
+							{ __( 'Enable query diff tracking', 'query-monitor' ) }
+						</label>
+					</p>
+					{ queryDiffEnabled && (
+						<p>
+							<Icon name="yes-alt"/>
+							{ __( 'Query diff is active. Refresh the page to see changes.', 'query-monitor' ) }
+						</p>
+					) }
 				</section>
 			</div>
 		</NonTabularPanel>
