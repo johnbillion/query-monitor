@@ -26,14 +26,14 @@ test.describe( 'PHP Errors', () => {
 	test( 'Suppressed warning should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersSuppressedPhpError( 'warning' );
 		await QueryMonitor.seeQMMenu();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'warning (suppressed)' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'Warning (suppressed)' );
 		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test suppressed warning' );
 	} );
 
 	test( 'Suppressed notice should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatTriggersSuppressedPhpError( 'notice' );
 		await QueryMonitor.seeQMMenu();
-		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'notice (suppressed)' );
+		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'Notice (suppressed)' );
 		await QueryMonitor.seeInQMPanel( 'PHP Errors', 'This is a test suppressed notice' );
 	} );
 

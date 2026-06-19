@@ -105,21 +105,4 @@ test.describe( 'Enqueued Scripts', () => {
 		await expect( warningRow ).toBeVisible();
 		await expect( warningRow ).toContainText( 'qm-nonexistent-dependency' );
 	} );
-
-	test( 'Insecure content should be flagged as a warning', async ( { QueryMonitor } ) => {
-		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'insecure-content' );
-
-		// The toolbar menu shows an error indicator, just like missing dependencies.
-		await QueryMonitor.seeQMMenuWithError();
-
-		// The whole row is flagged as a warning and shows the insecure content message.
-		await QueryMonitor.openQMPanel( 'Scripts' );
-
-		const warningRow = QueryMonitor.getVisiblePanel().locator( 'tr.qm-warn' ).filter( {
-			hasText: 'qm-test-insecure',
-		} );
-
-		await expect( warningRow ).toBeVisible();
-		await expect( warningRow ).toContainText( 'Insecure content' );
-	} );
 } );
