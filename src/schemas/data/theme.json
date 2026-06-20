@@ -113,6 +113,27 @@
 				"type": "integer"
 			}
 		},
+		"template_part_timing": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"display": {
+						"type": "string"
+					},
+					"start": {
+						"description": "Start time in milliseconds relative to the start of the request.",
+						"type": "number"
+					},
+					"ltime": {
+						"description": "Duration in seconds.",
+						"type": "number"
+					}
+				},
+				"required": ["display", "start", "ltime"],
+				"additionalProperties": false
+			}
+		},
 		"unsuccessful_template_parts": {
 			"type": "array",
 			"items": {
