@@ -567,6 +567,17 @@ export interface Theme {
 	count_template_parts: {
 		[k: string]: number;
 	};
+	template_part_timing?: {
+		display: string;
+		/**
+		 * Start time in milliseconds relative to the start of the request.
+		 */
+		start: number;
+		/**
+		 * Duration in seconds.
+		 */
+		ltime: number;
+	}[];
 	unsuccessful_template_parts: {
 		slug: string;
 		name: string | null;

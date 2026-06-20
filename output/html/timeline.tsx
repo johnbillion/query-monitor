@@ -1,7 +1,7 @@
 import { type JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
-import { Component, Doing_It_Wrong, HTTP, Logger, PHP_Errors, QueryRow, Timing, Transients } from '../data-types';
+import { Component, Doing_It_Wrong, HTTP, Logger, PHP_Errors, QueryRow, Theme, Timing, Transients } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
 import { iPanelData, iSettings } from '../panels/panels';
 import { JumpLink } from '../components/jump-link';
@@ -20,7 +20,7 @@ interface TimelineItem {
 	label: string | JSX.Element[];
 	time: number;
 	duration: number | null;
-	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log' | 'transient' | 'doing-it-wrong';
+	category: 'db' | 'http' | 'php-error' | 'timing' | 'action' | 'log' | 'transient' | 'doing-it-wrong' | 'template-part';
 	panel: string;
 	rowIndex?: number;
 	component?: Component;
@@ -41,6 +41,7 @@ const categoryColors: Record<TimelineItem['category'], string> = {
 	'log': 'var(--qm-timeline-log)',
 	'transient': 'var(--qm-timeline-transient)',
 	'doing-it-wrong': 'var(--qm-timeline-doing-it-wrong)',
+	'template-part': 'var(--qm-timeline-template-part)',
 };
 
 const categoryLabels: Record<TimelineItem['category'], string> = {
@@ -52,6 +53,7 @@ const categoryLabels: Record<TimelineItem['category'], string> = {
 	'log': __( 'Logs', 'query-monitor' ),
 	'transient': __( 'Transient Updates', 'query-monitor' ),
 	'doing-it-wrong': __( 'Doing It Wrong', 'query-monitor' ),
+	'template-part': __( 'Template Parts', 'query-monitor' ),
 };
 
 const segmentLabels: Record<string, string> = {
@@ -71,6 +73,7 @@ const buildTimelineItems = (
 	logs?: Logger['logs'] | null,
 	transients?: Transients['trans'] | null,
 	doingItWrong?: Doing_It_Wrong['actions'] | null,
+	templateParts?: Theme['template_part_timing'] | null,
 ): TimelineItem[] => {
 	const items: TimelineItem[] = [];
 
@@ -204,6 +207,18 @@ const buildTimelineItems = (
 		}
 	}
 
+	if ( templateParts ) {
+		for ( const part of templateParts ) {
+			items.push( {
+				label: part.display,
+				time: part.start,
+				duration: part.ltime,
+				category: 'template-part',
+				panel: 'response',
+			} );
+		}
+	}
+
 	return items;
 };
 
@@ -220,6 +235,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 	const loggerData = data.logger?.data;
 	const transientsData = data.transients?.data;
 	const doingItWrongData = data.doing_it_wrong?.data;
+	const responseData = data.response?.data;
 
 	if ( ! data.overview ) {
 		return null;
@@ -239,6 +255,7 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		loggerData?.logs,
 		transientsData?.trans,
 		doingItWrongData?.actions,
+		responseData?.template_part_timing,
 	);
 
 	// Merge action markers into items.

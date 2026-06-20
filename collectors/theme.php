@@ -45,6 +45,27 @@ class QM_Collector_Theme extends QM_DataCollector {
 	protected $requested_template_part_nopes = array();
 
 	/**
+	 * Stack of in-progress classic template file loads, used to time each load.
+	 *
+	 * @var array<int, array{ file: string, start: float }>
+	 */
+	protected $template_load_stack = array();
+
+	/**
+	 * Stack of in-progress block template part renders, used to time each render.
+	 *
+	 * @var array<int, array{ id: string, start: float }>
+	 */
+	protected $block_part_stack = array();
+
+	/**
+	 * Completed template part timings.
+	 *
+	 * @var array<int, array{ file: string, start: float, end: float }|array{ id: string, start: float, end: float }>
+	 */
+	protected $template_part_timing = array();
+
+	/**
 	 * @var ?WP_Block_Template
 	 */
 	protected $block_template = null;
@@ -63,6 +84,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 		add_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999, 3 );
 		add_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		add_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10, 3 );
+		add_action( 'wp_before_load_template', array( $this, 'action_wp_before_load_template' ), 9999 );
+		add_action( 'wp_after_load_template', array( $this, 'action_wp_after_load_template' ), 9999 );
+		add_filter( 'render_block', array( $this, 'filter_render_block' ), 9999, 2 );
 		add_action( 'get_header', array( $this, 'action_get_position' ) );
 		add_action( 'get_sidebar', array( $this, 'action_get_position' ) );
 		add_action( 'get_footer', array( $this, 'action_get_position' ) );
@@ -82,6 +106,9 @@ class QM_Collector_Theme extends QM_DataCollector {
 		remove_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999 );
 		remove_action( 'template_redirect', array( $this, 'action_template_redirect' ) );
 		remove_action( 'get_template_part', array( $this, 'action_get_template_part' ), 10 );
+		remove_action( 'wp_before_load_template', array( $this, 'action_wp_before_load_template' ), 9999 );
+		remove_action( 'wp_after_load_template', array( $this, 'action_wp_after_load_template' ), 9999 );
+		remove_filter( 'render_block', array( $this, 'filter_render_block' ), 9999 );
 		remove_action( 'get_header', array( $this, 'action_get_position' ) );
 		remove_action( 'get_sidebar', array( $this, 'action_get_position' ) );
 		remove_action( 'get_footer', array( $this, 'action_get_position' ) );
@@ -292,6 +319,60 @@ class QM_Collector_Theme extends QM_DataCollector {
 	}
 
 	/**
+	 * Fires before a classic template file is loaded via load_template().
+	 *
+	 * @param string $template_file The full path to the template file.
+	 * @return void
+	 */
+	public function action_wp_before_load_template( $template_file ) {
+		$this->template_load_stack[] = array(
+			'file' => $template_file,
+			'start' => microtime( true ),
+		);
+	}
+
+	/**
+	 * Fires after a classic template file is loaded via load_template().
+	 *
+	 * @param string $template_file The full path to the template file.
+	 * @return void
+	 */
+	public function action_wp_after_load_template( $template_file ) {
+		$entry = array_pop( $this->template_load_stack );
+
+		if ( null === $entry ) {
+			return;
+		}
+
+		$entry['end'] = microtime( true );
+		$this->template_part_timing[] = $entry;
+	}
+
+	/**
+	 * Records the end time of a block template part render.
+	 *
+	 * @param string  $content The block content.
+	 * @param mixed[] $block   The parsed block.
+	 * @return string The unmodified block content.
+	 */
+	public function filter_render_block( $content, $block ) {
+		if ( ( $block['blockName'] ?? '' ) !== 'core/template-part' ) {
+			return $content;
+		}
+
+		$entry = array_pop( $this->block_part_stack );
+
+		if ( null === $entry ) {
+			return $content;
+		}
+
+		$entry['end'] = microtime( true );
+		$this->template_part_timing[] = $entry;
+
+		return $content;
+	}
+
+	/**
 	 * Fires when a post is loaded for a template part block.
 	 *
 	 * @param string  $template_part_id
@@ -306,6 +387,20 @@ class QM_Collector_Theme extends QM_DataCollector {
 			'post' => $post->ID,
 		);
 		$this->requested_template_part_posts[] = $part;
+		$this->start_block_part_timing( $template_part_id );
+	}
+
+	/**
+	 * Pushes the start of a block template part render onto the timing stack.
+	 *
+	 * @param string $template_part_id
+	 * @return void
+	 */
+	protected function start_block_part_timing( $template_part_id ) {
+		$this->block_part_stack[] = array(
+			'id' => $template_part_id,
+			'start' => microtime( true ),
+		);
 	}
 
 	/**
@@ -323,6 +418,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 			'path' => $template_part_file_path,
 		);
 		$this->requested_template_part_files[] = $part;
+		$this->start_block_part_timing( $template_part_id );
 	}
 
 	/**
@@ -340,6 +436,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 			'path' => $template_part_file_path,
 		);
 		$this->requested_template_part_nopes[] = $part;
+		$this->start_block_part_timing( $template_part_id );
 	}
 
 	/**
@@ -517,6 +614,25 @@ class QM_Collector_Theme extends QM_DataCollector {
 
 				$this->data->template_parts[ $file ] = $display;
 				$this->data->theme_template_parts[ $file ] = $theme_display;
+			}
+		}
+
+		if ( ! empty( $this->template_part_timing ) ) {
+			$this->data->template_part_timing = array();
+
+			foreach ( $this->template_part_timing as $entry ) {
+				if ( isset( $entry['file'] ) ) {
+					$file = QM_Util::standard_dir( $entry['file'] );
+					$display = trim( str_replace( array( $stylesheet_directory, $template_directory ), '', $file ), '/' );
+				} else {
+					$display = $entry['id'];
+				}
+
+				$this->data->template_part_timing[] = array(
+					'display' => $display,
+					'start' => ( $entry['start'] - $_SERVER['REQUEST_TIME_FLOAT'] ) * 1000,
+					'ltime' => $entry['end'] - $entry['start'],
+				);
 			}
 		}
 

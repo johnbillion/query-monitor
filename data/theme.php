@@ -99,6 +99,15 @@ class QM_Data_Theme extends QM_Data {
 	public $count_template_parts;
 
 	/**
+	 * @phpstan-var ?array<int, array{
+	 *   display: string,
+	 *   start: float,
+	 *   ltime: float,
+	 * }>
+	 */
+	public $template_part_timing;
+
+	/**
 	 * @phpstan-var array<int, array{
 	 *   slug: string,
 	 *   name: string|null,

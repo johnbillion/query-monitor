@@ -126,6 +126,7 @@
 	--qm-timeline-log:                 #ff9800;
 	--qm-timeline-transient:           #00897b;
 	--qm-timeline-doing-it-wrong:      #b84a6a;
+	--qm-timeline-template-part:       #eab308;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	--qm-font-default-size: 12px;
