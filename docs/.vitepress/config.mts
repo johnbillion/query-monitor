@@ -65,6 +65,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/how-to-use/',
 					},
 					{
+						text: 'Timeline',
+						link: '/wordpress-debugging/timeline/',
+					},
+					{
 						text: 'Database queries',
 						link: '/wordpress-debugging/database-queries/',
 					},
