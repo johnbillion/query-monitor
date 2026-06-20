@@ -118,14 +118,14 @@
 		--qm-sql-value-fg:                 #ce9178;
 	}
 
-	--qm-timeline-db:                  #3858e9;
+	--qm-timeline-db:                  #2563eb;
 	--qm-timeline-http:                #888888;
-	--qm-timeline-php-error:           #d63638;
-	--qm-timeline-timing:              #2e7d32;
-	--qm-timeline-action:              #9c27b0;
-	--qm-timeline-log:                 #ff9800;
-	--qm-timeline-transient:           #00897b;
-	--qm-timeline-doing-it-wrong:      #b84a6a;
+	--qm-timeline-php-error:           #dc2626;
+	--qm-timeline-timing:              #16a34a;
+	--qm-timeline-action:              #9333ea;
+	--qm-timeline-log:                 #ea580c;
+	--qm-timeline-transient:           #06b6d4;
+	--qm-timeline-doing-it-wrong:      #db2777;
 
 	--qm-font-default-face: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	--qm-font-default-size: 12px;
@@ -549,7 +549,6 @@ i {
 		button[aria-selected="true"] {
 			background: var( --qm-panel-menu-bg-selected );
 			color: var( --qm-panel-menu-fg-selected );
-			font-weight: 500;
 			text-shadow:
 				0 -1px 1px var( --qm-panel-menu-shadow ),
 				1px 0 1px var( --qm-panel-menu-shadow ),
