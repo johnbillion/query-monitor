@@ -50,7 +50,7 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 		if ( ! empty( $dbq_data->dupes ) ) {
 			$menu[ $this->collector->id() ] = $this->menu( array(
 				'title' => __( 'Duplicate Queries', 'query-monitor' ),
-				'warning_count' => array_sum( array_column( $dbq_data->dupes, 'count' ) ),
+				'count' => array_sum( array_column( $dbq_data->dupes, 'count' ) ),
 			) );
 		}
 

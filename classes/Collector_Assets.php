@@ -244,6 +244,18 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$warning = ! in_array( $handle, $raw->done, true );
 
+				if ( $source instanceof WP_Error ) {
+					/** This filter is documented in collectors/http.php */
+					$silent = apply_filters( 'qm/collect/silent_http_errors', array(
+						'http_request_not_executed',
+						'airplane_mode_enabled',
+					) );
+
+					if ( ! in_array( $source->get_error_code(), $silent, true ) ) {
+						$warning = true;
+					}
+				}
+
 				$dependencies = array_values( $dependency->deps );
 
 				foreach ( $dependencies as $dep ) {
@@ -464,6 +476,16 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * This is primarily so relative URLs are correctly handled in the same way as local absolute URLs.
 	 */
 	protected function hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( string $url ): QM_Data_URL {
+		return self::determine_url_characteristics( $url, $this->data->url );
+	}
+
+	/**
+	 * Determines the normalised information for the given URL relative to the current page's URL.
+	 *
+	 * @param string      $url  An absolute URL, relative URL, or root-relative URL.
+	 * @param QM_Data_URL $site The URL information for the current page.
+	 */
+	public static function determine_url_characteristics( string $url, QM_Data_URL $site ): QM_Data_URL {
 		$parsed_url = new QM_Data_URL();
 		$parsed_url->hostname = (string) parse_url( $url, PHP_URL_HOST );
 		$parsed_url->scheme = (string) parse_url( $url, PHP_URL_SCHEME );
@@ -471,20 +493,25 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		if ( empty( $parsed_url->hostname ) ) {
 			// Relative URL - prepend the origin
-			$parsed_url->origin = $this->data->url->origin;
-			$parsed_url->hostname = $this->data->url->hostname;
-			$parsed_url->scheme = $this->data->url->scheme;
-			$parsed_url->absolute = $this->data->url->origin . $url;
-			$port = (string) parse_url( $this->data->url->origin, PHP_URL_PORT );
+			$parsed_url->origin = $site->origin;
+			$parsed_url->hostname = $site->hostname;
+			$parsed_url->scheme = $site->scheme;
+			$parsed_url->absolute = $site->origin . $url;
+			$port = (string) parse_url( $site->origin, PHP_URL_PORT );
 		} else {
 			// Absolute URL
+			if ( empty( $parsed_url->scheme ) ) {
+				// Protocol-relative URL - inherit the scheme from the current page
+				$parsed_url->scheme = $site->scheme;
+			}
 			$parsed_url->origin = $parsed_url->scheme . '://' . $parsed_url->hostname . ( $port ? ':' . $port : '' );
 			$parsed_url->absolute = $url;
 		}
 
-		$parsed_url->insecure = ( 'https' !== $parsed_url->scheme ) && ( 'localhost' !== $parsed_url->hostname ) && ( ! $this->data->url->insecure );
+		// Mixed content is only a concern when the current page itself is served over HTTPS.
+		$parsed_url->insecure = ( 'https' === $site->scheme ) && ( 'https' !== $parsed_url->scheme ) && ( 'localhost' !== $parsed_url->hostname );
 		$parsed_url->host = $port ? "{$parsed_url->hostname}:{$port}" : $parsed_url->hostname;
-		$parsed_url->local = ( $this->data->url->origin === $parsed_url->origin );
+		$parsed_url->local = ( $site->origin === $parsed_url->origin );
 
 		return $parsed_url;
 	}

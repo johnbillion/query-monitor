@@ -98,7 +98,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 * @return array<int, string>
 	 */
 	public function admin_class( array $class ) {
-
 		if ( $this->collector->get_errors() ) {
 			$class[] = 'qm-error';
 		}
@@ -144,6 +143,9 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 				'panel' => 'db_expensive',
 				'title' => esc_html__( 'Slow Queries', 'query-monitor' ),
 				'warning_count' => count( $expensive ),
+				'meta' => [
+					'classname' => 'qm-expensive',
+				],
 			) );
 		}
 

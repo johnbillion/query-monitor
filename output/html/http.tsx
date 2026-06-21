@@ -4,7 +4,8 @@ import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
-import { getCallerCol, getComponentCol } from '../table';
+import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
+import type { FilterOption } from '../table';
 import { Duration } from '../components/duration';
 import { TotalTime } from '../components/total-time';
 import { PanelFooter } from '../panels/panel-footer';
@@ -106,12 +107,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					</>
 				),
 				filters: {
-					options: [
-						Array.from( new Set( data.http.map( row => row.host ) ) ).map( host => ({
-							key: host,
-							label: host,
-						})),
-					],
+					options: [ derivePrimitiveFilters( data.http, ( row ) => row.host ) ],
 					callback: ( row, value ) => row.host === value,
 				},
 			},
@@ -153,13 +149,13 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						return statusText;
 					}
 
-					const timeFields: { key: string; label: string }[] = [
+					const timeFields: FilterOption[] = [
 						{ key: 'namelookup_time', label: __( 'DNS Resolution Time', 'query-monitor' ) },
 						{ key: 'connect_time', label: __( 'Connection Time', 'query-monitor' ) },
 						{ key: 'starttransfer_time', label: __( 'Transfer Start Time (TTFB)', 'query-monitor' ) },
 					];
 
-					const otherFields: { key: string; label: string }[] = [
+					const otherFields: FilterOption[] = [
 						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
 					];
 
@@ -236,10 +232,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 		} }
 		data={ data.http }
-		rowHasError={ ( row ) =>
-			Utils.isWPError( row.result ) ||
-			( ! row.intercepted && row.result.code >= 400 )
-		}
+		rowHasError={ Utils.httpRowHasError }
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }

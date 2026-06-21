@@ -34,7 +34,6 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 				<Warning>
 					{ errorMessage }
 				</Warning>
-				<br/>
 				<a href={ href } target="_blank" rel="noreferrer">
 					{ href }
 				</a>

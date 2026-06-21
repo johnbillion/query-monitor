@@ -64,6 +64,11 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	public function admin_menu( array $menu ) {
 		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
+
+		if ( empty( $data->errors ) ) {
+			return $menu;
+		}
+
 		$menu_label = array();
 
 		$types = array(
@@ -77,46 +82,61 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 			'warning' => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
 		);
 
-		foreach ( $types as $type => $label ) {
-			$count = 0;
-			$has_errors = false;
+		// Count only non-suppressed errors, grouped by level.
+		$counts = array();
 
-			if ( isset( $data->types[ $type ] ) ) {
-				$has_errors = true;
-				$count += $data->types[ $type ];
-			}
-
-			if ( ! $has_errors ) {
+		foreach ( $data->errors as $error ) {
+			if ( $error->suppressed ) {
 				continue;
 			}
 
-			if ( $count ) {
-				$label = sprintf(
-					translate_nooped_plural(
-						$label,
-						$count,
-						'query-monitor'
-					),
-					number_format_i18n( $count )
-				);
-				$menu_label[] = $label;
+			$counts[ $error->level ] = ( $counts[ $error->level ] ?? 0 ) + $error->count;
+		}
+
+		foreach ( $types as $type => $label ) {
+			if ( empty( $counts[ $type ] ) ) {
+				continue;
 			}
+
+			$menu_label[] = sprintf(
+				translate_nooped_plural(
+					$label,
+					$counts[ $type ],
+					'query-monitor'
+				),
+				number_format_i18n( $counts[ $type ] )
+			);
 		}
 
-		if ( empty( $menu_label ) ) {
-			return $menu;
+		$count = array_sum( $counts );
+
+		if ( ! empty( $menu_label ) ) {
+			/* translators: used between list items, there is a space after the comma */
+			$sep = __( ', ', 'query-monitor' );
+
+			$title = sprintf(
+				/* translators: %s: List of PHP error types */
+				__( 'PHP Errors (%s)', 'query-monitor' ),
+				implode( $sep, array_reverse( $menu_label ) )
+			);
+		} else {
+			$title = __( 'PHP Errors', 'query-monitor' );
 		}
 
-		$count = array_sum( array_filter( array_map( function( $type ) use ( $data ) {
-			return $data->types[ $type ] ?? 0;
-		}, array_keys( $types ) ) ) );
-
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html__( 'PHP Errors', 'query-monitor' ),
+		$args = array(
+			'title' => $title,
 			'warning_count' => $count,
-		) );
-		return $menu;
+		);
 
+		$classes = $this->admin_class( [] );
+
+		if ( ! empty( $classes ) ) {
+			$args['meta']['classname'] = implode( ' ', $classes );
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( $args );
+
+		return $menu;
 	}
 
 	/**

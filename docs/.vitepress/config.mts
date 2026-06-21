@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
-import { wpURL, ghURL, siteURL, chromeExtURL } from './urls'
+import { wpURL, ghURL, siteURL } from './urls'
 
 const year = new Date().getFullYear();
 
@@ -53,10 +53,6 @@ export default defineConfig({
 				text: 'Download WordPress plugin',
 				link: wpURL,
 			},
-			{
-				text: 'Install Chrome extension',
-				link: chromeExtURL,
-			},
 		],
 
 		sidebar: [
@@ -67,6 +63,10 @@ export default defineConfig({
 					{
 						text: 'How to use Query Monitor',
 						link: '/wordpress-debugging/how-to-use/',
+					},
+					{
+						text: 'Timeline',
+						link: '/wordpress-debugging/timeline/',
 					},
 					{
 						text: 'Database queries',
@@ -156,10 +156,6 @@ export default defineConfig({
 						text: 'Assertions',
 						link: '/wordpress-debugging/assertions/',
 					},
-					{
-						text: 'Browser extension',
-						link: '/wordpress-debugging/browser-extension/',
-					},
 				],
 			},
 			{
@@ -169,10 +165,6 @@ export default defineConfig({
 					{
 						text: 'Query Monitor 4',
 						link: '/help/query-monitor-4/',
-					},
-					{
-						text: 'Browser extension',
-						link: '/help/browser-extension/',
 					},
 					{
 						text: 'Clickable stack traces',
@@ -203,10 +195,6 @@ export default defineConfig({
 			{
 				text: 'Download WordPress plugin',
 				link: wpURL,
-			},
-			{
-				text: 'Install Chrome extension',
-				link: chromeExtURL,
 			},
 			{
 				text: 'GitHub Project',

@@ -1,5 +1,5 @@
 import { Fragment, type JSX } from 'preact';
-import { Callback, StackFrame, URL } from './data-types';
+import { Callback, HTTP, Logger, PHP_Error, QueryRow, StackFrame, URL } from './data-types';
 import { WP_Error } from 'wp-types';
 
 interface QMGlobals {
@@ -176,6 +176,35 @@ export function isWPError( data: unknown ): data is WP_Error {
 	return ( ( typeof data === 'object' ) && data !== null && 'errors' in data );
 }
 
+export function queryRowHasError( row: QueryRow ): boolean {
+	return isWPError( row.result );
+}
+
+export function httpRowHasError( row: HTTP['http'][number] ): boolean {
+	return isWPError( row.result ) || ( ! row.intercepted && row.result.code >= 400 );
+}
+
+export const logLevels: { key: string; label: string; isError: boolean }[] = [
+	{ key: 'emergency', label: 'Emergency', isError: true },
+	{ key: 'alert', label: 'Alert', isError: true },
+	{ key: 'critical', label: 'Critical', isError: true },
+	{ key: 'error', label: 'Error', isError: true },
+	{ key: 'warning', label: 'Warning', isError: true },
+	{ key: 'notice', label: 'Notice', isError: false },
+	{ key: 'info', label: 'Info', isError: false },
+	{ key: 'debug', label: 'Debug', isError: false },
+];
+
+const logErrorLevels = logLevels.filter( ( level ) => level.isError ).map( ( level ) => level.key );
+
+export function logRowHasError( row: Logger['logs'][number] ): boolean {
+	return logErrorLevels.includes( row.level );
+}
+
+export function phpErrorHasError( row: PHP_Error ): boolean {
+	return row.level === 'warning' && ! row.suppressed;
+}
+
 interface ErrorDataContainer {
 	error_data?: Record<string, unknown>;
 }
@@ -239,7 +268,7 @@ export function getEditors(): { label: string, name: string; format: string; }[]
 			format: 'cursor://file/%1$s:%2$s',
 		},
 		{
-			label: 'Netbeans',
+			label: 'NetBeans',
 			name: 'netbeans',
 			format: 'nbopen://%1$s:%2$s',
 		},
@@ -352,8 +381,15 @@ export function stripAbspath( file: string, settings: { abspath: string; content
 }
 
 export function getAssetDisplay( url: URL ): string {
+	if ( ! url.absolute ) {
+		return '';
+	}
+
 	try {
-		const parsed = new window.URL( url.absolute );
+		// Protocol-relative URLs need a scheme before URL() will parse them. The scheme is
+		// irrelevant here as only the path and query are used for display.
+		const absolute = url.absolute.startsWith( '//' ) ? `https:${ url.absolute }` : url.absolute;
+		const parsed = new window.URL( absolute );
 		parsed.searchParams.delete( 'ver' );
 		return ( parsed.pathname + parsed.search ).replace( /^\//, '' );
 	} catch {

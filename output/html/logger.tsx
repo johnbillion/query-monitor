@@ -4,20 +4,12 @@ import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
 import { JsonOutput } from '../components/json-output';
-import { getCallerCol, getComponentCol } from '../table';
-import { getFilterLabel } from '../utils';
+import { buildCountedFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 import { __, _n, sprintf } from '@wordpress/i18n';
-
-const warningLevels = [
-	'emergency',
-	'alert',
-	'critical',
-	'error',
-	'warning',
-];
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	const { settings } = useContext( MainContext );
@@ -29,7 +21,7 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 					{ __( 'No data logged.', 'query-monitor' ) }
 				</p>
 				<p>
-					<a href="https://querymonitor.com/wordpress-debugging/profiling-and-logging/">
+					<a href="https://querymonitor.com/wordpress-debugging/profiling-and-logging/" target="_blank" rel="noopener noreferrer" className="qm-external-link">
 						{ __( 'Read about profiling and logging in Query Monitor.', 'query-monitor' ) }
 					</a>
 				</p>
@@ -37,52 +29,14 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 		);
 	}
 
-	const counts = data.logs.reduce( ( acc, log ) => {
-		acc[ log.level ] = ( acc[ log.level ] || 0 ) + 1;
-		return acc;
-	}, {} as Record<string, number> );
-
-	const filterOptions = [
-		{
-			label: getFilterLabel( 'Emergency', counts.emergency ),
-			key: 'emergency',
-		},
-		{
-			label: getFilterLabel( 'Alert', counts.alert ),
-			key: 'alert',
-		},
-		{
-			label: getFilterLabel( 'Critical', counts.critical ),
-			key: 'critical',
-		},
-		{
-			label: getFilterLabel( 'Error', counts.error ),
-			key: 'error',
-		},
-		{
-			label: getFilterLabel( 'Warning', counts.warning ),
-			key: 'warning',
-		},
-		{
-			label: getFilterLabel( 'Notice', counts.notice ),
-			key: 'notice',
-		},
-		{
-			label: getFilterLabel( 'Info', counts.info ),
-			key: 'info',
-		},
-		{
-			label: getFilterLabel( 'Debug', counts.debug ),
-			key: 'debug',
-		},
-	];
+	const filterOptions = buildCountedFilters( data.logs, ( row ) => row.level, Utils.logLevels );
 
 	return <TabularPanel
 		title={ __( 'Logs', 'query-monitor' ) }
 		cols={ {
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
-				render: ( row ) => warningLevels.includes( row.level )
+				render: ( row ) => Utils.logRowHasError( row )
 					? <Warning>{ row.level }</Warning>
 					: row.level,
 				filters: {
@@ -116,6 +70,6 @@ export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 			component: getComponentCol( data.logs ),
 		} }
 		data={ data.logs }
-		rowHasError={ ( row ) => warningLevels.includes( row.level ) }
+		rowHasError={ Utils.logRowHasError }
 	/>
 };

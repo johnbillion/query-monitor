@@ -20,7 +20,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-import { type ComponentChildren } from 'preact';
+import { Fragment, type ComponentChildren } from 'preact';
 import { useContext, useEffect, useRef, useState } from 'preact/hooks';
 import { MainContext } from './contexts/main-context';
 
@@ -101,6 +101,34 @@ const deriveFilters = <TDataRow,>(
 
 	filters.sort( sortFilters );
 	return filters;
+};
+
+export const derivePrimitiveFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string | number | null | undefined,
+): FilterOption[] => deriveFilters( rows, ( row ) => {
+	const value = getKey( row );
+	if ( value === null || value === undefined || value === '' ) {
+		return null;
+	}
+	const stringValue = String( value );
+	return { key: stringValue, label: stringValue };
+} );
+
+export const buildCountedFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string,
+	options: FilterOption[],
+): FilterOption[] => {
+	const counts: Record<string, number> = {};
+	for ( const row of rows ) {
+		const k = getKey( row );
+		counts[ k ] = ( counts[ k ] || 0 ) + 1;
+	}
+	return options.map( ( { key, label } ) => ( {
+		key,
+		label: Utils.getFilterLabel( label, counts[ key ] ),
+	} ) );
 };
 
 export const componentFilterCallback = ( component: ComponentType | null | undefined, value: string ): boolean => {
@@ -427,7 +455,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 											>
 												<option value="">All</option>
 												{ colFilters.map( ( group, gi ) => (
-													<>
+													<Fragment key={ gi }>
 														<hr/>
 														{ group.map( ( filter ) => (
 															<option
@@ -435,7 +463,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 																value={ filter.key }
 															>{ filter.label }</option>
 														) ) }
-													</>
+													</Fragment>
 												) ) }
 											</select>
 										</div>

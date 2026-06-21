@@ -44,10 +44,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		/** @var QM_Data_HTTP $data */
 		$data = $this->collector->get_data();
 
-		if ( isset( $data->errors['alert'] ) ) {
-			$class[] = 'qm-alert';
-		}
-		if ( isset( $data->errors['warning'] ) ) {
+		if ( ! empty( $data->errors ) ) {
 			$class[] = 'qm-warning';
 		}
 
@@ -64,7 +61,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 		$data = $this->collector->get_data();
 
 		$count = ! empty( $data->http ) ? count( $data->http ) : 0;
-		$error_count = isset( $data->errors['alert'] ) ? count( $data->errors['alert'] ) : 0;
+		$error_count = ! empty( $data->errors ) ? count( $data->errors ) : 0;
 
 		$args = array(
 			'title' => __( 'HTTP API Calls', 'query-monitor' ),
@@ -72,10 +69,7 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 			'warning_count' => $error_count ?: null,
 		);
 
-		if ( isset( $data->errors['alert'] ) ) {
-			$args['meta']['classname'] = 'qm-alert';
-		}
-		if ( isset( $data->errors['warning'] ) ) {
+		if ( ! empty( $data->errors ) ) {
 			$args['meta']['classname'] = 'qm-warning';
 		}
 

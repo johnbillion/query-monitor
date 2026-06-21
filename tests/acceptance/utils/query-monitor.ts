@@ -136,6 +136,13 @@ export class QueryMonitorUtils {
 	}
 
 	/**
+	 * Assert that the QM menu is visible with an error indicator
+	 */
+	async seeQMMenuWithError() {
+		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-error' ) ).toBeVisible();
+	}
+
+	/**
 	 * Assert that the QM menu is visible with a notice indicator
 	 */
 	async seeQMMenuWithNotice() {
@@ -149,6 +156,27 @@ export class QueryMonitorUtils {
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor' ) ).toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-warning' ) ).not.toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-notice' ) ).not.toBeVisible();
+	}
+
+	/**
+	 * Assert that a submenu item in the admin bar dropdown with the given class contains the given text.
+	 */
+	async seeQMSubMenuItemWithText( className: string, text: string ) {
+		const item = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.${className}` );
+		await expect( item ).toContainText( text );
+	}
+
+	/**
+	 * Assert that a panel menu item displays a warning count bubble.
+	 */
+	async seeWarningBubbleInQMPanelMenu( panel: string ) {
+		await this.openQMPanel( panel );
+
+		const button = this.page.locator( '#qm-panel-menu button:visible' ).filter( {
+			hasText: panel,
+		} );
+
+		await expect( button.locator( '.qm-menu-badge-warning' ) ).toBeVisible();
 	}
 
 	/**
