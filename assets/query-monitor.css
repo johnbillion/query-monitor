@@ -337,10 +337,23 @@ i {
 	}
 }
 
+.qm-sqlite-params {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0 1em;
+	margin: 0;
+
+	dt,
+	dd {
+		margin: 0;
+	}
+}
+
 .qm-cell-sql b {
 	color: var( --qm-sql-keyword-fg );
 }
 
+.qm-cell-sql-params .qm-sql-value,
 .qm-cell-sql .qm-sql-value {
 	color: var( --qm-sql-value-fg );
 }

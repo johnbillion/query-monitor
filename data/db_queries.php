@@ -15,7 +15,7 @@
 /**
  * @phpstan-type SQLiteQuery array{
  *   sql: string,
- *   params?: array<string, string|int|float>,
+ *   params?: array<string, mixed>,
  * }
  * @phpstan-type QueryRow array{
  *   stack?: array<int, string>,
