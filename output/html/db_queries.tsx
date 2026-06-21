@@ -89,8 +89,8 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 					const sql = row.sqlite_queries?.length ? (
 						<ol>
 							{ row.sqlite_queries.map( ( q, j ) => (
-								<li>
-									<code key={ j }>
+								<li key={ j }>
+									<code>
 										{ Utils.formatSQL( q.sql ) }
 									</code>
 								</li>
