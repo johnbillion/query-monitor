@@ -234,7 +234,6 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
-	has_sqlite: boolean;
 	dupes: {
 		query: string;
 		count: number;

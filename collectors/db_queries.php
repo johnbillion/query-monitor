@@ -130,7 +130,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$types = array();
 		$has_result = false;
 		$has_trace = false;
-		$has_sqlite = false;
 		$i = 0;
 		$request = trim( $wp_the_query->request ?: '' );
 
@@ -164,7 +163,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				}
 				// SQLite Database Integration plugin.
 				if ( ! empty( $query['sqlite_queries'] ) ) {
-					$has_sqlite = true;
 					$sqlite_queries = $query['sqlite_queries'];
 				}
 			} else {
@@ -226,7 +224,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$this->data->total_qs = count( $this->data->rows );
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
-		$this->data->has_sqlite = $has_sqlite;
 
 		// Filter out queries that do not have duplicates
 		$this->dupes = array_filter( $this->dupes, array( $this, 'filter_dupe_items' ) );

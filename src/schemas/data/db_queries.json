@@ -91,7 +91,6 @@
 		"total_qs",
 		"has_result",
 		"has_trace",
-		"has_sqlite",
 		"dupes",
 		"errors"
 	],
@@ -126,9 +125,6 @@
 			"type": "boolean"
 		},
 		"has_trace": {
-			"type": "boolean"
-		},
-		"has_sqlite": {
 			"type": "boolean"
 		},
 		"dupes": {

@@ -59,11 +59,6 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $has_trace;
 
 	/**
-	 * @var bool
-	 */
-	public $has_sqlite;
-
-	/**
 	 * @phpstan-var array<int, array{
 	 *   query: string,
 	 *   count: int,
