@@ -21,13 +21,15 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 }
 
 /**
+ * @phpstan-import-type SQLiteQuery from QM_Data_DB_Queries
+ *
  * @phpstan-type QueryStandard array{
  *   0: string,
  *   1: float,
  *   2: string,
  *   trace?: QM_Backtrace,
  *   result?: int|bool|WP_Error,
- *   sqlite_queries?: array<int, array{sql: string, params: array<string, mixed>}>,
+ *   sqlite_queries?: array<int, SQLiteQuery>,
  * }
  * @phpstan-type QueryVIP array{
  *   query: string,
