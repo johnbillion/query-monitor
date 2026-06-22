@@ -5,6 +5,27 @@
 	"description": "Database queries data transfer object.",
 	"type": "object",
 	"definitions": {
+		"SQLiteQuery": {
+			"type": "object",
+			"required": [
+				"sql"
+			],
+			"properties": {
+				"sql": {
+					"type": "string"
+				},
+				"params": {
+					"type": "object",
+					"additionalProperties": {
+						"oneOf": [
+							{ "type": "string" },
+							{ "type": "number" }
+						]
+					}
+				}
+			},
+			"additionalProperties": false
+		},
 		"QueryRow": {
 			"type": "object",
 			"required": [
@@ -55,6 +76,12 @@
 				},
 				"is_main_query": {
 					"type": "boolean"
+				},
+				"sqlite_queries": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/SQLiteQuery"
+					}
 				}
 			},
 			"additionalProperties": false

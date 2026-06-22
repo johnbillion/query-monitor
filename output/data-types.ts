@@ -256,6 +256,13 @@ export interface QueryRow {
 	result?: number | boolean | WP_Error;
 	trace?: Backtrace;
 	is_main_query?: boolean;
+	sqlite_queries?: SQLiteQuery[];
+}
+export interface SQLiteQuery {
+	sql: string;
+	params?: {
+		[k: string]: string | number;
+	};
 }
 /**
  * Doing it Wrong data transfer object.

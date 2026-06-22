@@ -50,7 +50,7 @@ export const qm_l10n = {
 };
 
 function highlightStrings( text: string ): ( string | JSX.Element )[] {
-	const parts = text.split( /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/ );
+	const parts = text.split( /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|:\w+)/ );
 
 	return parts.map( ( part, i ) =>
 		i % 2 === 1
@@ -78,7 +78,7 @@ export function formatSQL( sql: string ): JSX.Element[] {
 		trimmed = trimmed.slice( 0, -trailingMatch[0].length );
 	}
 
-	const formatted = ' ' + trimmed;
+	const formatted = ' ' + trimmed + ' ';
 	const lineRegex = ' (ADD|AFTER|ALTER|AND|BEGIN|CASE|COMMIT|CREATE|DELETE|DESCRIBE|DO|DROP|ELSE|END|EXCEPT|EXPLAIN|FROM|GROUP BY|GROUP|HAVING|INNER JOIN|INSERT|INTERSECT|JOIN|LEFT JOIN|LIMIT|ON|OR|ORDER BY|ORDER|OUTER JOIN|RENAME|REPLACE|RIGHT JOIN|ROLLBACK|SELECT|SET|SHOW|START|THEN|TRUNCATE|UNION|UPDATE|USE|USING|VALUES|WHEN|WHERE|XOR) ';
 	const lines = formatted.split( new RegExp( lineRegex ) );
 	const collection: JSX.Element[] = [];

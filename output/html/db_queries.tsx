@@ -9,6 +9,7 @@ import { TotalTime } from '../components/total-time';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
+import { Fragment } from 'preact';
 
 import {
 	__,
@@ -64,6 +65,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 
 	const types = Utils.getQueryTypes( data.rows );
 	const promptReason = ! data.has_trace ? settings.extended_query_prompt_reason : null;
+	const hasSQLite = data.rows.some( ( row ) => row.sqlite_queries?.length );
 
 	return <TabularPanel
 		title={ __( 'Database Queries', 'query-monitor' ) }
@@ -85,22 +87,38 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			sql: {
 				className: ( row ) => Utils.getQueryType( row.sql ) !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
-				render: ( row ) => (
-					<>
+				render: ( row ) => {
+					const sql = row.sqlite_queries?.length ? (
+						<ol>
+							{ row.sqlite_queries.map( ( q, j ) => (
+								<li key={ j }>
+									<code>
+										{ Utils.formatSQL( q.sql ) }
+									</code>
+								</li>
+							) ) }
+						</ol>
+					) : (
 						<code>
 							{ Utils.formatSQL( row.sql ) }
 						</code>
-						{ Utils.isWPError( row.result ) && (
-							<>
-								<br />
-								<br />
-								<Warning>
-									{ Utils.getErrorMessage( row.result ) }
-								</Warning>
-							</>
-						) }
-					</>
-				),
+					);
+
+					return (
+						<>
+							{ sql }
+							{ Utils.isWPError( row.result ) && (
+								<>
+									<br />
+									<br />
+									<Warning>
+										{ Utils.getErrorMessage( row.result ) }
+									</Warning>
+								</>
+							) }
+						</>
+					);
+				},
 				filters: {
 					options: ( () => {
 						const filters = Object.keys( types ).map( ( type ) => ( {
@@ -134,6 +152,37 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				},
 				wrap: true
 			},
+			'sql-params': hasSQLite ? {
+				heading: __( 'Parameters', 'query-monitor' ),
+				render: ( row ) => {
+					if ( ! row.sqlite_queries?.length ) {
+						return null;
+					}
+
+					return (
+						row.sqlite_queries.map( ( q ) => {
+							const params = q.params ? Object.entries( q.params ) : [];
+
+							return (
+								params.length ? (
+									<>
+										<dl className="qm-sqlite-params">
+											{ params.map( ( [ name, value ] ) => (
+												<Fragment key={ name }>
+													<dt><code className="qm-sql-value">{ name }</code></dt>
+													<dd><code>{ value }</code></dd>
+												</Fragment>
+											) ) }
+										</dl>
+										<br/>
+									</>
+								) : null
+							);
+						} )
+					);
+				},
+				wrap: true,
+			} : null,
 			caller: data.has_trace ? getCallerCol( data.rows, settings ) : getStackCol( data.rows ),
 			component: data.has_trace ? getComponentCol( data.rows ) : null,
 			result: data.has_result ? {

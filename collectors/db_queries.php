@@ -21,12 +21,15 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 }
 
 /**
+ * @phpstan-import-type SQLiteQuery from QM_Data_DB_Queries
+ *
  * @phpstan-type QueryStandard array{
  *   0: string,
  *   1: float,
  *   2: string,
  *   trace?: QM_Backtrace,
  *   result?: int|bool|WP_Error,
+ *   sqlite_queries?: array<int, SQLiteQuery>,
  * }
  * @phpstan-type QueryVIP array{
  *   query: string,
@@ -158,6 +161,10 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 					$has_result = true;
 					$result = $query['result'];
 				}
+				// SQLite Database Integration plugin.
+				if ( ! empty( $query['sqlite_queries'] ) ) {
+					$sqlite_queries = $query['sqlite_queries'];
+				}
 			} else {
 				// ¯\_(ツ)_/¯
 				continue;
@@ -200,6 +207,10 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				if ( $result instanceof WP_Error ) {
 					$this->data->errors[] = $i;
 				}
+			}
+
+			if ( isset( $sqlite_queries ) ) {
+				$row['sqlite_queries'] = $sqlite_queries;
 			}
 
 			if ( self::is_expensive( $row ) ) {
