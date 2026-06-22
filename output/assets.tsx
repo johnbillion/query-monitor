@@ -34,7 +34,7 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 				<Warning>
 					{ errorMessage }
 				</Warning>
-				<a href={ href } target="_blank" rel="noreferrer">
+				<a href={ href } target="_blank" rel="noreferrer" className="qm-external-link">
 					{ href }
 				</a>
 			</>
@@ -53,7 +53,7 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 
 	return (
 		display ? (
-			<a href={ asset.url.absolute } target="_blank" rel="noreferrer">
+			<a href={ asset.url.absolute } target="_blank" rel="noreferrer" className="qm-external-link">
 				{ display }
 			</a>
 		) : (
