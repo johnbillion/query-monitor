@@ -645,6 +645,59 @@ i {
 	}
 }
 
+.qm-dashboard-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fill, minmax( 180px, 1fr ) );
+	gap: 10px;
+	width: 100%;
+}
+
+.qm-dashboard-metric {
+	border: 1px solid var( --qm-panel-border );
+	border-radius: 6px;
+	padding: 14px 18px;
+	min-width: 0;
+
+	code {
+		white-space: normal;
+		word-break: break-all;
+	}
+
+	h3 + h3,
+	p + h3 {
+		margin-top: 14px;
+	}
+}
+
+.qm-dashboard-value {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	margin: 0 0 2px;
+}
+
+.qm-dashboard-value-text {
+	font-size: 14px;
+}
+
+.qm-usage-bar {
+	height: 8px;
+	background: var( --qm-panel-separator );
+	border-radius: 4px;
+	margin: 8px 0 5px;
+	overflow: hidden;
+}
+
+.qm-usage-bar-fill {
+	height: 100%;
+	background: var( --qm-link-fg );
+	border-radius: 3px 0 0 3px
+}
+
+.qm-usage-bar-warn {
+	background: var( --qm-warn-fg );
+}
+
 .qm {
 	.qm-none {
 		margin: 2em;
