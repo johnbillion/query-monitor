@@ -165,14 +165,17 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 
 							return (
 								params.length ? (
-									<dl className="qm-sqlite-params">
-										{ params.map( ( [ name, value ] ) => (
-											<Fragment key={ name }>
-												<dt><code className="qm-sql-value">{ name }</code></dt>
-												<dd><code>{ value }</code></dd>
-											</Fragment>
-										) ) }
-									</dl>
+									<>
+										<dl className="qm-sqlite-params">
+											{ params.map( ( [ name, value ] ) => (
+												<Fragment key={ name }>
+													<dt><code className="qm-sql-value">{ name }</code></dt>
+													<dd><code>{ value }</code></dd>
+												</Fragment>
+											) ) }
+										</dl>
+										<br/>
+									</>
 								) : null
 							);
 						} )
