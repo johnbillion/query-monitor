@@ -18,7 +18,7 @@ import {
 } from '@wordpress/i18n';
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return ! row.url.startsWith( 'https://' );
+	return ( ! row.url.startsWith( 'https://' ) ) && ( 'localhost' !== row.host );
 };
 
 const hasSslVerifyWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
