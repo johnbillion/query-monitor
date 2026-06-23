@@ -70,7 +70,7 @@ const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
 				{ _x( 'New', 'badge', 'query-monitor' ) }
 			</span>
 		) }
-		{ !! item.count && item.count !== item.warning_count && (
+		{ item.count != null && item.count !== item.warning_count && (
 			<span aria-hidden="true" className="qm-menu-badge">
 				{ Utils.numberFormat( item.count ) }
 			</span>
