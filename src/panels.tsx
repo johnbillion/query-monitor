@@ -40,7 +40,7 @@ import { Timeline } from '../output/html/timeline';
 /**
  * Raw settings from PHP, before merging with l10n values.
  */
-export type iQMSettings = Pick<iSettings, 'verified' | 'extended_query_prompt_reason' | 'color_scheme'>;
+export type iQMSettings = Pick<iSettings, 'verified' | 'color_scheme'>;
 
 /**
  * Localization data from PHP.

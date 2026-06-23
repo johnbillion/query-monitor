@@ -54,6 +54,11 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $has_trace;
 
 	/**
+	 * @var ?'conflict'|'disabled'|'failed'
+	 */
+	public $extended_query_prompt_reason;
+
+	/**
 	 * @phpstan-var array<int, array{
 	 *   query: string,
 	 *   count: int,

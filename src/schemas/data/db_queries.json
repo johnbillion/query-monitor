@@ -100,6 +100,14 @@
 		"has_trace": {
 			"type": "boolean"
 		},
+		"extended_query_prompt_reason": {
+			"type": "string",
+			"enum": [
+				"conflict",
+				"disabled",
+				"failed"
+			]
+		},
 		"dupes": {
 			"type": "array",
 			"items": {
