@@ -10,7 +10,6 @@ interface FiltersType {
 }
 
 export interface SettingsType {
-	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	file_path_map: Record<string, string>;
 	file_link_format: string | false;
 	abspath: string;
@@ -53,7 +52,6 @@ export const MainContext = createContext<MainContextType>( {
 	durationUnit: 's',
 	setDurationUnit: ( _unit ) => {},
 	settings: {
-		extended_query_prompt_reason: null,
 		file_path_map: {},
 		file_link_format: false,
 		abspath: '',

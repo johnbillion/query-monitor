@@ -63,7 +63,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	}
 
 	const types = Utils.getQueryTypes( data.rows );
-	const promptReason = ! data.has_trace ? settings.extended_query_prompt_reason : null;
+	const promptReason = ! data.has_trace ? data.extended_query_prompt_reason : null;
 
 	return <TabularPanel
 		title={ __( 'Database Queries', 'query-monitor' ) }

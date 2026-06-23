@@ -48,7 +48,6 @@ export type iPanelData = {
  */
 export type iSettings = {
 	verified: boolean;
-	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	color_scheme: 'fresh' | 'modern';
 	ajaxurl: string;
 	admin_url: string;
