@@ -78,12 +78,11 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		) : undefined }
 		cols={ {
 			i: {
-				className: 'qm-num',
+				className: 'qm-i',
 				heading: '#',
 				render: ( row, i ) => ( i + 1 ),
 			},
 			sql: {
-				className: ( row ) => Utils.getQueryType( row.sql ) !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
 					<>

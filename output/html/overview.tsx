@@ -221,14 +221,14 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 						<>
 							{ cacheData.stats && cacheData.cache_hit_percentage !== undefined ? (
 								<>
-									<p className="qm-dashboard-value">
+									<div className="qm-dashboard-value">
 										{ sprintf(
 											/* translators: %s: Cache hit percentage */
 											__( '%s%% hit rate', 'query-monitor' ),
 											Utils.numberFormat( cacheData.cache_hit_percentage, 1 )
 										) }
 										<UsageBar usage={ cacheData.cache_hit_percentage } warn={ cacheData.cache_hit_percentage < 75 } />
-									</p>
+									</div>
 									<p>
 										{ sprintf(
 											/* translators: 1: Number of cache hits, 2: Number of cache misses */

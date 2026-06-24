@@ -47,7 +47,6 @@
 	--qm-warn-bg-dark:                 #fceced;
 	--qm-warn-bg-hover:                #fdeced;
 	--qm-warn-border:                  #facfd2;
-	--qm-nonselect-fg:                 #a0a;
 	--qm-title-bg:                     #ececec;
 	--qm-selection-fg:                 #1e1e1e;
 	--qm-selection-bg:                 #B9D6FB;
@@ -55,7 +54,7 @@
 	--qm-badge-bg:                     #dcdcde;
 	--qm-badge-warn-fg:                #8a2424;
 	--qm-badge-warn-bg:                #facfd2;
-	--qm-sql-keyword-fg:               var( --qm-wp-color );
+	--qm-sql-keyword-fg:               #33a;
 	--qm-sql-value-fg:                 #a44;
 
 	&[data-theme="dark"] {
@@ -86,7 +85,7 @@
 		--qm-cell-bg-stripe:               #32373c;
 		--qm-table-header-bg:              #3e444a;
 		--qm-table-footer-bg:              #32373c;
-		--qm-link-fg:                      var( --qm-wp-color );
+		--qm-link-fg:                      #30ceff;
 		--qm-link-fg-hover:                oklch(from var( --qm-link-fg ) calc( l - 0.2 ) c h);
 		--qm-link-fg-active:               #69aadc;
 		--qm-button-fg:                    #fff;
@@ -106,7 +105,6 @@
 		--qm-warn-bg-dark:                 #6c2424;
 		--qm-warn-bg-hover:                #7a2a2a;
 		--qm-warn-border:                  #ffd6d6;
-		--qm-nonselect-fg:                 #a6a;
 		--qm-title-bg:                     #3e444a;
 		--qm-selection-fg:                 #32373c;
 		--qm-selection-bg:                 #B9D6FB;
@@ -114,8 +112,8 @@
 		--qm-badge-bg:                     #50626f;
 		--qm-badge-warn-fg:                #f0c0c0;
 		--qm-badge-warn-bg:                #6c2424;
-		--qm-sql-keyword-fg:               var( --qm-wp-color );
-		--qm-sql-value-fg:                 #ce9178;
+		--qm-sql-keyword-fg:               #bdf;
+		--qm-sql-value-fg:                 #dcb;
 	}
 
 	--qm-timeline-db:                  #2563eb;
@@ -799,11 +797,14 @@ i {
 		width: 5.5em;
 	}
 
+	th.qm-i,
+	td.qm-i,
 	th.qm-num,
 	td.qm-num {
 		text-align: right;
 	}
 
+	td.qm-i,
 	td.qm-num {
 		font-family: var( --qm-font-code-face );
 		font-size: var( --qm-font-code-size );
@@ -970,6 +971,7 @@ i {
 		color: #767676;
 	}
 
+	.qm-i,
 	.qm-num,
 	code,
 	.qm-nowrap {
@@ -992,13 +994,6 @@ i {
 	.qm-sticky {
 		position: sticky;
 		top: 36px;
-	}
-
-	.qm-current,
-	td.qm-has-toggle p,
-	.qm-nonselectsql code,
-	.qm-nonselectsql {
-		color: var( --qm-nonselect-fg );
 	}
 
 	.qm-info {
