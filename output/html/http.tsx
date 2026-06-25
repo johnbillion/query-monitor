@@ -80,7 +80,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								<Warning>
 									{ sprintf(
 										/* translators: %s: WordPress filter name */
-										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
+										__( 'Request was not sent because the %s filter returned a response', 'query-monitor' ),
 										'pre_http_request'
 									) }
 								</Warning>
