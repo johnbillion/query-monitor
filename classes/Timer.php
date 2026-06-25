@@ -140,6 +140,9 @@ class QM_Timer {
 	 * @return float
 	 */
 	public function get_time() {
+		if ( ! is_array( $this->end ) ) {
+			return 0.0;
+		}
 		return $this->end['time'] - $this->start['time'];
 	}
 
@@ -147,6 +150,9 @@ class QM_Timer {
 	 * @return int
 	 */
 	public function get_memory() {
+		if ( ! is_array( $this->end ) ) {
+			return 0;
+		}
 		return $this->end['memory'] - $this->start['memory'];
 	}
 
