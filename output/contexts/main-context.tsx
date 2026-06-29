@@ -34,6 +34,8 @@ export type MainContextType = {
 	settings: SettingsType;
 	durationUnit: DurationUnit;
 	setDurationUnit: ( unit: DurationUnit ) => void;
+	verified: boolean;
+	setVerified: ( verified: boolean ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -51,6 +53,8 @@ export const MainContext = createContext<MainContextType>( {
 	setTimelineHiddenCategories: ( _categories ) => {},
 	durationUnit: 's',
 	setDurationUnit: ( _unit ) => {},
+	verified: false,
+	setVerified: ( _verified ) => {},
 	settings: {
 		file_path_map: {},
 		file_link_format: false,

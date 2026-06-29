@@ -75,6 +75,7 @@ export const QM = ( props: Props ) => {
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
 	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
+	const [ verified, setVerified ] = useState( props.settings.verified );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
 	const jumpToRowRef = useRef( jumpToRow );
 	jumpToRowRef.current = jumpToRow;
@@ -178,6 +179,8 @@ export const QM = ( props: Props ) => {
 			props.onDurationUnitChange( unit );
 			setDurationUnit( unit );
 		},
+		verified,
+		setVerified,
 		settings: {
 			file_path_map: props.settings.file_path_map,
 			file_link_format: props.settings.file_link_format,
