@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	/**
@@ -552,13 +555,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @param string $error
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
 	public function output_fatal( $error, array $e ): void {
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
