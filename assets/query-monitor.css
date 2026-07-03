@@ -1178,7 +1178,24 @@ i {
 		border: 1px solid var( --qm-warn-border );
 		color: var( --qm-warn-fg );
 		margin: 0 0 10px 0;
-		padding: 10px 20px;
+		padding: 20px 30px;
+		position: relative;
+
+		button {
+			position: absolute;
+			top: 10px;
+			right: 15px;
+			border: 1px solid var( --qm-warn-border );
+			padding: 5px 10px;
+
+			&:hover {
+				border-color: var( --qm-warn-fg );
+			}
+
+			&:active {
+				transform: translateY( 1px );
+			}
+		}
 	}
 
 	.qm-icon {

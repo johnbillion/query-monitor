@@ -8,10 +8,8 @@ interface Props {
 
 export const ErrorPanel = ( { children }: Props ) => (
 	<NonTabularPanel title={ __( 'Error', 'query-monitor' ) }>
-		<section>
-			<div className="qm-error">
-				{ children }
-			</div>
+		<section className="qm-error">
+			{ children }
 		</section>
 	</NonTabularPanel>
 );
