@@ -226,11 +226,6 @@ export default defineConfig({
 			},
 		],
 
-		editLink: {
-			pattern: 'https://github.com/johnbillion/query-monitor/edit/develop/docs/:path',
-			text: 'Edit this page on GitHub',
-		},
-
 		search: {
 			provider: 'local',
 		},
