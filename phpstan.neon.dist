@@ -34,8 +34,6 @@ parameters:
 	ignoreErrors:
 		# The `wpdb` class exposes its properties via `__get()`
 		- '#^Access to protected property wpdb::#'
-		# Properties in QM_Data* classes are nullable
-		- '#^Property QM_Data_.+ is not nullable\.$#'
 		# Test factory methods return int|WP_Error but we know they succeed in tests
 		-
 			path: tests/integration/*
