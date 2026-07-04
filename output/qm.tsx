@@ -40,7 +40,7 @@ type Props = {
 				id: string;
 				panel: string;
 				title: string;
-				count?: number | null;
+				ok_count?: number | null;
 				notice_count?: number | null;
 				warning_count?: number | null;
 				meta?: {

@@ -53,7 +53,7 @@ export type iQMMenuItem = {
 	id: string;
 	panel: string;
 	title: string;
-	count?: number | null;
+	ok_count?: number | null;
 	notice_count?: number | null;
 	warning_count?: number | null;
 	meta?: {
@@ -174,7 +174,7 @@ function buildSub( items: PanelMenuItem[] ): iQMMenu[ 'sub' ] {
 				id: item.id,
 				panel: item.panel,
 				title: item.title,
-				count: item.ok_count ?? null,
+				ok_count: item.ok_count ?? null,
 				notice_count: item.notice_count ?? null,
 				warning_count: item.warning_count ?? null,
 				...( item.classname ? { meta: { classname: item.classname } } : {} ),
