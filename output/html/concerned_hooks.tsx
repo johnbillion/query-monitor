@@ -106,6 +106,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 			} }
 			data={ allHooks }
 			groupKey={ ( row ) => row.name }
+			footer={ () => null }
 		/>
 	);
 };
