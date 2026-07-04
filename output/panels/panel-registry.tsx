@@ -1,4 +1,5 @@
 import { type ComponentChildren } from 'preact';
+import { __ } from '@wordpress/i18n';
 
 import {
 	AbstractData,
@@ -6,6 +7,7 @@ import {
 } from '../data-types';
 import { iPanelData, iSettings } from './panels';
 import { PanelDataMap } from '../types';
+import { ConcernedHooks } from '../html/concerned_hooks';
 
 interface Panels<TDataKey extends keyof DataTypes> {
 	[ id: string ]: Panel<TDataKey> | OverviewPanel<TDataKey> | SettingsPanel;
@@ -68,6 +70,29 @@ export const registerPanel = <
 ) => {
 	panels[ id ] = {
 		...args,
+		type: 'standard',
+	};
+
+	panels[ `${id}-concerned_hooks` ] = {
+		render: ( data, enabled ) => <ConcernedHooks data={ data } enabled={ enabled } />,
+		data: id as keyof DataTypes,
+		menu: ( data ) => {
+			const { concerned_filters, concerned_actions } = data as AbstractData;
+			const count = Object.keys( concerned_filters ?? {} ).length + Object.keys( concerned_actions ?? {} ).length;
+
+			if ( ! count ) {
+				return [];
+			}
+
+			return [ {
+				id: `${id}-concerned_hooks`,
+				panel: `${id}-concerned_hooks`,
+				parent: id,
+				title: __( 'Hooks in Use', 'query-monitor' ),
+				count,
+				adminBar: false,
+			} ];
+		},
 		type: 'standard',
 	};
 }
