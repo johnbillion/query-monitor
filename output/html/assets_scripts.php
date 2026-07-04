@@ -30,17 +30,6 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 		return __( 'Scripts', 'query-monitor' );
 	}
 
-	/**
-	 * @return array<string, string>
-	 */
-	public function get_type_labels() {
-		return array(
-			'label' => _x( 'Scripts', 'Enqueued scripts', 'query-monitor' ),
-			/* translators: %s: Total number of enqueued scripts */
-			'count' => _x( 'Scripts (%s)', 'Enqueued scripts', 'query-monitor' ),
-		);
-	}
-
 }
 
 /**

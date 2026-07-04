@@ -16,6 +16,25 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const httpMenu = ( data: DataTypes['http'] ): PanelMenuItem[] => {
+	const count = data.http?.length ?? 0;
+	const errorCount = ( data.errors?.alert?.length ?? 0 ) + ( data.errors?.warning?.length ?? 0 );
+
+	return [ {
+		id: 'http',
+		panel: 'http',
+		title: __( 'HTTP API Calls', 'query-monitor' ),
+		count: count || null,
+		warning_count: errorCount || null,
+		...( errorCount ? { classname: 'qm-warning' } : {} ),
+	} ];
+};
+
+export const httpMenuClass = ( data: DataTypes['http'] ): string[] => (
+	Object.keys( data.errors ?? {} ).length ? [ 'qm-warning' ] : []
+);
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return ( ! row.url.startsWith( 'https://' ) ) && ( 'localhost' !== row.host );

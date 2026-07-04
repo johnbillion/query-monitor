@@ -474,10 +474,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
 
-		if ( false === strpos( $class, 'qm-' ) ) {
-			$class .= ' qm-all-clear';
-		}
-
 		/**
 		 * Filters the title used in Query Monitor's admin toolbar menu.
 		 *

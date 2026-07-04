@@ -10,6 +10,14 @@ import {
 	__,
 	_x,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const transientsMenu = ( data: DataTypes['transients'] ): PanelMenuItem[] => [ {
+	id: 'transients',
+	panel: 'transients',
+	title: __( 'Transient Updates', 'query-monitor' ),
+	count: data.trans?.length || null,
+} ];
 
 export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {
 	const { settings } = useContext( MainContext );

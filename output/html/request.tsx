@@ -6,6 +6,27 @@ import { PanelProps } from '../types';
 import { Fragment } from 'preact';
 
 import { sprintf, __ } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const requestMenu = (): PanelMenuItem[] => [ {
+	id: 'request',
+	panel: 'request',
+	title: __( 'Request', 'query-monitor' ),
+	children: [
+		{
+			id: 'raw_request',
+			panel: 'raw_request',
+			title: __( 'Request Headers', 'query-monitor' ),
+			adminBar: false,
+		},
+		{
+			id: 'raw_request-response',
+			panel: 'raw_request-response',
+			title: __( 'Response Headers', 'query-monitor' ),
+			adminBar: false,
+		},
+	],
+} ];
 
 export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 	const items = {

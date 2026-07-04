@@ -2,6 +2,13 @@ import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const adminMenu = (): PanelMenuItem[] => [ {
+	id: 'admin',
+	panel: 'admin',
+	title: __( 'Admin Screen', 'query-monitor' ),
+} ];
 
 export const Admin = ( { data }: PanelProps<DataTypes['admin']> ) => {
 	if ( ! data.current_screen ) {

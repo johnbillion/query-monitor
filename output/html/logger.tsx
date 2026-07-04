@@ -10,6 +10,28 @@ import { PanelProps } from '../types';
 import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 import { __, _n, sprintf } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+const loggerWarningLevels = Utils.logLevels.filter( ( level ) => level.isError ).map( ( level ) => level.key );
+
+const isWarningLog = ( level: string ): boolean => loggerWarningLevels.includes( level );
+
+export const loggerMenu = ( data: DataTypes['logger'] ): PanelMenuItem[] => {
+	const logs = data.logs ?? [];
+	const warningCount = logs.filter( ( log ) => isWarningLog( log.level ) ).length;
+
+	return [ {
+		id: 'logger',
+		panel: 'logger',
+		title: __( 'Logs', 'query-monitor' ),
+		warning_count: warningCount || null,
+		count: logs.length || null,
+	} ];
+};
+
+export const loggerMenuClass = ( data: DataTypes['logger'] ): string[] => (
+	( data.logs ?? [] ).some( ( log ) => isWarningLog( log.level ) ) ? [ 'qm-warning' ] : []
+);
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	const { settings } = useContext( MainContext );

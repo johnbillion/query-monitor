@@ -17,7 +17,7 @@ export type iNavMenu = {
 	[k: string]: iNavMenuItem;
 }
 
-interface iNavMenuItem {
+export interface iNavMenuItem {
 	panel: string;
 	title: string;
 	count?: number | null;
@@ -49,7 +49,7 @@ function normaliseMenuItem( item: iNavMenuItem ): iNavMenuItem {
 	};
 }
 
-function normaliseMenu( menu: iNavMenu ): iNavMenu {
+export function normaliseMenu( menu: iNavMenu ): iNavMenu {
 	const result: iNavMenu = {};
 
 	for ( const [ key, item ] of Object.entries( menu ) ) {
@@ -106,28 +106,13 @@ const isNewItemSeen = ( item: iNavMenuItem, seen: string ): boolean => {
 	return ! item.new || item.panel === seen;
 };
 
-export const Nav = ( { menu: rawMenu, onSwitch, active, seen = '' }: Props ) => {
-	const menu = normaliseMenu( rawMenu );
-
+export const Nav = ( { menu, onSwitch, active, seen = '' }: Props ) => {
 	return (
 	<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
 		<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
 			{ __( 'Query Monitor Menu', 'query-monitor' ) }
 		</h2>
 		<ul role="tablist">
-			<li
-				key="overview"
-				className={ clsx( {
-					'qm-current-menu': active === 'overview',
-				} ) }
-				role="presentation"
-			>
-				<button aria-selected={ active === 'overview' } role="tab" onClick={ () => {
-					onSwitch( 'overview' );
-				} }>
-					{ __( 'Overview', 'query-monitor' ) }
-				</button>
-			</li>
 			{ Object.entries( menu ).map( ( [ key, item ] ) => {
 				const children = item.children;
 				return (
@@ -179,9 +164,7 @@ export const Nav = ( { menu: rawMenu, onSwitch, active, seen = '' }: Props ) => 
 	);
 };
 
-export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
-	const menu = normaliseMenu( rawMenu );
-
+export const NavSelect = ( { menu, onSwitch, active }: Props ) => {
 	return (
 	<select
 		aria-label={ __( 'Select panel', 'query-monitor' ) }
@@ -190,9 +173,6 @@ export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
 			onSwitch( e.currentTarget.value );
 		} }
 	>
-		<option key="overview" value="overview">
-			{ __( 'Overview', 'query-monitor' ) }
-		</option>
 		{ Object.entries( menu ).map( ( [ key, item ] ) => {
 			const children = item.children;
 			return (

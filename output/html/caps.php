@@ -23,28 +23,11 @@ class QM_Output_Html_Caps extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 105 );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Capability Checks', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => $this->name(),
-		) );
-		return $menu;
-
 	}
 
 }

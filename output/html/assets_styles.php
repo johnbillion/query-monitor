@@ -30,17 +30,6 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 		return __( 'Styles', 'query-monitor' );
 	}
 
-	/**
-	 * @return array<string, string>
-	 */
-	public function get_type_labels() {
-		return array(
-			'label' => _x( 'Styles', 'Enqueued styles', 'query-monitor' ),
-			/* translators: %s: Total number of enqueued styles */
-			'count' => _x( 'Styles (%s)', 'Enqueued styles', 'query-monitor' ),
-		);
-	}
-
 }
 
 /**

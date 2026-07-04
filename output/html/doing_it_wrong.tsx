@@ -7,7 +7,23 @@ import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import {
 	__,
+	_x,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const doingItWrongMenu = ( data: DataTypes['doing_it_wrong'] ): PanelMenuItem[] => (
+	data.actions?.length ? [ {
+		id: 'doing_it_wrong',
+		panel: 'doing_it_wrong',
+		title: _x( 'Doing it Wrong', 'Doing it Wrong', 'query-monitor' ),
+		warning_count: data.actions.length,
+		classname: 'qm-notice',
+	} ] : []
+);
+
+export const doingItWrongMenuClass = ( data: DataTypes['doing_it_wrong'] ): string[] => (
+	data.actions?.length ? [ 'qm-notice' ] : []
+);
 
 export const DoingItWrong = ( { data }: PanelProps<DataTypes['doing_it_wrong']> ) => {
 	const { settings } = useContext( MainContext );
