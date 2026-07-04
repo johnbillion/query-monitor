@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
@@ -44,7 +45,7 @@ type OverviewProps = {
 const UsageBar = ( { usage, warn }: { usage: number; warn: boolean } ) => (
 	<div className="qm-usage-bar">
 		<div
-			className={ `qm-usage-bar-fill${ warn ? ' qm-usage-bar-warn' : '' }` }
+			className={ clsx( 'qm-usage-bar-fill', { 'qm-usage-bar-warn': warn } ) }
 			style={ { width: `${ Math.min( usage, 100 ) }%` } }
 		/>
 	</div>
@@ -64,12 +65,12 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 
 	const overviewData = data.overview.data;
 
-	const timeTaken = overviewData.time_taken || 0;
-	const memory = overviewData.memory || 0;
-	const timeLimit = overviewData.time_limit || 0;
-	const memoryLimit = overviewData.memory_limit || 0;
-	const timeUsage = overviewData.time_usage || 0;
-	const memoryUsage = overviewData.memory_usage || 0;
+	const timeTaken = overviewData.time_taken ?? 0;
+	const memory = overviewData.memory;
+	const timeLimit = overviewData.time_limit;
+	const memoryLimit = overviewData.memory_limit;
+	const timeUsage = overviewData.time_usage;
+	const memoryUsage = overviewData.memory_usage;
 	const displayTimeUsageWarning = timeUsage >= 75;
 	const displayMemoryUsageWarning = memoryUsage >= 75;
 
