@@ -16,13 +16,8 @@ export const doingItWrongMenu = ( data: DataTypes['doing_it_wrong'] ): PanelMenu
 		id: 'doing_it_wrong',
 		panel: 'doing_it_wrong',
 		title: _x( 'Doing it Wrong', 'Doing it Wrong', 'query-monitor' ),
-		warning_count: data.actions.length,
-		classname: 'qm-notice',
+		notice_count: data.actions.length,
 	} ] : []
-);
-
-export const doingItWrongMenuClass = ( data: DataTypes['doing_it_wrong'] ): string[] => (
-	data.actions?.length ? [ 'qm-notice' ] : []
 );
 
 export const DoingItWrong = ( { data }: PanelProps<DataTypes['doing_it_wrong']> ) => {

@@ -7,36 +7,9 @@ import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
-import { __, _nx, sprintf } from '@wordpress/i18n';
+import { __, _nx } from '@wordpress/i18n';
 import { Icon } from '../components/icon';
 import { PanelMenuItem } from '../panels/panel-registry';
-
-export const phpErrorsMenuClass = ( data: DataTypes['php_errors'] ): string[] => {
-	const classes = new Set<string>();
-
-	for ( const error of Object.values( data.errors ?? {} ) ) {
-		if ( ! error.suppressed ) {
-			classes.add( `qm-${ error.level }` );
-		}
-	}
-
-	return Array.from( classes );
-};
-
-const phpErrorPluralLabels: Record<string, ( count: number ) => string> = {
-	deprecated: ( count ) =>
-		/* translators: %s: Number of deprecated PHP errors */
-		_nx( '%s Deprecated', '%s Deprecated', count, 'PHP error level', 'query-monitor' ),
-	strict: ( count ) =>
-		/* translators: %s: Number of strict PHP errors */
-		_nx( '%s Strict', '%s Stricts', count, 'PHP error level', 'query-monitor' ),
-	notice: ( count ) =>
-		/* translators: %s: Number of PHP notices */
-		_nx( '%s Notice', '%s Notices', count, 'PHP error level', 'query-monitor' ),
-	warning: ( count ) =>
-		/* translators: %s: Number of PHP warnings */
-		_nx( '%s Warning', '%s Warnings', count, 'PHP error level', 'query-monitor' ),
-};
 
 export const phpErrorsMenu = ( data: DataTypes['php_errors'] ): PanelMenuItem[] => {
 	const errors = Object.values( data.errors ?? {} );
@@ -45,54 +18,28 @@ export const phpErrorsMenu = ( data: DataTypes['php_errors'] ): PanelMenuItem[] 
 		return [];
 	}
 
-	const counts: Record<string, number> = {};
+	let notice_count = 0;
+	let warning_count = 0;
 
 	for ( const error of errors ) {
-		if ( ! error.suppressed ) {
-			counts[ error.level ] = ( counts[ error.level ] ?? 0 ) + error.count;
-		}
-	}
-
-	const parts: string[] = [];
-	let total = 0;
-
-	for ( const [ level, getLabel ] of Object.entries( phpErrorPluralLabels ) ) {
-		const count = counts[ level ];
-
-		if ( ! count ) {
+		if ( error.suppressed ) {
 			continue;
 		}
 
-		total += count;
-		parts.push( sprintf( getLabel( count ), Utils.numberFormat( count ) ) );
+		if ( error.level == 'warning' ) {
+			warning_count += error.count;
+		} else {
+			notice_count += error.count;
+		}
 	}
-
-	const title = parts.length
-		? sprintf(
-			/* translators: %s: List of PHP error types */
-			__( 'PHP Errors (%s)', 'query-monitor' ),
-			/* translators: used between list items, there is a space after the comma */
-			parts.reverse().join( __( ', ', 'query-monitor' ) ),
-		)
-		: __( 'PHP Errors', 'query-monitor' );
-
-	const classes = phpErrorsMenuClass( data );
 
 	return [
 		{
 			id: 'php_errors',
 			panel: 'php_errors',
-			title,
-			warning_count: total,
-			...( classes.length ? { classname: classes.join( ' ' ) } : {} ),
-			nav: false,
-		},
-		{
-			id: 'php_errors',
-			panel: 'php_errors',
 			title: __( 'PHP Errors', 'query-monitor' ),
-			warning_count: Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 ),
-			adminBar: false,
+			notice_count: ( notice_count || null ),
+			warning_count: ( warning_count || null ),
 		},
 	];
 };

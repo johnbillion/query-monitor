@@ -25,13 +25,9 @@ export const loggerMenu = ( data: DataTypes['logger'] ): PanelMenuItem[] => {
 		panel: 'logger',
 		title: __( 'Logs', 'query-monitor' ),
 		warning_count: warningCount || null,
-		count: logs.length || null,
+		ok_count: logs.length || null,
 	} ];
 };
-
-export const loggerMenuClass = ( data: DataTypes['logger'] ): string[] => (
-	( data.logs ?? [] ).some( ( log ) => isWarningLog( log.level ) ) ? [ 'qm-warning' ] : []
-);
 
 export const Logger = ( { data }: PanelProps<DataTypes['logger']> ) => {
 	const { settings } = useContext( MainContext );

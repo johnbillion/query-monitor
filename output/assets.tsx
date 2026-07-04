@@ -14,23 +14,19 @@ type AssetsPanelId = 'assets_scripts' | 'assets_styles';
 
 type AssetsData = DataTypes[AssetsPanelId];
 
-const assetsWarningCount = ( data: AssetsData ): number =>
-	( data.assets ?? [] ).filter( ( asset ) => asset.warning ).length;
-
 export const assetsMenu = ( id: AssetsPanelId, label: string, data: AssetsData ): PanelMenuItem[] => {
-	const warningCount = assetsWarningCount( data );
+	const warningCount = ( data.assets ?? [] ).filter( ( asset ) => asset.warning ).length;
 
 	return [ {
 		id,
 		panel: id,
 		title: label,
-		count: Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 ),
-		...( warningCount ? { warning_count: warningCount, classname: 'qm-error' } : {} ),
+		ok_count: Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 ),
+		...( warningCount ? {
+			warning_count: warningCount,
+		} : {} ),
 	} ];
 };
-
-export const assetsMenuClass = ( data: AssetsData ): string[] =>
-	assetsWarningCount( data ) > 0 ? [ 'qm-error' ] : [];
 
 type myProps = PanelProps<DataTypes['assets_scripts'] | DataTypes['assets_styles']> & {
 	labels: {

@@ -54,6 +54,8 @@
 	--qm-selection-bg:                 #B9D6FB;
 	--qm-badge-fg:                     #50575e;
 	--qm-badge-bg:                     #dcdcde;
+	--qm-badge-notice-fg:              #674e00;
+	--qm-badge-notice-bg:              #fcf6e1;
 	--qm-badge-warn-fg:                #8a2424;
 	--qm-badge-warn-bg:                #facfd2;
 	--qm-sql-keyword-fg:               #33a;
@@ -576,6 +578,11 @@ i {
 				color: #fff;
 			}
 
+			.qm-menu-badge-notice {
+				background: var( --qm-badge-notice-bg );
+				color: var( --qm-badge-notice-fg );
+			}
+
 			.qm-menu-badge-warning {
 				background: var( --qm-badge-warn-bg );
 				color: var( --qm-badge-warn-fg );
@@ -607,7 +614,7 @@ i {
 			color: var( --qm-panel-menu-fg-hover );
 		}
 
-		.qm-menu-badge + .qm-menu-badge-warning {
+		.qm-menu-badge + .qm-menu-badge {
 			margin-left: 0;
 		}
 	}

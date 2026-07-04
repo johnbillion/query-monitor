@@ -27,7 +27,6 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 			panel: 'db_errors',
 			title: __( 'Database Errors', 'query-monitor' ),
 			warning_count: data.errors.length,
-			classname: 'qm-warning',
 		} );
 	}
 
@@ -36,8 +35,7 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 			id: 'db_expensive',
 			panel: 'db_expensive',
 			title: __( 'Slow Queries', 'query-monitor' ),
-			warning_count: data.expensive.length,
-			classname: 'qm-expensive',
+			notice_count: data.expensive.length,
 		} );
 	}
 
@@ -46,7 +44,7 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 			id: 'db_dupes',
 			panel: 'db_dupes',
 			title: __( 'Duplicate Queries', 'query-monitor' ),
-			count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
+			ok_count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
 			adminBar: false,
 		} );
 	}
@@ -69,12 +67,17 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
+	const warningCount = data.errors?.length ?? 0;
+	const noticeCount = ( data.expensive?.length ?? 0 ) + ( data.dupes?.length ?? 0 );
+	const okCount = Math.max( ( data.total_qs ?? 0 ) - warningCount - noticeCount, 0 );
+
 	return [ {
 		id: 'db_queries',
 		panel: 'db_queries',
 		title: __( 'Database Queries', 'query-monitor' ),
-		count: data.total_qs ?? 0,
-		warning_count: data.errors?.length ?? 0,
+		ok_count: okCount || null,
+		notice_count: noticeCount || null,
+		warning_count: warningCount ?? null,
 		children,
 	} ];
 };
@@ -106,19 +109,6 @@ export const dbQueriesTitle = ( data: DataTypes['db_queries'] ): string[] => {
 	}
 
 	return titles;
-};
-
-export const dbQueriesMenuClass = ( data: DataTypes['db_queries'] ): string[] => {
-	const classes: string[] = [];
-
-	if ( data.errors?.length ) {
-		classes.push( 'qm-error' );
-	}
-	if ( data.expensive?.length ) {
-		classes.push( 'qm-expensive' );
-	}
-
-	return classes;
 };
 
 const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'failed' ) => {

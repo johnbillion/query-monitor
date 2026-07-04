@@ -16,22 +16,22 @@ import { DBComponents } from '../output/html/db_components';
 import { DBDupes } from '../output/html/db_dupes';
 import { DBErrors } from '../output/html/db_errors';
 import { DBExpensive } from '../output/html/db_expensive';
-import { DBQueries, dbQueriesMenu, dbQueriesTitle, dbQueriesMenuClass } from '../output/html/db_queries';
-import { DoingItWrong, doingItWrongMenu, doingItWrongMenuClass } from '../output/html/doing_it_wrong';
+import { DBQueries, dbQueriesMenu, dbQueriesTitle } from '../output/html/db_queries';
+import { DoingItWrong, doingItWrongMenu } from '../output/html/doing_it_wrong';
 import { Environment, environmentMenu } from '../output/html/environment';
 import { Hooks, hooksMenu } from '../output/html/hooks';
-import { HTTP, httpMenu, httpMenuClass } from '../output/html/http';
+import { HTTP, httpMenu } from '../output/html/http';
 import { Languages, languagesMenu } from '../output/html/languages';
-import { Logger, loggerMenu, loggerMenuClass } from '../output/html/logger';
+import { Logger, loggerMenu } from '../output/html/logger';
 import { Multisite, multisiteMenu } from '../output/html/multisite';
 import { Overview, overviewTitle, overviewMenu } from '../output/html/overview';
 import { Timeline, timelineMenu } from '../output/html/timeline';
-import { PHPErrors, phpErrorsMenu, phpErrorsMenuClass } from '../output/html/php_errors';
+import { PHPErrors, phpErrorsMenu } from '../output/html/php_errors';
 import { Request, requestMenu } from '../output/html/request';
 import { Headers } from '../output/html/headers';
 import { Settings } from '../output/html/settings';
-import { Scripts, scriptsMenu, scriptsMenuClass } from '../output/html/assets_scripts';
-import { Styles, stylesMenu, stylesMenuClass } from '../output/html/assets_styles';
+import { Scripts, scriptsMenu } from '../output/html/assets_scripts';
+import { Styles, stylesMenu } from '../output/html/assets_styles';
 import { Theme, themeMenu } from '../output/html/theme';
 import { Timing, timingMenu } from '../output/html/timing';
 import { Transients, transientsMenu } from '../output/html/transients';
@@ -53,6 +53,9 @@ export type iQMMenuItem = {
 	id: string;
 	panel: string;
 	title: string;
+	count?: number | null;
+	notice_count?: number | null;
+	warning_count?: number | null;
 	meta?: {
 		classname: string;
 	};
@@ -128,7 +131,8 @@ function toNavItem( item: PanelMenuItem, children: iNavMenu ): iNavMenuItem {
 	const navItem: iNavMenuItem = {
 		panel: item.panel,
 		title: item.title,
-		count: item.count ?? null,
+		ok_count: item.ok_count ?? null,
+		notice_count: item.notice_count ?? null,
 		warning_count: item.warning_count ?? null,
 		new: item.new ?? false,
 	};
@@ -170,6 +174,9 @@ function buildSub( items: PanelMenuItem[] ): iQMMenu[ 'sub' ] {
 				id: item.id,
 				panel: item.panel,
 				title: item.title,
+				count: item.ok_count ?? null,
+				notice_count: item.notice_count ?? null,
+				warning_count: item.warning_count ?? null,
 				...( item.classname ? { meta: { classname: item.classname } } : {} ),
 			};
 		}
@@ -186,7 +193,7 @@ function buildSub( items: PanelMenuItem[] ): iQMMenu[ 'sub' ] {
  * panels using the PHP filters) are appended to the bottom in their server order.
  */
 export function buildMenus( server: iQM ): { menu: iQMMenu; panel_menu: iNavMenu } {
-	const { items, menuTitle, menuClass } = collectMenuContributions(
+	const { items, menuTitle } = collectMenuContributions(
 		server.data as PanelDataMap,
 	);
 
@@ -199,11 +206,19 @@ export function buildMenus( server: iQM ): { menu: iQMMenu; panel_menu: iNavMenu
 	const panel_menu: iNavMenu = { ...buildNav( tops ), ...normaliseMenu( server.panel_menu ) };
 	const sub: iQMMenu[ 'sub' ] = { ...buildSub( tops ), ...server.menu.sub };
 
+	let menuClass = '';
+
+	if ( Object.values( sub ).some( ( item ) => item.warning_count && item.warning_count > 0 ) ) {
+		menuClass = 'qm-warning';
+	} else if ( Object.values( sub ).some( ( item ) => item.notice_count && item.notice_count > 0 ) ) {
+		menuClass = 'qm-notice';
+	}
+
 	return {
 		menu: {
 			top: {
 				title: [ ...menuTitle, ...server.menu.top.title ],
-				classname: [ server.menu.top.classname, ...menuClass ].join( ' ' ),
+				classname: [ server.menu.top.classname, menuClass ].join( ' ' ),
 			},
 			sub,
 		},
@@ -320,7 +335,6 @@ export function registerAllPanels(): void {
 			order: 20,
 			menu: dbQueriesMenu,
 			menuTitle: dbQueriesTitle,
-			menuClass: dbQueriesMenuClass
 		}
 	);
 	registerPanel(
@@ -330,7 +344,6 @@ export function registerAllPanels(): void {
 			data: 'doing_it_wrong',
 			order: 15,
 			menu: doingItWrongMenu,
-			menuClass: doingItWrongMenuClass
 		}
 	);
 	registerPanel(
@@ -358,7 +371,6 @@ export function registerAllPanels(): void {
 			data: 'http',
 			order: 90,
 			menu: httpMenu,
-			menuClass: httpMenuClass
 		}
 	);
 	registerPanel(
@@ -377,7 +389,6 @@ export function registerAllPanels(): void {
 			data: 'logger',
 			order: 47,
 			menu: loggerMenu,
-			menuClass: loggerMenuClass
 		}
 	);
 	registerPanel(
@@ -396,7 +407,6 @@ export function registerAllPanels(): void {
 			data: 'php_errors',
 			order: 10,
 			menu: phpErrorsMenu,
-			menuClass: phpErrorsMenuClass
 		}
 	);
 	registerPanel(
@@ -429,7 +439,6 @@ export function registerAllPanels(): void {
 			data: 'assets_scripts',
 			order: 70,
 			menu: scriptsMenu,
-			menuClass: scriptsMenuClass
 		}
 	);
 	registerPanel(
@@ -439,7 +448,6 @@ export function registerAllPanels(): void {
 			data: 'assets_styles',
 			order: 71,
 			menu: stylesMenu,
-			menuClass: stylesMenuClass
 		}
 	);
 	registerPanel(

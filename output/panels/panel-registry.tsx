@@ -21,7 +21,8 @@ export interface PanelMenuItem {
 	id: string;
 	panel: string;
 	title: string;
-	count?: number | null;
+	ok_count?: number | null;
+	notice_count?: number | null;
 	warning_count?: number | null;
 	classname?: string;
 	/** Entries nested beneath this one in the nav menu, in display order. */
@@ -43,7 +44,6 @@ interface Panel<TDataKey extends keyof DataTypes> {
 	order?: number;
 	menu?: ( data: DataTypes[ TDataKey ], enabled: boolean ) => PanelMenuItem[];
 	menuTitle?: ( data: DataTypes[ TDataKey ] ) => string[];
-	menuClass?: ( data: DataTypes[ TDataKey ] ) => string[];
 }
 
 interface OverviewPanel<TDataKey extends keyof DataTypes> {
@@ -89,7 +89,7 @@ export const registerPanel = <
 				panel: `${id}-concerned_hooks`,
 				parent: id,
 				title: __( 'Hooks in Use', 'query-monitor' ),
-				count,
+				ok_count: count,
 				adminBar: false,
 			} ];
 		},
@@ -149,7 +149,6 @@ export const collectMenuContributions = (
 ) => {
 	const items: PanelMenuItem[] = [];
 	const menuTitle: string[] = [];
-	const menuClass: string[] = [];
 
 	for ( const panel of Object.values( panels ) ) {
 		if ( panel.type === 'overview' ) {
@@ -184,9 +183,6 @@ export const collectMenuContributions = (
 		if ( panel.menuTitle ) {
 			menuTitle.push( ...panel.menuTitle( panelData ) );
 		}
-		if ( panel.menuClass ) {
-			menuClass.push( ...panel.menuClass( panelData ) );
-		}
 	}
 
 	// Nest any item that declared a parent beneath that parent's entry. An item
@@ -206,5 +202,5 @@ export const collectMenuContributions = (
 		return false;
 	} );
 
-	return { items: topLevel, menuTitle, menuClass };
+	return { items: topLevel, menuTitle };
 }

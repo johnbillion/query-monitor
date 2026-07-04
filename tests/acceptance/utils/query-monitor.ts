@@ -150,10 +150,11 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Assert that the QM menu is visible without any warning/notice indicators
+	 * Assert that the QM menu is visible without any error/warning/notice indicators
 	 */
 	async seeQMMenu() {
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor' ) ).toBeVisible();
+		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-error' ) ).not.toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-warning' ) ).not.toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-notice' ) ).not.toBeVisible();
 	}

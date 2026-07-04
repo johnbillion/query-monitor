@@ -6,12 +6,10 @@ import {
 } from '@wordpress/i18n';
 import { PanelMenuItem } from '../panels/panel-registry';
 
-import Assets, { assetsMenu, assetsMenuClass } from '../assets';
+import Assets, { assetsMenu } from '../assets';
 
 export const scriptsMenu = ( data: DataTypes['assets_scripts'] ): PanelMenuItem[] =>
 	assetsMenu( 'assets_scripts', _x( 'Scripts', 'Enqueued scripts', 'query-monitor' ), data );
-
-export const scriptsMenuClass = assetsMenuClass;
 
 export const Scripts = ( props: PanelProps<DataTypes['assets_scripts']> ) => {
 	return (

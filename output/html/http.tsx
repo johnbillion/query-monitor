@@ -29,15 +29,10 @@ export const httpMenu = ( data: DataTypes['http'] ): PanelMenuItem[] => {
 		id: 'http',
 		panel: 'http',
 		title: __( 'HTTP API Calls', 'query-monitor' ),
-		count: count || null,
+		ok_count: count || null,
 		warning_count: errorCount || null,
-		...( errorCount ? { classname: 'qm-warning' } : {} ),
 	} ];
 };
-
-export const httpMenuClass = ( data: DataTypes['http'] ): string[] => (
-	Object.keys( data.errors ?? {} ).length ? [ 'qm-warning' ] : []
-);
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return ( ! row.url.startsWith( 'https://' ) ) && ( 'localhost' !== row.host );

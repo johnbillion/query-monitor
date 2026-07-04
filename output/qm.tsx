@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 
 import { __ } from '@wordpress/i18n';
 
-import { Nav, iNavMenu, NavSelect } from './nav';
+import { Nav, iNavMenu, NavSelect, Badges } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
 const devCssUrl = import.meta.env.DEV
@@ -40,6 +40,9 @@ type Props = {
 				id: string;
 				panel: string;
 				title: string;
+				count?: number | null;
+				notice_count?: number | null;
+				warning_count?: number | null;
 				meta?: {
 					classname: string;
 				}
@@ -201,7 +204,7 @@ export const QM = ( props: Props ) => {
 		},
 	};
 
-	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
+	// Apply the menu class (qm-warning, qm-notice, or qm-error) to the admin bar element
 	useEffect( () => {
 		if ( ! inWP ) {
 			return;
@@ -426,6 +429,7 @@ export const QM = ( props: Props ) => {
 										} }
 									>
 										{ menu.title }
+										<Badges item={ menu } seen={ true } />
 									</a>
 								</li>
 							) ) }

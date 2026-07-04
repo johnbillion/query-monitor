@@ -16,7 +16,7 @@ export const transientsMenu = ( data: DataTypes['transients'] ): PanelMenuItem[]
 	id: 'transients',
 	panel: 'transients',
 	title: __( 'Transient Updates', 'query-monitor' ),
-	count: data.trans?.length || null,
+	ok_count: data.trans?.length || null,
 } ];
 
 export const Transients = ( { data }: PanelProps<DataTypes['transients']> ) => {

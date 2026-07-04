@@ -29,63 +29,62 @@
 		}
 	}
 
-	/* Top and submenu items for PHP stricts, deprecateds, and notices */
-	.qm-strict,
-	.qm-deprecated,
-	.qm-notice {
-		background-color: var( --qm-menu-notice-bg ) !important;
-	}
-
-	/* Submenu item links for PHP stricts, deprecateds, and notices */
-	.ab-submenu .qm-strict a,
-	.ab-submenu .qm-deprecated a,
-	.ab-submenu .qm-notice a {
-		color: rgba( 255, 255, 255, 0.8 ) !important;
-
+	/* Submenu item badges */
+	.ab-submenu a {
 		&:focus,
 		&:hover {
-			background-color: var( --qm-menu-notice-bg-hover ) !important;
-			color: rgba( 255, 255, 255, 0.7 ) !important;
-		}
-	}
-
-	/* Top and submenu items for slow database queries */
-	.qm-expensive {
-		background-color: var( --qm-menu-expensive-bg ) !important;
-	}
-
-	/* Submenu item links for slow database queries */
-	.ab-submenu .qm-expensive a {
-		color: rgba( 255, 255, 255, 0.8 ) !important;
-
-		&:focus,
-		&:hover {
-			background-color: var( --qm-menu-expensive-bg-hover );
-			color: rgba( 255, 255, 255, 0.7 ) !important;
-		}
-	}
-
-	/* Top and submenu items for errors and warnings */
-	.qm-error,
-	.qm-warning {
-		background-color: var( --qm-menu-warning-bg ) !important;
-	}
-
-	/* Submenu item links for errors and warnings */
-	.ab-submenu .qm-error a,
-	.ab-submenu .qm-warning a {
-		color: rgba( 255, 255, 255, 0.9 ) !important;
-
-		&:focus,
-		&:hover {
-			background-color: var( --qm-menu-warning-bg-hover ) !important;
-			color: rgba( 255, 255, 255, 0.8 ) !important;
+			.qm-menu-badge {
+				opacity: 0.8;
+			}
 		}
 	}
 
 	#wp-admin-bar-query-monitor {
+		/* Top-level toolbar item for notices */
+		&.qm-notice {
+			background-color: var( --qm-menu-notice-bg ) !important;
+		}
+
+		/* Top-level toolbar item for errors and warnings */
+		&.qm-error,
+		&.qm-warning {
+			background-color: var( --qm-menu-warning-bg ) !important;
+		}
+
 		small {
 			font-size: 11px !important;
+		}
+
+		.ab-submenu .ab-item {
+			display: flex !important;
+			align-items: center;
+		}
+
+		.qm-menu-badge {
+			background: #50626f;
+			border-radius: 99px;
+			color: #eee;
+			font-size: 10.5px;
+			font-weight: 600;
+			line-height: 1;
+			margin-left: auto;
+			/* min-width: 18px; */
+			padding: 3px 7px;
+			text-align: center;
+		}
+
+		.qm-menu-badge-notice {
+			background: var( --qm-menu-notice-bg );
+			color: #eee;
+		}
+
+		.qm-menu-badge-warning {
+			background: var( --qm-menu-warning-bg );
+			color: #eee;
+		}
+
+		.qm-menu-badge + .qm-menu-badge {
+			margin-left: 6px;
 		}
 	}
 }
