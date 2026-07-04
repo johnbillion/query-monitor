@@ -44,7 +44,7 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 			id: 'db_dupes',
 			panel: 'db_dupes',
 			title: __( 'Duplicate Queries', 'query-monitor' ),
-			ok_count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
+			notice_count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
 			adminBar: false,
 		} );
 	}

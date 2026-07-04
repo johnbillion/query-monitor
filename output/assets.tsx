@@ -16,15 +16,14 @@ type AssetsData = DataTypes[AssetsPanelId];
 
 export const assetsMenu = ( id: AssetsPanelId, label: string, data: AssetsData ): PanelMenuItem[] => {
 	const warningCount = ( data.assets ?? [] ).filter( ( asset ) => asset.warning ).length;
+	const totalCount = Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 );
 
 	return [ {
 		id,
 		panel: id,
 		title: label,
-		ok_count: Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 ),
-		...( warningCount ? {
-			warning_count: warningCount,
-		} : {} ),
+		ok_count: ( totalCount - warningCount ),
+		warning_count: warningCount || null,
 	} ];
 };
 

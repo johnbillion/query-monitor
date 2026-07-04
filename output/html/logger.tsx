@@ -25,7 +25,7 @@ export const loggerMenu = ( data: DataTypes['logger'] ): PanelMenuItem[] => {
 		panel: 'logger',
 		title: __( 'Logs', 'query-monitor' ),
 		warning_count: warningCount || null,
-		ok_count: logs.length || null,
+		ok_count: ( logs.length - warningCount ) || null,
 	} ];
 };
 

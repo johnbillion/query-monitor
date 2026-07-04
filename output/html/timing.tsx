@@ -19,7 +19,7 @@ export const timingMenu = ( data: DataTypes['timing'] ): PanelMenuItem[] => {
 		id: 'timing',
 		panel: 'timing',
 		title: __( 'Timings', 'query-monitor' ),
-		ok_count: count || null,
+		ok_count: ( count - warningCount ) || null,
 		warning_count: warningCount || null,
 	} ];
 };

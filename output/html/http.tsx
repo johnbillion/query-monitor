@@ -29,7 +29,7 @@ export const httpMenu = ( data: DataTypes['http'] ): PanelMenuItem[] => {
 		id: 'http',
 		panel: 'http',
 		title: __( 'HTTP API Calls', 'query-monitor' ),
-		ok_count: count || null,
+		ok_count: ( count - errorCount ) || null,
 		warning_count: errorCount || null,
 	} ];
 };
