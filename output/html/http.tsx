@@ -4,6 +4,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
+import { ApproximateSize } from '../components/approximate-size';
 import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
 import type { FilterOption } from '../table';
 import { Duration } from '../components/duration';
@@ -14,6 +15,7 @@ import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import {
 	__,
+	_x,
 	sprintf,
 } from '@wordpress/i18n';
 import { PanelMenuItem } from '../panels/panel-registry';
@@ -159,7 +161,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						'namelookup_time' in info ||
 						'connect_time' in info ||
 						'starttransfer_time' in info ||
-						'size_download' in info ||
 						'content_type' in info ||
 						'primary_ip' in info
 					);
@@ -177,8 +178,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					const otherFields: FilterOption[] = [
 						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
 					];
-
-					const sizeDownload = 'size_download' in info ? info.size_download as number : null;
 
 					return (
 						<Toggler summary={ statusText }>
@@ -198,11 +197,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										</li>
 									);
 								} ) }
-								{ sizeDownload !== null && (
-									<li key="size_download" className="qm-info qm-supplemental">
-										{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
-									</li>
-								) }
 								{ otherFields.map( ( { key, label } ) => {
 									if ( ! ( key in info ) ) {
 										return null;
@@ -239,6 +233,19 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 			caller: getCallerCol( data.http, settings ),
 			component: getComponentCol( data.http ),
+			size: {
+				heading: _x( 'Size', 'size of HTTP response', 'query-monitor' ),
+				className: 'qm-num',
+				render: ( row ) => {
+					const info = row.info && typeof row.info === 'object' ? row.info : null;
+
+					if ( ! info || ! ( 'size_download' in info ) ) {
+						return '';
+					}
+
+					return <ApproximateSize value={ info.size_download as number } />;
+				},
+			},
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',
