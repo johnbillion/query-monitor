@@ -43,9 +43,6 @@ type Props = {
 				ok_count?: number | null;
 				notice_count?: number | null;
 				warning_count?: number | null;
-				meta?: {
-					classname: string;
-				}
 			}
 		}
 	};
@@ -418,7 +415,7 @@ export const QM = ( props: Props ) => {
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">
 							{ Object.values( props.menu.sub ).map( ( menu ) => (
-								<li key={ menu.id } className={ clsx( menu.meta && menu.meta.classname ) }>
+								<li key={ menu.id } className={ `qm-item-${menu.panel}` }>
 									<a
 										className="ab-item"
 										href={ `#qm-${ menu.panel }` }

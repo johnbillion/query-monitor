@@ -20,7 +20,7 @@
 	--qm-menu-true-fg-hover: #47a747;
 
 	/* True conditionals */
-	.quicklinks .menupop ul li.qm-true > a {
+	.quicklinks .menupop ul li.qm-item-conditionals > a {
 		color: var( --qm-menu-true-fg ) !important;
 
 		&:focus,

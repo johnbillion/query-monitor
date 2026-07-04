@@ -11,7 +11,6 @@ export const conditionalsMenu = ( data: DataTypes['conditionals'] ): PanelMenuIt
 		id: `conditionals-${ cond }`,
 		panel: 'conditionals',
 		title: `${ cond }()`,
-		classname: 'qm-true qm-ltr',
 		nav: false,
 	} ) );
 

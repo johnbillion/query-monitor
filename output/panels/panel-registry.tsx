@@ -24,7 +24,6 @@ export interface PanelMenuItem {
 	ok_count?: number | null;
 	notice_count?: number | null;
 	warning_count?: number | null;
-	classname?: string;
 	/** Entries nested beneath this one in the nav menu, in display order. */
 	children?: PanelMenuItem[];
 	/** id of the item this entry should be nested beneath as a child. */
