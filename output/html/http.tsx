@@ -4,6 +4,7 @@ import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
+import { Notice } from '../components/notice';
 import { ApproximateSize } from '../components/approximate-size';
 import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
 import type { FilterOption } from '../table';
@@ -80,9 +81,9 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					<>
 						{ hasHttpsWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ __( 'Request to a non-HTTPS URL', 'query-monitor' ) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ hasSslVerifyWarning( row ) && (
@@ -98,13 +99,13 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						) }
 						{ hasInterceptedWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ sprintf(
 										/* translators: %s: WordPress filter name */
 										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
 										'pre_http_request'
 									) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ row.args.method === 'GET' ? (

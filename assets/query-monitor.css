@@ -47,6 +47,8 @@
 	--qm-warn-bg-dark:                 #fceced;
 	--qm-warn-bg-hover:                #fdeced;
 	--qm-warn-border:                  #facfd2;
+	--qm-notice-fg:                    #674e00;
+	--qm-notice-bg:                    #fcf6e1;
 	--qm-title-bg:                     #ececec;
 	--qm-selection-fg:                 #1e1e1e;
 	--qm-selection-bg:                 #B9D6FB;
@@ -105,6 +107,8 @@
 		--qm-warn-bg-dark:                 #6c2424;
 		--qm-warn-bg-hover:                #7a2a2a;
 		--qm-warn-border:                  #ffd6d6;
+		--qm-notice-fg:                    #fbf3d0;
+		--qm-notice-bg:                    #5c4a14;
 		--qm-title-bg:                     #3e444a;
 		--qm-selection-fg:                 #32373c;
 		--qm-selection-bg:                 #B9D6FB;
@@ -1161,6 +1165,16 @@ i {
 
 	.qm-icon {
 		fill: var( --qm-warn-fg );
+	}
+}
+
+.qm-non-tabular .qm-notice,
+.qm tbody tr:not(.qm-warn) .qm-notice {
+	background-color: var( --qm-notice-bg );
+	color: var( --qm-notice-fg );
+
+	.qm-icon {
+		fill: var( --qm-notice-fg );
 	}
 }
 
