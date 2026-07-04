@@ -114,7 +114,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		{ key: 'notice', label: 'Notice' },
 		{ key: 'strict', label: 'Strict' },
 		{ key: 'deprecated', label: 'Deprecated' },
-	] );
+	], ( row ) => row.count );
 	const showWarning = Utils.phpErrorHasError;
 
 	return <TabularPanel

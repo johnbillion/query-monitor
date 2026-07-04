@@ -119,11 +119,12 @@ export const buildCountedFilters = <TDataRow,>(
 	rows: TDataRow[],
 	getKey: ( row: TDataRow ) => string,
 	options: FilterOption[],
+	getCount: ( row: TDataRow ) => number = () => 1,
 ): FilterOption[] => {
 	const counts: Record<string, number> = {};
 	for ( const row of rows ) {
 		const k = getKey( row );
-		counts[ k ] = ( counts[ k ] || 0 ) + 1;
+		counts[ k ] = ( counts[ k ] || 0 ) + getCount( row );
 	}
 	return options.map( ( { key, label } ) => ( {
 		key,
