@@ -9,8 +9,6 @@ import {
 	sprintf,
 } from '@wordpress/i18n';
 import { PanelMenuItem } from './panels/panel-registry';
-import { PanelFooter } from './panels/panel-footer';
-import { useMemo } from 'preact/hooks';
 
 type AssetsPanelId = 'assets_scripts' | 'assets_styles';
 
