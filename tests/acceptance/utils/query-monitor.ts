@@ -160,11 +160,20 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Assert that a submenu item in the admin bar dropdown with the given class contains the given text.
+	 * Assert that the submenu item for the given panel contains the given text.
 	 */
-	async seeQMSubMenuItemWithText( className: string, text: string ) {
-		const item = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.${className}` );
+	async seeQMSubMenuItemWithText( panel: string, text: string ) {
+		const item = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.qm-item-${ panel }` );
 		await expect( item ).toContainText( text );
+	}
+
+	/**
+	 * Assert that the submenu item for the given panel displays a badge of the
+	 * given type (ok, notice, warning, new) containing the given text.
+	 */
+	async seeQMSubMenuItemWithBadge( panel: string, type: string, text: string ) {
+		const badge = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.qm-item-${ panel } .qm-menu-badge-${ type }` );
+		await expect( badge ).toHaveText( text );
 	}
 
 	/**

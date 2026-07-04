@@ -89,8 +89,8 @@ test.describe( 'Enqueued Scripts', () => {
 	test( 'Missing dependencies should be flagged', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'missing-dependency' );
 
-		// The toolbar menu shows an error indicator.
-		await QueryMonitor.seeQMMenuWithError();
+		// The toolbar menu shows a warning indicator.
+		await QueryMonitor.seeQMMenuWithWarning();
 
 		// The Scripts panel menu entry shows a warning count bubble.
 		await QueryMonitor.seeWarningBubbleInQMPanelMenu( 'Scripts' );
