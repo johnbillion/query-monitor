@@ -67,17 +67,13 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
-	const warningCount = data.errors?.length ?? 0;
-	const noticeCount = ( data.expensive?.length ?? 0 ) + ( data.dupes?.length ?? 0 );
-	const okCount = Math.max( ( data.total_qs ?? 0 ) - warningCount - noticeCount, 0 );
+	const okCount = ( data.total_qs ?? 0 );
 
 	return [ {
 		id: 'db_queries',
 		panel: 'db_queries',
 		title: __( 'Database Queries', 'query-monitor' ),
 		ok_count: okCount || null,
-		notice_count: noticeCount || null,
-		warning_count: warningCount ?? null,
 		children,
 	} ];
 };
