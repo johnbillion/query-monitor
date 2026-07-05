@@ -30,7 +30,8 @@ export type Col<TDataRow> = {
 	render: ( row: TDataRow, i: number ) => ( ComponentChildren | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
-	cellHasError?: ( row: TDataRow, i: number ) => boolean;
+	cellHasNotice?: ( row: TDataRow, i: number ) => boolean;
+	cellHasWarning?: ( row: TDataRow, i: number ) => boolean;
 	wrap?: boolean;
 	rowSpan?: ( row: TDataRow, i: number, data: TDataRow[] ) => number;
 }
@@ -217,7 +218,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Duration value={ row.ltime ?? 0 } />,
-		cellHasError: ( row, i ) => slow && slow( row, i ),
+		cellHasNotice: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
 			default: 'desc',
@@ -508,7 +509,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 								<td
 									key={ key }
 									className={ clsx( `qm-cell-${key}`, typeof col.className === 'function' ? col.className( row, i ) : col.className, {
-										'qm-warn': col.cellHasError && col.cellHasError( row, i ),
+										'qm-notice': col.cellHasNotice && col.cellHasNotice( row, i ),
 										'qm-wrap': col.wrap,
 									} ) }
 									rowSpan={ span > 1 ? span : undefined }
