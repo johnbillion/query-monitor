@@ -24,42 +24,24 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 	public function get_output() {
 		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
-		$headers = array();
 
-		if ( empty( $data->errors ) ) {
-			return array();
-		}
-
-		$count = 0;
+		$counts = [];
 
 		foreach ( $data->errors as $error ) {
-			$count++;
-
-			$stack = isset( $error->trace ) ? $error->trace->get_stack() : array();
-			$component = isset( $error->trace ) ? $error->trace->get_component()->name : '';
-			$callsite = isset( $error->trace ) ? $error->trace->get_callsite() : null;
-
-			$output_error = array(
-				'level' => $error->level,
-				'message' => $error->message,
-				'file' => $callsite ? QM_Util::standard_dir( $callsite->file, '' ) : '',
-				'line' => $callsite->line ?? null,
-				'stack' => $stack,
-				'component' => $component,
-			);
-
-			$key = sprintf( 'error-%d', $count );
-			$headers[ $key ] = wp_json_encode( $output_error );
+			if ( ! isset( $counts[ $error->level ] ) ) {
+				$counts[ $error->level ] = 0;
+			}
+			$counts[ $error->level ]++;
 		}
 
-		return array_merge(
-			array(
-				'count' => $count,
-			),
-			$headers
-		);
-	}
+		$output = [];
 
+		foreach ( $counts as $level => $count ) {
+			$output[ "count-{$level}" ] = $count;
+		}
+
+		return $output;
+	}
 }
 
 /**
