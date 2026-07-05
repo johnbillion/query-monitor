@@ -23,52 +23,11 @@ class QM_Output_Html_DB_Dupes extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 45 );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 25 );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Duplicate Queries', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Collector_DB_Queries|null $dbq */
-		$dbq = QM_Collectors::get( 'db_queries' );
-
-		/** @var QM_Data_DB_Queries $dbq_data */
-		$dbq_data = $dbq->get_data();
-
-		if ( ! empty( $dbq_data->dupes ) ) {
-			$menu[ $this->collector->id() ] = $this->menu( array(
-				'title' => __( 'Duplicate Queries', 'query-monitor' ),
-				'count' => array_sum( array_column( $dbq_data->dupes, 'count' ) ),
-			) );
-		}
-
-		return $menu;
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function panel_menu( array $menu ) {
-		$id = $this->collector->id();
-		if ( isset( $menu[ $id ] ) ) {
-			$menu['qm-db_queries']['children'][] = $menu[ $id ];
-			unset( $menu[ $id ] );
-		}
-
-		return $menu;
 	}
 
 }

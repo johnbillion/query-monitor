@@ -8,9 +8,21 @@ import { Warning } from '../components/warning';
 import { DataTypes, Backtrace } from '../data-types';
 import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
-import {
-	__,
-} from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const timingMenu = ( data: DataTypes['timing'] ): PanelMenuItem[] => {
+	const count = ( data.timing?.length ?? 0 ) + ( data.warning?.length ?? 0 );
+	const warningCount = data.warning?.length ?? 0;
+
+	return [ {
+		id: 'timing',
+		panel: 'timing',
+		title: __( 'Timings', 'query-monitor' ),
+		ok_count: ( count - warningCount ) || null,
+		warning_count: warningCount || null,
+	} ];
+};
 
 interface LapData {
 	time: number;

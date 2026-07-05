@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	/**
@@ -471,10 +474,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 */
 		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
 
-		if ( false === strpos( $class, 'qm-' ) ) {
-			$class .= ' qm-all-clear';
-		}
-
 		/**
 		 * Filters the title used in Query Monitor's admin toolbar menu.
 		 *
@@ -552,13 +551,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @param string $error
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
 	public function output_fatal( $error, array $e ): void {
 		// This hides the subsequent message from the fatal error handler in core. It cannot be

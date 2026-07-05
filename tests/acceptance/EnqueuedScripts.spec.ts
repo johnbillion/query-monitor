@@ -89,8 +89,8 @@ test.describe( 'Enqueued Scripts', () => {
 	test( 'Missing dependencies should be flagged', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'missing-dependency' );
 
-		// The toolbar menu shows an error indicator.
-		await QueryMonitor.seeQMMenuWithError();
+		// The toolbar menu shows a warning indicator.
+		await QueryMonitor.seeQMMenuWithWarning();
 
 		// The Scripts panel menu entry shows a warning count bubble.
 		await QueryMonitor.seeWarningBubbleInQMPanelMenu( 'Scripts' );
@@ -104,5 +104,18 @@ test.describe( 'Enqueued Scripts', () => {
 
 		await expect( warningRow ).toBeVisible();
 		await expect( warningRow ).toContainText( 'qm-nonexistent-dependency' );
+	} );
+
+	test( 'Asset transfer size should be displayed', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageWithEnqueuedScripts( 'with-size' );
+
+		// The Size column shows the transferred size in kB for a script the browser loaded.
+		await QueryMonitor.seeTableRowInQMPanel( 'Scripts', {
+			'Handle': 'qm-test-with-size',
+			'Size': 'kB',
+		} );
+
+		// The panel footer shows a total transfer size in kB.
+		await expect( QueryMonitor.getVisiblePanel().locator( 'tfoot' ) ).toContainText( 'kB' );
 	} );
 } );

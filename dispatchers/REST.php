@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	public $id = 'rest';
@@ -81,13 +84,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @param string $message
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
 	public function output_fatal( $message, array $e ): void {
 		if ( ! headers_sent() ) {

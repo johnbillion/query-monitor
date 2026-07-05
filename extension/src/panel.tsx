@@ -4,7 +4,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { QM } from '../../output/qm';
 import { DurationUnit } from '../../output/contexts/main-context';
 
-import { iQM, type iQMData, initializeQMData, mergeSettings, registerAllPanels } from '../../src/panels';
+import { iQM, type iQMData, initializeQMData, mergeSettings, registerAllPanels, buildMenus } from '../../src/panels';
 
 /**
  * Wrapper component that manages data fetching from the inspected page
@@ -83,6 +83,7 @@ const ExtensionPanel = () => {
 	}
 
 	const settings = mergeSettings( qmData );
+	const { menu, panel_menu } = buildMenus( qmData );
 
 	const panelKey = 'qm-extension-panel';
 	const themeKey = 'qm-theme';
@@ -100,8 +101,8 @@ const ExtensionPanel = () => {
 			isRtl={ false }
 			active={ active }
 			cssUrl=""
-			menu={ qmData.menu }
-			panel_menu={ qmData.panel_menu }
+			menu={ menu }
+			panel_menu={ panel_menu }
 			data={ qmData.data }
 			settings={ settings }
 			side={ true }

@@ -8,12 +8,104 @@ import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import { PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
 
 import {
 	__,
+	_n,
+	_x,
 	sprintf,
 } from '@wordpress/i18n';
+
+export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] => {
+	const children: PanelMenuItem[] = [];
+
+	if ( data.errors?.length ) {
+		children.push( {
+			id: 'db_errors',
+			panel: 'db_errors',
+			title: __( 'Database Errors', 'query-monitor' ),
+			warning_count: data.errors.length,
+		} );
+	}
+
+	if ( data.expensive?.length ) {
+		children.push( {
+			id: 'db_expensive',
+			panel: 'db_expensive',
+			title: __( 'Slow Queries', 'query-monitor' ),
+			notice_count: data.expensive.length,
+		} );
+	}
+
+	if ( data.dupes?.length ) {
+		children.push( {
+			id: 'db_dupes',
+			panel: 'db_dupes',
+			title: __( 'Duplicate Queries', 'query-monitor' ),
+			notice_count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
+			adminBar: false,
+		} );
+	}
+
+	if ( data.rows?.length ) {
+		children.push( {
+			id: 'db_callers',
+			panel: 'db_callers',
+			title: __( 'Queries by Caller', 'query-monitor' ),
+			adminBar: false,
+		} );
+	}
+
+	if ( data.rows?.length && data.has_trace ) {
+		children.push( {
+			id: 'db_components',
+			panel: 'db_components',
+			title: __( 'Queries by Component', 'query-monitor' ),
+			adminBar: false,
+		} );
+	}
+
+	const okCount = ( data.total_qs ?? 0 );
+
+	return [ {
+		id: 'db_queries',
+		panel: 'db_queries',
+		title: __( 'Database Queries', 'query-monitor' ),
+		ok_count: okCount || null,
+		children,
+	} ];
+};
+
+export const dbQueriesTitle = ( data: DataTypes['db_queries'] ): string[] => {
+	const titles: string[] = [];
+
+	const queryCount = (): string => (
+		sprintf(
+			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
+			_n( '%s Q', '%s Q', data.total_qs, 'query-monitor' ) || '%s Q',
+			Utils.numberFormat( data.total_qs ),
+		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' )
+	);
+
+	if ( data.rows ) {
+		const totalTime = data.rows.reduce( ( sum, row ) => sum + row.ltime, 0 );
+
+		titles.push(
+			sprintf(
+				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+				_x( '%ss', 'Time in seconds', 'query-monitor' ),
+				Utils.numberFormat( totalTime, 2 )
+			)
+		);
+		titles.push( queryCount() );
+	} else if ( data.total_qs != null ) {
+		titles.push( queryCount() );
+	}
+
+	return titles;
+};
 
 const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'failed' ) => {
 	switch ( reason ) {
@@ -78,12 +170,11 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		) : undefined }
 		cols={ {
 			i: {
-				className: 'qm-num',
+				className: 'qm-i',
 				heading: '#',
 				render: ( row, i ) => ( i + 1 ),
 			},
 			sql: {
-				className: ( row ) => Utils.getQueryType( row.sql ) !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
 					<>

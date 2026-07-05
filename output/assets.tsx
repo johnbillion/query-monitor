@@ -1,5 +1,7 @@
+import { useMemo } from 'preact/hooks';
 import { EmptyPanel } from './panels/empty-panel';
 import { TabularPanel } from './panels/tabular-panel';
+import { PanelFooter } from './panels/panel-footer';
 import * as Utils from './utils';
 import { Warning } from './components/warning';
 import { Asset as AssetDataType, DataTypes } from './data-types';
@@ -8,11 +10,54 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from './panels/panel-registry';
+
+type AssetsPanelId = 'assets_scripts' | 'assets_styles';
+
+type AssetsData = DataTypes[AssetsPanelId];
+
+export const assetsMenu = ( id: AssetsPanelId, label: string, data: AssetsData ): PanelMenuItem[] => {
+	const warningCount = ( data.assets ?? [] ).filter( ( asset ) => asset.warning ).length;
+	const totalCount = Object.values( data.types ?? {} ).reduce( ( sum, value ) => sum + value, 0 );
+
+	return [ {
+		id,
+		panel: id,
+		title: label,
+		ok_count: ( totalCount - warningCount ),
+		warning_count: warningCount || null,
+	} ];
+};
 
 type myProps = PanelProps<DataTypes['assets_scripts'] | DataTypes['assets_styles']> & {
 	labels: {
 		none: string;
 	};
+};
+
+type AssetRow = AssetDataType & {
+	size: number;
+};
+
+/**
+ * Builds a map of asset URL to its transferred body size, using the Performance
+ * Resource Timing API. Cross-origin resources report 0 unless the server sends
+ * a Timing-Allow-Origin header, so those are recorded as 0 (unknown).
+ */
+const getAssetSizes = (): Map<string, number> => {
+	const sizes = new Map<string, number>();
+
+	if ( typeof performance === 'undefined' || ! performance.getEntriesByType ) {
+		return sizes;
+	}
+
+	for ( const entry of performance.getEntriesByType( 'resource' ) as PerformanceResourceTiming[] ) {
+		if ( entry.encodedBodySize > 0 ) {
+			sizes.set( entry.name, entry.encodedBodySize );
+		}
+	}
+
+	return sizes;
 };
 
 type iPositionLabels = {
@@ -70,6 +115,15 @@ const Assets = ( { data, labels }: myProps ) => {
 		header: __( 'Header', 'query-monitor' ),
 		footer: __( 'Footer', 'query-monitor' ),
 	};
+
+	const assets: AssetRow[] = useMemo( () => {
+		const sizes = getAssetSizes();
+
+		return ( data.assets ?? [] ).map( ( asset ) => ( {
+			...asset,
+			size: sizes.get( asset.url.absolute ) ?? 0,
+		} ) );
+	}, [ data.assets ] );
 
 	if ( ! data.assets ) {
 		return (
@@ -163,8 +217,53 @@ const Assets = ( { data, labels }: myProps ) => {
 					heading: __( 'Version', 'query-monitor' ),
 					render: ( row ) => row.ver,
 				},
+				size: {
+					heading: __( 'Size', 'query-monitor' ),
+					className: 'qm-num',
+					render: ( row ) => {
+						if ( row.size > 0 ) {
+							return (
+								<code>
+									{ sprintf(
+										/* translators: %s: Size of an asset in kilobytes */
+										__( '%s kB', 'query-monitor' ),
+										Utils.numberFormat( row.size / 1024, 1 )
+									) }
+								</code>
+							);
+						}
+
+						return row.url.absolute ? __( 'Unknown', 'query-monitor' ) : '';
+					},
+					sorting: {
+						field: 'size',
+					},
+				},
 			}}
-			data={ data.assets }
+			data={ assets }
+			footer={ ( { cols, count, total, data: filteredData } ) => {
+				const totalSize = filteredData.reduce( ( sum, row ) => sum + row.size, 0 );
+
+				return (
+					<PanelFooter
+						cols={ cols - 1 }
+						count={ count }
+						total={ total }
+					>
+						<td className="qm-num">
+							{ totalSize > 0 ? (
+								<code>
+									{ sprintf(
+										/* translators: %s: Size of an asset in kilobytes */
+										__( '%s kB', 'query-monitor' ),
+										Utils.numberFormat( totalSize / 1024, 1 )
+									) }
+								</code>
+							) : '—' }
+						</td>
+					</PanelFooter>
+				);
+			} }
 			rowHasError={ ( row ) => {
 				return row.warning;
 			} }

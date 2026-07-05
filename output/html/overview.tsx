@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
@@ -11,6 +12,30 @@ import {
 	sprintf,
 	_x,
 } from '@wordpress/i18n';
+import { DataTypes } from '../data-types';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const overviewMenu = (): PanelMenuItem[] => [ {
+	id: 'overview',
+	panel: 'overview',
+	title: __( 'Overview', 'query-monitor' ),
+	adminBar: false,
+} ];
+
+export const overviewTitle = ( data: DataTypes['overview'] ): string[] => {
+	return [
+		sprintf(
+			/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+			_x( '%ss', 'Time in seconds', 'query-monitor' ),
+			Utils.numberFormat( data.time_taken ?? 0, 2 )
+		),
+		sprintf(
+			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
+			__( '%s MB', 'query-monitor' ),
+			Utils.numberFormat( data.memory / 1024 / 1024, 1 ),
+		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' ),
+	];
+};
 
 type OverviewProps = {
 	data: iPanelData;
@@ -20,7 +45,7 @@ type OverviewProps = {
 const UsageBar = ( { usage, warn }: { usage: number; warn: boolean } ) => (
 	<div className="qm-usage-bar">
 		<div
-			className={ `qm-usage-bar-fill${ warn ? ' qm-usage-bar-warn' : '' }` }
+			className={ clsx( 'qm-usage-bar-fill', { 'qm-usage-bar-warn': warn } ) }
 			style={ { width: `${ Math.min( usage, 100 ) }%` } }
 		/>
 	</div>
@@ -40,12 +65,12 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 
 	const overviewData = data.overview.data;
 
-	const timeTaken = overviewData.time_taken || 0;
-	const memory = overviewData.memory || 0;
-	const timeLimit = overviewData.time_limit || 0;
-	const memoryLimit = overviewData.memory_limit || 0;
-	const timeUsage = overviewData.time_usage || 0;
-	const memoryUsage = overviewData.memory_usage || 0;
+	const timeTaken = overviewData.time_taken ?? 0;
+	const memory = overviewData.memory;
+	const timeLimit = overviewData.time_limit;
+	const memoryLimit = overviewData.memory_limit;
+	const timeUsage = overviewData.time_usage;
+	const memoryUsage = overviewData.memory_usage;
 	const displayTimeUsageWarning = timeUsage >= 75;
 	const displayMemoryUsageWarning = memoryUsage >= 75;
 
@@ -221,14 +246,14 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 						<>
 							{ cacheData.stats && cacheData.cache_hit_percentage !== undefined ? (
 								<>
-									<p className="qm-dashboard-value">
+									<div className="qm-dashboard-value">
 										{ sprintf(
 											/* translators: %s: Cache hit percentage */
-											__( '%s%%', 'query-monitor' ),
+											__( '%s%% hit rate', 'query-monitor' ),
 											Utils.numberFormat( cacheData.cache_hit_percentage, 1 )
 										) }
-										<UsageBar usage={ cacheData.cache_hit_percentage } warn={ false } />
-									</p>
+										<UsageBar usage={ cacheData.cache_hit_percentage } warn={ cacheData.cache_hit_percentage < 75 } />
+									</div>
 									<p>
 										{ sprintf(
 											/* translators: 1: Number of cache hits, 2: Number of cache misses */

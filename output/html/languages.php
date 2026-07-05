@@ -23,31 +23,11 @@ class QM_Output_Html_Languages extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 80 );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Languages', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		$args = array(
-			'title' => $this->name(),
-		);
-
-		$menu[ $this->collector->id() ] = $this->menu( $args );
-
-		return $menu;
-
 	}
 
 }

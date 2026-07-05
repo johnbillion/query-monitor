@@ -2,7 +2,7 @@ import { Icon } from '../components/icon';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { MainContext } from '../contexts/main-context';
 import * as Utils from '../utils';
-import { useState, useContext } from 'preact/hooks';
+import { useContext } from 'preact/hooks';
 
 import {
 	__,
@@ -15,7 +15,6 @@ interface SettingsProps {
 }
 
 export const Settings = ( {settings}: SettingsProps ) => {
-	const [ verified, setVerified ] = useState( settings.verified );
 	const {
 		editor,
 		setEditor,
@@ -25,6 +24,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setFabulous,
 		durationUnit,
 		setDurationUnit,
+		verified,
+		setVerified,
 	} = useContext( MainContext );
 
 	const setVerify = () => {

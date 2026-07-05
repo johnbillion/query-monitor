@@ -6,6 +6,15 @@
  */
 
 if ( ! class_exists( 'QM_Dispatcher' ) ) {
+/**
+ * @phpstan-type FatalError array{
+ *   message: string,
+ *   file: string,
+ *   line: int,
+ *   type?: int,
+ *   trace?: mixed|null,
+ * }
+ */
 abstract class QM_Dispatcher {
 
 	/**
@@ -57,13 +66,7 @@ abstract class QM_Dispatcher {
 	/**
 	 * @param string $message
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
 	public function output_fatal( $message, array $e ): void {
 		print_r( $e );

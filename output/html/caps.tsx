@@ -10,6 +10,13 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const capsMenu = (): PanelMenuItem[] => [ {
+	id: 'caps',
+	panel: 'caps',
+	title: __( 'Capability Checks', 'query-monitor' ),
+} ];
 
 export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 	const { settings } = useContext( MainContext );

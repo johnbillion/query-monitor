@@ -5,16 +5,14 @@ import { getPanel, isOverviewPanel, isSettingsPanel } from './panel-registry';
 import { ErrorPanel } from './error-panel';
 import { Warning } from '../components/warning';
 import { DataTypes } from '../data-types';
+import { PanelProps, PanelDataMap } from '../types';
 import { useRef, useState, useEffect, useContext } from 'preact/hooks';
 
-interface QMPanelData<TDataKey extends keyof DataTypes> {
-	data: DataTypes[ TDataKey ];
-	enabled: boolean;
-}
+type QMPanelData<TDataKey extends keyof DataTypes> = PanelProps<DataTypes[ TDataKey ]>;
 
 export type iPanelData = {
 	overview?: QMPanelData<'overview'>;
-	timeline?: { data: null; enabled: boolean };
+	timeline?: PanelProps<null>;
 	admin?: QMPanelData<'admin'>;
 	assets_scripts: QMPanelData<'assets_scripts'>;
 	assets_styles: QMPanelData<'assets_styles'>;
@@ -233,7 +231,7 @@ export const Panels = ( props: Props ) => {
 			// Settings panel receives the settings object
 			output = panel.render( props.settings );
 		} else {
-			const panelData = ( props.data as Record<string, { data: unknown; enabled: boolean } | undefined> )[ panel.data ] ?? null;
+			const panelData = ( props.data as PanelDataMap )[ panel.data ] ?? null;
 			output = panelData ? panel.render( panelData.data as DataTypes[keyof DataTypes], panelData.enabled ) : null;
 		}
 	}
