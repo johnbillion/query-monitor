@@ -7,17 +7,19 @@
 /** === Admin Toolbar === */
 
 #wpadminbar {
-	--qm-menu-icon: #aaa;
-	--qm-menu-alert-bg: #f60;
-	--qm-menu-notice-bg: #740;
-	--qm-menu-notice-bg-hover: #6a3c00;
-	--qm-menu-expensive-bg: #b60;
-	--qm-menu-expensive-bg-hover: #a25800;
+	--qm-menu-notice-bg: #b45309;
 	--qm-menu-warning-bg: #c00;
-	--qm-menu-warning-bg-hover: #b30000;
-	--qm-menu-fg: #eee;
+	--qm-menu-warning-fg: #fff;
 	--qm-menu-true-fg: #8c8;
 	--qm-menu-true-fg-hover: #47a747;
+
+	/* Badge colours: */
+	--qm-badge-fg:         #ddd;
+	--qm-badge-bg:         #235;
+	--qm-badge-notice-fg:  #fff;
+	--qm-badge-notice-bg:  #950;
+	--qm-badge-warning-fg: #fff;
+	--qm-badge-warning-bg: #d00;
 
 	/* True conditionals */
 	.quicklinks .menupop ul li.qm-item-conditionals > a {
@@ -34,7 +36,7 @@
 		&:focus,
 		&:hover {
 			.qm-menu-badge {
-				opacity: 0.8;
+				opacity: 0.9;
 			}
 		}
 	}
@@ -49,6 +51,7 @@
 		&.qm-error,
 		&.qm-warning {
 			background-color: var( --qm-menu-warning-bg ) !important;
+			color: var( --qm-menu-warning-fg ) !important;
 		}
 
 		small {
@@ -58,33 +61,33 @@
 		.ab-submenu .ab-item {
 			display: flex !important;
 			align-items: center;
+			gap: 4px;
 		}
 
 		.qm-menu-badge {
-			background: #50626f;
+			background: var( --qm-badge-bg );
 			border-radius: 99px;
-			color: #eee;
+			color: var( --qm-badge-fg );
 			font-size: 10.5px;
-			font-weight: 600;
+			font-weight: 500;
 			line-height: 1;
 			margin-left: auto;
-			/* min-width: 18px; */
-			padding: 3px 7px;
+			padding: 3px 6px;
 			text-align: center;
 		}
 
 		.qm-menu-badge-notice {
-			background: var( --qm-menu-notice-bg );
-			color: #eee;
+			background: var( --qm-badge-notice-bg );
+			color: var( --qm-badge-notice-fg );
 		}
 
 		.qm-menu-badge-warning {
-			background: var( --qm-menu-warning-bg );
-			color: #eee;
+			background: var( --qm-badge-warning-bg );
+			color: var( --qm-badge-warning-fg );
 		}
 
 		.qm-menu-badge + .qm-menu-badge {
-			margin-left: 6px;
+			margin-left: 0px;
 		}
 	}
 }
