@@ -13,22 +13,13 @@ class BacktraceTest extends Test {
 	}
 
 	/**
-	 * Resolves serialized frame tuples back to QM_Data_Stack_Frame objects
-	 * using the frame registry, for assertion convenience.
+	 * Returns the serialized frames for assertion convenience.
 	 *
 	 * @param array<string, mixed> $data
 	 * @return \QM_Data_Stack_Frame[]
 	 */
 	private function resolve_frames( array $data ): array {
-		$resolved = array();
-
-		foreach ( $data['frames'] as $tuple ) {
-			$frame = clone \QM_Frame_Registry::get_frame( $tuple[0] );
-			$frame->line = $tuple[1];
-			$resolved[] = $frame;
-		}
-
-		return $resolved;
+		return $data['frames'];
 	}
 
 	public function testFrameFileLineIsShifted(): void {

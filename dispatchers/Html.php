@@ -373,7 +373,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data'        => $data,
-			'frames'      => QM_Frame_Registry::get_frames(),
 			'l10n' => [
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'admin_url' => admin_url(),

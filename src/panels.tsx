@@ -3,7 +3,6 @@ import { setLocaleData } from '@wordpress/i18n';
 import { iNavMenu, iNavMenuItem, normaliseMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
 import { PanelDataMap } from '../output/types';
-import { FrameLookupEntry, setFrameLookup } from '../output/frame-lookup';
 import { setQMGlobals } from '../output/utils';
 import { registerPanel, registerOverview, registerSettings, collectMenuContributions, getMenuOrder, PanelMenuItem } from '../output/panels/panel-registry';
 
@@ -77,7 +76,6 @@ export type iQM = {
 	settings: iQMSettings;
 	panel_menu: iNavMenu;
 	data: iPanelData;
-	frames: FrameLookupEntry[];
 	l10n: iQML10n;
 	number_format: {
 		thousands_sep: string;
@@ -94,7 +92,6 @@ export type iQMData = iQM | false;
  * in the browser extension).
  */
 export function initializeQMData( data: iQM ): void {
-	setFrameLookup( data.frames );
 	setQMGlobals( {
 		number_format: data.number_format,
 		l10n: data.l10n,
