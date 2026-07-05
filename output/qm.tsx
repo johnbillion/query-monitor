@@ -82,6 +82,7 @@ export const QM = ( props: Props ) => {
 	const [ side, setSide ] = useState( props.side );
 	const [ theme, setTheme ] = useState( props.theme );
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
+	const [ fabulousAnimate, setFabulousAnimate ] = useState( false );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ seen, setSeen ] = useState( props.seen );
@@ -158,6 +159,7 @@ export const QM = ( props: Props ) => {
 		setFabulous: ( fabulous: boolean ) => {
 			props.onFabulousChange( fabulous );
 			setFabulous( fabulous );
+			setFabulousAnimate( fabulous );
 		},
 		editor: editor,
 		setEditor: ( editor: string ) => {
@@ -342,7 +344,7 @@ export const QM = ( props: Props ) => {
 			) }
 			{ effectiveActive && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
-					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
+					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous, 'qm-fabulous-animate': fabulous && fabulousAnimate } ) }>
 						<h1 className={ clsx( 'qm-title-heading', { 'qm-resizer': inWP } ) }>
 							<span>
 								{ __( 'Query Monitor', 'query-monitor' ) }

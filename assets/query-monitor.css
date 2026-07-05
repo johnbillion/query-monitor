@@ -384,13 +384,16 @@ i {
 			width: 100%;
 			height: 8px;
 			clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-			animation: qm-fabulous-swipe 0.5s ease-out;
 			background: var( --qm-fabulous-gradient );
 		}
 
 		span {
 			display: none;
 		}
+	}
+
+	&.qm-fabulous-animate .qm-title-heading::before {
+		animation: qm-fabulous-swipe 0.5s ease-out;
 	}
 
 	div.qm-title-heading {
