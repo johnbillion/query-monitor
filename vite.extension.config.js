@@ -50,7 +50,7 @@ export default defineConfig( {
 				conditionals: false,
 			},
 		},
-		rollupOptions: {
+		rolldownOptions: {
 			input: {
 				panel: resolve( __dirname, 'extension/src/panel.tsx' ),
 			},
