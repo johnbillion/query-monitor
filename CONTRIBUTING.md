@@ -13,9 +13,11 @@ This project uses <a href="https://github.com/johnbillion/query-monitor/blob/dev
 AI-assisted development is welcome and encouraged, but you must:
 
 - Always disclose your use of AI-assisted coding agents. Failure to do so may result in your contribution being refused.
+- Always verify that the changes your AI assistant are proposing are valid and correct. Slop pull requests will be reported as spam.
 - Respect the GNU GPL software license that applies to this project.
-- Prefer human-written issue descriptions and PR descriptions over AI-generated ones.
-- Keep written descriptions brief, there is no need to write a novel that describes every issue or change in detail. Brevity is a skill.
+- Prefer human-written issue descriptions and pull request descriptions over AI-generated ones.
+- Always use the `.github/PULL_REQUEST_TEMPLATE.md` template when writing the body of a pull request.
+- Keep written descriptions brief, there is no need to write a novel that describes every change.
 
 ## Setting up Locally
 
