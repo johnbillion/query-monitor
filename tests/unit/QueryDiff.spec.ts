@@ -117,6 +117,18 @@ test.describe( 'computeQueryDiff: query identity is the SQL plus the caller', ()
 		expect( result.removed ).toEqual( previous );
 	} );
 
+	test( 'a || inside the SQL does not collide with the caller boundary', () => {
+		// Regression test: a plain `sql + '||' + caller` fingerprint would give
+		// both of these the same fingerprint and wrongly report no changes.
+		const previous = [ q( 'SELECT a', 'b||x' ) ];
+		const current = [ q( 'SELECT a||b', 'x' ) ];
+
+		const result = computeQueryDiff( previous, current );
+
+		expect( result.added ).toEqual( current );
+		expect( result.removed ).toEqual( previous );
+	} );
+
 	test( 'SQL is compared verbatim, so a differing literal value is a different query', () => {
 		// Queries that embed run-time values (timestamps, nonces) diff as
 		// changed on every page load even though they are logically the same.

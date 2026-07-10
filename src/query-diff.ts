@@ -56,7 +56,9 @@ export function extractQueries( rows?: QueryRow[] ): QuerySnapshot[] {
  * Creates a fingerprint string for a query to use as a comparison key.
  */
 function getFingerprint( query: QuerySnapshot ): string {
-	return query.sql + '||' + query.caller;
+	// JSON encoding keeps the sql/caller boundary unambiguous regardless of
+	// their content, unlike a plain string delimiter.
+	return JSON.stringify( [ query.sql, query.caller ] );
 }
 
 /**
