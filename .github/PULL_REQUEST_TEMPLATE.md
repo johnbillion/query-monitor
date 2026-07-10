@@ -1,6 +1,6 @@
 ## Summary
 
-<!-- Thank you for submitting a pull request! Please provide a *brief* description of the change. No need to write a novel that describes every change. -->
+<!-- Thank you for submitting a pull request! Please provide a *brief* description of the change. -->
 
 ## Testing
 
