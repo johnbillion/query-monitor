@@ -27,6 +27,7 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setFabulous,
 		durationUnit,
 		setDurationUnit,
+		switchToPanel,
 	} = useContext( MainContext );
 
 	const setVerify = () => {
@@ -217,10 +218,17 @@ export const Settings = ( {settings}: SettingsProps ) => {
 						</label>
 					</p>
 					{ queryDiffEnabled && (
-						<p>
-							<Icon name="yes-alt"/>
-							{ __( 'Query diff is active. Refresh the page to see changes.', 'query-monitor' ) }
-						</p>
+						<>
+							<p>
+								<Icon name="yes-alt"/>
+								{ __( 'Open the Query Diff panel and refresh the page to see changes.', 'query-monitor' ) }
+							</p>
+							<p>
+								<button className="qm-button" onClick={ () => switchToPanel( 'db_queries_diff' ) }>
+									{ __( 'Open the Query Diff panel', 'query-monitor' ) }
+								</button>
+							</p>
+						</>
 					) }
 				</section>
 			</div>
