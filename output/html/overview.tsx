@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { FilterLink } from '../components/filter-link';
 import { Icon } from '../components/icon';
@@ -11,11 +12,44 @@ import {
 	sprintf,
 	_x,
 } from '@wordpress/i18n';
+import { DataTypes } from '../data-types';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const overviewMenu = (): PanelMenuItem[] => [ {
+	id: 'overview',
+	panel: 'overview',
+	title: __( 'Overview', 'query-monitor' ),
+	adminBar: false,
+} ];
+
+export const overviewTitle = ( data: DataTypes['overview'] ): string[] => {
+	return [
+		sprintf(
+			/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+			_x( '%ss', 'Time in seconds', 'query-monitor' ),
+			Utils.numberFormat( data.time_taken ?? 0, 2 )
+		),
+		sprintf(
+			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
+			__( '%s MB', 'query-monitor' ),
+			Utils.numberFormat( data.memory / 1024 / 1024, 1 ),
+		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' ),
+	];
+};
 
 type OverviewProps = {
 	data: iPanelData;
 	settings: iSettings;
 };
+
+const UsageBar = ( { usage, warn }: { usage: number; warn: boolean } ) => (
+	<div className="qm-usage-bar">
+		<div
+			className={ clsx( 'qm-usage-bar-fill', { 'qm-usage-bar-warn': warn } ) }
+			style={ { width: `${ Math.min( usage, 100 ) }%` } }
+		/>
+	</div>
+);
 
 export const Overview = ( { data, settings }: OverviewProps ) => {
 	// Get data from various collectors
@@ -31,19 +65,19 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 
 	const overviewData = data.overview.data;
 
-	const timeTaken = overviewData.time_taken || 0;
-	const memory = overviewData.memory || 0;
-	const timeLimit = overviewData.time_limit || 0;
-	const memoryLimit = overviewData.memory_limit || 0;
-	const timeUsage = overviewData.time_usage || 0;
-	const memoryUsage = overviewData.memory_usage || 0;
+	const timeTaken = overviewData.time_taken ?? 0;
+	const memory = overviewData.memory;
+	const timeLimit = overviewData.time_limit;
+	const memoryLimit = overviewData.memory_limit;
+	const timeUsage = overviewData.time_usage;
+	const memoryUsage = overviewData.memory_usage;
 	const displayTimeUsageWarning = timeUsage >= 75;
 	const displayMemoryUsageWarning = memoryUsage >= 75;
 
 	return (
 		<NonTabularPanel title={ __( 'Overview', 'query-monitor' ) }>
-			<div className="qm-boxed">
-				{ rawRequestData && rawRequestData.response?.status != null && (
+			{ rawRequestData && rawRequestData.response?.status != null && (
+				<div className="qm-boxed">
 					<section id="qm-overview-raw-request">
 						<h3>
 							{ sprintf(
@@ -54,16 +88,18 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 							) }
 						</h3>
 					</section>
-				) }
-			</div>
-			<div className="qm-grid">
-				<section>
+				</div>
+			) }
+			<div className="qm-dashboard-grid">
+				<section className="qm-dashboard-metric">
 					<h3>{ __( 'Page Generation Time', 'query-monitor' ) }</h3>
-					<p>
+					<p className="qm-dashboard-value">
 						<Duration value={ timeTaken } secondsLabel />
-						{ timeLimit > 0 ? (
-							<>
-								<br />
+					</p>
+					{ timeLimit > 0 ? (
+						<>
+							<UsageBar usage={ timeUsage } warn={ displayTimeUsageWarning } />
+							<p>
 								<span className={ displayTimeUsageWarning ? 'qm-warn' : 'qm-info' }>
 									{ displayTimeUsageWarning && <Icon name="warning" /> }
 									{ sprintf(
@@ -73,73 +109,81 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 										Utils.numberFormat( timeLimit )
 									) }
 								</span>
-							</>
-						) : (
-							<>
-								<br />
-								<span className="qm-warn">
-									<Icon name="warning" />
-									{ sprintf(
-										/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
-										__( 'No execution time limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
-										'max_execution_time',
-										'0'
-									) }
-								</span>
-							</>
-						) }
-					</p>
+							</p>
+						</>
+					) : (
+						<p>
+							<span className="qm-warn">
+								<Icon name="warning" />
+								{ sprintf(
+									/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
+									__( 'No execution time limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
+									'max_execution_time',
+									'0'
+								) }
+							</span>
+						</p>
+					) }
 				</section>
 
-				<section>
+				<section className="qm-dashboard-metric">
 					<h3>{ __( 'Peak Memory Usage', 'query-monitor' ) }</h3>
-					<p>
-						{ memory === 0 ? (
-							__( 'Unknown', 'query-monitor' )
-						) : (
-							<>
+					{ memory === 0 ? (
+						<p className="qm-dashboard-value">{ __( 'Unknown', 'query-monitor' ) }</p>
+					) : (
+						<>
+							<p className="qm-dashboard-value">
 								{ sprintf(
-									/* translators: 1: Memory used in bytes, 2: Memory used in megabytes */
-									__( '%1$s bytes (%2$s MB)', 'query-monitor' ),
-									Utils.numberFormat( memory ),
+									/* translators: %s: Memory in megabytes */
+									__( '%s MB', 'query-monitor' ),
 									Utils.numberFormat( memory / 1024 / 1024, 1 )
 								) }
-								{ memoryLimit > 0 ? (
-									<>
-										<br />
+							</p>
+							{ memoryLimit > 0 ? (
+								<>
+									<UsageBar usage={ memoryUsage } warn={ displayMemoryUsageWarning } />
+									<p>
 										<span className={ displayMemoryUsageWarning ? 'qm-warn' : 'qm-info' }>
 											{ displayMemoryUsageWarning && <Icon name="warning" /> }
 											{ sprintf(
 												/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
-												__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
+												__( '%1$s%% of %2$s MB limit', 'query-monitor' ),
 												Utils.numberFormat( memoryUsage, 1 ),
 												Utils.numberFormat( memoryLimit / 1024 / 1024 )
 											) }
 										</span>
-									</>
-								) : (
-									<>
-										<br />
-										<span className="qm-warn">
-											<Icon name="warning" />
-											{ sprintf(
-												/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
-												__( 'No memory limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
-												'memory_limit',
-												'0'
-											) }
-										</span>
-									</>
-								) }
-							</>
-						) }
-					</p>
+									</p>
+								</>
+							) : (
+								<p>
+									<span className="qm-warn">
+										<Icon name="warning" />
+										{ sprintf(
+											/* translators: 1: Name of the PHP directive, 2: Value of the PHP directive */
+											__( 'No memory limit. The %1$s PHP configuration directive is set to %2$s.', 'query-monitor' ),
+											'memory_limit',
+											'0'
+										) }
+									</span>
+								</p>
+							) }
+						</>
+					) }
 				</section>
 
-				<section>
+				<section className="qm-dashboard-metric">
 					<h3>{ __( 'Database Queries', 'query-monitor' ) }</h3>
 					{ dbQueriesData?.rows?.length ? (
 						<>
+							<p className="qm-dashboard-value">
+								<FilterLink
+									targetPanel="db_queries"
+									filterName="type"
+									filterValue=""
+								>
+									{ Utils.numberFormat( dbQueriesData.total_qs ) }
+								</FilterLink>
+							</p>
 							<p>
 								<Duration value={ dbQueriesData.rows.reduce( ( acc, row ) => acc + row.ltime, 0 ) } secondsLabel />
 							</p>
@@ -147,6 +191,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 								{ Object.keys( dbQueryTypes ).length > 1 && Object.entries( dbQueryTypes ).map( ( [ typeName, typeCount ] ) => (
 									<Fragment key={ typeName }>
 										<FilterLink
+											key={ typeName }
 											targetPanel="db_queries"
 											filterName="sql"
 											filterValue={ typeName }
@@ -156,27 +201,12 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 										<br />
 									</Fragment>
 								) ) }
-								<FilterLink
-									targetPanel="db_queries"
-									filterName="type"
-									filterValue=""
-								>
-									{ sprintf(
-										'%1$s: %2$s',
-										_x( 'Total', 'database queries', 'query-monitor' ),
-										Utils.numberFormat( dbQueriesData.total_qs )
-									) }
-								</FilterLink>
 							</p>
 						</>
 					) : (
-						<p>
+						<p className="qm-dashboard-value">
 							{ dbQueriesData?.total_qs ? (
-								sprintf(
-									'%1$s: %2$s',
-									_x( 'Total', 'database queries', 'query-monitor' ),
-									Utils.numberFormat( dbQueriesData.total_qs )
-								)
+								Utils.numberFormat( dbQueriesData.total_qs )
 							) : (
 								<em>{ __( 'None', 'query-monitor' ) }</em>
 							) }
@@ -185,44 +215,57 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 				</section>
 
 				{ httpData && (
-					<section>
+					<section className="qm-dashboard-metric">
 						<h3>{ __( 'HTTP API Calls', 'query-monitor' ) }</h3>
 						{ httpData.http?.length ? (
 							<>
+								<p className="qm-dashboard-value">
+									<FilterLink
+										targetPanel="http"
+										filterName="type"
+										filterValue=""
+									>
+										{ Utils.numberFormat( httpData.http.length ) }
+									</FilterLink>
+								</p>
 								<p>
 									<Duration value={ httpData.ltime } secondsLabel />
 								</p>
-								<FilterLink
-									targetPanel="http"
-									filterName="type"
-									filterValue=""
-								>
-									{ sprintf(
-										'%1$s: %2$s',
-										_x( 'Total', 'HTTP API calls', 'query-monitor' ),
-										Utils.numberFormat( httpData.http.length )
-									) }
-								</FilterLink>
 							</>
 						) : (
-							<p><em>{ __( 'None', 'query-monitor' ) }</em></p>
+							<p className="qm-dashboard-value">
+								<em>{ __( 'None', 'query-monitor' ) }</em>
+							</p>
 						) }
 					</section>
 				) }
 
-				<section>
+				<section className="qm-dashboard-metric">
 					<h3>{ __( 'Object Cache', 'query-monitor' ) }</h3>
 					{ cacheData ? (
 						<>
-							{ cacheData.stats && cacheData.cache_hit_percentage !== undefined && (
-								<p>
-									{ sprintf(
-										/* translators: 1: Cache hit rate percentage, 2: number of cache hits, 3: number of cache misses */
-										__( '%1$s%% hit rate (%2$s hits, %3$s misses)', 'query-monitor' ),
-										Utils.numberFormat( cacheData.cache_hit_percentage, 1 ),
-										Utils.numberFormat( cacheData.stats.cache_hits as number, 0 ),
-										Utils.numberFormat( cacheData.stats.cache_misses as number, 0 )
-									) }
+							{ cacheData.stats && cacheData.cache_hit_percentage !== undefined ? (
+								<>
+									<div className="qm-dashboard-value">
+										{ sprintf(
+											/* translators: %s: Cache hit percentage */
+											__( '%s%% hit rate', 'query-monitor' ),
+											Utils.numberFormat( cacheData.cache_hit_percentage, 1 )
+										) }
+										<UsageBar usage={ cacheData.cache_hit_percentage } warn={ cacheData.cache_hit_percentage < 75 } />
+									</div>
+									<p>
+										{ sprintf(
+											/* translators: 1: Number of cache hits, 2: Number of cache misses */
+											__( '%1$s hits, %2$s misses', 'query-monitor' ),
+											Utils.numberFormat( cacheData.stats.cache_hits as number, 0 ),
+											Utils.numberFormat( cacheData.stats.cache_misses as number, 0 )
+										) }
+									</p>
+								</>
+							) : (
+								<p className="qm-dashboard-value qm-dashboard-value-text">
+									{ __( 'No stats available', 'query-monitor' ) }
 								</p>
 							) }
 							{ cacheData.has_object_cache ? (
@@ -233,14 +276,14 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											{ __( 'Persistent object cache plugin in use', 'query-monitor' ) }
+											{ __( 'Persistent object cache in use', 'query-monitor' ) }
 										</a>
 									</span>
 								</p>
 							) : (
 								<>
 									<p>
-										{ __( 'Persistent object cache plugin not in use', 'query-monitor' ) }
+										{ __( 'No persistent object cache', 'query-monitor' ) }
 									</p>
 									{ Object.entries( cacheData.object_cache_extensions ).some( ( [ , value ] ) => value ) && (
 										Object.entries( cacheData.object_cache_extensions ).filter( ( [ , value ] ) => value ).map( ( [ name ] ) => (
@@ -257,29 +300,32 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 							) }
 						</>
 					) : (
-						<p>{ __( 'Object cache statistics are not available', 'query-monitor' ) }</p>
+						<p className="qm-dashboard-value qm-dashboard-value-text">
+							{ __( 'Not available', 'query-monitor' ) }
+						</p>
 					) }
 				</section>
 
 				{ cacheData && (
-					<section>
+					<section className="qm-dashboard-metric">
 						<h3>{ __( 'Opcode Cache', 'query-monitor' ) }</h3>
 						{ cacheData.has_opcode_cache ? (
-							Object.entries( cacheData.opcode_cache_extensions ).filter( ( [ , value ] ) => value ).map( ( [ name ] ) => (
-								<p key={ name }>
-									{ sprintf(
-										/* translators: %s: Name of cache driver */
-										__( 'Opcode cache in use: %s', 'query-monitor' ),
-										name
-									) }
+							<>
+								<p className="qm-dashboard-value qm-dashboard-value-text">
+									{ __( 'Enabled', 'query-monitor' ) }
 								</p>
-							) )
+								{ Object.entries( cacheData.opcode_cache_extensions ).filter( ( [ , value ] ) => value ).map( ( [ name ] ) => (
+									<p key={ name }>
+										{ name }
+									</p>
+								) ) }
+							</>
 						) : (
 							<>
-								<p>
+								<p className="qm-dashboard-value qm-dashboard-value-text">
 									<span className="qm-warn">
 										<Icon name="warning" />
-										{ __( 'Opcode cache not in use', 'query-monitor' ) }
+										{ __( 'Disabled', 'query-monitor' ) }
 									</span>
 								</p>
 								<p>

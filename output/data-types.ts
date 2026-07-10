@@ -234,6 +234,7 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
+	extended_query_prompt_reason?: "conflict" | "disabled" | "failed";
 	dupes: {
 		query: string;
 		count: number;

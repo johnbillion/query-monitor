@@ -23,11 +23,6 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 20 );
-	}
-
 	/**
 	 * Collector name.
 	 *
@@ -37,30 +32,6 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 */
 	public function name() {
 		return __( 'Request Data', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function panel_menu( array $menu ) {
-		if ( ! isset( $menu['qm-request'] ) ) {
-			return $menu;
-		}
-
-		$ids = array(
-			$this->collector->id => __( 'Request Headers', 'query-monitor' ),
-			$this->collector->id . '-response' => __( 'Response Headers', 'query-monitor' ),
-		);
-		foreach ( $ids as $id => $title ) {
-			$menu['qm-request']['children'][] = array(
-				'id' => $id,
-				'panel' => $id,
-				'title' => esc_html( $title ),
-			);
-		}
-
-		return $menu;
 	}
 }
 

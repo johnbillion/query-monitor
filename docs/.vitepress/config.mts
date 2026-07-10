@@ -65,6 +65,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/how-to-use/',
 					},
 					{
+						text: 'Timeline',
+						link: '/wordpress-debugging/timeline/',
+					},
+					{
 						text: 'Database queries',
 						link: '/wordpress-debugging/database-queries/',
 					},
@@ -221,11 +225,6 @@ export default defineConfig({
 				ariaLabel: 'Query Monitor on GitHub',
 			},
 		],
-
-		editLink: {
-			pattern: 'https://github.com/johnbillion/query-monitor/edit/develop/docs/:path',
-			text: 'Edit this page on GitHub',
-		},
 
 		search: {
 			provider: 'local',

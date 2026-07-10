@@ -15,6 +15,7 @@ if ( ! defined( 'QM_ERROR_FATALS' ) ) {
 
 /**
  * @extends QM_DataCollector<QM_Data_PHP_Errors>
+ * @phpstan-import-type FatalError from QM_Dispatcher
  */
 class QM_Collector_PHP_Errors extends QM_DataCollector {
 
@@ -299,14 +300,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 	/**
 	 * @param string $error
-	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 * @return void
 	 */
 	protected function output_fatal( $error, array $e ) {

@@ -7,8 +7,42 @@ import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
-import { __ } from '@wordpress/i18n';
+import { __, _nx } from '@wordpress/i18n';
 import { Icon } from '../components/icon';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const phpErrorsMenu = ( data: DataTypes['php_errors'] ): PanelMenuItem[] => {
+	const errors = Object.values( data.errors ?? {} );
+
+	if ( ! errors.length ) {
+		return [];
+	}
+
+	let notice_count = 0;
+	let warning_count = 0;
+
+	for ( const error of errors ) {
+		if ( error.suppressed ) {
+			continue;
+		}
+
+		if ( error.level == 'warning' ) {
+			warning_count += error.count;
+		} else {
+			notice_count += error.count;
+		}
+	}
+
+	return [
+		{
+			id: 'php_errors',
+			panel: 'php_errors',
+			title: __( 'PHP Errors', 'query-monitor' ),
+			notice_count: ( notice_count || null ),
+			warning_count: ( warning_count || null ),
+		},
+	];
+};
 
 export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	const { settings } = useContext( MainContext );
@@ -27,7 +61,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 		{ key: 'notice', label: 'Notice' },
 		{ key: 'strict', label: 'Strict' },
 		{ key: 'deprecated', label: 'Deprecated' },
-	] );
+	], ( row ) => row.count );
 	const showWarning = Utils.phpErrorHasError;
 
 	return <TabularPanel

@@ -7,20 +7,22 @@
 /** === Admin Toolbar === */
 
 #wpadminbar {
-	--qm-menu-icon: #aaa;
-	--qm-menu-alert-bg: #f60;
-	--qm-menu-notice-bg: #740;
-	--qm-menu-notice-bg-hover: #6a3c00;
-	--qm-menu-expensive-bg: #b60;
-	--qm-menu-expensive-bg-hover: #a25800;
+	--qm-menu-notice-bg: #b45309;
 	--qm-menu-warning-bg: #c00;
-	--qm-menu-warning-bg-hover: #b30000;
-	--qm-menu-fg: #eee;
+	--qm-menu-warning-fg: #fff;
 	--qm-menu-true-fg: #8c8;
 	--qm-menu-true-fg-hover: #47a747;
 
+	/* Badge colours: */
+	--qm-badge-fg:         #ddd;
+	--qm-badge-bg:         #235;
+	--qm-badge-notice-fg:  #fff;
+	--qm-badge-notice-bg:  #950;
+	--qm-badge-warning-fg: #fff;
+	--qm-badge-warning-bg: #d00;
+
 	/* True conditionals */
-	.quicklinks .menupop ul li.qm-true > a {
+	.quicklinks .menupop ul li.qm-item-conditionals > a {
 		color: var( --qm-menu-true-fg ) !important;
 
 		&:focus,
@@ -29,63 +31,63 @@
 		}
 	}
 
-	/* Top and submenu items for PHP stricts, deprecateds, and notices */
-	.qm-strict,
-	.qm-deprecated,
-	.qm-notice {
-		background-color: var( --qm-menu-notice-bg ) !important;
-	}
-
-	/* Submenu item links for PHP stricts, deprecateds, and notices */
-	.ab-submenu .qm-strict a,
-	.ab-submenu .qm-deprecated a,
-	.ab-submenu .qm-notice a {
-		color: rgba( 255, 255, 255, 0.8 ) !important;
-
+	/* Submenu item badges */
+	.ab-submenu a {
 		&:focus,
 		&:hover {
-			background-color: var( --qm-menu-notice-bg-hover ) !important;
-			color: rgba( 255, 255, 255, 0.7 ) !important;
-		}
-	}
-
-	/* Top and submenu items for slow database queries */
-	.qm-expensive {
-		background-color: var( --qm-menu-expensive-bg ) !important;
-	}
-
-	/* Submenu item links for slow database queries */
-	.ab-submenu .qm-expensive a {
-		color: rgba( 255, 255, 255, 0.8 ) !important;
-
-		&:focus,
-		&:hover {
-			background-color: var( --qm-menu-expensive-bg-hover );
-			color: rgba( 255, 255, 255, 0.7 ) !important;
-		}
-	}
-
-	/* Top and submenu items for errors and warnings */
-	.qm-error,
-	.qm-warning {
-		background-color: var( --qm-menu-warning-bg ) !important;
-	}
-
-	/* Submenu item links for errors and warnings */
-	.ab-submenu .qm-error a,
-	.ab-submenu .qm-warning a {
-		color: rgba( 255, 255, 255, 0.9 ) !important;
-
-		&:focus,
-		&:hover {
-			background-color: var( --qm-menu-warning-bg-hover ) !important;
-			color: rgba( 255, 255, 255, 0.8 ) !important;
+			.qm-menu-badge {
+				opacity: 0.9;
+			}
 		}
 	}
 
 	#wp-admin-bar-query-monitor {
+		/* Top-level toolbar item for notices */
+		&.qm-notice {
+			background-color: var( --qm-menu-notice-bg ) !important;
+		}
+
+		/* Top-level toolbar item for errors and warnings */
+		&.qm-error,
+		&.qm-warning {
+			background-color: var( --qm-menu-warning-bg ) !important;
+			color: var( --qm-menu-warning-fg ) !important;
+		}
+
 		small {
 			font-size: 11px !important;
+		}
+
+		.ab-submenu .ab-item {
+			display: flex !important;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.qm-menu-badge {
+			background: var( --qm-badge-bg );
+			border-radius: 99px;
+			color: var( --qm-badge-fg );
+			font-size: 10.5px;
+			font-weight: 500;
+			line-height: 1;
+			margin-left: auto;
+			padding: 3px 6px;
+			text-align: center;
+		}
+
+		.qm-menu-badge-notice {
+			background: var( --qm-badge-notice-bg );
+			color: var( --qm-badge-notice-fg );
+		}
+
+		.qm-menu-badge-warning {
+			background: var( --qm-badge-warning-bg );
+			color: var( --qm-badge-warning-fg );
+		}
+
+		.qm-menu-badge + .qm-menu-badge {
+			margin-left: 0px;
 		}
 	}
 }

@@ -4,6 +4,8 @@ import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
+import { Notice } from '../components/notice';
+import { ApproximateSize } from '../components/approximate-size';
 import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
 import type { FilterOption } from '../table';
 import { Duration } from '../components/duration';
@@ -14,11 +16,26 @@ import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import {
 	__,
+	_x,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const httpMenu = ( data: DataTypes['http'] ): PanelMenuItem[] => {
+	const count = data.http?.length ?? 0;
+	const errorCount = ( data.errors?.alert?.length ?? 0 ) + ( data.errors?.warning?.length ?? 0 );
+
+	return [ {
+		id: 'http',
+		panel: 'http',
+		title: __( 'HTTP API Calls', 'query-monitor' ),
+		ok_count: ( count - errorCount ) || null,
+		warning_count: errorCount || null,
+	} ];
+};
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return ! row.url.startsWith( 'https://' );
+	return ( ! row.url.startsWith( 'https://' ) ) && ( 'localhost' !== row.host );
 };
 
 const hasSslVerifyWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
@@ -59,9 +76,9 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					<>
 						{ hasHttpsWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ __( 'Request to a non-HTTPS URL', 'query-monitor' ) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ hasSslVerifyWarning( row ) && (
@@ -77,13 +94,13 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						) }
 						{ hasInterceptedWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ sprintf(
 										/* translators: %s: WordPress filter name */
 										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
 										'pre_http_request'
 									) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ row.args.method === 'GET' ? (
@@ -140,7 +157,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						'namelookup_time' in info ||
 						'connect_time' in info ||
 						'starttransfer_time' in info ||
-						'size_download' in info ||
 						'content_type' in info ||
 						'primary_ip' in info
 					);
@@ -158,8 +174,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					const otherFields: FilterOption[] = [
 						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
 					];
-
-					const sizeDownload = 'size_download' in info ? info.size_download as number : null;
 
 					return (
 						<Toggler summary={ statusText }>
@@ -179,11 +193,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										</li>
 									);
 								} ) }
-								{ sizeDownload !== null && (
-									<li key="size_download" className="qm-info qm-supplemental">
-										{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
-									</li>
-								) }
 								{ otherFields.map( ( { key, label } ) => {
 									if ( ! ( key in info ) ) {
 										return null;
@@ -220,6 +229,19 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 			caller: getCallerCol( data.http, settings ),
 			component: getComponentCol( data.http ),
+			size: {
+				heading: _x( 'Size', 'size of HTTP response', 'query-monitor' ),
+				className: 'qm-num',
+				render: ( row ) => {
+					const info = row.info && typeof row.info === 'object' ? row.info : null;
+
+					if ( ! info || ! ( 'size_download' in info ) ) {
+						return '';
+					}
+
+					return <ApproximateSize value={ info.size_download as number } />;
+				},
+			},
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',

@@ -23,33 +23,11 @@ class QM_Output_Html_Transients extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 100 );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Transients', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Transients $data */
-		$data = $this->collector->get_data();
-		$count = count( $data->trans );
-
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => __( 'Transient Updates', 'query-monitor' ),
-			'count' => $count ?: null,
-		) );
-		return $menu;
-
 	}
 
 }

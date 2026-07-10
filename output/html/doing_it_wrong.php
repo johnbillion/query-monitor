@@ -20,61 +20,11 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
-		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Doing it Wrong', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<int, string> $class
-	 * @return array<int, string>
-	 */
-	public function admin_class( array $class ) {
-		/** @var QM_Data_Doing_It_Wrong $data */
-		$data = $this->collector->get_data();
-
-		if ( ! empty( $data->actions ) ) {
-			$class[] = 'qm-notice';
-		}
-
-		return $class;
-
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Data_Doing_It_Wrong $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->actions ) ) {
-			return $menu;
-		}
-
-		$args = array(
-			'title' => esc_html_x( 'Doing it Wrong', 'Doing it Wrong', 'query-monitor' ),
-			'warning_count' => count( $data->actions ),
-		);
-
-		if ( ! empty( $data->actions ) ) {
-			$args['meta']['classname'] = 'qm-notice';
-		}
-
-		$id = $this->collector->id();
-		$menu[ $id ] = $this->menu( $args );
-
-		return $menu;
-
 	}
 
 }

@@ -5,6 +5,7 @@
 /node_modules
 /assets/build
 /extension/build
+/.playwright-mcp
 /tests/test-results
 /tests/cache
 *.zip

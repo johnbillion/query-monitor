@@ -15,6 +15,14 @@ import {
 	__,
 	_x,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const timelineMenu = (): PanelMenuItem[] => [ {
+	id: 'timeline',
+	panel: 'timeline',
+	title: __( 'Timeline', 'query-monitor' ),
+	new: true,
+} ];
 
 interface TimelineItem {
 	label: string | JSX.Element[];

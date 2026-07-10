@@ -5,7 +5,7 @@ import { Fatal } from '../output/fatal';
 import { iSettings } from '../output/panels/panels';
 import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 
-import { iQMData, initializeQMData, mergeSettings, registerAllPanels } from './panels';
+import { iQMData, initializeQMData, mergeSettings, registerAllPanels, buildMenus } from './panels';
 import { clearQuerySnapshot } from './query-diff';
 
 declare const QueryMonitorData: iQMData;
@@ -24,6 +24,10 @@ if ( QueryMonitorData === false ) {
 
 initializeQMData( QueryMonitorData );
 registerAllPanels();
+
+// Build the toolbar and panel navigation menus, merging client-side
+// contributions from registered panels with the server-provided menus.
+const { menu, panel_menu } = buildMenus( QueryMonitorData );
 
 document.addEventListener( 'DOMContentLoaded', function () {
 	const fatalElement = document.getElementById( 'qm-fatal' );
@@ -151,8 +155,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				active={ active }
 				adminMenuElement={ adminMenuElement ?? undefined }
 				cssUrl={ containerElement.dataset.cssUrl! }
-				menu={ QueryMonitorData.menu }
-				panel_menu={ QueryMonitorData.panel_menu }
+				menu={ menu }
+				panel_menu={ panel_menu }
 				data={ QueryMonitorData.data }
 				settings={ settings }
 				side={ side }

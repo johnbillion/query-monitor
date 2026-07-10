@@ -281,6 +281,29 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 			$this->data->dupes[] = $dupe_data;
 		}
+
+		/**
+		 * Filter whether to show the QM extended query information prompt.
+		 *
+		 * By default QM shows a prompt to install the QM db.php drop-in,
+		 * this filter allows a dev to choose not to show the prompt.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param bool $show_prompt Whether to show the prompt.
+		 */
+		$show_extended_query_prompt = apply_filters( 'qm/show_extended_query_prompt', true );
+
+		// Determine the reason for the extended query prompt
+		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+				$this->data->extended_query_prompt_reason = 'conflict';
+			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+				$this->data->extended_query_prompt_reason = 'disabled';
+			} else {
+				$this->data->extended_query_prompt_reason = 'failed';
+			}
+		}
 	}
 
 	/**

@@ -23,60 +23,11 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 90 );
-		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
-	}
-
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'HTTP API Calls', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<int, string> $class
-	 * @return array<int, string>
-	 */
-	public function admin_class( array $class ) {
-		/** @var QM_Data_HTTP $data */
-		$data = $this->collector->get_data();
-
-		if ( ! empty( $data->errors ) ) {
-			$class[] = 'qm-warning';
-		}
-
-		return $class;
-
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Data_HTTP $data */
-		$data = $this->collector->get_data();
-
-		$count = ! empty( $data->http ) ? count( $data->http ) : 0;
-		$error_count = ! empty( $data->errors ) ? count( $data->errors ) : 0;
-
-		$args = array(
-			'title' => __( 'HTTP API Calls', 'query-monitor' ),
-			'count' => $count ?: null,
-			'warning_count' => $error_count ?: null,
-		);
-
-		if ( ! empty( $data->errors ) ) {
-			$args['meta']['classname'] = 'qm-warning';
-		}
-
-		$menu[ $this->collector->id() ] = $this->menu( $args );
-
-		return $menu;
-
 	}
 
 }

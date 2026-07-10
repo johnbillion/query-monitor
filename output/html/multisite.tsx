@@ -9,6 +9,13 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const multisiteMenu = (): PanelMenuItem[] => [ {
+	id: 'multisite',
+	panel: 'multisite',
+	title: __( 'Multisite', 'query-monitor' ),
+} ];
 
 export const Multisite = ( { data }: PanelProps<DataTypes['multisite']> ) => {
 	const { settings } = useContext( MainContext );
@@ -27,7 +34,7 @@ export const Multisite = ( { data }: PanelProps<DataTypes['multisite']> ) => {
 		title={ __( 'Multisite', 'query-monitor' ) }
 		cols={ {
 			i: {
-				className: 'qm-num',
+				className: 'qm-i',
 				heading: '#',
 				render: ( row, i ) => ( i + 1 ),
 			},

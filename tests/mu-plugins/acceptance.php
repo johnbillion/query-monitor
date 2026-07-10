@@ -213,6 +213,13 @@ add_action( 'init', function() {
 						wp_enqueue_script( 'qm-test-missing-dep', home_url( 'qm-test-missing-dep.js' ), [ 'qm-nonexistent-dependency' ], '1.0' );
 					} );
 					break;
+				case 'with-size':
+					add_action( 'wp_enqueue_scripts', function() {
+						// Enqueue a script pointing at a real core file so the browser actually loads
+						// it and reports a transfer size via the Performance Resource Timing API.
+						wp_enqueue_script( 'qm-test-with-size', includes_url( 'js/wp-embed.min.js' ), [], '1.0', true );
+					} );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

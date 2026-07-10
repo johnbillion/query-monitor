@@ -13,6 +13,13 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const languagesMenu = (): PanelMenuItem[] => [ {
+	id: 'languages',
+	panel: 'languages',
+	title: __( 'Languages', 'query-monitor' ),
+} ];
 
 export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 	const {
