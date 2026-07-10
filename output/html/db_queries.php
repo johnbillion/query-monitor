@@ -149,12 +149,6 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 			) );
 		}
 
-		$menu['qm-db_queries_diff'] = $this->menu( array(
-			'id'    => 'db_queries_diff',
-			'panel' => 'db_queries_diff',
-			'title' => esc_html__( 'Query Diff', 'query-monitor' ),
-		) );
-
 		return $menu;
 
 	}
@@ -164,13 +158,19 @@ class QM_Output_Html_DB_Queries extends QM_Output_Html {
 	 * @return array<string, mixed[]>
 	 */
 	public function panel_menu( array $menu ) {
-		foreach ( array( 'errors', 'expensive', 'queries_diff' ) as $sub ) {
+		foreach ( array( 'errors', 'expensive' ) as $sub ) {
 			$id = 'qm-db_' . $sub;
 			if ( isset( $menu[ $id ] ) ) {
 				$menu['qm-db_queries']['children'][] = $menu[ $id ];
 				unset( $menu[ $id ] );
 			}
 		}
+
+		$menu['qm-db_queries']['children'][] = $this->menu( array(
+			'id'    => 'db_queries_diff',
+			'panel' => 'db_queries_diff',
+			'title' => esc_html__( 'Query Diff', 'query-monitor' ),
+		) );
 
 		return $menu;
 	}
