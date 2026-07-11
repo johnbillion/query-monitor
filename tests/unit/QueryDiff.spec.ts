@@ -381,6 +381,17 @@ test.describe( 'getQueryDiffResult: storage handling', () => {
 		expect( second ).toBe( first );
 		expect( storage.setCalls ).toHaveLength( 1 );
 	} );
+
+	test( 'clearing the snapshot resets the cache so the next call re-saves the snapshot', () => {
+		const storage = stubStorage();
+
+		const first = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+		clearQuerySnapshot();
+		const second = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( second ).not.toBe( first );
+		expect( storage.setCalls ).toHaveLength( 2 );
+	} );
 } );
 
 test.describe( 'clearQuerySnapshot', () => {

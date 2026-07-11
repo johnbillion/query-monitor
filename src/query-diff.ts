@@ -121,6 +121,11 @@ export function computeQueryDiff( previous: QuerySnapshot[], current: QuerySnaps
  * the user when the stored snapshot could not be removed.
  */
 export function clearQuerySnapshot(): boolean {
+	// The cache must be reset too, otherwise re-enabling the feature in the
+	// same page load would return the cached result without re-saving the
+	// snapshot, silently losing the comparison baseline for the next load.
+	cachedDiffResult = null;
+
 	try {
 		sessionStorage.removeItem( STORAGE_KEY );
 		return true;
