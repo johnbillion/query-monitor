@@ -108,9 +108,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 
 	const onQueryDiffEnabledChange = ( enabled: boolean ) => {
 		localStorage.setItem( queryDiffEnabledKey, enabled ? 'true' : 'false' );
-		if ( ! enabled ) {
-			clearQuerySnapshot();
-		}
+
+		return enabled || clearQuerySnapshot();
 	}
 
 	const active = localStorage.getItem( panelKey ) ?? '';

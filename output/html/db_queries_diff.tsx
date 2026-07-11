@@ -1,5 +1,6 @@
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { MainContext } from '../contexts/main-context';
+import { Warning } from '../components/warning';
 import * as Utils from '../utils';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
@@ -32,6 +33,21 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
 					<p>
 						{ __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare database queries between page loads.', 'query-monitor' ) }
+					</p>
+				</section>
+			</NonTabularPanel>
+		);
+	}
+
+	if ( queryDiffResult?.status === 'error' ) {
+		return (
+			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
+				<section className="qm-error">
+					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
+					<p>
+						<Warning>
+							{ __( 'Browser session storage could not be accessed, so query diffs cannot be tracked between page loads. This can happen in private browsing mode or when the storage quota has been exceeded.', 'query-monitor' ) }
+						</Warning>
 					</p>
 				</section>
 			</NonTabularPanel>

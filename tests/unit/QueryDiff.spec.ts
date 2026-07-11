@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { computeQueryDiff, extractQueries } from '../../src/query-diff';
+import { clearQuerySnapshot, computeQueryDiff, extractQueries, getQueryDiffResult, resetCachedQueryDiffResult } from '../../src/query-diff';
 import type { QuerySnapshot } from '../../src/query-diff';
 import { setFrameLookup } from '../../output/frame-lookup';
 import type { Backtrace, QueryRow } from '../../output/data-types';
@@ -255,5 +255,149 @@ test.describe( 'computeQueryDiff: result metadata', () => {
 
 	test( 'the status is always ready', () => {
 		expect( computeQueryDiff( [], [] ).status ).toBe( 'ready' );
+	} );
+} );
+
+// getQueryDiffResult() and clearQuerySnapshot() access `sessionStorage` and
+// `window`, which don't exist in the Node test environment, so both are
+// stubbed on globalThis.
+const setGlobal = ( name: string, value: unknown ) => {
+	( globalThis as Record<string, unknown> )[ name ] = value;
+};
+
+interface StorageStub {
+	getItem: ( key: string ) => string | null;
+	setItem: ( key: string, value: string ) => void;
+	removeItem: ( key: string ) => void;
+	setCalls: { key: string; value: string }[];
+	removeCalls: string[];
+}
+
+const stubStorage = ( { stored = null, getThrows = false, setThrows = false, removeThrows = false }: { stored?: string | null; getThrows?: boolean; setThrows?: boolean; removeThrows?: boolean } = {} ): StorageStub => {
+	const stub: StorageStub = {
+		setCalls: [],
+		removeCalls: [],
+		getItem: () => {
+			if ( getThrows ) {
+				throw new Error( 'Storage access denied' );
+			}
+
+			return stored;
+		},
+		setItem: ( key, value ) => {
+			if ( setThrows ) {
+				throw new Error( 'Storage quota exceeded' );
+			}
+
+			stub.setCalls.push( { key, value } );
+		},
+		removeItem: ( key ) => {
+			if ( removeThrows ) {
+				throw new Error( 'Storage access denied' );
+			}
+
+			stub.removeCalls.push( key );
+		},
+	};
+
+	setGlobal( 'sessionStorage', stub );
+
+	return stub;
+};
+
+test.describe( 'getQueryDiffResult: storage handling', () => {
+	const PAGE_URL = 'https://example.com/';
+
+	const storedSnapshot = ( queries: QuerySnapshot[] ) => JSON.stringify( {
+		url: PAGE_URL,
+		queries,
+		timestamp: 0,
+	} );
+
+	test.beforeEach( () => {
+		resetCachedQueryDiffResult();
+		setGlobal( 'window', { location: { href: PAGE_URL } } );
+	} );
+
+	test.afterEach( () => {
+		setGlobal( 'sessionStorage', undefined );
+		setGlobal( 'window', undefined );
+	} );
+
+	test( 'working storage with no previous snapshot produces a waiting result', () => {
+		const storage = stubStorage();
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( result.status ).toBe( 'waiting' );
+		expect( storage.setCalls ).toHaveLength( 1 );
+	} );
+
+	test( 'working storage with a previous snapshot produces a ready result', () => {
+		stubStorage( { stored: storedSnapshot( [ q( 'SELECT 1' ) ] ) } );
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ), q( 'SELECT 2' ) ] );
+
+		expect( result.status ).toBe( 'ready' );
+		expect( result.added ).toEqual( [ q( 'SELECT 2' ) ] );
+		expect( result.removed ).toEqual( [] );
+	} );
+
+	test( 'a failure to read the previous snapshot produces an error result', () => {
+		stubStorage( { getThrows: true } );
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( result.status ).toBe( 'error' );
+	} );
+
+	test( 'a corrupt stored snapshot produces an error result', () => {
+		stubStorage( { stored: 'this is not JSON' } );
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( result.status ).toBe( 'error' );
+	} );
+
+	test( 'a failure to save the snapshot produces an error result even when a diff was computed', () => {
+		stubStorage( {
+			stored: storedSnapshot( [ q( 'SELECT 1' ) ] ),
+			setThrows: true,
+		} );
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ), q( 'SELECT 2' ) ] );
+
+		expect( result.status ).toBe( 'error' );
+		expect( result.added ).toEqual( [] );
+		expect( result.removed ).toEqual( [] );
+	} );
+
+	test( 'the result is computed once and cached', () => {
+		const storage = stubStorage();
+
+		const first = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+		const second = getQueryDiffResult( [ q( 'SELECT 2' ) ] );
+
+		expect( second ).toBe( first );
+		expect( storage.setCalls ).toHaveLength( 1 );
+	} );
+} );
+
+test.describe( 'clearQuerySnapshot', () => {
+	test.afterEach( () => {
+		setGlobal( 'sessionStorage', undefined );
+	} );
+
+	test( 'returns true when the snapshot is removed', () => {
+		const storage = stubStorage();
+
+		expect( clearQuerySnapshot() ).toBe( true );
+		expect( storage.removeCalls ).toEqual( [ 'qm-query-diff-data' ] );
+	} );
+
+	test( 'returns false when storage cannot be accessed', () => {
+		stubStorage( { removeThrows: true } );
+
+		expect( clearQuerySnapshot() ).toBe( false );
 	} );
 } );

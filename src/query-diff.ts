@@ -7,7 +7,7 @@ export interface QuerySnapshot {
 }
 
 export interface QueryDiffResult {
-	status: 'waiting' | 'ready';
+	status: 'waiting' | 'ready' | 'error';
 	added: QuerySnapshot[];
 	removed: QuerySnapshot[];
 	previousCount: number;
@@ -116,12 +116,19 @@ export function computeQueryDiff( previous: QuerySnapshot[], current: QuerySnaps
 /**
  * Clears any stored query diff snapshot from sessionStorage.
  * Called when the user disables the feature.
+ *
+ * Returns whether the snapshot was cleared, so the settings UI can inform
+ * the user when the stored snapshot could not be removed.
  */
-export function clearQuerySnapshot(): void {
+export function clearQuerySnapshot(): boolean {
 	try {
 		sessionStorage.removeItem( STORAGE_KEY );
+		return true;
 	} catch {
-		// Ignore storage errors.
+		// Storage can be unavailable (e.g. private browsing, blocked storage
+		// access). The stale snapshot remains, but sessionStorage is discarded
+		// when the browser session ends anyway.
+		return false;
 	}
 }
 
@@ -131,7 +138,8 @@ export function clearQuerySnapshot(): void {
  * load. Called by the panel component when it renders.
  *
  * Returns a "waiting" result if there is no previous snapshot or the URL
- * doesn't match.
+ * doesn't match, and an "error" result if sessionStorage could not be
+ * accessed.
  *
  * @TODO The snapshot is only saved when the panel renders, meaning the user
  * must open the Query Diff panel at least once per page load for the next
@@ -164,7 +172,16 @@ export function getQueryDiffResult( currentQueries: QuerySnapshot[] ): QueryDiff
 		};
 		sessionStorage.setItem( STORAGE_KEY, JSON.stringify( newSnapshot ) );
 	} catch {
-		// Ignore storage errors (e.g. private browsing, quota exceeded).
+		// Storage can be unavailable (e.g. private browsing, blocked storage
+		// access, quota exceeded) or the stored snapshot can be corrupt. Any
+		// computed diff is discarded because it can't be tracked reliably.
+		result = {
+			status: 'error',
+			added: [],
+			removed: [],
+			previousCount: 0,
+			currentCount: currentQueries.length,
+		};
 	}
 
 	cachedDiffResult = result ?? {
@@ -176,4 +193,11 @@ export function getQueryDiffResult( currentQueries: QuerySnapshot[] ): QueryDiff
 	};
 
 	return cachedDiffResult;
+}
+
+/**
+ * Resets the cached diff result. Only needed by unit tests.
+ */
+export function resetCachedQueryDiffResult(): void {
+	cachedDiffResult = null;
 }

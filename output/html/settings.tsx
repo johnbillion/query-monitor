@@ -1,6 +1,7 @@
 import { Icon } from '../components/icon';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { MainContext } from '../contexts/main-context';
+import { Warning } from '../components/warning';
 import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 
@@ -22,6 +23,7 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setTheme,
 		queryDiffEnabled,
 		setQueryDiffEnabled,
+		queryDiffClearFailed,
 		fabulous,
 		setFabulous,
 		durationUnit,
@@ -218,6 +220,15 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							{ __( 'Enable query diff tracking', 'query-monitor' ) }
 						</label>
 					</p>
+					{ queryDiffClearFailed && (
+						<div className="qm-error">
+							<p>
+								<Warning>
+									{ __( 'Browser session storage could not be accessed, so the stored query snapshot could not be removed. It will be discarded automatically when the browser session ends.', 'query-monitor' ) }
+								</Warning>
+							</p>
+						</div>
+					) }
 					{ queryDiffEnabled && (
 						<>
 							<p>

@@ -76,7 +76,7 @@ type Props = {
 	durationUnit: DurationUnit;
 	onDurationUnitChange: ( unit: DurationUnit ) => void;
 	queryDiffEnabled: boolean;
-	onQueryDiffEnabledChange: ( enabled: boolean ) => void;
+	onQueryDiffEnabledChange: ( enabled: boolean ) => boolean;
 }
 
 export const QM = ( props: Props ) => {
@@ -91,6 +91,7 @@ export const QM = ( props: Props ) => {
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
 	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
 	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled );
+	const [ queryDiffClearFailed, setQueryDiffClearFailed ] = useState( false );
 	const [ verified, setVerified ] = useState( props.settings.verified );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
 	const jumpToRowRef = useRef( jumpToRow );
@@ -206,9 +207,10 @@ export const QM = ( props: Props ) => {
 		},
 		queryDiffEnabled: queryDiffEnabled,
 		setQueryDiffEnabled: ( enabled: boolean ) => {
-			props.onQueryDiffEnabledChange( enabled );
+			setQueryDiffClearFailed( ! props.onQueryDiffEnabledChange( enabled ) );
 			setQueryDiffEnabled( enabled );
 		},
+		queryDiffClearFailed,
 	};
 
 	// Apply the menu class (qm-warning, qm-notice, or qm-error) to the admin bar element

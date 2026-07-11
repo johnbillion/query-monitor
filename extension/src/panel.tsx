@@ -126,7 +126,7 @@ const ExtensionPanel = () => {
 			durationUnit={ durationUnit }
 			onDurationUnitChange={ ( unit ) => localStorage.setItem( durationUnitKey, unit ) }
 			queryDiffEnabled={ false }
-			onQueryDiffEnabledChange={ () => {} }
+			onQueryDiffEnabledChange={ () => true }
 			isFolded={ false }
 			isAutoFold={ false }
 			isFullscreenMode={ false }
