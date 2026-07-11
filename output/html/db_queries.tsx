@@ -8,7 +8,7 @@ import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
-import { PanelMenuItem } from '../panels/panel-registry';
+import { getPanel, PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
 
 import {
@@ -67,12 +67,15 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
-	children.push( {
-		id: 'db_queries_diff',
-		panel: 'db_queries_diff',
-		title: __( 'Query Diff', 'query-monitor' ),
-		adminBar: false,
-	} );
+	// The Query Diff panel is not registered in every host (see registerAllPanels).
+	if ( getPanel( 'db_queries_diff' ) ) {
+		children.push( {
+			id: 'db_queries_diff',
+			panel: 'db_queries_diff',
+			title: __( 'Query Diff', 'query-monitor' ),
+			adminBar: false,
+		} );
+	}
 
 	const okCount = ( data.total_qs ?? 0 );
 

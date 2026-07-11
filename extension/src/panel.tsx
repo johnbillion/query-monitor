@@ -31,7 +31,7 @@ const ExtensionPanel = () => {
 					}
 
 					initializeQMData( result );
-					registerAllPanels();
+					registerAllPanels( { isExtension: true } );
 					setQmData( result );
 				},
 			);
@@ -125,8 +125,6 @@ const ExtensionPanel = () => {
 			onTimelineHiddenChange={ () => {} }
 			durationUnit={ durationUnit }
 			onDurationUnitChange={ ( unit ) => localStorage.setItem( durationUnitKey, unit ) }
-			queryDiffEnabled={ false }
-			onQueryDiffEnabledChange={ () => true }
 			isFolded={ false }
 			isAutoFold={ false }
 			isFullscreenMode={ false }

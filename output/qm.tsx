@@ -75,8 +75,10 @@ type Props = {
 	onTimelineHiddenChange: ( categories: string[] ) => void;
 	durationUnit: DurationUnit;
 	onDurationUnitChange: ( unit: DurationUnit ) => void;
-	queryDiffEnabled: boolean;
-	onQueryDiffEnabledChange: ( enabled: boolean ) => boolean;
+	// Optional: hosts that don't register the Query Diff panel (the browser
+	// extension) don't wire these up.
+	queryDiffEnabled?: boolean;
+	onQueryDiffEnabledChange?: ( enabled: boolean ) => boolean;
 }
 
 export const QM = ( props: Props ) => {
@@ -90,7 +92,7 @@ export const QM = ( props: Props ) => {
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
 	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
-	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled );
+	const [ queryDiffEnabled, setQueryDiffEnabled ] = useState( props.queryDiffEnabled ?? false );
 	const [ queryDiffClearFailed, setQueryDiffClearFailed ] = useState( false );
 	const [ verified, setVerified ] = useState( props.settings.verified );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
@@ -207,7 +209,7 @@ export const QM = ( props: Props ) => {
 		},
 		queryDiffEnabled: queryDiffEnabled,
 		setQueryDiffEnabled: ( enabled: boolean ) => {
-			setQueryDiffClearFailed( ! props.onQueryDiffEnabledChange( enabled ) );
+			setQueryDiffClearFailed( ! ( props.onQueryDiffEnabledChange?.( enabled ) ?? true ) );
 			setQueryDiffEnabled( enabled );
 		},
 		queryDiffClearFailed,

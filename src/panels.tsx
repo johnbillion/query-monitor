@@ -227,8 +227,12 @@ let panelsRegistered = false;
 
 /**
  * Register all built-in panels. Safe to call multiple times.
+ *
+ * The browser extension host must pass `isExtension: true` so that panels
+ * which cannot work in a devtools panel are left unregistered, which also
+ * removes them from the navigation menu and the Settings panel.
  */
-export function registerAllPanels(): void {
+export function registerAllPanels( options: { isExtension?: boolean } = {} ): void {
 	if ( panelsRegistered ) {
 		return;
 	}
@@ -334,13 +338,15 @@ export function registerAllPanels(): void {
 			menuTitle: dbQueriesTitle,
 		}
 	);
-	registerPanel(
-		'db_queries_diff',
-		{
-			render: ( data, enabled ) => <DBQueriesDiff data={ data } enabled={ enabled } />,
-			data: 'db_queries',
-		}
-	);
+	if ( ! options.isExtension ) {
+		registerPanel(
+			'db_queries_diff',
+			{
+				render: ( data, enabled ) => <DBQueriesDiff data={ data } enabled={ enabled } />,
+				data: 'db_queries',
+			}
+		);
+	}
 	registerPanel(
 		'doing_it_wrong',
 		{
