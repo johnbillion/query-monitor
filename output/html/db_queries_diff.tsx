@@ -1,4 +1,5 @@
 import { NonTabularPanel } from '../panels/non-tabular-panel';
+import { type ComponentChildren } from 'preact';
 import { MainContext } from '../contexts/main-context';
 import { Warning } from '../components/warning';
 import * as Utils from '../utils';
@@ -33,55 +34,35 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 
 	if ( ! queryDiffEnabled ) {
 		return (
-			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
-				<section>
-					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
-					<p>
-						{ __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare database queries between page loads.', 'query-monitor' ) }
-					</p>
-				</section>
-			</NonTabularPanel>
+			<QueryDiffMessage>
+				{ __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare database queries between page loads.', 'query-monitor' ) }
+			</QueryDiffMessage>
 		);
 	}
 
 	if ( queriesNotLogged ) {
 		return (
-			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
-				<section>
-					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
-					<p>
-						{ __( 'Database queries were not logged, so query diffs cannot be tracked between page loads.', 'query-monitor' ) }
-					</p>
-				</section>
-			</NonTabularPanel>
+			<QueryDiffMessage>
+				{ __( 'Database queries were not logged, so query diffs cannot be tracked between page loads.', 'query-monitor' ) }
+			</QueryDiffMessage>
 		);
 	}
 
 	if ( queryDiffResult?.status === 'error' ) {
 		return (
-			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
-				<section className="qm-error">
-					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
-					<p>
-						<Warning>
-							{ __( 'Browser session storage could not be accessed, so query diffs cannot be tracked between page loads. This can happen in private browsing mode or when the storage quota has been exceeded.', 'query-monitor' ) }
-						</Warning>
-					</p>
-				</section>
-			</NonTabularPanel>
+			<QueryDiffMessage error>
+				<Warning>
+					{ __( 'Browser session storage could not be accessed, so query diffs cannot be tracked between page loads. This can happen in private browsing mode or when the storage quota has been exceeded.', 'query-monitor' ) }
+				</Warning>
+			</QueryDiffMessage>
 		);
 	}
 
 	if ( ! queryDiffResult || queryDiffResult.status === 'waiting' ) {
 		return (
-			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
-				<section>
-					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
-					<p>
-						{ __( 'Refresh this page to compare queries between page loads.', 'query-monitor' ) }
-					</p>
-				</section>
-			</NonTabularPanel>
+			<QueryDiffMessage>
+				{ __( 'Refresh this page to compare queries between page loads.', 'query-monitor' ) }
+			</QueryDiffMessage>
 		);
 	}
 
@@ -89,14 +70,9 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 
 	if ( ! added.length && ! removed.length ) {
 		return (
-			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
-				<section>
-					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
-					<p>
-						{ __( 'No query changes detected between page loads.', 'query-monitor' ) }
-					</p>
-				</section>
-			</NonTabularPanel>
+			<QueryDiffMessage>
+				{ __( 'No query changes detected between page loads.', 'query-monitor' ) }
+			</QueryDiffMessage>
 		);
 	}
 
@@ -142,6 +118,22 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 		</NonTabularPanel>
 	);
 };
+
+interface QueryDiffMessageProps {
+	error?: boolean;
+	children: ComponentChildren;
+}
+
+const QueryDiffMessage = ( { error = false, children }: QueryDiffMessageProps ) => (
+	<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
+		<section className={ error ? 'qm-error' : undefined }>
+			<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
+			<p>
+				{ children }
+			</p>
+		</section>
+	</NonTabularPanel>
+);
 
 interface QueryDiffSectionProps {
 	type: 'added' | 'removed';
