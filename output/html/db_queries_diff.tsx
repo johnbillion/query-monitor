@@ -18,13 +18,18 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 		queryDiffEnabled,
 	} = useContext( MainContext );
 
+	// Queries were performed but not logged, e.g. with SAVEQUERIES defined as
+	// false. Skipping the diff computation also avoids saving an empty
+	// snapshot that the next page load would be compared against.
+	const queriesNotLogged = !! data.total_qs && ! data.rows?.length;
+
 	const queryDiffResult = useMemo( () => {
-		if ( ! queryDiffEnabled ) {
+		if ( ! queryDiffEnabled || queriesNotLogged ) {
 			return null;
 		}
 
 		return getQueryDiffResult( extractQueries( data.rows ) );
-	}, [ queryDiffEnabled, data.rows ] );
+	}, [ queryDiffEnabled, queriesNotLogged, data.rows ] );
 
 	if ( ! queryDiffEnabled ) {
 		return (
@@ -33,6 +38,19 @@ export const DBQueriesDiff = ( { data }: PanelProps<DataTypes['db_queries']> ) =
 					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
 					<p>
 						{ __( 'Query diff tracking is disabled. Enable it in the Settings panel to compare database queries between page loads.', 'query-monitor' ) }
+					</p>
+				</section>
+			</NonTabularPanel>
+		);
+	}
+
+	if ( queriesNotLogged ) {
+		return (
+			<NonTabularPanel title={ __( 'Query Diff', 'query-monitor' ) }>
+				<section>
+					<h3>{ __( 'Query Diff', 'query-monitor' ) }</h3>
+					<p>
+						{ __( 'Database queries were not logged, so query diffs cannot be tracked between page loads.', 'query-monitor' ) }
 					</p>
 				</section>
 			</NonTabularPanel>
