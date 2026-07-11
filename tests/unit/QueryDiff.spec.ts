@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-import { computeQueryDiff } from '../../src/query-diff';
+import { computeQueryDiff, extractQueries } from '../../src/query-diff';
 import type { QuerySnapshot } from '../../src/query-diff';
+import { setFrameLookup } from '../../output/frame-lookup';
+import type { Backtrace, QueryRow } from '../../output/data-types';
 
 const q = ( sql: string, caller = '' ): QuerySnapshot => ( { sql, caller } );
 
@@ -139,6 +141,105 @@ test.describe( 'computeQueryDiff: query identity is the SQL plus the caller', ()
 
 		expect( result.added ).toEqual( current );
 		expect( result.removed ).toEqual( previous );
+	} );
+} );
+
+test.describe( 'extractQueries', () => {
+	const row = ( sql: string, extra: Partial<QueryRow> = {} ): QueryRow => ( {
+		sql,
+		ltime: 0,
+		...extra,
+	} );
+
+	const trace = ( frames: Backtrace['frames'] ): Backtrace => ( {
+		component: { type: 'core', name: 'Core', context: 'core' },
+		frames,
+		time: 0,
+	} );
+
+	test.beforeEach( () => {
+		setFrameLookup( [
+			{ id: 'WP_Query->get_posts', file: 'wp-includes/class-wp-query.php' },
+			{ id: 'get_option', file: 'wp-includes/option.php' },
+		] );
+	} );
+
+	test( 'undefined rows produce an empty array', () => {
+		expect( extractQueries( undefined ) ).toEqual( [] );
+	} );
+
+	test( 'an empty rows array produces an empty array', () => {
+		expect( extractQueries( [] ) ).toEqual( [] );
+	} );
+
+	test( 'the caller is resolved from the first trace frame', () => {
+		const rows = [
+			row( 'SELECT * FROM wp_posts', { trace: trace( [ [ 0, 123 ], [ 1, 456 ] ] ) } ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( 'SELECT * FROM wp_posts', 'WP_Query->get_posts' ),
+		] );
+	} );
+
+	test( 'the first stack entry is used when there is no trace', () => {
+		const rows = [
+			row( 'SELECT 1', { stack: [ 'get_transient', 'do_action' ] } ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( 'SELECT 1', 'get_transient' ),
+		] );
+	} );
+
+	test( 'the trace takes precedence over the stack when both are present', () => {
+		const rows = [
+			row( 'SELECT 1', {
+				trace: trace( [ [ 1, 10 ] ] ),
+				stack: [ 'get_transient' ],
+			} ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( 'SELECT 1', 'get_option' ),
+		] );
+	} );
+
+	test( 'a trace with no frames falls back to the stack', () => {
+		const rows = [
+			row( 'SELECT 1', {
+				trace: trace( [] ),
+				stack: [ 'get_transient' ],
+			} ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( 'SELECT 1', 'get_transient' ),
+		] );
+	} );
+
+	test( 'a row with neither trace nor stack gets an empty caller', () => {
+		const rows = [
+			row( 'SELECT 1' ),
+			row( 'SELECT 2', { stack: [] } ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( 'SELECT 1', '' ),
+			q( 'SELECT 2', '' ),
+		] );
+	} );
+
+	test( 'the SQL is copied verbatim and row order is preserved', () => {
+		const rows = [
+			row( "SELECT ID FROM wp_posts WHERE post_date <= '2026-07-09 10:00:00'" ),
+			row( 'SELECT   *\nFROM wp_options' ),
+		];
+
+		expect( extractQueries( rows ) ).toEqual( [
+			q( "SELECT ID FROM wp_posts WHERE post_date <= '2026-07-09 10:00:00'", '' ),
+			q( 'SELECT   *\nFROM wp_options', '' ),
+		] );
 	} );
 } );
 
