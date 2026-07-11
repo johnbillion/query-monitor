@@ -40,6 +40,7 @@ export function extractQueries( rows?: QueryRow[] ): QuerySnapshot[] {
 	return rows.map( ( row ) => {
 		let caller = '';
 
+		// @TODO: This caller resolution logic is duplicated in output/html/db_callers.tsx and output/table.tsx. Extract a shared getRowCaller() helper so the three stay in sync.
 		if ( row.trace?.frames?.length ) {
 			caller = resolveFrame( row.trace.frames[ 0 ] ).id;
 		} else if ( row.stack?.length ) {
