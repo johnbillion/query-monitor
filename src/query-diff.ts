@@ -17,6 +17,7 @@ export interface QueryDiffResult {
 interface StoredSnapshot {
 	url: string;
 	queries: QuerySnapshot[];
+	// @TODO: The timestamp is currently unused, but could be used to implement a "stale" state if the snapshot is too old.
 	timestamp: number;
 }
 
@@ -76,60 +77,36 @@ function buildFingerprintCounts( queries: QuerySnapshot[] ): Map<string, number>
 }
 
 /**
+ * Returns the queries that occur more often in `queries` than in `other`,
+ * once per surplus occurrence.
+ */
+function getSurplusQueries( queries: QuerySnapshot[], other: QuerySnapshot[] ): QuerySnapshot[] {
+	const unmatched = buildFingerprintCounts( other );
+
+	return queries.filter( ( query ) => {
+		const fp = getFingerprint( query );
+		const remaining = unmatched.get( fp ) ?? 0;
+
+		if ( remaining === 0 ) {
+			return true;
+		}
+
+		unmatched.set( fp, remaining - 1 );
+		return false;
+	} );
+}
+
+/**
  * Computes the diff between two sets of query snapshots.
  *
  * Uses fingerprint-based counting so duplicate queries are handled correctly:
  * if a query appears 3 times previously and 5 times now, 2 are "added".
- *
- * @TODO: Deeply review the diffing logic and test with various edge cases (e.g. all queries changed, some queries with same SQL but different callers, etc.)
  */
 export function computeQueryDiff( previous: QuerySnapshot[], current: QuerySnapshot[] ): QueryDiffResult {
-	const prevCounts = buildFingerprintCounts( previous );
-	const currCounts = buildFingerprintCounts( current );
-
-	// Build a lookup from fingerprint to a representative QuerySnapshot
-	const prevLookup = new Map<string, QuerySnapshot>();
-	for ( const query of previous ) {
-		prevLookup.set( getFingerprint( query ), query );
-	}
-	const currLookup = new Map<string, QuerySnapshot>();
-	for ( const query of current ) {
-		currLookup.set( getFingerprint( query ), query );
-	}
-
-	const added: QuerySnapshot[] = [];
-	const removed: QuerySnapshot[] = [];
-
-	// Find added queries (in current but not in previous, or more occurrences)
-	for ( const [ fp, currCount ] of currCounts ) {
-		const prevCount = prevCounts.get( fp ) ?? 0;
-		const diff = currCount - prevCount;
-
-		if ( diff > 0 ) {
-			const query = currLookup.get( fp )!;
-			for ( let i = 0; i < diff; i++ ) {
-				added.push( query );
-			}
-		}
-	}
-
-	// Find removed queries (in previous but not in current, or fewer occurrences)
-	for ( const [ fp, prevCount ] of prevCounts ) {
-		const currCount = currCounts.get( fp ) ?? 0;
-		const diff = prevCount - currCount;
-
-		if ( diff > 0 ) {
-			const query = prevLookup.get( fp )!;
-			for ( let i = 0; i < diff; i++ ) {
-				removed.push( query );
-			}
-		}
-	}
-
 	return {
 		status: 'ready',
-		added,
-		removed,
+		added: getSurplusQueries( current, previous ),
+		removed: getSurplusQueries( previous, current ),
 		previousCount: previous.length,
 		currentCount: current.length,
 	};
