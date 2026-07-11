@@ -359,6 +359,22 @@ test.describe( 'getQueryDiffResult: storage handling', () => {
 		expect( result.status ).toBe( 'error' );
 	} );
 
+	test( 'a corrupt stored snapshot is removed so the error does not repeat on the next page load', () => {
+		const storage = stubStorage( { stored: 'this is not JSON' } );
+
+		getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( storage.removeCalls ).toEqual( [ 'qm-query-diff-data' ] );
+	} );
+
+	test( 'a failure to remove a corrupt stored snapshot still produces an error result', () => {
+		stubStorage( { stored: 'this is not JSON', removeThrows: true } );
+
+		const result = getQueryDiffResult( [ q( 'SELECT 1' ) ] );
+
+		expect( result.status ).toBe( 'error' );
+	} );
+
 	test( 'a failure to save the snapshot produces an error result even when a diff was computed', () => {
 		stubStorage( {
 			stored: storedSnapshot( [ q( 'SELECT 1' ) ] ),

@@ -180,6 +180,15 @@ export function getQueryDiffResult( currentQueries: QuerySnapshot[] ): QueryDiff
 		// Storage can be unavailable (e.g. private browsing, blocked storage
 		// access, quota exceeded) or the stored snapshot can be corrupt. Any
 		// computed diff is discarded because it can't be tracked reliably.
+		try {
+			// Remove the stored value so a corrupt snapshot doesn't repeat this
+			// error on every page load; if storage is inaccessible the removal
+			// fails too, and there is nothing to clean up.
+			sessionStorage.removeItem( STORAGE_KEY );
+		} catch {
+			// See above.
+		}
+
 		result = {
 			status: 'error',
 			added: [],
