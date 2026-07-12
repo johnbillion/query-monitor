@@ -229,7 +229,7 @@ const Assets = ( { data, labels }: myProps ) => {
 							return (
 								<code>
 									{ sprintf(
-										/* translators: %s: Size of an asset in kilobytes */
+										/* translators: %s: Size in kilobytes */
 										__( '%s kB', 'query-monitor' ),
 										Utils.numberFormat( row.size / 1024, 1 )
 									) }
@@ -258,7 +258,7 @@ const Assets = ( { data, labels }: myProps ) => {
 							{ totalSize > 0 ? (
 								<code>
 									{ sprintf(
-										/* translators: %s: Size of an asset in kilobytes */
+										/* translators: %s: Size in kilobytes */
 										__( '%s kB', 'query-monitor' ),
 										Utils.numberFormat( totalSize / 1024, 1 )
 									) }

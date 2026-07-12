@@ -361,7 +361,7 @@ export const QM = ( props: Props ) => {
 		? `${ devCssUrl }?t=${ cssVersion }`
 		: props.cssUrl;
 
-	// In extension mode, always show a panel (default to overview).
+	// When standalone (not embedded in wp-admin), always show a panel (default to overview).
 	const effectiveActive = inWP ? active : ( active || 'overview' );
 
 	// The requests overview is a top-level view shown instead of a request's
