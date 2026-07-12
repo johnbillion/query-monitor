@@ -41,6 +41,7 @@ Here's an overview of what's shown for each page load:
 In addition:
 
 * Whenever a redirect occurs, Query Monitor adds an HTTP header containing the call stack, so you can use your favourite HTTP inspector or browser developer tools to trace what triggered the redirect.
+* Query Monitor can show its full data for Ajax, `fetch()`, and REST API requests, not just the initial page load. Any such request made while its panel is open is added to the request switcher so you can inspect it in the same panels you use for a page load. Authenticated responses also include overview and PHP error information in their HTTP headers.
 
 By default, Query Monitor's output is only shown to Administrators on single-site installations, and Super Admins on Multisite installations.
 
