@@ -124,7 +124,10 @@ export const Nav = ( { menu, onSwitch, active, seen = '' }: Props ) => {
 		<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
 			{ __( 'Query Monitor Menu', 'query-monitor' ) }
 		</h2>
-		<ul role="tablist">
+		<ul role="tablist" onKeyDown={ ( e ) => Utils.handleTablistKeydown( e, [
+			{ key: 'ArrowLeft', id: 'qm-request-menu' },
+			{ key: 'ArrowRight', id: 'qm-panels' },
+		] ) }>
 			{ Object.entries( menu ).map( ( [ key, item ] ) => {
 				const children = item.children;
 				return (
