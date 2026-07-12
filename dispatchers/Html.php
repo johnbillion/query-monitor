@@ -369,7 +369,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data_id'     => $store->get_id(),
-			'data_url'    => $store->has_data() ? $store->get_url() : null,
+			'data_url'    => $store->get_url(),
 			'l10n' => [
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'admin_url' => admin_url(),
