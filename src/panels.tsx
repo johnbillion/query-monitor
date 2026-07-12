@@ -77,6 +77,7 @@ export type iQM = {
 	panel_menu?: iNavMenu;
 	data_id: string;
 	data_url: string | null;
+	status_code?: number | null;
 	l10n: iQML10n;
 	number_format: {
 		thousands_sep: string;

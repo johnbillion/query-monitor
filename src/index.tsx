@@ -180,7 +180,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		label: __( 'Page load', 'query-monitor' ),
 		method: '',
 		path: `${ window.location.pathname }${ window.location.search }`,
-		statusCode: null,
+		statusCode: QueryMonitorData.status_code ?? null,
 		status: 'idle',
 		partial: false,
 		data: null,
