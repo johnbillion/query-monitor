@@ -17,6 +17,8 @@ Please note that in a future version of Query Monitor, opt-in features may be in
 
 ## Query Monitor browser extension privacy statement
 
+Please note that the Query Monitor browser extension is no longer maintained. It might return in the future.
+
 The Query Monitor browser extension only reads Query Monitor data from pages you inspect with your browser's developer tools. It does not read any other data, all data remains in your browser, and no data is sent to any third party.
 
 The browser extension stores the same user preferences as the Query Monitor plugin in the browser's Local Storage, as described above.
