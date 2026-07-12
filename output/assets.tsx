@@ -1,4 +1,5 @@
-import { useMemo } from 'preact/hooks';
+import { useContext, useMemo } from 'preact/hooks';
+import { MainContext } from './contexts/main-context';
 import { EmptyPanel } from './panels/empty-panel';
 import { TabularPanel } from './panels/tabular-panel';
 import { PanelFooter } from './panels/panel-footer';
@@ -108,6 +109,9 @@ const AssetSource = ( { asset }: iAssetSourceProps ) => {
 };
 
 const Assets = ( { data, labels }: myProps ) => {
+	// Asset sizes come from the browser's Resource Timing API, which is only relevant for the main page load.
+	const { isMainPageLoad } = useContext( MainContext );
+
 	const position_labels: iPositionLabels = {
 		missing: __( 'Missing', 'query-monitor' ),
 		broken: __( 'Missing Dependencies', 'query-monitor' ),
@@ -117,13 +121,13 @@ const Assets = ( { data, labels }: myProps ) => {
 	};
 
 	const assets: AssetRow[] = useMemo( () => {
-		const sizes = getAssetSizes();
+		const sizes = isMainPageLoad ? getAssetSizes() : new Map<string, number>();
 
 		return ( data.assets ?? [] ).map( ( asset ) => ( {
 			...asset,
 			size: sizes.get( asset.url.absolute ) ?? 0,
 		} ) );
-	}, [ data.assets ] );
+	}, [ data.assets, isMainPageLoad ] );
 
 	if ( ! data.assets ) {
 		return (
@@ -217,7 +221,7 @@ const Assets = ( { data, labels }: myProps ) => {
 					heading: __( 'Version', 'query-monitor' ),
 					render: ( row ) => row.ver,
 				},
-				size: {
+				size: isMainPageLoad ? {
 					heading: __( 'Size', 'query-monitor' ),
 					className: 'qm-num',
 					render: ( row ) => {
@@ -238,10 +242,10 @@ const Assets = ( { data, labels }: myProps ) => {
 					sorting: {
 						field: 'size',
 					},
-				},
+				} : false,
 			}}
 			data={ assets }
-			footer={ ( { cols, count, total, data: filteredData } ) => {
+			footer={ isMainPageLoad ? ( { cols, count, total, data: filteredData } ) => {
 				const totalSize = filteredData.reduce( ( sum, row ) => sum + row.size, 0 );
 
 				return (
@@ -263,7 +267,7 @@ const Assets = ( { data, labels }: myProps ) => {
 						</td>
 					</PanelFooter>
 				);
-			} }
+			} : undefined }
 			rowHasError={ ( row ) => {
 				return row.warning;
 			} }
