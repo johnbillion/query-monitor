@@ -64,7 +64,6 @@
 		"total_qs",
 		"has_result",
 		"has_trace",
-		"dupes",
 		"errors"
 	],
 	"properties": {
@@ -107,50 +106,6 @@
 				"disabled",
 				"failed"
 			]
-		},
-		"dupes": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"query": {
-						"type": "string"
-					},
-					"count": {
-						"type": "integer"
-					},
-					"ltime": {
-						"type": "number"
-					},
-					"callers": {
-						"type": "object",
-						"additionalProperties": {
-							"type": "integer"
-						}
-					},
-					"components": {
-						"type": "object",
-						"additionalProperties": {
-							"type": "integer"
-						}
-					},
-					"sources": {
-						"type": "object",
-						"additionalProperties": {
-							"type": "integer"
-						}
-					}
-				},
-				"required": [
-					"query",
-					"count",
-					"ltime",
-					"callers",
-					"components",
-					"sources"
-				],
-				"additionalProperties": false
-			}
 		}
 	},
 	"additionalProperties": false
