@@ -5,7 +5,6 @@ import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
 import { Notice } from '../components/notice';
-import { ApproximateSize } from '../components/approximate-size';
 import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
 import type { FilterOption } from '../table';
 import { Duration } from '../components/duration';
@@ -239,7 +238,11 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						return '';
 					}
 
-					return <ApproximateSize value={ info.size_download as number } />;
+					return sprintf(
+						/* translators: %s: Size in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						Utils.numberFormat( ( info.size_download as number ) / 1024, 1 )
+					);
 				},
 			},
 			timeout: {
