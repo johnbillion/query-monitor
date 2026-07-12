@@ -489,3 +489,32 @@ export function getQueryTypes( rows: { sql: string }[] ): Record<string, number>
 
 	return types;
 }
+
+/**
+ * Values present in every one of the given arrays, preserving the order and any
+ * repeats of the first array. Mirrors PHP's array_intersect().
+ */
+export function arrayIntersect( arrays: string[][] ): string[] {
+	if ( arrays.length === 0 ) {
+		return [];
+	}
+
+	const [ first, ...rest ] = arrays;
+	const restSets = rest.map( ( arr ) => new Set( arr ) );
+
+	return first.filter( ( value ) => restSets.every( ( set ) => set.has( value ) ) );
+}
+
+/**
+ * Counts the number of occurrences of each value. Mirrors PHP's
+ * array_count_values().
+ */
+export function arrayCountValues( values: string[] ): Record<string, number> {
+	const counts: Record<string, number> = {};
+
+	for ( const value of values ) {
+		counts[ value ] = ( counts[ value ] || 0 ) + 1;
+	}
+
+	return counts;
+}

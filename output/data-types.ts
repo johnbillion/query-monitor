@@ -241,20 +241,6 @@ export interface DB_Queries {
 	has_result: boolean;
 	has_trace: boolean;
 	extended_query_prompt_reason?: "conflict" | "disabled" | "failed";
-	dupes: {
-		query: string;
-		count: number;
-		ltime: number;
-		callers: {
-			[k: string]: number;
-		};
-		components: {
-			[k: string]: number;
-		};
-		sources: {
-			[k: string]: number;
-		};
-	}[];
 }
 export interface QueryRow {
 	stack?: string[];
