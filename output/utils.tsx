@@ -9,11 +9,6 @@ interface QMGlobals {
 	};
 	l10n: {
 		admin_url: string;
-		ajaxurl: string;
-		auth_nonce: {
-			on: string;
-			off: string;
-		};
 	};
 }
 
@@ -24,8 +19,6 @@ let qmGlobals: QMGlobals = {
 	},
 	l10n: {
 		admin_url: '',
-		ajaxurl: '',
-		auth_nonce: { on: '', off: '' },
 	},
 };
 
@@ -36,18 +29,6 @@ let qmGlobals: QMGlobals = {
 export function setQMGlobals( globals: QMGlobals ): void {
 	qmGlobals = globals;
 }
-
-export const qm_l10n = {
-	get admin_url() {
-		return qmGlobals.l10n.admin_url;
-	},
-	get ajaxurl() {
-		return qmGlobals.l10n.ajaxurl;
-	},
-	get auth_nonce() {
-		return qmGlobals.l10n.auth_nonce;
-	},
-};
 
 function highlightStrings( text: string ): ( string | JSX.Element )[] {
 	const parts = text.split( /('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/ );
@@ -322,6 +303,68 @@ export function frameDisplay( frame: Pick<StackFrame, 'id' | 'args'> ): string {
 }
 
 /**
+ * Moves focus between the tab buttons within a tablist using the up/down arrow
+ * keys, as well as the Vim-style j (down) and k (up) keys, activating each button
+ * as focus reaches it. Focus stops at either end. Attach to the `onKeyDown` of
+ * the `<ul role="tablist">` element.
+ *
+ * Each entry in `jumps` maps a key to the id of another region; pressing that
+ * key moves focus there. The target resolves to the region's active tab (falling
+ * back to its first tab, then the region element itself), letting the user step
+ * sideways between the request menu, the panel menu, and the panel content.
+ */
+export function handleTablistKeydown(
+	event: JSX.TargetedKeyboardEvent<HTMLUListElement>,
+	jumps: { key: string; id: string }[] = [],
+): void {
+	// Query Monitor renders inside a shadow root, so the focused element must be
+	// read from the tablist's root node rather than `document.activeElement`,
+	// which would only report the shadow host.
+	const root = event.currentTarget.getRootNode() as ShadowRoot | Document;
+
+	const jump = jumps.find( ( j ) => j.key === event.key );
+
+	if ( jump ) {
+		const target =
+			root.querySelector<HTMLElement>( `#${ jump.id } [role="tab"][aria-selected="true"]` ) ??
+			root.querySelector<HTMLElement>( `#${ jump.id } [role="tab"]` ) ??
+			root.querySelector<HTMLElement>( `#${ jump.id }` );
+
+		if ( target ) {
+			event.preventDefault();
+			target.focus();
+		}
+
+		return;
+	}
+
+	const forward = event.key === 'ArrowDown' || event.key === 'j';
+	const backward = event.key === 'ArrowUp' || event.key === 'k';
+
+	if ( ! forward && ! backward ) {
+		return;
+	}
+
+	const buttons = Array.from( event.currentTarget.querySelectorAll<HTMLButtonElement>( '[role="tab"]' ) );
+	const index = buttons.indexOf( root.activeElement as HTMLButtonElement );
+
+	if ( index === -1 ) {
+		return;
+	}
+
+	const next = forward ? index + 1 : index - 1;
+
+	if ( next < 0 || next >= buttons.length ) {
+		return;
+	}
+
+	event.preventDefault();
+
+	buttons[ next ].focus();
+	buttons[ next ].click();
+}
+
+/**
  * Shortens a fully qualified name to reduce the length of long namespaced symbols.
  *
  * This initialises portions that do not form the first or last portion of the name. For example:
@@ -458,7 +501,7 @@ export function getSiteEditorUrl( template: string, type: string = 'wp_template_
 		canvas: 'edit',
 	} );
 
-	return `${ qm_l10n.admin_url }site-editor.php?${ params.toString() }`;
+	return `${ qmGlobals.l10n.admin_url }site-editor.php?${ params.toString() }`;
 }
 
 /**

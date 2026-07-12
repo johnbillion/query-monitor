@@ -75,7 +75,8 @@ export type iQM = {
 	menu: iQMMenu;
 	settings: iQMSettings;
 	panel_menu?: iNavMenu;
-	data: iPanelData;
+	data_id: string;
+	data_url: string | null;
 	l10n: iQML10n;
 	number_format: {
 		thousands_sep: string;
@@ -87,14 +88,114 @@ export type iQM = {
 export type iQMData = iQM | false;
 
 /**
+ * The result of reassembling a request's data file: the panel data plus a
+ * `partial` flag.
+ */
+export type iReassembledData = {
+	data: iPanelData;
+	/**
+	 * True when the data file holds only streamed bulk records but no `@meta`
+	 * records, meaning collection began but the dispatcher never finalised the
+	 * request (e.g. an early exit or redirect). Such a file has no panel menu
+	 * or overview, so its panels can't be rendered.
+	 */
+	partial: boolean;
+};
+
+/**
+ * Reassembles the per-request NDJSON data file into the iPanelData structure the
+ * panels consume. Each line is either a collector metadata record
+ * (`{ c, f: '@meta', d: { enabled, data } }`) or a streamed bulk record
+ * (`{ c, f: <field>, d: <record> }`). Lines may arrive in any order: metadata
+ * fields never overwrite arrays already built up from streamed records.
+ */
+export function reassembleData( ndjson: string ): iReassembledData {
+	const data: Record<string, { enabled: boolean; data: Record<string, unknown> | null }> = {};
+	let hasMeta = false;
+
+	for ( const line of ndjson.split( '\n' ) ) {
+		if ( ! line ) {
+			continue;
+		}
+
+		let parsed: { c: string; f: string; d: unknown };
+		try {
+			parsed = JSON.parse( line );
+		} catch {
+			continue;
+		}
+
+		const { c, f, d } = parsed;
+
+		if ( f === '@meta' ) {
+			hasMeta = true;
+			const meta = d as { enabled: boolean; data: Record<string, unknown> | null };
+
+			if ( ! data[ c ] ) {
+				data[ c ] = { enabled: meta.enabled, data: meta.data === null ? null : {} };
+			} else {
+				data[ c ].enabled = meta.enabled;
+			}
+
+			const target = data[ c ].data;
+			if ( meta.data && target ) {
+				for ( const key of Object.keys( meta.data ) ) {
+					if ( ! ( key in target ) ) {
+						target[ key ] = meta.data[ key ];
+					}
+				}
+			}
+		} else {
+			if ( ! data[ c ] ) {
+				data[ c ] = { enabled: true, data: {} };
+			}
+
+			const target = data[ c ].data ?? ( data[ c ].data = {} );
+			if ( ! Array.isArray( target[ f ] ) ) {
+				target[ f ] = [];
+			}
+
+			( target[ f ] as unknown[] ).push( d );
+		}
+	}
+
+	// php_errors streams each unique error's full record (with its backtrace)
+	// separately from the lightweight, deduplicated map (which carries the final
+	// counts and survives server-side level filtering). Stitch them back together:
+	// keep only errors whose key is still in the map, and apply the map's count.
+	const phpErrors = data[ 'php_errors' ]?.data;
+	if ( phpErrors && Array.isArray( phpErrors.error_rows ) ) {
+		const kept = ( phpErrors.errors ?? {} ) as Record<string, { count: number }>;
+		const rows = phpErrors.error_rows as Array<{ key: string; data: Record<string, unknown> }>;
+		const finalErrors: Record<string, Record<string, unknown>> = {};
+
+		for ( const row of rows ) {
+			if ( kept[ row.key ] ) {
+				row.data.count = kept[ row.key ].count;
+				finalErrors[ row.key ] = row.data;
+			}
+		}
+
+		phpErrors.errors = finalErrors;
+		delete phpErrors.error_rows;
+	}
+
+	return {
+		data: data as unknown as iPanelData,
+		partial: ! hasMeta,
+	};
+}
+
+/**
  * Initialise lookup tables, globals, and translations from a QM data object.
- * Call once before rendering, and again when data changes (e.g. after navigation
- * in the browser extension).
+ * Called once before rendering.
  */
 export function initializeQMData( data: iQM ): void {
 	setQMGlobals( {
 		number_format: data.number_format,
-		l10n: data.l10n,
+		l10n: {
+			admin_url: data.l10n.admin_url,
+		},
 	} );
 
 	if ( data.locale_data ) {

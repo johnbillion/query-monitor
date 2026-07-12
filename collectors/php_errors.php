@@ -45,6 +45,14 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	private $previous_exception_handler = null;
 
 	/**
+	 * Component per error key, kept for level filtering once the full error
+	 * records (with their traces) have been streamed out of memory.
+	 *
+	 * @var array<string, ?QM_Component>
+	 */
+	private $error_components = array();
+
+	/**
 	 * @var string|null
 	 */
 	private static $unexpected_error = null;
@@ -273,7 +281,19 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 				$error->trace = $trace;
 			}
 
-			$this->data->errors[ $key ] = $error;
+			// Stream the full error (including its backtrace) to the data store.
+			$this->stream( 'error_rows', array(
+				'key' => $key,
+				'data' => $error,
+			) );
+
+			// Keep only a lightweight copy (no trace) in memory, plus the component
+			// needed for level filtering in process().
+			$light = clone $error;
+			$light->trace = null;
+
+			$this->data->errors[ $key ] = $light;
+			$this->error_components[ $key ] = $do_trace ? $trace->get_component() : null;
 		}
 
 		$this->log_type( $level );
@@ -409,7 +429,9 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 
 		foreach ( $components as $component_context => $allowed_level ) {
 			foreach ( $all_errors as $error_id => $error ) {
-				if ( ! isset( $error->trace ) ) {
+				$component = $this->error_components[ $error_id ] ?? null;
+
+				if ( null === $component ) {
 					continue;
 				}
 
@@ -417,7 +439,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 					continue;
 				}
 
-				if ( ! $this->is_affected_component( $error->trace->get_component(), $component_type, $component_context ) ) {
+				if ( ! $this->is_affected_component( $component, $component_type, $component_context ) ) {
 					continue;
 				}
 
@@ -479,6 +501,10 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 */
 	public function set_php_errors( $errors ) {
 		$this->data->errors = $errors;
+
+		foreach ( $errors as $key => $error ) {
+			$this->error_components[ $key ] = isset( $error->trace ) ? $error->trace->get_component() : null;
+		}
 	}
 }
 

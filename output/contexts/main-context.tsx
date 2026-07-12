@@ -36,6 +36,7 @@ export type MainContextType = {
 	setDurationUnit: ( unit: DurationUnit ) => void;
 	verified: boolean;
 	setVerified: ( verified: boolean ) => void;
+	isMainPageLoad: boolean;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -55,6 +56,7 @@ export const MainContext = createContext<MainContextType>( {
 	setDurationUnit: ( _unit ) => {},
 	verified: false,
 	setVerified: ( _verified ) => {},
+	isMainPageLoad: true,
 	settings: {
 		file_path_map: {},
 		file_link_format: false,

@@ -360,6 +360,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$color_scheme = version_compare( $wp_version, '7.0.0', '>=' ) ? 'modern' : 'fresh';
 		}
 
+		$store = QM_Data_Store::init();
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
 			'settings'    => array(
@@ -367,7 +368,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'color_scheme' => $color_scheme,
 			),
 			'panel_menu'  => $this->panel_menu,
-			'data'        => $data,
+			'data_id'     => $store->get_id(),
+			'data_url'    => $store->has_data() ? $store->get_url() : null,
 			'l10n' => [
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'admin_url' => admin_url(),

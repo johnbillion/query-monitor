@@ -8,6 +8,8 @@ import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 import { __ } from '@wordpress/i18n';
 
 import { Nav, iNavMenu, NavSelect, Badges } from './nav';
+import { RequestNav, iQMRequest, REQUESTS_OVERVIEW_ID } from './request-nav';
+import { RequestsOverview } from './requests-overview';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
 const devCssUrl = import.meta.env.DEV
@@ -46,9 +48,18 @@ type Props = {
 			}
 		}
 	};
-	data: iPanelData;
+	data: iPanelData | null;
+	partial?: boolean;
 	settings: iSettings;
 	panel_menu: iNavMenu | null;
+	requests?: iQMRequest[];
+	activeRequestId?: string;
+	pageLoadId?: string;
+	isMainPageLoad: boolean;
+	onRequestChange?: ( id: string ) => void;
+	paused?: boolean;
+	onPauseToggle: () => void;
+	onClear: () => void;
 	side: boolean;
 	colorScheme: 'fresh' | 'modern';
 	theme: string;
@@ -131,6 +142,18 @@ export const QM = ( props: Props ) => {
 		// @TODO focus the panel for a11y
 	};
 
+	// The admin toolbar menu always represents the current page load.
+	const switchToPageLoadPanel = ( panel: string ) => {
+		if (
+			props.onRequestChange &&
+			props.pageLoadId !== undefined &&
+			props.activeRequestId !== props.pageLoadId
+		) {
+			props.onRequestChange( props.pageLoadId );
+		}
+		setActivePanel( panel );
+	};
+
 	const adminMenuElement = props.adminMenuElement;
 
 	let actualTheme = theme;
@@ -199,6 +222,7 @@ export const QM = ( props: Props ) => {
 		},
 		verified,
 		setVerified,
+		isMainPageLoad: props.isMainPageLoad,
 		settings: {
 			file_path_map: props.settings.file_path_map,
 			file_link_format: props.settings.file_link_format,
@@ -340,6 +364,10 @@ export const QM = ( props: Props ) => {
 	// In extension mode, always show a panel (default to overview).
 	const effectiveActive = inWP ? active : ( active || 'overview' );
 
+	// The requests overview is a top-level view shown instead of a request's
+	// panels; it replaces the panel content and hides the panel navigation.
+	const showRequestsOverview = props.activeRequestId === REQUESTS_OVERVIEW_ID;
+
 	return (
 		<MainContext.Provider value={ contextValue }>
 			<IconDefs />
@@ -354,7 +382,7 @@ export const QM = ( props: Props ) => {
 								{ __( 'Query Monitor', 'query-monitor' ) }
 							</span>
 						</h1>
-						{ side && (
+						{ side && ! showRequestsOverview && ! props.partial && (
 							<div className="qm-title-heading">
 								<NavSelect active={ effectiveActive } menu={ panelMenu } onSwitch={ setActivePanel } />
 							</div>
@@ -393,10 +421,42 @@ export const QM = ( props: Props ) => {
 						) }
 					</div>
 					<div id="qm-panels-wrapper">
-						{ ! side && (
-							<Nav active={ effectiveActive } menu={ panelmenu } onSwitch={ setActivePanel } seen={ seen } />
+						{ props.requests && props.activeRequestId && props.onRequestChange && (
+							<RequestNav
+								items={ props.requests }
+								activeRequestId={ props.activeRequestId }
+								onRequestChange={ props.onRequestChange }
+								paused={ props.paused }
+								onPauseToggle={ props.onPauseToggle }
+								onClear={ props.onClear }
+							/>
 						) }
-						<Panels data={ props.data } active={ effectiveActive } settings={ props.settings } />
+						{ ! side && ! showRequestsOverview && ! props.partial && (
+							<Nav active={ effectiveActive } menu={ panelMenu } onSwitch={ setActivePanel } seen={ seen } />
+						) }
+						{ showRequestsOverview
+							? <RequestsOverview requests={ props.requests ?? [] } />
+							: props.partial
+								? (
+									// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+									<div id="qm-panels" className="qm-non-tabular" tabIndex={ 0 }>
+										<div className="qm-boxed">
+											<section>
+												<p>
+													{ __( 'Query Monitor did not finish collecting data for this request, so there is nothing to show.', 'query-monitor' ) }
+												</p>
+											</section>
+										</div>
+									</div>
+								)
+								: props.data
+									? <Panels data={ props.data } active={ effectiveActive } settings={ props.settings } />
+									: (
+										<div id="qm-panels" className="qm-loading">
+											<p>{ __( 'Loading data…', 'query-monitor' ) }</p>
+										</div>
+									)
+						}
 					</div>
 				</div>
 			) }
@@ -406,7 +466,11 @@ export const QM = ( props: Props ) => {
 						className="ab-item"
 						href="#qm-overview"
 						onClick={ ( e ) => {
-							setActivePanel( active ? '' : 'overview' );
+							if ( active ) {
+								setActivePanel( '' );
+							} else {
+								switchToPageLoadPanel( 'overview' );
+							}
 							adminMenuElement.classList.remove( 'hover' );
 							e.preventDefault();
 						} }
@@ -426,7 +490,7 @@ export const QM = ( props: Props ) => {
 										className="ab-item"
 										href={ `#qm-${ menu.panel }` }
 										onClick={ ( e ) => {
-											setActivePanel( menu.panel );
+											switchToPageLoadPanel( menu.panel );
 											adminMenuElement.classList.remove( 'hover' );
 											e.preventDefault();
 										} }
