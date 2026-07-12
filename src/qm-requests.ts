@@ -17,27 +17,6 @@ export type ObserveOptions = {
 let installed = false;
 
 /**
- * Reads the `action` value from a request body, regardless of whether it was
- * sent as a URL-encoded string, URLSearchParams, or FormData.
- */
-function getRequestAction( body: unknown ): string | null {
-	if ( typeof body === 'string' ) {
-		return new URLSearchParams( body ).get( 'action' );
-	}
-
-	if ( body instanceof URLSearchParams ) {
-		return body.get( 'action' );
-	}
-
-	if ( body instanceof FormData ) {
-		const action = body.get( 'action' );
-		return typeof action === 'string' ? action : null;
-	}
-
-	return null;
-}
-
-/**
  * Installs observers on `XMLHttpRequest` and `fetch` that report any response
  * carrying a Query Monitor request ID header.
  */
@@ -67,7 +46,17 @@ export function observeQMRequests(
 		if ( ! ignoreHeartbeat || method.toUpperCase() !== 'POST' || ! matchesAjaxurl( url ) ) {
 			return false;
 		}
-		return getRequestAction( body ) === 'heartbeat';
+
+		// WordPress sends the heartbeat via jQuery `$.ajax`, which serializes the body to a URL-encoded string.
+		if ( typeof body !== 'string' ) {
+			return false;
+		}
+
+		return new URLSearchParams( body ).get( 'action' ) === 'heartbeat';
+	};
+
+	const shouldIgnore = ( method: string, url: string, body: unknown ): boolean => {
+		return isHeartbeat( method, url, body );
 	};
 
 	const report = (
@@ -103,7 +92,7 @@ export function observeQMRequests(
 		...args: Parameters<XMLHttpRequest[ 'send' ]>
 	) {
 		const info = requestInfo.get( this );
-		if ( ! isHeartbeat( info?.method ?? 'GET', info?.url ?? '', args[ 0 ] ) ) {
+		if ( ! shouldIgnore( info?.method ?? 'GET', info?.url ?? '', args[ 0 ] ) ) {
 			this.addEventListener( 'load', () => {
 				report(
 					this.getResponseHeader( ID_HEADER ),
@@ -126,7 +115,7 @@ export function observeQMRequests(
 				: input instanceof Request ? input.url : String( input );
 			const method = init?.method ?? ( input instanceof Request ? input.method : 'GET' );
 
-			if ( isHeartbeat( method, requestUrl, init?.body ) ) {
+			if ( shouldIgnore( method, requestUrl, init?.body ) ) {
 				return response;
 			}
 
