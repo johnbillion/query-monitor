@@ -35,15 +35,23 @@ export const Conditionals = ( { data }: PanelProps<DataTypes['conditionals']> ) 
 					<h3>
 						{ __( 'True Conditionals', 'query-monitor' ) }
 					</h3>
-					<ul>
-						{ trueConds.map( cond => (
-							<li key={ cond } className="qm-ltr qm-true">
-								<code>
-									{ cond }()
-								</code>
-							</li>
-						) ) }
-					</ul>
+					{ trueConds.length ? (
+						<ul>
+							{ trueConds.map( cond => (
+								<li key={ cond } className="qm-ltr qm-true">
+									<code>
+										{ cond }()
+									</code>
+								</li>
+							) ) }
+						</ul>
+					) : (
+						<p>
+							<em>
+								{ __( 'No conditionals are true.', 'query-monitor' ) }
+							</em>
+						</p>
+					) }
 				</section>
 			</div>
 			<div className="qm-boxed">
