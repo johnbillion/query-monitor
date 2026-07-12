@@ -7,7 +7,6 @@ import { getCallerCol, getComponentCol, getStackCol, getTimeCol } from '../table
 import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes, QueryRow } from '../data-types';
-import { resolveFrames } from '../frame-lookup';
 import { PanelProps } from '../types';
 import { PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
@@ -53,7 +52,7 @@ const normalizeDupeSQL = ( sql: string ): string => (
  */
 const getDupeStack = ( row: QueryRow ): string[] => {
 	if ( row.trace ) {
-		return resolveFrames( row.trace.frames ).map( ( frame ) => Utils.frameDisplay( frame ) );
+		return row.trace.frames.map( ( frame ) => Utils.frameDisplay( frame ) );
 	}
 
 	return row.stack ?? [];
