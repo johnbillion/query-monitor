@@ -10,9 +10,7 @@ import { Fragment } from 'preact';
 import {
 	__,
 	sprintf,
-	_x,
 } from '@wordpress/i18n';
-import { DataTypes } from '../data-types';
 import { PanelMenuItem } from '../panels/panel-registry';
 
 export const overviewMenu = (): PanelMenuItem[] => [ {
@@ -21,21 +19,6 @@ export const overviewMenu = (): PanelMenuItem[] => [ {
 	title: __( 'Overview', 'query-monitor' ),
 	adminBar: false,
 } ];
-
-export const overviewTitle = ( data: DataTypes['overview'] ): string[] => {
-	return [
-		sprintf(
-			/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
-			_x( '%ss', 'Time in seconds', 'query-monitor' ),
-			Utils.numberFormat( data.time_taken ?? 0, 2 )
-		),
-		sprintf(
-			/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
-			__( '%s MB', 'query-monitor' ),
-			Utils.numberFormat( data.memory / 1024 / 1024, 1 ),
-		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' ),
-	];
-};
 
 type OverviewProps = {
 	data: iPanelData;

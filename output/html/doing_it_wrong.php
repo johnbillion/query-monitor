@@ -20,11 +20,36 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 15 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Doing it Wrong', 'query-monitor' );
+	}
+
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
+	public function admin_menu( array $menu ) {
+		/** @var QM_Data_Doing_It_Wrong $data */
+		$data = $this->collector->get_data();
+
+		if ( empty( $data->actions ) ) {
+			return $menu;
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'title' => __( 'Doing it Wrong', 'query-monitor' ),
+			'notice_count' => count( $data->actions ),
+		) );
+
+		return $menu;
 	}
 
 }

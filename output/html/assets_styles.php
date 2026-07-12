@@ -23,11 +23,16 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 71 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
-		return __( 'Styles', 'query-monitor' );
+		return _x( 'Styles', 'Enqueued styles', 'query-monitor' );
 	}
 
 }

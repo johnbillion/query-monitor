@@ -304,11 +304,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Filters the menu items shown in the panel navigation menu in Query Monitor's output.
 		 *
+		 * The panel navigation for built-in panels is now built client-side from
+		 * each request's data, so this filter is seeded empty and carries only
+		 * third-party entries. The admin toolbar menu is still generated
+		 * server-side via `qm/output/menus`.
+		 *
 		 * @since 3.0.0
 		 *
-		 * @param array<string, mixed[]> $admin_bar_menu Array of menus.
+		 * @param array<string, mixed[]> $panel_menu Array of menus.
 		 */
-		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
+		$this->panel_menu = apply_filters( 'qm/output/panel_menus', array() );
 
 		// Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
 		self::apply_panel_menu_back_compat( $this->panel_menu );
@@ -333,16 +338,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				$data[ $collector->id ] = array(
 					'enabled' => $collector::enabled(),
 					'data'    => $collector_data,
-				);
-			}
-
-			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $collector->id() ] ) ) {
-				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
-				$this->panel_menu[ $collector->id() ]['children'][ $collector->id . '-concerned_hooks' ] = array(
-					'id' => $collector->id . '-concerned_hooks',
-					'panel' => $collector->id . '-concerned_hooks',
-					'title' => __( 'Hooks in Use', 'query-monitor' ),
-					'count' => $count,
 				);
 			}
 		}
@@ -492,6 +487,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		foreach ( $this->admin_bar_menu as $menu ) {
 			$admin_bar_menu['sub'][ $menu['id'] ] = $menu;
+		}
+
+		// The top-level menu colour reflects the highest-severity badge in the
+		// submenu: a warning takes precedence over a notice.
+		$menu_class = '';
+
+		foreach ( $admin_bar_menu['sub'] as $item ) {
+			if ( ! empty( $item['warning_count'] ) ) {
+				$menu_class = 'qm-warning';
+				break;
+			}
+		}
+
+		if ( '' === $menu_class ) {
+			foreach ( $admin_bar_menu['sub'] as $item ) {
+				if ( ! empty( $item['notice_count'] ) ) {
+					$menu_class = 'qm-notice';
+					break;
+				}
+			}
+		}
+
+		if ( '' !== $menu_class ) {
+			$admin_bar_menu['top']['classname'] = trim( $class . ' ' . $menu_class );
 		}
 
 		return $admin_bar_menu;

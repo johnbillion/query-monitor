@@ -23,11 +23,16 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 70 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
-		return __( 'Scripts', 'query-monitor' );
+		return _x( 'Scripts', 'Enqueued scripts', 'query-monitor' );
 	}
 
 }

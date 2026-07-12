@@ -23,11 +23,43 @@ class QM_Output_Html_HTTP extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 90 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'HTTP API Calls', 'query-monitor' );
+	}
+
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
+	public function admin_menu( array $menu ) {
+		/** @var QM_Data_HTTP $data */
+		$data = $this->collector->get_data();
+
+		$count = ! empty( $data->http ) ? count( $data->http ) : 0;
+		$error_count = 0;
+
+		if ( ! empty( $data->errors['alert'] ) ) {
+			$error_count += count( $data->errors['alert'] );
+		}
+		if ( ! empty( $data->errors['warning'] ) ) {
+			$error_count += count( $data->errors['warning'] );
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'title' => __( 'HTTP API Calls', 'query-monitor' ),
+			'ok_count' => ( $count - $error_count ) ?: null,
+			'warning_count' => $error_count ?: null,
+		) );
+
+		return $menu;
 	}
 
 }

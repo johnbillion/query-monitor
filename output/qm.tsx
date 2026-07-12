@@ -48,7 +48,7 @@ type Props = {
 	};
 	data: iPanelData;
 	settings: iSettings;
-	panel_menu: iNavMenu;
+	panel_menu: iNavMenu | null;
 	side: boolean;
 	colorScheme: 'fresh' | 'modern';
 	theme: string;
@@ -103,6 +103,10 @@ export const QM = ( props: Props ) => {
 		setTimelineHiddenCategories( categories );
 	};
 
+	// The panel menu is request-specific and arrives with the data; fall back to an
+	// empty menu while it loads (or for requests that don't provide one).
+	const panelMenu = props.panel_menu ?? {};
+
 	const newPanels = useMemo( () => {
 		const panels = new Set<string>();
 		const collect = ( menu: iNavMenu ) => {
@@ -115,7 +119,7 @@ export const QM = ( props: Props ) => {
 				}
 			}
 		};
-		collect( props.panel_menu );
+		collect( props.panel_menu ?? {} );
 		return panels;
 	}, [ props.panel_menu ] );
 
@@ -352,7 +356,7 @@ export const QM = ( props: Props ) => {
 						</h1>
 						{ side && (
 							<div className="qm-title-heading">
-								<NavSelect active={ effectiveActive } menu={ props.panel_menu } onSwitch={ setActivePanel } />
+								<NavSelect active={ effectiveActive } menu={ panelMenu } onSwitch={ setActivePanel } />
 							</div>
 						) }
 						<button
@@ -390,7 +394,7 @@ export const QM = ( props: Props ) => {
 					</div>
 					<div id="qm-panels-wrapper">
 						{ ! side && (
-							<Nav active={ effectiveActive } menu={ props.panel_menu } onSwitch={ setActivePanel } seen={ seen } />
+							<Nav active={ effectiveActive } menu={ panelmenu } onSwitch={ setActivePanel } seen={ seen } />
 						) }
 						<Panels data={ props.data } active={ effectiveActive } settings={ props.settings } />
 					</div>
