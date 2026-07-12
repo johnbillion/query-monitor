@@ -68,6 +68,12 @@ Query Monitor uses JSON Schema to define the structure of data passed between PH
 
 4. **React panels** (`output/html/*.tsx`) consume the data with full TypeScript type checking
 
+## Architecture
+
+The front-end Preact app must remain declarative, reactive, and state-driven, with no imperative code. Views should be pure components with no side effects where possible.
+
+The server-side PHP in collectors and dispatchers should minimise memory usage as much as possible. Prefer DTOs over array shapes.
+
 ## Running the Tests
 
 The test suite consists of:
