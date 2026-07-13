@@ -23,11 +23,52 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 10 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
+	}
+
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
+	public function admin_menu( array $menu ) {
+		/** @var QM_Data_PHP_Errors $data */
+		$data = $this->collector->get_data();
+
+		if ( empty( $data->errors ) ) {
+			return $menu;
+		}
+
+		$notice_count = 0;
+		$warning_count = 0;
+
+		foreach ( $data->errors as $error ) {
+			if ( $error->suppressed ) {
+				continue;
+			}
+
+			if ( 'warning' === $error->level ) {
+				$warning_count += $error->count;
+			} else {
+				$notice_count += $error->count;
+			}
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'title' => __( 'PHP Errors', 'query-monitor' ),
+			'notice_count' => $notice_count ?: null,
+			'warning_count' => $warning_count ?: null,
+		) );
+
+		return $menu;
 	}
 
 }

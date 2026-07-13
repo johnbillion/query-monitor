@@ -135,12 +135,9 @@ class QM_Backtrace implements JsonSerializable {
 	);
 
 	/**
-	 * Pre-computed frame tuples for JSON output: [registryIndex, lineNumber].
+	 * Pre-computed frames for JSON output, with file/line already shifted.
 	 *
-	 * @var list<array{
-	 *   int,
-	 *   int|null,
-	 * }>
+	 * @var list<QM_Data_Stack_Frame>
 	 */
 	protected $output_frames = array();
 
@@ -277,9 +274,7 @@ class QM_Backtrace implements JsonSerializable {
 	public function get_stack() {
 		$stack = array();
 
-		foreach ( $this->output_frames as $tuple ) {
-			$frame = QM_Frame_Registry::get_frame( $tuple[0] );
-
+		foreach ( $this->output_frames as $frame ) {
 			if ( isset( $frame->args ) ) {
 				$stack[] = $frame->id . '(' . $frame->args . ')';
 			} else {
@@ -410,29 +405,12 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * Resolves frames from the registry into full QM_Data_Stack_Frame objects.
+	 * Returns the filtered trace frames.
 	 *
 	 * @return QM_Data_Stack_Frame[]
 	 */
 	public function get_filtered_trace() : array {
-		$frames = array();
-
-		foreach ( $this->output_frames as [ $id, $line ] ) {
-			$entry = QM_Frame_Registry::get_frame( $id );
-
-			$frame = new QM_Data_Stack_Frame();
-			$frame->id = $entry->id;
-			$frame->file = $entry->file;
-			$frame->line = $line;
-
-			if ( isset( $entry->args ) ) {
-				$frame->args = $entry->args;
-			}
-
-			$frames[] = $frame;
-		}
-
-		return $frames;
+		return $this->output_frames;
 	}
 
 	/**
@@ -783,9 +761,8 @@ class QM_Backtrace implements JsonSerializable {
 	}
 
 	/**
-	 * Shifts file/line numbers and registers each frame with the frame
-	 * registry. Called eagerly from the constructor so the registry is
-	 * populated without needing a separate serialization pass.
+	 * Shifts file/line numbers and builds the output frames. Called eagerly
+	 * from the constructor so the frames are ready for serialization.
 	 *
 	 * @param QM_Backtrace_Frame[] $trace
 	 * @return void
@@ -815,7 +792,7 @@ class QM_Backtrace implements JsonSerializable {
 				$prev_line = $frame->line;
 			}
 
-			$this->output_frames[] = array( QM_Frame_Registry::register( $data ), $data->line );
+			$this->output_frames[] = $data;
 		}
 	}
 
@@ -823,7 +800,7 @@ class QM_Backtrace implements JsonSerializable {
 	 * @phpstan-return array{
 	 *   component: QM_Component,
 	 *   callsite: ?QM_Data_Callsite,
-	 *   frames: list<array{int, int|null}>,
+	 *   frames: list<QM_Data_Stack_Frame>,
 	 *   time: float,
 	 * }
 	 */

@@ -23,11 +23,35 @@ class QM_Output_Html_Block_Editor extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 55 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Blocks', 'query-monitor' );
+	}
+
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
+	public function admin_menu( array $menu ) {
+		/** @var QM_Data_Block_Editor $data */
+		$data = $this->collector->get_data();
+
+		if ( empty( $data->post_blocks ) ) {
+			return $menu;
+		}
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'title' => __( 'Blocks', 'query-monitor' ),
+		) );
+
+		return $menu;
 	}
 
 }

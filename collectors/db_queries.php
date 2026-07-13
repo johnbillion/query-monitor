@@ -117,9 +117,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 			return;
 		}
 
-		$this->data->rows = array();
-
-		$types = array();
 		$has_result = false;
 		$has_trace = false;
 		$i = 0;
@@ -199,11 +196,11 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$this->data->expensive[] = $i;
 			}
 
-			$this->data->rows[ $i ] = $row;
+			$this->stream( 'rows', $row );
 			$i++;
 		}
 
-		$this->data->total_qs = count( $this->data->rows );
+		$this->data->total_qs = $i;
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
 

@@ -92,13 +92,13 @@ Filtering queries by component or calling function makes it easy to see which pl
 
 ### Ajax
 
-The response from any jQuery Ajax request on the page will contain various debugging information in its headers. Any errors also get output to the developer console. No hooking required.
+Query Monitor can show its full data for Ajax requests made while its panel is open, not just for the initial page load. Any Ajax request that occurs is detected automatically and added to the request switcher, where you can inspect its database queries, HTTP API calls, logged messages, PHP errors, and everything else. No hooking required.
 
-Currently this includes PHP errors and some overview information such as memory usage, but this will be built upon in future versions.
+The response from an Ajax request also includes overview and PHP error information in its HTTP headers.
 
 ### REST API
 
-The response from an authenticated WordPress REST API request will contain various debugging information in its headers, as long as the authenticated user has permission to view Query Monitor's output.
+Query Monitor can show its full data for REST API requests too. An authenticated REST API request made while the panel is open is added to the request switcher so you can inspect all of its data, and the response includes overview and PHP error information in its HTTP headers.
 
 [Read more about debugging REST API requests with Query Monitor](https://querymonitor.com/wordpress-debugging/rest-api-requests/).
 
@@ -259,7 +259,7 @@ In addition, if you like the plugin then I'd love for you to [leave a review](ht
 
 ## Privacy Statement
 
-Query Monitor is private by default and always will be. It does not persistently store any of the data that it collects. It does not send data to any third party, nor does it include any third party resources.
+Query Monitor is private by default and always will be. It does not send data to any third party, nor does it include any third party resources.
 
 [Query Monitor's full privacy statement can be found here](https://querymonitor.com/privacy/).
 

@@ -304,11 +304,16 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/**
 		 * Filters the menu items shown in the panel navigation menu in Query Monitor's output.
 		 *
+		 * The panel navigation for built-in panels is now built client-side from
+		 * each request's data, so this filter is seeded empty and carries only
+		 * third-party entries. The admin toolbar menu is still generated
+		 * server-side via `qm/output/menus`.
+		 *
 		 * @since 3.0.0
 		 *
-		 * @param array<string, mixed[]> $admin_bar_menu Array of menus.
+		 * @param array<string, mixed[]> $panel_menu Array of menus.
 		 */
-		$this->panel_menu = apply_filters( 'qm/output/panel_menus', $this->admin_bar_menu );
+		$this->panel_menu = apply_filters( 'qm/output/panel_menus', array() );
 
 		// Back-compat: derive 'id' and 'panel' from legacy 'href' entries.
 		self::apply_panel_menu_back_compat( $this->panel_menu );
@@ -335,16 +340,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					'data'    => $collector_data,
 				);
 			}
-
-			if ( ( ! empty( $collector->concerned_filters ) || ! empty( $collector->concerned_actions ) ) && isset( $this->panel_menu[ $collector->id() ] ) ) {
-				$count = count( $collector->concerned_filters ) + count( $collector->concerned_actions );
-				$this->panel_menu[ $collector->id() ]['children'][ $collector->id . '-concerned_hooks' ] = array(
-					'id' => $collector->id . '-concerned_hooks',
-					'panel' => $collector->id . '-concerned_hooks',
-					'title' => __( 'Hooks in Use', 'query-monitor' ),
-					'count' => $count,
-				);
-			}
 		}
 
 		$data['overview'] = array(
@@ -365,6 +360,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			$color_scheme = version_compare( $wp_version, '7.0.0', '>=' ) ? 'modern' : 'fresh';
 		}
 
+		$store = QM_Data_Store::init();
 		$json = array(
 			'menu' => $this->js_admin_bar_menu(),
 			'settings'    => array(
@@ -372,8 +368,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 				'color_scheme' => $color_scheme,
 			),
 			'panel_menu'  => $this->panel_menu,
-			'data'        => $data,
-			'frames'      => QM_Frame_Registry::get_frames(),
+			'data_id'     => $store->get_id(),
+			'data_url'    => $store->get_url(),
+			'status_code' => http_response_code() ?: null,
 			'l10n' => [
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'admin_url' => admin_url(),
@@ -493,6 +490,30 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		foreach ( $this->admin_bar_menu as $menu ) {
 			$admin_bar_menu['sub'][ $menu['id'] ] = $menu;
+		}
+
+		// The top-level menu colour reflects the highest-severity badge in the
+		// submenu: a warning takes precedence over a notice.
+		$menu_class = '';
+
+		foreach ( $admin_bar_menu['sub'] as $item ) {
+			if ( ! empty( $item['warning_count'] ) ) {
+				$menu_class = 'qm-warning';
+				break;
+			}
+		}
+
+		if ( '' === $menu_class ) {
+			foreach ( $admin_bar_menu['sub'] as $item ) {
+				if ( ! empty( $item['notice_count'] ) ) {
+					$menu_class = 'qm-notice';
+					break;
+				}
+			}
+		}
+
+		if ( '' !== $menu_class ) {
+			$admin_bar_menu['top']['classname'] = trim( $class . ' ' . $menu_class );
 		}
 
 		return $admin_bar_menu;

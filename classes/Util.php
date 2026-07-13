@@ -481,8 +481,18 @@ class QM_Util {
 	/**
 	 * @return bool
 	 */
+	public static function is_rest() {
+		return ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+	}
+
+	/**
+	 * @return bool
+	 */
 	public static function is_async() {
 		if ( self::is_ajax() ) {
+			return true;
+		}
+		if ( self::is_rest() ) {
 			return true;
 		}
 		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' === strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) ) { // phpcs:ignore

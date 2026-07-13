@@ -25,11 +25,28 @@ The numbers at the top show, in order:
 3. Total time taken by SQL queries in seconds
 4. Total number of SQL queries
 
-All of the information shown by Query Monitor is for the _current page load_. Historical information is not available (although this feature is planned for a future version).
+The primary information shown by Query Monitor is for the _current page load_, but data for Ajax and REST API requests that the page makes is also recorded and available to view. See [Viewing other requests](#viewing-other-requests) below for more info.
 
 Click the top of the menu to open the Overview panel, or click any menu item to open its corresponding panel.
 
 Initially you'll probably be most interested in the Queries panel, which shows all of the database queries that were performed during the page load and allows you to filter and sort them and determine which component was responsible for each query. Bear in mind that other aspects, such as HTTP API calls and block rendering, can contribute more to page generation time than just database queries alone.
+
+## Viewing other requests
+
+Query Monitor can show data for Ajax and REST API requests made by your browser while viewing the current page. As your browser performs these requests you'll see them listed to the side of the main Query Monitor panel, much like the Network panel in your browser developer tools.
+
+Select a request in the switcher to view its data in the same panels you use for a page load, including its database queries, HTTP API calls, logged messages, and PHP errors.
+
+The request switcher provides:
+
+* An **Overview** which groups the observed requests by their URL path
+* A **pause** control which stops newly observed requests from being added to the list
+* A **clear** control which removes the observed requests, leaving just the page load
+* A **filter** box for searching the list of requests
+
+This works without any hooking or configuration.
+
+Note that WordPress heartbeat requests are ignored by default so they don't clutter the list.
 
 ## Debugging a Slow Site
 

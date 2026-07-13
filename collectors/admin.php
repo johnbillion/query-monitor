@@ -141,6 +141,6 @@ function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
 	return $collectors;
 }
 
-if ( is_admin() ) {
+if ( is_admin() && ! QM_Util::is_ajax() ) {
 	add_filter( 'qm/collectors', 'register_qm_collector_admin', 10, 2 );
 }

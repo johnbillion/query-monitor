@@ -7,7 +7,6 @@ import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import {
 	__,
-	_x,
 } from '@wordpress/i18n';
 import { PanelMenuItem } from '../panels/panel-registry';
 
@@ -15,7 +14,7 @@ export const doingItWrongMenu = ( data: DataTypes['doing_it_wrong'] ): PanelMenu
 	data.actions?.length ? [ {
 		id: 'doing_it_wrong',
 		panel: 'doing_it_wrong',
-		title: _x( 'Doing it Wrong', 'Doing it Wrong', 'query-monitor' ),
+		title: __( 'Doing it Wrong', 'query-monitor' ),
 		notice_count: data.actions.length,
 	} ] : []
 );

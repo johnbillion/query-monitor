@@ -41,6 +41,12 @@ abstract class QM_Dispatcher {
 	 */
 	protected $ceased = false;
 
+	/**
+	 * Whether the request ID response header has been sent. Shared across all
+	 * dispatchers so it is only sent once per request.
+	 */
+	protected static bool $request_id_header_sent = false;
+
 	public function __construct( QM_Plugin $qm ) {
 		$this->qm = $qm;
 
@@ -151,6 +157,13 @@ abstract class QM_Dispatcher {
 		}
 
 		add_action( 'send_headers', 'nocache_headers' );
+
+		if ( ! self::$request_id_header_sent && ! headers_sent() ) {
+			self::$request_id_header_sent = true;
+			$store = QM_Data_Store::init();
+			header( sprintf( 'X-QM-Request-ID: %s', $store->get_id() ) );
+			header( sprintf( 'X-QM-Request-Data: %s', $store->get_url() ) );
+		}
 	}
 
 	/**

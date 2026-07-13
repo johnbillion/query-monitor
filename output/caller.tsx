@@ -3,7 +3,6 @@ import { SourceLocation } from './components/source-location';
 import {
 	Backtrace,
 } from './data-types';
-import { resolveFrames } from './frame-lookup';
 import * as Utils from './utils';
 import { MainContext } from './contexts/main-context';
 import { useContext, useState } from 'preact/hooks';
@@ -26,7 +25,8 @@ export const Caller = ( { trace, defaultExpanded = false }: Props ) => {
 	} = useContext( MainContext );
 	const [ expanded, setExpanded ] = useState( defaultExpanded );
 
-	const frames = trace?.frames ? resolveFrames( trace.frames ) : [];
+	// This creates a copy of the frames array.
+	const frames = trace?.frames ? [ ...trace.frames ] : [];
 
 	// Frame 0 is always removed from the stack. It either becomes the
 	// caller display, or is redundant with the call site.

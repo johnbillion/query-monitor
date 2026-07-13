@@ -21,12 +21,6 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 	public $id = 'caps';
 
-	/**
-	 * @var array<int, array<string, mixed>>
-	 * @phpstan-var list<CapCheck>
-	 */
-	private $cap_checks = array();
-
 	public function get_storage(): QM_Data {
 		return new QM_Data_Caps();
 	}
@@ -155,11 +149,11 @@ class QM_Collector_Caps extends QM_DataCollector {
 			}
 		}
 
-		$this->cap_checks[] = array(
+		$this->record_cap_check( array(
 			'args' => $args,
 			'trace' => $trace,
 			'result' => $result,
-		);
+		) );
 
 		return $user_caps;
 	}
@@ -208,44 +202,49 @@ class QM_Collector_Caps extends QM_DataCollector {
 		array_unshift( $args, $user_id );
 		array_unshift( $args, $cap );
 
-		$this->cap_checks[] = array(
+		$this->record_cap_check( array(
 			'args' => array_values( $args ),
 			'trace' => $trace,
 			'result' => $result,
-		);
+		) );
 
 		return $required_caps;
+	}
+
+	/**
+	 * Filters out noise and streams a single capability check to the data store.
+	 *
+	 * @param array<string, mixed> $cap
+	 * @phpstan-param CapCheck $cap
+	 */
+	private function record_cap_check( array $cap ): void {
+		if ( ! $this->filter_remove_noise( $cap ) ) {
+			return;
+		}
+
+		if ( self::hide_qm() && ! $this->filter_remove_qm( $cap ) ) {
+			return;
+		}
+
+		$name = array_shift( $cap['args'] );
+		$user_id = array_shift( $cap['args'] );
+
+		if ( ! is_string( $name ) ) {
+			$name = '';
+		}
+
+		$cap['name'] = $name;
+		$cap['user'] = (int) $user_id;
+
+		$this->stream( 'caps', $cap );
 	}
 
 	/**
 	 * @return void
 	 */
 	public function process() {
-		if ( empty( $this->cap_checks ) ) {
-			return;
-		}
-
+		// This guarantees the client always receives an array, even if no cap checks took place.
 		$this->data->caps = array();
-
-		$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_noise' ) ) );
-
-		if ( self::hide_qm() ) {
-			$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_qm' ) ) );
-		}
-
-		foreach ( $this->cap_checks as $cap ) {
-			$name = array_shift( $cap['args'] );
-			$user_id = array_shift( $cap['args'] );
-
-			if ( ! is_string( $name ) ) {
-				$name = '';
-			}
-
-			$cap['name'] = $name;
-			$cap['user'] = (int) $user_id;
-
-			$this->data->caps[] = $cap;
-		}
 	}
 
 	/**
@@ -265,11 +264,11 @@ class QM_Collector_Caps extends QM_DataCollector {
 			'wp_admin_bar_render',
 		);
 
-		foreach ( $trace as $item ) {
-			if ( in_array( $item->file, $exclude_files, true ) ) {
+		foreach ( $trace as $frame ) {
+			if ( in_array( $frame->file, $exclude_files, true ) ) {
 				return false;
 			}
-			if ( in_array( $item->id, $exclude_functions, true ) ) {
+			if ( in_array( $frame->id, $exclude_functions, true ) ) {
 				return false;
 			}
 		}

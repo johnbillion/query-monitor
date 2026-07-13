@@ -23,11 +23,36 @@ class QM_Output_Html_Timing extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
+	public function __construct( QM_Collector $collector ) {
+		parent::__construct( $collector );
+		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 46 );
+	}
+
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Timing', 'query-monitor' );
+	}
+
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
+	public function admin_menu( array $menu ) {
+		/** @var QM_Data_Timing $data */
+		$data = $this->collector->get_data();
+
+		$timing_count = ! empty( $data->timing ) ? count( $data->timing ) : 0;
+		$warning_count = ! empty( $data->warning ) ? count( $data->warning ) : 0;
+
+		$menu[ $this->collector->id() ] = $this->menu( array(
+			'title' => __( 'Timings', 'query-monitor' ),
+			'ok_count' => $timing_count ?: null,
+			'warning_count' => $warning_count ?: null,
+		) );
+
+		return $menu;
 	}
 
 }

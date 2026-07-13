@@ -42,7 +42,6 @@ interface Panel<TDataKey extends keyof DataTypes> {
 	type?: 'standard';
 	order?: number;
 	menu?: ( data: DataTypes[ TDataKey ], enabled: boolean ) => PanelMenuItem[];
-	menuTitle?: ( data: DataTypes[ TDataKey ] ) => string[];
 }
 
 interface OverviewPanel<TDataKey extends keyof DataTypes> {
@@ -51,7 +50,6 @@ interface OverviewPanel<TDataKey extends keyof DataTypes> {
 	order?: number;
 	data?: TDataKey;
 	menu?: () => PanelMenuItem[];
-	menuTitle?: ( data: DataTypes[ TDataKey ] ) => string[];
 }
 
 interface SettingsPanel {
@@ -141,25 +139,17 @@ export const isSettingsPanel = ( panel: AnyPanel ): panel is SettingsPanel => {
 }
 
 /**
- * Gathers the menu, title, and menu class contributions from every panel.
+ * Gathers the panel navigation menu contributions from every panel.
  */
 export const collectMenuContributions = (
 	data: PanelDataMap,
 ) => {
 	const items: PanelMenuItem[] = [];
-	const menuTitle: string[] = [];
 
 	for ( const panel of Object.values( panels ) ) {
 		if ( panel.type === 'overview' ) {
 			if ( panel.menu ) {
 				items.push( ...panel.menu() );
-			}
-			if ( panel.menuTitle && panel.data ) {
-				const slice = data[ panel.data ];
-
-				if ( slice ) {
-					menuTitle.push( ...panel.menuTitle( slice.data as DataTypes[ keyof DataTypes ] ) );
-				}
 			}
 			continue;
 		}
@@ -178,9 +168,6 @@ export const collectMenuContributions = (
 
 		if ( panel.menu ) {
 			items.push( ...panel.menu( panelData, slice.enabled ) );
-		}
-		if ( panel.menuTitle ) {
-			menuTitle.push( ...panel.menuTitle( panelData ) );
 		}
 	}
 
@@ -201,5 +188,5 @@ export const collectMenuContributions = (
 		return false;
 	} );
 
-	return { items: topLevel, menuTitle };
+	return { items: topLevel };
 }

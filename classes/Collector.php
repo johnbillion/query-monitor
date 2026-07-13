@@ -122,6 +122,16 @@ abstract class QM_Collector {
 	}
 
 	/**
+	 * Streams a record to the data store and returns its index.
+	 *
+	 * @param string $field
+	 * @param mixed  $record
+	 */
+	protected function stream( string $field, $record ) : int {
+		return QM_Data_Store::init()->write( $this->id, $field, $record );
+	}
+
+	/**
 	 * @return QM_Data
 	 */
 	public function get_storage(): QM_Data {

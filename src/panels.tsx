@@ -3,7 +3,6 @@ import { setLocaleData } from '@wordpress/i18n';
 import { iNavMenu, iNavMenuItem, normaliseMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
 import { PanelDataMap } from '../output/types';
-import { FrameLookupEntry, setFrameLookup } from '../output/frame-lookup';
 import { setQMGlobals } from '../output/utils';
 import { registerPanel, registerOverview, registerSettings, collectMenuContributions, getMenuOrder, PanelMenuItem } from '../output/panels/panel-registry';
 
@@ -16,7 +15,7 @@ import { DBComponents } from '../output/html/db_components';
 import { DBDupes } from '../output/html/db_dupes';
 import { DBErrors } from '../output/html/db_errors';
 import { DBExpensive } from '../output/html/db_expensive';
-import { DBQueries, dbQueriesMenu, dbQueriesTitle } from '../output/html/db_queries';
+import { DBQueries, dbQueriesMenu } from '../output/html/db_queries';
 import { DoingItWrong, doingItWrongMenu } from '../output/html/doing_it_wrong';
 import { Environment, environmentMenu } from '../output/html/environment';
 import { Hooks, hooksMenu } from '../output/html/hooks';
@@ -24,7 +23,7 @@ import { HTTP, httpMenu } from '../output/html/http';
 import { Languages, languagesMenu } from '../output/html/languages';
 import { Logger, loggerMenu } from '../output/html/logger';
 import { Multisite, multisiteMenu } from '../output/html/multisite';
-import { Overview, overviewTitle, overviewMenu } from '../output/html/overview';
+import { Overview, overviewMenu } from '../output/html/overview';
 import { Timeline, timelineMenu } from '../output/html/timeline';
 import { PHPErrors, phpErrorsMenu } from '../output/html/php_errors';
 import { Request, requestMenu } from '../output/html/request';
@@ -75,9 +74,10 @@ export type iQMMenu = {
 export type iQM = {
 	menu: iQMMenu;
 	settings: iQMSettings;
-	panel_menu: iNavMenu;
-	data: iPanelData;
-	frames: FrameLookupEntry[];
+	panel_menu?: iNavMenu;
+	data_id: string;
+	data_url: string | null;
+	status_code?: number | null;
 	l10n: iQML10n;
 	number_format: {
 		thousands_sep: string;
@@ -89,15 +89,114 @@ export type iQM = {
 export type iQMData = iQM | false;
 
 /**
+ * The result of reassembling a request's data file: the panel data plus a
+ * `partial` flag.
+ */
+export type iReassembledData = {
+	data: iPanelData;
+	/**
+	 * True when the data file holds only streamed bulk records but no `@meta`
+	 * records, meaning collection began but the dispatcher never finalised the
+	 * request (e.g. an early exit or redirect). Such a file has no panel menu
+	 * or overview, so its panels can't be rendered.
+	 */
+	partial: boolean;
+};
+
+/**
+ * Reassembles the per-request NDJSON data file into the iPanelData structure the
+ * panels consume. Each line is either a collector metadata record
+ * (`{ c, f: '@meta', d: { enabled, data } }`) or a streamed bulk record
+ * (`{ c, f: <field>, d: <record> }`). Lines may arrive in any order: metadata
+ * fields never overwrite arrays already built up from streamed records.
+ */
+export function reassembleData( ndjson: string ): iReassembledData {
+	const data: Record<string, { enabled: boolean; data: Record<string, unknown> | null }> = {};
+	let hasMeta = false;
+
+	for ( const line of ndjson.split( '\n' ) ) {
+		if ( ! line ) {
+			continue;
+		}
+
+		let parsed: { c: string; f: string; d: unknown };
+		try {
+			parsed = JSON.parse( line );
+		} catch {
+			continue;
+		}
+
+		const { c, f, d } = parsed;
+
+		if ( f === '@meta' ) {
+			hasMeta = true;
+			const meta = d as { enabled: boolean; data: Record<string, unknown> | null };
+
+			if ( ! data[ c ] ) {
+				data[ c ] = { enabled: meta.enabled, data: meta.data === null ? null : {} };
+			} else {
+				data[ c ].enabled = meta.enabled;
+			}
+
+			const target = data[ c ].data;
+			if ( meta.data && target ) {
+				for ( const key of Object.keys( meta.data ) ) {
+					if ( ! ( key in target ) ) {
+						target[ key ] = meta.data[ key ];
+					}
+				}
+			}
+		} else {
+			if ( ! data[ c ] ) {
+				data[ c ] = { enabled: true, data: {} };
+			}
+
+			const target = data[ c ].data ?? ( data[ c ].data = {} );
+			if ( ! Array.isArray( target[ f ] ) ) {
+				target[ f ] = [];
+			}
+
+			( target[ f ] as unknown[] ).push( d );
+		}
+	}
+
+	// php_errors streams each unique error's full record (with its backtrace)
+	// separately from the lightweight, deduplicated map (which carries the final
+	// counts and survives server-side level filtering). Stitch them back together:
+	// keep only errors whose key is still in the map, and apply the map's count.
+	const phpErrors = data[ 'php_errors' ]?.data;
+	if ( phpErrors && Array.isArray( phpErrors.error_rows ) ) {
+		const kept = ( phpErrors.errors ?? {} ) as Record<string, { count: number }>;
+		const rows = phpErrors.error_rows as Array<{ key: string; data: Record<string, unknown> }>;
+		const finalErrors: Record<string, Record<string, unknown>> = {};
+
+		for ( const row of rows ) {
+			if ( kept[ row.key ] ) {
+				row.data.count = kept[ row.key ].count;
+				finalErrors[ row.key ] = row.data;
+			}
+		}
+
+		phpErrors.errors = finalErrors;
+		delete phpErrors.error_rows;
+	}
+
+	return {
+		data: data as unknown as iPanelData,
+		partial: ! hasMeta,
+	};
+}
+
+/**
  * Initialise lookup tables, globals, and translations from a QM data object.
- * Call once before rendering, and again when data changes (e.g. after navigation
- * in the browser extension).
+ * Called once before rendering.
  */
 export function initializeQMData( data: iQM ): void {
-	setFrameLookup( data.frames );
 	setQMGlobals( {
 		number_format: data.number_format,
-		l10n: data.l10n,
+		l10n: {
+			admin_url: data.l10n.admin_url,
+		},
 	} );
 
 	if ( data.locale_data ) {
@@ -160,64 +259,32 @@ function buildNav( items: PanelMenuItem[] ): iNavMenu {
 }
 
 /**
- * Flattens the nested menu contributions into the flat admin toolbar submenu.
+ * Builds the panel navigation menu from the active request's data.
+ *
+ * The admin toolbar menu (title, submenu, and CSS class) is generated
+ * server-side for the current page load and passed through unchanged — it must
+ * always be visible and always represent the page load, so it can't depend on a
+ * request's data file being fetched. Only the panel navigation is built
+ * client-side, so it reflects whichever request is currently being viewed.
  */
-function buildSub( items: PanelMenuItem[] ): iQMMenu[ 'sub' ] {
-	const sub: iQMMenu[ 'sub' ] = {};
-
-	for ( const item of items ) {
-		if ( item.adminBar !== false ) {
-			sub[ item.id ] = {
-				id: item.id,
-				panel: item.panel,
-				title: item.title,
-				ok_count: item.ok_count ?? null,
-				notice_count: item.notice_count ?? null,
-				warning_count: item.warning_count ?? null,
-			};
-		}
-
-		Object.assign( sub, buildSub( item.children ?? [] ) );
-	}
-
-	return sub;
-}
-
-/**
- * Builds the admin toolbar menu and panel menu. Client entries come first
- * (ordered by their registration); any server-provided entries (e.g. third-party
- * panels using the PHP filters) are appended to the bottom in their server order.
- */
-export function buildMenus( server: iQM ): { menu: iQMMenu; panel_menu: iNavMenu } {
-	const { items, menuTitle } = collectMenuContributions(
-		server.data as PanelDataMap,
-	);
+export function buildMenus(
+	server: iQM,
+	data: PanelDataMap,
+): { menu: iQMMenu; panel_menu: iNavMenu } {
+	const { items } = collectMenuContributions( data );
 
 	// Top-level items come from independent panels, so order them by their
 	// registration order. Nested children keep the order their panel authored them in.
 	const tops = [ ...items ].sort( byOrder );
 
-	// Client entries carry a structured `count`; only server-provided entries embed
-	// the count in their title string (e.g. "Logs (5)"), so normalise just those.
-	const panel_menu: iNavMenu = { ...buildNav( tops ), ...normaliseMenu( server.panel_menu ) };
-	const sub: iQMMenu[ 'sub' ] = { ...buildSub( tops ), ...server.menu.sub };
-
-	let menuClass = '';
-
-	if ( Object.values( sub ).some( ( item ) => item.warning_count && item.warning_count > 0 ) ) {
-		menuClass = 'qm-warning';
-	} else if ( Object.values( sub ).some( ( item ) => item.notice_count && item.notice_count > 0 ) ) {
-		menuClass = 'qm-notice';
-	}
+	// Client-registered built-in panels own the nav; any server-registered
+	// entries (third-party PHP panels using the `qm/output/panel_menus` filter)
+	// fill in behind them. Server entries may embed a count in their title string
+	// (e.g. "Logs (5)"), so normalise those.
+	const panel_menu: iNavMenu = { ...normaliseMenu( server.panel_menu ?? {} ), ...buildNav( tops ) };
 
 	return {
-		menu: {
-			top: {
-				title: [ ...menuTitle, ...server.menu.top.title ],
-				classname: [ server.menu.top.classname, menuClass ].join( ' ' ),
-			},
-			sub,
-		},
+		menu: server.menu,
 		panel_menu,
 	};
 }
@@ -241,7 +308,6 @@ export function registerAllPanels(): void {
 			order: 0,
 			data: 'overview',
 			menu: overviewMenu,
-			menuTitle: overviewTitle,
 		}
 	);
 	registerOverview(
@@ -330,7 +396,6 @@ export function registerAllPanels(): void {
 			data: 'db_queries',
 			order: 20,
 			menu: dbQueriesMenu,
-			menuTitle: dbQueriesTitle,
 		}
 	);
 	registerPanel(

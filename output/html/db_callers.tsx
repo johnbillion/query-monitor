@@ -6,7 +6,6 @@ import { FilterLink } from '../components/filter-link';
 import { Component } from '../component';
 import { getQueryType, getQueryTypes } from '../utils';
 import { Component as ComponentType, DataTypes } from '../data-types';
-import { resolveFrame } from '../frame-lookup';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
 
@@ -24,7 +23,7 @@ const aggregateByCaller = ( rows: NonNullable<DataTypes['db_queries']['rows']> )
 		let caller: string | undefined;
 
 		if ( row.trace?.frames?.length ) {
-			caller = resolveFrame( row.trace.frames[0] ).id;
+			caller = row.trace.frames[0].id;
 		} else if ( row.stack?.length ) {
 			caller = row.stack[0];
 		}

@@ -198,10 +198,7 @@ export interface Caps {
 export interface Backtrace {
 	component: Component;
 	callsite?: CallSite | null;
-	/**
-	 * Compact frame references as [frameIndex, lineNumber] tuples.
-	 */
-	frames: [number, number | null][];
+	frames: StackFrame[];
 	/**
 	 * Time in milliseconds relative to the start of the request.
 	 */
@@ -213,6 +210,15 @@ export interface Backtrace {
 export interface CallSite {
 	file: string;
 	line: number;
+}
+/**
+ * Stack trace frame.
+ */
+export interface StackFrame {
+	id: string;
+	args?: string | null;
+	file: string | null;
+	line?: number | null;
 }
 /**
  * Conditionals data transfer object.
@@ -386,15 +392,6 @@ export interface Languages {
 	 * Polylang language.
 	 */
 	pll_language: string;
-}
-/**
- * Stack trace frame.
- */
-export interface StackFrame {
-	id: string;
-	args?: string | null;
-	file: string | null;
-	line?: number | null;
 }
 /**
  * Logger data transfer object.

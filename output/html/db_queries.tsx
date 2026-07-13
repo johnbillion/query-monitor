@@ -7,15 +7,12 @@ import { getCallerCol, getComponentCol, getStackCol, getTimeCol } from '../table
 import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
 import { DataTypes, QueryRow } from '../data-types';
-import { resolveFrames } from '../frame-lookup';
 import { PanelProps } from '../types';
 import { PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
 
 import {
 	__,
-	_n,
-	_x,
 	sprintf,
 } from '@wordpress/i18n';
 
@@ -53,7 +50,7 @@ const normalizeDupeSQL = ( sql: string ): string => (
  */
 const getDupeStack = ( row: QueryRow ): string[] => {
 	if ( row.trace ) {
-		return resolveFrames( row.trace.frames ).map( ( frame ) => Utils.frameDisplay( frame ) );
+		return row.trace.frames.map( ( frame ) => Utils.frameDisplay( frame ) );
 	}
 
 	return row.stack ?? [];
@@ -204,35 +201,6 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		ok_count: okCount || null,
 		children,
 	} ];
-};
-
-export const dbQueriesTitle = ( data: DataTypes['db_queries'] ): string[] => {
-	const titles: string[] = [];
-
-	const queryCount = (): string => (
-		sprintf(
-			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
-			_n( '%s Q', '%s Q', data.total_qs, 'query-monitor' ) || '%s Q',
-			Utils.numberFormat( data.total_qs ),
-		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' )
-	);
-
-	if ( data.rows ) {
-		const totalTime = data.rows.reduce( ( sum, row ) => sum + row.ltime, 0 );
-
-		titles.push(
-			sprintf(
-				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
-				_x( '%ss', 'Time in seconds', 'query-monitor' ),
-				Utils.numberFormat( totalTime, 2 )
-			)
-		);
-		titles.push( queryCount() );
-	} else if ( data.total_qs != null ) {
-		titles.push( queryCount() );
-	}
-
-	return titles;
 };
 
 const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'failed' ) => {
