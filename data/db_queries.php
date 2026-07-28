@@ -57,16 +57,4 @@ class QM_Data_DB_Queries extends QM_Data {
 	 * @var ?'conflict'|'disabled'|'failed'
 	 */
 	public $extended_query_prompt_reason;
-
-	/**
-	 * @phpstan-var array<int, array{
-	 *   query: string,
-	 *   count: int,
-	 *   ltime: float,
-	 *   callers: array<string, int>,
-	 *   components: array<string, int>,
-	 *   sources: array<string, int>,
-	 * }>
-	 */
-	public $dupes;
 }

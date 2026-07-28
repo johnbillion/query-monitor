@@ -251,6 +251,14 @@ add_action( 'init', function() {
 
 					$wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
 					break;
+				case 'duplicate':
+					global $wpdb;
+
+					// Run an identical query more than once to trigger the
+					// duplicate query detection.
+					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
+					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

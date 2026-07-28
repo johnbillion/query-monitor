@@ -1,4 +1,3 @@
-import { ApproximateSize } from '../components/approximate-size';
 import { FileName } from '../components/file-name';
 import { SourceLocation } from '../components/source-location';
 import * as Utils from '../utils';
@@ -81,9 +80,11 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					className: 'qm-nowrap',
 					render: ( row ) => (
 						row.found ? (
-							<ApproximateSize
-								value={ row.found }
-							/>
+							sprintf(
+								/* translators: %s: Size in kilobytes */
+								__( '%s kB', 'query-monitor' ),
+								Utils.numberFormat( row.found / 1024, 1 )
+							)
 						) : (
 							__( 'Not Found', 'query-monitor' )
 						)
@@ -98,9 +99,11 @@ export const Languages = ( { data }: PanelProps<DataTypes['languages']> ) => {
 					total={ total }
 				>
 					<td>
-						<ApproximateSize
-							value={ data.reduce( ( total, row ) => ( total + ( row.found ? row.found : 0 ) ), 0 ) }
-						/>
+						{ sprintf(
+							/* translators: %s: Size in kilobytes */
+							__( '%s kB', 'query-monitor' ),
+							Utils.numberFormat( data.reduce( ( total, row ) => ( total + ( row.found ? row.found : 0 ) ), 0 ) / 1024, 1 )
+						) }
 					</td>
 				</PanelFooter>
 			) }

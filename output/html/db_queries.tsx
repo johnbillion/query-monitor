@@ -6,9 +6,10 @@ import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol, getStackCol, getTimeCol } from '../table';
 import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
-import { DataTypes } from '../data-types';
+import { DataTypes, QueryRow } from '../data-types';
+import { resolveFrames } from '../frame-lookup';
 import { PanelProps } from '../types';
-import { getPanel, PanelMenuItem } from '../panels/panel-registry';
+import { PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
 
 import {
@@ -17,6 +18,131 @@ import {
 	_x,
 	sprintf,
 } from '@wordpress/i18n';
+
+export interface DupeQuery {
+	query: string;
+	count: number;
+	ltime: number;
+	callers: Record<string, number>;
+	components: Record<string, number>;
+	sources: Record<string, number>;
+}
+
+/**
+ * Normalises a SQL string for duplicate grouping: collapses all whitespace to
+ * single spaces, strips tabs and backticks, and removes any trailing semicolon.
+ */
+const normalizeDupeSQL = ( sql: string ): string => (
+	sql
+		// Replace all newlines with a single space:
+		.replace( /\r\n|\r|\n/g, ' ' )
+		// Remove all tabs and backticks:
+		.replace( /[\t`]/g, '' )
+		// Replace all instance of multiple spaces with a single space:
+		.replace( / +/g, ' ' )
+		// Trim the SQL:
+		.trim()
+		// Remove trailing semicolon:
+		.replace( /;+$/, '' )
+);
+
+/**
+ * Returns the stack of callers used for duplicate grouping. For rows with a
+ * full backtrace this mirrors QM_Backtrace::get_stack(); otherwise it uses the
+ * pre-filtered stack captured server-side.
+ */
+const getDupeStack = ( row: QueryRow ): string[] => {
+	if ( row.trace ) {
+		return resolveFrames( row.trace.frames ).map( ( frame ) => Utils.frameDisplay( frame ) );
+	}
+
+	return row.stack ?? [];
+};
+
+/**
+ * Detects duplicate database queries from the collected query rows.
+ *
+ * This reproduces the duplicate-query analysis that Query Monitor previously
+ * performed server-side: queries are grouped by their normalised SQL, groups
+ * with only a single occurrence are discarded, and the callers, components and
+ * potential troublemakers for each duplicated query are tallied up.
+ */
+export const getDupes = ( rows: QueryRow[] ): DupeQuery[] => {
+	// Group the query rows by their normalised SQL.
+	const groups = new Map<string, QueryRow[]>();
+
+	for ( const row of rows ) {
+		const sql = normalizeDupeSQL( row.sql );
+		const group = groups.get( sql );
+
+		if ( group ) {
+			group.push( row );
+		} else {
+			groups.set( sql, [ row ] );
+		}
+	}
+
+	// Ignore duplicates from `WP_Query->set_found_posts()`.
+	groups.delete( 'SELECT FOUND_ROWS()' );
+
+	const dupes: DupeQuery[] = [];
+
+	for ( const [ query, group ] of groups ) {
+		// Skip queries that do not have duplicates.
+		if ( group.length < 2 ) {
+			continue;
+		}
+
+		const callers: Record<string, number> = {};
+		const components: Record<string, number> = {};
+		const stacks: string[][] = [];
+		let ltime = 0;
+
+		for ( const row of group ) {
+			const component = row.trace ? row.trace.component.name : null;
+			const stack = getDupeStack( row );
+
+			if ( component !== null ) {
+				components[ component ] = ( components[ component ] || 0 ) + 1;
+			}
+
+			if ( stack.length ) {
+				const caller = stack[0];
+				callers[ caller ] = ( callers[ caller ] || 0 ) + 1;
+			}
+
+			stacks.push( stack );
+			ltime += row.ltime;
+		}
+
+		// The callers which are common to all stacks for this query.
+		const common = new Set( Utils.arrayIntersect( stacks ) );
+		const callerKeys = Object.keys( callers );
+
+		// Remove the common callers, leaving only what differs between stacks.
+		// If nothing differs, fall back to the primary callers.
+		const trimmed = stacks.map( ( stack ) => {
+			const diff = stack.filter( ( caller ) => ! common.has( caller ) );
+			return diff.length ? diff : callerKeys;
+		} );
+
+		// Count the occurrences of each primary caller across the duplicates.
+		const primary = trimmed
+			.map( ( stack ) => stack[0] )
+			.filter( ( caller ): caller is string => caller !== undefined );
+
+		dupes.push( {
+			query,
+			count: group.length,
+			ltime,
+			callers,
+			components,
+			sources: Utils.arrayCountValues( primary ),
+		} );
+	}
+
+	return dupes;
+};
 
 export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] => {
 	const children: PanelMenuItem[] = [];
@@ -39,12 +165,14 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
-	if ( data.dupes?.length ) {
+	const dupes = data.rows?.length ? getDupes( data.rows ) : [];
+
+	if ( dupes.length ) {
 		children.push( {
 			id: 'db_dupes',
 			panel: 'db_dupes',
 			title: __( 'Duplicate Queries', 'query-monitor' ),
-			notice_count: data.dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
+			notice_count: dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
 			adminBar: false,
 		} );
 	}
@@ -67,15 +195,12 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
-	// The Query Diff panel is not registered in every host (see registerAllPanels).
-	if ( getPanel( 'db_queries_diff' ) ) {
-		children.push( {
-			id: 'db_queries_diff',
-			panel: 'db_queries_diff',
-			title: __( 'Query Diff', 'query-monitor' ),
-			adminBar: false,
-		} );
-	}
+	children.push( {
+		id: 'db_queries_diff',
+		panel: 'db_queries_diff',
+		title: __( 'Query Diff', 'query-monitor' ),
+		adminBar: false,
+	} );
 
 	const okCount = ( data.total_qs ?? 0 );
 

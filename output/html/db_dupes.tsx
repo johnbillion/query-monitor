@@ -2,6 +2,7 @@ import { FilterLink } from '../components/filter-link';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Duration } from '../components/duration';
 import * as Utils from '../utils';
+import { getDupes } from './db_queries';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { Fragment } from 'preact';
@@ -13,7 +14,9 @@ import {
 } from '@wordpress/i18n';
 
 export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
-	if ( ! data.dupes.length ) {
+	const dupes = data.rows?.length ? getDupes( data.rows ) : [];
+
+	if ( ! dupes.length ) {
 		return null;
 	}
 
@@ -101,6 +104,6 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 				),
 			},
 		} }
-		data={ data.dupes }
+		data={ dupes }
 	/>
 };
