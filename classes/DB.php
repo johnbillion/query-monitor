@@ -35,7 +35,11 @@ class QM_DB extends wpdb {
 			$this->queries = array();
 		}
 
-		if ( ! isset( $this->queries[ $i ] ) ) {
+		// In some environments `$this->queries[ $i ]` can hold a non-array value.
+		// Writing an array offset to it is a fatal error on PHP 8, so treat that
+		// the same as a missing entry and bail.
+		// See https://github.com/johnbillion/query-monitor/issues/1120.
+		if ( ! is_array( $this->queries[ $i ] ?? null ) ) {
 			return $result;
 		}
 
