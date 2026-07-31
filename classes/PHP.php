@@ -50,7 +50,7 @@ class QM_PHP {
 	public static function vendor_nope() {
 		printf(
 			'<div id="qm-built-nope" class="notice notice-error"><p>Dependencies for Query Monitor need to be installed. Run <code>composer install --no-dev</code> from the <code>%s</code> directory.</p></div>',
-			esc_html( dirname( dirname( __FILE__ ) ) )
+			esc_html( dirname( __DIR__ ) )
 		);
 	}
 

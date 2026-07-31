@@ -446,7 +446,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 * @param QM_Backtrace $trace The backtrace object.
 	 * @param array<string, mixed> $options Guzzle request options.
 	 */
-	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ) : void {
+	public function log_guzzle_request( $request, $response, $exception, string $url, float $start_time, QM_Backtrace $trace, array $options ): void {
 		$end_time = microtime( true );
 		$ltime = $end_time - $start_time;
 		$key = $start_time . $url;

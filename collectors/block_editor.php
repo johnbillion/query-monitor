@@ -185,7 +185,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 * } $block
 	 * @param mixed[] $block
 	 */
-	protected function process_block( array $block ) : ?QM_Data_Post_Block {
+	protected function process_block( array $block ): ?QM_Data_Post_Block {
 		$context = array_shift( $this->block_context );
 		$timing = array_shift( $this->block_timing );
 

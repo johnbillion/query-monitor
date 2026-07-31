@@ -95,9 +95,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 						$subject .= ' non-core';
 					}
 
-					printf( // WPCS: XSS ok.
+					printf(
 						'<tr data-qm-subject="%s" %s>',
 						esc_attr( $subject ),
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						$attr
 					);
 
@@ -145,10 +146,10 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 
 					if ( isset( $action['callback']->file ) ) {
 						echo '<td class="qm-nowrap qm-ltr qm-has-toggle' . esc_attr( $class ) . '">';
-						echo self::build_toggler(); // WPCS: XSS ok;
+						echo self::build_toggler(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo '<ol>';
 						echo '<li>';
-						echo self::output_filename( $action['callback']->name, $action['callback']->file, $action['callback']->line ); // WPCS: XSS ok.
+						echo self::output_filename( $action['callback']->name, $action['callback']->file, $action['callback']->line ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo '</li>';
 						echo '</ol></td>';
 					} else {
@@ -189,7 +190,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 					$first = false;
 				}
 			} else {
-				echo "<tr{$attr}>"; // WPCS: XSS ok.
+				echo "<tr{$attr}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '<th scope="row" class="qm-ltr">';
 				echo '<code>' . esc_html( $hook['name'] ) . '</code>';
 				echo '</th>';
