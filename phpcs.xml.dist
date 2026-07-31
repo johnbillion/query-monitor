@@ -61,6 +61,14 @@
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
 		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody" />
+		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
+
+		<!-- `declare(strict_types = 1)` shares the opening tag line, so it precedes the file docblock -->
+		<exclude name="PSR12.Files.FileHeader.IncorrectOrder" />
+
+		<!-- Each collector and output file declares its class alongside its registration function -->
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
 
 		<!-- We have the means -->
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
