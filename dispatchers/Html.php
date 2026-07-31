@@ -533,10 +533,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
-				return false;
-			}
+		} elseif ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
+			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
