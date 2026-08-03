@@ -4,6 +4,7 @@
 
 ## Testing
 
+- [ ] I have reproduced this bug or have a desire for this feature on a real installation of WordPress (required)
 - [ ] I have tested this change on a real installation of WordPress (required)
 
 Steps to test:
