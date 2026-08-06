@@ -105,10 +105,8 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! did_action( 'wp' ) ) {
-				return false;
-			}
+		} elseif ( ! did_action( 'wp' ) ) {
+			return false;
 		}
 
 		return true;

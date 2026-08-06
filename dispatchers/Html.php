@@ -533,10 +533,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
-				return false;
-			}
+		} elseif ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
+			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
@@ -583,7 +581,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			nl2br( esc_html( $e['message'] ), false ),
 			esc_html( $e['file'] ),
 			intval( $e['line'] )
-		); // WPCS: XSS ok.
+		);
 
 		if ( ! empty( $e['trace'] ) ) {
 			echo '<p>Call stack:</p>';
@@ -595,7 +593,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					continue;
 				}
 
-				$args = array_map( function( $value ) {
+				$args = array_map( function ( $value ) {
 					$type = gettype( $value );
 
 					switch ( $type ) {
@@ -620,8 +618,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 				printf(
 					'<li>%s</li>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					QM_Output_Html::output_filename( $name, $frame['file'] ?? '', $frame['line'] ?? 0 )
-				); // WPCS: XSS ok.
+				);
 			}
 			echo '</ol>';
 		}

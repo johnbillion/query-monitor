@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_wp_version" value="6.2"/>
 	<arg name="extensions" value="php"/>
 	<arg name="cache" value="tests/cache/phpcs.json"/>
 
@@ -47,7 +48,7 @@
 		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting" />
 		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_ini_set" />
-		<exclude name="WordPress.PHP.IniSet.display_errors_Blacklisted" />
+		<exclude name="WordPress.PHP.IniSet.display_errors_Disallowed" />
 		<exclude name="WordPress.DB.RestrictedFunctions" />
 
 		<!-- @TODO remove this exclusion: -->
@@ -56,16 +57,23 @@
 		<!-- Not interested in whitespace issues at the moment -->
 		<exclude name="PEAR.Functions.FunctionCallSignature" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
-		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
-		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent" />
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
 		<exclude name="Generic.Formatting.MultipleStatementAlignment.IncorrectWarning" />
 		<exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody" />
+		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />
+
+		<!-- `declare(strict_types = 1)` shares the opening tag line, so it precedes the file docblock -->
+		<exclude name="PSR12.Files.FileHeader.IncorrectOrder" />
+
+		<!-- Each collector and output file declares its class alongside its registration function -->
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
 
 		<!-- We have the means -->
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
-		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+		<exclude name="Universal.Operators.DisallowShortTernary.Found" />
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
 
 		<!-- QM looks at several superglobals -->
 		<exclude name="WordPress.Security.NonceVerification.Missing" />
@@ -76,13 +84,9 @@
 	<!-- Custom rule properties -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="query-monitor" />
-		</properties>
-	</rule>
-
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="6.2" />
+			<property name="text_domain" type="array">
+				<element value="query-monitor" />
+			</property>
 		</properties>
 	</rule>
 

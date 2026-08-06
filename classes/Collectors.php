@@ -71,7 +71,7 @@ class QM_Collectors implements IteratorAggregate {
 	/**
 	 * Ceases data collection if the current request is not one where QM will output.
 	 */
-	public function cease_if_unsupported() : void {
+	public function cease_if_unsupported(): void {
 		if ( self::request_supported() ) {
 			return;
 		}
@@ -82,7 +82,7 @@ class QM_Collectors implements IteratorAggregate {
 	/**
 	 * Determines whether the current request supports data collection.
 	 */
-	public static function request_supported() : bool {
+	public static function request_supported(): bool {
 		// Don't collect during a Customizer preview request:
 		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
 			return false;

@@ -58,7 +58,7 @@ if ( is_admin() ) {
 }
 
 // This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
-$qm_dir = dirname( dirname( __FILE__ ) );
+$qm_dir = dirname( __DIR__ );
 $qm_php = "{$qm_dir}/classes/PHP.php";
 
 if ( ! is_readable( $qm_php ) ) {
