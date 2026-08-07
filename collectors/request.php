@@ -292,9 +292,12 @@ class QM_Collector_Request extends QM_DataCollector {
 		$rewrite_rules = $wp_rewrite->rules;
 
 		foreach ( $rewrite_rules as $match => $query ) {
-			if ( preg_match( "#^{$match}#", $this->data->request['request'] ) ) {
-				$matching[ $match ] = $query;
-			}
+		        $request = $this->data->request['request'] ?? '';
+
+                if ( is_string( $request ) && preg_match( "#^{$match}#", $request ) ) {
+                       $matching[ $match ] = $query;
+              }
+
 		}
 
 		$this->data->matching_rewrites = $matching;
