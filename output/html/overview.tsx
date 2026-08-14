@@ -272,7 +272,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 								<p>
 									<span className="qm-info">
 										<a
-											href={ `${ settings.admin_url }network/plugins.php?plugin_status=dropins` }
+											href={ `${ settings.admin_url }${ settings.is_multisite ? 'network/' : '' }plugins.php?plugin_status=dropins` }
 											target="_blank"
 											rel="noopener noreferrer"
 										>

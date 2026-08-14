@@ -47,6 +47,7 @@ export type iPanelData = {
 export type iSettings = {
 	verified: boolean;
 	color_scheme: 'fresh' | 'modern';
+	is_multisite: boolean;
 	ajaxurl: string;
 	admin_url: string;
 	auth_nonce: {

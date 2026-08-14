@@ -39,7 +39,7 @@ import { Transients, transientsMenu } from '../output/html/transients';
 /**
  * Raw settings from PHP, before merging with l10n values.
  */
-export type iQMSettings = Pick<iSettings, 'verified' | 'color_scheme'>;
+export type iQMSettings = Pick<iSettings, 'verified' | 'color_scheme' | 'is_multisite'>;
 
 /**
  * Localization data from PHP.
