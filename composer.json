@@ -37,7 +37,7 @@
 		"phpstan/phpstan": "2.1.46",
 		"phpstan/phpstan-deprecation-rules": "2.0.4",
 		"phpstan/phpstan-phpunit": "2.0.16",
-		"squizlabs/php_codesniffer": "3.13.5",
+		"squizlabs/php_codesniffer": "3.13.6",
 		"szepeviktor/phpstan-wordpress": "2.0.3",
 		"wp-coding-standards/wpcs": "3.4.1"
 	},
