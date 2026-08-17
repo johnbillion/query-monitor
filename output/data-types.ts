@@ -468,10 +468,22 @@ export interface PHP_Error {
  */
 export interface Raw_Request {
 	request: {
-		[k: string]: unknown;
+		ip: string;
+		method: string;
+		scheme: string;
+		host: string;
+		path: string;
+		query: string;
+		url: string;
+		headers: {
+			[k: string]: string;
+		};
 	};
 	response: {
-		[k: string]: unknown;
+		status: number | null;
+		headers: {
+			[k: string]: string;
+		};
 	};
 }
 /**

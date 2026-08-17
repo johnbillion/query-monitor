@@ -14,7 +14,7 @@ interface HeadersProps extends PanelProps<DataTypes['raw_request']> {
 }
 
 export const Headers = ( { data, type }: HeadersProps ) => {
-	const headers = data[type]?.headers as Record<string, string>;
+	const headers = data[type]?.headers;
 
 	if ( ! headers || Object.keys( headers ).length === 0 ) {
 		return (

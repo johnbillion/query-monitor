@@ -80,12 +80,7 @@ export const Overview = ( { data, settings }: OverviewProps ) => {
 				<div className="qm-boxed">
 					<section id="qm-overview-raw-request">
 						<h3>
-							{ sprintf(
-								'%1$s %2$s → %3$s',
-								rawRequestData.request.method,
-								rawRequestData.request.url,
-								rawRequestData.response.status || __( 'Unknown HTTP Response Code', 'query-monitor' )
-							) }
+							{ `${ rawRequestData.request.method } ${ rawRequestData.request.url } → ${ rawRequestData.response.status || __( 'Unknown HTTP Response Code', 'query-monitor' ) }` }
 						</h3>
 					</section>
 				</div>
