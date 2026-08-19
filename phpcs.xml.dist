@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="Query Monitor">
 	<config name="testVersion" value="7.4-"/>
-	<config name="minimum_wp_version" value="6.2"/>
+	<config name="minimum_wp_version" value="6.3"/>
 	<arg name="extensions" value="php"/>
 	<arg name="cache" value="tests/cache/phpcs.json"/>
 
