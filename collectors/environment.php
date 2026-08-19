@@ -187,12 +187,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		);
 
 		$this->data->wp['environment_type'] = wp_get_environment_type();
-
-		// WP 6.3
-		if ( function_exists( 'wp_get_development_mode' ) ) {
-			$this->data->wp['development_mode'] = wp_get_development_mode();
-		}
-
+		$this->data->wp['development_mode'] = wp_get_development_mode();
 		$this->data->wp['constants'] = apply_filters( 'qm/environment-constants', $constants );
 
 		if ( is_multisite() ) {

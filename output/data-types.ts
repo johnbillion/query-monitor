@@ -290,7 +290,7 @@ export interface Environment {
 	wp: {
 		version: string;
 		environment_type: string;
-		development_mode?: string;
+		development_mode: string;
 		constants: {
 			[k: string]: string;
 		};
