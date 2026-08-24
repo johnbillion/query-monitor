@@ -29,7 +29,7 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "2.9.4",
+		"johnbillion/plugin-infrastructure": "2.9.6",
 		"johnbillion/wp-compat": "1.5.0",
 		"php-stubs/wp-cli-stubs": "2.12.0",
 		"php-stubs/wordpress-stubs": "7.0.0 as 6.9.4",
@@ -37,7 +37,7 @@
 		"phpstan/phpstan": "2.1.46",
 		"phpstan/phpstan-deprecation-rules": "2.0.4",
 		"phpstan/phpstan-phpunit": "2.0.16",
-		"squizlabs/php_codesniffer": "3.13.5",
+		"squizlabs/php_codesniffer": "3.13.6",
 		"szepeviktor/phpstan-wordpress": "2.0.3",
 		"wp-coding-standards/wpcs": "3.4.1"
 	},

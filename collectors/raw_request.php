@@ -50,19 +50,19 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-		$request = array(
-			'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
-			'method' => strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ),
-			'scheme' => is_ssl() ? 'https' : 'http',
-			'host' => self::get_origin(),
-			'path' => wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ),
-			'query' => wp_unslash( $_SERVER['QUERY_STRING'] ?? '' ),
-			'headers' => $this->get_headers( wp_unslash( $_SERVER ) ),
-		);
+		$request_headers = $this->get_headers( wp_unslash( $_SERVER ) );
 
-		ksort( $request['headers'] );
+		ksort( $request_headers );
 
-		$request['url'] = sprintf( '%s%s', $request['host'], $request['path'] );
+		$request = new QM_Data_Raw_Request_Request();
+		$request->ip = $_SERVER['REMOTE_ADDR'] ?? '';
+		$request->method = strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) );
+		$request->scheme = is_ssl() ? 'https' : 'http';
+		$request->host = self::get_origin();
+		$request->path = wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' );
+		$request->query = wp_unslash( $_SERVER['QUERY_STRING'] ?? '' );
+		$request->headers = $request_headers;
+		$request->url = sprintf( '%s%s', $request->host, $request->path );
 
 		$this->data->request = $request;
 
@@ -78,10 +78,11 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 
 		ksort( $headers );
 
-		$response = array(
-			'status' => http_response_code(),
-			'headers' => $headers,
-		);
+		$status = http_response_code();
+
+		$response = new QM_Data_Raw_Request_Response();
+		$response->status = is_int( $status ) ? $status : null;
+		$response->headers = $headers;
 
 		$this->data->response = $response;
 	}

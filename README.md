@@ -286,6 +286,7 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
  * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
  * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
  * [Snitch](https://wordpress.org/plugins/snitch/)
+ * [Scrutoscope](https://wordpress.org/plugins/scrutoscope/)
  * [User Switching](https://wordpress.org/plugins/user-switching/)
  * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
  * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)
