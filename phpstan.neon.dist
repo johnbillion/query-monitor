@@ -15,8 +15,6 @@ parameters:
 		- tests/acceptance/
 		- tests/integration/
 		- wp-content/
-	scanFiles:
-		- %rootDir%/../../php-stubs/wp-cli-stubs/wp-cli-stubs.php
 	scanDirectories:
 		- vendor/wp-phpunit/wp-phpunit/includes/
 	excludePaths:
