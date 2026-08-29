@@ -26,7 +26,12 @@ export class QueryMonitorUtils {
 		await this.page.fill( 'input[name="pwd"]', password );
 		await this.page.locator( '#wp-submit' ).click();
 
-		// @todo verify we're logged in (can't use HTTP status code as WP returns 200 even on failed login)
+		// Wait for the redirect to complete before returning, otherwise a subsequent
+		// navigation can race the login request and land without the auth cookie.
+		await this.page.waitForURL( /\/wp-admin\// );
+
+		// WP returns a 200 for a failed login, so assert on the logged-in state instead.
+		await expect( this.page.locator( '#wpadminbar' ) ).toBeVisible();
 	}
 
 	/**
