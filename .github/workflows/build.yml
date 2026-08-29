@@ -12,7 +12,7 @@ permissions: {}
 jobs:
   build:
     name: Build
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@d9a465cfe7c3e582d8712658ff653cc9e259f1ba # 2.9.6
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@5da00cd003a94ef534a553d48b78a20ef4fadf0d # 2.9.7
     permissions:
       contents: write # Required to push release branch and tags
     with:
