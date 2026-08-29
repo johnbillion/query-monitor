@@ -1,5 +1,8 @@
 <?php
 
+// The autofocus timer on wp-login.php races Playwright filling in the login form.
+add_filter( 'enable_login_autofocus', '__return_false' );
+
 add_action( 'init', function() {
 	if ( ! isset( $_GET['_qm_acceptance_group'], $_GET['_qm_acceptance_test'] ) ) {
 		return;
