@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import { v4wp } from '@kucrut/vite-for-wp';
 import { rmSync } from 'node:fs';
 import preact from '@preact/preset-vite';
@@ -45,6 +45,11 @@ export default defineConfig( {
 	],
 	server: {
 		cors: true,
+	},
+	test: {
+		environment: 'jsdom',
+		include: [ 'tests/unit/**/*.test.tsx' ],
+		setupFiles: [ './tests/unit/setup.ts' ],
 	},
 	build: {
 		sourcemap: false,
