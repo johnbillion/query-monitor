@@ -370,6 +370,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'settings'    => array(
 				'verified' => self::user_verified(),
 				'color_scheme' => $color_scheme,
+				'is_multisite' => is_multisite(),
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data'        => $data,
