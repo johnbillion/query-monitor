@@ -78,6 +78,7 @@ The server-side PHP in collectors and dispatchers should minimise memory usage a
 
 The test suite consists of:
 
+* Unit tests for the Preact components using Vitest
 * Acceptance tests using Playwright
 * Integration tests using PHPUnit
 * Linting using PHPCS and ESLint
@@ -93,6 +94,7 @@ To run tests individually, run one of:
 
 	npm run typecheck
 	npm run lint
+	npm run test:unit
 	composer test:phpcs
 	composer test:phpstan
 	composer test:integration
@@ -101,6 +103,7 @@ To run tests individually, run one of:
 To run a single test:
 
 	composer test:acceptance -- tests/acceptance/EnqueuedScripts.spec.ts
+	npm run test:unit -- tests/unit/menus.test.tsx
 
 The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 

@@ -76,11 +76,15 @@
 			"npm run typecheck",
 			"npm run lint",
 			"@test:phpstan",
+			"@test:unit",
 			"@test:phpcs",
 			"@test:start",
 			"@test:integration",
 			"@test:acceptance",
 			"@test:stop"
+		],
+		"test:unit": [
+			"npm run test:unit"
 		],
 		"test:acceptance": [
 			"npm run build #",
