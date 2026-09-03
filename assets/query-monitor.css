@@ -60,6 +60,14 @@
 	--qm-badge-warning-bg:             #fac6c6;
 	--qm-sql-keyword-fg:               #33a;
 	--qm-sql-value-fg:                 #a44;
+	--qm-diff-added-fg:                #1a7f37;
+	--qm-diff-added-bg:                rgba( 40, 167, 69, 0.15 );
+	--qm-diff-added-bg-subtle:         rgba( 40, 167, 69, 0.06 );
+	--qm-diff-added-border:            #28a745;
+	--qm-diff-removed-fg:              #cf222e;
+	--qm-diff-removed-bg:              rgba( 220, 53, 69, 0.15 );
+	--qm-diff-removed-bg-subtle:       rgba( 220, 53, 69, 0.06 );
+	--qm-diff-removed-border:          #dc3545;
 
 	&[data-theme="dark"] {
 		/* We can't use light-dark() yet due to some users on Chrome < 123 */
@@ -122,6 +130,14 @@
 		--qm-badge-warning-bg:             #d00;
 		--qm-sql-keyword-fg:               #bdf;
 		--qm-sql-value-fg:                 #dcb;
+		--qm-diff-added-fg:                #8fd19e;
+		--qm-diff-added-bg:                rgba( 40, 167, 69, 0.25 );
+		--qm-diff-added-bg-subtle:         rgba( 40, 167, 69, 0.12 );
+		--qm-diff-added-border:            #28a745;
+		--qm-diff-removed-fg:              #f1aeb5;
+		--qm-diff-removed-bg:              rgba( 220, 53, 69, 0.25 );
+		--qm-diff-removed-bg-subtle:       rgba( 220, 53, 69, 0.12 );
+		--qm-diff-removed-border:          #dc3545;
 	}
 
 	--qm-timeline-db:                  #2563eb;
@@ -1675,4 +1691,71 @@ select {
 		animation: none;
 		background: var( --qm-cell-bg-highlight-dark );
 	}
+}
+
+/** === Query Diff Panel === */
+
+#query-monitor-main .qm-query-diff-summary {
+	background: var( --qm-container-bg );
+	border: 1px solid var( --qm-panel-separator );
+	border-radius: 3px;
+	margin-bottom: 15px;
+	padding: 10px 15px;
+}
+
+#query-monitor-main .qm-query-diff-added h3,
+#query-monitor-main .qm-query-diff-removed h3 {
+	border-radius: 3px;
+	font-weight: bold;
+	margin: 15px 0 8px;
+	padding: 6px 10px;
+}
+
+#query-monitor-main .qm-query-diff-added h3 {
+	background: var( --qm-diff-added-bg );
+	color: var( --qm-diff-added-fg );
+}
+
+#query-monitor-main .qm-query-diff-removed h3 {
+	background: var( --qm-diff-removed-bg );
+	color: var( --qm-diff-removed-fg );
+}
+
+#query-monitor-main .qm-query-diff-added ul,
+#query-monitor-main .qm-query-diff-removed ul {
+	margin: 0;
+	padding: 0;
+}
+
+#query-monitor-main .qm-query-diff-added li,
+#query-monitor-main .qm-query-diff-removed li {
+	border-left: 3px solid;
+	margin-bottom: 4px;
+	padding: 6px 10px;
+}
+
+#query-monitor-main .qm-query-diff-added li {
+	background: var( --qm-diff-added-bg-subtle );
+	border-left-color: var( --qm-diff-added-border );
+}
+
+#query-monitor-main .qm-query-diff-removed li {
+	background: var( --qm-diff-removed-bg-subtle );
+	border-left-color: var( --qm-diff-removed-border );
+}
+
+#query-monitor-main .qm-query-diff-sql {
+	display: block;
+	font-family: var( --qm-font-code-face );
+	font-size: var( --qm-font-code-size );
+	line-height: var( --qm-font-code-line-height );
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+#query-monitor-main .qm-query-diff-caller {
+	display: block;
+	font-size: 10px;
+	margin-top: 4px;
+	color: var( --qm-info-fg );
 }

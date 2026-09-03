@@ -17,6 +17,7 @@ import { DBDupes } from '../output/html/db_dupes';
 import { DBErrors } from '../output/html/db_errors';
 import { DBExpensive } from '../output/html/db_expensive';
 import { DBQueries, dbQueriesMenu, dbQueriesTitle } from '../output/html/db_queries';
+import { DBQueriesDiff } from '../output/html/db_queries_diff';
 import { DoingItWrong, doingItWrongMenu } from '../output/html/doing_it_wrong';
 import { Environment, environmentMenu } from '../output/html/environment';
 import { Hooks, hooksMenu } from '../output/html/hooks';
@@ -331,6 +332,13 @@ export function registerAllPanels(): void {
 			order: 20,
 			menu: dbQueriesMenu,
 			menuTitle: dbQueriesTitle,
+		}
+	);
+	registerPanel(
+		'db_queries_diff',
+		{
+			render: ( data, enabled ) => <DBQueriesDiff data={ data } enabled={ enabled } />,
+			data: 'db_queries',
 		}
 	);
 	registerPanel(
