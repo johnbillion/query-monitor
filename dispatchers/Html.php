@@ -111,7 +111,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$cookie = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
 		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, false );
+		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, true );
 
 		wp_send_json_success();
 
