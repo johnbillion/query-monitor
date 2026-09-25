@@ -277,19 +277,32 @@ Debugging is rarely done with just one tool. Along with Query Monitor you should
 
 ### Plugins for WordPress
 
- * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)
- * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)
- * [Code Profiler](https://wordpress.org/plugins/code-profiler/)
- * [Debug This](https://wordpress.org/plugins/debug-this/)
- * [Decalog](https://wordpress.org/plugins/decalog/)
- * [Laps](https://github.com/Rarst/laps)
- * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)
- * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)
- * [Snitch](https://wordpress.org/plugins/snitch/)
- * [Scrutoscope](https://wordpress.org/plugins/scrutoscope/)
- * [User Switching](https://wordpress.org/plugins/user-switching/)
- * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)
- * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)
+ * [Block Debug](https://github.com/alleyinteractive/wp-block-debug/)  
+   Adds a panel to the block editor showing the name, attributes, and serialised HTML of the selected block.
+ * [Block X-ray Attributes](https://wordpress.org/plugins/block-xray-attributes/)  
+   Shows the raw attributes of the selected block in the block editor sidebar.
+ * [Code Profiler](https://wordpress.org/plugins/code-profiler/)  
+   Profiles the execution time of plugins, themes, and core to find performance bottlenecks.
+ * [Debug This](https://wordpress.org/plugins/debug-this/)  
+   Adds front-end debug views for queries, globals, rewrite rules, and more via the admin toolbar.
+ * [Decalog](https://wordpress.org/plugins/decalog/)  
+   Captures events, traces, and metrics and sends them to local or external logging services.
+ * [Laps](https://github.com/Rarst/laps)  
+   Shows a timeline of PHP execution, database queries, and HTTP requests in the admin toolbar.
+ * [Log HTTP Requests](https://wordpress.org/plugins/log-http-requests/)  
+   Logs outgoing HTTP API requests and their responses for later inspection.
+ * [Rewrite Rules Inspector](https://wordpress.org/plugins/rewrite-rules-inspector/)  
+   Lists all rewrite rules and shows which rule matches a given URL.
+ * [Snitch](https://wordpress.org/plugins/snitch/)  
+   Logs outgoing connections from your site and lets you block them.
+ * [Scrutoscope](https://wordpress.org/plugins/scrutoscope/)  
+   Profiles every hook callback and attributes the execution time to the responsible plugin, theme, or core.
+ * [User Switching](https://wordpress.org/plugins/user-switching/)  
+   Instantly switch between user accounts to test your site as different users.
+ * [WP Crontrol](https://wordpress.org/plugins/wp-crontrol/)  
+   View, edit, and run WP-Cron events and schedules.
+ * [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/)  
+   Reports PHP and JavaScript errors to Sentry.
 
 Query Monitor also has [several add-on plugins](https://querymonitor.com/help/add-on-plugins/) which extend its functionality, and transparently supports add-ons for the Debug Bar plugin (see the FAQ for more info).
 
@@ -297,34 +310,56 @@ See also my list of [Plugins for WordPress Developers](https://johnblackbourn.co
 
 ### Tools for WordPress developers
 
- * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)
- * [Hook Order](https://hookorder.com/)
- * [Wonolog](https://github.com/inpsyde/Wonolog)
- * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)
+ * [Query Monitor WordPress Snippets for VS Code](https://marketplace.visualstudio.com/items?itemName=eduwass.query-monitor-wordpress-snippets)  
+   Editor snippets for Query Monitor's logging and timing functions.
+ * [Hook Order](https://hookorder.com/)  
+   Reference for the order in which WordPress fires its actions and filters during different types of request.
+ * [Wonolog](https://github.com/inpsyde/Wonolog)  
+   Monolog-based logging for WordPress that logs core events and your own messages.
+ * [WP-CLI `profile` command](https://developer.wordpress.org/cli/commands/profile/)  
+   Profiles hooks, load stages, and database queries from the command line.
 
 ### Other tools
 
- * [Buggregator](https://buggregator.dev/)
- * [Clockwork](https://underground.works/clockwork/)
- * [Meminfo](https://github.com/BitOne/php-meminfo)
- * [memprof](https://github.com/arnaud-lb/php-memory-profiler)
- * [phpspy](https://github.com/adsr/phpspy)
- * [Psysh](https://psysh.org/)
- * [Ray](https://myray.app/)
- * [Reli](https://github.com/reliforp/reli-prof)
- * [SPX](https://github.com/NoiseByNorthwest/php-spx)
- * [Tinkerwell](https://tinkerwell.app/)
- * [Xdebug](https://xdebug.org/)
- * [XHProf](https://tideways.com/profiler/xhprof-for-php7)
+ * [Buggregator](https://buggregator.dev/)  
+   Local server that collects debug output, logs, emails, and profiler data from PHP applications.
+ * [Clockwork](https://underground.works/clockwork/)  
+   Browser extension and server-side library for profiling and debugging PHP requests.
+ * [Meminfo](https://github.com/BitOne/php-meminfo)  
+   PHP extension that dumps memory usage and object references for analysis.
+ * [memprof](https://github.com/arnaud-lb/php-memory-profiler)  
+   PHP extension that profiles memory allocation and reports where memory is consumed.
+ * [phpspy](https://github.com/adsr/phpspy)  
+   Low-overhead sampling profiler for PHP that requires no changes to your application.
+ * [Psysh](https://psysh.org/)  
+   Interactive PHP shell for running code and inspecting objects.
+ * [Ray](https://myray.app/)  
+   Desktop app that displays debug output sent from your code.
+ * [Reli](https://github.com/reliforp/reli-prof)  
+   Sampling profiler for PHP that reads process memory without changing your application.
+ * [SPX](https://github.com/NoiseByNorthwest/php-spx)  
+   PHP profiler extension with a built-in web UI for viewing reports.
+ * [Tinkerwell](https://tinkerwell.app/)  
+   Desktop app for running PHP code against your local or remote application.
+ * [Xdebug](https://xdebug.org/)  
+   PHP extension for step debugging, profiling, and code coverage.
+ * [XHProf](https://tideways.com/profiler/xhprof-for-php7)  
+   Function-level hierarchical profiler for PHP.
 
 ### Hosted services
 
- * [Blackfire](https://blackfire.io/)
- * [Datadog](https://www.datadoghq.com/)
- * [Loggly](https://www.loggly.com/)
- * [New Relic](https://newrelic.com/)
- * [Scout](https://scoutapm.com/)
- * [Sentry](https://sentry.io/])
+ * [Blackfire](https://blackfire.io/)  
+   PHP profiling and performance testing.
+ * [Datadog](https://www.datadoghq.com/)  
+   Monitoring, application performance management, and log management.
+ * [Loggly](https://www.loggly.com/)  
+   Log aggregation and search.
+ * [New Relic](https://newrelic.com/)  
+   Application performance monitoring.
+ * [Scout](https://scoutapm.com/)  
+   Application performance monitoring for PHP with tracing and N+1 query detection.
+ * [Sentry](https://sentry.io/)  
+   Error tracking and performance monitoring.
 
 ## Contributing
 
