@@ -26,6 +26,7 @@
 /.prettierrc export-ignore
 /assets/query-monitor.css export-ignore
 /assets/toolbar.css export-ignore
+/ACCESSIBILITY.md export-ignore
 /AGENTS.md export-ignore
 /composer.lock export-ignore
 /CLAUDE.md export-ignore
