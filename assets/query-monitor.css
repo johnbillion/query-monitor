@@ -90,7 +90,8 @@
 		--qm-table-header-bg:              #1d2327;
 		--qm-table-footer-bg:              #32373c;
 		--qm-link-fg:                      #30ceff;
-		--qm-link-fg-hover:                oklch(from var( --qm-link-fg ) calc( l - 0.2 ) c h);
+		/* Lighter, not darker: darkening loses contrast on dark backgrounds */
+		--qm-link-fg-hover:                oklch(from var( --qm-link-fg ) calc( l + 0.1 ) c h);
 		--qm-link-fg-active:               #69aadc;
 		--qm-button-fg:                    #fff;
 		--qm-button-bg:                    var( --qm-wp-color );
