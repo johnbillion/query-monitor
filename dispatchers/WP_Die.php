@@ -68,7 +68,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 		<style>
 			#query-monitor {
 				position: absolute;
-				margin: 4em 0 1em -2em;
+				margin: 4em 0 1em 0;
 				border: 1px solid #ccd0d4;
 				box-shadow: 0 1px 1px rgb( 0 0 0 / 4% );
 				background: #fff;
