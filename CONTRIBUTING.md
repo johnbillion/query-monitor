@@ -80,6 +80,7 @@ The test suite consists of:
 
 * Acceptance tests using Playwright
 * Integration tests using PHPUnit
+* Unit tests for the TypeScript source using the Playwright test runner (no browser or container needed)
 * Linting using PHPCS and ESLint
 * Static analysis using PHPStan
 
@@ -93,6 +94,7 @@ To run tests individually, run one of:
 
 	npm run typecheck
 	npm run lint
+	npm run test:unit
 	composer test:phpcs
 	composer test:phpstan
 	composer test:integration

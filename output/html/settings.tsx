@@ -1,6 +1,7 @@
 import { Icon } from '../components/icon';
 import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { MainContext } from '../contexts/main-context';
+import { Warning } from '../components/warning';
 import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
 
@@ -20,10 +21,14 @@ export const Settings = ( {settings}: SettingsProps ) => {
 		setEditor,
 		theme,
 		setTheme,
+		queryDiffEnabled,
+		setQueryDiffEnabled,
+		queryDiffClearFailed,
 		fabulous,
 		setFabulous,
 		durationUnit,
 		setDurationUnit,
+		switchToPanel,
 		verified,
 		setVerified,
 	} = useContext( MainContext );
@@ -194,6 +199,49 @@ export const Settings = ( {settings}: SettingsProps ) => {
 							</label>
 						</li>
 					</ul>
+				</section>
+				<section>
+					<h3>
+						{ __( 'Query Diff', 'query-monitor' ) }
+					</h3>
+					<p>
+						{ __( 'Track database queries between page loads to see which queries were added or removed.', 'query-monitor' ) }
+					</p>
+					<p>
+						<label>
+							<input
+								type="checkbox"
+								className="qm-checkbox"
+								checked={ queryDiffEnabled }
+								onChange={ ( e ) => {
+									setQueryDiffEnabled( e.currentTarget.checked );
+								} }
+							/>
+							{ __( 'Enable query diff tracking', 'query-monitor' ) }
+						</label>
+					</p>
+					{ queryDiffClearFailed && (
+						<div className="qm-error">
+							<p>
+								<Warning>
+									{ __( 'Browser session storage could not be accessed, so the stored query snapshot could not be removed. It will be discarded automatically when the browser session ends.', 'query-monitor' ) }
+								</Warning>
+							</p>
+						</div>
+					) }
+					{ queryDiffEnabled && (
+						<>
+							<p>
+								<Icon name="yes-alt"/>
+								{ __( 'Open the Query Diff panel and refresh the page to see changes.', 'query-monitor' ) }
+							</p>
+							<p>
+								<button className="qm-button" onClick={ () => switchToPanel( 'db_queries_diff' ) }>
+									{ __( 'Open the Query Diff panel', 'query-monitor' ) }
+								</button>
+							</p>
+						</>
+					) }
 				</section>
 			</div>
 		</NonTabularPanel>
