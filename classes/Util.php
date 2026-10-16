@@ -391,7 +391,8 @@ class QM_Util {
 
 		$function = $callback['function'];
 
-		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) ) {
+		// PHP >= 8.4 names closures `{closure:Class::method():line}`
+		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) && ( 0 !== strpos( $function, '{closure' ) ) ) {
 			$function = explode( '::', $function );
 		}
 

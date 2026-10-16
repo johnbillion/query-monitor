@@ -185,4 +185,15 @@ class CallbacksTest extends Test {
 
 	}
 
+	public function testCallbackIsCorrectlyPopulatedWithClosureFrameFromPhp84(): void {
+
+		$actual = \QM_Util::determine_callback( array(
+			'function' => '{closure:QM\Tests\Supports\TestObject::hello():12}',
+			'class' => 'QM\Tests\Supports\TestObject',
+		) );
+
+		self::assertSame( 'unknown', $actual->callback_type );
+
+	}
+
 }
