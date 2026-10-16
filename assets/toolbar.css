@@ -89,6 +89,25 @@
 		.qm-menu-badge + .qm-menu-badge {
 			margin-left: 0px;
 		}
+
+		.ab-icon {
+			display: none !important;
+		}
+	}
+
+	@media screen and (max-width: 782px) {
+		/* Core hides plugin toolbar items on small screens */
+		li#wp-admin-bar-query-monitor {
+			display: block;
+		}
+
+		/* Show "QM" in place of the title, which core hides */
+		#wp-admin-bar-query-monitor .ab-icon {
+			display: block !important;
+			font: 18px/46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+			padding: 0 10px !important;
+			width: auto !important;
+		}
 	}
 }
 
