@@ -18,7 +18,8 @@ export const Fatal = ( props: Props ) => {
 				className="ab-item"
 				href="#qm-fatal"
 			>
-				<span className="qm-menu-title">PHP Fatal Error</span>
+				<span className="ab-icon" aria-hidden="true">QM</span>
+				<span className="ab-label qm-menu-title">PHP Fatal Error</span>
 			</a>
 		</FatalAdminMenu>
 	);
