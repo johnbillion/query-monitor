@@ -185,4 +185,45 @@ class CallbacksTest extends Test {
 
 	}
 
+	public function testCallbackIsCorrectlyPopulatedWithNonStringMethodArray(): void {
+
+		$obj = new Supports\TestObject;
+		$callback = array(
+			'function' => array( $obj, array( 'method' ) ),
+		);
+
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'unknown', $actual->callback_type );
+		self::assertNull( $actual->name );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithNonStringStaticMethodArray(): void {
+
+		$callback = array(
+			'function' => array( '\QM\Tests\Supports\TestObject', array( 'method' ) ),
+		);
+
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'unknown', $actual->callback_type );
+		self::assertNull( $actual->name );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithMalformedCallbackArray(): void {
+
+		$callback = array(
+			'function' => array(),
+		);
+
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'unknown', $actual->callback_type );
+		self::assertNull( $actual->name );
+
+	}
+
 }
+

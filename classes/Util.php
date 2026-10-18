@@ -405,14 +405,22 @@ class QM_Util {
 		try {
 
 			if ( is_array( $function ) ) {
+				if ( ! isset( $function[0], $function[1] ) || ! is_string( $function[1] ) ) {
+					$result->callback_type = 'unknown';
+					return $result;
+				}
+
 				if ( is_object( $function[0] ) ) {
 					$class = get_class( $function[0] );
 					$access = '->';
 					$result->callback_type = 'method';
-				} else {
+				} elseif ( is_string( $function[0] ) ) {
 					$class = $function[0];
 					$access = '::';
 					$result->callback_type = 'static_method';
+				} else {
+					$result->callback_type = 'unknown';
+					return $result;
 				}
 
 				$result->name = $class . $access . $function[1] . '()';
