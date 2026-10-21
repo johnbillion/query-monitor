@@ -32,7 +32,7 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@isolate-checkout-test-environments
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@d5c6c8625b1c81d405ccb09f33711c2230a6116e # isolate-checkout-test-environments
     strategy:
       matrix:
         label:
