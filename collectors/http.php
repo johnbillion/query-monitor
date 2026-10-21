@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   headers: \WpOrg\Requests\Utility\CaseInsensitiveDictionary,
  *   body: string,
  *   response: array{
- *     code: int|false,
- *     message: string|false,
+ *     code?: int|false,
+ *     message?: string|false,
  *   },
  *   cookies: array<int, \WP_Http_Cookie>,
  *   filename: string|null,
@@ -299,8 +299,8 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			$response_data = $response;
 		} else {
 			$response_data = new QM_Data_HTTP_Response();
-			$response_data->code = (int) $response['response']['code'];
-			$response_data->message = (string) $response['response']['message'];
+			$response_data->code = (int) ( $response['response']['code'] ?? 0 );
+			$response_data->message = (string) ( $response['response']['message'] ?? '' );
 		}
 
 		$http_response = array(
