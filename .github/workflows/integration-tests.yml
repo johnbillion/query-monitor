@@ -38,7 +38,7 @@ jobs:
     name: WP ${{ matrix.wp }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@6c0125cdb02e2dd6e72f1958f38c2d510f307bdb # isolate-checkout-test-environments
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
