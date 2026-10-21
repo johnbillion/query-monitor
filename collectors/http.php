@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   headers: \WpOrg\Requests\Utility\CaseInsensitiveDictionary,
  *   body: string,
  *   response: array{
- *     code: int|false,
- *     message: string|false,
+ *     code?: int|false,
+ *     message?: string|false,
  *   },
  *   cookies: array<int, \WP_Http_Cookie>,
  *   filename: string|null,
