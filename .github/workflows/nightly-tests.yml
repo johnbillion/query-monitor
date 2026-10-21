@@ -46,7 +46,7 @@ jobs:
           - '8.5'
           - '7.4'
       fail-fast: false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@e5acf0c698604c5a6fda78b8e7b45c4941a4a24e # 2.9.8
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-acceptance-tests.yml@d6b1b91bb54e8dd2336d43b6aa6d7922437b5a48
     with:
       node: true
       php: ${{ matrix.php }}
@@ -57,7 +57,7 @@ jobs:
     name: Nightly ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@e5acf0c698604c5a6fda78b8e7b45c4941a4a24e # 2.9.8
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@d6b1b91bb54e8dd2336d43b6aa6d7922437b5a48
     strategy:
       matrix:
         label:
