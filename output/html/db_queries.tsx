@@ -259,6 +259,35 @@ const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'faile
 	}
 };
 
+const getNotLoggedMessage = ( reason: NonNullable<DataTypes['db_queries']['not_logged_reason']>, dbClass?: string ) => {
+	switch ( reason ) {
+		case 'constant':
+			return sprintf(
+				/* translators: 1: Configuration constant name, 2: Configuration file name */
+				__( 'Query logging is disabled because the %1$s constant is set to false. Remove it from your %2$s file or set it to true.', 'query-monitor' ),
+				'SAVEQUERIES',
+				'wp-config.php'
+			);
+		case 'property':
+			return sprintf(
+				/* translators: %s: Property name */
+				__( 'Query logging was disabled by a plugin or theme which set the %s property to false.', 'query-monitor' ),
+				'$wpdb->save_queries'
+			);
+		case 'unknown':
+			if ( dbClass ) {
+				return sprintf(
+					/* translators: 1: PHP class name, 2: File name */
+					__( 'The database class in use (%1$s) does not appear to log queries. It is probably loaded by a %2$s drop-in from another plugin.', 'query-monitor' ),
+					dbClass,
+					'db.php'
+				);
+			}
+
+			return __( 'A plugin or theme probably disabled query logging or cleared the logged queries.', 'query-monitor' );
+	}
+};
+
 export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	const { settings } = useContext( MainContext );
 
@@ -279,6 +308,11 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 					Utils.numberFormat( data.total_qs )
 				) }
 			</p>
+			{ data.not_logged_reason && (
+				<p>
+					{ getNotLoggedMessage( data.not_logged_reason, data.db_class ) }
+				</p>
+			) }
 		</EmptyPanel>
 	}
 

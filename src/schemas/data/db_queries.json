@@ -106,6 +106,17 @@
 				"disabled",
 				"failed"
 			]
+		},
+		"not_logged_reason": {
+			"type": "string",
+			"enum": [
+				"constant",
+				"property",
+				"unknown"
+			]
+		},
+		"db_class": {
+			"type": "string"
 		}
 	},
 	"additionalProperties": false

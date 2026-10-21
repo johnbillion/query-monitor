@@ -57,4 +57,14 @@ class QM_Data_DB_Queries extends QM_Data {
 	 * @var ?'conflict'|'disabled'|'failed'
 	 */
 	public $extended_query_prompt_reason;
+
+	/**
+	 * @var ?'constant'|'property'|'unknown'
+	 */
+	public $not_logged_reason;
+
+	/**
+	 * @var ?string
+	 */
+	public $db_class;
 }

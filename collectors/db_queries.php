@@ -81,6 +81,22 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
+	 * @return 'constant'|'property'|'unknown'
+	 */
+	protected static function get_not_logged_reason( wpdb $wpdb ): string {
+		if ( ! SAVEQUERIES ) {
+			return 'constant';
+		}
+
+		// This property isn't part of core's wpdb but is used by drop-ins such as HyperDB and LudicrousDB.
+		if ( property_exists( $wpdb, 'save_queries' ) && ! $wpdb->save_queries ) {
+			return 'property';
+		}
+
+		return 'unknown';
+	}
+
+	/**
 	 * @return void
 	 */
 	public function process() {
@@ -114,6 +130,15 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
 		if ( empty( $wpdb->queries ) ) {
 			$this->data->total_qs += $wpdb->num_queries;
+
+			if ( $this->data->total_qs ) {
+				$this->data->not_logged_reason = self::get_not_logged_reason( $wpdb );
+
+				if ( ! in_array( get_class( $wpdb ), array( 'wpdb', 'QM_DB' ), true ) ) {
+					$this->data->db_class = get_class( $wpdb );
+				}
+			}
+
 			return;
 		}
 
