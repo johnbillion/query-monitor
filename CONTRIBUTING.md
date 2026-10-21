@@ -85,6 +85,8 @@ The test suite consists of:
 
 The acceptance and integration tests run in a container. Ensure Docker Desktop is running before running the tests.
 
+Each checkout of the repo gets its own containers and database, so if you use git worktrees you can run the tests in several worktrees at the same time without them interfering with each other.
+
 To run the whole test suite:
 
 	composer test
