@@ -30,7 +30,7 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
 		"johnbillion/plugin-infrastructure": "2.9.9",
-		"johnbillion/wp-compat": "2.0.1",
+		"johnbillion/wp-compat": "3.0.1",
 		"php-stubs/wordpress-stubs": "7.1.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.8",
 		"phpstan/phpstan": "2.1.46",
