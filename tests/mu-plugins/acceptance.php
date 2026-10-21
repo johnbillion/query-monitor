@@ -3,6 +3,17 @@
 // The autofocus timer on wp-login.php races Playwright filling in the login form.
 add_filter( 'enable_login_autofocus', '__return_false' );
 
+if ( isset( $_GET['_qm_acceptance_group'] ) && 'fatal_errors' === $_GET['_qm_acceptance_group'] ) {
+	// Log to a file that the tests can read via WP-CLI, which runs in a separate container.
+	ini_set( 'log_errors', '1' );
+	ini_set( 'error_log', WP_CONTENT_DIR . '/qm-acceptance-fatal.log' );
+
+	// This has to happen before QM reads the value when its error handler is set up.
+	if ( isset( $_GET['_qm_acceptance_display_errors'] ) ) {
+		ini_set( 'display_errors', $_GET['_qm_acceptance_display_errors'] );
+	}
+}
+
 add_action( 'init', function() {
 	if ( ! isset( $_GET['_qm_acceptance_group'], $_GET['_qm_acceptance_test'] ) ) {
 		return;
@@ -60,6 +71,23 @@ add_action( 'init', function() {
 					trigger_error( 'This is a test notice', E_USER_NOTICE );
 					@trigger_error( 'This is a test suppressed warning', E_USER_WARNING );
 					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
+		case 'fatal_errors':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'uncaught':
+					// Fatals from mu-plugins are never attributed to a plugin or theme, so this
+					// reaches core's fatal error handler without triggering recovery mode.
+					throw new \Error( 'This is a test fatal error' );
+				case 'uncaught-rest':
+					// `REST_REQUEST` isn't defined until after `init`.
+					add_action( 'rest_api_init', function() {
+						throw new \Error( 'This is a test fatal error' );
+					} );
 					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );

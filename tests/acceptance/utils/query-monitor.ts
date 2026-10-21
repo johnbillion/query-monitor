@@ -99,6 +99,14 @@ export class QueryMonitorUtils {
 	}
 
 	/**
+	 * Navigate to a page that triggers a fatal error
+	 */
+	async amOnAPageThatTriggersFatalError( test: string, path: string = '/', displayErrors?: string ) {
+		const display = displayErrors === undefined ? '' : `&_qm_acceptance_display_errors=${displayErrors}`;
+		await this.page.goto( `${path}?_qm_acceptance_group=fatal_errors&_qm_acceptance_test=${test}${display}` );
+	}
+
+	/**
 	 * Navigate to a page that makes a Guzzle HTTP request
 	 */
 	async amOnAPageThatMakesGuzzleRequest( test: string ) {
