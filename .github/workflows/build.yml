@@ -12,7 +12,7 @@ permissions: {}
 jobs:
   build:
     name: Build
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@d5c6c8625b1c81d405ccb09f33711c2230a6116e # isolate-checkout-test-environments
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-build.yml@6c0125cdb02e2dd6e72f1958f38c2d510f307bdb # isolate-checkout-test-environments
     permissions:
       contents: write # Required to push release branch and tags
     with:
