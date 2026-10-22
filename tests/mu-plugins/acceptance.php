@@ -262,6 +262,11 @@ add_action( 'init', function() {
 					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
 					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
 					break;
+				case 'cleared':
+					add_action( 'shutdown', function() {
+						$GLOBALS['wpdb']->queries = array();
+					}, 8 );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;

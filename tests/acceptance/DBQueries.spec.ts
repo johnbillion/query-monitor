@@ -24,4 +24,11 @@ test.describe( 'Database Queries', () => {
 			Count: '2',
 		} );
 	} );
+
+	test( 'Cleared queries should be explained', async ( { QueryMonitor } ) => {
+		await QueryMonitor.amOnAPageThatTriggersDBQuery( 'cleared' );
+		await QueryMonitor.seeQMMenu();
+		await QueryMonitor.seeInQMPanel( 'Database Queries', 'but none were logged' );
+		await QueryMonitor.seeInQMPanel( 'Database Queries', 'A plugin or theme probably disabled query logging' );
+	} );
 } );

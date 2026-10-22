@@ -235,6 +235,8 @@ export interface DB_Queries {
 	has_result: boolean;
 	has_trace: boolean;
 	extended_query_prompt_reason?: "conflict" | "disabled" | "failed";
+	not_logged_reason?: "constant" | "property" | "unknown";
+	db_class?: string;
 }
 export interface QueryRow {
 	stack?: string[];
