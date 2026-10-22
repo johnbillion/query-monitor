@@ -335,7 +335,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		);
 
 		$dispatcher->output_fatal( $message, $e );
-		exit;
 	}
 
 	/**
