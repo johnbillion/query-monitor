@@ -105,6 +105,10 @@ export default defineConfig({
 						link: '/wordpress-debugging/doing-it-wrong/',
 					},
 					{
+						text: 'WebMCP',
+						link: '/wordpress-debugging/webmcp/',
+					},
+					{
 						text: 'HTTP headers',
 						link: '/wordpress-debugging/headers/',
 					},
