@@ -29,7 +29,7 @@
 	"devDependencies": {
 		"@axe-core/playwright": "^4.11.1",
 		"@eslint/js": "^9.39.2",
-		"@johnbillion/plugin-infrastructure": "2.9.9",
+		"@johnbillion/plugin-infrastructure": "file:../plugin-infrastructure/johnbillion-plugin-infrastructure-2.9.9.tgz",
 		"@jsdevtools/version-bump-prompt": "^6.1.0",
 		"@kucrut/vite-for-wp": "^0.12.0",
 		"@playwright/test": "^1.58.0",
@@ -76,6 +76,15 @@
 		"version": "npm install # See https://github.com/JS-DevTools/version-bump-prompt/issues/42",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
-		"docs:preview": "vitepress preview docs"
+		"docs:preview": "vitepress preview docs",
+		"composer": "tests-composer",
+		"test": "tests-composer validate --strict --no-check-lock && npm run build-schemas && npm run typecheck && npm run lint && npm run test:start && npm run test:phpstan && npm run test:phpcs && npm run test:integration && npm run test:acceptance && npm run test:stop",
+		"test:phpcs": "tests-composer test:phpcs",
+		"test:phpstan": "tests-composer test:phpstan",
+		"test:start": "tests-start",
+		"test:stop": "tests-stop",
+		"test:destroy": "tests-destroy",
+		"test:integration": "integration-tests",
+		"test:acceptance": "npm run build && acceptance-tests"
 	}
 }

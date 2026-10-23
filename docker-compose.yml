@@ -1,7 +1,7 @@
 include:
   -
     path:
-      - vendor/johnbillion/plugin-infrastructure/tests/docker-compose.yml
+      - ${PLUGIN_INFRASTRUCTURE_PATH:-node_modules/@johnbillion/plugin-infrastructure}/tests/docker-compose.yml
       - tests/mu-plugins/acceptance.yml
       - tests/mu-plugins/third-party-panel.yml
     project_directory: .

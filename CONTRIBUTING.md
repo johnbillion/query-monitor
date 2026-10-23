@@ -25,19 +25,22 @@ You can clone this repo and activate it like a normal plugin, but you'll need to
 
 ### Prerequisites
 
-* [Composer](https://getcomposer.org/)
 * [Node](https://nodejs.org/)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or compatible) to run the tests
 
+PHP and Composer don't need to be installed on your machine. They run in a container.
+
 ### Setup
 
-1. Install the PHP dependencies:
-
-       composer install
-
-2. Install the Node dependencies:
+1. Install the Node dependencies:
 
        npm install
+
+2. Start the Docker containers. The first run installs the Composer dependencies:
+
+       npm run test:start
+
+To run any other Composer command in the container, use `npm run composer -- <command>`.
 
 ## Building the Assets
 
@@ -89,25 +92,25 @@ Each checkout of the repo gets its own containers and database, so if you use gi
 
 To run the whole test suite:
 
-	composer test
+	npm test
 
 To run tests individually, run one of:
 
 	npm run typecheck
 	npm run lint
-	composer test:phpcs
-	composer test:phpstan
-	composer test:integration
-	composer test:acceptance
+	npm run test:phpcs
+	npm run test:phpstan
+	npm run test:integration
+	npm run test:acceptance
 
 To run a single test:
 
-	composer test:acceptance -- tests/acceptance/EnqueuedScripts.spec.ts
+	npm run test:acceptance -- tests/acceptance/EnqueuedScripts.spec.ts
 
 The individual integration and acceptance tests require the Docker containers to be running. To start and stop them, use:
 
-	composer test:start
-	composer test:stop
+	npm run test:start
+	npm run test:stop
 
 ## Releasing a New Version
 

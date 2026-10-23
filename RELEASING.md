@@ -10,7 +10,7 @@ These are the steps to take to release a new version of Query Monitor (for contr
 1. Ensure `README.md` and `readme.txt` contain up to date "Tested up to" versions, descriptions, FAQs, and screenshots.
 1. Ensure `.gitattributes` is up to date with all files that shouldn't be part of the build.
    - To do this, run `git archive --output=qm.zip HEAD` then check the contents for files that shouldn't be part of the package.
-1. Run `composer test` and ensure everything passes.
+1. Run `npm test` and ensure everything passes.
 1. Run `git push origin develop` and ensure CI is passing.
 1. Prepare a changelog for the release.
 
