@@ -52,7 +52,7 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@0c09a3b9014e7a8e25a9366045ed8e89569b1b1d # docker-only-dev
     strategy:
       matrix:
         label:
