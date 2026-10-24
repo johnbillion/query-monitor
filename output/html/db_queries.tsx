@@ -32,7 +32,7 @@ export interface DupeQuery {
  * Normalises a SQL string for duplicate grouping: collapses all whitespace to
  * single spaces, strips tabs and backticks, and removes any trailing semicolon.
  */
-const normalizeDupeSQL = ( sql: string ): string => (
+export const normalizeDupeSQL = ( sql: string ): string => (
 	sql
 		// Replace all newlines with a single space:
 		.replace( /\r\n|\r|\n/g, ' ' )
@@ -62,10 +62,9 @@ const getDupeStack = ( row: QueryRow ): string[] => {
 /**
  * Detects duplicate database queries from the collected query rows.
  *
- * This reproduces the duplicate-query analysis that Query Monitor previously
- * performed server-side: queries are grouped by their normalised SQL, groups
- * with only a single occurrence are discarded, and the callers, components and
- * potential troublemakers for each duplicated query are tallied up.
+ * Queries are grouped by their normalised SQL, groups with only a single
+ * occurrence are discarded, and the callers, components and potential
+ * troublemakers for each duplicated query are tallied up.
  */
 export const getDupes = ( rows: QueryRow[] ): DupeQuery[] => {
 	// Group the query rows by their normalised SQL.
