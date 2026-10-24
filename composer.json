@@ -29,7 +29,7 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "2.9.9",
+		"johnbillion/plugin-infrastructure": "dev-docker-only-dev-built",
 		"johnbillion/wp-compat": "3.0.1",
 		"php-stubs/wordpress-stubs": "7.1.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.8",
@@ -70,39 +70,11 @@
 		"build-vendor": [
 			"build-vendor"
 		],
-		"test": [
-			"@composer validate --strict --no-check-lock",
-			"npm run build-schemas",
-			"npm run typecheck",
-			"npm run lint",
-			"@test:phpstan",
-			"@test:phpcs",
-			"@test:start",
-			"@test:integration",
-			"@test:acceptance",
-			"@test:stop"
-		],
-		"test:acceptance": [
-			"npm run build #",
-			"acceptance-tests"
-		],
-		"test:integration": [
-			"integration-tests"
-		],
 		"test:phpcs": [
 			"phpcs -nps --colors --report-code --report-summary --report-width=80 --basepath='./' ."
 		],
 		"test:phpstan": [
 			"phpstan analyze -v --memory-limit=2G"
-		],
-		"test:start": [
-			"tests-start"
-		],
-		"test:stop": [
-			"tests-stop"
-		],
-		"test:destroy": [
-			"tests-destroy"
 		]
 	}
 }

@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.WP_BASE_URL;
 if ( ! baseURL ) {
-	throw new Error( 'WP_BASE_URL environment variable is required. Run tests via "composer test:acceptance".' );
+	throw new Error( 'WP_BASE_URL environment variable is required. Run tests via "npm run test:acceptance".' );
 }
 
 export default defineConfig({
