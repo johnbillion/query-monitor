@@ -32,7 +32,7 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@0c09a3b9014e7a8e25a9366045ed8e89569b1b1d # docker-only-dev
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@e70269069f7b1a4f28bc27942e762f8576dda5d2 # docker-only-dev
     strategy:
       matrix:
         label:

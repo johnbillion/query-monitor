@@ -21,7 +21,7 @@ jobs:
   deploy:
     name: Deploy Tag
     if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@0c09a3b9014e7a8e25a9366045ed8e89569b1b1d # docker-only-dev
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-deploy-tag.yml@e70269069f7b1a4f28bc27942e762f8576dda5d2 # docker-only-dev
     permissions:
       contents: write      # Required to push the new branch
       issues: write        # Required for write access to milestones
