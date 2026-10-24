@@ -1,0 +1,11 @@
+{
+	"$schema": "https://t3.codes/schema/t3.json",
+	"scripts": [
+		{
+			"name": "Stop test containers",
+			"command": "composer test:stop",
+			"icon": "test",
+			"runOnSettle": true
+		}
+	]
+}
