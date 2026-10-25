@@ -1514,7 +1514,7 @@ select {
 
 /** === Timeline === */
 
-#qm-timeline table {
+#qm-timeline > table {
 	width: 100%;
 
 	td {
@@ -1647,6 +1647,70 @@ select {
 
 .timeline-bar-label-overlay .timeline-bar-label-warning .qm-icon {
 	fill: #fff;
+}
+
+.timeline-bar-label-text button[aria-pressed="true"] {
+	font-weight: bold;
+}
+
+/*
+ * Show the selected item details as a sidebar next to the timeline. When the panel
+ * is too narrow for both, wrap-reverse moves the details above the timeline.
+ */
+#qm-timeline:has( > .qm-table-children ) {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	align-items: flex-start;
+
+	> table {
+		flex: 999 1 480px;
+		min-width: 0;
+	}
+}
+
+#qm-timeline > .qm-table-children {
+	order: 1;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	flex: 1 1 360px;
+	min-width: 0;
+	max-height: 50vh;
+	overflow-y: auto;
+	box-sizing: border-box;
+	background: var( --qm-panel-bg );
+}
+
+.timeline-detail {
+	flex: 1;
+	min-width: 0;
+
+	p {
+		margin: 0 0 10px;
+	}
+
+	th {
+		padding-right: 10px;
+	}
+}
+
+.timeline-detail-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin: 0 0 10px;
+
+	h3 {
+		margin: 0 !important;
+	}
+}
+
+.timeline-detail-label {
+	display: block;
+	margin: 0 0 10px;
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 
 /** === Animations === */
