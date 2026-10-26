@@ -23,6 +23,7 @@ test.describe( 'Timeline', () => {
 
 		await expect( details ).toContainText( 'SELECT 123' );
 		await expect( details ).toContainText( 'Started' );
+		await expect( details ).toBeInViewport();
 		await expect( page.locator( '#qm-timeline' ) ).toBeVisible();
 
 		await details.getByRole( 'button', { name: 'View in Database Queries' } ).click();

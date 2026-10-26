@@ -1656,11 +1656,12 @@ select {
 /*
  * Show the selected item details as a sidebar next to the timeline. When the panel
  * is too narrow for both, wrap-reverse moves the details above the timeline.
+ * wrap-reverse also flips the cross axis, so flex-end keeps the details at the top.
  */
 #qm-timeline:has( > .qm-table-children ) {
 	display: flex;
 	flex-wrap: wrap-reverse;
-	align-items: flex-start;
+	align-items: flex-end;
 
 	> table {
 		flex: 999 1 480px;
