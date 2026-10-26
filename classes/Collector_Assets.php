@@ -230,7 +230,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$dependents = $this->get_dependents( $dependency, $raw );
 
-				list( $url, $source ) = $this->get_dependency_data( $dependency );
+				list( $url, $source ) = $this->get_dependency_data( $dependency, $raw );
 
 				// Widen this type because plugins can set ver to boolean true.
 				/** @var string|bool|null $dependency_ver */
@@ -404,7 +404,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * @param WP_Dependencies $dependencies
 	 * @return array<int, string>
 	 */
-	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+	public function get_dependents( _WP_Dependency $dependency, ?WP_Dependencies $dependencies = null ) {
 		$dependents = array();
 		$handles = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
@@ -423,32 +423,25 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * @param _WP_Dependency $dependency
+	 * @param _WP_Dependency       $dependency
+	 * @param WP_Dependencies|null $dependencies
 	 * @return array{
 	 *   0: QM_Data_URL,
 	 *   1: string|WP_Error,
 	 * }
 	 */
-	public function get_dependency_data( _WP_Dependency $dependency ) {
-		$loader = rtrim( $this->get_dependency_type(), 's' );
-		$src = $dependency->src;
+	public function get_dependency_data( _WP_Dependency $dependency, ?WP_Dependencies $dependencies = null ) {
 		$url = new QM_Data_URL();
 
-		if ( null === $dependency->ver ) {
-			$ver = '';
+		// WordPress 7.2+
+		if ( $dependencies && method_exists( $dependencies, 'get_src' ) ) {
+			$source = $dependencies->get_src( $dependency->handle );
 		} else {
-			$ver = $dependency->ver ?: $this->default_version;
+			$source = $this->get_legacy_src( $dependency );
 		}
-
-		if ( ! empty( $src ) && ! empty( $ver ) ) {
-			$src = add_query_arg( 'ver', $ver, $src );
-		}
-
-		/** This filter is documented in wp-includes/class.wp-scripts.php */
-		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
 		if ( is_string( $source ) ) {
-			// @TODO this still needs to normalise to absolute URL.
+			// @TODO on WordPress < 7.2 this still needs to normalise to absolute URL.
 			$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $source );
 		}
 
@@ -468,6 +461,30 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 		}
 
 		return array( $url, $source );
+	}
+
+	/**
+	 * Builds the URL of an asset for versions of WordPress without `WP_Scripts::get_src()` and `WP_Styles::get_src()`.
+	 *
+	 * @param _WP_Dependency $dependency
+	 * @return mixed
+	 */
+	protected function get_legacy_src( _WP_Dependency $dependency ) {
+		$loader = rtrim( $this->get_dependency_type(), 's' );
+		$src = $dependency->src;
+
+		if ( null === $dependency->ver ) {
+			$ver = '';
+		} else {
+			$ver = $dependency->ver ?: $this->default_version;
+		}
+
+		if ( ! empty( $src ) && ! empty( $ver ) ) {
+			$src = add_query_arg( 'ver', $ver, $src );
+		}
+
+		/** This filter is documented in wp-includes/class.wp-scripts.php */
+		return apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 	}
 
 	/**
