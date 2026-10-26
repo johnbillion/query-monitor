@@ -36,22 +36,40 @@
 		&:focus,
 		&:hover {
 			.qm-menu-badge {
-				opacity: 0.9;
+				opacity: 0.8;
 			}
 		}
 	}
 
 	#wp-admin-bar-query-monitor {
+		&.qm-notice,
+		&.qm-error,
+		&.qm-warning {
+			> .ab-item .qm-menu-title {
+				border-radius: 99px;
+				padding: 3px 8px;
+			}
+		}
+
 		/* Top-level toolbar item for notices */
-		&.qm-notice {
-			background-color: var( --qm-menu-notice-bg ) !important;
+		&.qm-notice > .ab-item .qm-menu-title {
+			background-color: var( --qm-menu-notice-bg );
 		}
 
 		/* Top-level toolbar item for errors and warnings */
 		&.qm-error,
 		&.qm-warning {
-			background-color: var( --qm-menu-warning-bg ) !important;
-			color: var( --qm-menu-warning-fg ) !important;
+			> .ab-item .qm-menu-title {
+				background-color: var( --qm-menu-warning-bg );
+				color: var( --qm-menu-warning-fg );
+			}
+		}
+
+		&.hover > .ab-item .qm-menu-title,
+		> .ab-item:hover .qm-menu-title,
+		> .ab-item:focus .qm-menu-title {
+			background-color: transparent;
+			color: inherit;
 		}
 
 		small {
