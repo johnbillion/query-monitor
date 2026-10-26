@@ -723,8 +723,14 @@ class QM_Backtrace implements JsonSerializable {
 
 			$id = $frame['class'] . $frame['type'] . $frame['function'];
 		} else {
+			// PHP >= 8.4 names closures `{closure:Namespace\function():line}`, with nesting for nested closures
+			$function = $frame['function'];
+			while ( 0 === strpos( $function, '{closure:' ) ) {
+				$function = substr( $function, strlen( '{closure:' ) );
+			}
+
 			foreach ( array_keys( $ignore_namespace ) as $namespace ) {
-				if ( 0 === strpos( $frame['function'], $namespace . '\\' ) ) {
+				if ( 0 === strpos( $function, $namespace . '\\' ) ) {
 					return null;
 				}
 			}
