@@ -207,7 +207,6 @@ class CallbacksTest extends Test {
 
 		try {
 			$closure();
-			self::fail( 'Expected exception was not thrown' );
 		} catch ( \Exception $e ) {
 			$frame = $e->getTrace()[0];
 		}
@@ -217,6 +216,7 @@ class CallbacksTest extends Test {
 		$actual = \QM_Util::determine_callback( $frame );
 
 		self::assertSame( 'unknown', $actual->callback_type );
+		self::assertSame( __CLASS__ . '::' . $frame['function'] . '()', $actual->name );
 
 	}
 
