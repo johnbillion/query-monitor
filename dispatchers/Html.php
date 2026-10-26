@@ -148,7 +148,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$wp_admin_bar->add_node( array(
 			'id' => 'query-monitor',
-			'title' => esc_html( $title ),
+			'title' => '<span class="qm-menu-title">' . esc_html( $title ) . '</span>',
 			'href' => '#qm-overview',
 		) );
 

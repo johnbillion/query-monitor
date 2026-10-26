@@ -407,12 +407,14 @@ export const QM = ( props: Props ) => {
 							e.preventDefault();
 						} }
 					>
-						{ props.menu.top.title.map( ( part, i ) => (
-							<Fragment key={ i }>
-								{ i > 0 ? '\u00A0\u00A0' : '' }
-								{ createInterpolateElement( part ) }
-							</Fragment>
-						) ) }
+						<span className="qm-menu-title">
+							{ props.menu.top.title.map( ( part, i ) => (
+								<Fragment key={ i }>
+									{ i > 0 ? '\u00A0\u00A0' : '' }
+									{ createInterpolateElement( part ) }
+								</Fragment>
+							) ) }
+						</span>
 					</a>
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">
