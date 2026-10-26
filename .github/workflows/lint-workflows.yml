@@ -26,7 +26,7 @@ jobs:
   lint:
     name: Lint
     permissions:
-      security-events: write
-      actions: read
-      contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
+      security-events: write # Required for codeql-action/upload-sarif to upload SARIF files.
+      actions: read          # Needed for codeql-action/upload-sarif to read workflow run info.
+      contents: read         # Needed to clone the repo.
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-workflow-lint.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9

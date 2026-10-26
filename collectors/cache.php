@@ -24,6 +24,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
+		/** @var ?object $wp_object_cache */
 		global $wp_object_cache;
 
 		$this->data->has_object_cache = (bool) wp_using_ext_object_cache();
@@ -83,16 +84,15 @@ class QM_Collector_Cache extends QM_DataCollector {
 		}
 
 		if ( ! empty( $this->data->stats['cache_hits'] ) ) {
-			$total = $this->data->stats['cache_hits'];
+			$hits = (int) $this->data->stats['cache_hits'];
+			$total = $hits;
 
 			if ( ! empty( $this->data->stats['cache_misses'] ) ) {
-				$total += $this->data->stats['cache_misses'];
+				$total += (int) $this->data->stats['cache_misses'];
 			}
 
-			$this->data->cache_hit_percentage = ( 100 / $total ) * $this->data->stats['cache_hits'];
+			$this->data->cache_hit_percentage = (int) ( ( 100 / $total ) * $hits );
 		}
-
-		$this->data->display_hit_rate_warning = ( 100 === $this->data->cache_hit_percentage );
 
 		if ( function_exists( 'extension_loaded' ) ) {
 			$this->data->object_cache_extensions = array_map( 'extension_loaded', array(

@@ -1,0 +1,61 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/backtrace.json",
+	"title": "Backtrace",
+	"description": "Class representing a backtrace.",
+	"type": "object",
+	"required": [
+		"component",
+		"frames",
+		"time"
+	],
+	"properties": {
+		"component": {
+			"phpType": "QM_Component",
+			"type": "object",
+			"allOf": [
+				{
+					"$ref": "./component.json"
+				}
+			]
+		},
+		"callsite": {
+			"phpType": "QM_Data_Callsite",
+			"oneOf": [
+				{
+					"$ref": "./callsite.json"
+				},
+				{
+					"type": "null"
+				}
+			]
+		},
+		"frames": {
+			"description": "Compact frame references as [frameIndex, lineNumber] tuples.",
+			"type": "array",
+			"items": {
+				"type": "array",
+				"items": [
+					{
+						"description": "Index into the top-level frames lookup.",
+						"type": "integer"
+					},
+					{
+						"description": "Line number.",
+						"type": [
+							"integer",
+							"null"
+						]
+					}
+				],
+				"minItems": 2,
+				"maxItems": 2
+			}
+		},
+		"time": {
+			"description": "Time in milliseconds relative to the start of the request.",
+			"type": "number"
+		}
+	},
+	"additionalProperties": false
+}

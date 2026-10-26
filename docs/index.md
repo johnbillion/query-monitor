@@ -2,14 +2,14 @@
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 publish: false
-title: The developer tools panel for WordPress
+title: The developer tools panel for WordPress and WooCommerce
 
 hero:
   name: Debugging starts with Query Monitor.
-  text: The developer tools panel for WordPress.
+  text: The developer tools panel for WordPress and WooCommerce.
   actions:
     - theme: brand
-      text: Get started
+      text: Documentation
       link: /wordpress-debugging/how-to-use/
     - theme: alt
       text: View on GitHub

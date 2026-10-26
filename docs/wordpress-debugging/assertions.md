@@ -4,10 +4,6 @@ title: Assertions
 
 # Performing assertions in Query Monitor
 
-::: tip New
-This feature is new in Query Monitor 3.15
-:::
-
 Query Monitor allows developers to perform assertions which will log an error in the Logs panel in Query Monitor when they fail. This is a convenience wrapper around the logging feature which allows you to get alerted to problems without performing conditional logic.
 
 Here's what assertions look like in the Logs panel:

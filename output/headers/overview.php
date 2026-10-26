@@ -26,28 +26,17 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 		$data = $this->collector->get_data();
 		$headers = array();
 
-		$headers['time_taken'] = number_format_i18n( $data->time_taken, 4 );
-		$headers['time_usage'] = sprintf(
-			/* translators: 1: Percentage of time limit used, 2: Time limit in seconds */
-			__( '%1$s%% of %2$ss limit', 'query-monitor' ),
-			number_format_i18n( $data->time_usage, 1 ),
-			number_format_i18n( $data->time_limit )
-		);
+		# Not localised because HTTP header values must be ASCII
+		$headers['time_taken'] = number_format( $data->time_taken, 4 );
+		$headers['time_usage'] = number_format( $data->time_usage, 1 ) . '%';
+		$headers['time_limit'] = number_format( $data->time_limit ) . 's';
 
 		if ( ! empty( $data->memory ) ) {
-			$headers['memory'] = sprintf(
-				/* translators: %s: Memory usage in megabytes with a decimal fraction. Note the space between value and unit symbol. */
-				__( '%s MB', 'query-monitor' ),
-				number_format_i18n( ( $data->memory / 1024 / 1024 ), 1 )
-			);
+			$headers['memory'] = number_format( ( $data->memory / 1024 / 1024 ), 1 ) . ' MB';
 
 			if ( $data->memory_limit > 0 ) {
-				$headers['memory_usage'] = sprintf(
-					/* translators: 1: Percentage of memory limit used, 2: Memory limit in megabytes */
-					__( '%1$s%% of %2$s MB server limit', 'query-monitor' ),
-					number_format_i18n( $data->memory_usage, 1 ),
-					number_format_i18n( $data->memory_limit / 1024 / 1024 )
-				);
+				$headers['memory_usage'] = number_format( $data->memory_usage, 1 ) . '%';
+				$headers['memory_limit'] = number_format( $data->memory_limit / 1024 / 1024 ) . ' MB';
 			}
 		}
 

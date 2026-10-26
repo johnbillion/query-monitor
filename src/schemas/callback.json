@@ -1,0 +1,56 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/callback.json",
+	"title": "Callback",
+	"description": "Callback registered on a hook or block.",
+	"type": "object",
+	"phpFile": "callback",
+	"phpClass": "QM_Data_Callback",
+	"required": [
+		"callback_type"
+	],
+	"properties": {
+		"callback_type": {
+			"type": "string",
+			"enum": [
+				"function",
+				"method",
+				"static_method",
+				"closure",
+				"invokable",
+				"lambda",
+				"unknown",
+				"unknown_closure"
+			]
+		},
+		"name": {
+			"type": "string"
+		},
+		"file": {
+			"phpType": "string|false",
+			"tsType": "string | false",
+			"type": [
+				"string",
+				"boolean"
+			]
+		},
+		"line": {
+			"phpType": "int|false",
+			"tsType": "number | false",
+			"type": [
+				"number",
+				"boolean"
+			]
+		},
+		"component": {
+			"phpType": "QM_Component",
+			"type": "object",
+			"allOf": [
+				{
+					"$ref": "./component.json"
+				}
+			]
+		}
+	},
+	"additionalProperties": false
+}

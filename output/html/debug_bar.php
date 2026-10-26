@@ -27,8 +27,10 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	 * @return string
 	 */
 	public function name() {
-		/** @var string */
-		return $this->collector->get_panel()->title();
+		/** @var string $title */
+		$title = $this->collector->get_panel()->title();
+
+		return $title;
 	}
 
 	/**
@@ -86,6 +88,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
  * @return array<string, QM_Output>
  */
 function register_qm_output_html_debug_bar( array $output, QM_Collectors $collectors ) {
+	/** @var ?Debug_Bar $debug_bar */
 	global $debug_bar;
 
 	if ( empty( $debug_bar ) ) {
@@ -100,7 +103,7 @@ function register_qm_output_html_debug_bar( array $output, QM_Collectors $collec
 		}
 
 		$panel_id = strtolower( sanitize_html_class( $class ) );
-		/** @var QM_Collector_Debug_Bar|null */
+		/** @var QM_Collector_Debug_Bar|null $collector */
 		$collector = QM_Collectors::get( "debug_bar_{$panel_id}" );
 
 		if ( $collector && $collector->is_visible() ) {

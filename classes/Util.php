@@ -292,21 +292,19 @@ class QM_Util {
 	}
 
 	/**
+	 * @deprecated Use the determine_callback() method instead.
+	 *
 	 * @param array<string, mixed> $callback
 	 * @return array<string, mixed>
 	 * @phpstan-return array{
 	 *   name?: string,
 	 *   file?: string|false,
 	 *   line?: string|false,
-	 *   error?: WP_Error,
 	 *   component?: QM_Component,
 	 *   callback_type: string,
-	 *   start_line?: int,
-	 *   display_file?: string,
 	 * }
 	 */
 	public static function populate_callback( array $callback ) {
-
 		if ( is_string( $callback['function'] ) && ( false !== strpos( $callback['function'], '::' ) ) ) {
 			$callback['function'] = explode( '::', $callback['function'] );
 		}
@@ -331,7 +329,7 @@ class QM_Util {
 					$callback['callback_type'] = 'static_method';
 				}
 
-				$callback['name'] = self::shorten_fqn( $class . $access . $callback['function'][1] ) . '()';
+				$callback['name'] = $class . $access . $callback['function'][1] . '()';
 				$ref = new ReflectionMethod( $class, $callback['function'][1] );
 			} elseif ( is_object( $callback['function'] ) ) {
 				if ( $callback['function'] instanceof Closure ) {
@@ -339,25 +337,19 @@ class QM_Util {
 					$filename = $ref->getFileName();
 
 					if ( $filename ) {
-						$file = self::standard_dir( $filename, '' );
-						if ( 0 === strpos( $file, '/' ) ) {
-							$file = basename( $filename );
-						}
 						$callback['callback_type'] = 'closure';
-						$callback['start_line'] = $ref->getStartLine();
-						$callback['display_file'] = $file;
 					} else {
 						$callback['callback_type'] = 'unknown_closure';
 					}
 				} else {
 					// the object should have a __invoke() method
 					$class = get_class( $callback['function'] );
-					$callback['name'] = self::shorten_fqn( $class ) . '->__invoke()';
+					$callback['name'] = $class . '->__invoke()';
 					$callback['callback_type'] = 'invokable';
 					$ref = new ReflectionMethod( $class, '__invoke' );
 				}
 			} else {
-				$callback['name'] = self::shorten_fqn( $callback['function'] ) . '()';
+				$callback['name'] = $callback['function'] . '()';
 				$callback['callback_type'] = 'function';
 				$ref = new ReflectionFunction( $callback['function'] );
 			}
@@ -389,46 +381,91 @@ class QM_Util {
 		unset( $callback['function'], $callback['class'] );
 
 		return $callback;
-
 	}
 
 	/**
-	 * Generate the translated callback name from callback properties.
-	 *
-	 * @param array<string, mixed> $callback Callback data array.
-	 * @return string Translated callback name.
+	 * @param array<string, mixed> $callback
 	 */
-	public static function get_callback_name( array $callback ) {
-		if ( isset( $callback['name'] ) ) {
-			return $callback['name'];
+	public static function determine_callback( array $callback ): QM_Data_Callback {
+		$result = new QM_Data_Callback();
+
+		$function = $callback['function'];
+
+		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) ) {
+			$function = explode( '::', $function );
 		}
 
-		if ( ! isset( $callback['callback_type'] ) ) {
-			return '';
+		if ( isset( $callback['class'] ) ) {
+			$function = array(
+				$callback['class'],
+				$function,
+			);
 		}
 
-		switch ( $callback['callback_type'] ) {
-			case 'closure':
-				return sprintf(
-					/* translators: A closure is an anonymous PHP function. 1: Line number, 2: File name */
-					__( 'Closure on line %1$d of %2$s', 'query-monitor' ),
-					$callback['start_line'],
-					$callback['display_file']
-				);
+		try {
 
-			case 'unknown_closure':
-				/* translators: A closure is an anonymous PHP function */
-				return __( 'Unknown closure', 'query-monitor' );
+			if ( is_array( $function ) ) {
+				if ( is_object( $function[0] ) ) {
+					$class = get_class( $function[0] );
+					$access = '->';
+					$result->callback_type = 'method';
+				} else {
+					$class = $function[0];
+					$access = '::';
+					$result->callback_type = 'static_method';
+				}
 
-			case 'function':
-			case 'method':
-			case 'static_method':
-			case 'invokable':
-			case 'lambda':
-			case 'unknown':
-			default:
-				return $callback['name'] ?? '';
+				$result->name = $class . $access . $function[1] . '()';
+				$ref = new ReflectionMethod( $class, $function[1] );
+			} elseif ( is_object( $function ) ) {
+				if ( $function instanceof Closure ) {
+					$ref = new ReflectionFunction( $function );
+					$filename = $ref->getFileName();
+
+					if ( $filename ) {
+						$result->callback_type = 'closure';
+					} else {
+						$result->callback_type = 'unknown_closure';
+					}
+				} else {
+					// the object should have a __invoke() method
+					$class = get_class( $function );
+					$result->name = $class . '->__invoke()';
+					$result->callback_type = 'invokable';
+					$ref = new ReflectionMethod( $class, '__invoke' );
+				}
+			} else {
+				$result->name = $function . '()';
+				$result->callback_type = 'function';
+				$ref = new ReflectionFunction( $function );
+			}
+
+			$result->file = $ref->getFileName();
+			$result->line = $ref->getStartLine();
+
+			// Handle legacy create_function() lambdas (PHP 7.4 only, removed in PHP 8.0)
+			$name = trim( $ref->getName() );
+			if ( 0 === strpos( $name, 'lambda_' ) ) {
+				// Just use the lambda name as-is, these are from deprecated create_function()
+				$result->name = $name . '()';
+				$result->callback_type = 'lambda';
+				$result->file = null;
+				$result->line = null;
+			}
+
+			if ( ! empty( $result->file ) ) {
+				$result->component = self::get_file_component( $result->file );
+			} else {
+				$result->component = QM_Component::from( QM_Component::TYPE_PHP, 'php' );
+			}
+		} catch ( ReflectionException $e ) {
+
+			$result->callback_type = 'unknown';
+
 		}
+
+		return $result;
+
 	}
 
 	/**
@@ -590,6 +627,7 @@ class QM_Util {
 	 *
 	 *     Inpsyde\W\H\HookListenersRegistry->hook_callback()
 	 *
+	 * @deprecated Use the shortenFqn() method in the JavaScript Utils module instead.
 	 * @param string $fqn A fully qualified name.
 	 * @return string A shortened version of the name.
 	 */
@@ -598,7 +636,7 @@ class QM_Util {
 			return $fqn;
 		}
 
-		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]{4,}\\\\#', function( array $matches ) {
+		return preg_replace_callback( '#\\\\[a-zA-Z0-9_\\\\]{4,}\\\\#', function ( array $matches ) {
 			preg_match_all( '#\\\\([a-zA-Z0-9_])#', $matches[0], $m );
 			return '\\' . implode( '\\', $m[1] ) . '\\';
 		}, $fqn );
@@ -607,14 +645,15 @@ class QM_Util {
 	/**
 	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
+	 * @deprecated Use wp_json_encode() directly with the appropriate options instead.
+	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
 	 */
 	public static function json_format( $data ) {
-		// phpcs:ignore PHPCompatibility.Constants.NewConstants.json_unescaped_slashesFound
 		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
-		$json = json_encode( $data, $json_options );
+		$json = wp_json_encode( $data, $json_options );
 
 		if ( false === $json ) {
 			return '';
@@ -625,6 +664,8 @@ class QM_Util {
 
 	/**
 	 * Returns the site editor URL for a given template or template part name.
+	 *
+	 * @deprecated No longer used.
 	 *
 	 * @param string $template The site template name, for example `twentytwentytwo//header-small-dark`.
 	 * @param string $type     The template type, either 'wp_template_part' or 'wp_template'.
@@ -642,7 +683,8 @@ class QM_Util {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated No longer used.
+	 *
 	 * @param mixed $data
 	 * @return bool
 	 */

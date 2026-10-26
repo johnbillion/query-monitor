@@ -1,0 +1,86 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/block_editor.json",
+	"title": "Block_Editor",
+	"description": "Block editor data transfer object.",
+	"type": "object",
+	"definitions": {
+		"PostBlock": {
+			"type": "object",
+			"phpFile": "post_block",
+			"phpClass": "QM_Data_Post_Block",
+			"required": [
+				"blockName",
+				"attrs",
+				"innerContent",
+				"innerBlocks",
+				"dynamic",
+				"callback",
+				"innerHTML",
+				"timing"
+			],
+			"properties": {
+				"blockName": {
+					"type": ["string", "null"]
+				},
+				"attrs": {
+					"type": "object"
+				},
+				"innerContent": {
+					"type": "array",
+					"items": {
+						"type": ["string", "null"]
+					}
+				},
+				"dynamic": {
+					"type": "boolean"
+				},
+				"callback": {
+					"phpType": "?QM_Data_Callback",
+					"oneOf": [
+						{
+							"$ref": "../callback.json"
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"innerHTML": {
+					"type": "string"
+				},
+				"context": {
+					"type": ["array", "null"],
+					"items": {
+						"type": "object"
+					}
+				},
+				"timing": {
+					"type": "number"
+				},
+				"innerBlocks": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PostBlock"
+					}
+				}
+			}
+		}
+	},
+	"required": [
+		"post_blocks",
+		"post_has_blocks"
+	],
+	"properties": {
+		"post_blocks": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/PostBlock"
+			}
+		},
+		"post_has_blocks": {
+			"type": "boolean"
+		}
+	},
+	"additionalProperties": false
+}

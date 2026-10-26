@@ -153,7 +153,7 @@ class QM {
 		/**
 		 * Fires when an assertion is performed.
 		 *
-		 * @since x.y.z
+		 * @since 3.15.0
 		 *
 		 * @param mixed  $assertion The assertion result, ideally something that evaluates to true.
 		 * @param string $message   The assertion message. May be an empty string.
@@ -170,7 +170,7 @@ class QM {
 	 * @return void
 	 */
 	public static function log( $level, $message, array $context = array() ) {
-		/** @var QM_Collector_Logger */
+		/** @var QM_Collector_Logger $logger */
 		$logger = QM_Collectors::get( 'logger' );
 		$logger->log( $level, $message, $context );
 	}

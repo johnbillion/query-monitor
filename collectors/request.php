@@ -34,9 +34,10 @@ class QM_Collector_Request extends QM_DataCollector {
 			'parse_tax_query',
 			'pre_get_posts',
 			'send_headers',
+			'set_404',
+			'template_redirect',
 			'the_post',
 			'wp',
-			'after_switch_theme',
 		);
 	}
 
@@ -44,6 +45,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	 * @return array<int, string>
 	 */
 	public function get_concerned_filters() {
+		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 
 		$filters = array(
@@ -118,10 +120,15 @@ class QM_Collector_Request extends QM_DataCollector {
 	 */
 	public function get_concerned_options() {
 		return array(
+			'category_base',
 			'home',
+			'page_for_posts',
+			'page_on_front',
 			'permalink_structure',
 			'rewrite_rules',
+			'show_on_front',
 			'siteurl',
+			'tag_base',
 		);
 	}
 
@@ -139,7 +146,13 @@ class QM_Collector_Request extends QM_DataCollector {
 	 * @return void
 	 */
 	public function process() {
-
+		/**
+		 * @var \WP $wp
+		 * @var \WP_Query $wp_query
+		 * @var \WP_Site $current_blog
+		 * @var \WP_Network $current_site
+		 * @var \WP_Rewrite $wp_rewrite
+		*/
 		global $wp, $wp_query, $current_blog, $current_site, $wp_rewrite;
 
 		$qo = get_queried_object();
@@ -158,7 +171,7 @@ class QM_Collector_Request extends QM_DataCollector {
 
 		$this->data->user = array(
 			'title' => $user_title,
-			'data' => ( $user->exists() ? $user : false ),
+			'id' => ( $user->exists() ? $user->ID : false ),
 		);
 
 		if ( is_multisite() ) {
@@ -193,8 +206,8 @@ class QM_Collector_Request extends QM_DataCollector {
 			} else {
 				$this->data->request['request'] = '';
 			}
-			foreach ( array( 'query_string' ) as $item ) {
-				$this->data->request[ $item ] = $wp->$item;
+			if ( $wp->query_string ) {
+				$this->data->request['query_string'] = $wp->query_string;
 			}
 		} else {
 			foreach ( array( 'request', 'matched_rule', 'matched_query', 'query_string' ) as $item ) {
@@ -202,102 +215,71 @@ class QM_Collector_Request extends QM_DataCollector {
 			}
 		}
 
-		/** This filter is documented in wp-includes/class-wp.php */
-		$plugin_qvars = array_flip( apply_filters( 'query_vars', array() ) );
-
-		/** @var array<string, mixed> */
+		/** @var array<string, mixed> $qvars */
 		$qvars = $wp_query->query_vars;
 		$query_vars = array();
 
 		foreach ( $qvars as $k => $v ) {
-			if ( isset( $plugin_qvars[ $k ] ) ) {
-				if ( '' !== $v ) {
-					$query_vars[ $k ] = $v;
-				}
-			} else {
-				if ( ! empty( $v ) ) {
-					$query_vars[ $k ] = $v;
-				}
+			if ( ! empty( $v ) ) {
+				$query_vars[ $k ] = $v;
 			}
 		}
 
 		ksort( $query_vars );
 
-		# First add plugin vars to $this->data->qvars:
-		foreach ( $query_vars as $k => $v ) {
-			if ( isset( $plugin_qvars[ $k ] ) ) {
-				$this->data->qvars[ $k ] = $v;
-				$this->data->plugin_qvars[ $k ] = $v;
+		$this->data->qvars = $query_vars;
+
+		if ( is_object( $qo ) ) {
+			$queried_object = array();
+
+			switch ( get_class( $qo ) ) {
+				case WP_Post::class:
+					// Single post
+					$queried_object['title'] = sprintf(
+						/* translators: 1: Post type name, 2: Post ID */
+						__( 'Single %1$s: #%2$d', 'query-monitor' ),
+						get_post_type_object( $qo->post_type )->labels->singular_name,
+						$qo->ID
+					);
+					break;
+
+				case WP_User::class:
+					// Author archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Author name */
+						__( 'Author archive: %s', 'query-monitor' ),
+						$qo->user_nicename
+					);
+					break;
+
+				case WP_Term::class:
+					// Term archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Taxonomy term name */
+						__( 'Term archive: %s', 'query-monitor' ),
+						$qo->slug
+					);
+					break;
+
+				case WP_Post_Type::class:
+					// Post type archive
+					$queried_object['title'] = sprintf(
+						/* translators: %s: Post type name */
+						__( 'Post type archive: %s', 'query-monitor' ),
+						$qo->name
+					);
+					break;
+
+				default:
+					// Unknown, but we have a queried object
+					$queried_object['title'] = __( 'Unknown queried object', 'query-monitor' );
+					break;
 			}
-		}
 
-		# Now add all other vars to $this->data->qvars:
-		foreach ( $query_vars as $k => $v ) {
-			if ( ! isset( $plugin_qvars[ $k ] ) ) {
-				$this->data->qvars[ $k ] = $v;
-			}
-		}
+			$queried_object['data'] = $qo;
+			$queried_object['type'] = get_class( $qo );
 
-		switch ( true ) {
-
-			case ! is_object( $qo ):
-				// Nada
-				break;
-
-			case is_a( $qo, 'WP_Post' ):
-				// Single post
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: 1: Post type name, 2: Post ID */
-					__( 'Single %1$s: #%2$d', 'query-monitor' ),
-					get_post_type_object( $qo->post_type )->labels->singular_name,
-					$qo->ID
-				);
-				break;
-
-			case is_a( $qo, 'WP_User' ):
-				// Author archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Author name */
-					__( 'Author archive: %s', 'query-monitor' ),
-					$qo->user_nicename
-				);
-				break;
-
-			case is_a( $qo, 'WP_Term' ):
-			case property_exists( $qo, 'slug' ):
-				// Term archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Taxonomy term name */
-					__( 'Term archive: %s', 'query-monitor' ),
-					$qo->slug
-				);
-				break;
-
-			case is_a( $qo, 'WP_Post_Type' ):
-			case property_exists( $qo, 'has_archive' ):
-				// Post type archive
-				$this->data->queried_object['title'] = sprintf(
-					/* translators: %s: Post type name */
-					__( 'Post type archive: %s', 'query-monitor' ),
-					$qo->name
-				);
-				break;
-
-			default:
-				// Unknown, but we have a queried object
-				$this->data->queried_object['title'] = __( 'Unknown queried object', 'query-monitor' );
-				break;
-
-		}
-
-		if ( $qo ) {
-			$this->data->queried_object['data'] = $qo;
-		}
-
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
-			$this->data->request_method = strtoupper( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ); // phpcs:ignore
-		} else {
-			$this->data->request_method = '';
+			$this->data->queried_object = $queried_object;
 		}
 
 		if ( is_admin() || QM_Util::is_async() || empty( $wp_rewrite->rules ) ) {

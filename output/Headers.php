@@ -16,7 +16,7 @@ abstract class QM_Output_Headers extends QM_Output {
 
 		foreach ( $this->get_output() as $key => $value ) {
 			if ( ! is_scalar( $value ) ) {
-				$value = json_encode( $value );
+				$value = wp_json_encode( $value );
 			}
 
 			# Remove illegal characters (Header value may not contain NUL bytes)

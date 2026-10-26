@@ -1,0 +1,4 @@
+services:
+  php:
+    volumes:
+      - ./tests/mu-plugins/third-party-panel.php:/var/www/html/wp-content/mu-plugins/third-party-panel.php

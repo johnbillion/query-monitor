@@ -44,6 +44,7 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 			'print_scripts_array',
 			'script_loader_src',
 			'script_loader_tag',
+			'wp_script_attributes',
 		);
 	}
 }

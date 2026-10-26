@@ -1,0 +1,84 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/overview.json",
+	"title": "Overview",
+	"description": "Overview data transfer object.",
+	"type": "object",
+	"required": [
+		"time_limit",
+		"time_usage",
+		"memory",
+		"memory_limit",
+		"memory_usage"
+	],
+	"properties": {
+		"time_taken": {
+			"type": "number"
+		},
+		"time_limit": {
+			"type": "integer"
+		},
+		"time_usage": {
+			"type": [
+				"integer",
+				"number"
+			]
+		},
+		"memory": {
+			"type": "integer"
+		},
+		"memory_limit": {
+			"type": "number"
+		},
+		"memory_usage": {
+			"type": [
+				"integer",
+				"number"
+			]
+		},
+		"actions": {
+			"type": "object",
+			"additionalProperties": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"start": {
+							"type": "number"
+						},
+						"end": {
+							"type": "number"
+						}
+					},
+					"required": ["start"],
+					"additionalProperties": false
+				}
+			}
+		},
+		"segments": {
+			"type": "object",
+			"properties": {
+				"init": {
+					"type": "number"
+				},
+				"request": {
+					"type": "number"
+				},
+				"query": {
+					"type": "number"
+				},
+				"template": {
+					"type": "number"
+				},
+				"shutdown": {
+					"type": "number"
+				}
+			},
+			"required": [
+				"init"
+			],
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

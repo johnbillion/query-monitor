@@ -21,6 +21,19 @@ if ( SAVEQUERIES && property_exists( $GLOBALS['wpdb'], 'save_queries' ) ) {
 }
 
 /**
+ * @phpstan-type QueryStandard array{
+ *   0: string,
+ *   1: float,
+ *   2: string,
+ *   trace?: QM_Backtrace,
+ *   result?: int|bool|WP_Error,
+ * }
+ * @phpstan-type QueryVIP array{
+ *   query: string,
+ *   elapsed: float,
+ *   debug: string,
+ * }
+ *
  * @extends QM_DataCollector<QM_Data_DB_Queries>
  */
 class QM_Collector_DB_Queries extends QM_DataCollector {
@@ -40,7 +53,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
-	 * @return mixed[]|false
+	 * @return int[]|false
 	 */
 	public function get_errors() {
 		if ( ! empty( $this->data->errors ) ) {
@@ -50,7 +63,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
-	 * @return mixed[]|false
+	 * @return int[]|false
 	 */
 	public function get_expensive() {
 		if ( ! empty( $this->data->expensive ) ) {
@@ -68,45 +81,48 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
+	 * @return 'constant'|'property'|'unknown'
+	 */
+	protected static function get_not_logged_reason( wpdb $wpdb ): string {
+		if ( ! SAVEQUERIES ) {
+			return 'constant';
+		}
+
+		// This property isn't part of core's wpdb but is used by drop-ins such as HyperDB and LudicrousDB.
+		if ( property_exists( $wpdb, 'save_queries' ) && ! $wpdb->save_queries ) {
+			return 'property';
+		}
+
+		return 'unknown';
+	}
+
+	/**
 	 * @return void
 	 */
 	public function process() {
 		$this->data->total_qs = 0;
-		$this->data->total_time = 0;
 		$this->data->errors = array();
 		$this->process_db_object();
 	}
 
 	/**
+	 * @deprecated Caller calculations are now handled client-side.
+	 *
 	 * @param string $caller
 	 * @param float $ltime
 	 * @param string $type
 	 * @return void
 	 */
-	protected function log_caller( $caller, $ltime, $type ) {
-
-		if ( ! isset( $this->data->times[ $caller ] ) ) {
-			$this->data->times[ $caller ] = array(
-				'caller' => $caller,
-				'ltime' => 0,
-				'types' => array(),
-			);
-		}
-
-		$this->data->times[ $caller ]['ltime'] += $ltime;
-
-		if ( isset( $this->data->times[ $caller ]['types'][ $type ] ) ) {
-			$this->data->times[ $caller ]['types'][ $type ]++;
-		} else {
-			$this->data->times[ $caller ]['types'][ $type ] = 1;
-		}
-
-	}
+	protected function log_caller( $caller, $ltime, $type ) {}
 
 	/**
 	 * @return void
 	 */
 	public function process_db_object() {
+		/**
+		 * @var WP_Query $wp_the_query
+		 * @var wpdb $wpdb
+		 */
 		global $wp_the_query, $wpdb;
 
 		$this->wpdb = $wpdb;
@@ -114,43 +130,38 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
 		if ( empty( $wpdb->queries ) ) {
 			$this->data->total_qs += $wpdb->num_queries;
+
+			if ( $this->data->total_qs ) {
+				$this->data->not_logged_reason = self::get_not_logged_reason( $wpdb );
+
+				if ( ! in_array( get_class( $wpdb ), array( 'wpdb', 'QM_DB' ), true ) ) {
+					$this->data->db_class = get_class( $wpdb );
+				}
+			}
+
 			return;
 		}
 
 		$this->data->rows = array();
 
 		$types = array();
-		$total_time = 0;
 		$has_result = false;
 		$has_trace = false;
 		$i = 0;
 		$request = trim( $wp_the_query->request ?: '' );
 
-		if ( method_exists( $wpdb, 'remove_placeholder_escape' ) ) {
-			$request = $wpdb->remove_placeholder_escape( $request );
-		}
+		$request = $wpdb->remove_placeholder_escape( $request );
 
 		/**
-		 * @phpstan-var array{
-		 *   0: string,
-		 *   1: float,
-		 *   2: string,
-		 *   trace?: QM_Backtrace,
-		 *   result?: int|bool|WP_Error,
-		 * }|array{
-		 *   query: string,
-		 *   elapsed: float,
-		 *   debug: string,
-		 * } $query
+		 * @phpstan-var QueryStandard|QueryVIP $query
 		 */
 		foreach ( $wpdb->queries as $query ) {
-			$callers = array();
-
 			if ( isset( $query['query'], $query['elapsed'], $query['debug'] ) ) {
 				// WordPress.com VIP.
 				$sql = $query['query'];
 				$ltime = $query['elapsed'];
 				$stack = $query['debug'];
+			// @phpstan-ignore-next-line isset.offset
 			} elseif ( isset( $query[0], $query[1], $query[2] ) ) {
 				// Standard WP.
 				$sql = $query[0];
@@ -158,8 +169,15 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				$stack = $query[2];
 
 				// Query Monitor db.php drop-in.
-				$has_trace = isset( $query['trace'] );
-				$has_result = isset( $query['result'] );
+				// @phpstan-ignore-next-line instanceof.alwaysTrue
+				if ( isset( $query['trace'] ) && ( $query['trace'] instanceof QM_Backtrace ) ) {
+					$has_trace = true;
+					$trace = $query['trace'];
+				}
+				if ( isset( $query['result'] ) ) {
+					$has_result = true;
+					$result = $query['result'];
+				}
 			} else {
 				// ¯\_(ツ)_/¯
 				continue;
@@ -171,93 +189,80 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 				continue;
 			}
 
-			$result = $query['result'] ?? null;
-			$total_time += $ltime;
-
-			if ( isset( $query['trace'] ) ) {
-
-				$trace = $query['trace'];
-				$component = $query['trace']->get_component();
-				$caller = $query['trace']->get_caller();
-				$caller_name = $caller['display'] ?? 'Unknown';
-				$caller = $caller['display'] ?? 'Unknown';
-
-			} else {
-
-				$trace = null;
-				$component = null;
-				$callers = array_reverse( explode( ',', $stack ) );
-				$callers = array_map( 'trim', $callers );
-				$callers = QM_Backtrace::get_filtered_stack( $callers );
-				$caller = reset( $callers );
-				$caller_name = $caller;
-
-			}
-
 			$sql = trim( $sql );
-			$type = QM_Util::get_query_type( $sql );
 
-			$this->log_type( $type );
-			$this->log_caller( $caller_name, $ltime, $type );
-			$this->maybe_log_dupe( $sql, $i );
-
-			if ( $component ) {
-				$this->log_component( $component, $ltime, $type );
-			}
-
-			$is_main_query = false;
+			$row = compact( 'sql', 'ltime' );
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {
 				// Ignore comments that are appended to queries by some web hosts.
 				$match_sql = preg_replace( '#/\*.*?\*/\s*$#s', '', $sql );
 
 				$is_main_query = ( $request === $match_sql );
-			}
 
-			$row = compact( 'caller', 'caller_name', 'sql', 'ltime', 'result', 'type', 'component', 'trace', 'is_main_query' );
+				if ( $is_main_query ) {
+					$row['is_main_query'] = true;
+				}
+			}
 
 			if ( ! isset( $trace ) ) {
-				$row['stack'] = $callers;
+				$callers = array_reverse( explode( ',', $stack ) );
+				$callers = array_map( 'trim', $callers );
+				$row['stack'] = QM_Backtrace::get_filtered_stack( $callers );
+			} else {
+				$row['trace'] = $trace;
 			}
 
-			// @TODO these should store a reference ($i) instead of the whole row
-			if ( $result instanceof WP_Error ) {
-				$this->data->errors[] = $row;
+			if ( isset( $result ) ) {
+				$row['result'] = $result;
+
+				if ( $result instanceof WP_Error ) {
+					$this->data->errors[] = $i;
+				}
 			}
 
-			// @TODO these should store a reference ($i) instead of the whole row
 			if ( self::is_expensive( $row ) ) {
-				$this->data->expensive[] = $row;
+				$this->data->expensive[] = $i;
 			}
 
 			$this->data->rows[ $i ] = $row;
 			$i++;
 		}
 
-		$has_main_query = wp_list_filter( $this->data->rows, array(
-			'is_main_query' => true,
-		) );
-
 		$this->data->total_qs = count( $this->data->rows );
-		$this->data->total_time = $total_time;
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
-		$this->data->has_main_query = ! empty( $has_main_query );
+
+		/**
+		 * Filter whether to show the QM extended query information prompt.
+		 *
+		 * By default QM shows a prompt to install the QM db.php drop-in,
+		 * this filter allows a dev to choose not to show the prompt.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param bool $show_prompt Whether to show the prompt.
+		 */
+		$show_extended_query_prompt = apply_filters( 'qm/show_extended_query_prompt', true );
+
+		// Determine the reason for the extended query prompt
+		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+				$this->data->extended_query_prompt_reason = 'conflict';
+			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+				$this->data->extended_query_prompt_reason = 'disabled';
+			} else {
+				$this->data->extended_query_prompt_reason = 'failed';
+			}
+		}
 	}
 
 	/**
+	 * @deprecated No longer used.
 	 * @param string $sql
 	 * @param int $i
 	 * @return void
 	 */
 	protected function maybe_log_dupe( $sql, $i ) {
-		$sql = str_replace( array( "\r\n", "\r", "\n" ), ' ', $sql );
-		$sql = str_replace( array( "\t", '`' ), '', $sql );
-		$sql = preg_replace( '/ +/', ' ', $sql );
-		$sql = trim( $sql );
-		$sql = rtrim( $sql, ';' );
-
-		$this->data->dupes[ $sql ][] = $i;
 	}
 }
 

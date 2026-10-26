@@ -13,8 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends QM_DataCollector<QM_Data_Caps>
  * @phpstan-type CapCheck array{
  *   args: list<mixed>,
- *   filtered_trace: list<array<string, mixed>>,
- *   component: QM_Component,
+ *   trace: QM_Backtrace,
  *   result: bool,
  * }
  */
@@ -68,6 +67,9 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'add_user_role',
+			'remove_user_role',
+			'set_user_role',
 			'wp_roles_init',
 		);
 	}
@@ -77,6 +79,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	public function get_concerned_filters() {
 		return array(
+			'editable_roles',
 			'map_meta_cap',
 			'role_has_cap',
 			'user_has_cap',
@@ -90,6 +93,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
 		return array(
+			'default_role',
 			"{$blog_prefix}user_roles",
 		);
 	}
@@ -101,6 +105,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
 			'DISALLOW_FILE_EDIT',
+			'DISALLOW_FILE_MODS',
 			'DISALLOW_UNFILTERED_HTML',
 		);
 	}
@@ -152,8 +157,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 
 		$this->cap_checks[] = array(
 			'args' => $args,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'trace' => $trace,
 			'result' => $result,
 		);
 
@@ -205,9 +209,8 @@ class QM_Collector_Caps extends QM_DataCollector {
 		array_unshift( $args, $cap );
 
 		$this->cap_checks[] = array(
-			'args' => $args,
-			'filtered_trace' => $trace->get_filtered_trace(),
-			'component' => $trace->get_component(),
+			'args' => array_values( $args ),
+			'trace' => $trace,
 			'result' => $result,
 		);
 
@@ -222,9 +225,6 @@ class QM_Collector_Caps extends QM_DataCollector {
 			return;
 		}
 
-		$all_parts = array();
-		$all_users = array();
-		$components = array();
 		$this->data->caps = array();
 
 		$this->cap_checks = array_values( array_filter( $this->cap_checks, array( $this, 'filter_remove_noise' ) ) );
@@ -234,37 +234,18 @@ class QM_Collector_Caps extends QM_DataCollector {
 		}
 
 		foreach ( $this->cap_checks as $cap ) {
-			$name = $cap['args'][0];
+			$name = array_shift( $cap['args'] );
+			$user_id = array_shift( $cap['args'] );
 
 			if ( ! is_string( $name ) ) {
 				$name = '';
 			}
 
-			$component = $cap['component'];
-			$parts = array();
-			$pieces = preg_split( '#[_/-]#', $name );
-
-			if ( is_array( $pieces ) ) {
-				$parts = array_values( array_filter( $pieces ) );
-			}
-
-			$capability = array_shift( $cap['args'] );
-			$user_id = array_shift( $cap['args'] );
-
-			$cap['parts'] = $parts;
 			$cap['name'] = $name;
-			$cap['user'] = $user_id;
+			$cap['user'] = (int) $user_id;
 
 			$this->data->caps[] = $cap;
-
-			$all_parts = array_merge( $all_parts, $parts );
-			$all_users[] = (int) $user_id;
-			$components[ $component->get_id() ] = $component;
 		}
-
-		$this->data->parts = array_values( array_unique( array_filter( $all_parts ) ) );
-		$this->data->users = array_values( array_unique( array_filter( $all_users ) ) );
-		$this->data->components = $components;
 	}
 
 	/**
@@ -273,7 +254,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 * @return bool
 	 */
 	public function filter_remove_noise( array $cap ) {
-		$trace = $cap['filtered_trace'];
+		$trace = $cap['trace']->get_filtered_trace();
 
 		$exclude_files = array(
 			ABSPATH . 'wp-admin/menu.php',
@@ -285,10 +266,10 @@ class QM_Collector_Caps extends QM_DataCollector {
 		);
 
 		foreach ( $trace as $item ) {
-			if ( isset( $item['file'] ) && in_array( $item['file'], $exclude_files, true ) ) {
+			if ( in_array( $item->file, $exclude_files, true ) ) {
 				return false;
 			}
-			if ( isset( $item['function'] ) && in_array( $item['function'], $exclude_functions, true ) ) {
+			if ( in_array( $item->id, $exclude_functions, true ) ) {
 				return false;
 			}
 		}

@@ -1,0 +1,114 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/timing.json",
+	"title": "Timing",
+	"description": "Timing data transfer object.",
+	"type": "object",
+	"required": [
+		"warning",
+		"timing"
+	],
+	"properties": {
+		"warning": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"function": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace",
+						"allOf": [
+							{
+								"$ref": "../backtrace.json"
+							}
+						]
+					}
+				},
+				"required": [
+					"function",
+					"message",
+					"trace"
+				],
+				"additionalProperties": false
+			}
+		},
+		"timing": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"function": {
+						"type": "string"
+					},
+					"function_time": {
+						"type": "number"
+					},
+					"function_memory": {
+						"type": "integer"
+					},
+					"laps": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "object",
+							"properties": {
+								"time": {
+									"type": "number"
+								},
+								"time_used": {
+									"type": "number"
+								},
+								"memory": {
+									"type": "integer"
+								},
+								"memory_used": {
+									"type": "integer"
+								},
+								"data": {}
+							},
+							"required": [
+								"time",
+								"time_used",
+								"memory",
+								"memory_used",
+								"data"
+							],
+							"additionalProperties": false
+						}
+					},
+					"trace": {
+						"type": "object",
+						"phpType": "QM_Backtrace",
+						"allOf": [
+							{
+								"$ref": "../backtrace.json"
+							}
+						]
+					},
+					"start_time": {
+						"type": "number"
+					},
+					"end_time": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"function",
+					"function_time",
+					"function_memory",
+					"laps",
+					"trace",
+					"start_time",
+					"end_time"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"additionalProperties": false
+}

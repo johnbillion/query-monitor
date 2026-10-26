@@ -76,10 +76,8 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) ) ) {
-				return false;
-			}
+		} elseif ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) ) ) {
+			return false;
 		}
 
 		return true;

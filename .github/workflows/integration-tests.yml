@@ -6,15 +6,11 @@ on:
     branches:
       - 'develop'
       - 'trunk'
-      - 'client-side-rendering-feature'
     paths:
       - '.github/workflows/integration-tests.yml'
-      - 'tests/**'
-      - '**.css'
-      - '**.scss'
-      - '**.js'
+      - 'tests/integration/**'
       - '**.php'
-      - 'codeception.dist.yml'
+      - 'phpunit.xml.dist'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
@@ -23,12 +19,9 @@ on:
       - '**'
     paths:
       - '.github/workflows/integration-tests.yml'
-      - 'tests/**'
-      - '**.css'
-      - '**.scss'
-      - '**.js'
+      - 'tests/integration/**'
       - '**.php'
-      - 'codeception.dist.yml'
+      - 'phpunit.xml.dist'
       - 'composer.json'
       - 'docker-compose.yml'
       - 'package.json'
@@ -45,31 +38,33 @@ jobs:
     name: WP ${{ matrix.wp }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@878b9aa1ed37ebe75529845419b9571610845760 # 1.2.2
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
-        wp:
-          # Three most recent versions of WordPress
-          - '6.9'
-          - '6.8'
-          - '6.7'
-        php:
-          # Most recent version of PHP supported by all of the above, plus 7.4
-          - '8.4'
-          - '7.4'
         include:
-          # Latest WordPress on latest PHP
-          # - wp: '6.9'
-          #   php: '8.5'
-          # Oldest supported WordPress on its newest supported PHP, plus 7.4:
-          - wp: '6.1'
+          # Latest:
+          - wp: '7.1'
+            php: '8.5'
+          - wp: '7.1'
+            php: '7.4'
+          # Latest -1:
+          - wp: '7.0'
+            php: '8.5'
+          - wp: '7.0'
+            php: '7.4'
+          # Latest -2:
+          - wp: '6.9'
+            php: '8.4'
+          - wp: '6.9'
+            php: '7.4'
+          # Oldest supported:
+          - wp: '6.3'
             php: '8.2'
-          - wp: '6.1'
+          - wp: '6.3'
             php: '7.4'
       fail-fast: false
     with:
-      node: false
       php: ${{ matrix.php }}
       wp: ${{ matrix.wp }}

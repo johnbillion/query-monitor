@@ -137,9 +137,18 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	public function get_concerned_actions() {
 		return array(
+			'after_setup_theme',
 			'after_switch_theme',
+			'get_footer',
+			'get_header',
+			'get_sidebar',
+			'get_template_part',
+			'setup_theme',
+			'switch_theme',
 			'template_redirect',
+			'wp_after_load_template',
 			'wp_before_include_template',
+			'wp_before_load_template',
 			'wp_template_enhancement_output_buffer_started',
 		);
 	}
@@ -149,10 +158,13 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	public function get_concerned_filters() {
 		$filters = array(
+			'body_class',
 			'stylesheet',
 			'stylesheet_directory',
+			'stylesheet_directory_uri',
 			'template',
 			'template_directory',
+			'template_directory_uri',
 			'template_include',
 			'wp_should_output_buffer_template_for_enhancement',
 			'wp_template_enhancement_output_buffer',
@@ -427,7 +439,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 		$theme_directory = QM_Util::standard_dir( get_theme_root() );
 
 		if ( isset( $this->data->template_hierarchy ) ) {
-			$this->data->template_hierarchy = array_unique( $this->data->template_hierarchy );
+			$this->data->template_hierarchy = array_values( array_unique( $this->data->template_hierarchy ) );
 		}
 
 		if ( ! empty( $this->requested_template_parts ) ) {
@@ -542,7 +554,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 		}
 
 		if ( isset( $this->data->body_class ) ) {
-			asort( $this->data->body_class );
+			sort( $this->data->body_class );
 		}
 
 	}

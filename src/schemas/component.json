@@ -1,0 +1,24 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/component.json",
+	"title": "Component",
+	"description": "Class representing a component.",
+	"type": "object",
+	"required": [
+		"type",
+		"name",
+		"context"
+	],
+	"properties": {
+		"type": {
+			"type": "string"
+		},
+		"name": {
+			"type": "string"
+		},
+		"context": {
+			"type": "string"
+		}
+	},
+	"additionalProperties": false
+}

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QM_Collector_Admin extends QM_DataCollector {
 
-	public $id = 'response';
+	public $id = 'admin';
 
 	public function get_storage(): QM_Data {
 		return new QM_Data_Admin();
@@ -26,8 +26,11 @@ class QM_Collector_Admin extends QM_DataCollector {
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
+			'admin_init',
+			'admin_menu',
 			'admin_notices',
 			'all_admin_notices',
+			'in_admin_header',
 			'network_admin_notices',
 			'user_admin_notices',
 		);
@@ -43,7 +46,9 @@ class QM_Collector_Admin extends QM_DataCollector {
 	 * @return array<int, string>
 	 */
 	public function get_concerned_filters() {
-		$filters = array();
+		$filters = array(
+			'admin_body_class',
+		);
 
 		if ( ! empty( $this->data->list_table ) ) {
 			$filters[] = $this->data->list_table['columns_filter'];
@@ -132,7 +137,7 @@ class QM_Collector_Admin extends QM_DataCollector {
  * @return array<string, QM_Collector>
  */
 function register_qm_collector_admin( array $collectors, QueryMonitor $qm ) {
-	$collectors['response'] = new QM_Collector_Admin();
+	$collectors['admin'] = new QM_Collector_Admin();
 	return $collectors;
 }
 

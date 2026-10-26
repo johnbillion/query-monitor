@@ -18,122 +18,16 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 	 */
 	protected $collector;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 30 );
-	}
+	/**
+	 * @var bool
+	 */
+	public static $client_side_rendered = true;
 
 	/**
 	 * @return string
 	 */
 	public function name() {
 		return __( 'Queries by Caller', 'query-monitor' );
-	}
-
-	/**
-	 * @return void
-	 */
-	public function output() {
-		/** @var QM_Data_DB_Callers $data */
-		$data = $this->collector->get_data();
-
-		if ( empty( $data->types ) ) {
-			return;
-		}
-
-		$total_time = 0;
-
-		if ( ! empty( $data->times ) ) {
-			$this->before_tabular_output();
-
-			echo '<thead>' . "\n";
-			echo '<tr>' . "\n";
-			echo '<th scope="col">' . esc_html__( 'Caller', 'query-monitor' ) . '</th>' . "\n";
-
-			foreach ( array_keys( $data->types ) as $type_name ) {
-				echo '<th scope="col" class="qm-num qm-ltr qm-sortable-column" role="columnheader">';
-				echo $this->build_sorter( $type_name ); // WPCS: XSS ok;
-				echo '</th>' . "\n";
-			}
-
-			echo '<th scope="col" class="qm-num qm-sorted-desc qm-sortable-column" role="columnheader" aria-sort="descending">';
-			echo $this->build_sorter( __( 'Time', 'query-monitor' ) ); // WPCS: XSS ok;
-			echo '</th>' . "\n";
-			echo '</tr>' . "\n";
-			echo '</thead>' . "\n";
-
-			echo '<tbody>' . "\n";
-
-			foreach ( $data->times as $row ) {
-				$total_time += $row['ltime'];
-				$stime = number_format_i18n( $row['ltime'], 4 );
-
-				echo '<tr>' . "\n";
-				echo '<td class="qm-ltr">';
-				echo self::build_filter_trigger( 'db_queries', 'caller', $row['caller'], '<code>' . esc_html( $row['caller'] ) . '</code>' ); // WPCS: XSS ok;
-				echo '</td>' . "\n";
-
-				foreach ( array_keys( $data->types ) as $type_name ) {
-					if ( isset( $row['types'][ $type_name ] ) ) {
-						echo "<td class='qm-num'>" . esc_html( number_format_i18n( $row['types'][ $type_name ] ) ) . '</td>' . "\n";
-					} else {
-						echo "<td class='qm-num'></td>\n";
-					}
-				}
-
-				echo '<td class="qm-num" data-qm-sort-weight="' . esc_attr( (string) $row['ltime'] ) . '">' . esc_html( $stime ) . '</td>' . "\n";
-				echo '</tr>' . "\n";
-
-			}
-
-			echo '</tbody>' . "\n";
-			echo '<tfoot>' . "\n";
-
-			$total_stime = number_format_i18n( $total_time, 4 );
-
-			echo '<tr>' . "\n";
-			echo '<td></td>' . "\n";
-
-			foreach ( $data->types as $type_name => $type_count ) {
-				echo '<td class="qm-num">' . esc_html( number_format_i18n( $type_count ) ) . '</td>' . "\n";
-			}
-
-			echo '<td class="qm-num">' . esc_html( $total_stime ) . '</td>' . "\n";
-			echo '</tr>' . "\n";
-
-			echo '</tfoot>' . "\n";
-
-			$this->after_tabular_output();
-		} else {
-			$this->before_non_tabular_output();
-
-			echo '<div class="qm-none">' . "\n";
-			echo '<p>' . esc_html__( 'None', 'query-monitor' ) . '</p>' . "\n";
-			echo '</div>' . "\n";
-
-			$this->after_non_tabular_output();
-		}
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function panel_menu( array $menu ) {
-		/** @var QM_Collector_DB_Queries|null $dbq */
-		$dbq = QM_Collectors::get( 'db_queries' );
-
-		if ( $dbq ) {
-			/** @var QM_Data_DB_Queries $dbq_data */
-			$dbq_data = $dbq->get_data();
-			if ( ! empty( $dbq_data->times ) ) {
-				$menu['qm-db_queries']['children'][] = $this->menu( array(
-					'title' => esc_html__( 'Queries by Caller', 'query-monitor' ),
-				) );
-			}
-		}
-		return $menu;
-
 	}
 
 }

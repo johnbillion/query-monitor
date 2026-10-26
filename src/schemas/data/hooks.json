@@ -1,0 +1,75 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.querymonitor.com/src/schemas/data/hooks.json",
+	"title": "Hooks",
+	"description": "Hooks data transfer object.",
+	"type": "object",
+	"required": [
+		"hooks",
+		"all_hooks",
+		"php_int_max",
+		"php_int_min"
+	],
+	"properties": {
+		"hooks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"actions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"priority": {
+									"type": "integer"
+								},
+								"callback": {
+									"phpType": "QM_Data_Callback",
+									"type": "object",
+									"allOf": [
+										{
+											"$ref": "../callback.json"
+										}
+									]
+								}
+							},
+							"required": [
+								"priority",
+								"callback"
+							],
+							"additionalProperties": false
+						}
+					},
+					"components": {
+						"type": "object",
+						"phpType": "array<string, QM_Component>",
+						"additionalProperties": {
+							"phpType": "QM_Component",
+							"type": "object"
+						}
+					}
+				},
+				"required": [
+					"name",
+					"actions",
+					"components"
+				],
+				"additionalProperties": false
+			}
+		},
+		"all_hooks": {
+			"type": "boolean"
+		},
+		"php_int_max": {
+			"type": "integer"
+		},
+		"php_int_min": {
+			"type": "integer"
+		}
+	},
+	"additionalProperties": false
+}

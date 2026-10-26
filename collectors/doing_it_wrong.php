@@ -93,6 +93,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		return array(
 			'doing_it_wrong_run',
 			'deprecated_function_run',
+			'deprecated_class_run',
 			'deprecated_constructor_run',
 			'deprecated_file_included',
 			'deprecated_argument_run',
@@ -106,6 +107,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	public function get_concerned_filters() {
 		return array(
 			'deprecated_function_trigger_error',
+			'deprecated_class_trigger_error',
 			'deprecated_constructor_trigger_error',
 			'deprecated_file_trigger_error',
 			'deprecated_argument_trigger_error',
@@ -131,13 +133,16 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_doing_it_wrong' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Doing_It_Wrong_Run(
 			$trace,
 			[
 				'function_name' => $function_name,
-				'message'       => $message,
+				'message'       => wp_strip_all_tags( $message ),
 				'version'       => $version,
 			]
 		);
@@ -161,6 +166,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_function' => true,
 			),
 		) );
 
@@ -192,6 +200,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_constructor' => true,
 			),
 		) );
 
@@ -225,6 +236,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_file' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_File_Included(
@@ -233,7 +247,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				'file'        => $file,
 				'replacement' => $replacement,
 				'version'     => $version,
-				'message'     => $message,
+				'message'     => wp_strip_all_tags( $message ),
 			]
 		);
 
@@ -257,13 +271,16 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_argument' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_Argument_Run(
 			$trace,
 			[
 				'function_name' => $function_name,
-				'message'       => $message,
+				'message'       => wp_strip_all_tags( $message ),
 				'version'       => $version,
 			]
 		);
@@ -288,6 +305,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 			'ignore_hook' => array(
 				current_action() => true,
 			),
+			'ignore_func' => array(
+				'_deprecated_hook' => true,
+			),
 		) );
 
 		$this->data->actions[] = new QM_Deprecated_Hook_Run(
@@ -296,7 +316,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 				'hook'        => $hook,
 				'replacement' => $replacement,
 				'version'     => $version,
-				'message'     => $message,
+				'message'     => wp_strip_all_tags( $message ),
 			]
 		);
 
@@ -319,6 +339,9 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 		$trace = new QM_Backtrace( array(
 			'ignore_hook' => array(
 				current_action() => true,
+			),
+			'ignore_func' => array(
+				'_deprecated_class' => true,
 			),
 		) );
 
