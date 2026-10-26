@@ -21,7 +21,6 @@ export const timelineMenu = (): PanelMenuItem[] => [ {
 	id: 'timeline',
 	panel: 'timeline',
 	title: __( 'Timeline', 'query-monitor' ),
-	new: true,
 } ];
 
 interface TimelineItem {
