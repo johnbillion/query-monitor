@@ -9,6 +9,8 @@ class CollectorPhpErrorsTest extends Test {
 	 */
 	public $collector;
 
+	private bool $registered_previous_error_handler = false;
+
 	#[\Override]
 	public function set_up(): void {
 		parent::set_up();
@@ -19,6 +21,10 @@ class CollectorPhpErrorsTest extends Test {
 	#[\Override]
 	public function tear_down(): void {
 		$this->collector->tear_down();
+
+		if ( $this->registered_previous_error_handler ) {
+			restore_error_handler();
+		}
 
 		parent::tear_down();
 	}
@@ -231,5 +237,134 @@ class CollectorPhpErrorsTest extends Test {
 		self::assertSame( 1, count( $actual->errors ) );
 		self::assertArrayHasKey( 'warning_abc', $actual->errors );
 		self::assertArrayNotHasKey( 'notice_abc', $actual->errors );
+	}
+
+	function testItReturnsFalseWhenNoPreviousErrorHandler(): void {
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertFalse( $result );
+	}
+
+	function testItCallsFilterForErrorHandlerResult(): void {
+		add_filter( 'qm/collect/php_errors_return_value', '__return_true' );
+
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertTrue( $result );
+	}
+
+	/**
+	 * Registers an error handler that becomes the collector's previous handler when the collector is set up.
+	 *
+	 * @param mixed $return_value
+	 * @return \ArrayObject<int, list<mixed>> The arguments of each call to the handler.
+	 */
+	private function registerPreviousErrorHandler( $return_value ): \ArrayObject {
+		/** @var \ArrayObject<int, list<mixed>> $calls */
+		$calls = new \ArrayObject();
+
+		set_error_handler( static function () use ( $calls, $return_value ) {
+			$calls[] = func_get_args();
+			return $return_value;
+		} );
+
+		$this->registered_previous_error_handler = true;
+
+		return $calls;
+	}
+
+	/**
+	 * @param mixed $return_value
+	 * @return \ArrayObject<int, list<mixed>> The arguments of each call to the previous handler.
+	 */
+	private function setUpWithPreviousErrorHandler( $return_value ): \ArrayObject {
+		$calls = $this->registerPreviousErrorHandler( $return_value );
+
+		// Prevent an error from an earlier test being recorded by the collector.
+		error_clear_last();
+		$this->collector->set_up();
+
+		return $calls;
+	}
+
+	function testItCallsPreviousErrorHandlerWithStandardArguments(): void {
+		$calls = $this->setUpWithPreviousErrorHandler( false );
+
+		$this->collector->error_handler( E_WARNING, 'test', 'file.php', 123, array(), false );
+
+		self::assertSame( array(
+			array( E_WARNING, 'test', 'file.php', 123 ),
+		), $calls->getArrayCopy() );
+	}
+
+	function testItCallsPreviousErrorHandlerForFatalErrors(): void {
+		$calls = $this->setUpWithPreviousErrorHandler( true );
+
+		$result = $this->collector->error_handler( E_RECOVERABLE_ERROR, 'test', 'file.php', 123 );
+
+		self::assertTrue( $result );
+		self::assertCount( 1, $calls );
+		self::assertEmpty( $this->collector->get_data()->errors );
+	}
+
+	/**
+	 * @return array<string, array{mixed, bool}>
+	 */
+	public static function dataPreviousErrorHandlerReturnValues(): array {
+		return array(
+			'true' => array( true, true ),
+			'false' => array( false, false ),
+			// PHP treats any return value other than false as handled.
+			'null' => array( null, true ),
+		);
+	}
+
+	/**
+	 * @dataProvider dataPreviousErrorHandlerReturnValues
+	 * @param mixed $return_value
+	 */
+	function testItReturnsPreviousErrorHandlerResult( $return_value, bool $expected ): void {
+		$this->setUpWithPreviousErrorHandler( $return_value );
+
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertSame( $expected, $result );
+	}
+
+	function testItCallsPreviousErrorHandlerWhenFilterReturnsTrue(): void {
+		add_filter( 'qm/collect/php_errors_return_value', '__return_true' );
+		$calls = $this->setUpWithPreviousErrorHandler( false );
+
+		$result = $this->collector->error_handler( E_WARNING, 'test' );
+
+		self::assertTrue( $result );
+		self::assertCount( 1, $calls );
+	}
+
+	function testItRecordsErrorWhenPreviousErrorHandlerReturnsTrue(): void {
+		$this->setUpWithPreviousErrorHandler( true );
+
+		$this->collector->error_handler( E_WARNING, 'test' );
+
+		$errors = $this->collector->get_data()->errors;
+
+		self::assertCount( 1, $errors );
+		self::assertSame( 'test', reset( $errors )->message );
+	}
+
+	function testItDoesNotPassPriorErrorToPreviousErrorHandler(): void {
+		$calls = $this->registerPreviousErrorHandler( false );
+
+		error_clear_last();
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@trigger_error( 'prior', E_USER_NOTICE );
+		$calls->exchangeArray( array() );
+
+		$this->collector->set_up();
+		$errors = $this->collector->get_data()->errors;
+
+		self::assertCount( 0, $calls );
+		self::assertCount( 1, $errors );
+		self::assertSame( 'prior', reset( $errors )->message );
 	}
 }
