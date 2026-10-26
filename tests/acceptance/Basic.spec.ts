@@ -41,4 +41,16 @@ test.describe( 'Basic User Access', () => {
 			}
 		} );
 	}
+
+	test( 'administrator should have access to Query Monitor on a small screen', async ( {
+		page,
+		QueryMonitor,
+	} ) => {
+		await page.setViewportSize( { width: 390, height: 844 } );
+		await QueryMonitor.loginViaPage( 'administrator', 'administrator' );
+		await page.goto( '/' );
+
+		await page.locator( '#wp-admin-bar-query-monitor' ).click();
+		await expect( page.locator( '#wp-admin-bar-query-monitor .ab-submenu' ) ).toBeVisible();
+	} );
 } );

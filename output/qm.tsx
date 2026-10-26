@@ -407,7 +407,8 @@ export const QM = ( props: Props ) => {
 							e.preventDefault();
 						} }
 					>
-						<span className="qm-menu-title">
+						<span className="ab-icon" aria-hidden="true">QM</span>
+						<span className="ab-label qm-menu-title">
 							{ props.menu.top.title.map( ( part, i ) => (
 								<Fragment key={ i }>
 									{ i > 0 ? '\u00A0\u00A0' : '' }
