@@ -196,4 +196,28 @@ class CallbacksTest extends Test {
 
 	}
 
+	/**
+	 * @requires PHP >= 8.4
+	 */
+	public function testCallbackIsCorrectlyPopulatedWithRealClosureFrameFromPhp84(): void {
+
+		$closure = function (): void {
+			throw new \Exception( 'Testing' );
+		};
+
+		try {
+			$closure();
+			self::fail( 'Expected exception was not thrown' );
+		} catch ( \Exception $e ) {
+			$frame = $e->getTrace()[0];
+		}
+
+		self::assertStringStartsWith( '{closure:' . __METHOD__ . '():', $frame['function'] );
+
+		$actual = \QM_Util::determine_callback( $frame );
+
+		self::assertSame( 'unknown', $actual->callback_type );
+
+	}
+
 }
