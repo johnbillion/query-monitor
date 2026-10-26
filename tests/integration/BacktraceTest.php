@@ -955,8 +955,21 @@ class BacktraceTest extends Test {
 		return $max_depth;
 	}
 
+	/**
+	 * @param class-string $class
+	 */
+	private function get_static_property( string $class, string $name ): \ReflectionProperty {
+		$property = new \ReflectionProperty( $class, $name );
+
+		if ( \PHP_VERSION_ID < 80100 ) {
+			$property->setAccessible( true );
+		}
+
+		return $property;
+	}
+
 	public function testBacktraceInAllHookDoesNotRecurseWhenLoadingFilters(): void {
-		$filtered = new \ReflectionProperty( \QM_Backtrace::class, 'filtered' );
+		$filtered = $this->get_static_property( \QM_Backtrace::class, 'filtered' );
 		$filtered->setValue( null, false );
 
 		$depth = $this->get_nested_backtrace_depth( static function (): void {
@@ -968,9 +981,9 @@ class BacktraceTest extends Test {
 	}
 
 	public function testBacktraceInAllHookDoesNotRecurseWhenDetectingComponent(): void {
-		$file_dirs = new \ReflectionProperty( \QM_Util::class, 'file_dirs' );
+		$file_dirs = $this->get_static_property( \QM_Util::class, 'file_dirs' );
 		$file_dirs->setValue( null, array() );
-		( new \ReflectionProperty( \QM_Util::class, 'file_components' ) )->setValue( null, array() );
+		$this->get_static_property( \QM_Util::class, 'file_components' )->setValue( null, array() );
 
 		$component = null;
 
