@@ -131,6 +131,9 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			),
 			JSON_UNESCAPED_SLASHES
 		);
+
+		// Core's fatal error handler subsequently outputs its message during Ajax requests, which would break the JSON.
+		add_filter( 'wp_php_error_message', '__return_empty_string' );
 	}
 }
 
