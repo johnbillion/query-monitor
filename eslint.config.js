@@ -16,7 +16,7 @@ export default [
 			'vendor/**',
 			'*.php',
 			'docs/**',
-			'tests/**',
+			'tests/acceptance/**',
 			'src/bannerComment.ts', // Concatenated into data-types.ts during build
 			'output/data-types.ts', // Generated file
 		],
