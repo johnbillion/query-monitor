@@ -895,4 +895,29 @@ class BacktraceTest extends Test {
 		self::assertNull( $frames[0]->file );
 		self::assertNull( $frames[0]->line );
 	}
+
+	/**
+	 * @requires PHP >= 8.4
+	 */
+	public function testIgnoreNamespaceFiltersClosuresFromPhp84(): void {
+		require_once __DIR__ . '/includes/dummy-namespaced-closures.php';
+
+		$trace = Closures\get_trace();
+
+		self::assertStringStartsWith( '{closure:{closure:QM\Tests\Closures\get_trace():', $trace[0]['function'] );
+		self::assertStringStartsWith( '{closure:QM\Tests\Closures\get_trace():', $trace[1]['function'] );
+
+		$bt = $this->create_backtrace( $trace, array(
+			'ignore_namespace' => array(
+				'QM\Tests\Closures' => true,
+			),
+		) );
+		$frames = $this->resolve_frames( $bt->jsonSerialize() );
+
+		self::assertNotEmpty( $frames );
+
+		foreach ( $frames as $frame ) {
+			self::assertStringNotContainsString( 'QM\Tests\Closures', $frame->id );
+		}
+	}
 }
