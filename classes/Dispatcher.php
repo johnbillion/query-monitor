@@ -174,7 +174,10 @@ abstract class QM_Dispatcher {
 			return false;
 		}
 
-		if ( current_user_can( 'view_query_monitor' ) ) {
+		// Core doesn't reset the current user when it clears the auth cookies, for example
+		// when wp-login.php is loaded with `reauth=1`, so the user would otherwise still
+		// be treated as logged in for the rest of the request.
+		if ( ! did_action( 'clear_auth_cookie' ) && current_user_can( 'view_query_monitor' ) ) {
 			return true;
 		}
 
