@@ -71,8 +71,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		// Capture the last error that occurred before QM loaded:
 		$prior_error = error_get_last();
 
-		// Non-fatal error handler:
-		// To support error handler chaining, we need to set our error handler with E_ALL error_levels.
+		// Fatal levels are included so they can be passed on to the previous error handler.
 		$this->previous_error_handler = set_error_handler( array( $this, 'error_handler' ) );
 
 		// Fatal error and uncaught exception handler:
@@ -82,8 +81,9 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		$this->display_errors = ini_get( 'display_errors' );
 		ini_set( 'display_errors', '0' );
 
+		// The previous error handler has already seen this error, so it's recorded without being passed on.
 		if ( $prior_error ) {
-			$this->error_handler(
+			$this->record_error(
 				$prior_error['type'],
 				$prior_error['message'],
 				$prior_error['file'],
@@ -170,11 +170,55 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 */
 	public function error_handler( $errno, $message, $file = null, $line = null, $context = null, $do_trace = true ) {
 		if ( $errno & QM_ERROR_FATALS ) {
-			// Do not proceed with fatal errors.
-			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
-			return $this->fallback_error_handler( func_get_args() );
+			return $this->call_previous_error_handler( $errno, $message, $file, $line );
 		}
 
+		$this->record_error( $errno, $message, $file, $line, $context, $do_trace );
+
+		$return_value = $this->call_previous_error_handler( $errno, $message, $file, $line );
+
+		/**
+		 * Filters the PHP error handler return value. This can be used to control whether or not the default error
+		 * handler is called after Query Monitor's.
+		 *
+		 * Return true to stop further error handling, false to run the normal error handler.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param bool $return_value Error handler return value. Default false, or the return value of the previous
+		 *                           error handler if there is one.
+		 */
+		return apply_filters( 'qm/collect/php_errors_return_value', $return_value );
+	}
+
+	/**
+	 * Passes an error on to the error handler that was registered before Query Monitor's.
+	 *
+	 * @param int         $errno   The error number.
+	 * @param string      $message The error message.
+	 * @param string|null $file    The file location.
+	 * @param int|null    $line    The line number.
+	 * @return bool Whether the previous error handler handled the error.
+	 */
+	private function call_previous_error_handler( $errno, $message, $file, $line ): bool {
+		if ( ! is_callable( $this->previous_error_handler ) ) {
+			return false;
+		}
+
+		// PHP only falls back to its standard error handler when a handler returns exactly false.
+		return ( false !== call_user_func( $this->previous_error_handler, $errno, $message, $file, $line ) );
+	}
+
+	/**
+	 * @param int          $errno    The error number.
+	 * @param string       $message  The error message.
+	 * @param string|null  $file     The file location.
+	 * @param int|null     $line     The line number.
+	 * @param mixed[]|null $context  The context being passed.
+	 * @param bool         $do_trace Whether a stack trace should be included in the logged error data.
+	 * @return void
+	 */
+	private function record_error( $errno, $message, $file, $line, $context, $do_trace ) {
 		$level = null;
 
 		/**
@@ -217,13 +261,11 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		if ( null === $level ) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
-			return $this->fallback_error_handler( func_get_args() );
+			return;
 		}
 
 		if ( ! class_exists( 'QM_Backtrace' ) ) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
-			return $this->fallback_error_handler( func_get_args() );
+			return;
 		}
 
 		$suppressed = false;
@@ -248,14 +290,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		// Intentionally skip reporting these core warnings. They're a distraction when developing offline.
 		// The failed HTTP request will still appear in QM's output so it's not a big problem hiding these warnings.
 		if ( false !== strpos( $message, self::$unexpected_error ) ) {
-			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
-			return $this->fallback_error_handler( func_get_args() );
-		}
-
-		// If the fallback error handler returns true, the error was suppressed.
-		// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
-		if ( $this->fallback_error_handler( func_get_args() ) ) {
-			return true;
+			return;
 		}
 
 		$callsite = new QM_Data_Callsite();
@@ -291,18 +326,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		$this->log_type( $level );
-
-		/**
-		 * Filters the PHP error handler return value. This can be used to control whether or not the default error
-		 * handler is called after Query Monitor's.
-		 *
-		 * Return true to stop further error handling, false to run the normal error handler.
-		 *
-		 * @since 2.7.0
-		 *
-		 * @param bool $return_value Error handler return value. Default false.
-		 */
-		return apply_filters( 'qm/collect/php_errors_return_value', false );
 	}
 
 	private function is_error_suppressed(): bool {
@@ -314,21 +337,6 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 		}
 
 		return 0 === $current_level;
-	}
-
-	/**
-	 * Fallback error handler.
-	 *
-	 * @param mixed[] $args Arguments.
-	 *
-	 * @return bool
-	 * @noinspection PhpTernaryExpressionCanBeReplacedWithConditionInspection
-	 */
-	private function fallback_error_handler( array $args ): bool {
-		return null === $this->previous_error_handler ?
-			// Use standard error handler.
-			false :
-			(bool) call_user_func_array( $this->previous_error_handler, $args );
 	}
 
 	/**
