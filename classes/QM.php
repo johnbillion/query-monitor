@@ -153,7 +153,7 @@ class QM {
 		/**
 		 * Fires when an assertion is performed.
 		 *
-		 * @since x.y.z
+		 * @since 3.15.0
 		 *
 		 * @param mixed  $assertion The assertion result, ideally something that evaluates to true.
 		 * @param string $message   The assertion message. May be an empty string.
