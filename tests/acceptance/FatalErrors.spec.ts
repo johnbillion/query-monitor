@@ -25,17 +25,15 @@ test.describe( 'Fatal Errors', () => {
 	} );
 
 	test.describe( 'Logged in', () => {
-		test.beforeEach( async ( { QueryMonitor } ) => {
-			await QueryMonitor.loginViaPage( 'admin', 'password' );
-		} );
-
 		test( 'Fatal error on the front end should be displayed and logged', async ( { page, QueryMonitor, globalUtils } ) => {
+			QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 			await QueryMonitor.amOnAPageThatTriggersFatalError( 'uncaught' );
 			await expect( page.locator( '#qm-fatal' ) ).toContainText( message );
 			expect( readErrorLog( globalUtils ) ).toContain( `Uncaught Error: ${message}` );
 		} );
 
 		test( 'Fatal error in the admin area should be displayed, logged, and handled by core', async ( { page, QueryMonitor, globalUtils } ) => {
+			QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 			await QueryMonitor.amOnAPageThatTriggersFatalError( 'uncaught', '/wp-admin/' );
 			await expect( page.locator( '#qm-fatal' ) ).toContainText( message );
 			expect( readErrorLog( globalUtils ) ).toContain( `Uncaught Error: ${message}` );
@@ -45,14 +43,16 @@ test.describe( 'Fatal Errors', () => {
 			await expect( page.locator( '.wp-die-message' ) ).toBeHidden();
 		} );
 
-		test( 'Fatal error during an Ajax request should be output as JSON and logged', async ( { page, globalUtils } ) => {
+		test( 'Fatal error during an Ajax request should be output as JSON and logged', async ( { page, QueryMonitor, globalUtils } ) => {
+			await QueryMonitor.loginViaPage( 'admin', 'password' );
 			const response = await page.request.get( '/wp-admin/admin-ajax.php?action=qm_test&_qm_acceptance_group=fatal_errors&_qm_acceptance_test=uncaught' );
 			expect( response.status() ).toBe( 500 );
 			expect( await response.json() ).toMatchObject( { code: 'qm_fatal' } );
 			expect( readErrorLog( globalUtils ) ).toContain( `Uncaught Error: ${message}` );
 		} );
 
-		test( 'Fatal error during a REST API request should be output as JSON and logged', async ( { page, globalUtils } ) => {
+		test( 'Fatal error during a REST API request should be output as JSON and logged', async ( { page, QueryMonitor, globalUtils } ) => {
+			await QueryMonitor.loginViaPage( 'admin', 'password' );
 			const response = await page.request.get( '/wp-json/?_qm_acceptance_group=fatal_errors&_qm_acceptance_test=uncaught-rest' );
 			expect( response.status() ).toBe( 500 );
 			expect( await response.json() ).toMatchObject( { code: 'qm_fatal' } );

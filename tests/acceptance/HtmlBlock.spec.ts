@@ -15,12 +15,8 @@ test.describe( 'HTML Block', () => {
 		).trim();
 	} );
 
-	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
-	} );
-
-	test( 'Post with HTML block containing script tag should not break QM output', async ( { page } ) => {
-		await page.goto( `/?p=${postId}` );
+	test( 'Post with HTML block containing script tag should not break QM output', async ( { page, QueryMonitor } ) => {
+		await QueryMonitor.loginViaPage( 'admin', 'password', `/?p=${postId}` );
 
 		// The QueryMonitorData variable should be a valid object.
 		// If the </script> in the block innerHTML broke out of the

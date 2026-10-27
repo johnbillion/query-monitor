@@ -10,6 +10,7 @@ export class QueryMonitorUtils {
 	private page: Page;
 	private admin: Admin;
 	private globalUtils: GlobalUtils;
+	private pendingLogin: { username: string; password: string } | null = null;
 
 	constructor( page: Page, admin: Admin, globalUtils: GlobalUtils ) {
 		this.page = page;
@@ -18,20 +19,40 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Login via the wp-login.php page
+	 * Login via the wp-login.php page, then get redirected to the given URL
 	 */
-	async loginViaPage( username: string, password: string ) {
-		await this.page.goto( '/wp-login.php' );
+	async loginViaPage( username: string, password: string, redirectTo: string = '/wp-admin/' ) {
+		await this.page.goto( `/wp-login.php?redirect_to=${ encodeURIComponent( redirectTo ) }` );
 		await this.page.fill( 'input[name="log"]', username );
 		await this.page.fill( 'input[name="pwd"]', password );
 		await this.page.locator( '#wp-submit' ).click();
 
 		// Wait for the redirect to complete before returning, otherwise a subsequent
 		// navigation can race the login request and land without the auth cookie.
-		await this.page.waitForURL( /\/wp-admin\// );
+		await this.page.waitForURL( ( url ) => ! url.pathname.endsWith( '/wp-login.php' ) );
 
-		// WP returns a 200 for a failed login, so assert on the logged-in state instead.
-		await expect( this.page.locator( '#wpadminbar' ) ).toBeVisible();
+		// WP returns a 200 for a failed login, so assert on the logged-in state instead. This checks the cookie
+		// rather than the admin bar because some redirect targets, such as fatal errors, don't show it.
+		const cookies = await this.page.context().cookies();
+		expect( cookies.some( ( cookie ) => cookie.name.startsWith( 'wordpress_logged_in_' ) ) ).toBe( true );
+	}
+
+	/**
+	 * Login as part of the next `amOnAPage…()` navigation, which avoids loading the dashboard after logging in
+	 */
+	loginOnNextVisit( username: string, password: string ) {
+		this.pendingLogin = { username, password };
+	}
+
+	private async visit( url: string ) {
+		if ( this.pendingLogin ) {
+			const { username, password } = this.pendingLogin;
+			this.pendingLogin = null;
+			await this.loginViaPage( username, password, url );
+			return;
+		}
+
+		await this.page.goto( url );
 	}
 
 	/**
@@ -81,21 +102,21 @@ export class QueryMonitorUtils {
 	 * Navigate to a page that triggers a "doing it wrong" scenario
 	 */
 	async amOnAPageThatIsDoingItWrong( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a PHP error
 	 */
 	async amOnAPageThatTriggersPhpError( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a suppressed PHP error
 	 */
 	async amOnAPageThatTriggersSuppressedPhpError( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-${test}` );
+		await this.visit( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-${test}` );
 	}
 
 	/**
@@ -103,42 +124,42 @@ export class QueryMonitorUtils {
 	 */
 	async amOnAPageThatTriggersFatalError( test: string, path: string = '/', displayErrors?: string ) {
 		const display = displayErrors === undefined ? '' : `&_qm_acceptance_display_errors=${displayErrors}`;
-		await this.page.goto( `${path}?_qm_acceptance_group=fatal_errors&_qm_acceptance_test=${test}${display}` );
+		await this.visit( `${path}?_qm_acceptance_group=fatal_errors&_qm_acceptance_test=${test}${display}` );
 	}
 
 	/**
 	 * Navigate to a page that makes a Guzzle HTTP request
 	 */
 	async amOnAPageThatMakesGuzzleRequest( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a specific callback type
 	 */
 	async amOnAPageThatTriggersCallbackType( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=callback_types&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=callback_types&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page with enqueued scripts
 	 */
 	async amOnAPageWithEnqueuedScripts( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=enqueued_scripts&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=enqueued_scripts&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a database query scenario
 	 */
 	async amOnAPageThatTriggersDBQuery( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=db_queries&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=db_queries&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that loads the third-party panel test plugin
 	 */
 	async amOnAPageWithThirdPartyPanel() {
-		await this.page.goto( '/?_qm_acceptance_group=third_party_panel' );
+		await this.visit( '/?_qm_acceptance_group=third_party_panel' );
 	}
 
 	/**

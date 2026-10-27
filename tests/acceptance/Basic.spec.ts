@@ -23,8 +23,7 @@ test.describe( 'Basic User Access', () => {
 			page,
 			QueryMonitor,
 		} ) => {
-			await QueryMonitor.loginViaPage( role, role );
-			await page.goto( '/' );
+			await QueryMonitor.loginViaPage( role, role, '/' );
 
 			// Verify we're logged in as the correct user
 			await expect( page.locator( '#wp-admin-bar-my-account .display-name' ).first() ).toContainText( role );
@@ -47,8 +46,7 @@ test.describe( 'Basic User Access', () => {
 		QueryMonitor,
 	} ) => {
 		await page.setViewportSize( { width: 390, height: 844 } );
-		await QueryMonitor.loginViaPage( 'administrator', 'administrator' );
-		await page.goto( '/' );
+		await QueryMonitor.loginViaPage( 'administrator', 'administrator', '/' );
 
 		await page.locator( '#wp-admin-bar-query-monitor' ).click();
 		await expect( page.locator( '#wp-admin-bar-query-monitor .ab-submenu' ) ).toBeVisible();
