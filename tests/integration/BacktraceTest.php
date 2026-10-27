@@ -920,4 +920,79 @@ class BacktraceTest extends Test {
 			self::assertStringNotContainsString( 'QM\Tests\Closures', $frame->id );
 		}
 	}
+
+	/**
+	 * Constructs a backtrace on every `all` hook fired while `$callback` runs, and returns the
+	 * maximum nesting depth reached. The depth is capped so a regression fails the test rather
+	 * than exhausting the stack.
+	 */
+	private function get_nested_backtrace_depth( callable $callback ): int {
+		/** @var int $depth */
+		$depth = 0;
+		$max_depth = 0;
+
+		$listener = static function () use ( &$depth, &$max_depth ): void {
+			if ( $depth >= 5 ) {
+				return;
+			}
+
+			$depth++;
+			$max_depth = max( $max_depth, $depth );
+			$bt = new \QM_Backtrace();
+			$bt->get_filtered_trace();
+			$bt->get_component();
+			$depth--;
+		};
+
+		add_action( 'all', $listener );
+
+		try {
+			$callback();
+		} finally {
+			remove_action( 'all', $listener );
+		}
+
+		return $max_depth;
+	}
+
+	/**
+	 * @param class-string $class
+	 */
+	private function get_static_property( string $class, string $name ): \ReflectionProperty {
+		$property = new \ReflectionProperty( $class, $name );
+
+		if ( \PHP_VERSION_ID < 80100 ) {
+			$property->setAccessible( true );
+		}
+
+		return $property;
+	}
+
+	public function testBacktraceInAllHookDoesNotRecurseWhenLoadingFilters(): void {
+		$filtered = $this->get_static_property( \QM_Backtrace::class, 'filtered' );
+		$filtered->setValue( null, false );
+
+		$depth = $this->get_nested_backtrace_depth( static function (): void {
+			new \QM_Backtrace();
+		} );
+
+		self::assertSame( 1, $depth );
+		self::assertTrue( $filtered->getValue() );
+	}
+
+	public function testBacktraceInAllHookDoesNotRecurseWhenDetectingComponent(): void {
+		$file_dirs = $this->get_static_property( \QM_Util::class, 'file_dirs' );
+		$file_dirs->setValue( null, array() );
+		$this->get_static_property( \QM_Util::class, 'file_components' )->setValue( null, array() );
+
+		$component = null;
+
+		$depth = $this->get_nested_backtrace_depth( static function () use ( &$component ): void {
+			$component = ( new \QM_Backtrace() )->get_component();
+		} );
+
+		self::assertSame( 1, $depth );
+		self::assertInstanceOf( \QM_Component::class, $component );
+		self::assertNotEmpty( $file_dirs->getValue() );
+	}
 }
