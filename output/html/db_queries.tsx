@@ -195,6 +195,13 @@ export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] 
 		} );
 	}
 
+	children.push( {
+		id: 'db_queries_diff',
+		panel: 'db_queries_diff',
+		title: __( 'Query Diff', 'query-monitor' ),
+		adminBar: false,
+	} );
+
 	const okCount = ( data.total_qs ?? 0 );
 
 	return [ {
