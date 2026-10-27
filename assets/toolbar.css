@@ -113,6 +113,14 @@
 		}
 	}
 
+	@media screen and (min-width: 783px) {
+		/* Core gives .ab-label a fixed height, which stretches the alert pill */
+		#wp-admin-bar-query-monitor .qm-menu-title {
+			display: inline;
+			height: auto;
+		}
+	}
+
 	@media screen and (max-width: 782px) {
 		/* Core hides plugin toolbar items on small screens */
 		li#wp-admin-bar-query-monitor {
