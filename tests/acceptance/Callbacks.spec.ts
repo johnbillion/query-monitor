@@ -6,7 +6,7 @@ test.describe( 'Callback Types in Hooks & Actions', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Function callback should be displayed', async ( { QueryMonitor } ) => {

@@ -6,7 +6,7 @@ test.describe( 'Third-Party Panel Menus', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 		await QueryMonitor.amOnAPageWithThirdPartyPanel();
 	} );
 

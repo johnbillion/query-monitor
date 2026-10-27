@@ -6,7 +6,7 @@ test.describe( 'Doing It Wrong', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Deprecated argument should be handled', async ( { QueryMonitor } ) => {

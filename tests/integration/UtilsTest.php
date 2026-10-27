@@ -50,4 +50,39 @@ class UtilsTest extends Test {
 		);
 	}
 
+	public function testJsonSerializableObjectsAreRetainedWhenDataContainsNonUtf8Strings(): void {
+		$serializable = new class() implements \JsonSerializable {
+			/**
+			 * @return array<string, string>
+			 */
+			public function jsonSerialize(): array {
+				return array(
+					'serialized' => 'yes',
+				);
+			}
+		};
+
+		$container = new \stdClass();
+		$container->rows = array(
+			array(
+				'sql' => "INSERT INTO `t` (`ip`) VALUES ('" . inet_pton( '192.168.1.0' ) . "')",
+				'trace' => $serializable,
+			),
+		);
+
+		$json = \QM_Util::json_encode( array(
+			'data' => $container,
+		) );
+
+		self::assertIsString( $json );
+
+		$decoded = json_decode( $json, true );
+
+		self::assertIsArray( $decoded );
+		self::assertSame( array(
+			'serialized' => 'yes',
+		), $decoded['data']['rows'][0]['trace'] );
+		self::assertStringStartsWith( 'INSERT INTO', $decoded['data']['rows'][0]['sql'] );
+	}
+
 }

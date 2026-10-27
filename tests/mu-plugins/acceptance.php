@@ -3,6 +3,18 @@
 // The autofocus timer on wp-login.php races Playwright filling in the login form.
 add_filter( 'enable_login_autofocus', '__return_false' );
 
+// Update checks and other requests to wordpress.org are blocking and their speed depends on the network, so they're
+// short-circuited. Core saves the update transients before making the request, so they aren't retried.
+add_filter( 'pre_http_request', function( $pre, array $args, string $url ) {
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+
+	if ( is_string( $host ) && preg_match( '#(^|\.)wordpress\.org$#', $host ) ) {
+		return new WP_Error( 'qm_acceptance_blocked', 'Requests to wordpress.org are blocked during the acceptance tests.' );
+	}
+
+	return $pre;
+}, 10, 3 );
+
 if ( isset( $_GET['_qm_acceptance_group'] ) && 'fatal_errors' === $_GET['_qm_acceptance_group'] ) {
 	// Log to a file that the tests can read via WP-CLI, which runs in a separate container.
 	ini_set( 'log_errors', '1' );

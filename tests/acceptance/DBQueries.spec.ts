@@ -6,7 +6,7 @@ test.describe( 'Database Queries', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Non-UTF8 query should be displayed', async ( { QueryMonitor } ) => {

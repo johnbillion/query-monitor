@@ -396,7 +396,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->output_assets();
 
-		$encoded = wp_json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
+		$encoded = QM_Util::json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
 
 		wp_print_inline_script_tag(
 			sprintf(
