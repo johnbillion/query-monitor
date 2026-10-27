@@ -91,7 +91,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		echo wp_json_encode(
+		$json = QM_Util::json_encode(
 			array(
 				'code' => 'qm_fatal',
 				'message' => $message,
@@ -99,6 +99,8 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			),
 			JSON_UNESCAPED_SLASHES
 		);
+
+		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 

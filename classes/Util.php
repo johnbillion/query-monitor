@@ -644,9 +644,63 @@ class QM_Util {
 	}
 
 	/**
+	 * JSON encodes data, falling back to `wp_json_encode()` to convert any strings that aren't valid UTF-8.
+	 *
+	 * The fallback in `wp_json_encode()` rebuilds objects from their public properties, which discards the
+	 * output of `jsonSerialize()`, so objects are converted to plain data before the fallback runs.
+	 *
+	 * @param mixed $data The data to be JSON encoded.
+	 * @param int   $flags Options to pass to `json_encode()`.
+	 * @return string|false The JSON encoded data, or false on failure.
+	 */
+	public static function json_encode( $data, int $flags = 0 ) {
+		$json = json_encode( $data, $flags );
+
+		if ( false !== $json ) {
+			return $json;
+		}
+
+		return wp_json_encode( self::json_prepare( $data, 512 ), $flags );
+	}
+
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	protected static function json_prepare( $data, int $depth ) {
+		if ( $depth < 0 ) {
+			return null;
+		}
+
+		if ( $data instanceof JsonSerializable ) {
+			return self::json_prepare( $data->jsonSerialize(), $depth - 1 );
+		}
+
+		if ( is_array( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				$data[ $key ] = self::json_prepare( $value, $depth - 1 );
+			}
+
+			return $data;
+		}
+
+		if ( is_object( $data ) ) {
+			$prepared = new stdClass();
+
+			foreach ( get_object_vars( $data ) as $key => $value ) {
+				$prepared->$key = self::json_prepare( $value, $depth - 1 );
+			}
+
+			return $prepared;
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
-	 * @deprecated Use wp_json_encode() directly with the appropriate options instead.
+	 * @deprecated Use QM_Util::json_encode() directly with the appropriate options instead.
 	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
@@ -654,7 +708,7 @@ class QM_Util {
 	public static function json_format( $data ) {
 		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
-		$json = wp_json_encode( $data, $json_options );
+		$json = self::json_encode( $data, $json_options );
 
 		if ( false === $json ) {
 			return '';
