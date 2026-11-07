@@ -7,7 +7,8 @@ test.describe( 'Bundle globals', () => {
 	} );
 
 	test( 'Loading the panel does not define global formatting functions', async ( { page, QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password', '/wp-admin/' );
+		// Older WordPress versions load their own global sprintf functions in wp-admin.
+		await QueryMonitor.loginViaPage( 'admin', 'password', '/' );
 		await QueryMonitor.openQMPanel( 'Overview' );
 
 		for ( const name of [ 'sprintf', 'vsprintf' ] ) {
@@ -22,7 +23,7 @@ test.describe( 'Bundle globals', () => {
 			}
 		} );
 
-		await QueryMonitor.loginViaPage( 'admin', 'password', '/wp-admin/' );
+		await QueryMonitor.loginViaPage( 'admin', 'password', '/' );
 		await QueryMonitor.openQMPanel( 'Overview' );
 
 		for ( const name of [ 'sprintf', 'vsprintf' ] ) {
