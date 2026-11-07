@@ -57,7 +57,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								{ sprintf(
 									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
-									calls
+									String( calls )
 								) }
 							</span>
 							<br/>
@@ -76,7 +76,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								{ sprintf(
 									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
-									calls
+									String( calls )
 								) }
 							</span>
 							<br/>
@@ -95,7 +95,7 @@ export const DBDupes = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 								{ sprintf(
 									/* translators: %s: Number of function calls */
 									_n( '%s call', '%s calls', calls, 'query-monitor' ),
-									calls
+									String( calls )
 								) }
 							</span>
 							<br/>

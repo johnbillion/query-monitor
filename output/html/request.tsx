@@ -166,7 +166,7 @@ export const Request = ( { data }: PanelProps<DataTypes['request']> ) => {
 						{ sprintf(
 							/* translators: %d: Multisite site ID */
 							__( 'Current Site: #%d', 'query-monitor' ),
-							data.multisite.current_site.data.blog_id
+							Number( data.multisite.current_site.data.blog_id )
 						) }
 					</p>
 				</section>
