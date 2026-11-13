@@ -403,6 +403,10 @@ class QM_Util {
 			);
 		}
 
+		if ( $function instanceof Closure ) {
+			$function = self::unwrap_first_class_callable( $function );
+		}
+
 		try {
 
 			if ( is_array( $function ) ) {
@@ -467,6 +471,40 @@ class QM_Util {
 
 		return $result;
 
+	}
+
+	/**
+	 * Returns the callable that a first-class callable closure such as `$obj->method(...)`,
+	 * `Foo::method(...)`, or `strlen(...)` wraps, or the closure itself if it's anonymous.
+	 *
+	 * @return Closure|string|array{0: object|class-string, 1: string}
+	 */
+	private static function unwrap_first_class_callable( Closure $closure ) {
+		$ref = new ReflectionFunction( $closure );
+		$name = $ref->getName();
+
+		// Anonymous closures are named `{closure}` (with a namespace prefix) before PHP 8.4, and `{closure:...}` from PHP 8.4
+		if ( false !== strpos( $name, '{closure' ) ) {
+			return $closure;
+		}
+
+		$this_obj = $ref->getClosureThis();
+		$scope = $ref->getClosureScopeClass();
+
+		if ( $this_obj && method_exists( $this_obj, $name ) ) {
+			return array( $this_obj, $name );
+		}
+
+		if ( $scope && method_exists( $scope->getName(), $name ) ) {
+			return array( $scope->getName(), $name );
+		}
+
+		// Closures from `__call()` and `__callStatic()` methods are named after the inaccessible method
+		if ( $this_obj || $scope ) {
+			return $closure;
+		}
+
+		return $name;
 	}
 
 	/**

@@ -107,6 +107,98 @@ class CallbacksTest extends Test {
 
 	}
 
+	// `Closure::fromCallable()` creates the same closures as PHP 8.1's `$obj->method(...)` syntax.
+	public function testCallbackIsCorrectlyPopulatedWithFirstClassCallableObjectMethod(): void {
+
+		$obj = new Supports\TestObject;
+		$function = \Closure::fromCallable( array( $obj, 'hello' ) );
+		$callback = self::get_callback( $function );
+
+		$ref = new \ReflectionMethod( $obj, 'hello' );
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'method', $actual->callback_type );
+		self::assertSame( 'QM\Tests\Supports\TestObject->hello()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithFirstClassCallableStaticMethod(): void {
+
+		$function = \Closure::fromCallable( array( Supports\TestObject::class, 'greet' ) );
+		$callback = self::get_callback( $function );
+
+		$ref = new \ReflectionMethod( Supports\TestObject::class, 'greet' );
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'static_method', $actual->callback_type );
+		self::assertSame( 'QM\Tests\Supports\TestObject::greet()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithFirstClassCallableProceduralFunction(): void {
+
+		$function = \Closure::fromCallable( '__return_false' );
+		$callback = self::get_callback( $function );
+
+		$ref = new \ReflectionFunction( '__return_false' );
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'function', $actual->callback_type );
+		self::assertSame( '__return_false()', $actual->name );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithFirstClassCallableInternalFunction(): void {
+
+		$function = \Closure::fromCallable( 'strlen' );
+		$callback = self::get_callback( $function );
+
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'function', $actual->callback_type );
+		self::assertSame( 'strlen()', $actual->name );
+		self::assertNotNull( $actual->component );
+		self::assertSame( 'php', $actual->component->context );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithFirstClassCallableMagicMethod(): void {
+
+		$obj = new /** @method void hello() */ class() {
+			/**
+			 * @param mixed[] $args
+			 */
+			public function __call( string $name, array $args ): void {}
+		};
+		$function = \Closure::fromCallable( array( $obj, 'hello' ) );
+		$callback = self::get_callback( $function );
+
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'unknown_closure', $actual->callback_type );
+
+	}
+
+	public function testCallbackIsCorrectlyPopulatedWithClosureDefinedInMethod(): void {
+
+		$function = function (): void {};
+		$callback = self::get_callback( $function );
+
+		$ref = new \ReflectionFunction( $function );
+		$actual = \QM_Util::determine_callback( $callback );
+
+		self::assertSame( 'closure', $actual->callback_type );
+		self::assertSame( $ref->getFileName(), $actual->file );
+		self::assertSame( $ref->getStartLine(), $actual->line );
+
+	}
+
 	public function testCallbackIsCorrectlyPopulatedWithInvalidProceduralFunction(): void {
 
 		$function = 'invalid_function';
