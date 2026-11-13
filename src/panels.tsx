@@ -1,4 +1,4 @@
-import { setLocaleData } from '@wordpress/i18n';
+import { setLocaleData, type LocaleData } from '@wordpress/i18n';
 
 import { iNavMenu, iNavMenuItem, normaliseMenu } from '../output/nav';
 import { iPanelData, iSettings } from '../output/panels/panels';
@@ -83,7 +83,7 @@ export type iQM = {
 		thousands_sep: string;
 		decimal_point: string;
 	};
-	locale_data?: Record<string, unknown> | null;
+	locale_data?: LocaleData | null;
 };
 
 export type iQMData = iQM | false;
