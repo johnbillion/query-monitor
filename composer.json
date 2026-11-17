@@ -75,6 +75,7 @@
 			"npm run build-schemas",
 			"npm run typecheck",
 			"npm run lint",
+			"npm run test:unit",
 			"@test:phpstan",
 			"@test:phpcs",
 			"@test:start",
