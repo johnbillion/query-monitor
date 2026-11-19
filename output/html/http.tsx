@@ -133,7 +133,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								{ sprintf(
 									/* translators: %s: Error message text */
 									__( 'Error: %s', 'query-monitor' ),
-									String( Utils.getErrorMessage( row.result ) )
+									Utils.getErrorMessage( row.result ) ?? ''
 								) }
 							</Warning>
 						);

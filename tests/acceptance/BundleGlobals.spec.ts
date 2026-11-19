@@ -11,9 +11,8 @@ test.describe( 'Bundle globals', () => {
 		await QueryMonitor.loginViaPage( 'admin', 'password', '/' );
 		await QueryMonitor.openQMPanel( 'Overview' );
 
-		for ( const name of [ 'sprintf', 'vsprintf' ] ) {
-			expect( await page.evaluate( ( key ) => typeof Reflect.get( window, key ), name ) ).toBe( 'undefined' );
-		}
+		expect( await page.evaluate( () => typeof Reflect.get( window, 'sprintf' ) ) ).toBe( 'undefined' );
+		expect( await page.evaluate( () => typeof Reflect.get( window, 'vsprintf' ) ) ).toBe( 'undefined' );
 	} );
 
 	test( 'Loading the panel preserves formatting functions defined by other scripts', async ( { page, QueryMonitor } ) => {
@@ -26,8 +25,7 @@ test.describe( 'Bundle globals', () => {
 		await QueryMonitor.loginViaPage( 'admin', 'password', '/' );
 		await QueryMonitor.openQMPanel( 'Overview' );
 
-		for ( const name of [ 'sprintf', 'vsprintf' ] ) {
-			expect( await page.evaluate( ( key ) => Reflect.get( window, key )(), name ) ).toBe( 'existing formatter' );
-		}
+		expect( await page.evaluate( () => Reflect.get( window, 'sprintf' )() ) ).toBe( 'existing formatter' );
+		expect( await page.evaluate( () => Reflect.get( window, 'vsprintf' )() ) ).toBe( 'existing formatter' );
 	} );
 } );
