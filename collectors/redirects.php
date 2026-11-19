@@ -16,6 +16,7 @@ class QM_Collector_Redirects extends QM_DataCollector {
 
 	public $id = 'redirects';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Redirect();
 	}
@@ -23,6 +24,7 @@ class QM_Collector_Redirects extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 		add_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999, 2 );
@@ -31,6 +33,7 @@ class QM_Collector_Redirects extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999 );
 

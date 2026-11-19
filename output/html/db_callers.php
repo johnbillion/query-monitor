@@ -26,6 +26,7 @@ class QM_Output_Html_DB_Callers extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Queries by Caller', 'query-monitor' );
 	}

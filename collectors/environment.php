@@ -31,6 +31,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 		'log_errors',
 	);
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Environment();
 	}
@@ -76,6 +77,7 @@ class QM_Collector_Environment extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		/** @var string $wp_version */
 		global $wp_version;

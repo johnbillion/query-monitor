@@ -14,6 +14,7 @@
  * }>
  */
 final class QM_Deprecated_Hook_Run extends QM_Wrong {
+	#[\Override]
 	public function get_message(): string {
 		[
 			'hook' => $hook,

@@ -6,6 +6,7 @@
  */
 
 class QM_Component_Altis_Vendor extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		return sprintf(
 			/* translators: %s: Dependency name */

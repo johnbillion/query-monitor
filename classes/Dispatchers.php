@@ -19,6 +19,7 @@ class QM_Dispatchers implements IteratorAggregate {
 	 * @return ArrayIterator<string, QM_Dispatcher>
 	 */
 	#[\ReturnTypeWillChange]
+	#[\Override]
 	public function getIterator() {
 		return new ArrayIterator( $this->items );
 	}

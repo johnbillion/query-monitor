@@ -55,6 +55,7 @@ class UtilsTest extends Test {
 			/**
 			 * @return array<string, string>
 			 */
+			#[\Override]
 			public function jsonSerialize(): array {
 				return array(
 					'serialized' => 'yes',

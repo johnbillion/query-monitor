@@ -34,6 +34,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	 */
 	private $stop = array();
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Timing();
 	}
@@ -41,6 +42,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -52,6 +54,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_action( 'qm/start', array( $this, 'action_function_time_start' ), 10 );
 		remove_action( 'qm/stop', array( $this, 'action_function_time_stop' ), 10 );
@@ -143,6 +146,7 @@ class QM_Collector_Timing extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		foreach ( $this->start as $function => $value ) {
 			if ( ! isset( $this->stop[ $function ] ) ) {

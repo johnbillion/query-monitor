@@ -163,6 +163,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -280,6 +281,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		global $wp_version;
 
@@ -442,6 +444,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function after_output() {
 	}
 
@@ -515,6 +518,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {
@@ -552,6 +556,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @param mixed[] $e
 	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $error, array $e ): void {
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
@@ -639,6 +644,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 *
 	 * @return void
 	 */
+	#[\Override]
 	public function cease() {
 		$this->ceased = true;
 	}

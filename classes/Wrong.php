@@ -33,6 +33,7 @@ abstract class QM_Wrong implements JsonSerializable {
 	/**
 	 * @return array{trace: QM_Backtrace, message: string}
 	 */
+	#[\Override]
 	public function jsonSerialize(): array {
 		return [
 			'trace' => $this->backtrace,

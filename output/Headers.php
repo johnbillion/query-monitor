@@ -10,6 +10,7 @@ abstract class QM_Output_Headers extends QM_Output {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function output() {
 
 		$id = $this->collector->id;

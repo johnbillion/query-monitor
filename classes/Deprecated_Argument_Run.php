@@ -13,6 +13,7 @@
  * }>
  */
 final class QM_Deprecated_Argument_Run extends QM_Wrong {
+	#[\Override]
 	public function get_message(): string {
 		[
 			'function_name' => $function_name,

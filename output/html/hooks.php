@@ -26,6 +26,7 @@ class QM_Output_Html_Hooks extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		/** @var QM_Data_Hooks $data */
 		$data = $this->collector->get_data();

@@ -26,6 +26,7 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
 	}

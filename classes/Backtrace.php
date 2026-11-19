@@ -869,6 +869,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *   time: float,
 	 * }
 	 */
+	#[\Override]
 	public function jsonSerialize(): array {
 		return array(
 			'component' => $this->get_component(),

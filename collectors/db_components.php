@@ -16,6 +16,7 @@ class QM_Collector_DB_Components extends QM_DataCollector {
 
 	public $id = 'db_components';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
 	}
