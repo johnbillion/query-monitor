@@ -33,6 +33,7 @@ class QM_Collector_Redirects extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'wp_redirect', array( $this, 'filter_wp_redirect' ), 9999 );
 
@@ -44,7 +45,6 @@ class QM_Collector_Redirects extends QM_DataCollector {
 	 * @param int $status
 	 * @return string
 	 */
-	#[\Override]
 	public function filter_wp_redirect( $location, $status ) {
 
 		if ( ! $location ) {

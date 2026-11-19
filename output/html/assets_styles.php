@@ -26,6 +26,7 @@ class QM_Output_Html_Assets_Styles extends QM_Output_Html_Assets {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Styles', 'query-monitor' );
 	}

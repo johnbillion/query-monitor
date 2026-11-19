@@ -51,6 +51,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			require_once $file;
@@ -60,6 +61,7 @@ class QM_Dispatcher_Redirect extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {

@@ -25,6 +25,7 @@ class QM_Collectors implements IteratorAggregate {
 	 * @return ArrayIterator<string, QM_Collector>
 	 */
 	#[\ReturnTypeWillChange]
+	#[\Override]
 	public function getIterator() {
 		return new ArrayIterator( $this->items );
 	}

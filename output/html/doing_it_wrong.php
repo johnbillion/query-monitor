@@ -23,6 +23,7 @@ class QM_Output_Html_Doing_It_Wrong extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Doing it Wrong', 'query-monitor' );
 	}

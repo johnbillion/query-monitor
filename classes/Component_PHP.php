@@ -6,6 +6,7 @@
  */
 
 final class QM_Component_PHP extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		return 'PHP';
 	}

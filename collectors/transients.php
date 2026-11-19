@@ -24,6 +24,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 		parent::__construct();
 	}
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Transients();
 	}
@@ -31,6 +32,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -43,6 +45,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_action( "{$this->transient_hook_prefix}_site_transient", array( $this, 'action_setted_site_transient' ), 10 );
 		remove_action( "{$this->transient_hook_prefix}_transient", array( $this, 'action_setted_blog_transient' ), 10 );
@@ -108,6 +111,7 @@ class QM_Collector_Transients extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$this->data->has_type = is_multisite();
 	}

@@ -13,6 +13,7 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 
 	public $id = 'assets_styles';
 
+	#[\Override]
 	public function get_dependency_type() {
 		return 'styles';
 	}
@@ -20,6 +21,7 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		if ( is_admin() ) {
 			return array(
@@ -35,6 +37,7 @@ class QM_Collector_Assets_Styles extends QM_Collector_Assets {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'print_styles_array',

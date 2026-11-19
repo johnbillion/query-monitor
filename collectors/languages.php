@@ -21,6 +21,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	 */
 	public $seen = array();
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Languages();
 	}
@@ -28,6 +29,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 
 		parent::set_up();
@@ -42,6 +44,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'load_textdomain_mofile', array( $this, 'log_mo_file_load' ), 9999 );
 		remove_filter( 'load_translation_file', array( $this, 'log_translation_file_load' ), 9999 );
@@ -72,6 +75,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			'change_locale',
@@ -85,6 +89,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'determine_locale',
@@ -115,6 +120,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_options() {
 		return array(
 			'WPLANG',
@@ -124,6 +130,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_constants() {
 		return array(
 			'WPLANG',
@@ -133,6 +140,7 @@ class QM_Collector_Languages extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		if ( empty( $this->data->languages ) ) {
 			return;

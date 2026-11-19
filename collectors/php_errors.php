@@ -54,6 +54,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 */
 	private const NON_SILENT_ERROR_TYPES = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_PHP_Errors();
 	}
@@ -61,6 +62,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
@@ -97,6 +99,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		if ( defined( 'QM_DISABLE_ERROR_HANDLER' ) && QM_DISABLE_ERROR_HANDLER ) {
 			return;
@@ -387,6 +390,7 @@ class QM_Collector_PHP_Errors extends QM_DataCollector {
 	 *
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		if ( ! empty( $this->data->errors ) ) {
 			/**

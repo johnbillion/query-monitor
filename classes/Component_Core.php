@@ -6,6 +6,7 @@
  */
 
 class QM_Component_Core extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		return __( 'WordPress Core', 'query-monitor' );
 	}

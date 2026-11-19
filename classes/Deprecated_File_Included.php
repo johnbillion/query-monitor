@@ -14,6 +14,7 @@
  * }>
  */
 final class QM_Deprecated_File_Included extends QM_Wrong {
+	#[\Override]
 	public function get_message(): string {
 		[
 			'file' => $file,

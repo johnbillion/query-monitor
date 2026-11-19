@@ -54,6 +54,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	protected $default_version = '';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Assets();
 	}
@@ -61,6 +62,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
@@ -74,6 +76,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
 		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
@@ -121,6 +124,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$type = $this->get_dependency_type();
 		$modules = null;

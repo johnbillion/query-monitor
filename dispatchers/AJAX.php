@@ -28,6 +28,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -64,6 +65,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			require_once $file;
@@ -73,6 +75,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function after_output() {
 
 		# flush once, because we're nice
@@ -85,6 +88,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! QM_Util::is_ajax() ) {
@@ -118,6 +122,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	 * @param mixed[] $e
 	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $message, array $e ): void {
 		if ( ! headers_sent() ) {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );

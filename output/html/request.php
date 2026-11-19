@@ -26,6 +26,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Request', 'query-monitor' );
 	}

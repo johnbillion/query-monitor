@@ -28,6 +28,7 @@ class QM_Output_Raw_Logger extends QM_Output_Raw {
 	 *   stack: list<string>,
 	 * }>>
 	 */
+	#[\Override]
 	public function get_output() {
 		$output = array();
 		/** @var QM_Data_Logger $data */

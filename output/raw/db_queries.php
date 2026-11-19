@@ -45,6 +45,7 @@ class QM_Output_Raw_DB_Queries extends QM_Output_Raw {
 	 *   },
 	 * }|array{}
 	 */
+	#[\Override]
 	public function get_output() {
 		/** @var QM_Data_DB_Queries $data */
 		$data = $this->collector->get_data();

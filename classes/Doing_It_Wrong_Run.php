@@ -13,6 +13,7 @@
  * }>
  */
 final class QM_Doing_It_Wrong_Run extends QM_Wrong {
+	#[\Override]
 	public function get_message(): string {
 		[
 			'function_name' => $function_name,

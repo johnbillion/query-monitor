@@ -20,6 +20,7 @@ class QM_Output_Html_Multisite extends QM_Output_Html {
 
 	public static $client_side_rendered = true;
 
+	#[\Override]
 	public function name() {
 		return __( 'Multisite', 'query-monitor' );
 	}

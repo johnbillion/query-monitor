@@ -26,6 +26,7 @@ class QM_Output_Html_Environment extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Environment', 'query-monitor' );
 	}

@@ -26,6 +26,7 @@ class QM_Output_Html_Assets_Scripts extends QM_Output_Html_Assets {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Scripts', 'query-monitor' );
 	}

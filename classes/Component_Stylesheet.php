@@ -6,6 +6,7 @@
  */
 
 class QM_Component_Stylesheet extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		if ( is_child_theme() ) {
 			return __( 'Child Theme', 'query-monitor' );

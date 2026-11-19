@@ -11,6 +11,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 
 	public $id = 'raw_request';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Raw_Request();
 	}
@@ -49,6 +50,7 @@ class QM_Collector_Raw_Request extends QM_DataCollector {
 	 *
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$request_headers = $this->get_headers( wp_unslash( $_SERVER ) );
 

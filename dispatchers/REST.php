@@ -53,6 +53,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			include_once $file;
@@ -62,6 +63,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		# If the headers have already been sent then we can't do anything about it
@@ -86,6 +88,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	 * @param mixed[] $e
 	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $message, array $e ): void {
 		if ( ! headers_sent() ) {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );

@@ -142,6 +142,7 @@ class QM_Component implements JsonSerializable {
 	 * @phpstan-return QM_Component_Array
 	 * @return array<string, string>
 	 */
+	#[\Override]
 	public function jsonSerialize(): array {
 		return $this->toArray();
 	}
