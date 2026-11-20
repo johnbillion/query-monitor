@@ -6,6 +6,7 @@ import { iSettings } from '../output/panels/panels';
 import { MainContextType, DurationUnit } from '../output/contexts/main-context';
 
 import { iQMData, initializeQMData, mergeSettings, registerAllPanels, buildMenus } from './panels';
+import { registerWebMCPTools } from './webmcp';
 
 declare const QueryMonitorData: iQMData;
 
@@ -42,6 +43,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		);
 		return;
 	}
+
+	registerWebMCPTools( QueryMonitorData );
 
 	const isWpAdmin = document.body.classList.contains( 'wp-admin' );
 	const isRtl = document.documentElement.dir === 'rtl';
