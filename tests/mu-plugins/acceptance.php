@@ -107,6 +107,9 @@ add_action( 'init', function() {
 			}
 			break;
 		case 'guzzle_requests':
+			// Guzzle is a dev dependency, which QM's own autoloader doesn't load.
+			require_once WP_PLUGIN_DIR . '/query-monitor/vendor/autoload.php';
+
 			if ( ! class_exists( 'GuzzleHttp\Client' ) ) {
 				throw new \Exception( 'Guzzle not available' );
 			}
