@@ -10,6 +10,7 @@ parameters:
 	# Adding `#[\Override]` to a property is a fatal error before PHP 8.5.
 	checkMissingOverridePropertyAttribute: false
 	paths:
+		- autoload.php
 		- query-monitor.php
 		- classes/
 		- collectors/
