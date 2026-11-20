@@ -21,23 +21,20 @@ AI-assisted development is welcome and encouraged, but you must:
 
 ## Setting up Locally
 
-You can clone this repo and activate it like a normal plugin, but you'll need to install the developer dependencies in order to build the assets.
+You can clone this repo and activate it like a normal plugin, but you'll need to install the Node dependencies and build the assets first:
+
+	npm install
+	npm run build
+
+The PHP dependencies aren't needed to run the plugin. They're needed to run the tests and to regenerate the class map:
+
+	composer install
 
 ### Prerequisites
 
-* [Composer](https://getcomposer.org/)
 * [Node](https://nodejs.org/)
+* [Composer](https://getcomposer.org/) to run the tests
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or compatible) to run the tests
-
-### Setup
-
-1. Install the PHP dependencies:
-
-       composer install
-
-2. Install the Node dependencies:
-
-       npm install
 
 ## Building the Assets
 
