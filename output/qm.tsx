@@ -396,6 +396,18 @@ export const QM = ( props: Props ) => {
 					</div>
 				</div>
 			) }
+			{ inWP && ! adminMenuElement && ! effectiveActive && (
+				// The admin toolbar is hidden so it can't be used to open the panel.
+				<button
+					aria-label={ __( 'Query Monitor', 'query-monitor' ) }
+					className={ clsx( 'qm-launcher', props.menu.top.classname ) }
+					onClick={ () => {
+						setActivePanel( 'overview' );
+					} }
+				>
+					QM
+				</button>
+			) }
 			{ inWP && adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>
 					<a
