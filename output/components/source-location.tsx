@@ -15,6 +15,9 @@ export interface SourceLocationProps {
 	expanded?: boolean,
 }
 
+// File link formats are configured at runtime, so their placeholders cannot be inferred.
+const formatSourceLink: ( format: string, file: string, line: number ) => string = sprintf;
+
 export const SourceLocation = ( { text, file, line = 0, isFileName = false, expanded = false }: SourceLocationProps ) => {
 	const {
 		editor,
@@ -63,7 +66,7 @@ export const SourceLocation = ( { text, file, line = 0, isFileName = false, expa
 		);
 	}
 
-	const output = sprintf(
+	const output = formatSourceLink(
 		format,
 		encodeURIComponent( mappedFile ),
 		linkLine

@@ -4,7 +4,9 @@ import { TabularPanel } from '../panels/tabular-panel';
 import * as Utils from '../utils';
 import { Toggler } from '../components/toggler';
 import { Warning } from '../components/warning';
-import { getCallerCol, getComponentCol } from '../table';
+import { Notice } from '../components/notice';
+import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
+import type { FilterOption } from '../table';
 import { Duration } from '../components/duration';
 import { TotalTime } from '../components/total-time';
 import { PanelFooter } from '../panels/panel-footer';
@@ -13,19 +15,30 @@ import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
 import {
 	__,
+	_x,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const httpMenu = ( data: DataTypes['http'] ): PanelMenuItem[] => {
+	const count = data.http?.length ?? 0;
+	const errorCount = ( data.errors?.alert?.length ?? 0 ) + ( data.errors?.warning?.length ?? 0 );
+
+	return [ {
+		id: 'http',
+		panel: 'http',
+		title: __( 'HTTP API Calls', 'query-monitor' ),
+		ok_count: ( count - errorCount ) || null,
+		warning_count: errorCount || null,
+	} ];
+};
 
 const hasHttpsWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return ! row.url.startsWith( 'https://' );
+	return ( ! row.url.startsWith( 'https://' ) ) && ( 'localhost' !== row.host );
 };
 
 const hasSslVerifyWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return row.url.startsWith( 'https://' ) && row.args.sslverify === false;
-};
-
-const hasRedirectWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return row.redirected_to !== null;
 };
 
 const hasInterceptedWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
@@ -58,9 +71,9 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					<>
 						{ hasHttpsWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ __( 'Request to a non-HTTPS URL', 'query-monitor' ) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ hasSslVerifyWarning( row ) && (
@@ -76,13 +89,13 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						) }
 						{ hasInterceptedWarning( row ) && (
 							<div>
-								<Warning>
+								<Notice>
 									{ sprintf(
 										/* translators: %s: WordPress filter name */
-										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
+										__( 'Request was not sent because the %s filter returned a response', 'query-monitor' ),
 										'pre_http_request'
 									) }
-								</Warning>
+								</Notice>
 							</div>
 						) }
 						{ row.args.method === 'GET' ? (
@@ -92,7 +105,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						) : (
 							Utils.formatURL( row.url )
 						) }
-						{ hasRedirectWarning( row ) && (
+						{ row.redirected_to !== null && (
 							<div>
 								<Warning>
 									{ sprintf(
@@ -106,12 +119,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 					</>
 				),
 				filters: {
-					options: [
-						Array.from( new Set( data.http.map( row => row.host ) ) ).map( host => ({
-							key: host,
-							label: host,
-						})),
-					],
+					options: [ derivePrimitiveFilters( data.http, ( row ) => row.host ) ],
 					callback: ( row, value ) => row.host === value,
 				},
 			},
@@ -125,7 +133,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								{ sprintf(
 									/* translators: %s: Error message text */
 									__( 'Error: %s', 'query-monitor' ),
-									Utils.getErrorMessage( row.result )
+									Utils.getErrorMessage( row.result ) ?? ''
 								) }
 							</Warning>
 						);
@@ -144,7 +152,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						'namelookup_time' in info ||
 						'connect_time' in info ||
 						'starttransfer_time' in info ||
-						'size_download' in info ||
 						'content_type' in info ||
 						'primary_ip' in info
 					);
@@ -153,17 +160,15 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						return statusText;
 					}
 
-					const timeFields: { key: string; label: string }[] = [
+					const timeFields: FilterOption[] = [
 						{ key: 'namelookup_time', label: __( 'DNS Resolution Time', 'query-monitor' ) },
 						{ key: 'connect_time', label: __( 'Connection Time', 'query-monitor' ) },
 						{ key: 'starttransfer_time', label: __( 'Transfer Start Time (TTFB)', 'query-monitor' ) },
 					];
 
-					const otherFields: { key: string; label: string }[] = [
+					const otherFields: FilterOption[] = [
 						{ key: 'content_type', label: __( 'Response Content Type', 'query-monitor' ) },
 					];
-
-					const sizeDownload = 'size_download' in info ? info.size_download as number : null;
 
 					return (
 						<Toggler summary={ statusText }>
@@ -183,11 +188,6 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 										</li>
 									);
 								} ) }
-								{ sizeDownload !== null && (
-									<li key="size_download" className="qm-info qm-supplemental">
-										{ __( 'Response Size', 'query-monitor' ) }: { Utils.numberFormat( sizeDownload / 1024, 2 ) } KB
-									</li>
-								) }
 								{ otherFields.map( ( { key, label } ) => {
 									if ( ! ( key in info ) ) {
 										return null;
@@ -224,6 +224,23 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 			caller: getCallerCol( data.http, settings ),
 			component: getComponentCol( data.http ),
+			size: {
+				heading: _x( 'Size', 'size of HTTP response', 'query-monitor' ),
+				className: 'qm-num',
+				render: ( row ) => {
+					const info = row.info && typeof row.info === 'object' ? row.info : null;
+
+					if ( ! info || ! ( 'size_download' in info ) ) {
+						return '';
+					}
+
+					return sprintf(
+						/* translators: %s: Size in kilobytes */
+						__( '%s kB', 'query-monitor' ),
+						Utils.numberFormat( ( info.size_download as number ) / 1024, 1 )
+					);
+				},
+			},
 			timeout: {
 				heading: __( 'Timeout', 'query-monitor' ),
 				className: 'qm-num',
@@ -236,10 +253,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 			},
 		} }
 		data={ data.http }
-		rowHasError={ ( row ) =>
-			Utils.isWPError( row.result ) ||
-			( ! row.intercepted && row.result.code >= 400 )
-		}
+		rowHasError={ Utils.httpRowHasError }
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }

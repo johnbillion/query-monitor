@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_Html extends QM_Dispatcher {
 
 	/**
@@ -108,7 +111,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		$cookie = wp_generate_auth_cookie( get_current_user_id(), $expiration, 'logged_in' );
 		$domain = COOKIE_DOMAIN ?: '';
 
-		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, false );
+		setcookie( QM_COOKIE, $cookie, $expiration, COOKIEPATH, $domain, $secure, true );
 
 		wp_send_json_success();
 
@@ -145,7 +148,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$wp_admin_bar->add_node( array(
 			'id' => 'query-monitor',
-			'title' => esc_html( $title ),
+			'title' => '<span class="qm-menu-title">' . esc_html( $title ) . '</span>',
 			'href' => '#qm-overview',
 		) );
 
@@ -160,6 +163,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -277,6 +281,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		global $wp_version;
 
@@ -356,30 +361,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		/** @var WP_Locale $wp_locale */
 		global $wp_locale;
 
-		/**
-		 * Filter whether to show the QM extended query information prompt.
-		 *
-		 * By default QM shows a prompt to install the QM db.php drop-in,
-		 * this filter allows a dev to choose not to show the prompt.
-		 *
-		 * @since 2.9.0
-		 *
-		 * @param bool $show_prompt Whether to show the prompt.
-		 */
-		$show_extended_query_prompt = apply_filters( 'qm/show_extended_query_prompt', true );
-
-		// Determine the reason for the extended query prompt
-		$extended_query_prompt_reason = null;
-		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
-			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
-				$extended_query_prompt_reason = 'conflict';
-			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
-				$extended_query_prompt_reason = 'disabled';
-			} else {
-				$extended_query_prompt_reason = 'failed';
-			}
-		}
-
 		$color_scheme = get_user_option( 'admin_color' );
 
 		if ( $color_scheme !== 'fresh' ) {
@@ -390,8 +371,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			'menu' => $this->js_admin_bar_menu(),
 			'settings'    => array(
 				'verified' => self::user_verified(),
-				'extended_query_prompt_reason' => $extended_query_prompt_reason,
 				'color_scheme' => $color_scheme,
+				'is_multisite' => is_multisite(),
 			),
 			'panel_menu'  => $this->panel_menu,
 			'data'        => $data,
@@ -417,7 +398,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->output_assets();
 
-		$encoded = wp_json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
+		$encoded = QM_Util::json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
 
 		wp_print_inline_script_tag(
 			sprintf(
@@ -463,6 +444,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function after_output() {
 	}
 
@@ -495,10 +477,6 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 		 * @param array $menu_classes Array of menu classes.
 		 */
 		$class = implode( ' ', apply_filters( 'qm/output/menu_class', array() ) );
-
-		if ( false === strpos( $class, 'qm-' ) ) {
-			$class .= ' qm-all-clear';
-		}
 
 		/**
 		 * Filters the title used in Query Monitor's admin toolbar menu.
@@ -540,6 +518,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {
@@ -559,10 +538,8 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
-				return false;
-			}
+		} elseif ( ! ( did_action( 'wp' ) || did_action( 'login_init' ) || did_action( 'gp_head' ) ) ) {
+			return false;
 		}
 
 		/** Back-compat filter. Please use `qm/dispatch/html` instead */
@@ -577,14 +554,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @param string $error
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $error, array $e ): void {
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
@@ -615,7 +587,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			nl2br( esc_html( $e['message'] ), false ),
 			esc_html( $e['file'] ),
 			intval( $e['line'] )
-		); // WPCS: XSS ok.
+		);
 
 		if ( ! empty( $e['trace'] ) ) {
 			echo '<p>Call stack:</p>';
@@ -627,7 +599,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 					continue;
 				}
 
-				$args = array_map( function( $value ) {
+				$args = array_map( function ( $value ) {
 					$type = gettype( $value );
 
 					switch ( $type ) {
@@ -652,8 +624,9 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 				printf(
 					'<li>%s</li>',
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					QM_Output_Html::output_filename( $name, $frame['file'] ?? '', $frame['line'] ?? 0 )
-				); // WPCS: XSS ok.
+				);
 			}
 			echo '</ol>';
 		}
@@ -671,6 +644,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 *
 	 * @return void
 	 */
+	#[\Override]
 	public function cease() {
 		$this->ceased = true;
 	}

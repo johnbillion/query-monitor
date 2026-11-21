@@ -10,10 +10,73 @@
 	],
 	"properties": {
 		"request": {
-			"type": "object"
+			"type": "object",
+			"phpFile": "raw_request_request",
+			"phpClass": "QM_Data_Raw_Request_Request",
+			"properties": {
+				"ip": {
+					"type": "string"
+				},
+				"method": {
+					"type": "string"
+				},
+				"scheme": {
+					"type": "string"
+				},
+				"host": {
+					"type": "string"
+				},
+				"path": {
+					"type": "string"
+				},
+				"query": {
+					"type": "string"
+				},
+				"url": {
+					"type": "string"
+				},
+				"headers": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"ip",
+				"method",
+				"scheme",
+				"host",
+				"path",
+				"query",
+				"url",
+				"headers"
+			],
+			"additionalProperties": false
 		},
 		"response": {
-			"type": "object"
+			"type": "object",
+			"phpFile": "raw_request_response",
+			"phpClass": "QM_Data_Raw_Request_Response",
+			"properties": {
+				"status": {
+					"type": [
+						"integer",
+						"null"
+					]
+				},
+				"headers": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"status",
+				"headers"
+			],
+			"additionalProperties": false
 		}
 	},
 	"additionalProperties": false

@@ -27,6 +27,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	 */
 	private $cap_checks = array();
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Caps();
 	}
@@ -34,6 +35,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -48,6 +50,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 9999 );
 		remove_filter( 'map_meta_cap', array( $this, 'filter_map_meta_cap' ), 9999 );
@@ -58,6 +61,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public static function enabled() {
 		return ( defined( 'QM_ENABLE_CAPS_PANEL' ) && QM_ENABLE_CAPS_PANEL );
 	}
@@ -65,6 +69,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			'add_user_role',
@@ -77,6 +82,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'editable_roles',
@@ -89,6 +95,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_options() {
 		$blog_prefix = $GLOBALS['wpdb']->get_blog_prefix();
 
@@ -101,6 +108,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_constants() {
 		return array(
 			'ALLOW_UNFILTERED_UPLOADS',
@@ -220,6 +228,7 @@ class QM_Collector_Caps extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		if ( empty( $this->cap_checks ) ) {
 			return;

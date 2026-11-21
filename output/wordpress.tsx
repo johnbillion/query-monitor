@@ -34,22 +34,20 @@ const WordPress = ( { wordpress }: Props ) => (
 						{ wordpress.environment_type }
 					</td>
 				</tr>
-				{ wordpress.development_mode !== undefined && (
-					<tr>
-						<th scope="row">
-							{ __( 'Development Mode', 'query-monitor' ) }
-							&nbsp;
-							<span className="qm-info">
-								(<a className="qm-external-link" href="https://make.wordpress.org/core/2023/07/14/configuring-development-mode-in-6-3/">
-									{ __( 'Help', 'query-monitor' ) }
-								</a>)
-							</span>
-						</th>
-						<td>
-							{ wordpress.development_mode || __( 'empty string', 'query-monitor' ) }
-						</td>
-					</tr>
-				) }
+				<tr>
+					<th scope="row">
+						{ __( 'Development Mode', 'query-monitor' ) }
+						&nbsp;
+						<span className="qm-info">
+							(<a className="qm-external-link" href="https://make.wordpress.org/core/2023/07/14/configuring-development-mode-in-6-3/">
+								{ __( 'Help', 'query-monitor' ) }
+							</a>)
+						</span>
+					</th>
+					<td>
+						{ wordpress.development_mode || __( 'empty string', 'query-monitor' ) }
+					</td>
+				</tr>
 				{ Object.entries( wordpress.constants ).map( ( [ key, value ] ) => (
 					<tr key={ key }>
 						<th scope="row">

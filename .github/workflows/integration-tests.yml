@@ -38,31 +38,31 @@ jobs:
     name: WP ${{ matrix.wp }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@cc47e37177c694e00b901a5dc89fda5644bc550f # 2.9.1
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-integration-tests.yml@52de98a23b5c85d2024c71073ea4ef1770db7428 # 3.0.0
     strategy:
       # See the following for PHP compatibility of WordPress versions:
       # https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/
       matrix:
         include:
           # Latest:
-          - wp: '6.9'
+          - wp: '7.1'
             php: '8.5'
-          - wp: '6.9'
+          - wp: '7.1'
             php: '7.4'
           # Latest -1:
-          - wp: '6.8'
-            php: '8.4'
-          - wp: '6.8'
+          - wp: '7.0'
+            php: '8.5'
+          - wp: '7.0'
             php: '7.4'
           # Latest -2:
-          - wp: '6.7'
+          - wp: '6.9'
             php: '8.4'
-          - wp: '6.7'
+          - wp: '6.9'
             php: '7.4'
           # Oldest supported:
-          - wp: '6.1'
+          - wp: '6.3'
             php: '8.2'
-          - wp: '6.1'
+          - wp: '6.3'
             php: '7.4'
       fail-fast: false
     with:

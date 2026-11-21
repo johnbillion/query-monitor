@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_REST extends QM_Dispatcher {
 
 	public $id = 'rest';
@@ -50,6 +53,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			include_once $file;
@@ -59,6 +63,7 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		# If the headers have already been sent then we can't do anything about it
@@ -81,20 +86,15 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 	/**
 	 * @param string $message
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $message, array $e ): void {
 		if ( ! headers_sent() ) {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		echo wp_json_encode(
+		$json = QM_Util::json_encode(
 			array(
 				'code' => 'qm_fatal',
 				'message' => $message,
@@ -102,6 +102,8 @@ class QM_Dispatcher_REST extends QM_Dispatcher {
 			),
 			JSON_UNESCAPED_SLASHES
 		);
+
+		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 

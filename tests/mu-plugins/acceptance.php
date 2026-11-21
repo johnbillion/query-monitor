@@ -1,5 +1,31 @@
 <?php
 
+// The autofocus timer on wp-login.php races Playwright filling in the login form.
+add_filter( 'enable_login_autofocus', '__return_false' );
+
+// Update checks and other requests to wordpress.org are blocking and their speed depends on the network, so they're
+// short-circuited. Core saves the update transients before making the request, so they aren't retried.
+add_filter( 'pre_http_request', function( $pre, array $args, string $url ) {
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+
+	if ( is_string( $host ) && preg_match( '#(^|\.)wordpress\.org$#', $host ) ) {
+		return new WP_Error( 'qm_acceptance_blocked', 'Requests to wordpress.org are blocked during the acceptance tests.' );
+	}
+
+	return $pre;
+}, 10, 3 );
+
+if ( isset( $_GET['_qm_acceptance_group'] ) && 'fatal_errors' === $_GET['_qm_acceptance_group'] ) {
+	// Log to a file that the tests can read via WP-CLI, which runs in a separate container.
+	ini_set( 'log_errors', '1' );
+	ini_set( 'error_log', WP_CONTENT_DIR . '/qm-acceptance-fatal.log' );
+
+	// This has to happen before QM reads the value when its error handler is set up.
+	if ( isset( $_GET['_qm_acceptance_display_errors'] ) ) {
+		ini_set( 'display_errors', $_GET['_qm_acceptance_display_errors'] );
+	}
+}
+
 add_action( 'init', function() {
 	if ( ! isset( $_GET['_qm_acceptance_group'], $_GET['_qm_acceptance_test'] ) ) {
 		return;
@@ -50,12 +76,40 @@ add_action( 'init', function() {
 				case 'suppressed-notice':
 					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
 					break;
+				case 'buffet':
+					trigger_error( 'This is a single test warning', E_USER_WARNING );
+					_trigger_warning();
+					_trigger_warning();
+					trigger_error( 'This is a test notice', E_USER_NOTICE );
+					@trigger_error( 'This is a test suppressed warning', E_USER_WARNING );
+					@trigger_error( 'This is a test suppressed notice', E_USER_NOTICE );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
+		case 'fatal_errors':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'uncaught':
+					// Fatals from mu-plugins are never attributed to a plugin or theme, so this
+					// reaches core's fatal error handler without triggering recovery mode.
+					throw new \Error( 'This is a test fatal error' );
+				case 'uncaught-rest':
+					// `REST_REQUEST` isn't defined until after `init`.
+					add_action( 'rest_api_init', function() {
+						throw new \Error( 'This is a test fatal error' );
+					} );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;
 			}
 			break;
 		case 'guzzle_requests':
+			// Guzzle is a dev dependency, which QM's own autoloader doesn't load.
+			require_once WP_PLUGIN_DIR . '/query-monitor/vendor/autoload.php';
+
 			if ( ! class_exists( 'GuzzleHttp\Client' ) ) {
 				throw new \Exception( 'Guzzle not available' );
 			}
@@ -182,6 +236,36 @@ add_action( 'init', function() {
 						wp_enqueue_script( 'qm-test-footer', home_url( 'qm-test-footer.js' ), [], '1.0', true );
 					} );
 					break;
+				case 'protocol-relative':
+					add_action( 'wp_enqueue_scripts', function() {
+						// A protocol-relative URL on the current host so it's neither broken nor flagged as insecure.
+						$host = wp_parse_url( home_url(), PHP_URL_HOST );
+						$port = wp_parse_url( home_url(), PHP_URL_PORT );
+						$src = '//' . $host . ( $port ? ':' . $port : '' ) . '/qm-test-protocol-relative.js';
+						wp_enqueue_script( 'qm-test-protocol-relative', $src, [], '1.0' );
+					} );
+					break;
+				case 'no-src':
+					add_action( 'wp_enqueue_scripts', function() {
+						// A script registered with a boolean false src, used only to bundle dependencies (like jquery).
+						wp_register_script( 'qm-test-no-src-dep', home_url( 'qm-test-no-src-dep.js' ), [], '1.0' );
+						wp_register_script( 'qm-test-no-src', false, [ 'qm-test-no-src-dep' ], '1.0' );
+						wp_enqueue_script( 'qm-test-no-src' );
+					} );
+					break;
+				case 'missing-dependency':
+					add_action( 'wp_enqueue_scripts', function() {
+						// Enqueue a script that depends on a handle that was never registered.
+						wp_enqueue_script( 'qm-test-missing-dep', home_url( 'qm-test-missing-dep.js' ), [ 'qm-nonexistent-dependency' ], '1.0' );
+					} );
+					break;
+				case 'with-size':
+					add_action( 'wp_enqueue_scripts', function() {
+						// Enqueue a script pointing at a real core file so the browser actually loads
+						// it and reports a transfer size via the Performance Resource Timing API.
+						wp_enqueue_script( 'qm-test-with-size', includes_url( 'js/wp-embed.min.js' ), [], '1.0', true );
+					} );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;
@@ -213,6 +297,19 @@ add_action( 'init', function() {
 
 					$wpdb->query( "DROP TABLE IF EXISTS `{$table}`" );
 					break;
+				case 'duplicate':
+					global $wpdb;
+
+					// Run an identical query more than once to trigger the
+					// duplicate query detection.
+					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
+					$wpdb->query( "SELECT 123 FROM {$wpdb->posts}" );
+					break;
+				case 'cleared':
+					add_action( 'shutdown', function() {
+						$GLOBALS['wpdb']->queries = array();
+					}, 8 );
+					break;
 				default:
 					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
 					break;
@@ -223,3 +320,7 @@ add_action( 'init', function() {
 			break;
 	}
 } );
+
+function _trigger_warning() {
+	trigger_error( 'This is a repeated test warning', E_USER_WARNING );
+}

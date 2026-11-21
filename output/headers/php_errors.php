@@ -21,6 +21,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 	/**
 	 * @return array<string, mixed>
 	 */
+	#[\Override]
 	public function get_output() {
 		/** @var QM_Data_PHP_Errors $data */
 		$data = $this->collector->get_data();
@@ -49,7 +50,7 @@ class QM_Output_Headers_PHP_Errors extends QM_Output_Headers {
 			);
 
 			$key = sprintf( 'error-%d', $count );
-			$headers[ $key ] = wp_json_encode( $output_error );
+			$headers[ $key ] = QM_Util::json_encode( $output_error );
 		}
 
 		return array_merge(

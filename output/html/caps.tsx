@@ -2,7 +2,7 @@ import { MainContext } from '../contexts/main-context';
 import { EmptyPanel } from '../panels/empty-panel';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
-import { getCallerCol, getComponentCol } from '../table';
+import { derivePrimitiveFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { useContext } from 'preact/hooks';
@@ -10,6 +10,13 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const capsMenu = (): PanelMenuItem[] => [ {
+	id: 'caps',
+	panel: 'caps',
+	title: __( 'Capability Checks', 'query-monitor' ),
+} ];
 
 export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 	const { settings } = useContext( MainContext );
@@ -76,14 +83,7 @@ export const Caps = ( { enabled, data }: PanelProps<DataTypes['caps']> ) => {
 					</>
 				),
 				filters: {
-					options: [ ( () => {
-						const users = [ ...new Set( data.caps.map( ( cap ) => cap.user ) ) ];
-						users.sort();
-						return users.map( ( user ) => ( {
-							key: String( user ),
-							label: String( user ),
-						} ) );
-					} )() ],
+					options: [ derivePrimitiveFilters( data.caps, ( cap ) => cap.user ) ],
 					callback: ( row, value ) => row.user === Number( value ),
 				},
 			},

@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { VPButton } from 'vitepress/theme'
 import ChromeExtButton from './ChromeExtButton.vue'
+import Sponsors from './Sponsors.vue'
 import './custom.css'
 
 export default {
@@ -8,5 +9,6 @@ export default {
 	enhanceApp({ app }) {
 		app.component('VPButton', VPButton)
 		app.component('ChromeExtButton', ChromeExtButton)
+		app.component('Sponsors', Sponsors)
 	},
 }

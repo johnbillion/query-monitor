@@ -21,6 +21,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	 */
 	private $collecting = false;
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Doing_It_Wrong();
 	}
@@ -28,6 +29,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -51,6 +53,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_action( 'doing_it_wrong_run', array( $this, 'action_doing_it_wrong_run' ) );
 		remove_action( 'deprecated_function_run', array( $this, 'action_deprecated_function_run' ) );
@@ -89,6 +92,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			'doing_it_wrong_run',
@@ -104,6 +108,7 @@ class QM_Collector_Doing_It_Wrong extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'deprecated_function_trigger_error',

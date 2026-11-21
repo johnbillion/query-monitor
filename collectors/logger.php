@@ -26,6 +26,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	public const INFO = 'info';
 	public const DEBUG = 'debug';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Logger();
 	}
@@ -33,6 +34,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -47,6 +49,7 @@ class QM_Collector_Logger extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		foreach ( $this->get_levels() as $level ) {
 			remove_action( "qm/{$level}", array( $this, $level ), 10 );

@@ -14,12 +14,12 @@
 
 class QM_Data_Raw_Request extends QM_Data {
 	/**
-	 * @var array<string, mixed>
+	 * @var QM_Data_Raw_Request_Request
 	 */
 	public $request;
 
 	/**
-	 * @var array<string, mixed>
+	 * @var QM_Data_Raw_Request_Response
 	 */
 	public $response;
 }

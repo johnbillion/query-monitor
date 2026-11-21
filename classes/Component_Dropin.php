@@ -6,6 +6,7 @@
  */
 
 class QM_Component_Dropin extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		return sprintf(
 			/* translators: %s: Drop-in plugin file name */

@@ -103,6 +103,16 @@ class QM_Backtrace implements JsonSerializable {
 	protected static $filtered = false;
 
 	/**
+	 * Whether hooks are currently being fired while loading trace filters or detecting a component.
+	 *
+	 * A callback on one of these hooks (or on the `all` hook) can construct a backtrace, which
+	 * would otherwise fire the same hooks again and recurse infinitely.
+	 *
+	 * @var bool
+	 */
+	protected static $running_hooks = false;
+
+	/**
 	 * Compact trace retained for lazy component detection.
 	 * Each entry holds only class, function, and file.
 	 * Cleared once the component has been computed.
@@ -220,7 +230,7 @@ class QM_Backtrace implements JsonSerializable {
 			);
 		}
 
-		if ( function_exists( 'did_action' ) && did_action( 'after_setup_theme' ) ) {
+		if ( ! self::$running_hooks && function_exists( 'did_action' ) && did_action( 'after_setup_theme' ) ) {
 			$this->get_component( $component_trace );
 		} else {
 			$this->component_trace = $component_trace;
@@ -309,13 +319,29 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @param list<ComponentFrame> $trace
 	 */
-	public function get_component( array $trace = array() ) : QM_Component {
+	public function get_component( array $trace = array() ): QM_Component {
 		if ( isset( $this->component ) ) {
 			return $this->component;
 		}
 
-		$trace = $trace ?: $this->component_trace;
+		// Not cached, so the component can be determined once the outer hooks have finished.
+		if ( self::$running_hooks ) {
+			return QM_Component::from( QM_Component::TYPE_UNKNOWN, 'unknown' );
+		}
 
+		self::$running_hooks = true;
+
+		try {
+			return $this->determine_component( $trace ?: $this->component_trace );
+		} finally {
+			self::$running_hooks = false;
+		}
+	}
+
+	/**
+	 * @param list<ComponentFrame> $trace
+	 */
+	protected function determine_component( array $trace ): QM_Component {
 		$components = array();
 
 		if ( $this->callsite && $this->callsite->file ) {
@@ -368,7 +394,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @param ComponentFrame $frame
 	 */
-	public static function get_frame_component( array $frame ) :? QM_Component {
+	public static function get_frame_component( array $frame ): ?QM_Component {
 		try {
 
 			if ( isset( $frame['class'], $frame['function'] ) ) {
@@ -405,7 +431,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @return QM_Data_Stack_Frame[]
 	 */
-	public function get_display_trace() : array {
+	public function get_display_trace(): array {
 		return $this->get_filtered_trace();
 	}
 
@@ -414,7 +440,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *
 	 * @return QM_Data_Stack_Frame[]
 	 */
-	public function get_filtered_trace() : array {
+	public function get_filtered_trace(): array {
 		$frames = array();
 
 		foreach ( $this->output_frames as [ $id, $line ] ) {
@@ -617,8 +643,17 @@ class QM_Backtrace implements JsonSerializable {
 	 * @return void
 	 */
 	protected static function ensure_filters_loaded(): void {
-		if ( ! self::$filtered && function_exists( 'did_action' ) && did_action( 'plugins_loaded' ) ) {
+		if ( self::$filtered || self::$running_hooks ) {
+			return;
+		}
 
+		if ( ! function_exists( 'did_action' ) || ! did_action( 'plugins_loaded' ) ) {
+			return;
+		}
+
+		self::$running_hooks = true;
+
+		try {
 			/**
 			 * Filters which classes to ignore when constructing user-facing call stacks.
 			 *
@@ -673,7 +708,8 @@ class QM_Backtrace implements JsonSerializable {
 			self::$show_args = apply_filters( 'qm/trace/show_args', self::$show_args );
 
 			self::$filtered = true;
-
+		} finally {
+			self::$running_hooks = false;
 		}
 	}
 
@@ -686,7 +722,7 @@ class QM_Backtrace implements JsonSerializable {
 	 * @param array<string, bool> $ignore_hook
 	 * @param array<string, int|string> $show_args
 	 */
-	public function filter_trace( array $frame, array $ignore_namespace, array $ignore_method, array $ignore_hook, array $show_args ) :? QM_Backtrace_Frame {
+	public function filter_trace( array $frame, array $ignore_namespace, array $ignore_method, array $ignore_hook, array $show_args ): ?QM_Backtrace_Frame {
 
 		$hook_functions = array(
 			'apply_filters' => true,
@@ -723,8 +759,14 @@ class QM_Backtrace implements JsonSerializable {
 
 			$id = $frame['class'] . $frame['type'] . $frame['function'];
 		} else {
+			// PHP >= 8.4 names closures `{closure:Namespace\function():line}`, with nesting for nested closures
+			$function = $frame['function'];
+			while ( 0 === strpos( $function, '{closure:' ) ) {
+				$function = substr( $function, strlen( '{closure:' ) );
+			}
+
 			foreach ( array_keys( $ignore_namespace ) as $namespace ) {
-				if ( 0 === strpos( $frame['function'], $namespace . '\\' ) ) {
+				if ( 0 === strpos( $function, $namespace . '\\' ) ) {
 					return null;
 				}
 			}
@@ -827,6 +869,7 @@ class QM_Backtrace implements JsonSerializable {
 	 *   time: float,
 	 * }
 	 */
+	#[\Override]
 	public function jsonSerialize(): array {
 		return array(
 			'component' => $this->get_component(),

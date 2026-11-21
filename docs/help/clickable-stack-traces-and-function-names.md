@@ -15,7 +15,7 @@ You just need to open up the Settings panel in Query Monitor (click the cog next
 If you use one of the following editors you may need to configure its URL scheme handler:
 
 * Sublime Text: [Install the Sublime Text URL handler](https://github.com/inopinatus/sublime_url)
-* Netbeans: [Enable clickable stack traces with Netbeans](https://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/)
+* NetBeans: [Enable clickable stack traces with NetBeans](https://simonwheatley.co.uk/2012/08/clickable-stack-traces-with-netbeans/)
 
 ## Remote File Path Mapping
 

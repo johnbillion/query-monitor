@@ -16,6 +16,7 @@ class QM_Collector_Admin extends QM_DataCollector {
 
 	public $id = 'admin';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Admin();
 	}
@@ -23,6 +24,7 @@ class QM_Collector_Admin extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		$actions = array(
 			'current_screen',
@@ -45,6 +47,7 @@ class QM_Collector_Admin extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		$filters = array(
 			'admin_body_class',
@@ -61,6 +64,7 @@ class QM_Collector_Admin extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		/**
 		 * @var string $pagenow

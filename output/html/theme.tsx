@@ -10,6 +10,37 @@ import {
 	_nx,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const themeMenu = ( data: DataTypes['response'] ): PanelMenuItem[] => {
+	let name: string;
+
+	if ( data.block_template ) {
+		name = data.block_template.wp_id
+			? data.block_template.id
+			: sprintf( '%s/%s.html', data.theme_folders[ data.block_template.type ], data.block_template.slug );
+	} else if ( data.template_file ) {
+		name = data.is_child_theme ? data.theme_template_file : data.template_file;
+	} else {
+		name = __( 'Unknown', 'query-monitor' );
+	}
+
+	return [
+		{
+			id: 'response',
+			panel: 'response',
+			/* translators: %s: Template file name */
+			title: sprintf( __( 'Template: %s', 'query-monitor' ), name ),
+			nav: false,
+		},
+		{
+			id: 'response',
+			panel: 'response',
+			title: __( 'Template', 'query-monitor' ),
+			adminBar: false,
+		},
+	];
+};
 
 interface iParts {
 	[key: string]: string;

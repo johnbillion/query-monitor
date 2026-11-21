@@ -35,4 +35,9 @@ class QM_Data_Stack_Frame implements \ArrayAccess {
 	 * @var ?int|null
 	 */
 	public $line;
+
+	/**
+	 * @var ?string|null
+	 */
+	public $function;
 }

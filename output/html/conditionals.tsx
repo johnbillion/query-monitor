@@ -2,6 +2,27 @@ import { NonTabularPanel } from '../panels/non-tabular-panel';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
 import { __ } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const conditionalsMenu = ( data: DataTypes['conditionals'] ): PanelMenuItem[] => {
+	// One entry per true conditional in the admin toolbar, collapsed to a single
+	// entry in the panel navigation menu.
+	const items: PanelMenuItem[] = data.conds.true.map( ( cond ) => ( {
+		id: `conditionals-${ cond }`,
+		panel: 'conditionals',
+		title: `${ cond }()`,
+		nav: false,
+	} ) );
+
+	items.push( {
+		id: 'conditionals',
+		panel: 'conditionals',
+		title: __( 'Conditionals', 'query-monitor' ),
+		adminBar: false,
+	} );
+
+	return items;
+};
 
 export const Conditionals = ( { data }: PanelProps<DataTypes['conditionals']> ) => {
 	const trueConds = data.conds['true'];
@@ -14,15 +35,23 @@ export const Conditionals = ( { data }: PanelProps<DataTypes['conditionals']> ) 
 					<h3>
 						{ __( 'True Conditionals', 'query-monitor' ) }
 					</h3>
-					<ul>
-						{ trueConds.map( cond => (
-							<li key={ cond } className="qm-ltr qm-true">
-								<code>
-									{ cond }()
-								</code>
-							</li>
-						) ) }
-					</ul>
+					{ trueConds.length ? (
+						<ul>
+							{ trueConds.map( cond => (
+								<li key={ cond } className="qm-ltr qm-true">
+									<code>
+										{ cond }()
+									</code>
+								</li>
+							) ) }
+						</ul>
+					) : (
+						<p>
+							<em>
+								{ __( 'No conditionals are true.', 'query-monitor' ) }
+							</em>
+						</p>
+					) }
 				</section>
 			</div>
 			<div className="qm-boxed">

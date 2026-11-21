@@ -78,10 +78,12 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 				},
 				priority: {
 					heading: __( 'Priority', 'query-monitor' ),
+					className: 'qm-num',
 					render: ( row ) => row.priority,
 				},
 				callback: {
 					heading: __( 'Callback', 'query-monitor' ),
+					className: 'qm-nowrap',
 					render: ( row ) => {
 						const text = Utils.getCallbackName( row.callback, settings );
 						if ( ! text ) {
@@ -104,6 +106,7 @@ export const ConcernedHooks = ( { data }: PanelProps<AbstractData> ) => {
 			} }
 			data={ allHooks }
 			groupKey={ ( row ) => row.name }
+			footer={ () => null }
 		/>
 	);
 };

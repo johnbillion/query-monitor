@@ -54,6 +54,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 */
 	protected $default_version = '';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Assets();
 	}
@@ -61,6 +62,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 		add_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
@@ -74,6 +76,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_action( 'admin_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
 		remove_action( 'wp_print_footer_scripts', array( $this, 'action_print_footer_scripts' ), 9999 );
@@ -121,6 +124,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$type = $this->get_dependency_type();
 		$modules = null;
@@ -230,7 +234,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 				$dependents = $this->get_dependents( $dependency, $raw );
 
-				list( $url, $source ) = $this->get_dependency_data( $dependency );
+				list( $url, $source ) = $this->get_dependency_data( $dependency, $raw );
 
 				// Widen this type because plugins can set ver to boolean true.
 				/** @var string|bool|null $dependency_ver */
@@ -243,6 +247,18 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 				}
 
 				$warning = ! in_array( $handle, $raw->done, true );
+
+				if ( $source instanceof WP_Error ) {
+					/** This filter is documented in collectors/http.php */
+					$silent = apply_filters( 'qm/collect/silent_http_errors', array(
+						'http_request_not_executed',
+						'airplane_mode_enabled',
+					) );
+
+					if ( ! in_array( $source->get_error_code(), $silent, true ) ) {
+						$warning = true;
+					}
+				}
 
 				$dependencies = array_values( $dependency->deps );
 
@@ -392,7 +408,7 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	 * @param WP_Dependencies $dependencies
 	 * @return array<int, string>
 	 */
-	public function get_dependents( _WP_Dependency $dependency, WP_Dependencies $dependencies ) {
+	public function get_dependents( _WP_Dependency $dependency, ?WP_Dependencies $dependencies = null ) {
 		$dependents = array();
 		$handles = array_unique( array_merge( $dependencies->queue, $dependencies->done ) );
 
@@ -411,32 +427,25 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
-	 * @param _WP_Dependency $dependency
+	 * @param _WP_Dependency       $dependency
+	 * @param WP_Dependencies|null $dependencies
 	 * @return array{
 	 *   0: QM_Data_URL,
 	 *   1: string|WP_Error,
 	 * }
 	 */
-	public function get_dependency_data( _WP_Dependency $dependency ) {
-		$loader = rtrim( $this->get_dependency_type(), 's' );
-		$src = $dependency->src;
+	public function get_dependency_data( _WP_Dependency $dependency, ?WP_Dependencies $dependencies = null ) {
 		$url = new QM_Data_URL();
 
-		if ( null === $dependency->ver ) {
-			$ver = '';
+		// WordPress 7.2+
+		if ( $dependencies && method_exists( $dependencies, 'get_src' ) ) {
+			$source = $dependencies->get_src( $dependency->handle );
 		} else {
-			$ver = $dependency->ver ?: $this->default_version;
+			$source = $this->get_legacy_src( $dependency );
 		}
-
-		if ( ! empty( $src ) && ! empty( $ver ) ) {
-			$src = add_query_arg( 'ver', $ver, $src );
-		}
-
-		/** This filter is documented in wp-includes/class.wp-scripts.php */
-		$source = apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
 
 		if ( is_string( $source ) ) {
-			// @TODO this still needs to normalise to absolute URL.
+			// @TODO on WordPress < 7.2 this still needs to normalise to absolute URL.
 			$url = $this->hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( $source );
 		}
 
@@ -459,11 +468,45 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 	}
 
 	/**
+	 * Builds the URL of an asset for versions of WordPress without `WP_Scripts::get_src()` and `WP_Styles::get_src()`.
+	 *
+	 * @param _WP_Dependency $dependency
+	 * @return mixed
+	 */
+	protected function get_legacy_src( _WP_Dependency $dependency ) {
+		$loader = rtrim( $this->get_dependency_type(), 's' );
+		$src = $dependency->src;
+
+		if ( null === $dependency->ver ) {
+			$ver = '';
+		} else {
+			$ver = $dependency->ver ?: $this->default_version;
+		}
+
+		if ( ! empty( $src ) && ! empty( $ver ) ) {
+			$src = add_query_arg( 'ver', $ver, $src );
+		}
+
+		/** This filter is documented in wp-includes/class.wp-scripts.php */
+		return apply_filters( "{$loader}_loader_src", $src, $dependency->handle );
+	}
+
+	/**
 	 * Accepts an absolute URL, relative URL, or root-relative URL and returns its normalised information.
 	 *
 	 * This is primarily so relative URLs are correctly handled in the same way as local absolute URLs.
 	 */
 	protected function hyper_determine_the_proto_characteristics_of_a_pseudo_url_from_space( string $url ): QM_Data_URL {
+		return self::determine_url_characteristics( $url, $this->data->url );
+	}
+
+	/**
+	 * Determines the normalised information for the given URL relative to the current page's URL.
+	 *
+	 * @param string      $url  An absolute URL, relative URL, or root-relative URL.
+	 * @param QM_Data_URL $site The URL information for the current page.
+	 */
+	public static function determine_url_characteristics( string $url, QM_Data_URL $site ): QM_Data_URL {
 		$parsed_url = new QM_Data_URL();
 		$parsed_url->hostname = (string) parse_url( $url, PHP_URL_HOST );
 		$parsed_url->scheme = (string) parse_url( $url, PHP_URL_SCHEME );
@@ -471,20 +514,25 @@ abstract class QM_Collector_Assets extends QM_DataCollector {
 
 		if ( empty( $parsed_url->hostname ) ) {
 			// Relative URL - prepend the origin
-			$parsed_url->origin = $this->data->url->origin;
-			$parsed_url->hostname = $this->data->url->hostname;
-			$parsed_url->scheme = $this->data->url->scheme;
-			$parsed_url->absolute = $this->data->url->origin . $url;
-			$port = (string) parse_url( $this->data->url->origin, PHP_URL_PORT );
+			$parsed_url->origin = $site->origin;
+			$parsed_url->hostname = $site->hostname;
+			$parsed_url->scheme = $site->scheme;
+			$parsed_url->absolute = $site->origin . $url;
+			$port = (string) parse_url( $site->origin, PHP_URL_PORT );
 		} else {
 			// Absolute URL
+			if ( empty( $parsed_url->scheme ) ) {
+				// Protocol-relative URL - inherit the scheme from the current page
+				$parsed_url->scheme = $site->scheme;
+			}
 			$parsed_url->origin = $parsed_url->scheme . '://' . $parsed_url->hostname . ( $port ? ':' . $port : '' );
 			$parsed_url->absolute = $url;
 		}
 
-		$parsed_url->insecure = ( 'https' !== $parsed_url->scheme ) && ( 'localhost' !== $parsed_url->hostname ) && ( ! $this->data->url->insecure );
+		// Mixed content is only a concern when the current page itself is served over HTTPS.
+		$parsed_url->insecure = ( 'https' === $site->scheme ) && ( 'https' !== $parsed_url->scheme ) && ( 'localhost' !== $parsed_url->hostname );
 		$parsed_url->host = $port ? "{$parsed_url->hostname}:{$port}" : $parsed_url->hostname;
-		$parsed_url->local = ( $this->data->url->origin === $parsed_url->origin );
+		$parsed_url->local = ( $site->origin === $parsed_url->origin );
 
 		return $parsed_url;
 	}

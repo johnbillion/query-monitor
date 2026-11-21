@@ -48,11 +48,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 */
 	public $wpdb;
 
-	/**
-	 * @var ?array<string, array<int, int>>
-	 */
-	protected $dupes = array();
-
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
 	}
@@ -86,8 +82,25 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	}
 
 	/**
+	 * @return 'constant'|'property'|'unknown'
+	 */
+	protected static function get_not_logged_reason( wpdb $wpdb ): string {
+		if ( ! SAVEQUERIES ) {
+			return 'constant';
+		}
+
+		// This property isn't part of core's wpdb but is used by drop-ins such as HyperDB and LudicrousDB.
+		if ( property_exists( $wpdb, 'save_queries' ) && ! $wpdb->save_queries ) {
+			return 'property';
+		}
+
+		return 'unknown';
+	}
+
+	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$this->data->total_qs = 0;
 		$this->data->errors = array();
@@ -119,6 +132,15 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		// With SAVEQUERIES defined as false, `wpdb::queries` is empty but `wpdb::num_queries` is not.
 		if ( empty( $wpdb->queries ) ) {
 			$this->data->total_qs += $wpdb->num_queries;
+
+			if ( $this->data->total_qs ) {
+				$this->data->not_logged_reason = self::get_not_logged_reason( $wpdb );
+
+				if ( ! in_array( get_class( $wpdb ), array( 'wpdb', 'QM_DB' ), true ) ) {
+					$this->data->db_class = get_class( $wpdb );
+				}
+			}
+
 			return;
 		}
 
@@ -171,8 +193,6 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 
 			$sql = trim( $sql );
 
-			$this->maybe_log_dupe( $sql, $i );
-
 			$row = compact( 'sql', 'ltime' );
 
 			if ( false !== strpos( $stack, ' WP->main,' ) ) {
@@ -214,93 +234,37 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 		$this->data->has_result = $has_result;
 		$this->data->has_trace = $has_trace;
 
-		// Filter out queries that do not have duplicates
-		$this->dupes = array_filter( $this->dupes, array( $this, 'filter_dupe_items' ) );
+		/**
+		 * Filter whether to show the QM extended query information prompt.
+		 *
+		 * By default QM shows a prompt to install the QM db.php drop-in,
+		 * this filter allows a dev to choose not to show the prompt.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param bool $show_prompt Whether to show the prompt.
+		 */
+		$show_extended_query_prompt = apply_filters( 'qm/show_extended_query_prompt', true );
 
-		// Ignore duplicates from `WP_Query->set_found_posts()`
-		unset( $this->dupes['SELECT FOUND_ROWS()'] );
-
-		$stacks = array();
-
-		// Iterate all queries that have duplicates
-		foreach ( $this->dupes as $sql => $query_ids ) {
-			$dupe_data = array(
-				'query' => $sql,
-				'count' => count( $query_ids ),
-				'ltime' => 0,
-				'callers' => array(),
-				'components' => array(),
-				'sources' => array(),
-			);
-
-			foreach ( $query_ids as $query_id ) {
-				if ( isset( $this->data->rows[ $query_id ]['trace'] ) ) {
-					$trace = $this->data->rows[ $query_id ]['trace'];
-					$stack = $trace->get_stack();
-					$component = $trace->get_component();
-
-					// Populate the component counts for this query
-					if ( isset( $dupe_data['components'][ $component->name ] ) ) {
-						$dupe_data['components'][ $component->name ]++;
-					} else {
-						$dupe_data['components'][ $component->name ] = 1;
-					}
-				} else {
-					$stack = $this->data->rows[ $query_id ]['stack'] ?? array();
-				}
-
-				// Populate the caller counts for this query
-				if ( isset( $dupe_data['callers'][ $stack[0] ] ) ) {
-					$dupe_data['callers'][ $stack[0] ]++;
-				} else {
-					$dupe_data['callers'][ $stack[0] ] = 1;
-				}
-
-				// Populate the stack for this query
-				$stacks[ $sql ][] = $stack;
-
-				// Populate the time for this query
-				$dupe_data['ltime'] += $this->data->rows[ $query_id ]['ltime'];
+		// Determine the reason for the extended query prompt
+		if ( $show_extended_query_prompt && ! class_exists( 'QM_DB', false ) ) {
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+				$this->data->extended_query_prompt_reason = 'conflict';
+			} elseif ( defined( 'QM_DB_SYMLINK' ) && ! QM_DB_SYMLINK ) {
+				$this->data->extended_query_prompt_reason = 'disabled';
+			} else {
+				$this->data->extended_query_prompt_reason = 'failed';
 			}
-
-			// Get the callers which are common to all stacks for this query
-			$common = call_user_func_array( 'array_intersect', $stacks[ $sql ] );
-
-			// Remove callers which are common to all stacks for this query
-			foreach ( $stacks[ $sql ] as $i => $stack ) {
-				$stacks[ $sql ][ $i ] = array_values( array_diff( $stack, $common ) );
-
-				// No uncommon callers within the stack? Just use the topmost caller.
-				if ( empty( $stacks[ $sql ][ $i ] ) ) {
-					$stacks[ $sql ][ $i ] = array_keys( $dupe_data['callers'] );
-				}
-			}
-
-			// Count the occurrences of each primary caller across duplicate queries
-			$dupe_data['sources'] = array_count_values( array_column( $stacks[ $sql ], 0 ) );
-
-			$this->data->dupes[] = $dupe_data;
 		}
 	}
 
 	/**
+	 * @deprecated No longer used.
 	 * @param string $sql
 	 * @param int $i
 	 * @return void
 	 */
 	protected function maybe_log_dupe( $sql, $i ) {
-		// Replace all newlines with a single space
-		$sql = str_replace( array( "\r\n", "\r", "\n" ), ' ', $sql );
-		// Remove all tabs and backticks
-		$sql = str_replace( array( "\t", '`' ), '', $sql );
-		// Replace all instance of multiple spaces with a single space
-		$sql = preg_replace( '/ +/', ' ', $sql );
-		// Trim the SQL
-		$sql = trim( $sql );
-		// Remove trailing semicolon
-		$sql = rtrim( $sql, ';' );
-
-		$this->dupes[ $sql ][] = $i;
 	}
 }
 

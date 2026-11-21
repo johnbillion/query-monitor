@@ -6,6 +6,7 @@
  */
 
 final class QM_Component_Unknown extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		$name = __( 'Unknown', 'query-monitor' );
 		$type = $this->type;

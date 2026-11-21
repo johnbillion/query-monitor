@@ -21,6 +21,7 @@ class QM_DB extends wpdb {
 	 * @return int|bool Boolean true for CREATE, ALTER, TRUNCATE and DROP queries. Number of rows
 	 *                  affected/selected for all other queries. Boolean false on error.
 	 */
+	#[\Override]
 	public function query( $query ) {
 		if ( $this->show_errors ) {
 			$this->hide_errors();

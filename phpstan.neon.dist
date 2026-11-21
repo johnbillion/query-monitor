@@ -4,9 +4,13 @@ includes:
 	- vendor/johnbillion/plugin-infrastructure/phpstan/extension.neon
 	- vendor/johnbillion/wp-compat/extension.neon
 	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
+	- tests/phpstan/override.php
 parameters:
 	level: 7
+	# Adding `#[\Override]` to a property is a fatal error before PHP 8.5.
+	checkMissingOverridePropertyAttribute: false
 	paths:
+		- autoload.php
 		- query-monitor.php
 		- classes/
 		- collectors/
@@ -15,8 +19,6 @@ parameters:
 		- tests/acceptance/
 		- tests/integration/
 		- wp-content/
-	scanFiles:
-		- %rootDir%/../../php-stubs/wp-cli-stubs/wp-cli-stubs.php
 	scanDirectories:
 		- vendor/wp-phpunit/wp-phpunit/includes/
 	excludePaths:
@@ -34,8 +36,6 @@ parameters:
 	ignoreErrors:
 		# The `wpdb` class exposes its properties via `__get()`
 		- '#^Access to protected property wpdb::#'
-		# Properties in QM_Data* classes are nullable
-		- '#^Property QM_Data_.+ is not nullable\.$#'
 		# Test factory methods return int|WP_Error but we know they succeed in tests
 		-
 			path: tests/integration/*

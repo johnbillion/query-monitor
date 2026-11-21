@@ -6,6 +6,15 @@
  */
 
 if ( ! class_exists( 'QM_Dispatcher' ) ) {
+/**
+ * @phpstan-type FatalError array{
+ *   message: string,
+ *   file: string,
+ *   line: int,
+ *   type?: int,
+ *   trace?: mixed|null,
+ * }
+ */
 abstract class QM_Dispatcher {
 
 	/**
@@ -51,13 +60,7 @@ abstract class QM_Dispatcher {
 	/**
 	 * @param string $message
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
 	public function output_fatal( $message, array $e ): void {
 		print_r( $e );
@@ -171,7 +174,10 @@ abstract class QM_Dispatcher {
 			return false;
 		}
 
-		if ( current_user_can( 'view_query_monitor' ) ) {
+		// Core doesn't reset the current user when it clears the auth cookies, for example
+		// when wp-login.php is loaded with `reauth=1`, so the user would otherwise still
+		// be treated as logged in for the rest of the request.
+		if ( ! did_action( 'clear_auth_cookie' ) && current_user_can( 'view_query_monitor' ) ) {
 			return true;
 		}
 

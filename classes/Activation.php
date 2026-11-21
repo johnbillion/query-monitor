@@ -61,8 +61,15 @@ class QM_Activation extends QM_Plugin {
 		}
 
 		# Only delete db.php if a single site and db.php belongs to Query Monitor
-		if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && class_exists( 'QM_DB', false ) && ( $network_wide || ! is_multisite() ) ) {
-			unlink( WP_CONTENT_DIR . '/db.php' ); // phpcs:ignore
+		$db = WP_CONTENT_DIR . '/db.php';
+
+		if ( file_exists( $db ) && ( $network_wide || ! is_multisite() ) ) {
+			# Check the file itself because QM_DB isn't loaded on the CLI
+			$contents = file_get_contents( $db );
+
+			if ( false !== $contents && false !== strpos( $contents, 'new QM_DB' ) ) {
+				unlink( $db ); // phpcs:ignore
+			}
 		}
 
 	}

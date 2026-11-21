@@ -6,7 +6,7 @@ test.describe( 'Guzzle HTTP Requests', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Successful Guzzle request should be logged', async ( { QueryMonitor } ) => {

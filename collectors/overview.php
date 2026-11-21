@@ -53,6 +53,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 		'wp',
 	);
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Overview();
 	}
@@ -60,6 +61,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -80,6 +82,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		foreach ( self::$notable_actions as $action ) {
 			remove_action( $action, array( $this, 'track_action_start' ), PHP_INT_MIN );
@@ -170,6 +173,7 @@ class QM_Collector_Overview extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		if ( ! isset( $this->data->time_taken ) ) {
 			$this->process_timing();

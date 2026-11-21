@@ -2,12 +2,47 @@ import { MainContext } from '../contexts/main-context';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Warning } from '../components/warning';
 import { EmptyPanel } from '../panels/empty-panel';
-import { getCallerCol, getComponentCol } from '../table';
-import { getFilterLabel } from '../utils';
+import { buildCountedFilters, getCallerCol, getComponentCol } from '../table';
 import { DataTypes } from '../data-types';
 import { PanelProps } from '../types';
+import * as Utils from '../utils';
 import { useContext } from 'preact/hooks';
-import { __ } from '@wordpress/i18n';
+import { __, _nx } from '@wordpress/i18n';
+import { Icon } from '../components/icon';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const phpErrorsMenu = ( data: DataTypes['php_errors'] ): PanelMenuItem[] => {
+	const errors = Object.values( data.errors ?? {} );
+
+	if ( ! errors.length ) {
+		return [];
+	}
+
+	let notice_count = 0;
+	let warning_count = 0;
+
+	for ( const error of errors ) {
+		if ( error.suppressed ) {
+			continue;
+		}
+
+		if ( error.level == 'warning' ) {
+			warning_count += error.count;
+		} else {
+			notice_count += error.count;
+		}
+	}
+
+	return [
+		{
+			id: 'php_errors',
+			panel: 'php_errors',
+			title: __( 'PHP Errors', 'query-monitor' ),
+			notice_count: ( notice_count || null ),
+			warning_count: ( warning_count || null ),
+		},
+	];
+};
 
 export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	const { settings } = useContext( MainContext );
@@ -21,42 +56,36 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 	}
 
 	const errors = Object.values( data.errors );
-	const counts = errors.reduce( ( acc, error ) => {
-		acc[ error.level ] = ( acc[ error.level ] || 0 ) + 1;
-		return acc;
-	}, {} as Record<string, number> );
-
-	const filterOptions = [
-		{
-			label: getFilterLabel( 'Warning', counts.warning ),
-			key: 'warning',
-		},
-		{
-			label: getFilterLabel( 'Notice', counts.notice ),
-			key: 'notice',
-		},
-		{
-			label: getFilterLabel( 'Strict', counts.strict ),
-			key: 'strict',
-		},
-		{
-			label: getFilterLabel( 'Deprecated', counts.deprecated ),
-			key: 'deprecated',
-		},
-	];
+	const filterOptions = buildCountedFilters( errors, ( row ) => row.level, [
+		{ key: 'warning', label: 'Warning' },
+		{ key: 'notice', label: 'Notice' },
+		{ key: 'strict', label: 'Strict' },
+		{ key: 'deprecated', label: 'Deprecated' },
+	], ( row ) => row.count );
+	const showWarning = Utils.phpErrorHasError;
 
 	return <TabularPanel
 		title={ __( 'PHP Errors', 'query-monitor' ) }
 		cols={{
 			level: {
 				heading: __( 'Level', 'query-monitor' ),
+				className: 'qm-nowrap',
 				render: ( row ) => {
+					const level = row.level.charAt( 0 ).toUpperCase() + row.level.slice( 1 );
 					const label = row.suppressed
-						? `${ row.level } (${ __( 'suppressed', 'query-monitor' ) })`
-						: row.level;
-					return row.level === 'warning'
-						? <Warning>{ label }</Warning>
-						: label;
+						? `${ level } (${ __( 'suppressed', 'query-monitor' ) })`
+						: level;
+
+					if ( showWarning( row ) ) {
+						return <Warning>{ label }</Warning>;
+					}
+
+					return (
+						<>
+							<Icon name="blank"/>
+							{ label }
+						</>
+					);
 				},
 				filters: {
 					options: [ filterOptions ],
@@ -75,7 +104,7 @@ export const PHPErrors = ( { data }: PanelProps<DataTypes['php_errors']> ) => {
 			},
 			component: getComponentCol( errors ),
 		}}
-		rowHasError={ ( row ) => ( row.level === 'warning' ) }
+		rowHasError={ showWarning }
 		data={ errors }
 	/>;
 };

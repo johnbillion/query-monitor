@@ -6,6 +6,7 @@
  */
 
 class QM_Component_Template extends QM_Component {
+	#[\Override]
 	public function get_name(): string {
 		return __( 'Parent Theme', 'query-monitor' );
 	}

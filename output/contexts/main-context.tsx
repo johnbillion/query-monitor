@@ -10,7 +10,6 @@ interface FiltersType {
 }
 
 export interface SettingsType {
-	extended_query_prompt_reason: 'conflict' | 'disabled' | 'failed' | null;
 	file_path_map: Record<string, string>;
 	file_link_format: string | false;
 	abspath: string;
@@ -35,6 +34,8 @@ export type MainContextType = {
 	settings: SettingsType;
 	durationUnit: DurationUnit;
 	setDurationUnit: ( unit: DurationUnit ) => void;
+	verified: boolean;
+	setVerified: ( verified: boolean ) => void;
 }
 
 export const MainContext = createContext<MainContextType>( {
@@ -52,8 +53,9 @@ export const MainContext = createContext<MainContextType>( {
 	setTimelineHiddenCategories: ( _categories ) => {},
 	durationUnit: 's',
 	setDurationUnit: ( _unit ) => {},
+	verified: false,
+	setVerified: ( _verified ) => {},
 	settings: {
-		extended_query_prompt_reason: null,
 		file_path_map: {},
 		file_link_format: false,
 		abspath: '',

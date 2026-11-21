@@ -10,13 +10,13 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress and WooCommerce.
- * Version:      4.0.6
+ * Version:      4.1.1
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
  * Text Domain:  query-monitor
  * Domain Path:  /languages/
- * Requires at least: 6.1
+ * Requires at least: 6.3
  * Requires PHP: 7.4
  * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * License:      GPL v2 or later
@@ -36,25 +36,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '4.0.6' );
+define( 'QM_VERSION', '4.1.1' );
 
-// This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
-require_once __DIR__ . '/classes/PHP.php';
+require_once __DIR__ . '/autoload.php';
 
 if ( ! QM_PHP::version_met() ) {
 	add_action( 'all_admin_notices', 'QM_PHP::php_version_nope' );
-	return;
-}
-
-if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	add_action( 'all_admin_notices', 'QM_PHP::vendor_nope' );
-	return;
-}
-
-require_once __DIR__ . '/vendor/autoload.php';
-
-// Safety check to ensure the autoloader is operational.
-if ( ! class_exists( 'QM_Activation' ) ) {
 	return;
 }
 

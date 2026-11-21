@@ -20,7 +20,7 @@ import {
 	__,
 } from '@wordpress/i18n';
 
-import { type ComponentChildren } from 'preact';
+import { Fragment, type ComponentChildren } from 'preact';
 import { useContext, useEffect, useRef, useState } from 'preact/hooks';
 import { MainContext } from './contexts/main-context';
 
@@ -30,7 +30,8 @@ export type Col<TDataRow> = {
 	render: ( row: TDataRow, i: number ) => ( ComponentChildren | string );
 	filters?: ColFilters<TDataRow>;
 	sorting?: ColSorting<TDataRow>;
-	cellHasError?: ( row: TDataRow, i: number ) => boolean;
+	cellHasNotice?: ( row: TDataRow, i: number ) => boolean;
+	cellHasWarning?: ( row: TDataRow, i: number ) => boolean;
 	wrap?: boolean;
 	rowSpan?: ( row: TDataRow, i: number, data: TDataRow[] ) => number;
 }
@@ -101,6 +102,35 @@ const deriveFilters = <TDataRow,>(
 
 	filters.sort( sortFilters );
 	return filters;
+};
+
+export const derivePrimitiveFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string | number | null | undefined,
+): FilterOption[] => deriveFilters( rows, ( row ) => {
+	const value = getKey( row );
+	if ( value === null || value === undefined || value === '' ) {
+		return null;
+	}
+	const stringValue = String( value );
+	return { key: stringValue, label: stringValue };
+} );
+
+export const buildCountedFilters = <TDataRow,>(
+	rows: TDataRow[],
+	getKey: ( row: TDataRow ) => string,
+	options: FilterOption[],
+	getCount: ( row: TDataRow ) => number = () => 1,
+): FilterOption[] => {
+	const counts: Record<string, number> = {};
+	for ( const row of rows ) {
+		const k = getKey( row );
+		counts[ k ] = ( counts[ k ] || 0 ) + getCount( row );
+	}
+	return options.map( ( { key, label } ) => ( {
+		key,
+		label: Utils.getFilterLabel( label, counts[ key ] ),
+	} ) );
 };
 
 export const componentFilterCallback = ( component: ComponentType | null | undefined, value: string ): boolean => {
@@ -188,7 +218,7 @@ export const getTimeCol = <TDataRow extends DataRowWithTime>( _rows: TDataRow[],
 		className: 'qm-num',
 		heading: __( 'Time', 'query-monitor' ),
 		render: ( row ) => <Duration value={ row.ltime ?? 0 } />,
-		cellHasError: ( row, i ) => slow && slow( row, i ),
+		cellHasNotice: ( row, i ) => slow && slow( row, i ),
 		sorting: {
 			field: 'ltime',
 			default: 'desc',
@@ -427,7 +457,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 											>
 												<option value="">All</option>
 												{ colFilters.map( ( group, gi ) => (
-													<>
+													<Fragment key={ gi }>
 														<hr/>
 														{ group.map( ( filter ) => (
 															<option
@@ -435,7 +465,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 																value={ filter.key }
 															>{ filter.label }</option>
 														) ) }
-													</>
+													</Fragment>
 												) ) }
 											</select>
 										</div>
@@ -479,7 +509,7 @@ export const Table = <TDataRow extends {}, TCols extends Cols<TDataRow> = Cols<T
 								<td
 									key={ key }
 									className={ clsx( `qm-cell-${key}`, typeof col.className === 'function' ? col.className( row, i ) : col.className, {
-										'qm-warn': col.cellHasError && col.cellHasError( row, i ),
+										'qm-notice': col.cellHasNotice && col.cellHasNotice( row, i ),
 										'qm-wrap': col.wrap,
 									} ) }
 									rowSpan={ span > 1 ? span : undefined }

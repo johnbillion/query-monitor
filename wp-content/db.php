@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Query Monitor Database Class (Drop-in)
  * Description: Database drop-in for Query Monitor, the developer tools panel for WordPress and WooCommerce.
- * Version:     4.0.6
+ * Version:     4.1.1
  * Plugin URI:  https://querymonitor.com/
  * Author:      John Blackbourn
  * Author URI:  https://querymonitor.com/
@@ -57,28 +57,9 @@ if ( is_admin() ) {
 	}
 }
 
-// This must be required before vendor/autoload.php so QM can serve its own message about PHP compatibility.
-$qm_dir = dirname( dirname( __FILE__ ) );
-$qm_php = "{$qm_dir}/classes/PHP.php";
-
-if ( ! is_readable( $qm_php ) ) {
-	return;
-}
-require_once $qm_php;
+require_once dirname( __DIR__ ) . '/autoload.php';
 
 if ( ! QM_PHP::version_met() ) {
-	return;
-}
-
-if ( ! file_exists( "{$qm_dir}/vendor/autoload.php" ) ) {
-	add_action( 'all_admin_notices', 'QM_PHP::vendor_nope' );
-	return;
-}
-
-require_once "{$qm_dir}/vendor/autoload.php";
-
-// Safety check to ensure the autoloader is operational.
-if ( ! class_exists( 'QM_Backtrace' ) ) {
 	return;
 }
 

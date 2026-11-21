@@ -29,15 +29,10 @@ export const ErrorBoundary = ( { children }: Props ) => {
 	return (
 		<ErrorPanel>
 			{ ( error instanceof Error ) ? (
-				<div style={ { position: 'relative' } }>
+				<>
 					<button
 						aria-label={ __( 'Copy error to clipboard', 'query-monitor' ) }
 						onClick={ copyToClipboard }
-						style={ {
-							position: 'absolute',
-							top: 0,
-							right: 0,
-						} }
 					>
 						{ copied ? __( 'Copied!', 'query-monitor' ) : __( 'Copy', 'query-monitor' ) }
 					</button>
@@ -49,7 +44,7 @@ export const ErrorBoundary = ( { children }: Props ) => {
 					<pre>
 						{ error.stack }
 					</pre>
-				</div>
+				</>
 			) : (
 				<p>
 					<Warning>

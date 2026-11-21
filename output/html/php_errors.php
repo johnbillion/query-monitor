@@ -23,117 +23,12 @@ class QM_Output_Html_PHP_Errors extends QM_Output_Html {
 	 */
 	public static $client_side_rendered = true;
 
-	public function __construct( QM_Collector $collector ) {
-		parent::__construct( $collector );
-		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 10 );
-		add_filter( 'qm/output/panel_menus', array( $this, 'panel_menu' ), 10 );
-		add_filter( 'qm/output/menu_class', array( $this, 'admin_class' ) );
-	}
-
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'PHP Errors', 'query-monitor' );
-	}
-
-	/**
-	 * @param array<int, string> $class
-	 * @return array<int, string>
-	 */
-	public function admin_class( array $class ) {
-		/** @var QM_Data_PHP_Errors $data */
-		$data = $this->collector->get_data();
-
-		if ( ! empty( $data->errors ) ) {
-			foreach ( $data->errors as $error ) {
-				if ( ! $error->suppressed ) {
-					$class[] = 'qm-' . $error->level;
-				}
-			}
-		}
-
-		return array_unique( $class );
-
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function admin_menu( array $menu ) {
-		/** @var QM_Data_PHP_Errors $data */
-		$data = $this->collector->get_data();
-		$menu_label = array();
-
-		$types = array(
-			/* translators: %s: Number of deprecated PHP errors */
-			'deprecated' => _nx_noop( '%s Deprecated', '%s Deprecated', 'PHP error level', 'query-monitor' ),
-			/* translators: %s: Number of strict PHP errors */
-			'strict' => _nx_noop( '%s Strict', '%s Stricts', 'PHP error level', 'query-monitor' ),
-			/* translators: %s: Number of PHP notices */
-			'notice' => _nx_noop( '%s Notice', '%s Notices', 'PHP error level', 'query-monitor' ),
-			/* translators: %s: Number of PHP warnings */
-			'warning' => _nx_noop( '%s Warning', '%s Warnings', 'PHP error level', 'query-monitor' ),
-		);
-
-		foreach ( $types as $type => $label ) {
-			$count = 0;
-			$has_errors = false;
-
-			if ( isset( $data->types[ $type ] ) ) {
-				$has_errors = true;
-				$count += $data->types[ $type ];
-			}
-
-			if ( ! $has_errors ) {
-				continue;
-			}
-
-			if ( $count ) {
-				$label = sprintf(
-					translate_nooped_plural(
-						$label,
-						$count,
-						'query-monitor'
-					),
-					number_format_i18n( $count )
-				);
-				$menu_label[] = $label;
-			}
-		}
-
-		if ( empty( $menu_label ) ) {
-			return $menu;
-		}
-
-		$count = array_sum( array_filter( array_map( function( $type ) use ( $data ) {
-			return $data->types[ $type ] ?? 0;
-		}, array_keys( $types ) ) ) );
-
-		$menu[ $this->collector->id() ] = $this->menu( array(
-			'title' => esc_html__( 'PHP Errors', 'query-monitor' ),
-			'warning_count' => $count,
-		) );
-		return $menu;
-
-	}
-
-	/**
-	 * @param array<string, mixed[]> $menu
-	 * @return array<string, mixed[]>
-	 */
-	public function panel_menu( array $menu ) {
-		if ( ! isset( $menu[ $this->collector->id() ] ) ) {
-			return $menu;
-		}
-
-		$data = $this->collector->get_data();
-
-		$menu[ $this->collector->id() ]['title'] = esc_html__( 'PHP Errors', 'query-monitor' );
-		$menu[ $this->collector->id() ]['warning_count'] = array_sum( $data->types );
-
-		return $menu;
 	}
 
 }

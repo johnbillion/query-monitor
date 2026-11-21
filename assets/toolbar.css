@@ -7,18 +7,22 @@
 /** === Admin Toolbar === */
 
 #wpadminbar {
-	--qm-menu-icon: #aaa;
-	--qm-menu-alert-bg: #f60;
-	--qm-menu-notice-bg: #740;
-	--qm-menu-notice-bg-hover: #5e3500;
-	--qm-menu-expensive-bg: #b60;
+	--qm-menu-notice-bg: #b45309;
 	--qm-menu-warning-bg: #c00;
-	--qm-menu-warning-bg-hover: #b30000;
-	--qm-menu-fg: #eee;
+	--qm-menu-warning-fg: #fff;
 	--qm-menu-true-fg: #8c8;
 	--qm-menu-true-fg-hover: #47a747;
 
-	.quicklinks .menupop ul li.qm-true > a {
+	/* Badge colours: */
+	--qm-badge-fg:         #ddd;
+	--qm-badge-bg:         #235;
+	--qm-badge-notice-fg:  #fff;
+	--qm-badge-notice-bg:  #950;
+	--qm-badge-warning-fg: #fff;
+	--qm-badge-warning-bg: #d00;
+
+	/* True conditionals */
+	.quicklinks .menupop ul li.qm-item-conditionals > a {
 		color: var( --qm-menu-true-fg ) !important;
 
 		&:focus,
@@ -27,96 +31,141 @@
 		}
 	}
 
-	#wp-admin-bar-query-monitor-doing_it_wrong a,
-	#wp-admin-bar-query-monitor-stricts a,
-	#wp-admin-bar-query-monitor-deprecateds a,
-	#wp-admin-bar-query-monitor-notices a,
-	.qm-strict,
-	.qm-deprecated,
-	.qm-notice {
-		background-color: var( --qm-menu-notice-bg );
-
+	/* Submenu item badges */
+	.ab-submenu a {
 		&:focus,
 		&:hover {
-			background-color: var( --qm-menu-notice-bg-hover );
+			.qm-menu-badge {
+				opacity: 0.8;
+			}
 		}
 	}
 
-	#wp-admin-bar-query-monitor-expensive a,
-	.qm-expensive {
-		background-color: var( --qm-menu-expensive-bg );
-
-		&:focus,
-		&:hover {
-			background-color: #a25800;
+	#wp-admin-bar-query-monitor {
+		&.qm-notice,
+		&.qm-error,
+		&.qm-warning {
+			> .ab-item .qm-menu-title {
+				border-radius: 99px;
+				padding: 3px 8px;
+			}
 		}
-	}
 
-	.qm-alert {
-		background-color: var( --qm-menu-alert-bg );
-	}
-
-	#wp-admin-bar-query-monitor-logger-warning a,
-	#wp-admin-bar-query-monitor-warnings a,
-	#wp-admin-bar-query-monitor-errors a,
-	.qm-error,
-	.qm-warning {
-		background-color: var( --qm-menu-warning-bg );
-
-		&:focus,
-		&:hover {
-			background-color: var( --qm-menu-warning-bg-hover );
+		/* Top-level toolbar item for notices */
+		&.qm-notice > .ab-item .qm-menu-title {
+			background-color: var( --qm-menu-notice-bg );
 		}
-	}
 
-	#wp-admin-bar-query-monitor .ab-icon {
-		color: var( --qm-menu-icon ) !important;
-		display: none !important;
-		font: 18px/44px Arial !important;
-		padding: 0 10px !important;
-		width: auto !important;
-	}
-
-	@media screen and (max-width: 782px) {
-		/** force menu icon to show up */
-		#wp-admin-bar-query-monitor .ab-icon {
-			display: block !important;
+		/* Top-level toolbar item for errors and warnings */
+		&.qm-error,
+		&.qm-warning {
+			> .ab-item .qm-menu-title {
+				background-color: var( --qm-menu-warning-bg );
+				color: var( --qm-menu-warning-fg );
+			}
 		}
-		/** hide menu text */
-		#wp-admin-bar-query-monitor .ab-label {
+
+		&.hover > .ab-item .qm-menu-title,
+		> .ab-item:hover .qm-menu-title,
+		> .ab-item:focus .qm-menu-title {
+			background-color: transparent;
+			color: inherit;
+		}
+
+		small {
+			font-size: 11px !important;
+		}
+
+		.ab-submenu .ab-item {
+			display: flex !important;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.qm-menu-badge {
+			background: var( --qm-badge-bg );
+			border-radius: 99px;
+			color: var( --qm-badge-fg );
+			font-size: 10.5px;
+			font-weight: 500;
+			line-height: 1;
+			margin-left: auto;
+			padding: 3px 6px;
+			text-align: center;
+		}
+
+		.qm-menu-badge-notice {
+			background: var( --qm-badge-notice-bg );
+			color: var( --qm-badge-notice-fg );
+		}
+
+		.qm-menu-badge-warning {
+			background: var( --qm-badge-warning-bg );
+			color: var( --qm-badge-warning-fg );
+		}
+
+		.qm-menu-badge + .qm-menu-badge {
+			margin-left: 0px;
+		}
+
+		.ab-icon {
 			display: none !important;
 		}
 	}
-}
 
-#wp-admin-bar-query-monitor *,
-#wp-admin-bar-query-monitor {
-	direction: ltr !important;
-	text-align: left !important;
-}
+	@media screen and (min-width: 783px) {
+		/* Core gives .ab-label a fixed height, which stretches the alert pill */
+		#wp-admin-bar-query-monitor .qm-menu-title {
+			display: inline;
+			height: auto;
+		}
+	}
 
-body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover):not(.hover) .ab-label,
-#wp-admin-bar-query-monitor-default .qm-alert a,
-#wp-admin-bar-query-monitor-default .qm-error a,
-#wp-admin-bar-query-monitor-default .qm-warning a,
-#wp-admin-bar-query-monitor-doing_it_wrong a,
-#wp-admin-bar-query-monitor-deprecateds a,
-#wp-admin-bar-query-monitor-stricts a,
-#wp-admin-bar-query-monitor-notices a,
-#wp-admin-bar-query-monitor-expensive a,
-#wp-admin-bar-query-monitor-logger-warning a,
-#wp-admin-bar-query-monitor-warnings a,
-#wp-admin-bar-query-monitor-errors a {
-	color: var( --qm-menu-fg ) !important;
-}
+	@media screen and (max-width: 782px) {
+		/* Core hides plugin toolbar items on small screens */
+		li#wp-admin-bar-query-monitor {
+			display: block;
+		}
 
-#wp-admin-bar-query-monitor small {
-	font-size: 11px !important;
-}
+		/* Show "QM" in place of the title, which core hides */
+		#wp-admin-bar-query-monitor .ab-icon {
+			display: block !important;
+			font: 18px/46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+			padding: 0 10px !important;
+			width: auto !important;
+		}
 
-#wp-admin-bar-query-monitor.hover a small,
-#wp-admin-bar-query-monitor.hover a .ab-label {
-	text-shadow: none !important;
+		/* Alert pill around "QM", as the title is hidden */
+		#wp-admin-bar-query-monitor {
+			&.qm-notice,
+			&.qm-error,
+			&.qm-warning {
+				> .ab-item .ab-icon {
+					border-radius: 99px;
+					height: 30px !important;
+					line-height: 30px !important;
+					margin: 8px 0 !important;
+				}
+			}
+
+			&.qm-notice > .ab-item .ab-icon {
+				background-color: var( --qm-menu-notice-bg );
+			}
+
+			&.qm-error,
+			&.qm-warning {
+				> .ab-item .ab-icon {
+					background-color: var( --qm-menu-warning-bg );
+					color: var( --qm-menu-warning-fg );
+				}
+			}
+
+			&.hover > .ab-item .ab-icon {
+				background-color: transparent;
+				color: inherit;
+			}
+		}
+	}
 }
 
 /** === Fatal Error Panel === */
@@ -165,7 +214,6 @@ body.admin-color-light #wp-admin-bar-query-monitor:not(.qm-all-clear):not(:hover
 	a.qm-edit-link svg {
 		display: none;
 	}
-
 }
 
 body#error-page {

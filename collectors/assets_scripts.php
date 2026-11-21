@@ -13,6 +13,7 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 
 	public $id = 'assets_scripts';
 
+	#[\Override]
 	public function get_dependency_type() {
 		return 'scripts';
 	}
@@ -20,6 +21,7 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		if ( is_admin() ) {
 			return array(
@@ -39,6 +41,7 @@ class QM_Collector_Assets_Scripts extends QM_Collector_Assets {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'print_scripts_array',

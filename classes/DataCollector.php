@@ -19,6 +19,7 @@ abstract class QM_DataCollector extends QM_Collector {
 	 * @return QM_Data
 	 * @phpstan-return T
 	 */
+	#[\Override]
 	final public function get_data() {
 		return $this->data;
 	}

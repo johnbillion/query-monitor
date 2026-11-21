@@ -6,14 +6,234 @@ import { Warning } from '../components/warning';
 import { getCallerCol, getComponentCol, getStackCol, getTimeCol } from '../table';
 import { PanelFooter } from '../panels/panel-footer';
 import { TotalTime } from '../components/total-time';
-import { DataTypes } from '../data-types';
+import { DataTypes, QueryRow } from '../data-types';
+import { resolveFrames } from '../frame-lookup';
 import { PanelProps } from '../types';
+import { PanelMenuItem } from '../panels/panel-registry';
 import { useContext } from 'preact/hooks';
 
 import {
 	__,
+	_n,
+	_x,
 	sprintf,
 } from '@wordpress/i18n';
+
+export interface DupeQuery {
+	query: string;
+	count: number;
+	ltime: number;
+	callers: Record<string, number>;
+	components: Record<string, number>;
+	sources: Record<string, number>;
+}
+
+/**
+ * Normalises a SQL string for duplicate grouping: collapses all whitespace to
+ * single spaces, strips tabs and backticks, and removes any trailing semicolon.
+ */
+const normalizeDupeSQL = ( sql: string ): string => (
+	sql
+		// Replace all newlines with a single space:
+		.replace( /\r\n|\r|\n/g, ' ' )
+		// Remove all tabs and backticks:
+		.replace( /[\t`]/g, '' )
+		// Replace all instance of multiple spaces with a single space:
+		.replace( / +/g, ' ' )
+		// Trim the SQL:
+		.trim()
+		// Remove trailing semicolon:
+		.replace( /;+$/, '' )
+);
+
+/**
+ * Returns the stack of callers used for duplicate grouping. For rows with a
+ * full backtrace this mirrors QM_Backtrace::get_stack(); otherwise it uses the
+ * pre-filtered stack captured server-side.
+ */
+const getDupeStack = ( row: QueryRow ): string[] => {
+	if ( row.trace ) {
+		return resolveFrames( row.trace.frames ).map( ( frame ) => Utils.frameDisplay( frame ) );
+	}
+
+	return row.stack ?? [];
+};
+
+/**
+ * Detects duplicate database queries from the collected query rows.
+ *
+ * This reproduces the duplicate-query analysis that Query Monitor previously
+ * performed server-side: queries are grouped by their normalised SQL, groups
+ * with only a single occurrence are discarded, and the callers, components and
+ * potential troublemakers for each duplicated query are tallied up.
+ */
+export const getDupes = ( rows: QueryRow[] ): DupeQuery[] => {
+	// Group the query rows by their normalised SQL.
+	const groups = new Map<string, QueryRow[]>();
+
+	for ( const row of rows ) {
+		const sql = normalizeDupeSQL( row.sql );
+		const group = groups.get( sql );
+
+		if ( group ) {
+			group.push( row );
+		} else {
+			groups.set( sql, [ row ] );
+		}
+	}
+
+	// Ignore duplicates from `WP_Query->set_found_posts()`.
+	groups.delete( 'SELECT FOUND_ROWS()' );
+
+	const dupes: DupeQuery[] = [];
+
+	for ( const [ query, group ] of groups ) {
+		// Skip queries that do not have duplicates.
+		if ( group.length < 2 ) {
+			continue;
+		}
+
+		const callers: Record<string, number> = {};
+		const components: Record<string, number> = {};
+		const stacks: string[][] = [];
+		let ltime = 0;
+
+		for ( const row of group ) {
+			const component = row.trace ? row.trace.component.name : null;
+			const stack = getDupeStack( row );
+
+			if ( component !== null ) {
+				components[ component ] = ( components[ component ] || 0 ) + 1;
+			}
+
+			if ( stack.length ) {
+				const caller = stack[0];
+				callers[ caller ] = ( callers[ caller ] || 0 ) + 1;
+			}
+
+			stacks.push( stack );
+			ltime += row.ltime;
+		}
+
+		// The callers which are common to all stacks for this query.
+		const common = new Set( Utils.arrayIntersect( stacks ) );
+		const callerKeys = Object.keys( callers );
+
+		// Remove the common callers, leaving only what differs between stacks.
+		// If nothing differs, fall back to the primary callers.
+		const trimmed = stacks.map( ( stack ) => {
+			const diff = stack.filter( ( caller ) => ! common.has( caller ) );
+			return diff.length ? diff : callerKeys;
+		} );
+
+		// Count the occurrences of each primary caller across the duplicates.
+		const primary = trimmed
+			.map( ( stack ) => stack[0] )
+			.filter( ( caller ): caller is string => caller !== undefined );
+
+		dupes.push( {
+			query,
+			count: group.length,
+			ltime,
+			callers,
+			components,
+			sources: Utils.arrayCountValues( primary ),
+		} );
+	}
+
+	return dupes;
+};
+
+export const dbQueriesMenu = ( data: DataTypes['db_queries'] ): PanelMenuItem[] => {
+	const children: PanelMenuItem[] = [];
+
+	if ( data.errors?.length ) {
+		children.push( {
+			id: 'db_errors',
+			panel: 'db_errors',
+			title: __( 'Database Errors', 'query-monitor' ),
+			warning_count: data.errors.length,
+		} );
+	}
+
+	if ( data.expensive?.length ) {
+		children.push( {
+			id: 'db_expensive',
+			panel: 'db_expensive',
+			title: __( 'Slow Queries', 'query-monitor' ),
+			notice_count: data.expensive.length,
+		} );
+	}
+
+	const dupes = data.rows?.length ? getDupes( data.rows ) : [];
+
+	if ( dupes.length ) {
+		children.push( {
+			id: 'db_dupes',
+			panel: 'db_dupes',
+			title: __( 'Duplicate Queries', 'query-monitor' ),
+			notice_count: dupes.reduce( ( sum, dupe ) => sum + dupe.count, 0 ),
+			adminBar: false,
+		} );
+	}
+
+	if ( data.rows?.length ) {
+		children.push( {
+			id: 'db_callers',
+			panel: 'db_callers',
+			title: __( 'Queries by Caller', 'query-monitor' ),
+			adminBar: false,
+		} );
+	}
+
+	if ( data.rows?.length && data.has_trace ) {
+		children.push( {
+			id: 'db_components',
+			panel: 'db_components',
+			title: __( 'Queries by Component', 'query-monitor' ),
+			adminBar: false,
+		} );
+	}
+
+	const okCount = ( data.total_qs ?? 0 );
+
+	return [ {
+		id: 'db_queries',
+		panel: 'db_queries',
+		title: __( 'Database Queries', 'query-monitor' ),
+		ok_count: okCount || null,
+		children,
+	} ];
+};
+
+export const dbQueriesTitle = ( data: DataTypes['db_queries'] ): string[] => {
+	const titles: string[] = [];
+
+	const queryCount = (): string => (
+		sprintf(
+			/* translators: %s: Number of database queries. Note the space between value and unit symbol. */
+			_n( '%s Q', '%s Q', data.total_qs, 'query-monitor' ) || '%s Q',
+			Utils.numberFormat( data.total_qs ),
+		).replace( /\s?([^0-9,.]+)/g, '<small>$1</small>' )
+	);
+
+	if ( data.rows ) {
+		const totalTime = data.rows.reduce( ( sum, row ) => sum + row.ltime, 0 );
+
+		titles.push(
+			sprintf(
+				/* translators: %s: A time in seconds with a decimal fraction. No space between value and unit symbol. */
+				_x( '%ss', 'Time in seconds', 'query-monitor' ),
+				Utils.numberFormat( totalTime, 2 )
+			)
+		);
+		titles.push( queryCount() );
+	} else if ( data.total_qs != null ) {
+		titles.push( queryCount() );
+	}
+
+	return titles;
+};
 
 const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'failed' ) => {
 	switch ( reason ) {
@@ -39,6 +259,35 @@ const getExtendedQueryPromptMessage = ( reason: 'conflict' | 'disabled' | 'faile
 	}
 };
 
+const getNotLoggedMessage = ( reason: NonNullable<DataTypes['db_queries']['not_logged_reason']>, dbClass?: string ) => {
+	switch ( reason ) {
+		case 'constant':
+			return sprintf(
+				/* translators: 1: Configuration constant name, 2: Configuration file name */
+				__( 'Query logging is disabled because the %1$s constant is set to false. Remove it from your %2$s file or set it to true.', 'query-monitor' ),
+				'SAVEQUERIES',
+				'wp-config.php'
+			);
+		case 'property':
+			return sprintf(
+				/* translators: %s: Property name */
+				__( 'Query logging was disabled by a plugin or theme which set the %s property to false.', 'query-monitor' ),
+				'$wpdb->save_queries'
+			);
+		case 'unknown':
+			if ( dbClass ) {
+				return sprintf(
+					/* translators: 1: PHP class name, 2: File name */
+					__( 'The database class in use (%1$s) does not appear to log queries. It is probably loaded by a %2$s drop-in from another plugin.', 'query-monitor' ),
+					dbClass,
+					'db.php'
+				);
+			}
+
+			return __( 'A plugin or theme probably disabled query logging or cleared the logged queries.', 'query-monitor' );
+	}
+};
+
 export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 	const { settings } = useContext( MainContext );
 
@@ -59,11 +308,16 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 					Utils.numberFormat( data.total_qs )
 				) }
 			</p>
+			{ data.not_logged_reason && (
+				<p>
+					{ getNotLoggedMessage( data.not_logged_reason, data.db_class ) }
+				</p>
+			) }
 		</EmptyPanel>
 	}
 
 	const types = Utils.getQueryTypes( data.rows );
-	const promptReason = ! data.has_trace ? settings.extended_query_prompt_reason : null;
+	const promptReason = ! data.has_trace ? data.extended_query_prompt_reason : null;
 
 	return <TabularPanel
 		title={ __( 'Database Queries', 'query-monitor' ) }
@@ -78,12 +332,11 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 		) : undefined }
 		cols={ {
 			i: {
-				className: 'qm-num',
+				className: 'qm-i',
 				heading: '#',
 				render: ( row, i ) => ( i + 1 ),
 			},
 			sql: {
-				className: ( row ) => Utils.getQueryType( row.sql ) !== 'SELECT' ? 'qm-nonselectsql' : '',
 				heading: __( 'Query', 'query-monitor' ),
 				render: ( row ) => (
 					<>
@@ -144,7 +397,7 @@ export const DBQueries = ( { data }: PanelProps<DataTypes['db_queries']> ) => {
 			time: getTimeCol( data.rows, ( row, i ) => data.expensive?.includes( i ) ?? false ),
 		} }
 		data={ data.rows }
-		rowHasError={ ( row ) => Utils.isWPError( row.result ) }
+		rowHasError={ Utils.queryRowHasError }
 		footer={ ( { cols, count, total, data: filteredData } ) => (
 			<PanelFooter
 				cols={ cols - 1 }

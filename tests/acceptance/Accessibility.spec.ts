@@ -54,8 +54,7 @@ test.describe( 'Accessibility', () => {
 		page,
 		QueryMonitor,
 	} ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
-		await page.goto( '/' );
+		await QueryMonitor.loginViaPage( 'admin', 'password', '/' );
 
 		// Open QM
 		await page.locator( '#wp-admin-bar-query-monitor' ).click();

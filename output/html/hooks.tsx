@@ -13,6 +13,15 @@ import {
 	__,
 	sprintf,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const hooksMenu = ( data: DataTypes['hooks'] ): PanelMenuItem[] => [ {
+	id: 'hooks',
+	panel: 'hooks',
+	title: data.all_hooks
+		? __( 'Hooks, Actions, & Filters', 'query-monitor' )
+		: __( 'Hooks & Actions', 'query-monitor' ),
+} ];
 
 type HookAction = DataTypes['hooks']['hooks'][number]['actions'][number];
 type HookCallback = HookAction['callback'];

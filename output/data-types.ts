@@ -234,20 +234,9 @@ export interface DB_Queries {
 	rows?: QueryRow[];
 	has_result: boolean;
 	has_trace: boolean;
-	dupes: {
-		query: string;
-		count: number;
-		ltime: number;
-		callers: {
-			[k: string]: number;
-		};
-		components: {
-			[k: string]: number;
-		};
-		sources: {
-			[k: string]: number;
-		};
-	}[];
+	extended_query_prompt_reason?: "conflict" | "disabled" | "failed";
+	not_logged_reason?: "constant" | "property" | "unknown";
+	db_class?: string;
 }
 export interface QueryRow {
 	stack?: string[];
@@ -303,7 +292,7 @@ export interface Environment {
 	wp: {
 		version: string;
 		environment_type: string;
-		development_mode?: string;
+		development_mode: string;
 		constants: {
 			[k: string]: string;
 		};
@@ -408,6 +397,7 @@ export interface StackFrame {
 	args?: string | null;
 	file: string | null;
 	line?: number | null;
+	function?: string | null;
 }
 /**
  * Logger data transfer object.
@@ -481,10 +471,22 @@ export interface PHP_Error {
  */
 export interface Raw_Request {
 	request: {
-		[k: string]: unknown;
+		ip: string;
+		method: string;
+		scheme: string;
+		host: string;
+		path: string;
+		query: string;
+		url: string;
+		headers: {
+			[k: string]: string;
+		};
 	};
 	response: {
-		[k: string]: unknown;
+		status: number | null;
+		headers: {
+			[k: string]: string;
+		};
 	};
 }
 /**

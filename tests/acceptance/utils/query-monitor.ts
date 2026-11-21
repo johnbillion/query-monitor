@@ -10,6 +10,7 @@ export class QueryMonitorUtils {
 	private page: Page;
 	private admin: Admin;
 	private globalUtils: GlobalUtils;
+	private pendingLogin: { username: string; password: string } | null = null;
 
 	constructor( page: Page, admin: Admin, globalUtils: GlobalUtils ) {
 		this.page = page;
@@ -18,15 +19,40 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Login via the wp-login.php page
+	 * Login via the wp-login.php page, then get redirected to the given URL
 	 */
-	async loginViaPage( username: string, password: string ) {
-		await this.page.goto( '/wp-login.php' );
+	async loginViaPage( username: string, password: string, redirectTo: string = '/wp-admin/' ) {
+		await this.page.goto( `/wp-login.php?redirect_to=${ encodeURIComponent( redirectTo ) }` );
 		await this.page.fill( 'input[name="log"]', username );
 		await this.page.fill( 'input[name="pwd"]', password );
 		await this.page.locator( '#wp-submit' ).click();
 
-		// @todo verify we're logged in (can't use HTTP status code as WP returns 200 even on failed login)
+		// Wait for the redirect to complete before returning, otherwise a subsequent
+		// navigation can race the login request and land without the auth cookie.
+		await this.page.waitForURL( ( url ) => ! url.pathname.endsWith( '/wp-login.php' ) );
+
+		// WP returns a 200 for a failed login, so assert on the logged-in state instead. This checks the cookie
+		// rather than the admin bar because some redirect targets, such as fatal errors, don't show it.
+		const cookies = await this.page.context().cookies();
+		expect( cookies.some( ( cookie ) => cookie.name.startsWith( 'wordpress_logged_in_' ) ) ).toBe( true );
+	}
+
+	/**
+	 * Login as part of the next `amOnAPage…()` navigation, which avoids loading the dashboard after logging in
+	 */
+	loginOnNextVisit( username: string, password: string ) {
+		this.pendingLogin = { username, password };
+	}
+
+	private async visit( url: string ) {
+		if ( this.pendingLogin ) {
+			const { username, password } = this.pendingLogin;
+			this.pendingLogin = null;
+			await this.loginViaPage( username, password, url );
+			return;
+		}
+
+		await this.page.goto( url );
 	}
 
 	/**
@@ -76,56 +102,64 @@ export class QueryMonitorUtils {
 	 * Navigate to a page that triggers a "doing it wrong" scenario
 	 */
 	async amOnAPageThatIsDoingItWrong( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=doing_it_wrong&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a PHP error
 	 */
 	async amOnAPageThatTriggersPhpError( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a suppressed PHP error
 	 */
 	async amOnAPageThatTriggersSuppressedPhpError( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-${test}` );
+		await this.visit( `/?_qm_acceptance_group=php_errors&_qm_acceptance_test=suppressed-${test}` );
+	}
+
+	/**
+	 * Navigate to a page that triggers a fatal error
+	 */
+	async amOnAPageThatTriggersFatalError( test: string, path: string = '/', displayErrors?: string ) {
+		const display = displayErrors === undefined ? '' : `&_qm_acceptance_display_errors=${displayErrors}`;
+		await this.visit( `${path}?_qm_acceptance_group=fatal_errors&_qm_acceptance_test=${test}${display}` );
 	}
 
 	/**
 	 * Navigate to a page that makes a Guzzle HTTP request
 	 */
 	async amOnAPageThatMakesGuzzleRequest( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a specific callback type
 	 */
 	async amOnAPageThatTriggersCallbackType( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=callback_types&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=callback_types&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page with enqueued scripts
 	 */
 	async amOnAPageWithEnqueuedScripts( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=enqueued_scripts&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=enqueued_scripts&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that triggers a database query scenario
 	 */
 	async amOnAPageThatTriggersDBQuery( test: string ) {
-		await this.page.goto( `/?_qm_acceptance_group=db_queries&_qm_acceptance_test=${test}` );
+		await this.visit( `/?_qm_acceptance_group=db_queries&_qm_acceptance_test=${test}` );
 	}
 
 	/**
 	 * Navigate to a page that loads the third-party panel test plugin
 	 */
 	async amOnAPageWithThirdPartyPanel() {
-		await this.page.goto( '/?_qm_acceptance_group=third_party_panel' );
+		await this.visit( '/?_qm_acceptance_group=third_party_panel' );
 	}
 
 	/**
@@ -136,6 +170,13 @@ export class QueryMonitorUtils {
 	}
 
 	/**
+	 * Assert that the QM menu is visible with an error indicator
+	 */
+	async seeQMMenuWithError() {
+		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-error' ) ).toBeVisible();
+	}
+
+	/**
 	 * Assert that the QM menu is visible with a notice indicator
 	 */
 	async seeQMMenuWithNotice() {
@@ -143,12 +184,43 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Assert that the QM menu is visible without any warning/notice indicators
+	 * Assert that the QM menu is visible without any error/warning/notice indicators
 	 */
 	async seeQMMenu() {
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor' ) ).toBeVisible();
+		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-error' ) ).not.toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-warning' ) ).not.toBeVisible();
 		await expect( this.page.locator( '#wp-admin-bar-query-monitor.qm-notice' ) ).not.toBeVisible();
+	}
+
+	/**
+	 * Assert that the submenu item for the given panel contains the given text.
+	 */
+	async seeQMSubMenuItemWithText( panel: string, text: string ) {
+		const item = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.qm-item-${ panel }` );
+		await expect( item ).toContainText( text );
+	}
+
+	/**
+	 * Assert that the submenu item for the given panel displays a badge of the
+	 * given type (ok, notice, warning, new) containing the given text.
+	 */
+	async seeQMSubMenuItemWithBadge( panel: string, type: string, text: string ) {
+		const badge = this.page.locator( `#wp-admin-bar-query-monitor .ab-submenu li.qm-item-${ panel } .qm-menu-badge-${ type }` );
+		await expect( badge ).toHaveText( text );
+	}
+
+	/**
+	 * Assert that a panel menu item displays a warning count bubble.
+	 */
+	async seeWarningBubbleInQMPanelMenu( panel: string ) {
+		await this.openQMPanel( panel );
+
+		const button = this.page.locator( '#qm-panel-menu button:visible' ).filter( {
+			hasText: panel,
+		} );
+
+		await expect( button.locator( '.qm-menu-badge-warning' ) ).toBeVisible();
 	}
 
 	/**

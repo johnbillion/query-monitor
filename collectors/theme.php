@@ -49,6 +49,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	 */
 	protected $block_template = null;
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Theme();
 	}
@@ -56,6 +57,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -77,6 +79,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'body_class', array( $this, 'filter_body_class' ), 9999 );
 		remove_filter( 'timber/output', array( $this, 'filter_timber_output' ), 9999 );
@@ -135,6 +138,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			'after_setup_theme',
@@ -156,6 +160,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		$filters = array(
 			'body_class',
@@ -181,6 +186,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_options() {
 		return array(
 			'stylesheet',
@@ -432,6 +438,7 @@ class QM_Collector_Theme extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 
 		$stylesheet_directory = QM_Util::standard_dir( get_stylesheet_directory() );

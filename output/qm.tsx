@@ -1,18 +1,30 @@
 import clsx from 'clsx';
 import { Icon, IconDefs } from './components/icon';
 import { MainContext, MainContextType, DurationUnit } from './contexts/main-context';
-import { type ComponentChildren } from 'preact';
+import { Fragment, type ComponentChildren } from 'preact';
 import { createPortal } from 'preact/compat';
 import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 
 import { __ } from '@wordpress/i18n';
 
-import { Nav, iNavMenu, NavSelect } from './nav';
+import { Nav, iNavMenu, NavSelect, Badges } from './nav';
 import { Panels, iPanelData, iSettings } from './panels/panels';
 
 const devCssUrl = import.meta.env.DEV
 	? new URL( import.meta.url ).origin + '/assets/query-monitor.css'
 	: '';
+
+/**
+ * Minimal port of WordPress's `createInterpolateElement` that only understands
+ * the `<small>` tag, the only markup a menu title is expected to contain.
+ */
+const createInterpolateElement = ( text: string ): ComponentChildren => (
+	text.split( /(<small>.*?<\/small>)/g ).map( ( part, i ) => {
+		const match = part.match( /^<small>(.*?)<\/small>$/ );
+
+		return match ? <small key={ i }>{ match[ 1 ] }</small> : part;
+	} )
+);
 
 type Props = {
 	active: string;
@@ -28,9 +40,9 @@ type Props = {
 				id: string;
 				panel: string;
 				title: string;
-				meta?: {
-					classname: string;
-				}
+				ok_count?: number | null;
+				notice_count?: number | null;
+				warning_count?: number | null;
 			}
 		}
 	};
@@ -70,11 +82,13 @@ export const QM = ( props: Props ) => {
 	const [ side, setSide ] = useState( props.side );
 	const [ theme, setTheme ] = useState( props.theme );
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
+	const [ fabulousAnimate, setFabulousAnimate ] = useState( false );
 	const [ editor, setEditor ] = useState( props.editor );
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
 	const [ durationUnit, setDurationUnit ] = useState( props.durationUnit );
+	const [ verified, setVerified ] = useState( props.settings.verified );
 	const [ jumpToRow, setJumpToRow ] = useState<MainContextType['jumpToRow']>( null );
 	const jumpToRowRef = useRef( jumpToRow );
 	jumpToRowRef.current = jumpToRow;
@@ -145,6 +159,7 @@ export const QM = ( props: Props ) => {
 		setFabulous: ( fabulous: boolean ) => {
 			props.onFabulousChange( fabulous );
 			setFabulous( fabulous );
+			setFabulousAnimate( fabulous );
 		},
 		editor: editor,
 		setEditor: ( editor: string ) => {
@@ -178,8 +193,9 @@ export const QM = ( props: Props ) => {
 			props.onDurationUnitChange( unit );
 			setDurationUnit( unit );
 		},
+		verified,
+		setVerified,
 		settings: {
-			extended_query_prompt_reason: props.settings.extended_query_prompt_reason,
 			file_path_map: props.settings.file_path_map,
 			file_link_format: props.settings.file_link_format,
 			abspath: props.settings.abspath,
@@ -187,7 +203,7 @@ export const QM = ( props: Props ) => {
 		},
 	};
 
-	// Apply the menu class (qm-warning, qm-notice, etc.) to the admin bar element
+	// Apply the menu class (qm-warning, qm-notice, or qm-error) to the admin bar element
 	useEffect( () => {
 		if ( ! inWP ) {
 			return;
@@ -317,7 +333,7 @@ export const QM = ( props: Props ) => {
 		? `${ devCssUrl }?t=${ cssVersion }`
 		: props.cssUrl;
 
-	// In extension mode, always show a panel (default to overview).
+	// When standalone (not embedded in wp-admin), always show a panel (default to overview).
 	const effectiveActive = inWP ? active : ( active || 'overview' );
 
 	return (
@@ -328,7 +344,7 @@ export const QM = ( props: Props ) => {
 			) }
 			{ effectiveActive && (
 				<div ref={ mainRef } className={ mainClass } data-theme={ actualTheme } data-color-scheme={ props.colorScheme } dir="ltr" id="query-monitor-main">
-					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous } ) }>
+					<div id="qm-title" className={ clsx( { 'qm-fabulous': fabulous, 'qm-fabulous-animate': fabulous && fabulousAnimate } ) }>
 						<h1 className={ clsx( 'qm-title-heading', { 'qm-resizer': inWP } ) }>
 							<span>
 								{ __( 'Query Monitor', 'query-monitor' ) }
@@ -391,12 +407,20 @@ export const QM = ( props: Props ) => {
 							e.preventDefault();
 						} }
 					>
-						<span dangerouslySetInnerHTML={{ __html: props.menu.top.title.join('\u00A0\u00A0') }} />
+						<span className="ab-icon" aria-hidden="true">QM</span>
+						<span className="ab-label qm-menu-title">
+							{ props.menu.top.title.map( ( part, i ) => (
+								<Fragment key={ i }>
+									{ i > 0 ? '\u00A0\u00A0' : '' }
+									{ createInterpolateElement( part ) }
+								</Fragment>
+							) ) }
+						</span>
 					</a>
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">
 							{ Object.values( props.menu.sub ).map( ( menu ) => (
-								<li key={ menu.id } className={ clsx( menu.meta && menu.meta.classname ) }>
+								<li key={ menu.id } className={ `qm-item-${menu.panel}` }>
 									<a
 										className="ab-item"
 										href={ `#qm-${ menu.panel }` }
@@ -407,6 +431,7 @@ export const QM = ( props: Props ) => {
 										} }
 									>
 										{ menu.title }
+										<Badges item={ menu } seen={ true } />
 									</a>
 								</li>
 							) ) }

@@ -17,10 +17,11 @@ export type iNavMenu = {
 	[k: string]: iNavMenuItem;
 }
 
-interface iNavMenuItem {
+export interface iNavMenuItem {
 	panel: string;
 	title: string;
-	count?: number | null;
+	ok_count?: number | null;
+	notice_count?: number | null;
 	warning_count?: number | null;
 	new: boolean;
 	children?: iNavMenu;
@@ -28,11 +29,11 @@ interface iNavMenuItem {
 
 /**
  * Normalises a menu item that uses a legacy "Title (n)" format by extracting
- * the count into the dedicated `count` property. This provides backwards
- * compatibility with third-party plugins that haven't adopted the new format.
+ * the count into the dedicated `ok_count` property. This provides
+ * compatibility with third-party plugins that use server-side menus.
  */
 function normaliseMenuItem( item: iNavMenuItem ): iNavMenuItem {
-	if ( item.count != null ) {
+	if ( item.ok_count != null ) {
 		return item;
 	}
 
@@ -45,11 +46,11 @@ function normaliseMenuItem( item: iNavMenuItem ): iNavMenuItem {
 	return {
 		...item,
 		title: match[1],
-		count: parseInt( match[2], 10 ) || null,
+		ok_count: parseInt( match[2], 10 ) || null,
 	};
 }
 
-function normaliseMenu( menu: iNavMenu ): iNavMenu {
+export function normaliseMenu( menu: iNavMenu ): iNavMenu {
 	const result: iNavMenu = {};
 
 	for ( const [ key, item ] of Object.entries( menu ) ) {
@@ -63,16 +64,29 @@ function normaliseMenu( menu: iNavMenu ): iNavMenu {
 	return result;
 }
 
-const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
+export const Badges = ( { item, seen }: {
+	item: {
+		new?: boolean;
+		ok_count?: number | null;
+		notice_count?: number | null,
+		warning_count?: number | null,
+	};
+	seen: boolean,
+} ) => (
 	<>
 		{ item.new && ! seen && (
 			<span aria-hidden="true" className="qm-menu-badge qm-menu-badge-new">
 				{ _x( 'New', 'badge', 'query-monitor' ) }
 			</span>
 		) }
-		{ !! item.count && item.count !== item.warning_count && (
-			<span aria-hidden="true" className="qm-menu-badge">
-				{ Utils.numberFormat( item.count ) }
+		{ item.ok_count != null && (
+			<span aria-hidden="true" className="qm-menu-badge qm-menu-badge-ok">
+				{ Utils.numberFormat( item.ok_count ) }
+			</span>
+		) }
+		{ !! item.notice_count && (
+			<span aria-hidden="true" className="qm-menu-badge qm-menu-badge-notice">
+				{ Utils.numberFormat( item.notice_count ) }
 			</span>
 		) }
 		{ !! item.warning_count && (
@@ -86,17 +100,15 @@ const Badges = ( { item, seen }: { item: iNavMenuItem; seen: boolean } ) => (
 function selectLabel( item: iNavMenuItem ): string {
 	const parts = [ item.title ];
 
-	if ( item.count || item.warning_count ) {
+	if ( item.notice_count || item.warning_count ) {
 		const counts = [];
+		const alert_count = ( item.warning_count ?? 0 ) + ( item.notice_count ?? 0 );
 
-		if ( item.warning_count ) {
-			counts.push( `${ item.warning_count }!` );
-		}
-		if ( item.count && item.count !== item.warning_count ) {
-			counts.push( `${ item.count }` );
+		if ( alert_count ) {
+			counts.push( `${ alert_count }!` );
 		}
 
-		parts.push( `(${ counts.join( ', ' ) })` );
+		parts.push( `(${ counts.join( ') (' ) })` );
 	}
 
 	return parts.join( ' ' );
@@ -106,28 +118,13 @@ const isNewItemSeen = ( item: iNavMenuItem, seen: string ): boolean => {
 	return ! item.new || item.panel === seen;
 };
 
-export const Nav = ( { menu: rawMenu, onSwitch, active, seen = '' }: Props ) => {
-	const menu = normaliseMenu( rawMenu );
-
+export const Nav = ( { menu, onSwitch, active, seen = '' }: Props ) => {
 	return (
 	<nav aria-labelledby="qm-panel-menu-caption" id="qm-panel-menu">
 		<h2 className="qm-screen-reader-text" id="qm-panel-menu-caption">
 			{ __( 'Query Monitor Menu', 'query-monitor' ) }
 		</h2>
 		<ul role="tablist">
-			<li
-				key="overview"
-				className={ clsx( {
-					'qm-current-menu': active === 'overview',
-				} ) }
-				role="presentation"
-			>
-				<button aria-selected={ active === 'overview' } role="tab" onClick={ () => {
-					onSwitch( 'overview' );
-				} }>
-					{ __( 'Overview', 'query-monitor' ) }
-				</button>
-			</li>
 			{ Object.entries( menu ).map( ( [ key, item ] ) => {
 				const children = item.children;
 				return (
@@ -179,9 +176,7 @@ export const Nav = ( { menu: rawMenu, onSwitch, active, seen = '' }: Props ) => 
 	);
 };
 
-export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
-	const menu = normaliseMenu( rawMenu );
-
+export const NavSelect = ( { menu, onSwitch, active }: Props ) => {
 	return (
 	<select
 		aria-label={ __( 'Select panel', 'query-monitor' ) }
@@ -190,9 +185,6 @@ export const NavSelect = ( { menu: rawMenu, onSwitch, active }: Props ) => {
 			onSwitch( e.currentTarget.value );
 		} }
 	>
-		<option key="overview" value="overview">
-			{ __( 'Overview', 'query-monitor' ) }
-		</option>
 		{ Object.entries( menu ).map( ( [ key, item ] ) => {
 			const children = item.children;
 			return (

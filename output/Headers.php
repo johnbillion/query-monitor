@@ -10,13 +10,14 @@ abstract class QM_Output_Headers extends QM_Output {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function output() {
 
 		$id = $this->collector->id;
 
 		foreach ( $this->get_output() as $key => $value ) {
 			if ( ! is_scalar( $value ) ) {
-				$value = wp_json_encode( $value );
+				$value = QM_Util::json_encode( $value );
 			}
 
 			# Remove illegal characters (Header value may not contain NUL bytes)

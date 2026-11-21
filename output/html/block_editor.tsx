@@ -9,6 +9,15 @@ import { Cols } from '../table';
 import {
 	__,
 } from '@wordpress/i18n';
+import { PanelMenuItem } from '../panels/panel-registry';
+
+export const blockEditorMenu = ( data: DataTypes['block_editor'] ): PanelMenuItem[] => (
+	data.post_blocks?.length ? [ {
+		id: 'block_editor',
+		panel: 'block_editor',
+		title: __( 'Blocks', 'query-monitor' ),
+	} ] : []
+);
 
 interface iBlock extends PostBlock {
 	index?: string;

@@ -54,14 +54,17 @@ class QM_Data_DB_Queries extends QM_Data {
 	public $has_trace;
 
 	/**
-	 * @phpstan-var array<int, array{
-	 *   query: string,
-	 *   count: int,
-	 *   ltime: float,
-	 *   callers: array<string, int>,
-	 *   components: array<string, int>,
-	 *   sources: array<string, int>,
-	 * }>
+	 * @var ?'conflict'|'disabled'|'failed'
 	 */
-	public $dupes;
+	public $extended_query_prompt_reason;
+
+	/**
+	 * @var ?'constant'|'property'|'unknown'
+	 */
+	public $not_logged_reason;
+
+	/**
+	 * @var ?string
+	 */
+	public $db_class;
 }

@@ -25,6 +25,7 @@ class QM_Collectors implements IteratorAggregate {
 	 * @return ArrayIterator<string, QM_Collector>
 	 */
 	#[\ReturnTypeWillChange]
+	#[\Override]
 	public function getIterator() {
 		return new ArrayIterator( $this->items );
 	}
@@ -71,7 +72,7 @@ class QM_Collectors implements IteratorAggregate {
 	/**
 	 * Ceases data collection if the current request is not one where QM will output.
 	 */
-	public function cease_if_unsupported() : void {
+	public function cease_if_unsupported(): void {
 		if ( self::request_supported() ) {
 			return;
 		}
@@ -82,7 +83,7 @@ class QM_Collectors implements IteratorAggregate {
 	/**
 	 * Determines whether the current request supports data collection.
 	 */
-	public static function request_supported() : bool {
+	public static function request_supported(): bool {
 		// Don't collect during a Customizer preview request:
 		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() ) {
 			return false;
@@ -101,6 +102,12 @@ class QM_Collectors implements IteratorAggregate {
 		// Don't collect on the interim login screen:
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! empty( $_GET['interim-login'] ) ) {
+			return false;
+		}
+
+		// Don't collect on the Gutenberg site preview:
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET['wp_site_preview'] ) ) {
 			return false;
 		}
 

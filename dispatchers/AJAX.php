@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * @phpstan-import-type FatalError from QM_Dispatcher
+ */
 class QM_Dispatcher_AJAX extends QM_Dispatcher {
 
 	public $id = 'ajax';
@@ -25,6 +28,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -61,6 +65,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/headers/*.php' ) ) as $file ) {
 			require_once $file;
@@ -70,6 +75,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function after_output() {
 
 		# flush once, because we're nice
@@ -82,6 +88,7 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! QM_Util::is_ajax() ) {
@@ -102,10 +109,8 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			if ( ! did_action( 'admin_init' ) ) {
 				return false;
 			}
-		} else {
-			if ( ! did_action( 'wp' ) ) {
-				return false;
-			}
+		} elseif ( ! did_action( 'wp' ) ) {
+			return false;
 		}
 
 		return true;
@@ -115,20 +120,15 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 	/**
 	 * @param string $message
 	 * @param mixed[] $e
-	 * @phpstan-param array{
-	 *   message: string,
-	 *   file: string,
-	 *   line: int,
-	 *   type?: int,
-	 *   trace?: mixed|null,
-	 * } $e
+	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $message, array $e ): void {
 		if ( ! headers_sent() ) {
 			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		}
 
-		echo wp_json_encode(
+		$json = QM_Util::json_encode(
 			array(
 				'code' => 'qm_fatal',
 				'message' => $message,
@@ -136,6 +136,11 @@ class QM_Dispatcher_AJAX extends QM_Dispatcher {
 			),
 			JSON_UNESCAPED_SLASHES
 		);
+
+		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		// Core's fatal error handler subsequently outputs its message during Ajax requests, which would break the JSON.
+		add_filter( 'wp_php_error_message', '__return_empty_string' );
 	}
 }
 
