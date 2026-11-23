@@ -19,7 +19,7 @@ The horizontal axis represents time, from the start of the request to the end.
 * An event with a duration is drawn as a bar whose position and length marks when it started and how long it took.
 * An event that's a point in time is shown as a short bar.
 
-Clicking the label on most events jumps you to the corresponding row in its related panel, so you can see the full details.
+Clicking the label on an event opens a sidebar that shows its full details, such as the complete SQL of a database query, without leaving the timeline. From there you can jump to the corresponding row in its related panel.
 
 Use the dropdown and checkboxes at the top of the timeline to filter by component and category. Helpful when you're debugging or investigating something specific.
 

@@ -1,5 +1,5 @@
 import { type JSX } from 'preact';
-import { useContext } from 'preact/hooks';
+import { useContext, useEffect, useRef, useState } from 'preact/hooks';
 import { TabularPanel } from '../panels/tabular-panel';
 import { Component, Doing_It_Wrong, HTTP, Logger, PHP_Errors, QueryRow, Timing, Transients } from '../data-types';
 import { Cols, componentFilterCallback, deriveComponentFilters } from '../table';
@@ -14,6 +14,7 @@ import { PanelContext } from '../contexts/panel-context';
 import {
 	__,
 	_x,
+	sprintf,
 } from '@wordpress/i18n';
 import { PanelMenuItem } from '../panels/panel-registry';
 
@@ -68,6 +69,12 @@ const segmentLabels: Record<string, string> = {
 	'template': __( 'Template', 'query-monitor' ),
 	'shutdown': __( 'Shutdown', 'query-monitor' ),
 };
+
+const itemKey = ( item: TimelineItem ): string => (
+	item.rowIndex !== undefined
+		? `${ item.category }:${ item.rowIndex }`
+		: `${ item.category }:${ item.time }:${ item.label }`
+);
 
 const buildTimelineItems = (
 	dbRows?: QueryRow[] | null,
@@ -219,6 +226,16 @@ export const Timeline = ( { data }: TimelineProps ) => {
 	const componentFilter = filters['component'] ?? '';
 	const { timelineHiddenCategories, setTimelineHiddenCategories } = useContext( MainContext );
 	const hiddenCategories = new Set< TimelineItem['category'] >( timelineHiddenCategories as TimelineItem['category'][] );
+	const [ selectedKey, setSelectedKey ] = useState< string | null >( null );
+	const detailRef = useRef< HTMLElement >( null );
+	const triggerRef = useRef< HTMLButtonElement | null >( null );
+
+	// The details come before the table in the DOM, so move focus there for keyboard users.
+	useEffect( () => {
+		if ( selectedKey ) {
+			detailRef.current?.focus( { preventScroll: true } );
+		}
+	}, [ selectedKey ] );
 
 	const dbQueriesData = data.db_queries?.data;
 	const httpData = data.http?.data;
@@ -327,6 +344,8 @@ export const Timeline = ( { data }: TimelineProps ) => {
 				const isWide = widthPct > 30;
 				// Prefer right-aligned labels unless there's more space on the left.
 				const displayLabelLeft = ! isWide && ( leftPct > 60 || leftPct > ( 100 - leftPct - widthPct ) );
+				const key = itemKey( item );
+				const isSelected = key === selectedKey;
 
 				return (
 					<>
@@ -353,13 +372,16 @@ export const Timeline = ( { data }: TimelineProps ) => {
 								</span>
 							) }
 							<span className="timeline-bar-label-text">
-								{ item.rowIndex !== undefined ? (
-									<JumpLink targetPanel={ item.panel } rowIndex={ item.rowIndex }>
-										{ item.label }
-									</JumpLink>
-								) : (
-									item.label
-								) }
+								<button
+									className="qm-filter-trigger"
+									aria-pressed={ isSelected ? 'true' : 'false' }
+									onClick={ ( e ) => {
+										triggerRef.current = e.currentTarget;
+										setSelectedKey( isSelected ? null : key );
+									} }
+								>
+									{ item.label }
+								</button>
 							</span>
 							{ item.duration !== null && (
 								<span className="timeline-bar-label-time">
@@ -461,6 +483,9 @@ export const Timeline = ( { data }: TimelineProps ) => {
 		</>
 	);
 
+	// Look in all items, so the details stay open when a filter hides the selected item.
+	const selected = selectedKey ? allItems.find( ( item ) => itemKey( item ) === selectedKey ) : undefined;
+
 	return (
 		<TabularPanel
 			title={ __( 'Timeline', 'query-monitor' ) }
@@ -468,6 +493,78 @@ export const Timeline = ( { data }: TimelineProps ) => {
 			data={ sorted }
 			footer={ () => null }
 			header={ header }
-		/>
+		>
+			{ selected && (
+				<section
+					className="timeline-detail"
+					ref={ detailRef }
+					tabIndex={ -1 }
+					aria-labelledby="qm-timeline-detail-title"
+				>
+					<div className="timeline-detail-header">
+						<h3 id="qm-timeline-detail-title">
+							{ categoryLabels[ selected.category ] }
+						</h3>
+						<button
+							className="qm-button"
+							onClick={ () => {
+								setSelectedKey( null );
+								triggerRef.current?.focus();
+							} }
+						>
+							{ __( 'Close', 'query-monitor' ) }
+						</button>
+					</div>
+					{ selected.rowIndex !== undefined && (
+						<p>
+							<JumpLink targetPanel={ selected.panel } rowIndex={ selected.rowIndex }>
+								{ sprintf(
+									/* translators: %s: Name of a panel, e.g. Database Queries */
+									__( 'View in %s', 'query-monitor' ),
+									categoryLabels[ selected.category ]
+								) }
+							</JumpLink>
+						</p>
+					) }
+					<code className="timeline-detail-label">
+						{ selected.category === 'db' && typeof selected.label === 'string'
+							? Utils.formatSQL( selected.label )
+							: selected.label }
+					</code>
+					<table>
+						<tbody>
+							<tr>
+								<th scope="row">
+									{ __( 'Started', 'query-monitor' ) }
+								</th>
+								<td>
+									<Duration value={ selected.time / 1000 } />
+								</td>
+							</tr>
+							{ selected.duration !== null && (
+								<tr>
+									<th scope="row">
+										{ __( 'Time', 'query-monitor' ) }
+									</th>
+									<td>
+										<Duration value={ selected.duration } />
+									</td>
+								</tr>
+							) }
+							{ selected.component && (
+								<tr>
+									<th scope="row">
+										{ __( 'Component', 'query-monitor' ) }
+									</th>
+									<td>
+										{ selected.component.name }
+									</td>
+								</tr>
+							) }
+						</tbody>
+					</table>
+				</section>
+			) }
+		</TabularPanel>
 	);
 };
