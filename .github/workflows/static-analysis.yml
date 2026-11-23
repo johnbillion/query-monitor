@@ -38,7 +38,7 @@ jobs:
         label:
           - 'PHP'
         php:
-          - '8.5'
+          - '8.6'
           - '7.4'
       fail-fast: false
     with:

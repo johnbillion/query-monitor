@@ -46,12 +46,12 @@ jobs:
         include:
           # Latest:
           - wp: '7.1'
-            php: '8.5'
+            php: '8.6'
           - wp: '7.1'
             php: '7.4'
           # Latest -1:
           - wp: '7.0'
-            php: '8.5'
+            php: '8.6'
           - wp: '7.0'
             php: '7.4'
           # Latest -2:
