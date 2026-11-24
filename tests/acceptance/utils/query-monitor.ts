@@ -128,13 +128,6 @@ export class QueryMonitorUtils {
 	}
 
 	/**
-	 * Navigate to a page that makes a Guzzle HTTP request
-	 */
-	async amOnAPageThatMakesGuzzleRequest( test: string ) {
-		await this.visit( `/?_qm_acceptance_group=guzzle_requests&_qm_acceptance_test=${test}` );
-	}
-
-	/**
 	 * Navigate to a page that triggers a specific callback type
 	 */
 	async amOnAPageThatTriggersCallbackType( test: string ) {

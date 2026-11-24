@@ -34,6 +34,9 @@
 							},
 							"sslverify": {
 								"type": "boolean"
+							},
+							"_qm_guzzle": {
+								"type": "boolean"
 							}
 						},
 						"required": [

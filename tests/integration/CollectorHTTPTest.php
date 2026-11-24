@@ -84,4 +84,71 @@ class CollectorHTTPTest extends Test {
 		self::assertSame( 0.0, $data->ltime );
 	}
 
+	public function testSuccessfulGuzzleRequestIsLogged(): void {
+		$data = $this->perform_guzzle_request(
+			new \GuzzleHttp\Psr7\Response( 200, array(), '{"foo":"bar"}' ),
+			'https://example.org/json'
+		);
+
+		self::assertCount( 1, $data->http );
+
+		$request = $data->http[0];
+
+		self::assertSame( 'https://example.org/json', $request->url );
+		self::assertSame( 'HTTP 200', $request->type );
+		self::assertTrue( $request->args['_qm_guzzle'] ?? null );
+		self::assertInstanceOf( \QM_Data_HTTP_Response::class, $request->result );
+		self::assertSame( 200, $request->result->code );
+		self::assertEmpty( $data->errors );
+	}
+
+	public function testErrorGuzzleRequestIsLogged(): void {
+		$data = $this->perform_guzzle_request(
+			new \GuzzleHttp\Psr7\Response( 404, array(), 'Not Found' ),
+			'https://example.org/status/404'
+		);
+
+		self::assertCount( 1, $data->http );
+
+		$request = $data->http[0];
+
+		self::assertSame( 'https://example.org/status/404', $request->url );
+		self::assertSame( 'HTTP 404', $request->type );
+		self::assertInstanceOf( \QM_Data_HTTP_Response::class, $request->result );
+		self::assertSame( 404, $request->result->code );
+		self::assertContains( 'https://example.org/status/404', $data->errors['warning'] ?? array() );
+	}
+
+	private function perform_guzzle_request( \GuzzleHttp\Psr7\Response $response, string $url ): \QM_Data_HTTP {
+		$original = \QM_Collectors::get( 'http' );
+		self::assertInstanceOf( \QM_Collector_HTTP::class, $original );
+
+		$collector = new \QM_Collector_HTTP();
+		\QM_Collectors::add( $collector );
+
+		$stack = \GuzzleHttp\HandlerStack::create( new \GuzzleHttp\Handler\MockHandler( array( $response ) ) );
+		$stack->push( \QM_Collector_HTTP::guzzle_middleware() );
+		$client = new \GuzzleHttp\Client( array(
+			'handler' => $stack,
+		) );
+
+		try {
+			$client->get( $url );
+			self::assertLessThan( 400, $response->getStatusCode() );
+		} catch ( \GuzzleHttp\Exception\ClientException $e ) {
+			self::assertGreaterThanOrEqual( 400, $response->getStatusCode() );
+			self::assertSame( $response, $e->getResponse() );
+		} finally {
+			$collector->tear_down();
+			\QM_Collectors::add( $original );
+		}
+
+		$collector->process();
+
+		/** @var \QM_Data_HTTP $data */
+		$data = $collector->get_data();
+
+		return $data;
+	}
+
 }
