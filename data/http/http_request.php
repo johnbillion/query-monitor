@@ -23,7 +23,6 @@ class QM_Data_HTTP_Request implements \ArrayAccess {
 	 *   redirection?: int,
 	 *   blocking?: bool,
 	 *   sslverify?: bool,
-	 *   _qm_guzzle?: bool,
 	 * }
 	 */
 	public $args;

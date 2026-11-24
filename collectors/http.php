@@ -465,7 +465,6 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			'timeout' => $options['timeout'] ?? 30,
 			'blocking' => true,
 			'sslverify' => $options['verify'] ?? true,
-			'_qm_guzzle' => true,
 		);
 
 		if ( $exception ) {

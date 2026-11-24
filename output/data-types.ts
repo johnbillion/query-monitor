@@ -338,7 +338,6 @@ export interface HTTP {
 			redirection?: number;
 			blocking?: boolean;
 			sslverify?: boolean;
-			_qm_guzzle?: boolean;
 			[k: string]: unknown;
 		};
 		trace: Backtrace;

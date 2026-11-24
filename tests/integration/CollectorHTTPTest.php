@@ -96,7 +96,6 @@ class CollectorHTTPTest extends Test {
 
 		self::assertSame( 'https://example.org/json', $request->url );
 		self::assertSame( 'HTTP 200', $request->type );
-		self::assertTrue( $request->args['_qm_guzzle'] ?? null );
 		self::assertInstanceOf( \QM_Data_HTTP_Response::class, $request->result );
 		self::assertSame( 200, $request->result->code );
 		self::assertEmpty( $data->errors );
