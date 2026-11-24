@@ -12,4 +12,10 @@ class TestHtmlDispatcher extends \QM_Dispatcher_Html {
 		parent::apply_panel_menu_back_compat( $panel_menu );
 	}
 
+	public static function run_before_output( \QM_Dispatcher_Html $dispatcher ): string {
+		ob_start();
+		$dispatcher->before_output();
+		return (string) ob_get_clean();
+	}
+
 }
