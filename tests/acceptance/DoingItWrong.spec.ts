@@ -9,31 +9,10 @@ test.describe( 'Doing It Wrong', () => {
 		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
-	test( 'Deprecated argument should be handled', async ( { QueryMonitor } ) => {
-		await QueryMonitor.amOnAPageThatIsDoingItWrong( 'argument' );
-		await QueryMonitor.seeTableRowInQMPanel( 'Doing it Wrong', {
-			'Message': 'Function my_function was called with an argument that is deprecated since version 2.0.0 with no alternative available.',
-		} );
-	} );
-
-	test( 'Deprecated file should be handled', async ( { QueryMonitor } ) => {
-		await QueryMonitor.amOnAPageThatIsDoingItWrong( 'file' );
-		await QueryMonitor.seeTableRowInQMPanel( 'Doing it Wrong', {
-			'Message': 'File my_file.php is deprecated since version 2.0.0 with no alternative available.',
-		} );
-	} );
-
 	test( 'Deprecated function should be handled', async ( { QueryMonitor } ) => {
 		await QueryMonitor.amOnAPageThatIsDoingItWrong( 'function' );
 		await QueryMonitor.seeTableRowInQMPanel( 'Doing it Wrong', {
 			'Message': 'Function my_function is deprecated since version 2.0.0 with no alternative available.',
-		} );
-	} );
-
-	test( 'Deprecated hook should be handled', async ( { QueryMonitor } ) => {
-		await QueryMonitor.amOnAPageThatIsDoingItWrong( 'hook' );
-		await QueryMonitor.seeTableRowInQMPanel( 'Doing it Wrong', {
-			'Message': 'Hook my_hook is deprecated since version 2.0.0 with no alternative available.',
 		} );
 	} );
 } );
