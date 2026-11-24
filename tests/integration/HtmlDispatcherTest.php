@@ -224,28 +224,20 @@ class HtmlDispatcherTest extends Test {
 			$processed->setValue( $collectors, true );
 		}
 
-		$processor = new \WP_HTML_Tag_Processor( $output );
-		$script = null;
+		// A regex rather than the HTML API so this works on WordPress < 6.5, and so an unescaped
+		// `</script>` in the data ends the match early, as it would in a browser.
+		self::assertSame( 1, preg_match( '#<script[^>]*id="query-monitor-inline-data"[^>]*>(.*?)</script>#is', $output, $matches ) );
 
-		while ( $processor->next_tag( array( 'tag_name' => 'script' ) ) ) {
-			if ( 'query-monitor-inline-data' === $processor->get_attribute( 'id' ) ) {
-				// The integration tests run on the latest WordPress version.
-				// @phpstan-ignore WPCompat.methodNotAvailable
-				$script = $processor->get_modifiable_text();
-				break;
-			}
-		}
+		// Older WordPress versions wrap the script in CDATA comments.
+		self::assertSame( 1, preg_match( '#var QueryMonitorData = (.+?);\s*(?:/\* \]\]> \*/)?\s*$#s', $matches[1], $matches ) );
 
-		self::assertIsString( $script );
+		$json = $matches[1];
 
-		self::assertStringNotContainsStringIgnoringCase( '</script', $script );
 		// WordPress 7.1+ escapes `</script` itself, so assert that QM's own JSON encoding contains no tags.
-		self::assertStringNotContainsString( '<', $script );
-
-		self::assertSame( 1, preg_match( '/^\s*var QueryMonitorData = (.+);\s*$/s', $script, $matches ) );
+		self::assertStringNotContainsString( '<', $json );
 
 		/** @var array{data: array{block_editor: array{data: array{post_blocks: list<array{innerHTML: string}>}}}} $data */
-		$data = json_decode( $matches[1], true, 512, JSON_THROW_ON_ERROR );
+		$data = json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
 
 		self::assertSame( $inner_html, $data['data']['block_editor']['data']['post_blocks'][0]['innerHTML'] );
 	}
