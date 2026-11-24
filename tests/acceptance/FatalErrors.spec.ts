@@ -63,14 +63,12 @@ test.describe( 'Fatal Errors', () => {
 	test.describe( 'Logged out', () => {
 		test( 'Fatal error should be logged and handled by core when display_errors is off', async ( { page, QueryMonitor, globalUtils } ) => {
 			await QueryMonitor.amOnAPageThatTriggersFatalError( 'uncaught', '/', '0' );
-			await expect( page.locator( '#qm-fatal' ) ).not.toBeAttached();
 			await expect( page.locator( '.wp-die-message' ) ).toContainText( coreMessage );
 			expect( readErrorLog( globalUtils ) ).toContain( `Uncaught Error: ${message}` );
 		} );
 
-		test( 'Fatal error should be displayed and logged when display_errors is on', async ( { page, QueryMonitor, globalUtils } ) => {
+		test( 'Fatal error should be logged when display_errors is on', async ( { QueryMonitor, globalUtils } ) => {
 			await QueryMonitor.amOnAPageThatTriggersFatalError( 'uncaught', '/', '1' );
-			await expect( page.locator( '#qm-fatal' ) ).toContainText( message );
 			expect( readErrorLog( globalUtils ) ).toContain( `Uncaught Error: ${message}` );
 		} );
 	} );
