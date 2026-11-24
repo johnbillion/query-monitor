@@ -32,6 +32,9 @@ add_action( 'init', function() {
 	}
 
 	switch ( $_GET['_qm_acceptance_group'] ) {
+		case 'logger':
+			do_action( 'qm/debug', 'Select only this word from a longer log message.' );
+			break;
 		case 'doing_it_wrong':
 			switch ( $_GET['_qm_acceptance_test'] ) {
 				case 'argument':
