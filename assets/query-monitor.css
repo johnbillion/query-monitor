@@ -898,7 +898,6 @@ i {
 
 	dt {
 		border-top: 1px solid var( --qm-panel-separator );
-		flex-grow: 0;
 		flex: 1 0 16em;
 		padding: 10px 10px 10px 0;
 	}
