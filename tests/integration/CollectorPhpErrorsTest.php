@@ -352,6 +352,61 @@ class CollectorPhpErrorsTest extends Test {
 		self::assertSame( 'test', reset( $errors )->message );
 	}
 
+	/**
+	 * @return array<string, array{int, string}>
+	 */
+	public static function dataErrorLevels(): array {
+		return array(
+			'warning' => array( E_USER_WARNING, 'warning' ),
+			'notice' => array( E_USER_NOTICE, 'notice' ),
+		);
+	}
+
+	/**
+	 * @dataProvider dataErrorLevels
+	 */
+	function testItRecordsTriggeredErrorWithLevel( int $errno, string $expected_level ): void {
+		$this->setUpWithPreviousErrorHandler( true );
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		trigger_error( 'test', $errno );
+
+		$errors = $this->collector->get_data()->errors;
+
+		self::assertCount( 1, $errors );
+		$error = reset( $errors );
+		self::assertSame( $errno, $error->errno );
+		self::assertSame( $expected_level, $error->level );
+		self::assertFalse( $error->suppressed );
+		self::assertSame( 1, $error->count );
+	}
+
+	function testItRecordsSuppressedError(): void {
+		$this->setUpWithPreviousErrorHandler( true );
+
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		@trigger_error( 'test', E_USER_WARNING );
+
+		$errors = $this->collector->get_data()->errors;
+
+		self::assertCount( 1, $errors );
+		self::assertTrue( reset( $errors )->suppressed );
+	}
+
+	function testItCountsRepeatedErrorsFromTheSameCallsite(): void {
+		$this->setUpWithPreviousErrorHandler( true );
+
+		for ( $i = 0; $i < 2; $i++ ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+			trigger_error( 'test', E_USER_WARNING );
+		}
+
+		$errors = $this->collector->get_data()->errors;
+
+		self::assertCount( 1, $errors );
+		self::assertSame( 2, reset( $errors )->count );
+	}
+
 	function testItDoesNotPassPriorErrorToPreviousErrorHandler(): void {
 		$calls = $this->registerPreviousErrorHandler( false );
 
