@@ -1507,10 +1507,6 @@ select {
 	}
 }
 
-#qm-logger tr pre {
-	user-select: all;
-}
-
 /** === Timeline === */
 
 #qm-timeline table {
