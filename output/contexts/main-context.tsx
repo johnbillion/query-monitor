@@ -34,6 +34,9 @@ export type MainContextType = {
 	settings: SettingsType;
 	durationUnit: DurationUnit;
 	setDurationUnit: ( unit: DurationUnit ) => void;
+	queryDiffEnabled: boolean;
+	setQueryDiffEnabled: ( enabled: boolean ) => void;
+	queryDiffClearFailed: boolean;
 	verified: boolean;
 	setVerified: ( verified: boolean ) => void;
 }
@@ -61,4 +64,7 @@ export const MainContext = createContext<MainContextType>( {
 		abspath: '',
 		contentpath: '',
 	},
+	queryDiffEnabled: false,
+	setQueryDiffEnabled: ( _enabled ) => {},
+	queryDiffClearFailed: false,
 } );
