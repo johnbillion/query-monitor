@@ -72,6 +72,15 @@
 			color: inherit;
 		}
 
+		/*
+		 * WordPress 7.2 shows a focus outline on toolbar links for all focus types. Clicking this
+		 * item opens the panel without leaving the page so the outline would remain after a click.
+		 * The transparent outline remains visible in high contrast mode.
+		 */
+		> .ab-item:focus:not(:focus-visible) {
+			outline-color: transparent;
+		}
+
 		small {
 			font-size: 11px !important;
 		}
