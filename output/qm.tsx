@@ -54,6 +54,7 @@ type Props = {
 	theme: string;
 	fabulous: boolean;
 	editor: string;
+	launcher: boolean;
 	filters: MainContextType['filters'];
 	seen: string;
 	containerHeight: number | null;
@@ -69,6 +70,7 @@ type Props = {
 	onThemeChange: ( theme: string ) => void;
 	onFabulousChange: ( fabulous: boolean ) => void;
 	onEditorChange: ( editor: string ) => void;
+	onLauncherChange: ( launcher: boolean ) => void;
 	onFiltersChange: ( filters: MainContextType['filters'] ) => void;
 	onSeenChange: ( panel: string ) => void;
 	timelineHiddenCategories: string[];
@@ -84,6 +86,7 @@ export const QM = ( props: Props ) => {
 	const [ fabulous, setFabulous ] = useState( props.fabulous );
 	const [ fabulousAnimate, setFabulousAnimate ] = useState( false );
 	const [ editor, setEditor ] = useState( props.editor );
+	const [ launcher, setLauncher ] = useState( props.launcher );
 	const [ filters, setFilters ] = useState( props.filters );
 	const [ seen, setSeen ] = useState( props.seen );
 	const [ timelineHiddenCategories, setTimelineHiddenCategories ] = useState( props.timelineHiddenCategories );
@@ -165,6 +168,11 @@ export const QM = ( props: Props ) => {
 		setEditor: ( editor: string ) => {
 			props.onEditorChange( editor );
 			setEditor( editor );
+		},
+		launcher: launcher,
+		setLauncher: ( launcher: boolean ) => {
+			props.onLauncherChange( launcher );
+			setLauncher( launcher );
 		},
 		filters: filters,
 		setFilters: ( filters: MainContextType['filters'] ) => {
@@ -421,6 +429,18 @@ export const QM = ( props: Props ) => {
 						<Panels data={ props.data } active={ effectiveActive } settings={ props.settings } />
 					</div>
 				</div>
+			) }
+			{ inWP && launcher && ! adminMenuElement && ! effectiveActive && (
+				// The admin toolbar is hidden so it can't be used to open the panel.
+				<button
+					aria-label={ __( 'Query Monitor', 'query-monitor' ) }
+					className={ clsx( 'qm-launcher', props.menu.top.classname ) }
+					onClick={ () => {
+						setActivePanel( 'overview' );
+					} }
+				>
+					QM
+				</button>
 			) }
 			{ inWP && adminMenuElement && (
 				<AdminMenu element={ adminMenuElement }>

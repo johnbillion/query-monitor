@@ -21,6 +21,8 @@ export type DurationUnit = 's' | 'ms';
 export type MainContextType = {
 	editor: string;
 	setEditor: ( editor: string ) => void;
+	launcher: boolean;
+	setLauncher: ( launcher: boolean ) => void;
 	theme: string;
 	setTheme: ( theme: string ) => void;
 	fabulous: boolean;
@@ -41,6 +43,8 @@ export type MainContextType = {
 export const MainContext = createContext<MainContextType>( {
 	editor: '',
 	setEditor: ( _editor ) => {},
+	launcher: true,
+	setLauncher: ( _launcher ) => {},
 	theme: 'auto',
 	setTheme: ( _theme ) => {},
 	fabulous: false,
