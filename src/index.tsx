@@ -50,6 +50,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const themeKey = 'qm-theme';
 	const fabulousKey = 'qm-fabulous';
 	const editorKey = 'qm-editor';
+	const hideLauncherKey = 'qm-hide-launcher';
 	const filtersKey = 'qm-filters';
 	const containerHeightKey = 'qm-container-height';
 	const seenKey = 'qm-seen';
@@ -84,6 +85,15 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		localStorage.setItem( editorKey, editor );
 	}
 
+	// Stored as an opt-out so the launcher is shown by default.
+	const onLauncherChange = ( launcher: boolean ) => {
+		if ( launcher ) {
+			localStorage.removeItem( hideLauncherKey );
+		} else {
+			localStorage.setItem( hideLauncherKey, '1' );
+		}
+	}
+
 	const onFiltersChange = ( filters: MainContextType['filters'] ) => {
 		sessionStorage.setItem( filtersKey, JSON.stringify( filters ) );
 	}
@@ -107,6 +117,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	const active = localStorage.getItem( panelKey ) ?? '';
 	const side = localStorage.getItem( positionKey ) === 'right';
 	const editor = localStorage.getItem( editorKey ) ?? '';
+	const launcher = ! localStorage.getItem( hideLauncherKey );
 	const theme = localStorage.getItem( themeKey ) ?? 'auto';
 	const fabulous = !! localStorage.getItem( fabulousKey );
 	const rawFilters = sessionStorage.getItem( filtersKey );
@@ -154,6 +165,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				theme={ theme }
 				fabulous={ fabulous }
 				editor={ editor }
+				launcher={ launcher }
 				filters={ filters }
 				containerHeight={ containerHeight }
 				onPanelChange={ onPanelChange }
@@ -162,6 +174,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				onThemeChange={ onThemeChange }
 				onFabulousChange={ onFabulousChange }
 				onEditorChange={ onEditorChange }
+				onLauncherChange={ onLauncherChange }
 				onFiltersChange={ onFiltersChange }
 				seen={ seen }
 				onSeenChange={ onSeenChange }

@@ -18,6 +18,8 @@ export const Settings = ( {settings}: SettingsProps ) => {
 	const {
 		editor,
 		setEditor,
+		launcher,
+		setLauncher,
 		theme,
 		setTheme,
 		fabulous,
@@ -159,6 +161,28 @@ export const Settings = ( {settings}: SettingsProps ) => {
 								} }
 							/>
 							{ __( 'Fabulous', 'query-monitor' ) }
+						</label>
+					</p>
+				</section>
+				<section>
+					<h3>
+						{ __( 'Toolbar', 'query-monitor' ) }
+					</h3>
+					<p>
+						{ __( 'When the admin toolbar is hidden, a button is shown in the corner of the page so you can still open Query Monitor.', 'query-monitor' ) }
+					</p>
+					<p>
+						<label>
+							<input
+								type="checkbox"
+								className="qm-checkbox"
+								name="qm-launcher"
+								checked={ launcher }
+								onChange={ ( e ) => {
+									setLauncher( e.currentTarget.checked );
+								} }
+							/>
+							{ __( 'Show the Query Monitor button when the admin toolbar is hidden', 'query-monitor' ) }
 						</label>
 					</p>
 				</section>
