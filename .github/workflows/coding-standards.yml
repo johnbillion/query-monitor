@@ -52,7 +52,7 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-coding-standards.yml@52de98a23b5c85d2024c71073ea4ef1770db7428 # 3.0.0
     strategy:
       matrix:
         label:
@@ -91,3 +91,33 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  classmap:
+    name: Class map
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          coverage: none
+
+      # No packages are installed. Dumping the autoloader is enough to regenerate classmap.php.
+      - name: Regenerate the class map
+        run: composer dump-autoload
+
+      - name: Check the class map is up to date
+        run: | #shell
+          if ! git diff --exit-code -- classmap.php; then
+            echo "::error file=classmap.php::classmap.php is out of date. Run composer dump-autoload and commit the result."
+            exit 1
+          fi

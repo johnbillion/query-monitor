@@ -39,6 +39,7 @@ final class QM_Collector_Debug_Bar extends QM_Collector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$this->get_panel()->prerender();
 	}

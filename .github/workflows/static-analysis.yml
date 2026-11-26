@@ -32,13 +32,13 @@ jobs:
     name: ${{ matrix.label }}
     permissions:
       contents: read
-    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@bde088b47c6a57bf89ccac9ece001a57cbd2e431 # 2.9.9
+    uses: johnbillion/plugin-infrastructure/.github/workflows/reusable-static-analysis.yml@52de98a23b5c85d2024c71073ea4ef1770db7428 # 3.0.0
     strategy:
       matrix:
         label:
           - 'PHP'
         php:
-          - '8.5'
+          - '8.6'
           - '7.4'
       fail-fast: false
     with:

@@ -52,12 +52,12 @@
 	--qm-title-bg:                     #ececec;
 	--qm-selection-fg:                 #1e1e1e;
 	--qm-selection-bg:                 #B9D6FB;
-	--qm-badge-fg:                     #1d2c49;
-	--qm-badge-bg:                     #c6d8fa;
-	--qm-badge-notice-fg:              #663900;
-	--qm-badge-notice-bg:              #fae3c6;
-	--qm-badge-warning-fg:             #660000;
-	--qm-badge-warning-bg:             #fac6c6;
+	--qm-badge-fg:                     #ddd;
+	--qm-badge-bg:                     #235;
+	--qm-badge-notice-fg:              #fff;
+	--qm-badge-notice-bg:              #950;
+	--qm-badge-warning-fg:             #fff;
+	--qm-badge-warning-bg:             #d00;
 	--qm-sql-keyword-fg:               #33a;
 	--qm-sql-value-fg:                 #a44;
 
@@ -943,7 +943,6 @@ i {
 
 	dt {
 		border-top: 1px solid var( --qm-panel-separator );
-		flex-grow: 0;
 		flex: 1 0 16em;
 		padding: 10px 10px 10px 0;
 	}
@@ -1551,10 +1550,6 @@ select {
 			background-color: var( --qm-panel-menu-bg-hover );
 		}
 	}
-}
-
-#qm-logger tr pre {
-	user-select: all;
 }
 
 /** === Timeline === */

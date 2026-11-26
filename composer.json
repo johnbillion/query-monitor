@@ -29,7 +29,7 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.7.2",
 		"guzzlehttp/guzzle": "^7.0",
-		"johnbillion/plugin-infrastructure": "2.9.9",
+		"johnbillion/plugin-infrastructure": "3.0.0",
 		"johnbillion/wp-compat": "3.0.1",
 		"php-stubs/wordpress-stubs": "7.1.0",
 		"phpcompatibility/phpcompatibility-wp": "2.1.8",
@@ -67,8 +67,8 @@
 		"wordpress-install-dir": "vendor/wordpress/wordpress"
 	},
 	"scripts": {
-		"build-vendor": [
-			"build-vendor"
+		"post-autoload-dump": [
+			"@php bin/build-classmap.php"
 		],
 		"test": [
 			"@composer validate --strict --no-check-lock",

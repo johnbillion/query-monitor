@@ -16,6 +16,7 @@ class QM_Collector_Request extends QM_DataCollector {
 
 	public $id = 'request';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Request();
 	}
@@ -23,6 +24,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			# Rewrites
@@ -44,6 +46,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
@@ -118,6 +121,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_options() {
 		return array(
 			'category_base',
@@ -135,6 +139,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_constants() {
 		return array(
 			'WP_HOME',
@@ -145,6 +150,7 @@ class QM_Collector_Request extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		/**
 		 * @var \WP $wp

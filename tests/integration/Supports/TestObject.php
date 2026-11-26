@@ -7,4 +7,7 @@ class TestObject {
 	public function hello() {
 	}
 
+	public static function greet() {
+	}
+
 }

@@ -16,6 +16,7 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 
 	public $id = 'conditionals';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Conditionals();
 	}
@@ -23,6 +24,7 @@ class QM_Collector_Conditionals extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 
 		/**

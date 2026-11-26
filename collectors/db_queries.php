@@ -48,6 +48,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	 */
 	public $wpdb;
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_DB_Queries();
 	}
@@ -99,6 +100,7 @@ class QM_Collector_DB_Queries extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$this->data->total_qs = 0;
 		$this->data->errors = array();

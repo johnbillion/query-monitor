@@ -145,6 +145,7 @@ class QM_Dispatcher_WP_Die extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 		if ( ! $this->trace ) {
 			return false;

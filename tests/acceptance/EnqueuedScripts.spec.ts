@@ -6,7 +6,7 @@ test.describe( 'Enqueued Scripts', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Footer-only scripts should be detected', async ( { QueryMonitor, globalUtils } ) => {

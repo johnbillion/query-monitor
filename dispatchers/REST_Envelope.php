@@ -48,6 +48,7 @@ class QM_Dispatcher_REST_Envelope extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		foreach ( (array) glob( $this->qm->plugin_path( 'output/raw/*.php' ) ) as $file ) {
 			include_once $file;
@@ -57,6 +58,7 @@ class QM_Dispatcher_REST_Envelope extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 		if ( ! self::user_can_view() ) {
 			return false;

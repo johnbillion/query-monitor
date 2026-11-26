@@ -6,7 +6,7 @@ test.describe( 'PHP Errors', () => {
 	} );
 
 	test.beforeEach( async ( { QueryMonitor } ) => {
-		await QueryMonitor.loginViaPage( 'admin', 'password' );
+		QueryMonitor.loginOnNextVisit( 'admin', 'password' );
 	} );
 
 	test( 'Warning should be handled', async ( { QueryMonitor } ) => {

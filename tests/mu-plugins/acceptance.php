@@ -3,6 +3,29 @@
 // The autofocus timer on wp-login.php races Playwright filling in the login form.
 add_filter( 'enable_login_autofocus', '__return_false' );
 
+// Update checks and other requests to wordpress.org are blocking and their speed depends on the network, so they're
+// short-circuited. Core saves the update transients before making the request, so they aren't retried.
+add_filter( 'pre_http_request', function( $pre, array $args, string $url ) {
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+
+	if ( is_string( $host ) && preg_match( '#(^|\.)wordpress\.org$#', $host ) ) {
+		return new WP_Error( 'qm_acceptance_blocked', 'Requests to wordpress.org are blocked during the acceptance tests.' );
+	}
+
+	return $pre;
+}, 10, 3 );
+
+if ( isset( $_GET['_qm_acceptance_group'] ) && 'fatal_errors' === $_GET['_qm_acceptance_group'] ) {
+	// Log to a file that the tests can read via WP-CLI, which runs in a separate container.
+	ini_set( 'log_errors', '1' );
+	ini_set( 'error_log', WP_CONTENT_DIR . '/qm-acceptance-fatal.log' );
+
+	// This has to happen before QM reads the value when its error handler is set up.
+	if ( isset( $_GET['_qm_acceptance_display_errors'] ) ) {
+		ini_set( 'display_errors', $_GET['_qm_acceptance_display_errors'] );
+	}
+}
+
 add_action( 'init', function() {
 	if ( ! isset( $_GET['_qm_acceptance_group'], $_GET['_qm_acceptance_test'] ) ) {
 		return;
@@ -66,7 +89,27 @@ add_action( 'init', function() {
 					break;
 			}
 			break;
+		case 'fatal_errors':
+			switch ( $_GET['_qm_acceptance_test'] ) {
+				case 'uncaught':
+					// Fatals from mu-plugins are never attributed to a plugin or theme, so this
+					// reaches core's fatal error handler without triggering recovery mode.
+					throw new \Error( 'This is a test fatal error' );
+				case 'uncaught-rest':
+					// `REST_REQUEST` isn't defined until after `init`.
+					add_action( 'rest_api_init', function() {
+						throw new \Error( 'This is a test fatal error' );
+					} );
+					break;
+				default:
+					throw new \InvalidArgumentException( 'Unknown test: ' . $_GET['_qm_acceptance_test'] );
+					break;
+			}
+			break;
 		case 'guzzle_requests':
+			// Guzzle is a dev dependency, which QM's own autoloader doesn't load.
+			require_once WP_PLUGIN_DIR . '/query-monitor/vendor/autoload.php';
+
 			if ( ! class_exists( 'GuzzleHttp\Client' ) ) {
 				throw new \Exception( 'Guzzle not available' );
 			}

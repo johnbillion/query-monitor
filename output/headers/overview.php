@@ -21,6 +21,7 @@ class QM_Output_Headers_Overview extends QM_Output_Headers {
 	/**
 	 * @return array<string, mixed>
 	 */
+	#[\Override]
 	public function get_output() {
 		/** @var QM_Data_Overview $data */
 		$data = $this->collector->get_data();

@@ -60,6 +60,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	 */
 	private $http_responses = array();
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_HTTP();
 	}
@@ -67,6 +68,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 
 		parent::set_up();
@@ -83,6 +85,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'http_request_args', array( $this, 'filter_http_request_args' ), 9999 );
 		remove_filter( 'pre_http_request', array( $this, 'filter_pre_http_request' ), 9999 );
@@ -97,6 +100,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		$actions = array(
 			'http_api_curl',
@@ -133,6 +137,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'block_local_requests',
@@ -156,6 +161,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_constants() {
 		return array(
 			'WP_PROXY_HOST',
@@ -331,6 +337,7 @@ class QM_Collector_HTTP extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		$this->data->ltime = 0;
 
@@ -356,11 +363,14 @@ class QM_Collector_HTTP extends QM_DataCollector {
 			if ( isset( $this->http_responses[ $key ] ) ) {
 				$response = $this->http_responses[ $key ];
 			} else {
-				// Timed out
+				// The response was never logged. This can happen when a `pre_http_request` filter
+				// callback intercepts the request at a priority higher than QM's hook (9999), so
+				// QM's `filter_pre_http_request` already ran (saw no interception) and WordPress
+				// then short-circuits the request, meaning `http_api_debug` never fires either.
 				$response = array(
-					'end' => floatval( $request['start'] + $request['args']['timeout'] ),
+					'end' => $request['start'],
 					'args' => $request['args'],
-					'result' => new WP_Error( 'http_request_timed_out' ),
+					'result' => new WP_Error( 'http_request_not_executed' ),
 					'info' => null,
 					'intercepted' => false,
 				);

@@ -391,7 +391,8 @@ class QM_Util {
 
 		$function = $callback['function'];
 
-		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) ) {
+		// PHP >= 8.4 names closures `{closure:Class::method():line}`
+		if ( is_string( $function ) && ( false !== strpos( $function, '::' ) ) && ( 0 !== strpos( $function, '{closure' ) ) ) {
 			$function = explode( '::', $function );
 		}
 
@@ -400,6 +401,10 @@ class QM_Util {
 				$callback['class'],
 				$function,
 			);
+		}
+
+		if ( $function instanceof Closure ) {
+			$function = self::unwrap_first_class_callable( $function );
 		}
 
 		try {
@@ -466,6 +471,40 @@ class QM_Util {
 
 		return $result;
 
+	}
+
+	/**
+	 * Returns the callable that a first-class callable closure such as `$obj->method(...)`,
+	 * `Foo::method(...)`, or `strlen(...)` wraps, or the closure itself if it's anonymous.
+	 *
+	 * @return Closure|string|array{0: object|class-string, 1: string}
+	 */
+	private static function unwrap_first_class_callable( Closure $closure ) {
+		$ref = new ReflectionFunction( $closure );
+		$name = $ref->getName();
+
+		// Anonymous closures are named `{closure}` (with a namespace prefix) before PHP 8.4, and `{closure:...}` from PHP 8.4
+		if ( false !== strpos( $name, '{closure' ) ) {
+			return $closure;
+		}
+
+		$this_obj = $ref->getClosureThis();
+		$scope = $ref->getClosureScopeClass();
+
+		if ( $this_obj && method_exists( $this_obj, $name ) ) {
+			return array( $this_obj, $name );
+		}
+
+		if ( $scope && method_exists( $scope->getName(), $name ) ) {
+			return array( $scope->getName(), $name );
+		}
+
+		// Closures from `__call()` and `__callStatic()` methods are named after the inaccessible method
+		if ( $this_obj || $scope ) {
+			return $closure;
+		}
+
+		return $name;
 	}
 
 	/**
@@ -643,9 +682,63 @@ class QM_Util {
 	}
 
 	/**
+	 * JSON encodes data, falling back to `wp_json_encode()` to convert any strings that aren't valid UTF-8.
+	 *
+	 * The fallback in `wp_json_encode()` rebuilds objects from their public properties, which discards the
+	 * output of `jsonSerialize()`, so objects are converted to plain data before the fallback runs.
+	 *
+	 * @param mixed $data The data to be JSON encoded.
+	 * @param int   $flags Options to pass to `json_encode()`.
+	 * @return string|false The JSON encoded data, or false on failure.
+	 */
+	public static function json_encode( $data, int $flags = 0 ) {
+		$json = json_encode( $data, $flags );
+
+		if ( false !== $json ) {
+			return $json;
+		}
+
+		return wp_json_encode( self::json_prepare( $data, 512 ), $flags );
+	}
+
+	/**
+	 * @param mixed $data
+	 * @return mixed
+	 */
+	protected static function json_prepare( $data, int $depth ) {
+		if ( $depth < 0 ) {
+			return null;
+		}
+
+		if ( $data instanceof JsonSerializable ) {
+			return self::json_prepare( $data->jsonSerialize(), $depth - 1 );
+		}
+
+		if ( is_array( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				$data[ $key ] = self::json_prepare( $value, $depth - 1 );
+			}
+
+			return $data;
+		}
+
+		if ( is_object( $data ) ) {
+			$prepared = new stdClass();
+
+			foreach ( get_object_vars( $data ) as $key => $value ) {
+				$prepared->$key = self::json_prepare( $value, $depth - 1 );
+			}
+
+			return $prepared;
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Helper function for JSON encoding data and formatting it in a consistent manner.
 	 *
-	 * @deprecated Use wp_json_encode() directly with the appropriate options instead.
+	 * @deprecated Use QM_Util::json_encode() directly with the appropriate options instead.
 	 *
 	 * @param mixed $data The data to be JSON encoded.
 	 * @return string The JSON encoded data.
@@ -653,7 +746,7 @@ class QM_Util {
 	public static function json_format( $data ) {
 		$json_options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 
-		$json = wp_json_encode( $data, $json_options );
+		$json = self::json_encode( $data, $json_options );
 
 		if ( false === $json ) {
 			return '';

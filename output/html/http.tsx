@@ -41,10 +41,6 @@ const hasSslVerifyWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return row.url.startsWith( 'https://' ) && row.args.sslverify === false;
 };
 
-const hasRedirectWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
-	return row.redirected_to !== null;
-};
-
 const hasInterceptedWarning = ( row: DataTypes['http']['http'][0] ): boolean => {
 	return row.intercepted === true;
 };
@@ -96,7 +92,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								<Notice>
 									{ sprintf(
 										/* translators: %s: WordPress filter name */
-										__( 'Request was short-circuited by the %s filter and was not sent', 'query-monitor' ),
+										__( 'Request was not sent because the %s filter returned a response', 'query-monitor' ),
 										'pre_http_request'
 									) }
 								</Notice>
@@ -109,7 +105,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 						) : (
 							Utils.formatURL( row.url )
 						) }
-						{ hasRedirectWarning( row ) && (
+						{ row.redirected_to !== null && (
 							<div>
 								<Warning>
 									{ sprintf(
@@ -137,7 +133,7 @@ export const HTTP = ( { data }: PanelProps<DataTypes['http']> ) => {
 								{ sprintf(
 									/* translators: %s: Error message text */
 									__( 'Error: %s', 'query-monitor' ),
-									Utils.getErrorMessage( row.result )
+									Utils.getErrorMessage( row.result ) ?? ''
 								) }
 							</Warning>
 						);

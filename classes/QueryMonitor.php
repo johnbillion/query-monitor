@@ -56,7 +56,14 @@ class QueryMonitor extends QM_Plugin {
 	 * @return array<string, string>
 	 */
 	public function filter_plugin_action_links( array $actions ) {
-		return array_merge( array(
+		$links = array();
+
+		// The link is handled by QM's JavaScript, which only loads for users who can view QM.
+		if ( QM_Dispatcher::user_can_view() ) {
+			$links['settings'] = '<a href="#qm-settings">' . esc_html__( 'Settings', 'query-monitor' ) . '</a>';
+		}
+
+		return array_merge( $links, array(
 			'add-ons' => '<a href="https://querymonitor.com/help/add-on-plugins/">' . esc_html__( 'Add-ons', 'query-monitor' ) . '</a>',
 			'help' => '<a href="https://querymonitor.com/wordpress-debugging/how-to-use/">' . esc_html__( 'Help', 'query-monitor' ) . '</a>',
 		), $actions );

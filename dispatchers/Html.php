@@ -148,7 +148,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$wp_admin_bar->add_node( array(
 			'id' => 'query-monitor',
-			'title' => esc_html( $title ),
+			'title' => '<span class="qm-menu-title">' . esc_html( $title ) . '</span>',
 			'href' => '#qm-overview',
 		) );
 
@@ -163,6 +163,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function init() {
 
 		if ( ! self::user_can_view() ) {
@@ -280,6 +281,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function before_output() {
 		global $wp_version;
 
@@ -347,6 +349,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
+		// The overview panel shows the cache data even when a plugin such as Redis Object Cache replaces
+		// the cache outputter with a server-rendered one.
+		if ( ! isset( $data['cache'] ) ) {
+			$cache_collector = QM_Collectors::get( 'cache' );
+
+			if ( $cache_collector && $cache_collector->get_data() instanceof QM_Data_Cache ) {
+				$data['cache'] = array(
+					'enabled' => $cache_collector::enabled(),
+					'data'    => $cache_collector->get_data(),
+				);
+			}
+		}
+
 		$data['overview'] = array(
 			'enabled' => true,
 			'data' => QM_Collectors::get( 'overview' )->get_data(),
@@ -396,7 +411,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 
 		$this->output_assets();
 
-		$encoded = wp_json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
+		$encoded = QM_Util::json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG );
 
 		wp_print_inline_script_tag(
 			sprintf(
@@ -442,6 +457,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	protected function after_output() {
 	}
 
@@ -515,6 +531,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	/**
 	 * @return bool
 	 */
+	#[\Override]
 	public function is_active() {
 
 		if ( ! self::user_can_view() ) {
@@ -552,6 +569,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 * @param mixed[] $e
 	 * @phpstan-param FatalError $e
 	 */
+	#[\Override]
 	public function output_fatal( $error, array $e ): void {
 		// This hides the subsequent message from the fatal error handler in core. It cannot be
 		// disabled by a plugin so we'll just hide its output.
@@ -639,6 +657,7 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 	 *
 	 * @return void
 	 */
+	#[\Override]
 	public function cease() {
 		$this->ceased = true;
 	}

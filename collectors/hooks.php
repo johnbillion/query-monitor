@@ -24,6 +24,7 @@ class QM_Collector_Hooks extends QM_DataCollector {
 	 */
 	protected static $hide_core;
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Hooks();
 	}
@@ -31,6 +32,7 @@ class QM_Collector_Hooks extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		/**
 		 * @var array<string, int> $wp_actions

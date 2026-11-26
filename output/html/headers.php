@@ -30,6 +30,7 @@ class QM_Output_Html_Headers extends QM_Output_Html {
 	 *
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		return __( 'Request Data', 'query-monitor' );
 	}

@@ -24,6 +24,7 @@ class QM_Output_Raw_Transients extends QM_Output_Raw {
 	/**
 	 * @return array<string, mixed>
 	 */
+	#[\Override]
 	public function get_output() {
 		$output = array();
 		$data = $this->collector->get_data();

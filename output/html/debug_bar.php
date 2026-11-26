@@ -26,6 +26,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function name() {
 		/** @var string $title */
 		$title = $this->collector->get_panel()->title();
@@ -36,6 +37,7 @@ class QM_Output_Html_Debug_Bar extends QM_Output_Html {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function output() {
 		$class = get_class( $this->collector->get_panel() );
 

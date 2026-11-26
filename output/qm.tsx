@@ -220,6 +220,32 @@ export const QM = ( props: Props ) => {
 		}
 	}, [ inWP, adminMenuElement, props.menu.top.classname ] );
 
+	// Handles links outside of QM, such as the "Settings" link on the Plugins screen.
+	useEffect( () => {
+		if ( ! inWP ) {
+			return;
+		}
+
+		const onClick = ( event: MouseEvent ) => {
+			if ( ! ( event.target instanceof Element ) ) {
+				return;
+			}
+
+			if ( ! event.target.closest( 'a[href="#qm-settings"]' ) ) {
+				return;
+			}
+
+			event.preventDefault();
+			setActive( 'settings' );
+		};
+
+		document.addEventListener( 'click', onClick );
+
+		return () => {
+			document.removeEventListener( 'click', onClick );
+		};
+	}, [ inWP ] );
+
 	const mainRef = useRef<HTMLDivElement>( null );
 	const { onContainerResize, onPanelChange, containerHeight } = props;
 	const initialHeightApplied = useRef( false );
@@ -419,12 +445,15 @@ export const QM = ( props: Props ) => {
 							e.preventDefault();
 						} }
 					>
-						{ props.menu.top.title.map( ( part, i ) => (
-							<Fragment key={ i }>
-								{ i > 0 ? '\u00A0\u00A0' : '' }
-								{ createInterpolateElement( part ) }
-							</Fragment>
-						) ) }
+						<span className="ab-icon" aria-hidden="true">QM</span>
+						<span className="ab-label qm-menu-title">
+							{ props.menu.top.title.map( ( part, i ) => (
+								<Fragment key={ i }>
+									{ i > 0 ? '\u00A0\u00A0' : '' }
+									{ createInterpolateElement( part ) }
+								</Fragment>
+							) ) }
+						</span>
 					</a>
 					<div className="ab-sub-wrapper">
 						<ul className="ab-submenu">

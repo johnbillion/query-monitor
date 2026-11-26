@@ -31,6 +31,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	 */
 	protected $block_timer_stack = array();
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Block_Editor();
 	}
@@ -38,6 +39,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function set_up() {
 		parent::set_up();
 
@@ -50,6 +52,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function tear_down() {
 		remove_filter( 'pre_render_block', array( $this, 'filter_pre_render_block' ), 9999 );
 		remove_filter( 'render_block_context', array( $this, 'filter_render_block_context' ), -9999 );
@@ -62,6 +65,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_actions() {
 		return array(
 			'enqueue_block_assets',
@@ -72,6 +76,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 	/**
 	 * @return array<int, string>
 	 */
+	#[\Override]
 	public function get_concerned_filters() {
 		return array(
 			'allowed_block_types',
@@ -146,6 +151,7 @@ class QM_Collector_Block_Editor extends QM_DataCollector {
 		return $block_content;
 	}
 
+	#[\Override]
 	public function process() {
 		/** @var ?string $_wp_current_template_content */
 		global $_wp_current_template_content;

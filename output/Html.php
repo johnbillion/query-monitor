@@ -50,6 +50,7 @@ abstract class QM_Output_Html extends QM_Output {
 	/**
 	 * @return string
 	 */
+	#[\Override]
 	public function get_output() {
 		ob_start();
 		// compat until I convert all the existing outputters to use `get_output()`

@@ -16,6 +16,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 
 	public $id = 'cache';
 
+	#[\Override]
 	public function get_storage(): QM_Data {
 		return new QM_Data_Cache();
 	}
@@ -23,6 +24,7 @@ class QM_Collector_Cache extends QM_DataCollector {
 	/**
 	 * @return void
 	 */
+	#[\Override]
 	public function process() {
 		/** @var ?object $wp_object_cache */
 		global $wp_object_cache;
