@@ -349,6 +349,19 @@ class QM_Dispatcher_Html extends QM_Dispatcher {
 			}
 		}
 
+		// The overview panel shows the cache data even when a plugin such as Redis Object Cache replaces
+		// the cache outputter with a server-rendered one.
+		if ( ! isset( $data['cache'] ) ) {
+			$cache_collector = QM_Collectors::get( 'cache' );
+
+			if ( $cache_collector && $cache_collector->get_data() instanceof QM_Data_Cache ) {
+				$data['cache'] = array(
+					'enabled' => $cache_collector::enabled(),
+					'data'    => $cache_collector->get_data(),
+				);
+			}
+		}
+
 		$data['overview'] = array(
 			'enabled' => true,
 			'data' => QM_Collectors::get( 'overview' )->get_data(),
