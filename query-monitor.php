@@ -10,7 +10,7 @@
  *
  * Plugin Name:  Query Monitor
  * Description:  The developer tools panel for WordPress and WooCommerce.
- * Version:      4.1.1
+ * Version:      4.1.2
  * Plugin URI:   https://querymonitor.com/
  * Author:       John Blackbourn
  * Author URI:   https://querymonitor.com/
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QM_VERSION', '4.1.1' );
+define( 'QM_VERSION', '4.1.2' );
 
 require_once __DIR__ . '/autoload.php';
 
